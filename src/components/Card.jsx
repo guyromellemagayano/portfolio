@@ -1,20 +1,8 @@
-import Link from 'next/link'
 import clsx from 'clsx'
+import Link from 'next/link'
+import ChevronRightSvgIcon from './icons/svg/ChevronRight'
 
-function ChevronRightIcon(props) {
-  return (
-    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-      <path
-        d="M6.75 5.75 9.25 8l-2.5 2.25"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-export function Card({ as: Component = 'div', className, children }) {
+const Card = ({ as: Component = 'div', className, children }) => {
   return (
     <Component
       className={clsx(className, 'group relative flex flex-col items-start')}
@@ -59,7 +47,7 @@ Card.Cta = function CardCta({ children }) {
       className="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-500"
     >
       {children}
-      <ChevronRightIcon className="ml-1 h-4 w-4 stroke-current" />
+      <ChevronRightSvgIcon className="ml-1 h-4 w-4 stroke-current" />
     </div>
   )
 }
@@ -92,3 +80,5 @@ Card.Eyebrow = function CardEyebrow({
     </Component>
   )
 }
+
+export default Card
