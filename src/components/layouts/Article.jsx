@@ -1,11 +1,11 @@
-import { Container } from "@/components/Container";
+import Container from "@/components/Container";
 import { Prose } from "@/components/Prose";
 import { formatDate } from "@/lib/formatDate";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import ArrowLeftSvgIcon from "../icons/svg/ArrowLeft";
 
-const ArticleLayout = (props) => {
+const Article = (props) => {
 	const { children, meta, isRssFeed = false, previousPathname } = props;
 
 	let router = useRouter();
@@ -55,4 +55,4 @@ const ArticleLayout = (props) => {
 	);
 };
 
-export default ArticleLayout;
+export default Article;
