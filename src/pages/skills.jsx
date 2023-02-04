@@ -24,11 +24,11 @@ function Appearance({ title, description, event, cta, href }) {
 	);
 }
 
-export default function Speaking() {
+export default function Skills() {
 	return (
 		<>
 			<Head>
-				<title>Speaking - Spencer Sharp</title>
+				<title>Skills - Spencer Sharp</title>
 				<meta
 					name="description"
 					content="I’ve spoken at events all around the world and been interviewed for many podcasts."
