@@ -5,6 +5,8 @@ import Photos from "@/components/layouts/Photos";
 import Resume from "@/components/layouts/Resume";
 import SocialLink from "@/components/links/Social";
 import HomeData from "@/data/home";
+import socialLinksData from "@/data/socialLinks";
+import workExperiencesData from "@/data/workExperiences";
 import { generateRssFeed } from "@/lib/generateRssFeed";
 import { getAllArticles } from "@/lib/getAllArticles";
 import Head from "next/head";
@@ -18,7 +20,7 @@ const Home = (props) => {
 	const { articles } = props;
 
 	// Destructure the data from the HomeData function
-	const { meta, hero, slidePhotos, workExperiences } = HomeData();
+	const { meta, hero, slidePhotos } = HomeData();
 
 	return (
 		<>
@@ -33,9 +35,17 @@ const Home = (props) => {
 					<h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
 						{hero.heading}
 					</h1>
-					<p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">{hero.description}</p>
+					<p className="mt-6 text-base space-y-7 text-zinc-600 dark:text-zinc-400">
+						{hero.description.map((paragraph, index) => {
+							return (
+								<span key={index} className="space-y-7">
+									{paragraph}
+								</span>
+							);
+						})}
+					</p>
 					<div className="mt-6 flex gap-6">
-						{hero.socialLinks.map((link) => {
+						{socialLinksData.map((link) => {
 							return <SocialLink key={link.url} {...link} />;
 						})}
 					</div>
@@ -47,13 +57,13 @@ const Home = (props) => {
 			<Container className="mt-24 md:mt-28">
 				<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
 					<div className="flex flex-col gap-16">
-						{articles.map((article) => (
+						{articles?.map((article) => (
 							<Article key={article.slug} article={article} />
 						))}
 					</div>
 					<div className="space-y-10 lg:pl-16 xl:pl-24">
 						<Newsletter />
-						<Resume data={workExperiences} />
+						<Resume data={workExperiencesData} />
 					</div>
 				</div>
 			</Container>
