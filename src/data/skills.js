@@ -15,7 +15,7 @@ const SkillsData = () => {
 
 	const skills = [
 		{
-			name: "Web App Development",
+			name: "Web Development",
 			items: [
 				{
 					icons: [],
@@ -32,7 +32,7 @@ const SkillsData = () => {
 			]
 		},
 		{
-			name: "Mobile App Development",
+			name: "Mobile Development",
 			items: [
 				{
 					icons: [],
