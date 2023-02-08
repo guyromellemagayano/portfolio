@@ -1,4 +1,5 @@
 import { isEmpty } from "@/lib/checkTypes";
+import { formatDate } from "@/lib/formatDate";
 import Card from "./Card";
 import { Section } from "./Section";
 
@@ -60,7 +61,7 @@ export const SkillsListCards = (props) => {
 };
 
 /**
- * @description Render the Tools list component
+ * @description Render the tools list component
  * @param {Object} props
  * @returns {JSX} Tools list component
  */
@@ -87,5 +88,40 @@ export const ToolsListCards = (props) => {
 			<Card.Title as="h3">{title}</Card.Title>
 			<Card.Description>{description}</Card.Description>
 		</Card>
+	);
+};
+
+/**
+ * @description Render the articles list component
+ * @param {Object} props
+ * @returns {JSX} Articles list component
+ */
+export const ArticlesList = ({ children }) => {
+	return (
+		<div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
+			<div className="flex max-w-3xl flex-col space-y-16">{children}</div>
+		</div>
+	);
+};
+
+/**
+ * @description Render the articles list cards component
+ * @param {Object} props
+ * @returns {JSX} Articles list cards component
+ */
+export const ArticlesListCards = (props) => {
+	const { article } = props;
+
+	return (
+		<article className="md:grid md:grid-cols-4 md:items-baseline">
+			<Card.Eyebrow as="time" dateTime={article.date} className="mt-1 hidden md:block">
+				{formatDate(article.date)}
+			</Card.Eyebrow>
+			<Card className="md:col-span-3">
+				<Card.Title href={`/articles/${article.slug}`}>{article.title}</Card.Title>
+				<Card.Description>{article.description}</Card.Description>
+				<Card.Cta>Read article</Card.Cta>
+			</Card>
+		</article>
 	);
 };
