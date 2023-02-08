@@ -1,5 +1,4 @@
 import { isEmpty } from "@/lib/checkTypes";
-import { Fragment } from "react";
 import Card from "./Card";
 import { Section } from "./Section";
 
@@ -43,25 +42,15 @@ export const SkillsListCards = (props) => {
 				<span className="flex items-start gap-x-4">
 					{cta.map((item) => {
 						const projectCtaText = "See projects";
-						const articleCtaText = "See articles";
 
 						!isEmpty(item.projects) && (item.text = projectCtaText);
-						!isEmpty(item.articles) && (item.text = articleCtaText);
 
 						return (
-							<Fragment key={item.text}>
-								{!isEmpty(item.projects) && (
-									<Card.Cta key={item.text} title={item.text}>
-										{item.text}
-									</Card.Cta>
-								)}
-
-								{!isEmpty(item.articles) && (
-									<Card.Cta key={item.text} title={item.text}>
-										{item.text}
-									</Card.Cta>
-								)}
-							</Fragment>
+							!isEmpty(item.projects) && (
+								<Card.Cta key={item.text} title={item.text}>
+									{item.text}
+								</Card.Cta>
+							)
 						);
 					})}
 				</span>
