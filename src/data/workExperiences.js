@@ -56,7 +56,7 @@ const workExperiencesData = [
 	},
 	{
 		company: "Western Pest Control",
-		title: "Webmaster/Web Developer",
+		title: "Webmaster",
 		logo: logoWesternPestControl,
 		start: "May 2014",
 		end: "Oct. 2014"
