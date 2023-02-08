@@ -20,7 +20,12 @@ const Home = (props) => {
 	const { articles } = props;
 
 	// Destructure the data from the HomeData function
-	const { meta, hero, slidePhotos } = HomeData();
+	const { meta, hero, slidePhotos, cvFile } = HomeData();
+
+	const updatedResumeData = {
+		work: workExperiencesData,
+		file: cvFile
+	};
 
 	return (
 		<>
@@ -63,7 +68,7 @@ const Home = (props) => {
 					</div>
 					<div className="space-y-10 lg:pl-16 xl:pl-24">
 						<Newsletter />
-						<Resume data={workExperiencesData} />
+						<Resume data={updatedResumeData} />
 					</div>
 				</div>
 			</Container>
