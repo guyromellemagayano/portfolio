@@ -15,37 +15,24 @@ const SkillsData = () => {
 
 	const skills = [
 		{
-			name: "Frontend",
+			name: "Web App Development",
 			items: [
 				{
 					icons: [],
-					title: "Markup and Styling",
-					description:
-						"I have a good understanding of both HTML and CSS and can build responsive websites and apps from scratch.",
-					frameworks: ["TailwindCSS", "Bootstrap", "Bulma"]
+					title: "Frontend",
+					description: "I have a good understanding of both the following:",
+					frameworks: ["TailwindCSS", "Bootstrap", "Bulma", "ReactJS", "VueJS"]
 				},
 				{
 					icons: [],
-					title: "Javascript and Typescript",
-					description:
-						"I have a good understanding of Javascript and Typescript and can build responsive websites and apps from scratch.",
-					frameworks: ["ReactJS", "VueJS"]
+					title: "Backend",
+					description: "I have a good understanding of both the following:",
+					frameworks: ["NodeJS", "Python"]
 				}
 			]
 		},
 		{
-			name: "Backend",
-			items: [
-				{
-					icons: [],
-					title: "NodeJS",
-					description: "I have a good understanding of NodeJS and can build responsive websites and apps from scratch.",
-					frameworks: ["Express"]
-				}
-			]
-		},
-		{
-			name: "Mobile",
+			name: "Mobile App Development",
 			items: [
 				{
 					icons: [],
@@ -140,42 +127,6 @@ const SkillsData = () => {
 					title: "Git",
 					description: "I have very ample knowledge of Git and is always using it in my projects.",
 					frameworks: ["Github", "Gitlab", "Bitbucket"]
-				}
-			]
-		},
-		{
-			name: "User Interface Design",
-			items: [
-				{
-					icons: [],
-					title: "Tools",
-					description:
-						"I have a good understanding of user interface design tools and can build responsive websites and apps from scratch.",
-					frameworks: ["Figma", "Adobe Photoshop"]
-				}
-			]
-		},
-		{
-			name: "SEO",
-			items: [
-				{
-					icons: [],
-					title: "Tools",
-					description:
-						"I have a good understanding of SEO tools and can build responsive websites and apps from scratch.",
-					frameworks: ["Google Analytics", "Google Search Console", "Google Webmaster Tools", "PageSpeed Insights"]
-				}
-			]
-		},
-		{
-			name: "Project Management",
-			items: [
-				{
-					icons: [],
-					title: "Tools",
-					description:
-						"I have a good understanding of project management tools and can build responsive websites and apps from scratch.",
-					frameworks: ["Jira", "Trello", "Asana", "Notion", "Monday.com"]
 				}
 			]
 		}

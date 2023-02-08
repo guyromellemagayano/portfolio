@@ -30,26 +30,26 @@ const Skills = () => {
 									title={item.title}
 									description={item.description}
 									frameworks={item.frameworks}
-									cta={[
-										{
-											projects: [
-												{
-													title: "Project 1",
-													description: "Project 1 description",
-													link: "https://google.com"
-												}
-											]
-										},
-										{
-											articles: [
-												{
-													title: "Article 1",
-													description: "Article 1 description",
-													link: "https://google.com"
-												}
-											]
-										}
-									]}
+									// cta={[
+									// 	{
+									// 		projects: [
+									// 			{
+									// 				title: "Project 1",
+									// 				description: "Project 1 description",
+									// 				link: "https://google.com"
+									// 			}
+									// 		]
+									// 	},
+									// 	{
+									// 		articles: [
+									// 			{
+									// 				title: "Article 1",
+									// 				description: "Article 1 description",
+									// 				link: "https://google.com"
+									// 			}
+									// 		]
+									// 	}
+									// ]}
 								/>
 							))}
 						</SkillsList>
