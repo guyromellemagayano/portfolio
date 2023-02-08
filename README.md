@@ -1,3 +1,5 @@
+<br/>
+
 <h1 align="left">Hi 👋, I'm Guy Romelle Magayano</h1>
 <h3 align="left">A full-stack developer currently living in the Davao City, Philippines.</h3>
 
