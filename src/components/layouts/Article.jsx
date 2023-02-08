@@ -17,9 +17,10 @@ const Article = (props) => {
 	return (
 		<>
 			<Head>
-				<title>{`${meta.title} - Spencer Sharp`}</title>
+				<title>{`${meta.title} - Guy Romelle Magayano`}</title>
 				<meta name="description" content={meta.description} />
 			</Head>
+
 			<Container className="mt-16 lg:mt-32">
 				<div className="xl:relative">
 					<div className="mx-auto max-w-2xl">
@@ -33,6 +34,7 @@ const Article = (props) => {
 								<ArrowLeftSvgIcon className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400" />
 							</button>
 						)}
+
 						<article>
 							<header className="flex flex-col">
 								<h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
@@ -42,8 +44,7 @@ const Article = (props) => {
 									dateTime={meta.date}
 									className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
 								>
-									<span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
-									<span className="ml-3">{formatDate(meta.date)}</span>
+									<span>{formatDate(meta.date)}</span>
 								</time>
 							</header>
 							<Prose className="mt-8">{children}</Prose>
