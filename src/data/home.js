@@ -21,10 +21,13 @@ const HomeData = () => {
 
 	const slidePhotos = [image1, image2, image3, image4, image5];
 
+	const cvFile = "/docs/cv.pdf";
+
 	return {
 		meta,
 		hero,
-		slidePhotos
+		slidePhotos,
+		cvFile
 	};
 };
 
