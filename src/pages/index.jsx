@@ -1,12 +1,11 @@
 import Article from "@/components/Article";
 import Container from "@/components/Container";
-import Newsletter from "@/components/layouts/Newsletter";
+// import Newsletter from "@/components/layouts/Newsletter";
 import Photos from "@/components/layouts/Photos";
 import Resume from "@/components/layouts/Resume";
 import SocialLink from "@/components/links/Social";
 import HomeData from "@/data/home";
 import socialLinksData from "@/data/socialLinks";
-import workExperiencesData from "@/data/workExperiences";
 import { generateRssFeed } from "@/lib/generateRssFeed";
 import { getAllArticles } from "@/lib/getAllArticles";
 import Head from "next/head";
@@ -20,10 +19,10 @@ const Home = (props) => {
 	const { articles } = props;
 
 	// Destructure the data from the HomeData function
-	const { meta, hero, slidePhotos, cvFile } = HomeData();
+	const { meta, hero, slidePhotos, cvFile, workExperiences } = HomeData();
 
 	const updatedResumeData = {
-		work: workExperiencesData,
+		work: workExperiences,
 		file: cvFile
 	};
 
@@ -67,7 +66,7 @@ const Home = (props) => {
 						))}
 					</div>
 					<div className="space-y-10 lg:pl-16 xl:pl-24">
-						<Newsletter />
+						{/* <Newsletter /> */}
 						<Resume data={updatedResumeData} />
 					</div>
 				</div>
