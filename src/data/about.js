@@ -1,8 +1,7 @@
 const AboutData = () => {
 	const meta = {
 		title: "About - Guy Romelle Magayano",
-		description:
-			"I’m Guy, a full stack developer and an open-source enthusiast based in Davao City, Philippines. I love building things that live on the internet, whether that be websites, applications, or anything in between. My goal is to always build products that provide pixel-perfect, performant experiences while also ensuring minimal code and maximum efficiency.",
+		description: "I’m Guy Romelle Magayano and I build things for the web.",
 		keywords:
 			"guy romelle magayano, full stack developer, davao, philippines, custom web application, custom web development, devops, seo, amazon, google, javascript, typescript, html, css, react, react native, wordpress, tailwind, jamstack, gatsby, nextjs, astro"
 	};
