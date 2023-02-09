@@ -44,7 +44,7 @@ const ProjectsData = () => {
 			name: "RVGearPro",
 			description: "RVGearPro is your source for great prices and value on Camper & RV Parts",
 			link: {
-				url: "https://github.com/guyromellemagayano/rvgearpro",
+				url: "https://github.com/guyromellemagayano/headless-rvgearpro",
 				text: "github.com"
 			},
 			tech: ["BigCommerce API", "Javscript", "Gatsby", "NodeJS", "Tailwind"],
