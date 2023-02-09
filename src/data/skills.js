@@ -32,17 +32,6 @@ const SkillsData = () => {
 			]
 		},
 		{
-			name: "Mobile Development",
-			items: [
-				{
-					icons: [],
-					title: "React Native",
-					description:
-						"I have a good understanding of React Native and can build responsive websites and apps from scratch."
-				}
-			]
-		},
-		{
 			name: "Site Generators",
 			items: [
 				{
