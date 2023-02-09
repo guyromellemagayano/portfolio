@@ -1,7 +1,9 @@
 import { isEmpty } from "@/lib/checkTypes";
 import { formatDate } from "@/lib/formatDate";
+import Image from "next/image";
 import Card from "./Card";
 import { Section } from "./Section";
+import LinkSvgIcon from "./icons/svg/Link";
 
 /**
  * @description Render the skills list component
@@ -114,14 +116,67 @@ export const ArticlesListCards = (props) => {
 
 	return (
 		<article className="md:grid md:grid-cols-4 md:items-baseline">
-			<Card.Eyebrow as="time" dateTime={article.date} className="mt-1 hidden md:block">
-				{formatDate(article.date)}
-			</Card.Eyebrow>
-			<Card className="md:col-span-3">
-				<Card.Title href={`/articles/${article.slug}`}>{article.title}</Card.Title>
-				<Card.Description>{article.description}</Card.Description>
-				<Card.Cta>Read article</Card.Cta>
-			</Card>
+			{!isEmpty(article?.date) && (
+				<Card.Eyebrow as="time" dateTime={article.date} className="mt-1 hidden md:block">
+					{formatDate(article.date)}
+				</Card.Eyebrow>
+			)}
+
+			{!isEmpty(article?.title) && !isEmpty(article?.slug) && (
+				<Card className="md:col-span-3">
+					<Card.Title href={`/articles/${article.slug}`}>{article.title}</Card.Title>
+					<Card.Description>{article.description}</Card.Description>
+					<Card.Cta>Read article</Card.Cta>
+				</Card>
+			)}
 		</article>
+	);
+};
+
+/**
+ * @description Render the projects list component
+ * @param {Object} props
+ * @returns {JSX} Projects list component
+ */
+export const ProjectsList = ({ children }) => {
+	return (
+		<ul role="list" className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+			{children}
+		</ul>
+	);
+};
+
+/**
+ * @description Render the projects list cards component
+ * @param {Object} props
+ * @returns {JSX} Projects list cards component
+ */
+export const ProjectsListCards = (props) => {
+	const { project } = props;
+
+	return (
+		!isEmpty(project?.name) &&
+		!isEmpty(project?.link?.url) && (
+			<Card as="li" key={project.name}>
+				{!isEmpty(project?.logo) && (
+					<div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
+						<span className="h-8 w-8 overflow-hidden rounded-full">
+							<Image src={project.logo} alt="" className="h-full w-full" unoptimized />
+						</span>
+					</div>
+				)}
+
+				<h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
+					<Card.Link href={project.link.url} target="_blank">
+						{project.name}
+					</Card.Link>
+				</h2>
+				<Card.Description>{project?.description || ""}</Card.Description>
+				<p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-amber-500 dark:text-zinc-200">
+					<LinkSvgIcon className="h-6 w-6 flex-none" />
+					<span className="ml-2">{project?.link?.text || ""}</span>
+				</p>
+			</Card>
+		)
 	);
 };
