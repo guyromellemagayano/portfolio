@@ -39,7 +39,7 @@ const SkillsData = () => {
 					title: "JAMstack",
 					description:
 						"I have a good understanding of JAMstack and can build responsive websites and apps from scratch.",
-					frameworks: ["Gatsby", "NextJS", "NuxtJS"]
+					frameworks: ["Gatsby", "NextJS", "NuxtJS", "Jekyll", "Hugo"]
 				}
 			]
 		},
