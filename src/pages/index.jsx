@@ -6,7 +6,7 @@ import Photos from "@/components/layouts/Photos";
 import Resume from "@/components/layouts/Resume";
 import SocialLink from "@/components/links/Social";
 import HomeData from "@/data/home";
-import socialLinksData from "@/data/socialLinks";
+import socialLinksData from "@/data/social-links";
 import { generateRssFeed } from "@/lib/generateRssFeed";
 import { getAllArticles } from "@/lib/getAllArticles";
 
