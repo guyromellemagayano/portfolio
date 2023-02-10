@@ -2,7 +2,7 @@ import Container from "@/components/Container";
 import Seo from "@/components/Seo";
 import SocialLink from "@/components/links/Social";
 import AboutData from "@/data/about";
-import socialLinksData from "@/data/socialLinks";
+import socialLinksData from "@/data/social-links";
 import portraitImage from "@/images/portrait.jpg";
 import { convertStringToHTML } from "@/lib/convertValues";
 import clsx from "clsx";
