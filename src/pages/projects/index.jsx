@@ -1,7 +1,7 @@
 import { ProjectsList, ProjectsListCards } from "@/components/List";
+import Seo from "@/components/Seo";
 import { SimpleLayout } from "@/components/SimpleLayout";
 import ProjectsData from "@/data/projects";
-import Head from "next/head";
 
 /**
  * @description Render the projects page
@@ -13,11 +13,7 @@ const Projects = () => {
 
 	return (
 		<>
-			<Head>
-				<title>{meta.title}</title>
-				<meta name="description" content={hero.description} />
-				<meta name="keywords" content={meta.keywords} />
-			</Head>
+			<Seo meta={meta} />
 
 			<SimpleLayout id="hero" title={hero.heading} intro={hero.description}>
 				<ProjectsList>
