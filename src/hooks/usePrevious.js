@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 /**
  * @description Get the previous value of a variable
  * @param {string} value
