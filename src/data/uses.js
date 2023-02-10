@@ -48,7 +48,7 @@ const UsesData = () => {
 						"I use this hub to connect with my current webcam and gigabit ethernet adapter. Additionally, it supports up to 100W of power delivery, has 3 USB 3.0 ports, 1 SD card slot, 1 microSD card slot, a 4K HDMI port, a VGA port. It's a bit expensive but works well on my current setup."
 				},
 				{
-					title: "Brio Ultra HD Pro Business Webcam",
+					title: "Logitech Brio Ultra HD Pro Business Webcam",
 					description:
 						"I use this webcam for my video calls, streaming, and recording. It has a 4K sensor and a 5x digital zoom. It also has a built-in privacy shutter and a built-in microphone. Its quite crisp and clear while also supports HDR which is very useful in poorly lit environments."
 				},
@@ -58,7 +58,7 @@ const UsesData = () => {
 						"I love the noise cancellation feature of this headphone. It's very effective in blocking out the noise around me. I also love the fact that it's wireless via Bluetooth and has a long battery life. The only downside is that it's a bit expensive."
 				},
 				{
-					title: "ROG Strix Arion M.2 NVMe SSD Enclosure - 1 x M.2 Slot - USB 3.2 Gen 2 (10Gbps) - USB-C",
+					title: "Asus ROG Strix Arion M.2 NVMe SSD Enclosure - 1 x M.2 Slot - USB 3.2 Gen 2 (10Gbps) - USB-C",
 					description:
 						"I use this enclosure to connect my M.2 NVMe SSD to my MacBook Pro as my main Time Machinme backup drive."
 				}
