@@ -1,5 +1,6 @@
 import Article from "@/components/Article";
 import Container from "@/components/Container";
+import Seo from "@/components/Seo";
 // import Newsletter from "@/components/layouts/Newsletter";
 import Photos from "@/components/layouts/Photos";
 import Resume from "@/components/layouts/Resume";
@@ -8,7 +9,6 @@ import HomeData from "@/data/home";
 import socialLinksData from "@/data/socialLinks";
 import { generateRssFeed } from "@/lib/generateRssFeed";
 import { getAllArticles } from "@/lib/getAllArticles";
-import Head from "next/head";
 
 /**
  * @description Render the home page
@@ -21,6 +21,7 @@ const Home = (props) => {
 	// Destructure the data from the HomeData function
 	const { meta, hero, slidePhotos, cvFile, workExperiences } = HomeData();
 
+	// Update the work experience data
 	const updatedResumeData = {
 		work: workExperiences,
 		file: cvFile
@@ -28,11 +29,7 @@ const Home = (props) => {
 
 	return (
 		<>
-			<Head>
-				<title>{meta.title}</title>
-				<meta name="description" content={meta.description} />
-				<meta name="keywords" content={meta.keywords} />
-			</Head>
+			<Seo meta={meta} />
 
 			<Container id="hero" className="mt-9">
 				<div className="max-w-2xl">
