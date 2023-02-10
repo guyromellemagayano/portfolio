@@ -1,7 +1,7 @@
 import { ToolsList, ToolsListCards } from "@/components/List";
+import Seo from "@/components/Seo";
 import { SimpleLayout } from "@/components/SimpleLayout";
 import UsesData from "@/data/uses";
-import Head from "next/head";
 
 /**
  * @description Render the uses page
@@ -13,11 +13,7 @@ const Uses = () => {
 
 	return (
 		<>
-			<Head>
-				<title>{meta.title}</title>
-				<meta name="description" content={meta.description} />
-				<meta name="keywords" content={meta.keywords} />
-			</Head>
+			<Seo meta={meta} />
 
 			<SimpleLayout id="hero" title={hero.heading} intro={hero.description}>
 				<div className="space-y-20">
