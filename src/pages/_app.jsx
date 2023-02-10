@@ -1,20 +1,17 @@
 import { Footer } from "@/components/layouts/Footer";
 import { Header } from "@/components/layouts/Header";
+import usePrevious from "@/hooks/usePrevious";
 import "@/styles/tailwind.css";
 import "focus-visible";
-import { useEffect, useRef } from "react";
 
-function usePrevious(value) {
-	let ref = useRef();
+/**
+ * @description Render App component
+ * @param {Object} props
+ * @returns {JSX} App component
+ */
+const App = (props) => {
+	const { Component, pageProps, router } = props;
 
-	useEffect(() => {
-		ref.current = value;
-	}, [value]);
-
-	return ref.current;
-}
-
-export default function App({ Component, pageProps, router }) {
 	let previousPathname = usePrevious(router.pathname);
 
 	return (
@@ -34,4 +31,6 @@ export default function App({ Component, pageProps, router }) {
 			</div>
 		</>
 	);
-}
+};
+
+export default App;
