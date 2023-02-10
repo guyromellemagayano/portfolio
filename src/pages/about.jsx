@@ -1,11 +1,11 @@
 import Container from "@/components/Container";
+import Seo from "@/components/Seo";
 import SocialLink from "@/components/links/Social";
 import AboutData from "@/data/about";
 import socialLinksData from "@/data/socialLinks";
 import portraitImage from "@/images/portrait.jpg";
 import { convertStringToHTML } from "@/lib/convertValues";
 import clsx from "clsx";
-import Head from "next/head";
 import Image from "next/image";
 
 /**
@@ -18,11 +18,7 @@ const About = () => {
 
 	return (
 		<>
-			<Head>
-				<title>{meta.title}</title>
-				<meta name="description" content={meta.description} />
-				<meta name="keywords" content={meta.keywords} />
-			</Head>
+			<Seo meta={meta} />
 
 			<Container id="hero" className="mt-16 sm:mt-32">
 				<div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
