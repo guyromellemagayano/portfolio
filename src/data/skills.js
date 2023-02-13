@@ -20,25 +20,25 @@ const SkillsData = () => {
 				{
 					icons: [],
 					title: "Frontend",
-					description: "I have a good understanding of both the following:",
+					description: "I have a good understanding of the following:",
 					frameworks: ["TailwindCSS", "Bootstrap", "Bulma", "ReactJS", "VueJS"]
 				},
 				{
 					icons: [],
 					title: "Backend",
-					description: "I have a good understanding of both the following:",
+					description: "I have a good understanding of the following:",
 					frameworks: ["NodeJS", "Python"]
 				}
 			]
 		},
 		{
-			name: "Site Generators",
+			name: "JAMstack",
 			items: [
 				{
 					icons: [],
-					title: "JAMstack",
+					title: "Site Generators",
 					description:
-						"I have a good understanding of JAMstack and can build responsive websites and apps from scratch.",
+						"I have a good understanding of site generators and can build responsive websites and apps from scratch.",
 					frameworks: ["Gatsby", "NextJS", "NuxtJS", "Jekyll", "Hugo"]
 				}
 			]
@@ -50,29 +50,30 @@ const SkillsData = () => {
 					icons: [],
 					title: "Wordpress",
 					description:
-						"I have a good understanding of Wordpress and can build responsive websites and apps from scratch."
+						"I have a good understanding of the WordPress REST APIs and can build responsive websites from scratch."
 				},
 				{
 					icons: [],
 					title: "Optimizely/Episerver",
 					description:
-						"I have a good understanding of Optimizely/Episerver and can build responsive websites and apps from scratch."
+						"I have a good understanding of the Optimizely/Episerver REST APIs and can build responsive websites from scratch."
 				},
 				{
 					icons: [],
 					title: "BigCommerce",
 					description:
-						"I have a good understanding of BigCommerce and can build responsive websites and apps from scratch."
+						"I have a good understanding of the BigCommerce APIs and can build responsive websites from scratch."
 				},
 				{
 					icons: [],
 					title: "Shopify",
-					description: "I have a good understanding of Shopify and can build responsive websites and apps from scratch."
+					description:
+						"I have a good understanding of both the Shopify GraphQL and REST APIs and can build responsive websites from scratch."
 				}
 			]
 		},
 		{
-			name: "Database",
+			name: "Databases",
 			items: [
 				{
 					icons: [],
