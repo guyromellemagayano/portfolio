@@ -3,21 +3,19 @@
 
 <br/>
 
-- 🔭 I’m currently working on [gatsby-source-optimizely](https://github.com/guyromellemagayano/gatsby-source-optimizely)
+- 🔭 I’m currently working on [gatsby-source-optimizely](https://github.com/guyromellemagayano/gatsby-source-optimizely) and [gatsby-source-bigcommerce-v2](https://github.com/guyromellemagayano/gatsby-source-bigcommerce-v2)
 
 - 🌱 I’m currently learning **Python, Django, Go, Docker**
 
 - 👯 I’m looking to collaborate on [stackplate](https://github.com/guyromellemagayano/stackplate)
 
-- 🤝 I’m looking for help with [gatsby-source-bigcommerce](https://github.com/guyromellemagayano/gatsby-source-bigcommerce)
-
-- 👨‍💻 All of my projects are available at [https://guyromellemagayano.dev](https://guyromellemagayano.dev)
+- 👨‍💻 All of my projects are available at [https://guyromellemagayano.dev/projects](https://guyromellemagayano.dev/projects)
 
 - 📝 I regularly write articles on [https://guyromellemagayano.dev](https://guyromellemagayano.dev/articles)
 
-- 💬 Ask me about **React, Typescript, Javascript**
+- 💬 Ask me about **React, Typescript, Javascript, WordPress**
 
-- 📫 How to reach me **aspiredtechie2010@gmail.com**
+- 📫 How to reach me **hello@guyromellemagayano.dev**
 
 - 📄 Know about my experiences [https://guyromellemagayano.dev](https://guyromellemagayano.dev)
 
