@@ -1,4 +1,4 @@
-import { IAboutData } from "types";
+import { IAboutData } from "@/interfaces/data";
 
 const AboutData = (): IAboutData => {
 	const meta = {

@@ -1,4 +1,4 @@
-import { IUsesData } from "types";
+import { IUsesData } from "@/interfaces/data";
 
 const UsesData = (): IUsesData => {
 	const meta = {

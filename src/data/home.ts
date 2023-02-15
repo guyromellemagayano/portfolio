@@ -8,7 +8,7 @@ import image5 from "@/images/photos/photography.jpg";
 import image2 from "@/images/photos/speaker.jpg";
 import image1 from "@/images/photos/travel.jpg";
 import image3 from "@/images/photos/workplace.jpg";
-import { IHomeData } from "types";
+import { IHomeData } from "@/interfaces/data";
 
 const HomeData = (): IHomeData => {
 	const meta = {
