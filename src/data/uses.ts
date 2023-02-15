@@ -1,4 +1,23 @@
-const UsesData = () => {
+interface IUsesData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+	tools: {
+		name: string;
+		items: {
+			title: string;
+			description: string;
+		}[];
+	}[];
+}
+
+const UsesData = (): IUsesData => {
 	const meta = {
 		title: "Uses - Guy Romelle Magayano",
 		description: "Software I use, gadgets I love, and other things I recommend.",
