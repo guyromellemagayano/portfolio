@@ -1,17 +1,11 @@
-import { Footer } from "@/components/layouts/Footer";
-import { Header } from "@/components/layouts/Header";
+import Footer from "@/components/layouts/Footer";
+import Header from "@/components/layouts/Header";
 import usePrevious from "@/hooks/usePrevious";
 import "@/styles/tailwind.css";
 import "focus-visible";
+import { AppProps } from "next/app";
 
-/**
- * @description Render App component
- * @param {Object} props
- * @returns {JSX} App component
- */
-const App = (props) => {
-	const { Component, pageProps, router } = props;
-
+const App = ({ Component, pageProps, router }: AppProps) => {
 	let previousPathname = usePrevious(router.pathname);
 
 	return (
