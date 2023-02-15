@@ -8,8 +8,30 @@ import image5 from "@/images/photos/photography.jpg";
 import image2 from "@/images/photos/speaker.jpg";
 import image1 from "@/images/photos/travel.jpg";
 import image3 from "@/images/photos/workplace.jpg";
+import { StaticImageData } from "next/image";
 
-const HomeData = () => {
+interface IHomeData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+	slidePhotos: StaticImageData[];
+	cvFile: string;
+	workExperiences: {
+		company: string;
+		title: string;
+		logo: StaticImageData | null;
+		start: string;
+		end: string;
+	}[];
+}
+
+const HomeData = (): IHomeData => {
 	const meta = {
 		title: "Guy Romelle Magayano - Full Stack Developer, open-source enthusiast, and a minimalist",
 		description: "Full stack developer, open-source enthusiast, and a minimalist.",
