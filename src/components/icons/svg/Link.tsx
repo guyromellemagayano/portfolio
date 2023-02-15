@@ -1,9 +1,7 @@
-/**
- * @description Render the link icon
- * @param {Object} props
- * @returns {JSX} Link icon
- */
-const LinkSvgIcon = (props) => {
+import { SVGProps } from "react";
+
+// Link SVG icon
+const LinkSvgIcon = (props: SVGProps<SVGSVGElement>) => {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
 			<path
