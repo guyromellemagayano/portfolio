@@ -1,9 +1,7 @@
-/**
- * @description Render the mail alt icon
- * @param {Object} props
- * @returns {JSX} Mail alt icon
- */
-const MailAltSvgIcon = (props) => {
+import { SVGProps } from "react";
+
+// Mail SVG icon
+const MailSvgIcon = (props: SVGProps<SVGSVGElement>) => {
 	return (
 		<svg viewBox="0 0 24 24" aria-hidden="true" {...props}>
 			<path
@@ -14,4 +12,4 @@ const MailAltSvgIcon = (props) => {
 	);
 };
 
-export default MailAltSvgIcon;
+export default MailSvgIcon;
