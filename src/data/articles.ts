@@ -1,4 +1,4 @@
-import { IArticlesData } from "types";
+import { IArticlesData } from "@/interfaces/data";
 
 const ArticlesData = (): IArticlesData => {
 	const meta = {
