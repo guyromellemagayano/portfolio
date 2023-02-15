@@ -1,16 +1,8 @@
-import Link from "next/link";
-
 import Container from "@/components/Container";
+import NavLink from "../NavLink";
 
-function NavLink({ href, children }) {
-	return (
-		<Link href={href} className="transition hover:text-amber-500 dark:hover:text-amber-400">
-			{children}
-		</Link>
-	);
-}
-
-export function Footer() {
+// Footer component
+const Footer = () => {
 	return (
 		<footer className="mt-32">
 			<Container.Outer>
@@ -32,4 +24,6 @@ export function Footer() {
 			</Container.Outer>
 		</footer>
 	);
-}
+};
+
+export default Footer;
