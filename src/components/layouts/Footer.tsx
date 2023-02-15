@@ -1,11 +1,11 @@
 import Container from "@/components/Container";
-import FooterData from "@/data/footer";
-import NavLink from "../NavLink";
+import NavLink from "@/components/NavLink";
+import NavigationData from "@/data/navigation";
 
 // Footer component
-const Footer = () => {
+const Footer = (): JSX.Element => {
 	// Destructure the data from the FooterData function
-	const { menu, copyright } = FooterData();
+	const { menu, copyright } = NavigationData();
 
 	return (
 		<footer className="mt-32">
