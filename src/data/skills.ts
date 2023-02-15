@@ -1,4 +1,25 @@
-const SkillsData = () => {
+interface ISkillsData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+	skills: {
+		name: string;
+		items: {
+			icons?: string[];
+			title: string;
+			description: string;
+			frameworks?: string[];
+		}[];
+	}[];
+}
+
+const SkillsData = (): ISkillsData => {
 	const meta = {
 		title: "Skills - Guy Romelle Magayano",
 		description: "I love web and currently focusing on being better at quite a few things.",
