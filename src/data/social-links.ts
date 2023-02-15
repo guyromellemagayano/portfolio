@@ -1,14 +1,8 @@
 import MailSvgIcon from "@/components/icons/svg/Mail";
 import { GitHubSvgIcon, LinkedInSvgIcon, TwitterSvgIcon } from "@/components/SocialIcons";
-import { FunctionComponent } from "react";
+import { ISocialLinksData } from "types";
 
-interface ISocialLinksData {
-	url: string;
-	ariaLabel: string;
-	icon: FunctionComponent;
-}
-
-const socialLinksData = [
+const socialLinksData: ISocialLinksData[] = [
 	{
 		url: "https://twitter.com/mguyromelle",
 		ariaLabel: "Follow on Twitter",
@@ -29,6 +23,6 @@ const socialLinksData = [
 		ariaLabel: "hello@guyromellemagayano.dev",
 		icon: MailSvgIcon
 	}
-] as ISocialLinksData[];
+];
 
 export default socialLinksData;
