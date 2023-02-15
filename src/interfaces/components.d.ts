@@ -15,7 +15,8 @@ export interface IArticleProps {
 	date: string;
 }
 
-// Home page props
-export interface IHomeProps {
-	articles: IArticleProps[];
+// Nav link component props
+export interface INavLinkProps {
+	href: string;
+	children: ReactNode;
 }

@@ -1,13 +1,8 @@
+import { INavLinkProps } from "@/interfaces/components";
 import Link from "next/link";
-import { ReactNode } from "react";
 
-interface Props {
-	href: string;
-	children: ReactNode;
-}
-
-// Hook to get the previous value of a prop.
-const NavLink = ({ href, children }: Props) => {
+// Navigation link component
+const NavLink = ({ href, children }: INavLinkProps): JSX.Element => {
 	return (
 		<Link href={href} className="transition hover:text-amber-500 dark:hover:text-amber-400">
 			{children}
