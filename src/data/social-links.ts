@@ -1,8 +1,8 @@
 import MailSvgIcon from "@/components/icons/svg/Mail";
 import { GitHubSvgIcon, LinkedInSvgIcon, TwitterSvgIcon } from "@/components/SocialIcons";
-import { ISocialLinksData } from "types";
+import { ISocialLinksData } from "@/interfaces/data";
 
-const socialLinksData: ISocialLinksData[] = [
+const socialLinksData = [
 	{
 		url: "https://twitter.com/mguyromelle",
 		ariaLabel: "Follow on Twitter",
@@ -23,6 +23,6 @@ const socialLinksData: ISocialLinksData[] = [
 		ariaLabel: "hello@guyromellemagayano.dev",
 		icon: MailSvgIcon
 	}
-];
+] as ISocialLinksData[];
 
 export default socialLinksData;

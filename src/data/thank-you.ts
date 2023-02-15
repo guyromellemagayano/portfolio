@@ -1,4 +1,4 @@
-import { IThankYouData } from "types";
+import { IThankYouData } from "@/interfaces/data";
 
 const ThankYouData = (): IThankYouData => {
 	const meta = {
