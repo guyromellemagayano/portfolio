@@ -1,4 +1,16 @@
-const ThankYouData = () => {
+interface IThankYouData {
+	meta: {
+		title: string,
+		description: string,
+		keywords: string
+	};
+	hero: {
+		heading: string,
+		description: string[]
+	};
+}
+
+const ThankYouData = (): IThankYouData => {
 	const meta = {
 		title: "You’re subscribed! - Guy Romelle Magayano",
 		description: "Thanks for subscribing to my newsletter.",

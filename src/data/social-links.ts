@@ -1,27 +1,34 @@
-import { GitHubIcon, LinkedInIcon, TwitterIcon } from "@/components/SocialIcons";
-import MailAltSvgIcon from "@/components/icons/svg/MailAlt";
+import MailSvgIcon from "@/components/icons/svg/Mail";
+import { GitHubSvgIcon, LinkedInSvgIcon, TwitterSvgIcon } from "@/components/SocialIcons";
+import { FunctionComponent } from "react";
+
+interface ISocialLinksData {
+	url: string;
+	ariaLabel: string;
+	icon: FunctionComponent;
+}
 
 const socialLinksData = [
 	{
 		url: "https://twitter.com/mguyromelle",
 		ariaLabel: "Follow on Twitter",
-		icon: TwitterIcon
+		icon: TwitterSvgIcon
 	},
 	{
 		url: "https://github.com/guyromellemagayano",
 		ariaLabel: "Follow on GitHub",
-		icon: GitHubIcon
+		icon: GitHubSvgIcon
 	},
 	{
 		url: "https://www.linkedin.com/in/mguyromelle/",
 		ariaLabel: "Follow on LinkedIn",
-		icon: LinkedInIcon
+		icon: LinkedInSvgIcon
 	},
 	{
 		url: "mailto:hello@guyromellemagayano.dev",
 		ariaLabel: "hello@guyromellemagayano.dev",
-		icon: MailAltSvgIcon
+		icon: MailSvgIcon
 	}
-];
+] as ISocialLinksData[];
 
 export default socialLinksData;
