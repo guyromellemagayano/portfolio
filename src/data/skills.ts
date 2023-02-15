@@ -1,4 +1,4 @@
-import { ISkillsData } from "types";
+import { ISkillsData } from "@/interfaces/data";
 
 const SkillsData = (): ISkillsData => {
 	const meta = {

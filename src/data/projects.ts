@@ -3,7 +3,7 @@ import logoGithub from "@/images/logos/github.png";
 import logoNpm from "@/images/logos/npm.png";
 import logoReact from "@/images/logos/react.png";
 import logoWordpress from "@/images/logos/wordpress.png";
-import { IProjectsData } from "types";
+import { IProjectsData } from "@/interfaces/data";
 
 const ProjectsData = (): IProjectsData => {
 	const meta = {
