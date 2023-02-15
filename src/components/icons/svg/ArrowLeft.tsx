@@ -1,9 +1,7 @@
-/**
- * @description Render the arrow left icon
- * @param {Object} props
- * @returns {JSX} Arrow left icon
- */
-const ArrowLeftSvgIcon = (props) => {
+import { SVGProps } from "react";
+
+// Arrow left SVG icon
+const ArrowLeftSvgIcon = (props: SVGProps<SVGSVGElement>) => {
 	return (
 		<svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
 			<path
