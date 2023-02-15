@@ -1,4 +1,16 @@
-const AboutData = () => {
+interface IAboutData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+}
+
+const AboutData = (): IAboutData => {
 	const meta = {
 		title: "About - Guy Romelle Magayano",
 		description: "I’m Guy Romelle Magayano and I build things for the Web.",

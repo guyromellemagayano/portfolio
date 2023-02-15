@@ -1,4 +1,16 @@
-const ArticlesData = () => {
+interface IArticlesData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+}
+
+const ArticlesData = (): IArticlesData => {
 	const meta = {
 		title: "Articles - Guy Romelle Magayano",
 		description: "Writing on web and mobile app development, JAMstack, e-commerce, and a lot more.",

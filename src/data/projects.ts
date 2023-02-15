@@ -3,8 +3,31 @@ import logoGithub from "@/images/logos/github.png";
 import logoNpm from "@/images/logos/npm.png";
 import logoReact from "@/images/logos/react.png";
 import logoWordpress from "@/images/logos/wordpress.png";
+import { StaticImageData } from "next/image";
 
-const ProjectsData = () => {
+interface IProjectsData {
+	meta: {
+		title: string;
+		description: string;
+		keywords: string;
+	};
+	hero: {
+		heading: string;
+		description: string[];
+	};
+	projects: {
+		name: string;
+		description: string;
+		link: {
+			url: string;
+			text: string;
+		};
+		tech: string[];
+		logo: StaticImageData;
+	}[];
+}
+
+const ProjectsData = (): IProjectsData => {
 	const meta = {
 		title: "Projects - Guy Romelle Magayano",
 		description: "Things I’ve made trying to put my dent in the web universe.",
