@@ -1,21 +1,4 @@
-interface IUsesData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
-	tools: {
-		name: string;
-		items: {
-			title: string;
-			description: string;
-		}[];
-	}[];
-}
+import { IUsesData } from "types";
 
 const UsesData = (): IUsesData => {
 	const meta = {

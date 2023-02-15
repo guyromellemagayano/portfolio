@@ -1,15 +1,5 @@
 import PagesData from "@/data/pages";
-
-interface INavigationData {
-	menu: {
-		title: string;
-		slug: string;
-	}[];
-	copyright: {
-		year: number;
-		text: string;
-	};
-}
+import { INavigationData } from "types";
 
 const NavigationData = (): INavigationData => {
 	let menu = [];

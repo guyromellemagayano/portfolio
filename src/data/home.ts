@@ -8,28 +8,7 @@ import image5 from "@/images/photos/photography.jpg";
 import image2 from "@/images/photos/speaker.jpg";
 import image1 from "@/images/photos/travel.jpg";
 import image3 from "@/images/photos/workplace.jpg";
-import { StaticImageData } from "next/image";
-
-interface IHomeData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
-	slidePhotos: StaticImageData[];
-	cvFile: string;
-	workExperiences: {
-		company: string;
-		title: string;
-		logo: StaticImageData | null;
-		start: string;
-		end: string;
-	}[];
-}
+import { IHomeData } from "types";
 
 const HomeData = (): IHomeData => {
 	const meta = {

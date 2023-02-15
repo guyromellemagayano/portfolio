@@ -1,14 +1,4 @@
-interface IThankYouData {
-	meta: {
-		title: string,
-		description: string,
-		keywords: string
-	};
-	hero: {
-		heading: string,
-		description: string[]
-	};
-}
+import { IThankYouData } from "types";
 
 const ThankYouData = (): IThankYouData => {
 	const meta = {

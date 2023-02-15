@@ -1,14 +1,4 @@
-interface IAboutData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
-}
+import { IAboutData } from "types";
 
 const AboutData = (): IAboutData => {
 	const meta = {
