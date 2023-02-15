@@ -1,17 +1,4 @@
-interface IPagesData {
-	pages: {
-		title: string;
-		link: string;
-	}[];
-	articles: {
-		title: string;
-		link: string;
-	}[];
-	projects: {
-		title: string;
-		link: string;
-	}[];
-}
+import { IPagesData } from "types";
 
 const PagesData = (): IPagesData => {
 	const pages = [

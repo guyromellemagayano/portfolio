@@ -1,23 +1,4 @@
-interface ISkillsData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
-	skills: {
-		name: string;
-		items: {
-			icons?: string[];
-			title: string;
-			description: string;
-			frameworks?: string[];
-		}[];
-	}[];
-}
+import { ISkillsData } from "types";
 
 const SkillsData = (): ISkillsData => {
 	const meta = {
