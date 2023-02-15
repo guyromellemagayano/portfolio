@@ -1,5 +1,5 @@
 import PagesData from "@/data/pages";
-import { INavigationData } from "types";
+import { INavigationData } from "@/interfaces/data";
 
 const NavigationData = (): INavigationData => {
 	let menu = [];
