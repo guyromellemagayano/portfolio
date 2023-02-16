@@ -54,7 +54,7 @@ Card.Description = function CardDescription({ children, className }: ICardCommon
 };
 
 // Card CTA component
-Card.Cta = function CardCta({ title, children, href }: ICardCtaProps & ICardCommonProps): JSX.Element {
+Card.Cta = function CardCta({ title, children, href = "#" }: ICardCtaProps & ICardCommonProps): JSX.Element {
 	return (
 		<div aria-hidden="true" className="relative z-10 mt-4 text-sm font-medium flex items-start text-amber-500">
 			<Link
