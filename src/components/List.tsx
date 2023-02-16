@@ -93,22 +93,18 @@ export const ArticlesList = ({ children }: IArticleListProps): JSX.Element => {
 };
 
 // Articles list cards component
-export const ArticlesListCards = ({ article }: IArticleListCardProps): JSX.Element => {
+export const ArticlesListCards = ({ slug, meta: { title, date, description } }: IArticleListCardProps): JSX.Element => {
 	return (
 		<article className="md:grid md:grid-cols-4 md:items-baseline">
-			{!isEmpty(article?.date) && (
-				<Card.Eyebrow as="time" dateTime={article.date} className="mt-1 hidden md:block">
-					{formatDate(article.date)}
-				</Card.Eyebrow>
-			)}
+			<Card.Eyebrow as="time" dateTime={date} className="mt-1 hidden md:block">
+				{formatDate(date)}
+			</Card.Eyebrow>
 
-			{!isEmpty(article?.title) && !isEmpty(article?.slug) && (
-				<Card className="md:col-span-3">
-					<Card.Title href={`/articles/${article.slug}`}>{article.title}</Card.Title>
-					<Card.Description>{article.description}</Card.Description>
-					<Card.Cta>Read article</Card.Cta>
-				</Card>
-			)}
+			<Card className="md:col-span-3">
+				<Card.Title href={`/articles/${slug}`}>{title}</Card.Title>
+				<Card.Description>{description}</Card.Description>
+				<Card.Cta>Read article</Card.Cta>
+			</Card>
 		</article>
 	);
 };

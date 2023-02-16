@@ -9,6 +9,7 @@ const importArticle = async (
 	meta: {
 		author: string;
 		date: string;
+		slug: string;
 		description: string;
 		title: string;
 	};
@@ -18,7 +19,7 @@ const importArticle = async (
 
 	return {
 		slug: articleFilename.replace(/(\/index)?\.mdx$/, ""),
-		...meta,
+		meta,
 		component
 	};
 };
