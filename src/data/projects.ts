@@ -105,7 +105,7 @@ const ProjectsData = (): IProjectsData => {
 			name: "Bigcommerce for NodeJS",
 			description: "A revised version of the original node module for authentication and use with the BigCommerce API",
 			link: {
-				url: "https://github.com/guyromellemagayano/node-bigcommerce",
+				url: "https://github.com/guyromellemagayano/node-bigcommerce-v2",
 				text: "github.com"
 			},
 			tech: ["NodeJS", "JavaScript", "BigCommerce API"],
