@@ -22,8 +22,8 @@ export interface IAvatarProps {
 
 // Article component props
 export interface IArticleProps {
-	article: {
-		slug: string;
+	slug: string;
+	meta: {
 		title: string;
 		description: string;
 		date: string;
@@ -82,14 +82,14 @@ export interface ICardProps {
 
 // Card link component props
 export interface ICardLinkProps {
-	href: string;
+	href: string | object;
 	title?: string;
 }
 
 // Card title component props
 export interface ICardTitleProps {
 	as?: DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>["h2"];
-	href?: string;
+	href?: string | object;
 	title?: string;
 }
 
@@ -102,7 +102,7 @@ export interface ICardEyebrowProps {
 
 // Card CTA component props
 export interface ICardCtaProps {
-	href?: string;
+	href?: string | object;
 	title?: string;
 }
 
@@ -174,8 +174,8 @@ export interface IArticleListProps {
 
 // Article list card component props
 export interface IArticleListCardProps {
-	article: {
-		slug: string;
+	slug: string;
+	meta: {
 		title: string;
 		description: string;
 		date: string;

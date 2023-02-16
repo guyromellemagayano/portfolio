@@ -21,9 +21,9 @@ interface Props {
 // Main button component
 const MainButton = ({ type = "button", variant = "primary", className, href, children }: Props) => {
 	const updatedClassName = clsx(
+		className,
 		"inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none",
-		variantStyles[variant],
-		className
+		variantStyles[variant]
 	);
 
 	return href ? (

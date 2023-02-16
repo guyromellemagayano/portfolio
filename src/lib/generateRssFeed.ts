@@ -4,7 +4,8 @@ import { mkdir, writeFile } from "fs/promises";
 import ReactDOMServer from "react-dom/server";
 import { getAllArticles } from "./getAllArticles";
 
-export async function generateRssFeed() {
+// This function is used to generate the RSS feed
+export const generateRssFeed = async () => {
 	const { meta } = ArticlesData();
 
 	let articles = await getAllArticles();
@@ -15,7 +16,7 @@ export async function generateRssFeed() {
 	};
 
 	let feed = new Feed({
-		title: author.name,
+		title: meta.title,
 		description: meta.description,
 		author,
 		id: siteUrl,
@@ -30,8 +31,8 @@ export async function generateRssFeed() {
 	});
 
 	for (let article of articles) {
-		let url = `${siteUrl}/articles/${article.slug}`;
-		let html = ReactDOMServer.renderToStaticMarkup(<article.component isRssFeed />);
+		let url = `${siteUrl}/articles/${article.meta.slug}`;
+		let html = ReactDOMServer.renderToStaticMarkup(article.component({ isRssFeed: true }));
 
 		feed.addItem({
 			title: article.meta.title,
@@ -50,4 +51,4 @@ export async function generateRssFeed() {
 		writeFile("./public/rss/feed.xml", feed.rss2(), "utf8"),
 		writeFile("./public/rss/feed.json", feed.json1(), "utf8")
 	]);
-}
+};

@@ -56,7 +56,7 @@ const HomeData = (): IHomeData => {
 			title: "Full Stack Developer",
 			logo: logoEpicDesignLabs,
 			start: "Apr. 2020",
-			end: "Jan. 2023"
+			end: "Feb. 2023"
 		},
 		{
 			company: "MultiplyMii",
