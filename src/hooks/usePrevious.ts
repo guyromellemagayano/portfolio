@@ -1,10 +1,10 @@
-import { useEffect, useRef } from "react";
+import React from "react";
 
 // Hook to get the previous value of a prop.
 const usePrevious = (value: string): string => {
-	const ref = useRef<string | null>(null);
+	const ref = React.useRef<string | null>(null);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		ref.current = value;
 	}, [value]);
 
