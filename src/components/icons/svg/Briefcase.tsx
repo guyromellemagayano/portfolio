@@ -1,7 +1,7 @@
-import { SVGProps } from "react";
+import React from "react";
 
 // Briefcase SVG icon
-const BriefcaseSvgIcon = (props: SVGProps<SVGSVGElement>) => {
+const BriefcaseSvgIcon = (rest: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			viewBox="0 0 24 24"
@@ -10,7 +10,7 @@ const BriefcaseSvgIcon = (props: SVGProps<SVGSVGElement>) => {
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			aria-hidden="true"
-			{...props}
+			{...rest}
 		>
 			<path
 				d="M2.75 9.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"

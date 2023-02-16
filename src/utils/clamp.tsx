@@ -1,7 +1,7 @@
 import { IClampProps } from "@/interfaces/utils";
 
 // Return a number between min and max
-const clamp = ({ number, a, b }: IClampProps) => {
+const clamp = ({ number, a, b }: IClampProps): number => {
 	let min = Math.min(a, b);
 	let max = Math.max(a, b);
 

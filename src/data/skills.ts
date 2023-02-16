@@ -93,7 +93,7 @@ const SkillsData = (): ISkillsData => {
 					title: "Virtualization",
 					description:
 						"I have a good understanding of virtualization and can build responsive websites and apps from scratch.",
-					frameworks: ["Docker", "Vagrant"]
+					frameworks: ["Docker"]
 				},
 				{
 					icons: [],
@@ -118,7 +118,7 @@ const SkillsData = (): ISkillsData => {
 					icons: [],
 					title: "Git",
 					description: "I have very ample knowledge of Git and is always using it in my projects.",
-					frameworks: ["Github", "Gitlab", "Bitbucket"]
+					frameworks: ["Github"]
 				}
 			]
 		}
