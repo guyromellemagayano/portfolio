@@ -8,8 +8,8 @@ import SocialLink from "@/components/links/Social";
 import HomeData from "@/data/home";
 import socialLinksData from "@/data/social-links";
 import { IArticlesProps } from "@/interfaces/pages";
-// import { generateRssFeed } from "@/lib/generateRssFeed";
-// import { getAllArticles } from "@/lib/getAllArticles";
+import { generateRssFeed } from "@/lib/generateRssFeed";
+import { getAllArticles } from "@/lib/getAllArticles";
 
 // Home page
 const Home = ({ articles }: IArticlesProps): JSX.Element => {
@@ -53,8 +53,8 @@ const Home = ({ articles }: IArticlesProps): JSX.Element => {
 			<Container className="mt-24 md:mt-28">
 				<div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
 					<div className="flex flex-col gap-16">
-						{articles?.map((article, index) => (
-							<Article key={index} {...article} />
+						{articles?.map((article) => (
+							<Article key={article.slug} {...article} />
 						))}
 					</div>
 					<div className="space-y-10 lg:pl-16 xl:pl-24">
@@ -68,14 +68,13 @@ const Home = ({ articles }: IArticlesProps): JSX.Element => {
 };
 
 export async function getStaticProps() {
-	// if (process.env.NODE_ENV === "production") {
-	// 	await generateRssFeed();
-	// }
+	if (process.env.NODE_ENV !== "production") {
+		await generateRssFeed();
+	}
 
 	return {
 		props: {
-			// articles: (await getAllArticles()).slice(0, 4).map(({ component, ...meta }) => meta)
-			articles: []
+			articles: (await getAllArticles()).slice(0, 4).map(({ component, ...meta }) => meta)
 		}
 	};
 }
