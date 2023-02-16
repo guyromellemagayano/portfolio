@@ -15,7 +15,9 @@ const Footer = (): JSX.Element => {
 						<div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
 							<div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
 								{menu.map((item) => (
-									<NavLink href={item.link}>{item.title}</NavLink>
+									<NavLink key={item.link} href={item.link}>
+										{item.title}
+									</NavLink>
 								))}
 							</div>
 							<p className="text-sm text-zinc-400 dark:text-zinc-500">

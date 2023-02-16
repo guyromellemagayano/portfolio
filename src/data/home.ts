@@ -25,7 +25,28 @@ const HomeData = (): IHomeData => {
 		]
 	};
 
-	const slidePhotos = [image1, image2, image3, image4, image5];
+	const slidePhotos = [
+		{
+			alt: "",
+			src: image1
+		},
+		{
+			alt: "",
+			src: image2
+		},
+		{
+			alt: "",
+			src: image3
+		},
+		{
+			alt: "",
+			src: image4
+		},
+		{
+			alt: "",
+			src: image5
+		}
+	];
 
 	const cvFile = "/docs/cv.pdf";
 
