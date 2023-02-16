@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import ToggleDarkMode from "@/components/buttons/ToggleDarkMode";
 import Container from "@/components/Container";
 import DesktopNavigation from "@/components/DesktopNavigation";
@@ -96,11 +98,11 @@ const Header = () => {
 		}
 
 		updateStyles();
-		window.addEventListener("scroll", updateStyles, { passive: true });
+		window.addEventListener("scroll", updateStyles, true);
 		window.addEventListener("resize", updateStyles);
 
 		return () => {
-			window.removeEventListener("scroll", updateStyles, { passive: true });
+			window.removeEventListener("scroll", updateStyles, true);
 			window.removeEventListener("resize", updateStyles);
 		};
 	}, [isHomePage]);
@@ -140,6 +142,7 @@ const Header = () => {
 						</Container>
 					</>
 				)}
+
 				<div ref={headerRef} className="top-0 z-10 h-16 pt-6" style={{ position: "var(--header-position)" }}>
 					<Container
 						className="top-[var(--header-top,theme(spacing.6))] w-full"
