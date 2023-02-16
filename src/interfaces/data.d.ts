@@ -1,49 +1,32 @@
 import { StaticImageData } from "next/image";
-import { FunctionComponent } from "react";
+import React from "react";
+import { IHeroCommonProps, ISeoMetaCommonProps } from "./common";
 
 // About page data
 export interface IAboutData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 }
 
 // Articles page data
 export interface IArticlesData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 }
 
 // Home page data
 export interface IHomeData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
-	slidePhotos: StaticImageData[];
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
+	slidePhotos: {
+		alt: string;
+		src: StaticImageData;
+	}[];
 	cvFile: string;
 	workExperiences: {
 		company: string;
 		title: string;
-		logo: StaticImageData | null;
+		logo: StaticImageData;
 		start: string;
 		end: string;
 	}[];
@@ -54,6 +37,7 @@ export interface INavigationData {
 	menu: {
 		title: string;
 		slug: string;
+		link: string;
 	}[];
 	copyright: {
 		year: number;
@@ -79,15 +63,8 @@ export interface IPagesData {
 
 // Projects page data
 export interface IProjectsData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 	projects: {
 		name: string;
 		description: string;
@@ -102,28 +79,14 @@ export interface IProjectsData {
 
 // Thank you page data
 export interface IThankYouData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 }
 
 // Uses page data
 export interface IUsesData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 	tools: {
 		name: string;
 		items: {
@@ -135,15 +98,8 @@ export interface IUsesData {
 
 // Skills page data
 export interface ISkillsData {
-	meta: {
-		title: string;
-		description: string;
-		keywords: string;
-	};
-	hero: {
-		heading: string;
-		description: string[];
-	};
+	meta: ISeoMetaCommonProps;
+	hero: IHeroCommonProps;
 	skills: {
 		name: string;
 		items: {
@@ -159,5 +115,5 @@ export interface ISkillsData {
 export interface ISocialLinksData {
 	url: string;
 	ariaLabel: string;
-	icon: FunctionComponent;
+	icon: React.FunctionComponent;
 }

@@ -1,32 +1,40 @@
+import { IContainerProps } from "@/interfaces/components";
 import clsx from "clsx";
-import { ReactNode, forwardRef } from "react";
-
-interface Props {
-	className?: string;
-	children: ReactNode;
-}
+import React from "react";
 
 type DivRef = HTMLDivElement;
 
-const OuterContainer = forwardRef<DivRef, Props>(({ className, children, ...props }, ref) => {
+// Outer container components
+const OuterContainer = React.forwardRef<DivRef, IContainerProps & any>(function OuterContainer(
+	{ className, children, ...rest },
+	ref
+): JSX.Element {
 	return (
-		<div ref={ref} className={clsx("sm:px-8", className)} {...props}>
+		<div ref={ref} className={clsx("sm:px-8", className)} {...rest}>
 			<div className="mx-auto max-w-7xl lg:px-8">{children}</div>
 		</div>
 	);
 });
 
-const InnerContainer = forwardRef<DivRef, Props>(({ className, children, ...props }, ref) => {
+// Inner container components
+const InnerContainer = React.forwardRef<DivRef, IContainerProps & any>(function InnerContainer(
+	{ className, children, ...rest },
+	ref
+): JSX.Element {
 	return (
-		<div ref={ref} className={clsx("relative px-4 sm:px-8 lg:px-12", className)} {...props}>
+		<div ref={ref} className={clsx("relative px-4 sm:px-8 lg:px-12", className)} {...rest}>
 			<div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</div>
 		</div>
 	);
 });
 
-const ContainerWithRef = forwardRef<DivRef, Props>(({ children, ...props }, ref) => {
+// Container with ref
+const ContainerWithRef = React.forwardRef<DivRef, IContainerProps & any>(function ContainerWithRef(
+	{ children, ...rest },
+	ref
+): JSX.Element {
 	return (
-		<OuterContainer ref={ref} {...props}>
+		<OuterContainer ref={ref} {...rest}>
 			<InnerContainer>{children}</InnerContainer>
 		</OuterContainer>
 	);
@@ -37,6 +45,7 @@ type ContainerType = typeof ContainerWithRef & {
 	Inner: typeof InnerContainer;
 };
 
+// Container component
 const Container = ContainerWithRef as ContainerType;
 
 Container.Outer = OuterContainer;
