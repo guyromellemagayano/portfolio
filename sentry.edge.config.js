@@ -9,7 +9,9 @@ const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 Sentry.init({
 	dsn: SENTRY_DSN || "https://4998ee3c257c46df929ea4118a98b77b@o4504692950630400.ingest.sentry.io/4504692968718336",
 	// Adjust this value in production, or use tracesSampler for greater control
-	tracesSampleRate: 0.5
+	tracesSampleRate: 0.5,
+	environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
+	enabled: process.env.NODE_ENV === "production"
 	// ...
 	// Note: if you want to override the automatic release value, do not set a
 	// `release` value here - use the environment variable `SENTRY_RELEASE`, so
