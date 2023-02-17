@@ -1,5 +1,6 @@
 import rehypePrism from "@mapbox/rehype-prism";
 import nextMDX from "@next/mdx";
+import { withSentryConfig } from "@sentry/nextjs";
 import remarkGfm from "remark-gfm";
 
 /** @type {import('next').NextConfig} */
@@ -8,6 +9,9 @@ const nextConfig = {
 	reactStrictMode: true,
 	experimental: {
 		scrollRestoration: true
+	},
+	sentry: {
+		hideSourceMaps: true
 	}
 };
 
@@ -19,4 +23,8 @@ const withMDX = nextMDX({
 	}
 });
 
-export default withMDX(nextConfig);
+const sentryWebpackPluginOptions = {
+	silent: true
+};
+
+export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions);
