@@ -1,24 +1,24 @@
-import PagesData from "@/data/pages";
-import { INavigationData } from "@/interfaces/data";
+import PagesData from '@/data/pages'
+import { INavigationData } from '@/interfaces/data'
 
 const NavigationData = (): INavigationData => {
-	let menu = [];
+  const menu = []
 
-	// Destructure the data from the PagesData function
-	const { pages } = PagesData();
+  // Destructure the data from the PagesData function
+  const { pages } = PagesData()
 
-	// Add the pages to the menu
-	pages.filter((item) => item.title !== "Home").map((item) => menu.push(item));
+  // Add the pages to the menu
+  pages.filter((item) => item.title !== 'Home').map((item) => menu.push(item))
 
-	const copyright = {
-		year: new Date().getFullYear(),
-		text: "Guy Romelle Magayano. All rights reserved."
-	};
+  const copyright = {
+    year: new Date().getFullYear(),
+    text: 'Guy Romelle Magayano. All rights reserved.',
+  }
 
-	return {
-		menu,
-		copyright
-	};
-};
+  return {
+    menu,
+    copyright,
+  }
+}
 
-export default NavigationData;
+export default NavigationData
