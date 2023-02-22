@@ -2,9 +2,10 @@ import { ToolsList, ToolsListCards } from "@/components/List";
 import Seo from "@/components/Seo";
 import SimpleLayout from "@/components/SimpleLayout";
 import UsesData from "@/data/uses";
+import type { NextPage } from "next";
 
 // Uses page
-const Uses = (): JSX.Element => {
+const Uses: NextPage = (): JSX.Element => {
 	// Destructure the data from the UsesData function
 	const { meta, hero, tools } = UsesData();
 

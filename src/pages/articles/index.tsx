@@ -5,9 +5,10 @@ import SimpleLayout from '@/components/SimpleLayout'
 import ArticlesData from '@/data/articles'
 import { IArticlesProps } from '@/interfaces/pages'
 import { getAllArticles } from '@/lib/getAllArticles'
+import type { NextPage } from 'next'
 
 // Articles page
-const Articles = ({ articles }: IArticlesProps): JSX.Element => {
+const Articles: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
   // Destructure the data from ArticlesData function
   const { meta, hero } = ArticlesData()
 
