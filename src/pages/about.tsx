@@ -6,10 +6,11 @@ import socialLinksData from '@/data/social-links'
 import portraitImage from '@/images/portrait.jpg'
 import { convertStringToHTML } from '@/lib/convertValues'
 import clsx from 'clsx'
+import type { NextPage } from 'next'
 import Image from 'next/image'
 
 // About page
-const About = (): JSX.Element => {
+const About: NextPage = (): JSX.Element => {
   // Destrucutre the data from the AboutData function
   const { meta, hero } = AboutData()
 
