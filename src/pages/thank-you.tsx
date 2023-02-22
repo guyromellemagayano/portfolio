@@ -1,17 +1,19 @@
-import Seo from "@/components/Seo";
-import SimpleLayout from "@/components/SimpleLayout";
-import ThankYouData from "@/data/thank-you";
+import Seo from '@/components/Seo'
+import SimpleLayout from '@/components/SimpleLayout'
+import ThankYouData from '@/data/thank-you'
+import type { NextPage } from 'next'
 
-const ThankYou = (): JSX.Element => {
-	const { meta, hero } = ThankYouData();
+// Thank you page
+const ThankYou: NextPage = (): JSX.Element => {
+  const { meta, hero } = ThankYouData()
 
-	return (
-		<>
-			<Seo meta={meta} />
+  return (
+    <>
+      <Seo meta={meta} />
 
-			<SimpleLayout title={hero.heading} intro={hero.description} />
-		</>
-	);
-};
+      <SimpleLayout title={hero.heading} intro={hero.description} />
+    </>
+  )
+}
 
-export default ThankYou;
+export default ThankYou

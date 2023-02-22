@@ -11,9 +11,10 @@ import socialLinksData from '@/data/social-links'
 import { IArticlesProps } from '@/interfaces/pages'
 import { generateRssFeed } from '@/lib/generateRssFeed'
 import { getAllArticles } from '@/lib/getAllArticles'
+import type { NextPage } from 'next'
 
 // Home page
-const Home = ({ articles }: IArticlesProps): JSX.Element => {
+const Home: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
   // Destructure the data from the HomeData function
   const { meta, hero, slidePhotos, cvFile, workExperiences } = HomeData()
 
