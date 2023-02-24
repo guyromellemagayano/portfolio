@@ -122,7 +122,7 @@ export const ArticlesList = ({ children }: IArticleListProps): JSX.Element => {
 export const ArticlesListCards = ({ slug, meta: { title, date, description } }: IArticleListCardProps): JSX.Element => {
   return (
     <article className="md:grid md:grid-cols-4 md:items-baseline">
-      <Card.Eyebrow as="time" dateTime={date} className="mt-1 hidden md:block">
+      <Card.Eyebrow as="time" dateTime={date} className="mt-1 hidden md:block text-zinc-400 dark:text-zinc-500">
         {formatDate(date)}
       </Card.Eyebrow>
 
