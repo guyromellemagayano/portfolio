@@ -51,7 +51,9 @@ Card.Title = function CardTitle({
 
 // Card description component
 Card.Description = function CardDescription({ children, className }: ICardCommonProps): JSX.Element {
-  return <p className={clsx('relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400', className)}>{children}</p>
+  return (
+    <p className={clsx('relative z-10 mt-2 mb-4 text-sm text-zinc-600 dark:text-zinc-400', className)}>{children}</p>
+  )
 }
 
 // Card CTA component
@@ -80,11 +82,7 @@ Card.Eyebrow = function CardEyebrow({
 }: ICardEyebrowProps & ICardCommonProps & any): JSX.Element {
   return (
     <Component
-      className={clsx(
-        className,
-        'relative z-10 my-3 flex items-center text-sm font-medium text-zinc-400 dark:text-zinc-500',
-        decorate && 'pl-3.5'
-      )}
+      className={clsx(className, 'relative z-10 my-1 flex items-center text-sm font-medium', decorate && 'pl-3')}
       {...rest}
     >
       {decorate && (
