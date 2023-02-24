@@ -6,7 +6,7 @@ import { ISeoMetaCommonProps } from './common'
 export interface IContainerProps {
   id?: string
   className?: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Avatar container component props
@@ -32,7 +32,7 @@ export interface IArticleProps {
 
 // Article layout component props
 export interface IArticleLayoutProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
   meta: {
     title: string
     description: string
@@ -45,7 +45,7 @@ export interface IArticleLayoutProps {
 // Nav link component props
 export interface INavLinkProps {
   href: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // SEO component props
@@ -72,7 +72,7 @@ export interface IPhotosProps {
 // Card component common props
 interface ICardCommonProps {
   className?: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Card component props
@@ -108,7 +108,7 @@ export interface ICardCtaProps {
 
 // Simple layout component props
 export interface ISimpleLayoutProps {
-  children?: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
   id?: string
   title: string
   intro?: string[]
@@ -116,13 +116,13 @@ export interface ISimpleLayoutProps {
 
 // Prose component props
 export interface IProseProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
   className?: string
 }
 
 // Section component props
 export interface ISectionProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
   title?: string
 }
 
@@ -143,22 +143,32 @@ export interface IResumeProps {
 // Skills list card component props
 export interface ISkillsListCardsProps {
   title: string
-  description: string
-  frameworks: string[]
-  cta?: {
-    text: string
-    projects: string[]
-  }[]
+  description?: string[]
+  concepts?: string[]
+  technologies?: ISkillsListCardsTechnologiesProps[]
+  cta?: ISkillsListCardsCtaProps[]
+}
+
+// Skills list card technologies props
+export interface ISkillsListCardsTechnologiesProps {
+  name: string
+  icon?: StaticImageData | string | null
+}
+
+// Skills list card CTA props
+export interface ISkillsListCardsCtaProps {
+  text: string
+  projects: string[]
 }
 
 // Skills list component props
 export interface ISkillsListProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Tools list component props
 export interface IToolsListProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Tool list cards component props
@@ -169,7 +179,7 @@ export interface IToolsListCardsProps {
 
 // Article list component props
 export interface IArticleListProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Article list card component props
@@ -184,7 +194,7 @@ export interface IArticleListCardProps {
 
 // Project list component props
 export interface IProjectListProps {
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Project list card component props
@@ -203,13 +213,13 @@ export interface IProjectListCardProps {
 // Mobile nav item component props
 export interface IMobileNavItemProps {
   href: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Nav item component props
 export interface INavItemProps {
   href: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Main button component props
@@ -218,5 +228,5 @@ export interface IMainButtonProps {
   variant?: 'primary' | 'secondary'
   className?: string
   href?: string
-  children: React.ReactNode
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }

@@ -22,7 +22,8 @@ const Skills: NextPage = (): JSX.Element => {
                   key={item.title}
                   title={item.title}
                   description={item.description}
-                  frameworks={item.frameworks}
+                  concepts={item.concepts}
+                  technologies={item.technologies}
                   // cta={[
                   // 	{
                   // 		projects: [

@@ -26,20 +26,47 @@ export const SkillsList = ({ children, ...rest }: ISkillsListProps & any): JSX.E
 }
 
 // Skills list card component
-export const SkillsListCards = ({ title, description, frameworks, cta }: ISkillsListCardsProps): JSX.Element => {
+export const SkillsListCards = ({
+  title,
+  description,
+  concepts,
+  technologies,
+  cta,
+}: ISkillsListCardsProps): JSX.Element => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={title}>
         {title}
       </Card.Title>
-      <Card.Description>{description}</Card.Description>
 
-      {!isEmpty(frameworks) && (
-        <Card.Eyebrow as="ul" className="flex flex-wrap gap-x-2">
-          {frameworks.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </Card.Eyebrow>
+      {!isEmpty(description) && description.map((text) => <Card.Description key={text}>{text}</Card.Description>)}
+
+      {!isEmpty(concepts) && (
+        <div className="flex flex-row items-start gap-x-6 mt-2 mb-2">
+          <Card.Eyebrow as="h4" className="text-blue-400 dark:text-blue-500 text-base">
+            Concepts
+          </Card.Eyebrow>
+          <Card.Eyebrow as="ul" className="flex-wrap gap-x-2 text-zinc-400 dark:text-zinc-500">
+            {concepts.map((item: string) => (
+              <li key={item}>{item}</li>
+            ))}
+          </Card.Eyebrow>
+        </div>
+      )}
+
+      {!isEmpty(technologies) && (
+        <div className="flex flex-row items-start gap-x-6 mt-2 mb-2">
+          <Card.Eyebrow as="h4" className="text-rose-400 dark:text-rose-500 text-base">
+            Technologies
+          </Card.Eyebrow>
+
+          <Card.Eyebrow as="ul" className="flex-wrap gap-x-2 text-zinc-400 dark:text-zinc-500">
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+            {technologies.map(({ name, icon }) => (
+              <li key={name}>{name}</li>
+            ))}
+          </Card.Eyebrow>
+        </div>
       )}
 
       {!isEmpty(cta) && (
