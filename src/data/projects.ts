@@ -9,7 +9,7 @@ const ProjectsData = (): IProjectsData => {
     title: 'Projects - Guy Romelle Magayano',
     description: 'Things I’ve made trying to put my dent in the web universe.',
     keywords:
-      'guy romelle magayano, full stack developer, davao, philippines, custom web application, custom web development, devops, seo, amazon, google, javascript, typescript, html, css, react, react native, wordpress, tailwind, jamstack, gatsby, nextjs, astro',
+      'guy romelle magayano, full stack developer, davao, philippines, custom web application, custom web development, devops, seo, amazon, google, javascript, typescript, html, css, react, react native, wordpress, tailwind, jamstack, gatsby, nextjs',
   }
 
   const hero = {
