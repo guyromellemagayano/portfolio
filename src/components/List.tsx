@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   IArticleListCardProps,
-  IArticleListProps,
+  IChildrenProps,
   IProjectListCardProps,
-  IProjectListProps,
   ISkillsListCardsProps,
-  ISkillsListProps,
-  IToolsListCardsProps,
-  IToolsListProps,
 } from '@/interfaces/components'
+import { IUsesToolsItemsData, IWorkListData } from '@/interfaces/data'
 import { isEmpty } from '@/lib/checkTypes'
 import { formatDate } from '@/lib/formatDate'
 import Image from 'next/image'
@@ -17,7 +14,7 @@ import LinkSvgIcon from './icons/svg/Link'
 import Section from './Section'
 
 // Skills list component
-export const SkillsList = ({ children, ...rest }: ISkillsListProps & any): JSX.Element => {
+export const SkillsList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
   return (
     <Section {...rest}>
       <div className="space-y-16">{children}</div>
@@ -26,13 +23,7 @@ export const SkillsList = ({ children, ...rest }: ISkillsListProps & any): JSX.E
 }
 
 // Skills list card component
-export const SkillsListCards = ({
-  title,
-  description,
-  concepts,
-  technologies,
-  cta,
-}: ISkillsListCardsProps): JSX.Element => {
+export const SkillsListCards = ({ title, description, technologies, cta }: ISkillsListCardsProps): JSX.Element => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={title}>
@@ -41,21 +32,8 @@ export const SkillsListCards = ({
 
       {!isEmpty(description) && description.map((text) => <Card.Description key={text}>{text}</Card.Description>)}
 
-      {!isEmpty(concepts) && (
-        <div className="flex flex-row items-start gap-x-6 mt-2 mb-2">
-          <Card.Eyebrow as="h4" className="text-blue-400 dark:text-blue-500 text-base">
-            Concepts
-          </Card.Eyebrow>
-          <Card.Eyebrow as="ul" className="flex-wrap gap-x-2 text-zinc-400 dark:text-zinc-500">
-            {concepts.map((item: string) => (
-              <li key={item}>{item}</li>
-            ))}
-          </Card.Eyebrow>
-        </div>
-      )}
-
       {!isEmpty(technologies) && (
-        <div className="flex flex-row items-start gap-x-6 mt-2 mb-2">
+        <div className="flex flex-row items-start gap-x-6 my-2">
           <Card.Eyebrow as="h4" className="text-rose-400 dark:text-rose-500 text-base">
             Technologies
           </Card.Eyebrow>
@@ -91,7 +69,7 @@ export const SkillsListCards = ({
 }
 
 // Tools list component
-export const ToolsList = ({ children, ...rest }: IToolsListProps & any): JSX.Element => {
+export const ToolsList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
   return (
     <Section {...rest}>
       <ul className="space-y-16">{children}</ul>
@@ -100,7 +78,7 @@ export const ToolsList = ({ children, ...rest }: IToolsListProps & any): JSX.Ele
 }
 
 // Tools list card component
-export const ToolsListCards = ({ title, description }: IToolsListCardsProps): JSX.Element => {
+export const ToolsListCards = ({ title, description }: IUsesToolsItemsData): JSX.Element => {
   return (
     <Card as="li">
       <Card.Title as="h3">{title}</Card.Title>
@@ -110,7 +88,7 @@ export const ToolsListCards = ({ title, description }: IToolsListCardsProps): JS
 }
 
 // Articles list component
-export const ArticlesList = ({ children }: IArticleListProps): JSX.Element => {
+export const ArticlesList = ({ children }: IChildrenProps): JSX.Element => {
   return (
     <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
       <div className="flex max-w-3xl flex-col space-y-16">{children}</div>
@@ -136,7 +114,7 @@ export const ArticlesListCards = ({ slug, meta: { title, date, description } }: 
 }
 
 // Projects list component
-export const ProjectsList = ({ children }: IProjectListProps): JSX.Element => {
+export const ProjectsList = ({ children }: IChildrenProps): JSX.Element => {
   return <ul className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">{children}</ul>
 }
 
@@ -166,5 +144,43 @@ export const ProjectsListCards = ({ project }: IProjectListCardProps): JSX.Eleme
         </p>
       </Card>
     )
+  )
+}
+
+// Work list component
+export const WorkList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
+  return (
+    <Section {...rest}>
+      <div className="space-y-16">{children}</div>
+    </Section>
+  )
+}
+
+// Work list card component
+export const WorkListCards = ({ company, country, description, contributions }: IWorkListData): JSX.Element => {
+  return (
+    <Card as="article">
+      {!isEmpty(company) && !isEmpty(country) && (
+        <Card.Title as="h3" title={company} className=" !mb-2">
+          {company} &nbsp;
+          <h5 className="mb-2 hidden md:block text-sm">{country}</h5>
+        </Card.Title>
+      )}
+
+      {!isEmpty(description) && description.map((text) => <Card.Description key={text}>{text}</Card.Description>)}
+
+      {!isEmpty(contributions) && (
+        <div className="flex flex-row items-start gap-x-6 mt-4 mb-2">
+          <Card.Eyebrow as="h4" className="text-teal-400 dark:text-teal-500 text-base">
+            Contributions
+          </Card.Eyebrow>
+          <Card.Eyebrow as="ul" className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500">
+            {contributions.map((item: string) => (
+              <li key={item}>{item}</li>
+            ))}
+          </Card.Eyebrow>
+        </div>
+      )}
+    </Card>
   )
 }
