@@ -152,10 +152,6 @@ const SkillsData = (): ISkillsData => {
               icon: '',
             },
             {
-              name: 'Astro',
-              icon: '',
-            },
-            {
               name: 'Jekyll',
               icon: '',
             },
@@ -221,7 +217,6 @@ const SkillsData = (): ISkillsData => {
           description: [
             'Testing your code to eliminate as many bugs as possible in building web applications is essential. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Unit Testing', 'Integration Testing', 'Functional Testing', 'End-to-End Testing'],
           technologies: [
             {
               name: 'Jest',
@@ -243,7 +238,6 @@ const SkillsData = (): ISkillsData => {
           description: [
             "Several strategies can be used to authenticate a user or a system's identity. Here are some of the concepts I learned along the way and the technologies I have worked with:",
           ],
-          concepts: ['Basic Authentication', 'Session Based Authentication', 'Token Based Authentication'],
         },
         {
           title: 'Web Components',
@@ -252,16 +246,6 @@ const SkillsData = (): ISkillsData => {
             'Web Components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps.',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Custom Elements', 'Shadow DOM', 'HTML Templates'],
-        },
-        {
-          title: 'Progressive Web Apps (PWAs)',
-          skillLevel: 3,
-          description: [
-            'As part of building web applications, Progressive Web Apps are websites progressively enhanced to function like native applications on supporting platforms while still behaving like regular websites on most browsers.',
-            'Here are some of the concepts I learned along the way and the technologies I have worked with:',
-          ],
-          concepts: ['Offline Support', 'Push Notifications', 'Background Sync', 'LocalStorage', 'SessionStorage'],
         },
         {
           title: 'Hybrid Mobile Applications',
@@ -269,7 +253,6 @@ const SkillsData = (): ISkillsData => {
           description: [
             'Although I just learned to build hybrid mobile applications, I am excited to learn more about them. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Progressive Web Apps (PWAs)', 'Webview', 'Cross-Platform Compatibility', 'Native Mobile APIs'],
           technologies: [
             {
               name: 'React Native',
@@ -342,10 +325,30 @@ const SkillsData = (): ISkillsData => {
             'I learned Python for the first time a few years back and managed to build scripts with it. Eventually, I learned how to use it to write server-side code alongside another developer from my previous workplace.',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Basics', 'Object Oriented Programming (OOP)', 'Built-in and Custom Modules', 'Package Managers'],
           technologies: [
             {
               name: 'Django',
+              icon: '',
+            },
+          ],
+        },
+        {
+          title: 'PHP',
+          skillLevel: 3,
+          description: [
+            'I learned PHP for quite some time already and managed to build websites with it through WordPress. Eventually I learned how to use it to write server-side code alongside another developer from my previous workplace.',
+          ],
+          technologies: [
+            {
+              name: 'Composer',
+              icon: '',
+            },
+            {
+              name: 'Xdebug',
+              icon: '',
+            },
+            {
+              name: 'WordPress',
               icon: '',
             },
           ],
@@ -356,7 +359,6 @@ const SkillsData = (): ISkillsData => {
           description: [
             'I have also learned how to use the terminal to run commands and scripts. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Command Line Interface (CLI)', 'Commands', 'Arguments', 'Flags', 'Utilities', 'Scripts'],
           technologies: [
             {
               name: 'BASH',
@@ -412,12 +414,7 @@ const SkillsData = (): ISkillsData => {
             'Stands for Application Programming Interface, a set of functions and procedures that allow the creation of applications that access the features or data of an operating system, application, or other services.',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['REST', 'GraphQL', 'Basic Auth', 'JWT', 'Token Auth', 'JSON APIs'],
           technologies: [
-            {
-              name: 'WordPress',
-              icon: '',
-            },
             {
               name: 'Optimizely/Episerver',
               icon: '',
@@ -432,22 +429,6 @@ const SkillsData = (): ISkillsData => {
             },
           ],
         },
-        // {
-        //   title: 'Caching',
-        //   skillLevel: 2,
-        //   description: [
-        //     'It is a technique that stores data temporarily so that future requests for that data can be served faster. Here are some of the concepts I learned along the way:',
-        //   ],
-        //   concepts: ['Client Side Caching', 'Server Side Caching', 'CDN Caching', 'Database Caching'],
-        // },
-        {
-          title: 'Web Security',
-          skillLevel: 3,
-          description: [
-            'Building secure web applications is a must in today’s world, where cyber attacks are becoming increasingly common. There are many ways to secure a web application, but here are some of the concepts I learned along the way:',
-          ],
-          concepts: ['HTTPS', 'SSL/TLS', 'CORS', 'Content Security Policy (CSP)', 'OWASP'],
-        },
         {
           title: 'Containerization and Virtualization',
           skillLevel: 3,
@@ -456,14 +437,9 @@ const SkillsData = (): ISkillsData => {
             'Conversely, virtualization is a way to run multiple operating systems on a single computer.',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Containerization', 'Virtualization'],
           technologies: [
             {
               name: 'Docker',
-              icon: '',
-            },
-            {
-              name: 'Docker Compose',
               icon: '',
             },
           ],
@@ -475,7 +451,6 @@ const SkillsData = (): ISkillsData => {
             'GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data. It provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools..',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: ['Queries', 'Mutations', 'Subscriptions', 'Fragments', 'Interfaces'],
           technologies: [
             {
               name: 'Apollo',
