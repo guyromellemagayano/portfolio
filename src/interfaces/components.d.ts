@@ -1,12 +1,17 @@
 import { StaticImageData } from 'next/image'
 import React from 'react'
 import { ISeoMetaCommonProps } from './common'
+import { ISkillsListItemsData } from './data'
+
+// Children component props
+export interface IChildrenProps {
+  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+}
 
 // Container component props
-export interface IContainerProps {
+export interface IContainerProps extends IChildrenProps {
   id?: string
   className?: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Avatar container component props
@@ -31,8 +36,7 @@ export interface IArticleProps {
 }
 
 // Article layout component props
-export interface IArticleLayoutProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+export interface IArticleLayoutProps extends IChildrenProps {
   meta: {
     title: string
     description: string
@@ -43,9 +47,8 @@ export interface IArticleLayoutProps {
 }
 
 // Nav link component props
-export interface INavLinkProps {
+export interface INavLinkProps extends IChildrenProps {
   href: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // SEO component props
@@ -70,9 +73,8 @@ export interface IPhotosProps {
 }
 
 // Card component common props
-interface ICardCommonProps {
+interface ICardCommonProps extends IChildrenProps {
   className?: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Card component props
@@ -107,23 +109,21 @@ export interface ICardCtaProps {
 }
 
 // Simple layout component props
-export interface ISimpleLayoutProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+export interface ISimpleLayoutProps extends IChildrenProps {
   id?: string
   title: string
   intro?: string[]
 }
 
 // Prose component props
-export interface IProseProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+export interface IProseProps extends IChildrenProps {
   className?: string
 }
 
 // Section component props
-export interface ISectionProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+export interface ISectionProps extends IChildrenProps {
   title?: string
+  decorate?: boolean
 }
 
 // Resume component props
@@ -141,45 +141,14 @@ export interface IResumeProps {
 }
 
 // Skills list card component props
-export interface ISkillsListCardsProps {
-  title: string
-  description?: string[]
-  concepts?: string[]
-  technologies?: ISkillsListCardsTechnologiesProps[]
+export interface ISkillsListCardsProps extends ISkillsListItemsData {
   cta?: ISkillsListCardsCtaProps[]
-}
-
-// Skills list card technologies props
-export interface ISkillsListCardsTechnologiesProps {
-  name: string
-  icon?: StaticImageData | string | null
 }
 
 // Skills list card CTA props
 export interface ISkillsListCardsCtaProps {
   text: string
   projects: string[]
-}
-
-// Skills list component props
-export interface ISkillsListProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
-}
-
-// Tools list component props
-export interface IToolsListProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
-}
-
-// Tool list cards component props
-export interface IToolsListCardsProps {
-  title: string
-  description: string
-}
-
-// Article list component props
-export interface IArticleListProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Article list card component props
@@ -190,11 +159,6 @@ export interface IArticleListCardProps {
     description: string
     date: string
   }
-}
-
-// Project list component props
-export interface IProjectListProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Project list card component props
@@ -211,22 +175,19 @@ export interface IProjectListCardProps {
 }
 
 // Mobile nav item component props
-export interface IMobileNavItemProps {
+export interface IMobileNavItemProps extends IChildrenProps {
   href: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Nav item component props
-export interface INavItemProps {
+export interface INavItemProps extends IChildrenProps {
   href: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
 
 // Main button component props
-export interface IMainButtonProps {
+export interface IMainButtonProps extends IChildrenProps {
   type?: 'button' | 'submit' | 'reset'
   variant?: 'primary' | 'secondary'
   className?: string
   href?: string
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
 }
