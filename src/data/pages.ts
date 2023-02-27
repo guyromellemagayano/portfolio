@@ -1,38 +1,42 @@
-import { IPagesData } from "@/interfaces/data";
+import { IPagesData } from '@/interfaces/data'
 
 const PagesData = (): IPagesData => {
-	const pages = [
-		{
-			title: "Home",
-			link: "/"
-		},
-		{
-			title: "About",
-			link: "/about"
-		},
-		{
-			title: "Skills",
-			link: "/skills"
-		},
-		{
-			title: "Projects",
-			link: "/projects"
-		},
-		{
-			title: "Articles",
-			link: "/articles"
-		},
-		{
-			title: "Uses",
-			link: "/uses"
-		}
-	];
+  const pages = [
+    {
+      title: 'Home',
+      link: '/',
+    },
+    {
+      title: 'Skills',
+      link: '/skills',
+    },
+    {
+      title: 'Work',
+      link: '/work',
+    },
+    {
+      title: 'Projects',
+      link: '/projects',
+    },
+    {
+      title: 'Articles',
+      link: '/articles',
+    },
+    {
+      title: 'Uses',
+      link: '/uses',
+    },
+    {
+      title: 'About',
+      link: '/about',
+    },
+  ]
 
-	const articles = [];
+  const articles = []
 
-	const projects = [];
+  const projects = []
 
-	return { pages, articles, projects };
-};
+  return { pages, articles, projects }
+}
 
-export default PagesData;
+export default PagesData
