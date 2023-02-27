@@ -14,37 +14,11 @@ const Skills: NextPage = (): JSX.Element => {
       <Seo meta={meta} />
 
       <SimpleLayout id="hero" title={hero.heading} intro={hero.description}>
-        <div className="space-y-20">
+        <div className="grid gap-y-12">
           {skills.map((skill) => (
             <SkillsList key={skill.name} title={skill.name}>
               {skill.items?.map((item) => (
-                <SkillsListCards
-                  key={item.title}
-                  title={item.title}
-                  description={item.description}
-                  concepts={item.concepts}
-                  technologies={item.technologies}
-                  // cta={[
-                  // 	{
-                  // 		projects: [
-                  // 			{
-                  // 				title: "Project 1",
-                  // 				description: "Project 1 description",
-                  // 				link: "https://google.com"
-                  // 			}
-                  // 		]
-                  // 	},
-                  // 	{
-                  // 		articles: [
-                  // 			{
-                  // 				title: "Article 1",
-                  // 				description: "Article 1 description",
-                  // 				link: "https://google.com"
-                  // 			}
-                  // 		]
-                  // 	}
-                  // ]}
-                />
+                <SkillsListCards key={item.title} {...item} />
               ))}
             </SkillsList>
           ))}
