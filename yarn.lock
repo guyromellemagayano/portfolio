@@ -548,15 +548,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/mdx@npm:^13.1.6":
-  version: 13.1.6
-  resolution: "@next/mdx@npm:13.1.6"
+"@next/mdx@npm:^13.2.1":
+  version: 13.2.1
+  resolution: "@next/mdx@npm:13.2.1"
   dependencies:
-    source-map: "npm:^0.7.0"
+    source-map: ^0.7.0
   peerDependencies:
     "@mdx-js/loader": ">=0.15.0"
-    "@mdx-js/react": "*"
-  checksum: c66f13bda04221c8a4329dd064ba944573d98c7ab01d161f8a9c7cc632dd31b2b9df0fd76b8deccf71cddbc9b4e1f241a908898a08739e1b2c7d4a187c8e2574
+    "@mdx-js/react": ">=0.15.0"
+  peerDependenciesMeta:
+    "@mdx-js/loader":
+      optional: true
+    "@mdx-js/react":
+      optional: true
+  checksum: 40f0223112864e0c52a03b4f55732d758bc9a596a9f4250704fdf61a964fc230aff976150fefc144922da528d916e68c3a1a8169836bd69f4b548446a4a25591
   languageName: node
   linkType: hard
 
@@ -9099,7 +9104,7 @@ __metadata:
     "@netlify/plugin-nextjs": ^4.30.4
     "@netlify/plugin-sitemap": ^0.8.1
     "@netlify/sentry": ^0.0.6
-    "@next/mdx": ^13.1.6
+    "@next/mdx": ^13.2.1
     "@sentry/nextjs": ^7.38.0
     "@tailwindcss/typography": ^0.5.9
     "@types/lodash": ^4.14.191
