@@ -35,9 +35,10 @@ Card.Title = function CardTitle({
   href,
   children,
   title,
+  className,
 }: ICardTitleProps & ICardCommonProps): JSX.Element {
   return (
-    <Component className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+    <Component className={clsx(className, 'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100')}>
       {href ? (
         <Card.Link href={href} title={title}>
           {children}
@@ -51,15 +52,13 @@ Card.Title = function CardTitle({
 
 // Card description component
 Card.Description = function CardDescription({ children, className }: ICardCommonProps): JSX.Element {
-  return (
-    <p className={clsx('relative z-10 mt-2 mb-4 text-sm text-zinc-600 dark:text-zinc-400', className)}>{children}</p>
-  )
+  return <p className={clsx(className, 'relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400')}>{children}</p>
 }
 
 // Card CTA component
 Card.Cta = function CardCta({ title, children, href = '#' }: ICardCtaProps & ICardCommonProps): JSX.Element {
   return (
-    <div aria-hidden="true" className="relative z-10 mt-4 text-sm font-medium flex items-start text-amber-500">
+    <div aria-hidden="true" className="relative z-10 mt-2 text-sm font-medium flex items-start text-amber-500">
       <Link
         href={href}
         title={title}

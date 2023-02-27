@@ -89,11 +89,14 @@ export interface IUsesData {
   hero: IHeroCommonProps
   tools: {
     name: string
-    items: {
-      title: string
-      description: string
-    }[]
+    items: IUsesToolsItemsData[]
   }[]
+}
+
+// Uses tools items data
+export interface IUsesToolsItemsData {
+  title: string
+  description: string
 }
 
 // Skills page data
@@ -112,10 +115,25 @@ export interface ISkillsListData {
 // Skills list items data
 export interface ISkillsListItemsData {
   title?: string
-  skillLevel: number
+  skillLevel?: number
   description?: string[]
-  concepts?: string[]
   technologies?: ITechnologiesData[]
+}
+
+// Work page data
+export interface IWorkData {
+  meta: ISeoMetaCommonProps
+  hero: IHeroCommonProps
+  workExperiences?: IWorkListData[]
+}
+
+// Work list data
+export interface IWorkListData {
+  company?: string
+  duration: string
+  country?: string
+  description: string[]
+  contributions: string[]
 }
 
 // Technologies data
