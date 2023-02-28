@@ -24,55 +24,36 @@ const SkillsData = (): ISkillsData => {
           description: [
             'HTML, which stands for Hyper Text Markup Language, is the standard markup language for creating web pages and web applications.',
             'CSS, which stands for Cascading Style Sheets, is a style sheet language used for describing the presentation of a document written in a markup language like HTML',
-            'Both, along with JavaScript, are the blocks of the Web and are the foundations of any website and web application. Here are some of the concepts I learned along the way and the technologies I have worked with:',
-          ],
-          concepts: [
-            'Semantic HTML',
-            'Forms and Validations',
-            'Conventions and Best Practices',
-            'SEO (Search Engine Optimization)',
-            'Floats',
-            'Positioning',
-            'Display',
-            'Box Model',
-            'CSS Grid',
-            'Flex Box',
-            'Media Queries',
-            'Mobile First',
-            'Block Element Modifier (BEM)',
-            'Accessibility (A11Y)',
-            'Web Content Accesibility Guidelines (WCAG 2.0)',
-            'CSS Modules',
-            'CSS Preprocessors',
+            'Both HTML and CSS, along with JavaScript, are the blocks of the Web and serve as the foundations of any website and web application. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
           technologies: [
             {
               name: 'Twig',
-              icon: '',
+              link: 'https://twig.symfony.com/',
             },
             {
               name: 'Liquid',
-              icon: '',
+              link: 'https://shopify.github.io/liquid/',
             },
             {
               name: 'SASS',
-              icon: '',
+              link: 'https://sass-lang.com/',
             },
             {
               name: 'PostCSS',
-              icon: '',
+              link: 'https://sass-lang.com/',
             },
             {
               name: 'TailwindCSS',
-              icon: '',
+              link: 'https://tailwindcss.com/',
             },
             {
               name: 'Bootstrap',
-              icon: '',
+              link: 'https://getbootstrap.com/',
             },
             {
               name: 'Bulma',
-              icon: '',
+              link: 'https://bulma.io/',
             },
           ],
         },
@@ -84,80 +65,42 @@ const SkillsData = (): ISkillsData => {
             'Further down my journey in the front end, I also learned TypeScript, which adds more features on top of it, like static type checking that detects errors before actual code runs, ensuring data integrity as it goes through code logic.',
             'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: [
-            'DOM Manipulation',
-            'Event Handling',
-            'Fetch API / AJAX (XHR)',
-            'ES6+',
-            'Hoisting',
-            'Event Bubbling',
-            'Scope',
-            'Prototype',
-            'Shadow DOM',
-            'Strict Mode',
-            'CSS-in-JS',
-            'Progressive Web Apps (PWA)',
-            'Types',
-            'Interfaces',
-            'Generics',
-            'Enums',
-            'Type Aliases',
-            'Type Inference',
-            'Type Compatibility',
-            'Type Guards',
-            'Type Assertions',
-            'Type Widening',
-            'Type Narrowing',
-            'Server Side Rendering (SSR)',
-            'Static Site Generators',
-            'JAMstack',
-            'Incremental Static Regeneration (ISR)',
-            'Static Site Generation (SSG)',
-          ],
           technologies: [
             {
               name: 'Styled Components',
-              icon: '',
+              link: 'https://styled-components.com/',
             },
             {
               name: 'Emotion',
-              icon: '',
-            },
-            {
-              name: 'Styled JSX',
-              icon: '',
-            },
-            {
-              name: 'TypeScript',
-              icon: '',
+              link: 'https://emotion.sh/docs/introduction',
             },
             {
               name: 'ReactJS',
-              icon: '',
+              link: 'https://reactjs.org/',
             },
             {
               name: 'NextJS',
-              icon: '',
+              link: 'https://nextjs.org/',
             },
             {
               name: 'GatsbyJS',
-              icon: '',
+              link: 'https://www.gatsbyjs.com/',
             },
             {
               name: 'VueJS',
-              icon: '',
+              link: 'https://vuejs.org/',
             },
             {
               name: 'NuxtJS',
-              icon: '',
+              link: 'https://nuxtjs.org/',
             },
             {
               name: 'Jekyll',
-              icon: '',
+              link: 'https://jekyllrb.com/',
             },
             {
               name: 'Hugo',
-              icon: '',
+              link: 'https://gohugo.io/',
             },
           ],
         },
@@ -170,11 +113,11 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'NPM',
-              icon: '',
+              link: 'https://www.npmjs.com/',
             },
             {
               name: 'Yarn',
-              icon: '',
+              link: 'https://yarnpkg.com/',
             },
           ],
         },
@@ -187,27 +130,23 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Prettier',
-              icon: '',
+              link: 'https://prettier.io/',
             },
             {
               name: 'Babel',
-              icon: '',
+              link: 'https://babeljs.io/',
             },
             {
               name: 'ESLint',
-              icon: '',
+              link: 'https://eslint.org/',
             },
             {
               name: 'Webpack',
-              icon: '',
-            },
-            {
-              name: 'NPM scripts',
-              icon: '',
+              link: 'https://webpack.js.org/',
             },
             {
               name: 'Gulp',
-              icon: '',
+              link: 'https://gulpjs.com/',
             },
           ],
         },
@@ -220,31 +159,16 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Jest',
-              icon: '',
+              link: 'https://jestjs.io/',
             },
             {
               name: 'React Testing Library',
-              icon: '',
+              link: 'https://testing-library.com/',
             },
             {
               name: 'Cypress',
-              icon: '',
+              link: 'https://www.cypress.io/',
             },
-          ],
-        },
-        {
-          title: 'Authentication Strategies',
-          skillLevel: 3,
-          description: [
-            "Several strategies can be used to authenticate a user or a system's identity. Here are some of the concepts I learned along the way and the technologies I have worked with:",
-          ],
-        },
-        {
-          title: 'Web Components',
-          skillLevel: 3,
-          description: [
-            'Web Components are a set of web platform APIs that allow you to create new custom, reusable, encapsulated HTML tags to use in web pages and web apps.',
-            'Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
         },
         {
@@ -256,7 +180,7 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'React Native',
-              icon: '',
+              link: 'https://reactnative.dev/',
             },
           ],
         },
@@ -266,55 +190,31 @@ const SkillsData = (): ISkillsData => {
       name: 'Backend Development',
       items: [
         {
-          title: 'JavaScript',
+          title: 'JavaScript and TypeScript',
           skillLevel: 4,
           description: [
-            'Besides being used in the frontend, JavaScript can also be used in the backend to write server-side code. Here are some of the concepts I learned along the way and the technologies I have worked with:',
-          ],
-          concepts: [
-            'CommonJS',
-            'ESM',
-            'Private and Public Packages',
-            'Error Handling',
-            'Asynchrounous Programming',
-            'Command Line Apps',
-            'Logging',
-            'Streams',
-            'Debugging',
-            'Built-in Modules',
+            'Besides being used in the frontend, JavaScript, and therefore TypeScript, can also be used in the backend to write server-side code. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
           technologies: [
             {
               name: 'NodeJS',
-              icon: '',
+              link: 'https://nodejs.org/en/',
             },
             {
               name: 'ExpressJS',
-              icon: '',
+              link: 'https://expressjs.com/',
             },
             {
               name: 'Axios',
-              icon: '',
+              link: 'https://axios-http.com/',
             },
             {
               name: 'Fetch API',
-              icon: '',
-            },
-            {
-              name: 'Nodemon',
-              icon: '',
+              link: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API',
             },
             {
               name: 'Mongoose',
-              icon: '',
-            },
-            {
-              name: 'Winston',
-              icon: '',
-            },
-            {
-              name: 'Chrome Dev Tools',
-              icon: '',
+              link: 'https://mongoosejs.com/',
             },
           ],
         },
@@ -328,7 +228,7 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Django',
-              icon: '',
+              link: 'https://www.djangoproject.com/',
             },
           ],
         },
@@ -340,16 +240,8 @@ const SkillsData = (): ISkillsData => {
           ],
           technologies: [
             {
-              name: 'Composer',
-              icon: '',
-            },
-            {
-              name: 'Xdebug',
-              icon: '',
-            },
-            {
               name: 'WordPress',
-              icon: '',
+              link: 'https://wordpress.com/',
             },
           ],
         },
@@ -362,11 +254,11 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'BASH',
-              icon: '',
+              link: 'https://www.gnu.org/software/bash/',
             },
             {
-              name: 'ZSH',
-              icon: '',
+              name: 'Nano',
+              link: 'https://www.nano-editor.org/',
             },
           ],
         },
@@ -376,34 +268,22 @@ const SkillsData = (): ISkillsData => {
           description: [
             'Different types of databases can be used to store data. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: [
-            'Relational Databases',
-            'Non-Relational Databases',
-            'Object Relation Mapping (ORM)',
-            'Data Modeling',
-            'Data Normalization',
-            'Atomicity, Consistency, Isolation, Durability (ACID)',
-            'Transactions',
-            'Failure Modes',
-            'Performance Profiling',
-            'Database Indexing',
-          ],
           technologies: [
             {
               name: 'MongoDB',
-              icon: '',
+              link: 'https://www.mongodb.com/',
             },
             {
               name: 'MySQL',
-              icon: '',
+              link: 'https://www.mysql.com/',
             },
             {
               name: 'MariaDB',
-              icon: '',
+              link: 'https://mariadb.org/',
             },
             {
               name: 'PostgreSQL',
-              icon: '',
+              link: 'https://www.postgresql.org/',
             },
           ],
         },
@@ -417,15 +297,11 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Optimizely/Episerver',
-              icon: '',
+              link: 'https://www.optimizely.com/',
             },
             {
               name: 'BigCommerce',
-              icon: '',
-            },
-            {
-              name: 'Django',
-              icon: '',
+              link: 'https://www.bigcommerce.com/',
             },
           ],
         },
@@ -440,7 +316,7 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Docker',
-              icon: '',
+              link: 'https://www.docker.com/',
             },
           ],
         },
@@ -454,27 +330,128 @@ const SkillsData = (): ISkillsData => {
           technologies: [
             {
               name: 'Apollo',
-              icon: '',
+              link: 'https://www.apollographql.com/',
             },
           ],
         },
-        // {
-        //   title: 'Web Servers',
-        //   skillLevel: 3,
-        //   description: [
-        //     'Although they can be either hardware or software, web servers are used to serve web pages to users. Here are some of the concepts I learned along the way and the technologies I have worked with:',
-        //   ],
-        //   technologies: [
-        //     {
-        //       name: 'Apache',
-        //       icon: '',
-        //     },
-        //     {
-        //       name: 'Nginx',
-        //       icon: '',
-        //     },
-        //   ],
-        // },
+      ],
+    },
+    {
+      name: 'DevOps',
+      items: [
+        {
+          title: 'Continuous Integration and Continuous Deployment (CI/CD)',
+          skillLevel: 3,
+          description: [
+            'These are software development practices where developers integrate code into a shared repository frequently, and then automatically build, test, and deploy it to production. Here are some of the concepts I learned along the way and the technologies I have worked with:',
+          ],
+          technologies: [
+            {
+              name: 'Github Actions',
+              link: 'https://github.com/features/actions',
+            },
+          ],
+        },
+        {
+          title: 'Cloud Computing',
+          skillLevel: 3,
+          description: [
+            'Cloud computing is the on-demand delivery of IT resources and applications via the Internet with pay-as-you-go pricing. Instead of buying, owning, and maintaining physical data centers and servers, you can access technology services, such as computing power, storage, and databases, on an as-needed basis from a cloud provider.',
+          ],
+          technologies: [
+            {
+              name: 'AWS',
+              link: 'https://aws.amazon.com/',
+            },
+            {
+              name: 'Google Cloud',
+              link: 'https://cloud.google.com/',
+            },
+            {
+              name: 'Digital Ocean',
+              link: 'https://www.digitalocean.com/',
+            },
+            {
+              name: 'Heroku',
+              link: 'https://www.heroku.com/',
+            },
+          ],
+        },
+        {
+          title: 'Web Server',
+          skillLevel: 3,
+          description: [
+            'A web server is a computer system that processes requests via HTTP, the basic network protocol used to distribute information on the World Wide Web. Here are some of the concepts I learned along the way and the technologies I have worked with:',
+          ],
+          technologies: [
+            {
+              name: 'Nginx',
+              link: 'https://www.nginx.com/',
+            },
+            {
+              name: 'Apache',
+              link: 'https://httpd.apache.org/',
+            },
+          ],
+        },
+        {
+          title: 'Operating Systems',
+          skillLevel: 4,
+          description: [
+            'An operating system (OS) is system software that manages computer hardware and software resources and provides common services for computer programs. Here are some of the concepts I learned along the way and the technologies I have worked with:',
+          ],
+          technologies: [
+            {
+              name: 'Ubuntu (Linux)',
+              link: 'https://ubuntu.com/',
+            },
+            {
+              name: 'Windows',
+              link: 'https://www.microsoft.com/en-us/windows',
+            },
+          ],
+        },
+        {
+          title: 'Networks, Security, and Protocols',
+          skillLevel: 3,
+          description: [
+            'A network is a collection of computers and other devices connected by communication channels that allow them to exchange information. Here are some of the concepts I learned along the way and the technologies I have worked with:',
+          ],
+          technologies: [
+            {
+              name: 'TCP/IP',
+              link: 'https://en.wikipedia.org/wiki/Internet_protocol_suite',
+            },
+            {
+              name: 'HTTP',
+              link: 'https://www.cloudflare.com/en-gb/learning/ddos/glossary/hypertext-transfer-protocol-http/',
+            },
+            {
+              name: 'HTTPS',
+              link: 'https://www.cloudflare.com/en-gb/learning/ssl/what-is-https/',
+            },
+            {
+              name: 'SSH',
+              link: 'https://en.wikipedia.org/wiki/Secure_Shell',
+            },
+            {
+              name: 'FTP',
+              link: 'https://www.geeksforgeeks.org/file-transfer-protocol-ftp-in-application-layer/',
+            },
+            {
+              name: 'DNS',
+              link: 'https://www.cloudflare.com/en-gb/learning/dns/what-is-dns/',
+            },
+            {
+              name: 'SSL',
+              link: 'https://www.cloudflare.com/learning/ssl/what-is-ssl/',
+            },
+            {
+              name: 'TLS',
+              link: 'https://www.cloudflare.com/en-gb/learning/ssl/transport-layer-security-tls/',
+            },
+          ],
+        },
       ],
     },
     {
@@ -486,28 +463,7 @@ const SkillsData = (): ISkillsData => {
           description: [
             'These allow you to track changes to your codebase/files over time. It will enable you to go back to the previous codebase without issues and allows for collaboration with other developers. Here are some of the concepts I learned along the way and the technologies I have worked with:',
           ],
-          concepts: [
-            'Setup and Config',
-            'Branching and Merging',
-            'Basic Snapshotting',
-            'Staging',
-            'Sharing and Updating',
-            'Inspection and Comparison',
-            'Patching',
-            'Administration',
-            'Best Practices',
-          ],
-          technologies: [
-            { name: 'Github', icon: '' },
-            {
-              name: 'Gitlab',
-              icon: '',
-            },
-            {
-              name: 'Bitbucket',
-              icon: '',
-            },
-          ],
+          technologies: [{ name: 'Github', link: 'https://github.com/' }],
         },
       ],
     },
