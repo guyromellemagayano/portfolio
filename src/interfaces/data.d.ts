@@ -139,7 +139,7 @@ export interface IWorkListData {
 // Technologies data
 export interface ITechnologiesData {
   name: string
-  icon?: StaticImageData | string | null
+  link?: string
 }
 
 // Social links data

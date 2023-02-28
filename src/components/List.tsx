@@ -38,10 +38,19 @@ export const SkillsListCards = ({ title, description, technologies, cta }: ISkil
             Technologies
           </Card.Eyebrow>
 
-          <Card.Eyebrow as="ul" className="flex-wrap gap-x-2 text-zinc-400 dark:text-zinc-500">
+          <Card.Eyebrow as="ul" className="flex-wrap gap-x-4 text-zinc-400 dark:text-zinc-500">
             {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-            {technologies.map(({ name, icon }) => (
-              <li key={name}>{name}</li>
+            {technologies.map(({ name, link }) => (
+              <li key={name}>
+                <a
+                  href={link}
+                  className="hover:text-amber-500 dark:hover:text-amber-400 transition"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {name}
+                </a>
+              </li>
             ))}
           </Card.Eyebrow>
         </div>
