@@ -18,7 +18,7 @@
     "@netlify/integrations": "^0.5.0",
     "@netlify/plugin-nextjs": "^4.30.4",
     "@netlify/sentry": "^0.0.6",
-    "@next/mdx": "^13.2.1",
+    "@next/mdx": "^13.2.3",
     "@sentry/nextjs": "^7.39.0",
     "@tailwindcss/typography": "^0.5.9",
     "@types/lodash": "^4.14.191",
