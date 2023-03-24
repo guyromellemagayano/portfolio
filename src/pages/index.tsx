@@ -70,7 +70,7 @@ const Home: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
 }
 
 export const getStaticProps = async (): Promise<object> => {
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'production') {
     await generateRssFeed()
   }
 
