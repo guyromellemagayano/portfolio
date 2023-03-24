@@ -38,7 +38,7 @@
     "react-dom": "18.2.0",
     "remark-gfm": "^3.0.1",
     "tailwindcss": "^3.2.7",
-    "webpack": "^5.75.0"
+    "webpack": "^5.76.3"
   },
   "devDependencies": {
     "@netlify/plugin-sitemap": "^0.8.1",
