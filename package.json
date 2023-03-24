@@ -16,10 +16,6 @@
     "@mapbox/rehype-prism": "^0.8.0",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
-    "@netlify/functions": "^1.4.0",
-    "@netlify/integrations": "^0.5.0",
-    "@netlify/plugin-nextjs": "^4.30.4",
-    "@netlify/sentry": "^0.0.8",
     "@next/mdx": "^13.2.3",
     "@sentry/nextjs": "^7.41.0",
     "@tailwindcss/typography": "^0.5.9",
@@ -41,7 +37,6 @@
     "webpack": "^5.76.3"
   },
   "devDependencies": {
-    "@netlify/plugin-sitemap": "^0.8.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
