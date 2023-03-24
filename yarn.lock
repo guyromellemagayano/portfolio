@@ -12,41 +12,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@amplitude/analytics-core@npm:^0.11.3-beta.0":
-  version: 0.11.4
-  resolution: "@amplitude/analytics-core@npm:0.11.4"
-  dependencies:
-    "@amplitude/analytics-types": "npm:^0.16.0"
-    tslib: "npm:^2.4.1"
-  checksum: a96b557a356a752cd04d4d4133e67fe92088dfbd3f0a61d587105e8aea0ff6de9e3245f7cf86a1e36edcf0b396e32359f63554fda2d1a5057aeb125396eb009d
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-node@npm:1.0.3-beta.0":
-  version: 1.0.3-beta.0
-  resolution: "@amplitude/analytics-node@npm:1.0.3-beta.0"
-  dependencies:
-    "@amplitude/analytics-core": "npm:^0.11.3-beta.0"
-    "@amplitude/analytics-types": "npm:^0.15.0-beta.0"
-    tslib: "npm:^2.4.1"
-  checksum: da7d9e69ab51377cbb40293253fa5065a3ec8365bf01064e81d4c65074b43a0f995a1c8ce31be7b16c90e00217a3664decee8ce2f7216d2ffdde97a13f18a0d7
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-types@npm:^0.15.0-beta.0":
-  version: 0.15.0
-  resolution: "@amplitude/analytics-types@npm:0.15.0"
-  checksum: 496cf65224acc1c0e4be554a4ed7c5925a8ec795bdc333c92e2f8ee32b71c9d897d83141ba454f3ec81062c03d1fa4fd1fce4192094befb1c5462c719d790718
-  languageName: node
-  linkType: hard
-
-"@amplitude/analytics-types@npm:^0.16.0":
-  version: 0.16.0
-  resolution: "@amplitude/analytics-types@npm:0.16.0"
-  checksum: 046af5e2cd9ca652754cd95390f4edf51fe50ecd9e004d09456b9aef8158dc20cee890ce2209d51aad6af2e399fc46ca7c70bd9d92da15702878c74c9a122ec4
-  languageName: node
-  linkType: hard
-
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -1208,15 +1173,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/sentry@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "@netlify/sentry@npm:0.0.6"
+"@netlify/sentry@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "@netlify/sentry@npm:0.0.8"
   dependencies:
-    "@amplitude/analytics-node": "npm:1.0.3-beta.0"
-    "@netlify/integrations": "npm:^0.5.0"
-    "@sentry/serverless": "npm:^7.32.1"
-    node-fetch: "npm:^3.3.0"
-  checksum: 7ae273ac074b13b613e7197717c00344dd99302d9166c1368f608bd030a1847789a7bf3be96f64aadf12603a3ab0af80bfcef17370d961adf471940cc7f6a4a6
+    "@netlify/integrations": ^0.5.0
+    "@sentry/serverless": ^7.32.1
+    node-fetch: ^3.3.0
+  checksum: 5db6379dd366cf77d8ae708d52f1ea38e6f1ec770c36ac396cf29d9b3f537740d37f2ec7b20d5c792b6c8b815b15f30f3b065570ea3e19c848a4519f24a0d9fc
   languageName: node
   linkType: hard
 
@@ -11574,7 +11538,7 @@ __metadata:
     "@netlify/integrations": ^0.5.0
     "@netlify/plugin-nextjs": ^4.30.4
     "@netlify/plugin-sitemap": ^0.8.1
-    "@netlify/sentry": ^0.0.6
+    "@netlify/sentry": ^0.0.8
     "@next/mdx": ^13.2.3
     "@sentry/nextjs": ^7.41.0
     "@tailwindcss/typography": ^0.5.9
@@ -11914,7 +11878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.5.0":
+"tslib@npm:^2.4.0, tslib@npm:^2.5.0":
   version: 2.5.0
   resolution: "tslib@npm:2.5.0"
   checksum: ae3ed5f9ce29932d049908ebfdf21b3a003a85653a9a140d614da6b767a93ef94f460e52c3d787f0e4f383546981713f165037dc2274df212ea9f8a4541004e1
