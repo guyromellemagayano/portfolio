@@ -148,3 +148,9 @@ export interface ISocialLinksData {
   ariaLabel: string
   icon: React.FunctionComponent
 }
+
+// 404 page data
+export interface INotFoundPageData {
+  meta: ISeoMetaCommonProps
+  hero: IHeroCommonProps
+}
