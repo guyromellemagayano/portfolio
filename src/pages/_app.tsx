@@ -2,6 +2,7 @@ import Footer from '@/components/layouts/Footer'
 import Header from '@/components/layouts/Header'
 import usePrevious from '@/hooks/usePrevious'
 import '@/styles/tailwind.css'
+import { Analytics } from '@vercel/analytics/react'
 import 'focus-visible'
 import { AppProps } from 'next/app'
 
@@ -23,6 +24,8 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         </main>
         <Footer />
       </div>
+
+      <Analytics />
     </>
   )
 }
