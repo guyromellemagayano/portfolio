@@ -3,13 +3,13 @@ import { IWorkData } from '@/interfaces/data'
 const WorkData = (): IWorkData => {
   const meta = {
     title: 'Work - Guy Romelle Magayano',
-    description: 'I specialized in building websites and web applications using modern technologies.',
+    description: 'I specialize in building websites and web applications using modern technologies.',
     keywords:
       'guy romelle magayano, full stack developer, davao, philippines, frontend, backend, version control, epic design labs, multiplymii, make interactive bv, orth enterprises, outsourcing wizards, infosoft studio, miniclean business solutions, western pest control, freelance',
   }
 
   const hero = {
-    heading: 'I specialized in building websites and web applications using modern technologies.',
+    heading: 'I specialize in building websites and web applications using modern technologies.',
     description: [
       'I worked with different companies and clients from other countries. I have been working as a full-stack developer for more than five years. I have worked with different technologies and frameworks across various companies and clients from other countries.',
     ],
