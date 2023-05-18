@@ -1833,12 +1833,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/analytics@npm:^0.1.11":
-  version: 0.1.11
-  resolution: "@vercel/analytics@npm:0.1.11"
-  peerDependencies:
-    react: ^16.8||^17||^18
-  checksum: 05b8180ac6e23ebe7c09d74c43f8ee78c408cd0b6546e676389cbf4fba44dfeeae3648c9b52e2421be64fe3aeee8b026e6ea4bdfc0589fb5780670f2b090a167
+"@vercel/analytics@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@vercel/analytics@npm:1.0.1"
+  checksum: 6876e1d0868e85198d43a17ffec7266cdee5a53d5fc797d3f7e0d64e9d76a2ade3cbdcbc0a665e2ee2389f65dfc80591f7d667e9fc981cdbaa848006cbaefe19
   languageName: node
   linkType: hard
 
@@ -10140,7 +10138,7 @@ __metadata:
     "@types/testing-library__jest-dom": ^5.14.5
     "@typescript-eslint/eslint-plugin": ^5.59.2
     "@typescript-eslint/parser": ^5.59.2
-    "@vercel/analytics": ^0.1.11
+    "@vercel/analytics": ^1.0.1
     autoprefixer: ^10.4.14
     clsx: ^1.2.1
     eslint: ^8.40.0
