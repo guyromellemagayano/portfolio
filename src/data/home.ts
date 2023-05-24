@@ -2,6 +2,7 @@ import logoEpicDesignLabs from '@/images/logos/epic-design-labs.png'
 import logoInfosoftStudio from '@/images/logos/infosoft-studio.png'
 import logoMakeDevelopment from '@/images/logos/make-development.jpeg'
 import logoMultiplyMii from '@/images/logos/multiplymii.jpeg'
+import logoXTeam from '@/images/logos/x-team.png'
 import image4 from '@/images/photos/food.jpg'
 import image5 from '@/images/photos/photography.jpg'
 import image2 from '@/images/photos/speaker.jpg'
@@ -50,6 +51,13 @@ const HomeData = (): IHomeData => {
   const cvFile = '/docs/cv.pdf'
 
   const workExperiences = [
+    {
+      company: 'X-Team',
+      title: 'Senior Full Stack Developer',
+      logo: logoXTeam,
+      start: 'Apr. 2023',
+      end: 'Present',
+    },
     {
       company: 'Epic Design Labs',
       title: 'Full Stack Developer',

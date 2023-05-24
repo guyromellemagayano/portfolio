@@ -17,6 +17,13 @@ const WorkData = (): IWorkData => {
 
   const workExperiences = [
     {
+      company: 'X-Team',
+      duration: 'April 2023 - Present',
+      country: 'Melbourne, Victoria, Australia',
+      description: ['Hired as a full-time senior full stack developer to work for clients from other countries.'],
+      contributions: ['Maintained several Wordpress sites for clients from other countries.'],
+    },
+    {
       company: 'Epic Design Labs',
       duration: 'April 2020 - February 2023',
       country: 'Portland, Oregon, USA',
