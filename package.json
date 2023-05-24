@@ -29,7 +29,7 @@
     "feed": "^4.2.2",
     "focus-visible": "^5.2.0",
     "lodash": "^4.17.21",
-    "next": "13.4.1",
+    "next": "13.4.3",
     "next-sitemap": "^4.0.9",
     "postcss": "^8.4.23",
     "postcss-focus-visible": "^8.0.2",
