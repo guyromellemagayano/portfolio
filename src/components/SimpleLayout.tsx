@@ -2,7 +2,7 @@ import Container from '@/components/Container'
 import { ISimpleLayoutProps } from '@/interfaces/components'
 
 // Simple layout component
-const SimpleLayout = ({ title, intro, children }: ISimpleLayoutProps): JSX.Element => {
+const SimpleLayout = ({ title, intro, children }: ISimpleLayoutProps): React.ReactNode => {
   return (
     <Container className="mt-16 sm:mt-32">
       <header className="max-w-2xl">

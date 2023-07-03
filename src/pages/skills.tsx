@@ -5,7 +5,7 @@ import SkillsData from '@/data/skills'
 import type { NextPage } from 'next'
 
 // Skills page
-const Skills: NextPage = (): JSX.Element => {
+const Skills: NextPage = (): React.ReactNode => {
   // Destrucutre the data from the AboutData function
   const { meta, hero, skills } = SkillsData()
 

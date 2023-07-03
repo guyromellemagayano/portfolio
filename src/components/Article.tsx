@@ -3,7 +3,7 @@ import { formatDate } from '@/lib/formatDate'
 import Card from './Card'
 
 // Article component
-const Article = ({ slug, meta: { title, date, description } }: IArticleProps): JSX.Element => {
+const Article = ({ slug, meta: { title, date, description } }: IArticleProps): React.ReactNode => {
   return (
     <Card as="article">
       <Card.Title href={`/articles/${slug}`}>{title}</Card.Title>
