@@ -9,6 +9,9 @@ import { AppProps } from 'next/app'
 const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const previousPathname = usePrevious(router.pathname)
 
+  // Add the previousPathname to pageProps
+  const extendedPageProps = { ...pageProps, previousPathname }
+
   return (
     <>
       <div className="fixed inset-0 flex justify-center sm:px-8 bg-white dark:bg-zinc-900">
@@ -20,7 +23,7 @@ const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
       <div className="relative">
         <Header />
         <main>
-          <Component previousPathname={previousPathname} {...pageProps} />
+          <Component {...extendedPageProps} />
         </main>
         <Footer />
       </div>
