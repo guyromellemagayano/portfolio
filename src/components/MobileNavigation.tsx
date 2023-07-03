@@ -7,7 +7,7 @@ import CloseSvgIcon from './icons/svg/Close'
 import MobileNavItem from './MobileNavItem'
 
 // Main navigation for mobile devices
-const MobileNavigation = (rest: any): JSX.Element => {
+const MobileNavigation = (rest: any): React.ReactNode => {
   // Destructure the data from the FooterData function
   const { menu } = NavigationData()
 

@@ -5,7 +5,7 @@ import WorkData from '@/data/work'
 import { NextPage } from 'next'
 
 // Work page
-const Work: NextPage = (): JSX.Element => {
+const Work: NextPage = (): React.ReactNode => {
   // Destructure the data from the WorkData function
   const { meta, hero, workExperiences } = WorkData()
 

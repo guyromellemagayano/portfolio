@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Sun SVG icon
-const SunSvgIcon = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const SunSvgIcon = (rest: React.SVGProps<SVGSVGElement>): React.ReactNode => {
   return (
     <svg
       viewBox="0 0 24 24"

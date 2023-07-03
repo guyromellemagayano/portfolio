@@ -4,7 +4,7 @@ import ThankYouData from '@/data/thank-you'
 import type { NextPage } from 'next'
 
 // Thank you page
-const ThankYou: NextPage = (): JSX.Element => {
+const ThankYou: NextPage = (): React.ReactNode => {
   const { meta, hero } = ThankYouData()
 
   return (

@@ -6,7 +6,7 @@ import { Analytics } from '@vercel/analytics/react'
 import 'focus-visible'
 import { AppProps } from 'next/app'
 
-const App = ({ Component, pageProps, router }: AppProps): JSX.Element => {
+const App = ({ Component, pageProps, router }: AppProps): React.ReactNode => {
   const previousPathname = usePrevious(router.pathname)
 
   // Add the previousPathname to pageProps

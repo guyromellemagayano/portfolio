@@ -10,7 +10,7 @@ import Avatar from '../Avatar'
 import AvatarContainer from '../AvatarContainer'
 
 // Header component
-const Header = (): JSX.Element => {
+const Header = (): React.ReactNode => {
   const isHomePage = useRouter().pathname === '/'
 
   const headerRef = React.useRef<any | null>()

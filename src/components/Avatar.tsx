@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 // Avatar component
-const Avatar = ({ large = false, className, ...rest }: IAvatarProps & any): JSX.Element => {
+const Avatar = ({ large = false, className, ...rest }: IAvatarProps & any): React.ReactNode => {
   return (
     <Link href="/" aria-label="Home" className={clsx(className, 'pointer-events-auto')} {...rest}>
       <Image

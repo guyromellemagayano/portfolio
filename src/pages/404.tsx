@@ -4,7 +4,7 @@ import SimpleLayout from '@/components/SimpleLayout'
 import NotFoundPageData from '@/data/404'
 
 // 404 page
-const NotFoundPage = (): JSX.Element => {
+const NotFoundPage = (): React.ReactNode => {
   // Destructure the data from the NotFoundPageData function
   const { meta, hero } = NotFoundPageData()
 

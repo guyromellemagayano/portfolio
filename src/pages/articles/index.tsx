@@ -8,7 +8,7 @@ import { getAllArticles } from '@/lib/getAllArticles'
 import type { NextPage } from 'next'
 
 // Articles page
-const Articles: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
+const Articles: NextPage = ({ articles }: IArticlesProps): React.ReactNode => {
   // Destructure the data from ArticlesData function
   const { meta, hero } = ArticlesData()
 

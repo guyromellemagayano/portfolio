@@ -3,7 +3,7 @@ import { IAvatarContainerProps } from '@/interfaces/components'
 import clsx from 'clsx'
 
 // Avatar container component
-const AvatarContainer = ({ className, ...rest }: IAvatarContainerProps & any): JSX.Element => {
+const AvatarContainer = ({ className, ...rest }: IAvatarContainerProps & any): React.ReactNode => {
   return (
     <div
       className={clsx(

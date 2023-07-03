@@ -17,7 +17,7 @@ const MainButton = ({
   className,
   href,
   children,
-}: IMainButtonProps): JSX.Element => {
+}: IMainButtonProps): React.ReactNode => {
   const updatedClassName = clsx(
     className,
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none',
