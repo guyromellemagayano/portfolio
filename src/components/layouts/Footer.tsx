@@ -3,7 +3,7 @@ import NavLink from '@/components/NavLink'
 import NavigationData from '@/data/navigation'
 
 // Footer component
-const Footer = (): JSX.Element => {
+const Footer = (): React.ReactNode => {
   // Destructure the data from the FooterData function
   const { menu, copyright } = NavigationData()
 

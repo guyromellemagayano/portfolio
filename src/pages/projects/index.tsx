@@ -5,7 +5,7 @@ import ProjectsData from '@/data/projects'
 import type { NextPage } from 'next'
 
 // Projects page
-const Projects: NextPage = (): JSX.Element => {
+const Projects: NextPage = (): React.ReactNode => {
   // Desctructure the data from ProjectsData function
   const { meta, hero, projects } = ProjectsData()
 

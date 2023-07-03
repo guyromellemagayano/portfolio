@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Close SVG icon
-const CloseSvgIcon = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const CloseSvgIcon = (rest: React.SVGProps<SVGSVGElement>): React.ReactNode => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path

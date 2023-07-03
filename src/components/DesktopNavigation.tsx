@@ -3,7 +3,7 @@ import NavItem from '@/components/NavItem'
 import NavigationData from '@/data/navigation'
 
 // Main navigation for desktop devices
-const DesktopNavigation = (rest: any): JSX.Element => {
+const DesktopNavigation = (rest: any): React.ReactNode => {
   // Destructure the data from the FooterData function
   const { menu } = NavigationData()
 
