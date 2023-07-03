@@ -28,10 +28,19 @@ const Articles: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
 }
 
 export const getStaticProps = async (): Promise<object> => {
-  return {
-    props: {
-      articles: (await getAllArticles()).map(({ component, ...meta }) => meta),
-    },
+  try {
+    const allArticles = await getAllArticles()
+
+    return {
+      props: {
+        articles: allArticles.map(({ component, ...meta }) => meta),
+      },
+    }
+  } catch (error) {
+    console.error('Failed to retrieve articles:', error)
+
+    // You can return some default props in case of an error
+    return { props: { articles: [] } }
   }
 }
 
