@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Link SVG icon
-const LinkSvgIcon = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const LinkSvgIcon = (rest: React.SVGProps<SVGSVGElement>): React.ReactNode => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path

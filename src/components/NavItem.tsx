@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 // Navigation item for default (desktop) view
-const NavItem = ({ href, children }: INavItemProps): JSX.Element => {
+const NavItem = ({ href, children }: INavItemProps): React.ReactNode => {
   const isActive = useRouter().pathname === href
 
   return (

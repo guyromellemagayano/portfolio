@@ -10,7 +10,7 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 
 // About page
-const About: NextPage = (): JSX.Element => {
+const About: NextPage = (): React.ReactNode => {
   // Destrucutre the data from the AboutData function
   const { meta, hero } = AboutData()
 

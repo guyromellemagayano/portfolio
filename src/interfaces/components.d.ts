@@ -5,7 +5,7 @@ import { ISkillsListItemsData } from './data'
 
 // Children component props
 export interface IChildrenProps {
-  children?: JSX.Element | JSX.Element[] | React.ReactNode | React.ReactNode[] | string
+  children?: React.ReactNode | React.ReactNode[] | string
 }
 
 // Container component props

@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Moon SVG icon
-const MoonSvgIcon = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const MoonSvgIcon = (rest: React.SVGProps<SVGSVGElement>): React.ReactNode => {
   return (
     <svg
       viewBox="0 0 24 24"

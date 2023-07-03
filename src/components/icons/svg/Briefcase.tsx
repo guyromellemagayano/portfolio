@@ -1,7 +1,7 @@
 import React from 'react'
 
 // Briefcase SVG icon
-const BriefcaseSvgIcon = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const BriefcaseSvgIcon = (rest: React.SVGProps<SVGSVGElement>): React.ReactNode => {
   return (
     <svg
       viewBox="0 0 24 24"
