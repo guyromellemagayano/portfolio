@@ -9,7 +9,7 @@ type DivRef = HTMLDivElement
 const OuterContainer = React.forwardRef<DivRef, IContainerProps & any>(function OuterContainer(
   { className, children, ...rest },
   ref
-): JSX.Element {
+): React.ReactNode {
   return (
     <div ref={ref} className={clsx(className, 'sm:px-8')} {...rest}>
       <div className="mx-auto max-w-7xl lg:px-8">{children}</div>
@@ -21,7 +21,7 @@ const OuterContainer = React.forwardRef<DivRef, IContainerProps & any>(function 
 const InnerContainer = React.forwardRef<DivRef, IContainerProps & any>(function InnerContainer(
   { className, children, ...rest },
   ref
-): JSX.Element {
+): React.ReactNode {
   return (
     <div ref={ref} className={clsx(className, 'relative px-4 sm:px-8 lg:px-12')} {...rest}>
       <div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</div>
@@ -33,7 +33,7 @@ const InnerContainer = React.forwardRef<DivRef, IContainerProps & any>(function 
 const ContainerWithRef = React.forwardRef<DivRef, IContainerProps & any>(function ContainerWithRef(
   { children, ...rest },
   ref
-): JSX.Element {
+): React.ReactNode {
   return (
     <OuterContainer ref={ref} {...rest}>
       <InnerContainer>{children}</InnerContainer>

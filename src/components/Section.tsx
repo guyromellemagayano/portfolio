@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import React from 'react'
 
 // Section component
-const Section = ({ title, decorate, children }: ISectionProps): JSX.Element => {
+const Section = ({ title, decorate, children }: ISectionProps): React.ReactNode => {
   const id = React.useId()
 
   return (

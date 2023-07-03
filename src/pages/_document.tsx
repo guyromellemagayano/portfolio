@@ -37,7 +37,7 @@ const modeScript = `
   }
 `
 
-const Document = (): JSX.Element => {
+const Document = (): React.ReactNode => {
   return (
     <Html className="h-full antialiased" lang="en">
       <Head>

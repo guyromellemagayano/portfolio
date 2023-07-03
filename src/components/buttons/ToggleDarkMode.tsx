@@ -2,7 +2,7 @@ import MoonSvgIcon from '../icons/svg/Moon'
 import SunSvgIcon from '../icons/svg/Sun'
 
 // Button for toggling the dark and light modes
-const ToggleDarkMode = (): JSX.Element => {
+const ToggleDarkMode = (): React.ReactNode => {
   // Disable transitions temporarily to prevent the dark mode toggle from
   const disableTransitionsTemporarily = (): void => {
     document.documentElement.classList.add('[&_*]:!transition-none')

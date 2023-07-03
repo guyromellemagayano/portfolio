@@ -12,12 +12,12 @@ import Link from 'next/link'
 import ChevronRightSvgIcon from './icons/svg/ChevronRight'
 
 // Card component
-const Card = ({ as: Component = 'div', className, children }: ICardProps & ICardCommonProps): JSX.Element => {
+const Card = ({ as: Component = 'div', className, children }: ICardProps & ICardCommonProps): React.ReactNode => {
   return <Component className={clsx(className, 'group relative flex flex-col items-start')}>{children}</Component>
 }
 
 // Card link component
-Card.Link = function CardLink({ children, ...rest }: ICardLinkProps & ICardCommonProps & any): JSX.Element {
+Card.Link = function CardLink({ children, ...rest }: ICardLinkProps & ICardCommonProps & any): React.ReactNode {
   return (
     <>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
@@ -36,7 +36,7 @@ Card.Title = function CardTitle({
   children,
   title,
   className,
-}: ICardTitleProps & ICardCommonProps): JSX.Element {
+}: ICardTitleProps & ICardCommonProps): React.ReactNode {
   return (
     <Component className={clsx(className, 'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100')}>
       {href ? (
@@ -51,12 +51,12 @@ Card.Title = function CardTitle({
 }
 
 // Card description component
-Card.Description = function CardDescription({ children, className }: ICardCommonProps): JSX.Element {
+Card.Description = function CardDescription({ children, className }: ICardCommonProps): React.ReactNode {
   return <p className={clsx(className, 'relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400')}>{children}</p>
 }
 
 // Card CTA component
-Card.Cta = function CardCta({ title, children, href = '#' }: ICardCtaProps & ICardCommonProps): JSX.Element {
+Card.Cta = function CardCta({ title, children, href = '#' }: ICardCtaProps & ICardCommonProps): React.ReactNode {
   return (
     <div aria-hidden="true" className="relative z-10 mt-2 text-sm font-medium flex items-start text-amber-500">
       <Link
@@ -78,7 +78,7 @@ Card.Eyebrow = function CardEyebrow({
   className,
   children,
   ...rest
-}: ICardEyebrowProps & ICardCommonProps & any): JSX.Element {
+}: ICardEyebrowProps & ICardCommonProps & any): React.ReactNode {
   return (
     <Component
       className={clsx(className, 'relative z-10 my-1 flex items-center text-sm font-medium', decorate && 'pl-3')}
