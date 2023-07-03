@@ -14,7 +14,7 @@ import { getAllArticles } from '@/lib/getAllArticles'
 import type { NextPage } from 'next'
 
 // Home page
-const Home: NextPage = ({ articles }: IArticlesProps): JSX.Element => {
+const Home: NextPage = ({ articles }: IArticlesProps): React.ReactNode => {
   // Destructure the data from the HomeData function
   const { meta, hero, slidePhotos, cvFile, workExperiences } = HomeData()
 

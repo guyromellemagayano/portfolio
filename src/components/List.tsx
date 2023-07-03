@@ -14,7 +14,7 @@ import LinkSvgIcon from './icons/svg/Link'
 import Section from './Section'
 
 // Skills list component
-export const SkillsList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
+export const SkillsList = ({ children, ...rest }: IChildrenProps & any): React.ReactNode => {
   return (
     <Section {...rest}>
       <div className="space-y-16">{children}</div>
@@ -23,7 +23,7 @@ export const SkillsList = ({ children, ...rest }: IChildrenProps & any): JSX.Ele
 }
 
 // Skills list card component
-export const SkillsListCards = ({ title, description, technologies, cta }: ISkillsListCardsProps): JSX.Element => {
+export const SkillsListCards = ({ title, description, technologies, cta }: ISkillsListCardsProps): React.ReactNode => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={title}>
@@ -78,7 +78,7 @@ export const SkillsListCards = ({ title, description, technologies, cta }: ISkil
 }
 
 // Tools list component
-export const ToolsList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
+export const ToolsList = ({ children, ...rest }: IChildrenProps & any): React.ReactNode => {
   return (
     <Section {...rest}>
       <ul className="space-y-16">{children}</ul>
@@ -87,7 +87,7 @@ export const ToolsList = ({ children, ...rest }: IChildrenProps & any): JSX.Elem
 }
 
 // Tools list card component
-export const ToolsListCards = ({ title, description }: IUsesToolsItemsData): JSX.Element => {
+export const ToolsListCards = ({ title, description }: IUsesToolsItemsData): React.ReactNode => {
   return (
     <Card as="li">
       <Card.Title as="h3">{title}</Card.Title>
@@ -97,7 +97,7 @@ export const ToolsListCards = ({ title, description }: IUsesToolsItemsData): JSX
 }
 
 // Articles list component
-export const ArticlesList = ({ children }: IChildrenProps): JSX.Element => {
+export const ArticlesList = ({ children }: IChildrenProps): React.ReactNode => {
   return (
     <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
       <div className="flex max-w-3xl flex-col space-y-16">{children}</div>
@@ -106,7 +106,10 @@ export const ArticlesList = ({ children }: IChildrenProps): JSX.Element => {
 }
 
 // Articles list cards component
-export const ArticlesListCards = ({ slug, meta: { title, date, description } }: IArticleListCardProps): JSX.Element => {
+export const ArticlesListCards = ({
+  slug,
+  meta: { title, date, description },
+}: IArticleListCardProps): React.ReactNode => {
   return (
     <article className="md:grid md:grid-cols-4 md:items-baseline">
       <Card.Eyebrow as="time" dateTime={date} className="mt-1 hidden md:block text-zinc-400 dark:text-zinc-500">
@@ -123,12 +126,12 @@ export const ArticlesListCards = ({ slug, meta: { title, date, description } }: 
 }
 
 // Projects list component
-export const ProjectsList = ({ children }: IChildrenProps): JSX.Element => {
+export const ProjectsList = ({ children }: IChildrenProps): React.ReactNode => {
   return <ul className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">{children}</ul>
 }
 
 // Projects list cards component
-export const ProjectsListCards = ({ project }: IProjectListCardProps): JSX.Element => {
+export const ProjectsListCards = ({ project }: IProjectListCardProps): React.ReactNode => {
   return (
     !isEmpty(project?.name) &&
     !isEmpty(project?.link?.url) && (
@@ -157,7 +160,7 @@ export const ProjectsListCards = ({ project }: IProjectListCardProps): JSX.Eleme
 }
 
 // Work list component
-export const WorkList = ({ children, ...rest }: IChildrenProps & any): JSX.Element => {
+export const WorkList = ({ children, ...rest }: IChildrenProps & any): React.ReactNode => {
   return (
     <Section {...rest}>
       <div className="space-y-16">{children}</div>
@@ -166,7 +169,7 @@ export const WorkList = ({ children, ...rest }: IChildrenProps & any): JSX.Eleme
 }
 
 // Work list card component
-export const WorkListCards = ({ company, country, description, contributions }: IWorkListData): JSX.Element => {
+export const WorkListCards = ({ company, country, description, contributions }: IWorkListData): React.ReactNode => {
   return (
     <Card as="article">
       {!isEmpty(company) && !isEmpty(country) && (
