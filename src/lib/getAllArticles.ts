@@ -16,14 +16,18 @@ const importArticle = async (
   }
   component: any
 }> => {
-  const { meta, default: component } = await import(`../pages/articles/${articleFilename}`)
+  const { meta = {}, default: component } = await import(`../pages/articles/${articleFilename}`)
+
+  // Provide default values for missing meta
+  const { author = '', date = '', slug = '', description = '', title = '' } = meta;
 
   return {
     slug: articleFilename.replace(/(\/index)?\.mdx$/, ''),
-    meta,
+    meta: { author, date, slug, description, title },
     component,
   }
 }
+
 
 // This function is used to import all articles
 export const getAllArticles = async (): Promise<any[]> => {
