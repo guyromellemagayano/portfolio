@@ -50,26 +50,6 @@ const ProjectsData = (): IProjectsData => {
       tech: ['GatsbyJS', 'NodeJS', 'JavaScript', 'GraphQL', 'BigCommerce API'],
       logo: logoNpm,
     },
-    {
-      name: 'Optimizely for Gatsby',
-      description: 'This unofficial source plugin makes Optimizely API data available in GatsbyJS sites.',
-      link: {
-        url: 'https://www.npmjs.com/package/gatsby-source-optimizely',
-        text: 'npmjs.com',
-      },
-      tech: ['GatsbyJS', 'NodeJS', 'JavaScript', 'GraphQL', 'Optimizely API'],
-      logo: logoNpm,
-    },
-    {
-      name: 'Bigcommerce for NodeJS',
-      description: 'A revised version of the original node module for authentication and use with the BigCommerce API',
-      link: {
-        url: 'https://github.com/guyromellemagayano/node-bigcommerce-v2',
-        text: 'github.com',
-      },
-      tech: ['NodeJS', 'JavaScript', 'BigCommerce API'],
-      logo: logoGithub,
-    },
   ]
 
   return { meta, hero, projects }
