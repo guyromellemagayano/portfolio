@@ -958,9 +958,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/mdx@npm:^13.4.8":
-  version: 13.4.8
-  resolution: "@next/mdx@npm:13.4.8"
+"@next/mdx@npm:^13.4.12":
+  version: 13.4.12
+  resolution: "@next/mdx@npm:13.4.12"
   dependencies:
     source-map: ^0.7.0
   peerDependencies:
@@ -971,7 +971,7 @@ __metadata:
       optional: true
     "@mdx-js/react":
       optional: true
-  checksum: 6dc8c76d4a259d3acfa3890157fccff51293a74289a63a30ba9e1b7f6c5b243bfcb775c138df8104307f75637cba5cd9e325db438a2c24014d8c71a4dcc99bfb
+  checksum: 8295fd249c60618a8ec7f56bdac9ccd32d9ca93cacadf6aac45828c14b711da718168240c1e86753a1c9ffc805a5485916053b7a0c3525447b0d646e456e7dab
   languageName: node
   linkType: hard
 
@@ -10414,7 +10414,7 @@ __metadata:
     "@mapbox/rehype-prism": ^0.8.0
     "@mdx-js/loader": ^2.3.0
     "@mdx-js/react": ^2.3.0
-    "@next/mdx": ^13.4.8
+    "@next/mdx": ^13.4.12
     "@sentry/nextjs": ^7.57.0
     "@tailwindcss/typography": ^0.5.9
     "@testing-library/jest-dom": ^5.16.5
