@@ -13,7 +13,7 @@ import ChevronRightSvgIcon from './icons/svg/ChevronRight'
 
 // Card component
 const Card = ({ as: Component = 'div', className, children }: ICardProps & ICardCommonProps): React.ReactNode => {
-  return <Component className={clsx(className, 'group relative flex flex-col items-start')}>{children}</Component>
+  return <Component className={clsx('group relative flex flex-col items-start', className)}>{children}</Component>
 }
 
 // Card link component
@@ -38,7 +38,7 @@ Card.Title = function CardTitle({
   className,
 }: ICardTitleProps & ICardCommonProps): React.ReactNode {
   return (
-    <Component className={clsx(className, 'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100')}>
+    <Component className={clsx('text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100', className)}>
       {href ? (
         <Card.Link href={href} title={title}>
           {children}
@@ -52,7 +52,7 @@ Card.Title = function CardTitle({
 
 // Card description component
 Card.Description = function CardDescription({ children, className }: ICardCommonProps): React.ReactNode {
-  return <p className={clsx(className, 'relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400')}>{children}</p>
+  return <p className={clsx('relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400', className)}>{children}</p>
 }
 
 // Card CTA component
@@ -81,7 +81,7 @@ Card.Eyebrow = function CardEyebrow({
 }: ICardEyebrowProps & ICardCommonProps & any): React.ReactNode {
   return (
     <Component
-      className={clsx(className, 'relative z-10 my-1 flex items-center text-sm font-medium', decorate && 'pl-3')}
+      className={clsx('relative z-10 my-1 flex items-center text-sm font-medium', className, decorate && 'pl-3')}
       {...rest}
     >
       {decorate && (

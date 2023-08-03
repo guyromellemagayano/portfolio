@@ -29,7 +29,7 @@ const Resume = ({ data }: IResumeProps): React.ReactNode => {
               <dd className="text-xs text-zinc-500 dark:text-zinc-400">{role.title}</dd>
               <dt className="sr-only">Date</dt>
               <dd
-                className="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
+                className="block w-full text-xs text-zinc-400 dark:text-zinc-500"
                 aria-label={`${role.start} until ${role.end}`}
               >
                 <time dateTime={role.start}>{role.start}</time> <span aria-hidden="true">—</span>{' '}

@@ -1,6 +1,5 @@
 import logoDjango from '@/images/logos/django.png'
 // import logoGithub from '@/images/logos/github.png'
-import logoNpm from '@/images/logos/npm.png'
 import logoWordpress from '@/images/logos/wordpress.png'
 import { IProjectsData } from '@/interfaces/data'
 
@@ -39,16 +38,6 @@ const ProjectsData = (): IProjectsData => {
       },
       tech: ['WordPress', 'PHP', 'Timber', 'MySQL', 'Gulp', 'jQuery', 'Bootstrap'],
       logo: logoWordpress,
-    },
-    {
-      name: 'Bigcommerce for Gatsby (v2)',
-      description: 'This unofficial source plugin makes BigCommerce API data available in GatsbyJS sites',
-      link: {
-        url: 'https://www.npmjs.com/package/gatsby-source-bigcommerce-v2',
-        text: 'npmjs.com',
-      },
-      tech: ['GatsbyJS', 'NodeJS', 'JavaScript', 'GraphQL', 'BigCommerce API'],
-      logo: logoNpm,
     },
   ]
 
