@@ -1,5 +1,5 @@
 import logoDjango from '@/images/logos/django.png'
-import logoGithub from '@/images/logos/github.png'
+// import logoGithub from '@/images/logos/github.png'
 import logoNpm from '@/images/logos/npm.png'
 import logoWordpress from '@/images/logos/wordpress.png'
 import { IProjectsData } from '@/interfaces/data'
