@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 // Prose component
 const Prose = ({ children, className }: IProseProps): React.ReactNode => {
-  return <div className={clsx(className, 'prose dark:prose-invert')}>{children}</div>
+  return <div className={clsx('prose dark:prose-invert', className)}>{children}</div>
 }
 
 export default Prose

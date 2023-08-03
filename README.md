@@ -1,5 +1,5 @@
 <h1 align="left">Hi 👋, I'm Guy Romelle Magayano</h1>
-<h3 align="left">A full-stack developer currently living in the Davao City, Davao Del Sur, Philippines.</h3>
+<h3 align="left">A full-stack engineer currently living in the Davao City, Davao Del Sur, Philippines.</h3>
 
 <br/>
 
