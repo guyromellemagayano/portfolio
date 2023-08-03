@@ -8,7 +8,7 @@ import Link from 'next/link'
 // Avatar component
 const Avatar = ({ large = false, className, ...rest }: IAvatarProps & any): React.ReactNode => {
   return (
-    <Link href="/" aria-label="Home" className={clsx(className, 'pointer-events-auto')} {...rest}>
+    <Link href="/" aria-label="Home" className={clsx('pointer-events-auto', className)} {...rest}>
       <Image
         src={avatarImage}
         alt=""

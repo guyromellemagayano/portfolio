@@ -132,8 +132,8 @@ export interface IWorkListData {
   company?: string
   duration: string
   country?: string
-  description: string[]
   contributions: string[]
+  skills: string[]
 }
 
 // Technologies data

@@ -2,9 +2,9 @@
 import NavigationData from '@/data/navigation'
 import { Popover, Transition } from '@headlessui/react'
 import React from 'react'
+import MobileNavItem from './MobileNavItem'
 import ChevronDownSvgIcon from './icons/svg/ChevronDown'
 import CloseSvgIcon from './icons/svg/Close'
-import MobileNavItem from './MobileNavItem'
 
 // Main navigation for mobile devices
 const MobileNavigation = (rest: any): React.ReactNode => {
@@ -12,7 +12,7 @@ const MobileNavigation = (rest: any): React.ReactNode => {
   const { menu } = NavigationData()
 
   // Page filter
-  const pageFilter = ['Skills', 'Work', 'Projects', 'About']
+  const pageFilter = ['Work', 'Projects', 'About']
 
   return (
     <Popover {...rest}>
