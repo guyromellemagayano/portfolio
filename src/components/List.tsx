@@ -10,8 +10,8 @@ import { isEmpty } from '@/lib/checkTypes'
 import { formatDate } from '@/lib/formatDate'
 import Image from 'next/image'
 import Card from './Card'
-import LinkSvgIcon from './icons/svg/Link'
 import Section from './Section'
+import LinkSvgIcon from './icons/svg/Link'
 
 // Skills list component
 export const SkillsList = ({ children, ...rest }: IChildrenProps & any): React.ReactNode => {
@@ -169,7 +169,7 @@ export const WorkList = ({ children, ...rest }: IChildrenProps & any): React.Rea
 }
 
 // Work list card component
-export const WorkListCards = ({ company, country, description, contributions }: IWorkListData): React.ReactNode => {
+export const WorkListCards = ({ company, country, contributions, skills }: IWorkListData): React.ReactNode => {
   return (
     <Card as="article">
       {!isEmpty(company) && !isEmpty(country) && (
@@ -179,15 +179,23 @@ export const WorkListCards = ({ company, country, description, contributions }: 
         </Card.Title>
       )}
 
-      {!isEmpty(description) && description.map((text) => <Card.Description key={text}>{text}</Card.Description>)}
-
       {!isEmpty(contributions) && (
-        <div className="flex flex-row items-start gap-x-6 mt-4 mb-2">
-          <Card.Eyebrow as="h4" className="text-teal-400 dark:text-teal-500 text-base">
-            Contributions
-          </Card.Eyebrow>
+        <div className="flex flex-row items-start my-2">
           <Card.Eyebrow as="ul" className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500">
             {contributions.map((item: string) => (
+              <li key={item}>{item}</li>
+            ))}
+          </Card.Eyebrow>
+        </div>
+      )}
+
+      {!isEmpty(skills) && (
+        <div className="flex flex-row items-start gap-x-6 mt-4 mb-2">
+          <Card.Eyebrow as="h4" className="text-rose-400 dark:text-rose-500 text-base">
+            Skills
+          </Card.Eyebrow>
+          <Card.Eyebrow as="ul" className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500">
+            {skills.map((item: string) => (
               <li key={item}>{item}</li>
             ))}
           </Card.Eyebrow>

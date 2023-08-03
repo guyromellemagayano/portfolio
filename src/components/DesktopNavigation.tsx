@@ -8,7 +8,7 @@ const DesktopNavigation = (rest: any): React.ReactNode => {
   const { menu } = NavigationData()
 
   // Page filter
-  const pageFilter = ['Skills', 'Work', 'Projects', 'About']
+  const pageFilter = ['Work', 'Projects', 'About']
 
   return (
     <nav {...rest}>
