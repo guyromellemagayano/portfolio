@@ -6,7 +6,9 @@
   ],
   "settings": {
     "autoimport.doubleQuotes": true,
-    "auto-rename-tag.activationOnLanguage": ["*"],
+    "auto-rename-tag.activationOnLanguage": [
+      "*"
+    ],
     "css.validate": true,
     "editor.autoClosingQuotes": "always",
     "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
@@ -17,7 +19,7 @@
     "editor.linkedEditing": true,
     "editor.snippetSuggestions": "top",
     "editor.wordWrap": "on",
-    "editor.wordWrapColumn": 120,
+    "editor.wordWrapColumn": 80,
     "editor.tabCompletion": "on",
     "editor.codeActionsOnSave": {
       "source.fixAll": true,
@@ -68,6 +70,18 @@
       "editor.tabCompletion": "on"
     },
     "[javascript]": {
+      "editor.detectIndentation": true,
+      "editor.insertSpaces": true,
+      "editor.tabSize": 4,
+      "editor.tabCompletion": "on"
+    },
+    "[typescriptreact]": {
+      "editor.detectIndentation": true,
+      "editor.insertSpaces": true,
+      "editor.tabSize": 4,
+      "editor.tabCompletion": "on"
+    },
+    "[typescript]": {
       "editor.detectIndentation": true,
       "editor.insertSpaces": true,
       "editor.tabSize": 4,
