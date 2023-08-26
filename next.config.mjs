@@ -1,30 +1,31 @@
-import rehypePrism from "@mapbox/rehype-prism";
-import nextMDX from "@next/mdx";
-import { withSentryConfig } from "@sentry/nextjs";
-import remarkGfm from "remark-gfm";
+import rehypePrism from '@mapbox/rehype-prism'
+import nextMDX from '@next/mdx'
+import { withSentryConfig } from '@sentry/nextjs'
+import remarkGfm from 'remark-gfm'
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	pageExtensions: ["js", "jsx", "ts", "tsx", "mdx"],
-	reactStrictMode: true,
-	experimental: {
-		scrollRestoration: true
-	},
-	sentry: {
-		hideSourceMaps: true
-	}
-};
+    pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+    reactStrictMode: true,
+    experimental: {
+        scrollRestoration: true,
+    },
+    sentry: {
+        hideSourceMaps: true,
+    },
+}
 
 const withMDX = nextMDX({
-	extension: /\.mdx?$/,
-	options: {
-		remarkPlugins: [remarkGfm],
-		rehypePlugins: [rehypePrism]
-	}
-});
+    extension: /\.mdx?$/,
+    options: {
+        remarkPlugins: [remarkGfm],
+        rehypePlugins: [rehypePrism],
+    },
+})
 
 const sentryWebpackPluginOptions = {
-	silent: true
-};
+    authToken: process.env.SENTRY_AUTH_TOKEN,
+    silent: true,
+}
 
-export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions);
+export default withSentryConfig(withMDX(nextConfig), sentryWebpackPluginOptions)
