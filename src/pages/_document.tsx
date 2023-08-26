@@ -38,34 +38,44 @@ const modeScript = `
 `
 
 const Document = (): React.ReactNode => {
-  return (
-    <Html className="h-full antialiased" lang="en">
-      <Head>
-        <script dangerouslySetInnerHTML={{ __html: modeScript }} />
-        <link rel="alternate" type="application/rss+xml" href={`${process.env.NEXT_PUBLIC_SITE_URL}/rss/feed.xml`} />
-        <link rel="alternate" type="application/feed+json" href={`${process.env.NEXT_PUBLIC_SITE_URL}/rss/feed.json`} />
+    const gtmSrc = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`
 
-        <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-FBL98FXS6D" />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
+    return (
+        <Html className="h-full antialiased" lang="en">
+            <Head>
+                <script dangerouslySetInnerHTML={{ __html: modeScript }} />
+                <link
+                    rel="alternate"
+                    type="application/rss+xml"
+                    href={`${process.env.NEXT_PUBLIC_SITE_URL}/rss/feed.xml`}
+                />
+                <link
+                    rel="alternate"
+                    type="application/feed+json"
+                    href={`${process.env.NEXT_PUBLIC_SITE_URL}/rss/feed.json`}
+                />
+
+                <Script strategy="afterInteractive" src={gtmSrc} />
+                <Script
+                    id="google-analytics"
+                    strategy="afterInteractive"
+                    dangerouslySetInnerHTML={{
+                        __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-FBL98FXS6D');
+              gtag('config', ${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID});
             `,
-          }}
-        />
-      </Head>
+                    }}
+                />
+            </Head>
 
-      <body className="flex h-full flex-col bg-zinc-50 dark:bg-black">
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  )
+            <body className="flex h-full flex-col bg-zinc-50 dark:bg-black">
+                <Main />
+                <NextScript />
+            </body>
+        </Html>
+    )
 }
 
 export default Document
