@@ -10,9 +10,6 @@
     "serve:portfolio": "nx serve portfolio --watch"
   },
   "dependencies": {
-    "@contentful/live-preview": "^2.11.13",
-    "@contentful/rich-text-react-renderer": "^15.19.0",
-    "@contentful/rich-text-types": "^16.3.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.17",
@@ -21,9 +18,6 @@
     "@mapbox/rehype-prism": "^0.9.0",
     "@mdx-js/loader": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
-    "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.17",
-    "@mui/styles": "^5.14.17",
     "@next/bundle-analyzer": "^14.0.2",
     "@next/mdx": "^14.0.2",
     "@nx/next": "17.1.2",
@@ -77,12 +71,6 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.1",
     "@commitlint/config-conventional": "^18.4.0",
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/introspection": "4.0.0",
-    "@graphql-codegen/near-operation-file-preset": "^3.0.0",
-    "@graphql-codegen/typescript": "4.0.1",
-    "@graphql-codegen/typescript-operations": "4.0.1",
-    "@graphql-codegen/typescript-react-query": "^6.0.0",
     "@nrwl/nx-cloud": "^16.5.2",
     "@nx/cypress": "17.1.2",
     "@nx/eslint": "17.1.2",
@@ -119,7 +107,6 @@
     "babel-plugin-styled-components": "2.1.4",
     "circular-dependency-plugin": "^5.2.2",
     "commitizen": "^4.3.0",
-    "contentful-import": "^9.4.10",
     "cypress": "^13.5.0",
     "eslint": "~8.53.0",
     "eslint-config-next": "14.0.2",
@@ -152,7 +139,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "git-cz"
+      "path": "./node_modules/git-cz"
     }
   },
   "husky": {
@@ -165,8 +152,7 @@
   "lint-staged": {
     "**/*.{js,ts,tsx,json,mdx,md}": [
       "prettier --write --ignore-path .gitignore .",
-      "eslint --fix --color --ignore-path .gitignore .",
-      "git add ."
+      "eslint --fix --color --ignore-path .gitignore ."
     ]
   },
   "packageManager": "yarn@4.0.1"
