@@ -71,7 +71,6 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.1",
     "@commitlint/config-conventional": "^18.4.0",
-    "@nrwl/nx-cloud": "^16.5.2",
     "@nx/cypress": "17.1.2",
     "@nx/eslint": "17.1.2",
     "@nx/eslint-plugin": "17.1.2",
@@ -145,15 +144,14 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged --allow-empty",
-      "prepare-commit-msg": "exec < /dev/tty && git cz -e --hook || true",
+      "prepare-commit-msg": "exec < /dev/tty && git-cz -e --hook || true",
       "commit": "git-cz -e",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
     "**/*.{js,ts,tsx,json,mdx,md}": [
-      "prettier --write .",
-      "eslint --fix --color ."
+      "yarn lint"
     ]
   },
   "packageManager": "yarn@4.0.1"
