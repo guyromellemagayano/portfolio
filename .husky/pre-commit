@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+prettier --write --ignore-path ../.gitignore .
+eslint --quiet --fix --color --ignore-path ../.gitignore .
+git add .
