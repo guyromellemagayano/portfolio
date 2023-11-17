@@ -180,11 +180,8 @@ libpeerconnection.log
 testem.log
 typings/
 
-# System Files
+# System files
 Thumbs.db
 
 # NX
 .nx/cache
-
-# WordPress
-apps/**/server/
