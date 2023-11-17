@@ -30,6 +30,9 @@
     "typeRoots": ["./node_modules/@types"],
     "types": ["node", "jest", "next"]
   },
+  "ts-node": {
+    "swc": true
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
