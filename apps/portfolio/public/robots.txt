@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.guyromellemagayano.dev
+
+# Sitemaps
+Sitemap: https://www.guyromellemagayano.dev/sitemap.xml
