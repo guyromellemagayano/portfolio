@@ -1,0 +1,43 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@components/*": ["./components/*"],
+      "@data/*": ["./data/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@images/*": ["./images/*"],
+      "@lib/*": ["./lib/*"],
+      "@styles/*": ["./styles/*"],
+      "@utils/*": ["./utils/*"],
+      "types/*": ["./types/*"]
+    },
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": [
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.js",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "../../apps/portfolio/.next/types/**/*.ts",
+    "../../dist/apps/portfolio/.next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "server",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "jest.config.ts"
+  ]
+}
