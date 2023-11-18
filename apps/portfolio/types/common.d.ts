@@ -1,4 +1,5 @@
 import { TSkillsData } from '@data/skills'
+import { TUsesData } from '@data/uses'
 import { TWorkData } from '@data/work'
 
 import { THeroCommonProps, TSeoMetaCommonProps } from './common'
@@ -35,5 +36,6 @@ export type TBaseCommonAppComponentProps<T = object> = T & {
   projects?: TProjectProps[]
   hero?: THeroCommonProps
   skills?: TSkillsData['skills']
+  tools?: TUsesData['tools']
   workExperiences?: TWorkData['workExperiences']
 }
