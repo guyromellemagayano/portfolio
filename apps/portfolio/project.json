@@ -9,7 +9,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/portfolio"
+        "outputPath": "dist/apps/portfolio",
+        "postcssConfig": "apps/portfolio/postcss.config.js"
       },
       "configurations": {
         "development": {
@@ -60,7 +61,8 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/portfolio/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["apps/portfolio/**/*.{ts,tsx,js,jsx}"],
+        "fix": true
       }
     }
   },
