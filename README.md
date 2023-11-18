@@ -13,7 +13,7 @@
 
 - 💬 Ask me about **React, Typescript, Javascript, WordPress**
 
-- 📫 How to reach me **aspiredtechie2010@gmail.com**
+- 📫 How to reach me **<aspiredtechie2010@gmail.com>**
 
 - 📄 Know about my experiences [https://guyromellemagayano.dev](https://guyromellemagayano.dev)
 
