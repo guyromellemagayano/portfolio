@@ -22,7 +22,7 @@
       "strings": "on"
     },
     "editor.codeActionsOnSave": {
-      "source.organizeImports": false,
+      "source.organizeImports": true,
       "source.fixAll.eslint": true
     },
     "search.exclude": {
