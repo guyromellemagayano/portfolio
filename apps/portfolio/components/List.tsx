@@ -117,9 +117,13 @@ export function SkillsListCards({
  * @param {React.ReactNode} children - The child elements to be rendered.
  * @returns {JSX.Element} The rendered component.
  */
-export function ToolsList({ children, ...rest }: TToolsListProps): JSX.Element {
+export function ToolsList({
+  children,
+  title,
+  ...rest
+}: TToolsListProps): JSX.Element {
   return (
-    <Section {...rest}>
+    <Section title={title} {...rest}>
       <ul className="space-y-16">{children}</ul>
     </Section>
   )
