@@ -51,5 +51,10 @@
       }
     }
   },
-  "nxCloudAccessToken": "OTQ1ZDYxZWEtZjU0Zi00OTkxLTk4NjktMjIzMGU2YzI3OGU2fHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "OTQ1ZDYxZWEtZjU0Zi00OTkxLTk4NjktMjIzMGU2YzI3OGU2fHJlYWQtd3JpdGU=",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@vercel/remote-nx"
+    }
+  }
 }
