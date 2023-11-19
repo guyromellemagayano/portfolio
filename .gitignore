@@ -185,3 +185,4 @@ Thumbs.db
 
 # NX
 .nx/cache
+apps/*-server/
