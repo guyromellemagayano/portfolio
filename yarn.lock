@@ -2034,6 +2034,7 @@ __metadata:
     "@types/webpack-env": "npm:^1.18.4"
     "@typescript-eslint/eslint-plugin": "npm:^6.11.0"
     "@typescript-eslint/parser": "npm:^6.11.0"
+    "@vercel/analytics": "npm:^1.1.1"
     "@vercel/remote-nx": "npm:^1.1.1"
     autoprefixer: "npm:^10.4.16"
     axios: "npm:^1.6.2"
@@ -4711,6 +4712,15 @@ __metadata:
   version: 1.2.0
   resolution: "@ungap/structured-clone@npm:1.2.0"
   checksum: 8209c937cb39119f44eb63cf90c0b73e7c754209a6411c707be08e50e29ee81356dca1a848a405c8bdeebfe2f5e4f831ad310ae1689eeef65e7445c090c6657d
+  languageName: node
+  linkType: hard
+
+"@vercel/analytics@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@vercel/analytics@npm:1.1.1"
+  dependencies:
+    server-only: "npm:^0.0.1"
+  checksum: 218f94620b6dd0349960caf170c7c86872d67b0ef90ac127cd6e6a8f018c9118fbf21a3adf9314ca93d72c1599b8b77ac0e4cb8390ac33aa5fec555d749b3308
   languageName: node
   linkType: hard
 

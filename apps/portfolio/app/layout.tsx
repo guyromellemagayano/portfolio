@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
-
-import 'focus-visible'
 import { FooterLayout, HeaderLayout } from '@components/layouts'
+import { Analytics } from '@vercel/analytics/react'
+import 'focus-visible'
 import Script from 'next/script'
 
 import '@styles/tailwind.css'
@@ -35,7 +35,10 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
             <div className="flex w-full">
               <div className="relative flex w-full flex-col">
                 <HeaderLayout />
-                <main className="flex-auto">{children}</main>
+                <main className="flex-auto">
+                  {children}
+                  <Analytics />
+                </main>
                 <FooterLayout />
               </div>
             </div>
