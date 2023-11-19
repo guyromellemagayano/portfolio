@@ -1,7 +1,10 @@
-import ArticlesData from '@/data/articles'
-import { Feed } from 'feed'
 import { mkdir, writeFile } from 'fs/promises'
+
+import { Feed } from 'feed'
 import ReactDOMServer from 'react-dom/server'
+
+import ArticlesData from '@/data/articles'
+
 import { getAllArticles } from './getAllArticles'
 
 // This function is used to generate the RSS feed
@@ -12,7 +15,7 @@ export const generateRssFeed = async (): Promise<void> => {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   const author = {
     name: process.env.NEXT_PUBLIC_SITE_AUTHOR_NAME,
-    email: process.env.NEXT_PUBLIC_SITE_AUTHOR_EMAIL,
+    email: process.env.NEXT_PUBLIC_SITE_AUTHOR_EMAIL
   }
 
   const feed = new Feed({
@@ -26,13 +29,15 @@ export const generateRssFeed = async (): Promise<void> => {
     copyright: `All rights reserved ${new Date().getFullYear()}`,
     feedLinks: {
       rss2: `${siteUrl}/rss/feed.xml`,
-      json: `${siteUrl}/rss/feed.json`,
-    },
+      json: `${siteUrl}/rss/feed.json`
+    }
   })
 
   for (const article of articles) {
     const url = `${siteUrl}/articles/${article.meta.slug}`
-    const html = ReactDOMServer.renderToStaticMarkup(article.component({ isRssFeed: true }))
+    const html = ReactDOMServer.renderToStaticMarkup(
+      article.component({ isRssFeed: true })
+    )
 
     feed.addItem({
       title: article.meta.title,
@@ -42,13 +47,13 @@ export const generateRssFeed = async (): Promise<void> => {
       content: html,
       author: [author],
       contributor: [author],
-      date: new Date(article.meta.date),
+      date: new Date(article.meta.date)
     })
   }
 
   await mkdir('./public/rss', { recursive: true })
   await Promise.all([
     writeFile('./public/rss/feed.xml', feed.rss2(), 'utf8'),
-    writeFile('./public/rss/feed.json', feed.json1(), 'utf8'),
+    writeFile('./public/rss/feed.json', feed.json1(), 'utf8')
   ])
 }
