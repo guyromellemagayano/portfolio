@@ -54,7 +54,11 @@
   "nxCloudAccessToken": "OTQ1ZDYxZWEtZjU0Zi00OTkxLTk4NjktMjIzMGU2YzI3OGU2fHJlYWQtd3JpdGU=",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@vercel/remote-nx"
+      "runner": "@vercel/remote-nx",
+      "options": {
+        "accessToken": "xvNLRlsTr5fHFi1GQVYE4bGd",
+        "teamId": "team_zYHbAAHP0rAl9gBivFEzz7xW"
+      }
     }
   }
 }
