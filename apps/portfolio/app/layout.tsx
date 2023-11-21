@@ -1,15 +1,14 @@
 /* eslint-disable no-irregular-whitespace */
+import { Providers } from '@app/providers'
+import { StyledComponentsRegistry } from '@app/registry'
 import { FooterLayout, HeaderLayout } from '@components/layouts'
+import '@styles/tailwind.css'
 import { Analytics } from '@vercel/analytics/react'
 import 'focus-visible'
 import Script from 'next/script'
 
-import '@styles/tailwind.css'
-import { Providers } from './providers'
-import { StyledComponentsRegistry } from './registry'
-
 export default function RootLayout({ children }: { children: JSX.Element }) {
-  const gtmSrc = `https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`
+  const gtmSrc = `https://www.googletagmanager.com/gtag/js?id=${process.env.nextPublicGaMeasurementId}`
 
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
@@ -23,7 +22,7 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', "${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}");
+              gtag('config', "${process.env.nextPublicGaMeasurementId}");
             `
           }}
         />
