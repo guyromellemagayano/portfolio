@@ -10,6 +10,7 @@
     }
   ],
   "settings": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.tabCompletion": "on",
     "editor.tabFocusMode": false,
@@ -69,6 +70,6 @@
       "editor.insertSpaces": true,
       "editor.tabCompletion": "on",
       "editor.tabSize": 2
-    }
+    },
   }
 }
