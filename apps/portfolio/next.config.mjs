@@ -9,6 +9,14 @@ import remarkGfm from 'remark-gfm'
  **/
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+  env: {
+    nextPublicGaMeasurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    sentryAuthToken: process.env.SENTRY_AUTH_TOKEN,
+    sentryDsn: process.env.SENTRY_DSN,
+    sentryOrg: process.env.SENTRY_ORG,
+    sentryProject: process.env.SENTRY_PROJECT,
+    sentryEnvironment: process.env.SENTRY_ENVIRONMENT
+  },
   nx: {
     svgr: false
   },
@@ -18,8 +26,17 @@ const nextConfig = {
   reactStrictMode: true,
   sentry: {
     hideSourceMaps: true,
-    authToken: process.env.SENTRY_AUTH_TOKEN,
+    authToken: process.env.sentryAuthToken,
     silent: true
+  },
+  redirects: async () => {
+    return [
+      {
+        source: '/welcome',
+        destination: '/',
+        permanent: true
+      }
+    ]
   }
 }
 
