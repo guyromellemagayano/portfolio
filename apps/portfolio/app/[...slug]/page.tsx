@@ -5,6 +5,7 @@ import { ProjectsApp } from '@components/app/projects'
 import { SkillsApp } from '@components/app/skills'
 import { UsesApp } from '@components/app/uses'
 import { WorkApp } from '@components/app/work'
+import { NEXT_CMS_WORDPRESS_URL } from '@configs/env'
 import AboutData from '@data/about'
 import ArticlesData from '@data/articles'
 import ProjectsData from '@data/projects'
@@ -32,15 +33,17 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const slug = params.slug
 
-  const seo: any = await fetch(
-    'http://guy-romelle-magayano.lndo.site/graphql',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        query: `
+  const seo: {
+    title: string
+    metaDesc: string
+    focuskw: string
+  } = await fetch(NEXT_CMS_WORDPRESS_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      query: `
         query fetchPage($slug: ID!) {
           page(id: $slug, idType: URI) {
             seo {
@@ -74,19 +77,18 @@ export async function generateMetadata({
           }
         }
       `,
-        variables: {
-          slug: arrayToUrlSlug(slug)
-        }
-      })
-    }
-  )
+      variables: {
+        slug: arrayToUrlSlug(slug)
+      }
+    })
+  })
     .then(res => res.json())
     .then(res => res.data.page.seo)
 
   return {
-    title: seo?.title || '',
-    description: seo?.metaDesc || '',
-    keywords: seo?.focuskw || ''
+    title: seo.title || '',
+    description: seo.metaDesc || '',
+    keywords: seo.focuskw || ''
   }
 }
 

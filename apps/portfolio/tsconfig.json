@@ -11,6 +11,7 @@
     "paths": {
       "@app/*": ["./app/*"],
       "@components/*": ["./components/*"],
+      "@configs/*": ["./configs/*"],
       "@data/*": ["./data/*"],
       "@hooks/*": ["./hooks/*"],
       "@images/*": ["./images/*"],
