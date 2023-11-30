@@ -20,7 +20,7 @@
     "github.copilot.editor.enableAutoCompletions": true,
     "npm.packageManager": "yarn",
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsdk": "guy-romelle-magayano/node_modules/typescript/lib",
     "github.copilot.enable": {
       "*": true
     },
