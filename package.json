@@ -4,7 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "commit": "git-cz -e",
+    "commit": "git-cz",
     "precommit": "lint-staged",
     "prepare": "husky install"
   },
@@ -147,7 +147,6 @@
     "hooks": {
       "pre-commit": "lint-staged --allow-empty",
       "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
-      "commit": "git-cz -e",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
