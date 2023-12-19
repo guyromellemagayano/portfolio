@@ -1,12 +1,12 @@
 {
   "folders": [
     {
-      "path": ".",
-      "name": "guy-romelle-magayano"
+      "name": "guy-romelle-magayano",
+      "path": "."
     },
     {
-      "path": "./apps/portfolio-server",
-      "name": "portfolio-server"
+      "name": "portfolio-server",
+      "path": "apps/portfolio-server"
     }
   ],
   "settings": {
@@ -28,8 +28,8 @@
       "strings": "on"
     },
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true,
-      "source.fixAll.eslint": true
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
     },
     "search.exclude": {
       "**/.yarn": true,
