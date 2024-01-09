@@ -5,9 +5,9 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} Briefcase SVG image
  */
-export default function BriefcaseSvgImage(
+const BriefcaseSvgImage = (
   rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+): JSX.Element => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -29,3 +29,5 @@ export default function BriefcaseSvgImage(
     </svg>
   )
 }
+
+export default BriefcaseSvgImage

@@ -1,22 +1,21 @@
 'use client'
 
-import { ChevronDownSvgImage, CloseSvgImage } from '@components/images/svg'
-import MobileNavItem from '@components/nav-item/Mobile'
-import NavigationData from '@data/navigation'
-import { Popover, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
+
+import { Popover, Transition } from '@headlessui/react'
+
+import { ChevronDownSvgImage, CloseSvgImage, MobileNavItem } from '@/components'
+
+import { NavigationData } from '@/data'
 
 /**
  * Renders a mobile navigation item.
  * @param {any} rest - Other props to pass down to the component.
  * @returns {JSX.Element} The rendered component.
  */
-export default function MobileNavigation(rest: any): JSX.Element {
+const MobileNavigation = (rest: any): JSX.Element => {
   // Destructure the data from the FooterData function
   const { headerNav } = NavigationData()
-
-  // Page filter
-  const pageFilter = ['Work', 'Projects', 'About']
 
   return (
     <Popover {...rest}>
@@ -72,3 +71,5 @@ export default function MobileNavigation(rest: any): JSX.Element {
     </Popover>
   )
 }
+
+export default MobileNavigation

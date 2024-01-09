@@ -1,14 +1,19 @@
 'use client'
 
-import Container from '@components/Container'
-import Avatar from '@components/avatar'
-import AvatarContainer from '@components/avatar/Container'
-import { DarkModeButton } from '@components/buttons'
-import DesktopNavigation from '@components/navigation/Desktop'
-import MobileNavigation from '@components/navigation/Mobile'
-import clamp from '@utils/clamp'
-import { usePathname } from 'next/navigation'
 import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
+
+import { usePathname } from 'next/navigation'
+
+import {
+  Avatar,
+  AvatarContainer,
+  Container,
+  DarkModeButton,
+  DesktopNavigation,
+  MobileNavigation
+} from '@/components'
+
+import { clamp } from '@/utils'
 
 /**
  * Render the header layout component.

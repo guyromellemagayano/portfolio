@@ -1,4 +1,4 @@
-import { TGenericPageData } from 'types/common'
+import { TGenericPageData } from '@/types/common'
 
 export type TSkillsData<T = object> = TGenericPageData<T> & {
   skills?: Array<TSkillsDataProps>

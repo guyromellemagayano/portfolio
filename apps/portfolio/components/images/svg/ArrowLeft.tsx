@@ -5,9 +5,9 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} The rendered component.
  */
-export default function ArrowLeftSvgImage(
+const ArrowLeftSvgImage = (
   rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+): JSX.Element => {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...rest}>
       <path
@@ -19,3 +19,5 @@ export default function ArrowLeftSvgImage(
     </svg>
   )
 }
+
+export default ArrowLeftSvgImage

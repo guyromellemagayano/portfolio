@@ -1,5 +1,8 @@
+'use client'
+
 import clsx from 'clsx'
-import { TAvatarContainerProps } from 'types/components'
+
+import { TAvatarContainerProps } from '@/types/components'
 
 /**
  * Render avatar container component
@@ -7,11 +10,11 @@ import { TAvatarContainerProps } from 'types/components'
  * @param {any} rest - Other props to pass down to the component.
  * @returns {JSX.Element} The rendered component.
  */
-export default function AvatarContainer({
+const AvatarContainer = ({
   className,
   children,
   ...rest
-}: TAvatarContainerProps): JSX.Element {
+}: TAvatarContainerProps): JSX.Element => {
   return (
     <div
       className={clsx(
@@ -24,3 +27,5 @@ export default function AvatarContainer({
     </div>
   )
 }
+
+export default AvatarContainer

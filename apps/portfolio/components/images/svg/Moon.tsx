@@ -5,9 +5,7 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} The rendered component.
  */
-export default function MoonSvgImage(
-  rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+const MoonSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path
@@ -19,3 +17,5 @@ export default function MoonSvgImage(
     </svg>
   )
 }
+
+export default MoonSvgImage

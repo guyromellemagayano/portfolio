@@ -1,13 +1,13 @@
 'use client'
 
-import { Button } from '@components/buttons'
-import { MailSvgImage } from '@components/images/svg'
+import { Button } from '@/components'
+import MailSvgImage from '@/components/images/svg/Mail'
 
 /**
  * Newsletter component displays a form to subscribe to a newsletter.
  * @returns JSX.Element
  */
-export default function NewsletterLayout(): JSX.Element {
+const NewsletterLayout = (): JSX.Element => {
   return (
     <form
       action="/thank-you"
@@ -35,3 +35,5 @@ export default function NewsletterLayout(): JSX.Element {
     </form>
   )
 }
+
+export default NewsletterLayout
