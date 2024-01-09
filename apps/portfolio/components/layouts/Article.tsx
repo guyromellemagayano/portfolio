@@ -1,13 +1,16 @@
 'use client'
 
-import { AppContext } from '@app/providers'
-import Container from '@components/Container'
-import Prose from '@components/Prose'
-import { ArrowLeftSvgImage } from '@components/images/svg'
-import { formatDate } from '@lib/formatDate'
-import { useRouter } from 'next/navigation'
 import { useContext } from 'react'
-import { TArticleLayoutProps } from 'types/components'
+
+import { useRouter } from 'next/navigation'
+
+import { AppContext } from '@/app/providers'
+
+import { ArrowLeftSvgImage, Container, Prose } from '@/components'
+
+import { formatDate } from '@/lib'
+
+import { TArticleLayoutProps } from '@/types/components'
 
 /**
  * Render the article layout component.
@@ -15,10 +18,10 @@ import { TArticleLayoutProps } from 'types/components'
  * @param meta - The metadata for the article.
  * @returns {JSX.Element} The rendered component.
  */
-export default function ArticleLayout({
+const ArticleLayout = ({
   children,
   article
-}: TArticleLayoutProps): JSX.Element | React.ReactNode {
+}: TArticleLayoutProps): JSX.Element => {
   const router = useRouter()
   const { previousPathname } = useContext(AppContext)
 
@@ -61,3 +64,5 @@ export default function ArticleLayout({
     </Container>
   )
 }
+
+export default ArticleLayout

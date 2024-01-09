@@ -1,4 +1,4 @@
-import { TDataProps } from 'types/common'
+import { TDataProps } from '@/types/common'
 
 export type TUsesData<T = object> = TDataProps<T> & {
   tools: Array<{
@@ -35,7 +35,7 @@ const UsesData = (): TUsesData => {
       name: 'Workstation',
       items: [
         {
-          title: '16-inch MacBook Pro, Intel Core i9, 16GB RAM (2019)',
+          title: '16-inch MacBook Pro, M2 Apple Silicon, 16GB RAM (2022)',
           description:
             'This is quite an old machine but I love the size of the screen and the power of the machine. Although fans are always running on heavy workloads, I can still do a lot of things with this machine like running virtual machines, multiple browsers, and multiple apps all at the same time.'
         },
@@ -114,6 +114,11 @@ const UsesData = (): TUsesData => {
           title: 'Magnet',
           description:
             "I use Magnet to organize my windows on my Mac. It has lots of keyboard shortcuts that I can use to quickly organize my windows. It's very stable and does what it's supposed to do."
+        },
+        {
+          title: 'Duet',
+          description:
+            "I use Duet to turn my iPad into a second monitor. It's very easy to setup and very stable. It also has a lot of features that I can use to make my second monitor experience better."
         }
       ]
     }

@@ -1,29 +1,27 @@
-import logoEpicDesignLabs from '@images/logos/epic-design-labs.png'
-import logoInfosoftStudio from '@images/logos/infosoft-studio.png'
-import logoMakeDevelopment from '@images/logos/make-development.jpeg'
-import logoMultiplyMii from '@images/logos/multiplymii.jpeg'
-import logoXTeam from '@images/logos/x-team.png'
-import image4 from '@images/photos/food.jpg'
-import image5 from '@images/photos/photography.jpg'
-import image2 from '@images/photos/speaker.jpg'
-import image1 from '@images/photos/travel.jpg'
-import image3 from '@images/photos/workplace.jpg'
 import { StaticImageData } from 'next/image'
-import { TGenericPageData } from 'types/common'
+
+import { TWorkExperience } from './work'
+
+import { TGenericPageData } from '@/types/common'
+
+import logoEpicDesignLabs from '@/images/logos/epic-design-labs.png'
+import logoInfosoftStudio from '@/images/logos/infosoft-studio.png'
+import logoMakeDevelopment from '@/images/logos/make-development.jpeg'
+import logoMultiplyMii from '@/images/logos/multiplymii.jpeg'
+import logoXTeam from '@/images/logos/x-team.png'
+import image4 from '@/images/photos/food.jpg'
+import image5 from '@/images/photos/photography.jpg'
+import image2 from '@/images/photos/speaker.jpg'
+import image1 from '@/images/photos/travel.jpg'
+import image3 from '@/images/photos/workplace.jpg'
 
 export type THomeData<T = object> = TGenericPageData<T> & {
-  slidePhotos: Array<{
+  slidePhotos?: Array<{
     alt: string
     src: StaticImageData
-  }>
-  cvFile: string
-  workExperiences: Array<{
-    company: string
-    title: string
-    logo: StaticImageData | string | null
-    start: string
-    end: string
-  }>
+  }> | null
+  cvFile?: string
+  workExperiences?: Array<TWorkExperience> | null
 }
 
 /**

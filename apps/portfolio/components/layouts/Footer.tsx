@@ -1,16 +1,16 @@
 'use client'
 
-import Container from '@components/Container'
-import NavLink from '@components/nav-link'
-import NavigationData from '@data/navigation'
+import { NavigationData } from '@/data'
+
+import { Container, NavLink } from '@/components'
 
 /**
  * Render the footer layout component.
  * @returns {JSX.Element} The rendered component.
  */
-export default function FooterLayout(): JSX.Element {
+const FooterLayout = (): JSX.Element => {
   // Destructure the data from the FooterData function
-  const { menu, footerNav, copyright } = NavigationData()
+  const { footerNav, copyright } = NavigationData()
 
   return (
     <footer className="mt-32">
@@ -35,3 +35,5 @@ export default function FooterLayout(): JSX.Element {
     </footer>
   )
 }
+
+export default FooterLayout

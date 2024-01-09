@@ -1,8 +1,9 @@
-import GitHubSvgImage from '@components/images/svg/Github'
-import LinkedInSvgImage from '@components/images/svg/LinkedIn'
-import MailSvgImage from '@components/images/svg/Mail'
-import TwitterSvgImage from '@components/images/svg/Twitter'
 import { FunctionComponent, SVGProps } from 'react'
+
+import GitHubSvgImage from '@/components/images/svg/Github'
+import LinkedInSvgImage from '@/components/images/svg/LinkedIn'
+import MailSvgImage from '@/components/images/svg/Mail'
+import TwitterSvgImage from '@/components/images/svg/Twitter'
 
 export type TSocialLinksData<T = object> = T & {
   url: string
@@ -14,7 +15,7 @@ export type TSocialLinksData<T = object> = T & {
  * Social links data
  * @returns {TSocialLinksData[]} social links data
  */
-const socialLinksData = [
+const SocialLinksData = [
   {
     url: 'https://twitter.com/mguyromelle',
     ariaLabel: 'Follow on Twitter',
@@ -37,4 +38,4 @@ const socialLinksData = [
   }
 ] as TSocialLinksData[]
 
-export default socialLinksData
+export default SocialLinksData

@@ -7,11 +7,10 @@
 export const formatDate = (
   dateString: string,
   locale: string = 'en-US'
-): string => {
-  return new Date(`${dateString}T00:00:00Z`).toLocaleDateString(locale, {
+): string =>
+  new Date(`${dateString}T00:00:00Z`).toLocaleDateString(locale, {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC'
   })
-}

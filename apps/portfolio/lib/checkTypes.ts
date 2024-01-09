@@ -8,39 +8,39 @@ import isUndefined from 'lodash/isUndefined'
 import size from 'lodash/size'
 
 // Check if the given value is not null or undefined
-export function isNotNullOrUndefined<T>(
+export const isNotNullOrUndefined = <T>(
   value: T | null | undefined
-): value is T {
+): value is T => {
   return !isNull(value) && !isUndefined(value)
 }
 
 // Check if the given value is a object and not null or undefined
-export function isObjectType<T>(value: T): value is T & object {
+export const isObjectType = <T>(value: T): value is T & object => {
   return isNotNullOrUndefined(value) && isPlainObject(value)
 }
 
 // Check if the given value is a array and not null or undefined
-export function isArrayType<T>(value: T): value is T & any[] {
+export const isArrayType = <T>(value: T): value is T & any[] => {
   return isNotNullOrUndefined(value) && isArray(value)
 }
 
 // Check if the given value is a string and not null or undefined
-export function isStringType(value: unknown): value is string {
+export const isStringType = (value: unknown): value is string => {
   return isNotNullOrUndefined(value) && isString(value)
 }
 
 // Check if the given value is a number and not null or undefined
-export function isNumberType(value: unknown): value is number {
+export const isNumberType = (value: unknown): value is number => {
   return isNotNullOrUndefined(value) && isFinite(value as number)
 }
 
 // Check if the given value is a boolean and not null or undefined
-export function isBooleanType(value: unknown): value is boolean {
+export const isBooleanType = (value: unknown): value is boolean => {
   return isNotNullOrUndefined(value) && isBoolean(value)
 }
 
 // Check if the given valid value is empty
-export function isEmpty(value: unknown): boolean {
+export const isEmpty = (value: unknown): boolean => {
   if (isObjectType(value) || isArrayType(value) || isStringType(value)) {
     return size(value) === 0
   } else if (isNumberType(value)) {

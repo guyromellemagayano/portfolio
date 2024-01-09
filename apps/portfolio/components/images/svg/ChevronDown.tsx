@@ -5,9 +5,9 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} The rendered component.
  */
-export default function ChevronDownSvgImage(
+const ChevronDownSvgImage = (
   rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+): JSX.Element => {
   return (
     <svg viewBox="0 0 8 6" aria-hidden="true" {...rest}>
       <path
@@ -20,3 +20,5 @@ export default function ChevronDownSvgImage(
     </svg>
   )
 }
+
+export default ChevronDownSvgImage

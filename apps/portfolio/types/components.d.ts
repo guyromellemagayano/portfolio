@@ -1,7 +1,7 @@
-import { THomeData } from '@data/home'
-import { TWorkExperience } from '@data/work'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import { StaticImageData } from 'next/image'
+
+import { THomeData, TWorkExperience } from '@/data'
 
 import { TSeoMetaCommonProps } from './common'
 
@@ -22,8 +22,8 @@ export type TWithIDAndClass<T = object> = T &
     id?: string
   }
 
-// Props for components that represent a card structure
-export type TCardProps<T = object> = T &
+// Props for generic components that represent a block structure
+export type TBlockProps<T = object> = T &
   TWithIDAndClass<T> & {
     as?: keyof JSX.IntrinsicElements
   }
@@ -46,7 +46,7 @@ export type TProseProps<T = object> = T & TWithIDAndClass<T>
 // Props for section components with optional title and decoration flag
 export type TSectionLayoutProps<T = object> = T &
   TWithIDAndClass<T> & {
-    title?: string
+    title?: string | null
     decorate?: boolean
   }
 
@@ -76,9 +76,9 @@ export type TButtonProps<T = object> = T &
 // Props for common article components
 export type TArticleCommonProps<T = object> = T & {
   meta: {
-    title: string
-    description: string
-    date: string
+    title: string | null
+    description: string | null
+    date: string | null
   }
 }
 
@@ -86,7 +86,7 @@ export type TArticleCommonProps<T = object> = T & {
 export type TArticleLayoutProps<T = object> = T &
   TWithChildren<T> & {
     article: TArticleCommonProps['meta']
-    author: string
+    author: string | null
   }
 
 // Props for article component
@@ -97,10 +97,17 @@ export type TArticleProps<T = object> = T &
     slug: string
   }
 
+// Data for photo layout component
+export type TPhotoLayoutData<T = object> = T & {
+  alt: string
+  src: StaticImageData | StaticImport | string | null
+  [key: string]: any
+}
+
 // Props for photos component
 export type TPhotoLayoutProps<T = object> = T &
   TWithChildren<T> & {
-    data: Array<{ alt: string; src: StaticImageData }>
+    data?: Array<TPhotoLayoutData> | null
   }
 
 // Props for resume component
@@ -113,25 +120,28 @@ export type TResumeProps<T = object> = T &
   }
 
 // Props for simple layout component
-export type TSimpleLayoutProps<T = object> = T &
+export type TContentLayoutProps<T = object> = T &
+  TWithClassName<T> &
   TWithIDAndClass<T> & {
-    title: string
-    intro?: string[]
+    as?: React.ElementType
+    title?: string | null
+    intro?: string[] | string | null
+    layout?: 'simple' | 'aside'
   }
 
 // Props for social link component
 export type TSocialLinkProps<T = object> = T & {
   icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
-  url?: string
-  ariaLabel?: string
-  showLabel?: boolean
+  url?: string | null
+  ariaLabel?: string | null
+  showLabel?: boolean | null
 }
 
 // Props for navigation item component
 export type TNavItemProps<T = object> = T &
   TWithChildren<T> &
   TWithClassName<T> & {
-    href: string
+    href: string | '#'
   }
 
 // Props for common card components
@@ -141,7 +151,6 @@ export type TCardCommonProps<T = object> = T &
     title?: string
     decorate?: boolean
     target?: string
-    dateTime?: string
   }
 
 // Props for card component
@@ -167,7 +176,7 @@ export type TContainerType = typeof ContainerWithRef & {
 // Props for skills list component
 export type TSkillsListProps<T = object> = T &
   TWithChildren<T> & {
-    title: string
+    title: string | null
   }
 
 // Props for skills list cards component
@@ -177,19 +186,19 @@ export type TSkillsListCardsProps<T = object> = T &
     cta?: Array<{
       projects: string[]
       text: string
-    }>
+    }> | null
   }
 
 // Props for tools list component
 export type TToolsListProps<T = object> = T &
   TWithChildren<T> & {
-    title: string
+    title: string | null
   }
 
 // Props for tools list cards component
 export type TToolsListCardsProps<T = object> = T & {
-  title: string
-  description: string
+  title: string | null
+  description: string | null
 }
 
 // Props for project list component
@@ -198,25 +207,25 @@ export type TProjectListProps<T = object> = T & TWithChildren<T>
 // Props for project list card component
 export type TProjectListCardProps<T = object> = T &
   TWithChildren<T> & {
-    name: string
+    name: string | null
     link: {
-      url: string
-      text: string
+      url: string | null
+      text: string | null
     }
-    logo: StaticImport | string
-    description: string
+    logo: StaticImport | string | null
+    description: string | null
   }
 
 // Props for work list component
 export type TWorkListProps<T = object> = T &
   TWithChildren<T> & {
-    title: string
+    title: string | null
   }
 
 // Props for work list card component
 export type TWorkListCardProps<T = object> = T &
   TWithChildren<T> &
-  Pick<TWorkExperience, 'company' | 'country' | 'contributions' | 'skills'>
+  Pick<TWorkExperience, 'company', 'country', 'contributions', 'skills'>
 
 // Props for prose component
 export type TProseProps<T = object> = T &
@@ -229,3 +238,13 @@ export type TProjectProps<T = object> = T &
   TWithChildren<T> &
   TWithClassName<T> &
   TProjectListCardProps<T>
+
+// Props for error component
+export type TErrorProps<T = object> = T &
+  TWithChildren<T> & {
+    statusCode: number
+    heading: string
+    message: string
+    children?: React.ReactNode
+    className?: string
+  }

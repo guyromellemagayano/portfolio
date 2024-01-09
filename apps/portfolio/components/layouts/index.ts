@@ -1,7 +1,0 @@
-export { default as ArticleLayout } from './Article'
-export { default as FooterLayout } from './Footer'
-export { default as HeaderLayout } from './Header'
-export { default as NewsLetterLayout } from './Newsletter'
-export { default as PhotoLayout } from './Photo'
-export { default as ResumeLayout } from './Resume'
-export { default as SimpleLayout } from './Simple'

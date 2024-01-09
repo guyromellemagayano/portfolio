@@ -2,9 +2,10 @@
 
 import clsx from 'clsx'
 import Link from 'next/link'
-import { TCardCommonProps, TCardProps } from 'types/components'
 
-import { ChevronRightSvgImage } from './images/svg'
+import { ChevronRightSvgImage } from '@/components'
+
+import { TBlockProps, TCardCommonProps } from '@/types/components'
 
 /**
  * A card component that renders a container with a group class and a relative position.
@@ -13,11 +14,11 @@ import { ChevronRightSvgImage } from './images/svg'
  * @param {React.ReactNode} children - The content to render inside the eyebrow.
  * @returns {JSX.Element} The rendered card component.
  */
-export default function Card({
+const Card = ({
   as: Component = 'div',
   className,
   children
-}: TCardProps): JSX.Element {
+}: TBlockProps): JSX.Element => {
   return (
     <Component
       className={clsx('group relative flex flex-col items-start', className)}
@@ -36,25 +37,19 @@ export default function Card({
  * @param {String} [target] - The target of the link.
  * @returns {JSX.Element} The rendered link component.
  */
-Card.Link = function CardLink({
+const CardLink = ({
   children,
   href,
   title,
   className,
   target,
   ...rest
-}: TCardCommonProps): JSX.Element {
+}: TCardCommonProps): JSX.Element => {
   return (
     <div {...rest}>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
       {href ? (
-        <Link
-          href={href}
-          title={title}
-          className={className}
-          target={target}
-          passHref
-        >
+        <Link href={href} title={title} className={className} target={target}>
           <span className="absolute -inset-y-6 -inset-x-4 z-20 sm:-inset-x-6 sm:rounded-2xl" />
           <span className="relative z-10">{children}</span>
         </Link>
@@ -73,13 +68,13 @@ Card.Link = function CardLink({
  * @param {String} [className] - Additional CSS classes to apply to the title.
  * @returns {JSX.Element} The rendered title component.
  */
-Card.Title = function CardTitle({
+const CardTitle = ({
   as: Component = 'h2',
   href,
   children,
   title,
   className
-}: TCardCommonProps): JSX.Element {
+}: TCardCommonProps): JSX.Element => {
   return (
     <Component
       className={clsx(
@@ -104,10 +99,10 @@ Card.Title = function CardTitle({
  * @param {React.ReactNode} children - The content to render inside the description.
  * @returns {JSX.Element} The rendered description component.
  */
-Card.Description = function CardDescription({
+const CardDescription = ({
   children,
   className
-}: TCardCommonProps): JSX.Element {
+}: TCardCommonProps): JSX.Element => {
   return (
     <p
       className={clsx(
@@ -128,13 +123,13 @@ Card.Description = function CardDescription({
  * @param {React.ReactNode} children - The content to render inside the CTA.
  * @returns {JSX.Element} The rendered CTA component.
  */
-Card.Cta = function CardCta({
+const CardCta = ({
   title,
   children,
   className,
   href,
   ...rest
-}: TCardCommonProps): JSX.Element {
+}: TCardCommonProps): JSX.Element => {
   return (
     <div
       aria-hidden="true"
@@ -149,7 +144,6 @@ Card.Cta = function CardCta({
           href={href}
           title={title}
           className="transition hover:text-amber-600 dark:hover:text-amber-600 flex items-center"
-          passHref
         >
           {children}
           <ChevronRightSvgImage className="ml-1 h-4 w-4 stroke-current" />
@@ -169,13 +163,13 @@ Card.Cta = function CardCta({
  * @param {React.ReactNode} children - The content to render inside the eyebrow.
  * @returns {JSX.Element} The rendered eyebrow component.
  */
-Card.Eyebrow = function CardEyebrow({
+const CardEyebrow = ({
   as: Component = 'p',
   decorate = false,
   className,
   children,
   ...rest
-}: TCardCommonProps): JSX.Element {
+}: TCardCommonProps): JSX.Element => {
   return (
     <Component
       className={clsx(
@@ -197,3 +191,11 @@ Card.Eyebrow = function CardEyebrow({
     </Component>
   )
 }
+
+Card.Link = CardLink
+Card.Title = CardTitle
+Card.Description = CardDescription
+Card.Cta = CardCta
+Card.Eyebrow = CardEyebrow
+
+export default Card

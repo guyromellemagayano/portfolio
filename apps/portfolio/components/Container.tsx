@@ -1,8 +1,10 @@
 'use client'
 
-import clsx from 'clsx'
 import { forwardRef } from 'react'
-import { DivRef, TContainerProps, TContainerType } from 'types/components'
+
+import clsx from 'clsx'
+
+import { DivRef, TContainerProps, TContainerType } from '@/types/components'
 
 /**
  * A container component that wraps its children with an outer container.
@@ -13,8 +15,8 @@ import { DivRef, TContainerProps, TContainerType } from 'types/components'
 const OuterContainer = forwardRef<DivRef, TContainerProps>(
   function OuterContainer({ className, children, ...rest }, ref): JSX.Element {
     return (
-      <div ref={ref} className={clsx('sm:px-8', className)} {...rest}>
-        <div className="mx-auto max-w-7xl lg:px-8">{children}</div>
+      <div ref={ref} className={className} {...rest}>
+        <div className="mx-auto max-w-7xl">{children}</div>
       </div>
     )
   }
@@ -29,11 +31,7 @@ const OuterContainer = forwardRef<DivRef, TContainerProps>(
 const InnerContainer = forwardRef<DivRef, TContainerProps>(
   function InnerContainer({ className, children, ...rest }, ref): JSX.Element {
     return (
-      <div
-        ref={ref}
-        className={clsx('relative px-4 sm:px-8 lg:px-12', className)}
-        {...rest}
-      >
+      <div ref={ref} className={clsx('relative', className)} {...rest}>
         <div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</div>
       </div>
     )

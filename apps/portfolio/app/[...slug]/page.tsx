@@ -1,36 +1,24 @@
-import { AboutApp } from '@components/app/about'
-import { ArticlesApp } from '@components/app/articles'
-import HomeApp from '@components/app/home/Home'
-import { ProjectsApp } from '@components/app/projects'
-import { SkillsApp } from '@components/app/skills'
-import { UsesApp } from '@components/app/uses'
-import { WorkApp } from '@components/app/work'
-import { NEXT_CMS_WORDPRESS_URL } from '@configs/env'
-import AboutData from '@data/about'
-import ArticlesData from '@data/articles'
-import ProjectsData from '@data/projects'
-import SkillsData from '@data/skills'
-import UsesData from '@data/uses'
-import WorkData from '@data/work'
 import { Metadata } from 'next'
+
+import { NEXT_CMS_WORDPRESS_URL } from '@/configs/env'
+
+import {
+  AboutApp,
+  ArticlesApp,
+  ErrorApp,
+  ProjectsApp,
+  SkillsApp,
+  UsesApp,
+  WorkApp
+} from '@/components'
+
+import { arrayToUrlSlug } from '@/lib'
 
 type Props = {
   params: { slug: string[] }
-  searchParams: { [key: string]: string | string[] | undefined }
 }
 
-function arrayToUrlSlug(array: string[]): string {
-  const slugArray = array.map(item =>
-    item.toLowerCase().replace(/[\s\W-]+/g, '/')
-  )
-
-  return slugArray.join('-')
-}
-
-export async function generateMetadata({
-  params,
-  searchParams
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = params.slug
 
   const seo: {
@@ -83,7 +71,7 @@ export async function generateMetadata({
     })
   })
     .then(res => res.json())
-    .then(res => res.data.page.seo)
+    .then(res => res?.data?.page?.seo || {})
 
   return {
     title: seo.title || '',
@@ -97,52 +85,29 @@ export async function generateMetadata({
  * @param slug - The slug of the page to render
  * @returns A dynamic page component
  */
-export default function Page({ params, searchParams }: Props): JSX.Element {
-  let pageComponent: JSX.Element
-
-  const articles = []
-  const translations = {}
-
+const Page = ({ params }: Props): JSX.Element => {
   switch (params.slug[0]) {
-    case 'skills': {
-      const { ...rest } = SkillsData()
-      pageComponent = <SkillsApp {...rest} />
-      return pageComponent
-    }
-
-    case 'work': {
-      const { ...rest } = WorkData()
-      pageComponent = <WorkApp {...rest} />
-      return pageComponent
-    }
-
-    case 'projects': {
-      const { ...rest } = ProjectsData()
-      pageComponent = <ProjectsApp {...rest} />
-      return pageComponent
-    }
-
-    case 'articles': {
-      const { ...rest } = ArticlesData()
-      pageComponent = <ArticlesApp {...rest} />
-      return pageComponent
-    }
-
-    case 'about': {
-      const { ...rest } = AboutData()
-      pageComponent = <AboutApp {...rest} />
-      return pageComponent
-    }
-
-    case 'uses': {
-      const { ...rest } = UsesData()
-      pageComponent = <UsesApp {...rest} />
-      return pageComponent
-    }
-
+    case 'skills':
+      return <SkillsApp />
+    case 'work':
+      return <WorkApp />
+    case 'projects':
+      return <ProjectsApp />
+    case 'articles':
+      return <ArticlesApp />
+    case 'about':
+      return <AboutApp />
+    case 'uses':
+      return <UsesApp />
     default:
-      break
+      return (
+        <ErrorApp
+          statusCode={404}
+          heading="Page not found"
+          message="Sorry, we couldn’t find the page you’re looking for."
+        />
+      )
   }
-
-  return <HomeApp translations={translations} articles={articles} />
 }
+
+export default Page
