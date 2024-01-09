@@ -1,9 +1,11 @@
 import glob from 'fast-glob'
-import { TProjectLibProps, TProjectWithSlugLibProps } from 'types/libs'
 
-async function importProject(
+import { TProjectLibProps, TProjectWithSlugLibProps } from '@/types/libs'
+
+// Import a project
+export const importProject = async (
   projectFilename: string
-): Promise<TProjectWithSlugLibProps> {
+): Promise<TProjectWithSlugLibProps> => {
   const { article } = (await import(`../app/projects/${projectFilename}`)) as {
     default: React.ComponentType
     article: TProjectLibProps
@@ -15,7 +17,8 @@ async function importProject(
   }
 }
 
-export async function getAllProjects() {
+// Fetch all projects
+export const getAllProjects = async () => {
   const projectFilenames = await glob('*/page.mdx', {
     cwd: './app/projects'
   })

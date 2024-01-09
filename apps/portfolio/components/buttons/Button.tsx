@@ -2,7 +2,8 @@
 
 import clsx from 'clsx'
 import Link from 'next/link'
-import { ButtonVariant, TButtonProps } from 'types/components'
+
+import { ButtonVariant, TButtonProps } from '@/types/components'
 
 /**
  * Generate a class name for the button based on its variant.
@@ -10,10 +11,10 @@ import { ButtonVariant, TButtonProps } from 'types/components'
  * @param {String} className - Additional CSS classes to apply to the button.
  * @returns {String} The generated class name.
  */
-function generateButtonClassName(
+const generateButtonClassName = (
   variant: ButtonVariant,
   className?: string
-): string {
+): string => {
   const baseStyle =
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none'
   const variantStyles: Record<ButtonVariant, string> = {
@@ -35,19 +36,19 @@ function generateButtonClassName(
  * @param {any} children - The content to render inside the button.
  * @returns {JSX.Element} The rendered component.
  */
-export default function Button({
+const Button = ({
   type = 'button',
   variant = 'primary',
   className,
   href,
   children,
   ...rest
-}: TButtonProps): JSX.Element {
+}: TButtonProps): JSX.Element => {
   const updatedClassName = generateButtonClassName(variant, className)
 
   if (href) {
     return (
-      <Link href={href} passHref>
+      <Link href={href}>
         <span className={updatedClassName}>{children}</span>
       </Link>
     )
@@ -59,3 +60,5 @@ export default function Button({
     </button>
   )
 }
+
+export default Button

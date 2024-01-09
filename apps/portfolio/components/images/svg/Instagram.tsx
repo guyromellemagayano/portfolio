@@ -1,9 +1,11 @@
+'use client'
+
 /**
  * Renders an SVG image of the Instagram logo.
  * @param rest - Additional SVG props to be spread in the root element.
  * @returns A JSX element representing the Instagram logo.
  */
-export const InstagramSvgImage = (
+const InstagramSvgImage = (
   rest: React.SVGProps<SVGSVGElement>
 ): JSX.Element => {
   return (
@@ -13,3 +15,5 @@ export const InstagramSvgImage = (
     </svg>
   )
 }
+
+export default InstagramSvgImage
