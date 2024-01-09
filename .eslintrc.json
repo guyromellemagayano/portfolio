@@ -88,29 +88,6 @@
     "import/named": "off",
     "import/namespace": "off",
     "import/export": "off",
-    "import/order": [
-      "warn",
-      {
-        "groups": ["builtin", "external", ["parent", "sibling"], "index"],
-        "newlines-between": "always",
-        "pathGroups": [
-          {
-            "pattern": "@/**",
-            "group": "external",
-            "position": "after"
-          },
-          {
-            "pattern": "types/**",
-            "group": "external",
-            "position": "after"
-          }
-        ],
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": false
-        }
-      }
-    ],
     "jsx-a11y/click-events-have-key-events": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "react/prop-types": "off",
