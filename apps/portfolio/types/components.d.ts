@@ -192,13 +192,13 @@ export type TSkillsListCardsProps<T = object> = T &
 // Props for tools list component
 export type TToolsListProps<T = object> = T &
   TWithChildren<T> & {
-    title: string | null
+    title?: string | null
   }
 
 // Props for tools list cards component
 export type TToolsListCardsProps<T = object> = T & {
-  title: string | null
-  description: string | null
+  title?: string | null
+  description?: string | null
 }
 
 // Props for project list component
