@@ -5,9 +5,7 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} The rendered component.
  */
-export default function LinkSvgImage(
-  rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+const LinkSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path
@@ -17,3 +15,5 @@ export default function LinkSvgImage(
     </svg>
   )
 }
+
+export default LinkSvgImage

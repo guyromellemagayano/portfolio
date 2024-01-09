@@ -1,7 +1,10 @@
-import HomeApp from '@components/app/home/Home'
-import HomeData from '@data/home'
-// import { getAllArticles } from '@lib/articles'
 import { Metadata } from 'next'
+
+import { HomeData } from '@/data'
+
+import { HomeApp } from '@/components'
+
+// import { getAllArticles } from '@/lib/articles'
 
 const { meta } = HomeData()
 
@@ -21,8 +24,5 @@ export default async function Page({
 }: {
   params: { slug: string }
 }): Promise<JSX.Element> {
-  const articles = []
-  const translations = {}
-
-  return <HomeApp translations={translations} articles={articles} />
+  return <HomeApp />
 }
