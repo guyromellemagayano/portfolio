@@ -1,13 +1,23 @@
-/* eslint-disable no-irregular-whitespace */
-import { Providers } from '@app/providers'
-import { StyledComponentsRegistry } from '@app/registry'
-import { FooterLayout, HeaderLayout } from '@components/layouts'
-import '@styles/tailwind.css'
 import { Analytics } from '@vercel/analytics/react'
-import 'focus-visible'
 import Script from 'next/script'
 
-export default function RootLayout({ children }: { children: JSX.Element }) {
+import { Providers } from '@/app/providers'
+import { StyledComponentsRegistry } from '@/app/registry'
+
+import { FooterLayout, HeaderLayout } from '@/components'
+
+import '@/styles/tailwind.css'
+
+import 'focus-visible'
+
+/**
+ * RootLayout component that serves as the main layout for the application.
+ *
+ * @param {Object} props - The component props.
+ * @param {JSX.Element} props.children - The child elements to be rendered within the layout.
+ * @returns {JSX.Element} The rendered RootLayout component.
+ */
+const RootLayout = ({ children }: { children: JSX.Element }) => {
   const gtmSrc = `https://www.googletagmanager.com/gtag/js?id=${process.env.nextPublicGaMeasurementId}`
 
   return (
@@ -47,3 +57,5 @@ export default function RootLayout({ children }: { children: JSX.Element }) {
     </html>
   )
 }
+
+export default RootLayout

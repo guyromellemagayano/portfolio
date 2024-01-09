@@ -9,16 +9,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@app/*": ["./app/*"],
-      "@components/*": ["./components/*"],
-      "@configs/*": ["./configs/*"],
-      "@data/*": ["./data/*"],
-      "@hooks/*": ["./hooks/*"],
-      "@images/*": ["./images/*"],
-      "@lib/*": ["./lib/*"],
-      "@styles/*": ["./styles/*"],
-      "@utils/*": ["./utils/*"],
-      "types/*": ["./types/*"]
+      "@/*": ["./*"]
     },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true

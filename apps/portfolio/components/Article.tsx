@@ -1,9 +1,10 @@
 'use client'
 
-import { formatDate } from '@lib/formatDate'
-import { TArticleProps } from 'types/components'
+import { Card } from '@/components'
 
-import Card from './Card'
+import { formatDate } from '@/lib'
+
+import { TArticleProps } from '@/types/components'
 
 /**
  * Renders an article card with title, date, description, and a CTA to read the full article.
@@ -11,12 +12,12 @@ import Card from './Card'
  * @param {Object} meta - The article metadata.
  * @returns {JSX.Element} The rendered component.
  */
-export default function Article({
+const Article = ({
   slug,
   title,
   date,
   description
-}: TArticleProps): JSX.Element {
+}: TArticleProps): JSX.Element => {
   const dateNow = new Date()
   const dateNowToString = dateNow.toISOString()
 
@@ -25,7 +26,6 @@ export default function Article({
       <Card.Title href={`/articles/${slug}`}>{title}</Card.Title>
       <Card.Eyebrow
         as="time"
-        dateTime={date}
         className="text-zinc-400 dark:text-zinc-500"
         decorate
       >
@@ -36,3 +36,5 @@ export default function Article({
     </Card>
   )
 }
+
+export default Article

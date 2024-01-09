@@ -1,8 +1,12 @@
-import avatarImage from '@images/avatar.jpg'
-import clsx from 'clsx'
-import Image from 'next/image'
-import Link from 'next/link'
-import { TAvatarProps } from 'types/components'
+'use client'
+
+import { Suspense } from 'react'
+
+import { Skeleton } from '@/components'
+
+import { useLazyLoading } from '@/hooks'
+
+import { TAvatarProps } from '@/types/components'
 
 /**
  * Render avatar component
@@ -11,28 +15,20 @@ import { TAvatarProps } from 'types/components'
  * @param {any} rest - Other props to pass down to the component.
  * @returns {JSX.Element} The rendered component.
  */
-export default function Avatar({
+const Avatar = ({
   large = false,
   className,
   ...rest
-}: TAvatarProps): JSX.Element {
+}: TAvatarProps): JSX.Element => {
+  const AvatarContent = useLazyLoading({
+    importFunction: () => import('./Content')
+  })
+
   return (
-    <Link
-      href="/"
-      aria-label="Home"
-      className={clsx(className, 'pointer-events-auto')}
-      {...rest}
-    >
-      <Image
-        src={avatarImage}
-        alt=""
-        sizes={large ? '4rem' : '2.25rem'}
-        className={clsx(
-          'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
-          large ? 'h-16 w-16' : 'h-9 w-9'
-        )}
-        priority
-      />
-    </Link>
+    <Suspense fallback={<Skeleton.Avatar large={large} />}>
+      <AvatarContent large={large} className={className} {...rest} />
+    </Suspense>
   )
 }
+
+export default Avatar

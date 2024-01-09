@@ -5,9 +5,7 @@
  * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
  * @returns {JSX.Element} The rendered component.
  */
-export default function SunSvgImage(
-  rest: React.SVGProps<SVGSVGElement>
-): JSX.Element {
+const SunSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -25,3 +23,5 @@ export default function SunSvgImage(
     </svg>
   )
 }
+
+export default SunSvgImage
