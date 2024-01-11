@@ -1,3 +1,5 @@
+'use client'
+
 import { TWithChildren } from '@/types/components'
 
 /**

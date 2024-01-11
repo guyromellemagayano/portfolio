@@ -1,3 +1,5 @@
+'use client'
+
 import { Card } from '@/components'
 
 import { formatDate } from '@/lib'
