@@ -1,3 +1,5 @@
+'use client'
+
 import { TProjectListProps } from '@/types/components'
 
 /**
