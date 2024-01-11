@@ -11,7 +11,6 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
   env: {
     nextPublicGaMeasurementId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-    nextCmsWordPressUrl: process.env.NEXT_CMS_WORDPRESS_URL,
     sentryAuthToken: process.env.SENTRY_AUTH_TOKEN,
     sentryDsn: process.env.SENTRY_DSN,
     sentryOrg: process.env.SENTRY_ORG,
