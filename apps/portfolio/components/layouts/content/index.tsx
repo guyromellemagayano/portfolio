@@ -2,9 +2,9 @@
 
 import { Suspense } from 'react'
 
-import { useLazyLoading } from '@/hooks'
-
 import { Skeleton } from '@/components'
+
+import { useLazyLoading } from '@/hooks'
 
 import { TContentLayoutProps } from '@/types/components'
 

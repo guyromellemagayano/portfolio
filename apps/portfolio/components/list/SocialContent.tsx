@@ -1,8 +1,10 @@
+'use client'
+
 import clsx from 'clsx'
 
-import { SocialLinksData } from '@/data'
-
 import { SocialLink } from '@/components'
+
+import { SocialLinksData } from '@/data'
 
 import { TSocialLinksData } from '@/types/data'
 

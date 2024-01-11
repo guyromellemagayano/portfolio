@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, ImageLayout, LinkSvgImage } from '@/components'
 
 import { TProjectListCardProps } from '@/types/components'

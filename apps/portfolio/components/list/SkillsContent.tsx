@@ -1,3 +1,5 @@
+'use client'
+
 import { SectionLayout } from '@/components'
 
 import { TSkillsListProps } from '@/types/components'
