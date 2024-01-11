@@ -1,4 +1,5 @@
 import { Button, ContentLayout } from '@/components'
+
 import { TErrorProps } from '@/types/components'
 
 /**

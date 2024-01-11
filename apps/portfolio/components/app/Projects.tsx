@@ -1,8 +1,8 @@
 'use client'
 
-import { ProjectsData } from '@/data'
-
 import { ContentLayout, ProjectsList } from '@/components'
+
+import { ProjectsData } from '@/data'
 
 /**
  * Renders the projects page.
