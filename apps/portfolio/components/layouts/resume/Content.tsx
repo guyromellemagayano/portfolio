@@ -4,7 +4,7 @@ import { Key } from 'react'
 
 import Image from 'next/image'
 
-import { TWorkExperience } from '@/data/work'
+import { TWorkExperience } from '@/data'
 
 import { ArrowDownSvgImage, BriefcaseSvgImage, Button } from '@/components'
 
