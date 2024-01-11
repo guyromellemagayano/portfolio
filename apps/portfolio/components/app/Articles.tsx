@@ -1,8 +1,8 @@
 'use client'
 
-import { ArticlesData } from '@/data'
-
 import { ArticlesList, ContentLayout } from '@/components'
+
+import { ArticlesData } from '@/data'
 
 /**
  * Renders the articles page.

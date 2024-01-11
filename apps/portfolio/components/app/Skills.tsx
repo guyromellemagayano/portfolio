@@ -1,8 +1,8 @@
 'use client'
 
-import { SkillsData } from '@/data'
-
 import { ContentLayout, SkillsList, SkillsListCards } from '@/components'
+
+import { SkillsData } from '@/data'
 
 /**
  * Renders the skills page.
