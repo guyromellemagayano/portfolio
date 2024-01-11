@@ -1,8 +1,8 @@
 'use client'
 
-import { UsesData } from '@/data'
-
 import { ContentLayout, ToolsList, ToolsListCards } from '@/components'
+
+import { UsesData } from '@/data'
 
 /**
  * Renders the uses page.

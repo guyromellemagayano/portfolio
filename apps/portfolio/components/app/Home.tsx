@@ -2,8 +2,6 @@
 
 import { ReactNode } from 'react'
 
-import { HomeData, SocialLinksData } from '@/data'
-
 import {
   Article,
   Container,
@@ -12,6 +10,8 @@ import {
   ResumeLayout,
   SocialLink
 } from '@/components'
+
+import { HomeData, SocialLinksData } from '@/data'
 
 /**
  * Renders the home page.

@@ -1,8 +1,8 @@
 'use client'
 
-import { WorkData } from '@/data'
-
 import { ContentLayout, WorkList, WorkListCards } from '@/components'
+
+import { WorkData } from '@/data'
 
 /**
  * Renders the work page.
