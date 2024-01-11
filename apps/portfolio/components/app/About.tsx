@@ -1,6 +1,6 @@
-import { AboutData, SocialLinksData } from '@/data'
-
 import { Container, ContentLayout, ImageLayout, SocialList } from '@/components'
+
+import { AboutData, SocialLinksData } from '@/data'
 
 import { imagePortrait } from '@/images'
 
