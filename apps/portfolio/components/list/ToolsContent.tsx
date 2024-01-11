@@ -1,3 +1,5 @@
+'use client'
+
 import { SectionLayout } from '@/components'
 
 import { TToolsListProps } from '@/types/components'

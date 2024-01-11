@@ -1,3 +1,5 @@
+'use client'
+
 import { Card } from '@/components'
 
 import { TToolsListCardsProps } from '@/types/components'

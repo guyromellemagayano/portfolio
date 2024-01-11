@@ -1,8 +1,8 @@
 'use client'
 
-import { NavigationData } from '@/data'
-
 import { Container, NavLink } from '@/components'
+
+import { NavigationData } from '@/data'
 
 /**
  * Render the footer layout component.
