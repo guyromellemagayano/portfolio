@@ -1,13 +1,13 @@
 import { Key, ReactNode } from 'react'
 
 import clsx from 'clsx'
+import { usePathname } from 'next/navigation'
 
 import { Container } from '@/components'
 
 import { isArrayType } from '@/lib'
 
 import { TContentLayoutProps } from '@/types/components'
-import { usePathname } from 'next/navigation'
 
 /**
  * Render the simple layout content.

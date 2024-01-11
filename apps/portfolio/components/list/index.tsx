@@ -1,10 +1,12 @@
+'use client'
+
 import { Suspense } from 'react'
 
-import { useLazyLoading } from '@/hooks'
-
-import { TSocialLinksData } from '@/data/social-links'
-
 import { Skeleton } from '@/components'
+
+import { TSocialLinksData } from '@/data'
+
+import { useLazyLoading } from '@/hooks'
 
 import {
   TSkillsListCardsProps,
