@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
 
-import { NEXT_CMS_WORDPRESS_URL } from '@/configs/env'
-
 import {
   AboutApp,
   ArticlesApp,
@@ -12,71 +10,72 @@ import {
   WorkApp
 } from '@/components'
 
-import { arrayToUrlSlug } from '@/lib'
+import {
+  AboutData,
+  ArticlesData,
+  ProjectsData,
+  SkillsData,
+  UsesData,
+  WorkData
+} from '@/data'
 
 type Props = {
-  params: { slug: string[] }
+  params: { slug: string }
 }
 
+const { meta: skillsMeta } = SkillsData()
+const { meta: workMeta } = WorkData()
+const { meta: projectsMeta } = ProjectsData()
+const { meta: articlesMeta } = ArticlesData()
+const { meta: aboutMeta } = AboutData()
+const { meta: usesMeta } = UsesData()
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const slug = params.slug
+  const slug = params.slug?.[0]
 
-  const seo: {
-    title: string
-    metaDesc: string
-    focuskw: string
-  } = await fetch(NEXT_CMS_WORDPRESS_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query: `
-        query fetchPage($slug: ID!) {
-          page(id: $slug, idType: URI) {
-            seo {
-              canonical
-              cornerstone
-              metaDesc
-              focuskw
-              metaDesc
-              metaKeywords
-              metaRobotsNofollow
-              metaRobotsNoindex
-              opengraphAuthor
-              opengraphDescription
-              opengraphModifiedTime
-              opengraphPublishedTime
-              opengraphPublisher
-              opengraphSiteName
-              opengraphTitle
-              opengraphType
-              opengraphUrl
-              readingTime
-              title
-              twitterDescription
-              twitterTitle
-              schema {
-                articleType
-                pageType
-                raw
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        slug: arrayToUrlSlug(slug)
+  switch (slug) {
+    case 'skills':
+      return {
+        title: skillsMeta.title,
+        description: skillsMeta.description,
+        keywords: 'skills'
       }
-    })
-  })
-    .then(res => res.json())
-    .then(res => res?.data?.page?.seo || {})
-
-  return {
-    title: seo.title || '',
-    description: seo.metaDesc || '',
-    keywords: seo.focuskw || ''
+    case 'work':
+      return {
+        title: workMeta.title,
+        description: workMeta.description,
+        keywords: 'work'
+      }
+    case 'projects':
+      return {
+        title: projectsMeta.title,
+        description: projectsMeta.description,
+        keywords: 'projects'
+      }
+    case 'articles':
+      return {
+        title: articlesMeta.title,
+        description: articlesMeta.description,
+        keywords: 'articles'
+      }
+    case 'about':
+      return {
+        title: aboutMeta.title,
+        description: aboutMeta.description,
+        keywords: 'about'
+      }
+    case 'uses':
+      return {
+        title: usesMeta.title,
+        description: usesMeta.description,
+        keywords: 'uses'
+      }
+    default:
+      return {
+        title: '404 Error - Page Not Found',
+        description: "Sorry we couldn't find the page you're looking for.",
+        keywords: ''
+      }
   }
 }
 
@@ -86,7 +85,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  * @returns A dynamic page component
  */
 const Page = ({ params }: Props): JSX.Element => {
-  switch (params.slug[0]) {
+  const slug = params.slug?.[0] || ''
+
+  switch (slug) {
     case 'skills':
       return <SkillsApp />
     case 'work':
