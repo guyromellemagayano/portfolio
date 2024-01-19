@@ -5,7 +5,12 @@ import { createContext, useEffect, useRef } from 'react'
 import { ThemeProvider, useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
 
-const usePrevious = <T,>(value: T) => {
+/**
+ * Custom hook that returns the previous value of a given value.
+ * @param value - The value to return the previous value of.
+ * @returns The previous value of the given value.
+ */
+const usePrevious = <T,>(value: T): T | undefined => {
   const ref = useRef<T>()
 
   useEffect(() => {
@@ -15,7 +20,11 @@ const usePrevious = <T,>(value: T) => {
   return ref.current
 }
 
-const ThemeWatcher = () => {
+/**
+ * ThemeWatcher component that watches for changes in the system theme and updates the theme accordingly.
+ * @returns The rendered ThemeWatcher component.
+ */
+const ThemeWatcher = (): null => {
   const { resolvedTheme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -39,9 +48,17 @@ const ThemeWatcher = () => {
   return null
 }
 
+/**
+ * AppContext that provides the previous pathname to the application.
+ */
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
-export const Providers = ({ children }: { children: React.ReactNode }) => {
+/**
+ * Providers component that provides the application with the previous pathname and theme.
+ * @param children - The child elements to be rendered within the layout.
+ * @returns The rendered Providers component.
+ */
+export const Providers = ({ children }: { children: React.ReactNode }): JSX.Element => {
   const pathname = usePathname()
   const previousPathname = usePrevious(pathname)
 
