@@ -1,12 +1,10 @@
 import { Metadata } from 'next'
 
-import HomeApp from '@/components/app/Home'
+import AboutApp from '@/components/app/About'
 
-import HomeData from '@/data/home'
+import AboutData from '@/data/about'
 
-// import { getAllArticles } from '@/lib/articles'
-
-const data = HomeData()
+const data = AboutData()
 
 export const metadata: Metadata = {
   title: data?.meta?.title || '',
@@ -15,11 +13,11 @@ export const metadata: Metadata = {
 }
 
 /**
- * Renders the home page.
- * @returns The home page component.
+ * Renders the about page.
+ * @returns The about page component.
  */
 const Page = async (): Promise<JSX.Element> => {
-  return <HomeApp {...data} />
+  return <AboutApp {...data} />
 }
 
 export default Page
