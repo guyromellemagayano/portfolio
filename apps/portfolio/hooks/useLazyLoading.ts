@@ -1,5 +1,6 @@
-import { LAZY_LOADING_DURATION } from '@/configs/env'
 import { ComponentType, LazyExoticComponent, lazy } from 'react'
+
+import { LAZY_LOADING_DURATION } from '@/configs/env'
 
 export type TUseLazyLoading = {
   importFunction: any
