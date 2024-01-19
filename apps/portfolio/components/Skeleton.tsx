@@ -1,10 +1,17 @@
-'use client'
+import { ReactNode } from 'react';
 
-import { ReactNode } from 'react'
+import clsx from 'clsx';
 
-import clsx from 'clsx'
+import {
+  TBlockProps,
+  TWithChildren,
+  TWithClassName,
+  TWithIDAndClass
+} from '@/types/common';
 
-import { TAvatarProps, TBlockProps, TWithClassName } from '@/types/components'
+export type TAvatarProps<T = object> = T &
+  TWithIDAndClass<T> &
+  TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
 
 /**
  * Render the about app skeleton content.

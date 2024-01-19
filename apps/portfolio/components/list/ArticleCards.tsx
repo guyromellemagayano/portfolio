@@ -1,10 +1,9 @@
 'use client'
 
-import { Card } from '@/components'
+import type { TArticleProps } from '@/components/Article'
+import Card from '@/components/Card'
 
-import { formatDate } from '@/lib'
-
-import { TArticleProps } from '@/types/components'
+import { formatDate } from '@/utils/formatDate'
 
 /**
  * Renders a list of articles cards.
@@ -15,7 +14,7 @@ import { TArticleProps } from '@/types/components'
  * @param {String} props.description - The article description.
  * @returns {JSX.Element} The rendered component.
  */
-const ArticlesListCards = (props: TArticleProps): JSX.Element => {
+const ArticlesCardsList = (props: TArticleProps): JSX.Element => {
   return (
     <article className="md:grid md:grid-cols-4 md:items-baseline">
       <Card.Eyebrow
@@ -36,4 +35,4 @@ const ArticlesListCards = (props: TArticleProps): JSX.Element => {
   )
 }
 
-export default ArticlesListCards
+export default ArticlesCardsList

@@ -2,7 +2,10 @@
 
 import clsx from 'clsx'
 
-import { TProseProps } from '@/types/components'
+import type { TWithChildren, TWithClassName } from '@/types/common'
+
+export type TProseProps<T = object> = T &
+  TWithChildren<T> & TWithClassName<T>
 
 /**
  * Renders a prose component.

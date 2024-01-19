@@ -6,11 +6,28 @@ import { useRouter } from 'next/navigation'
 
 import { AppContext } from '@/app/providers'
 
-import { ArrowLeftSvgImage, Container, Prose } from '@/components'
+import Container from '@/components/Container'
+import ArrowLeftSvgImage from '@/components/images/svg/ArrowLeft'
+import Prose from '@/components/Prose'
 
-import { formatDate } from '@/lib'
+import { formatDate } from '@/utils/formatDate'
 
-import { TArticleLayoutProps } from '@/types/components'
+import type { TWithChildren } from '@/types/common'
+import Button from '../Button'
+
+export type TArticleCommonProps<T = object> = T & {
+  meta: {
+    title: string | null
+    description: string | null
+    date: string | null
+  }
+}
+
+export type TArticleLayoutProps<T = object> = T &
+  TWithChildren<T> & {
+    article: TArticleCommonProps['meta']
+    author: string | null
+  }
 
 /**
  * Render the article layout component.
@@ -33,14 +50,14 @@ const ArticleLayout = ({
       <div className="xl:relative">
         <div className="mx-auto max-w-2xl">
           {previousPathname && (
-            <button
+            <Button
               type="button"
               onClick={() => router.back()}
               aria-label="Go back to articles"
               className="group mb-8 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 transition dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 dark:ring-white/10 dark:hover:border-zinc-700 dark:hover:ring-white/20 lg:absolute lg:-left-5 lg:mb-0 lg:-mt-2 xl:-top-1.5 xl:left-0 xl:mt-0"
             >
               <ArrowLeftSvgImage className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400" />
-            </button>
+            </Button>
           )}
 
           <article>
