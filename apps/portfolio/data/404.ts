@@ -1,4 +1,4 @@
-import { TGenericPageData } from '@/types/common'
+import type { TGenericPageData } from '@/types/common'
 
 export type TNotFoundPageData<T = object> = TGenericPageData<T>
 

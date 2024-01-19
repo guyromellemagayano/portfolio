@@ -1,8 +1,8 @@
 import { StaticImageData } from 'next/image'
 
-import { TWorkExperience } from './work'
+import type { TWorkExperience } from './work'
 
-import { TGenericPageData } from '@/types/common'
+import type { TGenericPageData } from '@/types/common'
 
 import logoEpicDesignLabs from '@/images/logos/epic-design-labs.png'
 import logoInfosoftStudio from '@/images/logos/infosoft-studio.png'
