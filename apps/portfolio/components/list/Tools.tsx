@@ -1,8 +1,13 @@
 'use client'
 
-import { SectionLayout } from '@/components'
+import SectionLayout from "@/components/layouts/Section"
 
-import { TToolsListProps } from '@/types/components'
+import type { TWithChildren } from "@/types/common"
+
+export type TToolsListProps<T = object> = T &
+  TWithChildren<T> & {
+    title?: string | null
+  }
 
 /**
  * Renders a list of tools.

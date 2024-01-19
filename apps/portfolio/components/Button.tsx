@@ -1,9 +1,21 @@
 'use client'
 
-import clsx from 'clsx'
-import Link from 'next/link'
+import { ButtonHTMLAttributes } from 'react'
 
-import { ButtonVariant, TButtonProps } from '@/types/components'
+import clsx from 'clsx'
+
+import type { TWithChildren, TWithClassName } from '@/types/common'
+
+export type ButtonVariant = 'primary' | 'secondary'
+
+export type TButtonProps<T = object> = T &
+  ButtonHTMLAttributes<HTMLButtonElement> &
+  TWithChildren<T> &
+  TWithClassName<T> & {
+    type?: 'button' | 'submit' | 'reset'
+    variant?: 'primary' | 'secondary'
+    className?: string
+  }
 
 /**
  * Generate a class name for the button based on its variant.
@@ -40,19 +52,10 @@ const Button = ({
   type = 'button',
   variant = 'primary',
   className,
-  href,
   children,
   ...rest
 }: TButtonProps): JSX.Element => {
   const updatedClassName = generateButtonClassName(variant, className)
-
-  if (href) {
-    return (
-      <Link href={href}>
-        <span className={updatedClassName}>{children}</span>
-      </Link>
-    )
-  }
 
   return (
     <button type={type} className={updatedClassName} {...rest}>

@@ -1,8 +1,14 @@
 'use client'
 
+import { CSSProperties } from 'react'
+
 import clsx from 'clsx'
 
-import { TAvatarContainerProps } from '@/types/components'
+import type { TWithChildren, TWithClassName } from '@/types/common'
+
+export type TAvatarContainerProps<T = object> = T &
+  TWithClassName<T> &
+  TWithChildren<T> & { style?: CSSProperties }
 
 /**
  * Render avatar container component

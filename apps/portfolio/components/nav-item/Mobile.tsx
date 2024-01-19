@@ -3,7 +3,7 @@
 import { Popover } from '@headlessui/react'
 import Link from 'next/link'
 
-import { TNavItemProps } from '@/types/components'
+import type { TNavItemProps } from '@/components/NavItem'
 
 /**
  * Renders a mobile navigation item.

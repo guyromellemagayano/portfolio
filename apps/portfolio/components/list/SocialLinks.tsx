@@ -2,11 +2,10 @@
 
 import clsx from 'clsx'
 
-import { SocialLink } from '@/components'
+import SocialLink from '@/components/links/Social'
 
-import { SocialLinksData } from '@/data'
-
-import { TSocialLinksData } from '@/types/data'
+import type { TSocialLinksData } from '@/data/social-links'
+import SocialLinksData from '@/data/social-links'
 
 /**
  * Renders a list of social links.

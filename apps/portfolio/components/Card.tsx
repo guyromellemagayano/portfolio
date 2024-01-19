@@ -3,9 +3,23 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 
-import { ChevronRightSvgImage } from '@/components'
+import ChevronRightSvgImage from '@/components/images/svg/ChevronRight'
 
-import { TBlockProps, TCardCommonProps } from '@/types/components'
+import type { TBlockProps, TWithChildren, TWithClassName } from '@/types/common'
+
+export type TCardProps<T = object> = T &
+  TWithChildren<T> &
+  TWithClassName<T> & {
+    as?: React.ElementType
+  }
+
+export type TCardCommonProps<T = object> = T &
+  TCardProps & {
+    href?: string
+    title?: string
+    decorate?: boolean
+    target?: string
+  }
 
 /**
  * A card component that renders a container with a group class and a relative position.

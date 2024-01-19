@@ -1,6 +1,6 @@
 'use client'
 
-import { TWithChildren } from '@/types/components'
+import type { TWithChildren } from "@/types/common"
 
 /**
  * Renders a list of articles.

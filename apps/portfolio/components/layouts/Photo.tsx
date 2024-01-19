@@ -1,18 +1,30 @@
 'use client'
 
 import clsx from 'clsx'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
-import { RotationsData } from '@/data'
+import RotationsData from '@/data/rotations'
 
-import { TPhotoLayoutProps } from '@/types/components'
+import type { TWithChildren } from '@/types/common'
+
+export type TPhotoLayoutData<T = object> = T & {
+  alt: string
+  src: StaticImport | string | null
+  [key: string]: any
+}
+
+export type TPhotoLayoutProps<T = object> = T &
+  TWithChildren<T> & {
+    data?: Array<TPhotoLayoutData> | null
+  }
 
 /**
  * Render the photos component.
  * @param data - The photos data.
  * @returns {JSX.Element} The rendered component.
  */
-const PhotoLayoutContent = ({ data }: TPhotoLayoutProps): JSX.Element => {
+const PhotoLayout = ({ data }: TPhotoLayoutProps): JSX.Element => {
   return (
     <div className="mt-16 sm:mt-20">
       <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
@@ -39,4 +51,4 @@ const PhotoLayoutContent = ({ data }: TPhotoLayoutProps): JSX.Element => {
   )
 }
 
-export default PhotoLayoutContent
+export default PhotoLayout

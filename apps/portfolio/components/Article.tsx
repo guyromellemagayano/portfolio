@@ -1,10 +1,15 @@
 'use client'
 
-import { Card } from '@/components'
+import Card from '@/components/Card'
 
-import { formatDate } from '@/lib'
+import { formatDate } from "@/utils/formatDate"
 
-import { TArticleProps } from '@/types/components'
+export type TArticleProps<T = object> = T & {
+  slug: string
+  title: string
+  date: string
+  description: string
+}
 
 /**
  * Renders an article card with title, date, description, and a CTA to read the full article.

@@ -1,15 +1,22 @@
-import { Container, ContentLayout, ImageLayout, SocialList } from '@/components'
+'use client'
 
-import { AboutData, SocialLinksData } from '@/data'
+import Container from '@/components/Container'
+import ContentLayout from '@/components/layouts/Content'
+import ImageLayout from '@/components/layouts/Image'
+import SocialLinksList from '@/components/list/SocialLinks'
 
-import { imagePortrait } from '@/images'
+import type { TAboutData } from '@/data/about'
+import SocialLinksData from '@/data/social-links'
+
+import imagePortrait from '@/images/avatar.jpg'
 
 /**
  * Renders the about page.
  * @returns The about page component.
  */
-const AboutApp = (): JSX.Element => {
-  const { hero } = AboutData()
+const AboutApp = (data: TAboutData): JSX.Element => {
+  const heading = data?.hero?.heading || ''
+  const description = data?.hero?.description || []
 
   return (
     <Container id="hero" className="mt-16 sm:mt-32">
@@ -27,13 +34,13 @@ const AboutApp = (): JSX.Element => {
         </div>
         <div className="lg:order-first lg:row-span-2">
           <ContentLayout
-            title={hero?.heading || ''}
-            intro={hero?.description || []}
+            title={heading}
+            intro={description}
             layout="aside"
           />
         </div>
         <div className="lg:pl-20">
-          <SocialList data={SocialLinksData} />
+          <SocialLinksList data={SocialLinksData} />
         </div>
       </div>
     </Container>

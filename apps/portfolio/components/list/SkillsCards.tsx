@@ -1,10 +1,21 @@
 'use client'
 
-import { Card } from '@/components'
+import Card from '@/components/Card'
 
-import { isEmpty } from '@/lib'
+import type { TSkillsItemsProps } from '@/data/skills'
 
-import { TSkillsListCardsProps } from '@/types/components'
+import { isEmpty } from '@/utils/checkTypes'
+
+import type { TWithChildren } from '@/types/common'
+
+export type TSkillsCardsListProps<T = object> = T &
+  TWithChildren<T> &
+  Pick<TSkillsItemsProps, 'title' | 'description' | 'technologies'> & {
+    cta?: Array<{
+      projects: string[]
+      text: string
+    }> | null
+  }
 
 /**
  * Renders a list of skills cards.
@@ -15,7 +26,7 @@ import { TSkillsListCardsProps } from '@/types/components'
  * @param {Array} props.cta - The call to action of the card.
  * @returns {JSX.Element} The rendered component.
  */
-const SkillsListCards = (props: TSkillsListCardsProps): JSX.Element => {
+const SkillsCardsList = (props: TSkillsCardsListProps): JSX.Element => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={props?.title || ''}>
@@ -76,4 +87,4 @@ const SkillsListCards = (props: TSkillsListCardsProps): JSX.Element => {
   )
 }
 
-export default SkillsListCards
+export default SkillsCardsList

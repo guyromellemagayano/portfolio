@@ -1,13 +1,24 @@
-import { Key, ReactNode } from 'react'
+'use client'
 
-import clsx from 'clsx'
+import { Key } from 'react'
+
+import { clsx } from 'clsx'
 import { usePathname } from 'next/navigation'
 
-import { Container } from '@/components'
+import Container from '@/components/Container'
 
-import { isArrayType } from '@/lib'
+import { isArrayType } from '@/utils/checkTypes'
 
-import { TContentLayoutProps } from '@/types/components'
+import type { TWithClassName, TWithIDAndClass } from '@/types/common'
+
+export type TContentLayoutProps<T = object> = T &
+  TWithClassName<T> &
+  TWithIDAndClass<T> & {
+    as?: React.ElementType
+    title?: string | null
+    intro?: string[] | string | null
+    layout?: 'simple' | 'aside'
+  }
 
 /**
  * Render the simple layout content.
@@ -69,6 +80,7 @@ const ContentAside = (props: TContentLayoutProps): JSX.Element => {
       <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
         {props?.title || ''}
       </h1>
+
       {isArrayType(props?.intro) && props?.intro?.length > 0
         ? props.intro.map(
             (paragraph: string, index: Key | null | undefined) => {
@@ -99,7 +111,7 @@ const ContentAside = (props: TContentLayoutProps): JSX.Element => {
  * @param {ReactNode} props.children - The children of the layout.
  * @returns The content layout component.
  */
-const Content = ({
+const ContentLayout = ({
   as: Component = 'div',
   className,
   children,
@@ -117,4 +129,4 @@ const Content = ({
   return <Component className={className}>{render}</Component>
 }
 
-export default Content
+export default ContentLayout

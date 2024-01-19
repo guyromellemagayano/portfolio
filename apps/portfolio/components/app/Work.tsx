@@ -1,33 +1,41 @@
 'use client'
 
-import { ContentLayout, WorkList, WorkListCards } from '@/components'
+import ContentLayout from '@/components/layouts/Content'
+import WorkList from '@/components/list/Work'
+import WorkListCards from '@/components/list/WorkCards'
 
-import { WorkData } from '@/data'
+import type { TWorkData } from '@/data/work'
 
 /**
  * Renders the work page.
  * @returns The work page component.
  */
-const WorkApp = (): JSX.Element => {
-  const { hero, workExperiences } = WorkData()
+const WorkApp = (data: TWorkData): JSX.Element => {
+  const heading = data?.hero?.heading || ''
+  const description = data?.hero?.description || []
+  const workExperiences = data?.workExperiences || []
 
   return (
     <ContentLayout
       id="hero"
-      title={hero?.heading || ''}
-      intro={hero?.description || []}
+      title={heading}
+      intro={description}
       className="mt-16 sm:mt-32"
     >
       <div className="grid gap-y-12">
-        {workExperiences?.map(item => (
-          <WorkList
-            key={item.duration || ''}
-            title={item?.duration || ''}
-            {...item}
-          >
-            <WorkListCards {...item} />
-          </WorkList>
-        ))}
+        {workExperiences?.map(item => {
+          const duration = item?.duration || ''
+
+          return (
+            <WorkList
+              key={duration}
+              title={duration}
+              {...item}
+            >
+              <WorkListCards {...item} />
+            </WorkList>
+          )
+        })}
       </div>
     </ContentLayout>
   )

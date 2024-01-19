@@ -4,9 +4,11 @@ import { Fragment } from 'react'
 
 import { Popover, Transition } from '@headlessui/react'
 
-import { ChevronDownSvgImage, CloseSvgImage, MobileNavItem } from '@/components'
+import ChevronDownSvgImage from '@/components/images/svg/ChevronDown'
+import CloseSvgImage from '@/components/images/svg/Close'
+import MobileNavItem from '@/components/nav-item/Mobile'
 
-import { NavigationData } from '@/data'
+import NavigationData from '@/data/navigation'
 
 /**
  * Renders a mobile navigation item.
