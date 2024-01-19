@@ -1,10 +1,10 @@
 const { join } = require('path')
-
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind')
 const aspectRatio = require('@tailwindcss/aspect-ratio')
 const forms = require('@tailwindcss/forms')
 const typography = require('@tailwindcss/typography')
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     join(
