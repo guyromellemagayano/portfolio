@@ -1,4 +1,4 @@
-import { TDataProps } from '@/types/common'
+import type { TDataProps } from '@/types/common'
 
 export type TUsesData<T = object> = TDataProps<T> & {
   tools: Array<{

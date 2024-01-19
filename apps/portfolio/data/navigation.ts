@@ -1,4 +1,5 @@
-import PagesData, { TPagesData } from './pages'
+import type { TPagesData } from '@/data/pages'
+import PagesData from '@/data/pages'
 
 export type TNavigationData<T = object> = T & {
   menu: Array<TNavigationMenuData>
