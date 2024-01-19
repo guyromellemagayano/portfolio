@@ -1,6 +1,18 @@
 import glob from 'fast-glob'
 
-import { TProjectLibProps, TProjectWithSlugLibProps } from '@/types/libs'
+// Types for project lib function
+export type TProjectLibProps<T = any> = T & {
+  name: string
+  description: string
+  link: { url: string; text: string }
+  tech: string[]
+}
+
+// Types for project lib function with slug
+export type TProjectWithSlugLibProps<T = any> = T &
+  TProjectLibProps & {
+    slug: string
+  }
 
 // Import a project
 export const importProject = async (
