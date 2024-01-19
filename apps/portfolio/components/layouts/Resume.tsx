@@ -3,19 +3,23 @@
 import { Key } from 'react'
 
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
-import { TWorkExperience } from '@/data'
+import Button from '@/components/Button'
+import ArrowDownSvgImage from '@/components/images/svg/ArrowDown'
+import BriefcaseSvgImage from '@/components/images/svg/Briefcase'
 
-import { ArrowDownSvgImage, BriefcaseSvgImage, Button } from '@/components'
-
-import { TResumeProps } from '@/types/components'
+import type { THomeData } from '@/data/home'
+import type { TWorkExperience } from '@/data/work'
 
 /**
  * Render the resume component.
  * @param data - The resume data.
  * @returns {JSX.Element} The rendered component.
  */
-const Resume = ({ data }: TResumeProps): JSX.Element => {
+const ResumeLayout = (data: THomeData): JSX.Element => {
+  const router = useRouter()
+
   return (
     <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
       <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -23,7 +27,7 @@ const Resume = ({ data }: TResumeProps): JSX.Element => {
         <span className="ml-3">Work</span>
       </h2>
       <ol className="mt-6 space-y-4">
-        {data?.work?.map(
+        {data?.workExperiences?.map(
           (role: TWorkExperience, index: Key | null | undefined) => (
             <li key={index} className="flex gap-4">
               <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 rounded-full">
@@ -64,7 +68,7 @@ const Resume = ({ data }: TResumeProps): JSX.Element => {
       </ol>
 
       <Button
-        href={data?.file || '#'}
+        onClick={() => router.push(data?.cvFile || '#')}
         variant="secondary"
         className="group mt-6 w-full"
       >
@@ -75,4 +79,4 @@ const Resume = ({ data }: TResumeProps): JSX.Element => {
   )
 }
 
-export default Resume
+export default ResumeLayout

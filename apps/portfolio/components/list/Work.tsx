@@ -1,8 +1,13 @@
 'use client'
 
-import { SectionLayout } from '@/components'
+import SectionLayout from "@/components/layouts/Section"
 
-import { TWorkListProps } from '@/types/components'
+import type { TWithChildren } from "@/types/common"
+
+export type TWorkListProps<T = object> = T &
+  TWithChildren<T> & {
+    title?: string | null
+  }
 
 /**
  * Renders a list of work experiences.
