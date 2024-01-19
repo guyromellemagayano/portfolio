@@ -4,7 +4,13 @@ import Script from 'next/script'
 import { Providers } from '@/app/providers'
 import { StyledComponentsRegistry } from '@/app/registry'
 
-import { FooterLayout, HeaderLayout } from '@/components'
+import { NEXT_PUBLIC_GA_MEASUREMENT_ID, NEXT_PUBLIC_GA_MEASUREMENT_URL } from '@/configs/env'
+
+import FooterLayout from '@/components/layouts/Footer'
+import HeaderLayout from '@/components/layouts/Header'
+
+import type { TNavigationData } from '@/data/navigation'
+import NavigationData from '@/data/navigation'
 
 import '@/styles/tailwind.css'
 
@@ -17,13 +23,16 @@ import 'focus-visible'
  * @param {JSX.Element} props.children - The child elements to be rendered within the layout.
  * @returns {JSX.Element} The rendered RootLayout component.
  */
-const RootLayout = ({ children }: { children: JSX.Element }) => {
-  const gtmSrc = `https://www.googletagmanager.com/gtag/js?id=${process.env.nextPublicGaMeasurementId}`
+const RootLayout = ({ children }: { children: JSX.Element }): JSX.Element => {
+  const footerData: TNavigationData = NavigationData()
 
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <head>
-        <Script strategy="afterInteractive" src={gtmSrc} />
+        <Script
+          strategy="afterInteractive"
+          src={NEXT_PUBLIC_GA_MEASUREMENT_URL}
+        />
         <Script
           id="google-analytics"
           strategy="afterInteractive"
@@ -32,7 +41,7 @@ const RootLayout = ({ children }: { children: JSX.Element }) => {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', "${process.env.nextPublicGaMeasurementId}");
+              gtag('config', "${NEXT_PUBLIC_GA_MEASUREMENT_ID}");
             `
           }}
         />
@@ -48,7 +57,7 @@ const RootLayout = ({ children }: { children: JSX.Element }) => {
                   {children}
                   <Analytics />
                 </main>
-                <FooterLayout />
+                <FooterLayout {...footerData} />
               </div>
             </div>
           </StyledComponentsRegistry>
