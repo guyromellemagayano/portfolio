@@ -8,7 +8,7 @@ import SocialLinksList from '@/components/list/SocialLinks'
 import type { TAboutData } from '@/data/about'
 import SocialLinksData from '@/data/social-links'
 
-import imagePortrait from '@/images/avatar.jpg'
+import imagePortrait from '@/images/portrait.jpg'
 
 /**
  * Renders the about page.
