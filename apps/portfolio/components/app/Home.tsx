@@ -2,27 +2,26 @@
 
 import { ReactNode } from 'react'
 
-import {
-  Article,
-  Container,
-  ContentLayout,
-  PhotoLayout,
-  ResumeLayout,
-  SocialLink
-} from '@/components'
+import Article, { TArticleProps } from '@/components/Article'
+import Container from '@/components/Container'
+import ContentLayout from '@/components/layouts/Content'
+import NewsletterLayout from '@/components/layouts/Newsletter'
+import PhotoLayout from '@/components/layouts/Photo'
+import ResumeLayout from '@/components/layouts/Resume'
+import SocialLink from '@/components/links/Social'
 
-import { HomeData, SocialLinksData } from '@/data'
+import type { THomeData } from '@/data/home'
+import SocialLinksData from '@/data/social-links'
+
+import type { TWithClassName } from '@/types/common'
 
 /**
  * Renders the home page.
  * @returns The home page component.
  */
-const HomeApp = (): JSX.Element => {
-  const { hero, workExperiences, cvFile, slidePhotos } = HomeData()
-  const workData = {
-    work: workExperiences,
-    file: cvFile
-  }
+const HomeApp = (data: THomeData): JSX.Element => {
+  const hero = data?.hero || {}
+  const slidePhotos = data?.slidePhotos || []
   const articles = []
 
   return (
@@ -35,30 +34,29 @@ const HomeApp = (): JSX.Element => {
       >
         <div className="mt-6 flex gap-6">
           {SocialLinksData?.map(link => {
-            return <SocialLink key={link.url} {...link} />
+            const url = link?.url || ''
+
+            return <SocialLink key={url} {...link} />
           })}
         </div>
       </ContentLayout>
-
       <PhotoLayout data={slidePhotos} />
-
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
             {articles?.map(
               (
                 article: JSX.IntrinsicAttributes &
-                  object & { children?: ReactNode } & {
-                    className?: string | undefined
-                  } & { title: string; description: string; date: string } & {
+                  object & { children?: ReactNode } & TWithClassName &
+                  TArticleProps & {
                     slug: string
                   }
               ) => <Article key={article.slug} {...article} />
             )}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <ResumeLayout data={workData} />
-            {/* <NewsLetterLayout /> */}
+            <ResumeLayout {...data} />
+            <NewsletterLayout />
           </div>
         </div>
       </Container>

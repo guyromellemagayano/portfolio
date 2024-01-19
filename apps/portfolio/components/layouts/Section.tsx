@@ -4,7 +4,13 @@ import { useId } from 'react'
 
 import clsx from 'clsx'
 
-import { TSectionLayoutProps } from '@/types/components'
+import type { TWithIDAndClass } from '@/types/common'
+
+export type TSectionLayoutProps<T = object> = T &
+  TWithIDAndClass<T> & {
+    title?: string | null
+    decorate?: boolean
+  }
 
 /**
  * The props for the Section component.
@@ -13,7 +19,7 @@ import { TSectionLayoutProps } from '@/types/components'
  * @param {React.ReactNode} children - The content of the section.
  * @returns {JSX.Element} The rendered component.
  */
-const SectionLayoutContent = ({
+const SectionLayout = ({
   title,
   decorate,
   children
@@ -43,4 +49,4 @@ const SectionLayoutContent = ({
   )
 }
 
-export default SectionLayoutContent
+export default SectionLayout

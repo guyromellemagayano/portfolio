@@ -1,35 +1,48 @@
 'use client'
 
-import { ContentLayout, ToolsList, ToolsListCards } from '@/components'
-
-import { UsesData } from '@/data'
+import type { TUsesData } from '@/data/uses'
+import ContentLayout from '../layouts/Content'
+import ToolsList from '../list/Tools'
+import ToolsListCards from '../list/ToolsCards'
 
 /**
  * Renders the uses page.
  * @returns The uses page component.
  */
-const UsesApp = (): JSX.Element => {
-  const { hero, tools } = UsesData()
+const UsesApp = (data: TUsesData): JSX.Element => {
+  const heading = data?.hero?.heading || ''
+  const description = data?.hero?.description || []
+  const tools = data?.tools || []
 
   return (
     <ContentLayout
       id="hero"
-      title={hero?.heading || ''}
-      intro={hero?.description || []}
+      title={heading}
+      intro={description}
       className="sm:px-8 mt-16 sm:mt-32"
     >
       <div className="space-y-20">
-        {tools?.map(tool => (
-          <ToolsList key={tool.name} title={tool.name}>
-            {tool.items?.map(item => (
-              <ToolsListCards
-                key={item.title}
-                title={item.title}
-                description={item.description}
-              />
-            ))}
-          </ToolsList>
-        ))}
+        {tools?.map(tool => {
+          const name = tool?.name || ''
+          const items = tool?.items || []
+
+          return (
+            <ToolsList key={name} title={name}>
+              {items?.map(item => {
+                const title = item?.title || ''
+                const description = item?.description || ''
+
+                return (
+                  <ToolsListCards
+                    key={title}
+                    title={title}
+                    description={description}
+                  />
+                )
+              })}
+            </ToolsList>
+          )
+        })}
       </div>
     </ContentLayout>
   )

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 
-import { TNavItemProps } from '@/types/components'
+import type { TNavItemProps } from '@/components/NavItem'
 
 /**
  * Renders a navigation link.

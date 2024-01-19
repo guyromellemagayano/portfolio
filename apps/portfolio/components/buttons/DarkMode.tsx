@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react'
 
 import { useTheme } from 'next-themes'
 
-import { MoonSvgImage, SunSvgImage } from '@/components'
+import MoonSvgImage from '@/components/images/svg/Moon'
+import SunSvgImage from '@/components/images/svg/Sun'
+
 
 /**
  * Render dark mode button component.

@@ -4,9 +4,13 @@ import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { TAvatarProps } from '@/types/components'
+import imageAvatar from '@/images/avatar.jpg'
 
-import { imageAvatar } from '@/images'
+import type { TWithChildren, TWithIDAndClass } from '@/types/common'
+
+export type TAvatarProps<T = object> = T &
+  TWithIDAndClass<T> &
+  TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
 
 /**
  * Render avatar component

@@ -1,10 +1,22 @@
 'use client'
 
-import { forwardRef } from 'react'
+import { CSSProperties, forwardRef } from 'react'
 
 import clsx from 'clsx'
 
-import { DivRef, TContainerProps, TContainerType } from '@/types/components'
+import type { TWithChildren, TWithIDAndClass } from '@/types/common'
+
+export type DivRef = HTMLDivElement
+
+export type TContainerProps<T = object> = T &
+  TWithChildren<T> & TWithIDAndClass<T> & {
+    style?: CSSProperties
+  }
+
+export type TContainerType = typeof ContainerWithRef & {
+  Outer: typeof OuterContainer
+  Inner: typeof InnerContainer
+}
 
 /**
  * A container component that wraps its children with an outer container.

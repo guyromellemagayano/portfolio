@@ -1,10 +1,18 @@
 'use client'
 
 import clsx from 'clsx'
+import { Url } from 'next/dist/shared/lib/router/router'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { TNavItemProps } from '@/types/components'
+import type { TWithChildren, TWithClassName } from '@/types/common'
+
+
+export type TNavItemProps<T = object> = T &
+  TWithChildren<T> &
+  TWithClassName<T> & {
+    href: Url
+  }
 
 /**
  * A navigation item component.
