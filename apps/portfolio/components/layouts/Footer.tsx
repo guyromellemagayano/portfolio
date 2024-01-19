@@ -1,17 +1,18 @@
 'use client'
 
-import { Container, NavLink } from '@/components'
+import Container from '@/components/Container'
+import NavLink from '@/components/NavLink'
 
-import { NavigationData } from '@/data'
+import type { TNavigationData } from '@/data/navigation'
 
 /**
  * Render the footer layout component.
  * @returns {JSX.Element} The rendered component.
  */
-const FooterLayout = (): JSX.Element => {
-  // Destructure the data from the FooterData function
-  const { footerNav, copyright } = NavigationData()
-
+const FooterLayout = ({
+  footerNav,
+  copyright
+}: TNavigationData): JSX.Element => {
   return (
     <footer className="mt-32">
       <Container.Outer>
@@ -19,14 +20,14 @@ const FooterLayout = (): JSX.Element => {
           <Container.Inner className="lg:px-6">
             <div className="flex flex-col items-center justify-between gap-6 lg:flex-row text-center lg:text-left">
               <div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                {footerNav.map(item => (
+                {footerNav?.map(item => (
                   <NavLink key={item.link} href={item.link}>
                     {item.title}
                   </NavLink>
                 ))}
               </div>
               <p className="text-sm text-zinc-400 dark:text-zinc-500">
-                &copy; {copyright.year} {copyright.text}
+                &copy; {copyright?.year} {copyright?.text}
               </p>
             </div>
           </Container.Inner>

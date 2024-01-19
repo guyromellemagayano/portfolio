@@ -1,21 +1,23 @@
 'use client'
 
-import { ContentLayout, ProjectsList } from '@/components'
+import ContentLayout from '@/components/layouts/Content'
+import ProjectsList from '@/components/list/Projects'
 
-import { ProjectsData } from '@/data'
+import { TProjectsData } from '@/data/projects'
 
 /**
  * Renders the projects page.
  * @returns The projects page component.
  */
-const ProjectsApp = (): JSX.Element => {
-  const { hero } = ProjectsData()
+const ProjectsApp = (data: TProjectsData): JSX.Element => {
+  const heading = data?.hero?.heading || ''
+  const description = data?.hero?.description || []
 
   return (
     <ContentLayout
       id="hero"
-      title={hero?.heading || ''}
-      intro={hero?.description || []}
+      title={heading}
+      intro={description}
       className="sm:px-8 mt-16 sm:mt-32"
     >
       <ProjectsList>

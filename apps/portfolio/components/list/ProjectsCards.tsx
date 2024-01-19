@@ -1,8 +1,22 @@
 'use client'
 
-import { Card, ImageLayout, LinkSvgImage } from '@/components'
+import type { TWithChildren } from '@/types/common'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
-import { TProjectListCardProps } from '@/types/components'
+import Card from '@/components/Card'
+import LinkSvgImage from '@/components/images/svg/Link'
+import ImageLayout from '@/components/layouts/Image'
+
+export type TProjectsCardsListProps<T = object> = T &
+  TWithChildren<T> & {
+    name: string | null
+    link: {
+      url: string | null
+      text: string | null
+    }
+    logo: StaticImport | string | null
+    description: string | null
+  }
 
 /**
  * Renders a list of projects cards.
@@ -13,7 +27,7 @@ import { TProjectListCardProps } from '@/types/components'
  * @param {String} props.description - The project description.
  * @returns {JSX.Element} The rendered component.
  */
-const ProjectsListCards = (props: TProjectListCardProps): JSX.Element => {
+const ProjectsCardsList = (props: TProjectsCardsListProps): JSX.Element => {
   return (
     <Card as="li" key={props.name}>
       <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
@@ -42,4 +56,4 @@ const ProjectsListCards = (props: TProjectListCardProps): JSX.Element => {
   )
 }
 
-export default ProjectsListCards
+export default ProjectsCardsList

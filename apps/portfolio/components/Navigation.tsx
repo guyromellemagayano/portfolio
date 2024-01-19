@@ -1,8 +1,8 @@
 'use client'
 
-import { NavItem } from '@/components'
+import NavItem from '@/components/NavItem'
 
-import { NavigationData } from '@/data'
+import NavigationData from '@/data/navigation'
 
 /**
  * Render the desktop navigation component.
