@@ -1,8 +1,14 @@
 'use client'
 
-import { Card } from '@/components'
+import Card from "@/components/Card"
 
-import { TWorkListCardProps } from '@/types/components'
+import type { TWorkExperience } from "@/data/work"
+
+import type { TWithChildren } from "@/types/common"
+
+export type TWorkListCardProps<T = object> = T &
+  TWithChildren<T> &
+  Pick<TWorkExperience, 'company' | 'country' | 'contributions' | 'skills'>
 
 /**
  * Renders a list of work experiences cards.

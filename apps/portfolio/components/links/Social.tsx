@@ -1,8 +1,15 @@
 'use client'
 
+import { FunctionComponent, SVGProps } from 'react'
+
 import clsx from 'clsx'
 
-import { TSocialLinkProps } from '@/types/components'
+export type TSocialLinkProps<T = object> = T & {
+  icon: FunctionComponent<SVGProps<SVGSVGElement>>
+  url?: string | null
+  ariaLabel?: string | null
+  showLabel?: boolean | null
+}
 
 /**
  * Renders a social link with an icon and an optional label.

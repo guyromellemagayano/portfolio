@@ -1,6 +1,7 @@
 'use client'
 
-import { Button, MailSvgImage } from '@/components'
+import Button from '@/components/Button'
+import MailSvgImage from '@/components/images/svg/Mail'
 
 /**
  * Newsletter component displays a form to subscribe to a newsletter.

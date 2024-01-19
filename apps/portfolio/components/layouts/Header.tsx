@@ -4,22 +4,20 @@ import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
-import {
-  Avatar,
-  AvatarContainer,
-  Container,
-  DarkModeButton,
-  DesktopNavigation,
-  MobileNavigation
-} from '@/components'
+import Avatar from '@/components/Avatar'
+import Container from '@/components/Container'
+import DesktopNavigation from '@/components/Navigation'
+import DarkModeButton from '@/components/buttons/DarkMode'
+import AvatarContainer from '@/components/container/Avatar'
+import MobileNavigation from '@/components/navigation/Mobile'
 
-import { clamp } from '@/utils'
+import clamp from '@/utils/helpers'
 
 /**
  * Render the header layout component.
  * @returns {JSX.Element} The rendered component.
  */
-export default function HeaderLayout(): JSX.Element {
+const HeaderLayout = (): JSX.Element => {
   const pathname = usePathname()
   const headerRef = useRef<ElementRef<'div'>>(null)
   const avatarRef = useRef<ElementRef<'div'>>(null)
@@ -152,7 +150,7 @@ export default function HeaderLayout(): JSX.Element {
             />
             <Container
               className="top-0 order-last -mb-3 pt-3"
-              style={{ position: 'var(--header-position)' }}
+              style={headerPosition}
             >
               <div
                 className="top-[var(--avatar-top,theme(spacing.3))] w-full"
@@ -184,7 +182,7 @@ export default function HeaderLayout(): JSX.Element {
         >
           <Container
             className="top-[var(--header-top,theme(spacing.6))] w-full"
-            style={{ position: 'var(--header-inner-position)' }}
+            style={headerInnerPosition}
           >
             <div className="relative flex gap-4">
               <div className="flex flex-1">
@@ -217,3 +215,5 @@ export default function HeaderLayout(): JSX.Element {
     </>
   )
 }
+
+export default HeaderLayout
