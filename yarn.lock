@@ -84,18 +84,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/experimental-nextjs-app-support@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@apollo/experimental-nextjs-app-support@npm:0.6.0"
+"@apollo/experimental-nextjs-app-support@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@apollo/experimental-nextjs-app-support@npm:0.8.0"
   dependencies:
     server-only: "npm:^0.0.1"
-    superjson: "npm:^1.12.2"
+    superjson: "npm:^1.12.2 || ^2.0.0"
     ts-invariant: "npm:^0.10.3"
   peerDependencies:
-    "@apollo/client": ">=3.8.0-rc || ^3.8.0 || >=3.9.0-alpha || >=3.9.0-beta || >=3.9.0-rc"
+    "@apollo/client": ^3.9.0
     next: ^13.4.1 || ^14.0.0
     react: ^18
-  checksum: cb99c3d14c62a5809db5d6167cdd5ea264beb7ae49cfb59e30f7e45eb05a5ebb00b3cfd45496cc40d10ba2d3af437b0f91fcd6b935a20fd9fe1a7865912b40c6
+  checksum: 02df045141cb826dbae91a456c4847cd588864f3149b0068e0198d84568771a86d7f8622112dca1570f9e60250bd4d00ac6fbbca7823b9da7cf4a79634876952
   languageName: node
   linkType: hard
 
@@ -2135,7 +2135,7 @@ __metadata:
   resolution: "@guy-romelle-magayano/source@workspace:."
   dependencies:
     "@apollo/client": "npm:^3.8.10"
-    "@apollo/experimental-nextjs-app-support": "npm:^0.6.0"
+    "@apollo/experimental-nextjs-app-support": "npm:^0.8.0"
     "@commitlint/cli": "npm:^18.4.4"
     "@commitlint/config-conventional": "npm:^18.4.4"
     "@emotion/react": "npm:^11.11.3"
@@ -16912,12 +16912,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superjson@npm:^1.12.2":
-  version: 1.13.3
-  resolution: "superjson@npm:1.13.3"
+"superjson@npm:^1.12.2 || ^2.0.0":
+  version: 2.2.1
+  resolution: "superjson@npm:2.2.1"
   dependencies:
     copy-anything: "npm:^3.0.2"
-  checksum: 389a0a0c86884dd0558361af5d6d7f37102b71dda9595a665fe8b39d1ba0e57c859e39a9bd79b6f1fde6f4dcceac49a1c205f248d292744b2a340ee52846efdb
+  checksum: 5d8202c955170bd98ef2647f712754ac54d2d007923cfdb53a4b035304d8964b8c41d5eff41ee277896e2ac32e06abb009b571f1589416b729fe40216320cc7a
   languageName: node
   linkType: hard
 
