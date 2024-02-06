@@ -84,18 +84,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/experimental-nextjs-app-support@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@apollo/experimental-nextjs-app-support@npm:0.7.0"
+"@apollo/experimental-nextjs-app-support@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@apollo/experimental-nextjs-app-support@npm:0.8.0"
   dependencies:
     server-only: "npm:^0.0.1"
     superjson: "npm:^1.12.2 || ^2.0.0"
     ts-invariant: "npm:^0.10.3"
   peerDependencies:
-    "@apollo/client": ">=3.8.0-rc || ^3.8.0 || >=3.9.0-alpha || >=3.9.0-beta || >=3.9.0-rc"
+    "@apollo/client": ^3.9.0
     next: ^13.4.1 || ^14.0.0
     react: ^18
-  checksum: b01f608e05ac4f9abf6cd5b35705a0202e9a1f10c79b178a0a3eed7a08bae442da040f24cc5e710cde007b9bccac1e0f90384c3846ce1d238857afaa3a60b34f
+  checksum: 02df045141cb826dbae91a456c4847cd588864f3149b0068e0198d84568771a86d7f8622112dca1570f9e60250bd4d00ac6fbbca7823b9da7cf4a79634876952
   languageName: node
   linkType: hard
 
@@ -2135,7 +2135,7 @@ __metadata:
   resolution: "@guy-romelle-magayano/source@workspace:."
   dependencies:
     "@apollo/client": "npm:^3.8.10"
-    "@apollo/experimental-nextjs-app-support": "npm:^0.7.0"
+    "@apollo/experimental-nextjs-app-support": "npm:^0.8.0"
     "@commitlint/cli": "npm:^18.4.4"
     "@commitlint/config-conventional": "npm:^18.4.4"
     "@emotion/react": "npm:^11.11.3"
