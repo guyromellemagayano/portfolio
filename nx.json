@@ -54,14 +54,47 @@
       }
     }
   },
-  "nxCloudAccessToken": "OTQ1ZDYxZWEtZjU0Zi00OTkxLTk4NjktMjIzMGU2YzI3OGU2fHJlYWQtd3JpdGU=",
+  "nxCloudAccessToken": "ODAyZGRjMWYtMGE3NC00MzFkLTg3ZjctYWViNzEzOWZhYzAxfHJlYWQtd3JpdGU=",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@vercel/remote-nx",
       "options": {
-        "accessToken": "xvNLRlsTr5fHFi1GQVYE4bGd",
-        "teamId": "team_zYHbAAHP0rAl9gBivFEzz7xW"
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
-  }
+  },
+  "affected": {
+    "defaultBase": "main"
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview"
+      }
+    },
+    {
+      "plugin": "@nx/cypress/plugin",
+      "options": {
+        "targetName": "e2e",
+        "componentTestingTargetName": "component-test"
+      }
+    },
+    {
+      "plugin": "@nx/next/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "startTargetName": "start"
+      }
+    }
+  ]
 }

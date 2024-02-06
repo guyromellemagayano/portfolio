@@ -19,6 +19,8 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_GA_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '',
+    NX_VERCEL_REMOTE_CACHE_TOKEN: process.env.NX_VERCEL_REMOTE_CACHE_TOKEN,
+    NX_VERCEL_REMOTE_CACHE_TEAM: process.env.NX_VERCEL_REMOTE_CACHE_TEAM,
     SENTRY_DSN: process.env.SENTRY_DSN || '',
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
     SENTRY_ORG: process.env.SENTRY_ORG || '',
