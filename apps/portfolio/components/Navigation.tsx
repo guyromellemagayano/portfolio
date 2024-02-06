@@ -1,15 +1,17 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import NavItem from '@/components/NavItem'
 
 import NavigationData from '@/data/navigation'
 
 /**
- * Render the desktop navigation component.
- * @param {any} rest - Other props to pass down to the component.
- * @returns {JSX.Element} The rendered component.
+ * Renders the desktop navigation component.
+ * @param rest - The props object.
+ * @returns The rendered desktop navigation component.
  */
-const DesktopNavigation = (rest: any): JSX.Element => {
+const DesktopNavigation = (rest: any): ReactNode => {
   // Destructure the data from the FooterData function
   const { headerNav } = NavigationData()
 

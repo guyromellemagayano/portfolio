@@ -1,11 +1,13 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 /**
- * Renders a GitHub SVG image.
- * @param {React.SVGProps<SVGSVGElement>} rest - Additional SVG props.
- * @returns {JSX.Element} - Rendered GitHub SVG image.
+ * Renders an SVG image of the GitHub logo.
+ * @param rest - Additional SVG props.
+ * @returns The rendered SVG image of the GitHub logo.
  */
-const GitHubSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const GitHubSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path

@@ -1,8 +1,10 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Card from '@/components/Card'
 
-import { formatDate } from "@/utils/formatDate"
+import { formatDate } from '@/utils/formatDate'
 
 export type TArticleProps<T = object> = T & {
   slug: string
@@ -12,17 +14,19 @@ export type TArticleProps<T = object> = T & {
 }
 
 /**
- * Renders an article card with title, date, description, and a CTA to read the full article.
- * @param {String} slug - The article slug.
- * @param {Object} meta - The article metadata.
- * @returns {JSX.Element} The rendered component.
+ * Renders the article component.
+ * @param slug - The slug of the article.
+ * @param title - The title of the article.
+ * @param date - The date of the article.
+ * @param description - The description of the article.
+ * @returns The rendered article component.
  */
 const Article = ({
   slug,
   title,
   date,
   description
-}: TArticleProps): JSX.Element => {
+}: TArticleProps): ReactNode => {
   const dateNow = new Date()
   const dateNowToString = dateNow.toISOString()
 

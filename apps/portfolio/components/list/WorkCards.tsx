@@ -1,24 +1,23 @@
 'use client'
 
-import Card from "@/components/Card"
+import { ReactNode } from 'react'
 
-import type { TWorkExperience } from "@/data/work"
+import Card from '@/components/Card'
 
-import type { TWithChildren } from "@/types/common"
+import type { TWorkExperience } from '@/data/work'
+
+import type { TWithChildren } from '@/types/common'
 
 export type TWorkListCardProps<T = object> = T &
   TWithChildren<T> &
   Pick<TWorkExperience, 'company' | 'country' | 'contributions' | 'skills'>
 
 /**
- * Renders a list of work experiences cards.
- * @param {Object} props - The props object.
- * @param {String} props.company - The company name.
- * @param {String} props.country - The country name.
- * @param {Array} props.contributions - The contributions of the card.
- * @returns {JSX.Element} The rendered component.
+ * Renders the work list cards component.
+ * @param props - The props object.
+ * @returns The rendered work list cards component.
  */
-const WorkListCards = (props: TWorkListCardProps): JSX.Element => {
+const WorkListCards = (props: TWorkListCardProps): ReactNode => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={props?.company || ''} className="!mb-2">

@@ -7,23 +7,24 @@ import Link from 'next/link'
 import imageAvatar from '@/images/avatar.jpg'
 
 import type { TWithChildren, TWithIDAndClass } from '@/types/common'
+import { ReactNode } from 'react'
 
 export type TAvatarProps<T = object> = T &
   TWithIDAndClass<T> &
   TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
 
 /**
- * Render avatar component
- * @param {Boolean} large - Render a large avatar.
- * @param {String} className - Extend css classes to override default styling.
- * @param {any} rest - Other props to pass down to the component.
- * @returns {JSX.Element} The rendered component.
+ * Renders the avatar component.
+ * @param large - The large prop of the avatar.
+ * @param className - The class name of the avatar.
+ * @param rest - The rest of the props of the avatar.
+ * @returns The rendered avatar component.
  */
 const Avatar = ({
   large = false,
   className,
   ...rest
-}: TAvatarProps): JSX.Element => {
+}: TAvatarProps): ReactNode => {
   return (
     <Link
       href="/"

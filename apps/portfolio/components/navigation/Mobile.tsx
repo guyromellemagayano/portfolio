@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment } from 'react'
+import { Fragment, ReactNode } from 'react'
 
 import { Popover, Transition } from '@headlessui/react'
 
@@ -11,11 +11,11 @@ import MobileNavItem from '@/components/nav-item/Mobile'
 import NavigationData from '@/data/navigation'
 
 /**
- * Renders a mobile navigation item.
- * @param {any} rest - Other props to pass down to the component.
- * @returns {JSX.Element} The rendered component.
+ * Renders the mobile navigation component.
+ * @param rest - The rest of the mobile navigation props.
+ * @returns The rendered mobile navigation component.
  */
-const MobileNavigation = (rest: any): JSX.Element => {
+const MobileNavigation = (rest: any): ReactNode => {
   // Destructure the data from the FooterData function
   const { headerNav } = NavigationData()
 

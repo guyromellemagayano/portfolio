@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import clsx from 'clsx'
 import Link from 'next/link'
 
@@ -22,17 +24,17 @@ export type TCardCommonProps<T = object> = T &
   }
 
 /**
- * A card component that renders a container with a group class and a relative position.
- * @param {String} Component - The HTML tag or React component to render as the eyebrow.
- * @param {String} [className] - Additional CSS classes to apply to the eyebrow.
- * @param {React.ReactNode} children - The content to render inside the eyebrow.
- * @returns {JSX.Element} The rendered card component.
+ * Renders the card component.
+ * @param as - The HTML tag or React component to render as the card.
+ * @param className - Additional CSS classes to apply to the card.
+ * @param children - The content to render inside the card.
+ * @returns The rendered card component.
  */
 const Card = ({
   as: Component = 'div',
   className,
   children
-}: TBlockProps): JSX.Element => {
+}: TBlockProps): ReactNode => {
   return (
     <Component
       className={clsx('group relative flex flex-col items-start', className)}
@@ -43,13 +45,13 @@ const Card = ({
 }
 
 /**
- * A link component that can be used inside a Card component.
- * @param {React.ReactNode} children - The content to render inside the link.
- * @param {String} [href] - The URL to link to.
- * @param {String} [title] - The title of the link.
- * @param {String} [className] - Additional CSS classes to apply to the link.
- * @param {String} [target] - The target of the link.
- * @returns {JSX.Element} The rendered link component.
+ * Renders the card link component.
+ * @param href - The URL to link to.
+ * @param title - The title of the link.
+ * @param children - The content to render inside the link.
+ * @param className - Additional CSS classes to apply to the link.
+ * @param target - The target of the link.
+ * @returns The rendered card link component.
  */
 const CardLink = ({
   children,
@@ -58,7 +60,7 @@ const CardLink = ({
   className,
   target,
   ...rest
-}: TCardCommonProps): JSX.Element => {
+}: TCardCommonProps): ReactNode => {
   return (
     <div {...rest}>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
@@ -75,12 +77,13 @@ const CardLink = ({
 }
 
 /**
- * A title component that can be used inside a Card component.
- * @param {String} Component - The HTML tag or React component to render as the title.
- * @param {String} [href] - The URL to link to.
- * @param {String} [title] - The title of the link.
- * @param {String} [className] - Additional CSS classes to apply to the title.
- * @returns {JSX.Element} The rendered title component.
+ * Rendersthe card title component.
+ * @param as - The HTML tag or React component to render as the title.
+ * @param href - The URL to link to.
+ * @param title - The title of the link.
+ * @param children - The content to render inside the title.
+ * @param className - Additional CSS classes to apply to the title.
+ * @returns The rendered card title component.
  */
 const CardTitle = ({
   as: Component = 'h2',
@@ -88,7 +91,7 @@ const CardTitle = ({
   children,
   title,
   className
-}: TCardCommonProps): JSX.Element => {
+}: TCardCommonProps): ReactNode => {
   return (
     <Component
       className={clsx(
@@ -108,15 +111,15 @@ const CardTitle = ({
 }
 
 /**
- * A description component that can be used inside a Card component.
- * @param {String} [className] - Additional CSS classes to apply to the description.
- * @param {React.ReactNode} children - The content to render inside the description.
- * @returns {JSX.Element} The rendered description component.
+ * Renders the card description component.
+ * @param children - The content to render inside the description.
+ * @param className - Additional CSS classes to apply to the description.
+ * @returns The rendered card description component.
  */
 const CardDescription = ({
   children,
   className
-}: TCardCommonProps): JSX.Element => {
+}: TCardCommonProps): ReactNode => {
   return (
     <p
       className={clsx(
@@ -130,12 +133,12 @@ const CardDescription = ({
 }
 
 /**
- * A CTA component that can be used inside a Card component.
- * @param {String} [className] - Additional CSS classes to apply to the CTA.
- * @param {String} [href] - The URL to link to.
- * @param {String} [title] - The title of the link.
- * @param {React.ReactNode} children - The content to render inside the CTA.
- * @returns {JSX.Element} The rendered CTA component.
+ * Renders the card call to action component.
+ * @param title - The title of the link.
+ * @param children - The content to render inside the CTA.
+ * @param className - Additional CSS classes to apply to the CTA.
+ * @param href - The URL to link to.
+ * @returns The rendered card CTA component.
  */
 const CardCta = ({
   title,
@@ -143,7 +146,7 @@ const CardCta = ({
   className,
   href,
   ...rest
-}: TCardCommonProps): JSX.Element => {
+}: TCardCommonProps): ReactNode => {
   return (
     <div
       aria-hidden="true"
@@ -183,7 +186,7 @@ const CardEyebrow = ({
   className,
   children,
   ...rest
-}: TCardCommonProps): JSX.Element => {
+}: TCardCommonProps): ReactNode => {
   return (
     <Component
       className={clsx(

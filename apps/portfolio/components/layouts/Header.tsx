@@ -1,6 +1,6 @@
 'use client'
 
-import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
+import { CSSProperties, ElementRef, ReactNode, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
@@ -14,10 +14,10 @@ import MobileNavigation from '@/components/navigation/Mobile'
 import clamp from '@/utils/helpers'
 
 /**
- * Render the header layout component.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe header layout component.
+ * @returns The rendered header layout component.
  */
-const HeaderLayout = (): JSX.Element => {
+const HeaderLayout = (): ReactNode => {
   const pathname = usePathname()
   const headerRef = useRef<ElementRef<'div'>>(null)
   const avatarRef = useRef<ElementRef<'div'>>(null)

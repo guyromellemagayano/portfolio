@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import clsx from 'clsx'
 
 import SocialLink from '@/components/links/Social'
@@ -8,18 +10,11 @@ import type { TSocialLinksData } from '@/data/social-links'
 import SocialLinksData from '@/data/social-links'
 
 /**
- * Renders a list of social links.
- * @param props - The props object.
- * @param props.url - The url of the social link.
- * @param props.icon - The icon of the social link.
- * @param props.ariaLabel - The aria label of the social link.
- * @returns {JSX.Element} The rendered component.
+ * Renders the social links list component.
+ * @param data - The social links data.
+ * @returns The rendered social links list component.
  */
-const SocialLinksList = ({
-  data
-}: {
-  data: TSocialLinksData[]
-}): JSX.Element => {
+const SocialLinksList = ({ data }: { data: TSocialLinksData[] }): ReactNode => {
   return (
     <ul>
       {data?.map((link, index) => {

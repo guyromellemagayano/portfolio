@@ -1,16 +1,18 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Link from 'next/link'
 
 import type { TNavItemProps } from '@/components/NavItem'
 
 /**
- * Renders a navigation link.
- * @param {String} href - The URL of the navigation item.
- * @param {React.ReactNode} children - The content of the navigation item.
- * @returns {JSX.Element} The rendered component.
+ * Renders the nav link component.
+ * @param href - The URL to link to.
+ * @param children - The content to render inside the link.
+ * @returns The rendered nav link component.
  */
-const NavLink = ({ href, children }: TNavItemProps): JSX.Element => {
+const NavLink = ({ href, children }: TNavItemProps): ReactNode => {
   return (
     <Link
       href={href}

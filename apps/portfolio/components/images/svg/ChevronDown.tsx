@@ -1,13 +1,15 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 /**
- * Render an SVG image of a chevron pointing down.
- * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
- * @returns {JSX.Element} The rendered component.
+ * Rendersan SVG image of a chevron pointing down.
+ * @param rest - Additional SVG props
+ * @returns The rendered SVG image of a chevron pointing down.
  */
 const ChevronDownSvgImage = (
   rest: React.SVGProps<SVGSVGElement>
-): JSX.Element => {
+): ReactNode => {
   return (
     <svg viewBox="0 0 8 6" aria-hidden="true" {...rest}>
       <path

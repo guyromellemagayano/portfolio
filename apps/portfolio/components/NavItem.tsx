@@ -1,12 +1,13 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import clsx from 'clsx'
 import { Url } from 'next/dist/shared/lib/router/router'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import type { TWithChildren, TWithClassName } from '@/types/common'
-
 
 export type TNavItemProps<T = object> = T &
   TWithChildren<T> &
@@ -15,13 +16,13 @@ export type TNavItemProps<T = object> = T &
   }
 
 /**
- * A navigation item component.
- * @param href - The URL of the navigation item.
- * @param children - The content of the navigation item.
- * @param className - The class name of the navigation item.
- * @returns A JSX element representing the navigation item.
+ * Renders the nav item component.
+ * @param href - The URL to link to.
+ * @param children - The content to render inside the link.
+ * @param className - Additional CSS classes to apply to the link.
+ * @returns The rendered nav item component.
  */
-const NavItem = ({ href, children, className }: TNavItemProps): JSX.Element => {
+const NavItem = ({ href, children, className }: TNavItemProps): ReactNode => {
   const pathname = usePathname()
   const isActive = pathname === href
 

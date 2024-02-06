@@ -1,16 +1,18 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
 import type { TPhotoLayoutData } from '@/components/layouts/Photo'
 
 /**
- * Render the image component.
- * @param data - The image data.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe image component.
+ * @param props - The props object.
+ * @returns The rendered image component.
  */
-const ImageLayout = (props: TPhotoLayoutData): JSX.Element => {
+const ImageLayout = (props: TPhotoLayoutData): ReactNode => {
   const src: string | StaticImport = props?.src || '#'
   const alt: string = props?.alt ?? ''
   const sizes: string = props?.sizes ?? '100vw'
