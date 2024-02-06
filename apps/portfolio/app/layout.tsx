@@ -1,10 +1,14 @@
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
 import { Providers } from '@/app/providers'
 import { StyledComponentsRegistry } from '@/app/registry'
 
-import { NEXT_PUBLIC_GA_MEASUREMENT_ID, NEXT_PUBLIC_GA_MEASUREMENT_URL } from '@/configs/env'
+import {
+  NEXT_PUBLIC_GA_MEASUREMENT_ID,
+  NEXT_PUBLIC_GA_MEASUREMENT_URL
+} from '@/configs/env'
 
 import FooterLayout from '@/components/layouts/Footer'
 import HeaderLayout from '@/components/layouts/Header'
@@ -55,6 +59,7 @@ const RootLayout = ({ children }: { children: JSX.Element }): JSX.Element => {
                 <HeaderLayout />
                 <main className="flex-auto">
                   {children}
+                  <SpeedInsights />
                   <Analytics />
                 </main>
                 <FooterLayout {...footerData} />
