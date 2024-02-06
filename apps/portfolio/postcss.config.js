@@ -8,6 +8,7 @@ module.exports = {
     autoprefixer: {},
     'postcss-focus-visible': {
       replaceWith: '[data-focus-visible-added]'
-    }
+    },
+    ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
   }
 }
