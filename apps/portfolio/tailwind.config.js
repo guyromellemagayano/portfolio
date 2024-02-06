@@ -13,7 +13,6 @@ module.exports = {
     ),
     ...createGlobPatternsForDependencies(__dirname)
   ],
-  darkMode: 'class',
   theme: {
     fontSize: {
       xs: ['0.8125rem', { lineHeight: '1.5rem' }],
