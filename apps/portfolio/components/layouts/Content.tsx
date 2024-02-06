@@ -1,6 +1,6 @@
 'use client'
 
-import { Key } from 'react'
+import { Key, ReactNode } from 'react'
 
 import { clsx } from 'clsx'
 import { usePathname } from 'next/navigation'
@@ -21,16 +21,15 @@ export type TContentLayoutProps<T = object> = T &
   }
 
 /**
- * Render the simple layout content.
- * @param {Object} props - The props object.
- * @param {String} props.className - The class name of the layout.
- * @param {String} props.id - The id of the layout.
- * @param {String} props.title - The title of the layout.
- * @param {String} props.intro - The intro of the layout.
- * @param {ReactNode} props.children - The children of the layout.
+ * Rendersthe simple layout content.
+ * @param props - The props object.
+ * @param props.id - The id of the layout.
+ * @param props.title - The title of the layout.
+ * @param props.intro - The intro of the layout.
+ * @param props.children - The children of the layout.
  * @returns The simple layout content component.
  */
-const ContentSimple = (props: TContentLayoutProps): JSX.Element => {
+const ContentSimple = (props: TContentLayoutProps): ReactNode => {
   const pathname = usePathname()
 
   return (
@@ -66,7 +65,7 @@ const ContentSimple = (props: TContentLayoutProps): JSX.Element => {
 }
 
 /**
- * Render the aside layout content.
+ * Rendersthe aside layout content.
  * @param {Object} props - The props object.
  * @param {String} props.id - The id of the layout.
  * @param {String} props.title - The title of the layout.
@@ -103,7 +102,7 @@ const ContentAside = (props: TContentLayoutProps): JSX.Element => {
 }
 
 /**
- * Render the content layout.
+ * Rendersthe content layout.
  * @param {Object} props - The props object.
  * @param {String} props.as - The HTML tag or React component to render as the layout.
  * @param {String} props.className - The class name of the layout.

@@ -1,6 +1,6 @@
 'use client'
 
-import { useId } from 'react'
+import { ReactNode, useId } from 'react'
 
 import clsx from 'clsx'
 
@@ -13,17 +13,17 @@ export type TSectionLayoutProps<T = object> = T &
   }
 
 /**
- * The props for the Section component.
- * @param {String} title - The title of the section.
- * @param {Boolean} decorate - Whether to decorate the section.
- * @param {React.ReactNode} children - The content of the section.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe section layout component.
+ * @param title - The title of the section.
+ * @param decorate - The decoration of the section.
+ * @param children - The children of the section.
+ * @returns The rendered section layout component.
  */
 const SectionLayout = ({
   title,
   decorate,
   children
-}: TSectionLayoutProps): JSX.Element => {
+}: TSectionLayoutProps): ReactNode => {
   const id = useId()
 
   return (

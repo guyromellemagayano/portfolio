@@ -1,8 +1,10 @@
 'use client'
 
-import SectionLayout from "@/components/layouts/Section"
+import { ReactNode } from 'react'
 
-import type { TWithChildren } from "@/types/common"
+import SectionLayout from '@/components/layouts/Section'
+
+import type { TWithChildren } from '@/types/common'
 
 export type TWorkListProps<T = object> = T &
   TWithChildren<T> & {
@@ -10,11 +12,11 @@ export type TWorkListProps<T = object> = T &
   }
 
 /**
- * Renders a list of work experiences.
- * @param {React.ReactNode} children - The child elements to be rendered.
- * @returns {JSX.Element} The rendered component.
+ * Renders the work list component.
+ * @param children - The children of the work list.
+ * @returns The rendered work list component.
  */
-const WorkList = ({ children, ...rest }: TWorkListProps): JSX.Element => {
+const WorkList = ({ children, ...rest }: TWorkListProps): ReactNode => {
   return (
     <SectionLayout {...rest}>
       <div className="space-y-16">{children}</div>

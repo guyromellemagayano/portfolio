@@ -1,11 +1,14 @@
 'use client'
 
-import type { TWithChildren } from '@/types/common'
+import { ReactNode } from 'react'
+
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 import Card from '@/components/Card'
 import LinkSvgImage from '@/components/images/svg/Link'
 import ImageLayout from '@/components/layouts/Image'
+
+import type { TWithChildren } from '@/types/common'
 
 export type TProjectsCardsListProps<T = object> = T &
   TWithChildren<T> & {
@@ -19,15 +22,11 @@ export type TProjectsCardsListProps<T = object> = T &
   }
 
 /**
- * Renders a list of projects cards.
- * @param {Object} props - The props object.
- * @param {String} props.name - The project name.
- * @param {String} props.link - The project link.
- * @param {String} props.logo - The project logo.
- * @param {String} props.description - The project description.
- * @returns {JSX.Element} The rendered component.
+ * Renders the projects cards list component.
+ * @param props - The props object.
+ * @returns The rendered projects cards list component.
  */
-const ProjectsCardsList = (props: TProjectsCardsListProps): JSX.Element => {
+const ProjectsCardsList = (props: TProjectsCardsListProps): ReactNode => {
   return (
     <Card as="li" key={props.name}>
       <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">

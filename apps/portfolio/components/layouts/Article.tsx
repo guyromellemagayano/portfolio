@@ -1,11 +1,12 @@
 'use client'
 
-import { useContext } from 'react'
+import { ReactNode, useContext } from 'react'
 
 import { useRouter } from 'next/navigation'
 
 import { AppContext } from '@/app/providers'
 
+import Button from '@/components/Button'
 import Container from '@/components/Container'
 import ArrowLeftSvgImage from '@/components/images/svg/ArrowLeft'
 import Prose from '@/components/Prose'
@@ -13,7 +14,6 @@ import Prose from '@/components/Prose'
 import { formatDate } from '@/utils/formatDate'
 
 import type { TWithChildren } from '@/types/common'
-import Button from '../Button'
 
 export type TArticleCommonProps<T = object> = T & {
   meta: {
@@ -30,15 +30,15 @@ export type TArticleLayoutProps<T = object> = T &
   }
 
 /**
- * Render the article layout component.
- * @param children - The content to display inside the article.
- * @param meta - The metadata for the article.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe article layout component.
+ * @param children - The article content.
+ * @param article - The article metadata.
+ * @returns The rendered article layout component.
  */
 const ArticleLayout = ({
   children,
   article
-}: TArticleLayoutProps): JSX.Element => {
+}: TArticleLayoutProps): ReactNode => {
   const router = useRouter()
   const { previousPathname } = useContext(AppContext)
 

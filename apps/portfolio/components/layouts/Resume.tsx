@@ -1,6 +1,6 @@
 'use client'
 
-import { Key } from 'react'
+import { Key, ReactNode } from 'react'
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -13,11 +13,11 @@ import type { THomeData } from '@/data/home'
 import type { TWorkExperience } from '@/data/work'
 
 /**
- * Render the resume component.
- * @param data - The resume data.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe resume layout component.
+ * @param data - The home data.
+ * @returns The rendered resume layout component.
  */
-const ResumeLayout = (data: THomeData): JSX.Element => {
+const ResumeLayout = (data: THomeData): ReactNode => {
   const router = useRouter()
 
   return (

@@ -1,30 +1,32 @@
-import { ReactNode } from 'react';
+'use client'
 
-import clsx from 'clsx';
+import { ReactNode } from 'react'
+
+import clsx from 'clsx'
 
 import {
   TBlockProps,
   TWithChildren,
   TWithClassName,
   TWithIDAndClass
-} from '@/types/common';
+} from '@/types/common'
 
 export type TAvatarProps<T = object> = T &
   TWithIDAndClass<T> &
   TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
 
 /**
- * Render the about app skeleton content.
- * @param {String} Component - The HTML tag or React component to render as the about app skeleton content.
- * @param {String} [className] - Additional CSS classes to apply to the about app skeleton content.
- * @param {React.ReactNode} children - The content to render inside the about app skeleton content.
- * @returns {JSX.Element} The rendered about app skeleton content.
+ * Renders the skeleton component.
+ * @param as - The component to render.
+ * @param className - Additional CSS classes to apply to the skeleton component.
+ * @param children - The content to render inside the skeleton.
+ * @returns The rendered skeleton component.
  */
 const Skeleton = ({
   as: Component = 'div',
   className,
   children
-}: TBlockProps): JSX.Element => {
+}: TBlockProps): ReactNode => {
   return (
     <Component role="status" className={className}>
       {children}
@@ -33,10 +35,10 @@ const Skeleton = ({
 }
 
 /**
- * Render the avatar skeleton content.
- * @param {String} [className] - Additional CSS classes to apply to the avatar skeleton content.
- * @param {Boolean} [large] - Whether to render a large avatar skeleton.
- * @returns {JSX.Element} The rendered avatar skeleton content.
+ * Renders the avatar skeleton component.
+ * @param className - Additional CSS classes to apply to the avatar skeleton component.
+ * @param large - Whether the avatar is large.
+ * @returns The rendered avatar skeleton component.
  */
 const Avatar = ({ className, large }: TAvatarProps): ReactNode => {
   return (
@@ -51,7 +53,12 @@ const Avatar = ({ className, large }: TAvatarProps): ReactNode => {
   )
 }
 
-const SocialLink = ({ className }: TWithClassName): JSX.Element => {
+/**
+ * Renders the social link skeleton component.
+ * @param className - Additional CSS classes to apply to the social link skeleton component.
+ * @returns The rendered social link skeleton component.
+ */
+const SocialLink = ({ className }: TWithClassName): ReactNode => {
   return (
     <main role="status" className={className}>
       <div className="animate-pulse">
@@ -74,10 +81,10 @@ const SocialLink = ({ className }: TWithClassName): JSX.Element => {
 
 /**
  * Renders the photo layout skeleton component.
- * @param {String} [className] - Additional CSS classes to apply to the photo layout skeleton component.
- * @returns {JSX.Element} The rendered photo layout skeleton component.
+ * @param className - Additional CSS classes to apply to the photo layout skeleton component.
+ * @returns The rendered photo layout skeleton component.
  */
-const PhotoLayout = ({ className }: TWithClassName): JSX.Element => {
+const PhotoLayout = ({ className }: TWithClassName): ReactNode => {
   return (
     <main role="status" className={className}>
       <div className="mt-16 sm:mt-20">
@@ -95,10 +102,10 @@ const PhotoLayout = ({ className }: TWithClassName): JSX.Element => {
 
 /**
  * Renders the resume layout skeleton component.
- * @param {String} [className] - Additional CSS classes to apply to the resume layout.
- * @returns {JSX.Element} The rendered resume layout skeleton component.
+ * @param className - Additional CSS classes to apply to the resume layout skeleton component.
+ * @returns The rendered resume layout skeleton component.
  */
-const ResumeLayout = ({ className }: TWithClassName): JSX.Element => {
+const ResumeLayout = ({ className }: TWithClassName): ReactNode => {
   return (
     <main role="status" className={className}>
       <div className="animate-pulse rounded-2xl bg-gray-200 dark:bg-gray-700 w-full p-6 h-96" />
@@ -108,10 +115,10 @@ const ResumeLayout = ({ className }: TWithClassName): JSX.Element => {
 
 /**
  * Renders the section layout skeleton component.
- * @param {String} [className] - Additional CSS classes to apply to the section layout.
- * @returns {JSX.Element} The rendered section layout skeleton component.
+ * @param className - Additional CSS classes to apply to the section layout skeleton component.
+ * @returns The rendered section layout skeleton component.
  */
-const SectionLayout = ({ className }: TWithClassName): JSX.Element => {
+const SectionLayout = ({ className }: TWithClassName): ReactNode => {
   return (
     <main role="status" className={className}>
       <div className="md:grid md:grid-cols-4 md:items-baseline animate-pulse">
@@ -140,12 +147,11 @@ const SectionLayout = ({ className }: TWithClassName): JSX.Element => {
 }
 
 /**
- * Render the image layout skeleton component.
- * @param props - The props object.
- * @param {String} [props.className] - Additional CSS classes to apply to the image layout skeleton component.
- * @returns The image layout skeleton component.
+ * Rendersthe image layout skeleton content.
+ * @param {Object} props - The props object.
+ * @returns The image layout skeleton content component.
  */
-const ImageLayout = (props: TWithClassName): JSX.Element => {
+const ImageLayout = (props: TWithClassName): ReactNode => {
   return (
     <main role="status" className={props?.className || ''}>
       <div className="animate-pulse ">
@@ -156,12 +162,11 @@ const ImageLayout = (props: TWithClassName): JSX.Element => {
 }
 
 /**
- * Render the simple layout skeleton content.
+ * Renders the content simple layout skeleton content.
  * @param {Object} props - The props object.
- * @param {String} [props.className] - Additional CSS classes to apply to the simple layout skeleton content.
- * @returns The simple layout skeleton content component.
+ * @returns The content simple layout skeleton content component.
  */
-const ContentSimpleLayout = (props: TWithClassName): JSX.Element => {
+const ContentSimpleLayout = (props: TWithClassName): ReactNode => {
   return (
     <main
       role="status"
@@ -190,12 +195,11 @@ const ContentSimpleLayout = (props: TWithClassName): JSX.Element => {
 }
 
 /**
- * Render the aside layout skeleton content.
+ * Renders the content aside layout skeleton content.
  * @param {Object} props - The props object.
- * @param {String} [props.className] - Additional CSS classes to apply to the aside layout skeleton content.
- * @returns The aside layout skeleton content component.
+ * @returns The content aside layout skeleton content component.
  */
-const ContentAsideLayout = (props: TWithClassName): JSX.Element => {
+const ContentAsideLayout = (props: TWithClassName): ReactNode => {
   return (
     <main role="status" className={props?.className || ''}>
       <section className="mx-auto w-full animate-pulse">
@@ -218,12 +222,11 @@ const ContentAsideLayout = (props: TWithClassName): JSX.Element => {
 }
 
 /**
- * Render the social list skeleton content.
- * @param {Object} props - The props object.
- * @param {String} [props.className] - Additional CSS classes to apply to the social list skeleton content.
- * @returns The social list skeleton content component.
+ * Renders the social list skeleton component.
+ * @param className - Additional CSS classes to apply to the social list skeleton component.
+ * @returns The rendered social list skeleton component.
  */
-const SocialList = ({ className }: TWithClassName): JSX.Element => {
+const SocialList = ({ className }: TWithClassName): ReactNode => {
   return (
     <main role="status" className={className}>
       <div className="animate-pulse">

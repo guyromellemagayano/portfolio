@@ -1,13 +1,15 @@
 'use client'
 
-import type { TWithChildren } from "@/types/common"
+import { ReactNode } from 'react'
+
+import type { TWithChildren } from '@/types/common'
 
 /**
- * Renders a list of articles.
- * @param {React.ReactNode} children - The child elements to be rendered.
- * @returns {JSX.Element} The rendered component.
+ * Renders the articles list component.
+ * @param children - The children of the articles list.
+ * @returns The rendered articles list component.
  */
-const ArticlesList = ({ children }: TWithChildren): JSX.Element => {
+const ArticlesList = ({ children }: TWithChildren): ReactNode => {
   return (
     <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
       <div className="flex max-w-3xl flex-col space-y-16">{children}</div>

@@ -6,13 +6,9 @@ import Card from '@/components/Card'
 import { formatDate } from '@/utils/formatDate'
 
 /**
- * Renders a list of articles cards.
- * @param {Object} props - The props object.
- * @param {String} props.slug - The article slug.
- * @param {String} props.title - The article title.
- * @param {String} props.date - The article date.
- * @param {String} props.description - The article description.
- * @returns {JSX.Element} The rendered component.
+ * Renders the articles cards list component.
+ * @param props - The article props.
+ * @returns The rendered articles cards list component.
  */
 const ArticlesCardsList = (props: TArticleProps): JSX.Element => {
   return (

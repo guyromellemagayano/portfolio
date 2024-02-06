@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import clsx from 'clsx'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
@@ -20,11 +22,11 @@ export type TPhotoLayoutProps<T = object> = T &
   }
 
 /**
- * Render the photos component.
+ * Rendersthe photos component.
  * @param data - The photos data.
- * @returns {JSX.Element} The rendered component.
+ * @returns The rendered photos component.
  */
-const PhotoLayout = ({ data }: TPhotoLayoutProps): JSX.Element => {
+const PhotoLayout = ({ data }: TPhotoLayoutProps): ReactNode => {
   return (
     <div className="mt-16 sm:mt-20">
       <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">

@@ -1,6 +1,6 @@
 'use client'
 
-import { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 import clsx from 'clsx'
 
@@ -18,10 +18,10 @@ export type TButtonProps<T = object> = T &
   }
 
 /**
- * Generate a class name for the button based on its variant.
- * @param {ButtonVariant} variant - The visual style of the button (e.g. "primary", "secondary", "outline").
- * @param {String} className - Additional CSS classes to apply to the button.
- * @returns {String} The generated class name.
+ * Generate the class name for the button.
+ * @param variant - The visual style of the button.
+ * @param className - Additional CSS classes to apply to the button.
+ * @returns The class name for the button.
  */
 const generateButtonClassName = (
   variant: ButtonVariant,
@@ -40,13 +40,13 @@ const generateButtonClassName = (
 }
 
 /**
- * Render a button component.
- * @param {String} type - The type of the button (e.g. "button", "submit").
- * @param {ButtonVariant} variant - The visual style of the button (e.g. "primary", "secondary", "outline").
- * @param {String} className - Additional CSS classes to apply to the button.
- * @param {String} href - The URL to link to.
- * @param {any} children - The content to render inside the button.
- * @returns {JSX.Element} The rendered component.
+ * Renders the button component.
+ * @param type - The type of the button.
+ * @param variant - The visual style of the button.
+ * @param className - Additional CSS classes to apply to the button.
+ * @param children - The children of the button.
+ * @param rest - The rest of the props of the button.
+ * @returns The rendered button component.
  */
 const Button = ({
   type = 'button',
@@ -54,7 +54,7 @@ const Button = ({
   className,
   children,
   ...rest
-}: TButtonProps): JSX.Element => {
+}: TButtonProps): ReactNode => {
   const updatedClassName = generateButtonClassName(variant, className)
 
   return (

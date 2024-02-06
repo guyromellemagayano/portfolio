@@ -1,11 +1,13 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 /**
- * Render an SVG image of a moon.
- * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
- * @returns {JSX.Element} The rendered component.
+ * Rendersan SVG image of a moon.
+ * @param rest - Additional SVG props
+ * @returns The rendered SVG image of a moon.
  */
-const MoonSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const MoonSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path
