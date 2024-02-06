@@ -19,7 +19,7 @@ import type { TWithClassName } from '@/types/common'
  * Renders the home page.
  * @returns The home page component.
  */
-const HomeApp = (data: THomeData): JSX.Element => {
+const HomeApp = (data: THomeData): ReactNode => {
   const hero = data?.hero || {}
   const slidePhotos = data?.slidePhotos || []
   const articles = []

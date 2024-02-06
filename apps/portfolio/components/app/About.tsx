@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Container from '@/components/Container'
 import ContentLayout from '@/components/layouts/Content'
 import ImageLayout from '@/components/layouts/Image'
@@ -14,7 +16,7 @@ import imagePortrait from '@/images/portrait.jpg'
  * Renders the about page.
  * @returns The about page component.
  */
-const AboutApp = (data: TAboutData): JSX.Element => {
+const AboutApp = (data: TAboutData): ReactNode => {
   const heading = data?.hero?.heading || ''
   const description = data?.hero?.description || []
 
@@ -33,11 +35,7 @@ const AboutApp = (data: TAboutData): JSX.Element => {
           </div>
         </div>
         <div className="lg:order-first lg:row-span-2">
-          <ContentLayout
-            title={heading}
-            intro={description}
-            layout="aside"
-          />
+          <ContentLayout title={heading} intro={description} layout="aside" />
         </div>
         <div className="lg:pl-20">
           <SocialLinksList data={SocialLinksData} />
