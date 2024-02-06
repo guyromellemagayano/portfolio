@@ -1,15 +1,17 @@
 'use client'
 
+import { ReactNode } from 'react'
+
+import ContentLayout from '@/components/layouts/Content'
+import ToolsList from '@/components/list/Tools'
+import ToolsListCards from '@/components/list/ToolsCards'
 import type { TUsesData } from '@/data/uses'
-import ContentLayout from '../layouts/Content'
-import ToolsList from '../list/Tools'
-import ToolsListCards from '../list/ToolsCards'
 
 /**
  * Renders the uses page.
  * @returns The uses page component.
  */
-const UsesApp = (data: TUsesData): JSX.Element => {
+const UsesApp = (data: TUsesData): ReactNode => {
   const heading = data?.hero?.heading || ''
   const description = data?.hero?.description || []
   const tools = data?.tools || []
