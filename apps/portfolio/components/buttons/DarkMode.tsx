@@ -1,18 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 
 import { useTheme } from 'next-themes'
 
 import MoonSvgImage from '@/components/images/svg/Moon'
 import SunSvgImage from '@/components/images/svg/Sun'
 
-
 /**
- * Render dark mode button component.
- * @returns JSX.Element
+ * Rendersdark mode button component.
+ * @returns The dark mode button component.
  */
-const DarkModeButton = (): JSX.Element => {
+const DarkModeButton = (): ReactNode => {
   const { resolvedTheme, setTheme } = useTheme()
   const otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
   const [mounted, setMounted] = useState(false)

@@ -10,9 +10,10 @@ export type TSkillsListProps = {
 }
 
 /**
- * Renders a list of skills.
- * @param {React.ReactNode} children - The child elements to be rendered.
- * @returns {JSX.Element} The rendered component.
+ * Renders the skills list component.
+ * @param title - The title of the skills list.
+ * @param children - The children of the skills list.
+ * @returns The rendered skills list component.
  */
 const SkillsList = ({ children, title }: TSkillsListProps): JSX.Element => {
   return (

@@ -1,9 +1,9 @@
 'use client'
 
 /**
- * Render an SVG image of a link.
- * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
- * @returns {JSX.Element} The rendered component.
+ * Rendersan SVG image of a link.
+ * @param rest - Additional SVG props.
+ * @returns The rendered SVG image of a link.
  */
 const LinkSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
   return (
