@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import ContentLayout from '@/components/layouts/Content'
 import WorkList from '@/components/list/Work'
 import WorkListCards from '@/components/list/WorkCards'
@@ -10,7 +12,7 @@ import type { TWorkData } from '@/data/work'
  * Renders the work page.
  * @returns The work page component.
  */
-const WorkApp = (data: TWorkData): JSX.Element => {
+const WorkApp = (data: TWorkData): ReactNode => {
   const heading = data?.hero?.heading || ''
   const description = data?.hero?.description || []
   const workExperiences = data?.workExperiences || []
@@ -27,11 +29,7 @@ const WorkApp = (data: TWorkData): JSX.Element => {
           const duration = item?.duration || ''
 
           return (
-            <WorkList
-              key={duration}
-              title={duration}
-              {...item}
-            >
+            <WorkList key={duration} title={duration} {...item}>
               <WorkListCards {...item} />
             </WorkList>
           )

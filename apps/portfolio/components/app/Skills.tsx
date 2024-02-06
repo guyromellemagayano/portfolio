@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import ContentLayout from '@/components/layouts/Content'
 import SkillsList from '@/components/list/Skills'
 import SkillsCardsList from '@/components/list/SkillsCards'
@@ -10,7 +12,7 @@ import { TSkillsData } from '@/data/skills'
  * Renders the skills page.
  * @returns The skills page component.
  */
-const SkillsApp = (data: TSkillsData): JSX.Element => {
+const SkillsApp = (data: TSkillsData): ReactNode => {
   const heading = data?.hero?.heading || ''
   const description = data?.hero?.description || []
   const skills = data?.skills || []
@@ -29,18 +31,11 @@ const SkillsApp = (data: TSkillsData): JSX.Element => {
 
           return (
             <SkillsList key={name} title={name}>
-              {items?.map(
-                (rest) => {
+              {items?.map(rest => {
                 const title = rest?.title || ''
 
-                  return (
-                    <SkillsCardsList
-                      key={title}
-                      {...rest}
-                    />
-                  )
-                }
-              )}
+                return <SkillsCardsList key={title} {...rest} />
+              })}
             </SkillsList>
           )
         })}

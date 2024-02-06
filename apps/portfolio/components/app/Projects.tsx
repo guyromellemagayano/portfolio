@@ -1,5 +1,7 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import ContentLayout from '@/components/layouts/Content'
 import ProjectsList from '@/components/list/Projects'
 
@@ -9,7 +11,7 @@ import { TProjectsData } from '@/data/projects'
  * Renders the projects page.
  * @returns The projects page component.
  */
-const ProjectsApp = (data: TProjectsData): JSX.Element => {
+const ProjectsApp = (data: TProjectsData): ReactNode => {
   const heading = data?.hero?.heading || ''
   const description = data?.hero?.description || []
 
