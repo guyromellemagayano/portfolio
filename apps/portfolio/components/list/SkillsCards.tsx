@@ -7,6 +7,7 @@ import type { TSkillsItemsProps } from '@/data/skills'
 import { isEmpty } from '@/utils/checkTypes'
 
 import type { TWithChildren } from '@/types/common'
+import { ReactNode } from 'react'
 
 export type TSkillsCardsListProps<T = object> = T &
   TWithChildren<T> &
@@ -18,15 +19,11 @@ export type TSkillsCardsListProps<T = object> = T &
   }
 
 /**
- * Renders a list of skills cards.
- * @param {Object} props - The props
- * @param {String} props.title - The title of the card.
- * @param {Array} props.description - The description of the card.
- * @param {Array} props.technologies - The technologies of the card.
- * @param {Array} props.cta - The call to action of the card.
- * @returns {JSX.Element} The rendered component.
+ * Renders the skills cards list component.
+ * @param props - The props object.
+ * @returns The rendered skills cards list component.
  */
-const SkillsCardsList = (props: TSkillsCardsListProps): JSX.Element => {
+const SkillsCardsList = (props: TSkillsCardsListProps): ReactNode => {
   return (
     <Card as="article">
       <Card.Title as="h3" title={props?.title || ''}>

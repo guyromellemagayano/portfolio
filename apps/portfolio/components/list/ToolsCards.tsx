@@ -1,6 +1,6 @@
 'use client'
 
-import Card from "@/components/Card"
+import Card from '@/components/Card'
 
 export type TToolsCardsListProps<T = object> = T & {
   title?: string | null
@@ -8,11 +8,9 @@ export type TToolsCardsListProps<T = object> = T & {
 }
 
 /**
- * Renders a list of tools cards.
- * @param {Object} props - The props object.
- * @param {String} props.title - The title of the card.
- * @param {Array} props.description - The description of the card.
- * @returns {JSX.Element} The rendered component.
+ * Renders the tools cards list component.
+ * @param props - The props object.
+ * @returns The rendered tools cards list component.
  */
 const ToolsListCards = (props: TToolsCardsListProps): JSX.Element => {
   return (
