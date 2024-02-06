@@ -1,8 +1,10 @@
 'use client'
 
-import SectionLayout from "@/components/layouts/Section"
+import { ReactNode } from 'react'
 
-import type { TWithChildren } from "@/types/common"
+import SectionLayout from '@/components/layouts/Section'
+
+import type { TWithChildren } from '@/types/common'
 
 export type TToolsListProps<T = object> = T &
   TWithChildren<T> & {
@@ -10,11 +12,11 @@ export type TToolsListProps<T = object> = T &
   }
 
 /**
- * Renders a list of tools.
- * @param {React.ReactNode} children - The child elements to be rendered.
- * @returns {JSX.Element} The rendered component.
+ * Renders the tools list component.
+ * @param children - The children of the tools list.
+ * @returns The rendered tools list component.
  */
-const ToolsList = ({ children, ...rest }: TToolsListProps): JSX.Element => {
+const ToolsList = ({ children, ...rest }: TToolsListProps): ReactNode => {
   return (
     <SectionLayout {...rest}>
       <ul className="space-y-16">{children}</ul>

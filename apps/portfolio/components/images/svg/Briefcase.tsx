@@ -1,13 +1,13 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 /**
- * Render an SVG image of a briefcase.
- * @param {React.SVGProps<SVGSVGElement>} rest - additional SVG props
- * @returns {JSX.Element} Briefcase SVG image
+ * Rendersan SVG image of a briefcase.
+ * @param rest - Additional SVG props
+ * @returns The rendered SVG image of a briefcase.
  */
-const BriefcaseSvgImage = (
-  rest: React.SVGProps<SVGSVGElement>
-): JSX.Element => {
+const BriefcaseSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
   return (
     <svg
       viewBox="0 0 24 24"
