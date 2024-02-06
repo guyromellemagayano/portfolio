@@ -1,18 +1,19 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Container from '@/components/Container'
 import NavLink from '@/components/NavLink'
 
 import type { TNavigationData } from '@/data/navigation'
 
 /**
- * Render the footer layout component.
- * @returns {JSX.Element} The rendered component.
+ * Rendersthe footer layout component.
+ * @param footerNav - The footer navigation data.
+ * @param copyright - The copyright data.
+ * @returns The rendered footer layout component.
  */
-const FooterLayout = ({
-  footerNav,
-  copyright
-}: TNavigationData): JSX.Element => {
+const FooterLayout = ({ footerNav, copyright }: TNavigationData): ReactNode => {
   return (
     <footer className="mt-32">
       <Container.Outer>

@@ -1,13 +1,15 @@
 'use client'
 
+import { ReactNode } from 'react'
+
 import Button from '@/components/Button'
 import MailSvgImage from '@/components/images/svg/Mail'
 
 /**
- * Newsletter component displays a form to subscribe to a newsletter.
- * @returns JSX.Element
+ * Rendersthe newsletter layout component.
+ * @returns The rendered newsletter layout component.
  */
-const NewsletterLayout = (): JSX.Element => {
+const NewsletterLayout = (): ReactNode => {
   return (
     <form
       action="/thank-you"

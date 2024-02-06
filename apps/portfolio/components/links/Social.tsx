@@ -1,6 +1,6 @@
 'use client'
 
-import { FunctionComponent, SVGProps } from 'react'
+import { FunctionComponent, ReactNode, SVGProps } from 'react'
 
 import clsx from 'clsx'
 
@@ -12,19 +12,19 @@ export type TSocialLinkProps<T = object> = T & {
 }
 
 /**
- * Renders a social link with an icon and an optional label.
- * @param icon - Icon component
- * @param url - Link URL
- * @param ariaLabel - Aria label
- * @param showLabel - Show label
- * @returns {JSX.Element} The rendered component.
+ * Renders the social link component.
+ * @param icon - The icon component.
+ * @param url - The url of the social link.
+ * @param ariaLabel - The aria label of the social link.
+ * @param showLabel - The show label of the social link.
+ * @returns The rendered social link component.
  */
 const SocialLink = ({
   icon: Icon,
   url,
   ariaLabel,
   showLabel = false
-}: TSocialLinkProps): JSX.Element => {
+}: TSocialLinkProps): ReactNode => {
   return (
     <a
       className={clsx(
