@@ -1,13 +1,15 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Rendersan SVG image of an arrow pointing down.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an arrow pointing down.
  */
-const ArrowDownSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
+const ArrowDownSvgImage: TCommonSvgImageProps = (
+  rest
+) => {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...rest}>
       <path

@@ -1,15 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Rendersan SVG image of a chevron pointing down.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a chevron pointing down.
  */
-const ChevronDownSvgImage = (
-  rest: React.SVGProps<SVGSVGElement>
-): ReactNode => {
+const ChevronDownSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg viewBox="0 0 8 6" aria-hidden="true" {...rest}>
       <path
