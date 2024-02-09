@@ -10,6 +10,8 @@ export type TAvatarContainerProps<T = object> = T &
   TWithClassName<T> &
   TWithChildren<T> & { style?: CSSProperties }
 
+type TAvatarContainer = (props: TAvatarContainerProps) => ReactNode
+
 /**
  * Rendersavatar container component
  * @param className - Extend CSS classes to override default styling.
@@ -17,11 +19,11 @@ export type TAvatarContainerProps<T = object> = T &
  * @param rest - Other props to pass down to the component.
  * @returns The avatar container component.
  */
-const AvatarContainer = ({
+const AvatarContainer: TAvatarContainer = ({
   className,
   children,
   ...rest
-}: TAvatarContainerProps): ReactNode => {
+}) => {
   return (
     <div
       className={clsx(
