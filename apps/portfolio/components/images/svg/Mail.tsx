@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Rendersan SVG image of an envelope.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an envelope.
  */
-const MailSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
+const MailSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg
       viewBox="0 0 24 24"
