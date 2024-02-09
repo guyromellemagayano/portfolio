@@ -14,10 +14,10 @@ type TSkillsApp = (data: TSkillsData) => ReactNode
  * Renders the skills page.
  * @returns The skills page component.
  */
-const SkillsApp: TSkillsApp = (data) => {
+const SkillsApp: TSkillsApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || [],
-        skills = data?.skills || []
+    description = data?.hero?.description || [],
+    skills = data?.skills || []
 
   return (
     <ContentLayout

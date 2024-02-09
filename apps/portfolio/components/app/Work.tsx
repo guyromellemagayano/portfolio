@@ -14,10 +14,10 @@ type TWorkApp = (data: TWorkData) => ReactNode
  * Renders the work page.
  * @returns The work page component.
  */
-const WorkApp: TWorkApp = (data) => {
+const WorkApp: TWorkApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || [],
-        workExperiences = data?.workExperiences || []
+    description = data?.hero?.description || [],
+    workExperiences = data?.workExperiences || []
 
   return (
     <ContentLayout
