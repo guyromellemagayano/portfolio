@@ -12,13 +12,16 @@ import SocialLinksData from '@/data/social-links'
 
 import imagePortrait from '@/images/portrait.jpg'
 
+type TAboutApp = (data: TAboutData) => ReactNode
+
 /**
  * Renders the about page.
+ * @param data The about page data.
  * @returns The about page component.
  */
-const AboutApp = (data: TAboutData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
+const AboutApp: TAboutApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || []
 
   return (
     <Container id="hero" className="mt-16 sm:mt-32">
