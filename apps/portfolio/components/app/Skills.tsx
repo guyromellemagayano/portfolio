@@ -8,14 +8,16 @@ import SkillsCardsList from '@/components/list/SkillsCards'
 
 import { TSkillsData } from '@/data/skills'
 
+type TSkillsApp = (data: TSkillsData) => ReactNode
+
 /**
  * Renders the skills page.
  * @returns The skills page component.
  */
-const SkillsApp = (data: TSkillsData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
-  const skills = data?.skills || []
+const SkillsApp: TSkillsApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || [],
+        skills = data?.skills || []
 
   return (
     <ContentLayout
