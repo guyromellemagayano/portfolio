@@ -8,14 +8,16 @@ import WorkListCards from '@/components/list/WorkCards'
 
 import type { TWorkData } from '@/data/work'
 
+type TWorkApp = (data: TWorkData) => ReactNode
+
 /**
  * Renders the work page.
  * @returns The work page component.
  */
-const WorkApp = (data: TWorkData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
-  const workExperiences = data?.workExperiences || []
+const WorkApp: TWorkApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || [],
+        workExperiences = data?.workExperiences || []
 
   return (
     <ContentLayout

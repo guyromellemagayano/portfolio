@@ -15,14 +15,17 @@ import SocialLinksData from '@/data/social-links'
 
 import type { TWithClassName } from '@/types/common'
 
+type THomeApp = (data: THomeData) => ReactNode
+
 /**
  * Renders the home page.
+ * @param data The home page data.
  * @returns The home page component.
  */
-const HomeApp = (data: THomeData): ReactNode => {
-  const hero = data?.hero || {}
-  const slidePhotos = data?.slidePhotos || []
-  const articles = []
+const HomeApp: THomeApp = (data) => {
+  const hero = data?.hero || {},
+        slidePhotos = data?.slidePhotos || [],
+        articles = []
 
   return (
     <>

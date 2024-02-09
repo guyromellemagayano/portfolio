@@ -7,14 +7,16 @@ import ToolsList from '@/components/list/Tools'
 import ToolsListCards from '@/components/list/ToolsCards'
 import type { TUsesData } from '@/data/uses'
 
+type TUsesApp = (data: TUsesData) => ReactNode
+
 /**
  * Renders the uses page.
  * @returns The uses page component.
  */
-const UsesApp = (data: TUsesData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
-  const tools = data?.tools || []
+const UsesApp: TUsesApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || [],
+        tools = data?.tools || []
 
   return (
     <ContentLayout
