@@ -7,14 +7,16 @@ import { useTheme } from 'next-themes'
 import MoonSvgImage from '@/components/images/svg/Moon'
 import SunSvgImage from '@/components/images/svg/Sun'
 
+type TDarkModeButton = () => ReactNode
+
 /**
- * Rendersdark mode button component.
+ * Renders dark mode button component.
  * @returns The dark mode button component.
  */
-const DarkModeButton = (): ReactNode => {
-  const { resolvedTheme, setTheme } = useTheme()
-  const otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
-  const [mounted, setMounted] = useState(false)
+const DarkModeButton: TDarkModeButton = () => {
+  const { resolvedTheme, setTheme } = useTheme(),
+        otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark',
+        [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
