@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Rendersan SVG image of a close icon.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a close icon.
  */
-const CloseSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
+const CloseSvgImage: TCommonSvgImageProps = (rest) => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path

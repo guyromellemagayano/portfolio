@@ -1,11 +1,13 @@
 'use client'
 
+import { TCommonSvgImageProps } from '@/types/common'
+
 /**
  * Rendersan SVG image of a link.
  * @param rest - Additional SVG props.
  * @returns The rendered SVG image of a link.
  */
-const LinkSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const LinkSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path

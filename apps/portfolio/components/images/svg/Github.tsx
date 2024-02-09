@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Renders an SVG image of the GitHub logo.
  * @param rest - Additional SVG props.
  * @returns The rendered SVG image of the GitHub logo.
  */
-const GitHubSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
+const GitHubSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path
