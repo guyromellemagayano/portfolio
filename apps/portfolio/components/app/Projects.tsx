@@ -7,13 +7,15 @@ import ProjectsList from '@/components/list/Projects'
 
 import { TProjectsData } from '@/data/projects'
 
+type TProjectsApp = (data: TProjectsData) => ReactNode
+
 /**
  * Renders the projects page.
  * @returns The projects page component.
  */
-const ProjectsApp = (data: TProjectsData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
+const ProjectsApp: TProjectsApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || []
 
   return (
     <ContentLayout
