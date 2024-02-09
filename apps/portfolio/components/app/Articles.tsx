@@ -7,13 +7,16 @@ import ArticlesList from '@/components/list/Articles'
 
 import { TArticlesData } from '@/data/articles'
 
+type TArticlesApp = (data: TArticlesData) => ReactNode
+
 /**
  * Renders the articles page.
+ * @param data The articles page data.
  * @returns The articles page component.
  */
-const ArticlesApp = (data: TArticlesData): ReactNode => {
-  const heading = data?.hero?.heading || ''
-  const description = data?.hero?.description || []
+const ArticlesApp: TArticlesApp = (data) => {
+  const heading = data?.hero?.heading || '',
+        description = data?.hero?.description || []
 
   return (
     <ContentLayout
