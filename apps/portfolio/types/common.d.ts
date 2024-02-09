@@ -1,5 +1,10 @@
 import { ReactNode } from "react"
 
+// Base type for additional props
+export type TCommonAdditionalProps<T = object> = T & {
+  [key: string]: any
+}
+
 // Base type for SEO metadata
 export type TSeoMetaCommonProps<T = object> = T & {
   title: string | null
@@ -52,3 +57,10 @@ export type TBlockProps<T = object> = T &
 
 // Props for generic containers with optional children, id, and className
 export type TContainerProps<T = object> = T & TWithIDAndClass<T>
+
+// Props for common SVG images
+export type TCommonSvgImageProps = (
+  rest: TCommonAdditionalProps & {
+    rest: SVGProps<SVGSVGElement>
+  }
+) => ReactNode

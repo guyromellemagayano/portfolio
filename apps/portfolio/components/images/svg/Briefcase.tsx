@@ -1,13 +1,13 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { TCommonSvgImageProps } from '@/types/common'
 
 /**
  * Rendersan SVG image of a briefcase.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a briefcase.
  */
-const BriefcaseSvgImage = (rest: React.SVGProps<SVGSVGElement>): ReactNode => {
+const BriefcaseSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg
       viewBox="0 0 24 24"

@@ -1,11 +1,13 @@
 'use client'
 
+import { TCommonSvgImageProps } from '@/types/common'
+
 /**
  * Rendersan SVG image of a sun.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a sun.
  */
-const SunSvgImage = (rest: React.SVGProps<SVGSVGElement>): JSX.Element => {
+const SunSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg
       viewBox="0 0 24 24"
