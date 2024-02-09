@@ -14,9 +14,9 @@ type TArticlesApp = (data: TArticlesData) => ReactNode
  * @param data The articles page data.
  * @returns The articles page component.
  */
-const ArticlesApp: TArticlesApp = (data) => {
+const ArticlesApp: TArticlesApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || []
+    description = data?.hero?.description || []
 
   return (
     <ContentLayout

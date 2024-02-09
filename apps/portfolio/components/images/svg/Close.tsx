@@ -7,7 +7,7 @@ import { TCommonSvgImageProps } from '@/types/common'
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a close icon.
  */
-const CloseSvgImage: TCommonSvgImageProps = (rest) => {
+const CloseSvgImage: TCommonSvgImageProps = rest => {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <path
