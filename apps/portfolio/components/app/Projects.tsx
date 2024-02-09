@@ -13,9 +13,9 @@ type TProjectsApp = (data: TProjectsData) => ReactNode
  * Renders the projects page.
  * @returns The projects page component.
  */
-const ProjectsApp: TProjectsApp = (data) => {
+const ProjectsApp: TProjectsApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || []
+    description = data?.hero?.description || []
 
   return (
     <ContentLayout
