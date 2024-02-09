@@ -22,10 +22,10 @@ type THomeApp = (data: THomeData) => ReactNode
  * @param data The home page data.
  * @returns The home page component.
  */
-const HomeApp: THomeApp = (data) => {
+const HomeApp: THomeApp = data => {
   const hero = data?.hero || {},
-        slidePhotos = data?.slidePhotos || [],
-        articles = []
+    slidePhotos = data?.slidePhotos || [],
+    articles = []
 
   return (
     <>

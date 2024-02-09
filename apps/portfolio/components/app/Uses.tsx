@@ -13,10 +13,10 @@ type TUsesApp = (data: TUsesData) => ReactNode
  * Renders the uses page.
  * @returns The uses page component.
  */
-const UsesApp: TUsesApp = (data) => {
+const UsesApp: TUsesApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || [],
-        tools = data?.tools || []
+    description = data?.hero?.description || [],
+    tools = data?.tools || []
 
   return (
     <ContentLayout

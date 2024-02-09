@@ -15,8 +15,8 @@ type TDarkModeButton = () => ReactNode
  */
 const DarkModeButton: TDarkModeButton = () => {
   const { resolvedTheme, setTheme } = useTheme(),
-        otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark',
-        [mounted, setMounted] = useState(false)
+    otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark',
+    [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setMounted(true)
