@@ -19,9 +19,9 @@ type TAboutApp = (data: TAboutData) => ReactNode
  * @param data The about page data.
  * @returns The about page component.
  */
-const AboutApp: TAboutApp = (data) => {
+const AboutApp: TAboutApp = data => {
   const heading = data?.hero?.heading || '',
-        description = data?.hero?.description || []
+    description = data?.hero?.description || []
 
   return (
     <Container id="hero" className="mt-16 sm:mt-32">
