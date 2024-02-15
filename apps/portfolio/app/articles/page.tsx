@@ -1,3 +1,5 @@
+import { FC } from 'react'
+
 import { Metadata } from 'next'
 
 import ArticlesApp from '@/components/app/Articles'
@@ -16,8 +18,8 @@ export const metadata: Metadata = {
  * Renders the about page.
  * @returns The about page component.
  */
-const Page = async (): Promise<JSX.Element> => {
-  return <ArticlesApp {...data} />
+const Page: FC = async () => {
+  return <ArticlesApp className="mt-16 sm:mt-32" data={data} />
 }
 
 export default Page
