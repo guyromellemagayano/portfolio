@@ -1,29 +1,36 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
 import ContentLayout from '@/components/layouts/Content'
 import ArticlesList from '@/components/list/Articles'
 
 import { TArticlesData } from '@/data/articles'
 
-type TArticlesApp = (data: TArticlesData) => ReactNode
+import type { TCommonComponentProps } from '@/types/common'
+
+export type TArticlesAppDataProps = {
+  data: TArticlesData
+}
+
+export type TArticlesAppProps = TCommonComponentProps & TArticlesAppDataProps
 
 /**
  * Renders the articles page.
+ * @param id The articles page id.
  * @param data The articles page data.
+ * @param rest The articles page props.
  * @returns The articles page component.
  */
-const ArticlesApp: TArticlesApp = data => {
-  const heading = data?.hero?.heading || '',
-    description = data?.hero?.description || []
+const ArticlesApp: FC<TArticlesAppProps> = ({ id, data, ...rest }) => {
+  const customId = useId()
 
   return (
     <ContentLayout
-      id="hero"
-      title={heading}
-      intro={description}
-      className="mt-16 sm:mt-32"
+      id={id || customId}
+      title={data?.hero?.heading || ''}
+      intro={data?.hero?.description || []}
+      {...rest}
     >
       <ArticlesList>
         {/* {articles?.map(article => (
