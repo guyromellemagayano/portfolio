@@ -9,10 +9,11 @@ import SocialLinksList from '@/components/list/SocialLinks'
 
 import SocialLinksData from '@/data/social-links'
 
-import type { TCommonComponentProps, TCommonPageData } from '@/types/common'
-
 import imagePortrait from '@/images/portrait.jpg'
+
 import { isArrayType, isEmpty } from '@/utils/checkTypes'
+
+import type { TCommonComponentProps, TCommonPageData } from '@/types/common'
 
 export type TAboutDataProps = {
   data: TCommonPageData
