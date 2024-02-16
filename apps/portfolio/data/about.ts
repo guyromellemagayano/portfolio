@@ -1,12 +1,12 @@
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TAboutData<T = object> = TGenericPageData<T>
+export type TAboutData = () => TCommonPageData
 
 /**
  * Returns an object containing metadata and hero data for the About page.
- * @returns {TAboutData} An object containing metadata and hero data for the About page.
+ * @returns The metadata and hero data for the About page.
  */
-const AboutData = (): TAboutData => {
+const AboutData: TAboutData = () => {
   const meta = {
     title: 'About - Guy Romelle Magayano',
     description: 'I’m Guy Romelle Magayano and I build things for the Web.',
