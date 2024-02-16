@@ -1,8 +1,8 @@
 import { StaticImageData } from 'next/image'
 
-import type { TWorkExperience } from './work'
+import type { TWorkExperience } from '@/data/work'
 
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
 import logoEpicDesignLabs from '@/images/logos/epic-design-labs.png'
 import logoInfosoftStudio from '@/images/logos/infosoft-studio.png'
@@ -15,18 +15,20 @@ import image2 from '@/images/photos/speaker.jpg'
 import image1 from '@/images/photos/travel.jpg'
 import image3 from '@/images/photos/workplace.jpg'
 
-export type THomeData<T = object> = TGenericPageData<T> & {
-  slidePhotos?: Array<{
-    alt: string
-    src: StaticImageData
-  }> | null
+export type THomePageSlidePhotos = {
+  alt: string
+  src: StaticImageData
+}
+
+export type THomeData = TCommonPageData & {
+  slidePhotos?: Array<THomePageSlidePhotos>
   cvFile?: string
-  workExperiences?: Array<TWorkExperience> | null
+  workExperiences?: Array<TWorkExperience>
 }
 
 /**
  * Returns an object containing data for the home page.
- * @returns {THomeData} An object containing meta, hero, slidePhotos, cvFile, and workExperiences data.
+ * @returns The data for the home page.
  */
 const HomeData = (): THomeData => {
   const meta = {
