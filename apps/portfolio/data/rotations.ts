@@ -1,8 +1,8 @@
 /**
  * An array of strings representing rotation data.
- * @type {string[]}
+ * @returns An array of strings representing rotation data.
  */
-const RotationsData: string[] = [
+const RotationsData: Array<string> = [
   'rotate-2',
   '-rotate-2',
   'rotate-2',
