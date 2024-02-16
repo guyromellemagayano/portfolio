@@ -20,6 +20,9 @@ export type TUsesAppProps = TCommonComponentProps & TUsesAppDataProps
 
 /**
  * Renders the uses page.
+ * @param id The uses page id.
+ * @param data The uses page data.
+ * @param rest The uses page props.
  * @returns The uses page component.
  */
 const UsesApp: FC<TUsesAppProps> = ({ id, data, ...rest }) => {
