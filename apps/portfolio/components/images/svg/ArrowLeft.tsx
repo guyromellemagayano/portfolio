@@ -3,7 +3,7 @@
 import { TCommonSvgImageProps } from '@/types/common'
 
 /**
- * Rendersan SVG image of an arrow pointing left.
+ * Renders an SVG image of an arrow pointing left.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an arrow pointing left.
  */

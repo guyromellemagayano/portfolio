@@ -3,7 +3,7 @@
 import { TCommonSvgImageProps } from '@/types/common'
 
 /**
- * Rendersan SVG image of an envelope.
+ * Renders an SVG image of an envelope.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an envelope.
  */
