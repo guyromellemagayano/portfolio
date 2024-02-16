@@ -1,21 +1,21 @@
 import { StaticImageData } from 'next/image'
 
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TWorkData<T = object> = TGenericPageData<T> & {
+export type TWorkData = TCommonPageData & {
   workExperiences?: Array<TWorkExperience>
 }
 
-export type TWorkExperience<T = object> = T & {
-  company?: string | null
-  duration?: string | null
-  country?: string | null
-  contributions?: string[] | null
-  skills?: string[] | null
-  title?: string | null
+export type TWorkExperience = {
+  company?: string
+  duration?: string
+  country?: string
+  contributions?: string[]
+  skills?: string[]
+  title?: string
   logo?: StaticImageData | string | null
-  start?: string | null
-  end?: string | null
+  start?: string
+  end?: string
 }
 
 /**
