@@ -1,12 +1,12 @@
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TNotFoundPageData<T = object> = TGenericPageData<T>
+export type TNotFoundPageData = () => TCommonPageData
 
 /**
  * Returns the data for the 404 page.
- * @returns {TNotFoundPageData} The data for the 404 page.
+ * @returns The data for the 404 page.
  */
-const NotFoundPageData = (): TNotFoundPageData => {
+const NotFoundPageData: TNotFoundPageData = () => {
   const meta = {
     title: '404 - Page Not Found - Guy Romelle Magayano',
     description: 'Page not found.',
