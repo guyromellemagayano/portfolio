@@ -3,7 +3,7 @@
 import { TCommonSvgImageProps } from '@/types/common'
 
 /**
- * Rendersan SVG image of a chevron pointing right.
+ * Renders an SVG image of a chevron pointing right.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a chevron pointing right.
  */

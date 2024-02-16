@@ -3,7 +3,7 @@
 import { TCommonSvgImageProps } from '@/types/common'
 
 /**
- * Rendersan SVG image of a Twitter logo.
+ * Renders an SVG image of a Twitter logo.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a Twitter logo.
  */
