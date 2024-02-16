@@ -1,10 +1,10 @@
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TArticlesData<T = object> = TGenericPageData<T>
+export type TArticlesData = TCommonPageData
 
 /**
  * Returns an object containing metadata and hero data for articles.
- * @returns {TArticlesData} An object containing metadata and hero data for articles.
+ * @returns The metadata and hero data for articles.
  */
 const ArticlesData = (): TArticlesData => {
   const meta = {
