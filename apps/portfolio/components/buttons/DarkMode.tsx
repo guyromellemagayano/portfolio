@@ -1,19 +1,17 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { useTheme } from 'next-themes'
 
 import MoonSvgImage from '@/components/images/svg/Moon'
 import SunSvgImage from '@/components/images/svg/Sun'
 
-type TDarkModeButton = () => ReactNode
-
 /**
  * Renders dark mode button component.
  * @returns The dark mode button component.
  */
-const DarkModeButton: TDarkModeButton = () => {
+const DarkModeButton: FC = () => {
   const { resolvedTheme, setTheme } = useTheme(),
     otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark',
     [mounted, setMounted] = useState(false)
