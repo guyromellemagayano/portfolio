@@ -19,15 +19,14 @@ import NavigationData from '@/data/navigation'
 import '@/styles/tailwind.css'
 
 import 'focus-visible'
+import { ReactNode } from 'react'
 
 /**
  * RootLayout component that serves as the main layout for the application.
- *
- * @param {Object} props - The component props.
- * @param {JSX.Element} props.children - The child elements to be rendered within the layout.
- * @returns {JSX.Element} The rendered RootLayout component.
+ * @param children - The children of the layout.
+ * @returns The rendered RootLayout component.
  */
-const RootLayout = ({ children }: { children: JSX.Element }): JSX.Element => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   const footerData: TNavigationData = NavigationData()
 
   return (
@@ -62,7 +61,7 @@ const RootLayout = ({ children }: { children: JSX.Element }): JSX.Element => {
                   <SpeedInsights />
                   <Analytics />
                 </main>
-                <FooterLayout {...footerData} />
+                <FooterLayout className="mt-32" {...footerData} />
               </div>
             </div>
           </StyledComponentsRegistry>
