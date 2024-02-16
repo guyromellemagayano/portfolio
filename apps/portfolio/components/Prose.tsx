@@ -1,22 +1,32 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
 import clsx from 'clsx'
 
-import type { TWithChildren, TWithClassName } from '@/types/common'
+import type { TContainerProps } from '@/types/common'
 
-export type TProseProps<T = object> = T & TWithChildren<T> & TWithClassName<T>
+export type TProseProps = TContainerProps
 
 /**
  * Renders the prose component.
+ * @param id - The ID of the prose.
  * @param children - The children of the prose.
  * @param className - The class name of the prose.
+ * @param rest - The rest of the prose props.
  * @returns The rendered prose component.
  */
-const Prose = ({ children, className }: TProseProps): ReactNode => {
+const Prose: FC<TProseProps> = ({ id, children, className, ...rest }) => {
+  const customId = useId()
+
   return (
-    <div className={clsx('prose dark:prose-invert', className)}>{children}</div>
+    <div
+      id={id || customId}
+      className={clsx('prose dark:prose-invert', className)}
+      {...rest}
+    >
+      {children}
+    </div>
   )
 }
 
