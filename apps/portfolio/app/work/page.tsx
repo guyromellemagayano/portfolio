@@ -17,7 +17,7 @@ export const metadata: Metadata = {
  * @returns The about page component.
  */
 const Page = async (): Promise<JSX.Element> => {
-  return <WorkApp {...data} />
+  return <WorkApp data={data} />
 }
 
 export default Page
