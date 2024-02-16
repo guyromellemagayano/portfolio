@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useContext } from 'react'
+import { FC, useContext } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -15,35 +15,32 @@ import { formatDate } from '@/utils/formatDate'
 
 import type { TWithChildren } from '@/types/common'
 
-export type TArticleCommonProps<T = object> = T & {
-  meta: {
-    title: string | null
-    description: string | null
-    date: string | null
-  }
+export type TArticleCommonMeta = {
+  title: string
+  description: string
+  date: string
 }
 
-export type TArticleLayoutProps<T = object> = T &
-  TWithChildren<T> & {
-    article: TArticleCommonProps['meta']
-    author: string | null
-  }
+export type TArticleCommonProps = {
+  meta: TArticleCommonMeta
+}
+
+export type TArticleLayoutProps = TWithChildren & {
+  article: TArticleCommonMeta
+  author: string
+}
 
 /**
- * Rendersthe article layout component.
- * @param children - The article content.
- * @param article - The article metadata.
+ * Renders the article layout component.
  * @returns The rendered article layout component.
  */
-const ArticleLayout = ({
-  children,
-  article
-}: TArticleLayoutProps): ReactNode => {
-  const router = useRouter()
-  const { previousPathname } = useContext(AppContext)
-
-  const dateNow = new Date()
-  const dateNowToString = dateNow.toISOString()
+const ArticleLayout: FC<TArticleLayoutProps> = ({ children, article }) => {
+  const router = useRouter(),
+    { previousPathname } = useContext(AppContext),
+    dateNow = new Date(),
+    dateNowToString = dateNow.toISOString(),
+    articleTitle = article?.title || 'Sample Article Title',
+    articleDate = article?.date || dateNowToString
 
   return (
     <Container className="mt-16 lg:mt-32">
@@ -63,15 +60,16 @@ const ArticleLayout = ({
           <article>
             <header className="flex flex-col">
               <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                {article?.title || 'Sample Article Title'}
+                {articleTitle}
               </h1>
               <time
-                dateTime={article?.date || dateNowToString}
+                dateTime={articleDate}
                 className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
               >
-                <span>{formatDate(article?.date || dateNowToString)}</span>
+                <span>{formatDate(articleDate)}</span>
               </time>
             </header>
+
             <Prose className="mt-8" data-mdx-content>
               {children}
             </Prose>
