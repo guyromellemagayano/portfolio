@@ -1,18 +1,22 @@
-import type { TDataProps } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TUsesData<T = object> = TDataProps<T> & {
-  tools: Array<{
-    name: string
-    items: Array<{
-      title: string
-      description: string
-    }>
-  }>
+export type TUsesData = TCommonPageData & {
+  tools: Array<TUsesTools>
+}
+
+export type TUsesTools = {
+  name: string
+  items: Array<TUsesItems>
+}
+
+export type TUsesItems = {
+  title: string
+  description: string
 }
 
 /**
  * Returns an object containing metadata, hero section data, and tools data for the Uses page.
- * @returns {TUsesData} An object containing metadata, hero section data, and tools data for the Uses page.
+ * @returns The metadata, hero section data, and tools data for the Uses page.
  */
 const UsesData = (): TUsesData => {
   const meta = {
