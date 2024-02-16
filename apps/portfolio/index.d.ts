@@ -1,5 +1,7 @@
 import { ReactNode, SVGProps } from 'react'
 
+import { TCommonComponentReturnType } from '@/types/common'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
   const content: ReactNode<SVGProps<SVGSVGElement>>
@@ -12,6 +14,6 @@ declare module 'focus-visible' {
 }
 
 declare module '*.mdx' {
-  let MDXComponent: (props: any) => ReactNode
+  let MDXComponent: (props: any) => TCommonComponentReturnType
   export default MDXComponent
 }
