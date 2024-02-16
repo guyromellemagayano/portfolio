@@ -5,7 +5,9 @@ import LinkedInSvgImage from '@/components/images/svg/LinkedIn'
 import MailSvgImage from '@/components/images/svg/Mail'
 import TwitterSvgImage from '@/components/images/svg/Twitter'
 
-export type TSocialLinksData<T = object> = T & {
+import type { TCommonAdditionalProps } from '@/types/common'
+
+export type TSocialLinksData = TCommonAdditionalProps & {
   url: string
   ariaLabel: string
   icon: FunctionComponent<SVGProps<SVGSVGElement>>
@@ -13,7 +15,7 @@ export type TSocialLinksData<T = object> = T & {
 
 /**
  * Social links data
- * @returns {TSocialLinksData[]} social links data
+ * @returns An array of objects containing social links data.
  */
 const SocialLinksData = [
   {
