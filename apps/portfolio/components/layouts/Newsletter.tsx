@@ -1,15 +1,15 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC } from 'react'
 
 import Button from '@/components/Button'
 import MailSvgImage from '@/components/images/svg/Mail'
 
 /**
- * Rendersthe newsletter layout component.
+ * Renders the newsletter layout component.
  * @returns The rendered newsletter layout component.
  */
-const NewsletterLayout = (): ReactNode => {
+const NewsletterLayout: FC = () => {
   return (
     <form
       action="/thank-you"
