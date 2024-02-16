@@ -1,27 +1,29 @@
-import type { TGenericPageData } from '@/types/common'
+import type { TCommonPageData } from '@/types/common'
 
-export type TSkillsData<T = object> = TGenericPageData<T> & {
+export type TSkillsData = TCommonPageData & {
   skills?: Array<TSkillsDataProps>
 }
 
-export type TSkillsDataProps<T = object> = T & {
+export type TSkillsDataProps = {
   name: string
   items?: Array<TSkillsItemsProps>
 }
 
-export type TSkillsItemsProps<T = object> = T & {
+export type TSkillsItemsTechnologiesProps = {
+  name: string
+  link?: string
+}
+
+export type TSkillsItemsProps = {
   title: string
   skillLevel: number
-  description: string[]
-  technologies: Array<{
-    name: string
-    link?: string
-  }>
+  description: Array<string>
+  technologies: Array<TSkillsItemsTechnologiesProps>
 }
 
 /**
  * Returns an object containing data about skills.
- * @returns {TSkillsData} An object containing meta information, hero section data, and skills data.
+ * @returns An object containing data about skills.
  */
 const SkillsData = (): TSkillsData => {
   const meta = {
