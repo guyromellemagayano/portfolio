@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
 import ContentLayout from '@/components/layouts/Content'
 import WorkList from '@/components/list/Work'
@@ -8,34 +8,41 @@ import WorkListCards from '@/components/list/WorkCards'
 
 import type { TWorkData } from '@/data/work'
 
-type TWorkApp = (data: TWorkData) => ReactNode
+import { isArrayType, isEmpty } from '@/utils/checkTypes'
+
+import { TCommonComponentProps } from '@/types/common'
+
+export type TWorkAppDataProps = {
+  data: TWorkData
+}
+
+export type TWorkAppProps = TCommonComponentProps & TWorkAppDataProps
 
 /**
  * Renders the work page.
+ * @param id The work page id.
+ * @param data The work page data.
+ * @param rest The work page props.
  * @returns The work page component.
  */
-const WorkApp: TWorkApp = data => {
-  const heading = data?.hero?.heading || '',
-    description = data?.hero?.description || [],
-    workExperiences = data?.workExperiences || []
+const WorkApp: FC<TWorkAppProps> = ({ id, data, ...rest }) => {
+  const customId = useId()
 
   return (
     <ContentLayout
-      id="hero"
-      title={heading}
-      intro={description}
-      className="mt-16 sm:mt-32"
+      id={id || customId}
+      title={data?.hero?.heading || ''}
+      intro={data?.hero?.description || []}
+      {...rest}
     >
       <div className="grid gap-y-12">
-        {workExperiences?.map(item => {
-          const duration = item?.duration || ''
-
-          return (
-            <WorkList key={duration} title={duration} {...item}>
-              <WorkListCards {...item} />
+        {isArrayType(data?.workExperiences) &&
+          !isEmpty(data?.workExperiences) &&
+          data.workExperiences.map((rest, index) => (
+            <WorkList key={index} {...rest}>
+              <WorkListCards {...rest} />
             </WorkList>
-          )
-        })}
+          ))}
       </div>
     </ContentLayout>
   )
