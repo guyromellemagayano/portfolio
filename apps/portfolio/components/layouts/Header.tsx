@@ -1,6 +1,6 @@
 'use client'
 
-import { CSSProperties, ElementRef, ReactNode, useEffect, useRef } from 'react'
+import { CSSProperties, ElementRef, FC, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
@@ -13,15 +13,22 @@ import MobileNavigation from '@/components/navigation/Mobile'
 
 import clamp from '@/utils/helpers'
 
+import { TCommonComponentProps } from '@/types/common'
+
+export type THeaderLayoutProps = TCommonComponentProps
+
 /**
- * Rendersthe header layout component.
+ * Renders the header layout component.
+ * @param className - The additional class name for the component.
+ * @param id - The additional ID for the component.
+ * @param rest - The rest of the props.
  * @returns The rendered header layout component.
  */
-const HeaderLayout = (): ReactNode => {
-  const pathname = usePathname()
-  const headerRef = useRef<ElementRef<'div'>>(null)
-  const avatarRef = useRef<ElementRef<'div'>>(null)
-  const isInitial = useRef<boolean>(true)
+const HeaderLayout: FC<THeaderLayoutProps> = ({ className, id, ...rest }) => {
+  const pathname = usePathname(),
+    headerRef = useRef<ElementRef<'div'>>(null),
+    avatarRef = useRef<ElementRef<'div'>>(null),
+    isInitial = useRef<boolean>(true)
 
   const isHomePage = pathname === '/'
 
@@ -29,15 +36,15 @@ const HeaderLayout = (): ReactNode => {
     const downDelay = avatarRef.current?.offsetTop ?? 0
     const upDelay = 64
 
-    function setProperty(property: string, value: string) {
+    const setProperty = (property: string, value: string): void => {
       document.documentElement.style.setProperty(property, value)
     }
 
-    function removeProperty(property: string) {
+    const removeProperty = (property: string): void => {
       document.documentElement.style.removeProperty(property)
     }
 
-    function updateHeaderStyles() {
+    const updateHeaderStyles = (): void => {
       if (!headerRef.current) {
         return
       }
@@ -78,15 +85,15 @@ const HeaderLayout = (): ReactNode => {
       }
     }
 
-    function updateAvatarStyles() {
+    const updateAvatarStyles = (): void => {
       if (!isHomePage) {
         return
       }
 
-      const fromScale = 1
-      const toScale = 36 / 64
-      const fromX = 0
-      const toX = 2 / 16
+      const fromScale = 1,
+        toScale = 36 / 64,
+        fromX = 0,
+        toX = 2 / 16
 
       const scrollY = downDelay - window.scrollY
 
@@ -101,15 +108,15 @@ const HeaderLayout = (): ReactNode => {
         `translate3d(${x}rem, 0, 0) scale(${scale})`
       )
 
-      const borderScale = 1 / (toScale / scale)
-      const borderX = (-toX + x) * borderScale
-      const borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`
+      const borderScale = 1 / (toScale / scale),
+        borderX = (-toX + x) * borderScale,
+        borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`
 
       setProperty('--avatar-border-transform', borderTransform)
       setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
     }
 
-    function updateStyles() {
+    const updateStyles = () => {
       updateHeaderStyles()
       updateAvatarStyles()
       isInitial.current = false
@@ -141,6 +148,7 @@ const HeaderLayout = (): ReactNode => {
           height: 'var(--header-height)',
           marginBottom: 'var(--header-mb)'
         }}
+        {...rest}
       >
         {isHomePage && (
           <>
