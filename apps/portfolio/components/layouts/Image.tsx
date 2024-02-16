@@ -1,30 +1,44 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC } from 'react'
 
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
-import type { TPhotoLayoutData } from '@/components/layouts/Photo'
+import { TWithClassName, TWithID } from '@/types/common'
+
+export type TImageLayoutProps = TWithClassName &
+  TWithID & {
+    src: StaticImport | string | undefined
+    alt: string
+    sizes?: string
+    priority?: boolean
+    unoptimized?: boolean
+  }
 
 /**
- * Rendersthe image component.
- * @param props - The props object.
+ * Renders the image component.
+ * @param src - The image source.
+ * @param alt - The image alternative text.
+ * @param sizes - The image sizes.
+ * @param className - The image class name.
+ * @param [unoptimized=false] - The image unoptimized flag.
+ * @param [priority=false] - The image priority flag.
  * @returns The rendered image component.
  */
-const ImageLayout = (props: TPhotoLayoutData): ReactNode => {
-  const src: string | StaticImport = props?.src || '#'
-  const alt: string = props?.alt ?? ''
-  const sizes: string = props?.sizes ?? '100vw'
-  const className: string = props?.className ?? ''
-  const unoptimized: boolean = props?.unoptimized ?? false
-  const priority = props?.priority || false
-
+const ImageLayout: FC<TImageLayoutProps> = ({
+  src,
+  alt,
+  sizes,
+  className,
+  unoptimized = false,
+  priority = false
+}) => {
   return (
     <Image
-      src={src}
-      alt={alt}
-      sizes={sizes}
+      src={src || '#'}
+      alt={alt || ''}
+      sizes={sizes || '100vw'}
       className={className}
       unoptimized={unoptimized}
       priority={priority}
