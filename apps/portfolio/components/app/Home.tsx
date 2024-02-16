@@ -1,8 +1,7 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
-import Article, { TArticleProps } from '@/components/Article'
 import Container from '@/components/Container'
 import ContentLayout from '@/components/layouts/Content'
 import NewsletterLayout from '@/components/layouts/Newsletter'
@@ -13,52 +12,52 @@ import SocialLink from '@/components/links/Social'
 import type { THomeData } from '@/data/home'
 import SocialLinksData from '@/data/social-links'
 
-import type { TWithClassName } from '@/types/common'
+import type { TCommonComponentProps } from '@/types/common'
 
-type THomeApp = (data: THomeData) => ReactNode
+export type THomeAppDataProps = {
+  data: THomeData
+}
+
+export type THomeAppProps = TCommonComponentProps & THomeAppDataProps
 
 /**
  * Renders the home page.
+ * @param id The home page id.
  * @param data The home page data.
+ * @param rest The home page props.
  * @returns The home page component.
  */
-const HomeApp: THomeApp = data => {
-  const hero = data?.hero || {},
-    slidePhotos = data?.slidePhotos || [],
-    articles = []
+const HomeApp: FC<THomeAppProps> = ({ id, data, ...rest }) => {
+  const customId = useId()
+  // articles = []
 
   return (
     <>
       <ContentLayout
-        id="hero"
-        title={hero?.heading || ''}
-        intro={hero?.description || []}
-        className="mt-9 sm:mt-9"
+        id={id || customId}
+        title={data?.hero?.heading || ''}
+        intro={data?.hero?.description || []}
+        {...rest}
       >
         <div className="mt-6 flex gap-6">
-          {SocialLinksData?.map(link => {
-            const url = link?.url || ''
-
-            return <SocialLink key={url} {...link} />
-          })}
+          {SocialLinksData?.map((rest, index) => (
+            <SocialLink key={index} {...rest} />
+          ))}
         </div>
       </ContentLayout>
-      <PhotoLayout data={slidePhotos} />
+      <PhotoLayout className="mt-16 sm:mt-20" data={data?.slidePhotos || []} />
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
-            {articles?.map(
-              (
-                article: JSX.IntrinsicAttributes &
-                  object & { children?: ReactNode } & TWithClassName &
-                  TArticleProps & {
-                    slug: string
-                  }
-              ) => <Article key={article.slug} {...article} />
-            )}
+            {/* {articles?.map((article, index) => (
+              <Article key={index} {...article} />
+            ))} */}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            <ResumeLayout {...data} />
+            <ResumeLayout
+              workExperiences={data?.workExperiences || []}
+              cvFile={data?.cvFile || ''}
+            />
             <NewsletterLayout />
           </div>
         </div>
