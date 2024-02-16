@@ -1,10 +1,14 @@
-export type TPagesData<T = object> = T & {
-  pages: Array<{
-    title: string
-    link: string
-  }>
+import type { TCommonAdditionalProps } from '@/types/common'
+
+export type TPagesData = TCommonAdditionalProps & {
+  pages: Array<TPagesPages>
   articles: Array<never>
   projects: Array<never>
+}
+
+export type TPagesPages = {
+  title: string
+  link: string
 }
 
 /**
