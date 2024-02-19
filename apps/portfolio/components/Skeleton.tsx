@@ -1,19 +1,24 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
 import clsx from 'clsx'
 
-import {
-  TBlockProps,
-  TWithChildren,
-  TWithClassName,
-  TWithIDAndClass
-} from '@/types/common'
+import { TBlockProps } from '@/types/common'
 
-export type TAvatarProps<T = object> = T &
-  TWithIDAndClass<T> &
-  TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
+interface ISkeletonStaticComponents {
+  Avatar: FC<TBlockProps>
+  SocialLink: FC<TBlockProps>
+  PhotoLayout: FC<TBlockProps>
+  ResumeLayout: FC<TBlockProps>
+  SectionLayout: FC<TBlockProps>
+  ImageLayout: FC<TBlockProps>
+  ContentSimpleLayout: FC<TBlockProps>
+  ContentAsideLayout: FC<TBlockProps>
+  SocialList: FC<TBlockProps>
+}
+
+interface ISkeletonProps extends FC<TBlockProps>, ISkeletonStaticComponents {}
 
 /**
  * Renders the skeleton component.
@@ -22,27 +27,27 @@ export type TAvatarProps<T = object> = T &
  * @param children - The content to render inside the skeleton.
  * @returns The rendered skeleton component.
  */
-const Skeleton = ({
+const Skeleton: ISkeletonProps = ({
   as: Component = 'div',
-  className,
-  children
-}: TBlockProps): ReactNode => {
-  return (
-    <Component role="status" className={className}>
-      {children}
-    </Component>
-  )
+  children,
+  ...rest
+}) => {
+  return <Component {...rest}>{children}</Component>
 }
 
 /**
  * Renders the avatar skeleton component.
- * @param className - Additional CSS classes to apply to the avatar skeleton component.
+ * @param role - The role of the avatar skeleton component.
+ * @param id - The ID of the avatar skeleton component.
  * @param large - Whether the avatar is large.
+ * @param rest - The rest of the props of the avatar skeleton component.
  * @returns The rendered avatar skeleton component.
  */
-const Avatar = ({ className, large }: TAvatarProps): ReactNode => {
+const Avatar: FC<TBlockProps> = ({ role = 'status', id, large, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div
         className={clsx(
           'animate-pulse rounded-full bg-gray-200 dark:bg-gray-700',
@@ -55,12 +60,16 @@ const Avatar = ({ className, large }: TAvatarProps): ReactNode => {
 
 /**
  * Renders the social link skeleton component.
- * @param className - Additional CSS classes to apply to the social link skeleton component.
+ * @param role - The role of the social link skeleton component.
+ * @param id - The ID of the social link skeleton component.
+ * @param rest - The rest of the props of the social link skeleton component.
  * @returns The rendered social link skeleton component.
  */
-const SocialLink = ({ className }: TWithClassName): ReactNode => {
+const SocialLink: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="animate-pulse">
         <div className="mt-4 group -m-1 p-1 flex ">
           <span className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded" />
@@ -81,12 +90,16 @@ const SocialLink = ({ className }: TWithClassName): ReactNode => {
 
 /**
  * Renders the photo layout skeleton component.
- * @param className - Additional CSS classes to apply to the photo layout skeleton component.
+ * @param role - The role of the photo layout skeleton component.
+ * @param id - The ID of the photo layout skeleton component.
+ * @param rest - The rest of the props of the photo layout skeleton component.
  * @returns The rendered photo layout skeleton component.
  */
-const PhotoLayout = ({ className }: TWithClassName): ReactNode => {
+const PhotoLayout: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="mt-16 sm:mt-20">
         <div className="animate-pulse -my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
           <div className="h-80 bg-gray-200 dark:bg-gray-700 relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl sm:w-72 sm:rounded-2xl" />
@@ -102,12 +115,16 @@ const PhotoLayout = ({ className }: TWithClassName): ReactNode => {
 
 /**
  * Renders the resume layout skeleton component.
- * @param className - Additional CSS classes to apply to the resume layout skeleton component.
+ * @param role - The role of the resume layout skeleton component.
+ * @param id - The ID of the resume layout skeleton component.
+ * @param rest - The rest of the props of the resume layout skeleton component.
  * @returns The rendered resume layout skeleton component.
  */
-const ResumeLayout = ({ className }: TWithClassName): ReactNode => {
+const ResumeLayout: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="animate-pulse rounded-2xl bg-gray-200 dark:bg-gray-700 w-full p-6 h-96" />
     </main>
   )
@@ -115,12 +132,16 @@ const ResumeLayout = ({ className }: TWithClassName): ReactNode => {
 
 /**
  * Renders the section layout skeleton component.
- * @param className - Additional CSS classes to apply to the section layout skeleton component.
+ * @param role - The role of the section layout skeleton component.
+ * @param id - The ID of the section layout skeleton component.
+ * @param rest - The rest of the props of the section layout skeleton component.
  * @returns The rendered section layout skeleton component.
  */
-const SectionLayout = ({ className }: TWithClassName): ReactNode => {
+const SectionLayout: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="md:grid md:grid-cols-4 md:items-baseline animate-pulse">
         <div className="h-6 bg-gray-200 rounded dark:bg-gray-700 w-full max-w-32" />
         <div className="md:col-span-3 group relative flex flex-col items-start">
@@ -147,13 +168,17 @@ const SectionLayout = ({ className }: TWithClassName): ReactNode => {
 }
 
 /**
- * Rendersthe image layout skeleton content.
- * @param {Object} props - The props object.
+ * Renders the image layout skeleton content.
+ * @param role - The role of the image layout skeleton component.
+ * @param id - The ID of the image layout skeleton component.
+ * @param rest - The rest of the props of the image layout skeleton component.
  * @returns The image layout skeleton content component.
  */
-const ImageLayout = (props: TWithClassName): ReactNode => {
+const ImageLayout: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={props?.className || ''}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="animate-pulse ">
         <div className="aspect-square rotate-3 rounded-2xl object-cover bg-gray-200 dark:bg-gray-700 w-full h-[34.375rem]" />
       </div>
@@ -163,14 +188,26 @@ const ImageLayout = (props: TWithClassName): ReactNode => {
 
 /**
  * Renders the content simple layout skeleton content.
- * @param {Object} props - The props object.
+ * @param role - The role of the content simple layout skeleton component.
+ * @param id - The ID of the content simple layout skeleton component.
+ * @param className - Additional CSS classes to apply to the content simple layout skeleton component.
+ * @param rest - The rest of the props of the content simple layout skeleton component.
  * @returns The content simple layout skeleton content component.
  */
-const ContentSimpleLayout = (props: TWithClassName): ReactNode => {
+const ContentSimpleLayout: FC<TBlockProps> = ({
+  role = 'status',
+  id,
+  className,
+  ...rest
+}) => {
+  const customId = useId()
+
   return (
     <main
-      role="status"
-      className={clsx('sm:px-8 mt-16 sm:mt-32', props?.className || '')}
+      role={role}
+      id={id || customId}
+      className={clsx('sm:px-8 mt-16 sm:mt-32', className)}
+      {...rest}
     >
       <section className="mx-auto max-w-7xl sm:px-8 animate-pulse">
         <article className="relative px-4 sm:px-8 lg:px-12">
@@ -196,12 +233,20 @@ const ContentSimpleLayout = (props: TWithClassName): ReactNode => {
 
 /**
  * Renders the content aside layout skeleton content.
- * @param {Object} props - The props object.
+ * @param role - The role of the content aside layout skeleton component.
+ * @param id - The ID of the content aside layout skeleton component.
+ * @param rest - The rest of the props of the content aside layout skeleton component.
  * @returns The content aside layout skeleton content component.
  */
-const ContentAsideLayout = (props: TWithClassName): ReactNode => {
+const ContentAsideLayout: FC<TBlockProps> = ({
+  role = 'status',
+  id,
+  ...rest
+}) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={props?.className || ''}>
+    <main role={role} id={id || customId} {...rest}>
       <section className="mx-auto w-full animate-pulse">
         <article className="relative">
           <div className="mx-auto w-full max-w-2xl lg:max-w-5xl">
@@ -223,12 +268,16 @@ const ContentAsideLayout = (props: TWithClassName): ReactNode => {
 
 /**
  * Renders the social list skeleton component.
- * @param className - Additional CSS classes to apply to the social list skeleton component.
+ * @param role - The role of the social list skeleton component.
+ * @param id - The ID of the social list skeleton component.
+ * @param rest - The rest of the props of the social list skeleton component.
  * @returns The rendered social list skeleton component.
  */
-const SocialList = ({ className }: TWithClassName): ReactNode => {
+const SocialList: FC<TBlockProps> = ({ role = 'status', id, ...rest }) => {
+  const customId = useId()
+
   return (
-    <main role="status" className={className}>
+    <main role={role} id={id || customId} {...rest}>
       <div className="animate-pulse">
         <div className="mt-4 group -m-1 p-1 flex ">
           <span className="h-6 w-6 bg-gray-200 dark:bg-gray-700 rounded" />
