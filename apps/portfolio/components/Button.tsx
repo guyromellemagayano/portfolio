@@ -6,15 +6,19 @@ import clsx from 'clsx'
 
 import type { TContainerProps } from '@/types/common'
 
+export type ButtonType = 'button' | 'submit' | 'reset'
+
+export type ButtonVariant = 'primary' | 'secondary'
+
 export type TButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   TContainerProps & {
-    type: 'button' | 'submit' | 'reset'
-    variant: 'primary' | 'secondary'
+    type?: ButtonType
+    variant?: ButtonVariant
   }
 
 export type TGenerateButtonClassName = (
-  variant: TButtonProps['variant'],
-  className: TButtonProps['className']
+  variant?: ButtonVariant,
+  className?: TButtonProps['className']
 ) => string
 
 /**
@@ -29,14 +33,14 @@ const generateButtonClassName: TGenerateButtonClassName = (
 ) => {
   const baseStyle =
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none'
-  const variantStyles: Record<TButtonProps['variant'], string> = {
+  const variantStyles: Record<ButtonVariant, string> = {
     primary:
       'bg-zinc-800 font-semibold text-zinc-100 hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70',
     secondary:
       'bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70'
   }
 
-  return clsx(baseStyle, variantStyles[variant], className)
+  return clsx(baseStyle, variant && variantStyles[variant], className)
 }
 
 /**
