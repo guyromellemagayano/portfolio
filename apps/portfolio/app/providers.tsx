@@ -1,9 +1,11 @@
 'use client'
 
-import { createContext, useEffect, useRef } from 'react'
+import { FC, createContext, useEffect, useRef } from 'react'
 
 import { ThemeProvider, useTheme } from 'next-themes'
 import { usePathname } from 'next/navigation'
+
+import { TWithChildren } from '@/types/common'
 
 /**
  * Custom hook that returns the previous value of a given value.
@@ -53,14 +55,16 @@ const ThemeWatcher = (): null => {
  */
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
+export type TProviders = TWithChildren
+
 /**
  * Providers component that provides the application with the previous pathname and theme.
  * @param children - The child elements to be rendered within the layout.
  * @returns The rendered Providers component.
  */
-export const Providers = ({ children }: { children: React.ReactNode }): JSX.Element => {
-  const pathname = usePathname()
-  const previousPathname = usePrevious(pathname)
+export const Providers: FC<TProviders> = ({ children }) => {
+  const pathname = usePathname(),
+    previousPathname = usePrevious(pathname)
 
   return (
     <AppContext.Provider value={{ previousPathname }}>

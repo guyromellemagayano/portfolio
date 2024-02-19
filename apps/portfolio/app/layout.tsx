@@ -1,3 +1,6 @@
+/* eslint-disable no-irregular-whitespace */
+import { FC } from 'react'
+
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
@@ -16,17 +19,20 @@ import HeaderLayout from '@/components/layouts/Header'
 import type { TNavigationData } from '@/data/navigation'
 import NavigationData from '@/data/navigation'
 
+import { TWithChildren } from '@/types/common'
+
 import '@/styles/tailwind.css'
 
 import 'focus-visible'
-import { ReactNode } from 'react'
+
+export type TRootLayout = TWithChildren
 
 /**
  * RootLayout component that serves as the main layout for the application.
  * @param children - The children of the layout.
  * @returns The rendered RootLayout component.
  */
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout: FC<TRootLayout> = ({ children }) => {
   const footerData: TNavigationData = NavigationData()
 
   return (
