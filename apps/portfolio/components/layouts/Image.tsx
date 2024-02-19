@@ -1,6 +1,6 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useId } from 'react'
 
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
@@ -9,8 +9,8 @@ import { TWithClassName, TWithID } from '@/types/common'
 
 export type TImageLayoutProps = TWithClassName &
   TWithID & {
-    src: StaticImport | string | undefined
-    alt: string
+    src?: StaticImport | string | undefined
+    alt?: string
     sizes?: string
     priority?: boolean
     unoptimized?: boolean
@@ -27,18 +27,22 @@ export type TImageLayoutProps = TWithClassName &
  * @returns The rendered image component.
  */
 const ImageLayout: FC<TImageLayoutProps> = ({
-  src,
-  alt,
-  sizes,
+  id,
+  src = '#',
+  alt = '',
+  sizes = '100vw',
   className,
   unoptimized = false,
   priority = false
 }) => {
+  const customId = useId()
+
   return (
     <Image
-      src={src || '#'}
-      alt={alt || ''}
-      sizes={sizes || '100vw'}
+      src={src}
+      alt={alt}
+      sizes={sizes}
+      id={id || customId}
       className={className}
       unoptimized={unoptimized}
       priority={priority}
