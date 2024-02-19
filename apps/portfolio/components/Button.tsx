@@ -1,21 +1,21 @@
 'use client'
 
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { ButtonHTMLAttributes, FC, useId } from 'react'
 
 import clsx from 'clsx'
 
-import type { TWithChildren, TWithClassName } from '@/types/common'
+import type { TContainerProps } from '@/types/common'
 
-export type ButtonVariant = 'primary' | 'secondary'
-
-export type TButtonProps<T = object> = T &
-  ButtonHTMLAttributes<HTMLButtonElement> &
-  TWithChildren<T> &
-  TWithClassName<T> & {
-    type?: 'button' | 'submit' | 'reset'
-    variant?: 'primary' | 'secondary'
-    className?: string
+export type TButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
+  TContainerProps & {
+    type: 'button' | 'submit' | 'reset'
+    variant: 'primary' | 'secondary'
   }
+
+export type TGenerateButtonClassName = (
+  variant: TButtonProps['variant'],
+  className: TButtonProps['className']
+) => string
 
 /**
  * Generate the class name for the button.
@@ -23,13 +23,13 @@ export type TButtonProps<T = object> = T &
  * @param className - Additional CSS classes to apply to the button.
  * @returns The class name for the button.
  */
-const generateButtonClassName = (
-  variant: ButtonVariant,
-  className?: string
-): string => {
+const generateButtonClassName: TGenerateButtonClassName = (
+  variant,
+  className
+) => {
   const baseStyle =
     'inline-flex items-center gap-2 justify-center rounded-md py-2 px-3 text-sm outline-offset-2 transition active:transition-none'
-  const variantStyles: Record<ButtonVariant, string> = {
+  const variantStyles: Record<TButtonProps['variant'], string> = {
     primary:
       'bg-zinc-800 font-semibold text-zinc-100 hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70',
     secondary:
@@ -43,22 +43,30 @@ const generateButtonClassName = (
  * Renders the button component.
  * @param type - The type of the button.
  * @param variant - The visual style of the button.
+ * @param id - The ID of the button.
  * @param className - Additional CSS classes to apply to the button.
  * @param children - The children of the button.
  * @param rest - The rest of the props of the button.
  * @returns The rendered button component.
  */
-const Button = ({
+const Button: FC<TButtonProps> = ({
   type = 'button',
   variant = 'primary',
+  id,
   className,
   children,
   ...rest
-}: TButtonProps): ReactNode => {
-  const updatedClassName = generateButtonClassName(variant, className)
+}) => {
+  const updatedClassName = generateButtonClassName(variant, className),
+    customId = useId()
 
   return (
-    <button type={type} className={updatedClassName} {...rest}>
+    <button
+      type={type}
+      id={id || customId}
+      className={updatedClassName}
+      {...rest}
+    >
       {children}
     </button>
   )
