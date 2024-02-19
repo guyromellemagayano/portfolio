@@ -1,40 +1,58 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC } from 'react'
 
 import Card from '@/components/Card'
 
 import type { TWorkExperience } from '@/data/work'
 
-import type { TWithChildren } from '@/types/common'
+import { isArrayType, isEmpty, isStringType } from '@/utils/checkTypes'
 
-export type TWorkListCardProps<T = object> = T &
-  TWithChildren<T> &
+import type { TCommonComponentProps } from '@/types/common'
+
+export type TWorkListCardProps = TCommonComponentProps &
   Pick<TWorkExperience, 'company' | 'country' | 'contributions' | 'skills'>
 
 /**
  * Renders the work list cards component.
- * @param props - The props object.
+ * @param company - The company of the work.
+ * @param country - The country of the work.
+ * @param contributions - The contributions of the work.
+ * @param skills - The skills of the work.
+ * @param rest - The rest of the props.
  * @returns The rendered work list cards component.
  */
-const WorkListCards = (props: TWorkListCardProps): ReactNode => {
+const WorkListCards: FC<TWorkListCardProps> = ({
+  company,
+  country,
+  contributions,
+  skills,
+  ...rest
+}) => {
   return (
-    <Card as="article">
-      <Card.Title as="h3" title={props?.company || ''} className="!mb-2">
-        {props?.company || ''} &nbsp;
-        <h5 className="mb-2 hidden md:block text-sm">{props?.country || ''}</h5>
-      </Card.Title>
+    <Card as="article" {...rest}>
+      {isStringType(company) &&
+        !isEmpty(company) &&
+        isStringType(country) &&
+        !isEmpty(country) && (
+          <Card.Title as="h3" title={company} className="!mb-2">
+            {company}{' '}
+            <h5 className="mb-2 hidden md:block text-sm">{country}</h5>
+          </Card.Title>
+        )}
 
-      <div className="flex flex-row items-start my-2">
-        <Card.Eyebrow
-          as="ul"
-          className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500"
-        >
-          {props?.contributions?.map((item: string) => (
-            <li key={item}>{item}</li>
-          ))}
-        </Card.Eyebrow>
-      </div>
+      {isArrayType(contributions) && !isEmpty(contributions) && (
+        <div className="flex flex-row items-start my-2">
+          <Card.Eyebrow
+            as="ul"
+            className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500"
+          >
+            {contributions.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </Card.Eyebrow>
+        </div>
+      )}
 
       <div className="flex flex-row items-start gap-x-6 mt-4 mb-2">
         <Card.Eyebrow
@@ -43,12 +61,17 @@ const WorkListCards = (props: TWorkListCardProps): ReactNode => {
         >
           Skills
         </Card.Eyebrow>
-        <Card.Eyebrow
-          as="ul"
-          className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500"
-        >
-          {props?.skills?.map((item: string) => <li key={item}>{item}</li>)}
-        </Card.Eyebrow>
+
+        {isArrayType(skills) && !isEmpty(skills) && (
+          <Card.Eyebrow
+            as="ul"
+            className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500"
+          >
+            {skills.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </Card.Eyebrow>
+        )}
       </div>
     </Card>
   )
