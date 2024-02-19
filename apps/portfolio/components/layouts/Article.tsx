@@ -38,9 +38,7 @@ const ArticleLayout: FC<TArticleLayoutProps> = ({ children, article }) => {
   const router = useRouter(),
     { previousPathname } = useContext(AppContext),
     dateNow = new Date(),
-    dateNowToString = dateNow.toISOString(),
-    articleTitle = article?.title || 'Sample Article Title',
-    articleDate = article?.date || dateNowToString
+    dateNowToString = dateNow.toISOString()
 
   return (
     <Container className="mt-16 lg:mt-32">
@@ -60,13 +58,13 @@ const ArticleLayout: FC<TArticleLayoutProps> = ({ children, article }) => {
           <article>
             <header className="flex flex-col">
               <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                {articleTitle}
+                {article?.title || 'Sample Article Title'}
               </h1>
               <time
-                dateTime={articleDate}
+                dateTime={article?.date || dateNowToString}
                 className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
               >
-                <span>{formatDate(articleDate)}</span>
+                <span>{formatDate(article?.date || dateNowToString)}</span>
               </time>
             </header>
 
