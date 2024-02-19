@@ -5,6 +5,7 @@ import { FC, useId } from 'react'
 import type { TArticleProps } from '@/components/Article'
 import Card from '@/components/Card'
 
+import { isEmpty, isStringType } from '@/utils/checkTypes'
 import { formatDate } from '@/utils/formatDate'
 
 /**
@@ -33,16 +34,27 @@ const ArticlesCardsList: FC<TArticleProps> = ({
       className="md:grid md:grid-cols-4 md:items-baseline"
       {...rest}
     >
-      <Card.Eyebrow
-        as="time"
-        className="mt-1 hidden md:block text-zinc-400 dark:text-zinc-500"
-      >
-        {formatDate(date || '')}
-      </Card.Eyebrow>
+      {isStringType(date) && !isEmpty(date) && (
+        <Card.Eyebrow
+          as="time"
+          className="mt-1 hidden md:block text-zinc-400 dark:text-zinc-500"
+        >
+          {formatDate(date)}
+        </Card.Eyebrow>
+      )}
 
       <Card className="md:col-span-3">
-        <Card.Title href={`/articles/${slug}`}>{title}</Card.Title>
-        <Card.Description>{description}</Card.Description>
+        {isStringType(slug) &&
+          !isEmpty(slug) &&
+          isStringType(title) &&
+          !isEmpty(title) && (
+            <Card.Title href={`/articles/${slug}`}>{title}</Card.Title>
+          )}
+
+        {isStringType(description) && !isEmpty(description) && (
+          <Card.Description>{description}</Card.Description>
+        )}
+
         <Card.Cta>Read article</Card.Cta>
       </Card>
     </article>
