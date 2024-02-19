@@ -32,7 +32,7 @@ const ArticlesApp: FC<TArticlesAppProps> = ({ id, data, ...rest }) => {
       intro={data?.hero?.description || []}
       {...rest}
     >
-      <ArticlesList>
+      <ArticlesList className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         {/* {articles?.map(article => (
           <ArticlesListCards key={article.slug} {...article} />
         ))} */}
