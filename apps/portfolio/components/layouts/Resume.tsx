@@ -1,6 +1,6 @@
 'use client'
 
-import { FC } from 'react'
+import { FC, useId } from 'react'
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -14,19 +14,31 @@ import type { TWorkExperience } from '@/data/work'
 
 import { isArrayType, isEmpty, isStringType } from '@/utils/checkTypes'
 
+import { TCommonComponentProps } from '@/types/common'
+
+export type TResumeLayoutProps = TCommonComponentProps & THomeData
+
 /**
  * Renders the resume layout component.
  * @param workExperiences - The work experiences data.
  * @param cvFile - The CV file.
+ * @param id - The additional ID for the component.
+ * @param rest - The rest of the props.
  * @returns The rendered resume layout component.
  */
-const ResumeLayout: FC<THomeData> = ({ workExperiences, cvFile }) => {
-  const router = useRouter()
+const ResumeLayout: FC<TResumeLayoutProps> = ({
+  workExperiences,
+  cvFile,
+  id,
+  ...rest
+}) => {
+  const router = useRouter(),
+    customId = useId()
 
   return (
     isArrayType(workExperiences) &&
     !isEmpty(workExperiences) && (
-      <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
+      <div id={id || customId} {...rest}>
         <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
           <BriefcaseSvgImage className="h-6 w-6 flex-none" />
           <span className="ml-3">Work</span>
