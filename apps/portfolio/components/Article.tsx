@@ -6,7 +6,9 @@ import Card from '@/components/Card'
 
 import { formatDate } from '@/utils/formatDate'
 
-export type TArticleProps<T = object> = T & {
+import { TContainerProps } from '@/types/common'
+
+export type TArticleProps = TContainerProps & {
   slug: string
   title: string
   date: string
@@ -27,8 +29,8 @@ const Article = ({
   date,
   description
 }: TArticleProps): ReactNode => {
-  const dateNow = new Date()
-  const dateNowToString = dateNow.toISOString()
+  const dateNow = new Date(),
+    dateNowToString = dateNow.toISOString()
 
   return (
     <Card as="article">
