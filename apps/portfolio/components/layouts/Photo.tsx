@@ -18,7 +18,7 @@ import type {
 } from '@/types/common'
 
 export type TPhotoLayoutData = TCommonAdditionalProps & {
-  alt: string
+  alt?: string
   src: StaticImport | string | undefined
 }
 
