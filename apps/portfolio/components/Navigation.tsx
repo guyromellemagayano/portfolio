@@ -14,7 +14,7 @@ export type TDesktopNavigationProps = TCommonComponentProps
 
 /**
  * Renders the desktop navigation component.
- * @param rest - The props object.
+ * @param rest - The rest of the desktop navigation props.
  * @returns The rendered desktop navigation component.
  */
 const DesktopNavigation: FC<TCommonComponentProps> = ({ id, ...rest }) => {
