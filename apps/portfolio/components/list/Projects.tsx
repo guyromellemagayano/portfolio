@@ -1,21 +1,31 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
-import type { TWithChildren } from '@/types/common'
+import type { TContainerProps } from '@/types/common'
 
-export type TProjectsListProps<T = object> = T & TWithChildren<T>
+export type TProjectsListProps = TContainerProps
 
 /**
  * Renders the projects list component.
+ * @param id - The additional ID for the component.
  * @param children - The children of the projects list.
+ * @param rest - The rest of the props.
  * @returns The rendered projects list component.
  */
-const ProjectsList = ({ children }: TProjectsListProps): ReactNode => {
+const ProjectsList: FC<TProjectsListProps> = ({ id, children, ...rest }) => {
+  const customId = useId()
+
   return (
-    <ul className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
-      {children}
-    </ul>
+    children && (
+      <ul
+        id={id || customId}
+        className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3"
+        {...rest}
+      >
+        {children}
+      </ul>
+    )
   )
 }
 
