@@ -1,71 +1,87 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ElementType, FC, useId } from 'react'
 
 import clsx from 'clsx'
 import Link from 'next/link'
 
 import ChevronRightSvgImage from '@/components/images/svg/ChevronRight'
 
-import type { TBlockProps, TWithChildren, TWithClassName } from '@/types/common'
+import type { TContainerProps } from '@/types/common'
+import { isEmpty, isStringType } from '@/utils/checkTypes'
 
-export type TCardProps<T = object> = T &
-  TWithChildren<T> &
-  TWithClassName<T> & {
-    as?: React.ElementType
-  }
+export type TCardProps = TContainerProps & {
+  as?: ElementType
+}
 
-export type TCardCommonProps<T = object> = T &
-  TCardProps & {
-    href?: string
-    title?: string
-    decorate?: boolean
-    target?: string
-  }
+interface ICardStaticComponents {
+  Link: FC<TCardCommonProps>
+  Title: FC<TCardCommonProps>
+  Description: FC<TCardCommonProps>
+  Cta: FC<TCardCommonProps>
+  Eyebrow: FC<TCardCommonProps>
+}
+
+interface ICardProps extends FC<TCardProps>, ICardStaticComponents {}
 
 /**
  * Renders the card component.
  * @param as - The HTML tag or React component to render as the card.
  * @param className - Additional CSS classes to apply to the card.
  * @param children - The content to render inside the card.
+ * @param rest - The rest of the props of the card.
  * @returns The rendered card component.
  */
-const Card = ({
+const Card: ICardProps = ({
   as: Component = 'div',
   className,
-  children
-}: TBlockProps): ReactNode => {
+  children,
+  ...rest
+}) => {
   return (
     <Component
       className={clsx('group relative flex flex-col items-start', className)}
+      {...rest}
     >
       {children}
     </Component>
   )
 }
 
+export type TCardCommonProps = TCardProps & {
+  href?: string
+  title?: string
+  decorate?: boolean
+  target?: string
+}
+
 /**
  * Renders the card link component.
  * @param href - The URL to link to.
  * @param title - The title of the link.
+ * @param id - The ID of the link.
  * @param children - The content to render inside the link.
  * @param className - Additional CSS classes to apply to the link.
  * @param target - The target of the link.
+ * @param rest - The rest of the props of the link.
  * @returns The rendered card link component.
  */
-const CardLink = ({
+const CardLink: FC<TCardCommonProps> = ({
   children,
   href,
   title,
-  className,
+  id,
   target,
   ...rest
-}: TCardCommonProps): ReactNode => {
+}) => {
+  const customId = useId()
+
   return (
-    <div {...rest}>
+    <div id={id || customId} {...rest}>
       <div className="absolute -inset-y-6 -inset-x-4 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
-      {href ? (
-        <Link href={href} title={title} className={className} target={target}>
+
+      {isStringType(href) && !isEmpty(href) && children ? (
+        <Link href={href} title={title} target={target}>
           <span className="absolute -inset-y-6 -inset-x-4 z-20 sm:-inset-x-6 sm:rounded-2xl" />
           <span className="relative z-10">{children}</span>
         </Link>
@@ -77,29 +93,32 @@ const CardLink = ({
 }
 
 /**
- * Rendersthe card title component.
+ * Renders the card title component.
  * @param as - The HTML tag or React component to render as the title.
  * @param href - The URL to link to.
  * @param title - The title of the link.
  * @param children - The content to render inside the title.
  * @param className - Additional CSS classes to apply to the title.
+ * @param rest - The rest of the props of the title.
  * @returns The rendered card title component.
  */
-const CardTitle = ({
+const CardTitle: FC<TCardCommonProps> = ({
   as: Component = 'h2',
   href,
   children,
   title,
-  className
-}: TCardCommonProps): ReactNode => {
+  className,
+  ...rest
+}) => {
   return (
     <Component
       className={clsx(
         'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100',
         className
       )}
+      {...rest}
     >
-      {href ? (
+      {isStringType(href) && !isEmpty(href) && children ? (
         <Card.Link href={href} title={title}>
           {children}
         </Card.Link>
@@ -113,19 +132,27 @@ const CardTitle = ({
 /**
  * Renders the card description component.
  * @param children - The content to render inside the description.
+ * @param id - The ID of the description.
  * @param className - Additional CSS classes to apply to the description.
+ * @param rest - The rest of the props of the description.
  * @returns The rendered card description component.
  */
-const CardDescription = ({
+const CardDescription: FC<TCardCommonProps> = ({
   children,
-  className
-}: TCardCommonProps): ReactNode => {
+  id,
+  className,
+  ...rest
+}) => {
+  const customId = useId()
+
   return (
     <p
+      id={id || customId}
       className={clsx(
         'relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400',
         className
       )}
+      {...rest}
     >
       {children}
     </p>
@@ -136,27 +163,33 @@ const CardDescription = ({
  * Renders the card call to action component.
  * @param title - The title of the link.
  * @param children - The content to render inside the CTA.
+ * @param id - The ID of the CTA.
  * @param className - Additional CSS classes to apply to the CTA.
  * @param href - The URL to link to.
+ * @param rest - The rest of the props of the CTA.
  * @returns The rendered card CTA component.
  */
-const CardCta = ({
+const CardCta: FC<TCardCommonProps> = ({
   title,
   children,
+  id,
   className,
   href,
   ...rest
-}: TCardCommonProps): ReactNode => {
+}) => {
+  const customId = useId()
+
   return (
     <div
       aria-hidden="true"
+      id={id || customId}
       className={clsx(
         'relative z-10 mt-2 text-sm font-medium flex items-start text-amber-500',
         className
       )}
       {...rest}
     >
-      {href ? (
+      {isStringType(href) && !isEmpty(href) && children ? (
         <Link
           href={href}
           title={title}
@@ -174,19 +207,19 @@ const CardCta = ({
 
 /**
  * An eyebrow component that can be used inside a Card component.
- * @param {String} Component - The HTML tag or React component to render as the eyebrow.
- * @param {Boolean} [decorate=false] - Whether to decorate the eyebrow with a line.
- * @param {String} [className] - Additional CSS classes to apply to the eyebrow.
- * @param {React.ReactNode} children - The content to render inside the eyebrow.
- * @returns {JSX.Element} The rendered eyebrow component.
+ * @param as - The HTML tag or React component to render as the eyebrow.
+ * @param [decorate=false] - Whether to decorate the eyebrow with a line.
+ * @param className - Additional CSS classes to apply to the eyebrow.
+ * @param children - The content to render inside the eyebrow.
+ * @returns The rendered eyebrow component.
  */
-const CardEyebrow = ({
+const CardEyebrow: FC<TCardCommonProps> = ({
   as: Component = 'p',
   decorate = false,
   className,
   children,
   ...rest
-}: TCardCommonProps): ReactNode => {
+}) => {
   return (
     <Component
       className={clsx(
@@ -204,6 +237,7 @@ const CardEyebrow = ({
           <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
         </span>
       )}
+
       {children}
     </Component>
   )
