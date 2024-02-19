@@ -1,16 +1,19 @@
 'use client'
 
+import { FC } from 'react'
+
 import Card from '@/components/Card'
 
-import type { TSkillsItemsProps } from '@/data/skills'
+import type {
+  TSkillsItemsProps,
+  TSkillsItemsTechnologiesProps
+} from '@/data/skills'
 
-import { isEmpty } from '@/utils/checkTypes'
+import { isArrayType, isEmpty, isStringType } from '@/utils/checkTypes'
 
-import type { TWithChildren } from '@/types/common'
-import { ReactNode } from 'react'
+import type { TCommonComponentProps } from '@/types/common'
 
-export type TSkillsCardsListProps<T = object> = T &
-  TWithChildren<T> &
+export type TSkillsCardsListProps = TCommonComponentProps &
   Pick<TSkillsItemsProps, 'title' | 'description' | 'technologies'> & {
     cta?: Array<{
       projects: string[]
@@ -20,21 +23,35 @@ export type TSkillsCardsListProps<T = object> = T &
 
 /**
  * Renders the skills cards list component.
- * @param props - The props object.
+ * @param title - The title of the skill.
+ * @param description - The description of the skill.
+ * @param technologies - The technologies used in the skill.
+ * @param cta - The call to action for the skill.
+ * @param rest - The rest of the props.
  * @returns The rendered skills cards list component.
  */
-const SkillsCardsList = (props: TSkillsCardsListProps): ReactNode => {
+const SkillsCardsList: FC<TSkillsCardsListProps> = ({
+  title,
+  description,
+  technologies,
+  cta,
+  ...rest
+}) => {
   return (
-    <Card as="article">
-      <Card.Title as="h3" title={props?.title || ''}>
-        {props?.title || ''}
-      </Card.Title>
+    <Card as="article" {...rest}>
+      {isStringType(title) && title?.length > 0 && (
+        <Card.Title as="h3" title={title}>
+          {title}
+        </Card.Title>
+      )}
 
-      {props?.description?.map(text => (
-        <Card.Description key={text}>{text}</Card.Description>
-      ))}
+      {isArrayType(description) &&
+        !isEmpty(description) &&
+        description.map(text => (
+          <Card.Description key={text}>{text}</Card.Description>
+        ))}
 
-      {
+      {isArrayType(technologies) && !isEmpty(technologies) && (
         <div className="flex flex-row items-start gap-x-6 my-2">
           <Card.Eyebrow
             as="h4"
@@ -47,33 +64,39 @@ const SkillsCardsList = (props: TSkillsCardsListProps): ReactNode => {
             as="ul"
             className="flex-wrap gap-x-4 text-zinc-400 dark:text-zinc-500"
           >
-            {props?.technologies?.map(({ name, link }) => (
-              <li key={name}>
-                <a
-                  href={link}
-                  className="hover:text-amber-500 dark:hover:text-amber-400 transition"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {name}
-                </a>
-              </li>
-            ))}
+            {technologies.map(
+              ({ name, link }: TSkillsItemsTechnologiesProps, index) =>
+                isStringType(link) &&
+                !isEmpty(link) &&
+                isStringType(name) &&
+                !isEmpty(name) && (
+                  <li key={index}>
+                    <a
+                      href={link}
+                      className="hover:text-amber-500 dark:hover:text-amber-400 transition"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {name}
+                    </a>
+                  </li>
+                )
+            )}
           </Card.Eyebrow>
         </div>
-      }
+      )}
 
-      {!isEmpty(props?.cta) && (
+      {isArrayType(cta) && !isEmpty(cta) && (
         <span className="flex items-start gap-x-4">
-          {props?.cta?.map(item => {
+          {cta.map(({ projects, text }, index) => {
             const projectCtaText = 'See projects'
 
-            !isEmpty(item.projects) && (item.text = projectCtaText)
+            !isEmpty(projects) && (text = projectCtaText)
 
             return (
-              !isEmpty(item.projects) && (
-                <Card.Cta key={item.text} title={item.text}>
-                  {item.text}
+              !isEmpty(projects) && (
+                <Card.Cta key={index} title={text}>
+                  {text}
                 </Card.Cta>
               )
             )
