@@ -1,26 +1,26 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC } from 'react'
 
 import SectionLayout from '@/components/layouts/Section'
 
-import type { TWithChildren } from '@/types/common'
+import type { TContainerProps } from '@/types/common'
 
-export type TToolsListProps<T = object> = T &
-  TWithChildren<T> & {
-    title?: string | null
-  }
+export type TToolsListProps = TContainerProps
 
 /**
  * Renders the tools list component.
  * @param children - The children of the tools list.
+ * @param rest - The rest of the props of the tools list.
  * @returns The rendered tools list component.
  */
-const ToolsList = ({ children, ...rest }: TToolsListProps): ReactNode => {
+const ToolsList: FC<TToolsListProps> = ({ children, ...rest }) => {
   return (
-    <SectionLayout {...rest}>
-      <ul className="space-y-16">{children}</ul>
-    </SectionLayout>
+    children && (
+      <SectionLayout {...rest}>
+        <ul className="space-y-16">{children}</ul>
+      </SectionLayout>
+    )
   )
 }
 
