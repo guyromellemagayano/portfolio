@@ -1,40 +1,49 @@
 'use client'
 
+import { FC, useId } from 'react'
+
 import clsx from 'clsx'
-import Image from 'next/image'
 import Link from 'next/link'
+
+import ImageLayout from '@/components/layouts/Image'
+
+import type { TCommonComponentProps } from '@/types/common'
 
 import imageAvatar from '@/images/avatar.jpg'
 
-import type { TWithChildren, TWithIDAndClass } from '@/types/common'
-import { ReactNode } from 'react'
-
-export type TAvatarProps<T = object> = T &
-  TWithIDAndClass<T> &
-  TWithChildren<T> & { large?: boolean; style?: React.CSSProperties }
+export type TAvatarProps = TCommonComponentProps & {
+  large?: boolean
+  alt?: string
+}
 
 /**
  * Renders the avatar component.
  * @param large - The large prop of the avatar.
+ * @param id - The additional ID for the component.
  * @param className - The class name of the avatar.
+ * @param alt - The alternative text of the avatar.
  * @param rest - The rest of the props of the avatar.
  * @returns The rendered avatar component.
  */
-const Avatar = ({
+const Avatar: FC<TAvatarProps> = ({
   large = false,
+  id,
   className,
+  alt,
   ...rest
-}: TAvatarProps): ReactNode => {
+}) => {
+  const customId = useId()
+
   return (
     <Link
       href="/"
-      aria-label="Home"
-      className={clsx(className, 'pointer-events-auto')}
+      id={id || customId}
+      className={clsx('pointer-events-auto', className)}
       {...rest}
     >
-      <Image
+      <ImageLayout
         src={imageAvatar}
-        alt=""
+        alt={alt || ''}
         sizes={large ? '4rem' : '2.25rem'}
         className={clsx(
           'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
