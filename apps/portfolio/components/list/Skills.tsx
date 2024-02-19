@@ -1,25 +1,32 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { FC, useId } from 'react'
 
 import SectionLayout from '@/components/layouts/Section'
 
-export type TSkillsListProps = {
+import { TContainerProps } from '@/types/common'
+
+export type TSkillsListProps = TContainerProps & {
   title: string
-  children: ReactNode
 }
 
 /**
  * Renders the skills list component.
+ * @param id - The additional ID for the component.
  * @param title - The title of the skills list.
  * @param children - The children of the skills list.
+ * @param rest - The rest of the props of the skills list.
  * @returns The rendered skills list component.
  */
-const SkillsList = ({ children, title }: TSkillsListProps): JSX.Element => {
+const SkillsList: FC<TSkillsListProps> = ({ id, children, title, ...rest }) => {
+  const customId = useId()
+
   return (
-    <SectionLayout title={title}>
-      <div className="space-y-16">{children}</div>
-    </SectionLayout>
+    children && (
+      <SectionLayout id={id || customId} title={title} {...rest}>
+        <div className="space-y-16">{children}</div>
+      </SectionLayout>
+    )
   )
 }
 
