@@ -1,4 +1,4 @@
-import { isEmpty, isNotNullOrUndefined } from "@/utils/checkTypes"
+import { isEmpty, isNotNullOrUndefined } from '@/utils/checkTypes'
 
 export const LAZY_LOADING_DURATION: number = 1000
 
@@ -13,6 +13,8 @@ export const SENTRY_ENVIRONMENT: string = process.env.SENTRY_ENVIRONMENT || ''
 export const NEXT_PUBLIC_GA_MEASUREMENT_ID: string =
   process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''
 export const NEXT_PUBLIC_GA_MEASUREMENT_URL: string =
-  `https://www.googletagmanager.com/gtag/js` + isNotNullOrUndefined(NEXT_PUBLIC_GA_MEASUREMENT_ID) && !isEmpty(NEXT_PUBLIC_GA_MEASUREMENT_ID)
-    ? `?id=${process.env.nextPublicGaMeasurementId}`
+  `https://www.googletagmanager.com/gtag/js` +
+    isNotNullOrUndefined(NEXT_PUBLIC_GA_MEASUREMENT_ID) &&
+  !isEmpty(NEXT_PUBLIC_GA_MEASUREMENT_ID)
+    ? `?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`
     : ''
