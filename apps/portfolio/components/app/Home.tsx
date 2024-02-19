@@ -57,6 +57,7 @@ const HomeApp: FC<THomeAppProps> = ({ id, data, ...rest }) => {
             <ResumeLayout
               workExperiences={data?.workExperiences || []}
               cvFile={data?.cvFile || ''}
+              className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
             />
             <NewsletterLayout />
           </div>
