@@ -31,23 +31,21 @@ const SocialLinksList: FC<TSocialLinksListProps> = ({ id, data, ...rest }) => {
     isArrayType(data) &&
     !isEmpty(data) && (
       <ul id={id || customId} {...rest}>
-        {data.map((rest2, index) => {
-          return (
-            <li
-              key={index}
-              className={clsx(
-                'flex',
-                index > 0
-                  ? index < SocialLinksData?.length - 1
-                    ? 'mt-4'
-                    : 'mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40 flex'
-                  : null
-              )}
-            >
-              <SocialLink key={index} {...rest2} showLabel={true} />
-            </li>
-          )
-        })}
+        {data.map((rest2, index: number) => (
+          <li
+            key={index}
+            className={clsx(
+              'flex',
+              index > 0
+                ? index < SocialLinksData.length - 1
+                  ? 'mt-4'
+                  : 'mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40 flex'
+                : null
+            )}
+          >
+            <SocialLink key={index} {...rest2} showLabel={true} />
+          </li>
+        ))}
       </ul>
     )
   )

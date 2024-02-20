@@ -2,13 +2,14 @@
 
 import { FC, useId } from 'react'
 
-import Image, { StaticImageData } from 'next/image'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+import Image from 'next/image'
 
 import { TWithClassName, TWithID } from '@/types/common'
 
 export type TImageLayoutProps = TWithClassName &
   TWithID & {
-    src?: StaticImageData | string | null
+    src: StaticImport | string | undefined
     alt?: string
     sizes?: string
     priority?: boolean

@@ -7,9 +7,9 @@ import WorkData from '@/data/work'
 const data = WorkData()
 
 export const metadata: Metadata = {
-  title: data?.meta?.title || '',
-  description: data?.meta?.description || '',
-  keywords: data?.meta?.keywords || ''
+  title: data.meta?.title || '',
+  description: data.meta?.description || '',
+  keywords: data.meta?.keywords || ''
 }
 
 /**
