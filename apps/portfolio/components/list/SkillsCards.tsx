@@ -65,7 +65,7 @@ const SkillsCardsList: FC<TSkillsCardsListProps> = ({
             className="flex-wrap gap-x-4 text-zinc-400 dark:text-zinc-500"
           >
             {technologies.map(
-              ({ name, link }: TSkillsItemsTechnologiesProps, index) =>
+              ({ name, link }: TSkillsItemsTechnologiesProps, index: number) =>
                 isStringType(link) &&
                 !isEmpty(link) &&
                 isStringType(name) &&
@@ -88,7 +88,7 @@ const SkillsCardsList: FC<TSkillsCardsListProps> = ({
 
       {isArrayType(cta) && !isEmpty(cta) && (
         <span className="flex items-start gap-x-4">
-          {cta.map(({ projects, text }, index) => {
+          {cta.map(({ projects, text }, index: number) => {
             const projectCtaText = 'See projects'
 
             !isEmpty(projects) && (text = projectCtaText)

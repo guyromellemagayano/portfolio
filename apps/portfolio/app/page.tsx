@@ -11,9 +11,9 @@ import HomeData from '@/data/home'
 const data = HomeData()
 
 export const metadata: Metadata = {
-  title: data?.meta?.title || '',
-  description: data?.meta?.description || '',
-  keywords: data?.meta?.keywords || ''
+  title: data.meta?.title || '',
+  description: data.meta?.description || '',
+  keywords: data.meta?.keywords || ''
 }
 
 /**
