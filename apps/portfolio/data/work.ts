@@ -1,19 +1,19 @@
-import { StaticImageData } from 'next/image'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 import type { TCommonPageData } from '@/types/common'
 
 export type TWorkData = TCommonPageData & {
-  workExperiences?: Array<TWorkExperience>
+  workExperiences?: Array<TWorkExperiences>
 }
 
-export type TWorkExperience = {
+export type TWorkExperiences = {
   company?: string
   duration?: string
   country?: string
   contributions?: string[]
   skills?: string[]
   title?: string
-  logo?: StaticImageData | string | null
+  logo?: StaticImport | string | undefined
   start?: string
   end?: string
 }

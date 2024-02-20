@@ -28,8 +28,8 @@ const ProjectsApp: FC<TProjectsAppProps> = ({ id, data, ...rest }) => {
   return (
     <ContentLayout
       id={id || customId}
-      title={data?.hero?.heading || ''}
-      intro={data?.hero?.description || []}
+      title={data.hero?.heading || ''}
+      intro={data.hero?.description || []}
       {...rest}
     >
       <ProjectsList>

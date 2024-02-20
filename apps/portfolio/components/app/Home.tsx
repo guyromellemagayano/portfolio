@@ -35,28 +35,28 @@ const HomeApp: FC<THomeAppProps> = ({ id, data, ...rest }) => {
     <>
       <ContentLayout
         id={id || customId}
-        title={data?.hero?.heading || ''}
-        intro={data?.hero?.description || []}
+        title={data.hero?.heading || ''}
+        intro={data.hero?.description || []}
         {...rest}
       >
         <div className="mt-6 flex gap-6">
-          {SocialLinksData?.map((rest, index) => (
+          {SocialLinksData.map((rest, index: number) => (
             <SocialLink key={index} {...rest} />
           ))}
         </div>
       </ContentLayout>
-      <PhotoLayout className="mt-16 sm:mt-20" data={data?.slidePhotos || []} />
+      <PhotoLayout className="mt-16 sm:mt-20" data={data.slidePhotos || []} />
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
-            {/* {articles?.map((article, index) => (
+            {/* {articles?.map((article, index: number) => (
               <Article key={index} {...article} />
             ))} */}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
             <ResumeLayout
-              workExperiences={data?.workExperiences || []}
-              cvFile={data?.cvFile || ''}
+              workExperiences={data.workExperiences || []}
+              cvFile={data.cvFile || ''}
               className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
             />
             <NewsletterLayout />

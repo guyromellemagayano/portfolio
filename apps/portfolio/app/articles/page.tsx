@@ -9,9 +9,9 @@ import ArticlesData from '@/data/articles'
 const data = ArticlesData()
 
 export const metadata: Metadata = {
-  title: data?.meta?.title || '',
-  description: data?.meta?.description || '',
-  keywords: data?.meta?.keywords || ''
+  title: data.meta?.title || '',
+  description: data.meta?.description || '',
+  keywords: data.meta?.keywords || ''
 }
 
 /**
