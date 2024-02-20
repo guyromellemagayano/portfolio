@@ -78,7 +78,7 @@ const ContentSimple: FC<TContentLayoutProps> = ({
 
         <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
           {isArrayType(intro) && intro?.length > 0
-            ? intro.map((paragraph: string, index) => {
+            ? intro.map((paragraph: string, index: number) => {
                 return (
                   <span key={index} className="space-y-7">
                     {paragraph}
@@ -125,7 +125,7 @@ const ContentAside: FC<TContentLayoutProps> = ({
 
       <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
         {isArrayType(intro) && !isEmpty(intro)
-          ? intro.map((paragraph: string, index) => {
+          ? intro.map((paragraph: string, index: number) => {
               return (
                 <span key={index} className="space-y-7">
                   {paragraph}

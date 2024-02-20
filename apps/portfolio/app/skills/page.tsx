@@ -9,9 +9,9 @@ import SkillsData from '@/data/skills'
 const data = SkillsData()
 
 export const metadata: Metadata = {
-  title: data?.meta?.title || '',
-  description: data?.meta?.description || '',
-  keywords: data?.meta?.keywords || ''
+  title: data.meta?.title || '',
+  description: data.meta?.description || '',
+  keywords: data.meta?.keywords || ''
 }
 
 /**

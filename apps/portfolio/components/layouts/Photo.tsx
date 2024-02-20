@@ -3,10 +3,10 @@
 import { FC, useId } from 'react'
 
 import clsx from 'clsx'
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 import ImageLayout from '@/components/layouts/Image'
 
+import { THomePageSlidePhotos } from '@/data/home'
 import RotationsData from '@/data/rotations'
 
 import { isArrayType, isEmpty } from '@/utils/checkTypes'
@@ -17,10 +17,7 @@ import type {
   TWithID
 } from '@/types/common'
 
-export type TPhotoLayoutData = TCommonAdditionalProps & {
-  alt?: string
-  src: StaticImport | string | undefined
-}
+export type TPhotoLayoutData = TCommonAdditionalProps & THomePageSlidePhotos
 
 export type TPhotoLayoutProps = TWithClassName &
   TWithID &
@@ -43,7 +40,7 @@ const PhotoLayout: FC<TPhotoLayoutProps> = ({ data, id, ...rest }) => {
     !isEmpty(data) && (
       <div id={id || customId} {...rest}>
         <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-          {data?.map(({ src, alt }, index) => (
+          {data.map(({ src, alt }, index: number) => (
             <div
               key={index}
               className={clsx(

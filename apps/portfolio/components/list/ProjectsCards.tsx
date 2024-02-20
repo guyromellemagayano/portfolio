@@ -2,8 +2,6 @@
 
 import { FC } from 'react'
 
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
-
 import Card from '@/components/Card'
 import LinkSvgImage from '@/components/images/svg/Link'
 import ImageLayout from '@/components/layouts/Image'
@@ -20,7 +18,7 @@ export type TProjectsCardsListLink = {
 export type TProjectsCardsListProps = TCommonComponentProps & {
   name: string
   link: TProjectsCardsListLink
-  logo?: StaticImport | string | undefined
+  logo?: string
   alt?: string
   description: string
 }

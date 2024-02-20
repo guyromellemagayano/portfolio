@@ -30,18 +30,18 @@ const SkillsApp: FC<TSkillsAppProps> = ({ id, data, ...rest }) => {
   return (
     <ContentLayout
       id={id || customId}
-      title={data?.hero?.heading || ''}
-      intro={data?.hero?.description || []}
+      title={data.hero?.heading || ''}
+      intro={data.hero?.description || []}
       {...rest}
     >
       <div className="grid gap-y-12">
-        {isArrayType(data?.skills) &&
-          !isEmpty(data?.skills) &&
-          data.skills.map((skill: TSkillsDataProps, index) => (
+        {isArrayType(data.skills) &&
+          !isEmpty(data.skills) &&
+          data.skills.map((skill: TSkillsDataProps, index: number) => (
             <SkillsList key={index} title={skill?.name || ''}>
               {isArrayType(skill?.items) &&
                 !isEmpty(skill?.items) &&
-                skill.items.map((rest: TSkillsItemsProps, index) => (
+                skill.items.map((rest: TSkillsItemsProps, index: number) => (
                   <SkillsCardsList key={index} {...rest} />
                 ))}
             </SkillsList>

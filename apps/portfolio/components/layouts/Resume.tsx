@@ -10,7 +10,7 @@ import BriefcaseSvgImage from '@/components/images/svg/Briefcase'
 import ImageLayout from '@/components/layouts/Image'
 
 import type { THomeData } from '@/data/home'
-import type { TWorkExperience } from '@/data/work'
+import type { TWorkExperiences } from '@/data/work'
 
 import { isArrayType, isEmpty, isStringType } from '@/utils/checkTypes'
 
@@ -47,7 +47,7 @@ const ResumeLayout: FC<TResumeLayoutProps> = ({
         <ol className="mt-6 space-y-4">
           {workExperiences.map(
             (
-              { company, title, logo, start, end }: TWorkExperience,
+              { company, title, logo, start, end }: TWorkExperiences,
               index: number
             ) => (
               <li key={index} className="flex gap-4">
