@@ -49,8 +49,8 @@ const AboutApp: FC<TAboutAppProps> = ({ id, data, ...rest }) => {
         </div>
         <div className="lg:order-first lg:row-span-2">
           <ContentLayout
-            title={data?.hero?.heading || ''}
-            intro={data?.hero?.description || []}
+            title={data.hero?.heading || ''}
+            intro={data.hero?.description || []}
             layout="aside"
           />
         </div>

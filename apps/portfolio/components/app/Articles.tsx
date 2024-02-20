@@ -28,8 +28,8 @@ const ArticlesApp: FC<TArticlesAppProps> = ({ id, data, ...rest }) => {
   return (
     <ContentLayout
       id={id || customId}
-      title={data?.hero?.heading || ''}
-      intro={data?.hero?.description || []}
+      title={data.hero?.heading || ''}
+      intro={data.hero?.description || []}
       {...rest}
     >
       <ArticlesList className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">

@@ -4,14 +4,14 @@ import { FC } from 'react'
 
 import Card from '@/components/Card'
 
-import type { TWorkExperience } from '@/data/work'
+import type { TWorkExperiences } from '@/data/work'
 
 import { isArrayType, isEmpty, isStringType } from '@/utils/checkTypes'
 
 import type { TCommonComponentProps } from '@/types/common'
 
 export type TWorkListCardProps = TCommonComponentProps &
-  Pick<TWorkExperience, 'company' | 'country' | 'contributions' | 'skills'>
+  Pick<TWorkExperiences, 'company' | 'country' | 'contributions' | 'skills'>
 
 /**
  * Renders the work list cards component.
@@ -22,7 +22,7 @@ export type TWorkListCardProps = TCommonComponentProps &
  * @param rest - The rest of the props.
  * @returns The rendered work list cards component.
  */
-const WorkListCards: FC<TWorkListCardProps> = ({
+const WorkCardsList: FC<TWorkListCardProps> = ({
   company,
   country,
   contributions,
@@ -47,7 +47,7 @@ const WorkListCards: FC<TWorkListCardProps> = ({
             as="ul"
             className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500"
           >
-            {contributions.map((item, index) => (
+            {contributions.map((item, index: number) => (
               <li key={index}>{item}</li>
             ))}
           </Card.Eyebrow>
@@ -67,7 +67,7 @@ const WorkListCards: FC<TWorkListCardProps> = ({
             as="ul"
             className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500"
           >
-            {skills.map((item, index) => (
+            {skills.map((item, index: number) => (
               <li key={index}>{item}</li>
             ))}
           </Card.Eyebrow>
@@ -77,4 +77,4 @@ const WorkListCards: FC<TWorkListCardProps> = ({
   )
 }
 
-export default WorkListCards
+export default WorkCardsList
