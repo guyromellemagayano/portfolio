@@ -2,12 +2,12 @@
 
 import { FC, useId } from 'react'
 
-import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import Button from '@/components/Button'
 import ArrowDownSvgImage from '@/components/images/svg/ArrowDown'
 import BriefcaseSvgImage from '@/components/images/svg/Briefcase'
+import ImageLayout from '@/components/layouts/Image'
 
 import type { THomeData } from '@/data/home'
 import type { TWorkExperience } from '@/data/work'
@@ -45,25 +45,15 @@ const ResumeLayout: FC<TResumeLayoutProps> = ({
         </h2>
 
         <ol className="mt-6 space-y-4">
-          {workExperiences?.map(
+          {workExperiences.map(
             (
-              {
-                company,
-                duration,
-                country,
-                contributions,
-                skills,
-                title,
-                logo,
-                start,
-                end
-              }: TWorkExperience,
-              index
+              { company, title, logo, start, end }: TWorkExperience,
+              index: number
             ) => (
               <li key={index} className="flex gap-4">
                 <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 rounded-full">
-                  {isStringType(logo) && !isEmpty(logo) ? (
-                    <Image
+                  {!isEmpty(logo) ? (
+                    <ImageLayout
                       src={logo}
                       alt=""
                       className="h-7 w-7 rounded-full"
