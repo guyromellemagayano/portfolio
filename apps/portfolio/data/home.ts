@@ -1,6 +1,6 @@
-import { StaticImageData } from 'next/image'
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
-import type { TWorkExperience } from '@/data/work'
+import type { TWorkExperiences } from '@/data/work'
 
 import type { TCommonPageData } from '@/types/common'
 
@@ -17,13 +17,13 @@ import image3 from '@/images/photos/workplace.jpg'
 
 export type THomePageSlidePhotos = {
   alt: string
-  src: StaticImageData
+  src: StaticImport | string | undefined
 }
 
 export type THomeData = TCommonPageData & {
   slidePhotos?: Array<THomePageSlidePhotos>
   cvFile?: string
-  workExperiences?: Array<TWorkExperience>
+  workExperiences?: Array<TWorkExperiences>
 }
 
 /**
@@ -104,14 +104,12 @@ const HomeData = (): THomeData => {
     {
       company: 'Orth Enterprises, LLC',
       title: 'Full Stack Developer',
-      logo: null,
       start: 'Apr. 2019',
       end: 'Aug. 2019'
     },
     {
       company: 'Outsourcing Wizards',
       title: 'Full Stack Developer',
-      logo: null,
       start: 'Jan. 2019',
       end: 'Mar. 2019'
     },

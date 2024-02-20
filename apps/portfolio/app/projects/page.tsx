@@ -9,9 +9,9 @@ import ProjectsData from '@/data/projects'
 const data = ProjectsData()
 
 export const metadata: Metadata = {
-  title: data?.meta?.title || '',
-  description: data?.meta?.description || '',
-  keywords: data?.meta?.keywords || ''
+  title: data.meta?.title || '',
+  description: data.meta?.description || '',
+  keywords: data.meta?.keywords || ''
 }
 
 /**

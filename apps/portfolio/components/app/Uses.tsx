@@ -31,22 +31,22 @@ const UsesApp: FC<TUsesAppProps> = ({ id, data, ...rest }) => {
   return (
     <ContentLayout
       id={id || customId}
-      title={data?.hero?.heading || ''}
-      intro={data?.hero?.description || []}
+      title={data.hero?.heading || ''}
+      intro={data.hero?.description || []}
       {...rest}
     >
       <div className="space-y-20">
-        {isArrayType(data?.tools) &&
-          !isEmpty(data?.tools) &&
-          data.tools.map((tool, index) => (
-            <ToolsList key={index} title={tool?.name || ''}>
-              {isArrayType(tool?.items) &&
-                !isEmpty(tool?.items) &&
+        {isArrayType(data.tools) &&
+          !isEmpty(data.tools) &&
+          data.tools.map((tool, index: number) => (
+            <ToolsList key={index} title={tool.name || ''}>
+              {isArrayType(tool.items) &&
+                !isEmpty(tool.items) &&
                 tool.items.map((item, index2) => (
                   <ToolsListCards
                     key={index2}
-                    title={item?.title || ''}
-                    description={item?.title || ''}
+                    title={item.title || ''}
+                    description={item.description || ''}
                   />
                 ))}
             </ToolsList>
