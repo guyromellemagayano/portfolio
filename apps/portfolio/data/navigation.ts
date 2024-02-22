@@ -4,10 +4,10 @@ import PagesData from '@/data/pages'
 import type { TCommonAdditionalProps } from '@/types/common'
 
 export type TNavigationData = TCommonAdditionalProps & {
-  menu: Array<TNavigationMenuData>
-  headerNav: TPagesData['pages']
-  footerNav: TPagesData['pages']
-  copyright: TNavigationCopyrightData
+  menu?: Array<TNavigationMenuData>
+  headerNav?: TPagesData['pages']
+  footerNav?: TPagesData['pages']
+  copyright?: TNavigationCopyrightData
 }
 
 export type TNavigationMenuData = TCommonAdditionalProps & {
