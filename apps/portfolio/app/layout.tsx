@@ -33,7 +33,7 @@ export type TRootLayout = TWithChildren
  * @returns The rendered RootLayout component.
  */
 const RootLayout: FC<TRootLayout> = ({ children }) => {
-  const footerData: TNavigationData = NavigationData()
+  const { footerNav, copyright }: TNavigationData = NavigationData()
 
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
@@ -67,7 +67,11 @@ const RootLayout: FC<TRootLayout> = ({ children }) => {
                   <SpeedInsights />
                   <Analytics />
                 </main>
-                <FooterLayout className="mt-32" {...footerData} />
+                <FooterLayout
+                  className="mt-32"
+                  footerNav={footerNav}
+                  copyright={copyright}
+                />
               </div>
             </div>
           </StyledComponentsRegistry>
