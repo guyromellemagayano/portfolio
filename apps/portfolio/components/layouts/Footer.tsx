@@ -10,25 +10,20 @@ import { TPagesPages } from '@/data/pages'
 
 import { isArrayType, isEmpty } from '@/utils/checkTypes'
 
-import { TContainerProps } from '@/types/common'
+import NavigationData from '@/data/navigation'
+import type { TCommonComponentProps } from '@/types/common'
 
-export type TFooterLayoutProps = TContainerProps & TNavigationData
+export type TFooterLayoutProps = TCommonComponentProps
 
 /**
  * Renders the footer layout component.
  * @param id - The id of the footer.
- * @param footerNav - The footer navigation data.
- * @param copyright - The copyright data.
  * @param rest - The rest of the props of the footer.
  * @returns The rendered footer layout component.
  */
-const FooterLayout: FC<TFooterLayoutProps> = ({
-  id,
-  footerNav,
-  copyright,
-  ...rest
-}) => {
-  const customId = useId(),
+const FooterLayout: FC<TFooterLayoutProps> = ({ id, ...rest }) => {
+  const { footerNav, copyright }: TNavigationData = NavigationData(),
+    customId = useId(),
     yearNow = new Date().getFullYear(),
     copyrightText = `Guy Romelle Magayano. All rights reserved.`
 

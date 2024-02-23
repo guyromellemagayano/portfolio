@@ -14,9 +14,6 @@ import {
 import FooterLayout from '@/components/layouts/Footer'
 import HeaderLayout from '@/components/layouts/Header'
 
-import type { TNavigationData } from '@/data/navigation'
-import NavigationData from '@/data/navigation'
-
 import { TWithChildren } from '@/types/common'
 
 import '@/styles/tailwind.css'
@@ -31,8 +28,6 @@ export type TRootLayout = TWithChildren
  * @returns The rendered RootLayout component.
  */
 const RootLayout: FC<TRootLayout> = ({ children }) => {
-  const { footerNav, copyright }: TNavigationData = NavigationData()
-
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <head>
@@ -64,11 +59,7 @@ const RootLayout: FC<TRootLayout> = ({ children }) => {
                 <SpeedInsights />
                 <Analytics />
               </main>
-              <FooterLayout
-                className="mt-32"
-                footerNav={footerNav}
-                copyright={copyright}
-              />
+              <FooterLayout className="mt-32" />
             </div>
           </div>
         </Providers>
