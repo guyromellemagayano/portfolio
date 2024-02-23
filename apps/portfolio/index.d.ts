@@ -1,6 +1,6 @@
 import { ReactNode, SVGProps } from 'react'
 
-import { TCommonComponentReturnType } from '@/types/common'
+import { TCommonComponentReturnType } from '@guy-romelle-magayano/portfolio/types/common'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
