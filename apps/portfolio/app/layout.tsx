@@ -1,4 +1,3 @@
-/* eslint-disable no-irregular-whitespace */
 import { FC } from 'react'
 
 import { Analytics } from '@vercel/analytics/react'
@@ -6,7 +5,6 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
 import { Providers } from '@/app/providers'
-import { StyledComponentsRegistry } from '@/app/registry'
 
 import {
   NEXT_PUBLIC_GA_MEASUREMENT_ID,
@@ -58,23 +56,21 @@ const RootLayout: FC<TRootLayout> = ({ children }) => {
 
       <body className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
-          <StyledComponentsRegistry>
-            <div className="flex w-full">
-              <div className="relative flex w-full flex-col">
-                <HeaderLayout />
-                <main className="flex-auto">
-                  {children}
-                  <SpeedInsights />
-                  <Analytics />
-                </main>
-                <FooterLayout
-                  className="mt-32"
-                  footerNav={footerNav}
-                  copyright={copyright}
-                />
-              </div>
+          <div className="flex w-full">
+            <div className="relative flex w-full flex-col">
+              <HeaderLayout />
+              <main className="flex-auto">
+                {children}
+                <SpeedInsights />
+                <Analytics />
+              </main>
+              <FooterLayout
+                className="mt-32"
+                footerNav={footerNav}
+                copyright={copyright}
+              />
             </div>
-          </StyledComponentsRegistry>
+          </div>
         </Providers>
       </body>
     </html>
