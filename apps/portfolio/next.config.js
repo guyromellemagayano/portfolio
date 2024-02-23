@@ -1,10 +1,11 @@
-//@ts-check
+// @ts-nocheck
 
-import rehypePrism from '@mapbox/rehype-prism'
-import nextMDX from '@next/mdx'
-import { composePlugins, withNx } from '@nx/next'
-import { withSentryConfig } from '@sentry/nextjs'
-import remarkGfm from 'remark-gfm'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { composePlugins, withNx } = require('@nx/next')
+const { withSentryConfig } = require('@sentry/nextjs')
+const nextMDX = require('@next/mdx')
+const rehypePrism = require('@mapbox/rehype-prism')
+const remarkGfm = require('remark-gfm')
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -13,9 +14,8 @@ const nextConfig = {
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
-    svgr: false
+    svgr: true
   },
-  pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
   env: {
     NEXT_PUBLIC_GA_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '',
@@ -27,10 +27,9 @@ const nextConfig = {
     SENTRY_PROJECT: process.env.SENTRY_PROJECT || '',
     SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || ''
   },
-  reactStrictMode: true,
   compiler: {
-    // For other options, see https://styled-components.com/docs/tooling#babel-plugin
-    styledComponents: true
+    // For other options, see https://nextjs.org/docs/architecture/nextjs-compiler#emotion
+    emotion: true
   },
   sentry: {
     hideSourceMaps: true
@@ -58,7 +57,7 @@ const plugins = [
   withMDX
 ]
 
-export default withSentryConfig(
+module.exports = withSentryConfig(
   composePlugins(...plugins)(nextConfig),
   sentryWebpackPluginOptions
 )
