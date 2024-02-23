@@ -1,33 +1,26 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "rootDir": ".",
+    "sourceMap": true,
     "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["dom", "esnext"],
+    "target": "es2015",
     "module": "esnext",
-    "moduleResolution": "node",
-    "noEmit": true,
-    "noImplicitAny": false,
-    "preserveConstEnums": true,
-    "removeComments": false,
-    "resolveJsonModule": true,
-    "rootDir": ".",
-    "skipDefaultLibCheck": true,
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
-    "sourceMap": true,
+    "skipDefaultLibCheck": true,
     "strict": true,
-    "strictNullChecks": true,
-    "target": "esnext",
-    "types": ["node", "jest", "next"]
+    "baseUrl": ".",
+    "paths": {
+      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
+      "@guy-romelle-magayano/shared-ui": ["libs/shared/ui/src/index.ts"],
+      "@guy-romelle-magayano/shared-ui/server": ["libs/shared/ui/src/server.ts"]
+    }
   },
   "ts-node": {
     "swc": true
