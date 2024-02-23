@@ -5,7 +5,9 @@
       "version": "detect"
     },
     "import/parsers": {
-      "@typescript-eslint/parser": ["**/*.ts?(x)"]
+      "@typescript-eslint/parser": [
+        "**/*.ts?(x)"
+      ]
     },
     "import/resolver": {
       "typescript": {
@@ -30,12 +32,12 @@
   },
   "plugins": [
     "@nx",
-    "react",
+    "@typescript-eslint",
+    "jest",
     "jsx-a11y",
     "prettier",
-    "testing-library",
-    "jest",
-    "@typescript-eslint"
+    "react",
+    "testing-library"
   ],
   "extends": [
     "eslint:recommended",
@@ -55,7 +57,10 @@
   "rules": {
     "@next/next/no-html-link-for-pages": "off",
     "@typescript-eslint/ban-ts-comment": "warn",
-    "@typescript-eslint/semi": ["error", "never"],
+    "@typescript-eslint/semi": [
+      "error",
+      "never"
+    ],
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
@@ -75,7 +80,9 @@
         "depConstraints": [
           {
             "sourceTag": "*",
-            "onlyDependOnLibsWithTags": ["*"]
+            "onlyDependOnLibsWithTags": [
+              "*"
+            ]
           }
         ]
       }
@@ -100,16 +107,42 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts?(x)", "**/*.js?(x)"],
-      "parser": "@typescript-eslint/parser"
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "@nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "files": [
         "**/__tests__/**/*.[jt]s?(x)",
         "**/?(*.)+(spec|test).[jt]s?(x)"
       ],
-      "extends": ["plugin:testing-library/react"]
+      "extends": [
+        "plugin:testing-library/react"
+      ]
     }
   ],
-  "ignorePatterns": ["**/node_modules/**", "**/.next/**", "**/dist/**"]
+  "ignorePatterns": [
+    "**/*"
+  ]
 }
