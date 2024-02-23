@@ -1,47 +1,29 @@
 {
   "folders": [
     {
-      "name": "guy-romelle-magayano",
       "path": "."
     },
   ],
   "settings": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "always"
+    },
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.tabCompletion": "on",
     "editor.tabFocusMode": false,
     "editor.tabSize": 2,
     "emmet.triggerExpansionOnTab": true,
-    "eslint.nodePath": ".yarn/sdks",
     "github.copilot.editor.enableAutoCompletions": true,
-    "npm.packageManager": "yarn",
-    "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "guy-romelle-magayano/node_modules/typescript/lib",
     "github.copilot.enable": {
       "*": true
     },
-    "editor.quickSuggestions": {
-      "strings": "on"
-    },
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-      "source.fixAll.eslint": "explicit"
-    },
+    "npm.packageManager": "yarn",
     "search.exclude": {
       "**/.yarn": true,
       "**/.pnp.*": true
     },
-    "[json,scss,css]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.tabSize": 2,
-      "editor.insertSpaces": true,
-      "editor.tabCompletion": "on"
-    },
-    "[javascript,typescriptreact,typescript]": {
-      "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.insertSpaces": true,
-      "editor.tabCompletion": "on",
-      "editor.tabSize": 2
-    },
+    "typescript.tsdk": "node_modules/typescript/lib",
   }
 }
