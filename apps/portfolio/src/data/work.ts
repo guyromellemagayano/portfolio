@@ -1,0 +1,255 @@
+import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+
+import type { TCommonPageData } from '@guy-romelle-magayano/portfolio/types/common'
+
+export type TWorkData = TCommonPageData & {
+  workExperiences?: Array<TWorkExperiences>
+}
+
+export type TWorkExperiences = {
+  company?: string
+  duration?: string
+  country?: string
+  contributions?: string[]
+  skills?: string[]
+  title?: string
+  logo?: StaticImport | string | undefined
+  start?: string
+  end?: string
+}
+
+/**
+ * Returns an object containing metadata, hero section data, and work experience data.
+ * @returns {TWorkData} Object containing metadata, hero section data, and work experience data.
+ */
+const WorkData = (): TWorkData => {
+  const meta = {
+    title: 'Work - Guy Romelle Magayano',
+    description:
+      'I specialize in building websites and web applications using modern technologies.',
+    keywords:
+      'guy romelle magayano, full stack developer, davao, philippines, frontend, backend, version control, epic design labs, multiplymii, make interactive bv, orth enterprises, outsourcing wizards, infosoft studio, miniclean business solutions, western pest control, freelance'
+  }
+
+  const hero = {
+    heading:
+      'I specialize in building websites and web applications using modern technologies.',
+    description: [
+      'I worked with different companies and clients from other countries. I have been working as a full-stack engineer for more than nine years. I have worked with different technologies and frameworks across various companies and clients from other countries.'
+    ]
+  }
+
+  const workExperiences = [
+    {
+      company: 'X-Team',
+      duration: 'April 2023 - Present',
+      country: 'Melbourne, Victoria, Australia - Remote',
+      contributions: [
+        'Led mobile-responsive Ceros integrations for GQ and Vogue Australia, cutting update time in half and boosting engagement.',
+        'Championed the improvement of vertical video integration at Vogue Australia, propelling a notable 25% surge in video ad impressions and elevating user satisfaction by a substantial 30%.',
+        'Boosted page views by 30% and engagement time by 10% on news.com.au through data-driven UX enhancements.',
+        'Spearheaded documentation updates, reducing customer confusion by 50% and enhancing self-service issue resolution by 20%.',
+        'Executed broad front-end testing, slashing critical bugs by 40% and bolstering app stability.',
+        'Revolutionized WordPress VIP local development setup through automation, resulting in a weekly time saving of 10 hours per developer and enhancing efficiency.'
+      ],
+      skills: [
+        'TypeScript',
+        'Nginx',
+        'Jest',
+        'Cypress',
+        'Next.js',
+        'SASS',
+        'Docker',
+        'Amazon Web Services (AWS)',
+        'React.js',
+        'Node.js',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'Web Applications',
+        'PHP',
+        'WordPress',
+        'JavaScript',
+        'Git',
+        'Github'
+      ]
+    },
+    {
+      company: 'Epic Design Labs',
+      duration: 'April 2020 - February 2023',
+      country: 'Portland, Oregon, US - Remote',
+      contributions: [
+        'Devised a web crawler for SEO reporting by integrating various technologies and automating AWS deployment, thereby bolstering efficiency and delivery speed.',
+        'Automated data scraping and export via custom Python scripts, saving 25+ hours weekly and enhancing data management.',
+        'Constructed a mobile and web app for a wine networking business, driving a 25% upsurge in user engagement and revenue.',
+        'Headed the development of websites like RVGearPro and Duxiana, ensuring quality via Jest and Cypress and optimizing performance through Netlify deployment.'
+      ],
+      skills: [
+        'TypeScript',
+        'MongoDB',
+        'Go (Programming Language)',
+        'Heroku',
+        'Apollo',
+        'GraphQL',
+        'PostgreSQL',
+        'Django',
+        'Express.js',
+        'React Native',
+        'Jest',
+        'Cypress',
+        'GatsbyJS',
+        'Next.js',
+        'SASS',
+        'Tailwind CSS',
+        'Docker',
+        'Amazon Web Services (AWS)',
+        'Python (Programming Language)',
+        'Redux.js',
+        'React.js',
+        'Node.js',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'Web Applications',
+        'Software Development',
+        'JavaScript',
+        'Git',
+        'Github',
+        'Mobile Applications'
+      ]
+    },
+    {
+      company: 'MultiplyMii',
+      duration: 'April 2020 - September 2021',
+      country: 'Philippines - Remote',
+      contributions: [
+        'Introduced a pricing calculator to provide clients with immediate cost estimates of the company’s talent pool; improved sales conversion rate by 15% and reduced response time by 50%.'
+      ],
+      skills: [
+        'Express.js',
+        'SASS',
+        'Google Cloud Platform (GCP)',
+        'Vue.js',
+        'React.js',
+        'Node.js',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'JavaScript',
+        'Git',
+        'Github'
+      ]
+    },
+    {
+      company: 'Make Interactive BV',
+      duration: 'April 2019 - February 2020',
+      country: 'Netherlands - Remote',
+      contributions: [
+        'Enhanced WordPress websites, reducing maintenance time by 30% and improving site performance by 15%.',
+        'Launched feature updates for an internal SAAS app, stimulating a 30% rise in user adoption and a 40% decrease in customer support requests.',
+        'Engineered a bespoke WordPress plugin, cutting lead response time by 25% and enhancing CRM capabilities.',
+        'Modernized WooCommerce and WordPress storefronts, leading to a 35% increase in website traffic and a 20% boost in user satisfaction.'
+      ],
+      skills: [
+        'Linux',
+        'SASS',
+        'Redux.js',
+        'React.js',
+        'MySQL',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'Web Applications',
+        'PHP',
+        'Software Development',
+        'WordPress',
+        'jQuery',
+        'JavaScript',
+        'Git',
+        'Github'
+      ]
+    },
+    {
+      company: 'Orth Enterprises, LLC',
+      duration: 'April 2019 - August 2019',
+      country: 'Houston, Texas, USA',
+      contributions: [
+        "Rebuilt the website, Julva, the Dream Cream, using Hugo static site generator and custom CSS with SASS preprocessor and Gulp toolkit. The website was deployed on the client's web server."
+      ],
+      skills: [
+        'Hugo',
+        'Go (Programming Language)',
+        'Apache',
+        'SASS',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'JavaScript',
+        'Git',
+        'Github'
+      ]
+    },
+    {
+      company: 'Outsourcing Wizards',
+      duration: 'January 2019 - March 2019',
+      country: 'Victoria, Texas, USA',
+      contributions: [
+        'Developed a high-performance real estate WordPress plugin, increasing website loading speed by 40% and decreasing bounce rate by 25%.',
+        'Orchestrated custom theme installations for a range of WordPress websites, resulting in a 50% decrease in page load time and a substantial 35% increase in user engagement.'
+      ],
+      skills: [
+        'Apache',
+        'Linux',
+        'SASS',
+        'MySQL',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'PHP',
+        'WordPress',
+        'jQuery',
+        'JavaScript',
+        'Git',
+        'Github'
+      ]
+    },
+    {
+      company: 'Infosoft Studio',
+      duration: 'November 2014 - September 2018',
+      country: 'Davao City, Philippines',
+      contributions: [
+        'Steered a team in developing cutting-edge WordPress websites for Philippine government agencies, thereby enhancing online visibility and user experience.'
+      ],
+      skills: [
+        'Gulp.js',
+        'Apache',
+        'Linux',
+        'Nginx',
+        'SASS',
+        'Bootstrap',
+        'MySQL',
+        'CSS',
+        'Web Development',
+        'HTML',
+        'Web Design',
+        'PHP',
+        'WordPress',
+        'jQuery',
+        'JavaScript',
+        'Git',
+        'Github',
+        'User Interface Design'
+      ]
+    }
+  ]
+
+  return { meta, hero, workExperiences }
+}
+
+export default WorkData
