@@ -58,13 +58,14 @@
     }
   },
   "generators": {
-    "generators": {
-      "@nx/next": {
-        "application": {
-          "style": "@emotion/styled",
-          "linter": "eslint"
-        }
+    "@nx/next": {
+      "application": {
+        "style": "@emotion/styled",
+        "linter": "eslint"
       }
+    },
+    "@nx/react": {
+      "library": {}
     }
   },
   "tasksRunnerOptions": {
