@@ -24,15 +24,22 @@
     "types": ["jest", "node"]
   },
   "include": [
-    "**/*.[jt]s?(x)",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
     "**/*.mjs",
     "../../apps/portfolio/.next/types/**/*.ts",
     "../../dist/apps/portfolio/.next/types/**/*.ts",
-    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "next-env.d.ts"
   ],
   "exclude": [
     "node_modules",
     "jest.config.ts",
-    "**/?(*.)+(spec|test).[jt]s?(x)"
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }

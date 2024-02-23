@@ -32,6 +32,6 @@
   "ts-node": {
     "swc": true
   },
-  "include": ["next-env.d.ts", "**/*.[jt]s?(x)", "**/*.d.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.d.ts", "next-env.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }
