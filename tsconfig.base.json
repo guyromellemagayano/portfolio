@@ -1,8 +1,9 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
@@ -12,11 +13,12 @@
     "incremental": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
     "noImplicitAny": false,
+    "paths": {},
     "preserveConstEnums": true,
     "removeComments": false,
     "resolveJsonModule": true,
@@ -27,18 +29,11 @@
     "strict": true,
     "strictNullChecks": true,
     "target": "esnext",
-    "typeRoots": ["./node_modules/@types"],
     "types": ["node", "jest", "next"]
   },
   "ts-node": {
     "swc": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.d.ts"
-  ],
+  "include": ["next-env.d.ts", "**/*.[jt]s?(x)", "**/*.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }
