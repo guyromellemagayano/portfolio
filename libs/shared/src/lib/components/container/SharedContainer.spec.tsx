@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import SharedFooter from './footer'
+import { SharedContainer } from './SharedContainer'
 
-describe('Shared Footer', () => {
+describe('<SharedContainer />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedFooter />)
+    const { baseElement } = render(<SharedContainer />)
     expect(baseElement).toBeTruthy()
   })
 })

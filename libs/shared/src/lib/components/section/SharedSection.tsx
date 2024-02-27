@@ -30,8 +30,3 @@ export const SharedSection = forwardRef<SharedSectionRef, SharedSectionProps>(
     )
   }
 )
-
-// Set a display name for debugging purposes
-SharedSection.displayName = 'Section'
-
-export default SharedSection

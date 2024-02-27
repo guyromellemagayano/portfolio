@@ -2,14 +2,10 @@
 
 import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
-import styled from 'styled-components'
-
 type SharedHeaderRef = HTMLElement
 
 /* eslint-disable-next-line */
 export interface SharedHeaderProps extends HTMLAttributes<HTMLElement> {}
-
-const StyledSharedHeader = styled.header``
 
 /**
  * Render the shared header component.
@@ -24,14 +20,9 @@ export const SharedHeader = forwardRef<SharedHeaderRef, SharedHeaderProps>(
     const customId = useId()
 
     return (
-      <StyledSharedHeader ref={ref} {...rest} id={rest.id ?? customId}>
+      <header ref={ref} {...rest} id={rest.id ?? customId}>
         {children}
-      </StyledSharedHeader>
+      </header>
     )
   }
 )
-
-// Set a display name for debugging purposes
-SharedHeader.displayName = 'SharedHeader'
-
-export default SharedHeader

@@ -1,7 +1,4 @@
-import {
-  isEmpty,
-  isNotNullOrUndefined
-} from '@guy-romelle-magayano/portfolio/utils/checkTypes'
+import { isEmpty, isNotNullOrUndefined } from '@guy-romelle-magayano/shared'
 
 export const LAZY_LOADING_DURATION: number = 1000
 

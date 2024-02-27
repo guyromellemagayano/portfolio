@@ -2,14 +2,10 @@
 
 import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
-import styled from 'styled-components'
-
 type SharedFooterRef = HTMLElement
 
 /* eslint-disable-next-line */
 export interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
-
-const StyledSharedFooter = styled.footer``
 
 /**
  * Render the shared footer component.
@@ -24,14 +20,9 @@ export const SharedFooter = forwardRef<SharedFooterRef, SharedFooterProps>(
     const customId = useId()
 
     return (
-      <StyledSharedFooter ref={ref} {...rest} id={rest.id ?? customId}>
+      <footer ref={ref} {...rest} id={rest.id ?? customId}>
         {children}
-      </StyledSharedFooter>
+      </footer>
     )
   }
 )
-
-// Set a display name for debugging purposes
-SharedFooter.displayName = 'Footer'
-
-export default SharedFooter
