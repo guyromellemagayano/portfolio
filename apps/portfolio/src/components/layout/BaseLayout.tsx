@@ -19,6 +19,7 @@ import {
   SharedFooter,
   SharedMain
 } from '@guy-romelle-magayano/shared'
+import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 
 interface IBaseLayoutProps {
   children: ReactNode
@@ -58,17 +59,19 @@ const BaseLayout = ({ children }: IBaseLayoutProps) => {
       </head>
 
       <StyledBody>
-        <StyledBaseLayout id={customId}>
-          <SharedContainer tw="relative flex w-full flex-col">
-            <HeaderLayout />
-            <SharedMain tw="flex-auto">
-              {children}
-              <SpeedInsights />
-              <Analytics />
-            </SharedMain>
-            <SharedFooter tw="mt-32" />
-          </SharedContainer>
-        </StyledBaseLayout>
+        <Providers>
+          <StyledBaseLayout id={customId}>
+            <SharedContainer tw="relative flex w-full flex-col">
+              <HeaderLayout />
+              <SharedMain tw="flex-auto">
+                {children}
+                <SpeedInsights />
+                <Analytics />
+              </SharedMain>
+              <SharedFooter tw="mt-32" />
+            </SharedContainer>
+          </StyledBaseLayout>
+        </Providers>
       </StyledBody>
     </StyledHtml>
   )
