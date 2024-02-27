@@ -4,12 +4,12 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
 import styled from 'styled-components'
 
+type SharedFooterRef = HTMLElement
+
 /* eslint-disable-next-line */
-export interface SharedFooterUiProps extends HTMLAttributes<HTMLElement> {}
+export interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
 
-export type FooterRef = HTMLElement
-
-const StyledSharedFooterUi = styled.footer``
+const StyledSharedFooter = styled.footer``
 
 /**
  * Render the shared footer component.
@@ -18,20 +18,20 @@ const StyledSharedFooterUi = styled.footer``
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared footer component.
  */
-const SharedFooterUi = forwardRef<FooterRef, SharedFooterUiProps>(
-  ({ children, ...rest }, ref: ForwardedRef<FooterRef>) => {
+export const SharedFooter = forwardRef<SharedFooterRef, SharedFooterProps>(
+  ({ children, ...rest }, ref: ForwardedRef<SharedFooterRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
 
     return (
-      <StyledSharedFooterUi ref={ref} {...rest} id={rest.id ?? customId}>
+      <StyledSharedFooter ref={ref} {...rest} id={rest.id ?? customId}>
         {children}
-      </StyledSharedFooterUi>
+      </StyledSharedFooter>
     )
   }
 )
 
 // Set a display name for debugging purposes
-SharedFooterUi.displayName = 'Footer'
+SharedFooter.displayName = 'Footer'
 
-export default SharedFooterUi
+export default SharedFooter
