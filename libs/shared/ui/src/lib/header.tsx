@@ -1,6 +1,6 @@
 import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 
 /* eslint-disable-next-line */
 export interface SharedHeaderUiProps extends HTMLAttributes<HTMLElement> {}
@@ -16,7 +16,7 @@ const StyledSharedHeaderUi = styled.header``
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared header component.
  */
-export const SharedHeaderUi = forwardRef<HeaderRef, SharedHeaderUiProps>(
+const SharedHeaderUi = forwardRef<HeaderRef, SharedHeaderUiProps>(
   ({ children, ...rest }, ref: ForwardedRef<HeaderRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
