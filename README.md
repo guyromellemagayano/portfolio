@@ -16,7 +16,7 @@
 
 - 📄 Know about my experiences at [https://guyromellemagayano.dev/work](https://guyromellemagayano.dev/work)
 
-- ⚡ Fun fact: *Im an introvert. But quite friendly :)*
+- ⚡ Fun fact: _Im an introvert. But quite friendly :)_
 
 ## Connect with me
 
@@ -26,12 +26,12 @@
 
 ## Most Used Languages
 
-![Most Used Languages | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api/top-langs?username=guyromellemagayano&show_icons=true&locale=en&layout=compact "Most Used Languages | Guy Romelle Magayano")
+![Most Used Languages | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api/top-langs?username=guyromellemagayano&show_icons=true&locale=en&layout=compact 'Most Used Languages | Guy Romelle Magayano')
 
 ## Github Stats
 
-![Github Stats | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api?username=guyromellemagayano&show_icons=true&locale=en "Github Stats | Guy Romelle Magayano")
+![Github Stats | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api?username=guyromellemagayano&show_icons=true&locale=en 'Github Stats | Guy Romelle Magayano')
 
 ## Code Streaks
 
-![Code Streaks | Guy Romelle Magayano](https://github-readme-streak-stats.herokuapp.com/?user=guyromellemagayano& "Code Streaks | Guy Romelle Magayano")
+![Code Streaks | Guy Romelle Magayano](https://github-readme-streak-stats.herokuapp.com/?user=guyromellemagayano& 'Code Streaks | Guy Romelle Magayano')
