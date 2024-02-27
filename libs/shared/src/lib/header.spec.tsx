@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import SharedFooterUi from './footer'
+import SharedHeader from './header'
 
-describe('SharedFooterUi', () => {
+describe('Shared Header', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedFooterUi />)
+    const { baseElement } = render(<SharedHeader />)
     expect(baseElement).toBeTruthy()
   })
 })

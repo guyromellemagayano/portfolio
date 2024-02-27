@@ -4,12 +4,12 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
 import styled from 'styled-components'
 
+type SharedHeaderRef = HTMLElement
+
 /* eslint-disable-next-line */
-export interface SharedHeaderUiProps extends HTMLAttributes<HTMLElement> {}
+export interface SharedHeaderProps extends HTMLAttributes<HTMLElement> {}
 
-export type HeaderRef = HTMLElement
-
-const StyledSharedHeaderUi = styled.header``
+const StyledSharedHeader = styled.header``
 
 /**
  * Render the shared header component.
@@ -18,20 +18,20 @@ const StyledSharedHeaderUi = styled.header``
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared header component.
  */
-const SharedHeaderUi = forwardRef<HeaderRef, SharedHeaderUiProps>(
-  ({ children, ...rest }, ref: ForwardedRef<HeaderRef>) => {
+export const SharedHeader = forwardRef<SharedHeaderRef, SharedHeaderProps>(
+  ({ children, ...rest }, ref: ForwardedRef<SharedHeaderRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
 
     return (
-      <StyledSharedHeaderUi ref={ref} {...rest} id={rest.id ?? customId}>
+      <StyledSharedHeader ref={ref} {...rest} id={rest.id ?? customId}>
         {children}
-      </StyledSharedHeaderUi>
+      </StyledSharedHeader>
     )
   }
 )
 
 // Set a display name for debugging purposes
-SharedHeaderUi.displayName = 'Header'
+SharedHeader.displayName = 'SharedHeader'
 
-export default SharedHeaderUi
+export default SharedHeader
