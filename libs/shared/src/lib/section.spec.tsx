@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import SharedHeaderUi from './header'
+import SharedSection from './section'
 
-describe('SharedHeaderUi', () => {
+describe('Shared Section', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedHeaderUi />)
+    const { baseElement } = render(<SharedSection />)
     expect(baseElement).toBeTruthy()
   })
 })

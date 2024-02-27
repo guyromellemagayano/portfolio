@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import SharedSectionUi from './section'
+import SharedFooter from './footer'
 
-describe('SharedSectionUi', () => {
+describe('Shared Footer', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedSectionUi />)
+    const { baseElement } = render(<SharedFooter />)
     expect(baseElement).toBeTruthy()
   })
 })

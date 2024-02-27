@@ -4,12 +4,12 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
 import styled from 'styled-components'
 
+type SharedSectionRef = HTMLElement
+
 /* eslint-disable-next-line */
-export interface SharedSectionUiProps extends HTMLAttributes<HTMLElement> {}
+export interface SharedSectionProps extends HTMLAttributes<SharedSectionRef> {}
 
-export type SectionRef = HTMLElement
-
-const StyledSharedSectionUi = styled.section``
+const StyledSharedSection = styled.section``
 
 /**
  * Render the shared section component.
@@ -18,20 +18,20 @@ const StyledSharedSectionUi = styled.section``
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared section component.
  */
-const SharedSectionUi = forwardRef<SectionRef, SharedSectionUiProps>(
-  ({ children, ...rest }, ref: ForwardedRef<SectionRef>) => {
+export const SharedSection = forwardRef<SharedSectionRef, SharedSectionProps>(
+  ({ children, ...rest }, ref: ForwardedRef<SharedSectionRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
 
     return (
-      <StyledSharedSectionUi ref={ref} {...rest} id={rest.id ?? customId}>
+      <StyledSharedSection ref={ref} {...rest} id={rest.id ?? customId}>
         {children}
-      </StyledSharedSectionUi>
+      </StyledSharedSection>
     )
   }
 )
 
 // Set a display name for debugging purposes
-SharedSectionUi.displayName = 'Section'
+SharedSection.displayName = 'Section'
 
-export default SharedSectionUi
+export default SharedSection
