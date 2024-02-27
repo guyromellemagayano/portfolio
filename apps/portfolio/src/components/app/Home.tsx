@@ -13,7 +13,6 @@ import type { THomeData } from '@guy-romelle-magayano/portfolio/data/home'
 import SocialLinksData from '@guy-romelle-magayano/portfolio/data/social-links'
 
 import type { TCommonComponentProps } from '@guy-romelle-magayano/portfolio/types/common'
-import { SharedUi } from '@guy-romelle-magayano/shared-ui'
 
 export type THomeAppDataProps = {
   data: THomeData
@@ -46,7 +45,6 @@ const HomeApp: FC<THomeAppProps> = ({ id, data, ...rest }) => {
           ))}
         </div>
       </ContentLayout>
-      <SharedUi />
       <PhotoLayout className="mt-16 sm:mt-20" data={data.slidePhotos || []} />
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
