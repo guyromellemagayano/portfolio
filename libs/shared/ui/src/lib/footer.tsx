@@ -1,3 +1,5 @@
+'use client'
+
 import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 
 import styled from 'styled-components'
