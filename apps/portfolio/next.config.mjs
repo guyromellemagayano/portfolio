@@ -7,6 +7,8 @@ import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
 import remarkGfm from 'remark-gfm'
 
+import withTwin from './withTwin.mjs'
+
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
@@ -29,12 +31,12 @@ const nextConfig = {
     SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || ''
   },
   compiler: {
-    // For other options, see https://nextjs.org/docs/architecture/nextjs-compiler#emotion
-    emotion: true
+    // For other options, see https://styled-components.com/docs/tooling#babel-plugin
+    styledComponents: true
   },
   sentry: {
     hideSourceMaps: true
-  },
+  }
 }
 
 const sentryWebpackPluginOptions = {
@@ -57,7 +59,9 @@ const plugins = [
   withMDX
 ]
 
-export default withSentryConfig(
-  composePlugins(...plugins)(nextConfig),
-  sentryWebpackPluginOptions
+export default withTwin(
+  withSentryConfig(
+    composePlugins(...plugins)(nextConfig),
+    sentryWebpackPluginOptions
+  )
 )
