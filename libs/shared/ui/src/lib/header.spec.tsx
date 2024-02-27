@@ -1,10 +1,12 @@
+import React from 'react'
+
 import { render } from '@testing-library/react'
 
-import SharedUi from './shared-ui'
+import Header from './header'
 
-describe('SharedUi', () => {
+describe('Header', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedUi />)
+    const { baseElement } = render(<Header />)
     expect(baseElement).toBeTruthy()
   })
 })

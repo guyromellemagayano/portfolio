@@ -10,6 +10,7 @@ import DesktopNavigation from '@guy-romelle-magayano/portfolio/components/Naviga
 import DarkModeButton from '@guy-romelle-magayano/portfolio/components/buttons/DarkMode'
 import AvatarContainer from '@guy-romelle-magayano/portfolio/components/container/Avatar'
 import MobileNavigation from '@guy-romelle-magayano/portfolio/components/navigation/Mobile'
+import { SharedHeaderUi } from '@guy-romelle-magayano/shared-ui'
 
 import clamp from '@guy-romelle-magayano/portfolio/utils/helpers'
 
@@ -142,7 +143,7 @@ const HeaderLayout: FC<THeaderLayoutProps> = ({ className, id, ...rest }) => {
 
   return (
     <>
-      <header
+      <SharedHeaderUi
         className="pointer-events-none relative z-50 flex flex-none flex-col"
         style={{
           height: 'var(--header-height)',
@@ -212,7 +213,7 @@ const HeaderLayout: FC<THeaderLayoutProps> = ({ className, id, ...rest }) => {
             </div>
           </Container>
         </div>
-      </header>
+      </SharedHeaderUi>
 
       {isHomePage && (
         <div
