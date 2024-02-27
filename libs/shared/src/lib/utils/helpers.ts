@@ -11,7 +11,7 @@ export const arrayToUrlSlug = (array: string[]): string => {
   return slugArray.join('-')
 }
 
-export type TClampProps = {
+export interface TClampProps {
   number: number
   min: number
   max: number
@@ -24,11 +24,9 @@ export type TClampProps = {
  * @param max - The maximum value to clamp to.
  * @returns The clamped number.
  */
-const clamp = ({ number, min, max }: TClampProps): number => {
+export const clamp = ({ number, min, max }: TClampProps): number => {
   const a = Math.min(min, max)
   const b = Math.max(min, max)
 
   return Math.min(Math.max(number, a), b)
 }
-
-export default clamp
