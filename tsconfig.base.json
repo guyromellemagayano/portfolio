@@ -9,17 +9,17 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": ["esnext", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
       "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
-      "@guy-romelle-magayano/shared-ui": ["libs/shared/ui/src/index.ts"],
-      "@guy-romelle-magayano/shared-ui/server": ["libs/shared/ui/src/server.ts"]
+      "@guy-romelle-magayano/shared": ["libs/shared/src/index.ts"],
+      "@guy-romelle-magayano/shared/server": ["libs/shared/src/server.ts"]
     }
   },
   "ts-node": {
