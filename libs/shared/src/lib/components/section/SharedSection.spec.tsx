@@ -2,9 +2,9 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import SharedSection from './section'
+import { SharedSection } from './SharedSection'
 
-describe('Shared Section', () => {
+describe('<SharedSection />', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<SharedSection />)
     expect(baseElement).toBeTruthy()
