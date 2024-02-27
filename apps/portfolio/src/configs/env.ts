@@ -1,7 +1,5 @@
 import { isEmpty, isNotNullOrUndefined } from '@guy-romelle-magayano/shared'
 
-export const LAZY_LOADING_DURATION: number = 1000
-
 // Sentry
 export const SENTRY_DSN: string = process.env.SENTRY_DSN || ''
 export const SENTRY_AUTH_TOKEN: string = process.env.SENTRY_AUTH_TOKEN || ''
