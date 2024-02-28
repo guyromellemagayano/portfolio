@@ -12,16 +12,17 @@ import {
   NEXT_PUBLIC_GA_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
 
-import HeaderLayout from '@guy-romelle-magayano/portfolio/components/layout/HeaderLayout'
+import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
+
+import HeaderLayout from '@guy-romelle-magayano/portfolio/components/layout/Header'
 
 import {
   SharedContainer,
   SharedFooter,
   SharedMain
 } from '@guy-romelle-magayano/shared'
-import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 
-interface IBaseLayoutProps {
+interface BaseLayoutProps {
   children: ReactNode
 }
 
@@ -34,7 +35,7 @@ const StyledHtml = tw.html`h-full antialiased`,
  * @param children - The children of the base layout.
  * @returns The rendered base layout component.
  */
-const BaseLayout = ({ children }: IBaseLayoutProps) => {
+const BaseLayout = ({ children }: BaseLayoutProps) => {
   const customId = useId()
 
   return (
