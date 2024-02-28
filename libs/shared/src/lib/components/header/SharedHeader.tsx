@@ -5,7 +5,7 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 type SharedHeaderRef = HTMLElement
 
 /* eslint-disable-next-line */
-export interface SharedHeaderProps extends HTMLAttributes<HTMLElement> {}
+interface SharedHeaderProps extends HTMLAttributes<HTMLElement> {}
 
 /**
  * Render the shared header component.
@@ -26,3 +26,5 @@ export const SharedHeader = forwardRef<SharedHeaderRef, SharedHeaderProps>(
     )
   }
 )
+
+SharedHeader.displayName = 'SharedHeader'
