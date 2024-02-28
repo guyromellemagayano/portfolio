@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 import { StyledComponentsRegistry } from './registry'
 
-import BaseLayout from '@guy-romelle-magayano/portfolio/components/layout/BaseLayout'
+import BaseLayout from '@guy-romelle-magayano/portfolio/components/layout/Base'
 
 import GlobalStyles from '@guy-romelle-magayano/portfolio/styles/GlobalStyles'
 
