@@ -1,12 +1,19 @@
 'use client'
 
-import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
+import {
+  ElementType,
+  ForwardedRef,
+  forwardRef,
+  HTMLAttributes,
+  useId
+} from 'react'
 
 type SharedContainerRef = HTMLDivElement
 
 /* eslint-disable-next-line */
-export interface SharedContainerProps
-  extends HTMLAttributes<SharedContainerRef> {}
+interface SharedContainerProps extends HTMLAttributes<SharedContainerRef> {
+  as?: ElementType
+}
 
 /**
  * Render the shared container component.
@@ -18,13 +25,20 @@ export interface SharedContainerProps
 export const SharedContainer = forwardRef<
   SharedContainerRef,
   SharedContainerProps
->(({ children, ...rest }, ref: ForwardedRef<SharedContainerRef>) => {
-  // Generates a unique ID that can be used for accessibility attributes
-  const customId = useId()
+>(
+  (
+    { as: Component = 'div', children, ...rest },
+    ref: ForwardedRef<SharedContainerRef>
+  ) => {
+    // Generates a unique ID that can be used for accessibility attributes
+    const customId = useId()
 
-  return (
-    <div ref={ref} {...rest} id={rest.id ?? customId}>
-      {children}
-    </div>
-  )
-})
+    return (
+      <Component ref={ref} {...rest} id={rest.id ?? customId}>
+        {children}
+      </Component>
+    )
+  }
+)
+
+SharedContainer.displayName = 'SharedContainer'
