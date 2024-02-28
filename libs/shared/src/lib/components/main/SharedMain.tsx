@@ -5,7 +5,7 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 type SharedMainRef = HTMLElement
 
 /* eslint-disable-next-line */
-export interface SharedMainProps extends HTMLAttributes<SharedMainRef> {}
+interface SharedMainProps extends HTMLAttributes<SharedMainRef> {}
 
 /**
  * Render the shared main component.
@@ -26,3 +26,5 @@ export const SharedMain = forwardRef<SharedMainRef, SharedMainProps>(
     )
   }
 )
+
+SharedMain.displayName = 'SharedMain'
