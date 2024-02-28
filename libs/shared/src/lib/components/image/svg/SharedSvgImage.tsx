@@ -295,3 +295,5 @@ export const SharedSvgImage = ({ children, ...rest }: SharedSvgImageProps) => {
     </svg>
   )
 }
+
+SharedSvgImage.displayName = 'SharedSvgImage'
