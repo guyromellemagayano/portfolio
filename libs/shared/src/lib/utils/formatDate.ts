@@ -4,10 +4,7 @@
  * @param locale - Locale string for the desired language
  * @returns Date string in the format "Month Day, Year"
  */
-export const formatDate = (
-  dateString: string,
-  locale: string = 'en-US'
-): string =>
+export const formatDate = (dateString: string, locale: string = 'en-US') =>
   new Date(`${dateString}T00:00:00Z`).toLocaleDateString(locale, {
     day: 'numeric',
     month: 'long',
