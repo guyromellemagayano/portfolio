@@ -8,7 +8,7 @@ import Image from 'next/image'
 type SharedImageRef = HTMLImageElement
 
 /* eslint-disable-next-line */
-export interface SharedImageProps extends HTMLAttributes<SharedImageRef> {
+interface SharedImageProps extends HTMLAttributes<SharedImageRef> {
   src?: StaticImport | string | undefined
   alt?: string
   sizes?: string
@@ -53,3 +53,5 @@ export const SharedImage = forwardRef<SharedImageRef, SharedImageProps>(
     )
   }
 )
+
+SharedImage.displayName = 'SharedImage'

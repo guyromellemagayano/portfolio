@@ -7,7 +7,7 @@ import styled from 'styled-components'
 type SharedSectionRef = HTMLElement
 
 /* eslint-disable-next-line */
-export interface SharedSectionProps extends HTMLAttributes<SharedSectionRef> {}
+interface SharedSectionProps extends HTMLAttributes<SharedSectionRef> {}
 
 const StyledSharedSection = styled.section``
 
@@ -30,3 +30,5 @@ export const SharedSection = forwardRef<SharedSectionRef, SharedSectionProps>(
     )
   }
 )
+
+SharedSection.displayName = 'SharedSection'

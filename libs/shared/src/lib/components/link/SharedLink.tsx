@@ -7,7 +7,7 @@ import Link from 'next/link'
 type SharedLinkRef = HTMLAnchorElement & HTMLLinkElement
 
 /* eslint-disable-next-line */
-export interface SharedLinkProps extends HTMLAttributes<SharedLinkRef> {
+interface SharedLinkProps extends HTMLAttributes<SharedLinkRef> {
   href?: string
 }
 
@@ -31,3 +31,5 @@ export const SharedLink = forwardRef<SharedLinkRef, SharedLinkProps>(
     )
   }
 )
+
+SharedLink.displayName = 'SharedLink'

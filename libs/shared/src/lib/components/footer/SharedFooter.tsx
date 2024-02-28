@@ -5,7 +5,7 @@ import { ForwardedRef, forwardRef, HTMLAttributes, useId } from 'react'
 type SharedFooterRef = HTMLElement
 
 /* eslint-disable-next-line */
-export interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
+interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
 
 /**
  * Render the shared footer component.
@@ -26,3 +26,5 @@ export const SharedFooter = forwardRef<SharedFooterRef, SharedFooterProps>(
     )
   }
 )
+
+SharedFooter.displayName = 'SharedFooter'
