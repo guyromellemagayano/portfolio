@@ -2,12 +2,11 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import rehypePrism from '@mapbox/rehype-prism'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
 import remarkGfm from 'remark-gfm'
-
-import withTwin from './withTwin.mjs'
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -34,10 +33,13 @@ const nextConfig = {
     SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || ''
   },
   compiler: {
-    // For other options, see https://styled-components.com/docs/tooling#babel-plugin
-    styledComponents: true
+    removeConsole: {
+      exclude: ['error']
+    }
   },
   sentry: {
+    disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
+    disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
     hideSourceMaps: true
   }
 }
@@ -59,12 +61,12 @@ const withMDX = createMDX({
 const plugins = [
   // Add more Next.js plugins to this list if needed.
   withNx,
-  withMDX
+  withMDX,
+  withBundleAnalyzer({
+    enabled: process.env.ANALYZE === 'true'
+  })
 ]
 
-export default withTwin(
-  withSentryConfig(
-    composePlugins(...plugins)(nextConfig),
-    sentryWebpackPluginOptions
-  )
+export default withSentryConfig(
+  (composePlugins(...plugins)(nextConfig), sentryWebpackPluginOptions)
 )

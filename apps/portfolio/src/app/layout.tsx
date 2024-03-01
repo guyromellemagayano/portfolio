@@ -1,15 +1,13 @@
-import { ReactNode } from 'react'
-
-import { StyledComponentsRegistry } from './registry'
+import React from 'react'
 
 import BaseLayout from '@guy-romelle-magayano/portfolio/components/layout/Base'
 
-import GlobalStyles from '@guy-romelle-magayano/portfolio/styles/GlobalStyles'
+import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
 
 import 'focus-visible'
 
-interface IRootLayoutProps {
-  children: ReactNode
+type IRootLayoutProps = {
+  children: React.ReactNode
 }
 
 /**
@@ -18,12 +16,7 @@ interface IRootLayoutProps {
  * @returns The rendered root layout component.
  */
 const RootLayout = ({ children }: IRootLayoutProps) => {
-  return (
-    <StyledComponentsRegistry>
-      <GlobalStyles />
-      <BaseLayout>{children}</BaseLayout>
-    </StyledComponentsRegistry>
-  )
+  return <BaseLayout>{children}</BaseLayout>
 }
 
 export default RootLayout

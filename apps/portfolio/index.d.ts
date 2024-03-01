@@ -1,9 +1,11 @@
-import 'react'
+import React from 'react'
 
-import { CSSProp, css as cssImport, styledImport } from 'styled-components'
-import 'twin.macro'
-
-import { TCommonComponentReturnType } from '@guy-romelle-magayano/portfolio/types/common'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+declare module '*.svg' {
+  const content: any
+  export const ReactComponent: any
+  export default content
+}
 
 declare module 'focus-visible' {
   const focusVisible: () => void
@@ -11,35 +13,6 @@ declare module 'focus-visible' {
 }
 
 declare module '*.mdx' {
-  let MDXComponent: (props: any) => TCommonComponentReturnType
+  let MDXComponent: (props: any) => React.ReactNode
   export default MDXComponent
-}
-
-declare module 'twin.macro' {
-  // The styled and css imports
-  const styled: typeof styledImport
-  const css: typeof cssImport
-}
-
-declare module 'react' {
-  // The css prop
-  interface HTMLAttributes<T> extends DOMAttributes<T> {
-    css?: CSSProp
-    tw?: string
-  }
-
-  // The inline svg css prop
-  interface SVGProps<T> extends SVGProps<SVGSVGElement> {
-    css?: CSSProp
-    tw?: string
-  }
-}
-
-// The 'as' prop on styled components
-declare global {
-  namespace JSX {
-    interface IntrinsicAttributes<T> extends DOMAttributes<T> {
-      as?: string | Element
-    }
-  }
 }

@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useEffect, createContext, ReactNode } from 'react'
+import React from 'react'
 
-import { usePathname } from 'next/navigation'
 import { ThemeProvider, useTheme } from 'next-themes'
+import { usePathname } from 'next/navigation'
 
 /**
  * Custom hook that returns the previous value of a given value.
@@ -11,9 +11,9 @@ import { ThemeProvider, useTheme } from 'next-themes'
  * @returns The previous value of the given value.
  */
 const usePrevious = <T,>(value: T): T | undefined => {
-  const ref = useRef<T>()
+  const ref = React.useRef<T>()
 
-  useEffect(() => {
+  React.useEffect(() => {
     ref.current = value
   }, [value])
 
@@ -27,7 +27,7 @@ const usePrevious = <T,>(value: T): T | undefined => {
 const ThemeWatcher = (): null => {
   const { resolvedTheme, setTheme } = useTheme()
 
-  useEffect(() => {
+  React.useEffect(() => {
     const media = window.matchMedia('(prefers-color-scheme: dark)')
 
     const onMediaChange = () => {
@@ -51,10 +51,10 @@ const ThemeWatcher = (): null => {
 /**
  * AppContext that provides the previous pathname to the application.
  */
-export const AppContext = createContext<{ previousPathname?: string }>({})
+export const AppContext = React.createContext<{ previousPathname?: string }>({})
 
 interface IProvidersProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 /**
