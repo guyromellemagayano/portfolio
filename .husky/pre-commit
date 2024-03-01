@@ -1,2 +1,2 @@
-yarn validate-branch-name
-yarn lint-staged --allow-empty
+npx validate-branch-name
+npx lint-staged --allow-empty
