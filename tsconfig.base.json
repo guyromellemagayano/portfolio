@@ -9,22 +9,23 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "target": "esnext",
-    "module": "esnext",
-    "lib": ["esnext", "dom"],
+    "target": "es2015",
+    "module": "es2015",
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
-      "@guy-romelle-magayano/shared": ["libs/shared/src/index.ts"],
-      "@guy-romelle-magayano/shared/server": ["libs/shared/src/server.ts"]
+      "@guy-romelle-magayano/components": ["packages/components/src/index.ts"],
+      "@guy-romelle-magayano/components/server": [
+        "packages/components/src/server.ts"
+      ],
+      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"]
     }
   },
   "ts-node": {
     "swc": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.d.ts", "next-env.d.ts"],
   "exclude": ["node_modules", "tmp"]
 }
