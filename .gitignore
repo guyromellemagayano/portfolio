@@ -103,9 +103,6 @@ bower_components
 .bower-tmp
 public/data/mind.json
 
-# Install artifacts
-package-lock.json
-
 # Testing
 coverage/
 
