@@ -23,7 +23,8 @@
       "options": {
         "buildTargetName": "build",
         "devTargetName": "dev",
-        "startTargetName": "start"
+        "startTargetName": "start",
+        "serveStaticTargetName": "serve-static"
       }
     },
     {
@@ -60,7 +61,7 @@
   "generators": {
     "@nx/next": {
       "application": {
-        "style": "styled-components",
+        "style": "css",
         "linter": "eslint"
       }
     },
