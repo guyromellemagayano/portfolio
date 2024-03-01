@@ -1,11 +1,10 @@
 'use client'
 
-import { ReactNode, useId } from 'react'
+import React from 'react'
 
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
-import tw from 'twin.macro'
 
 import {
   NEXT_PUBLIC_GA_MEASUREMENT_ID,
@@ -20,15 +19,11 @@ import {
   SharedContainer,
   SharedFooter,
   SharedMain
-} from '@guy-romelle-magayano/shared'
+} from '@guy-romelle-magayano/components'
 
 interface BaseLayoutProps {
-  children: ReactNode
+  children: React.ReactNode
 }
-
-const StyledHtml = tw.html`h-full antialiased`,
-  StyledBody = tw.body`flex h-full bg-zinc-50 dark:bg-black`,
-  StyledBaseLayout = tw.div`flex w-full`
 
 /**
  * Render the base layout component.
@@ -36,10 +31,10 @@ const StyledHtml = tw.html`h-full antialiased`,
  * @returns The rendered base layout component.
  */
 const BaseLayout = ({ children }: BaseLayoutProps) => {
-  const customId = useId()
+  const customId = React.useId()
 
   return (
-    <StyledHtml lang="en" suppressHydrationWarning>
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <head>
         <Script
           strategy="afterInteractive"
@@ -59,9 +54,9 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
         />
       </head>
 
-      <StyledBody>
+      <body className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
-          <StyledBaseLayout id={customId}>
+          <div id={customId} className="flex w-full">
             <SharedContainer tw="relative flex w-full flex-col">
               <HeaderLayout />
               <SharedMain tw="flex-auto">
@@ -71,10 +66,10 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
               </SharedMain>
               <SharedFooter tw="mt-32" />
             </SharedContainer>
-          </StyledBaseLayout>
+          </div>
         </Providers>
-      </StyledBody>
-    </StyledHtml>
+      </body>
+    </html>
   )
 }
 
