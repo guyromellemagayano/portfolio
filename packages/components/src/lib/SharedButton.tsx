@@ -1,15 +1,12 @@
-'use client'
+import { ButtonHTMLAttributes, ForwardedRef, forwardRef, useId } from 'react'
 
-import React from 'react'
-
-import { cn, isEmpty } from '@guy-romelle-magayano/components'
+import { cn, isEmpty } from '@guy-romelle-magayano/utils'
 
 type SharedButtonRef = HTMLButtonElement
 type ButtonType = 'button' | 'submit' | 'reset'
 type ButtonVariant = 'primary' | 'secondary'
 
-interface SharedButtonProps
-  extends React.ButtonHTMLAttributes<SharedButtonRef> {
+interface SharedButtonProps extends ButtonHTMLAttributes<SharedButtonRef> {
   type?: ButtonType
   variant?: ButtonVariant
   [key: string]: any
@@ -52,20 +49,17 @@ const generateButtonClassName: GenerateButtonClassName = (
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared button component.
  */
-export const SharedButton = React.forwardRef<
-  SharedButtonRef,
-  SharedButtonProps
->(
+export const SharedButton = forwardRef<SharedButtonRef, SharedButtonProps>(
   (
     { type = 'button', variant = 'primary', id, children, ...rest },
-    ref: React.ForwardedRef<SharedButtonRef>
+    ref: ForwardedRef<SharedButtonRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
     const updatedClassName = generateButtonClassName(
         variant,
         rest['data-tw'] ?? rest['className']
       ),
-      customId = React.useId()
+      customId = useId()
 
     if (!isEmpty(rest['data-tw'])) {
       rest['data-tw'] = updatedClassName

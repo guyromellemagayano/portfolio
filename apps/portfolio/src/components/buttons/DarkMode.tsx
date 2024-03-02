@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTheme } from 'next-themes'
 
@@ -8,7 +8,7 @@ import {
   MoonSvgImage,
   SharedButton,
   SunSvgImage
-} from '@guy-romelle-magayano/components'
+} from '@guy-romelle-magayano/components/server'
 
 /**
  * Renders dark mode button component.
@@ -16,10 +16,10 @@ import {
  */
 const DarkModeButton = () => {
   const { resolvedTheme, setTheme } = useTheme(),
-    [mounted, setMounted] = React.useState(false),
+    [mounted, setMounted] = useState(false),
     otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark'
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true)
   }, [])
 

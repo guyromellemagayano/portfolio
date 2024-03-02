@@ -1,13 +1,11 @@
-'use client'
-
-import React from 'react'
+import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
 type SharedImageRef = HTMLImageElement
 
-interface SharedImageProps extends React.HTMLAttributes<SharedImageRef> {
+interface SharedImageProps extends HTMLAttributes<SharedImageRef> {
   src?: StaticImport | string | undefined
   alt?: string
   sizes?: string
@@ -23,7 +21,7 @@ interface SharedImageProps extends React.HTMLAttributes<SharedImageRef> {
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared image component.
  */
-export const SharedImage = React.forwardRef<SharedImageRef, SharedImageProps>(
+export const SharedImage = forwardRef<SharedImageRef, SharedImageProps>(
   (
     {
       src = '#',
@@ -33,10 +31,10 @@ export const SharedImage = React.forwardRef<SharedImageRef, SharedImageProps>(
       unoptimized = false,
       ...rest
     },
-    ref: React.ForwardedRef<SharedImageRef>
+    ref: ForwardedRef<SharedImageRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
-    const customId = React.useId()
+    const customId = useId()
 
     return (
       <Image

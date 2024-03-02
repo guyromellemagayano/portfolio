@@ -1,12 +1,10 @@
-'use client'
-
-import React from 'react'
+import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 import Link from 'next/link'
 
 type SharedLinkRef = HTMLAnchorElement & HTMLLinkElement
 
-interface SharedLinkProps extends React.HTMLAttributes<SharedLinkRef> {
+interface SharedLinkProps extends HTMLAttributes<SharedLinkRef> {
   href?: string
 }
 
@@ -18,13 +16,10 @@ interface SharedLinkProps extends React.HTMLAttributes<SharedLinkRef> {
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared link component.
  */
-export const SharedLink = React.forwardRef<SharedLinkRef, SharedLinkProps>(
-  (
-    { href = '#', children, ...rest },
-    ref: React.ForwardedRef<SharedLinkRef>
-  ) => {
+export const SharedLink = forwardRef<SharedLinkRef, SharedLinkProps>(
+  ({ href = '#', children, ...rest }, ref: ForwardedRef<SharedLinkRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
-    const customId = React.useId()
+    const customId = useId()
 
     return (
       <Link ref={ref} href={href} {...rest} id={rest.id ?? customId}>
