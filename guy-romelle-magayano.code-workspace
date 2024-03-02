@@ -2,6 +2,9 @@
   "folders": [
     {
       "path": "."
+    },
+    {
+      "path": "./apps/portfolio-server"
     }
   ],
   "settings": {
@@ -22,7 +25,11 @@
     "github.copilot.enable": {
       "*": true
     },
-    "npm.packageManager": "npm",
+    "npm.packageManager": "yarn",
+    "search.exclude": {
+      "**/.yarn": true,
+      "**/.pnp.*": true
+    },
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.tsdk": "node_modules/typescript/lib",
     "[javascript,javascriptreact,typescript,typescriptreact]": {
