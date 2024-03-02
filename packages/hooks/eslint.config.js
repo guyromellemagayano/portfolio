@@ -1,6 +1,6 @@
 const FlatCompat = require('@eslint/eslintrc')
 const js = require('@eslint/js')
-const baseConfig = require('../../eslint.config.js')
+const baseConfig = require('../../../eslint.config.js')
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
@@ -9,7 +9,16 @@ const compat = new FlatCompat({
 
 module.exports = [
   ...baseConfig,
-  ...compat.extends('plugin:@nx/react'),
+  ...compat.extends('plugin:@nx/react-typescript'),
+  ...compat
+    .config({
+      extends: ['plugin:testing-library/react'],
+      env: { jest: true }
+    })
+    .map(config => ({
+      ...config,
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)']
+    })),
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {}
@@ -21,6 +30,5 @@ module.exports = [
   {
     files: ['**/*.js', '**/*.jsx'],
     rules: {}
-  },
-  ...compat.extends('plugin:@nx/react')
+  }
 ]

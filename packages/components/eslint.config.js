@@ -9,7 +9,16 @@ const compat = new FlatCompat({
 
 module.exports = [
   ...baseConfig,
-  ...compat.extends('plugin:@nx/react'),
+  ...compat.extends('plugin:@nx/react-typescript'),
+  ...compat
+    .config({
+      extends: ['plugin:testing-library/react'],
+      env: { jest: true }
+    })
+    .map(config => ({
+      ...config,
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)']
+    })),
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {}
