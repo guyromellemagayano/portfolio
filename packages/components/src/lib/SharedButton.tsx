@@ -1,20 +1,21 @@
 import { ButtonHTMLAttributes, ForwardedRef, forwardRef, useId } from 'react'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
 import { cn, isEmpty } from '@guy-romelle-magayano/utils'
 
 type SharedButtonRef = HTMLButtonElement
 type ButtonType = 'button' | 'submit' | 'reset'
 type ButtonVariant = 'primary' | 'secondary'
 
-interface SharedButtonProps extends ButtonHTMLAttributes<SharedButtonRef> {
-  type?: ButtonType
-  variant?: ButtonVariant
-  [key: string]: any
-}
+export type TSharedButtonProps = ButtonHTMLAttributes<SharedButtonRef> &
+  TCommonSharedComponentsProps & {
+    type?: ButtonType
+    variant?: ButtonVariant
+  }
 
-type GenerateButtonClassName = (
+type TGenerateButtonClassName = (
   variant: ButtonVariant,
-  className?: SharedButtonProps['className']
+  className?: TSharedButtonProps['className']
 ) => string
 
 /**
@@ -23,7 +24,7 @@ type GenerateButtonClassName = (
  * @param className - Additional CSS classes to apply to the button.
  * @returns The class name for the button.
  */
-const generateButtonClassName: GenerateButtonClassName = (
+const generateButtonClassName: TGenerateButtonClassName = (
   variant,
   className
 ) => {
@@ -49,7 +50,7 @@ const generateButtonClassName: GenerateButtonClassName = (
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared button component.
  */
-export const SharedButton = forwardRef<SharedButtonRef, SharedButtonProps>(
+export const SharedButton = forwardRef<SharedButtonRef, TSharedButtonProps>(
   (
     { type = 'button', variant = 'primary', id, children, ...rest },
     ref: ForwardedRef<SharedButtonRef>

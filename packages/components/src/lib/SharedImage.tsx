@@ -3,15 +3,18 @@ import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
+
 type SharedImageRef = HTMLImageElement
 
-interface SharedImageProps extends HTMLAttributes<SharedImageRef> {
-  src?: StaticImport | string | undefined
-  alt?: string
-  sizes?: string
-  priority?: boolean
-  unoptimized?: boolean
-}
+export type TSharedImageProps = HTMLAttributes<SharedImageRef> &
+  TCommonSharedComponentsProps & {
+    src?: StaticImport | string | undefined
+    alt?: string
+    sizes?: string
+    priority?: boolean
+    unoptimized?: boolean
+  }
 
 /**
  * Render the shared image component.
@@ -21,7 +24,7 @@ interface SharedImageProps extends HTMLAttributes<SharedImageRef> {
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared image component.
  */
-export const SharedImage = forwardRef<SharedImageRef, SharedImageProps>(
+export const SharedImage = forwardRef<SharedImageRef, TSharedImageProps>(
   (
     {
       src = '#',

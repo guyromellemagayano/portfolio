@@ -2,7 +2,7 @@ import { ComponentType, LazyExoticComponent, lazy } from 'react'
 
 const LAZY_LOADING_DURATION: number = 1000
 
-interface TUseLazyLoading {
+type TUseLazyLoading = {
   importFunction: any
   duration?: number
 }

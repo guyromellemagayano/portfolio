@@ -1,8 +1,11 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
+
 type SharedFooterRef = HTMLElement
 
-interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
+export type TSharedFooterProps = HTMLAttributes<SharedFooterRef> &
+  TCommonSharedComponentsProps & {}
 
 /**
  * Render the shared footer component.
@@ -11,7 +14,7 @@ interface SharedFooterProps extends HTMLAttributes<SharedFooterRef> {}
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared footer component.
  */
-export const SharedFooter = forwardRef<SharedFooterRef, SharedFooterProps>(
+export const SharedFooter = forwardRef<SharedFooterRef, TSharedFooterProps>(
   ({ children, ...rest }, ref: ForwardedRef<SharedFooterRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()

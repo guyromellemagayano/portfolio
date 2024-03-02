@@ -2,11 +2,14 @@ import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 import Link from 'next/link'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
+
 type SharedLinkRef = HTMLAnchorElement & HTMLLinkElement
 
-interface SharedLinkProps extends HTMLAttributes<SharedLinkRef> {
-  href?: string
-}
+export type TSharedLinkProps = HTMLAttributes<SharedLinkRef> &
+  TCommonSharedComponentsProps & {
+    href?: string
+  }
 
 /**
  * Render the shared link component.
@@ -16,7 +19,7 @@ interface SharedLinkProps extends HTMLAttributes<SharedLinkRef> {
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared link component.
  */
-export const SharedLink = forwardRef<SharedLinkRef, SharedLinkProps>(
+export const SharedLink = forwardRef<SharedLinkRef, TSharedLinkProps>(
   ({ href = '#', children, ...rest }, ref: ForwardedRef<SharedLinkRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
