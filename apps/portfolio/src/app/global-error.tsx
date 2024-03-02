@@ -10,7 +10,11 @@ import NextError from 'next/error'
  * @param {Error} error - The error object.
  * @returns {JSX.Element} The rendered component.
  */
-const GlobalError = ({ error }: { error: Error & { digest?: string } }): JSX.Element => {
+const GlobalError = ({
+  error
+}: {
+  error: Error & { digest?: string }
+}): JSX.Element => {
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])
