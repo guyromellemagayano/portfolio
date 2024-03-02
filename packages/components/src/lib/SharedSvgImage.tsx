@@ -1,9 +1,7 @@
-'use client'
+import { ReactNode, SVGProps, useId } from 'react'
 
-import React from 'react'
-
-interface SharedSvgImageProps extends React.SVGProps<SVGSVGElement> {
-  children?: React.ReactNode
+interface SharedSvgImageProps extends SVGProps<SVGSVGElement> {
+  children?: ReactNode
 }
 
 /**
@@ -287,7 +285,7 @@ export const TwitterSvgImage = (rest: SharedSvgImageProps) => {
 
 export const SharedSvgImage = ({ children, ...rest }: SharedSvgImageProps) => {
   // Generates a unique ID that can be used for accessibility attributes
-  const customId = React.useId()
+  const customId = useId()
 
   return (
     <svg id={customId} {...rest}>
