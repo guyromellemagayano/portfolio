@@ -40,7 +40,7 @@ const nextConfig = {
   sentry: {
     disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
     disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
-    hideSourceMaps: true
+    hideSourceMaps: process.env.NODE_ENV === 'production'
   }
 }
 
@@ -48,7 +48,7 @@ const sentryWebpackPluginOptions = {
   org: process.env.SENTRY_ORG || '',
   project: process.env.SENTRY_PROJECT || '',
   authToken: process.env.SENTRY_AUTH_TOKEN || '',
-  silent: true
+  silent: process.env.NODE_ENV === 'development'
 }
 
 const withMDX = createMDX({
@@ -68,5 +68,6 @@ const plugins = [
 ]
 
 export default withSentryConfig(
-  (composePlugins(...plugins)(nextConfig), sentryWebpackPluginOptions)
+  composePlugins(...plugins)(nextConfig),
+  sentryWebpackPluginOptions
 )
