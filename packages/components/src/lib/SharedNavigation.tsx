@@ -1,8 +1,11 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
+
 type SharedNavigationRef = HTMLElement
 
-interface SharedNavigationProps extends HTMLAttributes<SharedNavigationRef> {}
+export type TSharedNavigationProps = HTMLAttributes<SharedNavigationRef> &
+  TCommonSharedComponentsProps & {}
 
 /**
  * Render the shared navigation component.
@@ -13,7 +16,7 @@ interface SharedNavigationProps extends HTMLAttributes<SharedNavigationRef> {}
  */
 export const SharedNavigation = forwardRef<
   SharedNavigationRef,
-  SharedNavigationProps
+  TSharedNavigationProps
 >(({ children, ...rest }, ref: ForwardedRef<SharedNavigationRef>) => {
   // Generates a unique ID that can be used for accessibility attributes
   const customId = useId()

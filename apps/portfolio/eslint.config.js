@@ -14,6 +14,19 @@ module.exports = [
     'next',
     'next/core-web-vitals'
   ),
+  ...compat.config({ env: { jest: true } }).map(config => ({
+    ...config,
+    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.spec.js', '**/*.spec.jsx']
+  })),
+  ...compat
+    .config({
+      extends: ['plugin:testing-library/react'],
+      env: { jest: true }
+    })
+    .map(config => ({
+      ...config,
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)']
+    })),
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: { '@next/next/no-html-link-for-pages': ['error', 'apps/gee/pages'] }
@@ -26,9 +39,5 @@ module.exports = [
     files: ['**/*.js', '**/*.jsx'],
     rules: {}
   },
-  ...compat.config({ env: { jest: true } }).map(config => ({
-    ...config,
-    files: ['**/*.spec.ts', '**/*.spec.tsx', '**/*.spec.js', '**/*.spec.jsx']
-  })),
   { ignores: ['.next/**/*'] }
 ]
