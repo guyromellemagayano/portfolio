@@ -1,11 +1,8 @@
-'use client'
-
-import React from 'react'
+import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 type SharedNavigationRef = HTMLElement
 
-interface SharedNavigationProps
-  extends React.HTMLAttributes<SharedNavigationRef> {}
+interface SharedNavigationProps extends HTMLAttributes<SharedNavigationRef> {}
 
 /**
  * Render the shared navigation component.
@@ -14,12 +11,12 @@ interface SharedNavigationProps
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared navigation component.
  */
-export const SharedNavigation = React.forwardRef<
+export const SharedNavigation = forwardRef<
   SharedNavigationRef,
   SharedNavigationProps
->(({ children, ...rest }, ref: React.ForwardedRef<SharedNavigationRef>) => {
+>(({ children, ...rest }, ref: ForwardedRef<SharedNavigationRef>) => {
   // Generates a unique ID that can be used for accessibility attributes
-  const customId = React.useId()
+  const customId = useId()
 
   return (
     <nav ref={ref} {...rest} id={rest.id ?? customId}>

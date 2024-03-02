@@ -1,10 +1,8 @@
-'use client'
-
-import React from 'react'
+import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 type SharedMainRef = HTMLElement
 
-interface SharedMainProps extends React.HTMLAttributes<SharedMainRef> {}
+interface SharedMainProps extends HTMLAttributes<SharedMainRef> {}
 
 /**
  * Render the shared main component.
@@ -13,10 +11,10 @@ interface SharedMainProps extends React.HTMLAttributes<SharedMainRef> {}
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared main component.
  */
-export const SharedMain = React.forwardRef<SharedMainRef, SharedMainProps>(
-  ({ children, ...rest }, ref: React.ForwardedRef<SharedMainRef>) => {
+export const SharedMain = forwardRef<SharedMainRef, SharedMainProps>(
+  ({ children, ...rest }, ref: ForwardedRef<SharedMainRef>) => {
     // Generates a unique ID that can be used for accessibility attributes
-    const customId = React.useId()
+    const customId = useId()
 
     return (
       <main ref={ref} {...rest} id={rest.id ?? customId}>

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { ReactNode, useId } from 'react'
 
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
@@ -19,10 +19,10 @@ import {
   SharedContainer,
   SharedFooter,
   SharedMain
-} from '@guy-romelle-magayano/components'
+} from '@guy-romelle-magayano/components/server'
 
 interface BaseLayoutProps {
-  children: React.ReactNode
+  children: ReactNode
 }
 
 /**
@@ -31,7 +31,7 @@ interface BaseLayoutProps {
  * @returns The rendered base layout component.
  */
 const BaseLayout = ({ children }: BaseLayoutProps) => {
-  const customId = React.useId()
+  const customId = useId()
 
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
