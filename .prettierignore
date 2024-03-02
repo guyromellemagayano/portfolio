@@ -185,3 +185,10 @@ Thumbs.db
 
 # NX
 .nx/cache
+apps/*-server/
+
+# Next.js
+.next
+
+# Sentry Config File
+.sentryclirc
