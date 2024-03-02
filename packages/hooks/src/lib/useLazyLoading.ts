@@ -1,4 +1,4 @@
-import React from 'react'
+import { ComponentType, LazyExoticComponent, lazy } from 'react'
 
 const LAZY_LOADING_DURATION: number = 1000
 
@@ -16,8 +16,8 @@ interface TUseLazyLoading {
 export const useLazyLoading = ({
   importFunction,
   duration = LAZY_LOADING_DURATION
-}: TUseLazyLoading): React.LazyExoticComponent<React.ComponentType<any>> =>
-  React.lazy(
+}: TUseLazyLoading): LazyExoticComponent<ComponentType<any>> =>
+  lazy(
     () =>
       new Promise(res => {
         setTimeout(() => res(importFunction()), duration)
