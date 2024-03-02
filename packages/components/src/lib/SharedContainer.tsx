@@ -6,11 +6,14 @@ import {
   useId
 } from 'react'
 
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
+
 type SharedContainerRef = HTMLDivElement
 
-interface SharedContainerProps extends HTMLAttributes<SharedContainerRef> {
-  as?: ElementType
-}
+export type TSharedContainerProps = HTMLAttributes<SharedContainerRef> &
+  TCommonSharedComponentsProps & {
+    as?: ElementType
+  }
 
 /**
  * Render the shared container component.
@@ -21,7 +24,7 @@ interface SharedContainerProps extends HTMLAttributes<SharedContainerRef> {
  */
 export const SharedContainer = forwardRef<
   SharedContainerRef,
-  SharedContainerProps
+  TSharedContainerProps
 >(
   (
     { as: Component = 'div', children, ...rest },
