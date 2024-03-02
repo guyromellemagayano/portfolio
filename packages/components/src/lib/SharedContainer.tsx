@@ -1,12 +1,15 @@
-'use client'
-
-import React from 'react'
+import {
+  ElementType,
+  ForwardedRef,
+  HTMLAttributes,
+  forwardRef,
+  useId
+} from 'react'
 
 type SharedContainerRef = HTMLDivElement
 
-interface SharedContainerProps
-  extends React.HTMLAttributes<SharedContainerRef> {
-  as?: React.ElementType
+interface SharedContainerProps extends HTMLAttributes<SharedContainerRef> {
+  as?: ElementType
 }
 
 /**
@@ -16,16 +19,16 @@ interface SharedContainerProps
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared container component.
  */
-export const SharedContainer = React.forwardRef<
+export const SharedContainer = forwardRef<
   SharedContainerRef,
   SharedContainerProps
 >(
   (
     { as: Component = 'div', children, ...rest },
-    ref: React.ForwardedRef<SharedContainerRef>
+    ref: ForwardedRef<SharedContainerRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
-    const customId = React.useId()
+    const customId = useId()
 
     return (
       <Component ref={ref} {...rest} id={rest.id ?? customId}>

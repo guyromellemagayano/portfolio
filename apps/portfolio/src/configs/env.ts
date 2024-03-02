@@ -1,4 +1,4 @@
-import { isEmpty, isNotNullOrUndefined } from '@guy-romelle-magayano/components'
+import { isEmpty, isNotNullOrUndefined } from '@guy-romelle-magayano/utils'
 
 // Sentry
 export const SENTRY_DSN: string = process.env.SENTRY_DSN || ''

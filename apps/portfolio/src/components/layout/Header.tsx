@@ -1,14 +1,14 @@
 'use client'
 
-import React from 'react'
+import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
 import {
   SharedContainer,
-  SharedHeader,
-  clamp
-} from '@guy-romelle-magayano/components'
+  SharedHeader
+} from '@guy-romelle-magayano/components/server'
+import { clamp } from '@guy-romelle-magayano/utils'
 
 /**
  * Render the header layout component.
@@ -16,18 +16,18 @@ import {
  */
 const HeaderLayout = () => {
   const pathname = usePathname(),
-    headerRef = React.useRef<React.ElementRef<'div'>>(null),
-    avatarRef = React.useRef<React.ElementRef<'div'>>(null),
-    isInitial = React.useRef<boolean>(true),
+    headerRef = useRef<ElementRef<'div'>>(null),
+    avatarRef = useRef<ElementRef<'div'>>(null),
+    isInitial = useRef<boolean>(true),
     isHomePage = pathname === '/',
     headerPosition = {
       position: 'var(--header-position)'
-    } as unknown as React.CSSProperties,
+    } as unknown as CSSProperties,
     headerInnerPosition = {
       position: 'var(--header-inner-position)'
-    } as unknown as React.CSSProperties
+    } as unknown as CSSProperties
 
-  React.useEffect(() => {
+  useEffect(() => {
     const downDelay = avatarRef.current?.offsetTop ?? 0,
       upDelay = 64,
       setProperty = (property: string, value: string): void => {
