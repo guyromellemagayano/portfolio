@@ -21,7 +21,11 @@
       "@guy-romelle-magayano/components/server": [
         "packages/components/src/server.ts"
       ],
-      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"]
+      "@guy-romelle-magayano/hooks": ["packages/hooks/src/index.ts"],
+      "@guy-romelle-magayano/hooks/server": ["packages/hooks/src/server.ts"],
+      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
+      "@guy-romelle-magayano/utils": ["packages/utils/src/index.ts"],
+      "@guy-romelle-magayano/utils/server": ["packages/utils/src/server.ts"]
     }
   },
   "ts-node": {
