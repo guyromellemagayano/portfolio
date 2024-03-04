@@ -20,6 +20,7 @@
     "editor.tabCompletion": "on",
     "editor.tabFocusMode": false,
     "editor.tabSize": 2,
+    "editor.insertSpaces": true,
     "emmet.triggerExpansionOnTab": true,
     "github.copilot.editor.enableAutoCompletions": true,
     "github.copilot.enable": {
@@ -32,10 +33,5 @@
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.tsdk": "node_modules/typescript/lib",
-    "[javascript,javascriptreact,typescript,typescriptreact]": {
-      "editor.insertSpaces": true,
-      "editor.tabCompletion": "on",
-      "editor.tabSize": 2,
-    },
   }
 }
