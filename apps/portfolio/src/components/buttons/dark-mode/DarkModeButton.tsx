@@ -35,4 +35,6 @@ const DarkModeButton = () => {
   )
 }
 
+DarkModeButton.displayName = 'DarkModeButton'
+
 export default DarkModeButton
