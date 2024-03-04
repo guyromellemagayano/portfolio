@@ -1,9 +1,11 @@
 {
   "folders": [
     {
+      "name": "guy-romelle-magayano",
       "path": "."
     },
     {
+      "name": "portfolio-server",
       "path": "./apps/portfolio-server"
     }
   ],
