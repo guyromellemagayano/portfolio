@@ -185,7 +185,7 @@ Thumbs.db
 
 # NX
 .nx/cache
-apps/*-server/
+apps/*-server-*/
 
 # Next.js
 .next
