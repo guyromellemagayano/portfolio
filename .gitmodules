@@ -1,0 +1,3 @@
+[submodule "apps/portfolio-server"]
+	path = apps/portfolio-server
+	url = git@github.com:guyromellemagayano/portfolio-server.git
