@@ -7,6 +7,7 @@
     "commit": "git-cz",
     "prepare": "husky"
   },
+  "description": "Full stack developer, open-source enthusiast, and a minimalist",
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
