@@ -4,25 +4,31 @@
 
 import * as Sentry from '@sentry/nextjs'
 
-const SENTRY_DSN = process.env.sentryDsn
+const SENTRY_DSN = process.env.SENTRY_DSN
 
 Sentry.init({
   dsn: SENTRY_DSN,
-  // Replay may only be enabled for the client-side
-  integrations: [new Sentry.Replay()],
 
-  // Capture Replay for 10% of all sessions,
-  // plus for 100% of sessions with an error
-  replaysSessionSampleRate: 0.1,
+  // Setting this option to true will print useful information to the console while you're setting up Sentry.
+  debug: false,
+
   replaysOnErrorSampleRate: 1.0,
+
+  // This sets the sample rate to be 10%. You may want this to be 100% while
+  // in development and sample at a lower rate in production
+  replaysSessionSampleRate: 0.1,
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.25,
   environment: process.env.sentryEnvironment,
-  enabled: process.env.SENTRY_ENVIRONMENT === 'production'
+  enabled: process.env.SENTRY_ENVIRONMENT === 'production',
 
-  // ...
-  // Note: if you want to override the automatic release value, do not set a
-  // `release` value here - use the environment variable `SENTRY_RELEASE`, so
-  // that it will also get attached to your source maps
+  // You can remove this option if you're not planning to use the Sentry Session Replay feature:
+  integrations: [
+    Sentry.replayIntegration({
+      // Additional Replay configuration goes in here, for example:
+      maskAllText: true,
+      blockAllMedia: true
+    })
+  ]
 })
