@@ -13,9 +13,11 @@ import {
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 
-import HeaderLayout from '@guy-romelle-magayano/portfolio/components/layout/Header'
+import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/layout/header'
 
 import { SharedLayout } from '@guy-romelle-magayano/components/server'
+
+import { cn } from '@guy-romelle-magayano/utils'
 
 interface BaseLayoutProps {
   children: ReactNode
@@ -33,7 +35,7 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
     <SharedLayout
       as="html"
       lang="en"
-      className="h-full antialiased"
+      className={cn('h-full antialiased')}
       suppressHydrationWarning
     >
       <head>
@@ -55,17 +57,20 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
         />
       </head>
 
-      <SharedLayout as="body" className="flex h-full bg-zinc-50 dark:bg-black">
+      <SharedLayout
+        as="body"
+        className={cn('flex h-full bg-zinc-50 dark:bg-black')}
+      >
         <Providers>
-          <div id={customId} className="flex w-full">
-            <SharedLayout className="relative flex w-full flex-col">
+          <div id={customId} className={cn('flex w-full')}>
+            <SharedLayout className={cn('relative flex w-full flex-col')}>
               <HeaderLayout />
-              <SharedLayout as="main" className="flex-auto">
+              <SharedLayout as="main" className={cn('flex-auto')}>
                 {children}
                 <SpeedInsights />
                 <Analytics />
               </SharedLayout>
-              <SharedLayout as="footer" className="mt-32" />
+              <SharedLayout as="footer" className={cn('mt-32')} />
             </SharedLayout>
           </div>
         </Providers>
@@ -73,5 +78,7 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
     </SharedLayout>
   )
 }
+
+BaseLayout.displayName = 'BaseLayout'
 
 export default BaseLayout
