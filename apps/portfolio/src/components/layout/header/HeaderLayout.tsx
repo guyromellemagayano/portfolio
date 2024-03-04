@@ -5,7 +5,8 @@ import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
 import { SharedLayout } from '@guy-romelle-magayano/components/server'
-import { clamp } from '@guy-romelle-magayano/utils'
+
+import { clamp, cn } from '@guy-romelle-magayano/utils'
 
 /**
  * Render the header layout component.
@@ -122,7 +123,9 @@ const HeaderLayout = () => {
     <>
       <SharedLayout
         as="header"
-        className="pointer-events-none relative z-50 flex flex-none flex-col"
+        className={cn(
+          'pointer-events-none relative z-50 flex flex-none flex-col'
+        )}
         style={{
           height: 'var(--header-height)',
           marginBottom: 'var(--header-mb)'
@@ -132,19 +135,25 @@ const HeaderLayout = () => {
           <>
             <SharedLayout
               ref={avatarRef}
-              className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
+              className={cn(
+                'order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]'
+              )}
             />
             <SharedLayout
-              className="top-0 order-last -mb-3 pt-3"
+              className={cn('top-0 order-last -mb-3 pt-3')}
               style={headerPosition}
             >
               <SharedLayout
-                className="top-[var(--avatar-top,theme(spacing.3))] w-full"
+                className={cn(
+                  'top-[var(--avatar-top,theme(spacing.3))] w-full'
+                )}
                 style={headerInnerPosition}
               >
-                <SharedLayout className="relative">
+                <SharedLayout className={cn('relative')}>
                   <SharedLayout
-                    className="absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10"
+                    className={cn(
+                      'absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10'
+                    )}
                     style={{
                       opacity: 'var(--avatar-border-opacity, 0)',
                       transform: 'var(--avatar-border-transform)'
@@ -158,27 +167,33 @@ const HeaderLayout = () => {
 
         <SharedLayout
           ref={headerRef}
-          className="top-0 z-10 h-16 pt-6"
+          className={cn('top-0 z-10 h-16 pt-6')}
           style={headerPosition}
         >
           <SharedLayout
-            className="top-[var(--header-top,theme(spacing.6))] w-full"
+            className={cn('top-[var(--header-top,theme(spacing.6))] w-full')}
             style={headerInnerPosition}
           >
-            <SharedLayout className="relative flex gap-4">
-              <SharedLayout className="flex flex-1">
+            <SharedLayout className={cn('relative flex gap-4')}>
+              <SharedLayout className={cn('flex flex-1')}>
                 {!isHomePage && (
-                  <SharedLayout className="h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10">
+                  <SharedLayout
+                    className={cn(
+                      'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10'
+                    )}
+                  >
                     {/* <Avatar /> */}
                   </SharedLayout>
                 )}
               </SharedLayout>
-              <SharedLayout className="flex flex-1 justify-end md:justify-center">
-                {/* <MobileNavigation className="pointer-events-auto md:hidden" /> */}
-                {/* <DesktopNavigation className="pointer-events-auto hidden md:block" /> */}
+              <SharedLayout
+                className={cn('flex flex-1 justify-end md:justify-center')}
+              >
+                {/* <MobileNavigation className={cn()}"pointer-events-auto md:hidden" /> */}
+                {/* <DesktopNavigation className={cn()}"pointer-events-auto hidden md:block" /> */}
               </SharedLayout>
-              <SharedLayout className="flex justify-end md:flex-1">
-                <SharedLayout className="pointer-events-auto">
+              <SharedLayout className={cn('flex justify-end md:flex-1')}>
+                <SharedLayout className={cn('pointer-events-auto')}>
                   {/* <DarkModeButton /> */}
                 </SharedLayout>
               </SharedLayout>
@@ -189,12 +204,14 @@ const HeaderLayout = () => {
 
       {isHomePage && (
         <SharedLayout
-          className="flex-none"
+          className={cn('flex-none')}
           style={{ height: 'var(--content-offset)' }}
         />
       )}
     </>
   )
 }
+
+HeaderLayout.displayName = 'HeaderLayout'
 
 export default HeaderLayout
