@@ -29,7 +29,7 @@ module.exports = [
     })),
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    rules: { '@next/next/no-html-link-for-pages': ['error', 'apps/gee/pages'] }
+    rules: {}
   },
   {
     files: ['**/*.ts', '**/*.tsx'],

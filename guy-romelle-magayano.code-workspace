@@ -3,10 +3,6 @@
     {
       "name": "guy-romelle-magayano",
       "path": "."
-    },
-    {
-      "name": "portfolio-server",
-      "path": "./apps/portfolio-server"
     }
   ],
   "settings": {
@@ -34,6 +30,6 @@
       "**/.pnp.*": true
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsdk": "guy-romelle-magayano/node_modules/typescript/lib",
   }
 }
