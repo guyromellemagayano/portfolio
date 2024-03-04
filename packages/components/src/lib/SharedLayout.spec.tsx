@@ -2,11 +2,11 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { SharedSection } from './SharedSection'
+import { SharedLayout } from './SharedLayout'
 
-describe('<SharedSection />', () => {
+describe('<SharedLayout />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<SharedSection />)
+    const { baseElement } = render(<SharedLayout />)
     expect(baseElement).toBeTruthy()
   })
 })

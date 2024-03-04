@@ -8,27 +8,24 @@ import {
 
 import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/components/server'
 
-type SharedContainerRef = HTMLDivElement
+type SharedLayoutRef = HTMLElement
 
-export type TSharedContainerProps = HTMLAttributes<SharedContainerRef> &
+export type TSharedLayoutProps = HTMLAttributes<SharedLayoutRef> &
   TCommonSharedComponentsProps & {
     as?: ElementType
   }
 
 /**
- * Render the shared container component.
- * @param children - The children of the shared container.
- * @param rest - The rest of the props of the shared container.
+ * Render the shared layout component.
+ * @param children - The children of the shared layout.
+ * @param rest - The rest of the props of the shared layout.
  * @param ref - Ref forwarding from parent component.
- * @returns The rendered shared container component.
+ * @returns The rendered shared layout component.
  */
-export const SharedContainer = forwardRef<
-  SharedContainerRef,
-  TSharedContainerProps
->(
+export const SharedLayout = forwardRef<SharedLayoutRef, TSharedLayoutProps>(
   (
     { as: Component = 'div', children, ...rest },
-    ref: ForwardedRef<SharedContainerRef>
+    ref: ForwardedRef<SharedLayoutRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
@@ -41,4 +38,4 @@ export const SharedContainer = forwardRef<
   }
 )
 
-SharedContainer.displayName = 'SharedContainer'
+SharedLayout.displayName = 'SharedLayout'
