@@ -4,10 +4,7 @@ import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
-import {
-  SharedContainer,
-  SharedHeader
-} from '@guy-romelle-magayano/components/server'
+import { SharedLayout } from '@guy-romelle-magayano/components/server'
 import { clamp } from '@guy-romelle-magayano/utils'
 
 /**
@@ -123,8 +120,9 @@ const HeaderLayout = () => {
 
   return (
     <>
-      <SharedHeader
-        tw="pointer-events-none relative z-50 flex flex-none flex-col"
+      <SharedLayout
+        as="header"
+        className="pointer-events-none relative z-50 flex flex-none flex-col"
         style={{
           height: 'var(--header-height)',
           marginBottom: 'var(--header-mb)'
@@ -132,66 +130,66 @@ const HeaderLayout = () => {
       >
         {isHomePage && (
           <>
-            <SharedContainer
+            <SharedLayout
               ref={avatarRef}
-              tw="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
+              className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
             />
-            <SharedContainer
-              tw="top-0 order-last -mb-3 pt-3"
+            <SharedLayout
+              className="top-0 order-last -mb-3 pt-3"
               style={headerPosition}
             >
-              <SharedContainer
-                tw="top-[var(--avatar-top,theme(spacing.3))] w-full"
+              <SharedLayout
+                className="top-[var(--avatar-top,theme(spacing.3))] w-full"
                 style={headerInnerPosition}
               >
-                <SharedContainer tw="relative">
-                  <SharedContainer
-                    tw="absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10"
+                <SharedLayout className="relative">
+                  <SharedLayout
+                    className="absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10"
                     style={{
                       opacity: 'var(--avatar-border-opacity, 0)',
                       transform: 'var(--avatar-border-transform)'
                     }}
-                  ></SharedContainer>
-                </SharedContainer>
-              </SharedContainer>
-            </SharedContainer>
+                  ></SharedLayout>
+                </SharedLayout>
+              </SharedLayout>
+            </SharedLayout>
           </>
         )}
 
-        <SharedContainer
+        <SharedLayout
           ref={headerRef}
-          tw="top-0 z-10 h-16 pt-6"
+          className="top-0 z-10 h-16 pt-6"
           style={headerPosition}
         >
-          <SharedContainer
-            tw="top-[var(--header-top,theme(spacing.6))] w-full"
+          <SharedLayout
+            className="top-[var(--header-top,theme(spacing.6))] w-full"
             style={headerInnerPosition}
           >
-            <SharedContainer tw="relative flex gap-4">
-              <SharedContainer tw="flex flex-1">
+            <SharedLayout className="relative flex gap-4">
+              <SharedLayout className="flex flex-1">
                 {!isHomePage && (
-                  <SharedContainer tw="h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10">
+                  <SharedLayout className="h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10">
                     {/* <Avatar /> */}
-                  </SharedContainer>
+                  </SharedLayout>
                 )}
-              </SharedContainer>
-              <SharedContainer tw="flex flex-1 justify-end md:justify-center">
-                {/* <MobileNavigation tw="pointer-events-auto md:hidden" /> */}
-                {/* <DesktopNavigation tw="pointer-events-auto hidden md:block" /> */}
-              </SharedContainer>
-              <SharedContainer tw="flex justify-end md:flex-1">
-                <SharedContainer tw="pointer-events-auto">
+              </SharedLayout>
+              <SharedLayout className="flex flex-1 justify-end md:justify-center">
+                {/* <MobileNavigation className="pointer-events-auto md:hidden" /> */}
+                {/* <DesktopNavigation className="pointer-events-auto hidden md:block" /> */}
+              </SharedLayout>
+              <SharedLayout className="flex justify-end md:flex-1">
+                <SharedLayout className="pointer-events-auto">
                   {/* <DarkModeButton /> */}
-                </SharedContainer>
-              </SharedContainer>
-            </SharedContainer>
-          </SharedContainer>
-        </SharedContainer>
-      </SharedHeader>
+                </SharedLayout>
+              </SharedLayout>
+            </SharedLayout>
+          </SharedLayout>
+        </SharedLayout>
+      </SharedLayout>
 
       {isHomePage && (
-        <SharedContainer
-          tw="flex-none"
+        <SharedLayout
+          className="flex-none"
           style={{ height: 'var(--content-offset)' }}
         />
       )}
