@@ -15,11 +15,7 @@ import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 
 import HeaderLayout from '@guy-romelle-magayano/portfolio/components/layout/Header'
 
-import {
-  SharedContainer,
-  SharedFooter,
-  SharedMain
-} from '@guy-romelle-magayano/components/server'
+import { SharedLayout } from '@guy-romelle-magayano/components/server'
 
 interface BaseLayoutProps {
   children: ReactNode
@@ -34,7 +30,12 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
   const customId = useId()
 
   return (
-    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <SharedLayout
+      as="html"
+      lang="en"
+      className="h-full antialiased"
+      suppressHydrationWarning
+    >
       <head>
         <Script
           strategy="afterInteractive"
@@ -54,22 +55,22 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
         />
       </head>
 
-      <body className="flex h-full bg-zinc-50 dark:bg-black">
+      <SharedLayout as="body" className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
           <div id={customId} className="flex w-full">
-            <SharedContainer tw="relative flex w-full flex-col">
+            <SharedLayout className="relative flex w-full flex-col">
               <HeaderLayout />
-              <SharedMain tw="flex-auto">
+              <SharedLayout as="main" className="flex-auto">
                 {children}
                 <SpeedInsights />
                 <Analytics />
-              </SharedMain>
-              <SharedFooter tw="mt-32" />
-            </SharedContainer>
+              </SharedLayout>
+              <SharedLayout as="footer" className="mt-32" />
+            </SharedLayout>
           </div>
         </Providers>
-      </body>
-    </html>
+      </SharedLayout>
+    </SharedLayout>
   )
 }
 
