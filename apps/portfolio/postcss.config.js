@@ -5,8 +5,8 @@ module.exports = {
     tailwindcss: {
       config: join(__dirname, 'tailwind.config.js')
     },
-    'tailwindcss/nesting': 'postcss-nesting',
     autoprefixer: {},
+    'tailwindcss/nesting': 'postcss-nesting',
     'postcss-focus-visible': {
       replaceWith: '[data-focus-visible-added]'
     },
