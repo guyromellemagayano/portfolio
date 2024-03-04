@@ -68,7 +68,4 @@ const plugins = [
   })
 ]
 
-export default withSentryConfig(
-  composePlugins(...plugins)(nextConfig),
-  sentryWebpackPluginOptions
-)
+export default withSentryConfig(composePlugins(...plugins)(nextConfig), sentryWebpackPluginOptions)
