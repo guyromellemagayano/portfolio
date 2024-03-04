@@ -18,7 +18,7 @@ const nextConfig = {
     svgr: false
   },
   images: {
-    unoptimized: false
+    unoptimized: true
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   env: {
@@ -40,7 +40,8 @@ const nextConfig = {
   sentry: {
     disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
     disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
-    hideSourceMaps: process.env.NODE_ENV === 'production'
+    hideSourceMaps: process.env.NODE_ENV === 'production',
+    automaticVercelMonitors: process.env.NODE_ENV === 'production'
   }
 }
 
