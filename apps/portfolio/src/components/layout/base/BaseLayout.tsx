@@ -6,20 +6,17 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
+import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
+import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/layout/header'
 import {
   NEXT_PUBLIC_GA_MEASUREMENT_ID,
   NEXT_PUBLIC_GA_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
 
-import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
-
-import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/layout/header'
-
-import { SharedLayout } from '@guy-romelle-magayano/components/server'
-
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
 import { cn } from '@guy-romelle-magayano/utils'
 
-interface BaseLayoutProps {
+export type TBaseLayoutProps = {
   children: ReactNode
 }
 
@@ -28,11 +25,11 @@ interface BaseLayoutProps {
  * @param children - The children of the base layout.
  * @returns The rendered base layout component.
  */
-const BaseLayout = ({ children }: BaseLayoutProps) => {
+const BaseLayout = ({ children }: TBaseLayoutProps) => {
   const customId = useId()
 
   return (
-    <SharedLayout
+    <SharedReactComponent.Layout
       as="html"
       lang="en"
       className={cn('h-full antialiased')}
@@ -57,25 +54,33 @@ const BaseLayout = ({ children }: BaseLayoutProps) => {
         />
       </head>
 
-      <SharedLayout
+      <SharedReactComponent.Layout
         as="body"
         className={cn('flex h-full bg-zinc-50 dark:bg-black')}
       >
         <Providers>
           <div id={customId} className={cn('flex w-full')}>
-            <SharedLayout className={cn('relative flex w-full flex-col')}>
+            <SharedReactComponent.Layout
+              className={cn('relative flex w-full flex-col')}
+            >
               <HeaderLayout />
-              <SharedLayout as="main" className={cn('flex-auto')}>
+              <SharedReactComponent.Layout
+                as="main"
+                className={cn('flex-auto')}
+              >
                 {children}
                 <SpeedInsights />
                 <Analytics />
-              </SharedLayout>
-              <SharedLayout as="footer" className={cn('mt-32')} />
-            </SharedLayout>
+              </SharedReactComponent.Layout>
+              <SharedReactComponent.Layout
+                as="footer"
+                className={cn('mt-32')}
+              />
+            </SharedReactComponent.Layout>
           </div>
         </Providers>
-      </SharedLayout>
-    </SharedLayout>
+      </SharedReactComponent.Layout>
+    </SharedReactComponent.Layout>
   )
 }
 

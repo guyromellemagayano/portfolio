@@ -30,6 +30,6 @@
       "**/.pnp.*": true
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "guy-romelle-magayano/node_modules/typescript/lib",
+    "typescript.tsdk": "node_modules/typescript/lib",
   }
 }

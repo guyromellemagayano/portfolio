@@ -1,0 +1,1 @@
+export { SharedSvgImage } from './SharedSvgImage'
