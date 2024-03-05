@@ -60,9 +60,7 @@ export type TBlockProps = HTMLAttributes<HTMLElement> &
   }
 
 // Props for common SVG images
-export type TCommonSvgImageProps = (
-  rest: SVGProps<SVGSVGElement>
-) => TCommonComponentReturnType
+export type TCommonSvgImageProps = SVGProps<SVGSVGElement>
 
 // Props for common component return types
 export type TCommonComponentReturnType = ReactNode | null

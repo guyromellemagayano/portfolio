@@ -1,14 +1,13 @@
-import {
-  SharedReactComponent,
-  TSharedSvgProps
-} from '@guy-romelle-magayano/react-components/server'
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+
+import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
 /**
  * Renders an SVG image of a sun.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a sun.
  */
-const SunSvg = (rest: TSharedSvgProps) => {
+const SunSvg = (rest: TCommonSvgImageProps) => {
   return (
     <SharedReactComponent.Svg
       viewBox="0 0 24 24"
