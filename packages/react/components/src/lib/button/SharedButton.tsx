@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ForwardedRef, forwardRef, useId } from 'react'
 
 import { TCommonSharedComponentsProps } from '../../components'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/utils'
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 type SharedButtonRef = HTMLButtonElement
 type ButtonType = 'button' | 'submit' | 'reset'

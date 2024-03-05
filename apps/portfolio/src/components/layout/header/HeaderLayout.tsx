@@ -5,7 +5,8 @@ import { CSSProperties, ElementRef, useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
 import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
-import { clamp, cn } from '@guy-romelle-magayano/utils'
+
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 /**
  * Render the header layout component.
