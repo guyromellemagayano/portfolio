@@ -1,14 +1,13 @@
-import {
-  SharedReactComponent,
-  TSharedSvgProps
-} from '@guy-romelle-magayano/react-components/server'
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+
+import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
 /**
  * Renders an SVG image of a close icon.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a close icon.
  */
-const CloseSvg = (rest: TSharedSvgProps) => {
+const CloseSvg = (rest: TCommonSvgImageProps) => {
   return (
     <SharedReactComponent.Svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
       <SharedReactComponent.SvgPath

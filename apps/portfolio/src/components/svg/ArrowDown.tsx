@@ -1,14 +1,13 @@
-import {
-  SharedReactComponent,
-  TSharedSvgProps
-} from '@guy-romelle-magayano/react-components/server'
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+
+import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
 /**
  * Renders an SVG image of an arrow pointing down.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an arrow pointing down.
  */
-const ArrowDownSvg = (rest: TSharedSvgProps) => {
+const ArrowDownSvg = (rest: TCommonSvgImageProps) => {
   return (
     <SharedReactComponent.Svg
       viewBox="0 0 16 16"
