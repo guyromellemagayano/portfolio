@@ -1,1 +1,0 @@
-export { SharedSvgImage } from './SharedSvgImage'
