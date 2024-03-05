@@ -192,6 +192,3 @@ apps/*-server-*/
 
 # Sentry Config File
 .sentryclirc
-
-# Servers
-server/
