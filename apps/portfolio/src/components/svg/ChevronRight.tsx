@@ -1,14 +1,13 @@
-import {
-  SharedReactComponent,
-  TSharedSvgProps
-} from '@guy-romelle-magayano/react-components/server'
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+
+import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
 /**
  * Renders an SVG image of a chevron pointing down.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a chevron pointing down.
  */
-const ChevronDownSvg = (rest: TSharedSvgProps) => {
+const ChevronDownSvg = (rest: TCommonSvgImageProps) => {
   return (
     <SharedReactComponent.Svg
       viewBox="0 0 16 16"
