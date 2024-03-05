@@ -1,6 +1,6 @@
-import * as Sentry from '@sentry/nextjs'
+// import * as Sentry from '@sentry/nextjs'
 
-import { SharedButton } from '@guy-romelle-magayano/components/server'
+// import { SharedButton } from '@guy-romelle-magayano/components/server'
 
 /**
  * Renders the home page.
@@ -9,7 +9,7 @@ import { SharedButton } from '@guy-romelle-magayano/components/server'
 const Page = async () => {
   return (
     <>
-      <SharedButton
+      {/* <SharedButton
         onClick={() => {
           Sentry.startSpan(
             {
@@ -38,7 +38,7 @@ const Page = async () => {
         <a href="https://docs.sentry.io/platforms/javascript/guides/nextjs/">
           https://docs.sentry.io/platforms/javascript/guides/nextjs/
         </a>
-      </p>
+      </p> */}
     </>
   )
 }
