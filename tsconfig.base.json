@@ -17,14 +17,18 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/hooks": ["packages/hooks/src/index.ts"],
-      "@guy-romelle-magayano/hooks/server": ["packages/hooks/src/server.ts"],
       "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
       "@guy-romelle-magayano/react-components/server": [
         "packages/react/components/src/server.ts"
+      ],
+      "@guy-romelle-magayano/react-hooks": [
+        "packages/react/hooks/src/index.ts"
+      ],
+      "@guy-romelle-magayano/react-hooks/server": [
+        "packages/react/hooks/src/server.ts"
       ],
       "@guy-romelle-magayano/utils": ["packages/utils/src/index.ts"],
       "@guy-romelle-magayano/utils/server": ["packages/utils/src/server.ts"]
