@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { clamp, cn } from '@guy-romelle-magayano/react-utils/server'
 
 /**
  * Render the header layout component.

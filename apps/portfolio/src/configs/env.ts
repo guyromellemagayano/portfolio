@@ -1,7 +1,7 @@
 import {
   isEmpty,
   isNotNullOrUndefined
-} from '@guy-romelle-magayano/react-utils'
+} from '@guy-romelle-magayano/react-utils/server'
 
 // Sentry
 export const SENTRY_DSN: string = process.env.SENTRY_DSN || ''
