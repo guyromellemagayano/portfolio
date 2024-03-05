@@ -14,7 +14,8 @@ import {
 } from '@guy-romelle-magayano/portfolio/configs/env'
 
 import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
-import { cn } from '@guy-romelle-magayano/utils'
+
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type TBaseLayoutProps = {
   children: ReactNode
