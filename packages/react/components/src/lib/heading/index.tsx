@@ -1,0 +1,1 @@
+export { SharedHeading } from './SharedHeading'

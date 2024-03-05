@@ -174,7 +174,7 @@ module.exports = [
       'typings/',
       'Thumbs.db',
       '.nx/cache',
-      'apps/*-server/',
+      'apps/*-server-*/',
       '.next',
       '.sentryclirc'
     ]
