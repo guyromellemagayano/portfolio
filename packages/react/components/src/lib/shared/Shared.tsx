@@ -14,12 +14,12 @@ import { SharedBlockquote } from '../blockquote'
 import { SharedButton } from '../button'
 import { SharedHeading } from '../heading'
 import { SharedImage } from '../image'
-import { SharedSvgImage } from '../image/svg'
 import { SharedLayout } from '../layout'
 import { SharedLink } from '../link'
 import { SharedList, SharedListItem } from '../list'
 import { SharedParagraph } from '../paragraph'
 import { SharedPreformattedText } from '../preformatted-text'
+import { SharedSvg, SharedSvgPath } from '../svg'
 
 type SharedRef = HTMLElement
 
@@ -38,11 +38,19 @@ interface ISharedStaticComponents {
   Link: typeof SharedLink
   Paragraph: typeof SharedParagraph
   PreformattedText: typeof SharedPreformattedText
-  SvgImage: typeof SharedSvgImage
+  Svg: typeof SharedSvg
+  SvgPath: typeof SharedSvgPath
   List: typeof SharedList
   ListItem: typeof SharedListItem
 }
 
+/**
+ * A shared component that provides a consistent API for rendering HTML elements.
+ * @param props.as - The HTML element to render
+ * @param props.children - The content to render
+ * @param props.rest - Additional HTML attributes
+ * @returns The rendered shared component
+ */
 const SharedReactComponent = forwardRef<SharedRef, ISharedProps>(
   (
     { as: Component = Fragment, children, ...rest },
@@ -68,7 +76,8 @@ SharedReactComponent.Layout = SharedLayout
 SharedReactComponent.Link = SharedLink
 SharedReactComponent.Paragraph = SharedParagraph
 SharedReactComponent.PreformattedText = SharedPreformattedText
-SharedReactComponent.SvgImage = SharedSvgImage
+SharedReactComponent.Svg = SharedSvg
+SharedReactComponent.SvgPath = SharedSvgPath
 SharedReactComponent.List = SharedList
 SharedReactComponent.ListItem = SharedListItem
 
