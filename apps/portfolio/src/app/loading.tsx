@@ -1,6 +1,6 @@
 import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 /**
  * Render the loading page.
