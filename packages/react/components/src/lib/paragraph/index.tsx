@@ -1,0 +1,1 @@
+export { SharedParagraph } from './SharedParagraph'

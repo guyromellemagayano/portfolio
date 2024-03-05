@@ -1,0 +1,1 @@
+export { SharedBlockquote } from './SharedBlockquote'
