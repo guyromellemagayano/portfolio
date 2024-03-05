@@ -1,16 +1,12 @@
-const { join } = require('path')
-
 module.exports = {
   plugins: {
-    tailwindcss: {
-      config: join(__dirname, 'tailwind.config.js')
-    },
+    tailwindcss: {},
     autoprefixer: {},
     'tailwindcss/nesting': 'postcss-nesting',
+    'postcss-import': {},
     'postcss-focus-visible': {
       replaceWith: '[data-focus-visible-added]'
     },
-    'postcss-import': {},
     'postcss-preset-env': {
       features: { 'nesting-rules': false }
     },
