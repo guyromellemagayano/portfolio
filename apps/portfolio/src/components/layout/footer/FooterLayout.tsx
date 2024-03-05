@@ -1,6 +1,8 @@
 'use client'
 
-import { cn } from '@guy-romelle-magayano/utils'
+import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 const FooterLayout = () => {
   return (
