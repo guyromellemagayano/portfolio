@@ -1,6 +1,7 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedBlockquoteRef = HTMLQuoteElement
 
@@ -22,7 +23,12 @@ export const SharedBlockquote = forwardRef<
   const customId = useId()
 
   return (
-    <blockquote ref={ref} {...rest} id={rest.id ?? customId}>
+    <blockquote
+      ref={ref}
+      {...rest}
+      id={rest.id ?? customId}
+      className={cn(rest.className)}
+    >
       {children}
     </blockquote>
   )
