@@ -1,6 +1,5 @@
 // @ts-nocheck
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import rehypePrism from '@mapbox/rehype-prism'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
@@ -17,10 +16,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false
   },
-  images: {
-    unoptimized: true
-  },
-  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
   env: {
     NEXT_PUBLIC_GA_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '',
@@ -68,4 +64,7 @@ const plugins = [
   })
 ]
 
-export default withSentryConfig(composePlugins(...plugins)(nextConfig), sentryWebpackPluginOptions)
+export default withSentryConfig(
+  composePlugins(...plugins)(nextConfig),
+  sentryWebpackPluginOptions
+)
