@@ -1,6 +1,7 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedHeadingRef = HTMLHeadingElement
 
@@ -26,7 +27,12 @@ export const SharedHeading = forwardRef<SharedHeadingRef, TSharedHeadingProps>(
     const customId = useId()
 
     return (
-      <Component ref={ref} {...rest} id={rest.id ?? customId}>
+      <Component
+        ref={ref}
+        {...rest}
+        id={rest.id ?? customId}
+        className={cn(rest.className)}
+      >
         {children}
       </Component>
     )

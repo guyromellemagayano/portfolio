@@ -6,6 +6,10 @@ import { usePathname } from 'next/navigation'
 
 import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
 
+import { Avatar } from '@guy-romelle-magayano/portfolio/components/avatar'
+import imageAvatar from '@guy-romelle-magayano/portfolio/images/avatar.jpg'
+
+import { DarkModeButton } from '@guy-romelle-magayano/portfolio/components/buttons/dark-mode'
 import { clamp, cn } from '@guy-romelle-magayano/react-utils/server'
 
 /**
@@ -23,7 +27,18 @@ const HeaderLayout = () => {
     } as unknown as CSSProperties,
     headerInnerPosition = {
       position: 'var(--header-inner-position)'
-    } as unknown as CSSProperties
+    } as unknown as CSSProperties,
+    avatar = {
+      link: {
+        href: '/',
+        className: 'block h-16 w-16 origin-left'
+      },
+      image: {
+        src: imageAvatar,
+        alt: '',
+        large: true
+      }
+    }
 
   useEffect(() => {
     const downDelay = avatarRef.current?.offsetTop ?? 0,
@@ -123,9 +138,7 @@ const HeaderLayout = () => {
     <>
       <SharedReactComponent.Layout
         as="header"
-        className={cn(
-          'pointer-events-none relative z-50 flex flex-none flex-col'
-        )}
+        className="pointer-events-none relative z-50 flex flex-none flex-col"
         style={{
           height: 'var(--header-height)',
           marginBottom: 'var(--header-mb)'
@@ -135,30 +148,28 @@ const HeaderLayout = () => {
           <>
             <SharedReactComponent.Layout
               ref={avatarRef}
-              className={cn(
-                'order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]'
-              )}
+              className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
             />
             <SharedReactComponent.Layout
-              className={cn('top-0 order-last -mb-3 pt-3')}
+              className="top-0 order-last -mb-3 pt-3"
               style={headerPosition}
             >
               <SharedReactComponent.Layout
-                className={cn(
-                  'top-[var(--avatar-top,theme(spacing.3))] w-full'
-                )}
+                className="top-[var(--avatar-top,theme(spacing.3))] w-full"
                 style={headerInnerPosition}
               >
-                <SharedReactComponent.Layout className={cn('relative')}>
+                <SharedReactComponent.Layout className="relative">
                   <SharedReactComponent.Layout
-                    className={cn(
-                      'absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10'
-                    )}
+                    className="absolute left-0 top-3 h-10 w-10 origin-left rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur transition-opacity dark:bg-zinc-800/90 dark:ring-white/10"
                     style={{
                       opacity: 'var(--avatar-border-opacity, 0)',
                       transform: 'var(--avatar-border-transform)'
                     }}
-                  ></SharedReactComponent.Layout>
+                  />
+                  <Avatar
+                    link={{ ...avatar.link }}
+                    image={{ ...avatar.image }}
+                  />
                 </SharedReactComponent.Layout>
               </SharedReactComponent.Layout>
             </SharedReactComponent.Layout>
@@ -167,38 +178,31 @@ const HeaderLayout = () => {
 
         <SharedReactComponent.Layout
           ref={headerRef}
-          className={cn('top-0 z-10 h-16 pt-6')}
+          className="top-0 z-10 h-16 pt-6"
           style={headerPosition}
         >
           <SharedReactComponent.Layout
-            className={cn('top-[var(--header-top,theme(spacing.6))] w-full')}
+            className="top-[var(--header-top,theme(spacing.6))] w-full"
             style={headerInnerPosition}
           >
-            <SharedReactComponent.Layout className={cn('relative flex gap-4')}>
-              <SharedReactComponent.Layout className={cn('flex flex-1')}>
+            <SharedReactComponent.Layout className="relative flex gap-4">
+              <SharedReactComponent.Layout className="flex flex-1">
                 {!isHomePage && (
-                  <SharedReactComponent.Layout
-                    className={cn(
-                      'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10'
-                    )}
-                  >
-                    {/* <Avatar /> */}
+                  <SharedReactComponent.Layout className="h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10">
+                    <Avatar
+                      link={{ ...avatar.link }}
+                      image={{ ...avatar.image }}
+                    />
                   </SharedReactComponent.Layout>
                 )}
               </SharedReactComponent.Layout>
-              <SharedReactComponent.Layout
-                className={cn('flex flex-1 justify-end md:justify-center')}
-              >
-                {/* <MobileNavigation className={cn()}"pointer-events-auto md:hidden" /> */}
-                {/* <DesktopNavigation className={cn()}"pointer-events-auto hidden md:block" /> */}
+              <SharedReactComponent.Layout className="flex flex-1 justify-end md:justify-center">
+                {/* <MobileNavigation className=)}"pointer-events-auto md:hidden" /> */}
+                {/* <DesktopNavigation className=)}"pointer-events-auto hidden md:block" /> */}
               </SharedReactComponent.Layout>
-              <SharedReactComponent.Layout
-                className={cn('flex justify-end md:flex-1')}
-              >
-                <SharedReactComponent.Layout
-                  className={cn('pointer-events-auto')}
-                >
-                  {/* <DarkModeButton /> */}
+              <SharedReactComponent.Layout className="flex justify-end md:flex-1">
+                <SharedReactComponent.Layout className="pointer-events-auto">
+                  <DarkModeButton />
                 </SharedReactComponent.Layout>
               </SharedReactComponent.Layout>
             </SharedReactComponent.Layout>
@@ -208,7 +212,7 @@ const HeaderLayout = () => {
 
       {isHomePage && (
         <SharedReactComponent.Layout
-          className={cn('flex-none')}
+          className="flex-none"
           style={{ height: 'var(--content-offset)' }}
         />
       )}
