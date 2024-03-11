@@ -1,8 +1,11 @@
-import { ReactNode, SVGProps, useId } from 'react'
+import { ForwardedRef, ReactNode, SVGProps, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
-export type TSharedSvgProps = SVGProps<SVGSVGElement> &
+type TSharedSvgRef = SVGSVGElement
+
+type TSharedSvgProps = SVGProps<TSharedSvgRef> &
   TCommonSharedComponentsProps & {
     children?: ReactNode
   }
@@ -13,20 +16,27 @@ export type TSharedSvgProps = SVGProps<SVGSVGElement> &
  * @param rest - Additional SVG props
  * @returns The rendered shared SVG.
  */
-export const SharedSvg = ({ children, ...rest }: TSharedSvgProps) => {
-  // Generates a unique ID that can be used for accessibility attributes
-  const customId = useId()
+export const SharedSvg = forwardRef<TSharedSvgRef, TSharedSvgProps>(
+  ({ children, ...rest }, ref: ForwardedRef<TSharedSvgRef>) => {
+    // Generates a unique ID that can be used for accessibility attributes
+    const customId = useId()
 
-  return (
-    <svg id={customId} {...rest}>
-      {children}
-    </svg>
-  )
-}
+    return (
+      <svg
+        ref={ref}
+        {...rest}
+        id={rest.id ?? customId}
+        className={cn(rest.className)}
+      >
+        {children}
+      </svg>
+    )
+  }
+)
 
 SharedSvg.displayName = 'SharedSvg'
 
-export type TSharedSvgPathProps = SVGProps<SVGPathElement> &
+type TSharedSvgPathProps = SVGProps<SVGPathElement> &
   TCommonSharedComponentsProps & {}
 
 /**

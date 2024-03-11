@@ -1,10 +1,11 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
-type SharedListRef = HTMLUListElement & HTMLOListElement
+type TSharedListRef = HTMLUListElement & HTMLOListElement
 
-type TSharedListProps = HTMLAttributes<SharedListRef> &
+type TSharedListProps = HTMLAttributes<TSharedListRef> &
   TCommonSharedComponentsProps & {
     as?: 'ul' | 'ol'
   }
@@ -17,16 +18,21 @@ type TSharedListProps = HTMLAttributes<SharedListRef> &
  * @param ref - Ref forwarding from parent component.
  * @returns The rendered shared list component.
  */
-export const SharedList = forwardRef<SharedListRef, TSharedListProps>(
+export const SharedList = forwardRef<TSharedListRef, TSharedListProps>(
   (
     { as: Component = 'ul', children, ...rest },
-    ref: ForwardedRef<SharedListRef>
+    ref: ForwardedRef<TSharedListRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
     const customId = useId()
 
     return (
-      <Component ref={ref} {...rest} id={rest.id ?? customId}>
+      <Component
+        ref={ref}
+        {...rest}
+        id={rest.id ?? customId}
+        className={cn(rest.className)}
+      >
         {children}
       </Component>
     )
@@ -48,7 +54,12 @@ export const SharedListItem = forwardRef<
   const customId = useId()
 
   return (
-    <li ref={ref} {...rest} id={rest.id ?? customId}>
+    <li
+      ref={ref}
+      {...rest}
+      id={rest.id ?? customId}
+      className={cn(rest.className)}
+    >
       {children}
     </li>
   )

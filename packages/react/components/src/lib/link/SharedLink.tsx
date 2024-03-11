@@ -2,7 +2,8 @@ import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
 import Link from 'next/link'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedLinkRef = HTMLAnchorElement
 
@@ -25,7 +26,13 @@ export const SharedLink = forwardRef<SharedLinkRef, TSharedLinkProps>(
     const customId = useId()
 
     return (
-      <Link ref={ref} href={href} {...rest} id={rest.id ?? customId}>
+      <Link
+        ref={ref}
+        href={href}
+        {...rest}
+        id={rest.id ?? customId}
+        className={cn(rest.className)}
+      >
         {children}
       </Link>
     )
