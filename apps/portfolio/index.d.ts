@@ -1,6 +1,5 @@
-import React from 'react'
+import { ReactNode } from 'react'
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 declare module '*.svg' {
   const content: any
   export const ReactComponent: any
