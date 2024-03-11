@@ -1,7 +1,6 @@
 import { ButtonHTMLAttributes, ForwardedRef, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
-
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
 import { cn, isEmpty } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedButtonRef = HTMLButtonElement
@@ -53,24 +52,24 @@ const generateButtonClassName: TGenerateButtonClassName = (
  */
 export const SharedButton = forwardRef<SharedButtonRef, TSharedButtonProps>(
   (
-    { type = 'button', variant = 'primary', id, children, ...rest },
+    { type = 'button', variant = 'primary', children, ...rest },
     ref: ForwardedRef<SharedButtonRef>
   ) => {
     // Generates a unique ID that can be used for accessibility attributes
     const updatedClassName = generateButtonClassName(
         variant,
-        rest['data-tw'] ?? rest['className']
+        rest['className']
       ),
       customId = useId()
 
-    if (!isEmpty(rest['data-tw'])) {
-      rest['data-tw'] = updatedClassName
-    } else {
-      rest['className'] = updatedClassName
-    }
-
     return (
-      <button ref={ref} type={type} {...rest} id={id ?? customId}>
+      <button
+        ref={ref}
+        type={type}
+        {...rest}
+        id={rest.id ?? customId}
+        className={updatedClassName}
+      >
         {children}
       </button>
     )
