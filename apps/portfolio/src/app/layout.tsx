@@ -2,8 +2,6 @@ import { ReactNode } from 'react'
 
 import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/layout/base'
 
-import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
-
 import 'focus-visible'
 
 type TRootLayoutProps = {

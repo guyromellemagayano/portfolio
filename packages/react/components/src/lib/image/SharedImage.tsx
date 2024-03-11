@@ -3,7 +3,8 @@ import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 import Image from 'next/image'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedImageRef = HTMLImageElement
 
@@ -49,6 +50,7 @@ export const SharedImage = forwardRef<SharedImageRef, TSharedImageProps>(
         unoptimized={unoptimized}
         {...rest}
         id={rest.id ?? customId}
+        className={cn(rest.className)}
       />
     )
   }

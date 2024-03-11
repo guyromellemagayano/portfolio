@@ -1,6 +1,7 @@
 import { ForwardedRef, HTMLAttributes, forwardRef, useId } from 'react'
 
-import { TCommonSharedComponentsProps } from '../../components'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { cn } from '@guy-romelle-magayano/react-utils/server'
 
 type SharedPreformattedTextRef = HTMLPreElement
 
@@ -22,7 +23,12 @@ export const SharedPreformattedText = forwardRef<
   const customId = useId()
 
   return (
-    <pre ref={ref} {...rest} id={rest.id ?? customId}>
+    <pre
+      ref={ref}
+      {...rest}
+      id={rest.id ?? customId}
+      className={cn(rest.className)}
+    >
       {children}
     </pre>
   )
