@@ -1,5 +1,6 @@
-import { LabelHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { LabelHTMLAttributes, forwardRef } from 'react'
 
 export type LabelRef = HTMLLabelElement
 export type LabelProps = LabelHTMLAttributes<LabelRef>
@@ -12,7 +13,7 @@ export type LabelProps = LabelHTMLAttributes<LabelRef>
  */
 const Label = forwardRef<LabelRef, LabelProps>(({ children, ...rest }, ref) => {
   return (
-    <label ref={ref} {...rest} >
+    <label ref={ref} {...rest}>
       {children}
     </label>
   )

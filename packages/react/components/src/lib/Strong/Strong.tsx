@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type StrongRef = HTMLElement
 export type StrongProps = HTMLAttributes<StrongRef>
@@ -13,7 +14,7 @@ export type StrongProps = HTMLAttributes<StrongRef>
 const Strong = forwardRef<StrongRef, StrongProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <strong ref={ref} {...rest} >
+      <strong ref={ref} {...rest}>
         {children}
       </strong>
     )

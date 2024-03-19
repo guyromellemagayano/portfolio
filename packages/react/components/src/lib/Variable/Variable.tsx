@@ -1,3 +1,5 @@
+'use client'
+
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type VariableRef = HTMLElement
