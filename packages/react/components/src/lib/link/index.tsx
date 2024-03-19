@@ -1,1 +1,1 @@
-export { SharedLink } from './SharedLink'
+export { default as Link } from './Link'
