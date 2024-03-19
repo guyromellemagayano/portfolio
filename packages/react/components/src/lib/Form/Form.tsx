@@ -1,6 +1,5 @@
 import { FormHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type FormRef = HTMLFormElement
 export type FormProps = FormHTMLAttributes<FormRef>
@@ -13,7 +12,7 @@ export type FormProps = FormHTMLAttributes<FormRef>
  */
 const Form = forwardRef<FormRef, FormProps>(({ children, ...rest }, ref) => {
   return (
-    <form ref={ref} {...rest} id={rest.id ?? customId}>
+    <form ref={ref} {...rest} >
       {children}
     </form>
   )

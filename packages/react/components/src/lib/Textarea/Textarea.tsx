@@ -1,7 +1,5 @@
 import { TextareaHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type TextareaRef = HTMLTextAreaElement
 export type TextareaProps = TextareaHTMLAttributes<TextareaRef>
 
@@ -14,7 +12,7 @@ export type TextareaProps = TextareaHTMLAttributes<TextareaRef>
 const Textarea = forwardRef<TextareaRef, TextareaProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <textarea ref={ref} {...rest} id={rest.id ?? customId}>
+      <textarea ref={ref} {...rest}>
         {children}
       </textarea>
     )

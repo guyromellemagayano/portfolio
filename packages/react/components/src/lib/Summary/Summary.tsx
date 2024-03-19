@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SummaryRef = HTMLElement
 export type SummaryProps = HTMLAttributes<SummaryRef>
 
@@ -14,7 +12,7 @@ export type SummaryProps = HTMLAttributes<SummaryRef>
 const Summary = forwardRef<SummaryRef, SummaryProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <summary ref={ref} {...rest} id={rest.id ?? customId}>
+      <summary ref={ref} {...rest}>
         {children}
       </summary>
     )

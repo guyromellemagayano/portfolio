@@ -1,7 +1,5 @@
 import { FieldsetHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type FieldsetRef = HTMLFieldSetElement
 export type FieldsetProps = FieldsetHTMLAttributes<FieldsetRef>
 
@@ -14,7 +12,7 @@ export type FieldsetProps = FieldsetHTMLAttributes<FieldsetRef>
 const Fieldset = forwardRef<FieldsetRef, FieldsetProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <fieldset ref={ref} {...rest} id={rest.id ?? customId}>
+      <fieldset ref={ref} {...rest}>
         {children}
       </fieldset>
     )

@@ -1,7 +1,5 @@
 import { ProgressHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type ProgressRef = HTMLProgressElement
 export type ProgressProps = ProgressHTMLAttributes<ProgressRef>
 
@@ -14,7 +12,7 @@ export type ProgressProps = ProgressHTMLAttributes<ProgressRef>
 const Progress = forwardRef<ProgressRef, ProgressProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <progress ref={ref} {...rest} id={rest.id ?? customId}>
+      <progress ref={ref} {...rest}>
         {children}
       </progress>
     )

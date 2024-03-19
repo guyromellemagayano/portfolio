@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type RubyTextRef = HTMLElement
 export type RubyTextProps = HTMLAttributes<RubyTextRef>
 
@@ -14,7 +12,7 @@ export type RubyTextProps = HTMLAttributes<RubyTextRef>
 const RubyText = forwardRef<RubyTextRef, RubyTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <rt ref={ref} {...rest} id={rest.id ?? customId}>
+      <rt ref={ref} {...rest}>
         {children}
       </rt>
     )

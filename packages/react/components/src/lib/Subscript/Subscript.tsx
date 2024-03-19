@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SubscriptRef = HTMLElement
 export type SubscriptProps = HTMLAttributes<SubscriptRef>
 
@@ -14,7 +12,7 @@ export type SubscriptProps = HTMLAttributes<SubscriptRef>
 const Subscript = forwardRef<SubscriptRef, SubscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <sub ref={ref} {...rest} id={rest.id ?? customId}>
+      <sub ref={ref} {...rest}>
         {children}
       </sub>
     )

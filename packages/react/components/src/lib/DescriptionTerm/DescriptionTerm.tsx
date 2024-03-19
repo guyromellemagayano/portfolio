@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DescriptionTermRef = HTMLElement
 export type DescriptionTermProps = HTMLAttributes<DescriptionTermRef>
 
@@ -14,7 +12,7 @@ export type DescriptionTermProps = HTMLAttributes<DescriptionTermRef>
 const DescriptionTerm = forwardRef<DescriptionTermRef, DescriptionTermProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <dt ref={ref} {...rest} id={rest.id ?? customId}>
+      <dt ref={ref} {...rest}>
         {children}
       </dt>
     )

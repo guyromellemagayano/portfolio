@@ -1,6 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type FigcaptionRef = HTMLElement
 export type FigcaptionProps = HTMLAttributes<FigcaptionRef>
@@ -14,7 +13,7 @@ export type FigcaptionProps = HTMLAttributes<FigcaptionRef>
 const Figcaption = forwardRef<FigcaptionRef, FigcaptionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <figcaption ref={ref} {...rest} id={rest.id ?? customId}>
+      <figcaption ref={ref} {...rest} >
         {children}
       </figcaption>
     )

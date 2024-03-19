@@ -1,7 +1,5 @@
 import { ColgroupHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type ColumnGroupRef = HTMLTableColElement
 export type ColumnGroupProps = ColgroupHTMLAttributes<ColumnGroupRef>
 
@@ -14,7 +12,7 @@ export type ColumnGroupProps = ColgroupHTMLAttributes<ColumnGroupRef>
 const ColumnGroup = forwardRef<ColumnGroupRef, ColumnGroupProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <colgroup ref={ref} {...rest} id={rest.id ?? customId}>
+      <colgroup ref={ref} {...rest}>
         {children}
       </colgroup>
     )
