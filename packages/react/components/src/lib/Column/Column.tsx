@@ -1,5 +1,6 @@
-import { ColHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { ColHTMLAttributes, forwardRef } from 'react'
 
 export type ColumnRef = HTMLTableColElement
 export type ColumnProps = ColHTMLAttributes<ColumnRef>
@@ -13,7 +14,7 @@ export type ColumnProps = ColHTMLAttributes<ColumnRef>
 const Column = forwardRef<ColumnRef, ColumnProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <col ref={ref} {...rest} >
+      <col ref={ref} {...rest}>
         {children}
       </col>
     )

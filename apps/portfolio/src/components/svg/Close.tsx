@@ -1,4 +1,4 @@
-import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+import { RC } from '@guy-romelle-magayano/react-components'
 
 import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
@@ -9,8 +9,8 @@ import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/comm
  */
 const CloseSvg = (rest: TCommonSvgImageProps) => {
   return (
-    <SharedReactComponent.Svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
-      <SharedReactComponent.SvgPath
+    <RC.Svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
+      <RC.Path
         d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5"
         fill="none"
         stroke="currentColor"
@@ -18,7 +18,7 @@ const CloseSvg = (rest: TCommonSvgImageProps) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </SharedReactComponent.Svg>
+    </RC.Svg>
   )
 }
 

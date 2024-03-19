@@ -1,3 +1,5 @@
+'use client'
+
 import { FieldsetHTMLAttributes, forwardRef } from 'react'
 
 export type FieldsetRef = HTMLFieldSetElement

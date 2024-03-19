@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type PictureRef = HTMLPictureElement
 export type PictureProps = HTMLAttributes<PictureRef>
@@ -13,7 +14,7 @@ export type PictureProps = HTMLAttributes<PictureRef>
 const Picture = forwardRef<PictureRef, PictureProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <picture ref={ref} {...rest} >
+      <picture ref={ref} {...rest}>
         {children}
       </picture>
     )

@@ -1,3 +1,5 @@
+'use client'
+
 import { AudioHTMLAttributes, forwardRef } from 'react'
 
 export type AudioRef = HTMLAudioElement

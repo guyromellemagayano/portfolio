@@ -1,3 +1,5 @@
+'use client'
+
 import { ButtonHTMLAttributes, forwardRef } from 'react'
 
 export type ButtonRef = HTMLButtonElement
