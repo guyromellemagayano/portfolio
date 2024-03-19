@@ -1,1 +1,1 @@
-export { SharedBlockquote } from './SharedBlockquote'
+export { default as Blockquote } from './Blockquote'
