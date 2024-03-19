@@ -1,3 +1,5 @@
+'use client'
+
 import { DataHTMLAttributes, forwardRef } from 'react'
 
 export type DataRef = HTMLDataElement

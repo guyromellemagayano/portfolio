@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type LegendRef = HTMLLegendElement
 export type LegendProps = HTMLAttributes<LegendRef>
@@ -13,7 +14,7 @@ export type LegendProps = HTMLAttributes<LegendRef>
 const Legend = forwardRef<LegendRef, LegendProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <legend ref={ref} {...rest} >
+      <legend ref={ref} {...rest}>
         {children}
       </legend>
     )

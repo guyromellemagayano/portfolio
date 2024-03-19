@@ -1,5 +1,6 @@
-import { MapHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { MapHTMLAttributes, forwardRef } from 'react'
 
 export type MapRef = HTMLMapElement
 export type MapProps = MapHTMLAttributes<MapRef>
@@ -12,7 +13,7 @@ export type MapProps = MapHTMLAttributes<MapRef>
  */
 const Map = forwardRef<MapRef, MapProps>(({ children, ...rest }, ref) => {
   return (
-    <map ref={ref} {...rest} >
+    <map ref={ref} {...rest}>
       {children}
     </map>
   )

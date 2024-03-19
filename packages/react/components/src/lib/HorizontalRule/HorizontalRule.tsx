@@ -1,3 +1,5 @@
+'use client'
+
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type HorizontalRuleRef = HTMLHRElement
@@ -11,7 +13,7 @@ export type HorizontalRuleProps = HTMLAttributes<HorizontalRuleRef>
  */
 const HorizontalRule = forwardRef<HorizontalRuleRef, HorizontalRuleProps>(
   ({ ...rest }, ref) => {
-    return <hr ref={ref} {...rest}  />
+    return <hr ref={ref} {...rest} />
   }
 )
 

@@ -1,5 +1,6 @@
-import { FormHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { FormHTMLAttributes, forwardRef } from 'react'
 
 export type FormRef = HTMLFormElement
 export type FormProps = FormHTMLAttributes<FormRef>
@@ -12,7 +13,7 @@ export type FormProps = FormHTMLAttributes<FormRef>
  */
 const Form = forwardRef<FormRef, FormProps>(({ children, ...rest }, ref) => {
   return (
-    <form ref={ref} {...rest} >
+    <form ref={ref} {...rest}>
       {children}
     </form>
   )

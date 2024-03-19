@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type FigcaptionRef = HTMLElement
 export type FigcaptionProps = HTMLAttributes<FigcaptionRef>
@@ -13,7 +14,7 @@ export type FigcaptionProps = HTMLAttributes<FigcaptionRef>
 const Figcaption = forwardRef<FigcaptionRef, FigcaptionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <figcaption ref={ref} {...rest} >
+      <figcaption ref={ref} {...rest}>
         {children}
       </figcaption>
     )

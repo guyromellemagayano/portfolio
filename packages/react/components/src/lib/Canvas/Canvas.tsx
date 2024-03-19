@@ -1,3 +1,5 @@
+'use client'
+
 import { CanvasHTMLAttributes, forwardRef } from 'react'
 
 export type CanvasRef = HTMLCanvasElement

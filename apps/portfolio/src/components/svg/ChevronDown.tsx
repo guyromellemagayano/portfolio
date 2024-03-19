@@ -1,4 +1,4 @@
-import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+import { RC } from '@guy-romelle-magayano/react-components'
 
 import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
@@ -9,15 +9,15 @@ import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/comm
  */
 const ChevronDownSvg = (rest: TCommonSvgImageProps) => {
   return (
-    <SharedReactComponent.Svg viewBox="0 0 8 6" aria-hidden="true" {...rest}>
-      <SharedReactComponent.SvgPath
+    <RC.Svg viewBox="0 0 8 6" aria-hidden="true" {...rest}>
+      <RC.Path
         d="M1.75 1.75 4 4.25l2.25-2.5"
         fill="none"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </SharedReactComponent.Svg>
+    </RC.Svg>
   )
 }
 

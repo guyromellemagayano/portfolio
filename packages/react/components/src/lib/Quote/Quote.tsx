@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type QuoteRef = HTMLQuoteElement
 export type QuoteProps = HTMLAttributes<QuoteRef>
@@ -12,7 +13,7 @@ export type QuoteProps = HTMLAttributes<QuoteRef>
  */
 const Quote = forwardRef<QuoteRef, QuoteProps>(({ children, ...rest }, ref) => {
   return (
-    <q ref={ref} {...rest} >
+    <q ref={ref} {...rest}>
       {children}
     </q>
   )

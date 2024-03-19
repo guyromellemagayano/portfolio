@@ -1,3 +1,5 @@
+'use client'
+
 import { HtmlHTMLAttributes } from 'react'
 
 export type HtmlRef = HTMLHtmlElement

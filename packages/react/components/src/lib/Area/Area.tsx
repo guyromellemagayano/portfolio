@@ -1,3 +1,5 @@
+'use client'
+
 import { AreaHTMLAttributes, forwardRef } from 'react'
 
 export type AreaRef = HTMLAreaElement
