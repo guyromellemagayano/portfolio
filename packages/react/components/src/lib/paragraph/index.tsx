@@ -1,1 +1,1 @@
-export { SharedParagraph } from './SharedParagraph'
+export { default as Paragraph } from './Paragraph'
