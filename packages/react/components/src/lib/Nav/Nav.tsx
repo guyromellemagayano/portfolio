@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type NavRef = HTMLElement
 export type NavProps = HTMLAttributes<NavRef>
 
@@ -13,7 +11,7 @@ export type NavProps = HTMLAttributes<NavRef>
  */
 const Nav = forwardRef<NavRef, NavProps>(({ children, ...rest }, ref) => {
   return (
-    <nav ref={ref} {...rest} id={rest.id ?? customId}>
+    <nav ref={ref} {...rest}>
       {children}
     </nav>
   )

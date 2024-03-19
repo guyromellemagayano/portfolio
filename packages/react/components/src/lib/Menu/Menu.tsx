@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type MenuRef = HTMLElement
 export type MenuProps = HTMLAttributes<MenuRef>
 
@@ -13,7 +11,7 @@ export type MenuProps = HTMLAttributes<MenuRef>
  */
 const Menu = forwardRef<MenuRef, MenuProps>(({ children, ...rest }, ref) => {
   return (
-    <menu ref={ref} {...rest} id={rest.id ?? customId}>
+    <menu ref={ref} {...rest}>
       {children}
     </menu>
   )

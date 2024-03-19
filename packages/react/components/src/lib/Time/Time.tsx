@@ -1,7 +1,5 @@
 import { TimeHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type TimeRef = HTMLTimeElement
 export type TimeProps = TimeHTMLAttributes<TimeRef>
 
@@ -13,7 +11,7 @@ export type TimeProps = TimeHTMLAttributes<TimeRef>
  */
 const Time = forwardRef<TimeRef, TimeProps>(({ children, ...rest }, ref) => {
   return (
-    <time ref={ref} {...rest} id={rest.id ?? customId}>
+    <time ref={ref} {...rest}>
       {children}
     </time>
   )

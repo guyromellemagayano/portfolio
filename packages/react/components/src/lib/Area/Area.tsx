@@ -1,7 +1,5 @@
 import { AreaHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type AreaRef = HTMLAreaElement
 export type AreaProps = AreaHTMLAttributes<AreaRef>
 
@@ -13,7 +11,7 @@ export type AreaProps = AreaHTMLAttributes<AreaRef>
  */
 const Area = forwardRef<AreaRef, AreaProps>(({ children, ...rest }, ref) => {
   return (
-    <area ref={ref} {...rest} id={rest.id ?? customId}>
+    <area ref={ref} {...rest}>
       {children}
     </area>
   )

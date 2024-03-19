@@ -1,6 +1,5 @@
 import { IframeHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type IframeRef = HTMLIFrameElement
 export type IframeProps = IframeHTMLAttributes<IframeRef>
@@ -15,7 +14,7 @@ export type IframeProps = IframeHTMLAttributes<IframeRef>
 const Iframe = forwardRef<IframeRef, IframeProps>(
   ({ src = '#', children, ...rest }, ref) => {
     return (
-      <iframe ref={ref} src={src} {...rest} id={rest.id ?? customId}>
+      <iframe ref={ref} src={src} {...rest} >
         {children}
       </iframe>
     )

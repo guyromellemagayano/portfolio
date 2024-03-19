@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DatalistRef = HTMLDataListElement
 export type DatalistProps = HTMLAttributes<DatalistRef>
 
@@ -14,7 +12,7 @@ export type DatalistProps = HTMLAttributes<DatalistRef>
 const Datalist = forwardRef<DatalistRef, DatalistProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <datalist ref={ref} {...rest} id={rest.id ?? customId}>
+      <datalist ref={ref} {...rest}>
         {children}
       </datalist>
     )

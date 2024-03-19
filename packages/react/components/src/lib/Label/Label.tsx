@@ -1,6 +1,5 @@
 import { LabelHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type LabelRef = HTMLLabelElement
 export type LabelProps = LabelHTMLAttributes<LabelRef>
@@ -13,7 +12,7 @@ export type LabelProps = LabelHTMLAttributes<LabelRef>
  */
 const Label = forwardRef<LabelRef, LabelProps>(({ children, ...rest }, ref) => {
   return (
-    <label ref={ref} {...rest} id={rest.id ?? customId}>
+    <label ref={ref} {...rest} >
       {children}
     </label>
   )

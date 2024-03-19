@@ -1,6 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type QuoteRef = HTMLQuoteElement
 export type QuoteProps = HTMLAttributes<QuoteRef>
@@ -13,7 +12,7 @@ export type QuoteProps = HTMLAttributes<QuoteRef>
  */
 const Quote = forwardRef<QuoteRef, QuoteProps>(({ children, ...rest }, ref) => {
   return (
-    <q ref={ref} {...rest} id={rest.id ?? customId}>
+    <q ref={ref} {...rest} >
       {children}
     </q>
   )

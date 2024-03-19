@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DivisionRef = HTMLDivElement
 export type DivisionProps = HTMLAttributes<DivisionRef>
 
@@ -14,7 +12,7 @@ export type DivisionProps = HTMLAttributes<DivisionRef>
 const Division = forwardRef<DivisionRef, DivisionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <div ref={ref} {...rest} id={rest.id ?? customId}>
+      <div ref={ref} {...rest}>
         {children}
       </div>
     )

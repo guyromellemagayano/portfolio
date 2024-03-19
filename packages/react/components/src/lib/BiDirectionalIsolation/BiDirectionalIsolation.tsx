@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type BiDirectionalIsolationRef = HTMLElement
 export type BiDirectionalIsolationProps =
   HTMLAttributes<BiDirectionalIsolationRef>
@@ -17,7 +15,7 @@ const BiDirectionalIsolation = forwardRef<
   BiDirectionalIsolationProps
 >(({ children, ...rest }, ref) => {
   return (
-    <bdi ref={ref} {...rest} id={rest.id ?? customId}>
+    <bdi ref={ref} {...rest}>
       {children}
     </bdi>
   )

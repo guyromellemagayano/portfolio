@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type FooterRef = HTMLElement
 export type FooterProps = HTMLAttributes<FooterRef>
 
@@ -11,10 +9,10 @@ export type FooterProps = HTMLAttributes<FooterRef>
  * @param rest - The rest of the props of the footer.
  * @returns The rendered footer component.
  */
- const Footer = forwardRef<FooterRef, FooterProps>(
+const Footer = forwardRef<FooterRef, FooterProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <footer ref={ref} {...rest} id={rest.id ?? customId}>
+      <footer ref={ref} {...rest}>
         {children}
       </footer>
     )

@@ -1,4 +1,3 @@
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type PreformattedTextRef = HTMLPreElement
@@ -13,7 +12,7 @@ export type PreformattedTextProps = HTMLAttributes<PreformattedTextRef>
 const PreformattedText = forwardRef<PreformattedTextRef, PreformattedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <pre ref={ref} {...rest} id={rest.id ?? customId}>
+      <pre ref={ref} {...rest}>
         {children}
       </pre>
     )

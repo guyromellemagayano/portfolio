@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type TableHeadRef = HTMLTableSectionElement
 export type TableHeadProps = HTMLAttributes<TableHeadRef>
 
@@ -14,7 +12,7 @@ export type TableHeadProps = HTMLAttributes<TableHeadRef>
 const TableHead = forwardRef<TableHeadRef, TableHeadProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <thead ref={ref} {...rest} id={rest.id ?? customId}>
+      <thead ref={ref} {...rest}>
         {children}
       </thead>
     )
