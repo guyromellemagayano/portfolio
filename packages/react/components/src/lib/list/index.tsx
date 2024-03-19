@@ -1,1 +1,1 @@
-export { SharedList, SharedListItem } from './SharedList'
+export { default as List } from './List'
