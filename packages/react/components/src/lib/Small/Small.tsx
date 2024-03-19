@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SmallRef = HTMLElement
 export type SmallProps = HTMLAttributes<SmallRef>
 
@@ -13,7 +11,7 @@ export type SmallProps = HTMLAttributes<SmallRef>
  */
 const Small = forwardRef<SmallRef, SmallProps>(({ children, ...rest }, ref) => {
   return (
-    <small ref={ref} {...rest} id={rest.id ?? customId}>
+    <small ref={ref} {...rest}>
       {children}
     </small>
   )

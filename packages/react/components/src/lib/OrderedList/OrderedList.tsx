@@ -1,7 +1,5 @@
 import { OlHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type OrderedListRef = HTMLOListElement
 export type OrderedListProps = OlHTMLAttributes<OrderedListRef>
 
@@ -14,7 +12,7 @@ export type OrderedListProps = OlHTMLAttributes<OrderedListRef>
 const OrderedList = forwardRef<OrderedListRef, OrderedListProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <ol ref={ref} {...rest} id={rest.id ?? customId}>
+      <ol ref={ref} {...rest}>
         {children}
       </ol>
     )

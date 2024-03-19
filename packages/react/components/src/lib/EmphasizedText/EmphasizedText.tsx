@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type EmphasizedTextRef = HTMLElement
 export type EmphasizedTextProps = HTMLAttributes<EmphasizedTextRef>
 
@@ -14,7 +12,7 @@ export type EmphasizedTextProps = HTMLAttributes<EmphasizedTextRef>
 const EmphasizedText = forwardRef<EmphasizedTextRef, EmphasizedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <em ref={ref} {...rest} id={rest.id ?? customId}>
+      <em ref={ref} {...rest}>
         {children}
       </em>
     )

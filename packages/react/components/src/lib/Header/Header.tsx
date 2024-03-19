@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type HeaderRef = HTMLElement
 export type HeaderProps = HTMLAttributes<HeaderRef>
 
@@ -14,7 +12,7 @@ export type HeaderProps = HTMLAttributes<HeaderRef>
 const Header = forwardRef<HeaderRef, HeaderProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <header ref={ref} {...rest} id={rest.id ?? customId}>
+      <header ref={ref} {...rest}>
         {children}
       </header>
     )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type AbbreviationRef = HTMLElement
 export type AbbreviationProps = HTMLAttributes<AbbreviationRef>
 
@@ -14,7 +12,7 @@ export type AbbreviationProps = HTMLAttributes<AbbreviationRef>
 const Abbreviation = forwardRef<AbbreviationRef, AbbreviationProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <abbr ref={ref} {...rest} id={rest.id ?? customId}>
+      <abbr ref={ref} {...rest}>
         {children}
       </abbr>
     )

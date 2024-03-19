@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type MarkRef = HTMLElement
 export type MarkProps = HTMLAttributes<MarkRef>
 
@@ -13,7 +11,7 @@ export type MarkProps = HTMLAttributes<MarkRef>
  */
 const Mark = forwardRef<MarkRef, MarkProps>(({ children, ...rest }, ref) => {
   return (
-    <mark ref={ref} {...rest} id={rest.id ?? customId}>
+    <mark ref={ref} {...rest}>
       {children}
     </mark>
   )

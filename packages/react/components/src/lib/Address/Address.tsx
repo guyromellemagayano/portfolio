@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type AddressRef = HTMLElement
 export type AddressProps = HTMLAttributes<AddressRef>
 
@@ -14,7 +12,7 @@ export type AddressProps = HTMLAttributes<AddressRef>
 const Address = forwardRef<AddressRef, AddressProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <address ref={ref} {...rest} id={rest.id ?? customId}>
+      <address ref={ref} {...rest}>
         {children}
       </address>
     )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type FigureRef = HTMLElement
 export type FigureProps = HTMLAttributes<FigureRef>
 
@@ -14,7 +12,7 @@ export type FigureProps = HTMLAttributes<FigureRef>
 const Figure = forwardRef<FigureRef, FigureProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <figure ref={ref} {...rest} id={rest.id ?? customId}>
+      <figure ref={ref} {...rest}>
         {children}
       </figure>
     )

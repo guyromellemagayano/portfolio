@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SpanRef = HTMLSpanElement
 export type SpanProps = HTMLAttributes<SpanRef>
 
@@ -13,7 +11,7 @@ export type SpanProps = HTMLAttributes<SpanRef>
  */
 const Span = forwardRef<SpanRef, SpanProps>(({ children, ...rest }, ref) => {
   return (
-    <span ref={ref} {...rest} id={rest.id ?? customId}>
+    <span ref={ref} {...rest}>
       {children}
     </span>
   )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type AsideRef = HTMLElement
 export type AsideProps = HTMLAttributes<AsideRef>
 
@@ -13,7 +11,7 @@ export type AsideProps = HTMLAttributes<AsideRef>
  */
 const Aside = forwardRef<AsideRef, AsideProps>(({ children, ...rest }, ref) => {
   return (
-    <aside ref={ref} {...rest} id={rest.id ?? customId}>
+    <aside ref={ref} {...rest}>
       {children}
     </aside>
   )

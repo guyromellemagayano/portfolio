@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SuperscriptRef = HTMLElement
 export type SuperscriptProps = HTMLAttributes<SuperscriptRef>
 
@@ -14,7 +12,7 @@ export type SuperscriptProps = HTMLAttributes<SuperscriptRef>
 const Superscript = forwardRef<SuperscriptRef, SuperscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <sup ref={ref} {...rest} id={rest.id ?? customId}>
+      <sup ref={ref} {...rest}>
         {children}
       </sup>
     )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type RubyParenthesesRef = HTMLElement
 export type RubyParenthesesProps = HTMLAttributes<RubyParenthesesRef>
 
@@ -14,7 +12,7 @@ export type RubyParenthesesProps = HTMLAttributes<RubyParenthesesRef>
 const RubyParentheses = forwardRef<RubyParenthesesRef, RubyParenthesesProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <rp ref={ref} {...rest} id={rest.id ?? customId}>
+      <rp ref={ref} {...rest}>
         {children}
       </rp>
     )

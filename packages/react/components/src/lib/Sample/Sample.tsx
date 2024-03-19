@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SampleRef = HTMLElement
 export type SampleProps = HTMLAttributes<SampleRef>
 
@@ -14,7 +12,7 @@ export type SampleProps = HTMLAttributes<SampleRef>
 const Sample = forwardRef<SampleRef, SampleProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <samp ref={ref} {...rest} id={rest.id ?? customId}>
+      <samp ref={ref} {...rest}>
         {children}
       </samp>
     )
