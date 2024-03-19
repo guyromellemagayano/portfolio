@@ -1,5 +1,6 @@
-import { IframeHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { IframeHTMLAttributes, forwardRef } from 'react'
 
 export type IframeRef = HTMLIFrameElement
 export type IframeProps = IframeHTMLAttributes<IframeRef>
@@ -14,7 +15,7 @@ export type IframeProps = IframeHTMLAttributes<IframeRef>
 const Iframe = forwardRef<IframeRef, IframeProps>(
   ({ src = '#', children, ...rest }, ref) => {
     return (
-      <iframe ref={ref} src={src} {...rest} >
+      <iframe ref={ref} src={src} {...rest}>
         {children}
       </iframe>
     )

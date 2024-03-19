@@ -1,3 +1,5 @@
+'use client'
+
 import { OptionHTMLAttributes, forwardRef } from 'react'
 
 export type OptionRef = HTMLOptionElement

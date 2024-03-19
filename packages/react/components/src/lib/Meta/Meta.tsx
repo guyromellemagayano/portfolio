@@ -1,3 +1,5 @@
+'use client'
+
 import { MetaHTMLAttributes } from 'react'
 
 export type MetaRef = HTMLMetaElement

@@ -1,3 +1,5 @@
+'use client'
+
 import { TimeHTMLAttributes, forwardRef } from 'react'
 
 export type TimeRef = HTMLTimeElement

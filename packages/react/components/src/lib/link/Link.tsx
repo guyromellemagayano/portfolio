@@ -1,3 +1,5 @@
+'use client'
+
 import { LinkHTMLAttributes } from 'react'
 
 export type LinkRef = HTMLLinkElement

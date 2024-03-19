@@ -1,3 +1,5 @@
+'use client'
+
 import { ImgHTMLAttributes, forwardRef } from 'react'
 
 export type ImageRef = HTMLImageElement

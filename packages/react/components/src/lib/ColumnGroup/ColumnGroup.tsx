@@ -1,3 +1,5 @@
+'use client'
+
 import { ColgroupHTMLAttributes, forwardRef } from 'react'
 
 export type ColumnGroupRef = HTMLTableColElement

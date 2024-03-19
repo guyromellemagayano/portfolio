@@ -1,3 +1,5 @@
+'use client'
+
 import { ScriptHTMLAttributes, forwardRef } from 'react'
 
 export type NoscriptRef = HTMLScriptElement

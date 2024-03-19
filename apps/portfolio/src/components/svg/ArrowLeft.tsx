@@ -1,4 +1,4 @@
-import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
+import { RC } from '@guy-romelle-magayano/react-components'
 
 import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/common'
 
@@ -9,19 +9,14 @@ import { TCommonSvgImageProps } from '@guy-romelle-magayano/portfolio/types/comm
  */
 const ArrowLeftSvg = (rest: TCommonSvgImageProps) => {
   return (
-    <SharedReactComponent.Svg
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-      {...rest}
-    >
-      <SharedReactComponent.SvgPath
+    <RC.Svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...rest}>
+      <RC.Path
         d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </SharedReactComponent.Svg>
+    </RC.Svg>
   )
 }
 

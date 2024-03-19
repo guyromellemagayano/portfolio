@@ -1,3 +1,5 @@
+'use client'
+
 import { ThHTMLAttributes, forwardRef } from 'react'
 
 export type TableHeaderRef = HTMLTableCellElement

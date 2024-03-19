@@ -1,5 +1,6 @@
-import { InsHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { InsHTMLAttributes, forwardRef } from 'react'
 
 export type InsertedTextRef = HTMLModElement
 export type InsertedTextProps = InsHTMLAttributes<InsertedTextRef>
@@ -13,7 +14,7 @@ export type InsertedTextProps = InsHTMLAttributes<InsertedTextRef>
 const InsertedText = forwardRef<InsertedTextRef, InsertedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <ins ref={ref} {...rest} >
+      <ins ref={ref} {...rest}>
         {children}
       </ins>
     )

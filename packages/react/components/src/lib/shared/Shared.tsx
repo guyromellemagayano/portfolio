@@ -8,7 +8,7 @@ import {
   forwardRef
 } from 'react'
 
-import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
+import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components'
 
 import { Abbreviation } from '../Abbreviation'
 import { Address } from '../Address'

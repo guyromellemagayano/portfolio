@@ -1,3 +1,5 @@
+'use client'
+
 import { ProgressHTMLAttributes, forwardRef } from 'react'
 
 export type ProgressRef = HTMLProgressElement

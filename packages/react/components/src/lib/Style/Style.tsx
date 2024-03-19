@@ -1,3 +1,5 @@
+'use client'
+
 import { StyleHTMLAttributes } from 'react'
 
 export type StyleRef = HTMLStyleElement
