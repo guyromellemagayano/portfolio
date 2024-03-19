@@ -1,1 +1,1 @@
-export { SharedSvg, SharedSvgPath } from './SharedSvg'
+export { Svg, SvgPath } from './Svg'
