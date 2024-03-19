@@ -1,7 +1,5 @@
 import { OutputHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type OutputRef = HTMLOutputElement
 export type OutputProps = OutputHTMLAttributes<OutputRef>
 
@@ -14,7 +12,7 @@ export type OutputProps = OutputHTMLAttributes<OutputRef>
 const Output = forwardRef<OutputRef, OutputProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <output ref={ref} {...rest} id={rest.id ?? customId}>
+      <output ref={ref} {...rest}>
         {children}
       </output>
     )

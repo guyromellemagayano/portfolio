@@ -1,6 +1,5 @@
 import { SVGProps, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type SvgRef = SVGSVGElement
 export type SvgProps = SVGProps<SvgRef>
@@ -14,7 +13,7 @@ export type SvgProps = SVGProps<SvgRef>
 export const Svg = forwardRef<SvgRef, SvgProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <svg ref={ref} {...rest} id={rest.id ?? customId}>
+      <svg ref={ref} {...rest} >
         {children}
       </svg>
     )

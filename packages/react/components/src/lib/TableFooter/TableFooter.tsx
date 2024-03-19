@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type TableFooterRef = HTMLTableSectionElement
 export type TableFooterProps = HTMLAttributes<TableFooterRef>
 
@@ -14,7 +12,7 @@ export type TableFooterProps = HTMLAttributes<TableFooterRef>
 const TableFooter = forwardRef<TableFooterRef, TableFooterProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <tfoot ref={ref} {...rest} id={rest.id ?? customId}>
+      <tfoot ref={ref} {...rest}>
         {children}
       </tfoot>
     )

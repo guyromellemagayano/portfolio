@@ -1,7 +1,5 @@
 import { AudioHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type AudioRef = HTMLAudioElement
 export type AudioProps = AudioHTMLAttributes<AudioRef>
 
@@ -13,7 +11,7 @@ export type AudioProps = AudioHTMLAttributes<AudioRef>
  */
 const Audio = forwardRef<AudioRef, AudioProps>(({ children, ...rest }, ref) => {
   return (
-    <audio ref={ref} {...rest} id={rest.id ?? customId}>
+    <audio ref={ref} {...rest}>
       {children}
     </audio>
   )

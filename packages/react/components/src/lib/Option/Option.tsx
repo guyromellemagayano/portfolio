@@ -1,7 +1,5 @@
 import { OptionHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type OptionRef = HTMLOptionElement
 export type OptionProps = OptionHTMLAttributes<OptionRef>
 
@@ -14,7 +12,7 @@ export type OptionProps = OptionHTMLAttributes<OptionRef>
 const Option = forwardRef<OptionRef, OptionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <option ref={ref} {...rest} id={rest.id ?? customId}>
+      <option ref={ref} {...rest}>
         {children}
       </option>
     )

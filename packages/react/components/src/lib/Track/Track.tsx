@@ -1,6 +1,5 @@
 import { TrackHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type TrackRef = HTMLTrackElement
 export type TrackProps = TrackHTMLAttributes<TrackRef>
@@ -13,7 +12,7 @@ export type TrackProps = TrackHTMLAttributes<TrackRef>
  */
 const Track = forwardRef<TrackRef, TrackProps>(({ children, ...rest }, ref) => {
   return (
-    <track ref={ref} {...rest} id={rest.id ?? customId}>
+    <track ref={ref} {...rest} >
       {children}
     </track>
   )

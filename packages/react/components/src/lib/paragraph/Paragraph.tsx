@@ -1,4 +1,3 @@
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type ParagraphRef = HTMLParagraphElement
@@ -13,7 +12,7 @@ export type ParagraphProps = HTMLAttributes<ParagraphRef>
 const Paragraph = forwardRef<ParagraphRef, ParagraphProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <p ref={ref} {...rest} id={rest.id ?? customId}>
+      <p ref={ref} {...rest}>
         {children}
       </p>
     )

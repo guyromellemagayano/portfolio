@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type KeyboardInputRef = HTMLElement
 export type KeyboardInputProps = HTMLAttributes<KeyboardInputRef>
 
@@ -14,7 +12,7 @@ export type KeyboardInputProps = HTMLAttributes<KeyboardInputRef>
 const KeyboardInput = forwardRef<KeyboardInputRef, KeyboardInputProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <kbd ref={ref} {...rest} id={rest.id ?? customId}>
+      <kbd ref={ref} {...rest}>
         {children}
       </kbd>
     )

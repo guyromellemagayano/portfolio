@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type HeadingGroupRef = HTMLElement
 export type HeadingGroupProps = HTMLAttributes<HeadingGroupRef>
 
@@ -14,7 +12,7 @@ export type HeadingGroupProps = HTMLAttributes<HeadingGroupRef>
 const HeadingGroup = forwardRef<HeadingGroupRef, HeadingGroupProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <hgroup ref={ref} {...rest} id={rest.id ?? customId}>
+      <hgroup ref={ref} {...rest}>
         {children}
       </hgroup>
     )

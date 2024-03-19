@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type TemplateRef = HTMLTemplateElement
 export type TemplateProps = HTMLAttributes<TemplateRef>
 
@@ -14,7 +12,7 @@ export type TemplateProps = HTMLAttributes<TemplateRef>
 const Template = forwardRef<TemplateRef, TemplateProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <template ref={ref} {...rest} id={rest.id ?? customId}>
+      <template ref={ref} {...rest}>
         {children}
       </template>
     )

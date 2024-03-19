@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type UnorderedListRef = HTMLUListElement
 export type UnorderedListProps = HTMLAttributes<UnorderedListRef>
 
@@ -14,7 +12,7 @@ export type UnorderedListProps = HTMLAttributes<UnorderedListRef>
 const UnorderedList = forwardRef<UnorderedListRef, UnorderedListProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <ul ref={ref} {...rest} id={rest.id ?? customId}>
+      <ul ref={ref} {...rest}>
         {children}
       </ul>
     )

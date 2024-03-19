@@ -1,7 +1,5 @@
 import { BlockquoteHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type BlockquoteRef = HTMLQuoteElement
 export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef>
 
@@ -14,7 +12,7 @@ export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef>
 const Blockquote = forwardRef<BlockquoteRef, BlockquoteProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <blockquote ref={ref} {...rest} id={rest.id ?? customId}>
+      <blockquote ref={ref} {...rest}>
         {children}
       </blockquote>
     )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type StrikethroughRef = HTMLElement
 export type StrikethroughProps = HTMLAttributes<StrikethroughRef>
 
@@ -14,7 +12,7 @@ export type StrikethroughProps = HTMLAttributes<StrikethroughRef>
 const Strikethrough = forwardRef<StrikethroughRef, StrikethroughProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <s ref={ref} {...rest} id={rest.id ?? customId}>
+      <s ref={ref} {...rest}>
         {children}
       </s>
     )

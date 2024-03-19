@@ -1,7 +1,5 @@
 import { SourceHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SourceRef = HTMLSourceElement
 export type SourceProps = SourceHTMLAttributes<SourceRef>
 
@@ -14,7 +12,7 @@ export type SourceProps = SourceHTMLAttributes<SourceRef>
 const Source = forwardRef<SourceRef, SourceProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <source ref={ref} {...rest} id={rest.id ?? customId}>
+      <source ref={ref} {...rest}>
         {children}
       </source>
     )

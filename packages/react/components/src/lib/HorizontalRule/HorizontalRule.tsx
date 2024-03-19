@@ -1,4 +1,3 @@
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type HorizontalRuleRef = HTMLHRElement
@@ -12,7 +11,7 @@ export type HorizontalRuleProps = HTMLAttributes<HorizontalRuleRef>
  */
 const HorizontalRule = forwardRef<HorizontalRuleRef, HorizontalRuleProps>(
   ({ ...rest }, ref) => {
-    return <hr ref={ref} {...rest} id={rest.id ?? customId} />
+    return <hr ref={ref} {...rest}  />
   }
 )
 

@@ -1,7 +1,5 @@
 import { AnchorHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type HyperlinkRef = HTMLAnchorElement
 export type HyperlinkProps = AnchorHTMLAttributes<HyperlinkRef>
 
@@ -15,7 +13,7 @@ export type HyperlinkProps = AnchorHTMLAttributes<HyperlinkRef>
 const Hyperlink = forwardRef<HyperlinkRef, HyperlinkProps>(
   ({ href = '#', children, ...rest }, ref) => {
     return (
-      <a ref={ref} href={href} {...rest} id={rest.id ?? customId}>
+      <a ref={ref} href={href} {...rest}>
         {children}
       </a>
     )

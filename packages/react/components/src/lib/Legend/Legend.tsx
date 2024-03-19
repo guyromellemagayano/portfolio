@@ -1,6 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type LegendRef = HTMLLegendElement
 export type LegendProps = HTMLAttributes<LegendRef>
@@ -14,7 +13,7 @@ export type LegendProps = HTMLAttributes<LegendRef>
 const Legend = forwardRef<LegendRef, LegendProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <legend ref={ref} {...rest} id={rest.id ?? customId}>
+      <legend ref={ref} {...rest} >
         {children}
       </legend>
     )

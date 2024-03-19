@@ -1,7 +1,5 @@
 import { LiHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type ListRef = HTMLLIElement
 export type ListProps = LiHTMLAttributes<ListRef>
 
@@ -13,7 +11,7 @@ export type ListProps = LiHTMLAttributes<ListRef>
  */
 const List = forwardRef<ListRef, ListProps>(({ children, ...rest }, ref) => {
   return (
-    <li ref={ref} {...rest} id={rest.id ?? customId}>
+    <li ref={ref} {...rest}>
       {children}
     </li>
   )

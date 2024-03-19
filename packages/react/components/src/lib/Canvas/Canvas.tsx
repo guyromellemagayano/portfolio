@@ -1,7 +1,5 @@
 import { CanvasHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type CanvasRef = HTMLCanvasElement
 export type CanvasProps = CanvasHTMLAttributes<CanvasRef>
 
@@ -14,7 +12,7 @@ export type CanvasProps = CanvasHTMLAttributes<CanvasRef>
 const Canvas = forwardRef<CanvasRef, CanvasProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <canvas ref={ref} {...rest} id={rest.id ?? customId}>
+      <canvas ref={ref} {...rest}>
         {children}
       </canvas>
     )
