@@ -1,3 +1,5 @@
+'use client'
+
 import { VideoHTMLAttributes, forwardRef } from 'react'
 
 export type VideoRef = HTMLVideoElement

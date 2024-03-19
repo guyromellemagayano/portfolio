@@ -1,5 +1,6 @@
-import { SVGProps, forwardRef } from 'react'
+'use client'
 
+import { SVGProps, forwardRef } from 'react'
 
 export type SvgRef = SVGSVGElement
 export type SvgProps = SVGProps<SvgRef>
@@ -13,7 +14,7 @@ export type SvgProps = SVGProps<SvgRef>
 export const Svg = forwardRef<SvgRef, SvgProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <svg ref={ref} {...rest} >
+      <svg ref={ref} {...rest}>
         {children}
       </svg>
     )

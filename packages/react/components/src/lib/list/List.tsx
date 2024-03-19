@@ -1,3 +1,5 @@
+'use client'
+
 import { LiHTMLAttributes, forwardRef } from 'react'
 
 export type ListRef = HTMLLIElement

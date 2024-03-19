@@ -1,5 +1,6 @@
-import { TrackHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { TrackHTMLAttributes, forwardRef } from 'react'
 
 export type TrackRef = HTMLTrackElement
 export type TrackProps = TrackHTMLAttributes<TrackRef>
@@ -12,7 +13,7 @@ export type TrackProps = TrackHTMLAttributes<TrackRef>
  */
 const Track = forwardRef<TrackRef, TrackProps>(({ children, ...rest }, ref) => {
   return (
-    <track ref={ref} {...rest} >
+    <track ref={ref} {...rest}>
       {children}
     </track>
   )

@@ -1,3 +1,5 @@
+'use client'
+
 import { SourceHTMLAttributes, forwardRef } from 'react'
 
 export type SourceRef = HTMLSourceElement

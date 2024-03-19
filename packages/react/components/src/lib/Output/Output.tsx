@@ -1,3 +1,5 @@
+'use client'
+
 import { OutputHTMLAttributes, forwardRef } from 'react'
 
 export type OutputRef = HTMLOutputElement

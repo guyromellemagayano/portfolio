@@ -1,3 +1,5 @@
+'use client'
+
 import { AnchorHTMLAttributes, forwardRef } from 'react'
 
 export type HyperlinkRef = HTMLAnchorElement

@@ -1,3 +1,5 @@
+'use client'
+
 import { DialogHTMLAttributes, forwardRef } from 'react'
 
 export type DialogRef = HTMLDialogElement

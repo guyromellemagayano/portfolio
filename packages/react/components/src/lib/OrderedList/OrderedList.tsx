@@ -1,3 +1,5 @@
+'use client'
+
 import { OlHTMLAttributes, forwardRef } from 'react'
 
 export type OrderedListRef = HTMLOListElement
