@@ -1,1 +1,1 @@
-export { SharedHeading } from './SharedHeading'
+export { default as Heading } from './Heading'
