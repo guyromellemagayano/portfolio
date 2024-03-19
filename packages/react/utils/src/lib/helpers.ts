@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 import { ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -40,3 +42,9 @@ export const clamp = ({ number, min, max }: TClampProps) => {
  * @returns The merged class names.
  */
 export const cn = (...classes: ClassValue[]) => twMerge(clsx(classes))
+
+/**
+ * Generates a unique ID that can be used for accessibility attributes.
+ * @returns The unique ID.
+ */
+export const customId = useId()
