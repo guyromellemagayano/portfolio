@@ -1,6 +1,5 @@
 import { DelHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type DeletedTextRef = HTMLModElement
 export type DeletedTextProps = DelHTMLAttributes<DeletedTextRef>
@@ -14,7 +13,7 @@ export type DeletedTextProps = DelHTMLAttributes<DeletedTextRef>
 const DeletedText = forwardRef<DeletedTextRef, DeletedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <del ref={ref} {...rest} id={rest.id ?? customId}>
+      <del ref={ref} {...rest} >
         {children}
       </del>
     )

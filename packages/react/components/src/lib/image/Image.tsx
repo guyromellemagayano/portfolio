@@ -1,7 +1,5 @@
 import { ImgHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type ImageRef = HTMLImageElement
 export type ImageProps = ImgHTMLAttributes<ImageRef>
 
@@ -14,9 +12,7 @@ export type ImageProps = ImgHTMLAttributes<ImageRef>
  */
 const Image = forwardRef<ImageRef, ImageProps>(
   ({ src = '#', alt = '', ...rest }, ref) => {
-    return (
-      <img ref={ref} src={src} alt={alt} {...rest} id={rest.id ?? customId} />
-    )
+    return <img ref={ref} src={src} alt={alt} {...rest} />
   }
 )
 

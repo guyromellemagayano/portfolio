@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SearchRef = HTMLElement
 export type SearchProps = HTMLAttributes<SearchRef>
 
@@ -14,7 +12,7 @@ export type SearchProps = HTMLAttributes<SearchRef>
 const Search = forwardRef<SearchRef, SearchProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <search ref={ref} {...rest} id={rest.id ?? customId}>
+      <search ref={ref} {...rest}>
         {children}
       </search>
     )

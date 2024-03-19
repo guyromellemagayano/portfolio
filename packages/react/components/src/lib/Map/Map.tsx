@@ -1,6 +1,5 @@
 import { MapHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type MapRef = HTMLMapElement
 export type MapProps = MapHTMLAttributes<MapRef>
@@ -13,7 +12,7 @@ export type MapProps = MapHTMLAttributes<MapRef>
  */
 const Map = forwardRef<MapRef, MapProps>(({ children, ...rest }, ref) => {
   return (
-    <map ref={ref} {...rest} id={rest.id ?? customId}>
+    <map ref={ref} {...rest} >
       {children}
     </map>
   )

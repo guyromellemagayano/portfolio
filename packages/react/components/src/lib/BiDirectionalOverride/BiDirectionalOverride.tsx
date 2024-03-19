@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type BiDirectionalOverrideRef = HTMLElement
 export type BiDirectionalOverrideProps =
   HTMLAttributes<BiDirectionalOverrideRef>
@@ -17,7 +15,7 @@ const BiDirectionalOverride = forwardRef<
   BiDirectionalOverrideProps
 >(({ children, ...rest }, ref) => {
   return (
-    <bdo ref={ref} {...rest} id={rest.id ?? customId}>
+    <bdo ref={ref} {...rest}>
       {children}
     </bdo>
   )

@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type UnderlineRef = HTMLElement
 export type UnderlineProps = HTMLAttributes<UnderlineRef>
 
@@ -14,7 +12,7 @@ export type UnderlineProps = HTMLAttributes<UnderlineRef>
 const Underline = forwardRef<UnderlineRef, UnderlineProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <u ref={ref} {...rest} id={rest.id ?? customId}>
+      <u ref={ref} {...rest}>
         {children}
       </u>
     )

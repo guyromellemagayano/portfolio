@@ -1,6 +1,5 @@
 import { OptgroupHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type OptgroupRef = HTMLOptGroupElement
 export type OptgroupProps = OptgroupHTMLAttributes<OptgroupRef>
@@ -14,7 +13,7 @@ export type OptgroupProps = OptgroupHTMLAttributes<OptgroupRef>
 const Optgroup = forwardRef<OptgroupRef, OptgroupProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <optgroup ref={ref} {...rest} id={rest.id ?? customId}>
+      <optgroup ref={ref} {...rest} >
         {children}
       </optgroup>
     )

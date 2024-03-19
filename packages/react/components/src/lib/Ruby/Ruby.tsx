@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type RubyRef = HTMLElement
 export type RubyProps = HTMLAttributes<RubyRef>
 
@@ -13,7 +11,7 @@ export type RubyProps = HTMLAttributes<RubyRef>
  */
 const Ruby = forwardRef<RubyRef, RubyProps>(({ children, ...rest }, ref) => {
   return (
-    <ruby ref={ref} {...rest} id={rest.id ?? customId}>
+    <ruby ref={ref} {...rest}>
       {children}
     </ruby>
   )

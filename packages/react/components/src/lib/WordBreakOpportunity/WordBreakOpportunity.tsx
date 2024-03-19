@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type WordBreakOpportunityRef = HTMLElement
 export type WordBreakOpportunityProps = HTMLAttributes<WordBreakOpportunityRef>
 
@@ -16,7 +14,7 @@ const WordBreakOpportunity = forwardRef<
   WordBreakOpportunityProps
 >(({ children, ...rest }, ref) => {
   return (
-    <var ref={ref} {...rest} id={rest.id ?? customId}>
+    <var ref={ref} {...rest}>
       {children}
     </var>
   )

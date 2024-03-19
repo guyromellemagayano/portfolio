@@ -1,7 +1,5 @@
 import { VideoHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type VideoRef = HTMLVideoElement
 export type VideoProps = VideoHTMLAttributes<VideoRef>
 
@@ -13,7 +11,7 @@ export type VideoProps = VideoHTMLAttributes<VideoRef>
  */
 const Video = forwardRef<VideoRef, VideoProps>(({ children, ...rest }, ref) => {
   return (
-    <video ref={ref} {...rest} id={rest.id ?? customId}>
+    <video ref={ref} {...rest}>
       {children}
     </video>
   )

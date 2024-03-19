@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DefinitionTermRef = HTMLElement
 export type DefinitionTermProps = HTMLAttributes<DefinitionTermRef>
 
@@ -14,7 +12,7 @@ export type DefinitionTermProps = HTMLAttributes<DefinitionTermRef>
 const DefinitionTerm = forwardRef<DefinitionTermRef, DefinitionTermProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <dfn ref={ref} {...rest} id={rest.id ?? customId}>
+      <dfn ref={ref} {...rest}>
         {children}
       </dfn>
     )

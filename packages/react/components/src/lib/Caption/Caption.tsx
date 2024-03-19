@@ -1,7 +1,5 @@
 import { TableHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type CaptionRef = HTMLTableCaptionElement
 export type CaptionProps = TableHTMLAttributes<CaptionRef>
 
@@ -14,7 +12,7 @@ export type CaptionProps = TableHTMLAttributes<CaptionRef>
 const Caption = forwardRef<CaptionRef, CaptionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <caption ref={ref} {...rest} id={rest.id ?? customId}>
+      <caption ref={ref} {...rest}>
         {children}
       </caption>
     )
