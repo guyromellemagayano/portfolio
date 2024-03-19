@@ -1,1 +1,1 @@
-export { default as SharedReactComponent } from './Shared'
+export { default as RC } from './Shared'
