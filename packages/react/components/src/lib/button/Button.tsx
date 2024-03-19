@@ -1,7 +1,5 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type ButtonRef = HTMLButtonElement
 export type ButtonProps = ButtonHTMLAttributes<ButtonRef>
 
@@ -15,7 +13,7 @@ export type ButtonProps = ButtonHTMLAttributes<ButtonRef>
 const Button = forwardRef<ButtonRef, ButtonProps>(
   ({ type = 'button', children, ...rest }, ref) => {
     return (
-      <button ref={ref} type={type} {...rest} id={rest.id ?? customId}>
+      <button ref={ref} type={type} {...rest}>
         {children}
       </button>
     )

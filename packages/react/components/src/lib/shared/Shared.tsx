@@ -5,8 +5,7 @@ import {
   Fragment,
   HTMLAttributes,
   RefAttributes,
-  forwardRef,
-  useId
+  forwardRef
 } from 'react'
 
 import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components/server'
@@ -242,11 +241,8 @@ const RC = forwardRef<SharedRef, ISharedProps>(
     { as: Component = Fragment, children, ...rest },
     ref: ForwardedRef<SharedRef>
   ) => {
-    // Generates a unique ID that can be used for accessibility attributes
-    const customId = useId()
-
     return (
-      <Component ref={ref} {...rest} id={rest.id ?? customId}>
+      <Component ref={ref} {...rest}>
         {children}
       </Component>
     )

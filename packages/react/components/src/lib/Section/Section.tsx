@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type SectionRef = HTMLElement
 export type SectionProps = HTMLAttributes<SectionRef>
 
@@ -14,7 +12,7 @@ export type SectionProps = HTMLAttributes<SectionRef>
 const Section = forwardRef<SectionRef, SectionProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <section ref={ref} {...rest} id={rest.id ?? customId}>
+      <section ref={ref} {...rest}>
         {children}
       </section>
     )

@@ -1,6 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 
 export type StrongRef = HTMLElement
 export type StrongProps = HTMLAttributes<StrongRef>
@@ -14,7 +13,7 @@ export type StrongProps = HTMLAttributes<StrongRef>
 const Strong = forwardRef<StrongRef, StrongProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <strong ref={ref} {...rest} id={rest.id ?? customId}>
+      <strong ref={ref} {...rest} >
         {children}
       </strong>
     )

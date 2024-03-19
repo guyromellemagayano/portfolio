@@ -1,4 +1,3 @@
-import { customId } from '@guy-romelle-magayano/react-utils/server'
 import { HTMLAttributes, forwardRef } from 'react'
 
 export type LineBreakRef = HTMLBRElement
@@ -12,7 +11,7 @@ export type LineBreakProps = HTMLAttributes<LineBreakRef>
  */
 const LineBreak = forwardRef<LineBreakRef, LineBreakProps>(
   ({ ...rest }, ref) => {
-    return <br ref={ref} {...rest} id={rest.id ?? customId} />
+    return <br ref={ref} {...rest} />
   }
 )
 

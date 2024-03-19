@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type BoldRef = HTMLElement
 export type BoldProps = HTMLAttributes<BoldRef>
 
@@ -13,7 +11,7 @@ export type BoldProps = HTMLAttributes<BoldRef>
  */
 const Bold = forwardRef<BoldRef, BoldProps>(({ children, ...rest }, ref) => {
   return (
-    <b ref={ref} {...rest} id={rest.id ?? customId}>
+    <b ref={ref} {...rest}>
       {children}
     </b>
   )

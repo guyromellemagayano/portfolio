@@ -1,7 +1,5 @@
 import { HTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type CiteRef = HTMLQuoteElement
 export type CiteProps = HTMLAttributes<CiteRef>
 
@@ -13,7 +11,7 @@ export type CiteProps = HTMLAttributes<CiteRef>
  */
 const Cite = forwardRef<CiteRef, CiteProps>(({ children, ...rest }, ref) => {
   return (
-    <cite ref={ref} {...rest} id={rest.id ?? customId}>
+    <cite ref={ref} {...rest}>
       {children}
     </cite>
   )

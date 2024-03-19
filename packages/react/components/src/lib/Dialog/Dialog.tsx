@@ -1,7 +1,5 @@
 import { DialogHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DialogRef = HTMLDialogElement
 export type DialogProps = DialogHTMLAttributes<DialogRef>
 
@@ -14,7 +12,7 @@ export type DialogProps = DialogHTMLAttributes<DialogRef>
 const Dialog = forwardRef<DialogRef, DialogProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <dialog ref={ref} {...rest} id={rest.id ?? customId}>
+      <dialog ref={ref} {...rest}>
         {children}
       </dialog>
     )

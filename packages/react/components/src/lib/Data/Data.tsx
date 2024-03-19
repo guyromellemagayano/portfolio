@@ -1,7 +1,5 @@
 import { DataHTMLAttributes, forwardRef } from 'react'
 
-import { customId } from '@guy-romelle-magayano/react-utils/server'
-
 export type DataRef = HTMLDataElement
 export type DataProps = DataHTMLAttributes<DataRef>
 
@@ -13,7 +11,7 @@ export type DataProps = DataHTMLAttributes<DataRef>
  */
 const Data = forwardRef<DataRef, DataProps>(({ children, ...rest }, ref) => {
   return (
-    <data ref={ref} {...rest} id={rest.id ?? customId}>
+    <data ref={ref} {...rest}>
       {children}
     </data>
   )
