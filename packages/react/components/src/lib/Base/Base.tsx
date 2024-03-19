@@ -1,3 +1,5 @@
+'use client'
+
 import { BaseHTMLAttributes } from 'react'
 
 export type BaseRef = HTMLBaseElement

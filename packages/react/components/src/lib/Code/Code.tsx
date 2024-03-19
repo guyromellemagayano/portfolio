@@ -1,5 +1,6 @@
-import { HTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { HTMLAttributes, forwardRef } from 'react'
 
 export type CodeRef = HTMLElement
 export type CodeProps = HTMLAttributes<CodeRef>
@@ -12,7 +13,7 @@ export type CodeProps = HTMLAttributes<CodeRef>
  */
 const Code = forwardRef<CodeRef, CodeProps>(({ children, ...rest }, ref) => {
   return (
-    <code ref={ref} {...rest} >
+    <code ref={ref} {...rest}>
       {children}
     </code>
   )

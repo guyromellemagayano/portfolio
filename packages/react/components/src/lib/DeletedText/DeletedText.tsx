@@ -1,5 +1,6 @@
-import { DelHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { DelHTMLAttributes, forwardRef } from 'react'
 
 export type DeletedTextRef = HTMLModElement
 export type DeletedTextProps = DelHTMLAttributes<DeletedTextRef>
@@ -13,7 +14,7 @@ export type DeletedTextProps = DelHTMLAttributes<DeletedTextRef>
 const DeletedText = forwardRef<DeletedTextRef, DeletedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <del ref={ref} {...rest} >
+      <del ref={ref} {...rest}>
         {children}
       </del>
     )

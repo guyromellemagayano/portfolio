@@ -1,3 +1,5 @@
+'use client'
+
 import { BlockquoteHTMLAttributes, forwardRef } from 'react'
 
 export type BlockquoteRef = HTMLQuoteElement

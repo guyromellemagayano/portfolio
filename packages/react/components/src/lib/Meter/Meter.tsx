@@ -1,5 +1,6 @@
-import { MeterHTMLAttributes, forwardRef } from 'react'
+'use client'
 
+import { MeterHTMLAttributes, forwardRef } from 'react'
 
 export type MeterRef = HTMLMeterElement
 export type MeterProps = MeterHTMLAttributes<MeterRef>
@@ -12,7 +13,7 @@ export type MeterProps = MeterHTMLAttributes<MeterRef>
  */
 const Meter = forwardRef<MeterRef, MeterProps>(({ children, ...rest }, ref) => {
   return (
-    <meter ref={ref} {...rest} >
+    <meter ref={ref} {...rest}>
       {children}
     </meter>
   )
