@@ -1,1 +1,1 @@
-export { default as RC } from './Shared'
+export { default as SharedRC } from './Shared'
