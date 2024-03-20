@@ -1,3 +1,5 @@
+'use client'
+
 import {
   ElementType,
   ForwardRefExoticComponent,
@@ -230,13 +232,13 @@ interface ISharedStaticComponents {
 }
 
 /**
- * A shared React component (RC) that provides a consistent API for rendering HTML elements.
+ * A shared React component (SharedRC) that provides a consistent API for rendering HTML elements.
  * @param as - The HTML element to render
  * @param children - The content to render
  * @param rest - Additional HTML attributes
  * @returns The rendered shared component
  */
-const RC = forwardRef<SharedRef, ISharedProps>(
+const SharedRC = forwardRef<SharedRef, ISharedProps>(
   (
     { as: Component = Fragment, children, ...rest },
     ref: ForwardedRef<SharedRef>
@@ -250,111 +252,111 @@ const RC = forwardRef<SharedRef, ISharedProps>(
 ) as ForwardRefExoticComponent<ISharedProps & RefAttributes<SharedRef>> &
   ISharedStaticComponents
 
-RC.A = Hyperlink
-RC.Abbr = Abbreviation
-RC.Address = Address
-RC.Area = Area
-RC.Article = Article
-RC.Aside = Aside
-RC.Audio = Audio
-RC.Base = Base
-RC.Bdi = BiDirectionalIsolation
-RC.Bdo = BiDirectionalOverride
-RC.Blockquote = Blockquote
-RC.Body = Body
-RC.Bold = Bold
-RC.Br = LineBreak
-RC.Button = Button
-RC.Canvas = Canvas
-RC.Caption = Caption
-RC.Cite = Cite
-RC.Code = Code
-RC.Colgroup = ColumnGroup
-RC.Column = Column
-RC.Data = Data
-RC.Datalist = Datalist
-RC.Dd = DescriptionDetails
-RC.Del = DeletedText
-RC.Details = Details
-RC.Dfn = DefinitionTerm
-RC.Dialog = Dialog
-RC.Div = Division
-RC.Dl = DescriptionList
-RC.Dt = DescriptionTerm
-RC.Em = EmphasizedText
-RC.Fieldset = Fieldset
-RC.Figcaption = Figcaption
-RC.Figure = Figure
-RC.Footer = Footer
-RC.Form = Form
-RC.Head = Head
-RC.Header = Header
-RC.Heading = Heading
-RC.Hgroup = HeadingGroup
-RC.Hr = HorizontalRule
-RC.Html = Html
-RC.I = Italic
-RC.Iframe = Iframe
-RC.Img = Image
-RC.Input = Input
-RC.Ins = InsertedText
-RC.Kbd = KeyboardInput
-RC.Legend = Legend
-RC.Li = List
-RC.Link = Link
-RC.Main = Main
-RC.Map = Map
-RC.Mark = Mark
-RC.Menu = Menu
-RC.Meta = Meta
-RC.Meter = Meter
-RC.Nav = Nav
-RC.Noscript = NoScript
-RC.Ol = OrderedList
-RC.Optgroup = Optgroup
-RC.Option = Option
-RC.Output = Output
-RC.P = Paragraph
-RC.Path = SvgPath
-RC.Picture = Picture
-RC.Pre = PreformattedText
-RC.Progress = Progress
-RC.Q = Quote
-RC.Rp = RubyParentheses
-RC.Rt = RubyText
-RC.Ruby = Ruby
-RC.S = Strikethrough
-RC.Samp = Sample
-RC.Script = Script
-RC.Search = Search
-RC.Section = Section
-RC.Select = Select
-RC.Small = Small
-RC.Source = Source
-RC.Span = Span
-RC.Strong = Strong
-RC.Style = Style
-RC.Sub = Subscript
-RC.Summary = Summary
-RC.Sup = Superscript
-RC.Svg = Svg
-RC.Table = Table
-RC.TableFooter = TableFooter
-RC.Tbody = TableBody
-RC.Td = TableData
-RC.Template = Template
-RC.Textarea = Textarea
-RC.Th = TableHeader
-RC.THead = TableHead
-RC.Time = Time
-RC.Title = Title
-RC.Tr = TableRow
-RC.Track = Track
-RC.Ul = UnorderedList
-RC.Var = Variable
-RC.Video = Video
-RC.Wbr = WordBreakOpportunity
+SharedRC.A = Hyperlink
+SharedRC.Abbr = Abbreviation
+SharedRC.Address = Address
+SharedRC.Area = Area
+SharedRC.Article = Article
+SharedRC.Aside = Aside
+SharedRC.Audio = Audio
+SharedRC.Base = Base
+SharedRC.Bdi = BiDirectionalIsolation
+SharedRC.Bdo = BiDirectionalOverride
+SharedRC.Blockquote = Blockquote
+SharedRC.Body = Body
+SharedRC.Bold = Bold
+SharedRC.Br = LineBreak
+SharedRC.Button = Button
+SharedRC.Canvas = Canvas
+SharedRC.Caption = Caption
+SharedRC.Cite = Cite
+SharedRC.Code = Code
+SharedRC.Colgroup = ColumnGroup
+SharedRC.Column = Column
+SharedRC.Data = Data
+SharedRC.Datalist = Datalist
+SharedRC.Dd = DescriptionDetails
+SharedRC.Del = DeletedText
+SharedRC.Details = Details
+SharedRC.Dfn = DefinitionTerm
+SharedRC.Dialog = Dialog
+SharedRC.Div = Division
+SharedRC.Dl = DescriptionList
+SharedRC.Dt = DescriptionTerm
+SharedRC.Em = EmphasizedText
+SharedRC.Fieldset = Fieldset
+SharedRC.Figcaption = Figcaption
+SharedRC.Figure = Figure
+SharedRC.Footer = Footer
+SharedRC.Form = Form
+SharedRC.Head = Head
+SharedRC.Header = Header
+SharedRC.Heading = Heading
+SharedRC.Hgroup = HeadingGroup
+SharedRC.Hr = HorizontalRule
+SharedRC.Html = Html
+SharedRC.I = Italic
+SharedRC.Iframe = Iframe
+SharedRC.Img = Image
+SharedRC.Input = Input
+SharedRC.Ins = InsertedText
+SharedRC.Kbd = KeyboardInput
+SharedRC.Legend = Legend
+SharedRC.Li = List
+SharedRC.Link = Link
+SharedRC.Main = Main
+SharedRC.Map = Map
+SharedRC.Mark = Mark
+SharedRC.Menu = Menu
+SharedRC.Meta = Meta
+SharedRC.Meter = Meter
+SharedRC.Nav = Nav
+SharedRC.Noscript = NoScript
+SharedRC.Ol = OrderedList
+SharedRC.Optgroup = Optgroup
+SharedRC.Option = Option
+SharedRC.Output = Output
+SharedRC.P = Paragraph
+SharedRC.Path = SvgPath
+SharedRC.Picture = Picture
+SharedRC.Pre = PreformattedText
+SharedRC.Progress = Progress
+SharedRC.Q = Quote
+SharedRC.Rp = RubyParentheses
+SharedRC.Rt = RubyText
+SharedRC.Ruby = Ruby
+SharedRC.S = Strikethrough
+SharedRC.Samp = Sample
+SharedRC.Script = Script
+SharedRC.Search = Search
+SharedRC.Section = Section
+SharedRC.Select = Select
+SharedRC.Small = Small
+SharedRC.Source = Source
+SharedRC.Span = Span
+SharedRC.Strong = Strong
+SharedRC.Style = Style
+SharedRC.Sub = Subscript
+SharedRC.Summary = Summary
+SharedRC.Sup = Superscript
+SharedRC.Svg = Svg
+SharedRC.Table = Table
+SharedRC.TableFooter = TableFooter
+SharedRC.Tbody = TableBody
+SharedRC.Td = TableData
+SharedRC.Template = Template
+SharedRC.Textarea = Textarea
+SharedRC.Th = TableHeader
+SharedRC.THead = TableHead
+SharedRC.Time = Time
+SharedRC.Title = Title
+SharedRC.Tr = TableRow
+SharedRC.Track = Track
+SharedRC.Ul = UnorderedList
+SharedRC.Var = Variable
+SharedRC.Video = Video
+SharedRC.Wbr = WordBreakOpportunity
 
-RC.displayName = 'RC'
+SharedRC.displayName = 'SharedRC'
 
-export default RC
+export default SharedRC
