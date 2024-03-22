@@ -11,7 +11,7 @@ export type SearchProps = HTMLAttributes<SearchRef>
  * @param rest - The rest of the props of the search.
  * @returns The rendered search component.
  */
-const Search = forwardRef<SearchRef, SearchProps>(
+export const Search = forwardRef<SearchRef, SearchProps>(
   ({ children, ...rest }, ref) => {
     return (
       <search ref={ref} {...rest}>

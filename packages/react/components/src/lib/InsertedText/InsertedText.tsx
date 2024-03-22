@@ -11,7 +11,7 @@ export type InsertedTextProps = InsHTMLAttributes<InsertedTextRef>
  * @param rest - The rest of the props of the inserted text.
  * @returns The rendered inserted text component.
  */
-const InsertedText = forwardRef<InsertedTextRef, InsertedTextProps>(
+export const InsertedText = forwardRef<InsertedTextRef, InsertedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <ins ref={ref} {...rest}>

@@ -11,7 +11,7 @@ export type TitleProps = HTMLAttributes<TitleRef>
  * @param rest - The rest of the props of the title.
  * @returns The rendered title component.
  */
-const Title = ({ children, ...rest }: TitleProps) => {
+export const Title = ({ children, ...rest }: TitleProps) => {
   return <title {...rest}>{children}</title>
 }
 

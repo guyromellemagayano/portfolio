@@ -11,7 +11,7 @@ export type OptionProps = OptionHTMLAttributes<OptionRef>
  * @param rest - The rest of the props of the option.
  * @returns The rendered option component.
  */
-const Option = forwardRef<OptionRef, OptionProps>(
+export const Option = forwardRef<OptionRef, OptionProps>(
   ({ children, ...rest }, ref) => {
     return (
       <option ref={ref} {...rest}>

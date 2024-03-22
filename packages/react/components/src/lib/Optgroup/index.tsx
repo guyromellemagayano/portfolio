@@ -1,1 +1,1 @@
-export { default as Optgroup } from './Optgroup'
+export * from './Optgroup'

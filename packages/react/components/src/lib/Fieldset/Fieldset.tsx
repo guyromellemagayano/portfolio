@@ -11,7 +11,7 @@ export type FieldsetProps = FieldsetHTMLAttributes<FieldsetRef>
  * @param rest - The rest of the props of the fieldset.
  * @returns The rendered fieldset component.
  */
-const Fieldset = forwardRef<FieldsetRef, FieldsetProps>(
+export const Fieldset = forwardRef<FieldsetRef, FieldsetProps>(
   ({ children, ...rest }, ref) => {
     return (
       <fieldset ref={ref} {...rest}>

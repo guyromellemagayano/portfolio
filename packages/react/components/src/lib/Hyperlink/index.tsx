@@ -1,1 +1,1 @@
-export { default as Hyperlink } from './Hyperlink'
+export * from './Hyperlink'

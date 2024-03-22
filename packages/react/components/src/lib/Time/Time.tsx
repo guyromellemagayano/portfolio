@@ -11,13 +11,15 @@ export type TimeProps = TimeHTMLAttributes<TimeRef>
  * @param rest - The rest of the props of the time.
  * @returns The rendered time component.
  */
-const Time = forwardRef<TimeRef, TimeProps>(({ children, ...rest }, ref) => {
-  return (
-    <time ref={ref} {...rest}>
-      {children}
-    </time>
-  )
-})
+export const Time = forwardRef<TimeRef, TimeProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <time ref={ref} {...rest}>
+        {children}
+      </time>
+    )
+  }
+)
 
 Time.displayName = 'Time'
 

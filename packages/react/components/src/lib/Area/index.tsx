@@ -1,1 +1,1 @@
-export { default as Area } from './Area'
+export * from './Area'

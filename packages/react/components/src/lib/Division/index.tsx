@@ -1,1 +1,1 @@
-export { default as Division } from './Division'
+export * from './Division'

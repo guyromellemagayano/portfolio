@@ -11,13 +11,15 @@ export type SpanProps = HTMLAttributes<SpanRef>
  * @param rest - The rest of the props of the span.
  * @returns The rendered span component.
  */
-const Span = forwardRef<SpanRef, SpanProps>(({ children, ...rest }, ref) => {
-  return (
-    <span ref={ref} {...rest}>
-      {children}
-    </span>
-  )
-})
+export const Span = forwardRef<SpanRef, SpanProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <span ref={ref} {...rest}>
+        {children}
+      </span>
+    )
+  }
+)
 
 Span.displayName = 'Span'
 

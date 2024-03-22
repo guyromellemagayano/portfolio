@@ -1,1 +1,1 @@
-export { default as Superscript } from './Superscript'
+export * from './Superscript'
