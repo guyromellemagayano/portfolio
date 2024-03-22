@@ -10,7 +10,7 @@ export type LinkProps = LinkHTMLAttributes<LinkRef>
  * @param rest - The rest of the props of the link.
  * @returns The rendered link component.
  */
-const Link = ({ ...rest }: LinkProps) => {
+export const Link = ({ ...rest }: LinkProps) => {
   return <link {...rest} />
 }
 

@@ -1,1 +1,1 @@
-export { default as InsertedText } from './InsertedText'
+export * from './InsertedText'

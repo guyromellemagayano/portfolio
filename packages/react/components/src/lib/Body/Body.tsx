@@ -11,13 +11,15 @@ export type BodyProps = HTMLAttributes<BodyRef>
  * @param rest - The rest of the props of the body.
  * @returns The rendered body component.
  */
-const Body = forwardRef<BodyRef, BodyProps>(({ children, ...rest }, ref) => {
-  return (
-    <body ref={ref} {...rest}>
-      {children}
-    </body>
-  )
-})
+export const Body = forwardRef<BodyRef, BodyProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <body ref={ref} {...rest}>
+        {children}
+      </body>
+    )
+  }
+)
 
 Body.displayName = 'Body'
 

@@ -4,7 +4,7 @@ import { ImgHTMLAttributes, forwardRef } from 'react'
 
 import dynamic from 'next/dynamic'
 
-const NextImage = dynamic(() => import('next/image'))
+export const NextImage = dynamic(() => import('next/image'))
 
 export type ImageRef = HTMLImageElement
 export type ImageProps = ImgHTMLAttributes<ImageRef> & {
@@ -21,7 +21,7 @@ export type ImageProps = ImgHTMLAttributes<ImageRef> & {
  * @param rest - The rest of the props of the image.
  * @returns The rendered  image component.
  */
-const Image = forwardRef<ImageRef, ImageProps>(
+export const Image = forwardRef<ImageRef, ImageProps>(
   (
     { src = '#', alt = '', width, height, isNextImage = false, ...rest },
     ref

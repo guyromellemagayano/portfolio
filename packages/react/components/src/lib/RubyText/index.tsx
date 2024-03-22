@@ -1,1 +1,1 @@
-export { default as RubyText } from './RubyText'
+export * from './RubyText'

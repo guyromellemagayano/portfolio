@@ -11,7 +11,7 @@ export type SourceProps = SourceHTMLAttributes<SourceRef>
  * @param rest - The rest of the props of the source.
  * @returns The rendered source component.
  */
-const Source = forwardRef<SourceRef, SourceProps>(
+export const Source = forwardRef<SourceRef, SourceProps>(
   ({ children, ...rest }, ref) => {
     return (
       <source ref={ref} {...rest}>

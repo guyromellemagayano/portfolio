@@ -12,7 +12,7 @@ export type ButtonProps = ButtonHTMLAttributes<ButtonRef>
  * @param rest - The rest of the props of the button.
  * @returns The rendered button component.
  */
-const Button = forwardRef<ButtonRef, ButtonProps>(
+export const Button = forwardRef<ButtonRef, ButtonProps>(
   ({ type = 'button', children, ...rest }, ref) => {
     return (
       <button ref={ref} type={type} {...rest}>
