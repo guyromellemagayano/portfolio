@@ -1,1 +1,1 @@
-export { default as HeadingGroup } from './HeadingGroup'
+export * from './HeadingGroup'

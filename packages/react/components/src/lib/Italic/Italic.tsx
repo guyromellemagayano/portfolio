@@ -11,7 +11,7 @@ export type ItalicProps = HTMLAttributes<ItalicRef>
  * @param rest - The rest of the props of the italic.
  * @returns The rendered italic component.
  */
-const Italic = forwardRef<ItalicRef, ItalicProps>(
+export const Italic = forwardRef<ItalicRef, ItalicProps>(
   ({ children, ...rest }, ref) => {
     return (
       <i ref={ref} {...rest}>

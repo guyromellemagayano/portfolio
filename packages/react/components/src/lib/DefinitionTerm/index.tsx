@@ -1,1 +1,1 @@
-export { default as DefinitionTerm } from './DefinitionTerm'
+export * from './DefinitionTerm'

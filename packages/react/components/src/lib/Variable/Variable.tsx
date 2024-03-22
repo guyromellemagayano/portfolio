@@ -11,7 +11,7 @@ export type VariableProps = HTMLAttributes<VariableRef>
  * @param rest - The rest of the props of the variable.
  * @returns The rendered variable component.
  */
-const Variable = forwardRef<VariableRef, VariableProps>(
+export const Variable = forwardRef<VariableRef, VariableProps>(
   ({ children, ...rest }, ref) => {
     return (
       <var ref={ref} {...rest}>

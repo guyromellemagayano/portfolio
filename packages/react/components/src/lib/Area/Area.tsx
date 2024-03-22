@@ -11,13 +11,15 @@ export type AreaProps = AreaHTMLAttributes<AreaRef>
  * @param rest - The rest of the props of the area.
  * @returns The rendered area component.
  */
-const Area = forwardRef<AreaRef, AreaProps>(({ children, ...rest }, ref) => {
-  return (
-    <area ref={ref} {...rest}>
-      {children}
-    </area>
-  )
-})
+export const Area = forwardRef<AreaRef, AreaProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <area ref={ref} {...rest}>
+        {children}
+      </area>
+    )
+  }
+)
 
 Area.displayName = 'Area'
 

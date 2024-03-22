@@ -11,15 +11,16 @@ export type DescriptionListProps = HTMLAttributes<DescriptionListRef>
  * @param rest - The rest of the props of the description list.
  * @returns The rendered description list component.
  */
-const DescriptionList = forwardRef<DescriptionListRef, DescriptionListProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <dl ref={ref} {...rest}>
-        {children}
-      </dl>
-    )
-  }
-)
+export const DescriptionList = forwardRef<
+  DescriptionListRef,
+  DescriptionListProps
+>(({ children, ...rest }, ref) => {
+  return (
+    <dl ref={ref} {...rest}>
+      {children}
+    </dl>
+  )
+})
 
 DescriptionList.displayName = 'DescriptionList'
 

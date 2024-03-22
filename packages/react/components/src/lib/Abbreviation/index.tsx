@@ -1,1 +1,1 @@
-export { default as Abbreviation } from './Abbreviation'
+export * from './Abbreviation'

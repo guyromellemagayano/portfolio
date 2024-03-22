@@ -11,7 +11,7 @@ export type UnderlineProps = HTMLAttributes<UnderlineRef>
  * @param rest - The rest of the props of the underline.
  * @returns The rendered underline component.
  */
-const Underline = forwardRef<UnderlineRef, UnderlineProps>(
+export const Underline = forwardRef<UnderlineRef, UnderlineProps>(
   ({ children, ...rest }, ref) => {
     return (
       <u ref={ref} {...rest}>

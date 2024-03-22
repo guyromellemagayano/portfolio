@@ -11,11 +11,12 @@ export type HorizontalRuleProps = HTMLAttributes<HorizontalRuleRef>
  * @param rest - The rest of the props of the horizontal rule.
  * @returns The rendered horizontal rule component.
  */
-const HorizontalRule = forwardRef<HorizontalRuleRef, HorizontalRuleProps>(
-  ({ ...rest }, ref) => {
-    return <hr ref={ref} {...rest} />
-  }
-)
+export const HorizontalRule = forwardRef<
+  HorizontalRuleRef,
+  HorizontalRuleProps
+>(({ ...rest }, ref) => {
+  return <hr ref={ref} {...rest} />
+})
 
 HorizontalRule.displayName = 'HorizontalRule'
 

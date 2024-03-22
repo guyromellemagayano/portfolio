@@ -11,15 +11,16 @@ export type RubyParenthesesProps = HTMLAttributes<RubyParenthesesRef>
  * @param rest - The rest of the props of the ruby parentheses.
  * @returns The rendered ruby parentheses component.
  */
-const RubyParentheses = forwardRef<RubyParenthesesRef, RubyParenthesesProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <rp ref={ref} {...rest}>
-        {children}
-      </rp>
-    )
-  }
-)
+export const RubyParentheses = forwardRef<
+  RubyParenthesesRef,
+  RubyParenthesesProps
+>(({ children, ...rest }, ref) => {
+  return (
+    <rp ref={ref} {...rest}>
+      {children}
+    </rp>
+  )
+})
 
 RubyParentheses.displayName = 'RubyParentheses'
 

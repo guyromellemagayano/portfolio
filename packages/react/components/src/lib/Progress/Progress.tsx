@@ -11,7 +11,7 @@ export type ProgressProps = ProgressHTMLAttributes<ProgressRef>
  * @param rest - The rest of the props of the progress.
  * @returns The rendered progress component.
  */
-const Progress = forwardRef<ProgressRef, ProgressProps>(
+export const Progress = forwardRef<ProgressRef, ProgressProps>(
   ({ children, ...rest }, ref) => {
     return (
       <progress ref={ref} {...rest}>

@@ -1,1 +1,1 @@
-export { default as ColumnGroup } from './ColumnGroup'
+export * from './ColumnGroup'

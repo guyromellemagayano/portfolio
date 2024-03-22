@@ -1,1 +1,1 @@
-export { default as Subscript } from './Subscript'
+export * from './Subscript'
