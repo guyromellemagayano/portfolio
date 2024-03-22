@@ -1,1 +1,1 @@
-export { default as BiDirectionalIsolation } from './BiDirectionalIsolation'
+export * from './BiDirectionalIsolation'

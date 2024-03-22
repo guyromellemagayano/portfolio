@@ -11,7 +11,7 @@ export type TableHeaderProps = ThHTMLAttributes<TableHeaderRef>
  * @param rest - The rest of the props of the table header.
  * @returns The rendered table header component.
  */
-const TableHeader = forwardRef<TableHeaderRef, TableHeaderProps>(
+export const TableHeader = forwardRef<TableHeaderRef, TableHeaderProps>(
   ({ children, ...rest }, ref) => {
     return (
       <th ref={ref} {...rest}>

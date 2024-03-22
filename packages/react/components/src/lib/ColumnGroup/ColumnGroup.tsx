@@ -11,7 +11,7 @@ export type ColumnGroupProps = ColgroupHTMLAttributes<ColumnGroupRef>
  * @param rest - The rest of the props of the column group.
  * @returns The rendered column group component.
  */
-const ColumnGroup = forwardRef<ColumnGroupRef, ColumnGroupProps>(
+export const ColumnGroup = forwardRef<ColumnGroupRef, ColumnGroupProps>(
   ({ children, ...rest }, ref) => {
     return (
       <colgroup ref={ref} {...rest}>

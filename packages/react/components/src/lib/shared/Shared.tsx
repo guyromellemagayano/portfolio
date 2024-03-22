@@ -10,7 +10,7 @@ import {
   forwardRef
 } from 'react'
 
-import { TCommonSharedComponentsProps } from '@guy-romelle-magayano/react-components'
+import { CommonComponentsProps } from '@guy-romelle-magayano/react-components'
 
 import { Abbreviation } from '../Abbreviation'
 import { Address } from '../Address'
@@ -70,8 +70,8 @@ import { Mark } from '../Mark'
 import { Menu } from '../Menu'
 import { Meta } from '../Meta'
 import { Meter } from '../Meter'
-import { Nav } from '../Nav'
-import { NoScript } from '../NoScript'
+import { Navigation } from '../Navigation'
+import { Noscript } from '../Noscript'
 import { Optgroup } from '../Optgroup'
 import { Option } from '../Option'
 import { OrderedList } from '../OrderedList'
@@ -120,7 +120,7 @@ type SharedRef = HTMLElement
 
 interface ISharedProps
   extends HTMLAttributes<SharedRef>,
-    TCommonSharedComponentsProps {
+    CommonComponentsProps {
   as?: ElementType
 }
 
@@ -183,8 +183,8 @@ interface ISharedStaticComponents {
   Menu: typeof Menu
   Meta: typeof Meta
   Meter: typeof Meter
-  Nav: typeof Nav
-  Noscript: typeof NoScript
+  Nav: typeof Navigation
+  Noscript: typeof Noscript
   Ol: typeof OrderedList
   Optgroup: typeof Optgroup
   Option: typeof Option
@@ -238,7 +238,7 @@ interface ISharedStaticComponents {
  * @param rest - Additional HTML attributes
  * @returns The rendered shared component
  */
-const SharedRC = forwardRef<SharedRef, ISharedProps>(
+export const SharedRC = forwardRef<SharedRef, ISharedProps>(
   (
     { as: Component = Fragment, children, ...rest },
     ref: ForwardedRef<SharedRef>
@@ -310,8 +310,8 @@ SharedRC.Mark = Mark
 SharedRC.Menu = Menu
 SharedRC.Meta = Meta
 SharedRC.Meter = Meter
-SharedRC.Nav = Nav
-SharedRC.Noscript = NoScript
+SharedRC.Nav = Navigation
+SharedRC.Noscript = Noscript
 SharedRC.Ol = OrderedList
 SharedRC.Optgroup = Optgroup
 SharedRC.Option = Option

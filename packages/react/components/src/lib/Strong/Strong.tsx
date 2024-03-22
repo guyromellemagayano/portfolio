@@ -11,7 +11,7 @@ export type StrongProps = HTMLAttributes<StrongRef>
  * @param rest - The rest of the props of the strong.
  * @returns The rendered strong component.
  */
-const Strong = forwardRef<StrongRef, StrongProps>(
+export const Strong = forwardRef<StrongRef, StrongProps>(
   ({ children, ...rest }, ref) => {
     return (
       <strong ref={ref} {...rest}>

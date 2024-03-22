@@ -12,7 +12,7 @@ export type BiDirectionalIsolationProps =
  * @param rest - The rest of the props of the bi-directional isolation.
  * @returns The rendered bi-directional isolation component.
  */
-const BiDirectionalIsolation = forwardRef<
+export const BiDirectionalIsolation = forwardRef<
   BiDirectionalIsolationRef,
   BiDirectionalIsolationProps
 >(({ children, ...rest }, ref) => {

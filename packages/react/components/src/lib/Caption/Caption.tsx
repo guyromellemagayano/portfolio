@@ -11,7 +11,7 @@ export type CaptionProps = TableHTMLAttributes<CaptionRef>
  * @param rest - The rest of the props of the caption.
  * @returns The rendered caption component.
  */
-const Caption = forwardRef<CaptionRef, CaptionProps>(
+export const Caption = forwardRef<CaptionRef, CaptionProps>(
   ({ children, ...rest }, ref) => {
     return (
       <caption ref={ref} {...rest}>

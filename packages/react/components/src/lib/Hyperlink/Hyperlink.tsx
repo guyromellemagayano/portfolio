@@ -4,7 +4,7 @@ import { AnchorHTMLAttributes, forwardRef } from 'react'
 
 import dynamic from 'next/dynamic'
 
-const NextLink = dynamic(() => import('next/link'))
+export const NextLink = dynamic(() => import('next/link'))
 
 export type HyperlinkRef = HTMLAnchorElement
 export type HyperlinkProps = AnchorHTMLAttributes<HyperlinkRef> & {
@@ -19,7 +19,7 @@ export type HyperlinkProps = AnchorHTMLAttributes<HyperlinkRef> & {
  * @param rest - The rest of the props of the hyperlink.
  * @returns The rendered hyperlink component.
  */
-const Hyperlink = forwardRef<HyperlinkRef, HyperlinkProps>(
+export const Hyperlink = forwardRef<HyperlinkRef, HyperlinkProps>(
   ({ href = '#', isNextLink = false, children, ...rest }, ref) => {
     if (isNextLink) {
       return (

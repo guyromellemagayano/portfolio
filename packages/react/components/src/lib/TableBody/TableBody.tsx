@@ -11,7 +11,7 @@ export type TableBodyProps = HTMLAttributes<TableBodyRef>
  * @param rest - The rest of the props of the table body.
  * @returns The rendered table body component.
  */
-const TableBody = forwardRef<TableBodyRef, TableBodyProps>(
+export const TableBody = forwardRef<TableBodyRef, TableBodyProps>(
   ({ children, ...rest }, ref) => {
     return (
       <tbody ref={ref} {...rest}>

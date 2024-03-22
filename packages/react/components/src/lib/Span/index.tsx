@@ -1,1 +1,1 @@
-export { default as Span } from './Span'
+export * from './Span'

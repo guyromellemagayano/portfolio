@@ -1,1 +1,1 @@
-export { default as Output } from './Output'
+export * from './Output'

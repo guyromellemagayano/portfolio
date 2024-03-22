@@ -11,13 +11,15 @@ export type ListProps = LiHTMLAttributes<ListRef>
  * @param rest - The rest of the props of the list.
  * @returns The rendered list component.
  */
-const List = forwardRef<ListRef, ListProps>(({ children, ...rest }, ref) => {
-  return (
-    <li ref={ref} {...rest}>
-      {children}
-    </li>
-  )
-})
+export const List = forwardRef<ListRef, ListProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <li ref={ref} {...rest}>
+        {children}
+      </li>
+    )
+  }
+)
 
 List.displayName = 'List'
 

@@ -11,13 +11,15 @@ export type AudioProps = AudioHTMLAttributes<AudioRef>
  * @param rest - The rest of the props of the audio.
  * @returns The rendered audio component.
  */
-const Audio = forwardRef<AudioRef, AudioProps>(({ children, ...rest }, ref) => {
-  return (
-    <audio ref={ref} {...rest}>
-      {children}
-    </audio>
-  )
-})
+export const Audio = forwardRef<AudioRef, AudioProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <audio ref={ref} {...rest}>
+        {children}
+      </audio>
+    )
+  }
+)
 
 Audio.displayName = 'Audio'
 

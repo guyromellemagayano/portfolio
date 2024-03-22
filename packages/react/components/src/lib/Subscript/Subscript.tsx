@@ -11,7 +11,7 @@ export type SubscriptProps = HTMLAttributes<SubscriptRef>
  * @param rest - The rest of the props of the subscript.
  * @returns The rendered subscript component.
  */
-const Subscript = forwardRef<SubscriptRef, SubscriptProps>(
+export const Subscript = forwardRef<SubscriptRef, SubscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
       <sub ref={ref} {...rest}>

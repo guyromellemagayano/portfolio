@@ -1,1 +1,1 @@
-export { default as KeyboardInput } from './KeyboardInput'
+export * from './KeyboardInput'

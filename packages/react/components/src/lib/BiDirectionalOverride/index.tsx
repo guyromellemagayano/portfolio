@@ -1,1 +1,1 @@
-export { default as BiDirectionalOverride } from './BiDirectionalOverride'
+export * from './BiDirectionalOverride'

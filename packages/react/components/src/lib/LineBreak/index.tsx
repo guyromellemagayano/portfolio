@@ -1,1 +1,1 @@
-export { default as LineBreak } from './LineBreak'
+export * from './LineBreak'

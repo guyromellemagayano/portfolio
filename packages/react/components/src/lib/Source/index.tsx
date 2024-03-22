@@ -1,1 +1,1 @@
-export { default as Source } from './Source'
+export * from './Source'

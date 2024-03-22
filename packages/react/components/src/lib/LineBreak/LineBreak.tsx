@@ -11,7 +11,7 @@ export type LineBreakProps = HTMLAttributes<LineBreakRef>
  * @param rest - The rest of the props of the line break.
  * @returns The rendered line break component.
  */
-const LineBreak = forwardRef<LineBreakRef, LineBreakProps>(
+export const LineBreak = forwardRef<LineBreakRef, LineBreakProps>(
   ({ ...rest }, ref) => {
     return <br ref={ref} {...rest} />
   }

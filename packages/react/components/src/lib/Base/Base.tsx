@@ -11,7 +11,7 @@ export type BaseProps = BaseHTMLAttributes<BaseRef>
  * @param rest - The rest of the props of the base.
  * @returns The rendered base component.
  */
-const Base = ({ children, ...rest }: BaseProps) => {
+export const Base = ({ children, ...rest }: BaseProps) => {
   return <base {...rest}>{children}</base>
 }
 

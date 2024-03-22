@@ -11,7 +11,7 @@ export type DatalistProps = HTMLAttributes<DatalistRef>
  * @param rest - The rest of the props of the datalist.
  * @returns The rendered datalist component.
  */
-const Datalist = forwardRef<DatalistRef, DatalistProps>(
+export const Datalist = forwardRef<DatalistRef, DatalistProps>(
   ({ children, ...rest }, ref) => {
     return (
       <datalist ref={ref} {...rest}>
