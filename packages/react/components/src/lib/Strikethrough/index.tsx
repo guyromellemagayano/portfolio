@@ -1,1 +1,1 @@
-export { default as Strikethrough } from './Strikethrough'
+export * from './Strikethrough'

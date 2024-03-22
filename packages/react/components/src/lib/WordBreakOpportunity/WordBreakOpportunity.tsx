@@ -11,7 +11,7 @@ export type WordBreakOpportunityProps = HTMLAttributes<WordBreakOpportunityRef>
  * @param rest - The rest of the props of the word break opportunity.
  * @returns The rendered word break opportunity component.
  */
-const WordBreakOpportunity = forwardRef<
+export const WordBreakOpportunity = forwardRef<
   WordBreakOpportunityRef,
   WordBreakOpportunityProps
 >(({ children, ...rest }, ref) => {

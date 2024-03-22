@@ -11,7 +11,7 @@ export type OutputProps = OutputHTMLAttributes<OutputRef>
  * @param rest - The rest of the props of the output.
  * @returns The rendered output component.
  */
-const Output = forwardRef<OutputRef, OutputProps>(
+export const Output = forwardRef<OutputRef, OutputProps>(
   ({ children, ...rest }, ref) => {
     return (
       <output ref={ref} {...rest}>

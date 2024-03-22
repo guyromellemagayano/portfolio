@@ -1,1 +1,1 @@
-export { default as Style } from './Style'
+export * from './Style'

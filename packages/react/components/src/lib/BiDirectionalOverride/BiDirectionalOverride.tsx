@@ -12,7 +12,7 @@ export type BiDirectionalOverrideProps =
  * @param rest - The rest of the props of the bi-directional override.
  * @returns The rendered bi-directional override component.
  */
-const BiDirectionalOverride = forwardRef<
+export const BiDirectionalOverride = forwardRef<
   BiDirectionalOverrideRef,
   BiDirectionalOverrideProps
 >(({ children, ...rest }, ref) => {

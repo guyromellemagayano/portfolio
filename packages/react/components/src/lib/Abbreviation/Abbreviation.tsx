@@ -11,7 +11,7 @@ export type AbbreviationProps = HTMLAttributes<AbbreviationRef>
  * @param rest - The rest of the props of the abbreviation.
  * @returns The rendered abbreviation component.
  */
-const Abbreviation = forwardRef<AbbreviationRef, AbbreviationProps>(
+export const Abbreviation = forwardRef<AbbreviationRef, AbbreviationProps>(
   ({ children, ...rest }, ref) => {
     return (
       <abbr ref={ref} {...rest}>

@@ -11,7 +11,7 @@ export type DialogProps = DialogHTMLAttributes<DialogRef>
  * @param rest - The rest of the props of the dialog.
  * @returns The rendered dialog component.
  */
-const Dialog = forwardRef<DialogRef, DialogProps>(
+export const Dialog = forwardRef<DialogRef, DialogProps>(
   ({ children, ...rest }, ref) => {
     return (
       <dialog ref={ref} {...rest}>

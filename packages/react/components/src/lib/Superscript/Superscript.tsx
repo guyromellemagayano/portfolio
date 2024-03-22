@@ -11,7 +11,7 @@ export type SuperscriptProps = HTMLAttributes<SuperscriptRef>
  * @param rest - The rest of the props of the superscript.
  * @returns The rendered superscript component.
  */
-const Superscript = forwardRef<SuperscriptRef, SuperscriptProps>(
+export const Superscript = forwardRef<SuperscriptRef, SuperscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
       <sup ref={ref} {...rest}>

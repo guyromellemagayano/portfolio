@@ -11,13 +11,15 @@ export type MarkProps = HTMLAttributes<MarkRef>
  * @param rest - The rest of the props of the mark.
  * @returns The rendered mark component.
  */
-const Mark = forwardRef<MarkRef, MarkProps>(({ children, ...rest }, ref) => {
-  return (
-    <mark ref={ref} {...rest}>
-      {children}
-    </mark>
-  )
-})
+export const Mark = forwardRef<MarkRef, MarkProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <mark ref={ref} {...rest}>
+        {children}
+      </mark>
+    )
+  }
+)
 
 Mark.displayName = 'Mark'
 

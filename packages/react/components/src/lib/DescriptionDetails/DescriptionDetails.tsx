@@ -11,7 +11,7 @@ export type DescriptionDetailsProps = HTMLAttributes<DescriptionDetailsRef>
  * @param rest - The rest of the props of the description details.
  * @returns The rendered description details component.
  */
-const DescriptionDetails = forwardRef<
+export const DescriptionDetails = forwardRef<
   DescriptionDetailsRef,
   DescriptionDetailsProps
 >(({ children, ...rest }, ref) => {

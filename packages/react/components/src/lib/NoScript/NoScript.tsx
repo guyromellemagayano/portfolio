@@ -11,7 +11,7 @@ export type NoscriptProps = ScriptHTMLAttributes<NoscriptRef>
  * @param rest - The rest of the props of the noscript.
  * @returns The rendered noscript component.
  */
-const Noscript = forwardRef<NoscriptRef, NoscriptProps>(
+export const Noscript = forwardRef<NoscriptRef, NoscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
       <noscript ref={ref} {...rest}>

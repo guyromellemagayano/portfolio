@@ -11,13 +11,15 @@ export type QuoteProps = HTMLAttributes<QuoteRef>
  * @param rest - The rest of the props of the quote.
  * @returns The rendered quote component.
  */
-const Quote = forwardRef<QuoteRef, QuoteProps>(({ children, ...rest }, ref) => {
-  return (
-    <q ref={ref} {...rest}>
-      {children}
-    </q>
-  )
-})
+export const Quote = forwardRef<QuoteRef, QuoteProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <q ref={ref} {...rest}>
+        {children}
+      </q>
+    )
+  }
+)
 
 Quote.displayName = 'Quote'
 

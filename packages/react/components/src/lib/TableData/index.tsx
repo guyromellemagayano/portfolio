@@ -1,1 +1,1 @@
-export { default as TableData } from './TableData'
+export * from './TableData'

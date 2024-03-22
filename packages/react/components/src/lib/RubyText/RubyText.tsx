@@ -11,7 +11,7 @@ export type RubyTextProps = HTMLAttributes<RubyTextRef>
  * @param rest - The rest of the props of the ruby text.
  * @returns The rendered ruby text component.
  */
-const RubyText = forwardRef<RubyTextRef, RubyTextProps>(
+export const RubyText = forwardRef<RubyTextRef, RubyTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <rt ref={ref} {...rest}>
