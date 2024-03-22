@@ -11,7 +11,7 @@ export type TemplateProps = HTMLAttributes<TemplateRef>
  * @param rest - The rest of the props of the template.
  * @returns The rendered template component.
  */
-const Template = forwardRef<TemplateRef, TemplateProps>(
+export const Template = forwardRef<TemplateRef, TemplateProps>(
   ({ children, ...rest }, ref) => {
     return (
       <template ref={ref} {...rest}>

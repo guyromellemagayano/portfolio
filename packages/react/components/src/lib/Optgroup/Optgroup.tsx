@@ -11,7 +11,7 @@ export type OptgroupProps = OptgroupHTMLAttributes<OptgroupRef>
  * @param rest - The rest of the props of the optgroup.
  * @returns The rendered optgroup component.
  */
-const Optgroup = forwardRef<OptgroupRef, OptgroupProps>(
+export const Optgroup = forwardRef<OptgroupRef, OptgroupProps>(
   ({ children, ...rest }, ref) => {
     return (
       <optgroup ref={ref} {...rest}>

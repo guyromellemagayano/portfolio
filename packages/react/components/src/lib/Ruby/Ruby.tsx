@@ -11,13 +11,15 @@ export type RubyProps = HTMLAttributes<RubyRef>
  * @param rest - The rest of the props of the ruby annotation.
  * @returns The rendered ruby annotation component.
  */
-const Ruby = forwardRef<RubyRef, RubyProps>(({ children, ...rest }, ref) => {
-  return (
-    <ruby ref={ref} {...rest}>
-      {children}
-    </ruby>
-  )
-})
+export const Ruby = forwardRef<RubyRef, RubyProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <ruby ref={ref} {...rest}>
+        {children}
+      </ruby>
+    )
+  }
+)
 
 Ruby.displayName = 'Ruby'
 

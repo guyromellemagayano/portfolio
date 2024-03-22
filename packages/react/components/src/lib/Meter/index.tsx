@@ -1,1 +1,1 @@
-export { default as Meter } from './Meter'
+export * from './Meter'

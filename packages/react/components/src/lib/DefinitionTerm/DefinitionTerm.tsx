@@ -11,15 +11,16 @@ export type DefinitionTermProps = HTMLAttributes<DefinitionTermRef>
  * @param rest - The rest of the props of the definition term.
  * @returns The rendered definition term component.
  */
-const DefinitionTerm = forwardRef<DefinitionTermRef, DefinitionTermProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <dfn ref={ref} {...rest}>
-        {children}
-      </dfn>
-    )
-  }
-)
+export const DefinitionTerm = forwardRef<
+  DefinitionTermRef,
+  DefinitionTermProps
+>(({ children, ...rest }, ref) => {
+  return (
+    <dfn ref={ref} {...rest}>
+      {children}
+    </dfn>
+  )
+})
 
 DefinitionTerm.displayName = 'DefinitionTerm'
 

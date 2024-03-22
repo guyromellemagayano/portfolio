@@ -14,7 +14,7 @@ export type HeadingProps = HTMLAttributes<HeadingRef> & {
  * @param rest - The rest of the props of the heading.
  * @returns The rendered heading component.
  */
-const Heading = forwardRef<HeadingRef, HeadingProps>(
+export const Heading = forwardRef<HeadingRef, HeadingProps>(
   ({ as: Component = 'h1', children, ...rest }, ref) => {
     return (
       <Component ref={ref} {...rest}>

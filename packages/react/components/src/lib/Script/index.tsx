@@ -1,1 +1,1 @@
-export { default as Script } from './Script'
+export * from './Script'

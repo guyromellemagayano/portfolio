@@ -11,7 +11,7 @@ export type DeletedTextProps = DelHTMLAttributes<DeletedTextRef>
  * @param rest - The rest of the props of the deleted text.
  * @returns The rendered deleted text component.
  */
-const DeletedText = forwardRef<DeletedTextRef, DeletedTextProps>(
+export const DeletedText = forwardRef<DeletedTextRef, DeletedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <del ref={ref} {...rest}>

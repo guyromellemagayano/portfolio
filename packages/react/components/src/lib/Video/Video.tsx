@@ -11,13 +11,15 @@ export type VideoProps = VideoHTMLAttributes<VideoRef>
  * @param rest - The rest of the props of the video.
  * @returns The rendered video component.
  */
-const Video = forwardRef<VideoRef, VideoProps>(({ children, ...rest }, ref) => {
-  return (
-    <video ref={ref} {...rest}>
-      {children}
-    </video>
-  )
-})
+export const Video = forwardRef<VideoRef, VideoProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <video ref={ref} {...rest}>
+        {children}
+      </video>
+    )
+  }
+)
 
 Video.displayName = 'Video'
 

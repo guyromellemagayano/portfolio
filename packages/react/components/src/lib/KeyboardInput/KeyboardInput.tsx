@@ -11,7 +11,7 @@ export type KeyboardInputProps = HTMLAttributes<KeyboardInputRef>
  * @param rest - The rest of the props of the keyboard input.
  * @returns The rendered keyboard input component.
  */
-const KeyboardInput = forwardRef<KeyboardInputRef, KeyboardInputProps>(
+export const KeyboardInput = forwardRef<KeyboardInputRef, KeyboardInputProps>(
   ({ children, ...rest }, ref) => {
     return (
       <kbd ref={ref} {...rest}>

@@ -11,13 +11,15 @@ export type LabelProps = LabelHTMLAttributes<LabelRef>
  * @param rest - The rest of the props of the label.
  * @returns The rendered label component.
  */
-const Label = forwardRef<LabelRef, LabelProps>(({ children, ...rest }, ref) => {
-  return (
-    <label ref={ref} {...rest}>
-      {children}
-    </label>
-  )
-})
+export const Label = forwardRef<LabelRef, LabelProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <label ref={ref} {...rest}>
+        {children}
+      </label>
+    )
+  }
+)
 
 Label.displayName = 'Label'
 

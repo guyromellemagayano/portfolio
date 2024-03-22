@@ -11,7 +11,7 @@ export type UnorderedListProps = HTMLAttributes<UnorderedListRef>
  * @param rest - The rest of the props of the unordered list.
  * @returns The rendered unordered list component.
  */
-const UnorderedList = forwardRef<UnorderedListRef, UnorderedListProps>(
+export const UnorderedList = forwardRef<UnorderedListRef, UnorderedListProps>(
   ({ children, ...rest }, ref) => {
     return (
       <ul ref={ref} {...rest}>

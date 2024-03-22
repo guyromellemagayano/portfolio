@@ -11,7 +11,7 @@ export type CanvasProps = CanvasHTMLAttributes<CanvasRef>
  * @param rest - The rest of the props of the canvas.
  * @returns The rendered canvas component.
  */
-const Canvas = forwardRef<CanvasRef, CanvasProps>(
+export const Canvas = forwardRef<CanvasRef, CanvasProps>(
   ({ children, ...rest }, ref) => {
     return (
       <canvas ref={ref} {...rest}>

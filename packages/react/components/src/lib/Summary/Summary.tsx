@@ -11,7 +11,7 @@ export type SummaryProps = HTMLAttributes<SummaryRef>
  * @param rest - The rest of the props of the summary.
  * @returns The rendered summary component.
  */
-const Summary = forwardRef<SummaryRef, SummaryProps>(
+export const Summary = forwardRef<SummaryRef, SummaryProps>(
   ({ children, ...rest }, ref) => {
     return (
       <summary ref={ref} {...rest}>

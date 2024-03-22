@@ -1,1 +1,1 @@
-export { default as WordBreakOpportunity } from './WordBreakOpportunity'
+export * from './WordBreakOpportunity'

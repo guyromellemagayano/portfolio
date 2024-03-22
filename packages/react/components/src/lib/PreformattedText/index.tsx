@@ -1,1 +1,1 @@
-export { default as PreformattedText } from './PreformattedText'
+export * from './PreformattedText'

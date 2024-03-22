@@ -11,7 +11,7 @@ export type ColumnProps = ColHTMLAttributes<ColumnRef>
  * @param rest - The rest of the props of the column.
  * @returns The rendered column component.
  */
-const Column = forwardRef<ColumnRef, ColumnProps>(
+export const Column = forwardRef<ColumnRef, ColumnProps>(
   ({ children, ...rest }, ref) => {
     return (
       <col ref={ref} {...rest}>

@@ -1,1 +1,1 @@
-export { default as Datalist } from './Datalist'
+export * from './Datalist'

@@ -11,15 +11,16 @@ export type EmphasizedTextProps = HTMLAttributes<EmphasizedTextRef>
  * @param rest - The rest of the props of the emphasized text.
  * @returns The rendered emphasized text component.
  */
-const EmphasizedText = forwardRef<EmphasizedTextRef, EmphasizedTextProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <em ref={ref} {...rest}>
-        {children}
-      </em>
-    )
-  }
-)
+export const EmphasizedText = forwardRef<
+  EmphasizedTextRef,
+  EmphasizedTextProps
+>(({ children, ...rest }, ref) => {
+  return (
+    <em ref={ref} {...rest}>
+      {children}
+    </em>
+  )
+})
 
 EmphasizedText.displayName = 'EmphasizedText'
 
