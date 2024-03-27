@@ -1,1 +1,2 @@
-export * from './EmphasizedText'
+export type * from './EmphasizedText'
+export { default as Em } from './EmphasizedText'

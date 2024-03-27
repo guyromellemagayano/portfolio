@@ -1,1 +1,2 @@
-export * from './TableHeader'
+export type * from './TableHeader'
+export { default as Th } from './TableHeader'

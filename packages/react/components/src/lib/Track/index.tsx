@@ -1,1 +1,2 @@
-export * from './Track'
+export type * from './Track'
+export { default as Track } from './Track'

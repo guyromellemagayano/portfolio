@@ -1,1 +1,2 @@
-export * from './BiDirectionalOverride'
+export type * from './BiDirectionalOverride'
+export { default as Bdo } from './BiDirectionalOverride'
