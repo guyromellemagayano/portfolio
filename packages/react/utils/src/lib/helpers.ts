@@ -14,7 +14,7 @@ export const arrayToUrlSlug = (array: string[]) => {
   return slugArray?.join('-') ?? ''
 }
 
-type TClampProps = {
+export type TClampProps = {
   number: number
   min: number
   max: number
