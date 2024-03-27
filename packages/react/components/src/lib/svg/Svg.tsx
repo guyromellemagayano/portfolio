@@ -35,4 +35,4 @@ export const SvgPath = ({ ...rest }: SvgPathProps) => {
   return <path {...rest} />
 }
 
-SvgPath.displayName = 'SVG Path'
+SvgPath.displayName = 'SVGPath'

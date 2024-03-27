@@ -7,9 +7,7 @@ import dynamic from 'next/dynamic'
 export const NextScript = dynamic(() => import('next/script'))
 
 export type ScriptRef = HTMLScriptElement
-export type ScriptProps = ScriptHTMLAttributes<ScriptRef> & {
-  isNextScript?: boolean
-}
+export type ScriptProps = ScriptHTMLAttributes<ScriptRef>
 
 /**
  * Render the script component
@@ -17,15 +15,7 @@ export type ScriptProps = ScriptHTMLAttributes<ScriptRef> & {
  * @param rest - The rest of the props of the script.
  * @returns The rendered script component.
  */
-export const Script = ({
-  isNextScript = false,
-  children,
-  ...rest
-}: ScriptProps) => {
-  if (isNextScript) {
-    return <NextScript {...rest}>{children}</NextScript>
-  }
-
+export const Script = ({ children, ...rest }: ScriptProps) => {
   return <script {...rest}>{children}</script>
 }
 

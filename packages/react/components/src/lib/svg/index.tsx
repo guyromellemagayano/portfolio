@@ -1,1 +1,2 @@
-export { Svg, SvgPath } from './Svg'
+export type * from './Svg'
+export { SvgPath as Path, Svg } from './Svg'

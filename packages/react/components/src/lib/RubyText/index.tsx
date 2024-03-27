@@ -1,1 +1,2 @@
-export * from './RubyText'
+export type * from './RubyText'
+export { default as Rt } from './RubyText'
