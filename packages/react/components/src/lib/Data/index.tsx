@@ -1,1 +1,2 @@
-export * from './Data'
+export type * from './Data'
+export { default as Data } from './Data'

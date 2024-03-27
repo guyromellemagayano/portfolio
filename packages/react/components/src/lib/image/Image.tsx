@@ -7,11 +7,7 @@ import dynamic from 'next/dynamic'
 export const NextImage = dynamic(() => import('next/image'))
 
 export type ImageRef = HTMLImageElement
-export type ImageProps = ImgHTMLAttributes<ImageRef> & {
-  isNextImage?: boolean
-  width?: number
-  height?: number
-}
+export type ImageProps = ImgHTMLAttributes<ImageRef>
 
 /**
  * Render the image component.
@@ -22,14 +18,7 @@ export type ImageProps = ImgHTMLAttributes<ImageRef> & {
  * @returns The rendered  image component.
  */
 export const Image = forwardRef<ImageRef, ImageProps>(
-  (
-    { src = '#', alt = '', width, height, isNextImage = false, ...rest },
-    ref
-  ) => {
-    if (isNextImage) {
-      return <NextImage ref={ref} src={src} alt={alt} {...rest} />
-    }
-
+  ({ src = '#', alt = '', ...rest }, ref) => {
     return <img ref={ref} src={src} alt={alt} {...rest} />
   }
 )
