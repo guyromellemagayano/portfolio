@@ -1,1 +1,2 @@
-export * from './Division'
+export type * from './Division'
+export { default as Div } from './Division'

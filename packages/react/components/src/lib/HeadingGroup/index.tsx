@@ -1,1 +1,2 @@
-export * from './HeadingGroup'
+export type * from './HeadingGroup'
+export { default as Hgroup } from './HeadingGroup'

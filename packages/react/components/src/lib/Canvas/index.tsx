@@ -1,1 +1,2 @@
-export * from './Canvas'
+export type * from './Canvas'
+export { default as Canvas } from './Canvas'
