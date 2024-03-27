@@ -16,9 +16,9 @@ export const WordBreakOpportunity = forwardRef<
   WordBreakOpportunityProps
 >(({ children, ...rest }, ref) => {
   return (
-    <var ref={ref} {...rest}>
+    <wbr ref={ref} {...rest}>
       {children}
-    </var>
+    </wbr>
   )
 })
 

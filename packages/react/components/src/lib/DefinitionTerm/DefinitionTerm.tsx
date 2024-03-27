@@ -16,9 +16,9 @@ export const DefinitionTerm = forwardRef<
   DefinitionTermProps
 >(({ children, ...rest }, ref) => {
   return (
-    <dfn ref={ref} {...rest}>
+    <dt ref={ref} {...rest}>
       {children}
-    </dfn>
+    </dt>
   )
 })
 

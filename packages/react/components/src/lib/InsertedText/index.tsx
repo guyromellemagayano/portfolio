@@ -1,1 +1,2 @@
-export * from './InsertedText'
+export type * from './InsertedText'
+export { default as Ins } from './InsertedText'

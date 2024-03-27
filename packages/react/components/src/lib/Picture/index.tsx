@@ -1,1 +1,2 @@
-export * from './Picture'
+export type * from './Picture'
+export { default as Picture } from './Picture'
