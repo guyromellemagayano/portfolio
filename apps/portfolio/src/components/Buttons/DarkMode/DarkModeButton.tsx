@@ -10,11 +10,19 @@ import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/ty
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
-
 // Dynamic imports
 const Button = dynamic(() =>
   import('@guy-romelle-magayano/react-components').then(mod => mod.Button)
+)
+const SunSvg = dynamic(() =>
+  import('@guy-romelle-magayano/portfolio/components/SVG').then(
+    mod => mod.SunSvg
+  )
+)
+const MoonSvg = dynamic(() =>
+  import('@guy-romelle-magayano/portfolio/components/SVG').then(
+    mod => mod.MoonSvg
+  )
 )
 
 export type DarkModeButtonRef = ButtonRef
