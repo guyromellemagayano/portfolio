@@ -1,10 +1,8 @@
 import { ReactNode } from 'react'
 
-import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/layout/base'
+import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Base'
 
-import 'focus-visible'
-
-type TRootLayoutProps = {
+export type RootLayoutProps = {
   children: ReactNode
 }
 
@@ -13,8 +11,10 @@ type TRootLayoutProps = {
  * @param children - The children of the root layout.
  * @returns The rendered root layout component.
  */
-const RootLayout = ({ children }: TRootLayoutProps) => {
+const RootLayout = ({ children }: RootLayoutProps) => {
   return <BaseLayout>{children}</BaseLayout>
 }
+
+RootLayout.displayName = 'RootLayout'
 
 export default RootLayout
