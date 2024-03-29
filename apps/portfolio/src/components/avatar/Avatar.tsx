@@ -2,72 +2,68 @@
 
 import { ForwardedRef, forwardRef } from 'react'
 
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { SharedReactComponent } from '@guy-romelle-magayano/react-components/server'
-import { cn } from '@guy-romelle-magayano/react-utils/server'
+import {
+  HyperlinkProps,
+  HyperlinkRef
+} from '@guy-romelle-magayano/react-components/server'
+import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
-type AvatarRef = HTMLAnchorElement
+import { cn } from '@guy-romelle-magayano/react-utils'
 
-export type AvatarProps = {
-  link: {
-    href?: string
-    className?: string
-  }
-  image: {
-    src?: StaticImport | string
+export type AvatarRef = HyperlinkRef
+export type AvatarProps = HyperlinkProps &
+  CommonComponentsProps & {
+    large?: boolean
     alt?: string
-    large: boolean
-    className?: string
   }
-}
 
 /**
  * Renders the avatar component.
- * @param link.href The link href.
- * @param link.className The link class name.
- * @param image.src The image src.
- * @param image.alt The image alt.
- * @param image.large The image large flag.
- * @param image.className The image class name.
- * @param rest The rest of the props.
+ * @param large - The large prop of the avatar.
+ * @param className - The class name of the avatar.
+ * @param alt - The alternative text of the avatar.
+ * @param rest - The rest of the props of the avatar.
  * @returns The rendered avatar component.
  */
 const Avatar = forwardRef<AvatarRef, AvatarProps>(
   (
-    {
-      link = {
-        href: '#',
-        className: ''
-      },
-      image = {
-        src: '#',
-        alt: '',
-        large: false,
-        className: ''
-      },
-      ...rest
-    },
+    { large = false, className, alt = '', ...rest },
     ref: ForwardedRef<AvatarRef>
   ) => {
+    const link: { href: string; label: string } = {
+        href: '/',
+        label: 'Go to Home Page'
+      },
+      image: { file: string; width: number; height: number } = {
+        file: '/images/avatar.jpg',
+        width: 64,
+        height: 64
+      }
+
     return (
-      <SharedReactComponent.Link
+      <Link
         ref={ref}
         href={link.href}
-        className={cn('pointer-events-auto', link.className)}
+        aria-label={link.label}
+        className={cn(className, 'pointer-events-auto')}
         {...rest}
       >
-        <SharedReactComponent.Image
-          src={image.src}
-          alt={image.alt}
+        <Image
+          src={image.file}
+          alt={alt}
+          sizes={large ? '4rem' : '2.25rem'}
+          width={image.width}
+          height={image.height}
           className={cn(
             'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
-            image.large ? 'h-16 w-16' : 'h-9 w-9',
-            image.className
+            large ? 'h-16 w-16' : 'h-9 w-9'
           )}
           priority
         />
-      </SharedReactComponent.Link>
+      </Link>
     )
   }
 )
