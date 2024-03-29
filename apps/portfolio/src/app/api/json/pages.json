@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Home",
+    "link": "/"
+  },
+  {
+    "title": "Skills",
+    "link": "/skills"
+  },
+  {
+    "title": "Work",
+    "link": "/work"
+  },
+  {
+    "title": "Projects",
+    "link": "/projects"
+  },
+  {
+    "title": "Articles",
+    "link": "/articles"
+  },
+  {
+    "title": "Uses",
+    "link": "/uses"
+  },
+  {
+    "title": "About",
+    "link": "/about"
+  }
+]
