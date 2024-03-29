@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://twitter.com/mguyromelle",
+    "label": "Follow on Twitter",
+    "icon": "twitter"
+  },
+  {
+    "url": "https://github.com/guyromellemagayano",
+    "label": "Follow on GitHub",
+    "icon": "github"
+  },
+  {
+    "url": "https://www.linkedin.com/in/mguyromelle/",
+    "label": "Follow on LinkedIn",
+    "icon": "linkedin"
+  },
+  {
+    "url": "mailto:aspiredtechie2010@gmail.com",
+    "label": "aspiredtechie2010@gmail.com",
+    "icon": "mail"
+  }
+]
