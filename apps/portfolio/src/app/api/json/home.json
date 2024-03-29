@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "title": "Guy Romelle Magayano - Full Stack Developer, open-source enthusiast, and a minimalist",
+    "description": "Full stack developer, open-source enthusiast, and a minimalist.",
+    "keywords": "guy romelle magayano, full stack developer, davao, philippines, custom web application, custom web development, devops, seo, amazon, google, javascript, typescript, html, css, react, react native, wordpress, tailwind, jamstack, gatsby, nextjs"
+  },
+  "hero": {
+    "heading": "Full stack developer, open-source enthusiast, and a minimalist.",
+    "description": [
+      "I’m Guy, a full stack developer and an open-source enthusiast based in Davao City, Philippines. I love building things that live on the internet, whether that be websites, applications, or anything in between. My goal is to always build products that provide pixel-perfect, performant experiences while also ensuring minimal code and maximum efficiency."
+    ]
+  },
+  "slidePhotos": [
+    {
+      "alt": "",
+      "src": "/images/photos/travel.jpg"
+    },
+    {
+      "alt": "",
+      "src": "/images/photos/speaker.jpg"
+    },
+    {
+      "alt": "",
+      "src": "/images/photos/workplace.jpg"
+    },
+    {
+      "alt": "",
+      "src": "/images/photos/food.jpg"
+    },
+    {
+      "alt": "",
+      "src": "/images/photos/photography.jpg"
+    }
+  ],
+  "cvFile": "/docs/cv.pdf",
+  "workExperiences": [
+    {
+      "company": "X-Team",
+      "title": "Senior Full Stack + WordPress Developer",
+      "logo": "/images/logos/x-team.png",
+      "alt": "X-Team Company Logo",
+      "start": "Apr. 2023",
+      "end": "Jul. 2023"
+    },
+    {
+      "company": "Epic Design Labs",
+      "title": "Senior Full Stack Developer",
+      "logo": "/images/logos/epic-design-labs.png",
+      "alt": "Epic Design Labs Company Logo",
+      "start": "Apr. 2020",
+      "end": "Feb. 2023"
+    },
+    {
+      "company": "MultiplyMii",
+      "title": "Senior Full Stack Developer",
+      "logo": "/images/logos/multiplymii.jpeg",
+      "alt": "MultiplyMii Company Logo",
+      "start": "Apr. 2020",
+      "end": "Sept. 2021"
+    },
+    {
+      "company": "MAKE Interactive BV",
+      "title": "Full Stack Developer",
+      "logo": "/images/logos/make-development.jpeg",
+      "alt": "MAKE Interactive BV Company Logo",
+      "start": "Apr. 2019",
+      "end": "Feb. 2020"
+    },
+    {
+      "company": "Orth Enterprises, LLC",
+      "title": "Full Stack Developer",
+      "start": "Apr. 2019",
+      "end": "Aug. 2019"
+    },
+    {
+      "company": "Outsourcing Wizards",
+      "title": "Full Stack Developer",
+      "start": "Jan. 2019",
+      "end": "Mar. 2019"
+    },
+    {
+      "company": "Infosoft Studio",
+      "title": "Full Stack Developer",
+      "logo": "/images/logos/infosoft-studio.png",
+      "alt": "Infosoft Studio Company Logo",
+      "start": "Nov. 2014",
+      "end": "Sept. 2018"
+    }
+  ]
+}

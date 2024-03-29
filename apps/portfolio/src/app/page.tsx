@@ -1,46 +1,37 @@
-// import * as Sentry from '@sentry/nextjs'
+import { Metadata } from 'next'
 
-// import { SharedButton } from '@guy-romelle-magayano/components/server'
+import { HomeApp } from '@guy-romelle-magayano/portfolio/components/Apps/Home'
+import { fullServerUrl } from '@guy-romelle-magayano/portfolio/utils'
+
+/**
+ * Fetches the data for the home page.
+ * @returns The data for the home page.
+ */
+const homeData = async () =>
+  await fetch(fullServerUrl('api/json?data=home')).then(res => res.json())
+
+/**
+ * Generates the metadata for the home page.
+ * @returns The metadata for the home page.
+ */
+export const generateMetadata = async (): Promise<Metadata> => {
+  const data = await homeData()
+
+  return {
+    title: data?.meta?.title || '',
+    description: data?.meta?.description || '',
+    keywords: data?.meta?.keywords || ''
+  }
+}
 
 /**
  * Renders the home page.
  * @returns The home page component.
  */
 const Page = async () => {
-  return (
-    <>
-      {/* <SharedButton
-        onClick={() => {
-          Sentry.startSpan(
-            {
-              name: 'Example Frontend Span',
-              op: 'test'
-            },
-            async () => {
-              const res = await fetch('/api/sentry-example-api')
-              if (!res.ok) {
-                throw new Error('Sentry Example Frontend Error')
-              }
-            }
-          )
-        }}
-      />
+  const data = await homeData()
 
-      <p>
-        Next, look for the error on the{' '}
-        <a href="https://guy-romelle-magayano.sentry.io/issues/?project=4504692968718336">
-          Issues Page
-        </a>
-        .
-      </p>
-      <p style={{ marginTop: '24px' }}>
-        For more information, see{' '}
-        <a href="https://docs.sentry.io/platforms/javascript/guides/nextjs/">
-          https://docs.sentry.io/platforms/javascript/guides/nextjs/
-        </a>
-      </p> */}
-    </>
-  )
+  return <HomeApp {...data}></HomeApp>
 }
 
 export default Page
