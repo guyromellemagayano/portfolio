@@ -6,9 +6,6 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
-
-import { isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import { SocialLinkProps } from '@guy-romelle-magayano/portfolio/components/Links/Social'
 
@@ -23,24 +20,22 @@ const SocialLink = dynamic(() =>
 )
 
 export type SocialLinksLayoutRef = DivisionRef
-export type SocialLinksLayoutProps = DivisionProps &
-  CommonComponentsProps & {
-    data: Array<SocialLinkProps>
-  }
+export type SocialLinksLayoutProps = DivisionProps & {
+  data: Array<SocialLinkProps>
+}
 
 /**
  * Render the social links layout component.
  * @param data - The data of the social links layout.
- * @param id - The id of the social links layout.
  * @param children - The children of the social links layout.
  * @returns The rendered social links layout component.
  */
 const SocialLinksLayout = forwardRef<
   SocialLinksLayoutRef,
   SocialLinksLayoutProps
->(({ data, id, ...rest }, ref) => {
+>(({ data, ...rest }, ref) => {
   return (
-    (!isEmpty(data) && (
+    (data && (
       <Div ref={ref} {...rest}>
         {data?.map((rest, index: number) => (
           <SocialLink key={index} {...rest} />

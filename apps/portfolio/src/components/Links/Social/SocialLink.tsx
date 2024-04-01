@@ -7,11 +7,7 @@ import {
   HyperlinkRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  convertStringToLowercase,
-  isEmpty
-} from '@guy-romelle-magayano/react-utils'
+import { cn, convertStringToLowercase } from '@guy-romelle-magayano/react-utils'
 
 import {
   GithubSvg,
@@ -22,12 +18,6 @@ import {
 import { SocialLinksData } from '@guy-romelle-magayano/portfolio/types/data'
 import { SvgProps } from '@guy-romelle-magayano/react-components'
 
-export type SocialLinkRef = HyperlinkRef
-export type SocialLinkProps = HyperlinkProps &
-  SocialLinksData & {
-    showLabel?: boolean
-  }
-
 // Dynamic imports
 const A = dynamic(() =>
   import('@guy-romelle-magayano/react-components/server').then(mod => mod.A)
@@ -35,6 +25,12 @@ const A = dynamic(() =>
 const Span = dynamic(() =>
   import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
 )
+
+export type SocialLinkRef = HyperlinkRef
+export type SocialLinkProps = HyperlinkProps &
+  SocialLinksData & {
+    showLabel?: boolean
+  }
 
 /**
  * Renders the social link component.
@@ -50,12 +46,10 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
   ({ icon, href, label, showLabel = false, id, className, ...rest }, ref) => {
     let Icon: FC<SvgProps> | undefined = () => undefined
 
-    const loweredIcon: string = !isEmpty(icon)
-      ? convertStringToLowercase(icon)
-      : ''
+    const loweredIcon: string = icon ? convertStringToLowercase(icon) : ''
 
     // Set the Icon value based on the icon prop.
-    if (!isEmpty(loweredIcon)) {
+    if (loweredIcon) {
       switch (loweredIcon) {
         case 'twitter':
           Icon = TwitterSvg
@@ -75,7 +69,7 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
     }
 
     return (
-      (!isEmpty(href) && (
+      (href && (
         <A
           ref={ref}
           {...rest}
@@ -90,7 +84,7 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
           target="_blank"
           rel="noreferrer"
         >
-          {!isEmpty(Icon) && (
+          {Icon && (
             <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
           )}
 
