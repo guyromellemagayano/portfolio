@@ -12,14 +12,8 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
-import {
-  cn,
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn, isArrayType } from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/Containers/Base'
 
@@ -43,14 +37,13 @@ const Span = dynamic(() =>
 )
 
 export type ContentLayoutRef = DivisionRef
-export type ContentLayoutProps = DivisionProps &
-  CommonComponentsProps & {
-    as?: ElementType
-    title?: string
-    intro?: string[] | string
-  }
+export type ContentLayoutProps = DivisionProps & {
+  as?: ElementType
+  title?: string
+  intro?: string[] | string
+}
 
-type ContentLayoutStaticComponents = {
+export type ContentLayoutStaticComponents = {
   Simple: typeof ContentSimpleLayout
   Aside: typeof ContentAsideLayout
 }
@@ -64,38 +57,40 @@ type ContentLayoutStaticComponents = {
  * @returns The rendered aside content layout component.
  */
 const ContentAsideLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
-  ({ title, intro, className, children, ...rest }, ref) => {
+  ({ title, intro, children, className, id, ...rest }, ref) => {
     return (
-      <Aside ref={ref} {...rest}>
-        {!isEmpty(title) && (
-          <Heading
-            as="h1"
-            className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
-          >
-            {title}
-          </Heading>
-        )}
+      ((title || intro || children) && (
+        <Aside ref={ref} {...rest}>
+          {title && (
+            <Heading
+              as="h1"
+              className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+            >
+              {title}
+            </Heading>
+          )}
 
-        {!isEmpty(intro) && (
-          <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-            {isArrayType(intro)
-              ? intro.map(
-                  (paragraph: string, index: number) =>
-                    !isEmpty(paragraph) &&
-                    isStringType(paragraph) && (
-                      <Span key={index} className="space-y-7">
-                        {paragraph}
-                      </Span>
-                    )
-                )
-              : intro}
-          </P>
-        )}
+          {intro && (
+            <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+              {isArrayType(intro)
+                ? intro?.map(
+                    (paragraph: string, index: number) =>
+                      paragraph && (
+                        <Span key={index} className="space-y-7">
+                          {paragraph}
+                        </Span>
+                      )
+                  )
+                : intro}
+            </P>
+          )}
 
-        {!isEmpty(children) && (
-          <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
-        )}
-      </Aside>
+          {children && (
+            <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
+          )}
+        </Aside>
+      )) ||
+      undefined
     )
   }
 )
@@ -111,44 +106,51 @@ ContentAsideLayout.displayName = 'ContentAsideLayout'
  * @returns The rendered simple content layout component.
  */
 const ContentSimpleLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
-  ({ title, intro, className, children, ...rest }, ref) => {
+  ({ title, intro, children, className, ...rest }, ref) => {
     const pathname = usePathname()
 
     return (
-      <BaseContainer ref={ref} className="mt-9" {...rest}>
-        <Div className="max-w-2xl">
-          {!isEmpty(title) && (
-            <Heading
-              as="h1"
-              className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
-            >
-              {title}
-            </Heading>
-          )}
+      ((title || intro || children) && (
+        <BaseContainer ref={ref} {...rest} className={cn('mt-9', className)}>
+          <Div className="max-w-2xl">
+            {title && (
+              <Heading
+                as="h1"
+                className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+              >
+                {title}
+              </Heading>
+            )}
 
-          {!isEmpty(intro) && (
-            <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-              {isArrayType(intro)
-                ? intro.map(
-                    (paragraph: string, index: number) =>
-                      !isEmpty(paragraph) &&
-                      isStringType(paragraph) && (
-                        <Span key={index} className="space-y-7">
-                          {paragraph}
-                        </Span>
-                      )
-                  )
-                : intro}
-            </P>
-          )}
-        </Div>
-
-        {!isEmpty(children) && (
-          <Div className={cn(pathname !== '/' && 'mt-16 sm:mt-20', className)}>
-            {children}
+            {intro && (
+              <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+                {isArrayType(intro)
+                  ? intro?.map(
+                      (paragraph: string, index: number) =>
+                        paragraph && (
+                          <Span key={index} className="space-y-7">
+                            {paragraph}
+                          </Span>
+                        )
+                    )
+                  : intro}
+              </P>
+            )}
           </Div>
-        )}
-      </BaseContainer>
+
+          {children && (
+            <Div
+              className={cn(
+                pathname !== '/' && 'mt-16 sm:mt-20',
+                'mt-9 sm:mt-9'
+              )}
+            >
+              {children}
+            </Div>
+          )}
+        </BaseContainer>
+      )) ||
+      undefined
     )
   }
 )
@@ -158,9 +160,6 @@ ContentSimpleLayout.displayName = 'ContentSimpleLayout'
 /**
  * Render the content layout component.
  * @param as - The element type of the content layout.
- * @param title - The title of the content layout.
- * @param intro - The introduction of the content layout.
- * @param layout - The layout of the content layout.
  * @param children - The children of the content layout.
  * @param rest - The rest of the props of the content layout.
  * @returns The rendered content layout component.

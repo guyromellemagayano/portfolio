@@ -5,7 +5,6 @@ import { forwardRef } from 'react'
 import dynamic from 'next/dynamic'
 
 import { FormProps, FormRef } from '@guy-romelle-magayano/react-components'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
@@ -40,7 +39,7 @@ const Input = dynamic(() =>
 )
 
 export type NewsletterLayoutRef = FormRef
-export type NewsletterLayoutProps = FormProps & CommonComponentsProps
+export type NewsletterLayoutProps = FormProps
 
 /**
  * Renders the newsletter layout component.
@@ -50,6 +49,7 @@ export type NewsletterLayoutProps = FormProps & CommonComponentsProps
  */
 const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
   ({ className, ...rest }, ref) => {
+    // Strings
     const strings = {
       stayUpToDate: 'Stay up to date',
       getNotified:
