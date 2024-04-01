@@ -1,26 +1,20 @@
 'use client'
 
+import { forwardRef } from 'react'
+
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@guy-romelle-magayano/react-components'
 import {
-  Div,
   DivisionProps,
-  DivisionRef,
-  Dl,
-  Heading,
-  Li,
-  Ol,
-  Span
+  DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
   HomePageData,
   WorkExperienceData
 } from '@guy-romelle-magayano/portfolio/types/data'
-import { forwardRef } from 'react'
 
 // Dynamic imports
 const ArrowDownSvg = dynamic(
@@ -28,6 +22,29 @@ const ArrowDownSvg = dynamic(
 )
 const BriefcaseSvg = dynamic(
   () => import('@guy-romelle-magayano/portfolio/components/SVG/Briefcase')
+)
+const Button = dynamic(() =>
+  import('@guy-romelle-magayano/react-components').then(mod => mod.Button)
+)
+const Div = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
+)
+const Dl = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Dl)
+)
+const Heading = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(
+    mod => mod.Heading
+  )
+)
+const Li = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Li)
+)
+const Ol = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Ol)
+)
+const Span = dynamic(() =>
+  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
 )
 
 export type ResumeLayoutRef = DivisionRef
