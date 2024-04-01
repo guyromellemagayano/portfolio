@@ -6,7 +6,6 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
@@ -16,7 +15,7 @@ const Div = dynamic(() =>
 )
 
 export type BaseContainerRef = DivisionRef
-export type BaseContainerProps = DivisionProps & CommonComponentsProps
+export type BaseContainerProps = DivisionProps
 
 /**
  * Render the outer container component.
