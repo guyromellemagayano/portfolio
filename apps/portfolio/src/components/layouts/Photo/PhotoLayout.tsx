@@ -42,7 +42,7 @@ const RotationsData: Array<string> = [
 const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
   ({ data, ...rest }, ref) => {
     return (
-      (data) && (
+      data && (
         <Div ref={ref} {...rest}>
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
             {data?.map(
