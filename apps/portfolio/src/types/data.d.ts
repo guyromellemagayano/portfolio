@@ -23,6 +23,7 @@ export type BasePageData = {
 export type PagesData = {
   title: string
   link: string
+  slug: string
 }
 
 // 404 page data
@@ -112,4 +113,11 @@ export type WorkExperienceData = {
   alt: string
   start?: string
   end?: string
+}
+
+// Social links data
+export type SocialLinksData = {
+  href: string
+  label?: string
+  icon: string
 }
