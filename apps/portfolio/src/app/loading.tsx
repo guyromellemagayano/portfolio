@@ -1,12 +1,4 @@
-import dynamic from 'next/dynamic'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const P = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.P)
-)
+import { Div, P } from '@guy-romelle-magayano/react-components/server'
 
 /**
  * Render the loading page.
