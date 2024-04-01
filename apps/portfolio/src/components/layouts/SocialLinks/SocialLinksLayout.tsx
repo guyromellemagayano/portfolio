@@ -21,7 +21,7 @@ const SocialLink = dynamic(() =>
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
-  data: Array<SocialLinkProps>
+  data?: Array<SocialLinkProps>
 }
 
 /**
