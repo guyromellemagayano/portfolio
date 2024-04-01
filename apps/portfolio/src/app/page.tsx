@@ -1,26 +1,19 @@
 import { Metadata } from 'next'
 
 import { HomeApp } from '@guy-romelle-magayano/portfolio/components/Apps/Home'
-import { fullServerUrl } from '@guy-romelle-magayano/portfolio/utils'
-
-/**
- * Fetches the data for the home page.
- * @returns The data for the home page.
- */
-const homeData = async () =>
-  await fetch(fullServerUrl('api/json?data=home')).then(res => res.json())
+import { homeData, socialData } from '@guy-romelle-magayano/portfolio/data/page'
 
 /**
  * Generates the metadata for the home page.
  * @returns The metadata for the home page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
-  const data = await homeData()
+  const { meta } = await homeData()
 
   return {
-    title: data?.meta?.title || '',
-    description: data?.meta?.description || '',
-    keywords: data?.meta?.keywords || ''
+    title: meta?.title || '',
+    description: meta?.description || '',
+    keywords: meta?.keywords || ''
   }
 }
 
@@ -29,7 +22,18 @@ export const generateMetadata = async (): Promise<Metadata> => {
  * @returns The home page component.
  */
 const Page = async () => {
-  const data = await homeData()
+  const page = await homeData(),
+    social = await socialData()
+
+  let data =
+    (await Promise.all([page, social]).then(([page, social]) => {
+      const { meta, ...rest } = page
+
+      return {
+        ...rest,
+        links: social
+      }
+    })) || undefined
 
   return <HomeApp {...data}></HomeApp>
 }
