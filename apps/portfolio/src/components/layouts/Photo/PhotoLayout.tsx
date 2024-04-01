@@ -7,9 +7,8 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 import { SlidePhotosData } from '@guy-romelle-magayano/portfolio/types/data'
 
@@ -19,10 +18,9 @@ const Div = dynamic(() =>
 )
 
 export type PhotoLayoutRef = DivisionRef
-export type PhotoLayoutProps = DivisionProps &
-  CommonComponentsProps & {
-    data: Array<SlidePhotosData>
-  }
+export type PhotoLayoutProps = DivisionProps & {
+  data?: Array<SlidePhotosData>
+}
 
 /**
  * The rotations data.
@@ -44,12 +42,12 @@ const RotationsData: Array<string> = [
 const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
   ({ data, ...rest }, ref) => {
     return (
-      !isEmpty(data) && (
+      (data) && (
         <Div ref={ref} {...rest}>
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-            {data.map(
+            {data?.map(
               ({ src, alt }: SlidePhotosData, index: number) =>
-                !isEmpty(src) && (
+                (src) && (
                   <Div
                     key={index}
                     className={cn(

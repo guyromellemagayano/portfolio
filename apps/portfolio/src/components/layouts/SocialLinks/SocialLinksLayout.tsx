@@ -31,21 +31,23 @@ export type SocialLinksLayoutProps = DivisionProps &
 /**
  * Render the social links layout component.
  * @param data - The data of the social links layout.
+ * @param id - The id of the social links layout.
  * @param children - The children of the social links layout.
  * @returns The rendered social links layout component.
  */
 const SocialLinksLayout = forwardRef<
   SocialLinksLayoutRef,
   SocialLinksLayoutProps
->(({ data, ...rest }, ref) => {
+>(({ data, id, ...rest }, ref) => {
   return (
-    !isEmpty(data) && (
+    (!isEmpty(data) && (
       <Div ref={ref} {...rest}>
-        {data.map((rest, index: number) => (
+        {data?.map((rest, index: number) => (
           <SocialLink key={index} {...rest} />
         ))}
       </Div>
-    )
+    )) ||
+    undefined
   )
 })
 
