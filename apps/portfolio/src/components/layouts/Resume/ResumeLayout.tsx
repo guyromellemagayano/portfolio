@@ -15,9 +15,6 @@ import {
   Ol,
   Span
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
-
-import { isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import {
   HomePageData,
@@ -34,12 +31,11 @@ const BriefcaseSvg = dynamic(
 )
 
 export type ResumeLayoutRef = DivisionRef
-export type ResumeLayoutProps = DivisionProps &
-  CommonComponentsProps & {
-    cvFile: Pick<HomePageData, 'cvFile'>['cvFile']
-    workExperiences: Pick<HomePageData, 'workExperiences'>['workExperiences']
-    className?: string
-  }
+export type ResumeLayoutProps = DivisionProps & {
+  cvFile?: Pick<HomePageData, 'cvFile'>['cvFile']
+  workExperiences?: Pick<HomePageData, 'workExperiences'>['workExperiences']
+  className?: string
+}
 
 /**
  * Renders the resume layout component.
@@ -71,16 +67,16 @@ const ResumeLayout = forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
           <Span className="ml-3">{strings.work}</Span>
         </Heading>
 
-        {!isEmpty(workExperiences) && (
+        {workExperiences && (
           <Ol className="mt-6 space-y-4">
-            {workExperiences.map(
+            {workExperiences?.map(
               (
                 { company, title, logo, alt, start, end }: WorkExperienceData,
                 index: number
               ) => (
                 <Li key={index} className="flex gap-4">
                   <Div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                    {!isEmpty(logo) ? (
+                    {logo ? (
                       <Image
                         src={logo}
                         alt={alt}
@@ -94,7 +90,7 @@ const ResumeLayout = forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
                     )}
                   </Div>
                   <Dl className="flex flex-auto flex-wrap gap-x-2">
-                    {!isEmpty(company) && (
+                    {company && (
                       <>
                         <dt className="sr-only">{strings.company}</dt>
                         <dd className="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
@@ -103,7 +99,7 @@ const ResumeLayout = forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
                       </>
                     )}
 
-                    {!isEmpty(title) && (
+                    {title && (
                       <>
                         <dt className="sr-only">{strings.role}</dt>
                         <dd className="text-xs text-zinc-500 dark:text-zinc-400">
@@ -112,7 +108,7 @@ const ResumeLayout = forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
                       </>
                     )}
 
-                    {!isEmpty(start) && !isEmpty(end) && (
+                    {start && end && (
                       <>
                         <dt className="sr-only">{strings.date}</dt>
                         <dd
@@ -132,7 +128,7 @@ const ResumeLayout = forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
           </Ol>
         )}
 
-        {!isEmpty(cvFile) && (
+        {cvFile && (
           <Button
             className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 outline-offset-2 transition hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70"
             onClick={() => router.push(cvFile)}
