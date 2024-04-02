@@ -1,2 +1,2 @@
-export * from './data'
+export * from './articles'
 // export * from './projects'

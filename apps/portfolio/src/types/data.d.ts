@@ -1,3 +1,4 @@
+import { MDXContent } from 'mdx/types'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 // Base type for SEO metadata
@@ -120,4 +121,15 @@ export type SocialLinksData = {
   href: string
   label?: string
   icon: string
+}
+
+// Articles data
+export type ArticlesData = {
+  author: string
+  slug: string
+  date: string
+  title: string
+  description: string
+  category: string
+  component?: MDXContent
 }
