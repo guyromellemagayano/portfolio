@@ -22,6 +22,7 @@
     "**/*.tsx",
     "**/*.js",
     "**/*.jsx",
+    "**/*.mdx",
     "../../apps/portfolio/.next/types/**/*.ts",
     "../../dist/apps/portfolio/.next/types/**/*.ts",
     ".next/types/**/*.ts",

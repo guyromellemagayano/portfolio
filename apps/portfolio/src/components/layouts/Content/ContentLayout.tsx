@@ -42,7 +42,6 @@ export type ContentLayoutProps = DivisionProps & {
   title?: string
   intro?: string[] | string
 }
-
 export type ContentLayoutStaticComponents = {
   Simple: typeof ContentSimpleLayout
   Aside: typeof ContentAsideLayout
