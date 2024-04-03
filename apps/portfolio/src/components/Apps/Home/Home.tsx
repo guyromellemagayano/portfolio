@@ -15,7 +15,7 @@ import {
   ArticlesData,
   HomePageData,
   SocialLinksData
-} from '@guy-romelle-magayano/portfolio/types/data'
+} from '@guy-romelle-magayano/portfolio/types'
 
 export type HomeAppProps = HomePageData & {
   links?: Array<SocialLinksData>
