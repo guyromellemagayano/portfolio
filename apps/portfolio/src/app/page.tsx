@@ -1,10 +1,9 @@
 import { Metadata } from 'next'
 
 import { HomeApp } from '@guy-romelle-magayano/portfolio/components/Apps/Home'
-import { articlesData } from '@guy-romelle-magayano/portfolio/utils'
 import {
-  homeData,
-  socialData
+  homeAppData,
+  homeData
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
@@ -26,21 +25,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
  * @returns The home page component.
  */
 const Page = async () => {
-  const page = await homeData(),
-    social = await socialData(),
-    articles = await articlesData(),
-    data = await Promise.all([page, social, articles]).then(
-      ([page, social, articles]) => {
-        const { meta, ...newPage } = page,
-          newArticles = articles.map(({ component, ...article }) => article)
-
-        return {
-          ...newPage,
-          links: social,
-          articles: newArticles
-        }
-      }
-    )
+  const data = await homeAppData()
 
   return <HomeApp {...data}></HomeApp>
 }
