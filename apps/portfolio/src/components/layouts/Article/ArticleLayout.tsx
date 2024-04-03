@@ -19,6 +19,7 @@ import {
 import { cn, formatDate } from '@guy-romelle-magayano/react-utils'
 
 import { AppContext } from '@guy-romelle-magayano/portfolio/app/providers'
+import { Article as HomeArticleLayout } from '@guy-romelle-magayano/portfolio/components/Article'
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/Containers/Base'
 import { Prose } from '@guy-romelle-magayano/portfolio/components/Prose'
 import { ArrowLeftSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
@@ -26,21 +27,27 @@ import { ArticlesData } from '@guy-romelle-magayano/portfolio/types/data'
 
 export type ArticleLayoutRef = DivisionRef
 export type ArticleLayoutProps = DivisionProps & {
-  article: ArticleProps
-  author: Pick<ArticlesData, 'author'>
+  article?: ArticleProps
+  articles?: Array<ArticlesData>
+  isHome?: boolean
 }
 export type ArticleProps = Pick<ArticlesData, 'title' | 'date' | 'description'>
 
 /**
  * Renders the article layout component.
  * @param article - The article to display.
+ * @param articles - The articles to display.
+ * @param [isHome=false] - Whether the article is on the home page.
  * @param children - The children of the article layout.
  * @param className - The class name of the article layout.
  * @param rest - The rest of the props of the article layout.
  * @returns The rendered article layout component.
  */
 const ArticleLayout = forwardRef<ArticleLayoutRef, ArticleLayoutProps>(
-  ({ article, children, className, ...rest }, ref) => {
+  (
+    { article, articles, isHome = false, children, className, ...rest },
+    ref
+  ) => {
     const router = useRouter(),
       { previousPathname } = useContext(AppContext),
       dateNow = new Date(),
@@ -51,6 +58,22 @@ const ArticleLayout = forwardRef<ArticleLayoutRef, ArticleLayoutProps>(
 
     let title: string = article?.title || '',
       date: string = article?.date || dateNowToString
+
+    if (isHome && articles && !article) {
+      return (
+        <Div className="flex flex-col gap-16">
+          {articles
+            ?.map((article, index: number) => (
+              <HomeArticleLayout
+                key={index}
+                className="inset-y-6"
+                {...article}
+              />
+            ))
+            ?.slice(0, 4)}
+        </Div>
+      )
+    }
 
     return (
       <BaseContainer

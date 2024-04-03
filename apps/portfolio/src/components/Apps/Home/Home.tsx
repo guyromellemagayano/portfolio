@@ -4,8 +4,8 @@ import { Div, Heading } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import Article from '@guy-romelle-magayano/portfolio/components/Article/Article'
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/Containers/Base'
+import { ArticleLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Article'
 import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Content'
 import { NewsletterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Newsletter'
 import { PhotoLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Photo'
@@ -57,15 +57,7 @@ const HomeApp = (props: HomeAppProps) => {
               {strings.articles}
             </Heading>
 
-            {articles && (
-              <Div className="flex flex-col gap-16">
-                {articles
-                  ?.map((article, index: number) => (
-                    <Article key={index} className="inset-y-6" {...article} />
-                  ))
-                  ?.slice(0, 4)}
-              </Div>
-            )}
+            <ArticleLayout articles={articles} isHome />
           </Div>
 
           <Div className="space-y-10 lg:pl-16 xl:pl-24">
