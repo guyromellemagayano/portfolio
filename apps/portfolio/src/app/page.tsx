@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import { HomeApp } from '@guy-romelle-magayano/portfolio/components/Apps/Home'
 import {
   homeAppData,
-  homeData
+  homePageData
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
@@ -11,7 +11,7 @@ import {
  * @returns The metadata for the home page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
-  const { meta } = await homeData()
+  const { meta } = await homePageData()
 
   return {
     title: meta?.title || '',
@@ -27,7 +27,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 const Page = async () => {
   const data = await homeAppData()
 
-  return <HomeApp {...data}></HomeApp>
+  return <HomeApp {...data} />
 }
 
 export default Page

@@ -134,14 +134,23 @@ export type ArticlesData = {
   component?: MDXContent
 }
 
+// Common page app data
+export type CommonPageAppData = {
+  hero?: BaseHeroData
+}
+
 // Home app data
-export type HomeAppData = {
+export type HomeAppData = CommonPageAppData & {
   links?: Array<SocialLinksData>
   articles?: Array<ArticlesData>
-  hero?: BaseHeroData
   slidePhotos?: Array<SlidePhotosData>
   cvFile?: HomePageData['cvFile']
   workExperiences?: Array<WorkExperienceData>
+}
+
+// Articles app data
+export type ArticlesAppData = CommonPageAppData & {
+  articles?: Array<ArticlesData>
 }
 
 // Navigation data
