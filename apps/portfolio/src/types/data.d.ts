@@ -133,3 +133,19 @@ export type ArticlesData = {
   category: string
   component?: MDXContent
 }
+
+// Home app data
+export type HomeAppData = {
+  links?: Array<SocialLinksData>
+  articles?: Array<ArticlesData>
+  hero?: BaseHeroData
+  slidePhotos?: Array<SlidePhotosData>
+  cvFile?: HomePageData['cvFile']
+  workExperiences?: Array<WorkExperienceData>
+}
+
+// Navigation data
+export type NavigationData = {
+  headerMenu: PagesData[]
+  footerMenu: PagesData[]
+}
