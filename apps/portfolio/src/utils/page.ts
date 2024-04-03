@@ -1,40 +1,22 @@
-import { headers } from 'next/headers'
-
+import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
 import {
+  ArticlesAppData,
+  ArticlesPageData,
   HomeAppData,
-  HomePageData,
-  NavigationData,
-  PagesData,
-  SocialLinksData
+  HomePageData
 } from '@guy-romelle-magayano/portfolio/types'
 import { articlesData } from '@guy-romelle-magayano/portfolio/utils'
-
-const apiUrls = {
-  home: 'api/json?data=home',
-  social: 'api/json?data=social',
-  pages: 'api/json?data=pages'
-}
-
-/**
- * Returns the full server URL with its protocol, host, and pathname.
- * @param pathname - The pathname to use.
- * @returns The full server URL.
- */
-export const fullServerUrl = (pathname: string): string => {
-  const headersList = headers()
-
-  return (
-    `${headersList.get('x-forwarded-proto') + '://' + headersList.get('host') + '/'}` +
-    pathname
-  )
-}
+import {
+  fullServerUrl,
+  socialData
+} from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
  * Returns the full server URL with its protocol, host, and pathname.
  * @param url - The URL to fetch.
  * @returns The page data.
  */
-const fetchPageData = async (url: string): Promise<any> =>
+export const fetchPageData = async (url: string): Promise<any> =>
   await fetch(fullServerUrl(url))
     .then(res => res.json())
     .catch(() => ({}))
@@ -43,47 +25,15 @@ const fetchPageData = async (url: string): Promise<any> =>
  * Fetches the home page data.
  * @returns The home page data.
  */
-export const homeData = async (): Promise<HomePageData> =>
+export const homePageData = async (): Promise<HomePageData> =>
   await fetchPageData(apiUrls.home)
-
-/**
- * Fetches the social data.
- * @returns The social data.
- */
-export const socialData = async (): Promise<Array<SocialLinksData>> =>
-  await fetchPageData(apiUrls.social)
-
-/**
- * Fetches the pages data.
- * @returns The pages data.
- */
-export const pagesData = async (): Promise<Array<PagesData>> =>
-  await fetchPageData(apiUrls.pages)
-
-/**
- * Retrieves the navigation data for the base layout.
- * @returns An object containing the header and footer menu data.
- */
-export const navigationData = async (): Promise<NavigationData> => {
-  const pages = await pagesData(),
-    pageFilter = ['skills', 'work', 'articles', 'projects', 'about'],
-    headerMenu = pages.filter(page => pageFilter.includes(page.slug)),
-    footerMenu = pages.filter(
-      page => !pageFilter.includes(page.slug) && page.slug !== 'home'
-    )
-
-  return {
-    headerMenu,
-    footerMenu
-  }
-}
 
 /**
  * Returns the home app data.
  * @returns The home app data.
  */
 export const homeAppData = async (): Promise<HomeAppData> => {
-  const page = await homeData(),
+  const page = await homePageData(),
     social = await socialData(),
     articles = await articlesData(),
     data = await Promise.all([page, social, articles]).then(
@@ -98,6 +48,33 @@ export const homeAppData = async (): Promise<HomeAppData> => {
         }
       }
     )
+
+  return data
+}
+
+/**
+ * Returns the articles page data.
+ * @returns The articles page data.
+ */
+export const articlesPageData = async (): Promise<ArticlesPageData> =>
+  await fetchPageData(apiUrls.articles)
+
+/**
+ * Returns the articles app data.
+ * @returns The articles app data.
+ */
+export const articlesAppData = async (): Promise<ArticlesAppData> => {
+  const page = await articlesPageData(),
+    articles = await articlesData(),
+    data = await Promise.all([page, articles]).then(([page, articles]) => {
+      const { meta, ...newPage } = page,
+        newArticles = articles.map(({ component, ...article }) => article)
+
+      return {
+        ...newPage,
+        articles: newArticles
+      }
+    })
 
   return data
 }
