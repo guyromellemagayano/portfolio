@@ -10,7 +10,7 @@ const Loading = async () => {
   }
 
   return (
-    <Div className="flex min-h-full items-end justify-center px-6 py-24 sm:py-32 lg:px-8">
+    <Div className="flex min-h-full items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
       <Div className="text-center">
         <P className="text-base font-semibold">{strings.loading}</P>
       </Div>
