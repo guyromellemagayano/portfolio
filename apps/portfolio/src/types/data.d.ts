@@ -68,16 +68,16 @@ export type SkillsData = {
 
 // Skills item data
 export type SkillsItemData = {
-  title: string
-  skillLevel: number
-  description: Array<string>
-  technologies: Array<TechnologiesData>
+  title?: string
+  skillLevel?: number
+  description?: Array<string>
+  technologies?: Array<TechnologiesData>
 }
 
 // Technologies data
 export type TechnologiesData = {
   name: string
-  link?: string
+  link: string
 }
 
 // Uses page data
@@ -88,13 +88,13 @@ export type UsesPageData = BasePageData & {
 // Tools data
 export type ToolsData = {
   name: string
-  items: Array<ToolsItemsData>
+  items?: Array<ToolsItemsData>
 }
 
 // Tools items data
 export type ToolsItemsData = {
-  title: string
-  description: string
+  title?: string
+  description?: string
 }
 
 // Work page data
