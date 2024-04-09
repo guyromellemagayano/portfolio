@@ -35,14 +35,13 @@ const SocialLinksLayout = forwardRef<
   SocialLinksLayoutProps
 >(({ data, ...rest }, ref) => {
   return (
-    (data && (
+    data && (
       <Div ref={ref} {...rest}>
         {data?.map((rest, index: number) => (
           <SocialLink key={index} {...rest} />
         ))}
       </Div>
-    )) ||
-    undefined
+    )
   )
 })
 
