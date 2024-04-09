@@ -1,6 +1,8 @@
 'use client'
 
 import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Content'
+import { ArticleCardsList } from '@guy-romelle-magayano/portfolio/components/Lists/ArticleCards'
+import { ArticlesList } from '@guy-romelle-magayano/portfolio/components/Lists/Articles'
 import {
   ArticlesData,
   ArticlesPageData
@@ -22,10 +24,13 @@ const ArticlesApp = (props: ArticlesAppProps) => {
     description = hero?.description || undefined
 
   return (
-    <ContentLayout.Simple
-      title={heading}
-      intro={description}
-    ></ContentLayout.Simple>
+    <ContentLayout.Simple title={heading} intro={description}>
+      <ArticlesList>
+        {articles?.map((article, index) => (
+          <ArticleCardsList key={index} {...article} />
+        ))}
+      </ArticlesList>
+    </ContentLayout.Simple>
   )
 }
 
