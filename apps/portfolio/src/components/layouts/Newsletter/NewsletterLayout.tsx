@@ -41,6 +41,14 @@ const Input = dynamic(() =>
 export type NewsletterLayoutRef = FormRef
 export type NewsletterLayoutProps = FormProps
 
+const strings = {
+  stayUpToDate: 'Stay up to date',
+  getNotified:
+    'Get notified when I publish something new, and unsubscribe at any time.',
+  email: 'Email address',
+  join: 'Join'
+}
+
 /**
  * Renders the newsletter layout component.
  * @param className - The class name of the newsletter layout.
@@ -49,15 +57,6 @@ export type NewsletterLayoutProps = FormProps
  */
 const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
   ({ className, ...rest }, ref) => {
-    // Strings
-    const strings = {
-      stayUpToDate: 'Stay up to date',
-      getNotified:
-        'Get notified when I publish something new, and unsubscribe at any time.',
-      email: 'Email address',
-      join: 'Join'
-    }
-
     return (
       <Form
         ref={ref}
