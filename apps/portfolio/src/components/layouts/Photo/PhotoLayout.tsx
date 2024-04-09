@@ -47,7 +47,7 @@ const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
             {data?.map(
               ({ src, alt }: SlidePhotosData, index: number) =>
-                (src) && (
+                src && (
                   <Div
                     key={index}
                     className={cn(
