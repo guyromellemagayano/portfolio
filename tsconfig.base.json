@@ -24,6 +24,9 @@
       "@guy-romelle-magayano/react-components/server": [
         "packages/react/components/src/server.ts"
       ],
+      "@guy-romelle-magayano/react-components/types": [
+        "packages/react/components/src/components.d.ts"
+      ],
       "@guy-romelle-magayano/react-hooks": [
         "packages/react/hooks/src/index.ts"
       ],
