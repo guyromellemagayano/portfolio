@@ -7,7 +7,7 @@ import {
   ArticleRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, formatDate } from '@guy-romelle-magayano/react-utils'
+import { cn, formatDate, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
@@ -66,10 +66,10 @@ const ArticleCardsList = forwardRef<ArticleCardsListRef, ArticleCardsListProps>(
     const href = `/articles/${slug}`
 
     return (
-      date &&
-      title &&
-      description &&
-      href && (
+      !isEmpty(date) &&
+      !isEmpty(title) &&
+      !isEmpty(description) &&
+      !isEmpty(href) && (
         <Article
           ref={ref}
           {...rest}
