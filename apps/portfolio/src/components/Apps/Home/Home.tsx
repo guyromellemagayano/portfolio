@@ -22,6 +22,10 @@ export type HomeAppProps = HomePageData & {
   articles?: Array<ArticlesData>
 }
 
+const strings = {
+  articles: 'Articles'
+}
+
 /**
  * Render the home application component.
  * @param props - The props of the home application.
@@ -31,10 +35,7 @@ const HomeApp = (props: HomeAppProps) => {
   const { hero, slidePhotos, cvFile, workExperiences, links, articles } = props
 
   const heading = hero?.heading || undefined,
-    description = hero?.description || undefined,
-    strings = {
-      articles: 'Articles'
-    }
+    description = hero?.description || undefined
 
   return (
     <>
@@ -56,7 +57,6 @@ const HomeApp = (props: HomeAppProps) => {
             >
               {strings.articles}
             </Heading>
-
             <ArticleLayout articles={articles} isHome />
           </Div>
 
