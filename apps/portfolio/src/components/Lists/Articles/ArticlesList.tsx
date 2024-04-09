@@ -6,7 +6,8 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { cn } from '@guy-romelle-magayano/react-utils'
+
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 // Dynamic imports
 const Div = dynamic(() =>
@@ -26,7 +27,7 @@ export type ArticlesListProps = DivisionProps
 const ArticlesList = forwardRef<ArticlesListRef, ArticlesListProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Div
           ref={ref}
           {...rest}
