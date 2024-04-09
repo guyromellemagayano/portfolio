@@ -6,7 +6,6 @@ import { useTheme } from 'next-themes'
 import dynamic from 'next/dynamic'
 
 import { ButtonProps, ButtonRef } from '@guy-romelle-magayano/react-components'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
@@ -26,7 +25,7 @@ const MoonSvg = dynamic(() =>
 )
 
 export type DarkModeButtonRef = ButtonRef
-export type DarkModeButtonProps = ButtonProps & CommonComponentsProps
+export type DarkModeButtonProps = ButtonProps
 
 /**
  * Renders dark mode button component.
