@@ -28,7 +28,7 @@ module.exports = [
       files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)']
     })),
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', '**/*.mdx'],
     rules: {}
   },
   {
@@ -37,6 +37,10 @@ module.exports = [
   },
   {
     files: ['**/*.js', '**/*.jsx'],
+    rules: {}
+  },
+  {
+    files: ['**/*.mdx'],
     rules: {}
   },
   { ignores: ['.next/**/*'] }
