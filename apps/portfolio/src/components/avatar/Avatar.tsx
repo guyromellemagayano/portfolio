@@ -9,16 +9,14 @@ import {
   HyperlinkProps,
   HyperlinkRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type AvatarRef = HyperlinkRef
-export type AvatarProps = HyperlinkProps &
-  CommonComponentsProps & {
-    large?: boolean
-    alt?: string
-  }
+export type AvatarProps = HyperlinkProps & {
+  large?: boolean
+  alt?: string
+}
 
 /**
  * Renders the avatar component.
