@@ -13,16 +13,16 @@ import {
 } from '@guy-romelle-magayano/react-components/server'
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
-// import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
+import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
 // import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
   NEXT_PUBLIC_GA_MEASUREMENT_ID,
   NEXT_PUBLIC_GA_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
+import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
 
 import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
 
-import { pagesData } from '@guy-romelle-magayano/portfolio/data/page'
 import 'focus-visible'
 
 export type BaseLayoutProps = {
@@ -35,12 +35,7 @@ export type BaseLayoutProps = {
  * @returns The rendered base layout component.
  */
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
-  const pages = await pagesData(),
-    pageFilter = ['skills', 'work', 'articles', 'projects', 'about'],
-    headerMenu = pages.filter(page => pageFilter.includes(page.slug)),
-    footerMenu = pages.filter(
-      page => !pageFilter.includes(page.slug) && page.slug !== 'home'
-    )
+  const { headerMenu, footerMenu } = await navigationData()
 
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
@@ -69,7 +64,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
             <Div className="relative flex w-full flex-col">
               {/* <HeaderLayout pages={headerMenu} /> */}
               <Main className="flex-auto">{children}</Main>
-              {/* <FooterLayout pages={footerMenu} /> */}
+              <FooterLayout pages={footerMenu} />
             </Div>
           </Div>
           <SpeedInsights />
