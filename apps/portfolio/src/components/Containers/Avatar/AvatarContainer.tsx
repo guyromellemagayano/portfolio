@@ -6,7 +6,6 @@ import {
   DivisionProps,
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
@@ -16,7 +15,7 @@ const Div = dynamic(() =>
 )
 
 export type AvatarContainerRef = DivisionRef
-export type AvatarContainerProps = DivisionProps & CommonComponentsProps
+export type AvatarContainerProps = DivisionProps
 
 /**
  * Renders avatar container component
