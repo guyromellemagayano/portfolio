@@ -1,5 +1,7 @@
 'use client'
 
+import { isEmpty } from '@guy-romelle-magayano/react-utils'
+
 import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Content'
 import { ArticleCardsList } from '@guy-romelle-magayano/portfolio/components/Lists/ArticleCards'
 import { ArticlesList } from '@guy-romelle-magayano/portfolio/components/Lists/Articles'
@@ -25,11 +27,13 @@ const ArticlesApp = (props: ArticlesAppProps) => {
 
   return (
     <ContentLayout.Simple title={heading} intro={description}>
-      <ArticlesList>
-        {articles?.map((article, index) => (
-          <ArticleCardsList key={index} {...article} />
-        ))}
-      </ArticlesList>
+      {!isEmpty(articles) && (
+        <ArticlesList>
+          {articles?.map((article, index) => (
+            <ArticleCardsList key={index} {...article} />
+          ))}
+        </ArticlesList>
+      )}
     </ContentLayout.Simple>
   )
 }
