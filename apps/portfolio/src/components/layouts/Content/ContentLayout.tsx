@@ -111,7 +111,7 @@ const ContentSimpleLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
     const pathname = usePathname()
 
     return (
-      ((title || intro || children) && (
+      (title || intro || children) && (
         <BaseContainer ref={ref} {...rest} className={cn('mt-9', className)}>
           <Div className="max-w-2xl">
             {title && (
@@ -150,8 +150,7 @@ const ContentSimpleLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
             </Div>
           )}
         </BaseContainer>
-      )) ||
-      undefined
+      )
     )
   }
 )
