@@ -142,8 +142,7 @@ const ContentSimpleLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
           {children && (
             <Div
               className={cn(
-                pathname !== '/' && 'mt-16 sm:mt-20',
-                'mt-9 sm:mt-9'
+                pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9'
               )}
             >
               {children}
