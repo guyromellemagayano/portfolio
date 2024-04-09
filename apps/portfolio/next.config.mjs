@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import rehypePrism from '@mapbox/rehype-prism'
-import withBundleAnalyzer from '@next/bundle-analyzer'
+// import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
@@ -12,8 +12,6 @@ import remarkGfm from 'remark-gfm'
  **/
 const nextConfig = {
   nx: {
-    // Set this to true if you would like to to use SVGR
-    // See: https://github.com/gregberge/svgr
     svgr: false
   },
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
@@ -30,7 +28,7 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: {
-      exclude: ['error']
+      exclude: ['error', 'log']
     }
   },
   sentry: {
@@ -56,12 +54,11 @@ const withMDX = createMDX({
 })
 
 const plugins = [
-  // Add more Next.js plugins to this list if needed.
   withNx,
-  withMDX,
-  withBundleAnalyzer({
-    enabled: process.env.ANALYZE === 'true'
-  })
+  withMDX
+  // withBundleAnalyzer({
+  //   enabled: process.env.NODE_ENV === 'development'
+  // })
 ]
 
 export default withSentryConfig(
