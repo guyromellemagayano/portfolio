@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 'use client'
 
 import {
@@ -165,9 +166,11 @@ ContentSimpleLayout.displayName = 'ContentSimpleLayout'
 const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
   ({ as: Component = Div, children, ...rest }, ref) => {
     return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
+      !isEmpty(children) && (
+        <Component ref={ref} {...rest}>
+          {children}
+        </Component>
+      )
     )
   }
 ) as ForwardRefExoticComponent<
