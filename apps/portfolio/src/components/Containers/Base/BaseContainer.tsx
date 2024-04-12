@@ -1,18 +1,12 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import {
-  DivisionProps,
-  DivisionRef
+  Div,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 export type BaseContainerRef = DivisionRef
 export type BaseContainerProps = DivisionProps
@@ -27,9 +21,11 @@ export type BaseContainerProps = DivisionProps
 const OuterContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      <Div ref={ref} {...rest} className={cn('sm:px-8', className)}>
-        <Div className="mx-auto max-w-7xl lg:px-8">{children}</Div>
-      </Div>
+      !isEmpty(children) && (
+        <Div ref={ref} {...rest} className={cn('sm:px-8', className)}>
+          <Div className="mx-auto max-w-7xl lg:px-8">{children}</Div>
+        </Div>
+      )
     )
   }
 )
@@ -46,13 +42,15 @@ OuterContainer.displayName = 'OuterContainer'
 const InnerContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      <Div
-        ref={ref}
-        {...rest}
-        className={cn('relative px-4 sm:px-8 lg:px-12', className)}
-      >
-        <Div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</Div>
-      </Div>
+      !isEmpty(children) && (
+        <Div
+          ref={ref}
+          {...rest}
+          className={cn('relative px-4 sm:px-8 lg:px-12', className)}
+        >
+          <Div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</Div>
+        </Div>
+      )
     )
   }
 )
@@ -67,9 +65,11 @@ InnerContainer.displayName = 'InnerContainer'
 const BaseContainerWithRef = forwardRef<BaseContainerRef, BaseContainerProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <OuterContainer ref={ref} {...rest}>
-        <InnerContainer>{children}</InnerContainer>
-      </OuterContainer>
+      !isEmpty(children) && (
+        <OuterContainer ref={ref} {...rest}>
+          <InnerContainer>{children}</InnerContainer>
+        </OuterContainer>
+      )
     )
   }
 )
