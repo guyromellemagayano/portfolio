@@ -3,26 +3,16 @@
 import { forwardRef, useEffect, useState } from 'react'
 
 import { useTheme } from 'next-themes'
-import dynamic from 'next/dynamic'
 
-import { ButtonProps, ButtonRef } from '@guy-romelle-magayano/react-components'
+import {
+  Button,
+  type ButtonProps,
+  type ButtonRef
+} from '@guy-romelle-magayano/react-components'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-// Dynamic imports
-const Button = dynamic(() =>
-  import('@guy-romelle-magayano/react-components').then(mod => mod.Button)
-)
-const SunSvg = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/SVG').then(
-    mod => mod.SunSvg
-  )
-)
-const MoonSvg = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/SVG').then(
-    mod => mod.MoonSvg
-  )
-)
+import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
 
 export type DarkModeButtonRef = ButtonRef
 export type DarkModeButtonProps = ButtonProps
