@@ -127,11 +127,28 @@ export type SocialLinksData = {
 export type ArticlesData = {
   author: string
   slug: string
-  date: string
+  date?: string
   title: string
   description: string
-  category: string
+  category: string | string[]
   component?: MDXContent
+}
+
+// Projects data
+export type ProjectsData = {
+  slug: string
+  title: string
+  description: string
+  link: ProjectsLinkData
+  tech: string[]
+  category: string | string[]
+  component?: MDXContent
+}
+
+// Projects link data
+export type ProjectsLinkData = {
+  url: string
+  text: string
 }
 
 // Common page app data
@@ -151,6 +168,11 @@ export type HomeAppData = CommonPageAppData & {
 // Articles app data
 export type ArticlesAppData = CommonPageAppData & {
   articles?: Array<ArticlesData>
+}
+
+// Projects app data
+export type ProjectsAppData = CommonPageAppData & {
+  projects?: Array<ProjectsData>
 }
 
 // Navigation data
