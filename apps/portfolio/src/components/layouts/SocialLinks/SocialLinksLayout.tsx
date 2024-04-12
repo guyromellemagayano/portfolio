@@ -1,23 +1,17 @@
-import { forwardRef } from 'react'
-
-import dynamic from 'next/dynamic'
+import { forwardRef, memo } from 'react'
 
 import {
-  DivisionProps,
-  DivisionRef
+  Div,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { SocialLinkProps } from '@guy-romelle-magayano/portfolio/components/Links/Social'
+import { isArrayType, isEmpty } from '@guy-romelle-magayano/react-utils'
 
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const SocialLink = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Links/Social').then(
-    mod => mod.SocialLink
-  )
-)
+import {
+  SocialLink,
+  type SocialLinkProps
+} from '@guy-romelle-magayano/portfolio/components/Links/Social'
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
@@ -30,20 +24,22 @@ export type SocialLinksLayoutProps = DivisionProps & {
  * @param children - The children of the social links layout.
  * @returns The rendered social links layout component.
  */
-const SocialLinksLayout = forwardRef<
-  SocialLinksLayoutRef,
-  SocialLinksLayoutProps
->(({ data, ...rest }, ref) => {
-  return (
-    data && (
-      <Div ref={ref} {...rest}>
-        {data?.map((rest, index: number) => (
-          <SocialLink key={index} {...rest} />
-        ))}
-      </Div>
-    )
+const SocialLinksLayout = memo(
+  forwardRef<SocialLinksLayoutRef, SocialLinksLayoutProps>(
+    ({ data, ...rest }, ref) => {
+      return (
+        !isEmpty(data) &&
+        isArrayType(data) && (
+          <Div ref={ref} {...rest}>
+            {data?.map((rest, index: number) => (
+              <SocialLink key={index} {...rest} />
+            ))}
+          </Div>
+        )
+      )
+    }
   )
-})
+)
 
 SocialLinksLayout.displayName = 'SocialLinksLayout'
 
