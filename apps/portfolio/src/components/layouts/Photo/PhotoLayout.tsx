@@ -1,21 +1,21 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 
 import {
-  DivisionProps,
-  DivisionRef
+  Div,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import {
+  cn,
+  isArrayType,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
 import { SlidePhotosData } from '@guy-romelle-magayano/portfolio/types/data'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
 
 export type PhotoLayoutRef = DivisionRef
 export type PhotoLayoutProps = DivisionProps & {
@@ -39,15 +39,17 @@ const RotationsData: Array<string> = [
  * @param rest - The rest of the photo layout props.
  * @returns The rendered photo layout component.
  */
-const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
-  ({ data, ...rest }, ref) => {
+const PhotoLayout = memo(
+  forwardRef<PhotoLayoutRef, PhotoLayoutProps>(({ data, ...rest }, ref) => {
     return (
-      data && (
+      !isEmpty(data) &&
+      isArrayType(data) && (
         <Div ref={ref} {...rest}>
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
             {data?.map(
               ({ src, alt }: SlidePhotosData, index: number) =>
-                src && (
+                !isEmpty(src) &&
+                isStringType(src) && (
                   <Div
                     key={index}
                     className={cn(
@@ -59,7 +61,7 @@ const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
                       src={src}
                       alt={alt}
                       sizes="(min-width: 640px) 18rem, 11rem"
-                      className="absolute inset-0 h-full w-full object-cover"
+                      className="absolute inset-0 h-auto w-full object-cover"
                       fill
                       priority
                     />
@@ -70,7 +72,7 @@ const PhotoLayout = forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
         </Div>
       )
     )
-  }
+  })
 )
 
 PhotoLayout.displayName = 'PhotoLayout'
