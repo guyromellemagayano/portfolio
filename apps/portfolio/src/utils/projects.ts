@@ -1,41 +1,41 @@
-import glob from 'fast-glob'
+import { glob } from 'fast-glob'
+import * as path from 'path'
 
-// Types for project lib function
-export type TProjectLibProps<T = any> = T & {
-  name: string
-  description: string
-  link: { url: string; text: string }
-  tech: string[]
+import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
+
+/**
+ * Imports the project data.
+ * @returns The project data.
+ */
+export const importProject = async (fileName: string) => {
+  const { meta, default: component } = await import(
+    `@guy-romelle-magayano/portfolio/app/projects/${fileName}`
+  )
+
+  return { slug: fileName.replace(/(\/page)?\.mdx$/, ''), ...meta, component }
 }
 
-// Types for project lib function with slug
-export type TProjectWithSlugLibProps<T = any> = T &
-  TProjectLibProps & {
-    slug: string
-  }
+/**
+ * Fetches the projects data.
+ * @returns The projects data.
+ */
+export const projectsData = async (): Promise<Array<ProjectsData>> =>
+  await Promise.all(
+    await glob(['**/*.mdx'], {
+      cwd: path.join(process.cwd(), '/src/app/projects')
+    })
+      .then(res => res.map(importProject))
+      .catch(() => [])
+  )
+    .then(res => res.sort((a, z) => +new Date(z.date) - +new Date(a.date)))
+    .catch(() => [])
 
-// Import a project
-export const importProject = async (
-  projectFilename: string
-): Promise<TProjectWithSlugLibProps> => {
-  const { article } = (await import(`../app/projects/${projectFilename}`)) as {
-    default: React.ComponentType
-    article: TProjectLibProps
-  }
-
-  return {
-    slug: projectFilename.replace(/(\/page)?\.mdx$/, ''),
-    ...article
-  }
-}
-
-// Fetch all projects
-export const getAllProjects = async () => {
-  const projectFilenames = await glob('*/page.mdx', {
-    cwd: './app/projects'
-  })
-
-  const projects = await Promise.all(projectFilenames.map(importProject))
-
-  return projects.sort((a, z) => +new Date(z.date) - +new Date(a.date))
-}
+/**
+ * Retrieves the projects data by category.
+ * @returns The projects data by category.
+ */
+export const projectsByCategory = (
+  data: Array<ProjectsData> | undefined,
+  category: string
+): Array<ProjectsData> | [] =>
+  data?.filter(project => project.category === category) || []
