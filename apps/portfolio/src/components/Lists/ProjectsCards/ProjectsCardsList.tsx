@@ -16,13 +16,15 @@ import {
   type CardProps,
   type CardRef
 } from '@guy-romelle-magayano/portfolio/components/Card'
-import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
-
 import { LinkSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
+import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ProjectsCardsListRef = CardRef
 export type ProjectsCardsListProps = CardProps &
-  Pick<ProjectsData, 'slug' | 'title' | 'description' | 'link' | 'category'>
+  Pick<
+    ProjectsData,
+    'slug' | 'title' | 'description' | 'link' | 'category' | 'logo'
+  >
 
 /**
  * Renders the projects cards list component.
