@@ -1,28 +1,14 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import {
-  SectionProps,
-  SectionRef
+  Div,
+  Heading,
+  Section,
+  type SectionProps,
+  type SectionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
-
-// Dynamic imports
-const Heading = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Heading
-  )
-)
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const Section = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Section
-  )
-)
+import { cn, isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
 
 export type SectionLayoutRef = SectionRef
 export type SectionLayoutProps = SectionProps & {
@@ -42,7 +28,7 @@ export type SectionLayoutProps = SectionProps & {
 const SectionLayout = forwardRef<SectionLayoutRef, SectionLayoutProps>(
   ({ title, decorate, className, children, ...rest }, ref) => {
     return (
-      (title || children) && (
+      ((!isEmpty(title) && isStringType(title)) || !isEmpty(children)) && (
         <Section
           ref={ref}
           {...rest}
@@ -53,7 +39,7 @@ const SectionLayout = forwardRef<SectionLayoutRef, SectionLayoutProps>(
           )}
         >
           <Div className="md:grid md:grid-cols-4 md:items-baseline">
-            {title && (
+            {!isEmpty(title) && isStringType(title) && (
               <Heading
                 as="h2"
                 className="text-sm font-semibold text-zinc-400 dark:text-zinc-500"
@@ -62,7 +48,7 @@ const SectionLayout = forwardRef<SectionLayoutRef, SectionLayoutProps>(
               </Heading>
             )}
 
-            {children && (
+            {!isEmpty(children) && (
               <Div className="group relative flex flex-col items-start md:col-span-3">
                 {children}
               </Div>
