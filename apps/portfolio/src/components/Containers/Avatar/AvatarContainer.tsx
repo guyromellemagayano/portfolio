@@ -1,18 +1,12 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import {
-  DivisionProps,
-  DivisionRef
+  Div,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
 
 export type AvatarContainerRef = DivisionRef
 export type AvatarContainerProps = DivisionProps
