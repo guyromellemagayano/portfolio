@@ -1,21 +1,17 @@
+/* eslint-disable sort-imports */
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
 import Link, { LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import {
   Li,
-  ListItemProps,
-  ListItemRef
+  Span,
+  type ListItemProps,
+  type ListItemRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
-
-// Dynamic imports
-const Span = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
-)
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 export type NavigationItemRef = ListItemRef
 export type NavigationItemProps = ListItemProps & {
@@ -35,8 +31,8 @@ const NavigationItem = forwardRef<NavigationItemRef, NavigationItemProps>(
       isActive = pathname === href
 
     return (
-      href &&
-      children && (
+      !isEmpty(href) &&
+      !isEmpty(children) && (
         <Li ref={ref} {...rest}>
           <Link
             href={href}
