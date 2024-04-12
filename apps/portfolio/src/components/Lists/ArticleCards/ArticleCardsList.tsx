@@ -1,51 +1,24 @@
-import { forwardRef } from 'react'
-
-import dynamic from 'next/dynamic'
+import { forwardRef, memo } from 'react'
 
 import {
-  ArticleProps,
-  ArticleRef
+  Article,
+  type ArticleProps,
+  type ArticleRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, formatDate, isEmpty } from '@guy-romelle-magayano/react-utils'
+import {
+  cn,
+  formatDate,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
+import { Card } from '@guy-romelle-magayano/portfolio/components/Card'
 import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
-
-// Dynamic imports
-const Article = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Article
-  )
-)
-const Card = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card
-  )
-)
-const CardEyebrow = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Eyebrow
-  )
-)
-const CardTitle = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Title
-  )
-)
-const CardDescription = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Description
-  )
-)
-const CardCta = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Cta
-  )
-)
 
 export type ArticleCardsListRef = ArticleRef
 export type ArticleCardsListProps = ArticleProps &
-  Pick<ArticlesData, 'date' | 'slug' | 'title' | 'description'>
+  Pick<ArticlesData, 'date' | 'slug' | 'title' | 'description' | 'category'>
 
 const strings = {
   read: 'Read article'
@@ -61,42 +34,45 @@ const strings = {
  * @param rest - The rest of the props.
  * @returns The rendered articles cards list component.
  */
-const ArticleCardsList = forwardRef<ArticleCardsListRef, ArticleCardsListProps>(
-  ({ date, slug, title, description, className, ...rest }, ref) => {
-    const href = `/articles/${slug}`
+const ArticleCardsList = memo(
+  forwardRef<ArticleCardsListRef, ArticleCardsListProps>(
+    ({ date, slug, title, description, className, ...rest }, ref) => {
+      const href = `/articles/${slug}`
 
-    return (
-      !isEmpty(date) &&
-      !isEmpty(title) &&
-      !isEmpty(description) &&
-      !isEmpty(href) && (
-        <Article
-          ref={ref}
-          {...rest}
-          className={cn('md:grid md:grid-cols-4 md:items-baseline', className)}
-        >
-          {date && (
-            <CardEyebrow
-              as="time"
-              className="mt-1 hidden text-zinc-400 md:block dark:text-zinc-500"
-            >
-              {formatDate(date)}
-            </CardEyebrow>
-          )}
+      return (
+        !isEmpty(title) &&
+        isStringType(title) &&
+        !isEmpty(description) &&
+        isStringType(description) &&
+        !isEmpty(slug) &&
+        isStringType(slug) && (
+          <Article
+            ref={ref}
+            {...rest}
+            className={cn(
+              'md:grid md:grid-cols-4 md:items-baseline',
+              className
+            )}
+          >
+            {!isEmpty(date) && isStringType(date) && (
+              <Card.Eyebrow
+                as="time"
+                className="mt-1 hidden text-zinc-400 md:block dark:text-zinc-500"
+              >
+                {formatDate(date)}
+              </Card.Eyebrow>
+            )}
 
-          {href && title && description && (
             <Card className="md:col-span-3">
-              {title && href && <CardTitle href={href}>{title}</CardTitle>}
-
-              {description && <CardDescription>{description}</CardDescription>}
-
-              <CardCta>{strings.read}</CardCta>
+              <Card.Title href={href}>{title}</Card.Title>
+              <Card.Description>{description}</Card.Description>
+              <Card.Cta>{strings.read}</Card.Cta>
             </Card>
-          )}
-        </Article>
+          </Article>
+        )
       )
-    )
-  }
+    }
+  )
 )
 
 ArticleCardsList.displayName = 'ArticleCardsList'
