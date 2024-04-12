@@ -18,6 +18,16 @@ export type AvatarProps = HyperlinkProps & {
   alt?: string
 }
 
+const link: { href: string; label: string } = {
+    href: '/',
+    label: 'Go to Home Page'
+  },
+  image: { file: string; width: number; height: number } = {
+    file: '/images/avatar.jpg',
+    width: 64,
+    height: 64
+  }
+
 /**
  * Renders the avatar component.
  * @param large - The large prop of the avatar.
@@ -31,16 +41,6 @@ const Avatar = forwardRef<AvatarRef, AvatarProps>(
     { large = false, className, alt = '', ...rest },
     ref: ForwardedRef<AvatarRef>
   ) => {
-    const link: { href: string; label: string } = {
-        href: '/',
-        label: 'Go to Home Page'
-      },
-      image: { file: string; width: number; height: number } = {
-        file: '/images/avatar.jpg',
-        width: 64,
-        height: 64
-      }
-
     return (
       <Link
         ref={ref}
