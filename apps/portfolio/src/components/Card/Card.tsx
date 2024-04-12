@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 import {
   ElementType,
   ForwardRefExoticComponent,
@@ -6,38 +7,22 @@ import {
   forwardRef
 } from 'react'
 
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
 import {
-  DivisionRef,
-  ParagraphProps,
-  ParagraphRef
+  Div,
+  Heading,
+  P,
+  Span,
+  type DivisionRef,
+  type ParagraphProps,
+  type ParagraphRef
 } from '@guy-romelle-magayano/react-components/server'
 import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const Heading = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Heading
-  )
-)
-const P = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.P)
-)
-const Span = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
-)
-const ChevronRightSvg = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/SVG').then(
-    mod => mod.ChevronRightSvg
-  )
-)
+import { ChevronRightSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
 
 export type CardRef = Ref<any>
 export type CardProps = CommonComponentsProps & {
@@ -69,7 +54,7 @@ export type CardStaticComponents = {
 const Card = forwardRef<CardRef, CardProps>(
   ({ as: Component = Div, className, children, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Component
           ref={ref}
           {...rest}
@@ -100,7 +85,7 @@ export type CardLinkProps = CardCommonProps
 const CardLink = forwardRef<CardLinkRef, CardLinkProps>(
   ({ href, title, target, children, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Div ref={ref} {...rest}>
           <Div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50" />
 
@@ -139,11 +124,11 @@ const CardTitle = forwardRef<CardTitleRef, CardTitleProps>(
     ref
   ) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Component
           ref={ref}
-          as="h2"
           {...rest}
+          as="h2"
           className={cn(
             'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100',
             className
@@ -178,7 +163,7 @@ export type CardDescriptionProps = ParagraphProps & CardCommonProps
 const CardDescription = forwardRef<CardDescriptionRef, CardDescriptionProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <P
           ref={ref}
           {...rest}
@@ -211,11 +196,11 @@ export type CardCtaProps = CardCommonProps
 const CardCta = forwardRef<CardCtaRef, CardCtaProps>(
   ({ href, title, children, className, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Div
           ref={ref}
-          aria-hidden="true"
           {...rest}
+          aria-hidden="true"
           className={cn(
             'relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500',
             className
@@ -259,7 +244,7 @@ const CardEyebrow = forwardRef<CardEyebrowRef, CardEyebrowProps>(
     ref
   ) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <Component
           ref={ref}
           {...rest}
