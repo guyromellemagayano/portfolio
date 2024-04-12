@@ -2,41 +2,23 @@
 
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
-import { FormProps, FormRef } from '@guy-romelle-magayano/react-components'
+import {
+  Button,
+  Form,
+  Input,
+  type FormProps,
+  type FormRef
+} from '@guy-romelle-magayano/react-components'
+import {
+  Div,
+  Heading,
+  P,
+  Span
+} from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const Heading = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Heading
-  )
-)
-const P = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.P)
-)
-const Span = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
-)
-const MailSvg = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/SVG').then(
-    mod => mod.MailSvg
-  )
-)
-const Button = dynamic(() =>
-  import('@guy-romelle-magayano/react-components').then(mod => mod.Button)
-)
-const Form = dynamic(() =>
-  import('@guy-romelle-magayano/react-components').then(mod => mod.Form)
-)
-const Input = dynamic(() =>
-  import('@guy-romelle-magayano/react-components').then(mod => mod.Input)
-)
+import { MailSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
 
 export type NewsletterLayoutRef = FormRef
 export type NewsletterLayoutProps = FormProps
@@ -57,11 +39,13 @@ const strings = {
  */
 const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
   ({ className, ...rest }, ref) => {
+    const thankYouPageLink = '/thank-you'
+
     return (
       <Form
         ref={ref}
         {...rest}
-        action="/thank-you"
+        action={thankYouPageLink}
         className={cn(
           className,
           'rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40'
