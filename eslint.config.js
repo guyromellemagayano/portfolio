@@ -21,8 +21,9 @@ module.exports = [
       '@nx/enforce-module-boundaries': [
         'error',
         {
-          enforceBuildableLibDependency: true,
           allow: [],
+          enforceBuildableLibDependency: true,
+          allowCircularSelfDependency: true,
           depConstraints: [
             {
               sourceTag: '*',
