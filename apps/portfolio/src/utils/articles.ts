@@ -1,7 +1,7 @@
 import { glob } from 'fast-glob'
 import * as path from 'path'
 
-import { ArticlesData } from '@guy-romelle-magayano/portfolio/types/data'
+import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 /**
  * Imports the article data.
