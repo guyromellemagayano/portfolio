@@ -3,9 +3,14 @@ import {
   ArticlesAppData,
   ArticlesPageData,
   HomeAppData,
-  HomePageData
+  HomePageData,
+  ProjectsAppData,
+  ProjectsPageData
 } from '@guy-romelle-magayano/portfolio/types'
-import { articlesData } from '@guy-romelle-magayano/portfolio/utils'
+import {
+  articlesData,
+  projectsData
+} from '@guy-romelle-magayano/portfolio/utils'
 import {
   fullServerUrl,
   socialData
@@ -68,11 +73,40 @@ export const articlesAppData = async (): Promise<ArticlesAppData> => {
     articles = await articlesData(),
     data = await Promise.all([page, articles]).then(([page, articles]) => {
       const { meta, ...newPage } = page,
-        newArticles = articles.map(({ component, ...article }) => article)
+        newArticles =
+          articles?.map(({ component, ...article }) => article) || []
 
       return {
         ...newPage,
         articles: newArticles
+      }
+    })
+
+  return data
+}
+
+/**
+ * Return the projects page data.
+ * @returns The projects page data.
+ */
+export const projectsPageData = async (): Promise<ProjectsPageData> =>
+  await fetchPageData(apiUrls.projects)
+
+/**
+ * Returns the projects app data.
+ * @returns The projects app data.
+ */
+export const projectsAppData = async (): Promise<ProjectsAppData> => {
+  const page = await projectsPageData(),
+    projects = await projectsData(),
+    data = await Promise.all([page, projects]).then(([page, projects]) => {
+      const { meta, ...newPage } = page,
+        newProjects =
+          projects?.map(({ component, ...project }) => project) || []
+
+      return {
+        ...newPage,
+        projects: newProjects
       }
     })
 
