@@ -1,13 +1,20 @@
+/* eslint-disable sort-imports */
 import { FC, forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
+import { SvgProps } from '@guy-romelle-magayano/react-components'
 import {
-  HyperlinkProps,
-  HyperlinkRef
+  A,
+  Span,
+  type HyperlinkProps,
+  type HyperlinkRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, convertStringToLowercase } from '@guy-romelle-magayano/react-utils'
+import {
+  cn,
+  convertStringToLowercase,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
 import {
   GithubSvg,
@@ -16,15 +23,6 @@ import {
   TwitterSvg
 } from '@guy-romelle-magayano/portfolio/components/SVG'
 import { SocialLinksData } from '@guy-romelle-magayano/portfolio/types/data'
-import { SvgProps } from '@guy-romelle-magayano/react-components'
-
-// Dynamic imports
-const A = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.A)
-)
-const Span = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
-)
 
 export type SocialLinkRef = HyperlinkRef
 export type SocialLinkProps = HyperlinkProps &
@@ -69,7 +67,8 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
     }
 
     return (
-      (href && (
+      !isEmpty(href) &&
+      isStringType(href) && (
         <A
           ref={ref}
           {...rest}
@@ -84,14 +83,15 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
           target="_blank"
           rel="noreferrer"
         >
-          {Icon && (
+          {!isEmpty(Icon) && (
             <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
           )}
 
-          {showLabel && <Span className="ml-4">{label}</Span>}
+          {showLabel && !isEmpty(label) && (
+            <Span className="ml-4">{label}</Span>
+          )}
         </A>
-      )) ||
-      undefined
+      )
     )
   }
 )
