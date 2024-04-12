@@ -1,25 +1,33 @@
-import { FC } from 'react'
-
 import { Metadata } from 'next'
 
-import ProjectsApp from '@guy-romelle-magayano/portfolio/components/app/Projects'
+import { ProjectsApp } from '@guy-romelle-magayano/portfolio/components/Apps/Projects'
+import {
+  projectsAppData,
+  projectsPageData
+} from '@guy-romelle-magayano/portfolio/utils/server'
 
-import ProjectsData from '@guy-romelle-magayano/portfolio/data/projects'
+/**
+ * Generates the metadata for the projects page.
+ * @returns The metadata for the projects page.
+ */
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { meta } = await projectsPageData()
 
-const data = ProjectsData()
-
-export const metadata: Metadata = {
-  title: data.meta?.title || '',
-  description: data.meta?.description || '',
-  keywords: data.meta?.keywords || ''
+  return {
+    title: meta?.title || '',
+    description: meta?.description || '',
+    keywords: meta?.keywords || ''
+  }
 }
 
 /**
- * Renders the about page.
- * @returns The about page component.
+ * Renders the projects page.
+ * @returns The projects page component.
  */
-const Page: FC = async () => {
-  return <ProjectsApp className="sm:px-8 mt-16 sm:mt-32" data={data} />
+const Page = async () => {
+  const data = await projectsAppData()
+
+  return <ProjectsApp {...data} />
 }
 
 export default Page
