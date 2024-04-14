@@ -1,25 +1,33 @@
-import { FC } from 'react'
-
 import { Metadata } from 'next'
 
-import SkillsApp from '@guy-romelle-magayano/portfolio/components/app/Skills'
+import { SkillsApp } from '@guy-romelle-magayano/portfolio/components/Apps/Skills'
+import {
+  skillsAppData,
+  skillsPageData
+} from '@guy-romelle-magayano/portfolio/utils/server'
 
-import SkillsData from '@guy-romelle-magayano/portfolio/data/skills'
+/**
+ * Generates the metadata for the home page.
+ * @returns The metadata for the home page.
+ */
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { meta } = await skillsPageData()
 
-const data = SkillsData()
-
-export const metadata: Metadata = {
-  title: data.meta?.title || '',
-  description: data.meta?.description || '',
-  keywords: data.meta?.keywords || ''
+  return {
+    title: meta?.title || '',
+    description: meta?.description || '',
+    keywords: meta?.keywords || ''
+  }
 }
 
 /**
- * Renders the about page.
- * @returns The about page component.
+ * Renders the home page.
+ * @returns The home page component.
  */
-const Page: FC = async () => {
-  return <SkillsApp className="mt-16 sm:mt-32" data={data} />
+const Page = async () => {
+  const data = await skillsAppData()
+
+  return <SkillsApp {...data} />
 }
 
 export default Page
