@@ -2,7 +2,12 @@
 
 import { Div, Heading } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import {
+  cn,
+  isArrayType,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/Containers/Base'
 import { ArticleLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Article'
@@ -39,15 +44,30 @@ const HomeApp = (props: HomeAppProps) => {
 
   return (
     <>
-      <ContentLayout.Simple title={heading} intro={description}>
-        <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
-      </ContentLayout.Simple>
-      <PhotoLayout className="mt-16 sm:mt-20" data={slidePhotos} />
+      {!isEmpty(heading) &&
+        isStringType(heading) &&
+        !isEmpty(description) &&
+        (isStringType(description) || isArrayType(description)) && (
+          <ContentLayout.Simple title={heading} intro={description}>
+            {!isEmpty(links) && isArrayType(links) && (
+              <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
+            )}
+          </ContentLayout.Simple>
+        )}
+
+      {!isEmpty(slidePhotos) && isArrayType(slidePhotos) && (
+        <PhotoLayout className="mt-16 sm:mt-20" data={slidePhotos} />
+      )}
+
       <BaseContainer className="mt-20 md:mt-24">
         <Div
           className={cn(
             'mx-auto grid max-w-xl grid-cols-1 lg:max-w-none lg:grid-cols-2',
-            articles && (cvFile || workExperiences) && 'gap-y-20'
+            !isEmpty(articles) &&
+              isArrayType(articles) &&
+              ((!isEmpty(cvFile) && isStringType(cvFile)) ||
+                (!isEmpty(workExperiences) && isArrayType(workExperiences))) &&
+              'gap-y-20'
           )}
         >
           <Div>
@@ -57,16 +77,23 @@ const HomeApp = (props: HomeAppProps) => {
             >
               {strings.articles}
             </Heading>
-            <ArticleLayout articles={articles} isHome />
+
+            {!isEmpty(articles) && isArrayType(articles) && (
+              <ArticleLayout articles={articles} isHome />
+            )}
           </Div>
 
           <Div className="space-y-10 lg:pl-16 xl:pl-24">
             <NewsletterLayout />
-            <ResumeLayout
-              cvFile={cvFile}
-              workExperiences={workExperiences}
-              className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
-            />
+
+            {((!isEmpty(workExperiences) && isArrayType(workExperiences)) ||
+              (!isEmpty(cvFile) && isStringType(cvFile))) && (
+              <ResumeLayout
+                cvFile={cvFile}
+                workExperiences={workExperiences}
+                className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
+              />
+            )}
           </Div>
         </Div>
       </BaseContainer>
