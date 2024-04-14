@@ -26,6 +26,11 @@ export type ProjectsCardsListProps = CardProps &
     'slug' | 'title' | 'description' | 'link' | 'category' | 'logo'
   >
 
+const imageDimensions = {
+  width: 32,
+  height: 32
+}
+
 /**
  * Renders the projects cards list component.
  * @param name - The name of the project.
@@ -57,7 +62,8 @@ const ProjectsCardsList = memo(
                   <Image
                     src={logo}
                     alt={alt}
-                    className="h-full w-full"
+                    width={imageDimensions.width}
+                    height={imageDimensions.height}
                     unoptimized
                     priority
                   />
