@@ -1,21 +1,14 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
+import { Ul } from '@guy-romelle-magayano/react-components/server'
+
+import { isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import {
-  SectionLayoutProps,
-  SectionLayoutRef
+  SectionLayout,
+  type SectionLayoutProps,
+  type SectionLayoutRef
 } from '@guy-romelle-magayano/portfolio/components/Layouts/Section'
-
-// Dynamic imports
-const Ul = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Ul)
-)
-const SectionLayout = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Layouts/Section').then(
-    mod => mod.SectionLayout
-  )
-)
 
 export type ToolsListRef = SectionLayoutRef
 export type ToolsListProps = SectionLayoutProps
@@ -29,7 +22,7 @@ export type ToolsListProps = SectionLayoutProps
 const ToolsList = forwardRef<ToolsListRef, ToolsListProps>(
   ({ children, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) && (
         <SectionLayout ref={ref} {...rest}>
           <Ul className="space-y-16">{children}</Ul>
         </SectionLayout>
@@ -37,5 +30,7 @@ const ToolsList = forwardRef<ToolsListRef, ToolsListProps>(
     )
   }
 )
+
+ToolsList.displayName = 'ToolsList'
 
 export default ToolsList
