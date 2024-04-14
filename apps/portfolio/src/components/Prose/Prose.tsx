@@ -1,21 +1,15 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import {
-  DivisionProps,
-  DivisionRef
+  Div,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 export type ProseRef = DivisionRef
 export type ProseProps = DivisionProps
-
-// Dynamic Imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
 
 /**
  * Renders the prose component.
@@ -24,16 +18,18 @@ const Div = dynamic(() =>
  * @param rest - The rest of the prose props.
  * @returns The rendered prose component.
  */
-export const Prose = forwardRef<ProseRef, ProseProps>(
+const Prose = forwardRef<ProseRef, ProseProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      <Div
-        ref={ref}
-        className={cn('prose dark:prose-invert', className)}
-        {...rest}
-      >
-        {children}
-      </Div>
+      !isEmpty(children) && (
+        <Div
+          ref={ref}
+          {...rest}
+          className={cn('prose dark:prose-invert', className)}
+        >
+          {children}
+        </Div>
+      )
     )
   }
 )
