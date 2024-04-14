@@ -14,7 +14,7 @@ import {
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
-// import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
+import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
   NEXT_PUBLIC_GA_MEASUREMENT_ID,
   NEXT_PUBLIC_GA_MEASUREMENT_URL
@@ -62,7 +62,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         <Providers>
           <Div className="flex w-full">
             <Div className="relative flex w-full flex-col">
-              {/* <HeaderLayout pages={headerMenu} /> */}
+              <HeaderLayout pages={headerMenu} />
               <Main className="flex-auto">{children}</Main>
               <FooterLayout pages={footerMenu} />
             </Div>

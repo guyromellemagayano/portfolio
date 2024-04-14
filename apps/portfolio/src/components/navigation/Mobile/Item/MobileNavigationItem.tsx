@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 import type { TNavItemProps } from '@guy-romelle-magayano/portfolio/components/NavItem'
 
-export type TMobileNavItemProps = TNavItemProps
+export type TMobileNavigationItemProps = TNavItemProps
 
 /**
  * Renders the mobile nav item component.
@@ -16,7 +16,7 @@ export type TMobileNavItemProps = TNavItemProps
  * @param children - The children of the mobile nav item.
  * @returns The rendered mobile nav item component.
  */
-const MobileNavItem: FC<TMobileNavItemProps> = ({
+const MobileNavigationItem: FC<TMobileNavigationItemProps> = ({
   href,
   id,
   children,
@@ -37,4 +37,4 @@ const MobileNavItem: FC<TMobileNavItemProps> = ({
   )
 }
 
-export default MobileNavItem
+export default MobileNavigationItem
