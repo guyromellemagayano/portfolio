@@ -1,60 +1,34 @@
-/* eslint-disable sort-imports */
 import { forwardRef } from 'react'
 
-import Link, { LinkProps } from 'next/link'
-import { usePathname } from 'next/navigation'
-
 import {
-  Li,
-  Span,
-  type ListItemProps,
-  type ListItemRef
+  Ul,
+  UnorderedListProps,
+  UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { isEmpty } from '@guy-romelle-magayano/react-utils'
 
-export type NavigationItemRef = ListItemRef
-export type NavigationItemProps = ListItemProps & {
-  href: LinkProps['href']
-}
+export type NavigationListRef = UnorderedListRef
+export type NavigationListProps = UnorderedListProps
 
 /**
- * Renders the nav item component.
- * @param href - The URL to link to.
- * @param children - The content to render inside the link.
- * @param rest - The props object.
- * @returns The rendered nav item component.
+ * Renders the navigation list component.
+ * @param children - The children of the navigation list.
+ * @param rest - The rest of the props of the navigation list.
+ * @returns The rendered navigation list component.
  */
-const NavigationItem = forwardRef<NavigationItemRef, NavigationItemProps>(
-  ({ href, children, ...rest }, ref) => {
-    const pathname = usePathname(),
-      isActive = pathname === href
-
+const NavigationList = forwardRef<NavigationListRef, NavigationListProps>(
+  ({ children, ...rest }, ref) => {
     return (
-      !isEmpty(href) &&
       !isEmpty(children) && (
-        <Li ref={ref} {...rest}>
-          <Link
-            href={href}
-            className={cn(
-              'relative block px-3 py-2 transition',
-              isActive
-                ? 'text-amber-500 dark:text-amber-400'
-                : 'hover:text-amber-500 dark:hover:text-amber-400'
-            )}
-          >
-            {children}
-
-            {isActive && (
-              <Span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-amber-500/0 via-amber-500/40 to-amber-500/0 dark:from-amber-400/0 dark:via-amber-400/40 dark:to-amber-400/0" />
-            )}
-          </Link>
-        </Li>
+        <Ul ref={ref} {...rest}>
+          {children}
+        </Ul>
       )
     )
   }
 )
 
-NavigationItem.displayName = 'NavigationItem'
+NavigationList.displayName = 'NavigationList'
 
-export default NavigationItem
+export default NavigationList
