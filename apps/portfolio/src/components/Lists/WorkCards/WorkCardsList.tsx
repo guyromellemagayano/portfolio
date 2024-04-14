@@ -1,40 +1,18 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
-import dynamic from 'next/dynamic'
+import { Div, Heading, Li } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  CardProps,
-  CardRef
+  Card,
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components/Card'
 import { WorkExperienceData } from '@guy-romelle-magayano/portfolio/types'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const Heading = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(
-    mod => mod.Heading
-  )
-)
-const Li = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Li)
-)
-const Card = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card
-  )
-)
-const CardTitle = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Title
-  )
-)
-const CardEyebrow = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Eyebrow
-  )
-)
+import {
+  isArrayType,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
 export type WorkCardsListRef = CardRef
 export type WorkCardsListProps = CardProps &
@@ -53,54 +31,62 @@ const strings = {
  * @param rest - The rest of the props.
  * @returns The rendered work list cards component.
  */
-const WorkCardsList = forwardRef<WorkCardsListRef, WorkCardsListProps>(
-  ({ company, country, contributions, skills, ...rest }, ref) => {
-    return (
-      <Card ref={ref} {...rest} as="article">
-        {company && country && (
-          <CardTitle as="h3" title={company} className="!mb-2">
-            {company}{' '}
-            <Heading as="h5" className="mb-2 hidden text-sm md:block">
-              {country}
-            </Heading>
-          </CardTitle>
-        )}
+const WorkCardsList = memo(
+  forwardRef<WorkCardsListRef, WorkCardsListProps>(
+    ({ company, country, contributions, skills, ...rest }, ref) => {
+      return (
+        !isEmpty(company) &&
+        isStringType(company) &&
+        !isEmpty(country) &&
+        isStringType(country) &&
+        !isEmpty(contributions) &&
+        isArrayType(contributions) &&
+        !isEmpty(skills) &&
+        isArrayType(skills) && (
+          <Card ref={ref} {...rest} as="article">
+            <Card.Title as="h3" title={company} className="!mb-2">
+              {company}{' '}
+              <Heading as="h5" className="mb-2 hidden text-sm md:block">
+                {country}
+              </Heading>
+            </Card.Title>
 
-        {contributions && (
-          <Div className="my-2 flex flex-row items-start">
-            <CardEyebrow
-              as="ul"
-              className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500"
-            >
-              {contributions?.map((item, index: number) => (
-                <Li key={index}>{item}</Li>
-              ))}
-            </CardEyebrow>
-          </Div>
-        )}
+            <Div className="my-2 flex flex-row items-start">
+              <Card.Eyebrow
+                as="ul"
+                className="flex-wrap gap-y-4 text-zinc-400 dark:text-zinc-500"
+              >
+                {contributions?.map(
+                  (item, index: number) =>
+                    !isEmpty(item) &&
+                    isStringType(item) && <Li key={index}>{item}</Li>
+                )}
+              </Card.Eyebrow>
+            </Div>
 
-        {skills && (
-          <Div className="mb-2 mt-4 flex flex-row items-start gap-x-6">
-            <CardEyebrow
-              as="h4"
-              className="text-base text-rose-400 dark:text-rose-500"
-            >
-              {strings.skills}
-            </CardEyebrow>
-
-            <CardEyebrow
-              as="ul"
-              className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500"
-            >
-              {skills?.map((item, index: number) => (
-                <Li key={index}>{item}</Li>
-              ))}
-            </CardEyebrow>
-          </Div>
-        )}
-      </Card>
-    )
-  }
+            <Div className="mb-2 mt-4 flex flex-row items-start gap-x-6">
+              <Card.Eyebrow
+                as="h4"
+                className="text-base text-rose-400 dark:text-rose-500"
+              >
+                {strings.skills}
+              </Card.Eyebrow>
+              <Card.Eyebrow
+                as="ul"
+                className="flex-wrap gap-x-3 gap-y-1 text-zinc-400 dark:text-zinc-500"
+              >
+                {skills?.map(
+                  (item, index: number) =>
+                    !isEmpty(item) &&
+                    isStringType(item) && <Li key={index}>{item}</Li>
+                )}
+              </Card.Eyebrow>
+            </Div>
+          </Card>
+        )
+      )
+    }
+  )
 )
 
 WorkCardsList.displayName = 'WorkCardsList'
