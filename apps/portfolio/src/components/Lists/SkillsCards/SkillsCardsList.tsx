@@ -1,49 +1,21 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
-import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
+import { Div, Li, Span } from '@guy-romelle-magayano/react-components/server'
+
 import {
-  CardProps,
-  CardRef
+  isArrayType,
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
+
+import {
+  Card,
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components/Card'
 import { SkillsItemData } from '@guy-romelle-magayano/portfolio/types'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const Li = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Li)
-)
-const Span = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Span)
-)
-const Card = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card
-  )
-)
-const CardCta = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Cta
-  )
-)
-const CardDescription = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Description
-  )
-)
-const CardEyebrow = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Eyebrow
-  )
-)
-const CardTitle = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Title
-  )
-)
 
 export type SkillsCardsListRef = CardRef
 export type SkillsCardsListProps = CardProps &
@@ -69,72 +41,85 @@ const strings = {
  * @param rest - The rest of the props.
  * @returns The rendered skills cards list component.
  */
-const SkillsCardsList = forwardRef<SkillsCardsListRef, SkillsCardsListProps>(
-  ({ title, description, technologies, cta, ...rest }, ref) => {
-    return (
-      <Card ref={ref} {...rest} as="article">
-        {title && (
-          <CardTitle as="h3" title={title}>
-            {title}
-          </CardTitle>
-        )}
+const SkillsCardsList = memo(
+  forwardRef<SkillsCardsListRef, SkillsCardsListProps>(
+    ({ title, description, technologies, cta, ...rest }, ref) => {
+      return (
+        !isEmpty(title) &&
+        isStringType(title) &&
+        !isEmpty(description) &&
+        isArrayType(description) && (
+          <Card ref={ref} {...rest} as="article">
+            <Card.Title as="h3" title={title}>
+              {title}
+            </Card.Title>
 
-        {description &&
-          description?.map((text, index) => (
-            <CardDescription key={index}>{text}</CardDescription>
-          ))}
-
-        {technologies && (
-          <Div className="my-2 flex flex-row items-start gap-x-6">
-            <CardEyebrow
-              as="h4"
-              className="text-base text-rose-400 dark:text-rose-500"
-            >
-              {strings.technologies}
-            </CardEyebrow>
-
-            <CardEyebrow
-              as="ul"
-              className="flex-wrap gap-x-4 text-zinc-400 dark:text-zinc-500"
-            >
-              {technologies?.map(
-                ({ name, link }, index) =>
-                  link &&
-                  name && (
-                    <Li key={index}>
-                      <Link
-                        href={link}
-                        className="transition hover:text-amber-500 dark:hover:text-amber-400"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {name}
-                      </Link>
-                    </Li>
-                  )
-              )}
-            </CardEyebrow>
-          </Div>
-        )}
-
-        {cta && (
-          <Span className="flex items-start gap-x-4">
-            {cta?.map(({ projects, text }, index: number) => {
-              projects && (text = strings.projects)
-
-              return (
-                projects && (
-                  <CardCta key={index} title={text}>
-                    {text}
-                  </CardCta>
+            {description?.map(
+              (text, index) =>
+                !isEmpty(text) &&
+                isStringType(text) && (
+                  <Card.Description key={index}>{text}</Card.Description>
                 )
-              )
-            })}
-          </Span>
-        )}
-      </Card>
-    )
-  }
+            )}
+
+            {!isEmpty(technologies) && isArrayType(technologies) && (
+              <Div className="my-2 flex flex-row items-start gap-x-6">
+                <Card.Eyebrow
+                  as="h4"
+                  className="text-base text-rose-400 dark:text-rose-500"
+                >
+                  {strings.technologies}
+                </Card.Eyebrow>
+
+                <Card.Eyebrow
+                  as="ul"
+                  className="flex-wrap gap-x-4 text-zinc-400 dark:text-zinc-500"
+                >
+                  {technologies?.map(
+                    ({ name, link }, index) =>
+                      !isEmpty(link) &&
+                      isStringType(link) &&
+                      !isEmpty(name) &&
+                      isStringType(name) && (
+                        <Li key={index}>
+                          <Link
+                            href={link}
+                            className="transition hover:text-amber-500 dark:hover:text-amber-400"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {name}
+                          </Link>
+                        </Li>
+                      )
+                  )}
+                </Card.Eyebrow>
+              </Div>
+            )}
+
+            {!isEmpty(cta) && isArrayType(cta) && (
+              <Span className="flex items-start gap-x-4">
+                {cta?.map(({ projects, text }, index: number) => {
+                  !isEmpty(projects) &&
+                    isArrayType(projects) &&
+                    (text = strings.projects)
+
+                  return (
+                    !isEmpty(projects) &&
+                    isArrayType(projects) && (
+                      <Card.Cta key={index} title={text}>
+                        {text}
+                      </Card.Cta>
+                    )
+                  )
+                })}
+              </Span>
+            )}
+          </Card>
+        )
+      )
+    }
+  )
 )
 
 SkillsCardsList.displayName = 'SkillsCardsList'
