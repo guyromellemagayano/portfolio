@@ -9,7 +9,7 @@ import {
 import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Content'
 import { ProjectsList } from '@guy-romelle-magayano/portfolio/components/Lists/Projects'
 import { ProjectsCardsList } from '@guy-romelle-magayano/portfolio/components/Lists/ProjectsCards'
-import {
+import type {
   ProjectsData,
   ProjectsPageData
 } from '@guy-romelle-magayano/portfolio/types'
@@ -33,7 +33,7 @@ const ProjectsApp = (props: ProjectsAppProps) => {
     !isEmpty(heading) &&
     isStringType(heading) &&
     !isEmpty(description) &&
-    isStringType(description) && (
+    (isStringType(description) || isArrayType(description)) && (
       <ContentLayout.Simple title={heading} intro={description}>
         {!isEmpty(projects) && isArrayType(projects) && (
           <ProjectsList>
