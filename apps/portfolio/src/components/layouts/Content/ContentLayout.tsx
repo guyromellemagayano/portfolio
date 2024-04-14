@@ -110,7 +110,11 @@ const ContentSimpleLayout = memo(
         ((!isEmpty(title) && isStringType(title)) ||
           (!isEmpty(intro) && (isStringType(intro) || isArrayType(intro))) ||
           !isEmpty(children)) && (
-          <BaseContainer ref={ref} {...rest} className={cn('mt-9', className)}>
+          <BaseContainer
+            ref={ref}
+            {...rest}
+            className={cn('mt-16 sm:mt-32', className)}
+          >
             <Div className="max-w-2xl">
               {!isEmpty(title) && isStringType(title) && (
                 <Heading

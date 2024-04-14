@@ -48,7 +48,11 @@ const HomeApp = (props: HomeAppProps) => {
         isStringType(heading) &&
         !isEmpty(description) &&
         (isStringType(description) || isArrayType(description)) && (
-          <ContentLayout.Simple title={heading} intro={description}>
+          <ContentLayout.Simple
+            title={heading}
+            intro={description}
+            className="mt-9 sm:mt-9"
+          >
             {!isEmpty(links) && isArrayType(links) && (
               <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
             )}
