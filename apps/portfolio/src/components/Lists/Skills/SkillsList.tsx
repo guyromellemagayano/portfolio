@@ -1,21 +1,14 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
+import { Div } from '@guy-romelle-magayano/react-components/server'
+
+import { isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
 
 import {
-  SectionLayoutProps,
-  SectionLayoutRef
+  SectionLayout,
+  type SectionLayoutProps,
+  type SectionLayoutRef
 } from '@guy-romelle-magayano/portfolio/components/Layouts/Section'
-
-// Dynamic imports
-const Div = dynamic(() =>
-  import('@guy-romelle-magayano/react-components/server').then(mod => mod.Div)
-)
-const SectionLayout = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Layouts/Section').then(
-    mod => mod.SectionLayout
-  )
-)
 
 export type SkillsListRef = SectionLayoutRef
 export type SkillsListProps = SectionLayoutProps & {
@@ -32,7 +25,9 @@ export type SkillsListProps = SectionLayoutProps & {
 const SkillsList = forwardRef<SkillsListRef, SkillsListProps>(
   ({ title, children, ...rest }, ref) => {
     return (
-      children && (
+      !isEmpty(children) &&
+      !isEmpty(title) &&
+      isStringType(title) && (
         <SectionLayout ref={ref} {...rest} title={title}>
           <Div className="space-y-16">{children}</Div>
         </SectionLayout>
