@@ -186,6 +186,9 @@ export type ProjectsAppData = CommonPageAppData & {
   projects?: Array<ProjectsData>
 }
 
+// About app data
+export type AboutAppData = CommonPageAppData
+
 // Navigation data
 export type NavigationData = {
   headerMenu: PagesData[]
