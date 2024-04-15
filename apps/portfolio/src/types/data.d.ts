@@ -139,6 +139,7 @@ export type ProjectsData = {
   slug: string
   title: string
   description: string
+  logo: string | StaticImport
   link: ProjectsLinkData
   tech: string[]
   category: string | string[]
@@ -157,11 +158,21 @@ export type CommonPageAppData = {
 }
 
 // Home app data
-export type HomeAppData = CommonPageAppData & {
+export type HomeAppData = WorkAppData & {
   links?: Array<SocialLinksData>
   articles?: Array<ArticlesData>
   slidePhotos?: Array<SlidePhotosData>
   cvFile?: HomePageData['cvFile']
+  workExperiences?: Array<WorkExperienceData>
+}
+
+// Skills app data
+export type SkillsAppData = CommonPageAppData & {
+  skills?: Array<SkillsData>
+}
+
+// Work app data
+export type WorkAppData = CommonPageAppData & {
   workExperiences?: Array<WorkExperienceData>
 }
 
