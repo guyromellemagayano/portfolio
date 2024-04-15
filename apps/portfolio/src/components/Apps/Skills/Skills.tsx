@@ -54,4 +54,6 @@ const SkillsApp = (props: SkillsAppProps) => {
   )
 }
 
+SkillsApp.displayName = 'SkillsApp'
+
 export default SkillsApp
