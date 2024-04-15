@@ -7,8 +7,8 @@ import {
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
- * Generates the metadata for the home page.
- * @returns The metadata for the home page.
+ * Generates the metadata for the articles page.
+ * @returns The metadata for the articles page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
   const { meta } = await articlesPageData()

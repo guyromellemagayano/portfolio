@@ -7,8 +7,8 @@ import {
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
- * Generates the metadata for the home page.
- * @returns The metadata for the home page.
+ * Generates the metadata for the skills page.
+ * @returns The metadata for the skills page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
   const { meta } = await skillsPageData()
@@ -21,8 +21,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 }
 
 /**
- * Renders the home page.
- * @returns The home page component.
+ * Renders the skills page.
+ * @returns The skills page component.
  */
 const Page = async () => {
   const data = await skillsAppData()
