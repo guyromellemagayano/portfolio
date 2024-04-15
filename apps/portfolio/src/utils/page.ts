@@ -7,7 +7,8 @@ import {
   ProjectsAppData,
   ProjectsPageData,
   SkillsAppData,
-  SkillsPageData
+  SkillsPageData,
+  WorkPageData
 } from '@guy-romelle-magayano/portfolio/types'
 import {
   articlesData,
@@ -72,6 +73,30 @@ export const skillsPageData = async (): Promise<SkillsPageData> =>
  */
 export const skillsAppData = async (): Promise<SkillsAppData> => {
   const page = await skillsPageData(),
+    data = await Promise.all([page]).then(([page]) => {
+      const { meta, ...newPage } = page
+
+      return {
+        ...newPage
+      }
+    })
+
+  return data
+}
+
+/**
+ * Returns the work app data.
+ * @returns The work app data.
+ */
+export const workPageData = async (): Promise<WorkPageData> =>
+  await fetchPageData(apiUrls.work)
+
+/**
+ * Returns the work app data.
+ * @returns The work app data.
+ */
+export const workAppData = async (): Promise<WorkPageData> => {
+  const page = await workPageData(),
     data = await Promise.all([page]).then(([page]) => {
       const { meta, ...newPage } = page
 

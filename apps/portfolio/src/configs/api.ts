@@ -5,5 +5,6 @@ export const apiUrls = {
   social: 'api/json?data=social',
   pages: 'api/json?data=pages',
   projects: 'api/json?data=projects',
-  skills: 'api/json?data=skills'
+  skills: 'api/json?data=skills',
+  work: 'api/json?data=work'
 }
