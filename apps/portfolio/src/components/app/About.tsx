@@ -1,73 +1,76 @@
 'use client'
 
-import { FC, useId } from 'react'
+import Image from 'next/image'
 
-import Container from '@guy-romelle-magayano/portfolio/components/Container'
-import ContentLayout from '@guy-romelle-magayano/portfolio/components/layouts/Content'
-import ImageLayout from '@guy-romelle-magayano/portfolio/components/layouts/Image'
-import SocialLinksList from '@guy-romelle-magayano/portfolio/components/list/SocialLinks'
-
-import SocialLinksData from '@guy-romelle-magayano/portfolio/data/social-links'
-
-import imagePortrait from '@guy-romelle-magayano/portfolio/images/portrait.jpg'
+import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
   isArrayType,
-  isEmpty
-} from '@guy-romelle-magayano/portfolio/utils/checkTypes'
+  isEmpty,
+  isStringType
+} from '@guy-romelle-magayano/react-utils'
 
-import type {
-  TCommonComponentProps,
-  TCommonPageData
-} from '@guy-romelle-magayano/portfolio/types/common'
+import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/Containers/Base'
+import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Content'
+import {
+  AboutPageData,
+  SocialLinksData
+} from '@guy-romelle-magayano/portfolio/types'
 
-export type TAboutDataProps = {
-  data: TCommonPageData
+export type AboutAppProps = AboutPageData & {
+  social?: Array<SocialLinksData>
 }
 
-export type TAboutAppProps = TCommonComponentProps & TAboutDataProps
+const imagePortrait = '/images/portrait.jpg'
 
 /**
- * Renders the about page.
- * @param id The about page id.
- * @param data The about page data.
- * @param rest The about page props.
- * @returns The about page component.
+ * Renders the about page component.
+ * @param props - The props of the about page.
+ * @returns The rendered about page component.
  */
-const AboutApp: FC<TAboutAppProps> = ({ id, data, ...rest }) => {
-  const customId = useId()
+const AboutApp = (props: AboutAppProps) => {
+  const { hero, social } = props
+
+  const heading = hero?.heading || undefined,
+    description = hero?.description || undefined
 
   return (
-    <Container id={id || customId} {...rest}>
-      <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
-        <div className="lg:pl-20">
-          <div className="max-w-xs px-2.5 lg:max-w-none">
-            {!isEmpty(imagePortrait) && (
-              <ImageLayout
+    <BaseContainer className="mt-16 sm:mt-32">
+      <Div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
+        {!isEmpty(imagePortrait) && (
+          <Div className="flex max-w-full justify-center lg:pl-20">
+            <Div className="relative h-[32rem] w-full max-w-xs px-2.5 lg:max-w-none">
+              <Image
                 src={imagePortrait}
                 alt=""
                 sizes="(min-width: 1024px) 32rem, 20rem"
-                className="aspect-square rotate-3 rounded-2xl object-cover"
+                className="aspect-square rotate-3 rounded-2xl bg-zinc-100 object-cover dark:bg-zinc-800"
+                fill
                 priority
               />
-            )}
-          </div>
-        </div>
-        <div className="lg:order-first lg:row-span-2">
-          <ContentLayout
-            title={data.hero?.heading || ''}
-            intro={data.hero?.description || []}
-            layout="aside"
-          />
-        </div>
-        <div className="lg:pl-20">
-          {isArrayType(SocialLinksData) && !isEmpty(SocialLinksData) && (
-            <SocialLinksList data={SocialLinksData} />
+            </Div>
+          </Div>
+        )}
+
+        {!isEmpty(heading) &&
+          isStringType(heading) &&
+          !isEmpty(description) &&
+          (isStringType(description) || isArrayType(description)) && (
+            <Div className="lg:order-first lg:row-span-2">
+              <ContentLayout.Aside title={heading} intro={description} />
+            </Div>
           )}
-        </div>
-      </div>
-    </Container>
+
+        {/* {!isEmpty(social) && isArrayType(social) && (
+          <Div className="lg:pl-20">
+            <SocialLinksπ data={social} />
+          </Div>
+        )} */}
+      </Div>
+    </BaseContainer>
   )
 }
+
+AboutApp.displayName = 'AboutApp'
 
 export default AboutApp
