@@ -1,5 +1,6 @@
 import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
 import {
+  AboutPageData,
   ArticlesAppData,
   ArticlesPageData,
   HomeAppData,
@@ -158,6 +159,32 @@ export const projectsAppData = async (): Promise<ProjectsAppData> => {
       return {
         ...newPage,
         projects: newProjects
+      }
+    })
+
+  return data
+}
+
+/**
+ * Returns the about app data.
+ * @returns The about app data.
+ */
+export const aboutPageData = async (): Promise<AboutPageData> =>
+  await fetchPageData(apiUrls.about)
+
+/**
+ * Returns the about app data.
+ * @returns The about app data.
+ */
+export const aboutAppData = async (): Promise<AboutPageData> => {
+  const page = await aboutPageData(),
+    social = await socialData(),
+    data = await Promise.all([page, social]).then(([page, social]) => {
+      const { meta, ...newPage } = page
+
+      return {
+        ...newPage,
+        social
       }
     })
 
