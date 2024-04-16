@@ -1,2 +1,2 @@
-yarn dlx validate-branch-name
-yarn dlx lint-staged --allow-empty
+yarn validate-branch-name
+yarn lint-staged --allow-empty
