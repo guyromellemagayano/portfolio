@@ -12,6 +12,6 @@ declare module 'focus-visible' {
 }
 
 declare module '*.mdx' {
-  let MDXComponent: (props: any) => React.ReactNode
+  let MDXComponent: (props: any) => ReactNode
   export default MDXComponent
 }
