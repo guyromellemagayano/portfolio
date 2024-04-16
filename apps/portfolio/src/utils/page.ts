@@ -9,6 +9,7 @@ import {
   ProjectsPageData,
   SkillsAppData,
   SkillsPageData,
+  UsesPageData,
   WorkPageData
 } from '@guy-romelle-magayano/portfolio/types'
 import {
@@ -185,6 +186,30 @@ export const aboutAppData = async (): Promise<AboutPageData> => {
       return {
         ...newPage,
         social
+      }
+    })
+
+  return data
+}
+
+/**
+ * Returns the uses app data.
+ * @returns The uses app data.
+ */
+export const usesPageData = async (): Promise<UsesPageData> =>
+  await fetchPageData(apiUrls.uses)
+
+/**
+ * Returns the uses app data.
+ * @returns The uses app data.
+ */
+export const usesAppData = async (): Promise<UsesPageData> => {
+  const page = await usesPageData(),
+    data = await Promise.all([page]).then(([page]) => {
+      const { meta, ...newPage } = page
+
+      return {
+        ...newPage
       }
     })
 
