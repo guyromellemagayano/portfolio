@@ -1,7 +1,7 @@
 /* eslint-disable sort-imports */
 'use client'
 
-import { forwardRef, memo, useEffect, useRef } from 'react'
+import { CSSProperties, forwardRef, memo, useEffect, useRef } from 'react'
 
 import { usePathname } from 'next/navigation'
 
@@ -46,21 +46,18 @@ const HeaderLayout = memo(
       const pathname = usePathname(),
         headerRef = useRef<DivisionRef | null>(null),
         avatarRef = useRef<DivisionRef | null>(null),
-        isInitial = useRef<boolean>(true)
-
-      const isHomePage = pathname === '/'
+        isInitial = useRef<boolean>(true),
+        isHomePage = pathname === '/'
 
       useEffect(() => {
-        const downDelay = avatarRef.current?.offsetTop ?? 0
-        const upDelay = 64
-
-        const setProperty = (property: string, value: string): void => {
-          document.documentElement.style.setProperty(property, value)
-        }
-
-        const removeProperty = (property: string): void => {
-          document.documentElement.style.removeProperty(property)
-        }
+        const downDelay = avatarRef.current?.offsetTop ?? 0,
+          upDelay = 64,
+          setProperty = (property: string, value: string): void => {
+            document.documentElement.style.setProperty(property, value)
+          },
+          removeProperty = (property: string): void => {
+            document.documentElement.style.removeProperty(property)
+          }
 
         const updateHeaderStyles = (): void => {
           if (!headerRef.current) {
@@ -151,6 +148,13 @@ const HeaderLayout = memo(
         }
       }, [isHomePage])
 
+      const headerPosition = {
+          position: 'var(--header-position)'
+        } as unknown as CSSProperties,
+        headerInnerPosition = {
+          position: 'var(--header-inner-position)'
+        } as unknown as CSSProperties
+
       return (
         <>
           <Header
@@ -173,13 +177,11 @@ const HeaderLayout = memo(
                 />
                 <BaseContainer
                   className="top-0 order-last -mb-3 pt-3"
-                  style={{ position: 'var(--header-position)' }}
+                  style={headerPosition}
                 >
                   <Div
                     className="top-[var(--avatar-top,theme(spacing.3))] w-full"
-                    style={{
-                      position: 'var(--header-inner-position)'
-                    }}
+                    style={headerInnerPosition}
                   >
                     <Div className="relative">
                       <AvatarContainer
@@ -203,13 +205,11 @@ const HeaderLayout = memo(
             <Div
               ref={headerRef}
               className="top-0 z-10 h-16 pt-6"
-              style={{ position: 'var(--header-position)' }}
+              style={headerPosition}
             >
               <BaseContainer
                 className="top-[var(--header-top,theme(spacing.6))] w-full"
-                style={{
-                  position: 'var(--header-inner-position)'
-                }}
+                style={headerInnerPosition}
               >
                 <Div className="relative flex gap-4">
                   <Div className="flex flex-1">

@@ -18,12 +18,12 @@ import {
   isStringType
 } from '@guy-romelle-magayano/react-utils'
 
-import { MobileNavigationItem } from '@guy-romelle-magayano/portfolio/components/Navigation/Mobile/Item'
 import {
   ChevronDownSvg,
   CloseSvg
 } from '@guy-romelle-magayano/portfolio/components/SVG'
 import { PagesData } from '@guy-romelle-magayano/portfolio/types'
+import Link from 'next/link'
 
 export type MobileNavigationRef = NavigationRef
 export type MobileNavigationProps = NavigationProps & {
@@ -103,9 +103,14 @@ const MobileNavigation = memo(
                           isStringType(link) &&
                           !isEmpty(title) &&
                           isStringType(title) && (
-                            <MobileNavigationItem key={index} href={link}>
+                            <Popover.Button
+                              key={index}
+                              as={Link}
+                              href={link}
+                              className="block py-2"
+                            >
                               {title}
-                            </MobileNavigationItem>
+                            </Popover.Button>
                           )
                       )}
                     </Ul>
