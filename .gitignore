@@ -129,7 +129,7 @@ yarn-error.log*
 !.env.*.sample
 
 # Vercel
-.vercel/
+.vercel
 
 # TypeScript
 *.tsbuildinfo
