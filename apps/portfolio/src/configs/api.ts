@@ -7,5 +7,6 @@ export const apiUrls = {
   projects: 'api/json?data=projects',
   skills: 'api/json?data=skills',
   work: 'api/json?data=work',
-  about: 'api/json?data=about'
+  about: 'api/json?data=about',
+  uses: 'api/json?data=uses'
 }
