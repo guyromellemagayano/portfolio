@@ -31,19 +31,21 @@
       "plugin": "@nx/cypress/plugin",
       "options": {
         "targetName": "e2e",
-        "componentTestingTargetName": "component-test"
-      }
-    },
-    {
-      "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
+        "componentTestingTargetName": "component-test",
+        "ciTargetName": "e2e-ci",
+        "openTargetName": "open-cypress"
       }
     },
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
       }
     }
   ],
@@ -61,12 +63,9 @@
   "generators": {
     "@nx/next": {
       "application": {
-        "style": "css",
+        "style": "tailwind",
         "linter": "eslint"
       }
-    },
-    "@nx/react": {
-      "library": {}
     }
   },
   "tasksRunnerOptions": {
