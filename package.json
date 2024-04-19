@@ -61,7 +61,7 @@
     "@nx/workspace": "18.2.4",
     "@swc-node/register": "~1.9.0",
     "@swc/cli": "~0.3.12",
-    "@swc/core": "~1.4.14",
+    "@swc/core": "~1.4.16",
     "@swc/helpers": "~0.5.10",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
