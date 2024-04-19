@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "name": "guy-romelle-magayano",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll": "always",
+      "source.sortImports": "always"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnType": true,
+    "editor.tabCompletion": "on",
+    "editor.tabFocusMode": false,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "emmet.triggerExpansionOnTab": true,
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.enable": {
+      "*": true
+    },
+    "npm.packageManager": "yarn",
+    "search.exclude": {
+      "**/.yarn": true,
+      "**/.pnp.*": true
+    },
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "typescript.tsdk": "node_modules/typescript/lib"
+  }
+}
