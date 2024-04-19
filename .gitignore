@@ -142,7 +142,7 @@ next-env.d.ts
 pb_data/
 
 # Yarn
-.yarn/*
+**/.yarn/*
 !.yarn/cache/
 !.yarn/patches/
 !.yarn/plugins/
@@ -184,7 +184,7 @@ typings/
 Thumbs.db
 
 # NX
-.nx/cache
+**/.nx/cache
 apps/*-server-*/
 
 # Next.js
