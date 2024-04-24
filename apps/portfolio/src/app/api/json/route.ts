@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { promises as fs } from 'node:fs'
 
 export async function GET(req: NextRequest) {
   const getJsonData = async (fileName: string) => {
     try {
-      const filePath =
-          __dirname.replace('.next/server', 'src') + '/' + fileName,
-        fileBuffer = await fs.readFile(filePath),
-        json = JSON.parse(fileBuffer.toString())
+      const filePath = req.nextUrl.origin + '/data/' + fileName,
+        response = await fetch(filePath)
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch JSON')
+      }
+
+      const json = await response.json()
 
       return NextResponse.json(json)
     } catch (err) {
