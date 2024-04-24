@@ -52,6 +52,7 @@
       }
     }
   ],
+  "parallel": 4,
   "targetDefaults": {
     "@nx/eslint:lint": {
       "cache": true,
@@ -66,10 +67,29 @@
       "inputs": [
         "production",
         "^production"
-      ]
+      ],
+      "cache": true
+    },
+    "lint": {
+      "cache": true
+    },
+    "test": {
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
+    },
+    "build-custom-server": {
+      "cache": true
     }
   },
   "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true
+      },
+      "library": {}
+    },
     "@nx/next": {
       "application": {
         "style": "tailwind",
