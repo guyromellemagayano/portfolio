@@ -32,7 +32,10 @@ const nextConfig = {
     disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
     disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
     hideSourceMaps: process.env.NODE_ENV === 'production',
-    automaticVercelMonitors: process.env.NODE_ENV === 'production'
+    automaticVercelMonitors: process.env.NODE_ENV === 'production',
+    disableLogger: process.env.NODE_ENV === 'production',
+    transpileClientSDK: process.env.NODE_ENV === 'production',
+    widenClientFileUpload: process.env.NODE_ENV === 'production'
   }
 }
 
