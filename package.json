@@ -19,6 +19,8 @@
     "@next/mdx": "^14.2.2",
     "@sentry/nextjs": "^7.105.0",
     "@swc/helpers": "~0.5.10",
+    "@vercel/analytics": "^1.2.2",
+    "@vercel/speed-insights": "^1.0.10",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
     "fast-glob": "^3.3.2",
@@ -106,5 +108,5 @@
     "webpack": "^5.91.0"
   },
   "license": "MIT",
-  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  "packageManager": "yarn@4.1.1"
 }
