@@ -14,7 +14,7 @@ import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
 import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
-  NEXT_PUBLIC_GA_MEASUREMENT_ID,
+  GA_MEASUREMENT_ID,
   NEXT_PUBLIC_GA_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
 import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
@@ -50,7 +50,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', "${NEXT_PUBLIC_GA_MEASUREMENT_ID}");
+              gtag('config', "${GA_MEASUREMENT_ID}");
             `
           }}
         />
