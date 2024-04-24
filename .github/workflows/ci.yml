@@ -27,7 +27,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
-      - run: yarn install --immutable
+      - run: yarn install --frozen-lockfile
         working-directory: ./client
       - uses: nrwl/nx-set-shas@v4
 
