@@ -11,11 +11,9 @@ export const SENTRY_PROJECT: string = process.env.SENTRY_PROJECT || ''
 export const SENTRY_ENVIRONMENT: string = process.env.SENTRY_ENVIRONMENT || ''
 
 // Next.js
-export const NEXT_PUBLIC_GA_MEASUREMENT_ID: string =
-  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || ''
+export const GA_MEASUREMENT_ID: string = process.env.GA_MEASUREMENT_ID || ''
 export const NEXT_PUBLIC_GA_MEASUREMENT_URL: string =
   `https://www.googletagmanager.com/gtag/js` +
-    isNotNullOrUndefined(NEXT_PUBLIC_GA_MEASUREMENT_ID) &&
-  !isEmpty(NEXT_PUBLIC_GA_MEASUREMENT_ID)
-    ? `?id=${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}`
+    isNotNullOrUndefined(GA_MEASUREMENT_ID) && !isEmpty(GA_MEASUREMENT_ID)
+    ? `?id=${process.env.GA_MEASUREMENT_ID}`
     : ''
