@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
 
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import {
   Body,
@@ -65,6 +67,8 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               <FooterLayout pages={footerMenu} />
             </Div>
           </Div>
+          <SpeedInsights />
+          <Analytics />
         </Providers>
       </Body>
     </Html>
