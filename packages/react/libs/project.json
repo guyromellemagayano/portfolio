@@ -4,5 +4,6 @@
   "sourceRoot": "packages/react/libs/src",
   "projectType": "library",
   "tags": [],
+  "// targets": "to see all targets run: nx show project react-libs --web",
   "targets": {}
 }
