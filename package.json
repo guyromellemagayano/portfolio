@@ -44,8 +44,6 @@
     "@babel/core": "^7.24.4",
     "@eslint/eslintrc": "^3.0.2",
     "@eslint/js": "~9.1.1",
-    "@nx-tools/container-metadata": "^5.3.1",
-    "@nx-tools/nx-container": "^5.3.1",
     "@nx/cypress": "18.3.3",
     "@nx/esbuild": "18.3.3",
     "@nx/eslint": "18.3.3",
