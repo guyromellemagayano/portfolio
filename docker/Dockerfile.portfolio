@@ -1,0 +1,44 @@
+# Using a specified Node.js version from .nvmrc and a smaller base image
+FROM node:20-alpine AS base
+
+# Setup env variables for the application in development
+ENV NODE_ENV=development
+
+# Install libc6-compat for compatibility and dumb-init for better signal handling
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache libc6-compat dumb-init yarn
+
+# Set the working directory for the application
+WORKDIR /app
+
+# Copying package management files from the client directory and install dependencies in a single layer
+COPY client/package.json client/yarn.lock ./
+RUN yarn install --pure-lockfile
+
+# Stage for development
+FROM base AS development
+
+# Copy your specific portfolio app code to Docker image
+COPY client/ ./
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Use the Nx CLI to serve the application
+CMD ["npx", "nx", "serve", "portfolio"]
+
+# Stage for production
+FROM base AS production
+
+# Setup env variables for the application in production
+ENV NODE_ENV=production
+
+# Copy necessary files for building the app
+COPY client/ ./
+
+# Use the Nx CLI to build the application
+RUN npx nx build portfolio
+
+# Command to start your Next.js app in production
+CMD ["npx", "nx", "serve", "portfolio", "--prod"]
