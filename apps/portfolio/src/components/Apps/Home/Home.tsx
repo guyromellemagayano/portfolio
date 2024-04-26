@@ -66,7 +66,7 @@ const HomeApp = (props: HomeAppProps) => {
       <BaseContainer className="mt-20 md:mt-24">
         <Div
           className={cn(
-            'mx-auto grid max-w-xl grid-cols-1 lg:max-w-none lg:grid-cols-2',
+            'mx-auto grid w-full max-w-xl grid-cols-1 lg:max-w-none lg:grid-cols-2',
             !isEmpty(articles) &&
               isArrayType(articles) &&
               ((!isEmpty(cvFile) && isStringType(cvFile)) ||
