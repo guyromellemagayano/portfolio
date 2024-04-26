@@ -42,7 +42,6 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
       <Head>
         <Script strategy="afterInteractive" src={GA_MEASUREMENT_URL} />
         <Script
-          id="google-analytics"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
@@ -50,8 +49,21 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', "${GA_MEASUREMENT_ID}");
+              gtag('consent', 'default', {
+                'ad_storage': 'granted',
+                'ad_user_data': 'granted',
+                'ad_personalization': 'granted',
+                'analytics_storage': 'granted',
+                'functionality_storage': 'granted',
+                'security_storage': 'granted'
+              });
             `
           }}
+        />
+        <Script
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9210279170204135"
+          crossOrigin="anonymous"
         />
       </Head>
 
