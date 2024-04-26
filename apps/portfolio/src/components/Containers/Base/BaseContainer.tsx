@@ -23,7 +23,7 @@ const OuterContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
     return (
       !isEmpty(children) && (
         <Div ref={ref} {...rest} className={cn('sm:px-8', className)}>
-          <Div className="mx-auto max-w-7xl lg:px-8">{children}</Div>
+          <Div className="mx-auto w-full max-w-7xl lg:px-8">{children}</Div>
         </Div>
       )
     )
@@ -48,7 +48,9 @@ const InnerContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
           {...rest}
           className={cn('relative px-4 sm:px-8 lg:px-12', className)}
         >
-          <Div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</Div>
+          <Div className="mx-auto w-full w-full max-w-2xl lg:max-w-5xl">
+            {children}
+          </Div>
         </Div>
       )
     )

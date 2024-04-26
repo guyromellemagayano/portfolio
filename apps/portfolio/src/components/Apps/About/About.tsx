@@ -38,7 +38,7 @@ const AboutApp = (props: AboutAppProps) => {
     <BaseContainer className="mt-16 sm:mt-32">
       <Div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
         {!isEmpty(imagePortrait) && (
-          <Div className="flex max-w-full justify-center lg:pl-20">
+          <Div className="flex w-full max-w-full justify-center lg:pl-20">
             <Div className="relative h-[32rem] w-full max-w-xs px-2.5 lg:max-w-none">
               <Image
                 src={imagePortrait}

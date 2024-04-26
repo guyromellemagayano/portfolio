@@ -94,7 +94,7 @@ const ArticleLayout = memo(
             className={cn('mt-16 lg:mt-32', className)}
           >
             <Div className="xl:relative">
-              <Div className="mx-auto max-w-2xl">
+              <Div className="mx-auto w-full max-w-2xl">
                 {previousPathname && (
                   <Button
                     type="button"
