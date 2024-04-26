@@ -4949,12 +4949,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.2.25, @types/react-dom@npm:^18.0.0":
+"@types/react-dom@npm:18.2.25":
   version: 18.2.25
   resolution: "@types/react-dom@npm:18.2.25"
   dependencies:
     "@types/react": "npm:*"
   checksum: 10c0/87604407eca6884c5b4d4657cb511dc5ba28ea1cfa5d0ce1fc2d659a7ad1b64ae85dcda60e3f010641f9a52a6a60dfcaa6be3b0d0de9d624475052a13dae01f4
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:^18.0.0":
+  version: 18.3.0
+  resolution: "@types/react-dom@npm:18.3.0"
+  dependencies:
+    "@types/react": "npm:*"
+  checksum: 10c0/6c90d2ed72c5a0e440d2c75d99287e4b5df3e7b011838cdc03ae5cd518ab52164d86990e73246b9d812eaf02ec351d74e3b4f5bd325bf341e13bf980392fd53b
   languageName: node
   linkType: hard
 
@@ -4967,7 +4976,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:18.2.79":
+"@types/react@npm:*":
+  version: 18.3.0
+  resolution: "@types/react@npm:18.3.0"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 10c0/6405f805700daf096a507a191bc4f8814ebed49120f156926b0a5b7b6f41424214320cea3dbb6df85f476b220f0554ef7e587baa88f59375e64bdbab525f58aa
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:18.2.79":
   version: 18.2.79
   resolution: "@types/react@npm:18.2.79"
   dependencies:
@@ -8213,9 +8232,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.668":
-  version: 1.4.748
-  resolution: "electron-to-chromium@npm:1.4.748"
-  checksum: 10c0/2945c6575db0e3572c7b985db6d39d579843488e598efba76b11a920485751174b82b6c3721e088bb5f68487ca41e465b251058e9bb111534faf05aa081357ea
+  version: 1.4.749
+  resolution: "electron-to-chromium@npm:1.4.749"
+  checksum: 10c0/6a448071e12918fd053fb8d4472178d8c916c9242b8ba0e0c5cb66d7c2f8602bc50e6a6d8bc48bff1fac67be63713e859ddae3353c28ee43cad8970b0ed78aba
   languageName: node
   linkType: hard
 
@@ -12558,9 +12577,9 @@ __metadata:
   linkType: hard
 
 "lru-cache@npm:^10.0.1, lru-cache@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "lru-cache@npm:10.2.0"
-  checksum: 10c0/c9847612aa2daaef102d30542a8d6d9b2c2bb36581c1bf0dc3ebf5e5f3352c772a749e604afae2e46873b930a9e9523743faac4e5b937c576ab29196774712ee
+  version: 10.2.1
+  resolution: "lru-cache@npm:10.2.1"
+  checksum: 10c0/e5b4aa7c60e154d27b8ff3e375f8c8cba6be5e94d4048d757588dc371941c15c11ab859d3a402dab33d338d082be9af569761af27a6bc0a9d91376900abb690e
   languageName: node
   linkType: hard
 
@@ -15881,7 +15900,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:18.2.0, react-is@npm:^18.0.0":
+"react-is@npm:18.2.0":
   version: 18.2.0
   resolution: "react-is@npm:18.2.0"
   checksum: 10c0/6eb5e4b28028c23e2bfcf73371e72cd4162e4ac7ab445ddae2afe24e347a37d6dc22fae6e1748632cd43c6d4f9b8f86dcf26bf9275e1874f436d129952528ae0
@@ -15899,6 +15918,13 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 10c0/2bdb6b93fbb1820b024b496042cce405c57e2f85e777c9aabd55f9b26d145408f9f74f5934676ffdc46f3dcff656d78413a6e43968e7b3f92eea35b3052e9053
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^18.0.0":
+  version: 18.3.0
+  resolution: "react-is@npm:18.3.0"
+  checksum: 10c0/88fed0b155686de74699d8815115be449b15b17ec78e0d6df994af5b9d02d0661fd5688a9ef43fd0a140b8db1e39786b611803addf413477209820e2d7ac793e
   languageName: node
   linkType: hard
 
@@ -16525,11 +16551,11 @@ __metadata:
   linkType: hard
 
 "scheduler@npm:^0.23.0":
-  version: 0.23.0
-  resolution: "scheduler@npm:0.23.0"
+  version: 0.23.1
+  resolution: "scheduler@npm:0.23.1"
   dependencies:
     loose-envify: "npm:^1.1.0"
-  checksum: 10c0/b777f7ca0115e6d93e126ac490dbd82642d14983b3079f58f35519d992fa46260be7d6e6cede433a92db70306310c6f5f06e144f0e40c484199e09c1f7be53dd
+  checksum: 10c0/cfda827a445fb57192e05275040eccc7c5e2749b98f15559520c7f6539d89d75633bb8b6c1cedf56ca0546630b72d0958bf00b63e2b8f9296e87d0d9d2d50e35
   languageName: node
   linkType: hard
 
