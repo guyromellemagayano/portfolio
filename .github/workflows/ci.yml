@@ -28,7 +28,7 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: yarn install --frozen-lockfile
-        working-directory: ./client
+        working-directory: /
       - uses: nrwl/nx-set-shas@v4
 
       - run: yarn nx-cloud record -- nx format:check
