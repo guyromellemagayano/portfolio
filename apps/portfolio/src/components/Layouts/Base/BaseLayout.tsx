@@ -16,8 +16,9 @@ import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
 import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
-  GA_MEASUREMENT_ID,
-  GA_MEASUREMENT_URL
+  GOOGLE_ADSENSE_MEASUREMENT_URL,
+  GOOGLE_ANALYTICS_MEASUREMENT_ID,
+  GOOGLE_ANALYTICS_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
 import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
 
@@ -40,7 +41,10 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <Head>
-        <Script strategy="afterInteractive" src={GA_MEASUREMENT_URL} />
+        <Script
+          strategy="afterInteractive"
+          src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
+        />
         <Script
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -48,7 +52,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', "${GA_MEASUREMENT_ID}");
+              gtag('config', "${GOOGLE_ANALYTICS_MEASUREMENT_ID}");
               gtag('consent', 'default', {
                 'ad_storage': 'granted',
                 'ad_user_data': 'granted',
@@ -62,7 +66,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         />
         <Script
           strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9210279170204135"
+          src={GOOGLE_ADSENSE_MEASUREMENT_URL}
           crossOrigin="anonymous"
         />
       </Head>
