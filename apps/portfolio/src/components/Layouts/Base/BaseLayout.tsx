@@ -1,15 +1,16 @@
 import { ReactNode } from 'react'
 
-import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import Script from 'next/script'
 
 import {
   Body,
   Div,
   Head,
   Html,
-  Main
+  Main,
+  Meta
 } from '@guy-romelle-magayano/react-components/server'
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
@@ -40,6 +41,8 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <Head>
+        <Meta charSet="utf-8" />
+        <Meta name="viewport" content="width=device-width, initial-scale=1" />
         <Script
           strategy="afterInteractive"
           src={NEXT_PUBLIC_GA_MEASUREMENT_URL}
