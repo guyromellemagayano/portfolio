@@ -161,6 +161,7 @@ export type CommonPageAppData = {
 export type HomeAppData = WorkAppData & {
   links?: Array<SocialLinksData>
   articles?: Array<ArticlesData>
+  projects?: Array<ProjectsData>
   slidePhotos?: Array<SlidePhotosData>
   cvFile?: HomePageData['cvFile']
   workExperiences?: Array<WorkExperienceData>
