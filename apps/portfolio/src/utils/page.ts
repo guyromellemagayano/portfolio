@@ -46,15 +46,18 @@ export const homeAppData = async (): Promise<HomeAppData> => {
   const page = await homePageData(),
     social = await socialData(),
     articles = await articlesData(),
-    data = await Promise.all([page, social, articles]).then(
-      ([page, social, articles]) => {
+    projects = await projectsData(),
+    data = await Promise.all([page, social, articles, projects]).then(
+      ([page, social, articles, projects]) => {
         const { meta, ...newPage } = page,
-          newArticles = articles.map(({ component, ...article }) => article)
+          newArticles = articles.map(({ component, ...article }) => article),
+          newProjects = projects.map(({ component, ...project }) => project)
 
         return {
           ...newPage,
           links: social,
-          articles: newArticles
+          articles: newArticles,
+          projects: newProjects
         }
       }
     )

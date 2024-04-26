@@ -1,6 +1,11 @@
 'use client'
 
-import { Div, Heading } from '@guy-romelle-magayano/react-components/server'
+import {
+  Article,
+  Div,
+  Heading,
+  Section
+} from '@guy-romelle-magayano/react-components/server'
 
 import {
   cn,
@@ -17,18 +22,21 @@ import { PhotoLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/
 import { ResumeLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Resume'
 import { SocialLinksLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/SocialLinks'
 import {
-  ArticlesData,
-  HomePageData,
-  SocialLinksData
+  type ArticlesData,
+  type HomePageData,
+  type ProjectsData,
+  type SocialLinksData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type HomeAppProps = HomePageData & {
   links?: Array<SocialLinksData>
   articles?: Array<ArticlesData>
+  projects?: Array<ProjectsData>
 }
 
 const strings = {
-  articles: 'Articles'
+  articles: 'Articles',
+  projects: 'Projects'
 }
 
 /**
@@ -37,7 +45,15 @@ const strings = {
  * @returns The rendered home application component.
  */
 const HomeApp = (props: HomeAppProps) => {
-  const { hero, slidePhotos, cvFile, workExperiences, links, articles } = props
+  const {
+    hero,
+    slidePhotos,
+    cvFile,
+    workExperiences,
+    links,
+    articles,
+    projects
+  } = props
 
   const heading = hero?.heading || undefined,
     description = hero?.description || undefined
@@ -74,20 +90,22 @@ const HomeApp = (props: HomeAppProps) => {
               'gap-y-20'
           )}
         >
-          <Div>
-            <Heading
-              as="h3"
-              className="mb-6 text-3xl font-bold tracking-tight text-zinc-800 sm:text-4xl dark:text-zinc-100"
-            >
-              {strings.articles}
-            </Heading>
-
+          <Section>
             {!isEmpty(articles) && isArrayType(articles) && (
-              <ArticleLayout articles={articles} isHome />
-            )}
-          </Div>
+              <Article className="mb-6">
+                <Heading
+                  as="h3"
+                  className=" text-3xl font-bold tracking-tight text-zinc-800 sm:text-4xl dark:text-zinc-100"
+                >
+                  {strings.articles}
+                </Heading>
 
-          <Div className="space-y-10 lg:pl-16 xl:pl-24">
+                <ArticleLayout articles={articles} isHome />
+              </Article>
+            )}
+          </Section>
+
+          <Section className="space-y-10 lg:pl-16 xl:pl-24">
             <NewsletterLayout />
 
             {((!isEmpty(workExperiences) && isArrayType(workExperiences)) ||
@@ -98,7 +116,7 @@ const HomeApp = (props: HomeAppProps) => {
                 className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
               />
             )}
-          </Div>
+          </Section>
         </Div>
       </BaseContainer>
     </>
