@@ -16,6 +16,7 @@ const nextConfig = {
   },
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
   env: {
+    SITE_URL: process.env.SITE_URL || '',
     GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || '',
     SENTRY_DSN: process.env.SENTRY_DSN || '',
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
