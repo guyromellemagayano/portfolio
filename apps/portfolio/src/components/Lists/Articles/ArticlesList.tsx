@@ -30,7 +30,9 @@ const ArticlesList = forwardRef<ArticlesListRef, ArticlesListProps>(
             className
           )}
         >
-          <Div className="flex max-w-3xl flex-col space-y-16">{children}</Div>
+          <Div className="flex w-full max-w-3xl flex-col space-y-16">
+            {children}
+          </Div>
         </Div>
       )
     )

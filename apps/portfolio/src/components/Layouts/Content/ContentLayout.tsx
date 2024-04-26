@@ -115,7 +115,7 @@ const ContentSimpleLayout = memo(
             {...rest}
             className={cn('mt-16 sm:mt-32', className)}
           >
-            <Div className="max-w-2xl">
+            <Div className="w-full max-w-2xl">
               {!isEmpty(title) && isStringType(title) && (
                 <Heading
                   as="h1"
