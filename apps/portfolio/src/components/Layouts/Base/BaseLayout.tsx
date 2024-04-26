@@ -9,8 +9,7 @@ import {
   Div,
   Head,
   Html,
-  Main,
-  Meta
+  Main
 } from '@guy-romelle-magayano/react-components/server'
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
@@ -18,7 +17,7 @@ import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts
 import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
   GA_MEASUREMENT_ID,
-  NEXT_PUBLIC_GA_MEASUREMENT_URL
+  GA_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
 import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
 
@@ -41,12 +40,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <Head>
-        <Meta charSet="utf-8" />
-        <Meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Script
-          strategy="afterInteractive"
-          src={NEXT_PUBLIC_GA_MEASUREMENT_URL}
-        />
+        <Script strategy="afterInteractive" src={GA_MEASUREMENT_URL} />
         <Script
           id="google-analytics"
           strategy="afterInteractive"
