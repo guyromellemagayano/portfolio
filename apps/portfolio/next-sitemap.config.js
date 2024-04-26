@@ -1,7 +1,11 @@
+const { SITE_URL } = require('@guy-romelle-magayano/portfolio/configs')
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://www.guyromellemagayano.dev',
+  siteUrl: SITE_URL,
   basePath: '/',
-  sitemapBaseFileName: 'sitemap',
   generateRobotsTxt: true,
+  generateIndexSitemap: false,
+  exclude: ['/thank-you'],
+  priority: 1
 }
