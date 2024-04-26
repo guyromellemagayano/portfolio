@@ -3,6 +3,9 @@ import {
   isNotNullOrUndefined
 } from '@guy-romelle-magayano/react-utils'
 
+// Site Information
+export const SITE_URL: string = process.env.SITE_URL || ''
+
 // Sentry
 export const SENTRY_DSN: string = process.env.SENTRY_DSN || ''
 export const SENTRY_AUTH_TOKEN: string = process.env.SENTRY_AUTH_TOKEN || ''
