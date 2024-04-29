@@ -16,7 +16,6 @@ import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
 import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
-  GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_ANALYTICS_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
@@ -66,7 +65,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         />
         <Script
           strategy="afterInteractive"
-          src={GOOGLE_ADSENSE_MEASUREMENT_URL}
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9210279170204135"
           crossOrigin="anonymous"
         />
       </Head>
