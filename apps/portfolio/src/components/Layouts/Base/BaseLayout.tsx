@@ -43,6 +43,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         <Script
           strategy="afterInteractive"
           src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
+          async
         />
         <Script
           strategy="afterInteractive"
