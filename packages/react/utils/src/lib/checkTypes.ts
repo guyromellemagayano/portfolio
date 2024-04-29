@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import isArray from 'lodash/isArray'
 import isBoolean from 'lodash/isBoolean'
 import isFinite from 'lodash/isFinite'

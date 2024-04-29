@@ -16,6 +16,7 @@ import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
 import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Footer'
 import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/Layouts/Header'
 import {
+  GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_ANALYTICS_MEASUREMENT_URL
 } from '@guy-romelle-magayano/portfolio/configs/env'
@@ -37,6 +38,12 @@ export type BaseLayoutProps = {
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
 
+  console.log(
+    GOOGLE_ADSENSE_MEASUREMENT_URL,
+    GOOGLE_ANALYTICS_MEASUREMENT_ID,
+    GOOGLE_ANALYTICS_MEASUREMENT_URL
+  )
+
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <Head>
@@ -46,6 +53,7 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
           async
         />
         <Script
+          id="google-analytics"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
@@ -65,8 +73,9 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
           }}
         />
         <Script
+          id="google-adsense"
           strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9210279170204135"
+          src={GOOGLE_ADSENSE_MEASUREMENT_URL}
           crossOrigin="anonymous"
         />
       </Head>
