@@ -76,6 +76,8 @@ const BaseContainerWithRef = forwardRef<BaseContainerRef, BaseContainerProps>(
   }
 )
 
+BaseContainerWithRef.displayName = 'BaseContainerWithRef'
+
 export type BaseContainerType = typeof BaseContainerWithRef & {
   Outer: typeof OuterContainer
   Inner: typeof InnerContainer

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import camelCase from 'lodash/camelCase'
 import join from 'lodash/join'
 import kebabCase from 'lodash/kebabCase'
