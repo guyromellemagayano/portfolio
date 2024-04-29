@@ -5,9 +5,9 @@ import { forwardRef } from 'react'
 import {
   Button,
   Form,
-  Input,
   type FormProps,
-  type FormRef
+  type FormRef,
+  Input
 } from '@guy-romelle-magayano/react-components'
 import {
   Div,
