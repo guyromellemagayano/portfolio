@@ -1,4 +1,4 @@
-import { isEmpty } from '@guy-romelle-magayano/react-utils'
+import { isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
 
 // Site Information
 export const SITE_URL: string = process.env.SITE_URL || ''
@@ -15,8 +15,9 @@ export const GOOGLE_ANALYTICS_MEASUREMENT_ID: string =
   process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID || ''
 export const GOOGLE_ANALYTICS_MEASUREMENT_URL: string =
   `https://www.googletagmanager.com/gtag/js` +
-  !isEmpty(GOOGLE_ANALYTICS_MEASUREMENT_ID)
-    ? `?id=${process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID}`
+    !isEmpty(GOOGLE_ANALYTICS_MEASUREMENT_ID) &&
+  isStringType(GOOGLE_ANALYTICS_MEASUREMENT_ID)
+    ? `?id=${GOOGLE_ANALYTICS_MEASUREMENT_ID}`
     : ''
 
 // Google Adsense
@@ -24,6 +25,6 @@ export const GOOGLE_ADSENSE_CLIENT_ID: string =
   process.env.GOOGLE_ADSENSE_CLIENT_ID || ''
 export const GOOGLE_ADSENSE_MEASUREMENT_URL: string =
   `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js` +
-  !isEmpty(GOOGLE_ADSENSE_CLIENT_ID)
-    ? `?client=${process.env.GOOGLE_ADSENSE_CLIENT_ID}`
+    !isEmpty(GOOGLE_ADSENSE_CLIENT_ID) && isStringType(GOOGLE_ADSENSE_CLIENT_ID)
+    ? `?client=${GOOGLE_ADSENSE_CLIENT_ID}`
     : ''
