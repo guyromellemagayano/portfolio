@@ -63,7 +63,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/portfolio/**/*.{ts,tsx,js,jsx}"],
+        "lintFilePatterns": ["apps/portfolio/**/*.{ts,tsx}"],
         "fix": true
       }
     }
