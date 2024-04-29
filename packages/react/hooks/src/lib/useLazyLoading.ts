@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentType, LazyExoticComponent, lazy } from 'react'
 
-const LAZY_LOADING_DURATION: number = 1000
+const LAZY_LOADING_DURATION = 1000
 
 type TUseLazyLoading = {
   importFunction: any
