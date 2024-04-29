@@ -29,13 +29,18 @@ jobs:
       - run: yarn install
         working-directory: ./
 
+
       - uses: nrwl/nx-set-shas@v4
+
+      - run: git branch --track main origin/main
+        if: ${{ github.event_name == 'pull_request' }}
 
       - run: git branch --track main origin/main
         if: ${{ github.event_name == 'pull_request' }}
 
       - run: yarn nx-cloud record -- nx format:check
         working-directory: ./
+
 
       - run: yarn nx affected -t lint test build e2e-ci
         working-directory: ./
