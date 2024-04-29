@@ -19,7 +19,7 @@ import {
   GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_ANALYTICS_MEASUREMENT_URL
-} from '@guy-romelle-magayano/portfolio/configs/env'
+} from '@guy-romelle-magayano/portfolio/configs'
 import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
 
 import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
@@ -37,12 +37,6 @@ export type BaseLayoutProps = {
  */
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
-
-  console.log(
-    GOOGLE_ADSENSE_MEASUREMENT_URL,
-    GOOGLE_ANALYTICS_MEASUREMENT_ID,
-    GOOGLE_ANALYTICS_MEASUREMENT_URL
-  )
 
   return (
     <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
