@@ -11,5 +11,6 @@
       "extends": ["plugin:testing-library/react"],
       "env": { "jest": true }
     }
-  ]
+  ],
+  "ignorePatterns": ["!**/*"]
 }
