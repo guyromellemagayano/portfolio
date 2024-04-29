@@ -125,8 +125,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local env files
-.env*
-!.env.*.sample
+.env.*
+.env*.*
 
 # Vercel
 .vercel
