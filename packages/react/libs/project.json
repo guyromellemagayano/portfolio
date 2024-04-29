@@ -4,6 +4,14 @@
   "sourceRoot": "packages/react/libs/src",
   "projectType": "library",
   "tags": [],
-  "// targets": "to see all targets run: nx show project react-libs --web",
-  "targets": {}
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/react/libs/src/**/*.{ts,tsx}"],
+        "fix": true
+      }
+    }
+  }
 }
