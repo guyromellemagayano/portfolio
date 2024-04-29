@@ -34,8 +34,8 @@ jobs:
       - run: git branch --track main origin/main
         if: ${{ github.event_name == 'pull_request' }}
 
-      - run: yarn nx-cloud record -- nx format:check
+      - run: yarn nx-cloud record nx format:check --verbose
         working-directory: ./
 
-      - run: yarn nx affected -t lint test build e2e-ci
+      - run: yarn nx affected -t lint test build e2e-ci --verbose
         working-directory: ./
