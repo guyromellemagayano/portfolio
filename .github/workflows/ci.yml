@@ -23,10 +23,7 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
-      - run: corepack enable
-        working-directory: ./
-
-      - run: yarn set version stable
+      - run: yarn set version classic
         working-directory: ./
 
       - run: yarn install
