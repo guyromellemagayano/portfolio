@@ -1,0 +1,9 @@
+{
+  "name": "coin-colorful-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/coin-colorful-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["coin-colorful"],
+  "// targets": "to see all targets run: nx show project coin-colorful-e2e --web",
+  "targets": {}
+}
