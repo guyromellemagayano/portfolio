@@ -1,5 +1,4 @@
 // @ts-nocheck
-
 import rehypePrism from '@mapbox/rehype-prism'
 // import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
