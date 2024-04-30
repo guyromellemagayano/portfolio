@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "paths": {
       "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
+      "@guy-romelle-magayano/coin-colorful/*": ["apps/coin-colorful/src/*"],
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
