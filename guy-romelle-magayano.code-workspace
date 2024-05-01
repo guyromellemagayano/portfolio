@@ -31,6 +31,18 @@
       "**/.pnp.*": true
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "[env]": {
+      "editor.defaultFormatter": "IronGeek.vscode-env"
+    },
+    "[dockerfile]": {
+      "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    },
+    "[shellscript]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    },
+    "[properties]": {
+      "editor.defaultFormatter": "foxundermoon.shell-format"
+    }
   }
 }
