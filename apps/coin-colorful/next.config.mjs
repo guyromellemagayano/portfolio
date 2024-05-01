@@ -1,22 +1,152 @@
-// @ts-nocheck
+// @ts-check
+import withPWAInit from '@ducanh2912/next-pwa'
+import withBundleAnalyzer from '@next/bundle-analyzer'
 import { composePlugins, withNx } from '@nx/next'
+
+/**
+ * Adds a polyfill entry to the webpack configuration.
+ * @param config - The webpack configuration object.
+ * @returns void
+ */
+const polyfills = (/** @type {{ entry: () => Promise<any>; }} */ config) => {
+  const originalEntry = config.entry
+
+  config.entry = async () => {
+    const entries = await originalEntry()
+
+    if (entries['main.js']) {
+      entries['main.js'].unshift('./polyfills.js')
+    }
+
+    return entries
+  }
+}
+
+// Security headers configuration
+const securityHeaders = [
+  {
+    key: 'X-DNS-Prefetch-Control',
+    value: 'on'
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload'
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'SAMEORIGIN'
+  },
+  {
+    key: 'Content-Security-Policy',
+    value: `frame-ancestors 'self' https://app.contentful.com https://app.eu.contentful.com`
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff'
+  },
+  {
+    key: 'X-XSS-Protection',
+    value: '1; mode=block'
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'no-referrer'
+  }
+]
+
+/**
+ * Returns an array of headers.
+ * @returns {Promise<Array<Headers>>} The array of headers.
+ */
+const headers = async () => [
+  {
+    // @ts-ignore
+    source: '/:path*',
+    headers: securityHeaders
+  }
+]
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  // Nx plugin configuration
   nx: {
-    svgr: false
+    svgr: true
   },
+
   pageExtensions: ['js', 'ts', 'tsx'],
-  env: {},
+
+  // TODO: Add i18n configuration here
+
+  // Environment variables configuration
+  env: {
+    COIN_COLORFUL_SITE_URL: process.env.COIN_COLORFUL_SITE_URL || '',
+    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
+    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
+    CONTENTFUL_PREVIEW_ACCESS_TOKEN: process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN
+  },
+
+  // React compiler configuration
   compiler: {
     removeConsole: {
       exclude: ['error', 'log']
     }
+  },
+
+  // @ts-ignore
+  // Site headers configuration
+  headers,
+
+  // Image optimization configuration
+  images: {
+    deviceSizes: [320, 420, 768, 1024, 1200, 1600],
+    domains: ['images.ctfassets.net', 'images.eu.ctfassets.net'],
+    path: '/_next/image',
+    loader: 'default'
+  },
+
+  // Circular dependency plugin configuration
+  webpack(config, options) {
+    if (!options.isServer || process.env.circularDependencies) {
+      import('circular-dependency-plugin').then(
+        ({ default: CircularDependencyPlugin }) => {
+          config.plugins.push(
+            new CircularDependencyPlugin({
+              exclude: /a\.js|node_modules/,
+              failOnError: false,
+              allowAsyncCycles: true,
+              cwd: process.cwd()
+            })
+          )
+        }
+      )
+    }
+
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack']
+    })
+
+    polyfills(config)
+
+    return config
   }
 }
 
-const plugins = [withNx]
+// PWA configuration
+const withPWA = withPWAInit({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development',
+  scope: './src/app'
+})
+
+// Bundle analyzer configuration
+const withBA = withBundleAnalyzer({
+  enabled: process.env.BUNDLE_ANALYZE !== 'true'
+})
+
+// Next.js plugins
+const plugins = [withNx, withPWA, withBA]
 
 export default composePlugins(...plugins)(nextConfig)
