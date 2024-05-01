@@ -14,8 +14,11 @@ const polyfills = (/** @type {{ entry: () => Promise<any>; }} */ config) => {
   config.entry = async () => {
     const entries = await originalEntry()
 
-    if (entries['main.js']) {
-      entries['main.js'].unshift('./polyfills.js')
+    if (
+      entries['main.js'] &&
+      !entries['main.js'].includes('./src/polyfills.ts')
+    ) {
+      entries['main.js'].unshift('./src/polyfills.ts')
     }
 
     return entries
@@ -136,9 +139,11 @@ const nextConfig = {
 
 // PWA configuration
 const withPWA = withPWAInit({
-  dest: 'public',
   disable: process.env.NODE_ENV === 'development',
-  scope: './src/app'
+  dest: 'public',
+  scope: '/app',
+  sw: 'service-worker.js',
+  publicExcludes: ['!favicon/**/*']
 })
 
 // Bundle analyzer configuration
