@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-import { SITE_URL } from '@guy-romelle-magayano/portfolio/configs'
+import { PORTFOLIO_SITE_URL } from '@guy-romelle-magayano/portfolio/configs'
 
 /**
  * Generates the robots for the portfolio application.
@@ -13,7 +13,7 @@ const robots = (): MetadataRoute.Robots => {
       allow: '/',
       disallow: '/api/'
     },
-    sitemap: `${SITE_URL}/sitemap.xml`
+    sitemap: `${PORTFOLIO_SITE_URL}/sitemap.xml`
   }
 }
 
