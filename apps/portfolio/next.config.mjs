@@ -15,7 +15,7 @@ const nextConfig = {
   },
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
   env: {
-    SITE_URL: process.env.SITE_URL || '',
+    PORTFOLIO_SITE_URL: process.env.PORTFOLIO_SITE_URL || '',
     GOOGLE_ANALYTICS_MEASUREMENT_ID:
       process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID || '',
     GOOGLE_ADSENSE_CLIENT_ID: process.env.GOOGLE_ADSENSE_CLIENT_ID || '',
