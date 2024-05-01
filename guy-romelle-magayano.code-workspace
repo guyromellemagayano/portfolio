@@ -6,15 +6,6 @@
     }
   ],
   "settings": {
-    "[dockerfile]": {
-      "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-    },
-    "[shellscript]": {
-      "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
-    "[properties]": {
-      "editor.defaultFormatter": "foxundermoon.shell-format"
-    },
     "editor.codeActionsOnSave": {
       "source.organizeImports": "always",
       "source.fixAll": "always",
@@ -40,6 +31,6 @@
       "**/.pnp.*": true
     },
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.tsdk": "node_modules/typescript/lib"
   }
 }
