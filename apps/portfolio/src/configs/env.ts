@@ -1,7 +1,7 @@
 import { isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
 
 // Site Information
-export const SITE_URL: string = process.env.SITE_URL || ''
+export const PORTFOLIO_SITE_URL: string = process.env.PORTFOLIO_SITE_URL || ''
 
 // Sentry
 export const SENTRY_DSN: string = process.env.SENTRY_DSN || ''
