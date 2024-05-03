@@ -37,5 +37,5 @@ jobs:
       - run: yarn nx-cloud record nx format:check --verbose
         working-directory: ./
 
-      - run: yarn nx affected -t lint test build --verbose
+      - run: yarn nx affected -t lint test build e2e-ci --verbose --base main
         working-directory: ./
