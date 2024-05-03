@@ -51,7 +51,11 @@
   ],
   "parallel": 4,
   "targetDefaults": {
-    "@nx/eslint:lint": {
+    "build": {
+      "inputs": ["production", "^production"],
+      "cache": true
+    },
+    "lint": {
       "cache": true,
       "inputs": [
         "default",
@@ -59,13 +63,6 @@
         "{workspaceRoot}/.eslintignore",
         "{workspaceRoot}/eslint.config.js"
       ]
-    },
-    "build": {
-      "inputs": ["production", "^production"],
-      "cache": true
-    },
-    "lint": {
-      "cache": true
     },
     "test": {
       "cache": true
@@ -79,16 +76,10 @@
   },
   "generators": {
     "@nx/react": {
-      "application": {
-        "babel": true
-      },
       "library": {}
     },
     "@nx/next": {
-      "application": {
-        "style": "tailwind",
-        "linter": "eslint"
-      }
+      "application": {}
     }
   },
   "nxCloudAccessToken": "M2E5OGE5NTQtZDc4Zi00MDlhLTk5NDctNTZhN2YyM2MwOGI2fHJlYWQ=",
