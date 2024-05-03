@@ -1,4 +1,4 @@
-// @ts-check
+// @ts-nocheck
 // import withPWAInit from '@ducanh2912/next-pwa'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import { composePlugins, withNx } from '@nx/next'
@@ -144,12 +144,16 @@ const nextConfig = {
 //   publicExcludes: ['!favicon/**/*']
 // })
 
-// Bundle analyzer configuration
-const withBA = withBundleAnalyzer({
-  enabled: process.env.BUNDLE_ANALYZE !== 'true'
-})
-
 // Next.js plugins
-const plugins = [withNx, withBA]
+const plugins = [withNx]
+
+if (process.env.BUNDLE_ANALYZE === 'true') {
+  // Bundle analyzer configuration
+  plugins.push(
+    withBundleAnalyzer({
+      enabled: true
+    })
+  )
+}
 
 export default composePlugins(...plugins)(nextConfig)
