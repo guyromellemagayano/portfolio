@@ -13,7 +13,9 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/coin-colorful"
+          "outputPath": "apps/coin-colorful",
+          "debug": true,
+          "profile": true
         },
         "production": {
           "generateLockfile": true
@@ -64,6 +66,18 @@
       "options": {
         "lintFilePatterns": ["apps/coin-colorful/**/*.{ts,tsx}"],
         "fix": true
+      }
+    },
+    "graphql-codegen:generate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts"
+      }
+    },
+    "graphql-codegen:watch": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts --watch"
       }
     }
   }
