@@ -14,7 +14,9 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/portfolio"
+          "outputPath": "apps/portfolio",
+          "debug": true,
+          "profile": true
         },
         "production": {
           "generateLockfile": true

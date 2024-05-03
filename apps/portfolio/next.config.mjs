@@ -1,7 +1,5 @@
-// @ts-check
+// @ts-nocheck
 // import withPWAInit from '@ducanh2912/next-pwa'
-import rehypePrism from '@mapbox/rehype-prism'
-import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
@@ -111,7 +109,7 @@ const sentryWebpackPluginOptions = {
 const withMDX = createMDX({
   options: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypePrism]
+    rehypePlugins: []
   }
 })
 
@@ -122,13 +120,8 @@ const withMDX = createMDX({
 //   publicExcludes: ['!favicon/**/*']
 // })
 
-// Bundle analyzer configuration
-const withBA = withBundleAnalyzer({
-  enabled: process.env.BUNDLE_ANALYZE !== 'true'
-})
-
 // Next.js plugins
-const plugins = [withNx, withMDX, withBA]
+const plugins = [withNx, withMDX]
 
 export default withSentryConfig(
   composePlugins(...plugins)(nextConfig),
