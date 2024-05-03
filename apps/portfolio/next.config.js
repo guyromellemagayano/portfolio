@@ -1,9 +1,7 @@
-// @ts-nocheck
-// import withPWAInit from '@ducanh2912/next-pwa'
-import createMDX from '@next/mdx'
-import { composePlugins, withNx } from '@nx/next'
-import { withSentryConfig } from '@sentry/nextjs'
-import remarkGfm from 'remark-gfm'
+// @ts-check
+const createMDX = require('@next/mdx')
+const { composePlugins, withNx } = require('@nx/next')
+const { withSentryConfig } = require('@sentry/nextjs')
 
 // Security headers configuration
 const securityHeaders = [
@@ -108,22 +106,22 @@ const sentryWebpackPluginOptions = {
 // MDX configuration
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [],
     rehypePlugins: []
   }
 })
 
 // PWA configuration
-// const withPWA = withPWAInit({
-//   disable: process.env.NODE_ENV === 'development',
-//   dest: 'public',
-//   publicExcludes: ['!favicon/**/*']
-// })
+const withPWA = require('@ducanh2912/next-pwa').default({
+  disable: process.env.NODE_ENV === 'development',
+  dest: 'public',
+  publicExcludes: ['!favicon/**/*']
+})
 
 // Next.js plugins
-const plugins = [withNx, withMDX]
+const plugins = [withNx, withMDX, withPWA]
 
-export default withSentryConfig(
+module.exports = withSentryConfig(
   composePlugins(...plugins)(nextConfig),
   sentryWebpackPluginOptions
 )
