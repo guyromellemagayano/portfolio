@@ -1,5 +1,5 @@
 // @ts-check
-import withPWAInit from '@ducanh2912/next-pwa'
+// import withPWAInit from '@ducanh2912/next-pwa'
 import rehypePrism from '@mapbox/rehype-prism'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import createMDX from '@next/mdx'
@@ -116,11 +116,11 @@ const withMDX = createMDX({
 })
 
 // PWA configuration
-const withPWA = withPWAInit({
-  disable: process.env.NODE_ENV === 'development',
-  dest: 'public',
-  publicExcludes: ['!favicon/**/*']
-})
+// const withPWA = withPWAInit({
+//   disable: process.env.NODE_ENV === 'development',
+//   dest: 'public',
+//   publicExcludes: ['!favicon/**/*']
+// })
 
 // Bundle analyzer configuration
 const withBA = withBundleAnalyzer({
@@ -128,7 +128,7 @@ const withBA = withBundleAnalyzer({
 })
 
 // Next.js plugins
-const plugins = [withNx, withMDX, withBA, withPWA]
+const plugins = [withNx, withMDX, withBA]
 
 export default withSentryConfig(
   composePlugins(...plugins)(nextConfig),
