@@ -1,6 +1,6 @@
-// @ts-nocheck
-// import withPWAInit from '@ducanh2912/next-pwa'
-import { composePlugins, withNx } from '@nx/next'
+// @ts-check
+// const withPWAInit = require('@ducanh2912/next-pwa')
+const { composePlugins, withNx } = require('@nx/next')
 
 /**
  * Adds a polyfill entry to the webpack configuration.
@@ -137,13 +137,13 @@ const nextConfig = {
 }
 
 // PWA configuration
-// const withPWA = withPWAInit({
-//   disable: process.env.NODE_ENV === 'development',
-//   dest: 'public',
-//   publicExcludes: ['!favicon/**/*']
-// })
+const withPWA = require('@ducanh2912/next-pwa').default({
+  disable: process.env.NODE_ENV === 'development',
+  dest: 'public',
+  publicExcludes: ['!favicon/**/*']
+})
 
 // Next.js plugins
-const plugins = [withNx]
+const plugins = [withNx, withPWA]
 
-export default composePlugins(...plugins)(nextConfig)
+module.exports = composePlugins(...plugins)(nextConfig)
