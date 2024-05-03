@@ -3,6 +3,9 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "firsttris.vscode-jest-runner",
-    "nrwl.angular-console"
+    "nrwl.angular-console",
+    "IronGeek.vscode-env",
+    "ms-azuretools.vscode-docker",
+    "foxundermoon.shell-format",
   ]
 }
