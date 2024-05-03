@@ -25,8 +25,7 @@
     "../../apps/coin-colorful/.next/types/**/*.ts",
     "../../dist/apps/coin-colorful/.next/types/**/*.ts",
     "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "next.config.mjs"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules", "jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
 }

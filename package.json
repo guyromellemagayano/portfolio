@@ -20,7 +20,6 @@
     "@mui/icons-material": "^5.15.16",
     "@mui/material": "^5.15.16",
     "@mui/styles": "^5.15.16",
-    "@next/bundle-analyzer": "^14.2.3",
     "@next/mdx": "^14.2.3",
     "@sentry/nextjs": "^7.113.0",
     "@svgr/webpack": "^8.1.0",
