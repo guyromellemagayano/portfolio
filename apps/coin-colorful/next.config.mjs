@@ -141,8 +141,6 @@ const nextConfig = {
 const withPWA = withPWAInit({
   disable: process.env.NODE_ENV === 'development',
   dest: 'public',
-  scope: '/app',
-  sw: 'service-worker.js',
   publicExcludes: ['!favicon/**/*']
 })
 
@@ -152,6 +150,6 @@ const withBA = withBundleAnalyzer({
 })
 
 // Next.js plugins
-const plugins = [withNx, withPWA, withBA]
+const plugins = [withNx, withBA, withPWA]
 
 export default composePlugins(...plugins)(nextConfig)
