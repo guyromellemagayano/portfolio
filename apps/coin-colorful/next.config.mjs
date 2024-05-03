@@ -1,5 +1,5 @@
 // @ts-check
-import withPWAInit from '@ducanh2912/next-pwa'
+// import withPWAInit from '@ducanh2912/next-pwa'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 import { composePlugins, withNx } from '@nx/next'
 
@@ -138,11 +138,11 @@ const nextConfig = {
 }
 
 // PWA configuration
-const withPWA = withPWAInit({
-  disable: process.env.NODE_ENV === 'development',
-  dest: 'public',
-  publicExcludes: ['!favicon/**/*']
-})
+// const withPWA = withPWAInit({
+//   disable: process.env.NODE_ENV === 'development',
+//   dest: 'public',
+//   publicExcludes: ['!favicon/**/*']
+// })
 
 // Bundle analyzer configuration
 const withBA = withBundleAnalyzer({
@@ -150,6 +150,6 @@ const withBA = withBundleAnalyzer({
 })
 
 // Next.js plugins
-const plugins = [withNx, withBA, withPWA]
+const plugins = [withNx, withBA]
 
 export default composePlugins(...plugins)(nextConfig)
