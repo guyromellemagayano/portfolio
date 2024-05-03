@@ -16,9 +16,9 @@ const polyfills = (/** @type {{ entry: () => Promise<any>; }} */ config) => {
 
     if (
       entries['main.js'] &&
-      !entries['main.js'].includes('./src/polyfills.ts')
+      !entries['main.js'].includes('./src/configs/polyfills.ts')
     ) {
-      entries['main.js'].unshift('./src/polyfills.ts')
+      entries['main.js'].unshift('./src/configs/polyfills.ts')
     }
 
     return entries
