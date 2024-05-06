@@ -12,7 +12,7 @@ import {
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
+import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components/svg'
 
 export type DarkModeButtonRef = ButtonRef
 export type DarkModeButtonProps = ButtonProps
