@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { SkillsApp } from '@guy-romelle-magayano/portfolio/components/Apps/Skills'
+import { SkillsApp } from '@guy-romelle-magayano/portfolio/components/apps/skills'
 import {
   skillsAppData,
   skillsPageData
