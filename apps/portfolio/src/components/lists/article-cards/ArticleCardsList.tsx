@@ -13,7 +13,7 @@ import {
   isStringType
 } from '@guy-romelle-magayano/react-utils'
 
-import { Card } from '@guy-romelle-magayano/portfolio/components/Card'
+import { Card } from '@guy-romelle-magayano/portfolio/components/card'
 import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticleCardsListRef = ArticleRef
