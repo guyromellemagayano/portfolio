@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { WorkApp } from '@guy-romelle-magayano/portfolio/components/Apps/Work'
+import { WorkApp } from '@guy-romelle-magayano/portfolio/components/apps/work'
 import {
   workAppData,
   workPageData
