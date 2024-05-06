@@ -16,7 +16,7 @@ import {
   type CardProps,
   type CardRef
 } from '@guy-romelle-magayano/portfolio/components/Card'
-import { LinkSvg } from '@guy-romelle-magayano/portfolio/components/SVG'
+import { LinkSvg } from '@guy-romelle-magayano/portfolio/components/svg'
 import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ProjectsCardsListRef = CardRef
