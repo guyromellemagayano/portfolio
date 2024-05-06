@@ -138,7 +138,7 @@
     "postcss-focus-visible": "^9.0.1",
     "postcss-import": "^16.1.0",
     "postcss-nesting": "^12.1.2",
-    "postcss-preset-env": "^9.5.9",
+    "postcss-preset-env": "^9.5.11",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "react-i18next": "^14.1.1",
