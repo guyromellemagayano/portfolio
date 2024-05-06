@@ -1,29 +1,11 @@
 import { forwardRef } from 'react'
 
-import dynamic from 'next/dynamic'
-
 import {
+  Card,
   CardProps,
   CardRef
-} from '@guy-romelle-magayano/portfolio/components/Card'
+} from '@guy-romelle-magayano/portfolio/components/card'
 import { ToolsItemsData } from '@guy-romelle-magayano/portfolio/types'
-
-// Dynamic imports
-const Card = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card
-  )
-)
-const CardTitle = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Title
-  )
-)
-const CardDescription = dynamic(() =>
-  import('@guy-romelle-magayano/portfolio/components/Card').then(
-    mod => mod.Card.Description
-  )
-)
 
 export type ToolsCardsListRef = CardRef
 export type ToolsCardsListProps = CardProps & ToolsItemsData
@@ -41,8 +23,8 @@ const ToolsCardsList = forwardRef<ToolsCardsListRef, ToolsCardsListProps>(
       title &&
       description && (
         <Card ref={ref} {...rest} as="li">
-          <CardTitle as="h3">{title}</CardTitle>
-          <CardDescription>{description}</CardDescription>
+          <Card.Title as="h3">{title}</Card.Title>
+          <Card.Description>{description}</Card.Description>
         </Card>
       )
     )
