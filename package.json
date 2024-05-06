@@ -5,6 +5,10 @@
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://guyromellemagayano.dev)",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "precommit": "lint-staged",
+    "postinstall": "husky"
+  },
   "dependencies": {
     "@contentful/live-preview": "^3.3.3",
     "@contentful/rich-text-react-renderer": "^15.19.6",
@@ -57,6 +61,8 @@
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/eslint-parser": "^7.24.5",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@eslint/eslintrc": "^3.0.2",
     "@eslint/js": "~9.1.1",
     "@graphql-codegen/cli": "^5.0.2",
@@ -105,8 +111,10 @@
     "babel-loader": "^9.1.3",
     "babel-plugin-import": "^1.13.8",
     "circular-dependency-plugin": "^5.2.2",
+    "commitizen": "^4.3.0",
     "contentful-import": "^9.4.55",
     "cypress": "13.8.1",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.1.1",
     "eslint-config-next": "^14.2.3",
     "eslint-config-prettier": "^9.1.0",
@@ -118,6 +126,7 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-testing-library": "^6.2.2",
+    "git-commit-msg-linter": "^5.0.7",
     "husky": "^9.0.11",
     "i18next": "^23.11.3",
     "jest": "^29.7.0",
@@ -137,6 +146,7 @@
     "ts-jest": "^29.1.2",
     "ts-node": "10.9.2",
     "typescript": "~5.4.5",
+    "validate-branch-name": "^1.3.0",
     "webpack": "^5.91.0"
   },
   "resolutions": {
@@ -150,5 +160,21 @@
     "node": "20.x",
     "npm": "Please use Yarn to install dependencies.",
     "yarn": ">=1.22.19"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --allow-empty",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,json}": [
+      "yarn nx affected --target=lint --skip-nx-cache=true"
+    ]
   }
 }
