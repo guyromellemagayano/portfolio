@@ -14,7 +14,7 @@ import {
   Card,
   type CardProps,
   type CardRef
-} from '@guy-romelle-magayano/portfolio/components/Card'
+} from '@guy-romelle-magayano/portfolio/components/card'
 import { SkillsItemData } from '@guy-romelle-magayano/portfolio/types'
 
 export type SkillsCardsListRef = CardRef
