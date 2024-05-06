@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { AboutApp } from '@guy-romelle-magayano/portfolio/components/Apps/About'
+import { AboutApp } from '@guy-romelle-magayano/portfolio/components/apps/about'
 import {
   aboutAppData,
   aboutPageData
