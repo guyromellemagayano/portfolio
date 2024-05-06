@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { HomeApp } from '@guy-romelle-magayano/portfolio/components/Apps/Home'
+import { HomeApp } from '@guy-romelle-magayano/portfolio/components/apps/home'
 import {
   homeAppData,
   homePageData
