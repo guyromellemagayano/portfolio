@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/layouts/base'
+// import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/layouts/base'
 
 export type RootLayoutProps = {
   children: ReactNode
@@ -12,7 +12,7 @@ export type RootLayoutProps = {
  * @returns The rendered root layout component.
  */
 const RootLayout = ({ children }: RootLayoutProps) => {
-  return <BaseLayout>{children}</BaseLayout>
+  // return <BaseLayout>{children}</BaseLayout>
 }
 
 RootLayout.displayName = 'RootLayout'
