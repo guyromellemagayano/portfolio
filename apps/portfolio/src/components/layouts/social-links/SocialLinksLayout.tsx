@@ -11,7 +11,7 @@ import { isArrayType, isEmpty } from '@guy-romelle-magayano/react-utils'
 import {
   SocialLink,
   type SocialLinkProps
-} from '@guy-romelle-magayano/portfolio/components/Links/Social'
+} from '@guy-romelle-magayano/portfolio/components/links/social'
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
