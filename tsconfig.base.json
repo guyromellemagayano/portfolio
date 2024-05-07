@@ -17,8 +17,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
       "@guy-romelle-magayano/coin-colorful/*": ["apps/coin-colorful/src/*"],
+      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
@@ -47,6 +47,11 @@
     }
   },
   "ts-node": {
+    "require": ["tsconfig-paths/register"],
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    },
     "swc": true
   },
   "exclude": ["node_modules", "tmp"]
