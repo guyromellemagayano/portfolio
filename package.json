@@ -172,8 +172,19 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,json,md,mdx}": [
-      "yarn nx affected --target=lint --parallel=5 --verbose --uncommitted",
+    "./apps/coin-colorful/**/*.{ts,tsx}": [
+      "yarn nx run coin-colorful:lint --fix --ignorePath .eslintignore"
+    ],
+    "./apps/coin-colorful-e2e/**/*.{ts,tsx}": [
+      "yarn nx run coin-colorful-e2e:lint --fix --ignorePath .eslintignore"
+    ],
+    "./apps/portfolio/**/*.{ts,tsx}": [
+      "yarn nx run portfolio:lint --fix --ignorePath .eslintignore"
+    ],
+    "./apps/portfolio-e2e/**/*.{ts,tsx}": [
+      "yarn nx run portfolio-e2e:lint --fix --ignorePath .eslintignore"
+    ],
+    "**/*.{ts,tsx,json,md,mdx}": [
       "yarn nx format:write --uncommitted"
     ]
   }
