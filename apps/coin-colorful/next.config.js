@@ -1,6 +1,9 @@
 // @ts-check
-// const withPWAInit = require('@ducanh2912/next-pwa')
 const { composePlugins, withNx } = require('@nx/next')
+const createNextIntlPlugin = require('next-intl/plugin')
+
+// Next.js Internationalization plugin
+const withNextIntl = createNextIntlPlugin()
 
 /**
  * Adds a polyfill entry to the webpack configuration.
@@ -144,6 +147,6 @@ const withPWA = require('@ducanh2912/next-pwa').default({
 })
 
 // Next.js plugins
-const plugins = [withNx, withPWA]
+const plugins = [withNx, withPWA, withNextIntl]
 
 module.exports = composePlugins(...plugins)(nextConfig)
