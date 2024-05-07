@@ -172,7 +172,7 @@
     }
   },
   "lint-staged": {
-    "*": [
+    "*.{ts,tsx,json,md,mdx}": [
       "yarn nx affected --target=lint --parallel=5 --verbose --uncommitted",
       "yarn nx format:write --uncommitted"
     ]
