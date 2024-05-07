@@ -1,16 +1,31 @@
-export default function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.none file.
-   */
+import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
+
+/**
+ * Generates the metadata for the home page.
+ * @returns The metadata for the home page.
+ */
+// @ts-ignore
+export const generateMetadata = async ({ params: { locale } }) => {
+  const t = await getTranslations({ locale, namespace: 'Metadata' })
+
+  return { title: t('title') }
+}
+
+/**
+ * Renders the home page.
+ * @returns The home page component.
+ */
+const Home = () => {
+  const t = useTranslations('Index')
+
   return (
     <>
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
             <h1>
-              <span> Hello there, </span>
+              <span> {t('title')}, </span>
               Welcome coin-colorful 👋
             </h1>
           </div>
@@ -465,3 +480,5 @@ export default function Index() {
     </>
   )
 }
+
+export default Home
