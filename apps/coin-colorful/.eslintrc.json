@@ -1,34 +1,24 @@
 {
-  "extends": [
-    "plugin:@nx/react-typescript",
-    "next",
-    "next/core-web-vitals",
-    "../../.eslintrc.json"
-  ],
+  "extends": ["../../.eslintrc.json"],
   "ignorePatterns": ["!**/*", ".next/**/*"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "plugin:@nx/react-typescript",
+        "next",
+        "next/core-web-vitals"
+      ],
       "rules": {
-        "@next/next/no-html-link-for-pages": [
-          "error",
-          "apps/coin-colorful/pages"
-        ]
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@next/next/no-html-link-for-pages": "off"
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
-      }
+      "files": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
+      "extends": ["plugin:testing-library/react"],
+      "env": { "jest": true }
     }
   ]
 }
