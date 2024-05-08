@@ -11,7 +11,6 @@ export type ErrorBoxProps = {
   children?: ReactNode
 }
 
-// Styles for the ErrorBox component.
 const useStyles = makeStyles((theme: Theme) => ({
   errorBoxRoot: {
     color: theme.palette.error.dark,
