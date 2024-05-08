@@ -3,7 +3,7 @@ import {
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_PREVIEW_ACCESS_TOKEN,
   CONTENTFUL_SPACE_ID
-} from '@guy-romelle-magayano/coin-colorful/configs'
+} from './env'
 
 export const CONTENTFUL_CONFIG: {
   contentful: {
