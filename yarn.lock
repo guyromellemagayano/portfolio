@@ -3266,6 +3266,13 @@
   dependencies:
     "@nx/react" "18.3.4"
 
+"@nrwl/react@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-19.0.1.tgz#2f941fe1dee382c19d6133975b1e777d2b39ac91"
+  integrity sha512-TnuBTsYD030r4QOfGZC0fRNFw0jNcf3zqlPQhNp3ZJmPzAjLDFMNYtf2nsQsmiG9V7H/7oj7/JtgBrgacOvKDw==
+  dependencies:
+    "@nx/react" "19.0.1"
+
 "@nrwl/tao@18.3.4":
   version "18.3.4"
   resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-18.3.4.tgz#e574addaae87a0fa83bd6163ef006c41be1ce066"
@@ -3296,6 +3303,13 @@
   integrity sha512-Zdi0WCAq6+JD1/H8FwzGNjSrHNZWMTN8uPCCV4re3rr2M7oJ+0NqMTATHNqsWGMr2C3HANRuxqC9wDa9Av0XCQ==
   dependencies:
     "@nx/web" "18.3.4"
+
+"@nrwl/web@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-19.0.1.tgz#91c54ca9d0e60e23232f064547e64e914d443dc7"
+  integrity sha512-AmwlzsgbTU1kGh2ASquGpswe21j0XyyBLm55fSXjNjUCz1TlTEBY4jlV/mxrrxqs5UJ5kY2vV0QwDam+hLfRxQ==
+  dependencies:
+    "@nx/web" "19.0.1"
 
 "@nrwl/webpack@18.3.4":
   version "18.3.4"
@@ -3418,6 +3432,18 @@
     "@nx/devkit" "19.0.0"
     "@nx/js" "19.0.0"
     "@nx/linter" "19.0.0"
+    eslint "^8.0.0"
+    tslib "^2.3.0"
+    typescript "~5.4.2"
+
+"@nx/eslint@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nx/eslint/-/eslint-19.0.1.tgz#e42959aa11c6508c83bdcf7c63d9ffb45b0d017b"
+  integrity sha512-KRxWqrDy5ilUOFcYrVa3fgi0f2kPC3oUDXo8NQ9+O8AHTGQjHWcMs8btvGXhpJq9mBkR0RC7zpfNsbitGzYgpA==
+  dependencies:
+    "@nx/devkit" "19.0.1"
+    "@nx/js" "19.0.1"
+    "@nx/linter" "19.0.1"
     eslint "^8.0.0"
     tslib "^2.3.0"
     typescript "~5.4.2"
@@ -3583,6 +3609,13 @@
   integrity sha512-xRSPc4bP8jSbGmmPIffBzK7uo66Rb8bUKE+14QfGwWC8ih1ITs6mRyNyl/zr3/H4DpZpDm5j96OtvtquzewcSw==
   dependencies:
     "@nx/eslint" "19.0.0"
+
+"@nx/linter@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nx/linter/-/linter-19.0.1.tgz#336f4a19662cf14720908e486b8ce1a3fc3e2aa3"
+  integrity sha512-4zfRhEAuJ8yd0JAQg+v69y79MxHOWkPG0/bjCDmkSRyg57JOQTCI/0VV5o3UFrb/nZ1Fi7gzFSkaACqenK6kwg==
+  dependencies:
+    "@nx/eslint" "19.0.1"
 
 "@nx/next@18.3.4":
   version "18.3.4"
@@ -3787,6 +3820,23 @@
     minimatch "9.0.3"
     tslib "^2.3.0"
 
+"@nx/react@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nx/react/-/react-19.0.1.tgz#cb2052c130c840ecff3a9638c3a4deb921cfcacc"
+  integrity sha512-Y7FdTrO/Cjdhxv59727AvHE3zkFNccfEOHjFWO2PHP9Q7e4bUXlzjL/BiPiVQNG2/vs5c6LWKHhz3CSE+HFerA==
+  dependencies:
+    "@nrwl/react" "19.0.1"
+    "@nx/devkit" "19.0.1"
+    "@nx/eslint" "19.0.1"
+    "@nx/js" "19.0.1"
+    "@nx/web" "19.0.1"
+    "@phenomnomnominal/tsquery" "~5.0.1"
+    "@svgr/webpack" "^8.0.1"
+    chalk "^4.1.0"
+    file-loader "^6.2.0"
+    minimatch "9.0.3"
+    tslib "^2.3.0"
+
 "@nx/web@18.3.4":
   version "18.3.4"
   resolved "https://registry.yarnpkg.com/@nx/web/-/web-18.3.4.tgz#975635cb6bd7a9c55ef04a9f922cc18fcac3df8b"
@@ -3795,6 +3845,19 @@
     "@nrwl/web" "18.3.4"
     "@nx/devkit" "18.3.4"
     "@nx/js" "18.3.4"
+    chalk "^4.1.0"
+    detect-port "^1.5.1"
+    http-server "^14.1.0"
+    tslib "^2.3.0"
+
+"@nx/web@19.0.1":
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/@nx/web/-/web-19.0.1.tgz#d91211777133fd565aa79ad543a49639f4db536c"
+  integrity sha512-j9jNygKDyjzN3Tq5DWEGCYAptjf35g2z7TGPOH37kGyCMg3dM36LRPFctWtpwsea/yML09bL+tj+yRBcFRgRVg==
+  dependencies:
+    "@nrwl/web" "19.0.1"
+    "@nx/devkit" "19.0.1"
+    "@nx/js" "19.0.1"
     chalk "^4.1.0"
     detect-port "^1.5.1"
     http-server "^14.1.0"
