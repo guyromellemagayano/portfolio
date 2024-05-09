@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles'
 import { TypographyStyleOptions } from '@mui/material/styles/createTypography'
 
+import { isNotNullOrUndefined } from '@guy-romelle-magayano/react-utils'
+
 export const THEME_CONTAINER_WIDTH = 1260
 export const THEME_SPACER = 5
 export const THEME_HEADER_HEIGHT = '9rem'
@@ -65,7 +67,7 @@ const colorConfigs: { [key: string]: TColorConfig } = {
  * @returns The color configuration for the specified palette.
  */
 export const getColorConfigFromPalette = (palette: string): TColorConfig => {
-  if (isNotNullOrUndefined(colorConfigs[`palette-${palette}`])) {
+  if (!isNotNullOrUndefined(colorConfigs[`palette-${palette}`])) {
     return colorConfigs[`palette-${palette}`]
   }
 
