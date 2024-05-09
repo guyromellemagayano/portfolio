@@ -10,15 +10,16 @@ import {
 import { makeStyles } from '@mui/styles'
 import { useTranslations } from 'next-intl'
 
+import { Div } from '@guy-romelle-magayano/react-components/server'
+
 import { CtfNavigationGql } from '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-navigation/ctf-navigation-gql'
 import { Link } from '@guy-romelle-magayano/coin-colorful/components/shared'
-import Logo from '@guy-romelle-magayano/coin-colorful/components/svg/icons/colorful-coin-logo.svg'
+import { ColorfulCoinLogo } from '@guy-romelle-magayano/coin-colorful/components/svg'
 import {
   THEME_CONTAINER_WIDTH,
   THEME_HEADER_HEIGHT,
   THEME_HEADER_HEIGHT_MD
 } from '@guy-romelle-magayano/coin-colorful/configs'
-import { Div } from '@guy-romelle-magayano/react-components/server'
 
 const useStyles = makeStyles((theme: Theme) => ({
   appbar: {
@@ -97,7 +98,7 @@ const HeaderTemplate = ({ onMenuClick, isMenuOpen }: HeaderPropsProps) => {
           }}
         >
           <Link href="/" withoutMaterial title={t('common.homepage')}>
-            <Logo className={classes.corporateLogo} />
+            <ColorfulCoinLogo className={classes.corporateLogo} />
           </Link>
           <Box display={{ xs: 'none', md: 'block' }}>
             <Div className={classes.menuWrapper}>
