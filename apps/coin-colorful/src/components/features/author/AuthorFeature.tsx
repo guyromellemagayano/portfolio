@@ -21,17 +21,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export type AuthorProps = PersonFieldsFragment & {
+export type AuthorFeatureProps = PersonFieldsFragment & {
   name: string
   avatar: string
 }
 
 /**
  * Renders the author feature component.
- * @param {AuthorProps} props - The properties to render the component with.
+ * @param {AuthorFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
-const AuthorFeature = (props: AuthorProps) => {
+const AuthorFeature = (props: AuthorFeatureProps) => {
   const { name, avatar } = props
 
   const classes = useStyles()
