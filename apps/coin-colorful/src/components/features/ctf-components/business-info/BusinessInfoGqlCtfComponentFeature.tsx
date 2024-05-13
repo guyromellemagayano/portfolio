@@ -17,7 +17,7 @@ export type BusinessInfoGqlCtfComponentFeatureProps = {
 }
 
 /**
- * Renders a business info `graphql` feature component for the `contentful` API to consume.
+ * Renders the business info `graphql` feature component for the `contentful` API to consume.
  * @param {BusinessInfoGqlCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */

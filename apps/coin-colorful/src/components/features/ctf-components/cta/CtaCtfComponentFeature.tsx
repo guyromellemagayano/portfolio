@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type CtaCtfComponentFeatureProps = CtaFieldsFragment
 
 /**
- * Renders a CTA feature component for the `contentful` API to consume.
+ * Renders the CTA feature component for the `contentful` API to consume.
  * @param {CtaCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
