@@ -23,17 +23,17 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export type AvatarProps = {
+export type AvatarFeatureProps = {
   asset: AssetFieldsFragment
   widthPx?: number
 }
 
 /**
  * Renders the avatar feature component.
- * @param {AvatarProps} props - The properties to render the component with.
+ * @param {AvatarFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
-const AvatarFeature = (props: AvatarProps) => {
+const AvatarFeature = (props: AvatarFeatureProps) => {
   const { asset, widthPx = 250 } = props
 
   const url = useMemo(() => `${asset.url}?w=${widthPx}`, [asset.url, widthPx]),
