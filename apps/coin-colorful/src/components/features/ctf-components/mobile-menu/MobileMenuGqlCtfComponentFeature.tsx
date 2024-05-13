@@ -12,7 +12,7 @@ export type MobileMenuGqlCtfComponentFeatureProps = {
 }
 
 /**
- * Renders the mobile menu feature component for the `contentful` API to consume.
+ * Renders the mobile menu `graphql` feature component for the `contentful` API to consume.
  * @param {MobileMenuGqlCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
