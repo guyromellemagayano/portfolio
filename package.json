@@ -5,12 +5,8 @@
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://guyromellemagayano.dev)",
   "private": true,
   "license": "MIT",
-  "scripts": {
-    "precommit": "lint-staged",
-    "postinstall": "husky"
-  },
   "dependencies": {
-    "@contentful/live-preview": "^3.3.5",
+    "@contentful/live-preview": "^3.3.7",
     "@contentful/rich-text-react-renderer": "^15.19.6",
     "@contentful/rich-text-types": "^16.3.5",
     "@ducanh2912/next-pwa": "^10.2.7",
@@ -25,9 +21,9 @@
     "@mui/material": "^5.15.17",
     "@mui/styles": "^5.15.17",
     "@next/mdx": "^14.2.3",
-    "@sentry/nextjs": "^7.114.0",
+    "@sentry/nextjs": "^8.0.0",
     "@svgr/webpack": "^8.1.0",
-    "@tanstack/react-query": "^5.35.1",
+    "@tanstack/react-query": "^5.36.0",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
     "clsx": "^2.1.1",
@@ -38,7 +34,7 @@
     "intersection-observer": "^0.12.2",
     "lodash": "^4.17.21",
     "next": "14.2.3",
-    "next-intl": "^3.12.2",
+    "next-intl": "^3.13.0",
     "next-themes": "^0.3.0",
     "nx-cloud": "^18.0.1",
     "query-string": "^9.0.0",
@@ -47,7 +43,7 @@
     "react-hook-form": "^7.51.4",
     "react-is": "18.3.1",
     "react-kawaii": "^0.18.0",
-    "react-router-dom": "6.23.0",
+    "react-router-dom": "6.23.1",
     "react-transition-group": "^4.4.5",
     "rehype-parse": "^9.0.0",
     "rehype-react": "^8.0.0",
@@ -61,8 +57,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.5",
     "@babel/eslint-parser": "^7.24.5",
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
     "@eslint/eslintrc": "^3.0.2",
     "@eslint/js": "~9.2.0",
     "@graphql-codegen/cli": "^5.0.2",
@@ -72,13 +66,13 @@
     "@graphql-codegen/typescript-operations": "4.2.0",
     "@graphql-codegen/typescript-react-query": "^6.1.0",
     "@nx/cypress": "19.0.2",
-    "@nx/eslint": "19.0.1",
-    "@nx/eslint-plugin": "19.0.1",
+    "@nx/eslint": "19.0.2",
+    "@nx/eslint-plugin": "19.0.2",
     "@nx/jest": "19.0.2",
-    "@nx/js": "19.0.1",
+    "@nx/js": "19.0.2",
     "@nx/next": "19.0.2",
-    "@nx/node": "19.0.1",
-    "@nx/react": "19.0.1",
+    "@nx/node": "19.0.2",
+    "@nx/react": "19.0.2",
     "@nx/workspace": "19.0.2",
     "@parcel/watcher": "^2.4.1",
     "@swc-node/register": "^1.9.1",
@@ -88,7 +82,7 @@
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
-    "@tanstack/react-query-devtools": "^5.35.1",
+    "@tanstack/react-query-devtools": "^5.36.0",
     "@testing-library/dom": "^10.1.0",
     "@testing-library/jest-dom": "^6.4.5",
     "@testing-library/react": "15.0.7",
@@ -99,22 +93,21 @@
     "@types/lodash": "^4.17.1",
     "@types/mdx": "^2.0.13",
     "@types/node": "20.12.11",
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.3.2",
     "@types/react-dom": "18.3.0",
     "@types/react-is": "18.3.0",
+    "@types/react-kawaii": "^0.17.3",
     "@types/react-transition-group": "^4.4.10",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
+    "@typescript-eslint/eslint-plugin": "^7.9.0",
+    "@typescript-eslint/parser": "^7.9.0",
     "@vercel/remote-nx": "^2.0.0",
     "autoprefixer": "^10.4.19",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.3",
     "babel-plugin-import": "^1.13.8",
     "circular-dependency-plugin": "^5.2.2",
-    "commitizen": "^4.3.0",
     "contentful-import": "^9.4.55",
     "cypress": "13.9.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.2.0",
     "eslint-config-next": "^14.2.3",
     "eslint-config-prettier": "^9.1.0",
@@ -126,18 +119,15 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-testing-library": "^6.2.2",
-    "git-commit-msg-linter": "^5.0.7",
-    "husky": "^9.0.11",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
-    "lint-staged": "^15.2.2",
     "nx": "19.0.2",
     "postcss": "^8.4.38",
     "postcss-focus-visible": "^9.0.1",
     "postcss-import": "^16.1.0",
-    "postcss-nesting": "^12.1.2",
-    "postcss-preset-env": "^9.5.11",
+    "postcss-nesting": "^12.1.3",
+    "postcss-preset-env": "^9.5.12",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.3",
@@ -145,7 +135,6 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "~5.4.5",
-    "validate-branch-name": "^1.3.0",
     "webpack": "^5.91.0"
   },
   "resolutions": {
@@ -159,33 +148,5 @@
     "node": "20.x",
     "npm": "Please use Yarn to install dependencies.",
     "yarn": ">=1.22.19"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged --allow-empty",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "./apps/coin-colorful/**/*.{ts,tsx}": [
-      "yarn nx run coin-colorful:lint --fix --ignorePath .eslintignore"
-    ],
-    "./apps/coin-colorful-e2e/**/*.{ts,tsx}": [
-      "yarn nx run coin-colorful-e2e:lint --fix --ignorePath .eslintignore"
-    ],
-    "./apps/portfolio/**/*.{ts,tsx}": [
-      "yarn nx run portfolio:lint --fix --ignorePath .eslintignore"
-    ],
-    "./apps/portfolio-e2e/**/*.{ts,tsx}": [
-      "yarn nx run portfolio-e2e:lint --fix --ignorePath .eslintignore"
-    ],
-    "**/*.{ts,tsx,json,md,mdx}": [
-      "yarn nx format:write --uncommitted"
-    ]
   }
 }
