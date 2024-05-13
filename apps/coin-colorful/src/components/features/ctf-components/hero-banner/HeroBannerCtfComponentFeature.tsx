@@ -108,7 +108,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type HeroBannerCtfComponentFeatureProps = HeroBannerFieldsFragment
 
 /**
- * Renders the hero banner for the `contentful` API to consume.
+ * Renders the hero banner feature component for the `contentful` API to consume.
  * @param {HeroBannerCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
