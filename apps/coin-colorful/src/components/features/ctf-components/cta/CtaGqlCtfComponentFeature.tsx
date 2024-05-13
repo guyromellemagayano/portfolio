@@ -12,7 +12,7 @@ export type CtaGqlCtlComponentFeatureProps = {
 }
 
 /**
- * Renders a CTA `graphql` feature component for the `contentful` API to consume.
+ * Renders the CTA `graphql` feature component for the `contentful` API to consume.
  * @param {CtaGqlCtlComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
