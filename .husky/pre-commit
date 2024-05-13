@@ -1,3 +1,0 @@
-yarn validate-branch-name
-yarn lint-staged --allow-empty
-yarn nx affected -t lint --verbose --uncommitted
