@@ -71,7 +71,7 @@
     "@graphql-codegen/typescript": "4.0.6",
     "@graphql-codegen/typescript-operations": "4.2.0",
     "@graphql-codegen/typescript-react-query": "^6.1.0",
-    "@nx/cypress": "19.0.1",
+    "@nx/cypress": "19.0.2",
     "@nx/eslint": "19.0.1",
     "@nx/eslint-plugin": "19.0.1",
     "@nx/jest": "19.0.1",
