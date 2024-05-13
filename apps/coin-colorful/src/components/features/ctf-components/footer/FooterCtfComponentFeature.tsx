@@ -244,7 +244,7 @@ export type FooterCtfComponentFeatureProps = FooterFieldsFragment
 const FooterCtfComponentFeature = (props: FooterCtfComponentFeatureProps) => {
   const { items } = props
 
-  const footerContent = items && items?.length > 0 ? items[0] : undefined
+  const footerContent = items?.[0] || undefined
 
   const t = useTranslations(),
     { locale } = useContentfulContext(),
