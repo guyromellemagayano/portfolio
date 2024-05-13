@@ -94,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export type BusinessInfoCtfComponentFeatureProps = BusinessInfoFieldsFragment
 
 /**
- * Renders a business info feature component for the `contentful` API to consume.
+ * Renders the business info feature component for the `contentful` API to consume.
  * @param {BusinessInfoCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
