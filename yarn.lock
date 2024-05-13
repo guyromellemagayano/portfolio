@@ -3224,12 +3224,12 @@
   dependencies:
     "@nx/js" "19.0.2"
 
-"@nrwl/next@19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/next/-/next-19.0.1.tgz#485c5bd43d5da684152ede2546bab949a2ab4107"
-  integrity sha512-QLcfXmp2pGIz2k23giXE2C9hdqv6g9PUlvo/pRotqQTuDw76uuudFYA1aLRbnmkKEhuUrEC42Qm/Ndxzz5lrkw==
+"@nrwl/next@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/next/-/next-19.0.2.tgz#5f9a2b4d3b71e4fd955e318f595502d5bcdc5f9e"
+  integrity sha512-N0hsaWLzNGbb6lKX1+D7BGkVQaiKV4/lZz6Q+zqKtabF85cm5nZAJDrmcoR4slEQ87mAfT1IPVz0o4QgLhRToQ==
   dependencies:
-    "@nx/next" "19.0.1"
+    "@nx/next" "19.0.2"
 
 "@nrwl/node@19.0.1":
   version "19.0.1"
@@ -3251,6 +3251,13 @@
   integrity sha512-TnuBTsYD030r4QOfGZC0fRNFw0jNcf3zqlPQhNp3ZJmPzAjLDFMNYtf2nsQsmiG9V7H/7oj7/JtgBrgacOvKDw==
   dependencies:
     "@nx/react" "19.0.1"
+
+"@nrwl/react@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/react/-/react-19.0.2.tgz#fd03c526e96ffda0423d6e15a4186967e3388e69"
+  integrity sha512-voR0oWyqfO7CzmbumdKU7EKlnENDyEyHsamu/HFix+n7XUPQK4dxYQa362dw6dDBJAdYu4PxBuZ8BgpVN1ZX/w==
+  dependencies:
+    "@nx/react" "19.0.2"
 
 "@nrwl/tao@19.0.1":
   version "19.0.1"
@@ -3275,12 +3282,19 @@
   dependencies:
     "@nx/web" "19.0.1"
 
-"@nrwl/webpack@19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@nrwl/webpack/-/webpack-19.0.1.tgz#9d738e16c80c4c3127c0d2ecc71667c2b26a231a"
-  integrity sha512-qNRtOCz3jID2H5JZmDzmhCVNu6InBNZAwb8lzFWTt0+foJ71kft6jTJxauErAsEKIfIc4okren8X975me7W1WA==
+"@nrwl/web@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-19.0.2.tgz#bcb30cd4c8f6bb32e9bc970e0f7d5e34927c815c"
+  integrity sha512-/w0ZhhFZvCJv0CgySaIGDhglLiDvvwbF7gM1k4qPPPYZFPPSShmb5BANlDyaBnX6wYRFY42kaXfGE51Dc6qZ5A==
   dependencies:
-    "@nx/webpack" "19.0.1"
+    "@nx/web" "19.0.2"
+
+"@nrwl/webpack@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nrwl/webpack/-/webpack-19.0.2.tgz#66e1a0652fc101fbbb8b2b87c73dda5b24174917"
+  integrity sha512-VpqZxrT8sglXpB9TKUrXS/Cht3j4ZOg53yL/CEse+oeVTUi2BFWFPhhdtFAzDtz27F1nnrcXSTluCcKpisDG/A==
+  dependencies:
+    "@nx/webpack" "19.0.2"
 
 "@nrwl/workspace@19.0.1":
   version "19.0.1"
@@ -3505,20 +3519,20 @@
   dependencies:
     "@nx/eslint" "19.0.2"
 
-"@nx/next@19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@nx/next/-/next-19.0.1.tgz#99e33c1511a524b081856a5e8f012494e07b2f16"
-  integrity sha512-SXw1xtQhGXr5iK1WzRZ5Kwy2JDt2Zins9U8KEOXp4GoexNfOIIm426fhsv34SUPvDxDhLKx45EDIpXfn8lD1Tg==
+"@nx/next@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nx/next/-/next-19.0.2.tgz#9e8b26f2ed7146e2ee55f4402606f955f6b459fa"
+  integrity sha512-OI+l9tAP4ljQWCEhhw9sj5bXEtVOUs2vSo6EkjQ4YwizvJ+mPuNTfVLa3j+nv4j/otItRl01QhfzG52Z0BhLkA==
   dependencies:
     "@babel/plugin-proposal-decorators" "^7.22.7"
-    "@nrwl/next" "19.0.1"
-    "@nx/devkit" "19.0.1"
-    "@nx/eslint" "19.0.1"
-    "@nx/js" "19.0.1"
-    "@nx/react" "19.0.1"
-    "@nx/web" "19.0.1"
-    "@nx/webpack" "19.0.1"
-    "@nx/workspace" "19.0.1"
+    "@nrwl/next" "19.0.2"
+    "@nx/devkit" "19.0.2"
+    "@nx/eslint" "19.0.2"
+    "@nx/js" "19.0.2"
+    "@nx/react" "19.0.2"
+    "@nx/web" "19.0.2"
+    "@nx/webpack" "19.0.2"
+    "@nx/workspace" "19.0.2"
     "@svgr/webpack" "^8.0.1"
     chalk "^4.1.0"
     copy-webpack-plugin "^10.2.4"
@@ -3658,6 +3672,23 @@
     minimatch "9.0.3"
     tslib "^2.3.0"
 
+"@nx/react@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nx/react/-/react-19.0.2.tgz#ef00bc7c417e602b5790acf1a404085cb8ffa7f9"
+  integrity sha512-yCCdZ6fiiQB2Kzd9V8xTkaX/LUB9P0wF91a6n28c+c4JeU9K9gS1QeStLnDtQ4MTcVDF7eARFAjgzyZTbWET+Q==
+  dependencies:
+    "@nrwl/react" "19.0.2"
+    "@nx/devkit" "19.0.2"
+    "@nx/eslint" "19.0.2"
+    "@nx/js" "19.0.2"
+    "@nx/web" "19.0.2"
+    "@phenomnomnominal/tsquery" "~5.0.1"
+    "@svgr/webpack" "^8.0.1"
+    chalk "^4.1.0"
+    file-loader "^6.2.0"
+    minimatch "9.0.3"
+    tslib "^2.3.0"
+
 "@nx/web@19.0.1":
   version "19.0.1"
   resolved "https://registry.yarnpkg.com/@nx/web/-/web-19.0.1.tgz#d91211777133fd565aa79ad543a49639f4db536c"
@@ -3671,15 +3702,28 @@
     http-server "^14.1.0"
     tslib "^2.3.0"
 
-"@nx/webpack@19.0.1":
-  version "19.0.1"
-  resolved "https://registry.yarnpkg.com/@nx/webpack/-/webpack-19.0.1.tgz#d4f50007f5c4ec14185ad44426d3c0dd63e424a5"
-  integrity sha512-m1J5z0ut/XKX+kA5ICUw5Aix5YMGLVTXshWQdYmz79jpCWQ7OoPHjXXmEeXHLS9o1vsRO8S8o2C2yz+rc+7mYA==
+"@nx/web@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nx/web/-/web-19.0.2.tgz#8dd3147077ac07c9608072b452420a2b98215ac4"
+  integrity sha512-sK1avzp/FXtFO/viEtBj/UQTA0ScVfOGlwe92bAAFiX8YnxoazrPQnWiogXbF2AkQwFGyxR0Kp3iiu4Ezrp9Vg==
+  dependencies:
+    "@nrwl/web" "19.0.2"
+    "@nx/devkit" "19.0.2"
+    "@nx/js" "19.0.2"
+    chalk "^4.1.0"
+    detect-port "^1.5.1"
+    http-server "^14.1.0"
+    tslib "^2.3.0"
+
+"@nx/webpack@19.0.2":
+  version "19.0.2"
+  resolved "https://registry.yarnpkg.com/@nx/webpack/-/webpack-19.0.2.tgz#0d0390791e7dc40b468c9a721dbfb6be435272ed"
+  integrity sha512-P26koXvBrThOA0v5SNSbj+t66V8cETpHcR0JpylJ4ANwW36NdpDlMFdFW385IrpBvaWl42dMRqj9wf2h2zJO7w==
   dependencies:
     "@babel/core" "^7.23.2"
-    "@nrwl/webpack" "19.0.1"
-    "@nx/devkit" "19.0.1"
-    "@nx/js" "19.0.1"
+    "@nrwl/webpack" "19.0.2"
+    "@nx/devkit" "19.0.2"
+    "@nx/js" "19.0.2"
     ajv "^8.12.0"
     autoprefixer "^10.4.9"
     babel-loader "^9.1.2"
