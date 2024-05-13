@@ -3210,12 +3210,12 @@
   dependencies:
     "@nx/jest" "19.0.1"
 
-"@nrwl/jest@19.0.2":
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-19.0.2.tgz#d9e9ac42691712cebae122e28d0066775e229dbe"
-  integrity sha512-z+TQMN57wOK0rocSrhUpYFntYV5rIlSWBcYL/TRjHZAC/2zFR3kmQbgc3bRqEtmmm2pGkpZBLg+abJD/ge+Nxw==
+"@nrwl/jest@19.0.3":
+  version "19.0.3"
+  resolved "https://registry.yarnpkg.com/@nrwl/jest/-/jest-19.0.3.tgz#725258d87396c31abd611dc93f4dccd71654e180"
+  integrity sha512-9XzfAjHKidqcVLlxGVk4dxeIk8ZukGGRtYmkEaWGZpGURQhQyMpUSGwjAGhZNM6jD0s4Ci0vfPbc+Q6Tza1ZxQ==
   dependencies:
-    "@nx/jest" "19.0.2"
+    "@nx/jest" "19.0.3"
 
 "@nrwl/js@19.0.1":
   version "19.0.1"
@@ -3470,16 +3470,16 @@
     tslib "^2.3.0"
     yargs-parser "21.1.1"
 
-"@nx/jest@19.0.2":
-  version "19.0.2"
-  resolved "https://registry.yarnpkg.com/@nx/jest/-/jest-19.0.2.tgz#9713467bde869d701479d711727c518406db3f5c"
-  integrity sha512-oV3QBdm/chaAcj+lzrwL937QIGZNXO18puFvol0hJrmVWMNRQr8LADfVHr8+qBrThxfj+w5UhXoDcqPS38zXXg==
+"@nx/jest@19.0.3":
+  version "19.0.3"
+  resolved "https://registry.yarnpkg.com/@nx/jest/-/jest-19.0.3.tgz#fdcd44a848360d28b39fefa2148d1c2c962679eb"
+  integrity sha512-X8yla4Rff22H3j8HbVBFsq45nRZ3o4MIeLWBZymyuB+td0oyRUYw/uCqbKqZXVzo/exmXlPffwkMvM063Z501g==
   dependencies:
     "@jest/reporters" "^29.4.1"
     "@jest/test-result" "^29.4.1"
-    "@nrwl/jest" "19.0.2"
-    "@nx/devkit" "19.0.2"
-    "@nx/js" "19.0.2"
+    "@nrwl/jest" "19.0.3"
+    "@nx/devkit" "19.0.3"
+    "@nx/js" "19.0.3"
     "@phenomnomnominal/tsquery" "~5.0.1"
     chalk "^4.1.0"
     identity-obj-proxy "3.0.0"
