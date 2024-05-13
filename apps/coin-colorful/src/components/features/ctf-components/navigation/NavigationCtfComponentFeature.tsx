@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 /**
- * Renders the navigation component for the `contentful` API to consume.
+ * Renders the navigation feature component for the `contentful` API to consume.
  * @param {NavigationFieldsFragment} props - The navigation fields.
  * @returns The rendered feature component.
  */
