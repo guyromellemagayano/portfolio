@@ -1,18 +1,13 @@
 import { ReactNode } from 'react'
 
+import { isNotNullOrUndefined } from '@guy-romelle-magayano/react-utils'
 import MuiButton from '@mui/material/Button'
 import MuiLink from '@mui/material/Link'
 import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
-import NextLink from 'next/link'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import queryString from 'query-string'
-
-import {
-  isEmpty,
-  isNotNullOrUndefined,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
 
 const useStyles = makeStyles(() => ({
   baseAnchor: {
@@ -22,7 +17,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export type LinkProps = {
+export type LinkSharedProps = {
   children: ReactNode
   href?: string
   as?: string
@@ -43,57 +38,46 @@ export type LinkProps = {
 }
 
 /**
- * Render a link with optional URL parameters.
- * @param dropUrlParams - Whether to drop URL parameters or not.
- * @param className - The CSS class name for the link.
- * @param children - The content of the link.
- * @param withoutMaterial - Whether to render the link without Material-UI styles.
- * @param underline - Whether to underline the link.
- * @param onClick - The click event handler for the link.
- * @param isButton - Whether the link should be rendered as a button.
- * @param variant - The variant of the link.
- * @param size - The size of the link.
- * @param color - The color of the link.
- * @param startIcon - The start icon of the link.
- * @param endIcon - The end icon of the link.
- * @param urlParams - The URL parameters for the link.
- * @param title - The title attribute of the link.
- * @param target - The target attribute of the link.
- * @param as - The URL for the link.
- * @param href - The href attribute of the link.
- * @returns The rendered link.
+ * Renders the shared link component for the `contentful` API to consume.
+ * @param {LinkSharedProps} props - The properties to render the component with.
+ * @returns The rendered component.
  */
-const Link = ({
-  dropUrlParams,
-  className,
-  children,
-  withoutMaterial,
-  underline,
-  onClick,
-  isButton = false,
-  variant,
-  size,
-  color,
-  startIcon,
-  endIcon,
-  urlParams = '',
-  title,
-  target = '_self',
-  as,
-  href = ''
-}: LinkProps) => {
+const LinkShared = (props: LinkSharedProps) => {
+  const {
+    dropUrlParams,
+    className,
+    children,
+    withoutMaterial,
+    underline,
+    onClick,
+    isButton = false,
+    variant,
+    size,
+    color,
+    startIcon,
+    endIcon,
+    urlParams = '',
+    title,
+    target = '_self',
+    as,
+    href = ''
+  } = props
+
+  let updatedHref = href,
+    updatedAs = as
+
   const router = useRouter()
 
-  if (!isNotNullOrUndefined(dropUrlParams) && router) {
-    const urlQuerystring = router.asPath.split('?')[1]
+  if (!isNotNullOrUndefined(dropUrlParams) && dropUrlParams && router) {
+    const urlQuerystring = router.asPath?.split('?')[1] || ''
 
-    if (!isEmpty(urlQuerystring) && isStringType(urlQuerystring)) {
-      href +=
+    if (urlQuerystring && urlQuerystring?.length > 0) {
+      updatedHref +=
         href.indexOf('?') < 0 ? `?${urlQuerystring}` : `&${urlQuerystring}`
     }
   }
 
-  if (!isEmpty(urlParams) && isStringType(urlParams)) {
+  if (urlParams && urlParams?.length > 0) {
     const parsedUrlParams = queryString.parse(urlParams),
       parsedHref = queryString.parseUrl(href),
       mergedParsedHref = {
@@ -104,9 +88,9 @@ const Link = ({
         }
       }
 
-    href = queryString.stringifyUrl(mergedParsedHref)
+    updatedHref = queryString.stringifyUrl(mergedParsedHref)
 
-    if (isNotNullOrUndefined(as) && isStringType(as)) {
+    if (as && as?.length > 0) {
       const parsedAs = queryString.parseUrl(as),
         mergedParsedAs = {
           ...parsedAs,
@@ -116,19 +100,18 @@ const Link = ({
           }
         }
 
-      as = queryString.stringifyUrl(mergedParsedAs)
+      updatedAs = queryString.stringifyUrl(mergedParsedAs)
     }
   }
 
   const classes = useStyles()
 
-  if (!isNotNullOrUndefined(href) || !isNotNullOrUndefined(href))
-    return <>{children}</>
+  if (!href) return <>{children}</>
 
   const external = href.startsWith('http://') || href.startsWith('https://'),
     underlineStyle = underline ? 'always' : 'none'
 
-  if (external === true || !href) {
+  if (external || !href) {
     return isButton ? (
       <MuiButton
         href={href}
@@ -159,19 +142,23 @@ const Link = ({
     )
   }
 
-  if (withoutMaterial === true) {
+  if (withoutMaterial) {
     return (
-      <NextLink href={href} as={as} passHref>
-        <a className={clsx(classes.baseAnchor, className)} title={title}>
-          {children}
-        </a>
-      </NextLink>
+      <Link
+        href={href}
+        as={as}
+        className={clsx(classes.baseAnchor, className)}
+        title={title}
+        passHref
+      >
+        {children}
+      </Link>
     )
   }
 
-  if (isButton === true) {
+  if (isButton) {
     return (
-      <NextLink href={href} as={as} passHref>
+      <Link href={href} as={as} passHref>
         <MuiButton
           href={as}
           className={className}
@@ -185,12 +172,12 @@ const Link = ({
         >
           {children}
         </MuiButton>
-      </NextLink>
+      </Link>
     )
   }
 
   return (
-    <NextLink href={href} as={as} passHref>
+    <Link href={href} as={as} passHref>
       <MuiLink
         href={as}
         className={className}
@@ -201,10 +188,10 @@ const Link = ({
       >
         {children}
       </MuiLink>
-    </NextLink>
+    </Link>
   )
 }
 
-Link.displayName = 'Link'
+LinkShared.displayName = 'LinkShared'
 
-export default Link
+export default LinkShared
