@@ -161,12 +161,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
+export type ProductTableCtfComponentFeatureProps = ProductTableFieldsFragment
+
 /**
  * Renders the product table feature component for the `contentful` API to consume.
- * @param {ProductTableFieldsFragment} props - The properties to render the component with.
+ * @param {ProductTableCtfComponentFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
-const ProductTableCtfComponentFeature = (props: ProductTableFieldsFragment) => {
+const ProductTableCtfComponentFeature = (
+  props: ProductTableCtfComponentFeatureProps
+) => {
   const {
     headline,
     subline,
