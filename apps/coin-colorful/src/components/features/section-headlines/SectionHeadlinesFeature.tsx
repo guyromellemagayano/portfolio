@@ -45,7 +45,7 @@ export type SectionHeadlinesFeatureProps = {
 }
 
 /**
- * Renders a section headlines feature component.
+ * Renders the section headlines feature component.
  * @param {SectionHeadlinesFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
