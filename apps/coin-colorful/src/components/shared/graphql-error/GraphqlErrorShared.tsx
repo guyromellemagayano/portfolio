@@ -11,13 +11,11 @@ import {
 import { Box, Theme, Typography } from '@mui/material'
 import { useTheme } from '@mui/styles'
 
-import { isArrayType, isEmpty } from '@guy-romelle-magayano/react-utils'
-
 import { tryGet } from '@guy-romelle-magayano/coin-colorful/libs'
 
 // TODO: add other errors than only `NetworkError`
 
-export type GraphqlErrorProps = {
+export type GraphqlErrorSharedProps = {
   error: {
     message: string
     graphQLErrors: {
@@ -35,19 +33,20 @@ export type GraphqlErrorProps = {
 }
 
 /**
- * Renders a component to display GraphQL errors.
- * @param error - The GraphQL error object.
+ * Renders the shared GraphQL error component for the `contentful` API to consume.
+ * @param {GraphqlErrorSharedProps} props - The properties to render the component with.
  * @returns The rendered component.
  */
-const GraphqlError = ({ error }: GraphqlErrorProps) => {
+const SharedGraphqlError = (props: GraphqlErrorSharedProps) => {
+  const { error } = props
+
   console.error({ error })
 
-  const theme = useTheme<Theme>()
-
-  const networkErrors = useMemo(
-    () => tryGet(() => error.networkError.result.errors),
-    [error]
-  )
+  const theme = useTheme<Theme>(),
+    networkErrors = useMemo(
+      () => tryGet(() => error.networkError.result.errors),
+      [error]
+    )
 
   return (
     <Box
@@ -58,7 +57,7 @@ const GraphqlError = ({ error }: GraphqlErrorProps) => {
     >
       <Typography variant="h3">{error.message}</Typography>
 
-      {!isEmpty(networkErrors) && isArrayType(networkErrors) && (
+      {networkErrors && networkErrors?.length > 0 && (
         <Box my={4}>
           <Typography variant="h4">Network Errors</Typography>
 
@@ -87,7 +86,7 @@ const GraphqlError = ({ error }: GraphqlErrorProps) => {
         </Box>
       )}
 
-      {!isEmpty(error.graphQLErrors) && isArrayType(error.graphQLErrors) && (
+      {error?.graphQLErrors && error?.graphQLErrors?.length > 0 && (
         <Box my={4}>
           <Typography variant="h4">GraphQl Errors</Typography>
 
@@ -121,6 +120,6 @@ const GraphqlError = ({ error }: GraphqlErrorProps) => {
   )
 }
 
-GraphqlError.displayName = 'GraphqlError'
+SharedGraphqlError.displayName = 'SharedGraphqlError'
 
-export default GraphqlError
+export default SharedGraphqlError
