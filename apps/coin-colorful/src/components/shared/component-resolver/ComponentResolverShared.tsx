@@ -1,5 +1,3 @@
-'use client'
-
 import { useMemo } from 'react'
 
 import { Box } from '@mui/material'
@@ -17,7 +15,7 @@ import { useContentfulContext } from '@guy-romelle-magayano/coin-colorful/hooks'
 
 let previousComponent: string | null = null
 
-export type ComponentResolverProps = {
+export type ComponentResolverSharedProps = {
   componentProps: {
     sys: { id: string }
     __typename: string
@@ -35,25 +33,19 @@ export type ComponentResolverProps = {
 }
 
 /**
- * Renders a component based on the provided props and GraphQL configuration.
- * @param componentProps - The props for the component.
- * @param [inline=false] - Indicates whether the component should be rendered inline.
- * @param forceGql - Indicates whether to force the use of GraphQL for the component.
- * @param className - The CSS class name for the component.
+ * Renders the shared component resolver component for the `contentful` API to consume.
+ * @param {ComponentResolverSharedProps} props - The properties to render the component with.
  * @returns The rendered component.
  */
-const ComponentResolver = ({
-  componentProps,
-  inline = false,
-  forceGql,
-  className
-}: ComponentResolverProps) => {
+const ComponentResolverShared = (props: ComponentResolverSharedProps) => {
+  const { componentProps, inline = false, forceGql, className } = props
+
   const { previewActive, locale } = useContentfulContext()
 
   const ComponentGql = componentGqlMap[componentProps.__typename]
 
   const shouldForceGql = useMemo(() => {
-    if (forceGql === true) {
+    if (isNotNullOrUndefined(forceGql) && forceGql) {
       return true
     }
 
@@ -61,19 +53,13 @@ const ComponentResolver = ({
       return false
     }
 
-    if (
-      isObjectType(componentProps) &&
-      Object.keys(componentProps).length > 3
-    ) {
+    if (componentProps && Object.keys(componentProps).length > 3) {
       // We expect components with no fragments set up to only contain 2 object
       // props. If there are more, it means we are providing fragments manually
       return false
     }
 
-    if (
-      !isNotNullOrUndefined(componentProps.__typename) ||
-      !isNotNullOrUndefined(componentProps.sys)
-    ) {
+    if (!componentProps.__typename || !componentProps.sys) {
       // We expect exactly these keys to be present in the returned props if the
       // fragment was not specified for this component
       return false
@@ -82,9 +68,8 @@ const ComponentResolver = ({
     return true
   }, [ComponentGql, componentProps, forceGql])
 
-  const Component = !shouldForceGql && componentMap[componentProps.__typename]
-
-  const previousComponentProp = previousComponent
+  const Component = !shouldForceGql && componentMap[componentProps.__typename],
+    previousComponentProp = previousComponent
 
   previousComponent = componentProps.__typename
 
@@ -119,6 +104,6 @@ const ComponentResolver = ({
   )
 }
 
-ComponentResolver.displayName = 'ComponentResolver'
+ComponentResolverShared.displayName = 'ComponentResolverShared'
 
-export default ComponentResolver
+export default ComponentResolverShared
