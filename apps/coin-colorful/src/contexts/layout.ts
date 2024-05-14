@@ -1,18 +1,14 @@
-import { ReactNode, createContext } from 'react'
+import { createContext } from 'react'
 
-export type TLayoutContextValue = {
+export type LayoutContextValueProps = {
   containerWidth: number
   parent: string
 }
 
-export const layoutContextValues = {
+export const layoutContextValues: LayoutContextValueProps = {
   containerWidth: 770,
   parent: ''
 }
 
-export type TLayoutContextProvider = {
-  children: ReactNode
-}
-
 export const LayoutContext =
-  createContext<TLayoutContextValue>(layoutContextValues)
+  createContext<LayoutContextValueProps>(layoutContextValues)
