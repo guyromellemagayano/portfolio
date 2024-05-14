@@ -321,232 +321,245 @@ const ProductTableCtfComponentFeature = (
     <Div ref={gridElement}>
       <Container maxWidth={false} className={classes.section}>
         <Div className={classes.innerContainer}>
-          <SectionHeadlinesFeature
-            headline={headline}
-            headlineLivePreviewProps={inspectorMode({
-              entryId: id,
-              fieldId: 'headline'
-            })}
-            subline={subline}
-            sublineLivePreviewProps={inspectorMode({
-              entryId: id,
-              fieldId: 'subline'
-            })}
-            className={classes.sectionHeadlines}
-          />
+          {headline &&
+            headline?.length > 0 &&
+            subline &&
+            subline?.length > 0 && (
+              <SectionHeadlinesFeature
+                headline={headline}
+                headlineLivePreviewProps={inspectorMode({
+                  entryId: id,
+                  fieldId: 'headline'
+                })}
+                subline={subline}
+                sublineLivePreviewProps={inspectorMode({
+                  entryId: id,
+                  fieldId: 'subline'
+                })}
+                className={classes.sectionHeadlines}
+              />
+            )}
 
-          {productsCollection && productsCollection.items?.length > 0 && (
-            <Div className={classes.comparisonTable}>
-              {productsCollection.items.map(
-                (product, j) =>
-                  product &&
-                  Object.keys(product)?.length > 0 && (
-                    <Div
-                      key={product.sys.id}
-                      className={classes.comparisonTableColumn}
-                      ref={el => {
-                        gridColumnElements.current[j] = el
-                      }}
-                      {...inspectorMode({
-                        entryId: product.sys.id,
-                        fieldId: 'internalName'
-                      })}
-                    >
+          {productsCollection?.items &&
+            productsCollection?.items?.length > 0 && (
+              <Div className={classes.comparisonTable}>
+                {productsCollection.items.map(
+                  (product, j) =>
+                    product &&
+                    Object.keys(product)?.length > 0 && (
                       <Div
-                        className={classes.featuredImage}
+                        key={product.sys.id}
+                        className={classes.comparisonTableColumn}
+                        ref={el => {
+                          gridColumnElements.current[j] = el
+                        }}
                         {...inspectorMode({
                           entryId: product.sys.id,
-                          fieldId: 'featuredImage'
+                          fieldId: 'internalName'
                         })}
                       >
                         <Div
-                          data-equal-size="0"
-                          style={{
-                            height:
-                              gridSizes[`index-0`] === undefined
-                                ? undefined
-                                : `${gridSizes[`index-0`]}px`
-                          }}
-                        >
-                          {product.featuredImage &&
-                            Object.keys(product.featuredImage)?.length > 0 && (
-                              <Image
-                                src={product.featuredImage.url as string}
-                                alt={product.featuredImage.description || ''}
-                                width={product.featuredImage.width as number}
-                                height={product.featuredImage.height as number}
-                                quality={60}
-                                loader={contentfulLoader}
-                                sizes="(min-width: 355px) 355px, 98vw"
-                              />
-                            )}
-                        </Div>
-                      </Div>
-                      <Div
-                        data-equal-size="1"
-                        style={{
-                          height:
-                            gridSizes[`index-1`] === undefined
-                              ? undefined
-                              : `${gridSizes[`index-1`]}px`
-                        }}
-                      >
-                        <Typography
-                          variant="h2"
-                          className={classes.title}
+                          className={classes.featuredImage}
                           {...inspectorMode({
                             entryId: product.sys.id,
-                            fieldId: 'name'
+                            fieldId: 'featuredImage'
                           })}
                         >
-                          {product.name}
-                        </Typography>
-                      </Div>
-                      <Div
-                        data-equal-size="2"
-                        style={{
-                          height:
-                            gridSizes['index-2'] === undefined
-                              ? undefined
-                              : `${gridSizes['index-2']}px`
-                        }}
-                        {...inspectorMode({
-                          entryId: product.sys.id,
-                          fieldId: 'description'
-                        })}
-                      >
-                        {product.description &&
-                          Object.keys(product.description)?.length > 0 && (
+                          <Div
+                            data-equal-size="0"
+                            style={{
+                              height:
+                                gridSizes[`index-0`] === undefined
+                                  ? undefined
+                                  : `${gridSizes[`index-0`]}px`
+                            }}
+                          >
+                            {product.featuredImage &&
+                              Object.keys(product.featuredImage)?.length >
+                                0 && (
+                                <Image
+                                  src={product.featuredImage.url as string}
+                                  alt={product.featuredImage.description || ''}
+                                  width={product.featuredImage.width as number}
+                                  height={
+                                    product.featuredImage.height as number
+                                  }
+                                  quality={60}
+                                  loader={contentfulLoader}
+                                  sizes="(min-width: 355px) 355px, 98vw"
+                                />
+                              )}
+                          </Div>
+                        </Div>
+                        <Div
+                          data-equal-size="1"
+                          style={{
+                            height:
+                              gridSizes[`index-1`] === undefined
+                                ? undefined
+                                : `${gridSizes[`index-1`]}px`
+                          }}
+                        >
+                          <Typography
+                            variant="h2"
+                            className={classes.title}
+                            {...inspectorMode({
+                              entryId: product.sys.id,
+                              fieldId: 'name'
+                            })}
+                          >
+                            {product.name}
+                          </Typography>
+                        </Div>
+                        <Div
+                          data-equal-size="2"
+                          style={{
+                            height:
+                              gridSizes['index-2'] === undefined
+                                ? undefined
+                                : `${gridSizes['index-2']}px`
+                          }}
+                          {...inspectorMode({
+                            entryId: product.sys.id,
+                            fieldId: 'description'
+                          })}
+                        >
+                          {product.description &&
+                            Object.keys(product.description)?.length > 0 && (
+                              <LayoutContext.Provider
+                                value={{
+                                  ...layoutContextValues,
+                                  parent: 'product-description'
+                                }}
+                              >
+                                <RichtextCtfComponentFeature
+                                  {...product.description}
+                                  className={classes.shortDescription}
+                                />
+                              </LayoutContext.Provider>
+                            )}
+                        </Div>
+                        <Div
+                          data-equal-size="3"
+                          style={{
+                            height:
+                              featureNames === null ||
+                              gridSizes['index-3'] === undefined
+                                ? undefined
+                                : `${gridSizes['index-3']}px`
+                          }}
+                          {...inspectorMode({
+                            entryId: product.sys.id,
+                            fieldId: 'price'
+                          })}
+                        >
+                          {!product.price || product.price === 0 ? (
+                            <Typography
+                              variant="h2"
+                              component="span"
+                              className={classes.priceUpper}
+                            >
+                              {t('price.free')}
+                            </Typography>
+                          ) : (
+                            <Typography
+                              variant="h2"
+                              component="span"
+                              className={classes.priceUpper}
+                            >
+                              <FormatCurrencyFeature value={product.price} />
+                              <Span className={classes.priceAddition}>
+                                /{t('time.month')}
+                              </Span>
+                            </Typography>
+                          )}
+                        </Div>
+
+                        {featureNames &&
+                          featureNames?.length > 0 &&
+                          featuresGrid &&
+                          Object.keys(featuresGrid)?.length > 0 && (
                             <LayoutContext.Provider
                               value={{
                                 ...layoutContextValues,
-                                parent: 'product-description'
+                                parent: 'product-table'
                               }}
                             >
-                              <RichtextCtfComponentFeature
-                                {...product.description}
-                                className={classes.shortDescription}
+                              <Div
+                                className={classes.comparisonFeaturesBreak}
                               />
+                              <Div
+                                {...inspectorMode({
+                                  entryId: product.sys.id,
+                                  fieldId: 'features'
+                                })}
+                              >
+                                {featureNames.map(
+                                  (featureName, i) =>
+                                    featuresGrid[featureName][
+                                      product.sys.id
+                                    ] && (
+                                      <Div
+                                        key={`${product.sys.id}-${featureName}`}
+                                        className={classes.feature}
+                                        {...featuresGrid[featureName][
+                                          product.sys.id
+                                        ].attributes}
+                                      >
+                                        <Div
+                                          data-equal-size={i + 4}
+                                          className={classes.featureInner}
+                                        >
+                                          <RichtextCtfComponentFeature
+                                            {...featuresGrid[featureName][
+                                              product.sys.id
+                                            ].value}
+                                          />
+                                        </Div>
+                                      </Div>
+                                    )
+                                )}
+                              </Div>
                             </LayoutContext.Provider>
                           )}
-                      </Div>
-                      <Div
-                        data-equal-size="3"
-                        style={{
-                          height:
-                            featureNames === null ||
-                            gridSizes['index-3'] === undefined
-                              ? undefined
-                              : `${gridSizes['index-3']}px`
-                        }}
-                        {...inspectorMode({
-                          entryId: product.sys.id,
-                          fieldId: 'price'
-                        })}
-                      >
-                        {!product.price || product.price === 0 ? (
-                          <Typography
-                            variant="h2"
-                            component="span"
-                            className={classes.priceUpper}
-                          >
-                            {t('price.free')}
-                          </Typography>
-                        ) : (
-                          <Typography
-                            variant="h2"
-                            component="span"
-                            className={classes.priceUpper}
-                          >
-                            <FormatCurrencyFeature value={product.price} />
-                            <Span className={classes.priceAddition}>
-                              /{t('time.month')}
-                            </Span>
-                          </Typography>
-                        )}
-                      </Div>
 
-                      {featureNames &&
-                        featureNames?.length > 0 &&
-                        featuresGrid &&
-                        Object.keys(featuresGrid)?.length > 0 && (
-                          <LayoutContext.Provider
-                            value={{
-                              ...layoutContextValues,
-                              parent: 'product-table'
-                            }}
-                          >
-                            <Div className={classes.comparisonFeaturesBreak} />
-                            <Div
+                        <Div
+                          className={classes.pricingBottom}
+                          data-equal-size={(featureNames || []).length + 4}
+                          style={{
+                            height:
+                              !featureNames ||
+                              !gridSizes[`index-${featureNames.length + 4}`]
+                                ? undefined
+                                : `${gridSizes[`index-${featureNames.length + 4}`]}px`
+                          }}
+                        >
+                          {!product.price || product.price === 0 ? (
+                            <Typography variant="h2" component="span">
+                              {t('price.free')}
+                            </Typography>
+                          ) : (
+                            <Typography
+                              variant="h2"
+                              component="span"
+                              className={classes.priceUpper}
                               {...inspectorMode({
                                 entryId: product.sys.id,
-                                fieldId: 'features'
+                                fieldId: 'price'
                               })}
                             >
-                              {featureNames.map(
-                                (featureName, i) =>
-                                  featuresGrid[featureName][product.sys.id] && (
-                                    <Div
-                                      key={`${product.sys.id}-${featureName}`}
-                                      className={classes.feature}
-                                      {...featuresGrid[featureName][
-                                        product.sys.id
-                                      ].attributes}
-                                    >
-                                      <Div
-                                        data-equal-size={i + 4}
-                                        className={classes.featureInner}
-                                      >
-                                        <RichtextCtfComponentFeature
-                                          {...featuresGrid[featureName][
-                                            product.sys.id
-                                          ].value}
-                                        />
-                                      </Div>
-                                    </Div>
-                                  )
-                              )}
-                            </Div>
-                          </LayoutContext.Provider>
-                        )}
-
-                      <Div
-                        className={classes.pricingBottom}
-                        data-equal-size={(featureNames || []).length + 4}
-                        style={{
-                          height:
-                            !featureNames ||
-                            !gridSizes[`index-${featureNames.length + 4}`]
-                              ? undefined
-                              : `${gridSizes[`index-${featureNames.length + 4}`]}px`
-                        }}
-                      >
-                        {!product.price || product.price === 0 ? (
-                          <Typography variant="h2" component="span">
-                            {t('price.free')}
-                          </Typography>
-                        ) : (
-                          <Typography
-                            variant="h2"
-                            component="span"
-                            className={classes.priceUpper}
-                            {...inspectorMode({
-                              entryId: product.sys.id,
-                              fieldId: 'price'
-                            })}
-                          >
-                            <FormatCurrencyFeature value={product.price} />
-                            <Span className={classes.priceAddition}>
-                              /{t('time.month')}
-                            </Span>
-                          </Typography>
-                        )}
+                              <FormatCurrencyFeature value={product.price} />
+                              <Span className={classes.priceAddition}>
+                                /{t('time.month')}
+                              </Span>
+                            </Typography>
+                          )}
+                        </Div>
                       </Div>
-                    </Div>
-                  )
-              )}
-            </Div>
-          )}
+                    )
+                )}
+              </Div>
+            )}
         </Div>
       </Container>
     </Div>

@@ -127,19 +127,22 @@ const InfoBlockCtfComponentFeature = (
             : null
         )}
       >
-        <SectionHeadlinesFeature
-          headline={headline}
-          headlineProps={{
-            style: { color: colorConfig.headlineColor },
-            ...inspectorMode({ fieldId: 'headline' })
-          }}
-          subline={subline}
-          sublineProps={{
-            style: { color: colorConfig.textColor },
-            ...inspectorMode({ fieldId: 'subline' })
-          }}
-          className={classes.sectionHeadlines}
-        />
+        {headline && headline?.length > 0 && subline && subline?.length > 0 && (
+          <SectionHeadlinesFeature
+            headline={headline}
+            headlineProps={{
+              style: { color: colorConfig.headlineColor },
+              ...inspectorMode({ fieldId: 'headline' })
+            }}
+            subline={subline}
+            sublineProps={{
+              style: { color: colorConfig.textColor },
+              ...inspectorMode({ fieldId: 'subline' })
+            }}
+            className={classes.sectionHeadlines}
+          />
+        )}
+
         <LayoutContext.Provider
           value={{ ...layoutContextValues, parent: 'info-block' }}
         >
