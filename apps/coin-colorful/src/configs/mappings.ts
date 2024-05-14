@@ -2,77 +2,77 @@ import dynamic from 'next/dynamic'
 
 // Mapping of page topics to dynamically imported components.
 const pageTopicMap = {
-  // CtfProduct component
+  // `ProductCtfComponentFeature` component
   TopicProduct: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-product/ctf-product-gql'
-    ).then(module => module.CtfProductGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.ProductCtfComponentFeature
+    )
   ),
 
-  // CtfBusinessInfo component
+  // `BusinessInfoCtfComponentFeature` component
   TopicBusinessInfo: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-business-info/ctf-business-info-gql'
-    ).then(module => module.CtfBusinessInfoGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.BusinessInfoCtfComponentFeature
+    )
   ),
 
-  // CtProductTable component
+  // `ProductTableCtfComponentFeature` component
   ComponentProductTable: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-product-table/ctf-product-table-gql'
-    ).then(module => module.CtfProductTableGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.ProductTableCtfComponentFeature
+    )
   )
 }
 
 // Mapping of component names to their corresponding dynamic imports.
 export const componentMap = {
-  // CtfCta component
+  // `CtaCtfComponentFeature` component
   ComponentCta: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-cta/ctf-cta'
-    ).then(module => module.CtfCta)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.CtaCtfComponentFeature
+    )
   ),
 
-  // CtfDuplex component
+  // `DuplexCtfComponentFeature` component
   ComponentDuplex: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-duplex/ctf-duplex'
-    ).then(module => module.CtfDuplex)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.DuplexCtfComponentFeature
+    )
   ),
 
-  // CtfHeroBanner component
+  // `HeroBannerCtfComponentFeature` component
   ComponentHeroBanner: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-hero-banner/ctf-hero-banner'
-    ).then(module => module.CtfHeroBanner)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.HeroBannerCtfComponentFeature
+    )
   ),
 
-  // CtfInfoBlock component
+  // `InfoBlockCtfComponentFeature` component
   ComponentInfoBlock: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-info-block/ctf-info-block'
-    ).then(module => module.CtfInfoBlock)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.InfoBlockCtfComponentFeature
+    )
   ),
 
-  // CtfQuote component
+  // `QuoteCtfComponentFeature` component
   ComponentQuote: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-quote/ctf-quote'
-    ).then(module => module.CtfQuote)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.QuoteCtfComponentFeature
+    )
   ),
 
   // CtfTextBlock component
   ComponentTextBlock: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-text-block/ctf-text-block'
-    ).then(module => module.CtfTextBlock)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.TextBlockCtfComponentFeature
+    )
   ),
 
-  // CtfPerson component
+  // `PersonCtfComponentFeature` component
   TopicPerson: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-person/ctf-person'
-    ).then(module => module.CtfPerson)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.PersonCtfComponentFeature
+    )
   )
 }
 
@@ -80,59 +80,59 @@ export const componentMap = {
 export const componentGqlMap = {
   ...pageTopicMap,
 
-  // GraphQL module for the ComponentCta component
+  // GraphQL module for the `CtaGqlCtfComponentFeature` component
   ComponentCta: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-cta/ctf-cta-gql'
-    ).then(module => module.CtfCtaGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.CtaGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the ComponentDuplex component
+  // GraphQL module for the `DuplexGqlCtfComponentFeature` component
   ComponentDuplex: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-duplex/ctf-duplex-gql'
-    ).then(module => module.CtfDuplexGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.DuplexGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the ComponentHeroBanner component
+  // GraphQL module for the `HeroBannerGqlCtfComponentFeature` component
   ComponentHeroBanner: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-hero-banner/ctf-hero-banner-gql'
-    ).then(module => module.CtfHeroGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.HeroBannerGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the ComponentInfoBlock component
+  // GraphQL module for the `InfoBlockGqlCtfComponentFeature` component
   ComponentInfoBlock: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-info-block/ctf-info-block-gql'
-    ).then(module => module.CtfInfoBlockGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.InfoBlockGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the ComponentQuote component
+  // GraphQL module for the `QuoteGqlCtfComponentFeature` component
   ComponentQuote: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-quote/ctf-quote-gql'
-    ).then(module => module.CtfQuoteGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.QuoteGqlCtfComponentFeature
+    )
   ),
 
   // GraphQL module for the ComponentTextBlock component
   ComponentTextBlock: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-text-block/ctf-text-block-gql'
-    ).then(module => module.CtfTextBlockGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.TextBlockGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the TopicPerson component
+  // GraphQL module for the `PersonGqlCtfComponentFeature` component
   TopicPerson: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-person/ctf-person-gql'
-    ).then(module => module.CtfPersonGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.PersonGqlCtfComponentFeature
+    )
   ),
 
-  // GraphQL module for the ComponentFooter component
+  // GraphQL module for the `FooterGqlCtfComponentFeature` component
   ComponentFooter: dynamic(() =>
-    import(
-      '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-footer/ctf-footer-gql'
-    ).then(module => module.CtfFooterGql)
+    import('@guy-romelle-magayano/coin-colorful/components').then(
+      module => module.FooterGqlCtfComponentFeature
+    )
   )
 }
