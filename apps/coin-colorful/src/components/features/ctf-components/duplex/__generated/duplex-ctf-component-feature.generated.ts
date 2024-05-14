@@ -1,14 +1,15 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  AssetFieldsFragmentDoc,
-  PageLinkFieldsFragmentDoc,
-  type AssetFieldsFragment,
-  type PageLinkFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-
+  PageLinkFieldsFragment,
+  PageLinkFieldsFragmentDoc
+} from '../../../page-link/__generated/page-link-feature.generated'
+import {
+  AssetFieldsFragment,
+  AssetFieldsFragmentDoc
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type DuplexFieldsFragment = {
   __typename: 'ComponentDuplex'
   containerLayout?: boolean | null
@@ -23,9 +24,9 @@ export type DuplexFieldsFragment = {
 }
 
 export type CtfDuplexQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  id: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
 
 export type CtfDuplexQuery = {
@@ -36,56 +37,56 @@ export type CtfDuplexQuery = {
 }
 
 export const DuplexFieldsFragmentDoc = `
-  fragment DuplexFields on ComponentDuplex {
-    __typename
-    sys {
-      id
-    }
-    containerLayout
-    headline
-    bodyText {
-      json
-    }
-    ctaText
-    targetPage {
-      ...PageLinkFields
-    }
-    image {
-      ...AssetFields
-    }
-    imageStyle
-    colorPalette
+    fragment DuplexFields on ComponentDuplex {
+  __typename
+  sys {
+    id
   }
-`
-
+  containerLayout
+  headline
+  bodyText {
+    json
+  }
+  ctaText
+  targetPage {
+    ...PageLinkFields
+  }
+  image {
+    ...AssetFields
+  }
+  imageStyle
+  colorPalette
+}
+    `
 export const CtfDuplexDocument = `
-  query CtfDuplex($id: String!, $locale: String, $preview: Boolean) {
-    componentDuplex(id: $id, locale: $locale, preview: $preview) {
-      ...DuplexFields
-    }
+    query CtfDuplex($id: String!, $locale: String, $preview: Boolean) {
+  componentDuplex(id: $id, locale: $locale, preview: $preview) {
+    ...DuplexFields
   }
-  ${DuplexFieldsFragmentDoc}
-  ${PageLinkFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-`
+}
+    ${DuplexFieldsFragmentDoc}
+${PageLinkFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}`
 
 export const useCtfDuplexQuery = <TData = CtfDuplexQuery, TError = unknown>(
   variables: CtfDuplexQueryVariables,
   options?: UseQueryOptions<CtfDuplexQuery, TError, TData>
-) =>
-  useQuery<CtfDuplexQuery, TError, TData>({
-    queryKey: ['CtfDuplex', variables],
-    queryFn: ctfFetcher<CtfDuplexQuery, CtfDuplexQueryVariables>(
+) => {
+  return useQuery<CtfDuplexQuery, TError, TData>(
+    ['CtfDuplex', variables],
+    ctfFetcher<CtfDuplexQuery, CtfDuplexQueryVariables>(
       CtfDuplexDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfDuplexQuery.getKey = (variables: CtfDuplexQueryVariables) => [
   'CtfDuplex',
   variables
 ]
+
 useCtfDuplexQuery.fetcher = (
   variables: CtfDuplexQueryVariables,
   options?: RequestInit['headers']

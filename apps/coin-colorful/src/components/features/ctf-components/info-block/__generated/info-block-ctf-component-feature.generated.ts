@@ -1,12 +1,11 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  type AssetFieldsFragment,
+  AssetFieldsFragment,
   AssetFieldsFragmentDoc
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type InfoBlockFieldsFragment = {
   __typename: 'ComponentInfoBlock'
   headline?: string | null
@@ -20,11 +19,13 @@ export type InfoBlockFieldsFragment = {
   block3Image?: ({ __typename?: 'Asset' } & AssetFieldsFragment) | null
   block3Body?: { __typename?: 'ComponentInfoBlockBlock3Body'; json: any } | null
 }
+
 export type CtfInfoBlockQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  id: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
+
 export type CtfInfoBlockQuery = {
   __typename?: 'Query'
   componentInfoBlock?:
@@ -33,44 +34,42 @@ export type CtfInfoBlockQuery = {
 }
 
 export const InfoBlockFieldsFragmentDoc = `
-  fragment InfoBlockFields on ComponentInfoBlock {
-    __typename
-    sys {
-      id
-    }
-    headline
-    subline
-    block1Image {
-      ...AssetFields
-    }
-    block1Body {
-      json
-    }
-    block2Image {
-      ...AssetFields
-    }
-    block2Body {
-      json
-    }
-    block3Image {
-      ...AssetFields
-    }
-    block3Body {
-      json
-    }
-    colorPalette
+    fragment InfoBlockFields on ComponentInfoBlock {
+  __typename
+  sys {
+    id
   }
-`
-
+  headline
+  subline
+  block1Image {
+    ...AssetFields
+  }
+  block1Body {
+    json
+  }
+  block2Image {
+    ...AssetFields
+  }
+  block2Body {
+    json
+  }
+  block3Image {
+    ...AssetFields
+  }
+  block3Body {
+    json
+  }
+  colorPalette
+}
+    `
 export const CtfInfoBlockDocument = `
-  query CtfInfoBlock($id: String!, $locale: String, $preview: Boolean) {
-    componentInfoBlock(id: $id, locale: $locale, preview: $preview) {
-      ...InfoBlockFields
-    }
+    query CtfInfoBlock($id: String!, $locale: String, $preview: Boolean) {
+  componentInfoBlock(id: $id, locale: $locale, preview: $preview) {
+    ...InfoBlockFields
   }
-  ${InfoBlockFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-`
+}
+    ${InfoBlockFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}`
 
 export const useCtfInfoBlockQuery = <
   TData = CtfInfoBlockQuery,
@@ -78,20 +77,22 @@ export const useCtfInfoBlockQuery = <
 >(
   variables: CtfInfoBlockQueryVariables,
   options?: UseQueryOptions<CtfInfoBlockQuery, TError, TData>
-) =>
-  useQuery<CtfInfoBlockQuery, TError, TData>({
-    queryKey: ['CtfInfoBlock', variables],
-    queryFn: ctfFetcher<CtfInfoBlockQuery, CtfInfoBlockQueryVariables>(
+) => {
+  return useQuery<CtfInfoBlockQuery, TError, TData>(
+    ['CtfInfoBlock', variables],
+    ctfFetcher<CtfInfoBlockQuery, CtfInfoBlockQueryVariables>(
       CtfInfoBlockDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfInfoBlockQuery.getKey = (variables: CtfInfoBlockQueryVariables) => [
   'CtfInfoBlock',
   variables
 ]
+
 useCtfInfoBlockQuery.fetcher = (
   variables: CtfInfoBlockQueryVariables,
   options?: RequestInit['headers']
