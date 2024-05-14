@@ -21,10 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
-export type AuthorFeatureProps = PersonFieldsFragment & {
-  name: string
-  avatar: string
-}
+export type AuthorFeatureProps = PersonFieldsFragment
 
 /**
  * Renders the author feature component.
