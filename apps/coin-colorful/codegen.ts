@@ -22,24 +22,24 @@ export const config: CodegenConfig = {
 
   // The generated files configuration.
   generates: {
-    './src/libs/__generated/graphql.schema.json': {
+    './apps/coin-colorful/src/libs/__generated/graphql.schema.json': {
       // The plugins to use for generating the file.
       plugins: ['introspection']
     },
-    './src/libs/__generated/graphql.schema.graphql': {
+    './apps/coin-colorful/src/libs/__generated/graphql.schema.graphql': {
       // The plugins to use for generating the file.
       plugins: ['schema-ast']
     },
-    './src/libs/__generated/graphql.types.ts': {
+    './apps/coin-colorful/src/libs/__generated/graphql.types.ts': {
       // The plugins to use for generating the file.
       plugins: ['typescript', 'typescript-operations'],
 
       // The GraphQL documents to process.
-      documents: ['./src/**/*.graphql']
+      documents: ['./apps/coin-colorful/src/**/*.graphql']
     },
-    './src/': {
+    './apps/coin-colorful/src/': {
       // The GraphQL documents to process.
-      documents: ['./src/**/*.graphql'],
+      documents: ['**/*.graphql'],
 
       // The preset to use for generating the files.
       preset: 'near-operation-file',
@@ -89,7 +89,7 @@ export const config: CodegenConfig = {
         withHooks: true,
 
         // The path to the fetcher function.
-        fetcher: './src/libs/contentful.ts#ctfFetcher'
+        fetcher: '../../../../../libs#ctfFetcher'
       }
     }
   }
