@@ -19,19 +19,21 @@ export type PageContainerProps = {
 }
 
 /**
- * Renders a page container component.
- * @param children - The content to be rendered inside the page container.
- * @param [style] - The inline styles to be applied to the page container.
- * @param [className] - The CSS class name to be applied to the page container.
- * @returns The rendered page container component.
+ * Renders the page container template component.
+ * @param {PageContainerProps} props - The properties to render the component with.
+ * @returns The rendered component.
  */
-const PageContainer = ({ className, style, children }: PageContainerProps) => {
+const PageContainer = (props: PageContainerProps) => {
+  const { className, style, children } = props
+
   const classes = useStyles()
 
   return (
-    <Div style={style} className={clsx(classes.pageContainerRoot, className)}>
-      {children}
-    </Div>
+    children && (
+      <Div style={style} className={clsx(classes.pageContainerRoot, className)}>
+        {children}
+      </Div>
+    )
   )
 }
 
