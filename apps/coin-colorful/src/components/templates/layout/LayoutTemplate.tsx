@@ -4,9 +4,14 @@ import { CssBaseline, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { useRouter } from 'next/router'
 
-import { CtfFooterGql } from '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-footer/ctf-footer-gql'
-import { CtfMobileMenuGql } from '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-mobile-menu/ctf-mobile-menu-gql'
-import { HeaderTemplate } from '@guy-romelle-magayano/coin-colorful/components/templates'
+import { Div } from '@guy-romelle-magayano/react-components/server'
+
+import {
+  FooterCtfComponentFeature,
+  HeaderTemplate,
+  MobileMenuGqlCtfComponentFeature
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { isNotNullOrUndefined } from '@guy-romelle-magayano/react-utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -24,12 +29,13 @@ export type LayoutTemplateProps = {
 }
 
 /**
- * Renders the layout template for the application.
- * @param preview - Indicates if the component is in preview mode.
- * @param children - The child components to render within the layout.
- * @returns The rendered layout template.
+ * Renders the layout template component.
+ * @param {LayoutTemplateProps} props - The properties to render the component with.
+ * @returns The rendered component.
  */
-const LayoutTemplate = ({ preview, children }: LayoutTemplateProps) => {
+const LayoutTemplate = (props: LayoutTemplateProps) => {
+  const { children } = props
+
   const [isMenuOpen, setMenuOpen] = useState(false),
     classes = useStyles(),
     router = useRouter()
@@ -40,7 +46,7 @@ const LayoutTemplate = ({ preview, children }: LayoutTemplateProps) => {
     })
 
     router.events.on('routeChangeComplete', () => {
-      if (document.activeElement === null) {
+      if (!isNotNullOrUndefined(document.activeElement)) {
         return
       }
 
@@ -57,9 +63,9 @@ const LayoutTemplate = ({ preview, children }: LayoutTemplateProps) => {
         isMenuOpen={isMenuOpen}
         onMenuClick={() => setMenuOpen(true)}
       />
-      <div className={classes.content}>{children}</div>
-      <CtfFooterGql />
-      <CtfMobileMenuGql
+      <Div className={classes.content}>{children}</Div>
+      <FooterCtfComponentFeature />
+      <MobileMenuGqlCtfComponentFeature
         isOpen={isMenuOpen}
         onOpenChange={(newOpen: boolean) => {
           setMenuOpen(newOpen)
