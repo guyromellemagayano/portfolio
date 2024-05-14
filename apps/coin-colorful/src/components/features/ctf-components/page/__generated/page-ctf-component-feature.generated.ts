@@ -1,12 +1,11 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  AssetFieldsFragmentDoc,
-  type AssetFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-
+  AssetFieldsFragment,
+  AssetFieldsFragmentDoc
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type PageTopSectionFields_ComponentCta_Fragment = {
   __typename: 'ComponentCta'
 }
@@ -179,9 +178,9 @@ export type CtfPageFieldsFragment = {
 }
 
 export type CtfPageQueryVariables = Types.Exact<{
-  slug: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  slug: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
 
 export type CtfPageQuery = {
@@ -193,112 +192,106 @@ export type CtfPageQuery = {
 }
 
 export const PageTopSectionFieldsFragmentDoc = `
-  fragment PageTopSectionFields on PageTopSectionItem {
-    __typename
-  }
-`
-
+    fragment PageTopSectionFields on PageTopSectionItem {
+  __typename
+}
+    `
 export const PageContentFieldsFragmentDoc = `
-  fragment PageContentFields on PagePageContent {
-    __typename
-  }
-`
-
+    fragment PageContentFields on PagePageContent {
+  __typename
+}
+    `
 export const PageExtraSectionItemFieldsFragmentDoc = `
-  fragment PageExtraSectionItemFields on PageExtraSectionItem {
-    __typename
-  }
-`
-
+    fragment PageExtraSectionItemFields on PageExtraSectionItem {
+  __typename
+}
+    `
 export const CtfPageFieldsFragmentDoc = `
-  fragment CtfPageFields on Page {
-    __typename
-    sys {
-      id
+    fragment CtfPageFields on Page {
+  __typename
+  sys {
+    id
+  }
+  pageName
+  internalName: pageName
+  slug
+  seo {
+    title
+    description
+    image {
+      ...AssetFields
     }
-    pageName
-    internalName: pageName
-    slug
-    seo {
-      title
-      description
-      image {
-        ...AssetFields
-      }
-      noIndex
-      noFollow
-    }
-    topSectionCollection(limit: 20) {
-      items {
-        ... on Entry {
-          __typename
-          sys {
-            id
-          }
-        }
-        ...PageTopSectionFields
-      }
-    }
-    pageContent {
+    noIndex
+    noFollow
+  }
+  topSectionCollection(limit: 20) {
+    items {
       ... on Entry {
         __typename
         sys {
           id
         }
       }
-      ...PageContentFields
+      ...PageTopSectionFields
     }
-    extraSectionCollection(limit: 20) {
-      items {
-        ... on Entry {
-          __typename
-          sys {
-            id
-          }
+  }
+  pageContent {
+    ... on Entry {
+      __typename
+      sys {
+        id
+      }
+    }
+    ...PageContentFields
+  }
+  extraSectionCollection(limit: 20) {
+    items {
+      ... on Entry {
+        __typename
+        sys {
+          id
         }
-        ...PageExtraSectionItemFields
       }
+      ...PageExtraSectionItemFields
     }
   }
-`
-
+}
+    `
 export const CtfPageDocument = `
-  query CtfPage($slug: String!, $locale: String, $preview: Boolean) {
-    pageCollection(
-      where: {slug: $slug}
-      locale: $locale
-      preview: $preview
-      limit: 1
-    ) {
-      items {
-        ...CtfPageFields
-      }
+    query CtfPage($slug: String!, $locale: String, $preview: Boolean) {
+  pageCollection(
+    where: {slug: $slug}
+    locale: $locale
+    preview: $preview
+    limit: 1
+  ) {
+    items {
+      ...CtfPageFields
     }
   }
-  ${CtfPageFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-  ${PageTopSectionFieldsFragmentDoc}
-  ${PageContentFieldsFragmentDoc}
-  ${PageExtraSectionItemFieldsFragmentDoc}
-`
+}
+    ${CtfPageFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}
+${PageTopSectionFieldsFragmentDoc}
+${PageContentFieldsFragmentDoc}
+${PageExtraSectionItemFieldsFragmentDoc}`
 
 export const useCtfPageQuery = <TData = CtfPageQuery, TError = unknown>(
   variables: CtfPageQueryVariables,
   options?: UseQueryOptions<CtfPageQuery, TError, TData>
-) =>
-  useQuery<CtfPageQuery, TError, TData>({
-    queryKey: ['CtfPage', variables],
-    queryFn: ctfFetcher<CtfPageQuery, CtfPageQueryVariables>(
-      CtfPageDocument,
-      variables
-    ),
-    ...options
-  })
+) => {
+  return useQuery<CtfPageQuery, TError, TData>(
+    ['CtfPage', variables],
+    ctfFetcher<CtfPageQuery, CtfPageQueryVariables>(CtfPageDocument, variables),
+    options
+  )
+}
 
 useCtfPageQuery.getKey = (variables: CtfPageQueryVariables) => [
   'CtfPage',
   variables
 ]
+
 useCtfPageQuery.fetcher = (
   variables: CtfPageQueryVariables,
   options?: RequestInit['headers']

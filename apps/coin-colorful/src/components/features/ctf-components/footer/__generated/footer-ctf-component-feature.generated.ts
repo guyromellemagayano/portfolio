@@ -1,16 +1,18 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
-import { PageLinkFieldsFragmentDoc } from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  MenuGroupFieldsFragmentDoc,
-  type MenuGroupFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-menuGroup.generated'
-
+  MenuGroupFieldsFragment,
+  MenuGroupFieldsFragmentDoc
+} from '../../../../../libs/shared-fragments/__generated/ctf-menuGroup.generated'
+import {
+  PageLinkFieldsFragment,
+  PageLinkFieldsFragmentDoc
+} from '../../../page-link/__generated/page-link-feature.generated'
 export type FooterFieldsFragment = {
   __typename?: 'FooterMenuCollection'
-  items?: Array<{
+  items: Array<{
     __typename: 'FooterMenu'
     twitterLink?: string | null
     facebookLink?: string | null
@@ -42,8 +44,8 @@ export type FooterFieldsFragment = {
 }
 
 export type CtfFooterQueryVariables = Types.Exact<{
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
 
 export type CtfFooterQuery = {
@@ -54,64 +56,63 @@ export type CtfFooterQuery = {
 }
 
 export const FooterFieldsFragmentDoc = `
-  fragment FooterFields on FooterMenuCollection {
-    items {
-      __typename
-      sys {
-        id
-      }
-      menuItemsCollection {
-        items {
-          __typename
-          groupName
-          sys {
-            id
-          }
-          featuredPagesCollection {
-            ...MenuGroupFields
-          }
+    fragment FooterFields on FooterMenuCollection {
+  items {
+    __typename
+    sys {
+      id
+    }
+    menuItemsCollection {
+      items {
+        __typename
+        groupName
+        sys {
+          id
         }
-      }
-      legalLinks {
         featuredPagesCollection {
           ...MenuGroupFields
         }
       }
-      twitterLink
-      facebookLink
-      linkedinLink
-      instagramLink
     }
+    legalLinks {
+      featuredPagesCollection {
+        ...MenuGroupFields
+      }
+    }
+    twitterLink
+    facebookLink
+    linkedinLink
+    instagramLink
   }
-`
-
+}
+    `
 export const CtfFooterDocument = `
-  query CtfFooter($locale: String, $preview: Boolean) {
-    footerMenuCollection(locale: $locale, preview: $preview, limit: 1) {
-      ...FooterFields
-    }
+    query CtfFooter($locale: String, $preview: Boolean) {
+  footerMenuCollection(locale: $locale, preview: $preview, limit: 1) {
+    ...FooterFields
   }
-  ${FooterFieldsFragmentDoc}
-  ${MenuGroupFieldsFragmentDoc}
-  ${PageLinkFieldsFragmentDoc}
-`
+}
+    ${FooterFieldsFragmentDoc}
+${MenuGroupFieldsFragmentDoc}
+${PageLinkFieldsFragmentDoc}`
 
 export const useCtfFooterQuery = <TData = CtfFooterQuery, TError = unknown>(
   variables?: CtfFooterQueryVariables,
   options?: UseQueryOptions<CtfFooterQuery, TError, TData>
-) =>
-  useQuery<CtfFooterQuery, TError, TData>({
-    queryKey:
-      variables === undefined ? ['CtfFooter'] : ['CtfFooter', variables],
-    queryFn: ctfFetcher<CtfFooterQuery, CtfFooterQueryVariables>(
+) => {
+  return useQuery<CtfFooterQuery, TError, TData>(
+    variables === undefined ? ['CtfFooter'] : ['CtfFooter', variables],
+    ctfFetcher<CtfFooterQuery, CtfFooterQueryVariables>(
       CtfFooterDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfFooterQuery.getKey = (variables?: CtfFooterQueryVariables) =>
   variables === undefined ? ['CtfFooter'] : ['CtfFooter', variables]
+
 useCtfFooterQuery.fetcher = (
   variables?: CtfFooterQueryVariables,
   options?: RequestInit['headers']

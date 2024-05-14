@@ -1,3 +1,5 @@
+import * as Types from '../../__generated/graphql.types'
+
 export type ComponentReferenceFields_ComponentCta_Fragment = {
   __typename: 'ComponentCta'
   sys: { __typename?: 'Sys'; id: string }
@@ -97,10 +99,10 @@ export type ComponentReferenceFieldsFragment =
   | ComponentReferenceFields_TopicProductFeature_Fragment
 
 export const ComponentReferenceFieldsFragmentDoc = `
-  fragment ComponentReferenceFields on Entry {
-    __typename
-    sys {
-      id
-    }
+    fragment ComponentReferenceFields on Entry {
+  __typename
+  sys {
+    id
   }
-`
+}
+    `

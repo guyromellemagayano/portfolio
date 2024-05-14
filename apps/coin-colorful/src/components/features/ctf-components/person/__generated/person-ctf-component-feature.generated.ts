@@ -1,12 +1,11 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  AssetFieldsFragmentDoc,
-  type AssetFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-
+  AssetFieldsFragment,
+  AssetFieldsFragmentDoc
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type PersonFieldsFragment = {
   __typename: 'TopicPerson'
   name?: string | null
@@ -17,62 +16,64 @@ export type PersonFieldsFragment = {
   bio?: { __typename?: 'TopicPersonBio'; json: any } | null
   avatar?: ({ __typename?: 'Asset' } & AssetFieldsFragment) | null
 }
+
 export type CtfPersonQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  id: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
+
 export type CtfPersonQuery = {
   __typename?: 'Query'
   topicPerson?: ({ __typename?: 'TopicPerson' } & PersonFieldsFragment) | null
 }
 
 export const PersonFieldsFragmentDoc = `
-  fragment PersonFields on TopicPerson {
-    __typename
-    sys {
-      id
-    }
-    name
-    bio {
-      json
-    }
-    avatar {
-      ...AssetFields
-    }
-    website
-    location
-    cardStyle
+    fragment PersonFields on TopicPerson {
+  __typename
+  sys {
+    id
   }
-`
-
+  name
+  bio {
+    json
+  }
+  avatar {
+    ...AssetFields
+  }
+  website
+  location
+  cardStyle
+}
+    `
 export const CtfPersonDocument = `
-  query CtfPerson($id: String!, $locale: String, $preview: Boolean) {
-    topicPerson(id: $id, preview: $preview, locale: $locale) {
-      ...PersonFields
-    }
+    query CtfPerson($id: String!, $locale: String, $preview: Boolean) {
+  topicPerson(id: $id, preview: $preview, locale: $locale) {
+    ...PersonFields
   }
-  ${PersonFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-`
+}
+    ${PersonFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}`
 
 export const useCtfPersonQuery = <TData = CtfPersonQuery, TError = unknown>(
   variables: CtfPersonQueryVariables,
   options?: UseQueryOptions<CtfPersonQuery, TError, TData>
-) =>
-  useQuery<CtfPersonQuery, TError, TData>({
-    queryKey: ['CtfPerson', variables],
-    queryFn: ctfFetcher<CtfPersonQuery, CtfPersonQueryVariables>(
+) => {
+  return useQuery<CtfPersonQuery, TError, TData>(
+    ['CtfPerson', variables],
+    ctfFetcher<CtfPersonQuery, CtfPersonQueryVariables>(
       CtfPersonDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfPersonQuery.getKey = (variables: CtfPersonQueryVariables) => [
   'CtfPerson',
   variables
 ]
+
 useCtfPersonQuery.fetcher = (
   variables: CtfPersonQueryVariables,
   options?: RequestInit['headers']

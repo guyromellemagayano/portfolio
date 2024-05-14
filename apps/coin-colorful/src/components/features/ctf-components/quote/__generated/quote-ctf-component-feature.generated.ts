@@ -1,13 +1,8 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  AssetFieldsFragmentDoc,
-  type AssetFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-import {
-  ComponentReferenceFieldsFragmentDoc,
   ComponentReferenceFields_ComponentCta_Fragment,
   ComponentReferenceFields_ComponentDuplex_Fragment,
   ComponentReferenceFields_ComponentHeroBanner_Fragment,
@@ -22,10 +17,14 @@ import {
   ComponentReferenceFields_Seo_Fragment,
   ComponentReferenceFields_TopicBusinessInfo_Fragment,
   ComponentReferenceFields_TopicPerson_Fragment,
+  ComponentReferenceFields_TopicProduct_Fragment,
   ComponentReferenceFields_TopicProductFeature_Fragment,
-  ComponentReferenceFields_TopicProduct_Fragment
-} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-componentMap.generated'
-
+  ComponentReferenceFieldsFragmentDoc
+} from '../../../../../libs/shared-fragments/__generated/ctf-componentMap.generated'
+import {
+  AssetFieldsFragment,
+  AssetFieldsFragmentDoc
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type QuoteFieldsFragment = {
   __typename: 'ComponentQuote'
   quoteAlignment?: boolean | null
@@ -97,9 +96,9 @@ export type QuoteFieldsFragment = {
 }
 
 export type CtfQuoteQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  id: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
 
 export type CtfQuoteQuery = {
@@ -110,63 +109,63 @@ export type CtfQuoteQuery = {
 }
 
 export const QuoteFieldsFragmentDoc = `
-  fragment QuoteFields on ComponentQuote {
-    __typename
-    sys {
-      id
-    }
-    quote {
-      json
-      links {
-        entries {
-          block {
-            ...ComponentReferenceFields
-          }
+    fragment QuoteFields on ComponentQuote {
+  __typename
+  sys {
+    id
+  }
+  quote {
+    json
+    links {
+      entries {
+        block {
+          ...ComponentReferenceFields
         }
-        assets {
-          block {
-            ...AssetFields
-          }
+      }
+      assets {
+        block {
+          ...AssetFields
         }
       }
     }
-    quoteAlignment
-    image {
-      ...AssetFields
-    }
-    imagePosition
-    colorPalette
   }
-`
-
+  quoteAlignment
+  image {
+    ...AssetFields
+  }
+  imagePosition
+  colorPalette
+}
+    `
 export const CtfQuoteDocument = `
-  query CtfQuote($id: String!, $locale: String, $preview: Boolean) {
-    componentQuote(id: $id, locale: $locale, preview: $preview) {
-      ...QuoteFields
-    }
+    query CtfQuote($id: String!, $locale: String, $preview: Boolean) {
+  componentQuote(id: $id, locale: $locale, preview: $preview) {
+    ...QuoteFields
   }
-  ${QuoteFieldsFragmentDoc}
-  ${ComponentReferenceFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-`
+}
+    ${QuoteFieldsFragmentDoc}
+${ComponentReferenceFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}`
 
 export const useCtfQuoteQuery = <TData = CtfQuoteQuery, TError = unknown>(
   variables: CtfQuoteQueryVariables,
   options?: UseQueryOptions<CtfQuoteQuery, TError, TData>
-) =>
-  useQuery<CtfQuoteQuery, TError, TData>({
-    queryKey: ['CtfQuote', variables],
-    queryFn: ctfFetcher<CtfQuoteQuery, CtfQuoteQueryVariables>(
+) => {
+  return useQuery<CtfQuoteQuery, TError, TData>(
+    ['CtfQuote', variables],
+    ctfFetcher<CtfQuoteQuery, CtfQuoteQueryVariables>(
       CtfQuoteDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfQuoteQuery.getKey = (variables: CtfQuoteQueryVariables) => [
   'CtfQuote',
   variables
 ]
+
 useCtfQuoteQuery.fetcher = (
   variables: CtfQuoteQueryVariables,
   options?: RequestInit['headers']

@@ -1,4 +1,4 @@
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+import * as Types from '../../../../libs/__generated/graphql.types'
 
 export type PageLinkFieldsFragment = {
   __typename: 'Page'
@@ -19,20 +19,20 @@ export type PageLinkFieldsFragment = {
 }
 
 export const PageLinkFieldsFragmentDoc = `
-  fragment PageLinkFields on Page {
-    __typename
-    slug
-    sys {
-      id
-    }
-    pageName
-    pageContent(locale: $locale, preview: $preview) {
-      ... on Entry {
-        __typename
-        sys {
-          id
-        }
+    fragment PageLinkFields on Page {
+  __typename
+  slug
+  sys {
+    id
+  }
+  pageName
+  pageContent(locale: $locale, preview: $preview) {
+    ... on Entry {
+      __typename
+      sys {
+        id
       }
     }
   }
-`
+}
+    `

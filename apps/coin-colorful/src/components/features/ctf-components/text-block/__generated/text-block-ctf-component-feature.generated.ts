@@ -1,13 +1,8 @@
-import { UseQueryOptions, useQuery } from '@tanstack/react-query'
+import * as Types from '../../../../../libs/__generated/graphql.types'
 
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { ctfFetcher } from '../../../../../libs'
 import {
-  AssetFieldsFragmentDoc,
-  type AssetFieldsFragment
-} from '@guy-romelle-magayano/coin-colorful/components'
-import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
-import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
-import {
-  ComponentReferenceFieldsFragmentDoc,
   ComponentReferenceFields_ComponentCta_Fragment,
   ComponentReferenceFields_ComponentDuplex_Fragment,
   ComponentReferenceFields_ComponentHeroBanner_Fragment,
@@ -22,10 +17,14 @@ import {
   ComponentReferenceFields_Seo_Fragment,
   ComponentReferenceFields_TopicBusinessInfo_Fragment,
   ComponentReferenceFields_TopicPerson_Fragment,
+  ComponentReferenceFields_TopicProduct_Fragment,
   ComponentReferenceFields_TopicProductFeature_Fragment,
-  ComponentReferenceFields_TopicProduct_Fragment
-} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-componentMap.generated'
-
+  ComponentReferenceFieldsFragmentDoc
+} from '../../../../../libs/shared-fragments/__generated/ctf-componentMap.generated'
+import {
+  AssetFieldsFragment,
+  AssetFieldsFragmentDoc
+} from '../../asset/__generated/asset-ctf-component-feature.generated'
 export type TextBlockFieldsFragment = {
   __typename: 'ComponentTextBlock'
   headline?: string | null
@@ -96,9 +95,9 @@ export type TextBlockFieldsFragment = {
 }
 
 export type CtfTextBlockQueryVariables = Types.Exact<{
-  id: Types.Scalars['String']
-  locale?: Types.InputMaybe<Types.Scalars['String']>
-  preview?: Types.InputMaybe<Types.Scalars['Boolean']>
+  id: Types.Scalars['String']['input']
+  locale?: Types.InputMaybe<Types.Scalars['String']['input']>
+  preview?: Types.InputMaybe<Types.Scalars['Boolean']['input']>
 }>
 
 export type CtfTextBlockQuery = {
@@ -109,42 +108,40 @@ export type CtfTextBlockQuery = {
 }
 
 export const TextBlockFieldsFragmentDoc = `
-  fragment TextBlockFields on ComponentTextBlock {
-    __typename
-    sys {
-      id
-    }
-    headline
-    subline
-    body {
-      json
-      links {
-        entries {
-          block {
-            ...ComponentReferenceFields
-          }
+    fragment TextBlockFields on ComponentTextBlock {
+  __typename
+  sys {
+    id
+  }
+  headline
+  subline
+  body {
+    json
+    links {
+      entries {
+        block {
+          ...ComponentReferenceFields
         }
-        assets {
-          block {
-            ...AssetFields
-          }
+      }
+      assets {
+        block {
+          ...AssetFields
         }
       }
     }
-    colorPalette
   }
-`
-
+  colorPalette
+}
+    `
 export const CtfTextBlockDocument = `
-  query CtfTextBlock($id: String!, $locale: String, $preview: Boolean) {
-    componentTextBlock(id: $id, locale: $locale, preview: $preview) {
-      ...TextBlockFields
-    }
+    query CtfTextBlock($id: String!, $locale: String, $preview: Boolean) {
+  componentTextBlock(id: $id, locale: $locale, preview: $preview) {
+    ...TextBlockFields
   }
-  ${TextBlockFieldsFragmentDoc}
-  ${ComponentReferenceFieldsFragmentDoc}
-  ${AssetFieldsFragmentDoc}
-`
+}
+    ${TextBlockFieldsFragmentDoc}
+${ComponentReferenceFieldsFragmentDoc}
+${AssetFieldsFragmentDoc}`
 
 export const useCtfTextBlockQuery = <
   TData = CtfTextBlockQuery,
@@ -152,20 +149,22 @@ export const useCtfTextBlockQuery = <
 >(
   variables: CtfTextBlockQueryVariables,
   options?: UseQueryOptions<CtfTextBlockQuery, TError, TData>
-) =>
-  useQuery<CtfTextBlockQuery, TError, TData>({
-    queryKey: ['CtfTextBlock', variables],
-    queryFn: ctfFetcher<CtfTextBlockQuery, CtfTextBlockQueryVariables>(
+) => {
+  return useQuery<CtfTextBlockQuery, TError, TData>(
+    ['CtfTextBlock', variables],
+    ctfFetcher<CtfTextBlockQuery, CtfTextBlockQueryVariables>(
       CtfTextBlockDocument,
       variables
     ),
-    ...options
-  })
+    options
+  )
+}
 
 useCtfTextBlockQuery.getKey = (variables: CtfTextBlockQueryVariables) => [
   'CtfTextBlock',
   variables
 ]
+
 useCtfTextBlockQuery.fetcher = (
   variables: CtfTextBlockQueryVariables,
   options?: RequestInit['headers']
