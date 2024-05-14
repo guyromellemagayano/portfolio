@@ -8,7 +8,7 @@ export const THEME_SPACER = 5
 export const THEME_HEADER_HEIGHT = '9rem'
 export const THEME_HEADER_HEIGHT_MD = '8rem'
 
-export type TColorConfig = {
+export type ColorConfigTypes = {
   headlineColor: string
   textColor: string
   backgroundColor: string
@@ -16,7 +16,7 @@ export type TColorConfig = {
 }
 
 // Configuration object for color palettes.
-const colorConfigs: { [key: string]: TColorConfig } = {
+export const colorConfigs: { [key: string]: ColorConfigTypes } = {
   'palette-1. White (#FFFFFF)': {
     headlineColor: '#1B273A',
     textColor: '#414D63',
@@ -66,7 +66,9 @@ const colorConfigs: { [key: string]: TColorConfig } = {
  * @param palette - The name of the palette.
  * @returns The color configuration for the specified palette.
  */
-export const getColorConfigFromPalette = (palette: string): TColorConfig => {
+export const getColorConfigFromPalette = (
+  palette: string
+): ColorConfigTypes => {
   if (!isNotNullOrUndefined(colorConfigs[`palette-${palette}`])) {
     return colorConfigs[`palette-${palette}`]
   }
@@ -74,8 +76,10 @@ export const getColorConfigFromPalette = (palette: string): TColorConfig => {
   return colorConfigs[`palette-${palette}`]
 }
 
-// The colorful theme configuration.
-const colorfulTheme = createTheme({
+/**
+ * The colorful theme configuration.
+ */
+export const colorfulTheme = createTheme({
   spacing: THEME_SPACER,
   typography: {
     fontFamily: `'Red Hat Display', sans-serif`,
@@ -278,5 +282,3 @@ colorfulTheme.mixins.toolbar = {
     height: '9rem'
   }
 }
-
-export default colorfulTheme
