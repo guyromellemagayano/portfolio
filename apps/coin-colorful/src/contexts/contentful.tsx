@@ -4,7 +4,7 @@ import { isStringType } from '@guy-romelle-magayano/react-utils'
 
 import { CONTENTFUL_CONFIG } from '@guy-romelle-magayano/coin-colorful/configs'
 
-export type TContentfulContextValue = {
+export type ContentfulContextValueProps = {
   locale: string
   spaceIds: {
     main: string
@@ -20,12 +20,12 @@ export const contentfulContextValues = {
   previewActive: false
 }
 
-export type TContentfulContentProvider = {
+export type ContentfulContentProviderProps = {
   children: ReactNode
   router: any
 }
 
-export const ContentfulContext = createContext<TContentfulContextValue>(
+export const ContentfulContext = createContext<ContentfulContextValueProps>(
   contentfulContextValues
 )
 
@@ -38,13 +38,13 @@ export const ContentfulContext = createContext<TContentfulContextValue>(
 export const ContentfulContentProvider = ({
   children,
   router
-}: TContentfulContentProvider) => {
+}: ContentfulContentProviderProps) => {
   const previewActive = !!router.query.preview
 
   return (
     <ContentfulContext.Provider
       value={{
-        locale: isStringType(router.locale) ? router.locale : 'en',
+        locale: typeof router.locale === 'string' ? router.locale : 'en',
         spaceIds: contentfulContextValues.spaceIds,
         previewActive
       }}
