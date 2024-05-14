@@ -12,9 +12,11 @@ import { useTranslations } from 'next-intl'
 
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
-import { CtfNavigationGql } from '@guy-romelle-magayano/coin-colorful/components/features/ctf-components/ctf-navigation/ctf-navigation-gql'
-import { Link } from '@guy-romelle-magayano/coin-colorful/components/shared'
-import { ColorfulCoinLogo } from '@guy-romelle-magayano/coin-colorful/components/svg'
+import {
+  ColorfulCoinLogo,
+  LinkShared,
+  NavigationGqlCtfComponentFeature
+} from '@guy-romelle-magayano/coin-colorful/components'
 import {
   THEME_CONTAINER_WIDTH,
   THEME_HEADER_HEIGHT,
@@ -82,7 +84,14 @@ export type HeaderPropsProps = {
   onMenuClick?: () => any
 }
 
-const HeaderTemplate = ({ onMenuClick, isMenuOpen }: HeaderPropsProps) => {
+/**
+ * Render the header template component.
+ * @param {HeaderPropsProps} props - The properties to render the component with.
+ * @returns The rendered component.
+ */
+const HeaderTemplate = (props: HeaderPropsProps) => {
+  const { onMenuClick, isMenuOpen } = props
+
   const t = useTranslations(),
     classes = useStyles()
 
@@ -97,12 +106,12 @@ const HeaderTemplate = ({ onMenuClick, isMenuOpen }: HeaderPropsProps) => {
             maxWidth: `${THEME_CONTAINER_WIDTH / 10}rem`
           }}
         >
-          <Link href="/" withoutMaterial title={t('common.homepage')}>
+          <LinkShared href="/" withoutMaterial title={t('common.homepage')}>
             <ColorfulCoinLogo className={classes.corporateLogo} />
-          </Link>
+          </LinkShared>
           <Box display={{ xs: 'none', md: 'block' }}>
             <Div className={classes.menuWrapper}>
-              <CtfNavigationGql />
+              <NavigationGqlCtfComponentFeature />
             </Div>
           </Box>
         </Container>
