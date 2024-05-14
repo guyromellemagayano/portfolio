@@ -71,13 +71,13 @@
     "graphql-codegen:generate": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts"
+        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts --verbose"
       }
     },
     "graphql-codegen:watch": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts --watch"
+        "command": "graphql-codegen -r dotenv/config --config ./apps/coin-colorful/codegen.ts --watch --verbose"
       }
     }
   }
