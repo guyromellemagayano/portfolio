@@ -261,7 +261,7 @@ export type FormSettingsFeatureProps = {
 }
 
 /**
- * Renders a form settings feature component.
+ * Renders the form settings feature component.
  * @param {FormSettingsFeatureProps} props - The properties to render the component with.
  * @returns The rendered feature component.
  */
