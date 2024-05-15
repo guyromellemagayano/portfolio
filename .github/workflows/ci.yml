@@ -21,12 +21,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: 'pnpm'
 
-      - run: yarn set version classic
-        working-directory: ./
-
-      - run: yarn install
+      - run: pnpm install
         working-directory: ./
 
       - uses: nrwl/nx-set-shas@v4
@@ -34,8 +31,5 @@ jobs:
       - run: git branch --track main origin/main
         if: ${{ github.event_name == 'pull_request' }}
 
-      - run: yarn nx-cloud record nx format:check --verbose
-        working-directory: ./
-
-      - run: yarn nx affected -t lint test build --verbose --base main
+      - run: pnpm nx affected -t lint test build --verbose --base main
         working-directory: ./
