@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/cypress/**/*",
@@ -52,7 +55,10 @@
   "parallel": 4,
   "targetDefaults": {
     "build": {
-      "inputs": ["production", "^production"],
+      "inputs": [
+        "production",
+        "^production"
+      ],
       "cache": true
     },
     "lint": {
@@ -82,12 +88,17 @@
       "application": {}
     }
   },
-  "nxCloudAccessToken": "M2E5OGE5NTQtZDc4Zi00MDlhLTk5NDctNTZhN2YyM2MwOGI2fHJlYWQ=",
+  "nxCloudAccessToken": "OTk5YWMzNzQtZWRhZS00M2FjLWJkNDktNzE1OTllZDUwN2QxfHJlYWQtd3JpdGU=",
   "tasksRunnerOptions": {
     "default": {
       "runner": "@vercel/remote-nx",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "verbose": true
       }
     }
