@@ -25,11 +25,7 @@
     "github.copilot.enable": {
       "*": true
     },
-    "npm.packageManager": "yarn",
-    "search.exclude": {
-      "**/.yarn": true,
-      "**/.pnp.*": true
-    },
+    "npm.packageManager": "pnpm",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.tsdk": "node_modules/typescript/lib",
     "[env]": {
