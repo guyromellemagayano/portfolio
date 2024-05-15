@@ -1,0 +1,3 @@
+pnpm validate-branch-name
+pnpm lint-staged --allow-empty
+pnpm nx affected -t lint --verbose --uncommitted
