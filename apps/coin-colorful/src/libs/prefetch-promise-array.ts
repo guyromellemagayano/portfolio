@@ -1,4 +1,4 @@
-import { prefetchMap } from '@guy-romelle-magayano/coin-colorful/libs/prefetch-mappings'
+import { prefetchMap } from '../libs/prefetch-mappings'
 
 export type PrefetchPromiseArrProps = {
   inputArr: any[]
@@ -8,9 +8,9 @@ export type PrefetchPromiseArrProps = {
 
 /**
  * Create an array of prefetchQuery functions that can be awaited in our pages to prefetch React Query calls
- * @param inputArr
- * @param queryClient
- * @param locale
+ * @param inputArr - An array of Contentful items
+ * @param queryClient - The React Query queryClient
+ * @param locale - The current locale
  * @returns An array of prefetchQuery functions
  */
 export const prefetchPromiseArr = ({
