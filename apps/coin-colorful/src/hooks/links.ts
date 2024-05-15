@@ -5,6 +5,7 @@ export type GetLinkDisplayTextProps = {
   slug?: string
   sys?: GetLinkDisplayTextSysProps
 }
+
 export type GetLinkDisplayTextSysProps = {
   id: string
 }

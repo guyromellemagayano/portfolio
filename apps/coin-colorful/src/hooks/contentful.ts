@@ -2,7 +2,7 @@
 
 import { useContext } from 'react'
 
-import { ContentfulContext } from '@guy-romelle-magayano/coin-colorful/contexts'
+import { ContentfulContext } from '../contexts'
 
 /**
  * Custom hook to access the Contentful context.
