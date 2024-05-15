@@ -2,7 +2,7 @@
 
 import { useContext } from 'react'
 
-import { LayoutContext } from '@guy-romelle-magayano/coin-colorful/contexts'
+import { LayoutContext } from '../contexts'
 
 /**
  * Custom hook to access the layout context.
