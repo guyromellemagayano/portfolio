@@ -22,7 +22,7 @@
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
     "@mui/icons-material": "^5.15.17",
-    "@mui/material": "^5.15.17",
+    "@mui/material": "^5.15.18",
     "@mui/system": "^5.15.15",
     "@next/mdx": "^14.2.3",
     "@sentry/nextjs": "^8.0.0",
