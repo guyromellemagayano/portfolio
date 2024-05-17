@@ -59,14 +59,14 @@ export const colorConfigs: { [key: string]: ColorConfigTypes } = {
   }
 }
 
+export type GetColorConfigFromPalette = (palette: string) => ColorConfigTypes
+
 /**
  * Retrieves the color configuration from the specified palette.
  * @param palette - The name of the palette.
  * @returns The color configuration for the specified palette.
  */
-export const getColorConfigFromPalette = (
-  palette: string
-): ColorConfigTypes => {
+export const getColorConfigFromPalette: GetColorConfigFromPalette = palette => {
   if (!colorConfigs[`palette-${palette}`]) {
     return colorConfigs[`palette-${palette}`]
   }
