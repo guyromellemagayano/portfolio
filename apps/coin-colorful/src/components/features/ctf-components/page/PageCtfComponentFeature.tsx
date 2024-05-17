@@ -1,7 +1,7 @@
 import {
   ComponentResolverShared,
-  PageContainerTemplate,
-  type CtfPageFieldsFragment
+  CtfPageFieldsFragment,
+  PageContainerTemplate
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
