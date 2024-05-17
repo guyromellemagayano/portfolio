@@ -1,6 +1,6 @@
-import { ReactNode, createContext } from 'react'
+'use client'
 
-import { isStringType } from '@guy-romelle-magayano/react-utils'
+import { ReactNode, createContext } from 'react'
 
 import { CONTENTFUL_CONFIG } from '@guy-romelle-magayano/coin-colorful/configs'
 
@@ -12,7 +12,7 @@ export type ContentfulContextValueProps = {
   previewActive: boolean
 }
 
-export const contentfulContextValues = {
+export const contentfulContextValues: ContentfulContextValueProps = {
   locale: 'en',
   spaceIds: {
     main: CONTENTFUL_CONFIG.contentful.space_id
@@ -20,19 +20,18 @@ export const contentfulContextValues = {
   previewActive: false
 }
 
+export const ContentfulContext = createContext<ContentfulContextValueProps>(
+  contentfulContextValues
+)
+
 export type ContentfulContentProviderProps = {
   children: ReactNode
   router: any
 }
 
-export const ContentfulContext = createContext<ContentfulContextValueProps>(
-  contentfulContextValues
-)
-
 /**
  * Provides content from Contentful to the application.
- * @param children - The child components to render.
- * @param router - The router object containing the query parameters.
+ * @param {ContentfulContentProviderProps} props - The properties of the contentful content provider.
  * @returns The contentful context provider.
  */
 export const ContentfulContentProvider = ({
