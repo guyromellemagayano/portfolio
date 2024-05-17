@@ -3,7 +3,7 @@ const { composePlugins, withNx } = require('@nx/next')
 const createNextIntlPlugin = require('next-intl/plugin')
 
 // Next.js Internationalization plugin
-const withNextIntl = createNextIntlPlugin()
+const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts')
 
 /**
  * Adds a polyfill entry to the webpack configuration.
