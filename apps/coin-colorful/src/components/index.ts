@@ -36,6 +36,11 @@ export * from './features/settings'
 export * from './features/settings/form'
 
 // --------------------
+// LAYOUT COMPONENTS
+// --------------------
+export * from './layouts/base'
+
+// --------------------
 // SHARED COMPONENTS
 // --------------------
 export * from './shared/component-resolver'
