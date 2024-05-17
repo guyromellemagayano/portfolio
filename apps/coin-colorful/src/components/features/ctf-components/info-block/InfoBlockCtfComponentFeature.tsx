@@ -7,9 +7,9 @@ import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
+  InfoBlockFieldsFragment,
   RichtextCtfComponentFeature,
-  SectionHeadlinesFeature,
-  type InfoBlockFieldsFragment
+  SectionHeadlinesFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
