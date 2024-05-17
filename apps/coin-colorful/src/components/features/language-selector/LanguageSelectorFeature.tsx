@@ -1,3 +1,5 @@
+'use client'
+
 import { MenuItem, Select, SvgIcon, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { useRouter } from 'next/router'
