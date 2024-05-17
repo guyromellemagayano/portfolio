@@ -7,7 +7,7 @@ import { makeStyles } from '@mui/styles'
 
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
-import { type AssetFieldsFragment } from '@guy-romelle-magayano/coin-colorful/components'
+import { AssetFieldsFragment } from '@guy-romelle-magayano/coin-colorful/components'
 
 const useStyles = makeStyles(() => ({
   avatarRoot: {
