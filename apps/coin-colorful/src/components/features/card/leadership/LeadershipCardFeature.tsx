@@ -7,8 +7,8 @@ import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  RichtextCtfComponentFeature,
-  type PersonFieldsFragment
+  PersonFieldsFragment,
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
