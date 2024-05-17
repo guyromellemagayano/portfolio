@@ -21,7 +21,7 @@
     "@hookform/resolvers": "^3.4.0",
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@mui/icons-material": "^5.15.17",
+    "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.17",
     "@mui/system": "^5.15.15",
     "@next/mdx": "^14.2.3",
