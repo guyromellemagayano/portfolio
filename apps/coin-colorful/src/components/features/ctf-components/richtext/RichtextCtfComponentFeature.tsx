@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useMemo } from 'react'
 
 import { useContentfulLiveUpdates } from '@contentful/live-preview/react'
@@ -187,10 +189,9 @@ const EntryHyperlink = ({ node }: { node: any }) => {
       id: node.data?.target.sys.id,
       preview: previewActive
     }),
-    page =
-      data?.page && Object.keys(data?.page)?.length > 0
-        ? useContentfulLiveUpdates(data.page)
-        : null
+    page = useContentfulLiveUpdates(
+      data?.page && Object.keys(data?.page)?.length > 0 ? data.page : null
+    )
 
   if (!data || isLoading) return null
 
