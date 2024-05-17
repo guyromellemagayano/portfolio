@@ -32,12 +32,12 @@ const BusinessInfoGqlCtfComponentFeature = (
       id,
       preview
     }),
-    topicBusinessInfo =
-      data &&
+    topicBusinessInfo = useContentfulLiveUpdates(
       data?.topicBusinessInfo &&
-      Object.keys(data?.topicBusinessInfo)?.length > 0
-        ? useContentfulLiveUpdates(data.topicBusinessInfo)
+        Object.keys(data?.topicBusinessInfo)?.length > 0
+        ? data.topicBusinessInfo
         : null
+    )
 
   if (!data || isLoading) {
     return null
@@ -53,8 +53,7 @@ const BusinessInfoGqlCtfComponentFeature = (
 
   return (
     <>
-      {topicBusinessInfo &&
-        topicBusinessInfo?.featuredImage?.url &&
+      {topicBusinessInfo?.featuredImage?.url &&
         topicBusinessInfo?.featuredImage?.url?.length > 0 && (
           <Head>
             <Meta
