@@ -84,8 +84,8 @@ const nextConfig = {
   headers
 }
 
-// Sentry webpack plugin configuration
-const sentryWebpackPluginOptions = {
+// Sentry plugin configuration
+const sentryPluginOptions = {
   org: process.env.SENTRY_ORG || '',
   project: process.env.SENTRY_PROJECT || '',
   authToken: process.env.SENTRY_AUTH_TOKEN || '',
@@ -93,7 +93,8 @@ const sentryWebpackPluginOptions = {
   hideSourceMaps: process.env.NODE_ENV === 'production',
   automaticVercelMonitors: process.env.NODE_ENV === 'production',
   disableLogger: process.env.NODE_ENV === 'production',
-  widenClientFileUpload: process.env.NODE_ENV === 'production'
+  widenClientFileUpload: process.env.NODE_ENV === 'production',
+  autoInstrumentServerFunctions: false
 }
 
 // MDX configuration
@@ -116,5 +117,5 @@ const plugins = [withNx, withMDX, withPWA]
 
 module.exports = withSentryConfig(
   composePlugins(...plugins)(nextConfig),
-  sentryWebpackPluginOptions
+  sentryPluginOptions
 )
