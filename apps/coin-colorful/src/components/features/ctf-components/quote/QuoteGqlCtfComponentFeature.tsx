@@ -26,10 +26,11 @@ const QuoteGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentQuote =
+    componentQuote = useContentfulLiveUpdates(
       data?.componentQuote && Object.keys(data?.componentQuote)?.length > 0
-        ? useContentfulLiveUpdates(data.componentQuote)
+        ? data.componentQuote
         : null
+    )
 
   if (isLoading || !componentQuote) {
     return null
