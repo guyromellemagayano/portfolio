@@ -24,10 +24,11 @@ const CtaGqlCtfComponentFeature = (props: CtaGqlCtlComponentFeatureProps) => {
       locale,
       preview
     }),
-    componentCta =
+    componentCta = useContentfulLiveUpdates(
       data?.componentCta && Object.keys(data?.componentCta)?.length > 0
-        ? useContentfulLiveUpdates(data.componentCta)
+        ? data.componentCta
         : null
+    )
 
   if (isLoading || !componentCta) {
     return null
