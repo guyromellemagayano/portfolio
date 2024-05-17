@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactElement, useEffect, useState } from 'react'
 
 import { CssBaseline, Theme } from '@mui/material'
@@ -7,7 +9,7 @@ import { useRouter } from 'next/router'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  FooterCtfComponentFeature,
+  FooterGqlCtfComponentFeature,
   HeaderTemplate,
   MobileMenuGqlCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
@@ -64,7 +66,7 @@ const LayoutTemplate = (props: LayoutTemplateProps) => {
         onMenuClick={() => setMenuOpen(true)}
       />
       <Div className={classes.content}>{children}</Div>
-      <FooterCtfComponentFeature />
+      <FooterGqlCtfComponentFeature />
       <MobileMenuGqlCtfComponentFeature
         isOpen={isMenuOpen}
         onOpenChange={(newOpen: boolean) => {
