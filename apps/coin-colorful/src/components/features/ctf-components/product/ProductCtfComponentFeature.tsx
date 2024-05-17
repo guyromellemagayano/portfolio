@@ -8,8 +8,8 @@ import { Div, Section } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  RichtextCtfComponentFeature,
-  type ProductFieldsFragment
+  ProductFieldsFragment,
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
