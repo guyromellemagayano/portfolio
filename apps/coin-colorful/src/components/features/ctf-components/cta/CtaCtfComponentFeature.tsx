@@ -4,9 +4,9 @@ import { makeStyles } from '@mui/styles'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
+  CtaFieldsFragment,
   PageLinkFeature,
-  RichtextCtfComponentFeature,
-  type CtaFieldsFragment
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
