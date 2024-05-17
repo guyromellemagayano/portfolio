@@ -26,10 +26,11 @@ const DuplexGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentDuplex =
+    componentDuplex = useContentfulLiveUpdates(
       data?.componentDuplex && Object.keys(data?.componentDuplex)?.length > 0
-        ? useContentfulLiveUpdates(data.componentDuplex)
+        ? data.componentDuplex
         : null
+    )
 
   if (isLoading || !componentDuplex) {
     return null
@@ -42,7 +43,5 @@ const DuplexGqlCtfComponentFeature = (
     )
   )
 }
-
-DuplexGqlCtfComponentFeature.displayName = 'DuplexGqlCtfComponentFeature'
 
 export default DuplexGqlCtfComponentFeature
