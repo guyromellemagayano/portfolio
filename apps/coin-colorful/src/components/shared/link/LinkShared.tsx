@@ -1,3 +1,5 @@
+'use client'
+
 import { ReactNode } from 'react'
 
 import { isNotNullOrUndefined } from '@guy-romelle-magayano/react-utils'
