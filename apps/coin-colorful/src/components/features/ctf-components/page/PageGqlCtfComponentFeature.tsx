@@ -33,10 +33,11 @@ const PageGqlCtfComponentFeature = (props: PageGqlCtfComponentFeatureProps) => {
       locale,
       preview: previewActive
     }),
-    page =
+    page = useContentfulLiveUpdates(
       data?.pageCollection?.items && data?.pageCollection?.items?.length > 0
-        ? useContentfulLiveUpdates(tryGet(() => data?.pageCollection!.items[0]))
+        ? tryGet(() => data?.pageCollection!.items[0])
         : null
+    )
 
   if (isLoading) return <></>
 
