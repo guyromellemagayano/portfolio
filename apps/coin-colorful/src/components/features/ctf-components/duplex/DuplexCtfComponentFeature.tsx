@@ -7,10 +7,10 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
+  DuplexFieldsFragment,
   ImageCtfComponentFeature,
   PageLinkFeature,
-  RichtextCtfComponentFeature,
-  type DuplexFieldsFragment
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
@@ -108,7 +108,9 @@ export type DuplexContentProps = DuplexFieldsFragment
 const DuplexContent = (props: DuplexContentProps) => {
   const { headline, bodyText, targetPage, ctaText, colorPalette } = props
 
-  const colorConfig = getColorConfigFromPalette(colorPalette || '')
+  const colorConfig = getColorConfigFromPalette(
+    colorPalette && colorPalette?.length > 0 ? colorPalette : ''
+  )
 
   const classes = useStyles(),
     inspectorMode = useContentfulInspectorMode({ entryId: props.sys.id })
