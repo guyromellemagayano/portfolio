@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 
 import { Box } from '@mui/material'
@@ -18,6 +20,7 @@ const ImageCtfComponentFeature = (props: ImageCtfComponentFeatureProps) => {
     src,
     description,
     showDescription = true,
+    alt = '',
     width,
     height,
     ...rest
@@ -42,15 +45,16 @@ const ImageCtfComponentFeature = (props: ImageCtfComponentFeatureProps) => {
       }}
     >
       <Image
-        onLoad={() => {
-          setLoaded(true)
-        }}
+        {...rest}
         src={src}
+        alt={alt}
         width={width}
         height={height}
         placeholder="blur"
         blurDataURL={blurUrl.toString()}
-        {...rest}
+        onLoad={() => {
+          setLoaded(true)
+        }}
       />
 
       {showDescription && description && description?.length > 0 && (
