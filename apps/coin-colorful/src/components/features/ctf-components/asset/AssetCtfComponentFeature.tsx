@@ -1,9 +1,9 @@
 import { ImageProps } from 'next/image'
 
 import {
+  AssetFieldsFragment,
   ImageCtfComponentFeature,
-  VideoCtfComponentFeature,
-  type AssetFieldsFragment
+  VideoCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { useLayoutContext } from '@guy-romelle-magayano/coin-colorful/hooks'
 
