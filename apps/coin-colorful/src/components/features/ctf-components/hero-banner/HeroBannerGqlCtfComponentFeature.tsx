@@ -26,11 +26,12 @@ const HeroBannerGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentHeroBanner =
+    componentHeroBanner = useContentfulLiveUpdates(
       data?.componentHeroBanner &&
-      Object.keys(data?.componentHeroBanner)?.length > 0
-        ? useContentfulLiveUpdates(data.componentHeroBanner)
+        Object.keys(data?.componentHeroBanner)?.length > 0
+        ? data.componentHeroBanner
         : null
+    )
 
   if (!componentHeroBanner || isLoading) return null
 
