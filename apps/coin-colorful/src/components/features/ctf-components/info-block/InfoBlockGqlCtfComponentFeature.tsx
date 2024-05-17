@@ -27,11 +27,12 @@ const InfoBlockGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentInfoBlock =
+    componentInfoBlock = useContentfulLiveUpdates(
       data?.componentInfoBlock &&
-      Object.keys(data?.componentInfoBlock)?.length > 0
-        ? useContentfulLiveUpdates(data.componentInfoBlock)
+        Object.keys(data?.componentInfoBlock)?.length > 0
+        ? data.componentInfoBlock
         : null
+    )
 
   if (isLoading || !componentInfoBlock) {
     return null
