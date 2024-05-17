@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
@@ -5,10 +7,12 @@ import { Container, Theme, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import clsx from 'clsx'
 
+import { Div } from '@guy-romelle-magayano/react-components/server'
+
 import {
+  HeroBannerFieldsFragment,
   PageLinkFeature,
-  RichtextCtfComponentFeature,
-  type HeroBannerFieldsFragment
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   THEME_HEADER_HEIGHT,
@@ -20,7 +24,6 @@ import {
   layoutContextValues
 } from '@guy-romelle-magayano/coin-colorful/contexts'
 import { useLayoutContext } from '@guy-romelle-magayano/coin-colorful/hooks'
-import { Div } from '@guy-romelle-magayano/react-components/server'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -133,9 +136,7 @@ const HeroBannerCtfComponentFeature = (
 
   const imageStyle = imageStyleBoolean ? 'partial' : 'full',
     heroSize =
-      heroSizeBoolean === null || heroSizeBoolean === true
-        ? 'full_screen'
-        : 'fixed_height'
+      !heroSizeBoolean || heroSizeBoolean ? 'full_screen' : 'fixed_height'
 
   const layout = useLayoutContext(),
     backgroundImage = useMemo(
@@ -164,16 +165,18 @@ const HeroBannerCtfComponentFeature = (
         backgroundColor: colorConfig.backgroundColor
       }}
     >
-      {imageStyle === 'partial' && backgroundImage && (
-        <Div className={classes.partialBgContainer}>
-          <Div
-            className={classes.partialBg}
-            style={{
-              backgroundImage: `url(${backgroundImage!})`
-            }}
-          />
-        </Div>
-      )}
+      {imageStyle === 'partial' &&
+        backgroundImage &&
+        backgroundImage?.length > 0 && (
+          <Div className={classes.partialBgContainer}>
+            <Div
+              className={classes.partialBg}
+              style={{
+                backgroundImage: `url(${backgroundImage!})`
+              }}
+            />
+          </Div>
+        )}
 
       <Div className={classes.innerContainer}>
         {headline && headline?.length > 0 && (
