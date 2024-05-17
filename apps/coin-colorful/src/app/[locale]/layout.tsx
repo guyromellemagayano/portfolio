@@ -1,14 +1,10 @@
 import { ReactNode } from 'react'
 
-import { locales } from '@guy-romelle-magayano/coin-colorful/i18n'
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { locales } from '@guy-romelle-magayano/coin-colorful/libs/i18n'
+
+import { BaseLayout } from '@guy-romelle-magayano/coin-colorful/components'
 
 import './global.css'
-
-export type RootLayoutProps = {
-  children: ReactNode
-  params: { locale: string }
-}
 
 /**
  * Generates static parameters for each locale.
@@ -17,20 +13,25 @@ export type RootLayoutProps = {
  */
 export const generateStaticParams = () => locales.map(locale => ({ locale }))
 
+export type RootLayoutProps<T> = {
+  children: ReactNode
+  params: T
+}
+
 /**
  * Serves as the root layout of the application.
- * @param children - The children of the root layout.
- * @param params - The parameters of the root layout.
+ * @param {RootLayoutProps} props - The properties of the root layout.
  * @returns The rendered root layout component.
  */
-const RootLayout = ({ children, params: { locale } }: RootLayoutProps) => {
-  unstable_setRequestLocale(locale)
+const RootLayout = <T extends { locale: string }>(
+  props: RootLayoutProps<T>
+) => {
+  const {
+    children,
+    params: { locale }
+  } = props
 
-  return (
-    <html lang={locale}>
-      <body>{children}</body>
-    </html>
-  )
+  return <BaseLayout lang={locale}>{children}</BaseLayout>
 }
 
 RootLayout.displayName = 'RootLayout'
