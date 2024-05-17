@@ -42,13 +42,7 @@
           }
         ],
         "prettier/prettier": "off",
-        "no-irregular-whitespace": "off",
-        "sort-imports": [
-          "error",
-          {
-            "ignoreDeclarationSort": true
-          }
-        ]
+        "no-irregular-whitespace": "off"
       }
     },
     {
