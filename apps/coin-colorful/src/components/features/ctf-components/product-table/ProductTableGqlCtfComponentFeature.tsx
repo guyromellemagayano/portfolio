@@ -28,11 +28,12 @@ const ProductTableGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentProductTable =
+    componentProductTable = useContentfulLiveUpdates(
       data?.componentProductTable &&
-      Object.keys(data?.componentProductTable)?.length > 0
-        ? useContentfulLiveUpdates(data.componentProductTable)
+        Object.keys(data?.componentProductTable)?.length > 0
+        ? data.componentProductTable
         : null
+    )
 
   if (isLoading || !componentProductTable) {
     return null
