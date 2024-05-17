@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo } from 'react'
 
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
@@ -9,8 +11,8 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  RichtextCtfComponentFeature,
-  type BusinessInfoFieldsFragment
+  BusinessInfoFieldsFragment,
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -111,7 +113,7 @@ const BusinessInfoCtfComponentFeature = (
 
   const backgroundImage = useMemo(
       () =>
-        featuredImage && featuredImage?.url && featuredImage?.url?.length > 0
+        featuredImage?.url && featuredImage?.url?.length > 0
           ? `${featuredImage.url}?w=1920`
           : undefined,
       [featuredImage]
