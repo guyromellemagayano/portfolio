@@ -8,8 +8,8 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  RichtextCtfComponentFeature,
-  type QuoteFieldsFragment
+  QuoteFieldsFragment,
+  RichtextCtfComponentFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
