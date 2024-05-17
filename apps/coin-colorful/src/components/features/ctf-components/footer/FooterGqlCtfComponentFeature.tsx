@@ -16,11 +16,12 @@ const FooterGqlCtfComponentFeature = () => {
       locale,
       preview: previewActive
     }),
-    footerMenuCollection =
+    footerMenuCollection = useContentfulLiveUpdates(
       data?.footerMenuCollection &&
-      Object.keys(data?.footerMenuCollection)?.length > 0
-        ? useContentfulLiveUpdates(data.footerMenuCollection)
+        Object.keys(data?.footerMenuCollection)?.length > 0
+        ? data.footerMenuCollection
         : null
+    )
 
   if (!footerMenuCollection || isLoading) return null
 
