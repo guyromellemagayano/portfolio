@@ -1,3 +1,5 @@
+'use client'
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
@@ -12,15 +14,14 @@ import { Div, Span } from '@guy-romelle-magayano/react-components/server'
 
 import {
   FormatCurrencyFeature,
+  ProductTableFieldsFragment,
   RichtextCtfComponentFeature,
-  SectionHeadlinesFeature,
-  type ProductTableFieldsFragment
+  SectionHeadlinesFeature
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
   layoutContextValues
 } from '@guy-romelle-magayano/coin-colorful/contexts'
-import { isNotNullOrUndefined } from '@guy-romelle-magayano/react-utils'
 
 export type ContentfulLoaderProps = {
   src: string
@@ -30,20 +31,18 @@ export type ContentfulLoaderProps = {
 
 /**
  * Generates a URL with query parameters for an image using the provided width and quality.
- * @param src - The source URL of the image.
- * @param width - The desired width of the image.
- * @param quality - The desired quality of the image.
+ * @param {ContentfulLoaderProps} props - The properties to generate the URL with.
  * @returns The URL with query parameters for the image.
  */
 export const contentfulLoader: ImageLoader = (props: ContentfulLoaderProps) => {
   const { src, width, quality } = props,
     params: Record<string, string | number> = {}
 
-  if (isNotNullOrUndefined(width) && width > 0) {
+  if (width && width > 0) {
     params.w = width
   }
 
-  if (isNotNullOrUndefined(quality) && quality > 0) {
+  if (quality && quality > 0) {
     params.q = quality
   }
 
@@ -192,27 +191,23 @@ const ProductTableCtfComponentFeature = (
 
     const names: string[] = []
 
-    productsCollection &&
-      productsCollection.items.forEach(product => {
-        if (
-          !product ||
-          (product.featuresCollection?.items?.length || 0) === 0
-        ) {
+    productsCollection.items.forEach(product => {
+      if (!product || (product.featuresCollection?.items?.length || 0) === 0) {
+        return
+      }
+
+      product.featuresCollection!.items?.forEach(feature => {
+        if (!feature?.name) {
           return
         }
 
-        product.featuresCollection!.items?.forEach(feature => {
-          if (!feature?.name) {
-            return
-          }
+        if (names.includes(feature.name)) {
+          return
+        }
 
-          if (names.includes(feature.name)) {
-            return
-          }
-
-          names.push(feature.name)
-        })
+        names.push(feature.name)
       })
+    })
 
     return names
   }, [productsCollection])
