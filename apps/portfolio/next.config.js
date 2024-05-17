@@ -81,18 +81,7 @@ const nextConfig = {
 
   // @ts-ignore
   // Site headers configuration
-  headers,
-
-  // Sentry configuration
-  sentry: {
-    disableServerWebpackPlugin: process.env.NODE_ENV === 'development',
-    disableClientWebpackPlugin: process.env.NODE_ENV === 'development',
-    hideSourceMaps: process.env.NODE_ENV === 'production',
-    automaticVercelMonitors: process.env.NODE_ENV === 'production',
-    disableLogger: process.env.NODE_ENV === 'production',
-    transpileClientSDK: process.env.NODE_ENV === 'production',
-    widenClientFileUpload: process.env.NODE_ENV === 'production'
-  }
+  headers
 }
 
 // Sentry webpack plugin configuration
@@ -100,7 +89,11 @@ const sentryWebpackPluginOptions = {
   org: process.env.SENTRY_ORG || '',
   project: process.env.SENTRY_PROJECT || '',
   authToken: process.env.SENTRY_AUTH_TOKEN || '',
-  silent: process.env.NODE_ENV === 'development'
+  silent: process.env.NODE_ENV === 'development',
+  hideSourceMaps: process.env.NODE_ENV === 'production',
+  automaticVercelMonitors: process.env.NODE_ENV === 'production',
+  disableLogger: process.env.NODE_ENV === 'production',
+  widenClientFileUpload: process.env.NODE_ENV === 'production'
 }
 
 // MDX configuration
