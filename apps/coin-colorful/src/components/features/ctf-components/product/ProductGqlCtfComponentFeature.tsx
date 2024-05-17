@@ -31,10 +31,11 @@ const ProductGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    topicProduct =
+    topicProduct = useContentfulLiveUpdates(
       data?.topicProduct && Object.keys(data?.topicProduct)?.length > 0
-        ? useContentfulLiveUpdates(data.topicProduct)
+        ? data.topicProduct
         : null
+    )
 
   if (!data || isLoading) {
     return null
