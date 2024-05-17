@@ -19,10 +19,10 @@ import {
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
+  FooterFieldsFragment,
   LanguageSelectorFeature,
   LinkShared,
-  LogoTagline,
-  type FooterFieldsFragment
+  LogoTagline
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
@@ -296,8 +296,7 @@ const FooterCtfComponentFeature = (props: FooterCtfComponentFeatureProps) => {
         maxWidth={false}
         className={classes.footerContainer}
       >
-        {footerContent &&
-          footerContent?.menuItemsCollection?.items &&
+        {footerContent?.menuItemsCollection?.items &&
           footerContent?.menuItemsCollection?.items?.length > 0 && (
             <Footer className={classes.footer}>
               <Nav role="navigation" className={classes.menuWrapper}>
