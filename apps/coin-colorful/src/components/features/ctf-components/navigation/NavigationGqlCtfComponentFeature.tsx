@@ -16,11 +16,12 @@ const NavigationGqlCtfComponentFeature = () => {
       locale,
       preview: previewActive
     }),
-    navigationMenuCollection =
+    navigationMenuCollection = useContentfulLiveUpdates(
       data?.navigationMenuCollection &&
-      Object.keys(data?.navigationMenuCollection)?.length > 0
-        ? useContentfulLiveUpdates(data.navigationMenuCollection)
+        Object.keys(data?.navigationMenuCollection)?.length > 0
+        ? data.navigationMenuCollection
         : null
+    )
 
   if (!navigationMenuCollection || isLoading) return null
 
