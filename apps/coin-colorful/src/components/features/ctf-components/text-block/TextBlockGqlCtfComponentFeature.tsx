@@ -26,11 +26,12 @@ const TextBlockGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    componentTextBlock =
+    componentTextBlock = useContentfulLiveUpdates(
       data?.componentTextBlock &&
-      Object.keys(data?.componentTextBlock)?.length > 0
-        ? useContentfulLiveUpdates(data?.componentTextBlock)
+        Object.keys(data?.componentTextBlock)?.length > 0
+        ? data.componentTextBlock
         : null
+    )
 
   if (isLoading || !componentTextBlock) {
     return null
