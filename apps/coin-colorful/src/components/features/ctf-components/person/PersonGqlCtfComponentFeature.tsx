@@ -27,10 +27,11 @@ const PersonGqlCtfComponentFeature = (
       locale,
       preview
     }),
-    topicPerson =
+    topicPerson = useContentfulLiveUpdates(
       data?.topicPerson && Object.keys(data?.topicPerson)?.length > 0
-        ? useContentfulLiveUpdates(data.topicPerson)
+        ? data.topicPerson
         : null
+    )
 
   if (isLoading || !topicPerson) {
     return null
