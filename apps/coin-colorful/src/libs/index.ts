@@ -1,5 +1,4 @@
 export * from './contentful'
-export * from './gql-client'
 export * from './i18n'
 export * from './middleware'
 export * from './prefetch-mappings'
