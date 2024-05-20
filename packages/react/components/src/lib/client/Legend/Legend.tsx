@@ -7,19 +7,19 @@ export type LegendProps = HTMLAttributes<LegendRef>
 
 /**
  * Render the legend component.
- * @param children - The children of the legend.
- * @param rest - The rest of the props of the legend.
+ * @param {LegendProps} props - The legend component properties.
+ * @param {LegendRef} ref - The legend component reference.
  * @returns The rendered legend component.
  */
-export const Legend = forwardRef<LegendRef, LegendProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <legend ref={ref} {...rest}>
-        {children}
-      </legend>
-    )
-  }
-)
+const Legend = forwardRef<LegendRef, LegendProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <legend ref={ref} {...rest}>
+      {children}
+    </legend>
+  )
+})
 
 Legend.displayName = 'Legend'
 
