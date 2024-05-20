@@ -3,14 +3,10 @@
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
-
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
-import { SkillsList } from '@guy-romelle-magayano/portfolio/components/lists/skills'
-import { SkillsCardsList } from '@guy-romelle-magayano/portfolio/components/lists/skills-cards'
+  ContentLayout,
+  SkillsCardsList,
+  SkillsList
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   SkillsData,
   SkillsItemData,
@@ -21,28 +17,28 @@ export type SkillsAppProps = SkillsPageData
 
 /**
  * Renders the skills page component.
- * @param props - The props of the skills page.
+ * @param {SkillsAppProps} props - The props of the skills page.
  * @returns The rendered skills page component.
  */
 const SkillsApp = (props: SkillsAppProps) => {
-  const { hero, skills } = props
-
-  const heading = hero?.heading || undefined,
+  const { hero, skills } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
-    !isEmpty(heading) &&
-    isStringType(heading) &&
-    !isEmpty(description) &&
-    (isStringType(description) || isArrayType(description)) && (
+    heading &&
+    heading?.length > 0 &&
+    description &&
+    ((typeof description === 'string' && description?.length > 0) ||
+      (Array.isArray(description) && description?.length > 0)) && (
       <ContentLayout.Simple title={heading} intro={description}>
-        {!isEmpty(skills) && isArrayType(skills) && (
+        {skills && skills?.length > 0 && (
           <Div className="grid gap-y-12">
-            {skills?.map(({ name, items }: SkillsData, index: number) => (
+            {skills.map(({ name, items }: SkillsData, index: number) => (
               <SkillsList key={index} title={name}>
-                {!isEmpty(items) &&
-                  isArrayType(items) &&
-                  items?.map((rest: SkillsItemData, index: number) => (
+                {items &&
+                  items?.length > 0 &&
+                  items.map((rest: SkillsItemData, index: number) => (
                     <SkillsCardsList key={index} {...rest} />
                   ))}
               </SkillsList>
