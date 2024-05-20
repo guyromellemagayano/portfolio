@@ -1,23 +1,23 @@
+'use server'
+
 import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
 import {
-  AboutPageData,
-  ArticlesAppData,
-  ArticlesPageData,
-  HomeAppData,
-  HomePageData,
-  ProjectsAppData,
-  ProjectsPageData,
-  SkillsAppData,
-  SkillsPageData,
-  UsesPageData,
-  WorkPageData
+  type AboutPageData,
+  type ArticlesAppData,
+  type ArticlesPageData,
+  type HomeAppData,
+  type HomePageData,
+  type ProjectsAppData,
+  type ProjectsPageData,
+  type SkillsAppData,
+  type SkillsPageData,
+  type UsesPageData,
+  type WorkPageData
 } from '@guy-romelle-magayano/portfolio/types'
 import {
   articlesData,
-  projectsData
-} from '@guy-romelle-magayano/portfolio/utils'
-import {
   fullServerUrl,
+  projectsData,
   socialData
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
@@ -27,7 +27,7 @@ import {
  * @returns The page data.
  */
 export const fetchPageData = async (url: string): Promise<any> =>
-  await fetch(fullServerUrl(url))
+  fetch(await fullServerUrl(url))
     .then(res => res.json())
     .catch(() => ({}))
 
@@ -50,8 +50,10 @@ export const homeAppData = async (): Promise<HomeAppData> => {
     data = await Promise.all([page, social, articles, projects]).then(
       ([page, social, articles, projects]) => {
         const { meta, ...newPage } = page,
-          newArticles = articles.map(({ component, ...article }) => article),
-          newProjects = projects.map(({ component, ...project }) => project)
+          newArticles =
+            articles?.map(({ component, ...article }) => article) || undefined,
+          newProjects =
+            projects?.map(({ component, ...project }) => project) || undefined
 
         return {
           ...newPage,
@@ -130,7 +132,7 @@ export const articlesAppData = async (): Promise<ArticlesAppData> => {
     data = await Promise.all([page, articles]).then(([page, articles]) => {
       const { meta, ...newPage } = page,
         newArticles =
-          articles?.map(({ component, ...article }) => article) || []
+          articles?.map(({ component, ...article }) => article) || undefined
 
       return {
         ...newPage,
@@ -158,7 +160,7 @@ export const projectsAppData = async (): Promise<ProjectsAppData> => {
     data = await Promise.all([page, projects]).then(([page, projects]) => {
       const { meta, ...newPage } = page,
         newProjects =
-          projects?.map(({ component, ...project }) => project) || []
+          projects?.map(({ component, ...project }) => project) || undefined
 
       return {
         ...newPage,
