@@ -7,19 +7,19 @@ export type TextareaProps = TextareaHTMLAttributes<TextareaRef>
 
 /**
  * Render the textarea component.
- * @param children - The children of the textarea.
- * @param rest - The rest of the props of the textarea.
+ * @param {TextareaProps} props - The textarea component properties.
+ * @param {TextareaRef} ref - The textarea component reference.
  * @returns The rendered textarea component.
  */
-export const Textarea = forwardRef<TextareaRef, TextareaProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <textarea ref={ref} {...rest}>
-        {children}
-      </textarea>
-    )
-  }
-)
+const Textarea = forwardRef<TextareaRef, TextareaProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <textarea ref={ref} {...rest}>
+      {children}
+    </textarea>
+  )
+})
 
 Textarea.displayName = 'Textarea'
 
