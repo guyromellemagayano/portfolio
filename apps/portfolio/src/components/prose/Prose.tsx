@@ -2,29 +2,28 @@ import { forwardRef } from 'react'
 
 import {
   Div,
-  type DivisionProps,
-  type DivisionRef
+  DivisionProps,
+  DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type ProseRef = DivisionRef
 export type ProseProps = DivisionProps
 
 /**
  * Renders the prose component.
- * @param children - The children of the prose.
- * @param className - The class name of the prose.
- * @param rest - The rest of the prose props.
+ * @param {ProseProps} props - The properties to render the prose component.
+ * @param {ProseRef} ref - The reference of the prose component.
  * @returns The rendered prose component.
  */
 const Prose = forwardRef<ProseRef, ProseProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Div
-          ref={ref}
           {...rest}
+          ref={ref}
           className={cn('prose dark:prose-invert', className)}
         >
           {children}
