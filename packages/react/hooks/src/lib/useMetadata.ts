@@ -1,5 +1,7 @@
 import { Metadata } from 'next'
 
+export type UseMetadataProps = Metadata
+
 /**
  * Custom hook that returns metadata for a page.
  * @param title - The title of the page.
@@ -7,11 +9,11 @@ import { Metadata } from 'next'
  * @param keywords - The keywords of the page.
  * @returns The metadata object.
  */
-export const useMetaData = ({
+export const useMetadata = ({
   title,
   description,
   keywords
-}: Metadata): Metadata => {
+}: UseMetadataProps): Metadata => {
   return {
     title: title || 'Sample Title',
     description: description || 'Sample Description',
