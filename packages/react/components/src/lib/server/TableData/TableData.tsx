@@ -5,19 +5,19 @@ export type TableDataProps = TdHTMLAttributes<TableDataRef>
 
 /**
  * Render the table data component.
- * @param children - The children of the table data.
- * @param rest - The rest of the props of the table data.
+ * @param {TableDataProps} props - The table data component properties.
+ * @param {TableDataRef} ref - The table data component reference.
  * @returns The rendered table data component.
  */
-export const TableData = forwardRef<TableDataRef, TableDataProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <td ref={ref} {...rest}>
-        {children}
-      </td>
-    )
-  }
-)
+const TableData = forwardRef<TableDataRef, TableDataProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <td ref={ref} {...rest}>
+      {children}
+    </td>
+  )
+})
 
 TableData.displayName = 'TableData'
 
