@@ -4,8 +4,8 @@ import { Ul } from '@guy-romelle-magayano/react-components/server'
 
 import {
   SectionLayout,
-  SectionLayoutProps,
-  SectionLayoutRef
+  type SectionLayoutProps,
+  type SectionLayoutRef
 } from '@guy-romelle-magayano/portfolio/components'
 
 export type ToolsListRef = SectionLayoutRef
