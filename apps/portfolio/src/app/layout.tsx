@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { BaseLayout } from '@guy-romelle-magayano/portfolio/components/layouts/base'
+import { BaseLayout } from '@guy-romelle-magayano/portfolio/components'
 
 export type RootLayoutProps = {
   children: ReactNode
