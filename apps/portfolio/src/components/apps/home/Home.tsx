@@ -19,10 +19,10 @@ import {
   SocialLinksLayout
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  ArticlesData,
-  HomePageData,
-  ProjectsData,
-  SocialLinksData
+  type ArticlesData,
+  type HomePageData,
+  type ProjectsData,
+  type SocialLinksData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type HomeAppProps = HomePageData & {
