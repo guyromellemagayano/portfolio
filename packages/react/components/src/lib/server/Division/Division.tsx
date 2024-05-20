@@ -5,19 +5,19 @@ export type DivisionProps = HTMLAttributes<DivisionRef>
 
 /**
  * Render the division component.
- * @param children - The children of the division.
- * @param rest - The rest of the props of the division.
+ * @param {DivisionProps} props - The division component properties.
+ * @param {DivisionRef} ref - The division component reference.
  * @returns The rendered division component.
  */
-export const Division = forwardRef<DivisionRef, DivisionProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <div ref={ref} {...rest}>
-        {children}
-      </div>
-    )
-  }
-)
+const Division = forwardRef<DivisionRef, DivisionProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <div ref={ref} {...rest}>
+      {children}
+    </div>
+  )
+})
 
 Division.displayName = 'Division'
 
