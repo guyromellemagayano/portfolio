@@ -6,14 +6,16 @@ export type BiDirectionalOverrideProps =
 
 /**
  * Render the bi-directional override component.
- * @param children - The children of the bi-directional override.
- * @param rest - The rest of the props of the bi-directional override.
+ * @param {BiDirectionalOverrideProps} props - The bi-directional override component properties.
+ * @param {BiDirectionalOverrideRef} ref - The bi-directional override component reference.
  * @returns The rendered bi-directional override component.
  */
-export const BiDirectionalOverride = forwardRef<
+const BiDirectionalOverride = forwardRef<
   BiDirectionalOverrideRef,
   BiDirectionalOverrideProps
->(({ children, ...rest }, ref) => {
+>((props, ref) => {
+  const { children, ...rest } = props
+
   return (
     <bdo ref={ref} {...rest}>
       {children}
