@@ -4,10 +4,10 @@ import { Div, Heading, Li } from '@guy-romelle-magayano/react-components/server'
 
 import {
   Card,
-  CardProps,
-  CardRef
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components'
-import { WorkExperienceData } from '@guy-romelle-magayano/portfolio/types'
+import { type WorkExperienceData } from '@guy-romelle-magayano/portfolio/types'
 
 export type WorkCardsListRef = CardRef
 export type WorkCardsListProps = CardProps &
