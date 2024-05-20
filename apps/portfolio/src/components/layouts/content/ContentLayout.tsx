@@ -13,11 +13,11 @@ import { usePathname } from 'next/navigation'
 import {
   Aside,
   Div,
-  DivisionProps,
-  DivisionRef,
   Heading,
   P,
-  Span
+  Span,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn, isArrayType } from '@guy-romelle-magayano/react-utils'
