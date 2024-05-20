@@ -7,19 +7,19 @@ export type FormProps = FormHTMLAttributes<FormRef>
 
 /**
  * Render the form component.
- * @param children - The children of the form.
- * @param rest - The rest of the props of the form.
+ * @param {FormProps} props - The form component properties.
+ * @param {FormRef} ref - The form component reference.
  * @returns The rendered form component.
  */
-export const Form = forwardRef<FormRef, FormProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <form ref={ref} {...rest}>
-        {children}
-      </form>
-    )
-  }
-)
+const Form = forwardRef<FormRef, FormProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <form ref={ref} {...rest}>
+      {children}
+    </form>
+  )
+})
 
 Form.displayName = 'Form'
 
