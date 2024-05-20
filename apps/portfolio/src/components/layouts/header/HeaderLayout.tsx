@@ -6,25 +6,22 @@ import { usePathname } from 'next/navigation'
 
 import {
   Div,
+  DivisionRef,
   Header,
-  type DivisionRef,
-  type HeaderProps,
-  type HeaderRef
+  HeaderProps,
+  HeaderRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  clamp,
-  cn,
-  isArrayType,
-  isEmpty
-} from '@guy-romelle-magayano/react-utils'
+import { clamp, cn } from '@guy-romelle-magayano/react-utils'
 
-import { Avatar } from '@guy-romelle-magayano/portfolio/components/avatar'
-import { DarkModeButton } from '@guy-romelle-magayano/portfolio/components/buttons/dark-mode'
-import { AvatarContainer } from '@guy-romelle-magayano/portfolio/components/containers/avatar'
-import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/containers/base'
-import { DesktopNavigation } from '@guy-romelle-magayano/portfolio/components/navigation/desktop'
-import { MobileNavigation } from '@guy-romelle-magayano/portfolio/components/navigation/mobile'
+import {
+  Avatar,
+  AvatarContainer,
+  BaseContainer,
+  DarkModeButton,
+  DesktopNavigation,
+  MobileNavigation
+} from '@guy-romelle-magayano/portfolio/components'
 import { PagesData } from '@guy-romelle-magayano/portfolio/types/data'
 
 export type HeaderLayoutRef = HeaderRef
@@ -34,9 +31,8 @@ export type HeaderLayoutProps = HeaderProps & {
 
 /**
  * Render the header layout component.
- * @param pages - The pages data.
- * @param className - The class name of the header layout.
- * @param rest - The rest of the header layout props.
+ * @param {HeaderLayoutProps} props - The props of the header layout.
+ * @param {HeaderLayoutRef} ref - The reference of the header layout.
  * @returns The rendered header layout component.
  */
 const HeaderLayout = memo(
@@ -219,7 +215,7 @@ const HeaderLayout = memo(
                     )}
                   </Div>
                   <Div className="flex flex-1 justify-end md:justify-center">
-                    {!isEmpty(pages) && isArrayType(pages) && (
+                    {pages && pages?.length > 0 && (
                       <>
                         <MobileNavigation
                           className="pointer-events-auto md:hidden"
