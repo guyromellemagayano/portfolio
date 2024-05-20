@@ -4,16 +4,11 @@ import Image from 'next/image'
 
 import {
   Div,
-  type DivisionProps,
-  type DivisionRef
+  DivisionProps,
+  DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 import { SlidePhotosData } from '@guy-romelle-magayano/portfolio/types/data'
 
@@ -35,21 +30,21 @@ const RotationsData: Array<string> = [
 
 /**
  * Renders the photo layout component.
- * @param data - The photo layout data.
- * @param rest - The rest of the photo layout props.
+ * @param {PhotoLayoutProps} props - The props of the photo layout.
+ * @param {PhotoLayoutRef} ref - The reference of the photo layout.
  * @returns The rendered photo layout component.
  */
 const PhotoLayout = memo(
   forwardRef<PhotoLayoutRef, PhotoLayoutProps>(({ data, ...rest }, ref) => {
     return (
-      !isEmpty(data) &&
-      isArrayType(data) && (
-        <Div ref={ref} {...rest}>
+      data &&
+      data?.length > 0 && (
+        <Div {...rest} ref={ref}>
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-            {data?.map(
+            {data.map(
               ({ src, alt }: SlidePhotosData, index: number) =>
-                !isEmpty(src) &&
-                isStringType(src) && (
+                src &&
+                src?.length > 0 && (
                   <Div
                     key={index}
                     className={cn(
