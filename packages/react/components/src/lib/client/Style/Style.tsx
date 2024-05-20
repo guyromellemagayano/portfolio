@@ -7,11 +7,10 @@ export type StyleProps = StyleHTMLAttributes<StyleRef>
 
 /**
  * Render the style component.
- * @param children - The children of the style.
- * @param rest - The rest of the props of the style.
+ * @param {StyleProps} props - The style component properties.
  * @returns The rendered style component.
  */
-export const Style = ({ children, ...rest }: StyleProps) => {
+const Style = ({ children, ...rest }: StyleProps) => {
   return <style {...rest}>{children}</style>
 }
 
