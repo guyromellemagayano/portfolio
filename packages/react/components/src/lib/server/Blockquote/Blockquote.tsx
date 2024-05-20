@@ -5,19 +5,19 @@ export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef>
 
 /**
  * Render the blockquote component.
- * @param children - The children of the blockquote.
- * @param rest - The rest of the props of the blockquote.
+ * @param {BlockquoteProps} props - The blockquote component properties.
+ * @param {BlockquoteRef} ref - The blockquote component reference.
  * @returns The rendered blockquote component.
  */
-export const Blockquote = forwardRef<BlockquoteRef, BlockquoteProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <blockquote ref={ref} {...rest}>
-        {children}
-      </blockquote>
-    )
-  }
-)
+const Blockquote = forwardRef<BlockquoteRef, BlockquoteProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <blockquote ref={ref} {...rest}>
+      {children}
+    </blockquote>
+  )
+})
 
 Blockquote.displayName = 'Blockquote'
 
