@@ -7,20 +7,19 @@ export type IframeProps = IframeHTMLAttributes<IframeRef>
 
 /**
  * Render the iframe component.
- * @param src - The source of the iframe.
- * @param children - The children of the iframe.
- * @param rest - The rest of the props of the iframe.
+ * @param {IframeProps} props - The iframe component properties.
+ * @param {IframeRef} ref - The iframe component reference.
  * @returns The rendered iframe component.
  */
-export const Iframe = forwardRef<IframeRef, IframeProps>(
-  ({ src = '#', children, ...rest }, ref) => {
-    return (
-      <iframe ref={ref} src={src} {...rest}>
-        {children}
-      </iframe>
-    )
-  }
-)
+const Iframe = forwardRef<IframeRef, IframeProps>((props, ref) => {
+  const { src = '#', children, ...rest } = props
+
+  return (
+    <iframe ref={ref} src={src} {...rest}>
+      {children}
+    </iframe>
+  )
+})
 
 Iframe.displayName = 'Iframe'
 
