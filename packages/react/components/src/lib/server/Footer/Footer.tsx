@@ -5,19 +5,19 @@ export type FooterProps = HTMLAttributes<FooterRef>
 
 /**
  * Render the footer component.
- * @param children - The children of the footer.
- * @param rest - The rest of the props of the footer.
+ * @param {FooterProps} props - The footer component properties.
+ * @param {FooterRef} ref - The footer component reference.
  * @returns The rendered footer component.
  */
-export const Footer = forwardRef<FooterRef, FooterProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <footer ref={ref} {...rest}>
-        {children}
-      </footer>
-    )
-  }
-)
+const Footer = forwardRef<FooterRef, FooterProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <footer ref={ref} {...rest}>
+      {children}
+    </footer>
+  )
+})
 
 Footer.displayName = 'Footer'
 
