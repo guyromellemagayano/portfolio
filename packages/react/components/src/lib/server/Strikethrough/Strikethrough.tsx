@@ -5,12 +5,14 @@ export type StrikethroughProps = HTMLAttributes<StrikethroughRef>
 
 /**
  * Render the strikethrough component.
- * @param children - The children of the strikethrough.
- * @param rest - The rest of the props of the strikethrough.
+ * @param {StrikethroughProps} props - The strikethrough component properties.
+ * @param {StrikethroughRef} ref - The strikethrough component reference.
  * @returns The rendered strikethrough component.
  */
-export const Strikethrough = forwardRef<StrikethroughRef, StrikethroughProps>(
-  ({ children, ...rest }, ref) => {
+const Strikethrough = forwardRef<StrikethroughRef, StrikethroughProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
     return (
       <s ref={ref} {...rest}>
         {children}
