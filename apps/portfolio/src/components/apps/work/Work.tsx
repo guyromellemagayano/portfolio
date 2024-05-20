@@ -8,8 +8,8 @@ import {
   WorkList
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  WorkExperienceData,
-  WorkPageData
+  type WorkExperienceData,
+  type WorkPageData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type WorkAppProps = WorkPageData
