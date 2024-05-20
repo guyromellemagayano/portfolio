@@ -5,14 +5,16 @@ export type DefinitionElementProps = HTMLAttributes<DefinitionElementRef>
 
 /**
  * Render the definition element component.
- * @param children - The children of the definition element.
- * @param rest - The rest of the props of the definition element.
+ * @param {DefinitionElementProps} props - The definition element component properties.
+ * @param {DefinitionElementRef} ref - The definition element component reference.
  * @returns The rendered definition element component.
  */
-export const DefinitionElement = forwardRef<
+const DefinitionElement = forwardRef<
   DefinitionElementRef,
   DefinitionElementProps
->(({ children, ...rest }, ref) => {
+>((props, ref) => {
+  const { children, ...rest } = props
+
   return (
     <dfn ref={ref} {...rest}>
       {children}
