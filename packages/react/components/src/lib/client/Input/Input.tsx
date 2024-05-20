@@ -7,15 +7,15 @@ export type InputProps = InputHTMLAttributes<InputRef>
 
 /**
  * Render the input component.
- * @param type - The type of the input.
- * @param rest - The rest of the props of the input.
+ * @param {InputProps} props - The input component properties.
+ * @param {InputRef} ref - The input component reference.
  * @returns The rendered input component.
  */
-export const Input = forwardRef<InputRef, InputProps>(
-  ({ type = 'text', ...rest }, ref) => {
-    return <input ref={ref} type={type} {...rest} />
-  }
-)
+const Input = forwardRef<InputRef, InputProps>((props, ref) => {
+  const { type = 'text', ...rest } = props
+
+  return <input ref={ref} type={type} {...rest} />
+})
 
 Input.displayName = 'Input'
 
