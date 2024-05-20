@@ -7,25 +7,22 @@ import {
   Section
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/containers/base'
-import { ArticleLayout } from '@guy-romelle-magayano/portfolio/components/layouts/article'
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
-import { NewsletterLayout } from '@guy-romelle-magayano/portfolio/components/layouts/newsletter'
-import { PhotoLayout } from '@guy-romelle-magayano/portfolio/components/layouts/photo'
-import { ResumeLayout } from '@guy-romelle-magayano/portfolio/components/layouts/resume'
-import { SocialLinksLayout } from '@guy-romelle-magayano/portfolio/components/layouts/social-links'
 import {
-  type ArticlesData,
-  type HomePageData,
-  type ProjectsData,
-  type SocialLinksData
+  ArticleLayout,
+  BaseContainer,
+  ContentLayout,
+  NewsletterLayout,
+  PhotoLayout,
+  ResumeLayout,
+  SocialLinksLayout
+} from '@guy-romelle-magayano/portfolio/components'
+import {
+  ArticlesData,
+  HomePageData,
+  ProjectsData,
+  SocialLinksData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type HomeAppProps = HomePageData & {
@@ -41,41 +38,41 @@ const strings = {
 
 /**
  * Render the home application component.
- * @param props - The props of the home application.
+ * @param {HomeAppProps} props - The props of the home application.
  * @returns The rendered home application component.
  */
 const HomeApp = (props: HomeAppProps) => {
   const {
-    hero,
-    slidePhotos,
-    cvFile,
-    workExperiences,
-    links,
-    articles,
-    projects
-  } = props
-
-  const heading = hero?.heading || undefined,
+      hero,
+      slidePhotos,
+      cvFile,
+      workExperiences,
+      links,
+      articles,
+      projects
+    } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
     <>
-      {!isEmpty(heading) &&
-        isStringType(heading) &&
-        !isEmpty(description) &&
-        (isStringType(description) || isArrayType(description)) && (
+      {heading &&
+        heading?.length > 0 &&
+        description &&
+        ((typeof description === 'string' && description?.length > 0) ||
+          (Array.isArray(description) && description?.length > 0)) && (
           <ContentLayout.Simple
             title={heading}
             intro={description}
             className="mt-9 sm:mt-9"
           >
-            {!isEmpty(links) && isArrayType(links) && (
+            {links && links?.length > 0 && (
               <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
             )}
           </ContentLayout.Simple>
         )}
 
-      {!isEmpty(slidePhotos) && isArrayType(slidePhotos) && (
+      {slidePhotos && slidePhotos?.length > 0 && (
         <PhotoLayout className="mt-16 sm:mt-20" data={slidePhotos} />
       )}
 
@@ -83,15 +80,15 @@ const HomeApp = (props: HomeAppProps) => {
         <Div
           className={cn(
             'mx-auto grid w-full max-w-xl grid-cols-1 lg:max-w-none lg:grid-cols-2',
-            !isEmpty(articles) &&
-              isArrayType(articles) &&
-              ((!isEmpty(cvFile) && isStringType(cvFile)) ||
-                (!isEmpty(workExperiences) && isArrayType(workExperiences))) &&
+            articles &&
+              articles?.length > 0 &&
+              ((cvFile && cvFile?.length > 0) ||
+                (workExperiences && workExperiences?.length > 0)) &&
               'gap-y-20'
           )}
         >
           <Section>
-            {!isEmpty(articles) && isArrayType(articles) && (
+            {articles && articles?.length > 0 && (
               <Article className="mb-6">
                 <Heading
                   as="h3"
@@ -108,8 +105,8 @@ const HomeApp = (props: HomeAppProps) => {
           <Section className="space-y-10 lg:pl-16 xl:pl-24">
             <NewsletterLayout />
 
-            {((!isEmpty(workExperiences) && isArrayType(workExperiences)) ||
-              (!isEmpty(cvFile) && isStringType(cvFile))) && (
+            {((workExperiences && workExperiences?.length > 0) ||
+              (cvFile && cvFile?.length > 0)) && (
               <ResumeLayout
                 cvFile={cvFile}
                 workExperiences={workExperiences}
