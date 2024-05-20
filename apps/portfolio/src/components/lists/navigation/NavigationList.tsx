@@ -6,22 +6,20 @@ import {
   UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { isEmpty } from '@guy-romelle-magayano/react-utils'
-
 export type NavigationListRef = UnorderedListRef
 export type NavigationListProps = UnorderedListProps
 
 /**
  * Renders the navigation list component.
- * @param children - The children of the navigation list.
- * @param rest - The rest of the props of the navigation list.
+ * @param {NavigationListProps} props - The properties to render the navigation list component.
+ * @param {NavigationListRef} ref - The reference of the navigation list component.
  * @returns The rendered navigation list component.
  */
 const NavigationList = forwardRef<NavigationListRef, NavigationListProps>(
   ({ children, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
-        <Ul ref={ref} {...rest}>
+      children && (
+        <Ul {...rest} ref={ref}>
           {children}
         </Ul>
       )
