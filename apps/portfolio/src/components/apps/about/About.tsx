@@ -5,13 +5,9 @@ import Image from 'next/image'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
-
-import { BaseContainer } from '@guy-romelle-magayano/portfolio/components/containers/base'
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
+  BaseContainer,
+  ContentLayout
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   AboutPageData,
   SocialLinksData
@@ -25,19 +21,18 @@ const imagePortrait = '/images/portrait.jpg'
 
 /**
  * Renders the about page component.
- * @param props - The props of the about page.
+ * @param {AboutAppProps} props - The props of the about page.
  * @returns The rendered about page component.
  */
 const AboutApp = (props: AboutAppProps) => {
-  const { hero, social } = props
-
-  const heading = hero?.heading || undefined,
+  const { hero, social } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
     <BaseContainer className="mt-16 sm:mt-32">
       <Div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
-        {!isEmpty(imagePortrait) && (
+        {imagePortrait && imagePortrait?.length > 0 && (
           <Div className="flex w-full max-w-full justify-center lg:pl-20">
             <Div className="relative h-[32rem] w-full max-w-xs px-2.5 lg:max-w-none">
               <Image
@@ -52,16 +47,17 @@ const AboutApp = (props: AboutAppProps) => {
           </Div>
         )}
 
-        {!isEmpty(heading) &&
-          isStringType(heading) &&
-          !isEmpty(description) &&
-          (isStringType(description) || isArrayType(description)) && (
+        {heading &&
+          heading?.length > 0 &&
+          description &&
+          ((typeof description === 'string' && description?.length > 0) ||
+            (Array.isArray(description) && description?.length > 0)) && (
             <Div className="lg:order-first lg:row-span-2">
               <ContentLayout.Aside title={heading} intro={description} />
             </Div>
           )}
 
-        {/* {!isEmpty(social) && isArrayType(social) && (
+        {/* {Array.isArray(social) && social?.length > 0 && (
           <Div className="lg:pl-20">
             <SocialLinks data={social} />
           </Div>
