@@ -5,19 +5,19 @@ export type AddressProps = HTMLAttributes<AddressRef>
 
 /**
  * Render the address component.
- * @param children - The children of the address.
- * @param rest - The rest of the props of the address.
+ * @param {AddressProps} props - The address component properties.
+ * @param {AddressRef} ref - The address component reference.
  * @returns The rendered address component.
  */
-export const Address = forwardRef<AddressRef, AddressProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <address ref={ref} {...rest}>
-        {children}
-      </address>
-    )
-  }
-)
+const Address = forwardRef<AddressRef, AddressProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <address ref={ref} {...rest}>
+      {children}
+    </address>
+  )
+})
 
 Address.displayName = 'Address'
 
