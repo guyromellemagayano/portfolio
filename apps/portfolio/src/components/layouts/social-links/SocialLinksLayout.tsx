@@ -2,16 +2,14 @@ import { forwardRef, memo } from 'react'
 
 import {
   Div,
-  type DivisionProps,
-  type DivisionRef
+  DivisionProps,
+  DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
-
-import { isArrayType, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import {
   SocialLink,
-  type SocialLinkProps
-} from '@guy-romelle-magayano/portfolio/components/links/social'
+  SocialLinkProps
+} from '@guy-romelle-magayano/portfolio/components'
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
@@ -20,18 +18,18 @@ export type SocialLinksLayoutProps = DivisionProps & {
 
 /**
  * Render the social links layout component.
- * @param data - The data of the social links layout.
- * @param children - The children of the social links layout.
+ * @param {SocialLinksLayoutProps} props - The props of the social links layout.
+ * @param {SocialLinksLayoutRef} ref - The reference of the social links layout.
  * @returns The rendered social links layout component.
  */
 const SocialLinksLayout = memo(
   forwardRef<SocialLinksLayoutRef, SocialLinksLayoutProps>(
     ({ data, ...rest }, ref) => {
       return (
-        !isEmpty(data) &&
-        isArrayType(data) && (
-          <Div ref={ref} {...rest}>
-            {data?.map((rest, index: number) => (
+        data &&
+        data?.length > 0 && (
+          <Div {...rest} ref={ref}>
+            {data.map((rest, index: number) => (
               <SocialLink key={index} {...rest} />
             ))}
           </Div>
