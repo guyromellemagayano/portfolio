@@ -7,19 +7,19 @@ export type MeterProps = MeterHTMLAttributes<MeterRef>
 
 /**
  * Render the meter component.
- * @param children - The children of the meter.
- * @param rest - The rest of the props of the meter.
+ * @param {MeterProps} props - The meter component properties.
+ * @param {MeterRef} ref - The meter component reference.
  * @returns The rendered meter component.
  */
-export const Meter = forwardRef<MeterRef, MeterProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <meter ref={ref} {...rest}>
-        {children}
-      </meter>
-    )
-  }
-)
+const Meter = forwardRef<MeterRef, MeterProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <meter ref={ref} {...rest}>
+      {children}
+    </meter>
+  )
+})
 
 Meter.displayName = 'Meter'
 
