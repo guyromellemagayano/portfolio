@@ -3,24 +3,19 @@ import { FC, forwardRef } from 'react'
 import { SvgProps } from '@guy-romelle-magayano/react-components'
 import {
   A,
-  Span,
-  type HyperlinkProps,
-  type HyperlinkRef
+  HyperlinkProps,
+  HyperlinkRef,
+  Span
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  convertStringToLowercase,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn, convertStringToLowercase } from '@guy-romelle-magayano/react-utils'
 
 import {
   GithubSvg,
   LinkedInSvg,
   MailSvg,
   TwitterSvg
-} from '@guy-romelle-magayano/portfolio/components/svg'
+} from '@guy-romelle-magayano/portfolio/components'
 import { SocialLinksData } from '@guy-romelle-magayano/portfolio/types/data'
 
 export type SocialLinkRef = HyperlinkRef
@@ -31,12 +26,8 @@ export type SocialLinkProps = HyperlinkProps &
 
 /**
  * Renders the social link component.
- * @param href - The href of the social link.
- * @param label - The label of the social link.
- * @param [showLabel=false] - The show label of the social link.
- * @param id - The id of the social link.
- * @param className - The class name of the social link.
- * @param rest - The rest of the props.
+ * @param {SocialLinkProps} props - The properties to render the social link component.
+ * @param {SocialLinkRef} ref - The reference of the social link component.
  * @returns The rendered social link component.
  */
 const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
@@ -66,8 +57,8 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
     }
 
     return (
-      !isEmpty(href) &&
-      isStringType(href) && (
+      href &&
+      href?.length > 0 && (
         <A
           ref={ref}
           {...rest}
@@ -82,11 +73,9 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
           target="_blank"
           rel="noreferrer"
         >
-          {!isEmpty(Icon) && (
-            <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
-          )}
+          <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
 
-          {showLabel && !isEmpty(label) && (
+          {showLabel && label && label?.length > 0 && (
             <Span className="ml-4">{label}</Span>
           )}
         </A>
