@@ -5,19 +5,19 @@ export type MainProps = HTMLAttributes<MainRef>
 
 /**
  * Render the main component.
- * @param children - The children of the main.
- * @param rest - The rest of the props of the main.
+ * @param {MainProps} props - The main component properties.
+ * @param {MainRef} ref - The main component reference.
  * @returns The rendered main component.
  */
-export const Main = forwardRef<MainRef, MainProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <main ref={ref} {...rest}>
-        {children}
-      </main>
-    )
-  }
-)
+const Main = forwardRef<MainRef, MainProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <main ref={ref} {...rest}>
+      {children}
+    </main>
+  )
+})
 
 Main.displayName = 'Main'
 
