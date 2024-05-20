@@ -5,19 +5,19 @@ export type TableProps = TableHTMLAttributes<TableRef>
 
 /**
  * Render the table component.
- * @param children - The children of the table.
- * @param rest - The rest of the props of the table.
+ * @param {TableProps} props - The table component properties.
+ * @param {TableRef} ref - The table component reference.
  * @returns The rendered table component.
  */
-export const Table = forwardRef<TableRef, TableProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <table ref={ref} {...rest}>
-        {children}
-      </table>
-    )
-  }
-)
+const Table = forwardRef<TableRef, TableProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <table ref={ref} {...rest}>
+      {children}
+    </table>
+  )
+})
 
 Table.displayName = 'Table'
 
