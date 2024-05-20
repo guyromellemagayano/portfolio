@@ -5,11 +5,12 @@ export type MetaProps = MetaHTMLAttributes<MetaRef>
 
 /**
  * Render the meta component.
- * @param children - The children of the meta.
- * @param rest - The rest of the props of the meta.
+ * @param {MetaProps} props - The meta component properties.
  * @returns The rendered meta component.
  */
-export const Meta = ({ children, ...rest }: MetaProps) => {
+const Meta = (props: MetaProps) => {
+  const { children, ...rest } = props
+
   return <meta {...rest}>{children}</meta>
 }
 
