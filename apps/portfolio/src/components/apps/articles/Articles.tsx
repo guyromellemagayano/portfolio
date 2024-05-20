@@ -1,14 +1,10 @@
 'use client'
 
 import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
-
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
-import { ArticleCardsList } from '@guy-romelle-magayano/portfolio/components/lists/article-cards'
-import { ArticlesList } from '@guy-romelle-magayano/portfolio/components/lists/articles'
+  ArticleCardsList,
+  ArticlesList,
+  ContentLayout
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   ArticlesData,
   ArticlesPageData
@@ -20,24 +16,24 @@ export type ArticlesAppProps = ArticlesPageData & {
 
 /**
  * Render the articles application component.
- * @param props - The props of the articles application.
+ * @param {ArticlesAppProps} props - The props of the articles application.
  * @returns The rendered articles application component.
  */
 const ArticlesApp = (props: ArticlesAppProps) => {
-  const { hero, articles } = props
-
-  const heading = hero?.heading || undefined,
+  const { hero, articles } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
-    !isEmpty(heading) &&
-    isStringType(heading) &&
-    !isEmpty(description) &&
-    (isStringType(description) || isArrayType(description)) && (
+    heading &&
+    heading?.length > 0 &&
+    description &&
+    ((typeof description === 'string' && description?.length > 0) ||
+      (Array.isArray(description) && description?.length > 0)) && (
       <ContentLayout.Simple title={heading} intro={description}>
-        {!isEmpty(articles) && isArrayType(articles) && (
+        {articles && Array.isArray(articles) && articles?.length > 0 && (
           <ArticlesList>
-            {articles?.map((article, index) => (
+            {articles.map((article, index) => (
               <ArticleCardsList key={index} {...article} />
             ))}
           </ArticlesList>
