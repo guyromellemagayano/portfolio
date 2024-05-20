@@ -13,8 +13,10 @@ import {
 } from '@guy-romelle-magayano/react-components/server'
 
 import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
-import { FooterLayout } from '@guy-romelle-magayano/portfolio/components/layouts/footer'
-import { HeaderLayout } from '@guy-romelle-magayano/portfolio/components/layouts/header'
+import {
+  FooterLayout,
+  HeaderLayout
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
@@ -32,7 +34,7 @@ export type BaseLayoutProps = {
 
 /**
  * Render the base layout component.
- * @param children - The children of the base layout.
+ * @param {BaseLayoutProps} props - The props of the base layout.
  * @returns The rendered base layout component.
  */
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
@@ -78,9 +80,15 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         <Providers>
           <Div className="flex w-full">
             <Div className="relative flex w-full flex-col">
-              <HeaderLayout pages={headerMenu} />
-              <Main className="flex-auto">{children}</Main>
-              <FooterLayout pages={footerMenu} />
+              {headerMenu && headerMenu?.length > 0 && (
+                <HeaderLayout pages={headerMenu} />
+              )}
+
+              {children && <Main className="flex-auto">{children}</Main>}
+
+              {footerMenu && footerMenu?.length > 0 && (
+                <FooterLayout pages={footerMenu} />
+              )}
             </Div>
           </Div>
           <SpeedInsights />
