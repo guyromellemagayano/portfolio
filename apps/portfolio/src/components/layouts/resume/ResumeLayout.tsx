@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef, memo } from 'react'
 
 import Image from 'next/image'
@@ -6,13 +8,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@guy-romelle-magayano/react-components'
 import {
   Div,
-  DivisionProps,
-  DivisionRef,
   Dl,
   Heading,
   Li,
   Ol,
-  Span
+  Span,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
@@ -20,9 +22,9 @@ import {
   BriefcaseSvg
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  HomePageData,
-  WorkExperienceData
-} from '@guy-romelle-magayano/portfolio/types/data'
+  type HomePageData,
+  type WorkExperienceData
+} from '@guy-romelle-magayano/portfolio/types'
 
 export type ResumeLayoutRef = DivisionRef
 export type ResumeLayoutProps = DivisionProps & {
