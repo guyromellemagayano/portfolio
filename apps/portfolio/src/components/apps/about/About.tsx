@@ -9,8 +9,8 @@ import {
   ContentLayout
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  AboutPageData,
-  SocialLinksData
+  type AboutPageData,
+  type SocialLinksData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type AboutAppProps = AboutPageData & {
