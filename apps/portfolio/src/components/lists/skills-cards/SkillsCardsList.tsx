@@ -8,10 +8,10 @@ import { isStringType } from '@guy-romelle-magayano/react-utils'
 
 import {
   Card,
-  CardProps,
-  CardRef
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components'
-import { SkillsItemData } from '@guy-romelle-magayano/portfolio/types'
+import { type SkillsItemData } from '@guy-romelle-magayano/portfolio/types'
 
 export type SkillsCardsListRef = CardRef
 export type SkillsCardsListProps = CardProps &
