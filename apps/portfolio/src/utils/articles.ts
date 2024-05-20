@@ -1,13 +1,17 @@
+'use server'
+
 import { glob } from 'fast-glob'
 import * as path from 'path'
 
-import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
+import { type ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 /**
  * Imports the article data.
  * @returns The article data.
  */
-export const importArticle = async (fileName: string) => {
+export const importArticle = async (
+  fileName: string
+): Promise<any | undefined> => {
   const { meta, default: component } = await import(
     `@guy-romelle-magayano/portfolio/app/articles/${fileName}`
   )
@@ -19,7 +23,9 @@ export const importArticle = async (fileName: string) => {
  * Fetches the articles data.
  * @returns The articles data.
  */
-export const articlesData = async (): Promise<Array<ArticlesData>> =>
+export const articlesData = async (): Promise<
+  Array<ArticlesData> | undefined
+> =>
   await Promise.all(
     await glob(['**/*.mdx'], {
       cwd: path.join(process.cwd(), '/src/app/articles')
@@ -34,8 +40,11 @@ export const articlesData = async (): Promise<Array<ArticlesData>> =>
  * Retrieves the articles data by category.
  * @returns The articles data by category.
  */
-export const articlesByCategory = (
+export const articlesByCategory = async (
   data: Array<ArticlesData> | undefined,
   category: string
-): Array<ArticlesData> | [] =>
-  data?.filter(article => article.category === category) || []
+): Promise<Array<ArticlesData> | undefined> =>
+  (data &&
+    data?.length > 0 &&
+    data.filter(article => article.category === category)) ||
+  undefined
