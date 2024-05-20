@@ -8,9 +8,9 @@ import {
   SkillsList
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  SkillsData,
-  SkillsItemData,
-  SkillsPageData
+  type SkillsData,
+  type SkillsItemData,
+  type SkillsPageData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type SkillsAppProps = SkillsPageData
