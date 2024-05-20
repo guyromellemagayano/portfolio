@@ -5,12 +5,14 @@ export type HeadingGroupProps = HTMLAttributes<HeadingGroupRef>
 
 /**
  * Render the heading group component.
- * @param children - The children of the heading group.
- * @param rest - The rest of the props of the heading group.
+ * @param {HeadingGroupProps} props - The heading group component properties.
+ * @param {HeadingGroupRef} ref - The heading group component reference.
  * @returns The rendered heading group component.
  */
-export const HeadingGroup = forwardRef<HeadingGroupRef, HeadingGroupProps>(
-  ({ children, ...rest }, ref) => {
+const HeadingGroup = forwardRef<HeadingGroupRef, HeadingGroupProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
     return (
       <hgroup ref={ref} {...rest}>
         {children}
