@@ -7,19 +7,19 @@ export type CanvasProps = CanvasHTMLAttributes<CanvasRef>
 
 /**
  * Render the canvas component.
- * @param children - The children of the canvas.
- * @param rest - The rest of the props of the canvas.
+ * @param {CanvasProps} props - The canvas component properties.
+ * @param {CanvasRef} ref - The canvas component reference.
  * @returns The rendered canvas component.
  */
-export const Canvas = forwardRef<CanvasRef, CanvasProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <canvas ref={ref} {...rest}>
-        {children}
-      </canvas>
-    )
-  }
-)
+const Canvas = forwardRef<CanvasRef, CanvasProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <canvas ref={ref} {...rest}>
+      {children}
+    </canvas>
+  )
+})
 
 Canvas.displayName = 'Canvas'
 
