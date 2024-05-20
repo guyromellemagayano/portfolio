@@ -6,21 +6,21 @@ import { useTheme } from 'next-themes'
 
 import {
   Button,
-  type ButtonProps,
-  type ButtonRef
+  ButtonProps,
+  ButtonRef
 } from '@guy-romelle-magayano/react-components'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components/svg'
+import { MoonSvg, SunSvg } from '@guy-romelle-magayano/portfolio/components'
 
 export type DarkModeButtonRef = ButtonRef
 export type DarkModeButtonProps = ButtonProps
 
 /**
  * Renders dark mode button component.
- * @param className - The class name of the dark mode button.
- * @param rest - The rest of the dark mode button props.
+ * @param {DarkModeButtonProps} props - The props of the dark mode button.
+ * @param {DarkModeButtonRef} ref - The reference of the dark mode button.
  * @returns The dark mode button component.
  */
 const DarkModeButton = forwardRef<DarkModeButtonRef, DarkModeButtonProps>(
