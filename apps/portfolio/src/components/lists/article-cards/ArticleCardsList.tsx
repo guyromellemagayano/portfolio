@@ -2,14 +2,14 @@ import { forwardRef, memo } from 'react'
 
 import {
   Article,
-  ArticleProps,
-  ArticleRef
+  type ArticleProps,
+  type ArticleRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn, formatDate } from '@guy-romelle-magayano/react-utils'
 
 import { Card } from '@guy-romelle-magayano/portfolio/components'
-import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
+import { type ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticleCardsListRef = ArticleRef
 export type ArticleCardsListProps = ArticleProps &
