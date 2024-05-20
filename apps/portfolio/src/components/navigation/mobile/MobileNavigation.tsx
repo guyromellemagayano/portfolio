@@ -1,27 +1,28 @@
 import { Fragment, forwardRef, memo } from 'react'
 
-import { Popover, Transition } from '@headlessui/react'
+import {
+  Popover,
+  PopoverButton,
+  PopoverOverlay,
+  PopoverPanel,
+  Transition,
+  TransitionChild
+} from '@headlessui/react'
 import Link from 'next/link'
 
 import {
   Div,
   Heading,
   Nav,
-  Ul,
-  type NavigationProps,
-  type NavigationRef
+  NavigationProps,
+  NavigationRef,
+  Ul
 } from '@guy-romelle-magayano/react-components/server'
-
-import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
 
 import {
   ChevronDownSvg,
   CloseSvg
-} from '@guy-romelle-magayano/portfolio/components/svg'
+} from '@guy-romelle-magayano/portfolio/components'
 import { PagesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type MobileNavigationRef = NavigationRef
@@ -37,22 +38,23 @@ const strings = {
 
 /**
  * Renders the mobile navigation component.
- * @param rest - The rest of the mobile navigation props.
+ * @param {MobileNavigationProps} props - The properties to render the mobile navigation component.
+ * @param {MobileNavigationRef} ref - The reference of the mobile navigation component.
  * @returns The rendered mobile navigation component.
  */
 const MobileNavigation = memo(
   forwardRef<MobileNavigationRef, MobileNavigationProps>(
     ({ menu, ...rest }, ref) => {
       return (
-        <Popover ref={ref} {...rest}>
-          <Popover.Button className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
+        <Popover {...rest} ref={ref}>
+          <PopoverButton className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
             {strings.menu}
 
             <ChevronDownSvg className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400" />
-          </Popover.Button>
+          </PopoverButton>
 
-          <Transition.Root>
-            <Transition.Child
+          <Transition>
+            <TransitionChild
               as={Fragment}
               enter="duration-150 ease-out"
               enterFrom="opacity-0"
@@ -61,10 +63,10 @@ const MobileNavigation = memo(
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Popover.Overlay className="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-sm dark:bg-black/80" />
-            </Transition.Child>
+              <PopoverOverlay className="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-sm dark:bg-black/80" />
+            </TransitionChild>
 
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="duration-150 ease-out"
               enterFrom="opacity-0 scale-95"
@@ -73,17 +75,17 @@ const MobileNavigation = memo(
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Popover.Panel
+              <PopoverPanel
                 focus
                 className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
               >
                 <Div className="flex flex-row-reverse items-center justify-between">
-                  <Popover.Button
+                  <PopoverButton
                     aria-label={strings.closeMenu}
                     className="-m-1 p-1"
                   >
                     <CloseSvg className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
-                  </Popover.Button>
+                  </PopoverButton>
 
                   <Heading
                     as="h2"
@@ -93,31 +95,31 @@ const MobileNavigation = memo(
                   </Heading>
                 </Div>
 
-                {!isEmpty(menu) && isArrayType(menu) && (
-                  <Nav className="mt-6">
+                <Nav className="mt-6">
+                  {menu && menu?.length > 0 && (
                     <Ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                      {menu?.map(
+                      {menu.map(
                         ({ link, title }, index: number) =>
-                          !isEmpty(link) &&
-                          isStringType(link) &&
-                          !isEmpty(title) &&
-                          isStringType(title) && (
-                            <Popover.Button
+                          link &&
+                          link?.length > 0 &&
+                          title &&
+                          title?.length > 0 && (
+                            <PopoverButton
                               key={index}
                               as={Link}
                               href={link}
                               className="block py-2"
                             >
                               {title}
-                            </Popover.Button>
+                            </PopoverButton>
                           )
                       )}
                     </Ul>
-                  </Nav>
-                )}
-              </Popover.Panel>
-            </Transition.Child>
-          </Transition.Root>
+                  )}
+                </Nav>
+              </PopoverPanel>
+            </TransitionChild>
+          </Transition>
         </Popover>
       )
     }
