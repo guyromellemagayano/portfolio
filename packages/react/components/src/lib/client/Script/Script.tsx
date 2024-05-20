@@ -11,11 +11,12 @@ export type ScriptProps = ScriptHTMLAttributes<ScriptRef>
 
 /**
  * Render the script component
- * @param children - The children of the script.
- * @param rest - The rest of the props of the script.
+ * @param {ScriptProps} props - The script component properties.
  * @returns The rendered script component.
  */
-export const Script = ({ children, ...rest }: ScriptProps) => {
+const Script = (props: ScriptProps) => {
+  const { children, ...rest } = props
+
   return <script {...rest}>{children}</script>
 }
 
