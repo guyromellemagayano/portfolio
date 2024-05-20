@@ -6,10 +6,10 @@ import { formatDate } from '@guy-romelle-magayano/react-utils'
 
 import {
   Card,
-  CardProps,
-  CardRef
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components'
-import { ArticlesData } from '@guy-romelle-magayano/portfolio/types/data'
+import { type ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticleRef = CardRef
 export type ArticleProps = CardProps & ArticlesData
