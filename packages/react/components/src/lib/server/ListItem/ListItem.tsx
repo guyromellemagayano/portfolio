@@ -5,19 +5,19 @@ export type ListItemProps = LiHTMLAttributes<ListItemRef>
 
 /**
  * Render the list item component.
- * @param children - The children of the list item.
- * @param rest - The rest of the props of the list item.
+ * @param {ListItemProps} props - The list item component properties.
+ * @param {ListItemRef} ref - The list item component reference.
  * @returns The rendered list item component.
  */
-export const ListItem = forwardRef<ListItemRef, ListItemProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <li ref={ref} {...rest}>
-        {children}
-      </li>
-    )
-  }
-)
+const ListItem = forwardRef<ListItemRef, ListItemProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <li ref={ref} {...rest}>
+      {children}
+    </li>
+  )
+})
 
 ListItem.displayName = 'ListItem'
 
