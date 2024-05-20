@@ -12,18 +12,18 @@ import Link from 'next/link'
 
 import {
   Div,
+  DivisionRef,
   Heading,
   P,
-  Span,
-  type DivisionRef,
-  type ParagraphProps,
-  type ParagraphRef
+  ParagraphProps,
+  ParagraphRef,
+  Span
 } from '@guy-romelle-magayano/react-components/server'
 import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { ChevronRightSvg } from '@guy-romelle-magayano/portfolio/components/svg'
+import { ChevronRightSvg } from '@guy-romelle-magayano/portfolio/components'
 
 export type CardRef = Ref<any>
 export type CardProps = CommonComponentsProps & {
@@ -46,19 +46,17 @@ export type CardStaticComponents = {
 
 /**
  * Renders the card component.
- * @param as - The HTML tag or React component to render as the card.
- * @param className - Additional CSS classes to apply to the card.
- * @param children - The content to render inside the card.
- * @param rest - The rest of the props of the card.
+ * @param {CardProps} props - The props of the card.
+ * @param {CardRef} ref - The reference of the card.
  * @returns The rendered card component.
  */
 const Card = forwardRef<CardRef, CardProps>(
   ({ as: Component = Div, className, children, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Component
-          ref={ref}
           {...rest}
+          ref={ref}
           className={cn('group relative flex flex-col items-start', className)}
         >
           {children}
@@ -76,21 +74,18 @@ export type CardLinkProps = CardCommonProps
 
 /**
  * Renders the card link component.
- * @param href - The URL to link to.
- * @param title - The title of the link.
- * @param target - The target of the link.
- * @param children - The content to render inside the link.
- * @param rest - The rest of the props of the link.
+ * @param {CardLinkProps} props - The props of the card link.
+ * @param {CardLinkRef} ref - The reference of the card link.
  * @returns The rendered card link component.
  */
 const CardLink = forwardRef<CardLinkRef, CardLinkProps>(
   ({ href, title, target, children, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
-        <Div ref={ref} {...rest}>
+      children && (
+        <Div {...rest} ref={ref}>
           <Div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50" />
 
-          {href && children ? (
+          {href && href?.length > 0 && children ? (
             <Link href={href} title={title} target={target}>
               <Span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
               <Span className="relative z-10">{children}</Span>
@@ -111,12 +106,8 @@ export type CardTitleProps = CardCommonProps
 
 /**
  * Renders the card title component.
- * @param as - The HTML tag or React component to render as the title.
- * @param href - The URL to link to.
- * @param title - The title of the link.
- * @param children - The content to render inside the title.
- * @param className - Additional CSS classes to apply to the title.
- * @param rest - The rest of the props of the title.
+ * @param {CardTitleProps} props - The props of the card title.
+ * @param {CardTitleRef} ref - The reference of the card title.
  * @returns The rendered card title component.
  */
 const CardTitle = forwardRef<CardTitleRef, CardTitleProps>(
@@ -125,17 +116,17 @@ const CardTitle = forwardRef<CardTitleRef, CardTitleProps>(
     ref
   ) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Component
-          ref={ref}
           {...rest}
+          ref={ref}
           as="h2"
           className={cn(
             'text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100',
             className
           )}
         >
-          {href && children ? (
+          {href && href?.length > 0 && children ? (
             <CardLink href={href} title={title}>
               {children}
             </CardLink>
@@ -155,19 +146,17 @@ export type CardDescriptionProps = ParagraphProps & CardCommonProps
 
 /**
  * Renders the card description component.
- * @param children - The content to render inside the description.
- * @param id - The ID of the description.
- * @param className - Additional CSS classes to apply to the description.
- * @param rest - The rest of the props of the description.
+ * @param {CardDescriptionProps} props - The props of the card description.
+ * @param {CardDescriptionRef} ref - The reference of the card description.
  * @returns The rendered card description component.
  */
 const CardDescription = forwardRef<CardDescriptionRef, CardDescriptionProps>(
   ({ children, className, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <P
-          ref={ref}
           {...rest}
+          ref={ref}
           className={cn(
             'relative z-10 my-2 text-sm text-zinc-600 dark:text-zinc-400',
             className
@@ -187,27 +176,24 @@ export type CardCtaProps = CardCommonProps
 
 /**
  * Renders the card call to action component.
- * @param title - The title of the link.
- * @param children - The content to render inside the CTA.
- * @param className - Additional CSS classes to apply to the CTA.
- * @param href - The URL to link to.
- * @param rest - The rest of the props of the CTA.
- * @returns The rendered card CTA component.
+ * @param {CardCtaProps} props - The props of the card call to action.
+ * @param {CardCtaRef} ref - The reference of the card call to action.
+ * @returns The rendered card call to action component.
  */
 const CardCta = forwardRef<CardCtaRef, CardCtaProps>(
   ({ href, title, children, className, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Div
-          ref={ref}
           {...rest}
+          ref={ref}
           aria-hidden="true"
           className={cn(
             'relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500',
             className
           )}
         >
-          {href && children ? (
+          {href && href?.length > 0 && children ? (
             <Link
               href={href}
               title={title}
@@ -234,9 +220,8 @@ export type CardEyebrowProps = CardCommonProps &
 
 /**
  * An eyebrow component that can be used inside a Card component.
- * @param [decorate=false] - Whether to decorate the eyebrow with a line.
- * @param className - Additional CSS classes to apply to the eyebrow.
- * @param children - The content to render inside the eyebrow.
+ * @param {CardEyebrowProps} props - The props of the card eyebrow.
+ * @param {CardEyebrowRef} ref - The reference of the card eyebrow.
  * @returns The rendered eyebrow component.
  */
 const CardEyebrow = forwardRef<CardEyebrowRef, CardEyebrowProps>(
@@ -245,10 +230,10 @@ const CardEyebrow = forwardRef<CardEyebrowRef, CardEyebrowProps>(
     ref
   ) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Component
-          ref={ref}
           {...rest}
+          ref={ref}
           className={cn(
             'relative z-10 my-1 flex items-center text-sm font-medium',
             className,
