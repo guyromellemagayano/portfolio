@@ -7,19 +7,19 @@ export type PictureProps = HTMLAttributes<PictureRef>
 
 /**
  * Render the picture component.
- * @param children - The children of the picture.
- * @param rest - The rest of the props of the picture.
+ * @param {PictureProps} props - The picture component properties.
+ * @param {PictureRef} ref - The picture component reference.
  * @returns The rendered picture component.
  */
-export const Picture = forwardRef<PictureRef, PictureProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <picture ref={ref} {...rest}>
-        {children}
-      </picture>
-    )
-  }
-)
+const Picture = forwardRef<PictureRef, PictureProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <picture ref={ref} {...rest}>
+      {children}
+    </picture>
+  )
+})
 
 Picture.displayName = 'Picture'
 
