@@ -7,19 +7,19 @@ export type SelectProps = SelectHTMLAttributes<SelectRef>
 
 /**
  * Render the select component.
- * @param children - The children of the select.
- * @param rest - The rest of the props of the select.
+ * @param {SelectProps} props - The select component properties.
+ * @param {SelectRef} ref - The select component reference.
  * @returns The rendered select component.
  */
-export const Select = forwardRef<SelectRef, SelectProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <select ref={ref} {...rest}>
-        {children}
-      </select>
-    )
-  }
-)
+const Select = forwardRef<SelectRef, SelectProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <select ref={ref} {...rest}>
+      {children}
+    </select>
+  )
+})
 
 Select.displayName = 'Select'
 
