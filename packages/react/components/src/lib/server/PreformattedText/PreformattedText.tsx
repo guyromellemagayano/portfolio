@@ -5,20 +5,21 @@ export type PreformattedTextProps = HTMLAttributes<PreformattedTextRef>
 
 /**
  * Render the preformatted text component.
- * @param children - The children of the preformatted text.
- * @param rest - The rest of the props of the preformatted text.
+ * @param {PreformattedTextProps} props - The preformatted text component properties.
+ * @param {PreformattedTextRef} ref - The preformatted text component reference.
  * @returns The rendered preformatted text component.
  */
-export const PreformattedText = forwardRef<
-  PreformattedTextRef,
-  PreformattedTextProps
->(({ children, ...rest }, ref) => {
-  return (
-    <pre ref={ref} {...rest}>
-      {children}
-    </pre>
-  )
-})
+const PreformattedText = forwardRef<PreformattedTextRef, PreformattedTextProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
+    return (
+      <pre ref={ref} {...rest}>
+        {children}
+      </pre>
+    )
+  }
+)
 
 PreformattedText.displayName = 'PreformattedText'
 
