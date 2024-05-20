@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import { formatDate } from '@guy-romelle-magayano/react-utils'
 
@@ -8,7 +8,7 @@ import {
   Card,
   CardProps,
   CardRef
-} from '@guy-romelle-magayano/portfolio/components/card'
+} from '@guy-romelle-magayano/portfolio/components'
 import { ArticlesData } from '@guy-romelle-magayano/portfolio/types/data'
 
 export type ArticleRef = CardRef
@@ -20,41 +20,39 @@ const strings = {
 
 /**
  * Renders the article component.
- * @param slug - The slug of the article.
- * @param title - The title of the article.
- * @param date - The date of the article.
- * @param description - The description of the article.
- * @param rest - The rest of the article props.
+ * @param {ArticleProps} props - The props of the article.
+ * @param {ArticleRef} ref - The reference of the article.
  * @returns The rendered article component.
  */
-const Article = forwardRef<ArticleRef, ArticleProps>(
-  ({ slug, title, date, description, ...rest }, ref): ReactNode => {
-    const href = `/articles/${slug}`
+const Article = forwardRef<ArticleRef, ArticleProps>((props, ref) => {
+  const { slug, title, date, description, ...rest } = props,
+    href = `/articles/${slug}`
 
-    return (
-      (href || date || title || description) && (
-        <Card ref={ref} {...rest} as="article">
-          {date && (
-            <Card.Eyebrow
-              as="time"
-              className="mb-2 text-zinc-400 dark:text-zinc-500"
-              dateTime={date}
-              decorate
-            >
-              {formatDate(date)}
-            </Card.Eyebrow>
-          )}
+  return (
+    <Card ref={ref} {...rest} as="article">
+      {date && date?.length > 0 && (
+        <Card.Eyebrow
+          as="time"
+          className="mb-2 text-zinc-400 dark:text-zinc-500"
+          dateTime={date}
+          decorate
+        >
+          {formatDate(date)}
+        </Card.Eyebrow>
+      )}
 
-          {title && href && <Card.Title href={href}>{title}</Card.Title>}
+      {title && title?.length > 0 && href && href?.length > 0 && (
+        <Card.Title href={href}>{title}</Card.Title>
+      )}
 
-          {description && <Card.Description>{description}</Card.Description>}
+      {description && description?.length > 0 && (
+        <Card.Description>{description}</Card.Description>
+      )}
 
-          {href && <Card.Cta>{strings.read}</Card.Cta>}
-        </Card>
-      )
-    )
-  }
-)
+      {href && href?.length > 0 && <Card.Cta>{strings.read}</Card.Cta>}
+    </Card>
+  )
+})
 
 Article.displayName = 'Article'
 
