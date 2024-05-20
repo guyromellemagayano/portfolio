@@ -5,19 +5,19 @@ export type BoldProps = HTMLAttributes<BoldRef>
 
 /**
  * Render the bold component.
- * @param children - The children of the bold.
- * @param rest - The rest of the props of the bold.
+ * @param {BoldProps} props - The bold component properties.
+ * @param {BoldRef} ref - The bold component reference.
  * @returns The rendered bold component.
  */
-export const Bold = forwardRef<BoldRef, BoldProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <b ref={ref} {...rest}>
-        {children}
-      </b>
-    )
-  }
-)
+const Bold = forwardRef<BoldRef, BoldProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <b ref={ref} {...rest}>
+      {children}
+    </b>
+  )
+})
 
 Bold.displayName = 'Bold'
 
