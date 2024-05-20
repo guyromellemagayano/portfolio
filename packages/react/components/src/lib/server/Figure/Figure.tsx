@@ -5,19 +5,19 @@ export type FigureProps = HTMLAttributes<FigureRef>
 
 /**
  * Render the figure component.
- * @param children - The children of the figure.
- * @param rest - The rest of the props of the figure.
+ * @param {FigureProps} props - The figure component properties.
+ * @param {FigureRef} ref - The figure component reference.
  * @returns The rendered figure component.
  */
-export const Figure = forwardRef<FigureRef, FigureProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <figure ref={ref} {...rest}>
-        {children}
-      </figure>
-    )
-  }
-)
+const Figure = forwardRef<FigureRef, FigureProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <figure ref={ref} {...rest}>
+      {children}
+    </figure>
+  )
+})
 
 Figure.displayName = 'Figure'
 
