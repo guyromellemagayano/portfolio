@@ -5,19 +5,19 @@ export type DataProps = DataHTMLAttributes<DataRef>
 
 /**
  * Render the data component.
- * @param children - The children of the data.
- * @param rest - The rest of the props of the data.
+ * @param {DataProps} props - The data component properties.
+ * @param {DataRef} ref - The data component reference.
  * @returns The rendered data component.
  */
-export const Data = forwardRef<DataRef, DataProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <data ref={ref} {...rest}>
-        {children}
-      </data>
-    )
-  }
-)
+const Data = forwardRef<DataRef, DataProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <data ref={ref} {...rest}>
+      {children}
+    </data>
+  )
+})
 
 Data.displayName = 'Data'
 
