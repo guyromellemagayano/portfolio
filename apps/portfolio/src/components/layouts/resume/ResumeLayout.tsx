@@ -6,25 +6,19 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@guy-romelle-magayano/react-components'
 import {
   Div,
+  DivisionProps,
+  DivisionRef,
   Dl,
   Heading,
   Li,
   Ol,
-  Span,
-  type DivisionProps,
-  type DivisionRef
+  Span
 } from '@guy-romelle-magayano/react-components/server'
-
-import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
 
 import {
   ArrowDownSvg,
   BriefcaseSvg
-} from '@guy-romelle-magayano/portfolio/components/svg'
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   HomePageData,
   WorkExperienceData
@@ -46,9 +40,8 @@ const strings = {
 
 /**
  * Renders the resume layout component.
- * @param cvFile - The CV file to download.
- * @param workExperiences - The work experiences to display.
- * @param rest - The rest of the resume layout props.
+ * @param {ResumeLayoutProps} props - The props of the resume layout.
+ * @param {ResumeLayoutRef} ref - The reference of the resume layout.
  * @returns The rendered resume layout component.
  */
 const ResumeLayout = memo(
@@ -57,9 +50,9 @@ const ResumeLayout = memo(
       const router = useRouter()
 
       return (
-        ((!isEmpty(workExperiences) && isArrayType(workExperiences)) ||
-          (!isEmpty(cvFile) && isStringType(cvFile))) && (
-          <Div ref={ref} {...rest}>
+        ((workExperiences && workExperiences?.length > 0) ||
+          (cvFile && cvFile?.length > 0)) && (
+          <Div {...rest} ref={ref}>
             <Heading
               as="h2"
               className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100"
@@ -68,7 +61,7 @@ const ResumeLayout = memo(
               <Span className="ml-3">{strings.work}</Span>
             </Heading>
 
-            {!isEmpty(workExperiences) && isArrayType(workExperiences) && (
+            {workExperiences && workExperiences?.length > 0 && (
               <Ol className="mt-6 space-y-4">
                 {workExperiences?.map(
                   (
@@ -82,17 +75,17 @@ const ResumeLayout = memo(
                     }: WorkExperienceData,
                     index: number
                   ) =>
-                    !isEmpty(company) &&
-                    isStringType(company) &&
-                    !isEmpty(title) &&
-                    isStringType(title) &&
-                    !isEmpty(start) &&
-                    isStringType(start) &&
-                    !isEmpty(end) &&
-                    isStringType(end) && (
+                    company &&
+                    company?.length > 0 &&
+                    title &&
+                    title?.length > 0 &&
+                    start &&
+                    start?.length > 0 &&
+                    end &&
+                    end?.length > 0 && (
                       <Li key={index} className="flex gap-4">
                         <Div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                          {!isEmpty(logo) && isStringType(logo) ? (
+                          {logo ? (
                             <Image
                               src={logo}
                               alt={alt}
@@ -133,7 +126,7 @@ const ResumeLayout = memo(
               </Ol>
             )}
 
-            {!isEmpty(cvFile) && isStringType(cvFile) && (
+            {cvFile && cvFile?.length > 0 && (
               <Button
                 className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 outline-offset-2 transition hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70"
                 onClick={() => router.push(cvFile)}
