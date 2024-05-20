@@ -5,9 +5,9 @@ import { forwardRef } from 'react'
 import {
   Button,
   Form,
-  Input,
-  type FormProps,
-  type FormRef
+  FormProps,
+  FormRef,
+  Input
 } from '@guy-romelle-magayano/react-components'
 import {
   Div,
@@ -18,7 +18,7 @@ import {
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { MailSvg } from '@guy-romelle-magayano/portfolio/components/svg'
+import { MailSvg } from '@guy-romelle-magayano/portfolio/components'
 
 export type NewsletterLayoutRef = FormRef
 export type NewsletterLayoutProps = FormProps
@@ -33,8 +33,8 @@ const strings = {
 
 /**
  * Renders the newsletter layout component.
- * @param className - The class name of the newsletter layout.
- * @param rest - The rest of the newsletter layout props.
+ * @param {NewsletterLayoutProps} props - The props of the newsletter layout.
+ * @param {NewsletterLayoutRef} ref - The reference of the newsletter layout.
  * @returns The rendered newsletter layout component.
  */
 const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
@@ -43,8 +43,8 @@ const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
 
     return (
       <Form
-        ref={ref}
         {...rest}
+        ref={ref}
         action={thankYouPageLink}
         className={cn(
           className,
