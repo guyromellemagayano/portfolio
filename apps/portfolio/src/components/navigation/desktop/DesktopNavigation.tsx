@@ -2,8 +2,8 @@ import { forwardRef, memo } from 'react'
 
 import {
   Nav,
-  NavigationProps,
-  NavigationRef
+  type NavigationProps,
+  type NavigationRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
