@@ -7,19 +7,19 @@ export type MenuProps = HTMLAttributes<MenuRef>
 
 /**
  * Render the menu component.
- * @param children - The children of the menu.
- * @param rest - The rest of the props of the menu.
+ * @param {MenuProps} props - The menu component properties.
+ * @param {MenuRef} ref - The menu component reference.
  * @returns The rendered menu component.
  */
-export const Menu = forwardRef<MenuRef, MenuProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <menu ref={ref} {...rest}>
-        {children}
-      </menu>
-    )
-  }
-)
+const Menu = forwardRef<MenuRef, MenuProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <menu ref={ref} {...rest}>
+      {children}
+    </menu>
+  )
+})
 
 Menu.displayName = 'Menu'
 
