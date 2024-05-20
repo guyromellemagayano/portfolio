@@ -5,19 +5,19 @@ export type SampleProps = HTMLAttributes<SampleRef>
 
 /**
  * Render the sample component.
- * @param children - The children of the sample.
- * @param rest - The rest of the props of the sample.
+ * @param {SampleProps} props - The sample component properties.
+ * @param {SampleRef} ref - The sample component reference.
  * @returns The rendered sample component.
  */
-export const Sample = forwardRef<SampleRef, SampleProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <samp ref={ref} {...rest}>
-        {children}
-      </samp>
-    )
-  }
-)
+const Sample = forwardRef<SampleRef, SampleProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <samp ref={ref} {...rest}>
+      {children}
+    </samp>
+  )
+})
 
 Sample.displayName = 'Sample'
 
