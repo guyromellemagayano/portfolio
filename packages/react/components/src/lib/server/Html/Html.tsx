@@ -5,11 +5,12 @@ export type HtmlProps = HtmlHTMLAttributes<HtmlRef>
 
 /**
  * Render the HTML component.
- * @param children - The children of the HTML.
- * @param rest - The rest of the props of the HTML.
+ * @param {HtmlProps} props - The HTML component properties.
  * @returns The rendered HTML component.
  */
-export const Html = ({ children, ...rest }: HtmlProps) => {
+const Html = (props: HtmlProps) => {
+  const { children, ...rest } = props
+
   return <html {...rest}>{children}</html>
 }
 
