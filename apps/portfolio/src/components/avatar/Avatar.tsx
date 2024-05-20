@@ -1,6 +1,6 @@
 'use client'
 
-import { ForwardedRef, forwardRef } from 'react'
+import { forwardRef } from 'react'
 
 import Image from 'next/image'
 import Link from 'next/link'
@@ -30,17 +30,12 @@ const link: { href: string; label: string } = {
 
 /**
  * Renders the avatar component.
- * @param large - The large prop of the avatar.
- * @param className - The class name of the avatar.
- * @param alt - The alternative text of the avatar.
- * @param rest - The rest of the props of the avatar.
+ * @param {AvatarProps} props - The props of the avatar.
+ * @param {AvatarRef} ref - The reference of the avatar.
  * @returns The rendered avatar component.
  */
 const Avatar = forwardRef<AvatarRef, AvatarProps>(
-  (
-    { large = false, className, alt = '', ...rest },
-    ref: ForwardedRef<AvatarRef>
-  ) => {
+  ({ large = false, className, alt = '', ...rest }, ref) => {
     return (
       <Link
         ref={ref}
