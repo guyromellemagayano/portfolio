@@ -14,16 +14,16 @@ import {
   Div,
   Heading,
   Nav,
-  NavigationProps,
-  NavigationRef,
-  Ul
+  Ul,
+  type NavigationProps,
+  type NavigationRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
   ChevronDownSvg,
   CloseSvg
 } from '@guy-romelle-magayano/portfolio/components'
-import { PagesData } from '@guy-romelle-magayano/portfolio/types'
+import { type PagesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type MobileNavigationRef = NavigationRef
 export type MobileNavigationProps = NavigationProps & {
