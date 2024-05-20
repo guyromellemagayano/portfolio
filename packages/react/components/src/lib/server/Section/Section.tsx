@@ -5,19 +5,19 @@ export type SectionProps = HTMLAttributes<SectionRef>
 
 /**
  * Render the section component.
- * @param children - The children of the section.
- * @param rest - The rest of the props of the section.
+ * @param {SectionProps} props - The section component properties.
+ * @param {SectionRef} ref - The section component reference.
  * @returns The rendered section component.
  */
-export const Section = forwardRef<SectionRef, SectionProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <section ref={ref} {...rest}>
-        {children}
-      </section>
-    )
-  }
-)
+const Section = forwardRef<SectionRef, SectionProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <section ref={ref} {...rest}>
+      {children}
+    </section>
+  )
+})
 
 Section.displayName = 'Section'
 
