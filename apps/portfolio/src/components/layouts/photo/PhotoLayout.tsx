@@ -4,13 +4,13 @@ import Image from 'next/image'
 
 import {
   Div,
-  DivisionProps,
-  DivisionRef
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
 
-import { SlidePhotosData } from '@guy-romelle-magayano/portfolio/types/data'
+import { type SlidePhotosData } from '@guy-romelle-magayano/portfolio/types'
 
 export type PhotoLayoutRef = DivisionRef
 export type PhotoLayoutProps = DivisionProps & {
