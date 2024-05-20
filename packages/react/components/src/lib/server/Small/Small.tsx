@@ -5,19 +5,19 @@ export type SmallProps = HTMLAttributes<SmallRef>
 
 /**
  * Render the small component.
- * @param children - The children of the small.
- * @param rest - The rest of the props of the small.
+ * @param {SmallProps} props - The small component properties.
+ * @param {SmallRef} ref - The small component reference.
  * @returns The rendered small component.
  */
-export const Small = forwardRef<SmallRef, SmallProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <small ref={ref} {...rest}>
-        {children}
-      </small>
-    )
-  }
-)
+const Small = forwardRef<SmallRef, SmallProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <small ref={ref} {...rest}>
+      {children}
+    </small>
+  )
+})
 
 Small.displayName = 'Small'
 
