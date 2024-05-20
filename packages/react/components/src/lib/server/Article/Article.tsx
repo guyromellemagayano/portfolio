@@ -5,19 +5,19 @@ export type ArticleProps = HTMLAttributes<ArticleRef>
 
 /**
  * Render the article component.
- * @param children - The children of the article.
- * @param rest - The rest of the props of the article.
+ * @param {ArticleProps} props - The article component properties.
+ * @param {ArticleRef} ref - The article component reference.
  * @returns The rendered article component.
  */
-export const Article = forwardRef<ArticleRef, ArticleProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <article ref={ref} {...rest}>
-        {children}
-      </article>
-    )
-  }
-)
+const Article = forwardRef<ArticleRef, ArticleProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <article ref={ref} {...rest}>
+      {children}
+    </article>
+  )
+})
 
 Article.displayName = 'Article'
 
