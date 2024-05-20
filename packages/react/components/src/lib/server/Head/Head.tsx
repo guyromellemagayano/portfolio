@@ -5,11 +5,12 @@ export type HeadProps = HTMLAttributes<HeadRef>
 
 /**
  * Render the head component.
- * @param children - The children of the head.
- * @param rest - The rest of the props of the head.
+ * @param {HeadProps} props - The head component properties.
  * @returns The rendered head component.
  */
-export const Head = ({ children, ...rest }: HeadProps) => {
+const Head = (props: HeadProps) => {
+  const { children, ...rest } = props
+
   return <head {...rest}>{children}</head>
 }
 
