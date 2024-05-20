@@ -12,12 +12,12 @@ import Link from 'next/link'
 
 import {
   Div,
-  DivisionRef,
   Heading,
   P,
-  ParagraphProps,
-  ParagraphRef,
-  Span
+  Span,
+  type DivisionRef,
+  type ParagraphProps,
+  type ParagraphRef
 } from '@guy-romelle-magayano/react-components/server'
 import { CommonComponentsProps } from '@guy-romelle-magayano/react-components/types'
 
