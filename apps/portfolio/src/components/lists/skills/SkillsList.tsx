@@ -2,13 +2,11 @@ import { forwardRef } from 'react'
 
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
-import { isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
-
 import {
   SectionLayout,
-  type SectionLayoutProps,
-  type SectionLayoutRef
-} from '@guy-romelle-magayano/portfolio/components/layouts/section'
+  SectionLayoutProps,
+  SectionLayoutRef
+} from '@guy-romelle-magayano/portfolio/components'
 
 export type SkillsListRef = SectionLayoutRef
 export type SkillsListProps = SectionLayoutProps & {
@@ -17,19 +15,17 @@ export type SkillsListProps = SectionLayoutProps & {
 
 /**
  * Renders the skills list component.
- * @param title - The title of the skills list.
- * @param children - The children of the skills list.
- * @param rest - The rest of the props of the skills list.
+ * @param {SkillsListProps} props - The properties to render the skills list component.
+ * @param {SkillsListRef} ref - The reference of the skills list component.
  * @returns The rendered skills list component.
  */
 const SkillsList = forwardRef<SkillsListRef, SkillsListProps>(
   ({ title, children, ...rest }, ref) => {
     return (
-      !isEmpty(children) &&
-      !isEmpty(title) &&
-      isStringType(title) && (
+      title &&
+      title?.length > 0 && (
         <SectionLayout ref={ref} {...rest} title={title}>
-          <Div className="space-y-16">{children}</Div>
+          {children && <Div className="space-y-16">{children}</Div>}
         </SectionLayout>
       )
     )
