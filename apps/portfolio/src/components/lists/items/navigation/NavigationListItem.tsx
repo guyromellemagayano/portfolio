@@ -5,12 +5,12 @@ import { usePathname } from 'next/navigation'
 
 import {
   Li,
-  Span,
-  type ListItemProps,
-  type ListItemRef
+  ListItemProps,
+  ListItemRef,
+  Span
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type NavigationListItemRef = ListItemRef
 export type NavigationListItemProps = ListItemProps & {
@@ -19,9 +19,8 @@ export type NavigationListItemProps = ListItemProps & {
 
 /**
  * Renders the navigation list component.
- * @param href - The URL to link to.
- * @param children - The content to render inside the link.
- * @param rest - The props object.
+ * @param {NavigationListItemProps} props - The properties to render the navigation list component.
+ * @param {NavigationListItemRef} ref - The reference of the navigation list component.
  * @returns The rendered navigation list component.
  */
 const NavigationListItem = forwardRef<
@@ -32,9 +31,8 @@ const NavigationListItem = forwardRef<
     isActive = pathname === href
 
   return (
-    !isEmpty(href) &&
-    !isEmpty(children) && (
-      <Li ref={ref} {...rest}>
+    <Li ref={ref} {...rest}>
+      {href && children && (
         <Link
           href={href}
           className={cn(
@@ -50,8 +48,8 @@ const NavigationListItem = forwardRef<
             <Span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-amber-500/0 via-amber-500/40 to-amber-500/0 dark:from-amber-400/0 dark:via-amber-400/40 dark:to-amber-400/0" />
           )}
         </Link>
-      </Li>
-    )
+      )}
+    </Li>
   )
 })
 
