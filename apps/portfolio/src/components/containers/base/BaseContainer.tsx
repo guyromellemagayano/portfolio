@@ -2,8 +2,8 @@ import { forwardRef } from 'react'
 
 import {
   Div,
-  DivisionProps,
-  DivisionRef
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
