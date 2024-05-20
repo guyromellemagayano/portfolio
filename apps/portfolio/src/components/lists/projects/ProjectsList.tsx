@@ -2,8 +2,8 @@ import { forwardRef } from 'react'
 
 import {
   Ul,
-  UnorderedListProps,
-  UnorderedListRef
+  type UnorderedListProps,
+  type UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
