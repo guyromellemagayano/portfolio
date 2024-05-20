@@ -56,7 +56,8 @@ const nextConfig = {
 
   // Experimental features configuration
   experimental: {
-    mdxRs: true
+    mdxRs: true,
+    instrumentationHook: true
   },
 
   // Environment variables configuration
