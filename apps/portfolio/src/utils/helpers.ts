@@ -1,3 +1,5 @@
+'use server'
+
 import { headers } from 'next/headers'
 
 /**
@@ -5,7 +7,7 @@ import { headers } from 'next/headers'
  * @param pathname - The pathname to use.
  * @returns The full server URL.
  */
-export const fullServerUrl = (pathname: string): string => {
+export const fullServerUrl = async (pathname: string): Promise<string> => {
   const headersList = headers()
 
   return (
