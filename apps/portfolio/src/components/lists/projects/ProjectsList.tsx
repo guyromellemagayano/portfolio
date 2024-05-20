@@ -2,28 +2,28 @@ import { forwardRef } from 'react'
 
 import {
   Ul,
-  type UnorderedListProps,
-  type UnorderedListRef
+  UnorderedListProps,
+  UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isEmpty } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type ProjectsListRef = UnorderedListRef
 export type ProjectsListProps = UnorderedListProps
 
 /**
  * Renders the projects list component.
- * @param children - The children of the projects list.
- * @param rest - The rest of the props.
+ * @param {ProjectsListProps} props - The properties to render the projects list component.
+ * @param {ProjectsListRef} ref - The reference of the projects list component.
  * @returns The rendered projects list component.
  */
 const ProjectsList = forwardRef<ProjectsListRef, ProjectsListProps>(
   ({ className, children, ...rest }, ref) => {
     return (
-      !isEmpty(children) && (
+      children && (
         <Ul
-          ref={ref}
           {...rest}
+          ref={ref}
           className={cn(
             'grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3',
             className
