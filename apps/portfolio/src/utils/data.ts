@@ -12,16 +12,15 @@ import { fetchPageData } from '@guy-romelle-magayano/portfolio/utils/server'
  * Fetches the pages data.
  * @returns The pages data.
  */
-export const pagesData = async (): Promise<Array<PagesData> | undefined> =>
+export const pagesData = async (): Promise<Array<PagesData>> =>
   await fetchPageData(apiUrls.pages)
 
 /**
  * Fetches the social data.
  * @returns The social data.
  */
-export const socialData = async (): Promise<
-  Array<SocialLinksData> | undefined
-> => await fetchPageData(apiUrls.social)
+export const socialData = async (): Promise<Array<SocialLinksData>> =>
+  await fetchPageData(apiUrls.social)
 
 /**
  * The pages to filter.
@@ -35,15 +34,17 @@ const pageFilter = ['skills', 'work', 'articles', 'projects', 'about']
 export const navigationData = async (): Promise<NavigationData> => {
   const pages = await pagesData(),
     headerMenu =
-      pages &&
-      pages?.length > 0 &&
-      pages?.filter(page => pageFilter.includes(page.slug)),
+      (pages &&
+        pages?.length > 0 &&
+        pages?.filter(page => pageFilter.includes(page.slug))) ||
+      [],
     footerMenu =
-      pages &&
-      pages?.length > 0 &&
-      pages?.filter(
-        page => !pageFilter.includes(page.slug) && page.slug !== 'home'
-      )
+      (pages &&
+        pages?.length > 0 &&
+        pages?.filter(
+          page => !pageFilter.includes(page.slug) && page.slug !== 'home'
+        )) ||
+      []
 
   return {
     headerMenu,
