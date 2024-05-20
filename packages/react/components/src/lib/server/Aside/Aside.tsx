@@ -5,19 +5,19 @@ export type AsideProps = HTMLAttributes<AsideRef>
 
 /**
  * Render the aside component.
- * @param children - The children of the aside.
- * @param rest - The rest of the props of the aside.
+ * @param {AsideProps} props - The aside component properties.
+ * @param {AsideRef} ref - The aside component reference.
  * @returns The rendered aside component.
  */
-export const Aside = forwardRef<AsideRef, AsideProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <aside ref={ref} {...rest}>
-        {children}
-      </aside>
-    )
-  }
-)
+const Aside = forwardRef<AsideRef, AsideProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <aside ref={ref} {...rest}>
+      {children}
+    </aside>
+  )
+})
 
 Aside.displayName = 'Aside'
 
