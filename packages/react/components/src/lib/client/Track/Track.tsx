@@ -7,19 +7,19 @@ export type TrackProps = TrackHTMLAttributes<TrackRef>
 
 /**
  * Render the track component.
- * @param children - The children of the track.
- * @param rest - The rest of the props of the track.
+ * @param {TrackProps} props - The track component properties.
+ * @param {TrackRef} ref - The track component reference.
  * @returns The rendered track component.
  */
-export const Track = forwardRef<TrackRef, TrackProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <track ref={ref} {...rest}>
-        {children}
-      </track>
-    )
-  }
-)
+const Track = forwardRef<TrackRef, TrackProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <track ref={ref} {...rest}>
+      {children}
+    </track>
+  )
+})
 
 Track.displayName = 'Track'
 
