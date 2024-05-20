@@ -5,19 +5,19 @@ export type ParagraphProps = HTMLAttributes<ParagraphRef>
 
 /**
  * Render the paragraph component.
- * @param children - The children of the paragraph.
- * @param rest - The rest of the props of the paragraph.
+ * @param {ParagraphProps} props - The paragraph component properties.
+ * @param {ParagraphRef} ref - The paragraph component reference.
  * @returns The rendered paragraph component.
  */
-export const Paragraph = forwardRef<ParagraphRef, ParagraphProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <p ref={ref} {...rest}>
-        {children}
-      </p>
-    )
-  }
-)
+const Paragraph = forwardRef<ParagraphRef, ParagraphProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <p ref={ref} {...rest}>
+      {children}
+    </p>
+  )
+})
 
 Paragraph.displayName = 'Paragraph'
 
