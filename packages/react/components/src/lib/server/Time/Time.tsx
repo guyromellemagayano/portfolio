@@ -5,19 +5,19 @@ export type TimeProps = TimeHTMLAttributes<TimeRef>
 
 /**
  * Render the time component.
- * @param children - The children of the time.
- * @param rest - The rest of the props of the time.
+ * @param {TimeProps} props - The time component properties.
+ * @param {TimeRef} ref - The time component reference.
  * @returns The rendered time component.
  */
-export const Time = forwardRef<TimeRef, TimeProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <time ref={ref} {...rest}>
-        {children}
-      </time>
-    )
-  }
-)
+const Time = forwardRef<TimeRef, TimeProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <time ref={ref} {...rest}>
+      {children}
+    </time>
+  )
+})
 
 Time.displayName = 'Time'
 
