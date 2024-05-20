@@ -3,14 +3,10 @@
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
-
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
-import { WorkList } from '@guy-romelle-magayano/portfolio/components/lists/work'
-import { WorkCardsList } from '@guy-romelle-magayano/portfolio/components/lists/work-cards'
+  ContentLayout,
+  WorkCardsList,
+  WorkList
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   WorkExperienceData,
   WorkPageData
@@ -20,24 +16,24 @@ export type WorkAppProps = WorkPageData
 
 /**
  * Render the work application component.
- * @param props The props of the work application.
+ * @param {WorkAppProps} props - The props of the work application.
  * @returns The rendered work application component.
  */
 const WorkApp = (props: WorkAppProps) => {
-  const { hero, workExperiences } = props
-
-  const heading = hero?.heading || undefined,
+  const { hero, workExperiences } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
-    !isEmpty(heading) &&
-    isStringType(heading) &&
-    !isEmpty(description) &&
-    (isStringType(description) || isArrayType(description)) && (
+    heading &&
+    heading?.length > 0 &&
+    description &&
+    ((typeof description === 'string' && description?.length > 0) ||
+      (Array.isArray(description) && description?.length > 0)) && (
       <ContentLayout.Simple title={heading} intro={description}>
-        {isArrayType(workExperiences) && !isEmpty(workExperiences) && (
+        {workExperiences && workExperiences?.length > 0 && (
           <Div className="grid gap-y-12">
-            {workExperiences?.map(
+            {workExperiences.map(
               ({ duration, ...rest }: WorkExperienceData, index: number) => (
                 <WorkList key={index} title={duration} {...rest}>
                   <WorkCardsList {...rest} />
