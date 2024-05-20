@@ -8,12 +8,12 @@ import { Button } from '@guy-romelle-magayano/react-components'
 import {
   Article,
   Div,
-  DivisionProps,
-  DivisionRef,
   Header,
   Heading,
   Span,
-  Time
+  Time,
+  type DivisionProps,
+  type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn, formatDate } from '@guy-romelle-magayano/react-utils'
@@ -25,7 +25,7 @@ import {
   Article as HomeArticleLayout,
   Prose
 } from '@guy-romelle-magayano/portfolio/components'
-import { ArticlesData } from '@guy-romelle-magayano/portfolio/types/data'
+import { type ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticleLayoutRef = DivisionRef
 export type ArticleLayoutProps = DivisionProps & {
