@@ -11,11 +11,11 @@ import {
 
 import {
   Card,
-  CardProps,
-  CardRef,
-  LinkSvg
+  LinkSvg,
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components'
-import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
+import { type ProjectsData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ProjectsCardsListRef = CardRef
 export type ProjectsCardsListProps = CardProps &
