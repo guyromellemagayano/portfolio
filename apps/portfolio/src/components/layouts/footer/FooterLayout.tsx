@@ -5,9 +5,9 @@ import { forwardRef, memo } from 'react'
 import {
   Div,
   Footer,
-  FooterProps,
-  FooterRef,
-  P
+  P,
+  type FooterProps,
+  type FooterRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
@@ -16,7 +16,7 @@ import {
   BaseContainer,
   NavigationLink
 } from '@guy-romelle-magayano/portfolio/components'
-import { PagesData } from '@guy-romelle-magayano/portfolio/types/data'
+import { type PagesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type FooterLayoutRef = FooterRef
 export type FooterLayoutProps = FooterProps & {
