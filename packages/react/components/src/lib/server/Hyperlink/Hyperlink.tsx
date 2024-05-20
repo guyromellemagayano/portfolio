@@ -9,21 +9,19 @@ export type HyperlinkProps = AnchorHTMLAttributes<HyperlinkRef>
 
 /**
  * Render the hyperlink component.
- * @param href - The URL of the hyperlink.
- * @param isNextLink - The flag to use the next link.
- * @param children - The children of the hyperlink.
- * @param rest - The rest of the props of the hyperlink.
+ * @param {HyperlinkProps} props - The hyperlink component properties.
+ * @param {HyperlinkRef} ref - The hyperlink component reference.
  * @returns The rendered hyperlink component.
  */
-export const Hyperlink = forwardRef<HyperlinkRef, HyperlinkProps>(
-  ({ href = '#', children, ...rest }, ref) => {
-    return (
-      <a ref={ref} href={href} {...rest}>
-        {children}
-      </a>
-    )
-  }
-)
+const Hyperlink = forwardRef<HyperlinkRef, HyperlinkProps>((props, ref) => {
+  const { href = '#', children, ...rest } = props
+
+  return (
+    <a ref={ref} href={href} {...rest}>
+      {children}
+    </a>
+  )
+})
 
 Hyperlink.displayName = 'Hyperlink'
 
