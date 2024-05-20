@@ -6,8 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import {
-  HyperlinkProps,
-  HyperlinkRef
+  type HyperlinkProps,
+  type HyperlinkRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
