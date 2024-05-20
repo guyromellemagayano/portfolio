@@ -5,19 +5,19 @@ export type HeaderProps = HTMLAttributes<HeaderRef>
 
 /**
  * Render the header component.
- * @param children - The children of the header.
- * @param rest - The rest of the props of the header.
+ * @param {HeaderProps} props - The header component properties.
+ * @param {HeaderRef} ref - The header component reference.
  * @returns The rendered header component.
  */
-export const Header = forwardRef<HeaderRef, HeaderProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <header ref={ref} {...rest}>
-        {children}
-      </header>
-    )
-  }
-)
+const Header = forwardRef<HeaderRef, HeaderProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <header ref={ref} {...rest}>
+      {children}
+    </header>
+  )
+})
 
 Header.displayName = 'Header'
 
