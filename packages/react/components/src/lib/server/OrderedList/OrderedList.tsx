@@ -5,12 +5,14 @@ export type OrderedListProps = OlHTMLAttributes<OrderedListRef>
 
 /**
  * Render the ordered list component.
- * @param children - The children of the ordered list.
- * @param rest - The rest of the props of the ordered list.
+ * @param {OrderedListProps} props - The ordered list component properties.
+ * @param {OrderedListRef} ref - The ordered list component reference.
  * @returns The rendered ordered list component.
  */
-export const OrderedList = forwardRef<OrderedListRef, OrderedListProps>(
-  ({ children, ...rest }, ref) => {
+const OrderedList = forwardRef<OrderedListRef, OrderedListProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
     return (
       <ol ref={ref} {...rest}>
         {children}
