@@ -6,8 +6,8 @@ import {
   ContentLayout
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  ArticlesData,
-  ArticlesPageData
+  type ArticlesData,
+  type ArticlesPageData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticlesAppProps = ArticlesPageData & {
