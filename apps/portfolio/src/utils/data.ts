@@ -1,8 +1,10 @@
+'use server'
+
 import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
 import {
-  NavigationData,
-  PagesData,
-  SocialLinksData
+  type NavigationData,
+  type PagesData,
+  type SocialLinksData
 } from '@guy-romelle-magayano/portfolio/types'
 import { fetchPageData } from '@guy-romelle-magayano/portfolio/utils/server'
 
@@ -10,15 +12,21 @@ import { fetchPageData } from '@guy-romelle-magayano/portfolio/utils/server'
  * Fetches the pages data.
  * @returns The pages data.
  */
-export const pagesData = async (): Promise<Array<PagesData>> =>
+export const pagesData = async (): Promise<Array<PagesData> | undefined> =>
   await fetchPageData(apiUrls.pages)
 
 /**
  * Fetches the social data.
  * @returns The social data.
  */
-export const socialData = async (): Promise<Array<SocialLinksData>> =>
-  await fetchPageData(apiUrls.social)
+export const socialData = async (): Promise<
+  Array<SocialLinksData> | undefined
+> => await fetchPageData(apiUrls.social)
+
+/**
+ * The pages to filter.
+ */
+const pageFilter = ['skills', 'work', 'articles', 'projects', 'about']
 
 /**
  * Retrieves the navigation data for the base layout.
@@ -26,11 +34,16 @@ export const socialData = async (): Promise<Array<SocialLinksData>> =>
  */
 export const navigationData = async (): Promise<NavigationData> => {
   const pages = await pagesData(),
-    pageFilter = ['skills', 'work', 'articles', 'projects', 'about'],
-    headerMenu = pages.filter(page => pageFilter.includes(page.slug)),
-    footerMenu = pages.filter(
-      page => !pageFilter.includes(page.slug) && page.slug !== 'home'
-    )
+    headerMenu =
+      pages &&
+      pages?.length > 0 &&
+      pages?.filter(page => pageFilter.includes(page.slug)),
+    footerMenu =
+      pages &&
+      pages?.length > 0 &&
+      pages?.filter(
+        page => !pageFilter.includes(page.slug) && page.slug !== 'home'
+      )
 
   return {
     headerMenu,

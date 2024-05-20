@@ -192,6 +192,6 @@ export type AboutAppData = CommonPageAppData
 
 // Navigation data
 export type NavigationData = {
-  headerMenu: PagesData[]
-  footerMenu: PagesData[]
+  headerMenu: Array<PagesData>
+  footerMenu: Array<PagesData>
 }
