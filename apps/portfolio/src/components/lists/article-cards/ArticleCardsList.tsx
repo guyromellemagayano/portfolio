@@ -2,18 +2,13 @@ import { forwardRef, memo } from 'react'
 
 import {
   Article,
-  type ArticleProps,
-  type ArticleRef
+  ArticleProps,
+  ArticleRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  formatDate,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn, formatDate } from '@guy-romelle-magayano/react-utils'
 
-import { Card } from '@guy-romelle-magayano/portfolio/components/card'
+import { Card } from '@guy-romelle-magayano/portfolio/components'
 import { ArticlesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ArticleCardsListRef = ArticleRef
@@ -26,12 +21,8 @@ const strings = {
 
 /**
  * Renders the articles cards list component.
- * @param date - The date of the article.
- * @param slug - The slug of the article.
- * @param title - The title of the article.
- * @param description - The description of the article.
- * @param className - The class name of the articles cards list.
- * @param rest - The rest of the props.
+ * @param {ArticleCardsListProps} props - The props of the articles cards list.
+ * @param {ArticleCardsListRef} ref - The reference of the articles cards list.
  * @returns The rendered articles cards list component.
  */
 const ArticleCardsList = memo(
@@ -40,36 +31,32 @@ const ArticleCardsList = memo(
       const href = `/articles/${slug}`
 
       return (
-        !isEmpty(title) &&
-        isStringType(title) &&
-        !isEmpty(description) &&
-        isStringType(description) &&
-        !isEmpty(slug) &&
-        isStringType(slug) && (
-          <Article
-            ref={ref}
-            {...rest}
-            className={cn(
-              'md:grid md:grid-cols-4 md:items-baseline',
-              className
-            )}
-          >
-            {!isEmpty(date) && isStringType(date) && (
-              <Card.Eyebrow
-                as="time"
-                className="mt-1 hidden text-zinc-400 md:block dark:text-zinc-500"
-              >
-                {formatDate(date)}
-              </Card.Eyebrow>
+        <Article
+          {...rest}
+          ref={ref}
+          className={cn('md:grid md:grid-cols-4 md:items-baseline', className)}
+        >
+          {date && date?.length > 0 && (
+            <Card.Eyebrow
+              as="time"
+              className="mt-1 hidden text-zinc-400 md:block dark:text-zinc-500"
+            >
+              {formatDate(date)}
+            </Card.Eyebrow>
+          )}
+
+          <Card className="md:col-span-3">
+            {href && href?.length > 0 && title && title?.length > 0 && (
+              <Card.Title href={href}>{title}</Card.Title>
             )}
 
-            <Card className="md:col-span-3">
-              <Card.Title href={href}>{title}</Card.Title>
+            {description && description?.length > 0 && (
               <Card.Description>{description}</Card.Description>
-              <Card.Cta>{strings.read}</Card.Cta>
-            </Card>
-          </Article>
-        )
+            )}
+
+            {href && href?.length > 0 && <Card.Cta>{strings.read}</Card.Cta>}
+          </Card>
+        </Article>
       )
     }
   )
