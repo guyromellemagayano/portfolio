@@ -5,9 +5,9 @@ import {
   ProjectsCardsList,
   ProjectsList
 } from '@guy-romelle-magayano/portfolio/components'
-import type {
-  ProjectsData,
-  ProjectsPageData
+import {
+  type ProjectsData,
+  type ProjectsPageData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type ProjectsAppProps = ProjectsPageData & {
