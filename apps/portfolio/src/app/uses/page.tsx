@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { UsesApp } from '@guy-romelle-magayano/portfolio/components/apps/uses'
+import { UsesApp } from '@guy-romelle-magayano/portfolio/components'
 import {
   usesAppData,
   usesPageData
