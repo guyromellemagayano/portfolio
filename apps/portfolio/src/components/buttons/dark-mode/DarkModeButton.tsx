@@ -6,8 +6,8 @@ import { useTheme } from 'next-themes'
 
 import {
   Button,
-  ButtonProps,
-  ButtonRef
+  type ButtonProps,
+  type ButtonRef
 } from '@guy-romelle-magayano/react-components'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
