@@ -2,8 +2,8 @@ import { forwardRef } from 'react'
 
 import {
   Card,
-  CardProps,
-  CardRef
+  type CardProps,
+  type CardRef
 } from '@guy-romelle-magayano/portfolio/components'
 import { ToolsItemsData } from '@guy-romelle-magayano/portfolio/types'
 
