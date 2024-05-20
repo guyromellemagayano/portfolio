@@ -11,7 +11,7 @@ export type BaseSeoData = {
 // Base type for hero components
 export type BaseHeroData = {
   heading?: string
-  description?: string[]
+  description?: string | string[]
 }
 
 // Base type for page data
