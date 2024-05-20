@@ -1,13 +1,16 @@
+'use server'
+
 import { glob } from 'fast-glob'
 import * as path from 'path'
 
-import { ProjectsData } from '@guy-romelle-magayano/portfolio/types'
+import { type ProjectsData } from '@guy-romelle-magayano/portfolio/types'
 
 /**
  * Imports the project data.
+ * @param fileName The file name.
  * @returns The project data.
  */
-export const importProject = async (fileName: string) => {
+export const importProject = async (fileName: string): Promise<any> => {
   const { meta, default: component } = await import(
     `@guy-romelle-magayano/portfolio/app/projects/${fileName}`
   )
@@ -19,7 +22,9 @@ export const importProject = async (fileName: string) => {
  * Fetches the projects data.
  * @returns The projects data.
  */
-export const projectsData = async (): Promise<Array<ProjectsData>> =>
+export const projectsData = async (): Promise<
+  Array<ProjectsData> | undefined
+> =>
   await Promise.all(
     await glob(['**/*.mdx'], {
       cwd: path.join(process.cwd(), '/src/app/projects')
@@ -34,8 +39,11 @@ export const projectsData = async (): Promise<Array<ProjectsData>> =>
  * Retrieves the projects data by category.
  * @returns The projects data by category.
  */
-export const projectsByCategory = (
+export const projectsByCategory = async (
   data: Array<ProjectsData> | undefined,
   category: string
-): Array<ProjectsData> | [] =>
-  data?.filter(project => project.category === category) || []
+): Promise<Array<ProjectsData> | undefined> =>
+  (data &&
+    data?.length > 0 &&
+    data.filter(project => project.category === category)) ||
+  undefined
