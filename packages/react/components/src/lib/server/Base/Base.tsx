@@ -1,17 +1,23 @@
-import { BaseHTMLAttributes } from 'react'
+import { BaseHTMLAttributes, forwardRef } from 'react'
 
 export type BaseRef = HTMLBaseElement
 export type BaseProps = BaseHTMLAttributes<BaseRef>
 
 /**
  * Render the base component.
- * @param children - The children of the base.
- * @param rest - The rest of the props of the base.
+ * @param {BaseProps} props - The base component properties.
+ * @param {BaseRef} ref - The base component reference.
  * @returns The rendered base component.
  */
-export const Base = ({ children, ...rest }: BaseProps) => {
-  return <base {...rest}>{children}</base>
-}
+const Base = forwardRef<BaseRef, BaseProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <base ref={ref} {...rest}>
+      {children}
+    </base>
+  )
+})
 
 Base.displayName = 'Base'
 
