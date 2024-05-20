@@ -1,3 +1,5 @@
+'use client'
+
 import { forwardRef } from 'react'
 
 import Link, { LinkProps } from 'next/link'
@@ -5,9 +7,9 @@ import { usePathname } from 'next/navigation'
 
 import {
   Li,
-  ListItemProps,
-  ListItemRef,
-  Span
+  Span,
+  type ListItemProps,
+  type ListItemRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn } from '@guy-romelle-magayano/react-utils'
