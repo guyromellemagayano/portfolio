@@ -7,19 +7,19 @@ export type SvgProps = SVGProps<SvgRef>
 
 /**
  * Renders a SVG image.
- * @param children - The children to render within the SVG image.
- * @param rest - Additional SVG image props
+ * @param {SvgProps} props - The SVG image properties.
+ * @param {SvgRef} ref - The SVG image reference.
  * @returns The rendered SVG image.
  */
-export const Svg = forwardRef<SvgRef, SvgProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <svg ref={ref} {...rest}>
-        {children}
-      </svg>
-    )
-  }
-)
+export const Svg = forwardRef<SvgRef, SvgProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <svg ref={ref} {...rest}>
+      {children}
+    </svg>
+  )
+})
 
 Svg.displayName = 'SVG'
 
@@ -28,10 +28,12 @@ export type SvgPathProps = SVGProps<SvgPathRef>
 
 /**
  * Renders a shared SVG path.
- * @param rest - Additional SVG path props
+ * @param {SvgPathProps} props - The shared SVG path properties.
  * @returns The rendered shared SVG path.
  */
-export const SvgPath = ({ ...rest }: SvgPathProps) => {
+export const SvgPath = (props: SvgPathProps) => {
+  const { ...rest } = props
+
   return <path {...rest} />
 }
 
