@@ -2,21 +2,13 @@ import Link, { LinkProps } from 'next/link'
 
 import { HyperlinkProps } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  isEmpty,
-  isObjectType,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type NavigationLinkProps = LinkProps & HyperlinkProps
 
 /**
  * Renders the nav link component.
- * @param href - The URL to link to.
- * @param className - The class name to apply to the link.
- * @param children - The content to render inside the link.
- * @param rest - The rest of the props.
+ * @param {NavigationLinkProps} props - The properties to render the nav link component.
  * @returns The rendered nav link component.
  */
 const NavigationLink = ({
@@ -26,11 +18,10 @@ const NavigationLink = ({
   ...rest
 }: NavigationLinkProps) => {
   return (
-    !isEmpty(href) &&
-    (isStringType(href) || isObjectType(href)) && (
+    href && (
       <Link
-        href={href}
         {...rest}
+        href={href}
         className={cn(
           'transition hover:text-amber-500 dark:hover:text-amber-400',
           className
