@@ -5,12 +5,14 @@ export type TableFooterProps = HTMLAttributes<TableFooterRef>
 
 /**
  * Render the table footer component.
- * @param children - The children of the table footer.
- * @param rest - The rest of the props of the table footer.
+ * @param {TableFooterProps} props - The table footer component properties.
+ * @param {TableFooterRef} ref - The table footer component reference.
  * @returns The rendered table footer component.
  */
-export const TableFooter = forwardRef<TableFooterRef, TableFooterProps>(
-  ({ children, ...rest }, ref) => {
+const TableFooter = forwardRef<TableFooterRef, TableFooterProps>(
+  (props, ref) => {
+    const { children, ...rest } = props
+
     return (
       <tfoot ref={ref} {...rest}>
         {children}
