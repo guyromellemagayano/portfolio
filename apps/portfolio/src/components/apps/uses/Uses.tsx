@@ -8,9 +8,9 @@ import {
   ToolsList
 } from '@guy-romelle-magayano/portfolio/components'
 import {
-  ToolsData,
-  ToolsItemsData,
-  UsesPageData
+  type ToolsData,
+  type ToolsItemsData,
+  type UsesPageData
 } from '@guy-romelle-magayano/portfolio/types'
 
 export type UsesAppProps = UsesPageData
