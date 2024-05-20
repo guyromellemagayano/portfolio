@@ -6,10 +6,10 @@ import { usePathname } from 'next/navigation'
 
 import {
   Div,
-  DivisionRef,
   Header,
-  HeaderProps,
-  HeaderRef
+  type DivisionRef,
+  type HeaderProps,
+  type HeaderRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { clamp, cn } from '@guy-romelle-magayano/react-utils'
@@ -22,7 +22,7 @@ import {
   DesktopNavigation,
   MobileNavigation
 } from '@guy-romelle-magayano/portfolio/components'
-import { PagesData } from '@guy-romelle-magayano/portfolio/types/data'
+import { PagesData } from '@guy-romelle-magayano/portfolio/types'
 
 export type HeaderLayoutRef = HeaderRef
 export type HeaderLayoutProps = HeaderProps & {
