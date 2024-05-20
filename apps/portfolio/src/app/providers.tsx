@@ -53,16 +53,16 @@ const ThemeWatcher = (): null => {
  */
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
-interface IProvidersProps {
+export type ProvidersProps = {
   children: ReactNode
 }
 
 /**
  * Providers component that provides the application with the previous pathname and theme.
- * @param children - The child elements to be rendered within the layout.
+ * @param {ProvidersProps} props - The props of the Providers component.
  * @returns The rendered Providers component.
  */
-export const Providers = ({ children }: IProvidersProps) => {
+export const Providers = ({ children }: ProvidersProps) => {
   const pathname = usePathname(),
     previousPathname = usePrevious(pathname)
 
