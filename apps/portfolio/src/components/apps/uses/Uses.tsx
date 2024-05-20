@@ -3,14 +3,10 @@
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  isArrayType,
-  isEmpty,
-  isStringType
-} from '@guy-romelle-magayano/react-utils'
-
-import { ContentLayout } from '@guy-romelle-magayano/portfolio/components/layouts/content'
-import { ToolsList } from '@guy-romelle-magayano/portfolio/components/lists/tools'
-import { ToolsCardsList } from '@guy-romelle-magayano/portfolio/components/lists/tools-cards'
+  ContentLayout,
+  ToolsCardsList,
+  ToolsList
+} from '@guy-romelle-magayano/portfolio/components'
 import {
   ToolsData,
   ToolsItemsData,
@@ -21,30 +17,28 @@ export type UsesAppProps = UsesPageData
 
 /**
  * Renders the uses page.
- * @param id The uses page id.
- * @param data The uses page data.
- * @param rest The uses page props.
- * @returns The uses page component.
+ * @param {UsesAppProps} props - The props of the uses page.
+ * @returns The rendered uses page.
  */
 const UsesApp = (props: UsesAppProps) => {
-  const { hero, tools } = props
-
-  const heading = hero?.heading || undefined,
+  const { hero, tools } = props,
+    heading = hero?.heading || undefined,
     description = hero?.description || undefined
 
   return (
-    !isEmpty(heading) &&
-    isStringType(heading) &&
-    !isEmpty(description) &&
-    (isStringType(description) || isArrayType(description)) && (
+    heading &&
+    heading?.length > 0 &&
+    description &&
+    ((typeof description === 'string' && description?.length > 0) ||
+      (Array.isArray(description) && description?.length > 0)) && (
       <ContentLayout.Simple title={heading} intro={description}>
-        {!isEmpty(tools) && isArrayType(tools) && (
+        {tools && tools?.length > 0 && (
           <Div className="space-y-20">
-            {tools?.map(({ name, items }: ToolsData, index: number) => (
+            {tools.map(({ name, items }: ToolsData, index: number) => (
               <ToolsList key={index} title={name}>
-                {!isEmpty(items) &&
-                  isArrayType(items) &&
-                  items?.map(
+                {items &&
+                  items?.length > 0 &&
+                  items.map(
                     ({ title, description }: ToolsItemsData, index2) => (
                       <ToolsCardsList
                         key={index2}
