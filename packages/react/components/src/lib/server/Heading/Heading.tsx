@@ -7,20 +7,19 @@ export type HeadingProps = HTMLAttributes<HeadingRef> & {
 
 /**
  * Render the heading component.
- * @param as - The tag of the heading.
- * @param children - The children of the heading.
- * @param rest - The rest of the props of the heading.
+ * @param {HeadingProps} props - The heading component properties.
+ * @param {HeadingRef} ref - The heading component reference.
  * @returns The rendered heading component.
  */
-export const Heading = forwardRef<HeadingRef, HeadingProps>(
-  ({ as: Component = 'h1', children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    )
-  }
-)
+const Heading = forwardRef<HeadingRef, HeadingProps>((props, ref) => {
+  const { as: Component = 'h1', children, ...rest } = props
+
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  )
+})
 
 Heading.displayName = 'Heading'
 
