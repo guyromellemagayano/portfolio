@@ -5,14 +5,16 @@ export type DescriptionDetailsProps = HTMLAttributes<DescriptionDetailsRef>
 
 /**
  * Render the description details component.
- * @param children - The children of the description details.
- * @param rest - The rest of the props of the description details.
+ * @param {DescriptionDetailsProps} props - The description details component properties.
+ * @param {DescriptionDetailsRef} ref - The description details component reference.
  * @returns The rendered description details component.
  */
-export const DescriptionDetails = forwardRef<
+const DescriptionDetails = forwardRef<
   DescriptionDetailsRef,
   DescriptionDetailsProps
->(({ children, ...rest }, ref) => {
+>((props, ref) => {
+  const { children, ...rest } = props
+
   return (
     <dd ref={ref} {...rest}>
       {children}
