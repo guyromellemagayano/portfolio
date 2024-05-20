@@ -5,19 +5,19 @@ export type CodeProps = HTMLAttributes<CodeRef>
 
 /**
  * Render the code component.
- * @param children - The children of the code.
- * @param rest - The rest of the props of the code.
+ * @param {CodeProps} props - The code component properties.
+ * @param {CodeRef} ref - The code component reference.
  * @returns The rendered code component.
  */
-export const Code = forwardRef<CodeRef, CodeProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <code ref={ref} {...rest}>
-        {children}
-      </code>
-    )
-  }
-)
+const Code = forwardRef<CodeRef, CodeProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <code ref={ref} {...rest}>
+      {children}
+    </code>
+  )
+})
 
 Code.displayName = 'Code'
 
