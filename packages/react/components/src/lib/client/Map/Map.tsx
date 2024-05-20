@@ -7,19 +7,19 @@ export type MapProps = MapHTMLAttributes<MapRef>
 
 /**
  * Render the map component.
- * @param children - The children of the map.
- * @param rest - The rest of the props of the map.
+ * @param {MapProps} props - The map component properties.
+ * @param {MapRef} ref - The map component reference.
  * @returns The rendered map component.
  */
-export const Map = forwardRef<MapRef, MapProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <map ref={ref} {...rest}>
-        {children}
-      </map>
-    )
-  }
-)
+const Map = forwardRef<MapRef, MapProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <map ref={ref} {...rest}>
+      {children}
+    </map>
+  )
+})
 
 Map.displayName = 'Map'
 
