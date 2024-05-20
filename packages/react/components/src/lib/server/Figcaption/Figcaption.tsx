@@ -5,19 +5,19 @@ export type FigcaptionProps = HTMLAttributes<FigcaptionRef>
 
 /**
  * Render the figcaption component.
- * @param children - The children of the figcaption.
- * @param rest - The rest of the props of the figcaption.
+ * @param {FigcaptionProps} props - The figcaption component properties.
+ * @param {FigcaptionRef} ref - The figcaption component reference.
  * @returns The rendered figcaption component.
  */
-export const Figcaption = forwardRef<FigcaptionRef, FigcaptionProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <figcaption ref={ref} {...rest}>
-        {children}
-      </figcaption>
-    )
-  }
-)
+const Figcaption = forwardRef<FigcaptionRef, FigcaptionProps>((props, ref) => {
+  const { children, ...rest } = props
+
+  return (
+    <figcaption ref={ref} {...rest}>
+      {children}
+    </figcaption>
+  )
+})
 
 Figcaption.displayName = 'Figcaption'
 
