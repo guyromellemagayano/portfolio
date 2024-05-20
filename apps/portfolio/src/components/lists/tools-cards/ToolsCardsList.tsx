@@ -4,7 +4,7 @@ import {
   Card,
   CardProps,
   CardRef
-} from '@guy-romelle-magayano/portfolio/components/card'
+} from '@guy-romelle-magayano/portfolio/components'
 import { ToolsItemsData } from '@guy-romelle-magayano/portfolio/types'
 
 export type ToolsCardsListRef = CardRef
@@ -22,7 +22,7 @@ const ToolsCardsList = forwardRef<ToolsCardsListRef, ToolsCardsListProps>(
     return (
       title &&
       description && (
-        <Card ref={ref} {...rest} as="li">
+        <Card {...rest} ref={ref} as="li">
           <Card.Title as="h3">{title}</Card.Title>
           <Card.Description>{description}</Card.Description>
         </Card>
