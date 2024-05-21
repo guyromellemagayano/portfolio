@@ -11,7 +11,7 @@ import {
 import {
   getLinkDisplayText,
   getLinkHrefPrefix
-} from '@guy-romelle-magayano/coin-colorful/hooks'
+} from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   menu: {
@@ -106,7 +106,8 @@ const NavigationCtfComponentFeature = (props: NavigationFieldsFragment) => {
                 className={listClassName}
                 {...inspectorMode({
                   entryId: menuItem.sys.id,
-                  fieldId: 'pageName'
+                  fieldId: 'pageName',
+                  manuallyTagged: undefined
                 })}
               >
                 <LinkShared href={href}>{linkText}</LinkShared>
@@ -131,7 +132,8 @@ const NavigationCtfComponentFeature = (props: NavigationFieldsFragment) => {
                       className={classes.menuItem}
                       {...inspectorMode({
                         entryId: menuItem.sys.id,
-                        fieldId: 'groupName'
+                        fieldId: 'groupName',
+                        manuallyTagged: undefined
                       })}
                     >
                       {!menuItem.link &&
