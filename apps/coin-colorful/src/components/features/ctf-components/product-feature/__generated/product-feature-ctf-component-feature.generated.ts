@@ -1,11 +1,12 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+  AssetFieldsFragmentDoc,
+  type AssetFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type ProductFeatureFieldsFragment = {
   __typename: 'TopicProductFeature'
   name?: string | null
@@ -48,42 +49,44 @@ export type CtfProductFeatureQuery = {
 }
 
 export const ProductFeatureFieldsFragmentDoc = `
-    fragment ProductFeatureFields on TopicProductFeature {
-  __typename
-  sys {
-    id
-  }
-  name
-  longDescription {
-    json
-    links {
-      assets {
-        block {
-          ...AssetFields
+  fragment ProductFeatureFields on TopicProductFeature {
+    __typename
+    sys {
+      id
+    }
+    name
+    longDescription {
+      json
+      links {
+        assets {
+          block {
+            ...AssetFields
+          }
+        }
+      }
+    }
+    shortDescription {
+      json
+      links {
+        assets {
+          block {
+            ...AssetFields
+          }
         }
       }
     }
   }
-  shortDescription {
-    json
-    links {
-      assets {
-        block {
-          ...AssetFields
-        }
-      }
-    }
-  }
-}
-    `
+`
+
 export const CtfProductFeatureDocument = `
-    query CtfProductFeature($id: String!, $locale: String, $preview: Boolean) {
-  topicProductFeature(id: $id, preview: $preview, locale: $locale) {
-    ...ProductFeatureFields
+  query CtfProductFeature($id: String!, $locale: String, $preview: Boolean) {
+    topicProductFeature(id: $id, preview: $preview, locale: $locale) {
+      ...ProductFeatureFields
+    }
   }
-}
-    ${ProductFeatureFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}`
+  ${ProductFeatureFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+`
 
 export const useCtfProductFeatureQuery = <
   TData = CtfProductFeatureQuery,
@@ -92,20 +95,19 @@ export const useCtfProductFeatureQuery = <
   variables: CtfProductFeatureQueryVariables,
   options?: UseQueryOptions<CtfProductFeatureQuery, TError, TData>
 ) => {
-  return useQuery<CtfProductFeatureQuery, TError, TData>(
-    ['CtfProductFeature', variables],
-    ctfFetcher<CtfProductFeatureQuery, CtfProductFeatureQueryVariables>(
-      CtfProductFeatureDocument,
-      variables
-    ),
-    options
-  )
+  return useQuery<CtfProductFeatureQuery, TError, TData>({
+    queryKey: ['CtfProductFeature', variables],
+    queryFn: ctfFetcher<
+      CtfProductFeatureQuery,
+      CtfProductFeatureQueryVariables
+    >(CtfProductFeatureDocument, variables),
+    ...options
+  })
 }
 
 useCtfProductFeatureQuery.getKey = (
   variables: CtfProductFeatureQueryVariables
 ) => ['CtfProductFeature', variables]
-
 useCtfProductFeatureQuery.fetcher = (
   variables: CtfProductFeatureQueryVariables,
   options?: RequestInit['headers']
