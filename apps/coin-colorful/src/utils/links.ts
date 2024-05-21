@@ -1,3 +1,5 @@
+'use client'
+
 export type GetLinkDisplayTextProps = {
   pageName?: string
   categoryName?: string
@@ -12,10 +14,7 @@ export type GetLinkDisplayTextSysProps = {
 
 /**
  * Retrieves the display text for a link based on the provided props.
- * @param pageName - The name of the page.
- * @param categoryName - The name of the category.
- * @param postName - The name of the post.
- * @param slug - The slug of the link.
+ * @param {GetLinkDisplayTextProps} props - The properties to retrieve the display text with.
  * @returns The display text for the link.
  */
 export const getLinkDisplayText = (props: GetLinkDisplayTextProps): string => {
@@ -44,10 +43,7 @@ export type GetLinkHrefPrefixProps = GetLinkDisplayTextProps
 
 /**
  * Returns the href prefix based on the provided props.
- * @param pageName - The name of the page.
- * @param categoryName - The name of the category.
- * @param postName - The name of the post.
- * @param slug - The slug of the link.
+ * @param {GetLinkHrefPrefixProps} props - The properties to retrieve the href prefix with.
  * @returns The href prefix.
  */
 export const getLinkHrefPrefix = (props: GetLinkHrefPrefixProps): string => {
