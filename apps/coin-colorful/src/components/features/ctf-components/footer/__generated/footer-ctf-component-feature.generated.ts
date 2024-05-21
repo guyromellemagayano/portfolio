@@ -1,15 +1,13 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
+import { PageLinkFieldsFragmentDoc } from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
 import {
-  MenuGroupFieldsFragment,
-  MenuGroupFieldsFragmentDoc
-} from '../../../../../libs/shared-fragments/__generated/ctf-menuGroup.generated'
-import {
-  PageLinkFieldsFragment,
-  PageLinkFieldsFragmentDoc
-} from '../../../page-link/__generated/page-link-feature.generated'
+  MenuGroupFieldsFragmentDoc,
+  type MenuGroupFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-menuGroup.generated'
+
 export type FooterFieldsFragment = {
   __typename?: 'FooterMenuCollection'
   items: Array<{
@@ -56,63 +54,64 @@ export type CtfFooterQuery = {
 }
 
 export const FooterFieldsFragmentDoc = `
-    fragment FooterFields on FooterMenuCollection {
-  items {
-    __typename
-    sys {
-      id
-    }
-    menuItemsCollection {
-      items {
-        __typename
-        groupName
-        sys {
-          id
+  fragment FooterFields on FooterMenuCollection {
+    items {
+      __typename
+      sys {
+        id
+      }
+      menuItemsCollection {
+        items {
+          __typename
+          groupName
+          sys {
+            id
+          }
+          featuredPagesCollection {
+            ...MenuGroupFields
+          }
         }
+      }
+      legalLinks {
         featuredPagesCollection {
           ...MenuGroupFields
         }
       }
+      twitterLink
+      facebookLink
+      linkedinLink
+      instagramLink
     }
-    legalLinks {
-      featuredPagesCollection {
-        ...MenuGroupFields
-      }
-    }
-    twitterLink
-    facebookLink
-    linkedinLink
-    instagramLink
   }
-}
-    `
+`
+
 export const CtfFooterDocument = `
-    query CtfFooter($locale: String, $preview: Boolean) {
-  footerMenuCollection(locale: $locale, preview: $preview, limit: 1) {
-    ...FooterFields
+  query CtfFooter($locale: String, $preview: Boolean) {
+    footerMenuCollection(locale: $locale, preview: $preview, limit: 1) {
+      ...FooterFields
+    }
   }
-}
-    ${FooterFieldsFragmentDoc}
-${MenuGroupFieldsFragmentDoc}
-${PageLinkFieldsFragmentDoc}`
+  ${FooterFieldsFragmentDoc}
+  ${MenuGroupFieldsFragmentDoc}
+  ${PageLinkFieldsFragmentDoc}
+`
 
 export const useCtfFooterQuery = <TData = CtfFooterQuery, TError = unknown>(
   variables?: CtfFooterQueryVariables,
   options?: UseQueryOptions<CtfFooterQuery, TError, TData>
 ) => {
-  return useQuery<CtfFooterQuery, TError, TData>(
-    variables === undefined ? ['CtfFooter'] : ['CtfFooter', variables],
-    ctfFetcher<CtfFooterQuery, CtfFooterQueryVariables>(
+  return useQuery<CtfFooterQuery, TError, TData>({
+    queryKey: ['CtfFooter', variables],
+    queryFn: ctfFetcher<CtfFooterQuery, CtfFooterQueryVariables>(
       CtfFooterDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfFooterQuery.getKey = (variables?: CtfFooterQueryVariables) =>
   variables === undefined ? ['CtfFooter'] : ['CtfFooter', variables]
-
 useCtfFooterQuery.fetcher = (
   variables?: CtfFooterQueryVariables,
   options?: RequestInit['headers']
