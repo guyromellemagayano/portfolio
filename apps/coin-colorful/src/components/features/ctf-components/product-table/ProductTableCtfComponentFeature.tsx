@@ -14,9 +14,9 @@ import { Div, Span } from '@guy-romelle-magayano/react-components/server'
 
 import {
   FormatCurrencyFeature,
-  ProductTableFieldsFragment,
   RichtextCtfComponentFeature,
-  SectionHeadlinesFeature
+  SectionHeadlinesFeature,
+  type ProductTableFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
@@ -246,7 +246,11 @@ const ProductTableCtfComponentFeature = (
           : 'longDescription'
 
         grid[featureName][product.sys.id] = {
-          attributes: inspectorMode({ fieldId, entryId: feature.sys.id }),
+          attributes: inspectorMode({
+            fieldId,
+            entryId: feature.sys.id,
+            manuallyTagged: undefined
+          }),
           value: feature[fieldId]
         }
       })
@@ -324,12 +328,14 @@ const ProductTableCtfComponentFeature = (
                 headline={headline}
                 headlineLivePreviewProps={inspectorMode({
                   entryId: id,
-                  fieldId: 'headline'
+                  fieldId: 'headline',
+                  manuallyTagged: undefined
                 })}
                 subline={subline}
                 sublineLivePreviewProps={inspectorMode({
                   entryId: id,
-                  fieldId: 'subline'
+                  fieldId: 'subline',
+                  manuallyTagged: undefined
                 })}
                 className={classes.sectionHeadlines}
               />
@@ -350,14 +356,16 @@ const ProductTableCtfComponentFeature = (
                         }}
                         {...inspectorMode({
                           entryId: product.sys.id,
-                          fieldId: 'internalName'
+                          fieldId: 'internalName',
+                          manuallyTagged: undefined
                         })}
                       >
                         <Div
                           className={classes.featuredImage}
                           {...inspectorMode({
                             entryId: product.sys.id,
-                            fieldId: 'featuredImage'
+                            fieldId: 'featuredImage',
+                            manuallyTagged: undefined
                           })}
                         >
                           <Div
@@ -400,7 +408,8 @@ const ProductTableCtfComponentFeature = (
                             className={classes.title}
                             {...inspectorMode({
                               entryId: product.sys.id,
-                              fieldId: 'name'
+                              fieldId: 'name',
+                              manuallyTagged: undefined
                             })}
                           >
                             {product.name}
@@ -416,7 +425,8 @@ const ProductTableCtfComponentFeature = (
                           }}
                           {...inspectorMode({
                             entryId: product.sys.id,
-                            fieldId: 'description'
+                            fieldId: 'description',
+                            manuallyTagged: undefined
                           })}
                         >
                           {product.description &&
@@ -445,7 +455,8 @@ const ProductTableCtfComponentFeature = (
                           }}
                           {...inspectorMode({
                             entryId: product.sys.id,
-                            fieldId: 'price'
+                            fieldId: 'price',
+                            manuallyTagged: undefined
                           })}
                         >
                           {!product.price || product.price === 0 ? (
@@ -486,7 +497,8 @@ const ProductTableCtfComponentFeature = (
                               <Div
                                 {...inspectorMode({
                                   entryId: product.sys.id,
-                                  fieldId: 'features'
+                                  fieldId: 'features',
+                                  manuallyTagged: undefined
                                 })}
                               >
                                 {featureNames.map(
@@ -540,7 +552,8 @@ const ProductTableCtfComponentFeature = (
                               className={classes.priceUpper}
                               {...inspectorMode({
                                 entryId: product.sys.id,
-                                fieldId: 'price'
+                                fieldId: 'price',
+                                manuallyTagged: undefined
                               })}
                             >
                               <FormatCurrencyFeature value={product.price} />
