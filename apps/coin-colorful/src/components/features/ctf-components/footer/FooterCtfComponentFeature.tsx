@@ -26,12 +26,12 @@ import {
   LogoTagline,
   type FooterFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
+import { useContentfulContext } from '@guy-romelle-magayano/coin-colorful/hooks'
+import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/theme'
 import {
   getLinkDisplayText,
-  getLinkHrefPrefix,
-  useContentfulContext
-} from '@guy-romelle-magayano/coin-colorful/hooks'
-import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/theme'
+  getLinkHrefPrefix
+} from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   footerContainer: {
