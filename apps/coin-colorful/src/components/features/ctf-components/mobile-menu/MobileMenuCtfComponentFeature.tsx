@@ -10,7 +10,7 @@ import {
 import {
   getLinkDisplayText,
   getLinkHrefPrefix
-} from '@guy-romelle-magayano/coin-colorful/hooks'
+} from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   menu: {
