@@ -1,3 +1,5 @@
+'use client'
+
 import { Fragment } from 'react'
 
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
@@ -8,8 +10,8 @@ import { Div, Section } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  ProductFieldsFragment,
-  RichtextCtfComponentFeature
+  RichtextCtfComponentFeature,
+  type ProductFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
@@ -166,7 +168,11 @@ const ProductCtfComponentFeature = (props: ProductCtfComponentFeatureProps) => {
                 variant="h1"
                 component="h2"
                 className={classes.headline}
-                {...inspectorMode({ entryId: id, fieldId: 'name' })}
+                {...inspectorMode({
+                  entryId: id,
+                  fieldId: 'name',
+                  manuallyTagged: undefined
+                })}
               >
                 {name}
               </Typography>
@@ -182,7 +188,8 @@ const ProductCtfComponentFeature = (props: ProductCtfComponentFeatureProps) => {
                 <Div
                   {...inspectorMode({
                     entryId: id,
-                    fieldId: 'description'
+                    fieldId: 'description',
+                    manuallyTagged: undefined
                   })}
                 >
                   <RichtextCtfComponentFeature
@@ -199,7 +206,8 @@ const ProductCtfComponentFeature = (props: ProductCtfComponentFeatureProps) => {
               className={classes.imageContainer}
               {...inspectorMode({
                 entryId: id,
-                fieldId: 'featuredImage'
+                fieldId: 'featuredImage',
+                manuallyTagged: undefined
               })}
             >
               <AssetCtfComponentFeature
@@ -234,7 +242,8 @@ const ProductCtfComponentFeature = (props: ProductCtfComponentFeatureProps) => {
                                 className={classes.featureName}
                                 {...inspectorMode({
                                   entryId: item.sys.id,
-                                  fieldId: 'name'
+                                  fieldId: 'name',
+                                  manuallyTagged: undefined
                                 })}
                               >
                                 {item.name}
@@ -251,7 +260,8 @@ const ProductCtfComponentFeature = (props: ProductCtfComponentFeatureProps) => {
                                   <Div
                                     {...inspectorMode({
                                       entryId: item.sys.id,
-                                      fieldId: 'longDescription'
+                                      fieldId: 'longDescription',
+                                      manuallyTagged: undefined
                                     })}
                                   >
                                     <RichtextCtfComponentFeature
