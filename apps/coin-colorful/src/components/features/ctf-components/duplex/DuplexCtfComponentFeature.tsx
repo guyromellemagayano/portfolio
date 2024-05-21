@@ -1,3 +1,5 @@
+'use client'
+
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
 import { Container, Typography } from '@mui/material'
 import { Theme } from '@mui/material/styles'
@@ -7,17 +9,17 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  DuplexFieldsFragment,
   ImageCtfComponentFeature,
   PageLinkFeature,
-  RichtextCtfComponentFeature
+  RichtextCtfComponentFeature,
+  type DuplexFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
   LayoutContext,
   layoutContextValues
 } from '@guy-romelle-magayano/coin-colorful/contexts'
 import { optimizeLineBreak } from '@guy-romelle-magayano/coin-colorful/libs'
+import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   innerContainer: {
@@ -124,7 +126,8 @@ const DuplexContent = (props: DuplexContentProps) => {
           className={classes.headline}
           style={{ color: colorConfig.headlineColor }}
           {...inspectorMode({
-            fieldId: 'headline'
+            fieldId: 'headline',
+            manuallyTagged: undefined
           })}
         >
           {optimizeLineBreak(headline)}
@@ -138,7 +141,8 @@ const DuplexContent = (props: DuplexContentProps) => {
           <Div
             style={{ color: colorConfig.textColor }}
             {...inspectorMode({
-              fieldId: 'bodyText'
+              fieldId: 'bodyText',
+              manuallyTagged: undefined
             })}
           >
             <RichtextCtfComponentFeature
@@ -156,7 +160,8 @@ const DuplexContent = (props: DuplexContentProps) => {
           <Div
             className={classes.ctaContainer}
             {...inspectorMode({
-              fieldId: 'ctaText'
+              fieldId: 'ctaText',
+              manuallyTagged: undefined
             })}
           >
             <PageLinkFeature
@@ -193,7 +198,10 @@ const DuplexImage = (props: DuplexImageProps) => {
       {image?.url && image?.url?.length > 0 ? (
         <Div
           className={classes.nextImageContainer}
-          {...inspectorMode({ fieldId: 'image' })}
+          {...inspectorMode({
+            fieldId: 'image',
+            manuallyTagged: undefined
+          })}
         >
           <ImageCtfComponentFeature
             className={clsx([
