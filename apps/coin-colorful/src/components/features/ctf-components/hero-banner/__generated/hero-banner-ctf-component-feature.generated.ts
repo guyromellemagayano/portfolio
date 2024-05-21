@@ -1,15 +1,14 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  PageLinkFieldsFragment,
-  PageLinkFieldsFragmentDoc
-} from '../../../page-link/__generated/page-link-feature.generated'
-import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+  AssetFieldsFragmentDoc,
+  PageLinkFieldsFragmentDoc,
+  type AssetFieldsFragment,
+  type PageLinkFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type HeroBannerFieldsFragment = {
   __typename: 'ComponentHeroBanner'
   headline?: string | null
@@ -37,36 +36,38 @@ export type CtfHeroBannerQuery = {
 }
 
 export const HeroBannerFieldsFragmentDoc = `
-    fragment HeroBannerFields on ComponentHeroBanner {
-  __typename
-  sys {
-    id
+  fragment HeroBannerFields on ComponentHeroBanner {
+    __typename
+    sys {
+      id
+    }
+    headline
+    bodyText {
+      json
+    }
+    ctaText
+    targetPage {
+      ...PageLinkFields
+    }
+    image {
+      ...AssetFields
+    }
+    imageStyle
+    heroSize
+    colorPalette
   }
-  headline
-  bodyText {
-    json
-  }
-  ctaText
-  targetPage {
-    ...PageLinkFields
-  }
-  image {
-    ...AssetFields
-  }
-  imageStyle
-  heroSize
-  colorPalette
-}
-    `
+`
+
 export const CtfHeroBannerDocument = `
-    query CtfHeroBanner($id: String!, $locale: String, $preview: Boolean) {
-  componentHeroBanner(id: $id, locale: $locale, preview: $preview) {
-    ...HeroBannerFields
+  query CtfHeroBanner($id: String!, $locale: String, $preview: Boolean) {
+    componentHeroBanner(id: $id, locale: $locale, preview: $preview) {
+      ...HeroBannerFields
+    }
   }
-}
-    ${HeroBannerFieldsFragmentDoc}
-${PageLinkFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}`
+  ${HeroBannerFieldsFragmentDoc}
+  ${PageLinkFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+`
 
 export const useCtfHeroBannerQuery = <
   TData = CtfHeroBannerQuery,
@@ -75,21 +76,20 @@ export const useCtfHeroBannerQuery = <
   variables: CtfHeroBannerQueryVariables,
   options?: UseQueryOptions<CtfHeroBannerQuery, TError, TData>
 ) => {
-  return useQuery<CtfHeroBannerQuery, TError, TData>(
-    ['CtfHeroBanner', variables],
-    ctfFetcher<CtfHeroBannerQuery, CtfHeroBannerQueryVariables>(
+  return useQuery<CtfHeroBannerQuery, TError, TData>({
+    queryKey: ['CtfHeroBanner', variables],
+    queryFn: ctfFetcher<CtfHeroBannerQuery, CtfHeroBannerQueryVariables>(
       CtfHeroBannerDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfHeroBannerQuery.getKey = (variables: CtfHeroBannerQueryVariables) => [
   'CtfHeroBanner',
   variables
 ]
-
 useCtfHeroBannerQuery.fetcher = (
   variables: CtfHeroBannerQueryVariables,
   options?: RequestInit['headers']
