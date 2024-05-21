@@ -1,7 +1,9 @@
+'use client'
+
 import {
   ComponentResolverShared,
-  CtfPageFieldsFragment,
-  PageContainerTemplate
+  PageContainerTemplate,
+  type CtfPageFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
