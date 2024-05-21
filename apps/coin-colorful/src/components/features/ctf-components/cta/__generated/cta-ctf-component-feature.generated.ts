@@ -1,11 +1,12 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  PageLinkFieldsFragment,
-  PageLinkFieldsFragmentDoc
-} from '../../../page-link/__generated/page-link-feature.generated'
+  PageLinkFieldsFragmentDoc,
+  type PageLinkFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type CtaFieldsFragment = {
   __typename: 'ComponentCta'
   headline?: string | null
@@ -29,48 +30,52 @@ export type CtfCtaQuery = {
 }
 
 export const CtaFieldsFragmentDoc = `
-    fragment CtaFields on ComponentCta {
-  __typename
-  sys {
-    id
+  fragment CtaFields on ComponentCta {
+    __typename
+    sys {
+      id
+    }
+    headline
+    subline {
+      json
+    }
+    ctaText
+    targetPage {
+      ...PageLinkFields
+    }
+    urlParameters
+    colorPalette
   }
-  headline
-  subline {
-    json
-  }
-  ctaText
-  targetPage {
-    ...PageLinkFields
-  }
-  urlParameters
-  colorPalette
-}
-    `
+`
+
 export const CtfCtaDocument = `
-    query CtfCta($id: String!, $locale: String, $preview: Boolean) {
-  componentCta(id: $id, locale: $locale, preview: $preview) {
-    ...CtaFields
+  query CtfCta($id: String!, $locale: String, $preview: Boolean) {
+    componentCta(id: $id, locale: $locale, preview: $preview) {
+      ...CtaFields
+    }
   }
-}
-    ${CtaFieldsFragmentDoc}
-${PageLinkFieldsFragmentDoc}`
+  ${CtaFieldsFragmentDoc}
+  ${PageLinkFieldsFragmentDoc}
+`
 
 export const useCtfCtaQuery = <TData = CtfCtaQuery, TError = unknown>(
   variables: CtfCtaQueryVariables,
   options?: UseQueryOptions<CtfCtaQuery, TError, TData>
 ) => {
-  return useQuery<CtfCtaQuery, TError, TData>(
-    ['CtfCta', variables],
-    ctfFetcher<CtfCtaQuery, CtfCtaQueryVariables>(CtfCtaDocument, variables),
-    options
-  )
+  return useQuery<CtfCtaQuery, TError, TData>({
+    queryKey: ['CtfCta', variables],
+    queryFn: ctfFetcher<CtfCtaQuery, CtfCtaQueryVariables>(
+      CtfCtaDocument,
+      variables
+    ),
+    ...options
+  })
 }
 
 useCtfCtaQuery.getKey = (variables: CtfCtaQueryVariables) => [
   'CtfCta',
   variables
 ]
-
 useCtfCtaQuery.fetcher = (
   variables: CtfCtaQueryVariables,
   options?: RequestInit['headers']
