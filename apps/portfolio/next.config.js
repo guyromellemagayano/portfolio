@@ -85,17 +85,19 @@ const nextConfig = {
   headers
 }
 
-// Sentry plugin configuration
-const sentryPluginOptions = {
+// Sentry configuration
+const sentryConfigOptions = {
+  authToken: process.env.SENTRY_AUTH_TOKEN || '',
+  autoInstrumentServerFunctions: false,
+  automaticVercelMonitors: process.env.NODE_ENV === 'production',
+  disableLogger: process.env.NODE_ENV === 'development',
+  hideSourceMaps: process.env.NODE_ENV === 'development',
   org: process.env.SENTRY_ORG || '',
   project: process.env.SENTRY_PROJECT || '',
-  authToken: process.env.SENTRY_AUTH_TOKEN || '',
   silent: process.env.NODE_ENV === 'development',
-  hideSourceMaps: process.env.NODE_ENV === 'production',
-  automaticVercelMonitors: process.env.NODE_ENV === 'production',
-  disableLogger: process.env.NODE_ENV === 'production',
-  widenClientFileUpload: process.env.NODE_ENV === 'production',
-  autoInstrumentServerFunctions: false
+  transpileClientSDK: process.env.NODE_ENV === 'production',
+  tunnelRoute: '/monitoring',
+  widenClientFileUpload: process.env.NODE_ENV === 'production'
 }
 
 // MDX configuration
@@ -118,5 +120,5 @@ const plugins = [withNx, withMDX, withPWA]
 
 module.exports = withSentryConfig(
   composePlugins(...plugins)(nextConfig),
-  sentryPluginOptions
+  sentryConfigOptions
 )
