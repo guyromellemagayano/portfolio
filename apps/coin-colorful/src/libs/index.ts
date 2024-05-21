@@ -1,6 +1,4 @@
 export * from './contentful'
-export * from './i18n'
-export * from './middleware'
 export * from './prefetch-mappings'
 export * from './prefetch-promise-array'
 export * from './utils'
