@@ -7,15 +7,15 @@ import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  InfoBlockFieldsFragment,
   RichtextCtfComponentFeature,
-  SectionHeadlinesFeature
+  SectionHeadlinesFeature,
+  type InfoBlockFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
   LayoutContext,
   layoutContextValues
 } from '@guy-romelle-magayano/coin-colorful/contexts'
+import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   innerContainer: {
@@ -132,12 +132,18 @@ const InfoBlockCtfComponentFeature = (
             headline={headline}
             headlineProps={{
               style: { color: colorConfig.headlineColor },
-              ...inspectorMode({ fieldId: 'headline' })
+              ...inspectorMode({
+                fieldId: 'headline',
+                manuallyTagged: undefined
+              })
             }}
             subline={subline}
             sublineProps={{
               style: { color: colorConfig.textColor },
-              ...inspectorMode({ fieldId: 'subline' })
+              ...inspectorMode({
+                fieldId: 'subline',
+                manuallyTagged: undefined
+              })
             }}
             className={classes.sectionHeadlines}
           />
@@ -153,7 +159,8 @@ const InfoBlockCtfComponentFeature = (
                   <Div
                     className={classes.itemIcon}
                     {...inspectorMode({
-                      fieldId: 'block1Image'
+                      fieldId: 'block1Image',
+                      manuallyTagged: undefined
                     })}
                   >
                     <AssetCtfComponentFeature
@@ -166,7 +173,8 @@ const InfoBlockCtfComponentFeature = (
                 <Div
                   style={{ color: colorConfig.textColor }}
                   {...inspectorMode({
-                    fieldId: 'block1Body'
+                    fieldId: 'block1Body',
+                    manuallyTagged: undefined
                   })}
                 >
                   <RichtextCtfComponentFeature
@@ -183,7 +191,8 @@ const InfoBlockCtfComponentFeature = (
                   <Div
                     className={classes.itemIcon}
                     {...inspectorMode({
-                      fieldId: 'block2Image'
+                      fieldId: 'block2Image',
+                      manuallyTagged: undefined
                     })}
                   >
                     <AssetCtfComponentFeature
@@ -196,7 +205,8 @@ const InfoBlockCtfComponentFeature = (
                 <Div
                   style={{ color: colorConfig.textColor }}
                   {...inspectorMode({
-                    fieldId: 'block2Body'
+                    fieldId: 'block2Body',
+                    manuallyTagged: undefined
                   })}
                 >
                   <RichtextCtfComponentFeature
@@ -213,7 +223,8 @@ const InfoBlockCtfComponentFeature = (
                   <Div
                     className={classes.itemIcon}
                     {...inspectorMode({
-                      fieldId: 'block3Image'
+                      fieldId: 'block3Image',
+                      manuallyTagged: undefined
                     })}
                   >
                     <AssetCtfComponentFeature
@@ -226,7 +237,8 @@ const InfoBlockCtfComponentFeature = (
                 <Div
                   style={{ color: colorConfig.textColor }}
                   {...inspectorMode({
-                    fieldId: 'block3Body'
+                    fieldId: 'block3Body',
+                    manuallyTagged: undefined
                   })}
                 >
                   <RichtextCtfComponentFeature
