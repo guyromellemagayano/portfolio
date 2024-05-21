@@ -11,8 +11,8 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  BusinessInfoFieldsFragment,
-  RichtextCtfComponentFeature
+  RichtextCtfComponentFeature,
+  type BusinessInfoFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -131,7 +131,10 @@ const BusinessInfoCtfComponentFeature = (
             style={{
               backgroundImage: `url(${backgroundImage})`
             }}
-            {...inspectorMode({ fieldId: 'featuredImage' })}
+            {...inspectorMode({
+              fieldId: 'featuredImage',
+              manuallyTagged: undefined
+            })}
           />
 
           <Container maxWidth={false}>
@@ -140,7 +143,10 @@ const BusinessInfoCtfComponentFeature = (
                 <Typography
                   variant="h1"
                   className={classes.title}
-                  {...inspectorMode({ fieldId: 'name' })}
+                  {...inspectorMode({
+                    fieldId: 'name',
+                    manuallyTagged: undefined
+                  })}
                 >
                   {name}
                 </Typography>
@@ -150,7 +156,8 @@ const BusinessInfoCtfComponentFeature = (
                 <Typography
                   className={classes.subtitle}
                   {...inspectorMode({
-                    fieldId: 'shortDescription'
+                    fieldId: 'shortDescription',
+                    manuallyTagged: undefined
                   })}
                 >
                   {shortDescription}
@@ -162,7 +169,12 @@ const BusinessInfoCtfComponentFeature = (
       )}
 
       {body && Object.keys(body)?.length > 0 && (
-        <Div {...inspectorMode({ fieldId: 'body' })}>
+        <Div
+          {...inspectorMode({
+            fieldId: 'body',
+            manuallyTagged: undefined
+          })}
+        >
           <RichtextCtfComponentFeature
             {...body}
             containerClassName={classes.container}
