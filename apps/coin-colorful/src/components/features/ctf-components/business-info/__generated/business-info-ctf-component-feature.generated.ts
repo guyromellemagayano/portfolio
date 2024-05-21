@@ -1,7 +1,11 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
+import {
+  AssetFieldsFragmentDoc,
+  type AssetFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
 import {
   ComponentReferenceFields_ComponentCta_Fragment,
   ComponentReferenceFields_ComponentDuplex_Fragment,
@@ -20,11 +24,8 @@ import {
   ComponentReferenceFields_TopicProduct_Fragment,
   ComponentReferenceFields_TopicProductFeature_Fragment,
   ComponentReferenceFieldsFragmentDoc
-} from '../../../../../libs/shared-fragments/__generated/ctf-componentMap.generated'
-import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-componentMap.generated'
+
 export type BusinessInfoFieldsFragment = {
   __typename: 'TopicBusinessInfo'
   name?: string | null
@@ -108,42 +109,44 @@ export type CtfBusinessInfoQuery = {
 }
 
 export const BusinessInfoFieldsFragmentDoc = `
-    fragment BusinessInfoFields on TopicBusinessInfo {
-  __typename
-  sys {
-    id
-  }
-  name
-  shortDescription
-  featuredImage {
-    ...AssetFields
-  }
-  body {
-    json
-    links {
-      entries {
-        block {
-          ...ComponentReferenceFields
+  fragment BusinessInfoFields on TopicBusinessInfo {
+    __typename
+    sys {
+      id
+    }
+    name
+    shortDescription
+    featuredImage {
+      ...AssetFields
+    }
+    body {
+      json
+      links {
+        entries {
+          block {
+            ...ComponentReferenceFields
+          }
         }
-      }
-      assets {
-        block {
-          ...AssetFields
+        assets {
+          block {
+            ...AssetFields
+          }
         }
       }
     }
   }
-}
-    `
+`
+
 export const CtfBusinessInfoDocument = `
-    query CtfBusinessInfo($id: String!, $locale: String, $preview: Boolean) {
-  topicBusinessInfo(id: $id, preview: $preview, locale: $locale) {
-    ...BusinessInfoFields
+  query CtfBusinessInfo($id: String!, $locale: String, $preview: Boolean) {
+    topicBusinessInfo(id: $id, preview: $preview, locale: $locale) {
+      ...BusinessInfoFields
+    }
   }
-}
-    ${BusinessInfoFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}
-${ComponentReferenceFieldsFragmentDoc}`
+  ${BusinessInfoFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+  ${ComponentReferenceFieldsFragmentDoc}
+`
 
 export const useCtfBusinessInfoQuery = <
   TData = CtfBusinessInfoQuery,
@@ -152,21 +155,20 @@ export const useCtfBusinessInfoQuery = <
   variables: CtfBusinessInfoQueryVariables,
   options?: UseQueryOptions<CtfBusinessInfoQuery, TError, TData>
 ) => {
-  return useQuery<CtfBusinessInfoQuery, TError, TData>(
-    ['CtfBusinessInfo', variables],
-    ctfFetcher<CtfBusinessInfoQuery, CtfBusinessInfoQueryVariables>(
+  return useQuery<CtfBusinessInfoQuery, TError, TData>({
+    queryKey: ['CtfBusinessInfo', variables],
+    queryFn: ctfFetcher<CtfBusinessInfoQuery, CtfBusinessInfoQueryVariables>(
       CtfBusinessInfoDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfBusinessInfoQuery.getKey = (variables: CtfBusinessInfoQueryVariables) => [
   'CtfBusinessInfo',
   variables
 ]
-
 useCtfBusinessInfoQuery.fetcher = (
   variables: CtfBusinessInfoQueryVariables,
   options?: RequestInit['headers']
