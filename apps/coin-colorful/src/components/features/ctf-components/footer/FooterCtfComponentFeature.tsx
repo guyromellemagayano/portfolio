@@ -1,3 +1,5 @@
+'use client'
+
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
 import Facebook from '@mui/icons-material/Facebook'
 import Instagram from '@mui/icons-material/Instagram'
@@ -19,17 +21,17 @@ import {
 } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  FooterFieldsFragment,
   LanguageSelectorFeature,
   LinkShared,
-  LogoTagline
+  LogoTagline,
+  type FooterFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/configs'
 import {
   getLinkDisplayText,
   getLinkHrefPrefix,
   useContentfulContext
 } from '@guy-romelle-magayano/coin-colorful/hooks'
+import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   footerContainer: {
@@ -268,7 +270,8 @@ const FooterCtfComponentFeature = (props: FooterCtfComponentFeatureProps) => {
                 className={listClassName}
                 {...inspectorMode({
                   entryId: menuItem.sys.id,
-                  fieldId: 'pageName'
+                  fieldId: 'pageName',
+                  manuallyTagged: undefined
                 })}
               >
                 <LinkShared href={href} className={classes.menuItem}>
@@ -285,7 +288,8 @@ const FooterCtfComponentFeature = (props: FooterCtfComponentFeatureProps) => {
       ? inspectorMode({
           entryId: footerContent.sys.id,
           fieldId: 'menuItems',
-          locale
+          locale,
+          manuallyTagged: undefined
         })
       : undefined
 
@@ -314,7 +318,8 @@ const FooterCtfComponentFeature = (props: FooterCtfComponentFeatureProps) => {
                                   {...inspectorMode({
                                     entryId: menuItem.sys.id,
                                     fieldId: 'groupName',
-                                    locale
+                                    locale,
+                                    manuallyTagged: undefined
                                   })}
                                 >
                                   {menuItem.groupName}
