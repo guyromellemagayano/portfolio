@@ -1,3 +1,5 @@
+'use client'
+
 import { Container, Theme } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
