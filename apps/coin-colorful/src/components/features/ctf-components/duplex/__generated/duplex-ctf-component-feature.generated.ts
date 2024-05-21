@@ -1,15 +1,14 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  PageLinkFieldsFragment,
-  PageLinkFieldsFragmentDoc
-} from '../../../page-link/__generated/page-link-feature.generated'
-import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+  AssetFieldsFragmentDoc,
+  PageLinkFieldsFragmentDoc,
+  type AssetFieldsFragment,
+  type PageLinkFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type DuplexFieldsFragment = {
   __typename: 'ComponentDuplex'
   containerLayout?: boolean | null
@@ -37,49 +36,51 @@ export type CtfDuplexQuery = {
 }
 
 export const DuplexFieldsFragmentDoc = `
-    fragment DuplexFields on ComponentDuplex {
-  __typename
-  sys {
-    id
+  fragment DuplexFields on ComponentDuplex {
+    __typename
+    sys {
+      id
+    }
+    containerLayout
+    headline
+    bodyText {
+      json
+    }
+    ctaText
+    targetPage {
+      ...PageLinkFields
+    }
+    image {
+      ...AssetFields
+    }
+    imageStyle
+    colorPalette
   }
-  containerLayout
-  headline
-  bodyText {
-    json
-  }
-  ctaText
-  targetPage {
-    ...PageLinkFields
-  }
-  image {
-    ...AssetFields
-  }
-  imageStyle
-  colorPalette
-}
-    `
+`
+
 export const CtfDuplexDocument = `
-    query CtfDuplex($id: String!, $locale: String, $preview: Boolean) {
-  componentDuplex(id: $id, locale: $locale, preview: $preview) {
-    ...DuplexFields
+  query CtfDuplex($id: String!, $locale: String, $preview: Boolean) {
+    componentDuplex(id: $id, locale: $locale, preview: $preview) {
+      ...DuplexFields
+    }
   }
-}
-    ${DuplexFieldsFragmentDoc}
-${PageLinkFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}`
+  ${DuplexFieldsFragmentDoc}
+  ${PageLinkFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+`
 
 export const useCtfDuplexQuery = <TData = CtfDuplexQuery, TError = unknown>(
   variables: CtfDuplexQueryVariables,
   options?: UseQueryOptions<CtfDuplexQuery, TError, TData>
 ) => {
-  return useQuery<CtfDuplexQuery, TError, TData>(
-    ['CtfDuplex', variables],
-    ctfFetcher<CtfDuplexQuery, CtfDuplexQueryVariables>(
+  return useQuery<CtfDuplexQuery, TError, TData>({
+    queryKey: ['CtfDuplex', variables],
+    queryFn: ctfFetcher<CtfDuplexQuery, CtfDuplexQueryVariables>(
       CtfDuplexDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfDuplexQuery.getKey = (variables: CtfDuplexQueryVariables) => [
