@@ -10,12 +10,11 @@ export type GetRequestConfigProps = {
 
 /**
  * Retrieves the request configuration for the specified locale.
- * @param locale - The locale for which to retrieve the request configuration.
- * @returns A promise that resolves to the request configuration object.
- * @throws Throws an error if the specified locale is not found.
+ * @param {GetRequestConfigProps} props - The properties of the request configuration.
+ * @returns The request configuration for the specified locale.
  */
 export default getRequestConfig(async ({ locale }: GetRequestConfigProps) => {
-  if (!locales.includes(locale)) notFound()
+  if (!locales.includes(locale as any)) notFound()
 
   return {
     messages: (await import(`../messages/${locale}.json`)).default
