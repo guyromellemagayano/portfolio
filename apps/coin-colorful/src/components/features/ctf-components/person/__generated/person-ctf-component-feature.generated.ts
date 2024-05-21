@@ -1,11 +1,12 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+  AssetFieldsFragmentDoc,
+  type AssetFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type PersonFieldsFragment = {
   __typename: 'TopicPerson'
   name?: string | null
@@ -29,51 +30,52 @@ export type CtfPersonQuery = {
 }
 
 export const PersonFieldsFragmentDoc = `
-    fragment PersonFields on TopicPerson {
-  __typename
-  sys {
-    id
+  fragment PersonFields on TopicPerson {
+    __typename
+    sys {
+      id
+    }
+    name
+    bio {
+      json
+    }
+    avatar {
+      ...AssetFields
+    }
+    website
+    location
+    cardStyle
   }
-  name
-  bio {
-    json
-  }
-  avatar {
-    ...AssetFields
-  }
-  website
-  location
-  cardStyle
-}
-    `
+`
+
 export const CtfPersonDocument = `
-    query CtfPerson($id: String!, $locale: String, $preview: Boolean) {
-  topicPerson(id: $id, preview: $preview, locale: $locale) {
-    ...PersonFields
+  query CtfPerson($id: String!, $locale: String, $preview: Boolean) {
+    topicPerson(id: $id, preview: $preview, locale: $locale) {
+      ...PersonFields
+    }
   }
-}
-    ${PersonFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}`
+  ${PersonFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+`
 
 export const useCtfPersonQuery = <TData = CtfPersonQuery, TError = unknown>(
   variables: CtfPersonQueryVariables,
   options?: UseQueryOptions<CtfPersonQuery, TError, TData>
 ) => {
-  return useQuery<CtfPersonQuery, TError, TData>(
-    ['CtfPerson', variables],
-    ctfFetcher<CtfPersonQuery, CtfPersonQueryVariables>(
+  return useQuery<CtfPersonQuery, TError, TData>({
+    queryKey: ['CtfPerson', variables],
+    queryFn: ctfFetcher<CtfPersonQuery, CtfPersonQueryVariables>(
       CtfPersonDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfPersonQuery.getKey = (variables: CtfPersonQueryVariables) => [
   'CtfPerson',
   variables
 ]
-
 useCtfPersonQuery.fetcher = (
   variables: CtfPersonQueryVariables,
   options?: RequestInit['headers']
