@@ -3,14 +3,15 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs'
+import * as Spotlight from '@spotlightjs/spotlight'
 
-const SENTRY_DSN = process.env.SENTRY_DSN
+import { SENTRY_DSN, SENTRY_ENVIRONMENT } from './src/configs'
 
 Sentry.init({
   dsn: SENTRY_DSN,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
+  debug: SENTRY_ENVIRONMENT === 'development' ? true : false,
 
   replaysOnErrorSampleRate: 1.0,
 
@@ -20,8 +21,8 @@ Sentry.init({
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.25,
-  environment: process.env.sentryEnvironment,
-  enabled: process.env.SENTRY_ENVIRONMENT === 'production',
+  environment: SENTRY_ENVIRONMENT,
+  enabled: SENTRY_ENVIRONMENT === 'production' ? true : false,
 
   // You can remove this option if you're not planning to use the Sentry Session Replay feature:
   integrations: [
@@ -32,3 +33,7 @@ Sentry.init({
     })
   ]
 })
+
+if (process.env.NODE_ENV === 'development') {
+  Spotlight.init()
+}
