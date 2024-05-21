@@ -1,4 +1,6 @@
-"""Represents a binary file in a space. An asset can be any file type."""
+"""
+Represents a binary file in a space. An asset can be any file type.
+"""
 type Asset {
   contentType(locale: String): String
   contentfulMetadata: ContentfulMetadata!
@@ -90,15 +92,60 @@ input AssetFilter {
 }
 
 type AssetLinkingCollections {
-  componentDuplexCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ComponentDuplexCollection
-  componentHeroBannerCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ComponentHeroBannerCollection
-  componentInfoBlockCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ComponentInfoBlockCollection
-  componentQuoteCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): ComponentQuoteCollection
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  seoCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): SeoCollection
-  topicBusinessInfoCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): TopicBusinessInfoCollection
-  topicPersonCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): TopicPersonCollection
-  topicProductCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): TopicProductCollection
+  componentDuplexCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentDuplexCollection
+  componentHeroBannerCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentHeroBannerCollection
+  componentInfoBlockCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentInfoBlockCollection
+  componentQuoteCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentQuoteCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  seoCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): SeoCollection
+  topicBusinessInfoCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): TopicBusinessInfoCollection
+  topicPersonCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): TopicPersonCollection
+  topicProductCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): TopicProductCollection
 }
 
 enum AssetOrder {
@@ -194,8 +241,19 @@ input ComponentCtaFilter {
 }
 
 type ComponentCtaLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentCtaLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentCtaLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentCtaLinkingCollectionsPageCollectionOrder {
@@ -390,8 +448,19 @@ input ComponentDuplexFilter {
 }
 
 type ComponentDuplexLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentDuplexLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentDuplexLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentDuplexLinkingCollectionsPageCollectionOrder {
@@ -548,8 +617,19 @@ input ComponentHeroBannerFilter {
 }
 
 type ComponentHeroBannerLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentHeroBannerLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentHeroBannerLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentHeroBannerLinkingCollectionsPageCollectionOrder {
@@ -788,8 +868,19 @@ input ComponentInfoBlockFilter {
 }
 
 type ComponentInfoBlockLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentInfoBlockLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentInfoBlockLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentInfoBlockLinkingCollectionsPageCollectionOrder {
@@ -836,7 +927,14 @@ type ComponentProductTable implements Entry {
   headline(locale: String): String
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): ComponentProductTableLinkingCollections
-  productsCollection(limit: Int = 100, locale: String, order: [ComponentProductTableProductsCollectionOrder], preview: Boolean, skip: Int = 0, where: TopicProductFilter): ComponentProductTableProductsCollection
+  productsCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentProductTableProductsCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicProductFilter
+  ): ComponentProductTableProductsCollection
   subline(locale: String): String
   sys: Sys!
 }
@@ -879,8 +977,19 @@ input ComponentProductTableFilter {
 }
 
 type ComponentProductTableLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentProductTableLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentProductTableLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentProductTableLinkingCollectionsPageCollectionOrder {
@@ -995,8 +1104,19 @@ input ComponentQuoteFilter {
 }
 
 type ComponentQuoteLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentQuoteLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentQuoteLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentQuoteLinkingCollectionsPageCollectionOrder {
@@ -1175,8 +1295,19 @@ input ComponentTextBlockFilter {
 }
 
 type ComponentTextBlockLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [ComponentTextBlockLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentTextBlockLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum ComponentTextBlockLinkingCollectionsPageCollectionOrder {
@@ -1290,10 +1421,21 @@ type FooterMenu implements Entry {
   facebookLink(locale: String): String
   instagramLink(locale: String): String
   internalName(locale: String): String
-  legalLinks(locale: String, preview: Boolean, where: MenuGroupFilter): MenuGroup
+  legalLinks(
+    locale: String
+    preview: Boolean
+    where: MenuGroupFilter
+  ): MenuGroup
   linkedFrom(allowedLocales: [String]): FooterMenuLinkingCollections
   linkedinLink(locale: String): String
-  menuItemsCollection(limit: Int = 100, locale: String, order: [FooterMenuMenuItemsCollectionOrder], preview: Boolean, skip: Int = 0, where: MenuGroupFilter): FooterMenuMenuItemsCollection
+  menuItemsCollection(
+    limit: Int = 100
+    locale: String
+    order: [FooterMenuMenuItemsCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: MenuGroupFilter
+  ): FooterMenuMenuItemsCollection
   sys: Sys!
   twitterLink(locale: String): String
 }
@@ -1352,7 +1494,12 @@ input FooterMenuFilter {
 }
 
 type FooterMenuLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
 }
 
 type FooterMenuMenuItemsCollection {
@@ -1398,13 +1545,17 @@ enum FooterMenuOrder {
   twitterLink_DESC
 }
 
-"""The 'HexColor' type represents color in `rgb:ffffff` string format."""
+"""
+The 'HexColor' type represents color in `rgb:ffffff` string format.
+"""
 scalar HexColor
 
 enum ImageFormat {
   AVIF
 
-  """JPG image format."""
+  """
+  JPG image format.
+  """
   JPG
 
   """
@@ -1415,7 +1566,9 @@ enum ImageFormat {
   """
   JPG_PROGRESSIVE
 
-  """PNG image format"""
+  """
+  PNG image format
+  """
   PNG
 
   """
@@ -1424,42 +1577,66 @@ enum ImageFormat {
   """
   PNG8
 
-  """WebP image format."""
+  """
+  WebP image format.
+  """
   WEBP
 }
 
 enum ImageResizeFocus {
-  """Focus the resizing on the bottom."""
+  """
+  Focus the resizing on the bottom.
+  """
   BOTTOM
 
-  """Focus the resizing on the bottom left."""
+  """
+  Focus the resizing on the bottom left.
+  """
   BOTTOM_LEFT
 
-  """Focus the resizing on the bottom right."""
+  """
+  Focus the resizing on the bottom right.
+  """
   BOTTOM_RIGHT
 
-  """Focus the resizing on the center."""
+  """
+  Focus the resizing on the center.
+  """
   CENTER
 
-  """Focus the resizing on the largest face."""
+  """
+  Focus the resizing on the largest face.
+  """
   FACE
 
-  """Focus the resizing on the area containing all the faces."""
+  """
+  Focus the resizing on the area containing all the faces.
+  """
   FACES
 
-  """Focus the resizing on the left."""
+  """
+  Focus the resizing on the left.
+  """
   LEFT
 
-  """Focus the resizing on the right."""
+  """
+  Focus the resizing on the right.
+  """
   RIGHT
 
-  """Focus the resizing on the top."""
+  """
+  Focus the resizing on the top.
+  """
   TOP
 
-  """Focus the resizing on the top left."""
+  """
+  Focus the resizing on the top left.
+  """
   TOP_LEFT
 
-  """Focus the resizing on the top right."""
+  """
+  Focus the resizing on the top right.
+  """
   TOP_RIGHT
 }
 
@@ -1474,7 +1651,9 @@ enum ImageResizeStrategy {
   """
   FILL
 
-  """Resizes the image to fit into the specified dimensions."""
+  """
+  Resizes the image to fit into the specified dimensions.
+  """
   FIT
 
   """
@@ -1488,7 +1667,9 @@ enum ImageResizeStrategy {
   """
   SCALE
 
-  """Creates a thumbnail from the image."""
+  """
+  Creates a thumbnail from the image.
+  """
   THUMB
 }
 
@@ -1507,10 +1688,14 @@ input ImageTransformOptions {
   """
   cornerRadius: Int
 
-  """Desired image format. Defaults to the original image format."""
+  """
+  Desired image format. Defaults to the original image format.
+  """
   format: ImageFormat
 
-  """Desired height in pixels. Defaults to the original image height."""
+  """
+  Desired height in pixels. Defaults to the original image height.
+  """
   height: Dimension
 
   """
@@ -1519,13 +1704,19 @@ input ImageTransformOptions {
   """
   quality: Quality
 
-  """Desired resize focus area. Defaults to `CENTER`."""
+  """
+  Desired resize focus area. Defaults to `CENTER`.
+  """
   resizeFocus: ImageResizeFocus
 
-  """Desired resize strategy. Defaults to `FIT`."""
+  """
+  Desired resize strategy. Defaults to `FIT`.
+  """
   resizeStrategy: ImageResizeStrategy
 
-  """Desired width in pixels. Defaults to the original image width."""
+  """
+  Desired width in pixels. Defaults to the original image width.
+  """
   width: Dimension
 }
 
@@ -1539,8 +1730,18 @@ A group of items making up a section in the navigation menu [See type definition
 """
 type MenuGroup implements Entry {
   contentfulMetadata: ContentfulMetadata!
-  featuredPagesCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: MenuGroupFeaturedPagesFilter): MenuGroupFeaturedPagesCollection
-  groupLink(locale: String, preview: Boolean, where: MenuGroupGroupLinkFilter): MenuGroupGroupLink
+  featuredPagesCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+    where: MenuGroupFeaturedPagesFilter
+  ): MenuGroupFeaturedPagesCollection
+  groupLink(
+    locale: String
+    preview: Boolean
+    where: MenuGroupGroupLinkFilter
+  ): MenuGroupGroupLink
   groupName(locale: String): String
   internalTitle(locale: String): String
   linkedFrom(allowedLocales: [String]): MenuGroupLinkingCollections
@@ -1659,9 +1860,26 @@ input MenuGroupGroupLinkFilter {
 }
 
 type MenuGroupLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  footerMenuCollection(limit: Int = 100, locale: String, order: [MenuGroupLinkingCollectionsFooterMenuCollectionOrder], preview: Boolean, skip: Int = 0): FooterMenuCollection
-  navigationMenuCollection(limit: Int = 100, locale: String, order: [MenuGroupLinkingCollectionsNavigationMenuCollectionOrder], preview: Boolean, skip: Int = 0): NavigationMenuCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  footerMenuCollection(
+    limit: Int = 100
+    locale: String
+    order: [MenuGroupLinkingCollectionsFooterMenuCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): FooterMenuCollection
+  navigationMenuCollection(
+    limit: Int = 100
+    locale: String
+    order: [MenuGroupLinkingCollectionsNavigationMenuCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): NavigationMenuCollection
 }
 
 enum MenuGroupLinkingCollectionsFooterMenuCollectionOrder {
@@ -1720,7 +1938,14 @@ type NavigationMenu implements Entry {
   contentfulMetadata: ContentfulMetadata!
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): NavigationMenuLinkingCollections
-  menuItemsCollection(limit: Int = 100, locale: String, order: [NavigationMenuMenuItemsCollectionOrder], preview: Boolean, skip: Int = 0, where: MenuGroupFilter): NavigationMenuMenuItemsCollection
+  menuItemsCollection(
+    limit: Int = 100
+    locale: String
+    order: [NavigationMenuMenuItemsCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: MenuGroupFilter
+  ): NavigationMenuMenuItemsCollection
   sys: Sys!
 }
 
@@ -1748,7 +1973,12 @@ input NavigationMenuFilter {
 }
 
 type NavigationMenuLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
 }
 
 type NavigationMenuMenuItemsCollection {
@@ -1791,7 +2021,13 @@ Container that enables editors to publish a page, define its slug, select & arra
 """
 type Page implements Entry {
   contentfulMetadata: ContentfulMetadata!
-  extraSectionCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: PageExtraSectionFilter): PageExtraSectionCollection
+  extraSectionCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+    where: PageExtraSectionFilter
+  ): PageExtraSectionCollection
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): PageLinkingCollections
   pageContent(locale: String, preview: Boolean): PagePageContent
@@ -1799,7 +2035,13 @@ type Page implements Entry {
   seo(locale: String, preview: Boolean, where: SeoFilter): Seo
   slug(locale: String): String
   sys: Sys!
-  topSectionCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0, where: PageTopSectionFilter): PageTopSectionCollection
+  topSectionCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+    where: PageTopSectionFilter
+  ): PageTopSectionCollection
 }
 
 type PageCollection {
@@ -1837,7 +2079,13 @@ input PageExtraSectionFilter {
   sys: SysFilter
 }
 
-union PageExtraSectionItem = ComponentCta | ComponentDuplex | ComponentHeroBanner | ComponentInfoBlock | ComponentQuote | ComponentTextBlock
+union PageExtraSectionItem =
+  | ComponentCta
+  | ComponentDuplex
+  | ComponentHeroBanner
+  | ComponentInfoBlock
+  | ComponentQuote
+  | ComponentTextBlock
 
 input PageFilter {
   AND: [PageFilter]
@@ -1875,11 +2123,40 @@ input PageFilter {
 }
 
 type PageLinkingCollections {
-  componentCtaCollection(limit: Int = 100, locale: String, order: [PageLinkingCollectionsComponentCtaCollectionOrder], preview: Boolean, skip: Int = 0): ComponentCtaCollection
-  componentDuplexCollection(limit: Int = 100, locale: String, order: [PageLinkingCollectionsComponentDuplexCollectionOrder], preview: Boolean, skip: Int = 0): ComponentDuplexCollection
-  componentHeroBannerCollection(limit: Int = 100, locale: String, order: [PageLinkingCollectionsComponentHeroBannerCollectionOrder], preview: Boolean, skip: Int = 0): ComponentHeroBannerCollection
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  menuGroupCollection(limit: Int = 100, locale: String, order: [PageLinkingCollectionsMenuGroupCollectionOrder], preview: Boolean, skip: Int = 0): MenuGroupCollection
+  componentCtaCollection(
+    limit: Int = 100
+    locale: String
+    order: [PageLinkingCollectionsComponentCtaCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentCtaCollection
+  componentDuplexCollection(
+    limit: Int = 100
+    locale: String
+    order: [PageLinkingCollectionsComponentDuplexCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentDuplexCollection
+  componentHeroBannerCollection(
+    limit: Int = 100
+    locale: String
+    order: [PageLinkingCollectionsComponentHeroBannerCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentHeroBannerCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  menuGroupCollection(
+    limit: Int = 100
+    locale: String
+    order: [PageLinkingCollectionsMenuGroupCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): MenuGroupCollection
 }
 
 enum PageLinkingCollectionsComponentCtaCollectionOrder {
@@ -2011,7 +2288,13 @@ input PageTopSectionFilter {
   sys: SysFilter
 }
 
-union PageTopSectionItem = ComponentCta | ComponentDuplex | ComponentHeroBanner | ComponentInfoBlock | ComponentQuote | ComponentTextBlock
+union PageTopSectionItem =
+  | ComponentCta
+  | ComponentDuplex
+  | ComponentHeroBanner
+  | ComponentInfoBlock
+  | ComponentQuote
+  | ComponentTextBlock
 
 """
 The 'Quality' type represents quality as whole numeric values between `1` and `100`.
@@ -2021,40 +2304,194 @@ scalar Quality
 type Query {
   _node(id: ID!, locale: String, preview: Boolean): _Node
   asset(id: String!, locale: String, preview: Boolean): Asset
-  assetCollection(limit: Int = 100, locale: String, order: [AssetOrder], preview: Boolean, skip: Int = 0, where: AssetFilter): AssetCollection
+  assetCollection(
+    limit: Int = 100
+    locale: String
+    order: [AssetOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: AssetFilter
+  ): AssetCollection
   componentCta(id: String!, locale: String, preview: Boolean): ComponentCta
-  componentCtaCollection(limit: Int = 100, locale: String, order: [ComponentCtaOrder], preview: Boolean, skip: Int = 0, where: ComponentCtaFilter): ComponentCtaCollection
-  componentDuplex(id: String!, locale: String, preview: Boolean): ComponentDuplex
-  componentDuplexCollection(limit: Int = 100, locale: String, order: [ComponentDuplexOrder], preview: Boolean, skip: Int = 0, where: ComponentDuplexFilter): ComponentDuplexCollection
-  componentHeroBanner(id: String!, locale: String, preview: Boolean): ComponentHeroBanner
-  componentHeroBannerCollection(limit: Int = 100, locale: String, order: [ComponentHeroBannerOrder], preview: Boolean, skip: Int = 0, where: ComponentHeroBannerFilter): ComponentHeroBannerCollection
-  componentInfoBlock(id: String!, locale: String, preview: Boolean): ComponentInfoBlock
-  componentInfoBlockCollection(limit: Int = 100, locale: String, order: [ComponentInfoBlockOrder], preview: Boolean, skip: Int = 0, where: ComponentInfoBlockFilter): ComponentInfoBlockCollection
-  componentProductTable(id: String!, locale: String, preview: Boolean): ComponentProductTable
-  componentProductTableCollection(limit: Int = 100, locale: String, order: [ComponentProductTableOrder], preview: Boolean, skip: Int = 0, where: ComponentProductTableFilter): ComponentProductTableCollection
+  componentCtaCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentCtaOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentCtaFilter
+  ): ComponentCtaCollection
+  componentDuplex(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): ComponentDuplex
+  componentDuplexCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentDuplexOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentDuplexFilter
+  ): ComponentDuplexCollection
+  componentHeroBanner(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): ComponentHeroBanner
+  componentHeroBannerCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentHeroBannerOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentHeroBannerFilter
+  ): ComponentHeroBannerCollection
+  componentInfoBlock(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): ComponentInfoBlock
+  componentInfoBlockCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentInfoBlockOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentInfoBlockFilter
+  ): ComponentInfoBlockCollection
+  componentProductTable(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): ComponentProductTable
+  componentProductTableCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentProductTableOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentProductTableFilter
+  ): ComponentProductTableCollection
   componentQuote(id: String!, locale: String, preview: Boolean): ComponentQuote
-  componentQuoteCollection(limit: Int = 100, locale: String, order: [ComponentQuoteOrder], preview: Boolean, skip: Int = 0, where: ComponentQuoteFilter): ComponentQuoteCollection
-  componentTextBlock(id: String!, locale: String, preview: Boolean): ComponentTextBlock
-  componentTextBlockCollection(limit: Int = 100, locale: String, order: [ComponentTextBlockOrder], preview: Boolean, skip: Int = 0, where: ComponentTextBlockFilter): ComponentTextBlockCollection
-  entryCollection(limit: Int = 100, locale: String, order: [EntryOrder], preview: Boolean, skip: Int = 0, where: EntryFilter): EntryCollection
+  componentQuoteCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentQuoteOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentQuoteFilter
+  ): ComponentQuoteCollection
+  componentTextBlock(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): ComponentTextBlock
+  componentTextBlockCollection(
+    limit: Int = 100
+    locale: String
+    order: [ComponentTextBlockOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: ComponentTextBlockFilter
+  ): ComponentTextBlockCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    order: [EntryOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: EntryFilter
+  ): EntryCollection
   footerMenu(id: String!, locale: String, preview: Boolean): FooterMenu
-  footerMenuCollection(limit: Int = 100, locale: String, order: [FooterMenuOrder], preview: Boolean, skip: Int = 0, where: FooterMenuFilter): FooterMenuCollection
+  footerMenuCollection(
+    limit: Int = 100
+    locale: String
+    order: [FooterMenuOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: FooterMenuFilter
+  ): FooterMenuCollection
   menuGroup(id: String!, locale: String, preview: Boolean): MenuGroup
-  menuGroupCollection(limit: Int = 100, locale: String, order: [MenuGroupOrder], preview: Boolean, skip: Int = 0, where: MenuGroupFilter): MenuGroupCollection
+  menuGroupCollection(
+    limit: Int = 100
+    locale: String
+    order: [MenuGroupOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: MenuGroupFilter
+  ): MenuGroupCollection
   navigationMenu(id: String!, locale: String, preview: Boolean): NavigationMenu
-  navigationMenuCollection(limit: Int = 100, locale: String, order: [NavigationMenuOrder], preview: Boolean, skip: Int = 0, where: NavigationMenuFilter): NavigationMenuCollection
+  navigationMenuCollection(
+    limit: Int = 100
+    locale: String
+    order: [NavigationMenuOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: NavigationMenuFilter
+  ): NavigationMenuCollection
   page(id: String!, locale: String, preview: Boolean): Page
-  pageCollection(limit: Int = 100, locale: String, order: [PageOrder], preview: Boolean, skip: Int = 0, where: PageFilter): PageCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [PageOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: PageFilter
+  ): PageCollection
   seo(id: String!, locale: String, preview: Boolean): Seo
-  seoCollection(limit: Int = 100, locale: String, order: [SeoOrder], preview: Boolean, skip: Int = 0, where: SeoFilter): SeoCollection
-  topicBusinessInfo(id: String!, locale: String, preview: Boolean): TopicBusinessInfo
-  topicBusinessInfoCollection(limit: Int = 100, locale: String, order: [TopicBusinessInfoOrder], preview: Boolean, skip: Int = 0, where: TopicBusinessInfoFilter): TopicBusinessInfoCollection
+  seoCollection(
+    limit: Int = 100
+    locale: String
+    order: [SeoOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: SeoFilter
+  ): SeoCollection
+  topicBusinessInfo(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): TopicBusinessInfo
+  topicBusinessInfoCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicBusinessInfoOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicBusinessInfoFilter
+  ): TopicBusinessInfoCollection
   topicPerson(id: String!, locale: String, preview: Boolean): TopicPerson
-  topicPersonCollection(limit: Int = 100, locale: String, order: [TopicPersonOrder], preview: Boolean, skip: Int = 0, where: TopicPersonFilter): TopicPersonCollection
+  topicPersonCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicPersonOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicPersonFilter
+  ): TopicPersonCollection
   topicProduct(id: String!, locale: String, preview: Boolean): TopicProduct
-  topicProductCollection(limit: Int = 100, locale: String, order: [TopicProductOrder], preview: Boolean, skip: Int = 0, where: TopicProductFilter): TopicProductCollection
-  topicProductFeature(id: String!, locale: String, preview: Boolean): TopicProductFeature
-  topicProductFeatureCollection(limit: Int = 100, locale: String, order: [TopicProductFeatureOrder], preview: Boolean, skip: Int = 0, where: TopicProductFeatureFilter): TopicProductFeatureCollection
+  topicProductCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicProductFilter
+  ): TopicProductCollection
+  topicProductFeature(
+    id: String!
+    locale: String
+    preview: Boolean
+  ): TopicProductFeature
+  topicProductFeatureCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductFeatureOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicProductFeatureFilter
+  ): TopicProductFeatureCollection
 }
 
 interface ResourceLink {
@@ -2124,8 +2561,19 @@ input SeoFilter {
 }
 
 type SeoLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [SeoLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [SeoLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum SeoLinkingCollectionsPageCollectionOrder {
@@ -2306,8 +2754,19 @@ input TopicBusinessInfoFilter {
 }
 
 type TopicBusinessInfoLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [TopicBusinessInfoLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicBusinessInfoLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum TopicBusinessInfoLinkingCollectionsPageCollectionOrder {
@@ -2448,7 +2907,12 @@ input TopicPersonFilter {
 }
 
 type TopicPersonLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
 }
 
 enum TopicPersonOrder {
@@ -2479,7 +2943,14 @@ type TopicProduct implements Entry {
   contentfulMetadata: ContentfulMetadata!
   description(locale: String): TopicProductDescription
   featuredImage(locale: String, preview: Boolean): Asset
-  featuresCollection(limit: Int = 100, locale: String, order: [TopicProductFeaturesCollectionOrder], preview: Boolean, skip: Int = 0, where: TopicProductFeatureFilter): TopicProductFeaturesCollection
+  featuresCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductFeaturesCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+    where: TopicProductFeatureFilter
+  ): TopicProductFeaturesCollection
   internalName(locale: String): String
   linkedFrom(allowedLocales: [String]): TopicProductLinkingCollections
   name(locale: String): String
@@ -2582,8 +3053,19 @@ input TopicProductFeatureFilter {
 }
 
 type TopicProductFeatureLinkingCollections {
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  topicProductCollection(limit: Int = 100, locale: String, order: [TopicProductFeatureLinkingCollectionsTopicProductCollectionOrder], preview: Boolean, skip: Int = 0): TopicProductCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  topicProductCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductFeatureLinkingCollectionsTopicProductCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): TopicProductCollection
 }
 
 enum TopicProductFeatureLinkingCollectionsTopicProductCollectionOrder {
@@ -2757,9 +3239,26 @@ input TopicProductFilter {
 }
 
 type TopicProductLinkingCollections {
-  componentProductTableCollection(limit: Int = 100, locale: String, order: [TopicProductLinkingCollectionsComponentProductTableCollectionOrder], preview: Boolean, skip: Int = 0): ComponentProductTableCollection
-  entryCollection(limit: Int = 100, locale: String, preview: Boolean, skip: Int = 0): EntryCollection
-  pageCollection(limit: Int = 100, locale: String, order: [TopicProductLinkingCollectionsPageCollectionOrder], preview: Boolean, skip: Int = 0): PageCollection
+  componentProductTableCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductLinkingCollectionsComponentProductTableCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): ComponentProductTableCollection
+  entryCollection(
+    limit: Int = 100
+    locale: String
+    preview: Boolean
+    skip: Int = 0
+  ): EntryCollection
+  pageCollection(
+    limit: Int = 100
+    locale: String
+    order: [TopicProductLinkingCollectionsPageCollectionOrder]
+    preview: Boolean
+    skip: Int = 0
+  ): PageCollection
 }
 
 enum TopicProductLinkingCollectionsComponentProductTableCollectionOrder {
