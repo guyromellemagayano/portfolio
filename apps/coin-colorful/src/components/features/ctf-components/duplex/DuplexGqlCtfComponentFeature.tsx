@@ -44,4 +44,6 @@ const DuplexGqlCtfComponentFeature = (
   )
 }
 
+DuplexGqlCtfComponentFeature.displayName = 'DuplexGqlCtfComponentFeature'
+
 export default DuplexGqlCtfComponentFeature
