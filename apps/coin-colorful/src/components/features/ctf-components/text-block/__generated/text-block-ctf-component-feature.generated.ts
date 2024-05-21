@@ -1,30 +1,31 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  ComponentReferenceFields_ComponentCta_Fragment,
-  ComponentReferenceFields_ComponentDuplex_Fragment,
-  ComponentReferenceFields_ComponentHeroBanner_Fragment,
-  ComponentReferenceFields_ComponentInfoBlock_Fragment,
-  ComponentReferenceFields_ComponentProductTable_Fragment,
-  ComponentReferenceFields_ComponentQuote_Fragment,
-  ComponentReferenceFields_ComponentTextBlock_Fragment,
-  ComponentReferenceFields_FooterMenu_Fragment,
-  ComponentReferenceFields_MenuGroup_Fragment,
-  ComponentReferenceFields_NavigationMenu_Fragment,
-  ComponentReferenceFields_Page_Fragment,
-  ComponentReferenceFields_Seo_Fragment,
-  ComponentReferenceFields_TopicBusinessInfo_Fragment,
-  ComponentReferenceFields_TopicPerson_Fragment,
-  ComponentReferenceFields_TopicProduct_Fragment,
-  ComponentReferenceFields_TopicProductFeature_Fragment,
-  ComponentReferenceFieldsFragmentDoc
-} from '../../../../../libs/shared-fragments/__generated/ctf-componentMap.generated'
+  AssetFieldsFragmentDoc,
+  type AssetFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
 import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
+  ComponentReferenceFieldsFragmentDoc,
+  type ComponentReferenceFields_ComponentCta_Fragment,
+  type ComponentReferenceFields_ComponentDuplex_Fragment,
+  type ComponentReferenceFields_ComponentHeroBanner_Fragment,
+  type ComponentReferenceFields_ComponentInfoBlock_Fragment,
+  type ComponentReferenceFields_ComponentProductTable_Fragment,
+  type ComponentReferenceFields_ComponentQuote_Fragment,
+  type ComponentReferenceFields_ComponentTextBlock_Fragment,
+  type ComponentReferenceFields_FooterMenu_Fragment,
+  type ComponentReferenceFields_MenuGroup_Fragment,
+  type ComponentReferenceFields_NavigationMenu_Fragment,
+  type ComponentReferenceFields_Page_Fragment,
+  type ComponentReferenceFields_Seo_Fragment,
+  type ComponentReferenceFields_TopicBusinessInfo_Fragment,
+  type ComponentReferenceFields_TopicPerson_Fragment,
+  type ComponentReferenceFields_TopicProduct_Fragment,
+  type ComponentReferenceFields_TopicProductFeature_Fragment
+} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-componentMap.generated'
+
 export type TextBlockFieldsFragment = {
   __typename: 'ComponentTextBlock'
   headline?: string | null
@@ -108,40 +109,42 @@ export type CtfTextBlockQuery = {
 }
 
 export const TextBlockFieldsFragmentDoc = `
-    fragment TextBlockFields on ComponentTextBlock {
-  __typename
-  sys {
-    id
-  }
-  headline
-  subline
-  body {
-    json
-    links {
-      entries {
-        block {
-          ...ComponentReferenceFields
+  fragment TextBlockFields on ComponentTextBlock {
+    __typename
+    sys {
+      id
+    }
+    headline
+    subline
+    body {
+      json
+      links {
+        entries {
+          block {
+            ...ComponentReferenceFields
+          }
         }
-      }
-      assets {
-        block {
-          ...AssetFields
+        assets {
+          block {
+            ...AssetFields
+          }
         }
       }
     }
+    colorPalette
   }
-  colorPalette
-}
-    `
+`
+
 export const CtfTextBlockDocument = `
-    query CtfTextBlock($id: String!, $locale: String, $preview: Boolean) {
-  componentTextBlock(id: $id, locale: $locale, preview: $preview) {
-    ...TextBlockFields
+  query CtfTextBlock($id: String!, $locale: String, $preview: Boolean) {
+    componentTextBlock(id: $id, locale: $locale, preview: $preview) {
+      ...TextBlockFields
+    }
   }
-}
-    ${TextBlockFieldsFragmentDoc}
-${ComponentReferenceFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}`
+  ${TextBlockFieldsFragmentDoc}
+  ${ComponentReferenceFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+`
 
 export const useCtfTextBlockQuery = <
   TData = CtfTextBlockQuery,
@@ -150,21 +153,20 @@ export const useCtfTextBlockQuery = <
   variables: CtfTextBlockQueryVariables,
   options?: UseQueryOptions<CtfTextBlockQuery, TError, TData>
 ) => {
-  return useQuery<CtfTextBlockQuery, TError, TData>(
-    ['CtfTextBlock', variables],
-    ctfFetcher<CtfTextBlockQuery, CtfTextBlockQueryVariables>(
+  return useQuery<CtfTextBlockQuery, TError, TData>({
+    queryKey: ['CtfTextBlock', variables],
+    queryFn: ctfFetcher<CtfTextBlockQuery, CtfTextBlockQueryVariables>(
       CtfTextBlockDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfTextBlockQuery.getKey = (variables: CtfTextBlockQueryVariables) => [
   'CtfTextBlock',
   variables
 ]
-
 useCtfTextBlockQuery.fetcher = (
   variables: CtfTextBlockQueryVariables,
   options?: RequestInit['headers']

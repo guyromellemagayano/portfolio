@@ -8,7 +8,7 @@ import {
   SectionHeadlinesFeature,
   type TextBlockFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/configs'
+import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   innerContainer: {
@@ -48,19 +48,20 @@ const TextBlockCtfComponentFeature = (
       }}
     >
       <Div className={classes.innerContainer}>
-        {headline && headline?.length > 0 && subline && subline?.length > 0 && (
-          <SectionHeadlinesFeature
-            headline={headline}
-            headlineProps={{
-              style: { color: colorConfig.headlineColor }
-            }}
-            subline={subline}
-            sublineProps={{
-              style: { color: colorConfig.textColor }
-            }}
-            className={classes.sectionHeadlines}
-          />
-        )}
+        {(headline && headline?.length > 0) ||
+          (subline && subline?.length > 0 && (
+            <SectionHeadlinesFeature
+              headline={headline}
+              headlineProps={{
+                style: { color: colorConfig.headlineColor }
+              }}
+              subline={subline}
+              sublineProps={{
+                style: { color: colorConfig.textColor }
+              }}
+              className={classes.sectionHeadlines}
+            />
+          ))}
 
         {body && Object.keys(body)?.length > 0 && (
           <Div
