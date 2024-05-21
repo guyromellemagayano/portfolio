@@ -4,16 +4,19 @@
 
 import * as Sentry from '@sentry/nextjs'
 
-const SENTRY_DSN = process.env.SENTRY_DSN
+import { SENTRY_DSN, SENTRY_ENVIRONMENT } from './src/configs'
 
 Sentry.init({
   dsn: SENTRY_DSN,
 
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0.25,
-  environment: process.env.sentryEnvironment,
-  enabled: process.env.SENTRY_ENVIRONMENT === 'production',
+  environment: SENTRY_ENVIRONMENT,
+  enabled: SENTRY_ENVIRONMENT === 'production' ? true : false,
 
   // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false
+  debug: SENTRY_ENVIRONMENT === 'development' ? true : false,
+
+  // Uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  spotlight: SENTRY_ENVIRONMENT === 'development' ? true : false
 })
