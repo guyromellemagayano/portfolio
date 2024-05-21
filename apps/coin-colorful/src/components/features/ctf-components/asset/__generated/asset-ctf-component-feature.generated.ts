@@ -1,4 +1,4 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
 
 export type AssetFieldsFragment = {
   __typename: 'Asset'
@@ -12,16 +12,16 @@ export type AssetFieldsFragment = {
 }
 
 export const AssetFieldsFragmentDoc = `
-    fragment AssetFields on Asset {
-  __typename
-  sys {
-    id
+  fragment AssetFields on Asset {
+    __typename
+    sys {
+      id
+    }
+    contentType
+    title
+    description
+    width
+    height
+    url
   }
-  contentType
-  title
-  description
-  width
-  height
-  url
-}
-    `
+`

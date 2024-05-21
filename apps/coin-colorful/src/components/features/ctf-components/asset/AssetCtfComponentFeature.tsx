@@ -1,9 +1,11 @@
+'use client'
+
 import { ImageProps } from 'next/image'
 
 import {
-  AssetFieldsFragment,
   ImageCtfComponentFeature,
-  VideoCtfComponentFeature
+  VideoCtfComponentFeature,
+  type AssetFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { useLayoutContext } from '@guy-romelle-magayano/coin-colorful/hooks'
 
@@ -28,11 +30,7 @@ const AssetCtfComponentFeature = (props: AssetCtfComponentFeatureProps) => {
     return null
   }
 
-  if (
-    contentType &&
-    contentType?.length > 0 &&
-    contentType?.startsWith('image')
-  ) {
+  if (contentType?.length > 0 && contentType?.startsWith('image')) {
     return (
       <ImageCtfComponentFeature
         height={height || undefined}
@@ -42,7 +40,7 @@ const AssetCtfComponentFeature = (props: AssetCtfComponentFeatureProps) => {
         showDescription={
           ['quote', 'product-table', 'info-block', 'duplex'].includes(
             layout.parent
-          ) === true
+          )
             ? false
             : showDescription
         }
@@ -50,11 +48,7 @@ const AssetCtfComponentFeature = (props: AssetCtfComponentFeatureProps) => {
     )
   }
 
-  if (
-    contentType &&
-    contentType?.length > 0 &&
-    contentType?.startsWith('video')
-  ) {
+  if (contentType?.length > 0 && contentType?.startsWith('video')) {
     return <VideoCtfComponentFeature {...props} />
   }
 
