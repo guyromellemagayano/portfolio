@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 'use client'
 
 import { useCallback, useMemo } from 'react'
@@ -22,10 +21,10 @@ import { Div, Li } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  AssetFieldsFragment,
   ComponentResolverShared,
   PageLinkFeature,
-  useCtfRichTextHyperlinkQuery
+  useCtfRichTextHyperlinkQuery,
+  type AssetFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   useContentfulContext,
@@ -367,6 +366,7 @@ const RichtextCtfComponentFeature = (
 
       const paragraphRenderer =
         (rendererProps: ParagraphRenderer = {}) =>
+        // eslint-disable-next-line react/display-name
         (
           _node: any,
           children:
