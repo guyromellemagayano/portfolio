@@ -1,15 +1,16 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  MenuGroupFieldsFragment,
-  MenuGroupFieldsFragmentDoc
-} from '../../../../../libs/shared-fragments/__generated/ctf-menuGroup.generated'
+  PageLinkFieldsFragmentDoc,
+  type PageLinkFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
 import {
-  PageLinkFieldsFragment,
-  PageLinkFieldsFragmentDoc
-} from '../../../page-link/__generated/page-link-feature.generated'
+  MenuGroupFieldsFragmentDoc,
+  type MenuGroupFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/libs/shared-fragments/__generated/ctf-menuGroup.generated'
+
 export type NavigationFieldsFragment = {
   __typename?: 'NavigationMenuCollection'
   items: Array<{
@@ -44,35 +45,37 @@ export type CtfNavigationQuery = {
 }
 
 export const NavigationFieldsFragmentDoc = `
-    fragment NavigationFields on NavigationMenuCollection {
-  items {
-    menuItemsCollection {
-      items {
-        __typename
-        sys {
-          id
-        }
-        groupName
-        link: groupLink {
-          ...PageLinkFields
-        }
-        children: featuredPagesCollection {
-          ...MenuGroupFields
+  fragment NavigationFields on NavigationMenuCollection {
+    items {
+      menuItemsCollection {
+        items {
+          __typename
+          sys {
+            id
+          }
+          groupName
+          link: groupLink {
+            ...PageLinkFields
+          }
+          children: featuredPagesCollection {
+            ...MenuGroupFields
+          }
         }
       }
     }
   }
-}
-    `
+`
+
 export const CtfNavigationDocument = `
-    query CtfNavigation($locale: String, $preview: Boolean) {
-  navigationMenuCollection(locale: $locale, preview: $preview, limit: 1) {
-    ...NavigationFields
+  query CtfNavigation($locale: String, $preview: Boolean) {
+    navigationMenuCollection(locale: $locale, preview: $preview, limit: 1) {
+      ...NavigationFields
+    }
   }
-}
-    ${NavigationFieldsFragmentDoc}
-${PageLinkFieldsFragmentDoc}
-${MenuGroupFieldsFragmentDoc}`
+  ${NavigationFieldsFragmentDoc}
+  ${PageLinkFieldsFragmentDoc}
+  ${MenuGroupFieldsFragmentDoc}
+`
 
 export const useCtfNavigationQuery = <
   TData = CtfNavigationQuery,
@@ -81,19 +84,18 @@ export const useCtfNavigationQuery = <
   variables?: CtfNavigationQueryVariables,
   options?: UseQueryOptions<CtfNavigationQuery, TError, TData>
 ) => {
-  return useQuery<CtfNavigationQuery, TError, TData>(
-    variables === undefined ? ['CtfNavigation'] : ['CtfNavigation', variables],
-    ctfFetcher<CtfNavigationQuery, CtfNavigationQueryVariables>(
+  return useQuery<CtfNavigationQuery, TError, TData>({
+    queryKey: !variables ? ['CtfNavigation'] : ['CtfNavigation', variables],
+    queryFn: ctfFetcher<CtfNavigationQuery, CtfNavigationQueryVariables>(
       CtfNavigationDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfNavigationQuery.getKey = (variables?: CtfNavigationQueryVariables) =>
   variables === undefined ? ['CtfNavigation'] : ['CtfNavigation', variables]
-
 useCtfNavigationQuery.fetcher = (
   variables?: CtfNavigationQueryVariables,
   options?: RequestInit['headers']
