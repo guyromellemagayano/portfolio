@@ -10,20 +10,20 @@ import clsx from 'clsx'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  HeroBannerFieldsFragment,
   PageLinkFeature,
-  RichtextCtfComponentFeature
+  RichtextCtfComponentFeature,
+  type HeroBannerFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import {
-  THEME_HEADER_HEIGHT,
-  THEME_HEADER_HEIGHT_MD,
-  getColorConfigFromPalette
-} from '@guy-romelle-magayano/coin-colorful/configs'
 import {
   LayoutContext,
   layoutContextValues
 } from '@guy-romelle-magayano/coin-colorful/contexts'
 import { useLayoutContext } from '@guy-romelle-magayano/coin-colorful/hooks'
+import {
+  THEME_HEADER_HEIGHT,
+  THEME_HEADER_HEIGHT_MD,
+  getColorConfigFromPalette
+} from '@guy-romelle-magayano/coin-colorful/theme'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'hidden',
     position: 'relative'
   },
-
   fullScreen: {
     minHeight: `calc(100vh - ${THEME_HEADER_HEIGHT_MD})`,
     [theme.breakpoints.up('md')]: {
@@ -44,7 +43,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       minHeight: '91.2rem'
     }
   },
-
   innerContainer: {
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -56,7 +54,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: theme.spacing(39, 0, 39)
     }
   },
-
   partialBgContainer: {
     display: 'none',
     height: '100%',
@@ -70,7 +67,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       display: 'block'
     }
   },
-
   partialBg: {
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -80,7 +76,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     top: 0,
     width: '50%'
   },
-
   headline: {
     fontSize: '3rem',
     fontWeight: 800,
@@ -90,7 +85,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '3.8rem'
     }
   },
-
   body: {
     fontWeight: 400,
     lineHeight: 1.56,
@@ -156,7 +150,10 @@ const HeroBannerCtfComponentFeature = (
         classes.root,
         heroSize === 'full_screen' ? classes.fullScreen : null
       )}
-      {...inspectorMode({ fieldId: 'image' })}
+      {...inspectorMode({
+        fieldId: 'image',
+        manuallyTagged: undefined
+      })}
       style={{
         backgroundImage:
           imageStyle === 'full' && backgroundImage
@@ -184,7 +181,10 @@ const HeroBannerCtfComponentFeature = (
             variant="h1"
             className={classes.headline}
             style={{ color: colorConfig.headlineColor }}
-            {...inspectorMode({ fieldId: 'headline' })}
+            {...inspectorMode({
+              fieldId: 'headline',
+              manuallyTagged: undefined
+            })}
           >
             {headline}
           </Typography>
@@ -196,7 +196,10 @@ const HeroBannerCtfComponentFeature = (
           >
             <Div
               style={{ color: colorConfig.textColor }}
-              {...inspectorMode({ fieldId: 'bodyText' })}
+              {...inspectorMode({
+                fieldId: 'bodyText',
+                manuallyTagged: undefined
+              })}
             >
               <RichtextCtfComponentFeature
                 {...bodyText}
