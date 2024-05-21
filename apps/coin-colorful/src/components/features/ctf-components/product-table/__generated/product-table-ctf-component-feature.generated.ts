@@ -1,19 +1,14 @@
-import * as Types from '../../../../../libs/__generated/graphql.types'
-
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { ctfFetcher } from '../../../../../libs'
+
 import {
-  AssetFieldsFragment,
-  AssetFieldsFragmentDoc
-} from '../../asset/__generated/asset-ctf-component-feature.generated'
-import {
-  ProductFeatureFieldsFragment,
-  ProductFeatureFieldsFragmentDoc
-} from '../../product-feature/__generated/product-feature-ctf-component-feature.generated'
-import {
-  ProductFieldsFragment,
-  ProductFieldsFragmentDoc
-} from '../../product/__generated/product-ctf-component-feature.generated'
+  AssetFieldsFragmentDoc,
+  ProductFeatureFieldsFragmentDoc,
+  ProductFieldsFragmentDoc,
+  type ProductFieldsFragment
+} from '@guy-romelle-magayano/coin-colorful/components'
+import { ctfFetcher } from '@guy-romelle-magayano/coin-colorful/libs'
+import * as Types from '@guy-romelle-magayano/coin-colorful/libs/__generated/graphql.types'
+
 export type ProductTableFieldsFragment = {
   __typename: 'ComponentProductTable'
   headline?: string | null
@@ -41,30 +36,32 @@ export type CtfProductTableQuery = {
 }
 
 export const ProductTableFieldsFragmentDoc = `
-    fragment ProductTableFields on ComponentProductTable {
-  __typename
-  sys {
-    id
-  }
-  headline
-  subline
-  productsCollection(limit: 3) {
-    items {
-      ...ProductFields
+  fragment ProductTableFields on ComponentProductTable {
+    __typename
+    sys {
+      id
+    }
+    headline
+    subline
+    productsCollection(limit: 3) {
+      items {
+        ...ProductFields
+      }
     }
   }
-}
-    `
+`
+
 export const CtfProductTableDocument = `
-    query CtfProductTable($id: String!, $locale: String, $preview: Boolean) {
-  componentProductTable(id: $id, preview: $preview, locale: $locale) {
-    ...ProductTableFields
+  query CtfProductTable($id: String!, $locale: String, $preview: Boolean) {
+    componentProductTable(id: $id, preview: $preview, locale: $locale) {
+      ...ProductTableFields
+    }
   }
-}
-    ${ProductTableFieldsFragmentDoc}
-${ProductFieldsFragmentDoc}
-${AssetFieldsFragmentDoc}
-${ProductFeatureFieldsFragmentDoc}`
+  ${ProductTableFieldsFragmentDoc}
+  ${ProductFieldsFragmentDoc}
+  ${AssetFieldsFragmentDoc}
+  ${ProductFeatureFieldsFragmentDoc}
+`
 
 export const useCtfProductTableQuery = <
   TData = CtfProductTableQuery,
@@ -73,21 +70,20 @@ export const useCtfProductTableQuery = <
   variables: CtfProductTableQueryVariables,
   options?: UseQueryOptions<CtfProductTableQuery, TError, TData>
 ) => {
-  return useQuery<CtfProductTableQuery, TError, TData>(
-    ['CtfProductTable', variables],
-    ctfFetcher<CtfProductTableQuery, CtfProductTableQueryVariables>(
+  return useQuery<CtfProductTableQuery, TError, TData>({
+    queryKey: ['CtfProductTable', variables],
+    queryFn: ctfFetcher<CtfProductTableQuery, CtfProductTableQueryVariables>(
       CtfProductTableDocument,
       variables
     ),
-    options
-  )
+    ...options
+  })
 }
 
 useCtfProductTableQuery.getKey = (variables: CtfProductTableQueryVariables) => [
   'CtfProductTable',
   variables
 ]
-
 useCtfProductTableQuery.fetcher = (
   variables: CtfProductTableQueryVariables,
   options?: RequestInit['headers']
