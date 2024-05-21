@@ -3,7 +3,7 @@ const { composePlugins, withNx } = require('@nx/next')
 const createNextIntlPlugin = require('next-intl/plugin')
 
 // Next.js Internationalization plugin
-const withNextIntl = createNextIntlPlugin('./src/libs/i18n.ts')
+const withNextIntl = createNextIntlPlugin()
 
 /**
  * Adds a polyfill entry to the webpack configuration.
@@ -107,6 +107,7 @@ const nextConfig = {
   images: {
     deviceSizes: [320, 420, 768, 1024, 1200, 1600],
     domains: ['images.ctfassets.net', 'images.eu.ctfassets.net'],
+    formats: ['image/avif', 'image/webp'],
     path: '/_next/image',
     loader: 'default'
   },
