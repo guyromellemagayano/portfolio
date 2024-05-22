@@ -1,3 +1,5 @@
+'use client'
+
 import { useContentfulInspectorMode } from '@contentful/live-preview/react'
 import { Theme, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
@@ -7,8 +9,8 @@ import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AssetCtfComponentFeature,
-  PersonFieldsFragment,
-  RichtextCtfComponentFeature
+  RichtextCtfComponentFeature,
+  type PersonFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import {
   LayoutContext,
@@ -99,7 +101,10 @@ const LeadershipCardFeature = (props: LeadershipCardFeatureProps) => {
     >
       {avatar && Object.keys(avatar)?.length > 0 && (
         <Div
-          {...inspectorMode({ fieldId: 'avatar' })}
+          {...inspectorMode({
+            fieldId: 'avatar',
+            manuallyTagged: undefined
+          })}
           className={classes.avatar}
         >
           <AssetCtfComponentFeature {...avatar} showDescription={false} />
@@ -107,7 +112,12 @@ const LeadershipCardFeature = (props: LeadershipCardFeatureProps) => {
       )}
 
       <Div>
-        <Div {...inspectorMode({ fieldId: 'name' })}>
+        <Div
+          {...inspectorMode({
+            fieldId: 'name',
+            manuallyTagged: undefined
+          })}
+        >
           {nameSplit && nameSplit?.length > 0 && (
             <Typography className={classes.name}>{nameSplit[0]}</Typography>
           )}
@@ -121,7 +131,12 @@ const LeadershipCardFeature = (props: LeadershipCardFeatureProps) => {
           <LayoutContext.Provider
             value={{ ...layoutContextValues, parent: 'card-person' }}
           >
-            <Div {...inspectorMode({ fieldId: 'bio' })}>
+            <Div
+              {...inspectorMode({
+                fieldId: 'bio',
+                manuallyTagged: undefined
+              })}
+            >
               <RichtextCtfComponentFeature {...bio} className={classes.bio} />
             </Div>
           </LayoutContext.Provider>
