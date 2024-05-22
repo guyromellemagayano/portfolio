@@ -1,4 +1,32 @@
+import { ComponentType } from 'react'
+
 import dynamic from 'next/dynamic'
+
+import {
+  type BusinessInfoCtfComponentFeatureProps,
+  type CtaCtfComponentFeatureProps,
+  type CtaGqlCtlComponentFeatureProps,
+  type DuplexCtfComponentFeatureProps,
+  type DuplexGqlCtfComponentFeatureProps,
+  type HeroBannerCtfComponentFeatureProps,
+  type HeroBannerGqlCtfComponentFeatureProps,
+  type InfoBlockCtfComponentFeatureProps,
+  type InfoBlockGqlCtfComponentFeatureProps,
+  type PersonCtfComponentFeatureProps,
+  type PersonGqlCtfComponentFeatureProps,
+  type ProductCtfComponentFeatureProps,
+  type ProductTableCtfComponentFeatureProps,
+  type QuoteCtfComponentFeatureProps,
+  type QuoteGqlCtfComponentFeatureProps,
+  type TextBlockCtfComponentFeatureProps,
+  type TextBlockGqlCtfComponentFeatureProps
+} from '@guy-romelle-magayano/coin-colorful/components'
+
+export type PageTopicMap = {
+  TopicProduct: ComponentType<ProductCtfComponentFeatureProps>
+  TopicBusinessInfo: ComponentType<BusinessInfoCtfComponentFeatureProps>
+  ComponentProductTable: ComponentType<ProductTableCtfComponentFeatureProps>
+}
 
 // Mapping of page topics to dynamically imported components.
 const pageTopicMap = {
@@ -22,6 +50,16 @@ const pageTopicMap = {
       module => module.ProductTableCtfComponentFeature
     )
   )
+} as PageTopicMap
+
+export type ComponentMap = {
+  ComponentCta: ComponentType<CtaCtfComponentFeatureProps>
+  ComponentDuplex: ComponentType<DuplexCtfComponentFeatureProps>
+  ComponentHeroBanner: ComponentType<HeroBannerCtfComponentFeatureProps>
+  ComponentInfoBlock: ComponentType<InfoBlockCtfComponentFeatureProps>
+  ComponentQuote: ComponentType<QuoteCtfComponentFeatureProps>
+  ComponentTextBlock: ComponentType<TextBlockCtfComponentFeatureProps>
+  TopicPerson: ComponentType<PersonCtfComponentFeatureProps>
 }
 
 // Mapping of component names to their corresponding dynamic imports.
@@ -74,6 +112,17 @@ export const componentMap = {
       module => module.PersonCtfComponentFeature
     )
   )
+} as ComponentMap
+
+export type ComponentGqlMap = {
+  ComponentCta: ComponentType<CtaGqlCtlComponentFeatureProps>
+  ComponentDuplex: ComponentType<DuplexGqlCtfComponentFeatureProps>
+  ComponentHeroBanner: ComponentType<HeroBannerGqlCtfComponentFeatureProps>
+  ComponentInfoBlock: ComponentType<InfoBlockGqlCtfComponentFeatureProps>
+  ComponentQuote: ComponentType<QuoteGqlCtfComponentFeatureProps>
+  ComponentTextBlock: ComponentType<TextBlockGqlCtfComponentFeatureProps>
+  TopicPerson: ComponentType<PersonGqlCtfComponentFeatureProps>
+  ComponentFooter: ComponentType<unknown>
 }
 
 // Mapping of component names to their corresponding GraphQL modules.
@@ -115,7 +164,7 @@ export const componentGqlMap = {
     )
   ),
 
-  // GraphQL module for the ComponentTextBlock component
+  // GraphQL module for the `TextBlockGqlCtfComponentFeature` component
   ComponentTextBlock: dynamic(() =>
     import('@guy-romelle-magayano/coin-colorful/components').then(
       module => module.TextBlockGqlCtfComponentFeature
@@ -135,4 +184,4 @@ export const componentGqlMap = {
       module => module.FooterGqlCtfComponentFeature
     )
   )
-}
+} as ComponentGqlMap
