@@ -5,7 +5,7 @@ import { Div, P } from '@guy-romelle-magayano/react-components/server'
 
 import {
   AvatarFeature,
-  PersonFieldsFragment
+  type PersonFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 
 const useStyles = makeStyles((theme: Theme) => ({
