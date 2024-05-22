@@ -12,7 +12,6 @@ import {
 } from '@guy-romelle-magayano/react-components/server'
 
 import Providers from '@guy-romelle-magayano/coin-colorful/app/[locale]/providers'
-import { colorfulTheme } from '@guy-romelle-magayano/coin-colorful/configs'
 
 export type BaseLayoutProps = {
   children: ReactNode
@@ -25,7 +24,7 @@ export type BaseLayoutProps = {
  * @param {BaseLayoutProps} props - The properties of the base layout.
  * @returns The rendered base layout component.
  */
-const BaseLayout = async (props: BaseLayoutProps) => {
+const BaseLayout = (props: BaseLayoutProps) => {
   const { dehydratedState, children, lang } = props
 
   unstable_setRequestLocale(lang)
@@ -37,7 +36,7 @@ const BaseLayout = async (props: BaseLayoutProps) => {
         <Meta name="robots" content="noindex, nofollow" />
 
         {/* PWA primary color */}
-        <Meta name="theme-color" content={colorfulTheme.palette.primary.main} />
+        <Meta name="theme-color" content="#000" />
 
         <Link
           href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;400;500;600;700;800;900&display=swap"
@@ -64,7 +63,9 @@ const BaseLayout = async (props: BaseLayoutProps) => {
       </Head>
 
       <Body>
-        <Providers dehydratedState={dehydratedState}>{children}</Providers>
+        <Providers dehydratedState={dehydratedState} lang={lang}>
+          {children}
+        </Providers>
       </Body>
     </Html>
   )
