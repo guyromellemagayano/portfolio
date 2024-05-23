@@ -12,13 +12,13 @@ export type ContentfulContextValueProps = {
   previewActive: boolean
 }
 
-export const contentfulContextValues: ContentfulContextValueProps = {
+export const contentfulContextValues = {
   locale: 'en',
   spaceIds: {
     main: CONTENTFUL_CONFIG.contentful.space_id
   },
   previewActive: false
-}
+} as ContentfulContextValueProps
 
 export const ContentfulContext = createContext<ContentfulContextValueProps>(
   contentfulContextValues
@@ -52,3 +52,5 @@ export const ContentfulContentProvider = ({
     </ContentfulContext.Provider>
   )
 }
+
+ContentfulContentProvider.displayName = 'ContentfulContentProvider'
