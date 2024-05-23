@@ -21,7 +21,7 @@ import {
   THEME_CONTAINER_WIDTH,
   THEME_HEADER_HEIGHT,
   THEME_HEADER_HEIGHT_MD
-} from '@guy-romelle-magayano/coin-colorful/configs'
+} from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   appbar: {
