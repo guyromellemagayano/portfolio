@@ -6,7 +6,7 @@ import { File } from 'react-kawaii'
 import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import { PageContainerTemplate } from '@guy-romelle-magayano/coin-colorful/components'
-import { colorfulTheme } from '@guy-romelle-magayano/coin-colorful/configs'
+import { theme } from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -65,7 +65,7 @@ const PageErrorFeature = (props: PageErrorFeatureProps) => {
                 <File
                   size={100}
                   mood="ko"
-                  color={colorfulTheme.palette.primary.main}
+                  color={theme.palette.primary.main}
                   className={classes.icon}
                 />
                 <Typography variant="h1" gutterBottom>
