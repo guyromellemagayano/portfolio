@@ -23,7 +23,7 @@ import {
   THEME_HEADER_HEIGHT,
   THEME_HEADER_HEIGHT_MD,
   getColorConfigFromPalette
-} from '@guy-romelle-magayano/coin-colorful/theme'
+} from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

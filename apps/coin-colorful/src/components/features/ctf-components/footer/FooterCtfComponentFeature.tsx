@@ -27,8 +27,8 @@ import {
   type FooterFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
 import { useContentfulContext } from '@guy-romelle-magayano/coin-colorful/hooks'
-import { THEME_CONTAINER_WIDTH } from '@guy-romelle-magayano/coin-colorful/theme'
 import {
+  THEME_CONTAINER_WIDTH,
   getLinkDisplayText,
   getLinkHrefPrefix
 } from '@guy-romelle-magayano/coin-colorful/utils'
