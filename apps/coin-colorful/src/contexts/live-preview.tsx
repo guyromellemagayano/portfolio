@@ -28,3 +28,5 @@ export const LivePreviewProvider = ({ children }: LivePreviewProviderProps) => {
     </ContentfulLivePreviewProvider>
   )
 }
+
+LivePreviewProvider.displayName = 'LivePreviewProvider'
