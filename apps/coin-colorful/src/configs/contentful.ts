@@ -3,9 +3,9 @@ import {
   CONTENTFUL_ACCESS_TOKEN,
   CONTENTFUL_PREVIEW_ACCESS_TOKEN,
   CONTENTFUL_SPACE_ID
-} from './env'
+} from '.'
 
-export const CONTENTFUL_CONFIG: {
+export type ContentfulConfig = {
   contentful: {
     space_id: string
     cda_token: string
@@ -23,7 +23,9 @@ export const CONTENTFUL_CONFIG: {
     width: number
     height: number
   }
-} = {
+}
+
+export const CONTENTFUL_CONFIG = {
   contentful: {
     space_id: CONTENTFUL_SPACE_ID,
     cda_token: CONTENTFUL_ACCESS_TOKEN,
@@ -46,8 +48,9 @@ export const CONTENTFUL_CONFIG: {
     width: 66,
     height: 64
   }
-}
-export const CONTENTFUL_FETCH_CONFIG: {
+} as ContentfulConfig
+
+export type ContentfulFetchConfig = {
   endpoint: string
   params: {
     headers: {
@@ -61,10 +64,10 @@ export const CONTENTFUL_FETCH_CONFIG: {
       Authorization: string
     }
   }
-} = {
-  endpoint: `https://graphql.contentful.com/content/v1/spaces/${String(
-    CONTENTFUL_SPACE_ID
-  )}`,
+}
+
+export const CONTENTFUL_FETCH_CONFIG = {
+  endpoint: `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`,
   params: {
     headers: {
       'Content-Type': 'application/json',
@@ -77,4 +80,4 @@ export const CONTENTFUL_FETCH_CONFIG: {
       Authorization: `Bearer ${CONTENTFUL_PREVIEW_ACCESS_TOKEN}`
     }
   }
-}
+} as ContentfulFetchConfig
