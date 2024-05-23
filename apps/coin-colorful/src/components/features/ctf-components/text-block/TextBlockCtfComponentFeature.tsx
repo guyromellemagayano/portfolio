@@ -8,7 +8,7 @@ import {
   SectionHeadlinesFeature,
   type TextBlockFieldsFragment
 } from '@guy-romelle-magayano/coin-colorful/components'
-import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/theme'
+import { getColorConfigFromPalette } from '@guy-romelle-magayano/coin-colorful/utils'
 
 const useStyles = makeStyles((theme: Theme) => ({
   innerContainer: {

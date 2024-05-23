@@ -1,6 +1,6 @@
 'use client'
 
-import { createTheme, adaptV4Theme } from '@mui/material/styles'
+import { adaptV4Theme, createTheme } from '@mui/material/styles'
 import { TypographyStyleOptions } from '@mui/material/styles/createTypography'
 
 export const THEME_CONTAINER_WIDTH = 1260
@@ -15,7 +15,9 @@ export type ColorConfigTypes = {
   buttonColor: 'primary' | 'secondary'
 }
 
-// Configuration object for color palettes.
+/**
+ * Configuration object for color palettes.
+ */
 export const colorConfigs: { [key: string]: ColorConfigTypes } = {
   'palette-1. White (#FFFFFF)': {
     headlineColor: '#1B273A',
