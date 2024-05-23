@@ -63,9 +63,7 @@ const BaseLayout = (props: BaseLayoutProps) => {
       </Head>
 
       <Body>
-        <Providers dehydratedState={dehydratedState} lang={lang}>
-          {children}
-        </Providers>
+        <Providers dehydratedState={dehydratedState}>{children}</Providers>
       </Body>
     </Html>
   )
