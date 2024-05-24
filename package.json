@@ -69,7 +69,7 @@
     "@nx/cypress": "19.0.4",
     "@nx/eslint": "19.0.4",
     "@nx/eslint-plugin": "19.0.4",
-    "@nx/jest": "19.0.4",
+    "@nx/jest": "19.1.0",
     "@nx/js": "19.0.4",
     "@nx/next": "19.0.4",
     "@nx/node": "19.0.4",
