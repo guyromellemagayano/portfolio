@@ -128,7 +128,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "lint-staged": "^15.2.2",
-    "nx": "^19.0.4",
+    "nx": "^19.3.2",
     "postcss": "^8.4.38",
     "postcss-focus-visible": "^9.0.1",
     "postcss-import": "^16.1.0",
