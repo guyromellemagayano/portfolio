@@ -12,8 +12,8 @@ dependencies:
     specifier: ^15.19.6
     version: 15.19.6(react-dom@18.3.1)(react@18.3.1)
   '@contentful/rich-text-types':
-    specifier: ^16.3.5
-    version: 16.3.5
+    specifier: ^16.6.1
+    version: 16.6.1
   '@ducanh2912/next-pwa':
     specifier: ^10.2.7
     version: 10.2.7(next@14.2.3)(webpack@5.91.0)
@@ -1848,7 +1848,7 @@ packages:
       react-dom: ^17.0.0 || ^18.0.0
     dependencies:
       '@contentful/content-source-maps': 0.5.0
-      '@contentful/rich-text-types': 16.3.5
+      '@contentful/rich-text-types': 16.6.1
       flatted: 3.3.1
       graphql-tag: 2.12.6(graphql@16.8.1)
       json-pointer: 0.6.2
@@ -1866,13 +1866,13 @@ packages:
       react: ^16.8.6 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.6 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@contentful/rich-text-types': 16.3.5
+      '@contentful/rich-text-types': 16.6.1
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
     dev: false
 
-  /@contentful/rich-text-types@16.3.5:
-    resolution: {integrity: sha512-ZLq6p5uyQXg+i1XGDFu4tAc2VYS12S1KA/jIOyyZjNgC1DvDajsi1JzuiBuOuMEhi1sKEUy6Ry3Yr9jsQtOKuQ==}
+  /@contentful/rich-text-types@16.6.1:
+    resolution: {integrity: sha512-Rb8QusSMSTMUP4dbpBDWgwGJoqKDYRxPcNXySP0URYTQ6pViJ2SXhVc81RJCgJ5Fb02n5ctbvDYGtcnBH8yhDw==}
     engines: {node: '>=6.0.0'}
 
   /@cspotcode/source-map-support@0.8.1:
@@ -9606,7 +9606,7 @@ packages:
     resolution: {integrity: sha512-ran37MZpgAiOyOfmmcWDYN7bvRiE/fnKFji/cWwCq3YLNS2V/c/Zs4Jg3FJ0DsiNtgtUci4hzGd930XRQ6aqOg==}
     engines: {node: '>=18'}
     dependencies:
-      '@contentful/rich-text-types': 16.3.5
+      '@contentful/rich-text-types': 16.6.1
       '@types/json-patch': 0.0.30
       axios: 1.7.1
       contentful-sdk-core: 8.1.2
