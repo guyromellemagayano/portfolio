@@ -60,8 +60,8 @@ dependencies:
     specifier: ^8.13.0
     version: 8.13.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1)(@opentelemetry/instrumentation@0.52.1)(@opentelemetry/sdk-trace-base@1.25.1)(@opentelemetry/semantic-conventions@1.25.1)(next@14.2.3)(react@18.3.1)(webpack@5.91.0)
   '@spotlightjs/spotlight':
-    specifier: ^1.2.17
-    version: 1.2.17
+    specifier: ^2.0.0
+    version: 2.0.0
   '@svgr/webpack':
     specifier: ^8.1.0
     version: 8.1.0(typescript@5.4.5)
@@ -7067,8 +7067,8 @@ packages:
       '@sinonjs/commons': 3.0.1
     dev: true
 
-  /@spotlightjs/overlay@1.8.3:
-    resolution: {integrity: sha512-6b5tBspOOEd6Gj0l4xgdUwR4Ydn2dNX9lqJ/WSzIu1lqkI96w2lqf69IGzEo6jb9aPtfTtu8nx5K2SD6JXH2SA==}
+  /@spotlightjs/overlay@2.0.0:
+    resolution: {integrity: sha512-6P2Kwko9NPxat+Z5/QxWHr9+PLZtbXb/Bi2bdFmKc1yWTBVTJcbvntU9Xy+Qd8L4tFFFfqSORiXg7L4Bk6z4Jw==}
     dev: false
 
   /@spotlightjs/sidecar@1.4.0:
@@ -7076,11 +7076,11 @@ packages:
     hasBin: true
     dev: false
 
-  /@spotlightjs/spotlight@1.2.17:
-    resolution: {integrity: sha512-91qtnLspMl2e1olBTeWoZcupwwTzQs8clQgTF8wv2Ib18zce7YYLvWpnDhNIVNQlbKIjGhYum6UY/KCfUCXQYg==}
+  /@spotlightjs/spotlight@2.0.0:
+    resolution: {integrity: sha512-V06WN7DxaihaAXp815DGdMINZEA2+Te3eeYdXJpXfJKiv57e8rwyyD7dqtQsTiTlbcCqXwNgaZp4fwTyuOyJCA==}
     hasBin: true
     dependencies:
-      '@spotlightjs/overlay': 1.8.3
+      '@spotlightjs/overlay': 2.0.0
       '@spotlightjs/sidecar': 1.4.0
     dev: false
 
