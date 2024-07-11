@@ -181,7 +181,7 @@ typings/
 Thumbs.db
 
 # NX
-.nx/cache/
+.nx/
 apps/*-server-*/
 
 # Sentry Config File
