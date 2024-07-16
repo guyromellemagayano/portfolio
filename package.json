@@ -93,7 +93,7 @@
     "@types/circular-dependency-plugin": "^5.0.8",
     "@types/imagesloaded": "^4.1.6",
     "@types/jest": "^29.5.12",
-    "@types/lodash": "^4.17.6",
+    "@types/lodash": "^4.17.7",
     "@types/mdx": "^2.0.13",
     "@types/node": "20.14.10",
     "@types/react": "^18.3.3",
