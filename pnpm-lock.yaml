@@ -99,8 +99,8 @@ dependencies:
     specifier: 14.2.5
     version: 14.2.5(@babel/core@7.24.8)(@opentelemetry/api@1.9.0)(react-dom@18.3.1)(react@18.3.1)
   next-intl:
-    specifier: ^3.16.0
-    version: 3.16.0(next@14.2.5)(react@18.3.1)
+    specifier: ^3.17.1
+    version: 3.17.1(next@14.2.5)(react@18.3.1)
   next-themes:
     specifier: ^0.3.0
     version: 0.3.0(react-dom@18.3.1)(react@18.3.1)
@@ -14790,8 +14790,8 @@ packages:
   /neo-async@2.6.2:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
 
-  /next-intl@3.16.0(next@14.2.5)(react@18.3.1):
-    resolution: {integrity: sha512-aBJPhxQCZDkRfSnZg4bFNq0WTHxV3IbAPwy0Iodd+0ZBIrEy3YgydNLzjSLin6LHEhuczgC9V8xlnDpYIXTriQ==}
+  /next-intl@3.17.1(next@14.2.5)(react@18.3.1):
+    resolution: {integrity: sha512-cRstsLyCZ+yS8sGIwM13xW/EqMulUi0z+J4NcCcwAkmB/OETu6d+xEQfvrQ0ZQ+Fj+qwl9df698Lozyx5kAYhw==}
     peerDependencies:
       next: ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0 || ^14.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -14800,7 +14800,7 @@ packages:
       negotiator: 0.6.3
       next: 14.2.5(@babel/core@7.24.8)(@opentelemetry/api@1.9.0)(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
-      use-intl: 3.16.0(react@18.3.1)
+      use-intl: 3.17.1(react@18.3.1)
     dev: false
 
   /next-themes@0.3.0(react-dom@18.3.1)(react@18.3.1):
@@ -18726,11 +18726,12 @@ packages:
     resolution: {integrity: sha512-Qp95D4TPJl1kC9SKigDcqgyM2VDVO4RiJc2d4qe5GrYm+zbIQCWWKAFaJNQ4BhdFeDGwBmAxqJBwWSJDb9T3BQ==}
     dev: true
 
-  /use-intl@3.16.0(react@18.3.1):
-    resolution: {integrity: sha512-q2RJMjqLTvWh7Usq/42Ku5CAk2TdlobzYbo0b1sGchaM0LEQxFtrSQlbKzcx/HDHD7/uA2Um1QxUsq5OMEB9TQ==}
+  /use-intl@3.17.1(react@18.3.1):
+    resolution: {integrity: sha512-TxpacwmqjhyAfWnNVJKmQNCRC0/apFhetAD/EByrlakoww+jxGkW7Xh0f0iwr+mSD/V1tMakmyaEbozH+yb0qA==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      '@formatjs/fast-memoize': 2.2.0
       intl-messageformat: 10.5.14
       react: 18.3.1
     dev: false
