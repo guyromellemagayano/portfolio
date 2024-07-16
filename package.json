@@ -110,7 +110,7 @@
     "babel-plugin-import": "^1.13.8",
     "circular-dependency-plugin": "^5.2.2",
     "contentful-import": "^9.4.56",
-    "cypress": "13.13.0",
+    "cypress": "13.13.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint-config-next": "^14.2.5",
     "eslint-config-prettier": "^9.1.0",
