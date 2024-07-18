@@ -218,8 +218,8 @@ devDependencies:
     specifier: ^2.4.1
     version: 2.4.1
   '@sentry/utils':
-    specifier: ^8.17.0
-    version: 8.17.0
+    specifier: ^8.18.0
+    version: 8.18.0
   '@swc-node/register':
     specifier: ^1.10.7
     version: 1.10.7(@swc/core@1.6.13)(@swc/types@0.1.9)(typescript@5.5.3)
@@ -6336,12 +6336,26 @@ packages:
   /@sentry/types@8.17.0:
     resolution: {integrity: sha512-v0nI0+ajiGTijhF1W/ryn2+zFVFr6VPn6lao3W4qKj9MlltIHa4/uuGzTaiCFwoPw7g5bZ1Q09SStpDXVMkz2A==}
     engines: {node: '>=14.18'}
+    dev: false
+
+  /@sentry/types@8.18.0:
+    resolution: {integrity: sha512-5J+uOqptnmAnW3Rk31AHIqW36Wzvlo3UOM+p2wjSYGrC/PgcE47Klzr+w4UcOhN6AZqefalGd3vaUXz9NaFdRg==}
+    engines: {node: '>=14.18'}
+    dev: true
 
   /@sentry/utils@8.17.0:
     resolution: {integrity: sha512-HHtAPLOlvzhwgfYzxtuPnLUoGRMtMrFvopkii74zmx/1ZD4VN4PYPB2E5KFf3c18pTovw+kxF0ux6VrGiyAHsw==}
     engines: {node: '>=14.18'}
     dependencies:
       '@sentry/types': 8.17.0
+    dev: false
+
+  /@sentry/utils@8.18.0:
+    resolution: {integrity: sha512-7wq7cgaeSIGJncl9/2VMu81ZN5ep4lp4H1/+O8+xUxOmnPb/05ZZcbn9/VxVQvIoqZSZdwCLPeBz6PEVukvokA==}
+    engines: {node: '>=14.18'}
+    dependencies:
+      '@sentry/types': 8.18.0
+    dev: true
 
   /@sentry/vercel-edge@8.17.0:
     resolution: {integrity: sha512-B03OxHergb8d++3VOAZfiRH013tKIc4GlkpT8vTudx0lWf23fv1Gp4+KMP0A3k+BR7QfjFkuyHO+2rmRM6pSPg==}
