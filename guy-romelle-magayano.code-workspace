@@ -20,16 +20,9 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "emmet.triggerExpansionOnTab": true,
-    "github.copilot.editor.enableAutoCompletions": true,
-    "github.copilot.enable": {
-      "*": true
-    },
     "npm.packageManager": "pnpm",
     "typescript.enablePromptUseWorkspaceTsdk": true,
     "typescript.tsdk": "node_modules/typescript/lib",
-    "[env]": {
-      "editor.defaultFormatter": "IronGeek.vscode-env"
-    },
     "[dockerfile]": {
       "editor.defaultFormatter": "ms-azuretools.vscode-docker"
     },
