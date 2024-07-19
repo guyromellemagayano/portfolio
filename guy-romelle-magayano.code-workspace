@@ -10,24 +10,37 @@
       "source.fixAll": "always",
       "source.sortImports": "always"
     },
+    "dotenv.enableAutocloaking": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file",
     "editor.formatOnType": true,
+    "editor.insertSpaces": true,
     "editor.tabCompletion": "on",
     "editor.tabFocusMode": false,
     "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "emmet.triggerExpansionOnTab": true,
-    "npm.packageManager": "pnpm",
-    "typescript.enablePromptUseWorkspaceTsdk": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "[dockerfile]": {
-      "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+    "editor.tokenColorCustomizations": {
+      "textMateRules": [
+        {
+          "scope": "keyword.other.dotenv",
+          "settings": {
+            "foreground": "#FF000000"
+          }
+        }
+      ]
     },
-    "[shellscript]": {
-      "editor.defaultFormatter": "foxundermoon.shell-format"
+    "emmet.triggerExpansionOnTab": true,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "npm.packageManager": "pnpm",
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "files.associations": {
+      "*.ts": "typescript",
+      "*.tsx": "typescriptreact",
+      ".env*": "dotenv"
     },
     "[properties]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
@@ -35,8 +48,11 @@
     "[ignore]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
     },
+    "[env]": {
+      "editor.defaultFormatter": "dotenv.dotenv-vscode"
+    },
     "[dotenv]": {
-      "editor.defaultFormatter": "foxundermoon.shell-format"
+      "editor.defaultFormatter": "dotenv.dotenv-vscode"
     }
   }
 }
