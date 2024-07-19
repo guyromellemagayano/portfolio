@@ -4,7 +4,7 @@
     "esbenp.prettier-vscode",
     "firsttris.vscode-jest-runner",
     "nrwl.angular-console",
-    "IronGeek.vscode-env",
+    "mikestead.dotenv",
     "ms-azuretools.vscode-docker",
     "foxundermoon.shell-format",
   ]
