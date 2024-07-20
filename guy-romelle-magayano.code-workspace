@@ -48,9 +48,6 @@
     "[ignore]": {
       "editor.defaultFormatter": "foxundermoon.shell-format"
     },
-    "[env]": {
-      "editor.defaultFormatter": "dotenv.dotenv-vscode"
-    },
     "[dotenv]": {
       "editor.defaultFormatter": "dotenv.dotenv-vscode"
     }
