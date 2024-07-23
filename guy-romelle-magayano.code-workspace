@@ -8,6 +8,8 @@
   "settings": {
     "editor.codeActionsOnSave": {
       "source.fixAll": "always",
+      "source.removeUnusedImports": "never",
+      "source.organizeImports": "always",
       "source.sortImports": "always"
     },
     "dotenv.enableAutocloaking": true,
