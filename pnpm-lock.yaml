@@ -113,8 +113,8 @@ devDependencies:
     specifier: 19.5.1
     version: 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(eslint@8.57.0)(nx@19.5.1)
   '@nx/eslint-plugin':
-    specifier: 19.5.1
-    version: 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
+    specifier: 19.5.2
+    version: 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
   '@nx/jest':
     specifier: 19.5.1
     version: 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(nx@19.5.1)(typescript@5.5.3)
@@ -3213,10 +3213,18 @@ packages:
       - nx
     dev: true
 
-  /@nrwl/eslint-plugin-nx@19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3):
-    resolution: {integrity: sha512-zCLLe4sbnV5U9yIi7MMFKpyW+KtQ3tTRra+7Lhyz/yrpu//3a0PrRz3o3LPuKSXxbqQryL5kQJzpqjOthF582Q==}
+  /@nrwl/devkit@19.5.2(nx@19.5.2):
+    resolution: {integrity: sha512-gDmGsegterCCeaFBzMi8cALIywOsBwYU50200VrGYcsOfrz3FJu5AoUzr+fBLmvC0b0CRqJy6FXEKK0QOZGKtA==}
     dependencies:
-      '@nx/eslint-plugin': 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
+      '@nx/devkit': 19.5.2(nx@19.5.2)
+    transitivePeerDependencies:
+      - nx
+    dev: true
+
+  /@nrwl/eslint-plugin-nx@19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3):
+    resolution: {integrity: sha512-nsN03foL32W3Sslb43Bh65aIVVJK9yQ6SGsU+XjxucyurbuFhTJGysv0PD/BZ1XVA2VKAhH1uqsyHc6QQZntLw==}
+    dependencies:
+      '@nx/eslint-plugin': 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -3441,6 +3449,7 @@ packages:
 
   /@nrwl/tao@19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0):
     resolution: {integrity: sha512-M7hdPT/M+vr8MW6W3gwkTv82J5T4jDHZWcVpXmoQPSK/v7g+Sfpw6CCBeaQv7/S94vRrrqI6r+GkZUvIQZnzZw==}
+    hasBin: true
     dependencies:
       nx: 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)
       tslib: 2.6.3
@@ -3608,7 +3617,7 @@ packages:
     peerDependencies:
       nx: '>= 17 <= 20'
     dependencies:
-      '@nrwl/devkit': 19.5.2(nx@19.5.1)
+      '@nrwl/devkit': 19.5.2(nx@19.5.2)
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.1
@@ -3620,8 +3629,8 @@ packages:
       yargs-parser: 21.1.1
     dev: true
 
-  /@nx/eslint-plugin@19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3):
-    resolution: {integrity: sha512-wLroRSUC2/KJv2+VupBVKQ6A2zfub8CCsThJO4UFJvO+KM/Heuvb9kxpPdDie+tyCQQqJpkgTwpWC7uhpDLAMw==}
+  /@nx/eslint-plugin@19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3):
+    resolution: {integrity: sha512-dzcNfDU9jkeoLbTyNCWanc5cH0+D2EAUJ7X+7LCdQk4/7G8csTGXrisK+u528BMYU7rWi1CbucoOtfdrmxG/1A==}
     peerDependencies:
       '@typescript-eslint/parser': ^6.13.2 || ^7.0.0
       eslint-config-prettier: ^9.0.0
@@ -3629,9 +3638,9 @@ packages:
       eslint-config-prettier:
         optional: true
     dependencies:
-      '@nrwl/eslint-plugin-nx': 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
-      '@nx/devkit': 19.5.1(nx@19.5.1)
-      '@nx/js': 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(nx@19.5.1)(typescript@5.5.3)
+      '@nrwl/eslint-plugin-nx': 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)
+      '@nx/devkit': 19.5.2(nx@19.5.1)
+      '@nx/js': 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(nx@19.5.1)(typescript@5.5.3)
       '@typescript-eslint/parser': 7.17.0(eslint@8.57.0)(typescript@5.5.3)
       '@typescript-eslint/type-utils': 7.16.1(eslint@8.57.0)(typescript@5.5.3)
       '@typescript-eslint/utils': 7.16.1(eslint@8.57.0)(typescript@5.5.3)
@@ -6866,6 +6875,7 @@ packages:
   /acorn@8.12.1:
     resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
     engines: {node: '>=0.4.0'}
+    hasBin: true
 
   /address@1.2.2:
     resolution: {integrity: sha512-4B/qKCfeE/ODUaAUpSwfzazo5x29WD4r3vXiWsB7I2mSDAihwEqKO+g8GELZUQSSAo5e1XTYh3ZVfLyxBc12nA==}
@@ -8898,6 +8908,7 @@ packages:
   /ejs@3.1.10:
     resolution: {integrity: sha512-UeJmFfOrAQS8OJWPZ4qtgHyWExa088/MtK5UEyoJGFH67cDEXkZSviOiKRCZ4Xij0zxI3JECgYs3oKx+AizQBA==}
     engines: {node: '>=0.10.0'}
+    hasBin: true
     dependencies:
       jake: 10.9.2
 
@@ -11309,6 +11320,7 @@ packages:
   /jake@10.9.2:
     resolution: {integrity: sha512-2P4SQ0HrLQ+fw6llpLnOaGAvN2Zu6778SJMrCUwns4fOoG9ayrTiZk3VV8sCPkVZF8ab0zksVpS8FDY5pRCNBA==}
     engines: {node: '>=10'}
+    hasBin: true
     dependencies:
       async: 3.2.5
       chalk: 4.1.2
@@ -13182,6 +13194,7 @@ packages:
 
   /nx@19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0):
     resolution: {integrity: sha512-tsuyjC9zwUOhgtW88zXR6l3lgihzyBVfDKjFj2OkXGn+jKMwNiPHLfMZ76vBWRBjwZ4I9apEMZSpMuxsVBcRTw==}
+    hasBin: true
     requiresBuild: true
     peerDependencies:
       '@swc-node/register': ^1.8.0
@@ -15478,6 +15491,7 @@ packages:
   /semver@7.6.3:
     resolution: {integrity: sha512-oVekP1cKtI+CTDvHWYFUcMtsK/00wmAEfyqKfNdARm8u1wNVhSgaX7A8d4UuIlUI5e84iEwOhs7ZPYRmzU9U6A==}
     engines: {node: '>=10'}
+    hasBin: true
 
   /send@0.18.0:
     resolution: {integrity: sha512-qqWzuOjSFOuqPjFe4NOsMLafToQQwBSOEpS+FwEt3A2V3vKubTquT3vmLTQpFgMXp8AlFWFuP1qKaJZOtPpVXg==}
