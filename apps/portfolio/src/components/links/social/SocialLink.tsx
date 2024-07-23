@@ -11,9 +11,14 @@ import {
 import { cn, convertStringToLowercase } from '@guy-romelle-magayano/react-utils'
 
 import {
+  BehanceSvg,
+  DiscordSvg,
+  FacebookSvg,
   GithubSvg,
+  InstagramSvg,
   LinkedInSvg,
   MailSvg,
+  MediumSvg,
   TwitterSvg
 } from '@guy-romelle-magayano/portfolio/components'
 import { type SocialLinksData } from '@guy-romelle-magayano/portfolio/types'
@@ -39,6 +44,12 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
     // Set the Icon value based on the icon prop.
     if (loweredIcon) {
       switch (loweredIcon) {
+        case 'facebook':
+          Icon = FacebookSvg
+          break
+        case 'instagram':
+          Icon = InstagramSvg
+          break
         case 'twitter':
           Icon = TwitterSvg
           break
@@ -50,6 +61,15 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
           break
         case 'mail':
           Icon = MailSvg
+          break
+        case 'medium':
+          Icon = MediumSvg
+          break
+        case 'behance':
+          Icon = BehanceSvg
+          break
+        case 'discord':
+          Icon = DiscordSvg
           break
         default:
           break
