@@ -40,7 +40,7 @@
     "@babel/eslint-parser": "^7.24.8",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "~9.7.0",
-    "@nx/cypress": "19.5.1",
+    "@nx/cypress": "19.5.2",
     "@nx/eslint": "19.5.1",
     "@nx/eslint-plugin": "19.5.1",
     "@nx/jest": "19.5.1",
