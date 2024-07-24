@@ -20,7 +20,12 @@ import {
   type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isArrayType } from '@guy-romelle-magayano/react-utils'
+import {
+  cn,
+  isArrayType,
+  isEmpty,
+  isNotNullOrUndefined
+} from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
@@ -36,43 +41,45 @@ export type ContentLayoutStaticComponents = {
 }
 
 /**
- * Render the aside content layout component.
- * @param {ContentLayoutProps} props - The props of the aside content layout.
- * @param {ContentLayoutRef} ref - The reference of the aside content layout.
- * @returns The rendered aside content layout component.
+ * Render the aside content layout component
+ * @param {ContentLayoutProps} props - The component props
+ * @param {ContentLayoutRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title, intro, children, className, id, ...rest }, ref) => {
+    ({ title, intro, children, className, ...rest }, ref) => {
+      if (isEmpty(title) && isEmpty(intro) && isEmpty(children)) {
+        return null
+      }
+
       return (
         <Aside {...rest} ref={ref}>
-          {title && title?.length > 0 && (
+          {!isEmpty(title) && (
             <Heading
               as="h1"
-              className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+              className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
             >
               {title}
             </Heading>
           )}
 
-          {intro &&
-            ((typeof intro === 'string' && intro?.length > 0) ||
-              (Array.isArray(intro) && intro?.length > 0)) && (
-              <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-                {Array.isArray(intro)
-                  ? intro?.map(
-                      (paragraph: string, index: number) =>
-                        paragraph && (
-                          <Span key={index} className="space-y-7">
-                            {paragraph}
-                          </Span>
-                        )
-                    )
-                  : intro}
-              </P>
-            )}
+          {!isEmpty(intro) && (
+            <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+              {isArrayType(intro)
+                ? intro?.map(
+                    (paragraph: string, index: number) =>
+                      paragraph && (
+                        <Span key={index} className="space-y-7">
+                          {paragraph}
+                        </Span>
+                      )
+                  )
+                : intro}
+            </P>
+          )}
 
-          {children && (
+          {isNotNullOrUndefined(children) && (
             <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
           )}
         </Aside>
@@ -84,15 +91,19 @@ const ContentAsideLayout = memo(
 ContentAsideLayout.displayName = 'ContentAsideLayout'
 
 /**
- * Render the simple content layout component.
- * @param  {ContentLayoutProps} props - The props of the simple content layout.
- * @param {ContentLayoutRef} ref - The reference of the simple content layout.
- * @returns The rendered simple content layout component.
+ * Render the simple content layout component
+ * @param {ContentLayoutProps} props - The component props
+ * @param {ContentLayoutRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
     ({ title, intro, children, className, ...rest }, ref) => {
       const pathname = usePathname()
+
+      if (isEmpty(title) && isEmpty(intro) && isEmpty(children)) {
+        return null
+      }
 
       return (
         <BaseContainer
@@ -101,34 +112,32 @@ const ContentSimpleLayout = memo(
           className={cn('mt-16 sm:mt-32', className)}
         >
           <Div className="w-full max-w-2xl">
-            {title && title?.length > 0 && (
+            {!isEmpty(title) && (
               <Heading
                 as="h1"
-                className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+                className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
               >
                 {title}
               </Heading>
             )}
 
-            {intro &&
-              ((typeof intro === 'string' && intro?.length > 0) ||
-                (Array.isArray(intro) && intro?.length > 0)) && (
-                <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-                  {isArrayType(intro)
-                    ? intro?.map(
-                        (paragraph: string, index: number) =>
-                          paragraph && (
-                            <Span key={index} className="space-y-7">
-                              {paragraph}
-                            </Span>
-                          )
-                      )
-                    : intro}
-                </P>
-              )}
+            {!isEmpty(intro) && (
+              <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+                {isArrayType(intro)
+                  ? intro?.map(
+                      (paragraph: string, index: number) =>
+                        paragraph && (
+                          <Span key={index} className="space-y-7">
+                            {paragraph}
+                          </Span>
+                        )
+                    )
+                  : intro}
+              </P>
+            )}
           </Div>
 
-          {children && (
+          {isNotNullOrUndefined(children) && (
             <Div
               className={cn(
                 pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9'
