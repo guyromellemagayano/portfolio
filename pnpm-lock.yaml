@@ -131,8 +131,8 @@ devDependencies:
     specifier: 19.5.2
     version: 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)(@types/node@20.14.10)(eslint@8.57.0)(nx@19.5.1)(typescript@5.5.3)(webpack@5.93.0)
   '@nx/workspace':
-    specifier: ^19.4.3
-    version: 19.5.1(@swc-node/register@1.10.9)(@swc/core@1.7.0)
+    specifier: ^19.5.2
+    version: 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.0)
   '@swc-node/register':
     specifier: ^1.10.7
     version: 1.10.9(@swc/core@1.7.0)(@swc/types@0.1.9)(typescript@5.5.3)
@@ -15462,6 +15462,7 @@ packages:
 
   /semver@5.7.2:
     resolution: {integrity: sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==}
+    hasBin: true
     requiresBuild: true
     dev: true
     optional: true
