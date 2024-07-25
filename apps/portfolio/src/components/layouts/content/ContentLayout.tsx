@@ -20,12 +20,7 @@ import {
   type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  cn,
-  isArrayType,
-  isEmpty,
-  isNotNullOrUndefined
-} from '@guy-romelle-magayano/react-utils'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
@@ -48,14 +43,14 @@ export type ContentLayoutStaticComponents = {
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title, intro, children, className, ...rest }, ref) => {
-      if (isEmpty(title) && isEmpty(intro) && isEmpty(children)) {
+    ({ title = '', intro = '', children, className, ...rest }, ref) => {
+      if (!title && !intro && !children) {
         return null
       }
 
       return (
         <Aside {...rest} ref={ref}>
-          {!isEmpty(title) && (
+          {title && (
             <Heading
               as="h1"
               className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
@@ -64,11 +59,11 @@ const ContentAsideLayout = memo(
             </Heading>
           )}
 
-          {!isEmpty(intro) && (
+          {intro && (
             <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-              {isArrayType(intro)
-                ? intro?.map(
-                    (paragraph: string, index: number) =>
+              {Array.isArray(intro)
+                ? intro.map(
+                    (paragraph, index) =>
                       paragraph && (
                         <Span key={index} className="space-y-7">
                           {paragraph}
@@ -79,7 +74,7 @@ const ContentAsideLayout = memo(
             </P>
           )}
 
-          {isNotNullOrUndefined(children) && (
+          {children && (
             <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
           )}
         </Aside>
@@ -98,10 +93,10 @@ ContentAsideLayout.displayName = 'ContentAsideLayout'
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title, intro, children, className, ...rest }, ref) => {
+    ({ title = '', intro = '', children, className, ...rest }, ref) => {
       const pathname = usePathname()
 
-      if (isEmpty(title) && isEmpty(intro) && isEmpty(children)) {
+      if (!title && !intro && !children) {
         return null
       }
 
@@ -112,7 +107,7 @@ const ContentSimpleLayout = memo(
           className={cn('mt-16 sm:mt-32', className)}
         >
           <Div className="w-full max-w-2xl">
-            {!isEmpty(title) && (
+            {title && (
               <Heading
                 as="h1"
                 className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
@@ -121,11 +116,11 @@ const ContentSimpleLayout = memo(
               </Heading>
             )}
 
-            {!isEmpty(intro) && (
+            {intro && (
               <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-                {isArrayType(intro)
+                {Array.isArray(intro)
                   ? intro?.map(
-                      (paragraph: string, index: number) =>
+                      (paragraph, index) =>
                         paragraph && (
                           <Span key={index} className="space-y-7">
                             {paragraph}
@@ -137,7 +132,7 @@ const ContentSimpleLayout = memo(
             )}
           </Div>
 
-          {isNotNullOrUndefined(children) && (
+          {children && (
             <Div
               className={cn(
                 pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9'
@@ -155,19 +150,21 @@ const ContentSimpleLayout = memo(
 ContentSimpleLayout.displayName = 'ContentSimpleLayout'
 
 /**
- * Render the content layout component.
- * @param {ContentLayoutProps} props - The props of the content layout.
- * @param {ContentLayoutRef} ref - The reference of the content layout.
- * @returns The rendered content layout component.
+ * Render the content layout component
+ * @param {ContentLayoutProps} props - The component props
+ * @param {ContentLayoutRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
   ({ as: Component = Div, children, ...rest }, ref) => {
+    if (!children) {
+      return null
+    }
+
     return (
-      children && (
-        <Component {...rest} ref={ref}>
-          {children}
-        </Component>
-      )
+      <Component {...rest} ref={ref}>
+        {children}
+      </Component>
     )
   }
 ) as ForwardRefExoticComponent<
