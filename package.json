@@ -47,7 +47,7 @@
     "@nx/js": "19.5.1",
     "@nx/next": "19.5.1",
     "@nx/node": "19.5.1",
-    "@nx/react": "19.5.2",
+    "@nx/react": "19.5.3",
     "@nx/workspace": "^19.5.2",
     "@sentry/utils": "^8.20.0",
     "@spotlightjs/overlay": "^2.1.0",
