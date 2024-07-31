@@ -1,17 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import camelCase from 'lodash/camelCase'
-import join from 'lodash/join'
-import kebabCase from 'lodash/kebabCase'
-import snakeCase from 'lodash/snakeCase'
-import startCase from 'lodash/startCase'
-import toArray from 'lodash/toArray'
-import toLower from 'lodash/toLower'
-import toNumber from 'lodash/toNumber'
-import toString from 'lodash/toString'
-import toUpper from 'lodash/toUpper'
-import unescape from 'lodash/unescape'
-import upperFirst from 'lodash/upperFirst'
-
 import { isEmpty } from './checkTypes'
 
 /**
@@ -20,7 +6,7 @@ import { isEmpty } from './checkTypes'
  * @returns The converted string to lowercase.
  */
 export const convertStringToLowercase = (str: string) =>
-  !isEmpty(str) ? toLower(str) : str
+  !isEmpty(str) ? str.toLowerCase() : str
 
 /**
  * Convert string to uppercase
@@ -28,7 +14,7 @@ export const convertStringToLowercase = (str: string) =>
  * @returns The converted string to uppercase.
  */
 export const convertStringToUppercase = (str: string) =>
-  !isEmpty(str) ? toUpper(str) : str
+  !isEmpty(str) ? str.toUpperCase() : str
 
 /**
  * Convert string to title case
@@ -36,7 +22,12 @@ export const convertStringToUppercase = (str: string) =>
  * @returns The converted string to title case.
  */
 export const convertStringToTitleCase = (str: string) =>
-  !isEmpty(str) ? startCase(camelCase(str)) : str
+  !isEmpty(str)
+    ? str.replace(
+        /\w\S*/g,
+        txt => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+      )
+    : str
 
 /**
  * Convert string to camel case
@@ -44,7 +35,13 @@ export const convertStringToTitleCase = (str: string) =>
  * @returns The converted string to camel case.
  */
 export const convertStringToCamelCase = (str: string) =>
-  !isEmpty(str) ? camelCase(str) : str
+  !isEmpty(str)
+    ? str
+        .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) =>
+          index === 0 ? match.toLowerCase() : match.toUpperCase()
+        )
+        .replace(/\s+/g, '')
+    : str
 
 /**
  * Convert string to snake case
@@ -52,7 +49,7 @@ export const convertStringToCamelCase = (str: string) =>
  * @returns The converted string to snake case.
  */
 export const convertStringToSnakeCase = (str: string) =>
-  !isEmpty(str) ? snakeCase(str) : str
+  !isEmpty(str) ? str.replace(/\s+/g, '_').toLowerCase() : str
 
 /**
  * Convert string to kebab case
@@ -60,7 +57,7 @@ export const convertStringToSnakeCase = (str: string) =>
  * @returns The converted string to kebab case.
  */
 export const convertStringToKebabCase = (str: string) =>
-  !isEmpty(str) ? kebabCase(str) : str
+  !isEmpty(str) ? str.replace(/\s+/g, '-').toLowerCase() : str
 
 /**
  * Convert string to constant case
@@ -68,15 +65,15 @@ export const convertStringToKebabCase = (str: string) =>
  * @returns The converted string to constant case.
  */
 export const convertStringToConstantCase = (str: string) =>
-  !isEmpty(str) ? toUpper(str).replace(/ /g, '_') : str
+  !isEmpty(str) ? str.toUpperCase().replace(/\s+/g, '_') : str
 
 /**
  * Convert string to sentence case
  * @param str - The string to convert to sentence case.
- * @returns - The converted string to sentence case.
+ * @returns The converted string to sentence case.
  */
 export const convertStringToSentenceCase = (str: string) =>
-  !isEmpty(str) ? upperFirst(toLower(str)) : str
+  !isEmpty(str) ? str.charAt(0).toUpperCase() + str.slice(1).toLowerCase() : str
 
 /**
  * Convert string to number
@@ -84,7 +81,7 @@ export const convertStringToSentenceCase = (str: string) =>
  * @returns The converted string to number.
  */
 export const convertStringToNumber = (str: string) =>
-  !isEmpty(str) ? toNumber(str) : str
+  !isEmpty(str) ? Number(str) : str
 
 /**
  * Convert string to boolean
@@ -100,7 +97,7 @@ export const convertStringToBoolean = (str: string) =>
  * @returns The converted string to array.
  */
 export const convertStringToArray = (str: string) =>
-  !isEmpty(str) ? toArray(str) : str
+  !isEmpty(str) ? Array.from(str) : str
 
 /**
  * Convert string to object
@@ -124,7 +121,7 @@ export const convertObjectToString = (obj: object) =>
  * @returns The converted array to string.
  */
 export const convertArrayToString = (arr: any[]) =>
-  !isEmpty(arr) ? join(arr, ' ') : arr
+  !isEmpty(arr) ? arr.join(' ') : arr
 
 /**
  * Convert number to string
@@ -132,12 +129,11 @@ export const convertArrayToString = (arr: any[]) =>
  * @returns The converted number to string.
  */
 export const convertNumberToString = (num: number) =>
-  !isEmpty(num) ? toString(num) : num
+  !isEmpty(num) ? String(num) : num
 
 /**
  * Convert string to HTML
  * @param str - The string to convert to HTML.
  * @returns The converted string to HTML.
  */
-export const convertStringToHTML = (str: string) =>
-  !isEmpty(str) ? unescape(str) : str
+export const convertStringToHTML = (str: string) => (!isEmpty(str) ? str : str)
