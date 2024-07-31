@@ -36,6 +36,11 @@ export * from './containers/avatar'
 export * from './containers/base'
 
 // --------------------
+// FORM COMPONENTS
+// --------------------
+export * from './forms/newsletter'
+
+// --------------------
 // LAYOUT COMPONENTS
 // --------------------
 export * from './layouts/article'
@@ -43,7 +48,7 @@ export * from './layouts/base'
 export * from './layouts/content'
 export * from './layouts/footer'
 export * from './layouts/header'
-export * from './layouts/newsletter'
+export * from './layouts/jumbotron'
 export * from './layouts/photo'
 export * from './layouts/resume'
 export * from './layouts/section'
