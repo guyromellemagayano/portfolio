@@ -20,8 +20,8 @@ import { cn } from '@guy-romelle-magayano/react-utils'
 
 import { MailSvg } from '@guy-romelle-magayano/portfolio/components'
 
-export type NewsletterLayoutRef = FormRef
-export type NewsletterLayoutProps = FormProps
+export type NewsletterFormRef = FormRef
+export type NewsletterFormProps = FormProps
 
 const strings = {
   stayUpToDate: 'Stay up to date',
@@ -31,16 +31,16 @@ const strings = {
   join: 'Join'
 }
 
-/**
- * Renders the newsletter layout component.
- * @param {NewsletterLayoutProps} props - The props of the newsletter layout.
- * @param {NewsletterLayoutRef} ref - The reference of the newsletter layout.
- * @returns The rendered newsletter layout component.
- */
-const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
-  ({ className, ...rest }, ref) => {
-    const thankYouPageLink = '/thank-you'
+const thankYouPageLink = '/thank-you'
 
+/**
+ * Renders the newsletter form component.
+ * @param {NewsletterFormProps} props - The component props
+ * @param {NewsletterFormRef} ref - The component reference
+ * @returns The rendered JSX component
+ */
+const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
+  ({ className, ...rest }, ref) => {
     return (
       <Form
         {...rest}
@@ -71,7 +71,7 @@ const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
           />
           <Button
             type="submit"
-            className="ml-4 inline-flex flex-none  items-center justify-center gap-2 rounded-md bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 active:transition-none dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70"
+            className="ml-4 inline-flex flex-none items-center justify-center gap-2 rounded-md bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 active:transition-none dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70"
           >
             {strings.join}
           </Button>
@@ -81,6 +81,6 @@ const NewsletterLayout = forwardRef<NewsletterLayoutRef, NewsletterLayoutProps>(
   }
 )
 
-NewsletterLayout.displayName = 'NewsletterLayout'
+NewsletterForm.displayName = 'NewsletterForm'
 
-export default NewsletterLayout
+export default NewsletterForm
