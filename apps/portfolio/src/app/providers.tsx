@@ -63,8 +63,8 @@ export type ProvidersProps = {
  * @returns The rendered Providers component.
  */
 export const Providers = ({ children }: ProvidersProps) => {
-  const pathname = usePathname(),
-    previousPathname = usePrevious(pathname)
+  const pathname = usePathname()
+  const previousPathname = usePrevious(pathname)
 
   return (
     <AppContext.Provider value={{ previousPathname }}>
