@@ -32,6 +32,727 @@
       "src": "/images/photos/photography.jpg"
     }
   ],
+  "aboutMeInfo": {
+    "heading": "About Me",
+    "description": "Henlo"
+  },
+  "skillsInfo": {
+    "heading": "Skills",
+    "description": "Explore the skills and expertise that enable me to create innovative, full-stack solutions, turning ideas into high-performance, scalable applications.",
+    "skills": [
+      {
+        "name": "html-5",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "HTML5 Default Logo",
+            "src": "/images/logos/html-5.svg"
+          }
+        }
+      },
+      {
+        "name": "css-3",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "CSS3 Default Logo",
+            "src": "/images/logos/css-3.svg"
+          }
+        }
+      },
+      {
+        "name": "javascript",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "JavaScript Default Logo",
+            "src": "/images/logos/javascript.svg"
+          }
+        }
+      },
+      {
+        "name": "typescript",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "TypeScript Default Logo",
+            "src": "/images/logos/typescript.svg"
+          }
+        }
+      },
+      {
+        "name": "react",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "React Default Logo",
+            "src": "/images/logos/react.svg"
+          }
+        }
+      },
+      {
+        "name": "next",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Next Default Logo",
+            "src": "/images/logos/next.svg"
+          }
+        }
+      },
+      {
+        "name": "gatsby",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Gatsby Logo",
+            "src": "/images/logos/gatsby.svg"
+          }
+        }
+      },
+      {
+        "name": "vue",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Vue Default Logo",
+            "src": "/images/logos/vue.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "nuxt",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Nuxt Default Logo",
+            "src": "/images/logos/nuxt.svg"
+          }
+        }
+      },
+      {
+        "name": "bootstrap",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Bootstrap Logo",
+            "src": "/images/logos/bootstrap.svg"
+          }
+        }
+      },
+      {
+        "name": "bulma",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Bulma Default Logo",
+            "src": "/images/logos/bulma.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "tailwindcss",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "TailwindCSS Logo",
+            "src": "/images/logos/tailwindcss.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "headlessui",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "HeadlessUI Logo",
+            "src": "/images/logos/headless-ui.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "redux",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Redux Default Logo",
+            "src": "/images/logos/redux.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "tanstack-query",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Tanstack Query Logo",
+            "src": "/images/logos/tanstack-query.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "jest",
+        "type": "testing",
+        "image": {
+          "default": {
+            "alt": "Jest Default Logo",
+            "src": "/images/logos/jest.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "testing-library",
+        "type": "testing",
+        "image": {
+          "default": {
+            "alt": "Testing Library Logo",
+            "src": "/images/logos/testing-library.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "cypress",
+        "type": "testing",
+        "image": {
+          "default": {
+            "alt": "Cypress Logo",
+            "src": "/images/logos/cypress.svg"
+          },
+          "dark": {
+            "alt": "Cypress Alternative Logo",
+            "src": "/images/logos/cypress-alt.svg"
+          }
+        }
+      },
+      {
+        "name": "react-native",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "React Native Logo",
+            "src": "/images/logos/react.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "webpack",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Webpack Logo",
+            "src": "/images/logos/webpack.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "figma",
+        "type": "design",
+        "image": {
+          "default": {
+            "alt": "Figma Default Logo",
+            "src": "/images/logos/figma.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "sketch",
+        "type": "design",
+        "image": {
+          "default": {
+            "alt": "Sketch Logo",
+            "src": "/images/logos/sketch.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "php",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "PHP Default Logo",
+            "src": "/images/logos/php.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "wordpress",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "WordPress Logo",
+            "src": "/images/logos/wordpress.svg"
+          }
+        }
+      },
+      {
+        "name": "node",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Node Default Logo",
+            "src": "/images/logos/node.svg"
+          },
+          "dark": {
+            "alt": "Node Alternative Logo",
+            "src": "/images/logos/node-alt.svg"
+          }
+        }
+      },
+      {
+        "name": "npm",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "NPM Default Logo",
+            "src": "/images/logos/npm.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "express",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Express Logo",
+            "src": "/images/logos/express.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "python",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Python Logo",
+            "src": "/images/logos/python.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "django",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Django Logo",
+            "src": "/images/logos/django.svg"
+          }
+        }
+      },
+      {
+        "name": "go",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Go Default Logo",
+            "src": "/images/logos/go.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "graphql",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "GraphQL Logo",
+            "src": "/images/logos/graphql.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "apollo",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Apollo Logo",
+            "src": "/images/logos/apollo.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "mysql",
+        "type": "database",
+        "image": {
+          "default": {
+            "alt": "MySQL Default Logo",
+            "src": "/images/logos/mysql.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "postgresql",
+        "type": "database",
+        "image": {
+          "default": {
+            "alt": "PostgreSQL Logo",
+            "src": "/images/logos/postgresql.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "mariadb",
+        "type": "database",
+        "image": {
+          "default": {
+            "alt": "MariaDB Logo",
+            "src": "/images/logos/mariadb.svg"
+          }
+        }
+      },
+      {
+        "name": "sqlite",
+        "type": "database",
+        "image": {
+          "default": {
+            "alt": "SQLite Logo",
+            "src": "/images/logos/sqlite.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "mongodb",
+        "type": "database",
+        "image": {
+          "default": {
+            "alt": "MongoDB Logo",
+            "src": "/images/logos/mongodb.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "bigcommerce",
+        "type": "ecommerce",
+        "image": {
+          "default": {
+            "alt": "BigCommerce Logo",
+            "src": "/images/logos/bigcommerce.svg"
+          }
+        }
+      },
+      {
+        "name": "shopify",
+        "type": "ecommerce",
+        "image": {
+          "default": {
+            "alt": "Shopify Logo",
+            "src": "/images/logos/shopify.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "optimizely",
+        "type": "ecommerce",
+        "image": {
+          "default": {
+            "alt": "Optimizely Logo",
+            "src": "/images/logos/optimizely.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "contentful",
+        "type": "cms",
+        "image": {
+          "default": {
+            "alt": "Contentful Logo",
+            "src": "/images/logos/contentful.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "jekyll",
+        "type": "cms",
+        "image": {
+          "default": {
+            "alt": "Jekyll Logo",
+            "src": "/images/logos/jekyll.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "hugo",
+        "type": "cms",
+        "image": {
+          "default": {
+            "alt": "Hugo Default Logo",
+            "src": "/images/logos/hugo.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "prisma",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Prisma Logo",
+            "src": "/images/logos/prisma.svg"
+          }
+        }
+      },
+      {
+        "name": "nginx",
+        "type": "server",
+        "image": {
+          "default": {
+            "alt": "NGINX Default Logo",
+            "src": "/images/logos/nginx.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "apache",
+        "type": "server",
+        "image": {
+          "default": {
+            "alt": "Apache Logo",
+            "src": "/images/logos/apache.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "linux",
+        "type": "os",
+        "image": {
+          "default": {
+            "alt": "Linux Default Logo",
+            "src": "/images/logos/linux.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "bash",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "BASH Default Logo",
+            "src": "/images/logos/bash.svg"
+          },
+          "dark": {
+            "alt": "BASH Alternative Logo",
+            "src": "/images/logos/bash-alt.svg"
+          }
+        }
+      },
+      {
+        "name": "docker",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Docker Logo",
+            "src": "/images/logos/docker.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "vagrant",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Vagrant Logo",
+            "src": "/images/logos/vagrant.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "github-actions",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Github Actions Logo",
+            "src": "/images/logos/github-actions.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "circleci",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "CircleCI Logo",
+            "src": "/images/logos/circleci.svg"
+          }
+        }
+      },
+      {
+        "name": "amazon-web-services",
+        "type": "cloud",
+        "image": {
+          "default": {
+            "alt": "Amazon Web Services Logo",
+            "src": "/images/logos/amazon-web-services.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "stripe",
+        "type": "payments",
+        "image": {
+          "default": {
+            "alt": "Stripe Logo",
+            "src": "/images/logos/stripe.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "jquery",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "JQuery Logo",
+            "src": "/images/logos/jquery.svg"
+          },
+          "dark": {
+            "alt": "JQuery Alternative Logo",
+            "src": "/images/logos/jquery-alt.svg"
+          }
+        }
+      },
+      {
+        "name": "google-maps",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Google Maps Logo",
+            "src": "/images/logos/google-maps.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "sentry",
+        "type": "monitoring",
+        "image": {
+          "default": {
+            "alt": "Sentry Logo",
+            "src": "/images/logos/sentry.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "netlify",
+        "type": "cloud",
+        "image": {
+          "default": {
+            "alt": "Netlify Logo",
+            "src": "/images/logos/netlify.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "vercel",
+        "type": "cloud",
+        "image": {
+          "default": {
+            "alt": "Vercel Default Logo",
+            "src": "/images/logos/vercel.svg"
+          }
+        }
+      },
+      {
+        "name": "git",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Git Default Logo",
+            "src": "/images/logos/git.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "github",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Github Logo",
+            "src": "/images/logos/github.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "gitlab",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Gitlab Logo",
+            "src": "/images/logos/gitlab.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "bitbucket",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Bitbucket Logo",
+            "src": "/images/logos/bitbucket.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "jira",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Jira Default Logo",
+            "src": "/images/logos/jira.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      },
+      {
+        "name": "confluence",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Confluence Logo",
+            "src": "/images/logos/confluence.svg"
+          },
+          "dark": { "alt": "Alternative Logo", "src": "#" }
+        }
+      }
+    ]
+  },
   "cvFile": "/docs/cv.pdf",
   "workExperiences": [
     {
