@@ -18,6 +18,7 @@ import {
   InstagramSvg,
   LinkedInSvg,
   MailSvg,
+  MastodonSvg,
   MediumSvg,
   TwitterSvg
 } from '@guy-romelle-magayano/portfolio/components'
@@ -70,6 +71,9 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
           break
         case 'discord':
           Icon = DiscordSvg
+          break
+        case 'mastodon':
+          Icon = MastodonSvg
           break
         default:
           break
