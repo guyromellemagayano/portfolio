@@ -1,5 +1,3 @@
-import { isEmpty } from '@guy-romelle-magayano/react-utils'
-
 import {
   ContentLayout,
   SocialLinksLayout
@@ -18,10 +16,12 @@ export type JumbotronLayoutProps = BaseHeroData & {
  * @param {JumbotronProps} props - The component props
  * @returns The rendered JSX component
  */
-const JumbotronLayout = (props: JumbotronLayoutProps) => {
-  const { heading, description, links } = props
-
-  if (isEmpty(heading) && isEmpty(description)) {
+const JumbotronLayout = ({
+  heading = '',
+  description = '',
+  links = []
+}: JumbotronLayoutProps) => {
+  if (!heading && !description) {
     return null
   }
 
@@ -31,7 +31,9 @@ const JumbotronLayout = (props: JumbotronLayoutProps) => {
       intro={description}
       className="mt-9 sm:mt-9"
     >
-      <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
+      {links.length > 0 && (
+        <SocialLinksLayout className="mt-6 flex gap-6" data={links} />
+      )}
     </ContentLayout.Simple>
   )
 }
