@@ -44,9 +44,33 @@ export type ThankYouPageData = BasePageData
 
 // Home page data
 export type HomePageData = BasePageData & {
+  skillsInfo?: SkillsInfoData
   slidePhotos?: Array<SlidePhotosData>
+  aboutMeInfo?: AboutMeInfoData
   cvFile?: string
   workExperiences?: Array<WorkExperienceData>
+}
+
+export type CommonInfoData = {
+  heading?: string
+  description?: string | Array<string>
+}
+
+// Skills info data
+export type SkillsInfoData = CommonInfoData & {
+  skills?: Array<SkillsInfoImagesData>
+}
+
+// Skills info images data
+export type SkillsInfoImagesData = {
+  name: string
+  image: SkillsInfoImageData
+}
+
+// Skills info image data
+export type SkillsInfoImageData = {
+  default: SlidePhotosData
+  dark?: SlidePhotosData
 }
 
 // Slide photos data
@@ -54,6 +78,9 @@ export type SlidePhotosData = {
   alt: string
   src: string
 }
+
+// About me info data
+export type AboutMeInfoData = CommonInfoData
 
 // Skills page data
 export type SkillsPageData = BasePageData & {
@@ -163,6 +190,7 @@ export type HomeAppData = WorkAppData & {
   articles?: Array<ArticlesData>
   projects?: Array<ProjectsData>
   slidePhotos?: Array<SlidePhotosData>
+  about?: null
   cvFile?: HomePageData['cvFile']
   workExperiences?: Array<WorkExperienceData>
 }
