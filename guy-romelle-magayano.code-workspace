@@ -8,6 +8,8 @@
   "settings": {
     "editor.codeActionsOnSave": {
       "source.fixAll": "always",
+      "source.removeUnusedImports": "never",
+      "source.organizeImports": "always",
       "source.sortImports": "always"
     },
     "dotenv.enableAutocloaking": true,
@@ -50,6 +52,9 @@
     },
     "[dotenv]": {
       "editor.defaultFormatter": "dotenv.dotenv-vscode"
+    },
+    "[xml]": {
+      "editor.defaultFormatter": "redhat.vscode-xml"
     }
   }
 }
