@@ -117,8 +117,7 @@
           "default": {
             "alt": "Vue Default Logo",
             "src": "/images/logos/vue.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -148,8 +147,7 @@
           "default": {
             "alt": "Bulma Default Logo",
             "src": "/images/logos/bulma.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -159,8 +157,7 @@
           "default": {
             "alt": "TailwindCSS Logo",
             "src": "/images/logos/tailwindcss.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -170,8 +167,7 @@
           "default": {
             "alt": "HeadlessUI Logo",
             "src": "/images/logos/headless-ui.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -181,8 +177,7 @@
           "default": {
             "alt": "Redux Default Logo",
             "src": "/images/logos/redux.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -192,43 +187,6 @@
           "default": {
             "alt": "Tanstack Query Logo",
             "src": "/images/logos/tanstack-query.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
-        "name": "jest",
-        "type": "testing",
-        "image": {
-          "default": {
-            "alt": "Jest Default Logo",
-            "src": "/images/logos/jest.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
-        "name": "testing-library",
-        "type": "testing",
-        "image": {
-          "default": {
-            "alt": "Testing Library Logo",
-            "src": "/images/logos/testing-library.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
-        "name": "cypress",
-        "type": "testing",
-        "image": {
-          "default": {
-            "alt": "Cypress Logo",
-            "src": "/images/logos/cypress.svg"
-          },
-          "dark": {
-            "alt": "Cypress Alternative Logo",
-            "src": "/images/logos/cypress-alt.svg"
           }
         }
       },
@@ -239,41 +197,71 @@
           "default": {
             "alt": "React Native Logo",
             "src": "/images/logos/react.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
-        "name": "webpack",
-        "type": "tooling",
+        "name": "jquery",
+        "type": "frontend",
         "image": {
           "default": {
-            "alt": "Webpack Logo",
-            "src": "/images/logos/webpack.svg"
+            "alt": "JQuery Logo",
+            "src": "/images/logos/jquery.svg"
           },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          "dark": {
+            "alt": "JQuery Alternative Logo",
+            "src": "/images/logos/jquery-alt.svg"
+          }
         }
       },
       {
-        "name": "figma",
-        "type": "design",
+        "name": "twig",
+        "type": "frontend",
         "image": {
           "default": {
-            "alt": "Figma Default Logo",
-            "src": "/images/logos/figma.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Twig Logo",
+            "src": "/images/logos/twig.svg"
+          }
         }
       },
       {
-        "name": "sketch",
-        "type": "design",
+        "name": "sass",
+        "type": "frontend",
         "image": {
           "default": {
-            "alt": "Sketch Logo",
-            "src": "/images/logos/sketch.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Sass Logo",
+            "src": "/images/logos/sass.svg"
+          }
+        }
+      },
+      {
+        "name": "postcss",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "PostCSS Logo",
+            "src": "/images/logos/postcss.svg"
+          }
+        }
+      },
+      {
+        "name": "styled-components",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Styled Components Logo",
+            "src": "/images/logos/styled-components.svg"
+          }
+        }
+      },
+      {
+        "name": "emotion",
+        "type": "frontend",
+        "image": {
+          "default": {
+            "alt": "Emotion Logo",
+            "src": "/images/logos/emotion.svg"
+          }
         }
       },
       {
@@ -283,8 +271,7 @@
           "default": {
             "alt": "PHP Default Logo",
             "src": "/images/logos/php.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -312,25 +299,13 @@
         }
       },
       {
-        "name": "npm",
-        "type": "tooling",
-        "image": {
-          "default": {
-            "alt": "NPM Default Logo",
-            "src": "/images/logos/npm.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
         "name": "express",
         "type": "backend",
         "image": {
           "default": {
             "alt": "Express Logo",
             "src": "/images/logos/express.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -340,8 +315,7 @@
           "default": {
             "alt": "Python Logo",
             "src": "/images/logos/python.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -361,8 +335,7 @@
           "default": {
             "alt": "Go Default Logo",
             "src": "/images/logos/go.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -372,8 +345,7 @@
           "default": {
             "alt": "GraphQL Logo",
             "src": "/images/logos/graphql.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -383,8 +355,17 @@
           "default": {
             "alt": "Apollo Logo",
             "src": "/images/logos/apollo.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
+        }
+      },
+      {
+        "name": "mongoose",
+        "type": "backend",
+        "image": {
+          "default": {
+            "alt": "Mongoose Logo",
+            "src": "/images/logos/mongoose.svg"
+          }
         }
       },
       {
@@ -394,8 +375,7 @@
           "default": {
             "alt": "MySQL Default Logo",
             "src": "/images/logos/mysql.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -405,8 +385,7 @@
           "default": {
             "alt": "PostgreSQL Logo",
             "src": "/images/logos/postgresql.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -426,8 +405,7 @@
           "default": {
             "alt": "SQLite Logo",
             "src": "/images/logos/sqlite.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -437,73 +415,121 @@
           "default": {
             "alt": "MongoDB Logo",
             "src": "/images/logos/mongodb.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
-        "name": "bigcommerce",
-        "type": "ecommerce",
-        "image": {
-          "default": {
-            "alt": "BigCommerce Logo",
-            "src": "/images/logos/bigcommerce.svg"
           }
         }
       },
       {
-        "name": "shopify",
-        "type": "ecommerce",
+        "name": "jest",
+        "type": "testing",
         "image": {
           "default": {
-            "alt": "Shopify Logo",
-            "src": "/images/logos/shopify.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Jest Default Logo",
+            "src": "/images/logos/jest.svg"
+          }
         }
       },
       {
-        "name": "optimizely",
-        "type": "ecommerce",
+        "name": "testing-library",
+        "type": "testing",
         "image": {
           "default": {
-            "alt": "Optimizely Logo",
-            "src": "/images/logos/optimizely.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Testing Library Logo",
+            "src": "/images/logos/testing-library.svg"
+          }
         }
       },
       {
-        "name": "contentful",
-        "type": "cms",
+        "name": "cypress",
+        "type": "testing",
         "image": {
           "default": {
-            "alt": "Contentful Logo",
-            "src": "/images/logos/contentful.svg"
+            "alt": "Cypress Logo",
+            "src": "/images/logos/cypress.svg"
           },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          "dark": {
+            "alt": "Cypress Alternative Logo",
+            "src": "/images/logos/cypress-alt.svg"
+          }
         }
       },
       {
-        "name": "jekyll",
-        "type": "cms",
+        "name": "yarn",
+        "type": "tooling",
         "image": {
           "default": {
-            "alt": "Jekyll Logo",
-            "src": "/images/logos/jekyll.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Yarn Logo",
+            "src": "/images/logos/yarn.svg"
+          }
         }
       },
       {
-        "name": "hugo",
-        "type": "cms",
+        "name": "prettier",
+        "type": "tooling",
         "image": {
           "default": {
-            "alt": "Hugo Default Logo",
-            "src": "/images/logos/hugo.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+            "alt": "Prettier Logo",
+            "src": "/images/logos/prettier.svg"
+          }
+        }
+      },
+      {
+        "name": "babel",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Babel Logo",
+            "src": "/images/logos/babel.svg"
+          }
+        }
+      },
+      {
+        "name": "eslint",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "ESLint Logo",
+            "src": "/images/logos/eslint.svg"
+          }
+        }
+      },
+      {
+        "name": "gulp",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Gulp Logo",
+            "src": "/images/logos/gulp.svg"
+          }
+        }
+      },
+      {
+        "name": "axios",
+        "type": "tooling",
+        "image": {
+          "default": {
+            "alt": "Axios Logo",
+            "src": "/images/logos/axios.svg"
+          }
+        }
+      },
+      {
+        "name": "figma",
+        "type": "design",
+        "image": {
+          "default": {
+            "alt": "Figma Default Logo",
+            "src": "/images/logos/figma.svg"
+          }
+        }
+      },
+      {
+        "name": "sketch",
+        "type": "design",
+        "image": {
+          "default": {
+            "alt": "Sketch Logo",
+            "src": "/images/logos/sketch.svg"
+          }
         }
       },
       {
@@ -523,8 +549,7 @@
           "default": {
             "alt": "NGINX Default Logo",
             "src": "/images/logos/nginx.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -534,8 +559,7 @@
           "default": {
             "alt": "Apache Logo",
             "src": "/images/logos/apache.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -545,8 +569,7 @@
           "default": {
             "alt": "Linux Default Logo",
             "src": "/images/logos/linux.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -570,8 +593,7 @@
           "default": {
             "alt": "Docker Logo",
             "src": "/images/logos/docker.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -581,8 +603,7 @@
           "default": {
             "alt": "Vagrant Logo",
             "src": "/images/logos/vagrant.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -592,8 +613,7 @@
           "default": {
             "alt": "Github Actions Logo",
             "src": "/images/logos/github-actions.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -613,8 +633,7 @@
           "default": {
             "alt": "Amazon Web Services Logo",
             "src": "/images/logos/amazon-web-services.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -624,21 +643,6 @@
           "default": {
             "alt": "Stripe Logo",
             "src": "/images/logos/stripe.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
-        }
-      },
-      {
-        "name": "jquery",
-        "type": "frontend",
-        "image": {
-          "default": {
-            "alt": "JQuery Logo",
-            "src": "/images/logos/jquery.svg"
-          },
-          "dark": {
-            "alt": "JQuery Alternative Logo",
-            "src": "/images/logos/jquery-alt.svg"
           }
         }
       },
@@ -649,8 +653,7 @@
           "default": {
             "alt": "Google Maps Logo",
             "src": "/images/logos/google-maps.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -660,8 +663,7 @@
           "default": {
             "alt": "Sentry Logo",
             "src": "/images/logos/sentry.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -671,8 +673,7 @@
           "default": {
             "alt": "Netlify Logo",
             "src": "/images/logos/netlify.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -692,8 +693,7 @@
           "default": {
             "alt": "Git Default Logo",
             "src": "/images/logos/git.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -703,8 +703,7 @@
           "default": {
             "alt": "Github Logo",
             "src": "/images/logos/github.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -714,8 +713,7 @@
           "default": {
             "alt": "Gitlab Logo",
             "src": "/images/logos/gitlab.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -725,8 +723,7 @@
           "default": {
             "alt": "Bitbucket Logo",
             "src": "/images/logos/bitbucket.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -736,8 +733,7 @@
           "default": {
             "alt": "Jira Default Logo",
             "src": "/images/logos/jira.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       },
       {
@@ -747,8 +743,7 @@
           "default": {
             "alt": "Confluence Logo",
             "src": "/images/logos/confluence.svg"
-          },
-          "dark": { "alt": "Alternative Logo", "src": "#" }
+          }
         }
       }
     ]
