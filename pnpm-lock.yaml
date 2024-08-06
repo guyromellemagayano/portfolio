@@ -30,8 +30,8 @@ dependencies:
     specifier: ^8.21.0
     version: 8.22.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.1)(@opentelemetry/instrumentation@0.52.1)(@opentelemetry/sdk-trace-base@1.25.1)(next@14.2.5)(react@18.3.1)(webpack@5.93.0)
   '@spotlightjs/spotlight':
-    specifier: ^2.1.0
-    version: 2.1.1
+    specifier: ^2.3.0
+    version: 2.3.0
   '@tanstack/react-query':
     specifier: ^5.51.11
     version: 5.51.11(react@18.3.1)
@@ -2216,6 +2216,7 @@ packages:
 
   /@emnapi/core@1.2.0:
     resolution: {integrity: sha512-E7Vgw78I93we4ZWdYCb4DGAwRROGkMIXk7/y87UmANR+J6qsWusmC3gLt0H+O0KOt5e6O38U8oJamgbudrES/w==}
+    requiresBuild: true
     dependencies:
       '@emnapi/wasi-threads': 1.0.1
       tslib: 2.6.3
@@ -2223,11 +2224,13 @@ packages:
 
   /@emnapi/runtime@1.2.0:
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
+    requiresBuild: true
     dependencies:
       tslib: 2.6.3
 
   /@emnapi/wasi-threads@1.0.1:
     resolution: {integrity: sha512-iIBu7mwkq4UQGeMEM8bLwNK962nXdhodeScX4slfQnRhEMMzvYivHhutCIk8uojvmASXXPC2WNEjwxFWk72Oqw==}
+    requiresBuild: true
     dependencies:
       tslib: 2.6.3
     dev: true
@@ -3241,14 +3244,6 @@ packages:
       - nx
     dev: true
 
-  /@nrwl/devkit@19.5.6(nx@19.5.6):
-    resolution: {integrity: sha512-H7LGlwAktfL2GR4scwCfehuppmzcHJJt4C2PpiGEsfA74MKBw2/VGX15b29Mf36XbGS+Bx9vjvooZEt5HPCusw==}
-    dependencies:
-      '@nx/devkit': 19.5.6(nx@19.5.6)
-    transitivePeerDependencies:
-      - nx
-    dev: true
-
   /@nrwl/eslint-plugin-nx@19.5.4(@swc-node/register@1.10.9)(@swc/core@1.7.3)(@types/node@22.0.0)(@typescript-eslint/parser@7.17.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@19.5.3)(typescript@5.5.4):
     resolution: {integrity: sha512-JfIB56mbVGS1X/vdH84SIxzfWzflBUQCAIjFuTyaAAhHwRyP6gS/tXtLwwLx3lwRJa9Em+9X/YuvKNjLkrsfjw==}
     dependencies:
@@ -3916,7 +3911,7 @@ packages:
     peerDependencies:
       nx: '>= 17 <= 20'
     dependencies:
-      '@nrwl/devkit': 19.5.6(nx@19.5.6)
+      '@nrwl/devkit': 19.5.6(nx@19.5.3)
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.1
@@ -6436,18 +6431,30 @@ packages:
 
   /@spotlightjs/overlay@2.1.0:
     resolution: {integrity: sha512-4A718MNG81N1q81lH45BppN/Z94lEHa9U8dUtfjpBdnSngJnwz6Ku3gmFhQQfEOcei+xtPdLgCVP3ODfu0etsg==}
+    dev: true
 
-  /@spotlightjs/sidecar@1.5.0:
-    resolution: {integrity: sha512-ASGHrRKQ40+kN/SAVEVD5GY3tt7gJM4lziEALHKb5rBXKHKIDqCckgEY4n8FhzpTo1N8azVFVHEIriPtpWTEsg==}
+  /@spotlightjs/overlay@2.2.1:
+    resolution: {integrity: sha512-irQruLWY9U3Kijdx4vid+bqPXQih+UOxfeMw9NwhBIIKRNOGIXmXCsZExBhyySWj3BmP8aHZKTECbjkQ8Vvbfg==}
     dev: false
 
-  /@spotlightjs/spotlight@2.1.1:
-    resolution: {integrity: sha512-i67sfCEIXvsHMtGMfE7U0F0MQMcrMRc54ToyaqvzZZ4aRCcUpPdl50KChcixY1ksuI7KiiP0q4h+NbjOzrrX7w==}
+  /@spotlightjs/sidecar@1.7.0:
+    resolution: {integrity: sha512-XTasirfq6FCAmShtFGgw/hM/q5yWOKjpLN7WKrRdASD+aj5uPt1p1WUbpMBA0NaC7Acu1gvMKFgqhcJnDzaWIg==}
+    engines: {node: '>=18'}
+    hasBin: true
     dependencies:
-      '@spotlightjs/overlay': 2.1.0
-      '@spotlightjs/sidecar': 1.5.0
-      import-meta-resolve: 4.1.0
+      kleur: 4.1.5
+      launch-editor: 2.8.0
       source-map: 0.7.4
+    dev: false
+
+  /@spotlightjs/spotlight@2.3.0:
+    resolution: {integrity: sha512-lKE750puAx3nQ0gS9UZ7bXuAfymeEzMXx8FQYIXvWQOP+gcR+qluhMYcB0pcTlZco/4T2xQJ7tP/QKQycfbacQ==}
+    engines: {node: '>=18'}
+    hasBin: true
+    dependencies:
+      '@spotlightjs/overlay': 2.2.1
+      '@spotlightjs/sidecar': 1.7.0
+      import-meta-resolve: 4.1.0
     dev: false
 
   /@surma/rollup-plugin-off-main-thread@2.2.3:
@@ -6935,6 +6942,7 @@ packages:
 
   /@tybys/wasm-util@0.9.0:
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
+    requiresBuild: true
     dependencies:
       tslib: 2.6.3
     dev: true
@@ -12878,6 +12886,11 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /kleur@4.1.5:
+    resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
+    engines: {node: '>=6'}
+    dev: false
+
   /klona@2.0.6:
     resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
     engines: {node: '>= 8'}
@@ -12949,7 +12962,6 @@ packages:
     dependencies:
       picocolors: 1.0.1
       shell-quote: 1.8.1
-    dev: true
 
   /lazy-ass@1.6.0:
     resolution: {integrity: sha512-cc8oEVoctTvsFZ/Oje/kGnHbpWHYBe8IAJe4C0QNc3t8uM/0Y8+erSz/7Y1ALuXTEZTMvxXwO6YbX1ey3ujiZw==}
@@ -16756,7 +16768,6 @@ packages:
 
   /shell-quote@1.8.1:
     resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
-    dev: true
 
   /shimmer@1.2.1:
     resolution: {integrity: sha512-sQTKC1Re/rM6XyFM6fIAGHRPVGvyXfgzIDvzoq608vM+jeyVD0Tu1E6Np0Kc2zAIFWIj963V2800iF/9LPieQw==}
