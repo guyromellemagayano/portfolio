@@ -46,7 +46,7 @@ const InnerContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
           ref={ref}
           className={cn('relative px-4 sm:px-8 lg:px-12', className)}
         >
-          <Div className="mx-auto w-full max-w-2xl lg:max-w-5xl">
+          <Div className="mx-auto w-full max-w-2xl lg:max-w-4xl">
             {children}
           </Div>
         </Div>
