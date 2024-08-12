@@ -2,8 +2,6 @@
 
 ## Full stack developer, open-source enthusiast, and a minimalist
 
-- 🔭 I’m currently working and looking to collaborate on [stackplate](https://github.com/guyromellemagayano/stackplate)
-
 - 🌱 I’m currently learning **Python, Django, Go, and DevOps**
 
 - 👨‍💻 All of my projects are available at [https://guyromellemagayano.dev/projects](https://guyromellemagayano.dev/projects)
@@ -34,4 +32,4 @@
 
 ## Code Streaks
 
-![Code Streaks | Guy Romelle Magayano](https://github-readme-streak-stats.herokuapp.com/?user=guyromellemagayano& 'Code Streaks | Guy Romelle Magayano')
+![Code Streaks | Guy Romelle Magayano](https://github-readme-streak-stats.herokuapp.com/?user=guyromellemagayano&date_format=M%20j%5B%2C%20Y%5D 'Code Streaks | Guy Romelle Magayano')
