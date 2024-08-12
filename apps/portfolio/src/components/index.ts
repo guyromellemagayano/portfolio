@@ -30,6 +30,11 @@ export * from './buttons/dark-mode'
 export * from './card'
 
 // --------------------
+// CATEGORY COMPONENTS
+// --------------------
+export * from "./categories/skills"
+
+// --------------------
 // CONTAINERS COMPONENTS
 // --------------------
 export * from './containers/avatar'
@@ -38,6 +43,7 @@ export * from './containers/base'
 // --------------------
 // FORM COMPONENTS
 // --------------------
+export * from "./forms/category"
 export * from './forms/newsletter'
 
 // --------------------
