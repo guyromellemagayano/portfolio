@@ -16,7 +16,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
-    "editor.formatOnSaveMode": "file",
     "editor.formatOnType": true,
     "editor.insertSpaces": true,
     "editor.tabCompletion": "on",
