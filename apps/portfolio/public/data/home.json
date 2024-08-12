@@ -1,13 +1,13 @@
 {
   "meta": {
-    "title": "Guy Romelle Magayano - Full Stack Developer, open-source enthusiast, and a minimalist",
-    "description": "Full stack developer, open-source enthusiast, and a minimalist.",
-    "keywords": "guy romelle magayano, full stack developer, software engineer, davao, philippines, custom web application, custom web development, devops, seo, amazon, google, javascript, typescript, html, css, react, react native, wordpress, tailwind, jamstack, gatsby, nextjs"
+    "title": "Guy Romelle Magayano - Full Stack Developer, Software Engineer, Open-Source Enthusiast",
+    "description": "Guy Romelle Magayano is a seasoned Full Stack Developer and Software Engineer with expertise in custom web development, DevOps, and SEO. Experienced in delivering high-performance solutions that drive business growth.",
+    "keywords": "Guy Romelle Magayano, Full Stack Developer, Software Engineer, custom web development, WordPress development, Python, Django, ReactJS, JavaScript, TypeScript, Node.js, DevOps, SEO, remote developer, AWS, Docker, CI/CD, Gatsby, Next.js, TailwindCSS, Davao, Philippines"
   },
   "hero": {
-    "heading": "Full stack developer, open-source enthusiast, and a minimalist.",
+    "heading": "Full Stack Developer, Open-Source Enthusiast, and a Minimalist.",
     "description": [
-      "With over six years of professional experience, I’m driven to leverage my expertise in full-stack development to deliver high-performance and robust solutions that catalyze business growth and operational efficiency. Committed to high code quality through rigorous testing and code reviews. Known for strategic problem-solving and aligning technical skills with business goals. Seeking to contribute to dynamic, forward-thinking teams."
+      "With over six years of professional experience, I’m driven to leverage my expertise in full-stack development to deliver high-performance and robust solutions that enhance business growth and operational efficiency. I’m committed to high code quality through rigorous testing and code reviews, known for strategic problem-solving and aligning technical skills with business goals. Seeking to contribute to dynamic, forward-thinking teams."
     ]
   },
   "slidePhotos": [
@@ -34,7 +34,11 @@
   ],
   "aboutMeInfo": {
     "heading": "About Me",
-    "description": "Henlo"
+    "description": [
+      "My journey into software development began with a simple curiosity about how technology shapes our daily lives. Over the years, this curiosity has evolved into a deep passion for creating efficient, scalable, and reliable systems that solve real-world problems. ",
+      "I take pride in bridging the gap between complex technical challenges and practical business needs. Whether I’m working on a frontend interface with React, architecting a backend solution with Django, or optimizing deployment pipelines, I focus on delivering solutions that meet expectations and exceed them. ",
+      "Beyond the code, I believe in continuous learning and staying ahead of industry trends. While my contributions to open-source are limited, I continuously seek opportunities to grow, share knowledge, and mentor others in the community. I thrive in environments that foster collaboration, creativity, and a commitment to excellence."
+    ]
   },
   "skillsInfo": {
     "heading": "Skills",
