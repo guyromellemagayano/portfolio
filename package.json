@@ -38,7 +38,7 @@
     "@babel/core": "^7.25.2",
     "@babel/eslint-parser": "^7.24.8",
     "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "~9.8.0",
+    "@eslint/js": "~9.9.0",
     "@nx/cypress": "19.5.2",
     "@nx/eslint-plugin": "19.5.7",
     "@nx/eslint": "19.5.7",
