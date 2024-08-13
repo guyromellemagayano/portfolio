@@ -1,2 +1,2 @@
 export type * from './Form'
-export { default as Form } from './Form'
+export { Form, ReactHookForm } from './Form'
