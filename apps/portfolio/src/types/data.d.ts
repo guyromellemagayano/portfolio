@@ -64,6 +64,7 @@ export type SkillsInfoData = CommonInfoData & {
 // Skills info images data
 export type SkillsInfoImagesData = {
   name: string
+  type: string
   image: SkillsInfoImageData
 }
 
