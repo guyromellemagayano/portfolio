@@ -1,37 +1,40 @@
 # Hi 👋, I'm Guy Romelle Magayano
 
-## Full stack developer, open-source enthusiast, and a minimalist
+## Full Stack Developer, Software Engineer, and a Minimalist
 
-- 🔭 I’m currently working and looking to collaborate on [stackplate](https://github.com/guyromellemagayano/stackplate)
+- 🌱 I’m currently deepening my expertise in **Python, Django, Go, and DevOps**.
 
-- 🌱 I’m currently learning **Python, Django, Go, and DevOps**
+- 👨‍💻 Explore all of my projects at [https://www.guyromellemagayano.dev/projects](https://www.guyromellemagayano.dev/projects).
 
-- 👨‍💻 All of my projects are available at [https://guyromellemagayano.dev/projects](https://guyromellemagayano.dev/projects)
+- 📝 I regularly write about tech and development at [https://www.guyromellemagayano.dev/articles](https://www.guyromellemagayano.dev/articles).
 
-- 📝 I regularly write articles at [https://guyromellemagayano.dev/articles](https://guyromellemagayano.dev/articles)
+- 💬 Ask me about **React, TypeScript, JavaScript, PHP, WordPress, Python**.
 
-- 💬 Ask me about **React, Typescript, Javascript, PHP, WordPress**
+- 📫 You can reach me at **<aspiredtechie2010@gmail.com>**.
 
-- 📫 Reach me at **<aspiredtechie2010@gmail.com>**
+- 📄 Learn more about my professional experiences at [https://www.guyromellemagayano.dev/work](https://www.guyromellemagayano.dev/work).
 
-- 📄 Know about my experiences at [https://guyromellemagayano.dev/work](https://guyromellemagayano.dev/work)
+- ⚡ Fun fact: _I'm an introvert, but I'm quite friendly and always up for a chat :)_
 
-- ⚡ Fun fact: _Im an introvert. But quite friendly :)_
+## Connect with Me
 
-## Connect with me
-
-[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="mguyromelle" height="30" width="40" />](https://www.facebook.com/mguyromelle/)
-[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="mguyromelle" height="30" width="40" />](https://twitter.com/mguyromelle)
-[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="mguyromelle" height="30" width="40" />](https://linkedin.com/in/mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="Follow me on Facebook" height="30" width="40" />](https://www.facebook.com/iiaamgee)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="Follow me on Instagram" height="30" width="40" />](https://www.instagram.com/iiaamgee)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Follow me on LinkedIn" height="30" width="40" />](https://www.linkedin.com/in/mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="Follow me on Twitter" height="30" width="40" />](https://twitter.com/mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="Follow me on Discord" height="30" width="40" />](https://discord.com/users/1004684457837596673)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="Follow me on GitHub" height="30" width="40" />](https://github.com/guyromellemagayano)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/medium.svg" alt="Follow me on Medium" height="30" width="40" />](https://medium.com/@mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/behance.svg" alt="Follow me on Behance" height="30" width="40" />](https://www.behance.net/mguyromelle)
 
 ## Most Used Languages
 
-![Most Used Languages | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api/top-langs?username=guyromellemagayano&show_icons=true&locale=en&layout=compact 'Most Used Languages | Guy Romelle Magayano')
+<a href="https://github.com/guyromellemagayano/github-stats">
+<img src="https://github.com/guyromellemagayano/github-stats/blob/master/generated/languages.svg#gh-light-mode-only" />
+</a>
 
 ## Github Stats
 
-![Github Stats | Guy Romelle Magayano](https://github-readme-stats.vercel.app/api?username=guyromellemagayano&show_icons=true&locale=en 'Github Stats | Guy Romelle Magayano')
-
-## Code Streaks
-
-![Code Streaks | Guy Romelle Magayano](https://github-readme-streak-stats.herokuapp.com/?user=guyromellemagayano& 'Code Streaks | Guy Romelle Magayano')
+<a href="https://github.com/guyromellemagayano/github-stats">
+<img src="https://github.com/guyromellemagayano/github-stats/blob/master/generated/overview.svg#gh-light-mode-only" />
+</a>
