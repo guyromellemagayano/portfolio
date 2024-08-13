@@ -117,7 +117,7 @@ const ContentSimpleLayout = memo(
             )}
 
             {intro && (
-              <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+              <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
                 {Array.isArray(intro)
                   ? intro?.map(
                       (paragraph, index) =>
