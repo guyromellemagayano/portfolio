@@ -134,8 +134,8 @@ devDependencies:
     specifier: ^8.21.0
     version: 8.22.0
   '@spotlightjs/overlay':
-    specifier: ^2.1.0
-    version: 2.1.0
+    specifier: ^2.3.0
+    version: 2.3.0
   '@swc-node/register':
     specifier: ^1.10.7
     version: 1.10.9(@swc/core@1.7.3)(@swc/types@0.1.12)(typescript@5.5.4)
@@ -6222,13 +6222,13 @@ packages:
       '@sinonjs/commons': 3.0.1
     dev: true
 
-  /@spotlightjs/overlay@2.1.0:
-    resolution: {integrity: sha512-4A718MNG81N1q81lH45BppN/Z94lEHa9U8dUtfjpBdnSngJnwz6Ku3gmFhQQfEOcei+xtPdLgCVP3ODfu0etsg==}
-    dev: true
-
   /@spotlightjs/overlay@2.2.1:
     resolution: {integrity: sha512-irQruLWY9U3Kijdx4vid+bqPXQih+UOxfeMw9NwhBIIKRNOGIXmXCsZExBhyySWj3BmP8aHZKTECbjkQ8Vvbfg==}
     dev: false
+
+  /@spotlightjs/overlay@2.3.0:
+    resolution: {integrity: sha512-kIHnTjEIl8gP9UWD3tvXWZ6mEArRn+7FMBs9ekkBSwrF8YbwaNBgBGkTci79IK/Ik+4clA6HIWWSHHglmO+mug==}
+    dev: true
 
   /@spotlightjs/sidecar@1.7.0:
     resolution: {integrity: sha512-XTasirfq6FCAmShtFGgw/hM/q5yWOKjpLN7WKrRdASD+aj5uPt1p1WUbpMBA0NaC7Acu1gvMKFgqhcJnDzaWIg==}
