@@ -101,8 +101,8 @@ devDependencies:
     specifier: ^3.1.0
     version: 3.1.0
   '@eslint/js':
-    specifier: ~9.8.0
-    version: 9.8.0
+    specifier: ~9.9.0
+    version: 9.9.0
   '@nx/cypress':
     specifier: 19.5.2
     version: 19.5.2(@swc-node/register@1.10.9)(@swc/core@1.7.3)(@types/node@22.1.0)(cypress@13.13.2)(eslint@8.57.0)(nx@19.5.3)(typescript@5.5.4)
@@ -2359,8 +2359,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  /@eslint/js@9.8.0:
-    resolution: {integrity: sha512-MfluB7EUfxXtv3i/++oh89uzAr4PDI4nn201hsp+qaXqsjAWzinlZEHEfPgAX4doIlKvPG/i0A9dpKxOLII8yA==}
+  /@eslint/js@9.9.0:
+    resolution: {integrity: sha512-hhetes6ZHP3BlXLxmd8K2SNgkhNSi+UcecbnwWKwpP7kyi/uC75DJ1lOOBO3xrC4jyojtGE3YxKZPHfk4yrgug==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     dev: true
 
