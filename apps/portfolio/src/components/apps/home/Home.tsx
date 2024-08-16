@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
+import { Button } from '@guy-romelle-magayano/react-components'
 import {
   Article,
   Div,
@@ -61,8 +62,15 @@ const HomeApp = (props: HomeAppProps) => {
       <ContentLayout.Simple
         title={hero?.heading}
         intro={hero?.description}
-        className="mt-20 md:mt-24"
-      />
+        className="sm:mt-12 sm:px-8"
+      >
+        <Button
+          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-50 dark:active:bg-zinc-700 dark:active:bg-zinc-800/50 dark:active:text-zinc-100/70"
+          onClick={() => '#'}
+        >
+          Hire Me
+        </Button>
+      </ContentLayout.Simple>
 
       {/* About me section */}
       <JumbotronLayout
