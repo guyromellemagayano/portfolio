@@ -53,7 +53,7 @@ const ContentAsideLayout = memo(
           {title && (
             <Heading
               as="h1"
-              className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
+              className="text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100"
             >
               {title}
             </Heading>
@@ -106,7 +106,7 @@ const ContentSimpleLayout = memo(
           ref={ref}
           className={cn('mt-16 sm:mt-32', className)}
         >
-          <Div className="w-full max-w-2xl">
+          <Div className="w-full max-w-3xl">
             {title && (
               <Heading
                 as="h1"

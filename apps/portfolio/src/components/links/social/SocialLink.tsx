@@ -90,7 +90,7 @@ const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
             className,
             'group -m-1 p-1',
             showLabel &&
-              'flex text-sm font-medium text-zinc-800 transition hover:text-amber-500 dark:text-zinc-200 dark:hover:text-amber-500'
+              'flex text-sm font-medium text-zinc-800 transition hover:text-zinc-500 dark:text-zinc-200 dark:hover:text-zinc-500'
           )}
           href={href}
           aria-label={label}
