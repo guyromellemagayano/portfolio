@@ -45,7 +45,7 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
           {children}
           {!isEmpty(data?.skills) && (
             <div className="mx-auto max-w-7xl">
-              <div className="-mx-6 grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:rounded-2xl md:grid-cols-4 lg:grid-cols-5">
+              <div className="grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:grid-cols-3 sm:rounded-2xl md:grid-cols-4 lg:grid-cols-5">
                 {data?.skills?.map(skill => {
                   const imageAlt =
                     resolvedTheme === 'dark' &&
