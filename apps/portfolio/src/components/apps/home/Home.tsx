@@ -65,7 +65,7 @@ const HomeApp = (props: HomeAppProps) => {
         className="sm:mt-12 sm:px-8"
       >
         <Button
-          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-600 dark:hover:bg-zinc-800/50 dark:hover:text-zinc-50 dark:active:bg-zinc-700 dark:active:bg-zinc-800/50 dark:active:text-zinc-100/70"
+          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
           onClick={() => '#'}
         >
           Hire Me
@@ -85,6 +85,11 @@ const HomeApp = (props: HomeAppProps) => {
       {/* <SkillsCategory data={skillsInfo}> */}
       {/* <CategoryForm /> */}
       {/* </SkillsCategory> */}
+
+      <BaseContainer className="mt-20 md:mt-24">
+        {/* Newsletter form section */}
+        <NewsletterForm />
+      </BaseContainer>
 
       <BaseContainer className="mt-20 md:mt-24">
         <Div
@@ -113,10 +118,7 @@ const HomeApp = (props: HomeAppProps) => {
             )}
           </Section>
 
-          <Section className="space-y-10 lg:pl-16 xl:pl-24">
-            {/* Newsletter form section */}
-            <NewsletterForm />
-
+          <Section className="xl:pl-18 space-y-10 lg:pl-16">
             {/* Work experiences section */}
             {((workExperiences && workExperiences?.length > 0) ||
               (cvFile && cvFile?.length > 0)) && (
