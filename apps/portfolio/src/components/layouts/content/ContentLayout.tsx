@@ -20,7 +20,7 @@ import {
   type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn, isStringType } from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
@@ -43,14 +43,14 @@ export type ContentLayoutStaticComponents = {
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title = '', intro = '', children, className, ...rest }, ref) => {
+    ({ title, intro, children, className, ...rest }, ref) => {
       if (!title && !intro && !children) {
         return null
       }
 
       return (
-        <Aside {...rest} ref={ref}>
-          {title && (
+        <Aside ref={ref}>
+          {title && title?.length > 0 && title !== '' && (
             <Heading
               as="h1"
               className="text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100"
@@ -59,23 +59,23 @@ const ContentAsideLayout = memo(
             </Heading>
           )}
 
-          {intro && (
+          {((intro && intro?.length > 0) ||
+            (isStringType(intro) && intro !== '')) && (
             <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
               {Array.isArray(intro)
-                ? intro.map(
-                    (paragraph, index) =>
-                      paragraph && (
-                        <Span key={index} className="space-y-7">
-                          {paragraph}
-                        </Span>
-                      )
-                  )
+                ? intro.map(paragraph => (
+                    <Span key={paragraph} className="space-y-7">
+                      {paragraph}
+                    </Span>
+                  ))
                 : intro}
             </P>
           )}
 
           {children && (
-            <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
+            <Div className={cn('mt-16 sm:mt-20', className)} {...rest}>
+              {children}
+            </Div>
           )}
         </Aside>
       )
@@ -93,7 +93,7 @@ ContentAsideLayout.displayName = 'ContentAsideLayout'
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title = '', intro = '', children, className, ...rest }, ref) => {
+    ({ title, intro, children, className, ...rest }, ref) => {
       const pathname = usePathname()
 
       if (!title && !intro && !children) {
@@ -102,12 +102,12 @@ const ContentSimpleLayout = memo(
 
       return (
         <BaseContainer
-          {...rest}
           ref={ref}
           className={cn('mt-16 sm:mt-32', className)}
+          {...rest}
         >
           <Div className="w-full max-w-3xl">
-            {title && (
+            {title && title?.length > 0 && title !== '' && (
               <Heading
                 as="h1"
                 className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
@@ -116,17 +116,15 @@ const ContentSimpleLayout = memo(
               </Heading>
             )}
 
-            {intro && (
+            {((intro && intro?.length > 0) ||
+              (isStringType(intro) && intro !== '')) && (
               <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
                 {Array.isArray(intro)
-                  ? intro?.map(
-                      (paragraph, index) =>
-                        paragraph && (
-                          <Span key={index} className="space-y-7">
-                            {paragraph}
-                          </Span>
-                        )
-                    )
+                  ? intro.map(paragraph => (
+                      <Span key={paragraph} className="space-y-7">
+                        {paragraph}
+                      </Span>
+                    ))
                   : intro}
               </P>
             )}
@@ -135,7 +133,8 @@ const ContentSimpleLayout = memo(
           {children && (
             <Div
               className={cn(
-                pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9'
+                pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9',
+                className
               )}
             >
               {children}
@@ -162,7 +161,7 @@ const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
     }
 
     return (
-      <Component {...rest} ref={ref}>
+      <Component ref={ref} {...rest}>
         {children}
       </Component>
     )
