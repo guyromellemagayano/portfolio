@@ -33,18 +33,6 @@ const sitemap = (): MetadataRoute.Sitemap => {
       priority: 1
     },
     {
-      url: `${PORTFOLIO_SITE_URL}/skills`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/uses`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8
-    },
-    {
       url: `${PORTFOLIO_SITE_URL}/work`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
