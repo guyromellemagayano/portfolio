@@ -1,20 +1,24 @@
 [
   {
+    "id": "c21e1b45-ff64-4c3f-9b1e-50a217841b1f",
     "title": "Home",
     "link": "/",
     "slug": "home"
   },
   {
+    "id": "a98f3d92-2a3e-4bfc-b1be-42a4bdf8c1e9",
     "title": "Projects",
     "link": "/projects",
     "slug": "projects"
   },
   {
-    "title": "Articles",
-    "link": "/articles",
-    "slug": "articles"
+    "id": "f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3",
+    "title": "Blog",
+    "link": "/blog",
+    "slug": "blog"
   },
   {
+    "id": "b8e7f9c2-3c4f-4b1d-a9f5-61d4e5f1b8c2",
     "title": "About",
     "link": "/about",
     "slug": "about"
