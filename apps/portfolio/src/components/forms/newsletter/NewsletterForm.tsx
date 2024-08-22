@@ -2,6 +2,8 @@
 
 import { forwardRef } from 'react'
 
+import Link from 'next/link'
+
 import {
   Button,
   Form,
@@ -17,9 +19,9 @@ import {
   P
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
-import Link from 'next/link'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
 export type NewsletterFormRef = DivisionRef
 export type NewsletterFormProps = DivisionProps & FormProps
@@ -45,24 +47,21 @@ const thankYouPageLink = '/thank-you'
 const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
   ({ className, ...rest }, ref) => {
     return (
-      <>
-        <Div
-          ref={ref}
-          className={cn(
-            className,
-            'mx-auto max-w-7xl rounded-2xl border border-zinc-300 p-6 sm:py-8 lg:py-10 xl:py-12 dark:border-zinc-500'
-          )}
-          {...rest}
-        >
+      <BaseContainer
+        ref={ref}
+        className={cn(className, 'mt-20 md:mt-24')}
+        {...rest}
+      >
+        <Div className="mx-auto max-w-7xl rounded-2xl border border-zinc-300 p-3 md:p-6 dark:border-zinc-500">
           <Div className="mx-auto max-w-7xl p-6 lg:px-8">
             <Div className="flex max-w-2xl flex-auto flex-wrap gap-y-3 md:flex-none">
               <Heading
                 as="h2"
-                className="inline space-y-7 text-3xl font-bold tracking-tight text-zinc-900 sm:block sm:text-4xl dark:text-zinc-100"
+                className="inline text-3xl font-bold tracking-tight text-zinc-900 sm:block sm:text-4xl dark:text-zinc-100"
               >
                 {strings.stayUpToDate}
               </Heading>{' '}
-              <P className="inline space-y-7 text-base leading-6 text-zinc-600 sm:block dark:text-zinc-400">
+              <P className="inline text-base leading-5 text-zinc-600 sm:block dark:text-zinc-400">
                 {strings.getNotified}
               </P>
             </Div>
@@ -89,7 +88,7 @@ const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
                   {strings.join}
                 </Button>
               </Div>
-              <P className="mt-4 space-y-7 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+              <P className="mt-4 text-sm leading-5 text-zinc-600 dark:text-zinc-400">
                 {strings.privacyPolicy}{' '}
                 <Link
                   href="#"
@@ -102,7 +101,7 @@ const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
             </Form>
           </Div>
         </Div>
-      </>
+      </BaseContainer>
     )
   }
 )

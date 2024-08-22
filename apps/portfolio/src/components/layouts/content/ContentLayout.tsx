@@ -20,7 +20,7 @@ import {
   type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn, isStringType } from '@guy-romelle-magayano/react-utils'
+import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
 
 import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
@@ -44,13 +44,23 @@ export type ContentLayoutStaticComponents = {
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
     ({ title, intro, children, className, ...rest }, ref) => {
-      if (!title && !intro && !children) {
+      const validTitle = isValidData(title, 'string') ? title : null
+      const validIntro =
+        isValidData(intro, 'string') || isValidData(intro, 'array')
+          ? intro
+          : null
+
+      if (
+        (!validTitle || validTitle?.length === 0) &&
+        (!validIntro || validIntro?.length === 0) &&
+        !children
+      ) {
         return null
       }
 
       return (
         <Aside ref={ref}>
-          {title && title?.length > 0 && title !== '' && (
+          {validTitle && (
             <Heading
               as="h1"
               className="text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100"
@@ -59,16 +69,15 @@ const ContentAsideLayout = memo(
             </Heading>
           )}
 
-          {((intro && intro?.length > 0) ||
-            (isStringType(intro) && intro !== '')) && (
+          {validIntro && (
             <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-              {Array.isArray(intro)
-                ? intro.map(paragraph => (
+              {Array.isArray(validIntro)
+                ? validIntro.map(paragraph => (
                     <Span key={paragraph} className="space-y-7">
                       {paragraph}
                     </Span>
                   ))
-                : intro}
+                : validIntro}
             </P>
           )}
 
@@ -95,8 +104,17 @@ const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
     ({ title, intro, children, className, ...rest }, ref) => {
       const pathname = usePathname()
+      const validTitle = isValidData(title, 'string') ? title : null
+      const validIntro =
+        isValidData(intro, 'string') || isValidData(intro, 'array')
+          ? intro
+          : null
 
-      if (!title && !intro && !children) {
+      if (
+        (!validTitle || validTitle?.length === 0) &&
+        (!validIntro || validIntro?.length === 0) &&
+        !children
+      ) {
         return null
       }
 
@@ -107,7 +125,7 @@ const ContentSimpleLayout = memo(
           {...rest}
         >
           <Div className="w-full max-w-3xl">
-            {title && title?.length > 0 && title !== '' && (
+            {validTitle && (
               <Heading
                 as="h1"
                 className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
@@ -116,16 +134,15 @@ const ContentSimpleLayout = memo(
               </Heading>
             )}
 
-            {((intro && intro?.length > 0) ||
-              (isStringType(intro) && intro !== '')) && (
+            {validIntro && (
               <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
-                {Array.isArray(intro)
-                  ? intro.map(paragraph => (
+                {Array.isArray(validIntro)
+                  ? validIntro.map(paragraph => (
                       <Span key={paragraph} className="space-y-7">
                         {paragraph}
                       </Span>
                     ))
-                  : intro}
+                  : validIntro}
               </P>
             )}
           </Div>
