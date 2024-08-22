@@ -12,7 +12,7 @@ import {
   type HeaderRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { clamp, cn } from '@guy-romelle-magayano/react-utils'
+import { clamp, cn, isEmpty } from '@guy-romelle-magayano/react-utils'
 
 import {
   Avatar,
@@ -31,28 +31,29 @@ export type HeaderLayoutProps = HeaderProps & {
 
 /**
  * Render the header layout component.
- * @param {HeaderLayoutProps} props - The props of the header layout.
- * @param {HeaderLayoutRef} ref - The reference of the header layout.
- * @returns The rendered header layout component.
+ * @param {HeaderLayoutProps} props - The component props
+ * @param {HeaderLayoutRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const HeaderLayout = memo(
   forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
     ({ pages, className, ...rest }, ref) => {
-      const pathname = usePathname(),
-        headerRef = useRef<DivisionRef | null>(null),
-        avatarRef = useRef<DivisionRef | null>(null),
-        isInitial = useRef<boolean>(true),
-        isHomePage = pathname === '/'
+      const pathname = usePathname()
+      const headerRef = useRef<DivisionRef | null>(null)
+      const avatarRef = useRef<DivisionRef | null>(null)
+      const isInitial = useRef<boolean>(true)
+      const isHomePage = pathname === '/'
 
       useEffect(() => {
-        const downDelay = avatarRef.current?.offsetTop ?? 0,
-          upDelay = 64,
-          setProperty = (property: string, value: string): void => {
-            document.documentElement.style.setProperty(property, value)
-          },
-          removeProperty = (property: string): void => {
-            document.documentElement.style.removeProperty(property)
-          }
+        const downDelay = avatarRef.current?.offsetTop ?? 0
+        const upDelay = 64
+
+        const setProperty = (property: string, value: string): void => {
+          document.documentElement.style.setProperty(property, value)
+        }
+        const removeProperty = (property: string): void => {
+          document.documentElement.style.removeProperty(property)
+        }
 
         const updateHeaderStyles = (): void => {
           if (!headerRef.current) {
@@ -94,16 +95,15 @@ const HeaderLayout = memo(
             setProperty('--avatar-top', '0px')
           }
         }
-
         const updateAvatarStyles = (): void => {
           if (!isHomePage) {
             return
           }
 
-          const fromScale = 1,
-            toScale = 36 / 64,
-            fromX = 0,
-            toX = 2 / 16
+          const fromScale = 1
+          const toScale = 36 / 64
+          const fromX = 0
+          const toX = 2 / 16
 
           const scrollY = downDelay - window.scrollY
 
@@ -118,9 +118,9 @@ const HeaderLayout = memo(
             `translate3d(${x}rem, 0, 0) scale(${scale})`
           )
 
-          const borderScale = 1 / (toScale / scale),
-            borderX = (-toX + x) * borderScale,
-            borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`
+          const borderScale = 1 / (toScale / scale)
+          const borderX = (-toX + x) * borderScale
+          const borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`
 
           setProperty('--avatar-border-transform', borderTransform)
           setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
@@ -144,17 +144,16 @@ const HeaderLayout = memo(
       }, [isHomePage])
 
       const headerPosition = {
-          position: 'var(--header-position)'
-        } as unknown as CSSProperties,
-        headerInnerPosition = {
-          position: 'var(--header-inner-position)'
-        } as unknown as CSSProperties
+        position: 'var(--header-position)'
+      } as unknown as CSSProperties
+      const headerInnerPosition = {
+        position: 'var(--header-inner-position)'
+      } as unknown as CSSProperties
 
       return (
         <>
           <Header
             ref={ref}
-            {...rest}
             className={cn(
               'pointer-events-none relative z-50 flex flex-none flex-col',
               className
@@ -163,6 +162,7 @@ const HeaderLayout = memo(
               height: 'var(--header-height)',
               marginBottom: 'var(--header-mb)'
             }}
+            {...rest}
           >
             {isHomePage && (
               <>
@@ -215,15 +215,15 @@ const HeaderLayout = memo(
                     )}
                   </Div>
                   <Div className="flex flex-1 justify-end md:justify-center">
-                    {pages && pages?.length > 0 && (
+                    {!isEmpty(pages) && (
                       <>
                         <MobileNavigation
                           className="pointer-events-auto md:hidden"
-                          menu={pages}
+                          menu={pages!}
                         />
                         <DesktopNavigation
                           className="pointer-events-auto hidden md:block"
-                          menu={pages}
+                          menu={pages!}
                         />
                       </>
                     )}
