@@ -6,6 +6,8 @@ import {
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
+import { isEmpty, isValidData } from '@guy-romelle-magayano/react-utils'
+
 import {
   SocialLink,
   SocialLinkProps
@@ -13,27 +15,33 @@ import {
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
-  data?: Array<SocialLinkProps>
+  data?: SocialLinkProps[]
 }
 
 /**
  * Render the social links layout component.
- * @param {SocialLinksLayoutProps} props - The props of the social links layout.
- * @param {SocialLinksLayoutRef} ref - The reference of the social links layout.
- * @returns The rendered social links layout component.
+ * @param {SocialLinksLayoutProps} props - The component props
+ * @param {SocialLinksLayoutRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const SocialLinksLayout = memo(
   forwardRef<SocialLinksLayoutRef, SocialLinksLayoutProps>(
     ({ data, ...rest }, ref) => {
+      const validData =
+        data?.filter((item): item is SocialLinkProps =>
+          isValidData(item, 'object')
+        ) || null
+
+      if (!validData || isEmpty(validData)) {
+        return null
+      }
+
       return (
-        data &&
-        data?.length > 0 && (
-          <Div {...rest} ref={ref}>
-            {data.map((rest, index: number) => (
-              <SocialLink key={index} {...rest} />
-            ))}
-          </Div>
-        )
+        <Div ref={ref} {...rest}>
+          {validData.map(({ id, ...rest }) => {
+            return <SocialLink key={id} {...rest} />
+          })}
+        </Div>
       )
     }
   )
