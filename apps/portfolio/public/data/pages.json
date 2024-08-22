@@ -5,16 +5,6 @@
     "slug": "home"
   },
   {
-    "title": "Skills",
-    "link": "/skills",
-    "slug": "skills"
-  },
-  {
-    "title": "Work",
-    "link": "/work",
-    "slug": "work"
-  },
-  {
     "title": "Projects",
     "link": "/projects",
     "slug": "projects"
@@ -23,11 +13,6 @@
     "title": "Articles",
     "link": "/articles",
     "slug": "articles"
-  },
-  {
-    "title": "Uses",
-    "link": "/uses",
-    "slug": "uses"
   },
   {
     "title": "About",
