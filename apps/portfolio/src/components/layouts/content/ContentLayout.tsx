@@ -36,10 +36,10 @@ export type ContentLayoutStaticComponents = {
 }
 
 /**
- * Render the aside content layout component
+ * Render the aside content layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered JSX component.
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
@@ -95,10 +95,10 @@ const ContentAsideLayout = memo(
 ContentAsideLayout.displayName = 'ContentAsideLayout'
 
 /**
- * Render the simple content layout component
+ * Render the simple content layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered JSX component.
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
@@ -130,7 +130,7 @@ const ContentSimpleLayout = memo(
                 as="h1"
                 className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
               >
-                {title}
+                {validTitle}
               </Heading>
             )}
 
@@ -150,8 +150,7 @@ const ContentSimpleLayout = memo(
           {children && (
             <Div
               className={cn(
-                pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9',
-                className
+                pathname !== '/' ? 'mt-16 sm:mt-20' : 'mt-9 sm:mt-9'
               )}
             >
               {children}
@@ -166,10 +165,10 @@ const ContentSimpleLayout = memo(
 ContentSimpleLayout.displayName = 'ContentSimpleLayout'
 
 /**
- * Render the content layout component
+ * Render the content layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered JSX component.
  */
 const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
   ({ as: Component = Div, children, ...rest }, ref) => {
