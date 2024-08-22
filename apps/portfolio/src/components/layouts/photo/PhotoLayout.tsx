@@ -8,24 +8,31 @@ import {
   type DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
 
-import { type SlidePhotosData } from '@guy-romelle-magayano/portfolio/types'
+import type {
+  CommonPhotosData,
+  PhotosData
+} from '@guy-romelle-magayano/portfolio/types'
 
 export type PhotoLayoutRef = DivisionRef
 export type PhotoLayoutProps = DivisionProps & {
-  data?: Array<SlidePhotosData>
+  data?: PhotosData['slidePhotos']
   priority?: boolean
 }
 
 // The rotations data.
-const RotationsData: Array<string> = [
+const RotationsData = [
   'rotate-2',
   '-rotate-2',
   'rotate-2',
   'rotate-2',
   '-rotate-2'
 ]
+
+const strings = {
+  defaultImageAlt: 'Photo Layout Image'
+}
 
 /**
  * Renders the photo layout component
@@ -36,18 +43,21 @@ const RotationsData: Array<string> = [
 const PhotoLayout = memo(
   forwardRef<PhotoLayoutRef, PhotoLayoutProps>(
     ({ data, priority, ...rest }, ref) => {
-      const defaultImageAlt = 'Photo Layout Image'
+      const validData =
+        data?.filter((item): item is CommonPhotosData =>
+          isValidData(item, 'object')
+        ) || null
 
-      if (!data || data.length === 0) {
+      if (!validData || validData?.length === 0) {
         return null
       }
 
       return (
         <Div {...rest} ref={ref}>
           <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-            {data.map(({ src, alt }, index) => (
+            {validData.map(({ id, src, alt }, index) => (
               <Div
-                key={index}
+                key={id}
                 className={cn(
                   'relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-72 sm:rounded-2xl dark:bg-zinc-800',
                   RotationsData[index % RotationsData.length]
@@ -55,7 +65,7 @@ const PhotoLayout = memo(
               >
                 <Image
                   src={src}
-                  alt={alt || defaultImageAlt}
+                  alt={alt || strings.defaultImageAlt}
                   sizes="(min-width: 640px) 18rem, 11rem"
                   className="absolute inset-0 h-auto w-full object-cover"
                   fill
