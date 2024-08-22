@@ -32,78 +32,49 @@ export type SocialLinkProps = HyperlinkProps &
 
 /**
  * Renders the social link component.
- * @param {SocialLinkProps} props - The properties to render the social link component.
- * @param {SocialLinkRef} ref - The reference of the social link component.
- * @returns The rendered social link component.
+ * @param {SocialLinkProps} props - The component props
+ * @param {SocialLinkRef} ref - The component reference
+ * @returns The rendered JSX component
  */
 const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
-  ({ icon, href, label, showLabel = false, id, className, ...rest }, ref) => {
-    let Icon: FC<SvgProps> | undefined = () => undefined
-
-    const loweredIcon: string = icon ? convertStringToLowercase(icon) : ''
-
-    // Set the Icon value based on the icon prop.
-    if (loweredIcon) {
-      switch (loweredIcon) {
-        case 'facebook':
-          Icon = FacebookSvg
-          break
-        case 'instagram':
-          Icon = InstagramSvg
-          break
-        case 'twitter':
-          Icon = TwitterSvg
-          break
-        case 'github':
-          Icon = GithubSvg
-          break
-        case 'linkedin':
-          Icon = LinkedInSvg
-          break
-        case 'mail':
-          Icon = MailSvg
-          break
-        case 'medium':
-          Icon = MediumSvg
-          break
-        case 'behance':
-          Icon = BehanceSvg
-          break
-        case 'discord':
-          Icon = DiscordSvg
-          break
-        case 'mastodon':
-          Icon = MastodonSvg
-          break
-        default:
-          break
-      }
+  ({ icon, href, label, showLabel = false, className, ...rest }, ref) => {
+    // Define the Icon component based on the icon prop.
+    const iconMap: Record<string, FC<SvgProps>> = {
+      facebook: FacebookSvg,
+      instagram: InstagramSvg,
+      twitter: TwitterSvg,
+      github: GithubSvg,
+      linkedin: LinkedInSvg,
+      mail: MailSvg,
+      medium: MediumSvg,
+      behance: BehanceSvg,
+      discord: DiscordSvg,
+      mastodon: MastodonSvg
     }
 
-    return (
-      href &&
-      href?.length > 0 && (
-        <A
-          ref={ref}
-          {...rest}
-          className={cn(
-            className,
-            'group -m-1 p-1',
-            showLabel &&
-              'flex text-sm font-medium text-zinc-800 transition hover:text-zinc-500 dark:text-zinc-200 dark:hover:text-zinc-500'
-          )}
-          href={href}
-          aria-label={label}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
+    const Icon = icon ? iconMap[convertStringToLowercase(icon)] : undefined
 
-          {showLabel && label && label?.length > 0 && (
-            <Span className="ml-4">{label}</Span>
-          )}
-        </A>
-      )
+    if (!href || !Icon) return null
+
+    return (
+      <A
+        ref={ref}
+        className={cn(
+          className,
+          'group -m-1 p-1',
+          showLabel &&
+            'flex text-sm font-medium text-zinc-800 transition hover:text-zinc-500 dark:text-zinc-200 dark:hover:text-zinc-500'
+        )}
+        href={href}
+        aria-label={label}
+        target="_blank"
+        rel="noreferrer"
+        {...rest}
+      >
+        <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
+
+        {showLabel && label && <Span className="ml-4">{label}</Span>}
+      </A>
     )
   }
 )
