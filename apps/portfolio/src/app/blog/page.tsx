@@ -7,8 +7,8 @@ import {
 } from '@guy-romelle-magayano/portfolio/utils/server'
 
 /**
- * Generates the metadata for the articles page.
- * @returns The metadata for the articles page.
+ * Generates the metadata for the blog page.
+ * @returns The metadata for the blog page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
   const { meta } = await articlesPageData()
@@ -21,8 +21,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 }
 
 /**
- * Renders the articles page.
- * @returns The articles page component.
+ * Renders the blog page.
+ * @returns The blog page component.
  */
 const Page = async () => {
   const data = await articlesAppData()
