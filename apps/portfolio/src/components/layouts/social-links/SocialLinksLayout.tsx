@@ -6,7 +6,7 @@ import {
   DivisionRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import { isEmpty, isValidData } from '@guy-romelle-magayano/react-utils'
+import { isValidData } from '@guy-romelle-magayano/react-utils'
 
 import {
   SocialLink,
@@ -32,7 +32,7 @@ const SocialLinksLayout = memo(
           isValidData(item, 'object')
         ) || null
 
-      if (!validData || isEmpty(validData)) {
+      if (!validData || validData?.length === 0) {
         return null
       }
 
