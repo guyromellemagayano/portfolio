@@ -13,7 +13,7 @@ export const importArticle = async (
   fileName: string
 ): Promise<any | undefined> => {
   const { meta, default: component } = await import(
-    `@guy-romelle-magayano/portfolio/app/articles/${fileName}`
+    `@guy-romelle-magayano/portfolio/app/blog/${fileName}`
   )
 
   return { slug: fileName.replace(/(\/page)?\.mdx$/, ''), ...meta, component }
