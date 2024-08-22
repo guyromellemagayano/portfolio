@@ -1,27 +1,25 @@
 {
-  "meta": {
-    "title": "Work - Guy Romelle Magayano",
-    "description": "I specialize in building websites and web applications using modern technologies.",
-    "keywords": "guy romelle magayano, full stack developer, davao, philippines, frontend, backend, version control, epic design labs, multiplymii, make interactive bv, orth enterprises, outsourcing wizards, infosoft studio, miniclean business solutions, western pest control, freelance"
-  },
   "hero": {
-    "heading": "I specialize in building websites and web applications using modern technologies.",
-    "description": [
-      "I worked with different companies and clients from other countries. I have been working as a full-stack engineer for more than nine years. I have worked with different technologies and frameworks across various companies and clients from other countries."
-    ]
+    "heading": "Work Experience",
+    "description": "I worked with different companies and clients from other countries. I have been working as a full-stack engineer for more than nine years. I have worked with different technologies and frameworks across various companies and clients from other countries."
   },
   "workExperiences": [
     {
+      "id": "f789b3a1-957e-41e5-92c7-3b7c87a98472",
       "company": "X-Team",
-      "duration": "April 2023 - July 2023",
+      "title": "Senior Full Stack + WordPress Developer",
+      "logo": "/images/logos/x-team.png",
+      "alt": "X-Team Company Logo",
+      "start": "Apr. 2023",
+      "end": "Jul. 2023",
       "country": "Melbourne, Victoria, Australia - Remote",
       "contributions": [
-        "Led mobile-responsive Ceros integrations for GQ and Vogue Australia, cutting update time in half and boosting engagement.",
-        "Championed the improvement of vertical video integration at Vogue Australia, propelling a notable 25% surge in video ad impressions and elevating user satisfaction by a substantial 30%.",
-        "Boosted page views by 30% and engagement time by 10% on news.com.au through data-driven UX enhancements.",
-        "Spearheaded documentation updates, reducing customer confusion by 50% and enhancing self-service issue resolution by 20%.",
-        "Executed broad front-end testing, slashing critical bugs by 40% and bolstering app stability.",
-        "Revolutionized WordPress VIP local development setup through automation, resulting in a weekly time saving of 10 hours per developer and enhancing efficiency."
+        "Optimized API integrations, enhancing content updates and user engagement for major publications like GQ and Vogue Australia.",
+        "Spearheaded vertical video development, improving performance and user experience across platforms.",
+        "Established front-end testing protocols using Jest, React Testing Library, and Cypress, significantly reducing bugs.",
+        "Automated WordPress VIP local development setups with custom BASH scripts, boosting team productivity.",
+        "Developed innovative user features like a mobile swiping feature for News Australia, enhancing interactivity.",
+        "Expanded developer documentation on Confluence, reducing support queries and easing onboarding."
       ],
       "skills": [
         "TypeScript",
@@ -47,14 +45,24 @@
       ]
     },
     {
+      "id": "8b3c7a5d-36d4-4ab2-bde8-3d15bff29a31",
       "company": "Epic Design Labs",
-      "duration": "April 2020 - February 2023",
+      "title": "Senior Full Stack Developer",
+      "logo": "/images/logos/epic-design-labs.png",
+      "alt": "Epic Design Labs Company Logo",
+      "start": "Apr. 2020",
+      "end": "Feb. 2023",
       "country": "Portland, Oregon, US - Remote",
       "contributions": [
-        "Devised a web crawler for SEO reporting by integrating various technologies and automating AWS deployment, thereby bolstering efficiency and delivery speed.",
-        "Automated data scraping and export via custom Python scripts, saving 25+ hours weekly and enhancing data management.",
-        "Constructed a mobile and web app for a wine networking business, driving a 25% upsurge in user engagement and revenue.",
-        "Headed the development of websites like RVGearPro and Duxiana, ensuring quality via Jest and Cypress and optimizing performance through Netlify deployment."
+        "Contributed to the development of a custom web crawler for SEO reporting, integrating Python, Django, PostgreSQL, and Go.",
+        "Managed server configuration and infrastructure using AWS services (EC2, S3, SES), and Docker for consistent deployments.",
+        "Implemented a comprehensive signup and user onboarding workflow, improving user experience.",
+        "Designed and implemented a robust team management module with Django, handling roles, permissions, and resources.",
+        "Developed an uptime monitoring system with real-time notifications and custom API endpoints.",
+        "Architected and integrated Stripe payment solutions, managing subscriptions and customer data securely.",
+        "Led frontend development with React.js, Next.js, and TypeScript, enhancing performance and scalability.",
+        "Automated CI/CD pipelines using GitHub Actions, ensuring smooth and efficient releases.",
+        "Improved caching and performance optimization for backend services, reducing response times."
       ],
       "skills": [
         "TypeScript",
@@ -92,11 +100,19 @@
       ]
     },
     {
+      "id": "9fc3e5a1-4ed4-4e78-a0f9-f2b618d74e92",
       "company": "MultiplyMii",
-      "duration": "April 2020 - September 2021",
+      "title": "Senior Full Stack Developer",
+      "logo": "/images/logos/multiplymii.jpeg",
+      "alt": "MultiplyMii Company Logo",
+      "start": "Apr. 2020",
+      "end": "Sept. 2021",
       "country": "Philippines - Remote",
       "contributions": [
-        "Introduced a pricing calculator to provide clients with immediate cost estimates of the company’s talent pool; improved sales conversion rate by 15% and reduced response time by 50%."
+        "Led full-stack development of the company website using Nuxt.js (Vue.js), focusing on server-side rendering and SEO.",
+        "Implemented a pricing calculator to streamline client interactions and enhance user decision-making.",
+        "Integrated GSAP (GreenSock Animation Platform) for engaging, visually appealing animations.",
+        "Deployed the website on Google Cloud Platform, ensuring reliability and scalability for varied traffic levels."
       ],
       "skills": [
         "Express.js",
@@ -115,14 +131,19 @@
       ]
     },
     {
+      "id": "a7b2e3f6-d1a8-4d75-bd79-681ae9580e9a",
       "company": "Make Interactive BV",
-      "duration": "April 2019 - February 2020",
+      "title": "Full Stack Developer",
+      "logo": "/images/logos/make-development.jpeg",
+      "alt": "MAKE Interactive BV Company Logo",
+      "start": "Apr. 2019",
+      "end": "Feb. 2020",
       "country": "Netherlands - Remote",
       "contributions": [
-        "Enhanced WordPress websites, reducing maintenance time by 30% and improving site performance by 15%.",
-        "Launched feature updates for an internal SAAS app, stimulating a 30% rise in user adoption and a 40% decrease in customer support requests.",
-        "Engineered a bespoke WordPress plugin, cutting lead response time by 25% and enhancing CRM capabilities.",
-        "Modernized WooCommerce and WordPress storefronts, leading to a 35% increase in website traffic and a 20% boost in user satisfaction."
+        "Conducted performance audits and implemented advanced caching strategies for WordPress sites.",
+        "Optimized image and content delivery using CDNs, improving site speed and user experience.",
+        "Developed critical features for a SaaS application using Create React App, focusing on UI/UX and responsive design.",
+        "Integrated Redux for state management and Axios for secure API interactions."
       ],
       "skills": [
         "Linux",
@@ -145,11 +166,16 @@
       ]
     },
     {
+      "id": "c4b2a7f8-e1b9-4908-b91f-4f46f1a2c6d3",
       "company": "Orth Enterprises, LLC",
-      "duration": "April 2019 - August 2019",
+      "title": "Full Stack Developer",
+      "start": "Apr. 2019",
+      "end": "Aug. 2019",
       "country": "Houston, Texas, USA",
       "contributions": [
-        "Rebuilt the website, Julva, the Dream Cream, using Hugo static site generator and custom CSS with SASS preprocessor and Gulp toolkit. The website was deployed on the client's web server."
+        "Led redesign and optimization of the Julva website using Hugo, improving engagement and sales.",
+        "Utilized SASS and BEM conventions for efficient CSS management, automating tasks with Gulp.",
+        "Implemented cross-platform compatibility testing, ensuring consistent user experiences across devices."
       ],
       "skills": [
         "Hugo",
@@ -166,12 +192,16 @@
       ]
     },
     {
+      "id": "d1f2c3a4-78b5-4f87-92e8-70d5a1f9e2d5",
       "company": "Outsourcing Wizards",
-      "duration": "January 2019 - March 2019",
+      "title": "Full Stack Developer",
+      "start": "Jan. 2019",
+      "end": "Mar. 2019",
       "country": "Victoria, Texas, USA",
       "contributions": [
-        "Developed a high-performance real estate WordPress plugin, increasing website loading speed by 40% and decreasing bounce rate by 25%.",
-        "Orchestrated custom theme installations for a range of WordPress websites, resulting in a 50% decrease in page load time and a substantial 35% increase in user engagement."
+        "Spearheaded the development of a WordPress plugin tailored for real estate websites, optimizing site speed and UX.",
+        "Developed custom Gutenberg blocks for flexible property listings and integrated interactive maps.",
+        "Ensured full responsiveness and theme integration across various devices and screen sizes."
       ],
       "skills": [
         "Apache",
@@ -191,11 +221,18 @@
       ]
     },
     {
+      "id": "e3a2b1c4-5f7e-48b1-a3d5-9f1e3a2b4c7d",
       "company": "Infosoft Studio",
-      "duration": "November 2014 - September 2018",
+      "title": "Full Stack Developer",
+      "logo": "/images/logos/infosoft-studio.png",
+      "alt": "Infosoft Studio Company Logo",
+      "start": "Nov. 2014",
+      "end": "Sept. 2018",
       "country": "Davao City, Philippines",
       "contributions": [
-        "Steered a team in developing cutting-edge WordPress websites for Philippine government agencies, thereby enhancing online visibility and user experience."
+        "Led the development of WordPress websites for Philippine government agencies, focusing on user-friendly design and scalable platforms.",
+        "Implemented advanced SEO strategies, boosting online visibility and user engagement.",
+        "Provided training on website management and ensured compliance with security protocols and data privacy laws."
       ],
       "skills": [
         "Gulp.js",
@@ -218,5 +255,6 @@
         "User Interface Design"
       ]
     }
-  ]
+  ],
+  "cvFile": "/docs/cv.pdf"
 }
