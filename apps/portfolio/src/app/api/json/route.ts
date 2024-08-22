@@ -28,14 +28,14 @@ export async function GET(req: NextRequest) {
     json = {
       home: 'home.json',
       about: 'about.json',
-      articles: 'articles.json',
+      blog: 'blog.json',
       projects: 'projects.json',
-      skills: 'skills.json',
       thankYou: 'thank-you.json',
-      uses: 'uses.json',
       work: 'work.json',
       notFound: '404.json',
       social: 'social.json',
+      skills: 'skills.json',
+      photos: 'photos.json',
       pages: 'pages.json'
     }
 
@@ -44,22 +44,22 @@ export async function GET(req: NextRequest) {
       return await getJsonData(json.home)
     case 'about':
       return await getJsonData(json.about)
-    case 'articles':
-      return await getJsonData(json.articles)
+    case 'blog':
+      return await getJsonData(json.blog)
     case 'projects':
       return await getJsonData(json.projects)
-    case 'skills':
-      return await getJsonData(json.skills)
     case 'thank-you':
       return await getJsonData(json.thankYou)
-    case 'uses':
-      return await getJsonData(json.uses)
     case 'work':
       return await getJsonData(json.work)
     case 'notFound':
       return await getJsonData(json.notFound)
     case 'social':
       return await getJsonData(json.social)
+    case 'skills':
+      return await getJsonData(json.skills)
+    case 'photos':
+      return await getJsonData(json.photos)
     case 'pages':
       return await getJsonData(json.pages)
     default:
