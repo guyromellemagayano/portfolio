@@ -53,7 +53,6 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
         ref={ref}
         title={validData?.hero?.heading}
         intro={validData?.hero?.description}
-        className="mt-20"
         {...rest}
       >
         {children}
