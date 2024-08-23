@@ -74,7 +74,6 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
           crossOrigin="anonymous"
         />
       </Head>
-
       <Body className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
           <Div className="flex w-full">
