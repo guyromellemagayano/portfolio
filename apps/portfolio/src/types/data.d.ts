@@ -18,12 +18,9 @@ export type WorkData = Pick<BasePageData, 'hero'> & {
 }
 
 // Work experiences data
-export type WorkExperiencesData = {
-  id?: string
+export type WorkExperiencesData = CommonPhotosData & {
   company: string
   title: string
-  logo?: string | StaticImport
-  alt?: string
   start: string
   end: string
   duration: string
