@@ -2,6 +2,8 @@
 
 import { forwardRef, memo } from 'react'
 
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 import {
@@ -10,20 +12,25 @@ import {
   ButtonRef
 } from '@guy-romelle-magayano/react-components'
 import {
+  Dd,
   Div,
-  DivisionProps,
-  DivisionRef
+  Dl,
+  Dt,
+  Li,
+  Span,
+  Time,
+  Ul,
+  UnorderedListProps,
+  UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
 import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
 
 import {
-  ArrowDownSvg,
+  BriefcaseSvg,
   ContentLayout,
   ContentLayoutProps,
-  ContentLayoutRef,
-  WorkCardsList,
-  WorkList
+  ContentLayoutRef
 } from '@guy-romelle-magayano/portfolio/components'
 import type {
   WorkData,
@@ -38,8 +45,8 @@ const strings = {
   downloadCV: 'Download CV'
 }
 
-type WorkExperiencesRef = DivisionRef
-type WorkExperiencesProps = DivisionProps & {
+type WorkExperiencesRef = UnorderedListRef
+type WorkExperiencesProps = UnorderedListProps & {
   data?: WorkExperiencesData[]
 }
 
@@ -61,15 +68,92 @@ const WorkExperiences = forwardRef<WorkExperiencesRef, WorkExperiencesProps>(
     }
 
     return (
-      <Div ref={ref} className={cn('grid gap-y-12', className)} {...rest}>
-        {validData.map(({ id, ...rest }) => {
-          return (
-            <WorkList key={id}>
-              <WorkCardsList {...rest} />
-            </WorkList>
-          )
-        })}
-      </Div>
+      <Ul
+        ref={ref}
+        role="list"
+        className={cn(
+          'divide-y divide-gray-100 overflow-hidden rounded-2xl bg-white shadow-md dark:divide-transparent dark:bg-transparent',
+          className
+        )}
+        {...rest}
+      >
+        {validData.map(
+          ({
+            id,
+            company,
+            title,
+            src,
+            alt,
+            start,
+            end,
+            country,
+            contributions,
+            skills
+          }) => {
+            return (
+              <Li
+                key={id}
+                className="relative flex cursor-pointer justify-between gap-x-6 px-4 py-5 ring-1 ring-gray-100 transition hover:bg-gray-50 sm:px-6 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-700"
+              >
+                <Div className="flex min-w-0 gap-x-4">
+                  <Span className="flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-full bg-gray-100">
+                    {src ? (
+                      <Image
+                        alt={alt}
+                        src={src}
+                        sizes="(min-width: 640px) 2.5rem, 1.5rem"
+                        width={48}
+                        height={48}
+                        className="h-full w-full"
+                        priority
+                      />
+                    ) : (
+                      <BriefcaseSvg className="h-7 w-7 text-gray-700" />
+                    )}
+                  </Span>
+
+                  <Dl className="min-w-0 flex-auto">
+                    <Dt className="sr-only">{company}</Dt>
+                    <Dd className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
+                      <Span className="absolute inset-x-0 -top-px bottom-0" />
+                      {company}
+                    </Dd>
+                    <Dt className="sr-only">{country}</Dt>
+                    <Dd className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                      {country}
+                    </Dd>
+                  </Dl>
+                </Div>
+                <Div className="flex shrink-0 items-center gap-x-4">
+                  <Dl className="hidden sm:flex sm:flex-col sm:items-end">
+                    <Dt className="sr-only">{title}</Dt>
+                    <Dd className="text-sm leading-6 text-gray-900 dark:text-gray-100">
+                      {title}
+                    </Dd>
+                    <Dt className="sr-only">{start + ' - ' + end}</Dt>
+                    <Dd
+                      className="mt-1 flex text-xs leading-5 text-gray-500 dark:text-gray-400"
+                      aria-label={`
+                      ${start} until ${end}
+                    `}
+                    >
+                      <Span className="relative truncate">
+                        <Time dateTime={start}>{start}</Time>
+                        <Span aria-hidden="true"> — </Span>
+                        <Time dateTime={end}>{end}</Time>
+                      </Span>
+                    </Dd>
+                  </Dl>
+                  <ChevronRightIcon
+                    aria-hidden="true"
+                    className="h-5 w-5 flex-none text-gray-400"
+                  />
+                </Div>
+              </Li>
+            )
+          }
+        )}
+      </Ul>
     )
   }
 )
@@ -100,14 +184,13 @@ const CvFile = forwardRef<CvFileRef, CvFileProps>(
       <Button
         ref={ref}
         className={cn(
-          'group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 outline-offset-2 transition hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70',
+          'text-md text-md text-md group mt-9 inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full border-2 border-zinc-800 bg-transparent bg-zinc-800 px-8 py-4 font-semibold text-zinc-50 outline-offset-2 transition hover:border-transparent hover:bg-zinc-600 active:bg-transparent active:bg-zinc-600 dark:border-white dark:bg-white dark:text-black dark:hover:border-transparent dark:hover:bg-zinc-300 dark:active:bg-zinc-300',
           className
         )}
         onClick={() => router.push(validData!)}
         {...rest}
       >
         {strings.downloadCV}
-        <ArrowDownSvg className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
       </Button>
     )
   }
