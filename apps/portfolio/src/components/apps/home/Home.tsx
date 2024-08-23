@@ -2,135 +2,139 @@
 'use client'
 
 import { Button } from '@guy-romelle-magayano/react-components'
-import {
-  Article,
-  Div,
-  Heading,
-  Section
-} from '@guy-romelle-magayano/react-components/server'
-
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { Div } from '@guy-romelle-magayano/react-components/server'
 
 import {
-  ArticleLayout,
-  BaseContainer,
+  AboutLayout,
   ContentLayout,
-  JumbotronLayout,
+  ContentLayoutProps,
   NewsletterForm,
+  PhotoLayout,
   ResumeLayout,
-  SkillsCategory
+  SkillsCategory,
+  SocialLinksLayout
 } from '@guy-romelle-magayano/portfolio/components'
 import type {
-  ArticlesData,
-  HomePageData,
-  ProjectsData,
-  SocialLinksData
+  BasePageData,
+  PhotosData,
+  SkillsData,
+  SocialLinksData,
+  WorkData
 } from '@guy-romelle-magayano/portfolio/types'
+import { cn } from '@guy-romelle-magayano/react-utils'
 
-export type HomeAppProps = HomePageData & {
-  links?: Array<SocialLinksData>
-  articles?: Array<ArticlesData>
-  projects?: Array<ProjectsData>
+export type HomeAppProps = BasePageData & {
+  aboutInfo: Pick<BasePageData, 'hero'>
+  workInfo: WorkData
+  skillsInfo: SkillsData
+  photos: PhotosData
+  links?: SocialLinksData[]
+  articles?: any
+  projects?: any
 }
 
 const strings = {
   articles: 'Articles',
-  projects: 'Projects'
+  projects: 'Projects',
+  hireMe: 'Hire me',
+  readBlog: 'Read the blog'
+}
+
+type IntroSectionProps = ContentLayoutProps & {
+  socialLinks: HomeAppProps['links']
 }
 
 /**
- * Render the home application component
- * @param {HomeAppProps} props - The component props
- * @returns The rendered JSX component
+ * Render the intro section component
+ * @param {IntroSectionProps} props - The component props
+ * @returns The rendered JSX component.
  */
-const HomeApp = (props: HomeAppProps) => {
-  const {
-    hero,
-    aboutMeInfo,
-    skillsInfo,
-    slidePhotos,
-    cvFile,
-    workExperiences,
-    links,
-    articles,
-    projects
-  } = props
+const IntroSection = ({
+  title,
+  intro,
+  socialLinks,
+  className,
+  ...rest
+}: IntroSectionProps) => {
+  return (
+    <ContentLayout.Simple
+      title={title}
+      intro={intro}
+      className={cn('mt-9 sm:mt-9', className)}
+      {...rest}
+    >
+      <SocialLinksLayout
+        className="mt-6 flex w-full max-w-xl flex-wrap gap-6 md:max-w-3xl"
+        data={socialLinks}
+      />
+      <Div className="mt-10 flex flex-row flex-wrap gap-3">
+        <Button
+          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-600 active:bg-zinc-600 active:transition-none dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
+          onClick={() => '#'}
+        >
+          {strings.hireMe}
+        </Button>
+        <Button
+          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full border-2 border-zinc-800 bg-transparent px-8 py-4 font-semibold text-zinc-600 outline-offset-2 transition hover:border-transparent active:bg-transparent active:transition-none dark:border-white dark:text-zinc-100 dark:hover:border-transparent"
+          onClick={() => '#'}
+        >
+          {strings.readBlog}
+        </Button>
+      </Div>
+    </ContentLayout.Simple>
+  )
+}
 
+IntroSection.displayName = 'IntroSection'
+
+/**
+ * Render the home application component.
+ * @param {HomeAppProps} props - The component props
+ * @returns The rendered JSX component.
+ */
+const HomeApp = ({
+  hero,
+  links,
+  aboutInfo,
+  workInfo,
+  skillsInfo,
+  photos
+  // articles,
+  // projects
+}: HomeAppProps) => {
   return (
     <>
       {/* Intro section */}
-      <ContentLayout.Simple
+      <IntroSection
         title={hero?.heading}
         intro={hero?.description}
-        className="sm:mt-12 sm:px-8"
-      >
-        <Button
-          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
-          onClick={() => '#'}
-        >
-          Hire Me
-        </Button>
-      </ContentLayout.Simple>
+        socialLinks={links}
+      />
+
+      {/* Slide photos */}
+      <PhotoLayout data={photos?.slidePhotos} className="mt-20 md:mt-24" />
 
       {/* About me section */}
-      <JumbotronLayout
-        heading={aboutMeInfo?.heading}
-        description={aboutMeInfo?.description}
-        photos={slidePhotos}
-        links={links}
+      <AboutLayout
+        title={aboutInfo?.hero?.heading}
+        intro={aboutInfo?.hero?.description}
+        className="mt-20 md:mt-24"
+      />
+
+      {/* Work experiences section */}
+      <ResumeLayout
+        title={workInfo?.hero?.heading}
+        intro={workInfo?.hero?.description}
+        cvFile={workInfo?.cvFile}
+        workExperiences={workInfo?.workExperiences}
+        className="mt-20 md:mt-24"
       />
 
       {/* Skills section */}
-      <SkillsCategory data={skillsInfo} />
-      {/* <SkillsCategory data={skillsInfo}> */}
-      {/* <CategoryForm /> */}
-      {/* </SkillsCategory> */}
+      <SkillsCategory data={skillsInfo} className="mt-20 md:mt-24" />
 
-      <BaseContainer className="mt-20 md:mt-24">
-        {/* Newsletter form section */}
-        <NewsletterForm />
-      </BaseContainer>
-
-      <BaseContainer className="mt-20 md:mt-24">
-        <Div
-          className={cn(
-            'mx-auto grid w-full max-w-xl grid-cols-1 lg:max-w-none lg:grid-cols-2',
-            articles &&
-              articles?.length > 0 &&
-              ((cvFile && cvFile?.length > 0) ||
-                (workExperiences && workExperiences?.length > 0)) &&
-              'gap-y-20'
-          )}
-        >
-          {/* Articles section */}
-          <Section>
-            {articles && articles?.length > 0 && (
-              <Article className="mb-6">
-                <Heading
-                  as="h3"
-                  className="text-3xl font-bold tracking-tight text-zinc-800 sm:text-4xl dark:text-zinc-100"
-                >
-                  {strings.articles}
-                </Heading>
-
-                <ArticleLayout articles={articles} isHome />
-              </Article>
-            )}
-          </Section>
-
-          <Section className="xl:pl-18 space-y-10 lg:pl-16">
-            {/* Work experiences section */}
-            {((workExperiences && workExperiences?.length > 0) ||
-              (cvFile && cvFile?.length > 0)) && (
-              <ResumeLayout
-                cvFile={cvFile}
-                workExperiences={workExperiences}
-                className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
-              />
-            )}
-          </Section>
-        </Div>
-      </BaseContainer>
+      {/* Newsletter form section */}
+      <NewsletterForm className="mt-20 sm:mt-32 md:mt-24" />
     </>
   )
 }
