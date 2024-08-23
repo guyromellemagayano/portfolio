@@ -22,7 +22,7 @@ export type SocialLinksLayoutProps = DivisionProps & {
  * Render the social links layout component.
  * @param {SocialLinksLayoutProps} props - The component props
  * @param {SocialLinksLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered JSX component.
  */
 const SocialLinksLayout = memo(
   forwardRef<SocialLinksLayoutRef, SocialLinksLayoutProps>(
