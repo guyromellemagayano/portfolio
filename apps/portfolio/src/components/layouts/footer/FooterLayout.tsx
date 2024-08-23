@@ -44,7 +44,7 @@ const FooterLayout = memo(
         <Footer ref={ref} className={cn('mt-32', className)} {...rest}>
           <BaseContainer.Outer>
             <Div className="mx-auto w-full max-w-2xl border-t border-zinc-300 pb-16 pt-10 lg:max-w-4xl dark:border-zinc-700">
-              <BaseContainer.Inner>
+              <BaseContainer.Inner className="lg:px-4">
                 <Div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                   <Div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
                     {validData &&
