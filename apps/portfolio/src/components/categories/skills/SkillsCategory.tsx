@@ -57,9 +57,9 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
       >
         {children}
 
-        {/* <CategoryForm className="my-9" /> */}
-        <Div className="mx-auto mt-20 max-w-7xl md:!mt-9">
-          <Div className="grid grid-cols-2 gap-0.5 overflow-hidden sm:mx-0 sm:grid-cols-3 sm:rounded-2xl md:grid-cols-4 lg:grid-cols-5">
+        {/* <CategoryForm /> */}
+        <Div className="mx-auto max-w-7xl">
+          <Div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent">
             {validData?.skills?.map(({ id, name, type, image }) => {
               const imgAlt =
                 resolvedTheme === 'dark' &&
@@ -68,16 +68,14 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
                   ? image.dark.alt
                   : image.default.alt
               const imgSrc =
-                resolvedTheme === 'dark' &&
-                image.dark?.src &&
-                image.dark?.src?.length > 0
+                resolvedTheme === 'dark' && image.dark?.src
                   ? image.dark.src
                   : image.default.src
 
               return (
                 <Div
                   key={id}
-                  className="h-full w-full cursor-pointer bg-neutral-200/45 px-4 py-8 ring-1 ring-neutral-950/10 transition hover:bg-neutral-200 dark:bg-white/5 dark:ring-neutral-950/5 dark:hover:bg-white/15"
+                  className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-700"
                 >
                   <Image
                     width={80}
