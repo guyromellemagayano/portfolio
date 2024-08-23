@@ -17,9 +17,11 @@ export type AboutLayoutProps = ContentLayoutProps
  */
 const AboutLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title, intro, ...rest }, ref) => {
+    ({ title, intro, children, ...rest }, ref) => {
       return (
-        <ContentLayout.Simple ref={ref} title={title} intro={intro} {...rest} />
+        <ContentLayout.Simple ref={ref} title={title} intro={intro} {...rest}>
+          {children}
+        </ContentLayout.Simple>
       )
     }
   )
