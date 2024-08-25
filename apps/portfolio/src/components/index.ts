@@ -1,10 +1,7 @@
 // --------------------
 // APP PAGE COMPONENTS
 // --------------------
-export * from './apps/about'
-export * from './apps/articles'
 export * from './apps/home'
-export * from './apps/projects'
 
 // --------------------
 // ARTICLE COMPONENT
@@ -73,9 +70,7 @@ export * from './lists/navigation'
 export * from './lists/projects'
 export * from './lists/projects-cards'
 export * from './lists/tools'
-export * from './lists/tools-cards'
 export * from './lists/work'
-export * from './lists/work-cards'
 
 // --------------------
 // NAVIGATION COMPONENTS
