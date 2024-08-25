@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -17,7 +16,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/portfolio/*": ["apps/portfolio/src/*"],
+      "@guy-romelle-magayano/portfolio-old/*": ["apps/portfolio-old/src/*"],
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
