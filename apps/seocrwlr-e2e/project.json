@@ -1,0 +1,9 @@
+{
+  "name": "seocrwlr-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/seocrwlr-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["seocrwlr"],
+  "// targets": "to see all targets run: nx show project seocrwlr-e2e --web",
+  "targets": {}
+}
