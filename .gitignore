@@ -124,6 +124,9 @@ yarn-error.log*
 # Local env files
 .env.*
 .env*.*
+!.env.project
+!.env.vault
+.flaskenv*
 
 # Vercel
 .vercel
