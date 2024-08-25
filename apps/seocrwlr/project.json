@@ -1,0 +1,42 @@
+{
+  "name": "seocrwlr",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/seocrwlr",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "dependsOn": ["^build", "build-custom-server"]
+    },
+    "build-custom-server": {
+      "executor": "@nx/js:swc",
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/seocrwlr",
+        "main": "apps/seocrwlr/server/main.ts",
+        "tsConfig": "apps/seocrwlr/tsconfig.server.json",
+        "clean": false,
+        "assets": []
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve-custom-server": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "seocrwlr:build-custom-server"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "seocrwlr:build-custom-server:development"
+        },
+        "production": {
+          "buildTarget": "seocrwlr:build-custom-server:production"
+        }
+      }
+    }
+  }
+}
