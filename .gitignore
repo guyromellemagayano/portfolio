@@ -109,9 +109,6 @@ package-lock.json
 # Testing
 coverage/
 
-# Next.js
-.next/
-
 # Production
 build/
 
@@ -186,3 +183,7 @@ apps/*-server-*/
 
 # Sentry Config File
 .sentryclirc
+
+# Next.js
+.next
+out
