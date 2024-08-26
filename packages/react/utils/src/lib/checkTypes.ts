@@ -80,3 +80,26 @@ export const isEmpty = (value: unknown): boolean => {
 
   return !isNotNullOrUndefined(value)
 }
+
+/**
+ * Utility function to check if a value matches a specific type and is not null or undefined.
+ * @param value - The value to be checked.
+ * @param type - The type to check the value against ('object', 'array', 'string', 'number', 'boolean').
+ * @returns A boolean indicating whether the value matches the specified type and is not null or undefined.
+ */
+export const isValidData = <T>(value: T, type: string): boolean => {
+  switch (type) {
+    case 'object':
+      return isObjectType(value)
+    case 'array':
+      return isArrayType(value)
+    case 'string':
+      return isStringType(value)
+    case 'number':
+      return isNumberType(value)
+    case 'boolean':
+      return isBooleanType(value)
+    default:
+      return isNotNullOrUndefined(value)
+  }
+}
