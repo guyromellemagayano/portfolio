@@ -2,35 +2,40 @@
 
 import { forwardRef, memo } from 'react'
 
+import { ChevronRightIcon } from '@heroicons/react/20/solid'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import { Button } from '@guy-romelle-magayano/react-components'
 import {
+  Button,
+  ButtonProps,
+  ButtonRef
+} from '@guy-romelle-magayano/react-components'
+import {
+  Dd,
   Div,
   Dl,
-  Heading,
+  Dt,
   Li,
-  Ol,
   Span,
-  type DivisionProps,
-  type DivisionRef
+  Time,
+  Ul,
+  UnorderedListProps,
+  UnorderedListRef
 } from '@guy-romelle-magayano/react-components/server'
 
-import {
-  ArrowDownSvg,
-  BriefcaseSvg
-} from '@guy-romelle-magayano/portfolio/components'
-import {
-  type HomePageData,
-  type WorkExperienceData
-} from '@guy-romelle-magayano/portfolio/types'
+import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
 
-export type ResumeLayoutRef = DivisionRef
-export type ResumeLayoutProps = DivisionProps & {
-  cvFile?: Pick<HomePageData, 'cvFile'>['cvFile']
-  workExperiences?: Pick<HomePageData, 'workExperiences'>['workExperiences']
-}
+import {
+  BriefcaseSvg,
+  ContentLayout,
+  ContentLayoutProps,
+  ContentLayoutRef
+} from '@guy-romelle-magayano/portfolio/components'
+import type {
+  WorkData,
+  WorkExperiencesData
+} from '@guy-romelle-magayano/portfolio/types'
 
 const strings = {
   work: 'Work',
@@ -40,105 +45,179 @@ const strings = {
   downloadCV: 'Download CV'
 }
 
+type WorkExperiencesRef = UnorderedListRef
+type WorkExperiencesProps = UnorderedListProps & {
+  data?: WorkExperiencesData[]
+}
+
+/**
+ * Render the work experiences component.
+ * @param {WorkExperiencesProps} props - The component props
+ * @param {WorkExperiencesRef} ref - The component reference
+ * @returns The rendered JSX component.
+ */
+const WorkExperiences = forwardRef<WorkExperiencesRef, WorkExperiencesProps>(
+  ({ data, className, ...rest }, ref) => {
+    const validData =
+      data?.filter((item): item is WorkExperiencesData =>
+        isValidData(item, 'object')
+      ) || null
+
+    if (!validData || validData?.length === 0) {
+      return null
+    }
+
+    return (
+      <Ul
+        ref={ref}
+        role="list"
+        className={cn(
+          'divide-y divide-gray-100 overflow-hidden rounded-2xl bg-white shadow-md dark:divide-transparent dark:bg-transparent',
+          className
+        )}
+        {...rest}
+      >
+        {validData.map(
+          ({
+            id,
+            company,
+            title,
+            src,
+            alt,
+            start,
+            end,
+            country,
+            contributions,
+            skills
+          }) => {
+            return (
+              <Li
+                key={id}
+                className="relative flex cursor-pointer justify-between gap-x-6 px-4 py-5 ring-1 ring-gray-100 transition hover:bg-gray-50 sm:px-6 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-700"
+              >
+                <Div className="flex min-w-0 gap-x-4">
+                  <Span className="flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-full bg-gray-100">
+                    {src ? (
+                      <Image
+                        alt={alt}
+                        src={src}
+                        sizes="(min-width: 640px) 2.5rem, 1.5rem"
+                        width={48}
+                        height={48}
+                        className="h-full w-full"
+                        priority
+                      />
+                    ) : (
+                      <BriefcaseSvg className="h-7 w-7 text-gray-700" />
+                    )}
+                  </Span>
+
+                  <Dl className="min-w-0 flex-auto">
+                    <Dt className="sr-only">{company}</Dt>
+                    <Dd className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
+                      <Span className="absolute inset-x-0 -top-px bottom-0" />
+                      {company}
+                    </Dd>
+                    <Dt className="sr-only">{country}</Dt>
+                    <Dd className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                      {country}
+                    </Dd>
+                  </Dl>
+                </Div>
+                <Div className="flex shrink-0 items-center gap-x-4">
+                  <Dl className="hidden sm:flex sm:flex-col sm:items-end">
+                    <Dt className="sr-only">{title}</Dt>
+                    <Dd className="text-sm leading-6 text-gray-900 dark:text-gray-100">
+                      {title}
+                    </Dd>
+                    <Dt className="sr-only">{start + ' - ' + end}</Dt>
+                    <Dd
+                      className="mt-1 flex text-xs leading-5 text-gray-500 dark:text-gray-400"
+                      aria-label={`
+                      ${start} until ${end}
+                    `}
+                    >
+                      <Span className="relative truncate">
+                        <Time dateTime={start}>{start}</Time>
+                        <Span aria-hidden="true"> — </Span>
+                        <Time dateTime={end}>{end}</Time>
+                      </Span>
+                    </Dd>
+                  </Dl>
+                  <ChevronRightIcon
+                    aria-hidden="true"
+                    className="h-5 w-5 flex-none text-gray-400"
+                  />
+                </Div>
+              </Li>
+            )
+          }
+        )}
+      </Ul>
+    )
+  }
+)
+
+WorkExperiences.displayName = 'WorkExperiences'
+
+type CvFileRef = ButtonRef
+type CvFileProps = ButtonProps & {
+  data?: WorkData['cvFile']
+}
+
+/**
+ * Render the cv file component.
+ * @param {CvFileProps} props - The component props
+ * @param {CvFileRef} ref - The component reference
+ * @returns The rendered JSX component.
+ */
+const CvFile = forwardRef<CvFileRef, CvFileProps>(
+  ({ data, className, ...rest }, ref) => {
+    const router = useRouter()
+    const validData = isValidData(data, 'string') ? data : null
+
+    if (!validData || validData?.length === 0) {
+      return null
+    }
+
+    return (
+      <Button
+        ref={ref}
+        className={cn(
+          'text-md text-md text-md group mt-9 inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full border-2 border-zinc-800 bg-transparent bg-zinc-800 px-8 py-4 font-semibold text-zinc-50 outline-offset-2 transition hover:border-transparent hover:bg-zinc-600 active:bg-transparent active:bg-zinc-600 dark:border-white dark:bg-white dark:text-black dark:hover:border-transparent dark:hover:bg-zinc-300 dark:active:bg-zinc-300',
+          className
+        )}
+        onClick={() => router.push(validData!)}
+        {...rest}
+      >
+        {strings.downloadCV}
+      </Button>
+    )
+  }
+)
+
+CvFile.displayName = 'CvFile'
+
+export type ResumeLayoutRef = ContentLayoutRef
+export type ResumeLayoutProps = ContentLayoutProps & {
+  cvFile?: WorkData['cvFile']
+  workExperiences?: WorkData['workExperiences']
+}
+
 /**
  * Renders the resume layout component.
- * @param {ResumeLayoutProps} props - The props of the resume layout.
- * @param {ResumeLayoutRef} ref - The reference of the resume layout.
- * @returns The rendered resume layout component.
+ * @param {ResumeLayoutProps} props - The component props
+ * @param {ResumeLayoutRef} ref - The component reference
+ * @returns The rendered JSX component.
  */
 const ResumeLayout = memo(
   forwardRef<ResumeLayoutRef, ResumeLayoutProps>(
-    ({ cvFile, workExperiences, ...rest }, ref) => {
-      const router = useRouter()
-
+    ({ title, intro, cvFile, workExperiences, ...rest }, ref) => {
       return (
-        ((workExperiences && workExperiences?.length > 0) ||
-          (cvFile && cvFile?.length > 0)) && (
-          <Div {...rest} ref={ref}>
-            <Heading
-              as="h2"
-              className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-            >
-              <BriefcaseSvg className="h-6 w-6 flex-none" />
-              <Span className="ml-3">{strings.work}</Span>
-            </Heading>
-
-            {workExperiences && workExperiences?.length > 0 && (
-              <Ol className="mt-6 space-y-4">
-                {workExperiences?.map(
-                  (
-                    {
-                      company,
-                      title,
-                      logo,
-                      alt,
-                      start,
-                      end
-                    }: WorkExperienceData,
-                    index: number
-                  ) =>
-                    company &&
-                    company?.length > 0 &&
-                    title &&
-                    title?.length > 0 &&
-                    start &&
-                    start?.length > 0 &&
-                    end &&
-                    end?.length > 0 && (
-                      <Li key={index} className="flex gap-4">
-                        <Div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                          {logo ? (
-                            <Image
-                              src={logo}
-                              alt={alt}
-                              sizes="(min-width: 640px) 2.5rem, 1.5rem"
-                              className="h-7 w-7 rounded-full"
-                              fill
-                              priority
-                            />
-                          ) : (
-                            <BriefcaseSvg className="h-6 w-6 text-white" />
-                          )}
-                        </Div>
-
-                        <Dl className="flex flex-auto flex-wrap gap-x-2">
-                          <dt className="sr-only">{strings.company}</dt>
-                          <dd className="w-full flex-none text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                            {company}
-                          </dd>
-
-                          <dt className="sr-only">{strings.role}</dt>
-                          <dd className="text-xs text-zinc-500 dark:text-zinc-400">
-                            {title}
-                          </dd>
-
-                          <dt className="sr-only">{strings.date}</dt>
-                          <dd
-                            className="block w-full text-xs text-zinc-400 dark:text-zinc-500"
-                            aria-label={`${start} until ${end}`}
-                          >
-                            <time dateTime={start}>{start}</time>{' '}
-                            <span aria-hidden="true">—</span>{' '}
-                            <time dateTime={end}>{end}</time>
-                          </dd>
-                        </Dl>
-                      </Li>
-                    )
-                )}
-              </Ol>
-            )}
-
-            {cvFile && cvFile?.length > 0 && (
-              <Button
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-900 outline-offset-2 transition hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 active:transition-none dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70"
-                onClick={() => router.push(cvFile)}
-              >
-                {strings.downloadCV}
-                <ArrowDownSvg className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
-              </Button>
-            )}
-          </Div>
-        )
+        <ContentLayout.Simple ref={ref} title={title} intro={intro} {...rest}>
+          <WorkExperiences data={workExperiences} />
+          <CvFile data={cvFile} />
+        </ContentLayout.Simple>
       )
     }
   )
