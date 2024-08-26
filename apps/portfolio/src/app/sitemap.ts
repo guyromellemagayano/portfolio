@@ -13,43 +13,31 @@ const sitemap = (): MetadataRoute.Sitemap => {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/articles`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/projects`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/skills`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/uses`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8
-    },
-    {
-      url: `${PORTFOLIO_SITE_URL}/work`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8
     }
+    // {
+    //   url: `${PORTFOLIO_SITE_URL}/about`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'weekly',
+    //   priority: 0.8
+    // },
+    // {
+    //   url: `${PORTFOLIO_SITE_URL}/blog`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'weekly',
+    //   priority: 1
+    // },
+    // {
+    //   url: `${PORTFOLIO_SITE_URL}/projects`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'weekly',
+    //   priority: 1
+    // },
+    // {
+    //   url: `${PORTFOLIO_SITE_URL}/work`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'weekly',
+    //   priority: 0.8
+    // }
   ]
 }
 
