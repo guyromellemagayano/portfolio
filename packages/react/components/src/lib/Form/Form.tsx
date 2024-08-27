@@ -1,21 +1,21 @@
 'use client'
 
-import { FormHTMLAttributes, forwardRef } from 'react'
+import React from 'react'
 
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { Input } from '@guy-romelle-magayano/react-components'
+import { Input } from '../Input'
 
 export type FormRef = HTMLFormElement
-export type FormProps = FormHTMLAttributes<FormRef>
+export type FormProps = React.FormHTMLAttributes<FormRef>
 
 /**
- * Render the form component.
+ * Render the form component
  * @param {FormProps} props - The form component properties
  * @param {FormRef} ref - The form component reference
  * @returns The rendered form component
  */
-export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
+export const Form = React.forwardRef<FormRef, FormProps>((props, ref) => {
   const { children, ...rest } = props
 
   return (
@@ -27,18 +27,18 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
 
 Form.displayName = 'Form'
 
-export type ReactFormRef = HTMLFormElement
-export type ReactFormProps = FormHTMLAttributes<FormRef> & {
+export type ReactFormRef = FormRef
+export type ReactFormProps = FormProps & {
   formInputs?: any
 }
 
 /**
- * Render a form based on React Hook Form.
- * @param {ReactFormProps} props - The form component properties
- * @param {ReactFormRef} ref - The form component reference
- * @returns The rendered form component
+ * Render a custom React Hook Form
+ * @param {ReactFormProps} props - The custom React Hook Form component properties
+ * @param {ReactFormRef} ref - The custom React Hook Form component reference
+ * @returns The rendered custom React Hook Form component
  */
-export const ReactHookForm = forwardRef<ReactFormRef, ReactFormProps>(
+export const ReactHookForm = React.forwardRef<ReactFormRef, ReactFormProps>(
   (props, ref) => {
     const { formInputs = {}, children, ...rest } = props
 
