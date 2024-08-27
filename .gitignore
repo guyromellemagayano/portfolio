@@ -109,9 +109,6 @@ package-lock.json
 # Testing
 coverage/
 
-# Next.js
-.next/
-
 # Production
 build/
 
@@ -127,6 +124,9 @@ yarn-error.log*
 # Local env files
 .env.*
 .env*.*
+!.env.project
+!.env.vault
+.flaskenv*
 
 # Vercel
 .vercel
@@ -186,3 +186,7 @@ apps/*-server-*/
 
 # Sentry Config File
 .sentryclirc
+
+# Next.js
+.next
+out
