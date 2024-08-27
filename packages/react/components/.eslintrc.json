@@ -1,15 +1,27 @@
 {
-  "extends": ["../../../.eslintrc.json"],
+  "extends": [
+    "../../../.eslintrc.json"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx"],
-      "extends": ["plugin:@nx/react-typescript"],
-      "rules": {}
+      "files": [
+        "**/*.ts?(x)"
+      ],
+      "extends": [
+        "plugin:@nx/react-typescript"
+      ]
     },
     {
-      "files": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
-      "extends": ["plugin:testing-library/react"],
-      "env": { "jest": true }
+      "files": [
+        "**/__tests__/**/*.ts?(x)",
+        "**/?(*.)+(spec|test).ts?(x)"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ],
+      "env": {
+        "jest": true
+      }
     }
   ]
 }
