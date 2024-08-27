@@ -1,9 +1,9 @@
 'use client'
 
-import { HTMLAttributes, forwardRef } from 'react'
+import React from 'react'
 
 export type DatalistRef = HTMLDataListElement
-export type DatalistProps = HTMLAttributes<DatalistRef>
+export type DatalistProps = React.HTMLAttributes<DatalistRef>
 
 /**
  * Render the datalist component.
@@ -11,7 +11,7 @@ export type DatalistProps = HTMLAttributes<DatalistRef>
  * @param {DatalistRef} ref - The datalist component reference.
  * @returns The rendered datalist component.
  */
-const Datalist = forwardRef<DatalistRef, DatalistProps>((props, ref) => {
+const Datalist = React.forwardRef<DatalistRef, DatalistProps>((props, ref) => {
   const { children, ...rest } = props
 
   return (
