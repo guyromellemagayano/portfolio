@@ -1,27 +1,41 @@
 {
-  "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", ".next/**/*", "**/*.js"],
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "ignorePatterns": [
+    "!**/*",
+    ".next/**/*"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts?(x)"],
+      "files": [
+        "**/*.ts?(x)"
+      ],
       "extends": [
         "plugin:@nx/react-typescript",
         "next",
         "next/core-web-vitals"
       ],
       "rules": {
-        "@next/next/no-html-link-for-pages": "off",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-unused-vars": "off"
+        "@next/next/no-html-link-for-pages": "off"
       }
     },
     {
-      "files": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
-      "extends": ["plugin:testing-library/react"],
-      "env": { "jest": true }
+      "files": [
+        "**/__tests__/**/*.ts?(x)",
+        "**/?(*.)+(spec|test).ts?(x)"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ],
+      "env": {
+        "jest": true
+      }
     },
     {
-      "files": ["**/*.md?(x)"],
+      "files": [
+        "**/*.md?(x)"
+      ],
       "rules": {}
     }
   ]
