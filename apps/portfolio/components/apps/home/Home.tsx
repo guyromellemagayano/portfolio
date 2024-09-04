@@ -1,40 +1,26 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-// import {
-//   ArrowPathIcon,
-//   CloudArrowUpIcon,
-//   Cog6ToothIcon,
-//   FingerPrintIcon,
-//   LockClosedIcon,
-//   ServerIcon
-// } from '@heroicons/react/20/solid'
+import { Button, Div } from '@react-components'
 
-import { Button } from '@guy-romelle-magayano/react-components'
+import { cn } from '@react-utils'
+
+import { SkillsCategory } from '@portfolio/components/categories/skills'
+import { AboutLayout } from '@portfolio/components/layouts/about'
 import {
-  // Dd,
-  Div
-} from '@guy-romelle-magayano/react-components/server'
-
-import { cn } from '@guy-romelle-magayano/react-utils'
-
-import {
-  AboutLayout,
   ContentLayout,
-  ContentLayoutProps,
-  // NewsletterForm,
-  PhotoLayout,
-  ResumeLayout,
-  SkillsCategory,
-  SocialLinksLayout
-} from '@guy-romelle-magayano/portfolio/components'
-import type {
-  BasePageData,
+  ContentLayoutProps
+} from '@portfolio/components/layouts/content'
+import { PhotoLayout } from '@portfolio/components/layouts/photo'
+import { ResumeLayout } from '@portfolio/components/layouts/resume'
+import { SocialLinksLayout } from '@portfolio/components/layouts/social-links'
+import { BasePageData } from '@portfolio/types/base'
+import {
   PhotosData,
   SkillsData,
   SocialLinksData,
   WorkData
-} from '@guy-romelle-magayano/portfolio/types'
+} from '@portfolio/types/data'
 
 export type HomeAppProps = BasePageData & {
   aboutInfo: Pick<BasePageData, 'hero'>
@@ -61,9 +47,9 @@ type IntroSectionProps = ContentLayoutProps & {
 }
 
 /**
- * Render the intro section component
+ * Render the intro section component.
  * @param {IntroSectionProps} props - The component props
- * @returns The rendered JSX component.
+ * @returns The rendered JSX component
  */
 const IntroSection = ({
   title,
@@ -74,9 +60,9 @@ const IntroSection = ({
 }: IntroSectionProps) => {
   return (
     <ContentLayout.Simple
-      title={title}
-      intro={intro}
       className={cn('mt-9 sm:mt-9', className)}
+      intro={intro}
+      title={title}
       {...rest}
     >
       <SocialLinksLayout
@@ -106,7 +92,7 @@ IntroSection.displayName = 'IntroSection'
 /**
  * Render the home application component.
  * @param {HomeAppProps} props - The component props
- * @returns The rendered JSX component.
+ * @returns The rendered JSX component
  */
 const HomeApp = ({
   hero,
@@ -161,19 +147,19 @@ const HomeApp = ({
     <>
       {/* Intro section */}
       <IntroSection
-        title={hero?.heading}
         intro={hero?.description}
         socialLinks={links}
+        title={hero?.heading}
       />
 
       {/* Slide photos */}
-      <PhotoLayout data={photos?.slidePhotos} className="mt-20 md:mt-24" />
+      <PhotoLayout className="mt-20 md:mt-24" data={photos?.slidePhotos} />
 
       {/* About me section */}
       <AboutLayout
-        title={aboutInfo?.hero?.heading}
-        intro={aboutInfo?.hero?.description}
         className="mt-20 md:mt-24"
+        intro={aboutInfo?.hero?.description}
+        title={aboutInfo?.hero?.heading}
       >
         <Div className="mt-10 flex flex-row flex-wrap gap-3">
           <Button
@@ -187,15 +173,15 @@ const HomeApp = ({
 
       {/* Work experiences section */}
       <ResumeLayout
-        title={workInfo?.hero?.heading}
-        intro={workInfo?.hero?.description}
-        cvFile={workInfo?.cvFile}
-        workExperiences={workInfo?.workExperiences}
         className="mt-20 md:mt-24"
+        cvFile={workInfo?.cvFile}
+        intro={workInfo?.hero?.description}
+        title={workInfo?.hero?.heading}
+        workExperiences={workInfo?.workExperiences}
       />
 
       {/* Skills section */}
-      <SkillsCategory data={skillsInfo} className="mt-20 md:mt-24" />
+      <SkillsCategory className="mt-20 md:mt-24" data={skillsInfo} />
 
       {/* Projects section */}
       {/* <Div className="mt-20 md:mt-24">
