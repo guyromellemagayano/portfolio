@@ -40,39 +40,15 @@
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-components/server": [
-        "packages/react/components/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-components/types": [
-        "packages/react/components/src/components.d.ts"
-      ],
       "@guy-romelle-magayano/react-hooks": [
         "packages/react/hooks/src/index.ts"
-      ],
-      "@guy-romelle-magayano/react-hooks/server": [
-        "packages/react/hooks/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-hooks/types": [
-        "packages/react/hooks/src/hooks.d.ts"
       ],
       "@guy-romelle-magayano/react-libs": [
         "packages/react/libs/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-libs/server": [
-        "packages/react/libs/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-libs/types": [
-        "packages/react/libs/src/libs.d.ts"
-      ],
       "@guy-romelle-magayano/react-utils": [
         "packages/react/utils/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-utils/server": [
-        "packages/react/utils/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-utils/types": [
-        "packages/react/utils/src/utils.d.ts"
-      ]
     }
   },
   "ts-node": {
