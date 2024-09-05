@@ -4,20 +4,20 @@ export type SampleRef = HTMLElement
 export type SampleProps = React.HTMLAttributes<SampleRef>
 
 /**
- * Render the sample component
+ * Render the sample component.
  * @param {SampleProps} props - The sample component properties
  * @param {SampleRef} ref - The sample component reference
  * @returns The rendered sample component
  */
-const Sample = React.forwardRef<SampleRef, SampleProps>((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <samp ref={ref} {...rest}>
-      {children}
-    </samp>
-  )
-})
+const Sample = React.forwardRef<SampleRef, SampleProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <samp ref={ref} {...rest}>
+        {children}
+      </samp>
+    )
+  }
+)
 
 Sample.displayName = 'Sample'
 
