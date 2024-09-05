@@ -1,13 +1,19 @@
 {
   "root": true,
-  "plugins": ["@nx"],
+  "plugins": [
+    "@nx"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts?(x)"],
+      "files": [
+        "**/*.ts?(x)"
+      ],
       "parserOptions": {
         "sourceType": "module"
       },
-      "extends": ["plugin:@nx/typescript"],
+      "extends": [
+        "plugin:@nx/typescript"
+      ],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -18,7 +24,9 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
               }
             ]
           }
@@ -46,8 +54,13 @@
       }
     },
     {
-      "files": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
-      "extends": ["plugin:testing-library/react"],
+      "files": [
+        "**/__tests__/**/*.ts?(x)",
+        "**/?(*.)+(spec|test).ts?(x)"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ],
       "env": {
         "jest": true
       }
