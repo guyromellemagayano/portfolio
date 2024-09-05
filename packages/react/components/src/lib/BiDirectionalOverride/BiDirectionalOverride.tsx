@@ -5,7 +5,7 @@ export type BiDirectionalOverrideProps =
   React.HTMLAttributes<BiDirectionalOverrideRef>
 
 /**
- * Render the bi-directional override component
+ * Render the bi-directional override component.
  * @param {BiDirectionalOverrideProps} props - The bi-directional override component properties
  * @param {BiDirectionalOverrideRef} ref - The bi-directional override component reference
  * @returns The rendered bi-directional override component
@@ -13,9 +13,7 @@ export type BiDirectionalOverrideProps =
 const BiDirectionalOverride = React.forwardRef<
   BiDirectionalOverrideRef,
   BiDirectionalOverrideProps
->((props, ref) => {
-  const { children, ...rest } = props
-
+>(({ children, ...rest }, ref) => {
   return (
     <bdo ref={ref} {...rest}>
       {children}
