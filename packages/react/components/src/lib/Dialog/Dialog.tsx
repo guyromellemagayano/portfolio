@@ -11,15 +11,15 @@ export type DialogProps = React.DialogHTMLAttributes<DialogRef>
  * @param {DialogRef} ref - The dialog component reference
  * @returns The rendered dialog component
  */
-const Dialog = React.forwardRef<DialogRef, DialogProps>((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <dialog ref={ref} {...rest}>
-      {children}
-    </dialog>
-  )
-})
+const Dialog = React.forwardRef<DialogRef, DialogProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dialog ref={ref} {...rest}>
+        {children}
+      </dialog>
+    )
+  }
+)
 
 Dialog.displayName = 'Dialog'
 
