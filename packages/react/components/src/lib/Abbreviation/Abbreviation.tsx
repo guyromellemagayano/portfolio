@@ -4,15 +4,13 @@ export type AbbreviationRef = HTMLElement
 export type AbbreviationProps = React.HTMLAttributes<AbbreviationRef>
 
 /**
- * Render the abbreviation component
+ * Render the abbreviation component.
  * @param {AbbreviationProps} props - The abbreviation component properties
  * @param {AbbreviationRef} ref - The abbreviation component reference
  * @returns The rendered abbreviation component
  */
 const Abbreviation = React.forwardRef<AbbreviationRef, AbbreviationProps>(
-  (props, ref) => {
-    const { children, ...rest } = props
-
+  ({ children, ...rest }, ref) => {
     return (
       <abbr ref={ref} {...rest}>
         {children}
