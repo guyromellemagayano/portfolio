@@ -10,9 +10,7 @@ export type UnderlineProps = React.HTMLAttributes<UnderlineRef>
  * @returns The rendered underline component
  */
 const Underline = React.forwardRef<UnderlineRef, UnderlineProps>(
-  (props, ref) => {
-    const { children, ...rest } = props
-
+  ({ children, ...rest }, ref) => {
     return (
       <u ref={ref} {...rest}>
         {children}
