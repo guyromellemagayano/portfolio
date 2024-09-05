@@ -9,15 +9,15 @@ export type DetailsProps = React.HTMLAttributes<DetailsRef>
  * @param {DetailsRef} ref - The details component reference
  * @returns The rendered details component
  */
-const Details = React.forwardRef<DetailsRef, DetailsProps>((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <details ref={ref} {...rest}>
-      {children}
-    </details>
-  )
-})
+const Details = React.forwardRef<DetailsRef, DetailsProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <details ref={ref} {...rest}>
+        {children}
+      </details>
+    )
+  }
+)
 
 Details.displayName = 'Details'
 
