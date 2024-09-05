@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 
 export type SelectRef = HTMLSelectElement
@@ -11,15 +9,15 @@ export type SelectProps = React.SelectHTMLAttributes<SelectRef>
  * @param {SelectRef} ref - The select component reference
  * @returns The rendered select component
  */
-const Select = React.forwardRef<SelectRef, SelectProps>((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <select ref={ref} {...rest}>
-      {children}
-    </select>
-  )
-})
+const Select = React.forwardRef<SelectRef, SelectProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <select ref={ref} {...rest}>
+        {children}
+      </select>
+    )
+  }
+)
 
 Select.displayName = 'Select'
 
