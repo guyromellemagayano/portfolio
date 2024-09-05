@@ -6,14 +6,12 @@ export type MapRef = HTMLMapElement
 export type MapProps = React.MapHTMLAttributes<MapRef>
 
 /**
- * Render the map component
+ * Render the map component.
  * @param {MapProps} props - The map component properties
  * @param {MapRef} ref - The map component reference
  * @returns The rendered map component
  */
-const Map = React.forwardRef<MapRef, MapProps>((props, ref) => {
-  const { children, ...rest } = props
-
+const Map = React.forwardRef<MapRef, MapProps>(({ children, ...rest }, ref) => {
   return (
     <map ref={ref} {...rest}>
       {children}
