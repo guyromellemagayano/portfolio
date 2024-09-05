@@ -10,13 +10,18 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/portfolio/app/*": ["./apps/portfolio/src/app/*"],
+      "@guy-romelle-magayano/portfolio/app/*": [
+        "./apps/portfolio/src/app/*"
+      ],
       "@guy-romelle-magayano/portfolio/components/*": [
         "./apps/portfolio/src/components/*"
       ],
@@ -32,18 +37,6 @@
       "@guy-romelle-magayano/portfolio/utils/*": [
         "./apps/portfolio/src/utils/*"
       ],
-      "@guy-romelle-magayano/seocrwlr/app/*": ["./apps/seocrwlr/src/app/*"],
-      "@guy-romelle-magayano/seocrwlr/components/*": [
-        "./apps/seocrwlr/src/components/*"
-      ],
-      "@guy-romelle-magayano/seocrwlr/configs/*": [
-        "./apps/seocrwlr/src/configs/*"
-      ],
-      "@guy-romelle-magayano/seocrwlr/styles/*": [
-        "./apps/seocrwlr/src/styles/*"
-      ],
-      "@guy-romelle-magayano/seocrwlr/types/*": ["./apps/seocrwlr/src/types/*"],
-      "@guy-romelle-magayano/seocrwlr/utils/*": ["./apps/seocrwlr/src/utils/*"],
       "@guy-romelle-magayano/react-components": [
         "packages/react/components/src/index.ts"
       ],
@@ -62,7 +55,9 @@
       "@guy-romelle-magayano/react-hooks/types": [
         "packages/react/hooks/src/hooks.d.ts"
       ],
-      "@guy-romelle-magayano/react-libs": ["packages/react/libs/src/index.ts"],
+      "@guy-romelle-magayano/react-libs": [
+        "packages/react/libs/src/index.ts"
+      ],
       "@guy-romelle-magayano/react-libs/server": [
         "packages/react/libs/src/server.ts"
       ],
@@ -81,12 +76,17 @@
     }
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
+    "require": [
+      "tsconfig-paths/register"
+    ],
     "transpileOnly": true,
     "compilerOptions": {
       "module": "commonjs"
     },
     "swc": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
