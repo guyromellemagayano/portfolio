@@ -25,7 +25,6 @@ import {
 import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
 
 import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
-
 import 'focus-visible'
 
 export type BaseLayoutProps = {
@@ -75,20 +74,13 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
           crossOrigin="anonymous"
         />
       </Head>
-
       <Body className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
           <Div className="flex w-full">
             <Div className="relative flex w-full flex-col">
-              {headerMenu && headerMenu?.length > 0 && (
-                <HeaderLayout pages={headerMenu} />
-              )}
-
-              {children && <Main className="flex-auto">{children}</Main>}
-
-              {footerMenu && footerMenu?.length > 0 && (
-                <FooterLayout pages={footerMenu} />
-              )}
+              <HeaderLayout data={headerMenu} />
+              <Main className="flex-auto">{children}</Main>
+              <FooterLayout data={footerMenu} />
             </Div>
           </Div>
           <SpeedInsights />

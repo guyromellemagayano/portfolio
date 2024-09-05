@@ -6,29 +6,29 @@ import {
   Button,
   Form,
   FormProps,
-  FormRef,
-  Input
+  Input,
+  Label
 } from '@guy-romelle-magayano/react-components'
 import {
   Div,
+  DivisionProps,
+  DivisionRef,
   Heading,
-  P,
-  Span
+  P
 } from '@guy-romelle-magayano/react-components/server'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
 
-import { MailSvg } from '@guy-romelle-magayano/portfolio/components'
-
-export type NewsletterFormRef = FormRef
-export type NewsletterFormProps = FormProps
+export type NewsletterFormRef = DivisionRef
+export type NewsletterFormProps = DivisionProps & FormProps
 
 const strings = {
-  stayUpToDate: 'Stay up to date',
+  stayUpToDate: 'Want product news and updates?',
   getNotified:
     'Get notified when I publish something new, and unsubscribe at any time.',
-  email: 'Email address',
-  join: 'Join'
+  emailAddress: 'Email Address',
+  email: 'Enter you email',
+  notifyMe: 'Notify me'
 }
 
 const thankYouPageLink = '/thank-you'
@@ -40,43 +40,50 @@ const thankYouPageLink = '/thank-you'
  * @returns The rendered JSX component
  */
 const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
-  ({ className, ...rest }, ref) => {
+  ({ ...rest }, ref) => {
     return (
-      <Form
-        {...rest}
-        ref={ref}
-        action={thankYouPageLink}
-        className={cn(
-          className,
-          'rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40'
-        )}
-      >
-        <Heading
-          as="h2"
-          className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100"
-        >
-          <MailSvg className="h-6 w-6 flex-none" />
-          <Span className="ml-3">{strings.stayUpToDate}</Span>
-        </Heading>
-        <P className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          {strings.getNotified}
-        </P>
-        <Div className="mt-6 flex">
-          <Input
-            type="email"
-            placeholder={strings.email}
-            aria-label={strings.email}
-            required
-            className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/10 sm:text-sm dark:border-zinc-700 dark:bg-zinc-700/[0.15] dark:text-zinc-200 dark:placeholder:text-zinc-500 dark:focus:border-amber-400 dark:focus:ring-amber-400/10"
-          />
-          <Button
-            type="submit"
-            className="ml-4 inline-flex flex-none items-center justify-center gap-2 rounded-md bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 active:transition-none dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70"
-          >
-            {strings.join}
-          </Button>
+      <BaseContainer ref={ref} {...rest}>
+        <Div className="mx-auto max-w-7xl rounded-2xl bg-white px-6 py-12 shadow-md lg:py-6 dark:bg-zinc-900">
+          <Div className="mx-auto max-w-7xl p-6 lg:px-8">
+            <Div className="flex flex-auto flex-wrap gap-y-3 md:flex-none">
+              <Heading
+                as="h2"
+                className="mx-auto text-center text-3xl font-bold tracking-tight text-zinc-900 sm:block sm:text-4xl dark:text-zinc-100"
+              >
+                {strings.stayUpToDate}
+              </Heading>{' '}
+              <P className="mx-auto text-center text-base leading-5 text-zinc-600 sm:block dark:text-zinc-400">
+                {strings.getNotified}
+              </P>
+            </Div>
+            <Form
+              action={thankYouPageLink}
+              className="mx-auto mt-10 flex max-w-md gap-x-4"
+            >
+              <Label htmlFor="email-address" className="sr-only">
+                {strings.emailAddress}
+              </Label>
+              <Input
+                id="email-address"
+                name="email-address"
+                type="email"
+                required
+                placeholder={strings.email}
+                aria-label={strings.email}
+                aria-required
+                autoComplete="email"
+                className="inline-flex min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-zinc-400 sm:text-sm sm:leading-6 dark:ring-gray-600 dark:ring-transparent dark:focus:ring-zinc-600/50"
+              />
+              <Button
+                type="submit"
+                className="inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-5 py-2.5 text-sm font-semibold text-zinc-100 shadow-sm outline-offset-2 transition hover:bg-zinc-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-600 active:bg-zinc-600 active:text-zinc-300/70 active:transition-none md:flex-none dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-300 dark:active:bg-zinc-300 dark:active:text-zinc-300/70"
+              >
+                {strings.notifyMe}
+              </Button>
+            </Form>
+          </Div>
         </Div>
-      </Form>
+      </BaseContainer>
     )
   }
 )
