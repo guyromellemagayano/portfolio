@@ -5,7 +5,7 @@ export type DescriptionDetailsProps =
   React.HTMLAttributes<DescriptionDetailsRef>
 
 /**
- * Render the description details component
+ * Render the description details component.
  * @param {DescriptionDetailsProps} props - The description details component properties
  * @param {DescriptionDetailsRef} ref - The description details component reference
  * @returns The rendered description details component
@@ -13,9 +13,7 @@ export type DescriptionDetailsProps =
 const DescriptionDetails = React.forwardRef<
   DescriptionDetailsRef,
   DescriptionDetailsProps
->((props, ref) => {
-  const { children, ...rest } = props
-
+>(({ children, ...rest }, ref) => {
   return (
     <dd ref={ref} {...rest}>
       {children}
