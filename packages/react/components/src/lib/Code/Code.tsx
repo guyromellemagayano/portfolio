@@ -4,20 +4,20 @@ export type CodeRef = HTMLElement
 export type CodeProps = React.HTMLAttributes<CodeRef>
 
 /**
- * Render the code component
+ * Render the code component.
  * @param {CodeProps} props - The code component properties
  * @param {CodeRef} ref - The code component reference
  * @returns The rendered code component
  */
-const Code = React.forwardRef<CodeRef, CodeProps>((props, ref) => {
-  const { children, ...rest } = props
-
-  return (
-    <code ref={ref} {...rest}>
-      {children}
-    </code>
-  )
-})
+const Code = React.forwardRef<CodeRef, CodeProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <code ref={ref} {...rest}>
+        {children}
+      </code>
+    )
+  }
+)
 
 Code.displayName = 'Code'
 
