@@ -20,7 +20,9 @@
     "test:react-components": "pnpm exec nx test react-components",
     "test:react-hooks": "pnpm exec nx test react-hooks",
     "test:react-libs": "pnpm exec nx test react-libs",
-    "test:react-utils": "pnpm exec nx test react-utils"
+    "test:react-utils": "pnpm exec nx test react-utils",
+    "serve": "pnpm exec nx run-many --target=prod --all",
+    "serve:portfolio": "pnpm exec nx serve portfolio --verbose"
   },
   "dependencies": {
     "@ducanh2912/next-pwa": "^10.2.8",
