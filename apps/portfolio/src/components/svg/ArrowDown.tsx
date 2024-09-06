@@ -1,4 +1,4 @@
-import { Path, Svg, SvgProps } from '@guy-romelle-magayano/react-components'
+import { Path, Svg, SvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of an arrow pointing down.
@@ -7,12 +7,12 @@ import { Path, Svg, SvgProps } from '@guy-romelle-magayano/react-components'
  */
 const ArrowDownSvg = (rest: SvgProps) => {
   return (
-    <Svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...rest}>
+    <Svg aria-hidden="true" fill="none" viewBox="0 0 16 16" {...rest}>
       <Path
         d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
-        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth="1.5"
       />
     </Svg>
   )
