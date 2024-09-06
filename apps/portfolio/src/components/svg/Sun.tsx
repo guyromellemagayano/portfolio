@@ -1,4 +1,4 @@
-import { Path, Svg, SvgProps } from '@guy-romelle-magayano/react-components'
+import { Path, Svg, SvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a sun.
@@ -8,11 +8,11 @@ import { Path, Svg, SvgProps } from '@guy-romelle-magayano/react-components'
 const SunSvg = (rest: SvgProps) => {
   return (
     <Svg
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
+      aria-hidden="true"
       strokeLinecap="round"
       strokeLinejoin="round"
-      aria-hidden="true"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
       {...rest}
     >
       <Path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
