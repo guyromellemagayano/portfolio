@@ -47,7 +47,7 @@ const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
             'mx-auto max-w-7xl rounded-2xl bg-white px-6 py-12 shadow-md lg:py-6 dark:bg-zinc-900'
           )}
         >
-          <Div className={cn('mx-auto max-w-7xl p-6 lg:px-8')}>
+          <Div className={cn('p-6 lg:px-8')}>
             <Div
               className={cn('flex flex-auto flex-wrap gap-y-3 md:flex-none')}
             >
