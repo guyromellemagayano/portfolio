@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
     "outDir": "../../../dist/out-tsc",
     "types": [
       "node",
@@ -12,9 +14,13 @@
   },
   "exclude": [
     "jest.config.ts",
-    "src/**/?(*.)(spec,test).ts?(x)"
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.tsx",
   ],
   "include": [
-    "src/**/*.ts?(x)"
-  ],
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
 }
