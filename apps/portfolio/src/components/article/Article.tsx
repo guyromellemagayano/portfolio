@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react'
 
-import { formatDate } from '@react-utils'
+import { cn, formatDate } from '@react-utils'
 
 import { Card, type CardRef } from '@portfolio/components'
 import type { ArticlesData } from '@portfolio/types'
@@ -29,7 +29,7 @@ const Article = forwardRef<ArticleRef, ArticleProps>(
         {date && (
           <Card.Eyebrow
             as="time"
-            className="mb-2 text-zinc-400 dark:text-zinc-500"
+            className={cn('mb-2 text-zinc-400 dark:text-zinc-500')}
             dateTime={date}
             decorate
           >
