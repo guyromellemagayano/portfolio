@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
 import {
   CodeBracketIcon,
@@ -31,77 +31,82 @@ export type SkillsCategoryProps = ContentLayoutProps & {
  * @param {SkillsCategoryRef} ref - The component reference
  * @returns The rendered skills category component
  */
-const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
-  ({ data, children, ...rest }, ref) => {
-    const { resolvedTheme } = useTheme()
+const SkillsCategory = memo(
+  forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
+    ({ data, children, ...rest }, ref) => {
+      const { resolvedTheme } = useTheme()
 
-    if (!data) return null
+      if (!data) return null
 
-    return (
-      <ContentLayout.Simple
-        ref={ref}
-        intro={data.hero?.description}
-        title={data.hero?.heading}
-        {...rest}
-      >
-        {children}
-        {/* <CategoryForm /> */}
-        <Div className="mx-auto max-w-7xl">
-          <Div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent">
-            {data.skills?.map(({ id, name, type, image }) => {
-              const imgAlt =
-                resolvedTheme === 'dark' && image.dark?.alt
-                  ? image.dark.alt
-                  : image.default.alt
-              const imgSrc =
-                resolvedTheme === 'dark' && image.dark?.src
-                  ? image.dark.src
-                  : image.default.src
+      return (
+        <ContentLayout.Simple
+          ref={ref}
+          intro={data.hero?.description}
+          title={data.hero?.heading}
+          {...rest}
+        >
+          {children}
+          {/* <CategoryForm /> */}
+          <Div className="mx-auto max-w-7xl">
+            <Div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent">
+              {data.skills?.map(({ id, name, type, image }) => {
+                const imgAlt =
+                  resolvedTheme === 'dark' && image.dark?.alt
+                    ? image.dark.alt
+                    : image.default.alt
+                const imgSrc =
+                  resolvedTheme === 'dark' && image.dark?.src
+                    ? image.dark.src
+                    : image.default.src
 
-              return (
-                <Div
-                  key={id}
-                  className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800"
-                >
-                  <Image
-                    src={imgSrc}
-                    alt={imgAlt}
-                    height={80}
-                    width={80}
-                    className="mx-auto h-20 w-20"
-                    priority
-                  />
-                  <Heading
-                    as="h3"
-                    className="mt-4 text-center text-base font-semibold leading-5 tracking-tighter text-zinc-600 dark:text-zinc-400"
+                return (
+                  <Div
+                    key={id}
+                    className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800"
                   >
-                    {name}
-                  </Heading>
-                  <Ul className="mt-3 flex justify-center gap-x-3" role="list">
-                    <Li>
-                      <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
-                        <NewspaperIcon className="h-4 w-4" />
-                      </Span>
-                    </Li>
-                    <Li>
-                      <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
-                        <CodeBracketIcon className="h-4 w-4" />
-                      </Span>
-                    </Li>
-                    <Li>
-                      <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
-                        <UserIcon className="h-4 w-4" />
-                      </Span>
-                    </Li>
-                  </Ul>
-                </Div>
-              )
-            })}
+                    <Image
+                      src={imgSrc}
+                      alt={imgAlt}
+                      height={80}
+                      width={80}
+                      className="mx-auto h-20 w-20"
+                      priority
+                    />
+                    <Heading
+                      as="h3"
+                      className="mt-4 text-center text-base font-semibold leading-5 tracking-tighter text-zinc-600 dark:text-zinc-400"
+                    >
+                      {name}
+                    </Heading>
+                    <Ul
+                      className="mt-3 flex justify-center gap-x-3"
+                      role="list"
+                    >
+                      <Li>
+                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
+                          <NewspaperIcon className="h-4 w-4" />
+                        </Span>
+                      </Li>
+                      <Li>
+                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
+                          <CodeBracketIcon className="h-4 w-4" />
+                        </Span>
+                      </Li>
+                      <Li>
+                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
+                          <UserIcon className="h-4 w-4" />
+                        </Span>
+                      </Li>
+                    </Ul>
+                  </Div>
+                )
+              })}
+            </Div>
           </Div>
-        </Div>
-      </ContentLayout.Simple>
-    )
-  }
+        </ContentLayout.Simple>
+      )
+    }
+  )
 )
 
 SkillsCategory.displayName = 'SkillsCategory'
