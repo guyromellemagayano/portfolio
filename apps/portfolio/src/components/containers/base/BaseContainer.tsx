@@ -1,7 +1,6 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
 import { Div, type DivisionProps, type DivisionRef } from '@react-components'
-
 import { cn } from '@react-utils'
 
 export type BaseContainerRef = DivisionRef
@@ -13,14 +12,18 @@ export type BaseContainerProps = DivisionProps
  * @param {BaseContainerRef} ref - The component reference
  * @returns The rendered outer container component
  */
-const OuterContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
-  ({ children, className, ...rest }, ref) => {
-    return (
-      <Div ref={ref} className={cn('sm:px-8', className)} {...rest}>
-        <Div className={cn('mx-auto w-full max-w-7xl lg:px-8')}>{children}</Div>
-      </Div>
-    )
-  }
+const OuterContainer = memo(
+  forwardRef<BaseContainerRef, BaseContainerProps>(
+    ({ children, className, ...rest }, ref) => {
+      return (
+        <Div ref={ref} className={cn('sm:px-8', className)} {...rest}>
+          <Div className={cn('mx-auto w-full max-w-7xl lg:px-8')}>
+            {children}
+          </Div>
+        </Div>
+      )
+    }
+  )
 )
 
 OuterContainer.displayName = 'OuterContainer'
@@ -31,20 +34,22 @@ OuterContainer.displayName = 'OuterContainer'
  * @param {BaseContainerRef} ref - The component reference
  * @returns The rendered inner container component
  */
-const InnerContainer = forwardRef<BaseContainerRef, BaseContainerProps>(
-  ({ children, className, ...rest }, ref) => {
-    return (
-      <Div
-        ref={ref}
-        className={cn('relative px-4 sm:px-8 lg:px-12', className)}
-        {...rest}
-      >
-        <Div className={cn('mx-auto w-full max-w-2xl lg:max-w-4xl')}>
-          {children}
+const InnerContainer = memo(
+  forwardRef<BaseContainerRef, BaseContainerProps>(
+    ({ children, className, ...rest }, ref) => {
+      return (
+        <Div
+          ref={ref}
+          className={cn('relative px-4 sm:px-8 lg:px-12', className)}
+          {...rest}
+        >
+          <Div className={cn('mx-auto w-full max-w-2xl lg:max-w-4xl')}>
+            {children}
+          </Div>
         </Div>
-      </Div>
-    )
-  }
+      )
+    }
+  )
 )
 
 InnerContainer.displayName = 'InnerContainer'
@@ -55,14 +60,16 @@ InnerContainer.displayName = 'InnerContainer'
  * @param {BaseContainerRef} ref - The component reference
  * @returns The rendered base container component
  */
-const BaseContainerWithRef = forwardRef<BaseContainerRef, BaseContainerProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <OuterContainer ref={ref} {...rest}>
-        <InnerContainer>{children}</InnerContainer>
-      </OuterContainer>
-    )
-  }
+const BaseContainerWithRef = memo(
+  forwardRef<BaseContainerRef, BaseContainerProps>(
+    ({ children, ...rest }, ref) => {
+      return (
+        <OuterContainer ref={ref} {...rest}>
+          <InnerContainer>{children}</InnerContainer>
+        </OuterContainer>
+      )
+    }
+  )
 )
 
 BaseContainerWithRef.displayName = 'BaseContainerWithRef'
