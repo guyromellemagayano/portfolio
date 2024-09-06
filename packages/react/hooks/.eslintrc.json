@@ -5,7 +5,8 @@
   "overrides": [
     {
       "files": [
-        "**/*.ts?(x)"
+        "**/*.ts",
+        "**/*.tsx"
       ],
       "extends": [
         "plugin:@nx/react-typescript"
@@ -13,8 +14,12 @@
     },
     {
       "files": [
-        "**/__tests__/**/*.ts?(x)",
-        "**/?(*.)+(spec|test).ts?(x)"
+        "**/__tests__/*.ts",
+        "**/__tests__/*.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx"
       ],
       "extends": [
         "plugin:testing-library/react"
