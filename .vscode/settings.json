@@ -48,7 +48,8 @@
     ".env*": "dotenv",
     "*ignore": "ignore",
     "*.json": "json",
-    "*.md": "markdown"
+    "*.md": "markdown",
+    "*.mdx": "mdx"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
