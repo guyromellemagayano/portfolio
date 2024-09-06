@@ -5,7 +5,7 @@
 import * as Sentry from '@sentry/nextjs'
 import * as Spotlight from '@spotlightjs/spotlight'
 
-import { SENTRY_DSN, SENTRY_ENVIRONMENT } from './src/configs'
+import { SENTRY_DSN, SENTRY_ENVIRONMENT } from '@portfolio/configs'
 
 Sentry.init({
   dsn: SENTRY_DSN,
