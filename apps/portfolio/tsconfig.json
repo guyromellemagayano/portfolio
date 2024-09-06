@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
+    "declaration": true,
     "jsx": "preserve",
     "allowJs": true,
     "esModuleInterop": true,
@@ -21,15 +23,19 @@
     ]
   },
   "include": [
-    "**/*.ts?(x)",
+    "**/*.ts",
+    "**/*.tsx",
     "**/*.mdx",
     "../../dist/apps/portfolio/.next/types/**/*.ts",
     ".next/types/**/*.ts",
     "next-env.d.ts"
   ],
   "exclude": [
-    "node_modules",
+    "../../node_modules",
     "jest.config.ts",
-    "**/?(*.)(spec,test).ts?(x)"
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.test.tsx",
   ]
 }
