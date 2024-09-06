@@ -1,8 +1,8 @@
 // @ts-check
+import * as NextPWA from '@ducanh2912/next-pwa'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
-import * as NextPWA from '@ducanh2912/next-pwa'
 
 // Security headers configuration
 const securityHeaders = [
@@ -50,7 +50,7 @@ const headers = async () => [
 const nextConfig = {
   // Nx plugin configuration
   nx: {
-    svgr: false
+    svgr: true
   },
 
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
