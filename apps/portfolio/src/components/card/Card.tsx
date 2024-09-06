@@ -84,12 +84,20 @@ const CardLink = forwardRef<CardLinkRef, CardLinkProps>(
 
     return (
       <Div ref={ref} {...rest}>
-        <Div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50" />
+        <Div
+          className={cn(
+            'absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50'
+          )}
+        />
 
         {href ? (
           <Link href={href} target={target} title={title}>
-            <Span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
-            <Span className="relative z-10">{children}</Span>
+            <Span
+              className={cn(
+                'absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl'
+              )}
+            />
+            <Span className={cn('relative z-10')}>{children}</Span>
           </Link>
         ) : (
           children

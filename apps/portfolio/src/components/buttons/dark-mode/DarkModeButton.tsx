@@ -59,8 +59,8 @@ const DarkModeButton = forwardRef<DarkModeButtonRef, DarkModeButtonProps>(
       <Button
         ref={ref}
         className={buttonClass}
-        aria-label={ariaLabel}
         onClick={() => setTheme(otherTheme)}
+        aria-label={ariaLabel}
         {...rest}
       >
         <SunSvg className={sunSvgClass} />
