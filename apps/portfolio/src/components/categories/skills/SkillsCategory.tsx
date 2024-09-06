@@ -10,22 +10,15 @@ import {
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 
-import {
-  Div,
-  Heading,
-  Li,
-  Span,
-  Ul
-} from '@guy-romelle-magayano/react-components/server'
-import { isValidData } from '@guy-romelle-magayano/react-utils'
+import { Div, Heading, Li, Span, Ul } from '@react-components'
 
 import {
   // CategoryForm,
   ContentLayout,
   type ContentLayoutProps,
   type ContentLayoutRef
-} from '@guy-romelle-magayano/portfolio/components'
-import type { SkillsData } from '@guy-romelle-magayano/portfolio/types'
+} from '@portfolio/components'
+import type { SkillsData } from '@portfolio/types'
 
 export type SkillsCategoryRef = ContentLayoutRef
 export type SkillsCategoryProps = ContentLayoutProps & {
@@ -36,35 +29,28 @@ export type SkillsCategoryProps = ContentLayoutProps & {
  * Renders the skills category component.
  * @param {SkillsCategoryRef} props - The component props
  * @param {SkillsCategoryRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered skills category component
  */
 const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
   ({ data, children, ...rest }, ref) => {
     const { resolvedTheme } = useTheme()
 
-    const validData = isValidData(data, 'object') ? data : null
-
-    if (!validData || Object.keys(validData)?.length === 0) {
-      return null
-    }
+    if (!data) return null
 
     return (
       <ContentLayout.Simple
         ref={ref}
-        title={validData?.hero?.heading}
-        intro={validData?.hero?.description}
+        intro={data.hero?.description}
+        title={data.hero?.heading}
         {...rest}
       >
         {children}
-
         {/* <CategoryForm /> */}
         <Div className="mx-auto max-w-7xl">
           <Div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent">
-            {validData?.skills?.map(({ id, name, type, image }) => {
+            {data.skills?.map(({ id, name, type, image }) => {
               const imgAlt =
-                resolvedTheme === 'dark' &&
-                image.dark?.alt &&
-                image.dark?.alt?.length > 0
+                resolvedTheme === 'dark' && image.dark?.alt
                   ? image.dark.alt
                   : image.default.alt
               const imgSrc =
@@ -75,13 +61,13 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
               return (
                 <Div
                   key={id}
-                  className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-800 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-700"
+                  className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800"
                 >
                   <Image
-                    width={80}
-                    height={80}
-                    alt={imgAlt}
                     src={imgSrc}
+                    alt={imgAlt}
+                    height={80}
+                    width={80}
                     className="mx-auto h-20 w-20"
                     priority
                   />
@@ -91,7 +77,7 @@ const SkillsCategory = forwardRef<SkillsCategoryRef, SkillsCategoryProps>(
                   >
                     {name}
                   </Heading>
-                  <Ul role="list" className="mt-3 flex justify-center gap-x-3">
+                  <Ul className="mt-3 flex justify-center gap-x-3" role="list">
                     <Li>
                       <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
                         <NewspaperIcon className="h-4 w-4" />
