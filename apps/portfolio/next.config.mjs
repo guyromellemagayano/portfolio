@@ -1,7 +1,8 @@
 // @ts-check
-const createMDX = require('@next/mdx')
-const { composePlugins, withNx } = require('@nx/next')
-const { withSentryConfig } = require('@sentry/nextjs')
+import createMDX from '@next/mdx'
+import { composePlugins, withNx } from '@nx/next'
+import { withSentryConfig } from '@sentry/nextjs'
+import * as NextPWA from '@ducanh2912/next-pwa'
 
 // Security headers configuration
 const securityHeaders = [
@@ -109,7 +110,7 @@ const withMDX = createMDX({
 })
 
 // PWA configuration
-const withPWA = require('@ducanh2912/next-pwa').default({
+const withPWA = NextPWA.default({
   disable: process.env.NODE_ENV === 'development',
   dest: 'public',
   publicExcludes: ['!favicon/**/*']
@@ -118,7 +119,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
 // Next.js plugins
 const plugins = [withNx, withMDX, withPWA]
 
-module.exports = withSentryConfig(
+export default withSentryConfig(
   composePlugins(...plugins)(nextConfig),
   sentryConfigOptions
 )
