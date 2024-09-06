@@ -25,8 +25,8 @@ const Article = forwardRef<ArticleRef, ArticleProps>(
     const href = `/articles/${slug}`
 
     return (
-      <Card ref={ref} {...rest} as="article">
-        {date?.length > 0 && (
+      <Card ref={ref} as="article" {...rest}>
+        {date && (
           <Card.Eyebrow
             as="time"
             className="mb-2 text-zinc-400 dark:text-zinc-500"
@@ -36,16 +36,9 @@ const Article = forwardRef<ArticleRef, ArticleProps>(
             {formatDate(date)}
           </Card.Eyebrow>
         )}
-
-        {title?.length > 0 && slug?.length > 0 && (
-          <Card.Title href={href}>{title}</Card.Title>
-        )}
-
-        {description?.length > 0 && (
-          <Card.Description>{description}</Card.Description>
-        )}
-
-        {slug?.length > 0 && <Card.Cta>{strings.read}</Card.Cta>}
+        {title && slug && <Card.Title href={href}>{title}</Card.Title>}
+        {description && <Card.Description>{description}</Card.Description>}
+        {slug && <Card.Cta>{strings.read}</Card.Cta>}
       </Card>
     )
   }
