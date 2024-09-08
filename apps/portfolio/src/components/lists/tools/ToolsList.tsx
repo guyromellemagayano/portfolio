@@ -1,30 +1,32 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
-import { Ul } from '@guy-romelle-magayano/react-components/server'
+import { Div } from '@react-components'
 
 import {
   SectionLayout,
   type SectionLayoutProps,
   type SectionLayoutRef
-} from '@guy-romelle-magayano/portfolio/components'
+} from '@portfolio/components'
 
 export type ToolsListRef = SectionLayoutRef
 export type ToolsListProps = SectionLayoutProps
 
 /**
  * Renders the tools list component.
- * @param {ToolsListProps} props - The properties to render the tools list component.
- * @param {ToolsListRef} ref - The reference of the tools list component.
+ * @param {ToolsListProps} props - The component props
+ * @param {ToolsListRef} ref - The component reference
  * @returns The rendered tools list component.
  */
-const ToolsList = forwardRef<ToolsListRef, ToolsListProps>(
-  ({ children, ...rest }, ref) => {
+const ToolsList = memo(
+  forwardRef<ToolsListRef, ToolsListProps>(({ children, ...rest }, ref) => {
+    if (!children) return null
+
     return (
-      <SectionLayout {...rest} ref={ref}>
-        {children && <Ul className="space-y-16">{children}</Ul>}
+      <SectionLayout ref={ref} {...rest}>
+        <Div className="space-y-16">{children}</Div>
       </SectionLayout>
     )
-  }
+  })
 )
 
 ToolsList.displayName = 'ToolsList'
