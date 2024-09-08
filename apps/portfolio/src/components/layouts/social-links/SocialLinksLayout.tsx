@@ -1,17 +1,8 @@
 import { forwardRef, memo } from 'react'
 
-import {
-  Div,
-  DivisionProps,
-  DivisionRef
-} from '@guy-romelle-magayano/react-components/server'
+import { Div, DivisionProps, DivisionRef } from '@react-components'
 
-import { isValidData } from '@guy-romelle-magayano/react-utils'
-
-import {
-  SocialLink,
-  SocialLinkProps
-} from '@guy-romelle-magayano/portfolio/components'
+import { SocialLink, SocialLinkProps } from '@portfolio/components'
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
@@ -22,23 +13,16 @@ export type SocialLinksLayoutProps = DivisionProps & {
  * Render the social links layout component.
  * @param {SocialLinksLayoutProps} props - The component props
  * @param {SocialLinksLayoutRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered social links layout component
  */
 const SocialLinksLayout = memo(
   forwardRef<SocialLinksLayoutRef, SocialLinksLayoutProps>(
     ({ data, ...rest }, ref) => {
-      const validData =
-        data?.filter((item): item is SocialLinkProps =>
-          isValidData(item, 'object')
-        ) || null
-
-      if (!validData || validData?.length === 0) {
-        return null
-      }
+      if (!data) return null
 
       return (
         <Div ref={ref} {...rest}>
-          {validData.map(({ id, ...rest }) => {
+          {data.map(({ id, ...rest }) => {
             return <SocialLink key={id} {...rest} />
           })}
         </Div>
