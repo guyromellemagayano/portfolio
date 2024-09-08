@@ -4,8 +4,8 @@ import {
   Div,
   Heading,
   Section,
-  SectionProps,
-  SectionRef
+  type SectionProps,
+  type SectionRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
