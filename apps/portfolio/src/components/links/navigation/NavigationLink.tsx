@@ -1,37 +1,39 @@
 import Link, { LinkProps } from 'next/link'
 
-import { HyperlinkProps } from '@guy-romelle-magayano/react-components/server'
+import type { HyperlinkProps, HyperlinkRef } from '@react-components'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@react-utils'
+import { forwardRef, memo } from 'react'
 
-export type NavigationLinkProps = LinkProps & HyperlinkProps
+export type NavigationLinkRef = HyperlinkRef
+export type NavigationLinkProps = HyperlinkProps & LinkProps
 
 /**
  * Renders the nav link component.
- * @param {NavigationLinkProps} props - The properties to render the nav link component.
- * @returns The rendered nav link component.
+ * @param {NavigationLinkProps} props - The component props
+ * @returns The rendered nav link component
  */
-const NavigationLink = ({
-  href,
-  className,
-  children,
-  ...rest
-}: NavigationLinkProps) => {
-  return (
-    href && (
-      <Link
-        {...rest}
-        href={href}
-        className={cn(
-          'transition hover:text-amber-500 dark:hover:text-amber-400',
-          className
-        )}
-      >
-        {children}
-      </Link>
-    )
+const NavigationLink = memo(
+  forwardRef<NavigationLinkRef, NavigationLinkProps>(
+    ({ href, className, children, ...rest }, ref) => {
+      if (!href || !children) return null
+
+      return (
+        <Link
+          ref={ref}
+          href={href}
+          className={cn(
+            'transition hover:text-amber-500 dark:hover:text-amber-400',
+            className
+          )}
+          {...rest}
+        >
+          {children}
+        </Link>
+      )
+    }
   )
-}
+)
 
 NavigationLink.displayName = 'NavigationLink'
 
