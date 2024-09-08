@@ -64,7 +64,6 @@ export type SocialLinksData = {
 
 // Articles data
 export type ArticlesData = CommonPostsData & {
-  author: string
   date: string
 }
 
