@@ -1,8 +1,8 @@
 import { forwardRef, memo } from 'react'
 
-import { Div, DivisionProps, DivisionRef } from '@react-components'
+import { Div, type DivisionProps, type DivisionRef } from '@react-components'
 
-import { SocialLink, SocialLinkProps } from '@portfolio/components'
+import { SocialLink, type SocialLinkProps } from '@portfolio/components'
 
 export type SocialLinksLayoutRef = DivisionRef
 export type SocialLinksLayoutProps = DivisionProps & {
