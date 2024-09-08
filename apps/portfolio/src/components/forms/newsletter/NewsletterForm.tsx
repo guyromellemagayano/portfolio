@@ -69,7 +69,7 @@ const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
             </Div>
             <Form
               action={thankYouPageLink}
-              className={cn('mx-auto mt-10 flex max-w-md gap-x-4')}
+              className={cn('mx-auto mt-10 grid max-w-md gap-4 md:flex')}
             >
               <Label className="sr-only" htmlFor="email-address">
                 {strings.emailAddress}
@@ -80,7 +80,7 @@ const NewsletterForm = forwardRef<NewsletterFormRef, NewsletterFormProps>(
                 aria-label={strings.email}
                 autoComplete="email"
                 className={cn(
-                  'inline-flex min-w-0 flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-zinc-400 sm:text-sm sm:leading-6 dark:ring-gray-600 dark:ring-transparent dark:focus:ring-zinc-600/50'
+                  'inline-flex min-w-0 flex-auto rounded-md border-0 bg-white/5 px-4 py-3 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-zinc-400 sm:text-sm sm:leading-6 md:px-3.5 md:py-2 dark:ring-gray-600 dark:ring-transparent dark:focus:ring-zinc-600/50'
                 )}
                 id="email-address"
                 name="email-address"
