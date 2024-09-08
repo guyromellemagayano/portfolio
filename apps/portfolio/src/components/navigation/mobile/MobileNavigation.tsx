@@ -16,14 +16,10 @@ import {
   Nav,
   type NavigationProps,
   type NavigationRef
-} from '@guy-romelle-magayano/react-components/server'
+} from '@react-components'
 
-import {
-  ChevronDownSvg,
-  CloseSvg
-} from '@guy-romelle-magayano/portfolio/components'
-import { type PagesData } from '@guy-romelle-magayano/portfolio/types'
-import { isEmpty, isValidData } from '@guy-romelle-magayano/react-utils'
+import { ChevronDownSvg, CloseSvg } from '@portfolio/components'
+import type { PagesData } from '@portfolio/types'
 
 export type MobileNavigationRef = NavigationRef
 export type MobileNavigationProps = NavigationProps & {
@@ -40,19 +36,12 @@ const strings = {
  * Renders the mobile navigation component.
  * @param {MobileNavigationProps} props - The component props
  * @param {MobileNavigationRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered mobile navigation component
  */
 const MobileNavigation = memo(
   forwardRef<MobileNavigationRef, MobileNavigationProps>(
     ({ data, ...rest }, ref) => {
-      const validData =
-        data?.filter((item): item is PagesData =>
-          isValidData(item, 'object')
-        ) || null
-
-      if (!validData || validData?.length === 0) {
-        return null
-      }
+      if (!data) return null
 
       return (
         <Popover ref={ref} {...rest}>
@@ -103,22 +92,18 @@ const MobileNavigation = memo(
                   </Heading>
                 </Div>
                 <Nav className="-my-2 mt-6 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                  {validData
-                    .filter(
-                      ({ link, title }) => !isEmpty(link) && !isEmpty(title)
+                  {data.map(({ id, link, title }) => {
+                    return (
+                      <PopoverButton
+                        as={Link}
+                        className="block py-2"
+                        href={link}
+                        key={id}
+                      >
+                        {title}
+                      </PopoverButton>
                     )
-                    .map(({ id, link, title }) => {
-                      return (
-                        <PopoverButton
-                          key={id}
-                          as={Link}
-                          href={link}
-                          className="block py-2"
-                        >
-                          {title}
-                        </PopoverButton>
-                      )
-                    })}
+                  })}
                 </Nav>
               </PopoverPanel>
             </TransitionChild>
@@ -128,7 +113,5 @@ const MobileNavigation = memo(
     }
   )
 )
-
-MobileNavigation.displayName = 'MobileNavigation'
 
 export default MobileNavigation
