@@ -23,7 +23,7 @@ import {
   DesktopNavigation,
   MobileNavigation
 } from '@portfolio/components'
-import { PagesData } from '@portfolio/types'
+import type { PagesData } from '@portfolio/types'
 
 export type HeaderLayoutRef = HeaderRef
 export type HeaderLayoutProps = HeaderProps & {
