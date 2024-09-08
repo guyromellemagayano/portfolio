@@ -13,8 +13,8 @@ import { usePathname } from 'next/navigation'
 import {
   Aside,
   Div,
-  DivisionProps,
-  DivisionRef,
+  type DivisionProps,
+  type DivisionRef,
   Heading,
   P,
   Span
