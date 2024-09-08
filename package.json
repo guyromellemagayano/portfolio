@@ -9,6 +9,7 @@
     "build:portfolio": "pnpm exec nx build portfolio --verbose",
     "build": "pnpm exec nx run-many --target=build --all",
     "clean": "pnpm exec nx run-many --target=clean --all",
+    "dev:portfolio:spotlight": "pnpm exec spotlight",
     "dev:portfolio": "pnpm exec nx dev portfolio --verbose",
     "dev": "pnpm exec nx run-many --target=dev --all",
     "lint:portfolio": "pnpm exec nx lint portfolio --verbose",
