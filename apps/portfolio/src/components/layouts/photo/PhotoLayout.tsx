@@ -2,18 +2,11 @@ import { forwardRef, memo } from 'react'
 
 import Image from 'next/image'
 
-import {
-  Div,
-  type DivisionProps,
-  type DivisionRef
-} from '@guy-romelle-magayano/react-components/server'
+import { Div, type DivisionProps, type DivisionRef } from '@react-components'
 
-import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@react-utils'
 
-import type {
-  CommonPhotosData,
-  PhotosData
-} from '@guy-romelle-magayano/portfolio/types'
+import type { PhotosData } from '@portfolio/types'
 
 export type PhotoLayoutRef = DivisionRef
 export type PhotoLayoutProps = DivisionProps & {
@@ -34,26 +27,19 @@ const strings = {
 }
 
 /**
- * Renders the photo layout component
+ * Renders the photo layout component.
  * @param {PhotoLayoutProps} props - The component props
  * @param {PhotoLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered photo layout component
  */
 const PhotoLayout = memo(
   forwardRef<PhotoLayoutRef, PhotoLayoutProps>(({ data, ...rest }, ref) => {
-    const validData =
-      data?.filter((item): item is CommonPhotosData =>
-        isValidData(item, 'object')
-      ) || null
-
-    if (!validData || validData?.length === 0) {
-      return null
-    }
+    if (!data) return null
 
     return (
       <Div ref={ref} {...rest}>
         <Div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-          {validData.map(({ id, src, alt }, index) => (
+          {data.map(({ id, src, alt }, index) => (
             <Div
               key={id}
               className={cn(
