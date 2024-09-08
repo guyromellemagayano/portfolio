@@ -32,6 +32,8 @@ const FooterLayout = memo(
       const yearNow = new Date().getFullYear()
       const copyrightText = `${yearNow} Guy Romelle Magayano`
 
+      if (!data) return null
+
       return (
         <Footer ref={ref} className={cn('mt-32', className)} {...rest}>
           <BaseContainer.Outer>
@@ -39,7 +41,7 @@ const FooterLayout = memo(
               <BaseContainer.Inner className="lg:px-4">
                 <Div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                   <Div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                    {data?.map(({ id, title, link, ...rest }) => (
+                    {data.map(({ id, title, link, ...rest }) => (
                       <NavigationLink key={id} href={link} {...rest}>
                         {title}
                       </NavigationLink>
