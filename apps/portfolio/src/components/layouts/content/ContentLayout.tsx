@@ -13,16 +13,16 @@ import { usePathname } from 'next/navigation'
 import {
   Aside,
   Div,
+  DivisionProps,
+  DivisionRef,
   Heading,
   P,
-  Span,
-  type DivisionProps,
-  type DivisionRef
-} from '@guy-romelle-magayano/react-components/server'
+  Span
+} from '@react-components'
 
-import { cn, isValidData } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@react-utils'
 
-import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
+import { BaseContainer } from '@portfolio/components'
 
 export type ContentLayoutRef = DivisionRef
 export type ContentLayoutProps = DivisionProps & {
@@ -36,31 +36,19 @@ export type ContentLayoutStaticComponents = {
 }
 
 /**
- * Render the aside content layout component.
+ * Render the content aside layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered content aside layout component
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
     ({ title, intro, children, className, ...rest }, ref) => {
-      const validTitle = isValidData(title, 'string') ? title : null
-      const validIntro =
-        isValidData(intro, 'string') || isValidData(intro, 'array')
-          ? intro
-          : null
-
-      if (
-        (!validTitle || validTitle?.length === 0) &&
-        (!validIntro || validIntro?.length === 0) &&
-        !children
-      ) {
-        return null
-      }
+      if (!title && !intro && !children) return null
 
       return (
         <Aside ref={ref}>
-          {validTitle && (
+          {title && (
             <Heading
               as="h1"
               className="text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100"
@@ -69,15 +57,15 @@ const ContentAsideLayout = memo(
             </Heading>
           )}
 
-          {validIntro && (
+          {intro && (
             <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-              {Array.isArray(validIntro)
-                ? validIntro.map(paragraph => (
-                    <Span key={paragraph} className="space-y-7">
+              {Array.isArray(intro)
+                ? intro.map((paragraph, index) => (
+                    <Span key={index} className="space-y-7">
                       {paragraph}
                     </Span>
                   ))
-                : validIntro}
+                : intro}
             </P>
           )}
 
@@ -95,54 +83,43 @@ const ContentAsideLayout = memo(
 ContentAsideLayout.displayName = 'ContentAsideLayout'
 
 /**
- * Render the simple content layout component.
+ * Render the content simple layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered content simple layout component
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
     ({ title, intro, children, className, ...rest }, ref) => {
       const pathname = usePathname()
-      const validTitle = isValidData(title, 'string') ? title : null
-      const validIntro =
-        isValidData(intro, 'string') || isValidData(intro, 'array')
-          ? intro
-          : null
 
-      if (
-        (!validTitle || validTitle?.length === 0) &&
-        (!validIntro || validIntro?.length === 0) &&
-        !children
-      ) {
-        return null
-      }
+      if (!title && !intro && !children) return null
 
       return (
         <BaseContainer
-          ref={ref}
           className={cn('mt-16 sm:mt-32', className)}
+          ref={ref}
           {...rest}
         >
           <Div className="w-full max-w-3xl">
-            {validTitle && (
+            {title && (
               <Heading
                 as="h1"
                 className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
               >
-                {validTitle}
+                {title}
               </Heading>
             )}
 
-            {validIntro && (
+            {intro && (
               <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
-                {Array.isArray(validIntro)
-                  ? validIntro.map(paragraph => (
-                      <Span key={paragraph} className="space-y-7">
+                {Array.isArray(intro)
+                  ? intro.map((paragraph, index) => (
+                      <Span key={index} className="space-y-7">
                         {paragraph}
                       </Span>
                     ))
-                  : validIntro}
+                  : intro}
               </P>
             )}
           </Div>
@@ -168,7 +145,7 @@ ContentSimpleLayout.displayName = 'ContentSimpleLayout'
  * Render the content layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component.
+ * @returns The rendered content layout component
  */
 const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
   ({ as: Component = Div, children, ...rest }, ref) => {
