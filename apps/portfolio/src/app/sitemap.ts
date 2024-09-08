@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-import { PORTFOLIO_SITE_URL } from '@guy-romelle-magayano/portfolio/configs'
+import { PORTFOLIO_SITE_URL } from '@portfolio/configs'
 
 /**
  * Generates the sitemap for the portfolio application.
