@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation'
 
 import {
   Button,
-  ButtonProps,
-  ButtonRef,
+  type ButtonProps,
+  type ButtonRef,
   Dd,
   Div,
   Dl,
@@ -18,8 +18,8 @@ import {
   Span,
   Time,
   Ul,
-  UnorderedListProps,
-  UnorderedListRef
+  type UnorderedListProps,
+  type UnorderedListRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
@@ -27,8 +27,8 @@ import { cn } from '@react-utils'
 import {
   BriefcaseSvg,
   ContentLayout,
-  ContentLayoutProps,
-  ContentLayoutRef
+  type ContentLayoutProps,
+  type ContentLayoutRef
 } from '@portfolio/components'
 import type { WorkData, WorkExperiencesData } from '@portfolio/types'
 
