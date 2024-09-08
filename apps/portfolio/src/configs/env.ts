@@ -1,4 +1,4 @@
-import { isEmpty, isStringType } from '@guy-romelle-magayano/react-utils'
+import { isEmpty, isStringType } from '@react-utils'
 
 // Site Information
 export const PORTFOLIO_SITE_URL: string = process.env.PORTFOLIO_SITE_URL || ''
