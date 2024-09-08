@@ -1,16 +1,14 @@
 'use server'
 
-import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
+import { apiUrls } from '@portfolio/configs'
 import {
   PhotosData,
   SkillsData,
   WorkData,
   type BasePageData
-} from '@guy-romelle-magayano/portfolio/types'
-import {
-  fullServerUrl,
-  socialData
-} from '@guy-romelle-magayano/portfolio/utils/server'
+} from '@portfolio/types'
+import { socialData } from './data'
+import { fullServerUrl } from './helpers'
 
 /**
  * Returns the full server URL with its protocol, host, and pathname.
