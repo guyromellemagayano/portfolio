@@ -5,7 +5,7 @@ import { forwardRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { HyperlinkProps, HyperlinkRef } from '@react-components'
+import type { HyperlinkProps, HyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
