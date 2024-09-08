@@ -4,27 +4,18 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
-import {
-  Body,
-  Div,
-  Head,
-  Html,
-  Main
-} from '@guy-romelle-magayano/react-components/server'
+import { Body, Div, Head, Html, Main } from '@react-components'
 
-import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
-import {
-  FooterLayout,
-  HeaderLayout
-} from '@guy-romelle-magayano/portfolio/components'
+import { Providers } from '@portfolio/app/providers'
+import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
   GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_ANALYTICS_MEASUREMENT_URL
-} from '@guy-romelle-magayano/portfolio/configs'
-import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
+} from '@portfolio/configs'
+import { navigationData } from '@portfolio/utils'
 
-import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
+import '@portfolio/styles/tailwind.css'
 import 'focus-visible'
 
 export type BaseLayoutProps = {
@@ -33,23 +24,21 @@ export type BaseLayoutProps = {
 
 /**
  * Render the base layout component.
- * @param {BaseLayoutProps} props - The props of the base layout.
- * @returns The rendered base layout component.
+ * @param {BaseLayoutProps} props - The component props
+ * @returns The rendered base layout component
  */
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
 
   return (
-    <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <Html suppressHydrationWarning className="h-full antialiased" lang="en">
       <Head>
         <Script
-          strategy="afterInteractive"
-          src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
           async
+          src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
+          strategy="afterInteractive"
         />
         <Script
-          id="google-analytics"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -66,12 +55,14 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               });
             `
           }}
+          id="google-analytics"
+          strategy="afterInteractive"
         />
         <Script
-          id="google-adsense"
-          strategy="afterInteractive"
-          src={GOOGLE_ADSENSE_MEASUREMENT_URL}
           crossOrigin="anonymous"
+          id="google-adsense"
+          src={GOOGLE_ADSENSE_MEASUREMENT_URL}
+          strategy="afterInteractive"
         />
       </Head>
       <Body className="flex h-full bg-zinc-50 dark:bg-black">
