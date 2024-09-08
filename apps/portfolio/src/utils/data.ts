@@ -1,12 +1,12 @@
-import { apiUrls } from '@guy-romelle-magayano/portfolio/configs'
-import {
+import { apiUrls } from '@portfolio/configs'
+import type {
+  NavigationData,
+  PagesData,
   PhotosData,
-  type NavigationData,
-  type PagesData,
-  type SocialLinksData
-} from '@guy-romelle-magayano/portfolio/types'
-import { fetchPageData } from '@guy-romelle-magayano/portfolio/utils/server'
-import { isValidData } from '@guy-romelle-magayano/react-utils'
+  SocialLinksData
+} from '@portfolio/types'
+
+import { fetchPageData } from './page'
 
 /**
  * Fetches the pages data.
@@ -32,8 +32,8 @@ export const photosData = async (): Promise<PhotosData> =>
 /**
  * The pages to filter.
  */
-// const pageFilter = ['blog', 'projects', 'about']
-const pageFilter: string[] = []
+const pageFilter = ['blog', 'projects', 'about']
+// const pageFilter: string[] = []
 
 /**
  * Retrieves the navigation data for the base layout.
@@ -41,17 +41,12 @@ const pageFilter: string[] = []
  */
 export const navigationData = async (): Promise<NavigationData> => {
   const pages = await pagesData()
+
   const headerMenu =
-    pages?.filter(
-      (item): item is PagesData =>
-        isValidData(item, 'object') && pageFilter.includes(item.slug)
-    ) || null
+    pages?.filter(item => pageFilter.includes(item.slug)) || null
   const footerMenu =
     pages?.filter(
-      (item): item is PagesData =>
-        isValidData(item, 'object') &&
-        !pageFilter.includes(item.slug) &&
-        item.slug !== 'home'
+      item => !pageFilter.includes(item.slug) && item.slug !== 'home'
     ) || null
 
   return {
