@@ -47,7 +47,6 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
     const setProperty = (property: string, value: string): void => {
       document.documentElement.style.setProperty(property, value)
     }
-
     const removeProperty = (property: string): void => {
       document.documentElement.style.removeProperty(property)
     }
@@ -89,7 +88,6 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
         setProperty('--avatar-top', '0px')
       }
     }
-
     const updateAvatarStyles = (downDelay: number) => {
       if (!isHomePage || !avatarRef.current) return
 
@@ -144,11 +142,11 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
     return (
       <>
         <Header
+          ref={ref}
           className={cn(
             'pointer-events-none relative z-50 flex flex-none flex-col',
             className
           )}
-          ref={ref}
           style={{
             height: 'var(--header-height)',
             marginBottom: 'var(--header-mb)'
@@ -159,28 +157,34 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
             <>
               <Div
                 ref={avatarRef}
-                className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
+                className={cn(
+                  'order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]'
+                )}
               />
               <BaseContainer
-                className="top-0 order-last -mb-3 pt-3"
+                className={cn('top-0 order-last -mb-3 pt-3')}
                 style={headerPosition}
               >
                 <Div
-                  className="top-[var(--avatar-top,theme(spacing.3))] w-full"
+                  className={cn(
+                    'top-[var(--avatar-top,theme(spacing.3))] w-full'
+                  )}
                   style={headerInnerPosition}
                 >
-                  <Div className="relative">
+                  <Div className={cn('relative')}>
                     <AvatarContainer
-                      className="absolute left-0 top-3 origin-left transition-opacity"
+                      className={cn(
+                        'absolute left-0 top-3 origin-left transition-opacity'
+                      )}
                       style={{
                         opacity: 'var(--avatar-border-opacity, 0)',
                         transform: 'var(--avatar-border-transform)'
                       }}
                     />
                     <Avatar
-                      large
-                      className="block h-16 w-16 origin-left"
+                      className={cn('block h-16 w-16 origin-left')}
                       style={{ transform: 'var(--avatar-image-transform)' }}
+                      large
                     />
                   </Div>
                 </Div>
@@ -190,33 +194,35 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
 
           <Div
             ref={headerRef}
-            className="top-0 z-10 h-16 pt-6"
+            className={cn('top-0 z-10 h-16 pt-6')}
             style={headerPosition}
           >
             <BaseContainer
-              className="top-[var(--header-top,theme(spacing.6))] w-full"
+              className={cn('top-[var(--header-top,theme(spacing.6))] w-full')}
               style={headerInnerPosition}
             >
-              <Div className="relative flex gap-4">
-                <Div className="flex flex-1">
+              <Div className={cn('relative flex gap-4')}>
+                <Div className={cn('flex flex-1')}>
                   {!isHomePage && (
                     <AvatarContainer>
                       <Avatar />
                     </AvatarContainer>
                   )}
                 </Div>
-                <Div className="flex flex-1 justify-end md:justify-center">
+                <Div
+                  className={cn('flex flex-1 justify-end md:justify-center')}
+                >
                   <MobileNavigation
-                    className="pointer-events-auto md:hidden"
+                    className={cn('pointer-events-auto md:hidden')}
                     data={data}
                   />
                   <DesktopNavigation
-                    className="pointer-events-auto hidden md:block"
+                    className={cn('pointer-events-auto hidden md:block')}
                     data={data}
                   />
                 </Div>
-                <Div className="flex justify-end md:flex-1">
-                  <Div className="pointer-events-auto">
+                <Div className={cn('flex justify-end md:flex-1')}>
+                  <Div className={cn('pointer-events-auto')}>
                     <DarkModeButton />
                   </Div>
                 </Div>
@@ -227,7 +233,7 @@ const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
 
         {isHomePage && (
           <Div
-            className="flex-none"
+            className={cn('flex-none')}
             style={{ height: 'var(--content-offset)' }}
           />
         )}
