@@ -19,7 +19,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
 
 /**
  * Renders the home app page.
- * @returns The rendered page app
+ * @returns The rendered home page app
  */
 const Page = async () => {
   const data = await homeAppData()

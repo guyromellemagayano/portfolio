@@ -21,7 +21,7 @@ const sitemap = (): MetadataRoute.Sitemap => {
     //   priority: 0.8
     // },
     // {
-    //   url: `${PORTFOLIO_SITE_URL}/blog`,
+    //   url: `${PORTFOLIO_SITE_URL}/articles`,
     //   lastModified: new Date(),
     //   changeFrequency: 'weekly',
     //   priority: 1
