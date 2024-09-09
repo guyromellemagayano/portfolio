@@ -59,11 +59,11 @@ const WorkExperiences = memo(
       return (
         <Ul
           ref={ref}
+          role="list"
           className={cn(
             'divide-y divide-gray-100 overflow-hidden rounded-2xl bg-white shadow-md dark:divide-transparent dark:bg-transparent',
             className
           )}
-          role="list"
           {...rest}
         >
           {data.map(
@@ -81,52 +81,76 @@ const WorkExperiences = memo(
             }) => {
               return (
                 <Li
-                  className="relative flex cursor-pointer justify-between gap-x-6 px-4 py-5 ring-1 ring-gray-100 transition hover:bg-gray-50 sm:px-6 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800"
                   key={id}
+                  className={cn(
+                    'relative flex cursor-pointer justify-between gap-x-6 px-4 py-5 ring-1 ring-gray-100 transition hover:bg-gray-50 sm:px-6 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800'
+                  )}
                 >
-                  <Div className="flex min-w-0 gap-x-4">
-                    <Span className="flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-full bg-gray-100">
+                  <Div className={cn('flex min-w-0 gap-x-4')}>
+                    <Span
+                      className={cn(
+                        'flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-full bg-gray-100'
+                      )}
+                    >
                       {src ? (
                         <Image
-                          priority
+                          src={src}
                           alt={alt}
-                          className="h-full w-full"
+                          width={48}
                           height={48}
                           sizes="(min-width: 640px) 2.5rem, 1.5rem"
-                          src={src}
-                          width={48}
+                          className={cn('h-full w-full')}
+                          priority
                         />
                       ) : (
-                        <BriefcaseSvg className="h-7 w-7 text-gray-700" />
+                        <BriefcaseSvg className={cn('h-7 w-7 text-gray-700')} />
                       )}
                     </Span>
 
-                    <Dl className="min-w-0 flex-auto">
-                      <Dt className="sr-only">{company}</Dt>
-                      <Dd className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100">
-                        <Span className="absolute inset-x-0 -top-px bottom-0" />
+                    <Dl className={cn('min-w-0 flex-auto')}>
+                      <Dt className={cn('sr-only')}>{company}</Dt>
+                      <Dd
+                        className={cn(
+                          'text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100'
+                        )}
+                      >
+                        <Span
+                          className={cn('absolute inset-x-0 -top-px bottom-0')}
+                        />
                         {company}
                       </Dd>
-                      <Dt className="sr-only">{country}</Dt>
-                      <Dd className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
+                      <Dt className={cn('sr-only')}>{country}</Dt>
+                      <Dd
+                        className={cn(
+                          'mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400'
+                        )}
+                      >
                         {country}
                       </Dd>
                     </Dl>
                   </Div>
-                  <Div className="flex shrink-0 items-center gap-x-4">
-                    <Dl className="hidden sm:flex sm:flex-col sm:items-end">
-                      <Dt className="sr-only">{title}</Dt>
-                      <Dd className="text-sm leading-6 text-gray-900 dark:text-gray-100">
+                  <Div className={cn('flex shrink-0 items-center gap-x-4')}>
+                    <Dl
+                      className={cn('hidden sm:flex sm:flex-col sm:items-end')}
+                    >
+                      <Dt className={cn('sr-only')}>{title}</Dt>
+                      <Dd
+                        className={cn(
+                          'text-sm leading-6 text-gray-900 dark:text-gray-100'
+                        )}
+                      >
                         {title}
                       </Dd>
-                      <Dt className="sr-only">{start + ' - ' + end}</Dt>
+                      <Dt className={cn('sr-only')}>{start + ' - ' + end}</Dt>
                       <Dd
                         aria-label={`
                       ${start} until ${end}
                     `}
-                        className="mt-1 flex text-xs leading-5 text-gray-500 dark:text-gray-400"
+                        className={cn(
+                          'mt-1 flex text-xs leading-5 text-gray-500 dark:text-gray-400'
+                        )}
                       >
-                        <Span className="relative truncate">
+                        <Span className={cn('relative truncate')}>
                           <Time dateTime={start}>{start}</Time>
                           <Span aria-hidden="true"> — </Span>
                           <Time dateTime={end}>{end}</Time>
@@ -135,7 +159,7 @@ const WorkExperiences = memo(
                     </Dl>
                     <ChevronRightIcon
                       aria-hidden="true"
-                      className="h-5 w-5 flex-none text-gray-400"
+                      className={cn('h-5 w-5 flex-none text-gray-400')}
                     />
                   </Div>
                 </Li>
