@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     json = {
       home: 'home.json',
       about: 'about.json',
-      blog: 'blog.json',
+      articles: 'articles.json',
       projects: 'projects.json',
       thankYou: 'thank-you.json',
       work: 'work.json',
@@ -44,8 +44,8 @@ export async function GET(req: NextRequest) {
       return await getJsonData(json.home)
     case 'about':
       return await getJsonData(json.about)
-    case 'blog':
-      return await getJsonData(json.blog)
+    case 'articles':
+      return await getJsonData(json.articles)
     case 'projects':
       return await getJsonData(json.projects)
     case 'thank-you':
