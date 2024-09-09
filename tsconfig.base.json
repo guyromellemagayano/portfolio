@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "sourceMap": true,
-    "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,56 +9,59 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@guy-romelle-magayano/portfolio-old/*": ["apps/portfolio-old/src/*"],
-      "@guy-romelle-magayano/react-components": [
+      "@portfolio/app/*": [
+        "apps/portfolio/src/app/*"
+      ],
+      "@portfolio/components": [
+        "apps/portfolio/src/components/index.ts"
+      ],
+      "@portfolio/configs": [
+        "apps/portfolio/src/configs/index.ts"
+      ],
+      "@portfolio/styles/*": [
+        "apps/portfolio/src/styles/*"
+      ],
+      "@portfolio/types": [
+        "apps/portfolio/src/types/index.ts"
+      ],
+      "@portfolio/utils": [
+        "apps/portfolio/src/utils/index.ts"
+      ],
+      "@react-components": [
         "packages/react/components/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-components/server": [
-        "packages/react/components/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-components/types": [
-        "packages/react/components/src/components.d.ts"
-      ],
-      "@guy-romelle-magayano/react-hooks": [
+      "@react-hooks": [
         "packages/react/hooks/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-hooks/server": [
-        "packages/react/hooks/src/server.ts"
+      "@react-libs": [
+        "packages/react/libs/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-hooks/types": [
-        "packages/react/hooks/src/hooks.d.ts"
-      ],
-      "@guy-romelle-magayano/react-libs": ["packages/react/libs/src/index.ts"],
-      "@guy-romelle-magayano/react-libs/server": [
-        "packages/react/libs/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-libs/types": [
-        "packages/react/libs/src/libs.d.ts"
-      ],
-      "@guy-romelle-magayano/react-utils": [
+      "@react-utils": [
         "packages/react/utils/src/index.ts"
       ],
-      "@guy-romelle-magayano/react-utils/server": [
-        "packages/react/utils/src/server.ts"
-      ],
-      "@guy-romelle-magayano/react-utils/types": [
-        "packages/react/utils/src/utils.d.ts"
-      ]
     }
   },
   "ts-node": {
-    "require": ["tsconfig-paths/register"],
+    "require": [
+      "tsconfig-paths/register"
+    ],
     "transpileOnly": true,
     "compilerOptions": {
       "module": "commonjs"
     },
     "swc": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
