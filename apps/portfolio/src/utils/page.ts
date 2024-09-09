@@ -1,5 +1,3 @@
-'use server'
-
 import { apiUrls } from '@portfolio/configs'
 import {
   PhotosData,
@@ -7,6 +5,7 @@ import {
   WorkData,
   type BasePageData
 } from '@portfolio/types'
+// import { articlesData } from './articles'
 import { socialData } from './data'
 import { fullServerUrl } from './helpers'
 
@@ -83,7 +82,7 @@ export const homeAppData = async (): Promise<any> => {
     photos,
     work,
     skills
-    // articles,
+    // articles
     // projects
   ]).then(([page, social, about, photos, work, skills]) => {
     const { meta: pageMeta, ...newPage } = page
@@ -100,7 +99,7 @@ export const homeAppData = async (): Promise<any> => {
       workInfo: work,
       skillsInfo: skills,
       photos
-      // articles: newArticles,
+      // articles: newArticles
       // projects: newProjects
     }
   })
