@@ -4,7 +4,7 @@ import {
   Ul,
   type UnorderedListProps,
   type UnorderedListRef
-} from '@guy-romelle-magayano/react-components/server'
+} from '@react-components'
 
 export type NavigationListRef = UnorderedListRef
 export type NavigationListProps = UnorderedListProps

@@ -3,28 +3,43 @@
 import { useEffect } from 'react'
 
 import * as Sentry from '@sentry/nextjs'
-import NextError from 'next/error'
+import { default as Error, default as NextError } from 'next/error'
 
-import { Body, Html } from '@guy-romelle-magayano/react-components/server'
+import { Body, Html } from '@react-components'
 
 /**
- * Render the global error component.
- * @param {Error} error - The error object.
- * @returns The rendered component.
+ * Render the global error app.
+ * @returns The rendered component
  */
-const GlobalError = ({ error }: { error: Error & { digest?: string } }) => {
-  useEffect(() => {
-    Sentry.captureException(error)
-  }, [error])
-
+export const GlobalErrorApp = () => {
   return (
     <Html>
       <Body>
-        {/* This is the default Next.js error component but it doesn't allow omitting the statusCode property yet. */}
         <NextError statusCode={undefined as any} />
       </Body>
     </Html>
   )
 }
+
+GlobalErrorApp.displayName = 'GlobalErrorApp'
+
+export interface GlobalErrorProps {
+  error: Error
+}
+
+/**
+ * Render the global error page.
+ * @param {GlobalErrorProps} props - The page props
+ * @returns The rendered component
+ */
+const GlobalError = ({ error }: GlobalErrorProps) => {
+  useEffect(() => {
+    Sentry.captureException(error)
+  }, [error])
+
+  return <GlobalErrorApp />
+}
+
+GlobalError.displayName = 'GlobalError'
 
 export default GlobalError

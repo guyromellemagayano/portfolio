@@ -4,28 +4,20 @@ import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Script from 'next/script'
 
-import {
-  Body,
-  Div,
-  Head,
-  Html,
-  Main
-} from '@guy-romelle-magayano/react-components/server'
+import { Body, Div, Head, Html, Main } from '@react-components'
 
-import { Providers } from '@guy-romelle-magayano/portfolio/app/providers'
-import {
-  FooterLayout,
-  HeaderLayout
-} from '@guy-romelle-magayano/portfolio/components'
+import { cn } from '@react-utils'
+
+import { Providers } from '@portfolio/app/providers'
+import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
   GOOGLE_ADSENSE_MEASUREMENT_URL,
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_ANALYTICS_MEASUREMENT_URL
-} from '@guy-romelle-magayano/portfolio/configs'
-import { navigationData } from '@guy-romelle-magayano/portfolio/utils/server'
+} from '@portfolio/configs'
+import { navigationData } from '@portfolio/utils'
 
-import '@guy-romelle-magayano/portfolio/styles/tailwind.css'
-
+import '@portfolio/styles/tailwind.css'
 import 'focus-visible'
 
 export type BaseLayoutProps = {
@@ -34,18 +26,22 @@ export type BaseLayoutProps = {
 
 /**
  * Render the base layout component.
- * @param {BaseLayoutProps} props - The props of the base layout.
- * @returns The rendered base layout component.
+ * @param {BaseLayoutProps} props - The component props
+ * @returns The rendered base layout component
  */
 const BaseLayout = async ({ children }: BaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
 
   return (
-    <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
+    <Html
+      lang="en"
+      className={cn('h-full antialiased')}
+      suppressHydrationWarning
+    >
       <Head>
         <Script
-          strategy="afterInteractive"
           src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
+          strategy="afterInteractive"
           async
         />
         <Script
@@ -70,25 +66,18 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
         />
         <Script
           id="google-adsense"
-          strategy="afterInteractive"
           src={GOOGLE_ADSENSE_MEASUREMENT_URL}
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
       </Head>
-
-      <Body className="flex h-full bg-zinc-50 dark:bg-black">
+      <Body className={cn('flex h-full bg-zinc-50 dark:bg-black')}>
         <Providers>
-          <Div className="flex w-full">
-            <Div className="relative flex w-full flex-col">
-              {headerMenu && headerMenu?.length > 0 && (
-                <HeaderLayout pages={headerMenu} />
-              )}
-
-              {children && <Main className="flex-auto">{children}</Main>}
-
-              {footerMenu && footerMenu?.length > 0 && (
-                <FooterLayout pages={footerMenu} />
-              )}
+          <Div className={cn('flex w-full')}>
+            <Div className={cn('relative flex w-full flex-col')}>
+              <HeaderLayout data={headerMenu} />
+              <Main className={cn('flex-auto')}>{children}</Main>
+              <FooterLayout data={footerMenu} />
             </Div>
           </Div>
           <SpeedInsights />

@@ -8,5 +8,5 @@ export const apiUrls = {
   skills: 'api/json?data=skills',
   work: 'api/json?data=work',
   about: 'api/json?data=about',
-  uses: 'api/json?data=uses'
+  photos: 'api/json?data=photos'
 }
