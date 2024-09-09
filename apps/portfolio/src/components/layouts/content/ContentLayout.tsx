@@ -51,17 +51,21 @@ const ContentAsideLayout = memo(
           {title && (
             <Heading
               as="h1"
-              className="text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100"
+              className={cn(
+                'text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100'
+              )}
             >
               {title}
             </Heading>
           )}
 
           {intro && (
-            <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+            <P
+              className={cn('mt-6 text-base text-zinc-600 dark:text-zinc-400')}
+            >
               {Array.isArray(intro)
                 ? intro.map((paragraph, index) => (
-                    <Span key={index} className="space-y-7">
+                    <Span key={index} className={cn('space-y-7')}>
                       {paragraph}
                     </Span>
                   ))
@@ -97,25 +101,31 @@ const ContentSimpleLayout = memo(
 
       return (
         <BaseContainer
-          className={cn('mt-16 sm:mt-32', className)}
           ref={ref}
+          className={cn('mt-16 sm:mt-32', className)}
           {...rest}
         >
-          <Div className="w-full max-w-3xl">
+          <Div className={cn('w-full max-w-3xl')}>
             {title && (
               <Heading
                 as="h1"
-                className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
+                className={cn(
+                  'text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100'
+                )}
               >
                 {title}
               </Heading>
             )}
 
             {intro && (
-              <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
+              <P
+                className={cn(
+                  'mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400'
+                )}
+              >
                 {Array.isArray(intro)
                   ? intro.map((paragraph, index) => (
-                      <Span key={index} className="space-y-7">
+                      <Span key={index} className={cn('space-y-7')}>
                         {paragraph}
                       </Span>
                     ))
