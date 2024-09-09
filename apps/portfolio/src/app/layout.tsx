@@ -1,15 +1,15 @@
 import { ReactNode } from 'react'
 
-import { BaseLayout } from '@guy-romelle-magayano/portfolio/components'
+import { BaseLayout } from '@portfolio/components'
 
 export type RootLayoutProps = {
   children: ReactNode
 }
 
 /**
- * Serves as the root layout of the application.
- * @param children - The children of the root layout.
- * @returns The rendered root layout component.
+ * Renders the root app layout.
+ * @param {RootLayoutProps} props - The component props
+ * @returns The rendered JSX component
  */
 const RootLayout = ({ children }: RootLayoutProps) => {
   return <BaseLayout>{children}</BaseLayout>

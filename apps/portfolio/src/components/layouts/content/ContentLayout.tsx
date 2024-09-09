@@ -13,16 +13,16 @@ import { usePathname } from 'next/navigation'
 import {
   Aside,
   Div,
+  type DivisionProps,
+  type DivisionRef,
   Heading,
   P,
-  Span,
-  type DivisionProps,
-  type DivisionRef
-} from '@guy-romelle-magayano/react-components/server'
+  Span
+} from '@react-components'
 
-import { cn } from '@guy-romelle-magayano/react-utils'
+import { cn } from '@react-utils'
 
-import { BaseContainer } from '@guy-romelle-magayano/portfolio/components'
+import { BaseContainer } from '@portfolio/components'
 
 export type ContentLayoutRef = DivisionRef
 export type ContentLayoutProps = DivisionProps & {
@@ -36,46 +36,47 @@ export type ContentLayoutStaticComponents = {
 }
 
 /**
- * Render the aside content layout component
+ * Render the content aside layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered content aside layout component
  */
 const ContentAsideLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title = '', intro = '', children, className, ...rest }, ref) => {
-      if (!title && !intro && !children) {
-        return null
-      }
+    ({ title, intro, children, className, ...rest }, ref) => {
+      if (!title && !intro && !children) return null
 
       return (
-        <Aside {...rest} ref={ref}>
+        <Aside ref={ref}>
           {title && (
             <Heading
               as="h1"
-              className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
+              className={cn(
+                'text-4xl font-bold tracking-tighter text-zinc-800 dark:text-zinc-100'
+              )}
             >
               {title}
             </Heading>
           )}
 
           {intro && (
-            <P className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
+            <P
+              className={cn('mt-6 text-base text-zinc-600 dark:text-zinc-400')}
+            >
               {Array.isArray(intro)
-                ? intro.map(
-                    (paragraph, index) =>
-                      paragraph && (
-                        <Span key={index} className="space-y-7">
-                          {paragraph}
-                        </Span>
-                      )
-                  )
+                ? intro.map((paragraph, index) => (
+                    <Span key={index} className={cn('space-y-7')}>
+                      {paragraph}
+                    </Span>
+                  ))
                 : intro}
             </P>
           )}
 
           {children && (
-            <Div className={cn('mt-16 sm:mt-20', className)}>{children}</Div>
+            <Div className={cn('mt-16 sm:mt-20', className)} {...rest}>
+              {children}
+            </Div>
           )}
         </Aside>
       )
@@ -86,47 +87,48 @@ const ContentAsideLayout = memo(
 ContentAsideLayout.displayName = 'ContentAsideLayout'
 
 /**
- * Render the simple content layout component
+ * Render the content simple layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered content simple layout component
  */
 const ContentSimpleLayout = memo(
   forwardRef<ContentLayoutRef, ContentLayoutProps>(
-    ({ title = '', intro = '', children, className, ...rest }, ref) => {
+    ({ title, intro, children, className, ...rest }, ref) => {
       const pathname = usePathname()
 
-      if (!title && !intro && !children) {
-        return null
-      }
+      if (!title && !intro && !children) return null
 
       return (
         <BaseContainer
-          {...rest}
           ref={ref}
           className={cn('mt-16 sm:mt-32', className)}
+          {...rest}
         >
-          <Div className="w-full max-w-2xl">
+          <Div className={cn('w-full max-w-3xl')}>
             {title && (
               <Heading
                 as="h1"
-                className="text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100"
+                className={cn(
+                  'text-4xl font-bold tracking-tighter text-zinc-800 sm:text-5xl dark:text-zinc-100'
+                )}
               >
                 {title}
               </Heading>
             )}
 
             {intro && (
-              <P className="mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400">
+              <P
+                className={cn(
+                  'mt-6 flex flex-col space-y-7 text-base text-zinc-600 dark:text-zinc-400'
+                )}
+              >
                 {Array.isArray(intro)
-                  ? intro?.map(
-                      (paragraph, index) =>
-                        paragraph && (
-                          <Span key={index} className="space-y-7">
-                            {paragraph}
-                          </Span>
-                        )
-                    )
+                  ? intro.map((paragraph, index) => (
+                      <Span key={index} className={cn('space-y-7')}>
+                        {paragraph}
+                      </Span>
+                    ))
                   : intro}
               </P>
             )}
@@ -150,10 +152,10 @@ const ContentSimpleLayout = memo(
 ContentSimpleLayout.displayName = 'ContentSimpleLayout'
 
 /**
- * Render the content layout component
+ * Render the content layout component.
  * @param {ContentLayoutProps} props - The component props
  * @param {ContentLayoutRef} ref - The component reference
- * @returns The rendered JSX component
+ * @returns The rendered content layout component
  */
 const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
   ({ as: Component = Div, children, ...rest }, ref) => {
@@ -162,7 +164,7 @@ const ContentLayout = forwardRef<ContentLayoutRef, ContentLayoutProps>(
     }
 
     return (
-      <Component {...rest} ref={ref}>
+      <Component ref={ref} {...rest}>
         {children}
       </Component>
     )

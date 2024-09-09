@@ -21,8 +21,8 @@ const usePrevious = <T,>(value: T): T | undefined => {
 }
 
 /**
- * ThemeWatcher component that watches for changes in the system theme and updates the theme accordingly.
- * @returns The rendered ThemeWatcher component.
+ * `ThemeWatcher` component that watches for changes in the system theme and updates the theme accordingly.
+ * @returns The rendered `ThemeWatcher` component
  */
 const ThemeWatcher = (): null => {
   const { resolvedTheme, setTheme } = useTheme()
@@ -32,6 +32,7 @@ const ThemeWatcher = (): null => {
 
     const onMediaChange = () => {
       const systemTheme = media.matches ? 'dark' : 'light'
+
       if (resolvedTheme === systemTheme) {
         setTheme('system')
       }
@@ -58,9 +59,9 @@ export type ProvidersProps = {
 }
 
 /**
- * Providers component that provides the application with the previous pathname and theme.
- * @param {ProvidersProps} props - The props of the Providers component.
- * @returns The rendered Providers component.
+ * `Providers` component that provides the application with the previous pathname and theme.
+ * @param {ProvidersProps} props - The app props
+ * @returns The rendered `Providers` component
  */
 export const Providers = ({ children }: ProvidersProps) => {
   const pathname = usePathname()
@@ -68,7 +69,7 @@ export const Providers = ({ children }: ProvidersProps) => {
 
   return (
     <AppContext.Provider value={{ previousPathname }}>
-      <ThemeProvider attribute="class" disableTransitionOnChange>
+      <ThemeProvider disableTransitionOnChange attribute="class">
         <ThemeWatcher />
         {children}
       </ThemeProvider>
