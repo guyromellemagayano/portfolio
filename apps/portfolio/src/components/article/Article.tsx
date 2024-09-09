@@ -22,7 +22,7 @@ const strings = {
  */
 const Article = forwardRef<ArticleRef, ArticleProps>(
   ({ slug, title, date, description, ...rest }, ref) => {
-    const href = `/blog/${slug}`
+    const href = `/articles/${slug}`
 
     return (
       <Card ref={ref} as="article" {...rest}>
