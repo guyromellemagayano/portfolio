@@ -1,10 +1,7 @@
 import { Metadata } from 'next'
 
-import { HomeApp } from '@guy-romelle-magayano/portfolio/components'
-import {
-  homeAppData,
-  homePageData
-} from '@guy-romelle-magayano/portfolio/utils/server'
+import { HomeApp } from '@portfolio/components'
+import { homeAppData, homePageData } from '@portfolio/utils'
 
 /**
  * Generates the metadata for the home page.
@@ -21,8 +18,8 @@ export const generateMetadata = async (): Promise<Metadata> => {
 }
 
 /**
- * Renders the home page.
- * @returns The home page component.
+ * Renders the home app page.
+ * @returns The rendered home page app
  */
 const Page = async () => {
   const data = await homeAppData()

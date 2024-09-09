@@ -1,13 +1,10 @@
 // --------------------
 // APP PAGE COMPONENTS
 // --------------------
-export * from './apps/about'
-export * from './apps/articles'
+// export * from './apps/about'
+// export * from './apps/articles'
 export * from './apps/home'
-export * from './apps/projects'
-export * from './apps/skills'
-export * from './apps/uses'
-export * from './apps/work'
+// export * from './apps/projects'
 
 // --------------------
 // ARTICLE COMPONENT
@@ -32,7 +29,7 @@ export * from './card'
 // --------------------
 // CATEGORY COMPONENTS
 // --------------------
-export * from "./categories/skills"
+export * from './categories/skills'
 
 // --------------------
 // CONTAINERS COMPONENTS
@@ -43,18 +40,18 @@ export * from './containers/base'
 // --------------------
 // FORM COMPONENTS
 // --------------------
-export * from "./forms/category"
+export * from './forms/category'
 export * from './forms/newsletter'
 
 // --------------------
 // LAYOUT COMPONENTS
 // --------------------
+export * from './layouts/about'
 export * from './layouts/article'
 export * from './layouts/base'
 export * from './layouts/content'
 export * from './layouts/footer'
 export * from './layouts/header'
-export * from './layouts/jumbotron'
 export * from './layouts/photo'
 export * from './layouts/resume'
 export * from './layouts/section'
@@ -75,12 +72,10 @@ export * from './lists/items/navigation'
 export * from './lists/navigation'
 export * from './lists/projects'
 export * from './lists/projects-cards'
-export * from './lists/skills'
-export * from './lists/skills-cards'
-export * from './lists/tools'
-export * from './lists/tools-cards'
-export * from './lists/work'
-export * from './lists/work-cards'
+// export * from './lists/tools'
+// export * from './lists/tools-cards'
+// export * from './lists/work'
+// export * from './lists/work-cards'
 
 // --------------------
 // NAVIGATION COMPONENTS
