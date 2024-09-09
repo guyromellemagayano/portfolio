@@ -4,13 +4,15 @@ import { forwardRef, memo } from 'react'
 
 import {
   CodeBracketIcon,
-  NewspaperIcon,
-  UserIcon
+  LinkIcon,
+  NewspaperIcon
 } from '@heroicons/react/16/solid'
 import { useTheme } from 'next-themes'
 import Image from 'next/image'
 
 import { Div, Heading, Li, Span, Ul } from '@react-components'
+
+import { cn } from '@react-utils'
 
 import {
   // CategoryForm,
@@ -47,8 +49,12 @@ const SkillsCategory = memo(
         >
           {children}
           {/* <CategoryForm /> */}
-          <Div className="mx-auto max-w-7xl">
-            <Div className="grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent">
+          <Div className={cn('mx-auto max-w-7xl')}>
+            <Div
+              className={cn(
+                'grid grid-cols-2 gap-0.5 overflow-hidden rounded-2xl bg-white shadow-md sm:mx-0 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 dark:bg-transparent'
+              )}
+            >
               {data.skills?.map(({ id, name, type, image }) => {
                 const imgAlt =
                   resolvedTheme === 'dark' && image.dark?.alt
@@ -62,39 +68,55 @@ const SkillsCategory = memo(
                 return (
                   <Div
                     key={id}
-                    className="h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800"
+                    className={cn(
+                      'h-full w-full cursor-pointer px-4 py-8 ring-1 ring-gray-100 transition hover:bg-gray-50 dark:bg-zinc-900 dark:text-zinc-100 dark:ring-black dark:hover:bg-zinc-800'
+                    )}
                   >
                     <Image
                       src={imgSrc}
                       alt={imgAlt}
                       height={80}
                       width={80}
-                      className="mx-auto h-20 w-20"
+                      className={cn('mx-auto h-20 w-20')}
                       priority
                     />
                     <Heading
                       as="h3"
-                      className="mt-4 text-center text-base font-semibold leading-5 tracking-tighter text-zinc-600 dark:text-zinc-400"
+                      className={cn(
+                        'mt-4 text-center text-base font-semibold leading-5 tracking-tighter text-zinc-600 dark:text-zinc-400'
+                      )}
                     >
                       {name}
                     </Heading>
                     <Ul
-                      className="mt-3 flex justify-center gap-x-3"
+                      className={cn('mt-3 flex justify-center gap-x-3')}
                       role="list"
                     >
                       <Li>
-                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
+                        <Span
+                          className={cn(
+                            'flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400'
+                          )}
+                        >
                           <NewspaperIcon className="h-4 w-4" />
                         </Span>
                       </Li>
                       <Li>
-                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
+                        <Span
+                          className={cn(
+                            'flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400'
+                          )}
+                        >
                           <CodeBracketIcon className="h-4 w-4" />
                         </Span>
                       </Li>
                       <Li>
-                        <Span className="flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400">
-                          <UserIcon className="h-4 w-4" />
+                        <Span
+                          className={cn(
+                            'flex items-center gap-x-1 text-sm font-medium leading-6 text-gray-400'
+                          )}
+                        >
+                          <LinkIcon className="h-4 w-4" />
                         </Span>
                       </Li>
                     </Ul>
