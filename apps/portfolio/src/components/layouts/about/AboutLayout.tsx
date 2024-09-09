@@ -18,6 +18,8 @@ export type AboutLayoutProps = ContentLayoutProps
 const AboutLayout = memo(
   forwardRef<AboutLayoutRef, AboutLayoutProps>(
     ({ title, intro, children, ...rest }, ref) => {
+      if (!title && !intro && !children) return null
+
       return (
         <ContentLayout.Simple ref={ref} title={title} intro={intro} {...rest}>
           {children}
