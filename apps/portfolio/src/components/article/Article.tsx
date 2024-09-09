@@ -4,11 +4,11 @@ import { forwardRef } from 'react'
 
 import { cn, formatDate } from '@react-utils'
 
-import { Card, type CardRef } from '@portfolio/components'
+import { Card, CardProps, type CardRef } from '@portfolio/components'
 import type { ArticlesData } from '@portfolio/types'
 
 export type ArticleRef = CardRef
-export type ArticleProps = ArticlesData
+export type ArticleProps = CardProps & ArticlesData
 
 const strings = {
   read: 'Read article'
@@ -22,7 +22,7 @@ const strings = {
  */
 const Article = forwardRef<ArticleRef, ArticleProps>(
   ({ slug, title, date, description, ...rest }, ref) => {
-    const href = `/articles/${slug}`
+    const href = `/blog/${slug}`
 
     return (
       <Card ref={ref} as="article" {...rest}>

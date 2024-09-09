@@ -51,7 +51,7 @@ const PhotoLayout = memo(
                 src={src}
                 alt={alt || strings.defaultImageAlt}
                 sizes="(min-width: 640px) 18rem, 11rem"
-                className="absolute inset-0 h-auto w-full object-cover"
+                className={cn('absolute inset-0 h-auto w-full object-cover')}
                 fill
                 priority
               />
