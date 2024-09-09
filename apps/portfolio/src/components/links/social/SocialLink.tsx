@@ -1,14 +1,14 @@
-import { FC, forwardRef } from 'react'
+import { FC, forwardRef, useMemo } from 'react'
 
-import { SvgProps } from '@guy-romelle-magayano/react-components'
 import {
   A,
   Span,
+  SvgProps,
   type HyperlinkProps,
   type HyperlinkRef
-} from '@guy-romelle-magayano/react-components/server'
+} from '@react-components'
 
-import { cn, convertStringToLowercase } from '@guy-romelle-magayano/react-utils'
+import { cn, convertStringToLowercase } from '@react-utils'
 
 import {
   BehanceSvg,
@@ -21,8 +21,8 @@ import {
   MastodonSvg,
   MediumSvg,
   TwitterSvg
-} from '@guy-romelle-magayano/portfolio/components'
-import { type SocialLinksData } from '@guy-romelle-magayano/portfolio/types'
+} from '@portfolio/components'
+import type { SocialLinksData } from '@portfolio/types'
 
 export type SocialLinkRef = HyperlinkRef
 export type SocialLinkProps = HyperlinkProps &
@@ -32,78 +32,57 @@ export type SocialLinkProps = HyperlinkProps &
 
 /**
  * Renders the social link component.
- * @param {SocialLinkProps} props - The properties to render the social link component.
- * @param {SocialLinkRef} ref - The reference of the social link component.
- * @returns The rendered social link component.
+ * @param {SocialLinkProps} props - The component props
+ * @param {SocialLinkRef} ref - The component reference
+ * @returns The rendered social link component
  */
 const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
-  ({ icon, href, label, showLabel = false, id, className, ...rest }, ref) => {
-    let Icon: FC<SvgProps> | undefined = () => undefined
+  ({ icon, href, label, showLabel = false, className, ...rest }, ref) => {
+    // Define the Icon component based on the icon prop.
+    const iconMap: Record<string, FC<SvgProps>> = useMemo(
+      () => ({
+        facebook: FacebookSvg,
+        instagram: InstagramSvg,
+        twitter: TwitterSvg,
+        github: GithubSvg,
+        linkedin: LinkedInSvg,
+        mail: MailSvg,
+        medium: MediumSvg,
+        behance: BehanceSvg,
+        discord: DiscordSvg,
+        mastodon: MastodonSvg
+      }),
+      []
+    )
 
-    const loweredIcon: string = icon ? convertStringToLowercase(icon) : ''
+    const Icon = useMemo(() => {
+      return icon ? iconMap[convertStringToLowercase(icon)] : undefined
+    }, [icon, iconMap])
 
-    // Set the Icon value based on the icon prop.
-    if (loweredIcon) {
-      switch (loweredIcon) {
-        case 'facebook':
-          Icon = FacebookSvg
-          break
-        case 'instagram':
-          Icon = InstagramSvg
-          break
-        case 'twitter':
-          Icon = TwitterSvg
-          break
-        case 'github':
-          Icon = GithubSvg
-          break
-        case 'linkedin':
-          Icon = LinkedInSvg
-          break
-        case 'mail':
-          Icon = MailSvg
-          break
-        case 'medium':
-          Icon = MediumSvg
-          break
-        case 'behance':
-          Icon = BehanceSvg
-          break
-        case 'discord':
-          Icon = DiscordSvg
-          break
-        case 'mastodon':
-          Icon = MastodonSvg
-          break
-        default:
-          break
-      }
-    }
+    if (!href || !Icon) return null
 
     return (
-      href &&
-      href?.length > 0 && (
-        <A
-          ref={ref}
-          {...rest}
+      <A
+        ref={ref}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+        className={cn(
+          className,
+          'group -m-1 p-1',
+          showLabel &&
+            'flex text-sm font-medium text-zinc-800 transition hover:text-zinc-500 dark:text-zinc-200 dark:hover:text-zinc-500'
+        )}
+        aria-label={label}
+        {...rest}
+      >
+        <Icon
           className={cn(
-            className,
-            'group -m-1 p-1',
-            showLabel &&
-              'flex text-sm font-medium text-zinc-800 transition hover:text-amber-500 dark:text-zinc-200 dark:hover:text-amber-500'
+            'h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300'
           )}
-          href={href}
-          aria-label={label}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
-
-          {showLabel && label && label?.length > 0 && (
-            <Span className="ml-4">{label}</Span>
-          )}
-        </A>
-      )
+        />
+        {showLabel && label && <Span className="ml-4">{label}</Span>}
+      </A>
     )
   }
 )
