@@ -24,7 +24,7 @@ const strings = {
 const ArticleCardsList = memo(
   forwardRef<ArticleCardsListRef, ArticleCardsListProps>(
     ({ date, slug, title, description, className, ...rest }, ref) => {
-      const href = `/blog/${slug}`
+      const href = `/articles/${slug}`
 
       if (!date || !slug || !description || !title) return null
 
