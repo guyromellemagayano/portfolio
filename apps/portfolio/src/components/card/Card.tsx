@@ -3,7 +3,6 @@
 import {
   ElementType,
   ForwardRefExoticComponent,
-  Ref,
   RefAttributes,
   forwardRef
 } from 'react'
@@ -11,8 +10,8 @@ import {
 import Link from 'next/link'
 
 import {
-  type CommonComponentsProps,
   Div,
+  type DivisionProps,
   type DivisionRef,
   Heading,
   P,
@@ -25,8 +24,8 @@ import { cn } from '@react-utils'
 
 import { ChevronRightSvg } from '@portfolio/components'
 
-export type CardRef = Ref<any>
-export type CardProps = CommonComponentsProps & {
+export type CardRef = DivisionRef
+export type CardProps = DivisionProps & {
   as?: ElementType
 }
 export type CardCommonProps = CardProps & {
@@ -80,7 +79,7 @@ export type CardLinkProps = CardCommonProps
  */
 const CardLink = forwardRef<CardLinkRef, CardLinkProps>(
   ({ href, title, target, children, ...rest }, ref) => {
-    if (!children) return null
+    if (!children && !href) return null
 
     return (
       <Div ref={ref} {...rest}>
@@ -123,7 +122,7 @@ const CardTitle = forwardRef<CardTitleRef, CardTitleProps>(
     { as: Component = Heading, href, title, children, className, ...rest },
     ref
   ) => {
-    if (!children) return null
+    if (!children && !href) return null
 
     return (
       <Component
@@ -190,7 +189,7 @@ export type CardCtaProps = CardCommonProps
  */
 const CardCta = forwardRef<CardCtaRef, CardCtaProps>(
   ({ href, title, children, className, ...rest }, ref) => {
-    if (!children) return null
+    if (!children && !href) return null
 
     return (
       <Div

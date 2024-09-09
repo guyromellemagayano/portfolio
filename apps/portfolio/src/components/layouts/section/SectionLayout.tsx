@@ -37,18 +37,24 @@ const SectionLayout = memo(
           )}
           {...rest}
         >
-          <Div className="md:grid md:grid-cols-4 md:items-baseline">
+          <Div className={cn('md:grid md:grid-cols-4 md:items-baseline')}>
             {title && (
               <Heading
                 as="h2"
-                className="text-sm font-semibold text-zinc-400 dark:text-zinc-500"
+                className={cn(
+                  'text-sm font-semibold text-zinc-400 dark:text-zinc-500'
+                )}
               >
                 {title}
               </Heading>
             )}
 
             {children && (
-              <Div className="group relative flex flex-col items-start md:col-span-3">
+              <Div
+                className={cn(
+                  'group relative flex flex-col items-start md:col-span-3'
+                )}
+              >
                 {children}
               </Div>
             )}

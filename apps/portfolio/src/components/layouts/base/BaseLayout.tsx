@@ -6,6 +6,8 @@ import Script from 'next/script'
 
 import { Body, Div, Head, Html, Main } from '@react-components'
 
+import { cn } from '@react-utils'
+
 import { Providers } from '@portfolio/app/providers'
 import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
@@ -31,14 +33,20 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
 
   return (
-    <Html suppressHydrationWarning className="h-full antialiased" lang="en">
+    <Html
+      lang="en"
+      className={cn('h-full antialiased')}
+      suppressHydrationWarning
+    >
       <Head>
         <Script
-          async
           src={GOOGLE_ANALYTICS_MEASUREMENT_URL}
           strategy="afterInteractive"
+          async
         />
         <Script
+          id="google-analytics"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
@@ -55,22 +63,20 @@ const BaseLayout = async ({ children }: BaseLayoutProps) => {
               });
             `
           }}
-          id="google-analytics"
-          strategy="afterInteractive"
         />
         <Script
-          crossOrigin="anonymous"
           id="google-adsense"
           src={GOOGLE_ADSENSE_MEASUREMENT_URL}
+          crossOrigin="anonymous"
           strategy="afterInteractive"
         />
       </Head>
-      <Body className="flex h-full bg-zinc-50 dark:bg-black">
+      <Body className={cn('flex h-full bg-zinc-50 dark:bg-black')}>
         <Providers>
-          <Div className="flex w-full">
-            <Div className="relative flex w-full flex-col">
+          <Div className={cn('flex w-full')}>
+            <Div className={cn('relative flex w-full flex-col')}>
               <HeaderLayout data={headerMenu} />
-              <Main className="flex-auto">{children}</Main>
+              <Main className={cn('flex-auto')}>{children}</Main>
               <FooterLayout data={footerMenu} />
             </Div>
           </Div>
