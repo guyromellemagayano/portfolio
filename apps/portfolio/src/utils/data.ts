@@ -32,8 +32,8 @@ export const photosData = async (): Promise<PhotosData> =>
 /**
  * The pages to filter.
  */
-const pageFilter = ['blog', 'projects', 'about']
-// const pageFilter: string[] = []
+// const pageFilter = ['articles', 'projects', 'about']
+const pageFilter: string[] = []
 
 /**
  * Retrieves the navigation data for the base layout.
