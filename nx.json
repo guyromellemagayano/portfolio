@@ -98,5 +98,19 @@
     }
   },
   "nxCloudAccessToken": "ZTYyMDM4ZTAtMWQxYS00MjFkLWFjYTItZWM5Mzk3ZWVmZWE3fHJlYWQtd3JpdGU=",
-  "defaultBase": "main"
+  "defaultBase": "main",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@vercel/remote-nx",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "e2e"
+        ],
+        "verbose": true
+      }
+    }
+  }
 }

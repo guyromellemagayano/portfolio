@@ -30,7 +30,8 @@
     "src/**/*.mdx",
     "../../dist/apps/portfolio/.next/types/**/*.ts",
     "./.next/types/**/*.ts",
-    "./next-env.d.ts"
+    "./next-env.d.ts",
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "../../node_modules",
@@ -38,6 +39,6 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.tsx",
-    "src/**/*.test.tsx",
+    "src/**/*.test.tsx"
   ]
 }
