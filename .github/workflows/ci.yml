@@ -35,5 +35,5 @@ jobs:
       - run: git branch --track main origin/main
         if: ${{ github.event_name == 'pull_request' }}
 
-      - run: pnpm run build --base main
+      - run: pnpm exec nx affected -t build --base=origin/main
         working-directory: ./
