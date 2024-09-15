@@ -209,8 +209,8 @@ devDependencies:
     specifier: ^17.0.0
     version: 17.3.2(nx@17.3.2)
   '@nx/eslint':
-    specifier: ^17.0.0
-    version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)
+    specifier: ^19.7.3
+    version: 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(eslint@8.57.0)(nx@17.3.2)
   '@nx/eslint-plugin':
     specifier: ^17.0.0
     version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(@typescript-eslint/parser@6.21.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@17.3.2)(typescript@5.5.4)
@@ -2338,7 +2338,6 @@ packages:
 
   /@emnapi/core@1.2.0:
     resolution: {integrity: sha512-E7Vgw78I93we4ZWdYCb4DGAwRROGkMIXk7/y87UmANR+J6qsWusmC3gLt0H+O0KOt5e6O38U8oJamgbudrES/w==}
-    requiresBuild: true
     dependencies:
       '@emnapi/wasi-threads': 1.0.1
       tslib: 2.7.0
@@ -2346,13 +2345,11 @@ packages:
 
   /@emnapi/runtime@1.2.0:
     resolution: {integrity: sha512-bV21/9LQmcQeCPEg3BDFtvwL6cwiTMksYNWQQ4KOxCZikEGalWtenoZ0wCiukJINlGCIi2KXx01g4FoH/LxpzQ==}
-    requiresBuild: true
     dependencies:
       tslib: 2.7.0
 
   /@emnapi/wasi-threads@1.0.1:
     resolution: {integrity: sha512-iIBu7mwkq4UQGeMEM8bLwNK962nXdhodeScX4slfQnRhEMMzvYivHhutCIk8uojvmASXXPC2WNEjwxFWk72Oqw==}
-    requiresBuild: true
     dependencies:
       tslib: 2.7.0
     dev: true
@@ -3262,14 +3259,6 @@ packages:
       - nx
     dev: true
 
-  /@nrwl/devkit@19.7.3(nx@19.7.3):
-    resolution: {integrity: sha512-g9vANTuxgHan6uAkI6M6tkfLjHECLmbZ4A80UqpxJNQJsCJFEHkzIC9oxhf8bWV3PjgCH6Xm4VyQ2GHwb3sgWw==}
-    dependencies:
-      '@nx/devkit': 19.7.3(nx@19.7.3)
-    transitivePeerDependencies:
-      - nx
-    dev: true
-
   /@nrwl/eslint-plugin-nx@17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(@typescript-eslint/parser@6.21.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@17.3.2)(typescript@5.5.4):
     resolution: {integrity: sha512-KfZtT+breRD7D8dy+YLIdKD7S9t4aqtEQLpRQCnJrCALYdqIRuql9rC2J69RUosozgrk55C0LERF0/kJVPe6Gg==}
     dependencies:
@@ -3461,7 +3450,6 @@ packages:
 
   /@nrwl/tao@19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24):
     resolution: {integrity: sha512-cIGhnSFPZdVTp4bI0fqwFoE9i7ToPg5jXz+hNMl/MTwcOQfKQ1JJY/ZPLM3aBUPORFIZ/GECQEycUb6+xCB56g==}
-    hasBin: true
     dependencies:
       nx: 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)
       tslib: 2.7.0
@@ -3577,7 +3565,7 @@ packages:
     peerDependencies:
       nx: '>= 17 <= 20'
     dependencies:
-      '@nrwl/devkit': 19.7.3(nx@19.7.3)
+      '@nrwl/devkit': 19.7.3(nx@17.3.2)
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.2
@@ -5911,7 +5899,6 @@ packages:
 
   /@tybys/wasm-util@0.9.0:
     resolution: {integrity: sha512-6+7nlbMVX/PVDCwaIQ8nTOPveOcFLSt8GcXdx8hD0bt39uWxYT88uXzqTd4fTvqta7oeUJqudepapKNt2DYJFw==}
-    requiresBuild: true
     dependencies:
       tslib: 2.7.0
     dev: true
@@ -6585,7 +6572,6 @@ packages:
 
   /@zkochan/js-yaml@0.0.7:
     resolution: {integrity: sha512-nrUSn7hzt7J6JWgWGz78ZYI8wj+gdIJdk0Ynjpp8l+trkn58Uqsf6RYrYkEK+3X18EX+TNdtJI0WxAtc+L84SQ==}
-    hasBin: true
     dependencies:
       argparse: 2.0.1
     dev: true
@@ -12303,7 +12289,6 @@ packages:
   /next@14.2.11(@babel/core@7.25.2)(@opentelemetry/api@1.9.0)(@playwright/test@1.47.0)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-8MDFqHBhdmR2wdfaWc8+lW3A/hppFe1ggQ9vgIu/g2/2QEMYJrPoQP6b+VNk56gIug/bStysAmrpUKtj3XN8Bw==}
     engines: {node: '>=18.17.0'}
-    hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
       '@playwright/test': ^1.41.2
@@ -12547,7 +12532,6 @@ packages:
 
   /nx@19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24):
     resolution: {integrity: sha512-8F4CzKavSuOFv+uKVwXHc00Px0q40CWAYCW6NC5IgU3AMaJVumyHzgB8Sn+yfkaVgfVnZVqznOsyrbZUWuj/VA==}
-    hasBin: true
     requiresBuild: true
     peerDependencies:
       '@swc-node/register': ^1.8.0
