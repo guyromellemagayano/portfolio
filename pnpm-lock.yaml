@@ -215,8 +215,8 @@ devDependencies:
     specifier: ^17.0.0
     version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(@typescript-eslint/parser@6.21.0)(eslint-config-prettier@9.1.0)(eslint@8.57.0)(nx@17.3.2)(typescript@5.5.4)
   '@nx/jest':
-    specifier: ^17.0.0
-    version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4)
+    specifier: ^19.7.3
+    version: 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4)
   '@nx/js':
     specifier: ^17.0.0
     version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(typescript@5.5.4)
@@ -3299,6 +3299,26 @@ packages:
       - verdaccio
     dev: true
 
+  /@nrwl/jest@19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4):
+    resolution: {integrity: sha512-knsOchwmN/0j9M7meMFMno1F//qK97YWNIEnN8qlkqQC7JX+VAH8/JSk/in87MCW//vi67twUB3XOiI9dKzOlA==}
+    dependencies:
+      '@nx/jest': 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4)
+    transitivePeerDependencies:
+      - '@babel/traverse'
+      - '@swc-node/register'
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - babel-plugin-macros
+      - debug
+      - node-notifier
+      - nx
+      - supports-color
+      - ts-node
+      - typescript
+      - verdaccio
+    dev: true
+
   /@nrwl/js@17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(typescript@5.3.3):
     resolution: {integrity: sha512-WuIeSErulJuMeSpeK41RfiWI3jLjDD0S+tLnYdOLaWdjaIPqjknClM2BAJKlq472NnkkNWvtwtOS8jm518OjOQ==}
     dependencies:
@@ -3683,6 +3703,41 @@ packages:
       minimatch: 9.0.3
       resolve.exports: 1.1.0
       tslib: 2.7.0
+    transitivePeerDependencies:
+      - '@babel/traverse'
+      - '@swc-node/register'
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - babel-plugin-macros
+      - debug
+      - node-notifier
+      - nx
+      - supports-color
+      - ts-node
+      - typescript
+      - verdaccio
+    dev: true
+
+  /@nx/jest@19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4):
+    resolution: {integrity: sha512-XAqKhF4cxzIH4/mPPV4oQftQ7whnvUF2pkJiLGZqyQM7TvWjjR8mWWuwnnyfBK/6S5heqDnI0n6tCiiJuoZQ4g==}
+    dependencies:
+      '@jest/reporters': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@nrwl/jest': 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(ts-node@10.9.2)(typescript@5.5.4)
+      '@nx/devkit': 19.7.3(nx@17.3.2)
+      '@nx/js': 19.7.3(@swc-node/register@1.10.9)(@swc/core@1.7.24)(@types/node@22.5.4)(nx@17.3.2)(typescript@5.5.4)
+      '@phenomnomnominal/tsquery': 5.0.1(typescript@5.5.4)
+      chalk: 4.1.2
+      identity-obj-proxy: 3.0.0
+      jest-config: 29.7.0(@types/node@22.5.4)(ts-node@10.9.2)
+      jest-resolve: 29.7.0
+      jest-util: 29.7.0
+      minimatch: 9.0.3
+      resolve.exports: 1.1.0
+      semver: 7.6.3
+      tslib: 2.7.0
+      yargs-parser: 21.1.1
     transitivePeerDependencies:
       - '@babel/traverse'
       - '@swc-node/register'
@@ -15813,7 +15868,6 @@ packages:
   /typescript@5.4.5:
     resolution: {integrity: sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==}
     engines: {node: '>=14.17'}
-    hasBin: true
     dev: true
 
   /typescript@5.5.4:
