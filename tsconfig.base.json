@@ -17,6 +17,7 @@
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
+    "rootDir": "/",
     "paths": {
       "@portfolio/app/*": [
         "apps/portfolio/src/app/*"
