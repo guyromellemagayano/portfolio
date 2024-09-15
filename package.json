@@ -128,7 +128,7 @@
     "@types/node": "22.5.4",
     "@types/react": "^18.3.4",
     "@types/react-dom": "18.3.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.13.2",
     "@vercel/remote-nx": "^2.0.0",
     "autoprefixer": "^10.4.20",
