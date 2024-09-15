@@ -54,6 +54,7 @@ const nextConfig = {
   },
 
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
+  poweredByHeader: false,
 
   // Experimental features configuration
   experimental: {
@@ -83,7 +84,27 @@ const nextConfig = {
 
   // @ts-ignore
   // Site headers configuration
-  headers
+  headers,
+
+  // Image optimizations
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.ctfassets.net'
+      }
+    ]
+  },
+
+  // Custom Webpack config
+  webpack: config => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack']
+    })
+
+    return config
+  }
 }
 
 // Sentry configuration
