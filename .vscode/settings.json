@@ -76,7 +76,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[dotenv]": {
-    "editor.defaultFormatter": "dotenv.dotenv-vscode"
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[graphql]": {
     "editor.defaultFormatter": "GraphQL.vscode-graphql"
