@@ -1,14 +1,11 @@
 import { ReactNode } from 'react'
 
+declare module '*.png'
+
 declare module '*.svg' {
   const content: any
   export const ReactComponent: any
   export default content
-}
-
-declare module 'focus-visible' {
-  const focusVisible: () => void
-  export default focusVisible
 }
 
 declare module '*.mdx' {
