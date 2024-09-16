@@ -93,7 +93,7 @@
     "@babel/core": "^7.25.2",
     "@babel/eslint-parser": "^7.25.1",
     "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "~9.9.1",
+    "@eslint/js": "~9.10.0",
     "@nx/cypress": "^17.0.0",
     "@nx/devkit": "^17.0.0",
     "@nx/eslint": "^17.0.0",
