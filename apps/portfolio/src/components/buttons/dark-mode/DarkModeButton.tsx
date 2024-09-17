@@ -61,6 +61,7 @@ const DarkModeButton = forwardRef<DarkModeButtonRef, DarkModeButtonProps>(
           className={cn(
             'hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition dark:block',
             '[prefers-color-scheme:dark]:group-hover:stroke-zinc-400',
+
             '[prefers-color-scheme:not_(dark)]:fill-zinc-400/10',
             '[prefers-color-scheme:not_(dark)]:stroke-zinc-500'
           )}
