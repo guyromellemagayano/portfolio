@@ -9,7 +9,6 @@ module.exports = {
     },
     'tailwindcss/nesting': 'postcss-nesting',
     tailwindcss: {},
-    autoprefixer: {},
-    ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
+    autoprefixer: {}
   }
 }
