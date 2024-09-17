@@ -28,6 +28,12 @@
       "@portfolio/configs": [
         "apps/portfolio/src/configs/index.ts"
       ],
+      "@portfolio/libs": [
+        "apps/portfolio/src/libs/index.ts"
+      ],
+      "@portfolio/providers": [
+        "apps/portfolio/src/providers/index.ts"
+      ],
       "@portfolio/styles/*": [
         "apps/portfolio/src/styles/*"
       ],
