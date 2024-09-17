@@ -18,7 +18,7 @@ import {
 
 import { cn, formatDate } from '@react-utils'
 
-import { AppContext } from '@portfolio/app/providers'
+import { AppContext } from '@portfolio/app/[locale]/providers'
 import {
   ArrowLeftSvg,
   BaseContainer,
@@ -99,7 +99,7 @@ const ArticleLayout = memo(
                 >
                   <ArrowLeftSvg
                     className={cn(
-                      'h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400'
+                      'group-hover:stroke-zinc-400:is(.dark *) h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500'
                     )}
                   />
                 </Button>
