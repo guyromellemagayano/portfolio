@@ -7,10 +7,7 @@ const typography = require('@tailwindcss/typography')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    join(
-      __dirname,
-      'src/{components,app}/**/*!(*.stories|*.spec).{ts,tsx,mdx,html}'
-    ),
+    join(__dirname, './src/**/*.{ts,tsx,mdx}'),
     ...createGlobPatternsForDependencies(__dirname)
   ],
   darkMode: 'class',
