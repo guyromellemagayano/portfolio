@@ -31,7 +31,7 @@ import '@portfolio/styles/tailwind.css'
 import 'focus-visible'
 
 export type BaseLayoutProps = Pick<CommonComponentsProps, 'children'> & {
-  locale: string
+  locale?: string
   messages?: AbstractIntlMessages
 }
 
