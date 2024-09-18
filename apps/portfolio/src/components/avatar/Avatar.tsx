@@ -3,11 +3,12 @@
 import { forwardRef } from 'react'
 
 import Image from 'next/image'
-import Link from 'next/link'
 
 import type { HyperlinkProps, HyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
+
+import { Link } from '@portfolio/i18n/routing'
 
 export type AvatarRef = HyperlinkRef
 export type AvatarProps = HyperlinkProps & {
