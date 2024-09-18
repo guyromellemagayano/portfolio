@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 import { Button, Dd, Div, Dl, Dt, Heading, Img, P } from '@react-components'
 
 import { cn } from '@react-utils'
@@ -51,14 +53,14 @@ const strings = {
   goToProjects: 'See all my projects'
 }
 
-type IntroSectionProps = ContentLayoutProps & {
+export type IntroSectionProps = ContentLayoutProps & {
   socialLinks: HomeAppProps['links']
 }
 
 /**
  * Render the intro section component.
  * @param {IntroSectionProps} props - The component props
- * @returns The rendered component
+ * @returns The rendered intro section component
  */
 const IntroSection = ({
   title,
@@ -67,6 +69,8 @@ const IntroSection = ({
   className,
   ...rest
 }: IntroSectionProps) => {
+  const t = useTranslations('HomePage')
+
   return (
     <ContentLayout.Simple
       className={cn('mt-9 sm:mt-9', className)}
@@ -99,9 +103,9 @@ const IntroSection = ({
 IntroSection.displayName = 'IntroSection'
 
 /**
- * Render the home application component.
+ * Render the home app component.
  * @param {HomeAppProps} props - The component props
- * @returns The rendered component
+ * @returns The rendered home app component
  */
 const HomeApp = ({
   hero,
@@ -154,17 +158,12 @@ const HomeApp = ({
 
   return (
     <>
-      {/* Intro section */}
       <IntroSection
         intro={hero?.description}
         socialLinks={links}
         title={hero?.heading}
       />
-
-      {/* Slide photos */}
       <PhotoLayout className="mt-20 md:mt-24" data={photos?.slidePhotos} />
-
-      {/* About me section */}
       <AboutLayout
         className="mt-20 md:mt-24"
         intro={aboutInfo?.hero?.description}
@@ -179,8 +178,6 @@ const HomeApp = ({
           </Button>
         </Div>
       </AboutLayout>
-
-      {/* Work experiences section */}
       <ResumeLayout
         className="mt-20 md:mt-24"
         cvFile={workInfo?.cvFile}
@@ -188,11 +185,7 @@ const HomeApp = ({
         title={workInfo?.hero?.heading}
         workExperiences={workInfo?.workExperiences}
       />
-
-      {/* Skills section */}
       <SkillsCategory className="mt-20 md:mt-24" data={skillsInfo} />
-
-      {/* Projects section */}
       <Div className="mt-20 md:mt-24">
         <Div className="mx-auto flex max-w-7xl flex-col flex-wrap px-6 lg:px-8">
           <Div className="mx-auto max-w-2xl lg:text-center">
@@ -258,8 +251,6 @@ const HomeApp = ({
           </Div>
         </Div>
       </Div>
-
-      {/* Newsletter form section */}
       <NewsletterForm className="mt-20 sm:mt-32 md:mt-24" />
     </>
   )
