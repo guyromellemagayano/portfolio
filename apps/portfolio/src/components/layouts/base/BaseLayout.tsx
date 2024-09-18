@@ -1,9 +1,6 @@
-import { FC } from 'react'
-
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
-import type { AbstractIntlMessages } from 'next-intl'
 import Script from 'next/script'
 
 import {
@@ -17,6 +14,7 @@ import {
 
 import { cn } from '@react-utils'
 
+import type { TLocaleLayoutParams } from '@portfolio/app/[locale]/layout'
 import Providers from '@portfolio/app/[locale]/providers'
 import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
@@ -24,26 +22,25 @@ import {
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_TAG_MANAGER_CONTAINER_ID
 } from '@portfolio/configs'
+import { routingDefaults } from '@portfolio/i18n/routing'
 import { navigationData } from '@portfolio/utils'
 
 import '@portfolio/styles/tailwind.css'
 
 import 'focus-visible'
 
-export type BaseLayoutProps = Pick<CommonComponentsProps, 'children'> & {
-  locale?: string
-  messages?: AbstractIntlMessages
-}
+export type TBaseLayoutProps = Pick<CommonComponentsProps, 'children'> &
+  TLocaleLayoutParams
 
 /**
  * Render the base layout component.
+ * @param {TBaseLayoutProps} props - The component props
  * @returns The rendered base layout component
  */
-const BaseLayout: FC<BaseLayoutProps> = async ({
+const BaseLayout = async ({
   children,
-  locale,
-  messages
-}) => {
+  locale = routingDefaults.defaultLocale
+}: TBaseLayoutProps) => {
   const { headerMenu, footerMenu } = await navigationData()
 
   return (
@@ -71,7 +68,7 @@ const BaseLayout: FC<BaseLayoutProps> = async ({
         )}
       </Head>
       <Body className={cn('flex h-full bg-zinc-50 dark:bg-black')}>
-        <Providers messages={messages}>
+        <Providers>
           <Div className={cn('flex w-full')}>
             <Div className={cn('relative flex w-full flex-col')}>
               <HeaderLayout data={headerMenu} />
