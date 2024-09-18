@@ -1,6 +1,6 @@
 {
   "HomePage": {
-    "title": "Henlo world!",
+    "hello": "Henlo world!",
     "about": "Go to the about page"
   }
 }
