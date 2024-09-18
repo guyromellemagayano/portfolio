@@ -3,6 +3,7 @@ import * as NextPWA from '@ducanh2912/next-pwa'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
+import createNextIntlPlugin from 'next-intl/plugin'
 
 // Security headers configuration
 const securityHeaders = [
@@ -64,15 +65,26 @@ const nextConfig = {
 
   // Environment variables configuration
   env: {
-    PORTFOLIO_SITE_URL: process.env.PORTFOLIO_SITE_URL || '',
+    BUNDLE_ANALYZE: process.env.BUNDLE_ANALYZE || '',
+    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN || '',
+    CONTENTFUL_PREVIEW_ACCESS_TOKEN:
+      process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN || '',
+    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID || '',
+    CROWDIN_BASE_PATH: process.env.CROWDIN_BASE_PATH || '',
+    CROWDIN_BASE_URL: process.env.CROWDIN_BASE_URL || '',
+    CROWDIN_PERSONAL_TOKEN: process.env.CROWDIN_PERSONAL_TOKEN || '',
+    CROWDIN_PROJECT_ID: process.env.CROWDIN_PROJECT_ID || '',
+    GOOGLE_ADSENSE_CLIENT_ID: process.env.GOOGLE_ADSENSE_CLIENT_ID || '',
     GOOGLE_ANALYTICS_MEASUREMENT_ID:
       process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID || '',
-    GOOGLE_ADSENSE_CLIENT_ID: process.env.GOOGLE_ADSENSE_CLIENT_ID || '',
-    SENTRY_DSN: process.env.SENTRY_DSN || '',
+    GOOGLE_TAG_MANAGER_CONTAINER_ID:
+      process.env.GOOGLE_TAG_MANAGER_CONTAINER_ID || '',
+    PORTFOLIO_SITE_URL: process.env.PORTFOLIO_SITE_URL || '',
     SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
+    SENTRY_DSN: process.env.SENTRY_DSN || '',
+    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || '',
     SENTRY_ORG: process.env.SENTRY_ORG || '',
-    SENTRY_PROJECT: process.env.SENTRY_PROJECT || '',
-    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || ''
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT || ''
   },
 
   // React compiler configuration
@@ -98,10 +110,25 @@ const nextConfig = {
 
   // Custom Webpack config
   webpack: config => {
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack']
-    })
+    const fileLoaderRule = config.module.rules.find(rule =>
+      rule.test?.test?.('.svg')
+    )
+
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/ // *.svg?url
+      },
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
+        use: ['@svgr/webpack']
+      }
+    )
+
+    fileLoaderRule.exclude = /\.svg$/i
 
     return config
   }
@@ -122,6 +149,9 @@ const sentryConfigOptions = {
   widenClientFileUpload: process.env.NODE_ENV === 'production'
 }
 
+// `next-intl` configuration
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
+
 // MDX configuration
 const withMDX = createMDX({
   options: {
@@ -138,7 +168,7 @@ const withPWA = NextPWA.default({
 })
 
 // Next.js plugins
-const plugins = [withNx, withMDX, withPWA]
+const plugins = [withNx, withMDX, withPWA, withNextIntl]
 
 export default withSentryConfig(
   composePlugins(...plugins)(nextConfig),
