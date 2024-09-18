@@ -7,7 +7,11 @@ import { ThemeProvider } from 'next-themes'
 
 import { BaseLayoutProps } from '@portfolio/components'
 import { usePathname } from '@portfolio/i18n/routing'
-import { ContentfulProvider, ThemeWatcherProvider } from '@portfolio/providers'
+import {
+  CtfLivePreviewProvider,
+  CtfProvider,
+  ThemeWatcherProvider
+} from '@portfolio/providers'
 
 // App context that provides the previous pathname to the application.
 export const AppContext = createContext<{ previousPathname?: string }>({})
@@ -25,12 +29,14 @@ const Providers = ({ children }: ProvidersProps) => {
 
   return (
     <AppContext.Provider value={{ previousPathname }}>
-      <ContentfulProvider>
-        <ThemeProvider attribute="class" disableTransitionOnChange>
-          <ThemeWatcherProvider />
-          {children}
-        </ThemeProvider>
-      </ContentfulProvider>
+      <CtfProvider>
+        <CtfLivePreviewProvider>
+          <ThemeProvider attribute="class" disableTransitionOnChange>
+            <ThemeWatcherProvider />
+            {children}
+          </ThemeProvider>
+        </CtfLivePreviewProvider>
+      </CtfProvider>
     </AppContext.Provider>
   )
 }
