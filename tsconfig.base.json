@@ -28,6 +28,9 @@
       "@portfolio/configs": [
         "apps/portfolio/src/configs/index.ts"
       ],
+      "@portfolio/i18n/*": [
+        "apps/portfolio/src/i18n/*"
+      ],
       "@portfolio/libs": [
         "apps/portfolio/src/libs/index.ts"
       ],
