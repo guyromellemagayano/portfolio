@@ -1,3 +1,5 @@
+'use server'
+
 import { apiUrls } from '@portfolio/configs'
 import type {
   NavigationData,
