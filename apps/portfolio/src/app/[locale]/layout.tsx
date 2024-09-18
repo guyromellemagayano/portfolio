@@ -1,33 +1,32 @@
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, unstable_setRequestLocale } from 'next-intl/server'
 
-import { CommonComponentsProps } from '@react-components'
+import type { CommonComponentsProps } from '@react-components'
 
 import { BaseLayout } from '@portfolio/components'
 import { routing } from '@portfolio/i18n/routing'
+import type { TCtfContextValue } from '@portfolio/providers'
 
 export const generateStaticParams = () =>
   routing.locales.map(locale => ({ locale }))
 
-export type TRootLayoutProps = Pick<CommonComponentsProps, 'children'> & {
-  params: TRootLayoutParams
+export type TLocaleLayoutProps = Pick<CommonComponentsProps, 'children'> & {
+  params: TLocaleLayoutParams
 }
-export type TRootLayoutParams = {
-  locale: string
-}
+export type TLocaleLayoutParams = Pick<TCtfContextValue, 'locale'>
 
 /**
- * Renders the root layout app.
- * @param {TRootLayoutProps} props - The app props
- * @returns The rendered root layout app
+ * Renders the locale layout app.
+ * @param {TLocaleLayoutProps} props - The app props
+ * @returns The rendered locale layout app
  */
-const RootLayout = async ({ children, params }: TRootLayoutProps) => {
+const LocaleLayout = async ({ children, params }: TLocaleLayoutProps) => {
   unstable_setRequestLocale(params.locale)
 
   const messages = await getMessages()
 
   return (
-    <BaseLayout locale={params.locale} messages={messages}>
+    <BaseLayout locale={params.locale}>
       <NextIntlClientProvider messages={messages}>
         {children}
       </NextIntlClientProvider>
@@ -35,6 +34,6 @@ const RootLayout = async ({ children, params }: TRootLayoutProps) => {
   )
 }
 
-RootLayout.displayName = 'RootLayout'
+LocaleLayout.displayName = 'LocaleLayout'
 
-export default RootLayout
+export default LocaleLayout
