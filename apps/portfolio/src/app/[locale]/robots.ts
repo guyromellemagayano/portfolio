@@ -10,7 +10,7 @@ const robots = (): MetadataRoute.Robots => {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
+      allow: '*',
       disallow: '/api/'
     },
     sitemap: `${PORTFOLIO_SITE_URL}/sitemap.xml`

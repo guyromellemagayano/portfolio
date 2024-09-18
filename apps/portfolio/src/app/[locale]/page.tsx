@@ -1,10 +1,10 @@
 import { Metadata } from 'next'
-import { unstable_setRequestLocale } from 'next-intl/server'
+import { getLocale, unstable_setRequestLocale } from 'next-intl/server'
 
 import { HomeApp } from '@portfolio/components'
 import { homeAppData, homePageData } from '@portfolio/utils'
 
-import { TRootLayoutProps } from './layout'
+import type { TLocaleLayoutProps } from './layout'
 
 /**
  * Generates the metadata for the home page.
@@ -20,7 +20,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-export type THomePageProps = Pick<TRootLayoutProps, 'params'>
+export type THomePageProps = Pick<TLocaleLayoutProps, 'params'>
 
 /**
  * Renders the home app page.
@@ -28,7 +28,9 @@ export type THomePageProps = Pick<TRootLayoutProps, 'params'>
  * @returns The rendered home page app
  */
 const Page = async ({ params }: THomePageProps) => {
-  unstable_setRequestLocale(params.locale)
+  const locale = await getLocale()
+
+  unstable_setRequestLocale(params.locale || locale)
 
   const data = await homeAppData()
 

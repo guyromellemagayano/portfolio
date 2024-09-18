@@ -5,7 +5,7 @@ import { createContext } from 'react'
 import { usePrevious } from '@uidotdev/usehooks'
 import { ThemeProvider } from 'next-themes'
 
-import { BaseLayoutProps } from '@portfolio/components'
+import { TBaseLayoutProps } from '@portfolio/components'
 import { usePathname } from '@portfolio/i18n/routing'
 import {
   CtfLivePreviewProvider,
@@ -16,14 +16,14 @@ import {
 // App context that provides the previous pathname to the application.
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
-export type ProvidersProps = Pick<BaseLayoutProps, 'children' | 'messages'>
+export type TProvidersProps = Pick<TBaseLayoutProps, 'children'>
 
 /**
  * Providers app that provides the application with the previous pathname and theme.
- * @param {ProvidersProps} props - The app props
+ * @param {TProvidersProps} props - The app props
  * @returns The rendered providers app
  */
-const Providers = ({ children }: ProvidersProps) => {
+const Providers = ({ children }: TProvidersProps) => {
   const pathname = usePathname()
   const previousPathname = usePrevious(pathname)
 
