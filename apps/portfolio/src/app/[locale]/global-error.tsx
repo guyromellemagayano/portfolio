@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
 import * as Sentry from '@sentry/nextjs'
 import NextError from 'next/error'
@@ -9,16 +9,15 @@ import { Body, Html } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export interface GlobalErrorProps {
+export type TGlobalErrorProps = {
   error: Error & { digest?: string }
 }
 
 /**
- * Render the global error page.
- * @param {GlobalErrorProps} props - The page props
- * @returns The rendered component
+ * Render the global error app page.
+ * @returns The rendered global error app page
  */
-const GlobalError = ({ error }: GlobalErrorProps) => {
+const GlobalError: FC<TGlobalErrorProps> = ({ error }) => {
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])

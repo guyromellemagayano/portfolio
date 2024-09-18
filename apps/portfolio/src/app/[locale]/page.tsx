@@ -3,6 +3,7 @@ import { unstable_setRequestLocale } from 'next-intl/server'
 
 import { HomeApp } from '@portfolio/components'
 import { homeAppData, homePageData } from '@portfolio/utils'
+import { FC } from 'react'
 
 /**
  * Generates the metadata for the home page.
@@ -18,11 +19,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
   }
 }
 
-type HomePageProps = {
-  params: HomePageParamsData
+export type THomePageProps = {
+  params: THomePageParamsData
 }
-
-type HomePageParamsData = {
+export type THomePageParamsData = {
   locale: string
 }
 
@@ -30,7 +30,7 @@ type HomePageParamsData = {
  * Renders the home app page.
  * @returns The rendered home page app
  */
-const Page = async ({ params: { locale } }: HomePageProps) => {
+const Page: FC<THomePageProps> = async ({ params: { locale } }) => {
   unstable_setRequestLocale(locale)
 
   const data = await homeAppData()
