@@ -2,8 +2,6 @@
 
 import { forwardRef, memo, useContext } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import {
   Article,
   Button,
@@ -25,7 +23,8 @@ import {
   Article as HomeArticleLayout,
   Prose
 } from '@portfolio/components'
-import { type ArticlesData } from '@portfolio/types'
+import { useRouter } from '@portfolio/i18n/routing'
+import type { ArticlesData } from '@portfolio/types'
 
 export type ArticleLayoutRef = DivisionRef
 export type ArticleLayoutProps = DivisionProps & {
