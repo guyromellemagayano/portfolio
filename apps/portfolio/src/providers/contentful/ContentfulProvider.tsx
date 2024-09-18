@@ -9,20 +9,19 @@ import { useSearchParams } from 'next/navigation'
 import { CommonComponentsProps } from '@react-components'
 
 import { CONTENTFUL_SPACE_ID } from '@portfolio/configs'
-import { routing } from '@portfolio/i18n/routing'
+import { routingDefaults } from '@portfolio/i18n/routing'
 
 export type TCtfContextValue = {
   locale: string
-  spaceIds: TCtfContextSpaceIds
+  spaceIds: TCtfContextValueSpaceIds
   previewActive: boolean
 }
-
-export type TCtfContextSpaceIds = {
+export type TCtfContextValueSpaceIds = {
   main: string
 }
 
 export const ctfContextValue: TCtfContextValue = {
-  locale: routing.defaultLocale,
+  locale: routingDefaults.defaultLocale,
   spaceIds: {
     main: CONTENTFUL_SPACE_ID
   },
@@ -76,7 +75,7 @@ export const CtfProvider = ({ children }: TCtfProviderProps) => {
   return (
     <CtfContext.Provider
       value={{
-        locale: locale ?? routing.defaultLocale,
+        locale: locale,
         spaceIds: {
           main: CONTENTFUL_SPACE_ID
         },
@@ -84,7 +83,7 @@ export const CtfProvider = ({ children }: TCtfProviderProps) => {
       }}
     >
       <ContentfulLivePreviewProvider
-        locale={locale ?? routing.defaultLocale}
+        locale={locale}
         enableInspectorMode={previewActive}
         enableLiveUpdates={previewActive}
       >
