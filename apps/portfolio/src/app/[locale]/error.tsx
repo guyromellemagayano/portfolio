@@ -3,17 +3,12 @@
 import { useEffect } from 'react'
 
 import * as Sentry from '@sentry/nextjs'
+import { useLocale } from 'next-intl'
 
-import { Heading } from '@react-components'
-
-import { BaseLayout } from '@portfolio/components'
+import { BaseLayout, ErrorApp } from '@portfolio/components'
 
 export type TCustomErrorProps = {
   error: Error & { digest?: string }
-}
-
-const strings = {
-  errorMessage: 'Something went wrong!'
 }
 
 /**
@@ -22,13 +17,15 @@ const strings = {
  * @returns The rendered custom error app page
  */
 const CustomError = ({ error }: TCustomErrorProps) => {
+  const locale = useLocale()
+
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])
 
   return (
-    <BaseLayout>
-      <Heading as="h2">{strings.errorMessage}</Heading>
+    <BaseLayout locale={locale}>
+      <ErrorApp className="flex h-full items-center" />
     </BaseLayout>
   )
 }
