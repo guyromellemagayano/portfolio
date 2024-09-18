@@ -4,6 +4,7 @@
 // export * from './apps/about'
 // export * from './apps/articles'
 export * from './apps/home'
+export * from './apps/loading'
 // export * from './apps/projects'
 
 // --------------------
