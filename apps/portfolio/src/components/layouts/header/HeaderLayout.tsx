@@ -3,8 +3,6 @@
 
 import { CSSProperties, forwardRef, useEffect, useRef } from 'react'
 
-import { usePathname } from 'next/navigation'
-
 import {
   Div,
   Header,
@@ -23,6 +21,7 @@ import {
   DesktopNavigation,
   MobileNavigation
 } from '@portfolio/components'
+import { usePathname } from '@portfolio/i18n/routing'
 import type { PagesData } from '@portfolio/types'
 
 export type HeaderLayoutRef = HeaderRef
