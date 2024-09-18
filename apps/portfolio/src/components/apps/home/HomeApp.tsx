@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { Button, Dd, Div, Dl, Dt, Heading, Img, P } from '@react-components'
 
 import { cn } from '@react-utils'
@@ -15,6 +13,7 @@ import {
   LockClosedIcon,
   ServerIcon
 } from '@heroicons/react/20/solid'
+
 import {
   AboutLayout,
   ContentLayout,
@@ -69,7 +68,7 @@ const IntroSection = ({
   className,
   ...rest
 }: IntroSectionProps) => {
-  const t = useTranslations('HomePage')
+  // const t = useTranslations('HomePage')
 
   return (
     <ContentLayout.Simple
