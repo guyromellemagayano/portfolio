@@ -3,8 +3,10 @@
 // --------------------
 // export * from './apps/about'
 // export * from './apps/articles'
+export * from './apps/error'
 export * from './apps/home'
 export * from './apps/loading'
+export * from './apps/not-found'
 // export * from './apps/projects'
 
 // --------------------
