@@ -1,2 +1,2 @@
-export type * from './Loading'
-export { default as LoadingApp } from './Loading'
+export type * from './LoadingApp'
+export { default as LoadingApp } from './LoadingApp'
