@@ -8,8 +8,6 @@ import {
   memo
 } from 'react'
 
-import { usePathname } from 'next/navigation'
-
 import {
   Aside,
   Div,
@@ -23,6 +21,7 @@ import {
 import { cn } from '@react-utils'
 
 import { BaseContainer } from '@portfolio/components'
+import { usePathname } from '@portfolio/i18n/routing'
 
 export type ContentLayoutRef = DivisionRef
 export type ContentLayoutProps = DivisionProps & {
