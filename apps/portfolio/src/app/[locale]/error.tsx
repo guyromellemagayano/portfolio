@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
 import * as Sentry from '@sentry/nextjs'
 
@@ -8,7 +8,7 @@ import { Body, Heading, Html } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type CustomErrorProps = {
+export type TCustomErrorProps = {
   error: Error & { digest?: string }
 }
 
@@ -18,10 +18,9 @@ const strings = {
 
 /**
  * Render the custom error app page.
- * @param {CustomErrorProps} props - The app page props
- * @returns The rendered app page
+ * @returns The rendered custom error app page
  */
-const CustomError = ({ error }: CustomErrorProps) => {
+const CustomError: FC<TCustomErrorProps> = ({ error }) => {
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])
