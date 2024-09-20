@@ -1,24 +1,18 @@
 {
-  "extends": [
-    "../../.eslintrc.json"
-  ],
-  "ignorePatterns": [
-    "!**/*",
-    ".next/**/*"
-  ],
+  "extends": ["../../.eslintrc.json"],
+  "ignorePatterns": ["!**/*", ".next/**/*"],
   "overrides": [
     {
-      "files": [
-        "**/*.ts",
-        "**/*.tsx"
-      ],
+      "files": ["**/*.ts", "**/*.tsx"],
       "extends": [
         "plugin:@nx/react-typescript",
+        "plugin:@tanstack/eslint-plugin-query/recommended",
         "next",
         "next/core-web-vitals"
       ],
       "rules": {
         "@next/next/no-html-link-for-pages": "off",
+        "@tanstack/query/exhaustive-deps": "error",
         "no-restricted-imports": [
           "error",
           {
@@ -47,17 +41,13 @@
         "**/*.test.ts",
         "**/*.test.tsx"
       ],
-      "extends": [
-        "plugin:testing-library/react"
-      ],
+      "extends": ["plugin:testing-library/react"],
       "env": {
         "jest": true
       }
     },
     {
-      "files": [
-        "**/*.mdx"
-      ],
+      "files": ["**/*.mdx"],
       "rules": {}
     }
   ]
