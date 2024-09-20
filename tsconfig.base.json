@@ -7,71 +7,37 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": false,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "esnext",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "rootDir": "/",
     "paths": {
-      "@portfolio/app/*": [
-        "apps/portfolio/src/app/*"
-      ],
-      "@portfolio/components": [
-        "apps/portfolio/src/components/index.ts"
-      ],
-      "@portfolio/configs": [
-        "apps/portfolio/src/configs/index.ts"
-      ],
-      "@portfolio/i18n/*": [
-        "apps/portfolio/src/i18n/*"
-      ],
-      "@portfolio/libs": [
-        "apps/portfolio/src/libs/index.ts"
-      ],
-      "@portfolio/providers": [
-        "apps/portfolio/src/providers/index.ts"
-      ],
-      "@portfolio/styles/*": [
-        "apps/portfolio/src/styles/*"
-      ],
-      "@portfolio/types": [
-        "apps/portfolio/src/types/index.ts"
-      ],
-      "@portfolio/utils": [
-        "apps/portfolio/src/utils/index.ts"
-      ],
-      "@react-components": [
-        "packages/react/components/src/index.ts"
-      ],
-      "@react-hooks": [
-        "packages/react/hooks/src/index.ts"
-      ],
-      "@react-libs": [
-        "packages/react/libs/src/index.ts"
-      ],
-      "@react-utils": [
-        "packages/react/utils/src/index.ts"
-      ],
+      "@portfolio/app/*": ["apps/portfolio/src/app/*"],
+      "@portfolio/components": ["apps/portfolio/src/components/index.ts"],
+      "@portfolio/configs": ["apps/portfolio/src/configs/index.ts"],
+      "@portfolio/i18n/*": ["apps/portfolio/src/i18n/*"],
+      "@portfolio/libs": ["apps/portfolio/src/libs/index.ts"],
+      "@portfolio/providers": ["apps/portfolio/src/providers/index.ts"],
+      "@portfolio/styles/*": ["apps/portfolio/src/styles/*"],
+      "@portfolio/types": ["apps/portfolio/src/types/index.ts"],
+      "@portfolio/utils": ["apps/portfolio/src/utils/index.ts"],
+      "@react-components": ["packages/react/components/src/index.ts"],
+      "@react-hooks": ["packages/react/hooks/src/index.ts"],
+      "@react-libs": ["packages/react/libs/src/index.ts"],
+      "@react-utils": ["packages/react/utils/src/index.ts"]
     }
   },
   "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ],
+    "require": ["tsconfig-paths/register"],
     "transpileOnly": true,
     "compilerOptions": {
-      "module": "commonjs"
+      "module": "esnext"
     },
     "swc": true
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
