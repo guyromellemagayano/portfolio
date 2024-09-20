@@ -6,7 +6,7 @@ import {
 
 // Fetcher config
 export const ctfConfig = {
-  endpoint: `https://graphql.contentful.com/content/v1/spaces${CONTENTFUL_SPACE_ID}`,
+  endpoint: `https://graphql.contentful.com/content/v1/spaces/${CONTENTFUL_SPACE_ID}`,
   params: {
     headers: {
       'Content-Type': 'application/json',
