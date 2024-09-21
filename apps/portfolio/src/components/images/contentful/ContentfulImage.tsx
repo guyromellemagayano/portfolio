@@ -4,7 +4,7 @@ import { forwardRef, memo } from 'react'
 
 import Image, { type ImageLoaderProps } from 'next/image'
 
-import { AVATAR } from '@portfolio/configs'
+import { avatarDefaults } from '@portfolio/configs'
 import type {
   CommonComponentsProps,
   ImageProps,
@@ -38,7 +38,7 @@ export const contentfulLoader = ({
 const ContentfulImage = memo(
   forwardRef<TContentfulImageRef, TContentfulImageProps>(
     ({ alt, ...rest }, ref) => {
-      const avatarFile = AVATAR.file
+      const avatarFile = avatarDefaults.file
 
       return (
         <Image

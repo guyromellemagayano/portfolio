@@ -9,7 +9,7 @@ import type { HyperlinkProps, HyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
-import { AVATAR } from '@portfolio/configs'
+import { avatarDefaults } from '@portfolio/configs'
 
 export type AvatarRef = HyperlinkRef
 export type AvatarProps = HyperlinkProps & {
@@ -30,17 +30,17 @@ const Avatar = forwardRef<AvatarRef, AvatarProps>(
     return (
       <Link
         ref={ref}
-        href={AVATAR.link.href}
+        href={avatarDefaults.link.href}
         className={cn('pointer-events-auto', className)}
-        aria-label={AVATAR.link.label}
+        aria-label={avatarDefaults.link.label}
         {...rest}
       >
         <Image
-          src={AVATAR.file.src}
+          src={avatarDefaults.file.src}
           alt={alt}
-          height={AVATAR.file.height}
+          height={avatarDefaults.file.height}
           sizes={imageSize}
-          width={AVATAR.file.width}
+          width={avatarDefaults.file.width}
           className={cn(
             'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
             sizeClass
