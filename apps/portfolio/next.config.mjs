@@ -1,4 +1,3 @@
-// @ts-check
 import * as NextPWA from '@ducanh2912/next-pwa'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
@@ -39,7 +38,6 @@ const securityHeaders = [
  */
 const headers = async () => [
   {
-    // @ts-ignore
     source: '/:path*',
     headers: securityHeaders
   }
@@ -91,12 +89,12 @@ const nextConfig = {
     }
   },
 
-  // @ts-ignore
   // Site headers configuration
   headers,
 
   // Image optimizations
   images: {
+    formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
         protocol: 'https',
