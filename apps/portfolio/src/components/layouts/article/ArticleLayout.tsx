@@ -2,6 +2,8 @@
 
 import { forwardRef, memo, useContext } from 'react'
 
+import { useRouter } from 'next/navigation'
+
 import {
   Article,
   Button,
@@ -16,14 +18,13 @@ import {
 
 import { cn, formatDate } from '@react-utils'
 
-import { AppContext } from '@portfolio/app/[locale]/providers'
+import { AppContext } from '@portfolio/app/providers'
 import {
   ArrowLeftSvg,
   BaseContainer,
   Article as HomeArticleLayout,
   Prose
 } from '@portfolio/components'
-import { useRouter } from '@portfolio/i18n/routing'
 import type { ArticlesData } from '@portfolio/types'
 
 export type ArticleLayoutRef = DivisionRef

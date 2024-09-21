@@ -1,7 +1,0 @@
-files:
-  [
-    {
-      'source': '/apps/portfolio/messages/en-US.json',
-      'translation': '/apps/portfolio/messages/%locale%.json'
-    }
-  ]
