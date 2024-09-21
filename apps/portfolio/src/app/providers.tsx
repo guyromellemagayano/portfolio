@@ -1,78 +1,60 @@
 'use client'
 
-import { ReactNode, createContext, useEffect, useRef } from 'react'
+import { createContext } from 'react'
 
-import { ThemeProvider, useTheme } from 'next-themes'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { usePrevious } from '@uidotdev/usehooks'
+import { ThemeProvider } from 'next-themes'
 import { usePathname } from 'next/navigation'
 
-/**
- * Custom hook that returns the previous value of a given value.
- * @param value - The value to return the previous value of.
- * @returns The previous value of the given value.
- */
-const usePrevious = <T,>(value: T): T | undefined => {
-  const ref = useRef<T>()
+import type { TBaseLayoutProps } from '@portfolio/components'
+import { IS_DEV } from '@portfolio/configs'
+// import { usePathname } from '@portfolio/i18n/routing'
+import { getQueryClient } from '@portfolio/libs'
+import {
+  CtfLivePreviewProvider,
+  CtfProvider,
+  ThemeWatcherProvider
+} from '@portfolio/providers'
 
-  useEffect(() => {
-    ref.current = value
-  }, [value])
-
-  return ref.current
-}
-
-/**
- * `ThemeWatcher` component that watches for changes in the system theme and updates the theme accordingly.
- * @returns The rendered `ThemeWatcher` component
- */
-const ThemeWatcher = (): null => {
-  const { resolvedTheme, setTheme } = useTheme()
-
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-color-scheme: dark)')
-
-    const onMediaChange = () => {
-      const systemTheme = media.matches ? 'dark' : 'light'
-
-      if (resolvedTheme === systemTheme) {
-        setTheme('system')
-      }
-    }
-
-    onMediaChange()
-    media.addEventListener('change', onMediaChange)
-
-    return () => {
-      media.removeEventListener('change', onMediaChange)
-    }
-  }, [resolvedTheme, setTheme])
-
-  return null
-}
-
-/**
- * AppContext that provides the previous pathname to the application.
- */
+// App context that provides the previous pathname to the application.
 export const AppContext = createContext<{ previousPathname?: string }>({})
 
-export type ProvidersProps = {
-  children: ReactNode
-}
+export type TProvidersProps = Pick<TBaseLayoutProps, 'children'>
 
 /**
- * `Providers` component that provides the application with the previous pathname and theme.
- * @param {ProvidersProps} props - The app props
- * @returns The rendered `Providers` component
+ * Providers app that provides the application with the previous pathname and theme.
+ * @param {TProvidersProps} props - The app props
+ * @returns The rendered providers app
  */
-export const Providers = ({ children }: ProvidersProps) => {
+const Providers = ({ children }: TProvidersProps) => {
   const pathname = usePathname()
   const previousPathname = usePrevious(pathname)
 
+  const queryClient = getQueryClient()
+
   return (
     <AppContext.Provider value={{ previousPathname }}>
-      <ThemeProvider disableTransitionOnChange attribute="class">
-        <ThemeWatcher />
-        {children}
-      </ThemeProvider>
+      <CtfProvider>
+        <CtfLivePreviewProvider>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools
+              position="bottom"
+              buttonPosition="bottom-left"
+              initialIsOpen={IS_DEV}
+            />
+            <ThemeProvider attribute="class" disableTransitionOnChange>
+              <ThemeWatcherProvider />
+              {children}
+            </ThemeProvider>
+          </QueryClientProvider>
+        </CtfLivePreviewProvider>
+      </CtfProvider>
     </AppContext.Provider>
   )
 }
+
+Providers.displayName = 'Providers'
+
+export default Providers

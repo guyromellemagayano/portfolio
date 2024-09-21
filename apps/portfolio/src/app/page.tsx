@@ -1,7 +1,8 @@
 import { Metadata } from 'next'
 
 import { HomeApp } from '@portfolio/components'
-import { homeAppData, homePageData } from '@portfolio/utils'
+// import { getQueryClient } from '@portfolio/libs'
+import { faviconsData, homeAppData, homePageData } from '@portfolio/utils'
 
 /**
  * Generates the metadata for the home page.
@@ -9,22 +10,27 @@ import { homeAppData, homePageData } from '@portfolio/utils'
  */
 export const generateMetadata = async (): Promise<Metadata> => {
   const { meta } = await homePageData()
+  const { icons, manifest } = await faviconsData()
 
   return {
     title: meta?.title || '',
     description: meta?.description || '',
-    keywords: meta?.keywords || ''
+    manifest,
+    icons
   }
 }
 
 /**
- * Renders the home app page.
- * @returns The rendered home page app
+ * Renders the home page.
+ * @param {THomePageProps} props - The page props
+ * @returns The rendered home page
  */
-const Page = async () => {
+const HomePage = async () => {
+  // const queryClient = getQueryClient()
+
   const data = await homeAppData()
 
   return <HomeApp {...data} />
 }
 
-export default Page
+export default HomePage

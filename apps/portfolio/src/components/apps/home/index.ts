@@ -1,2 +1,2 @@
-export type * from './Home'
-export { default as HomeApp } from './Home'
+export type * from './HomeApp'
+export { default as HomeApp } from './HomeApp'

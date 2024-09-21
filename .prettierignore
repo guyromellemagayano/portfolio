@@ -191,4 +191,4 @@ apps/*-server-*/
 .sentryclirc
 
 # Generated
-apps/**/src/__generated
+apps/**/src/**/__generated

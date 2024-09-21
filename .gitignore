@@ -122,6 +122,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local env files
+.env
 .env.*
 .env*.*
 !.env.project
