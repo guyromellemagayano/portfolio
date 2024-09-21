@@ -2,11 +2,16 @@
 
 import { createContext } from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { usePrevious } from '@uidotdev/usehooks'
 import { ThemeProvider } from 'next-themes'
+import { usePathname } from 'next/navigation'
 
-import { TBaseLayoutProps } from '@portfolio/components'
-import { usePathname } from '@portfolio/i18n/routing'
+import type { TBaseLayoutProps } from '@portfolio/components'
+import { IS_DEV } from '@portfolio/configs'
+// import { usePathname } from '@portfolio/i18n/routing'
+import { getQueryClient } from '@portfolio/libs'
 import {
   CtfLivePreviewProvider,
   CtfProvider,
@@ -27,14 +32,23 @@ const Providers = ({ children }: TProvidersProps) => {
   const pathname = usePathname()
   const previousPathname = usePrevious(pathname)
 
+  const queryClient = getQueryClient()
+
   return (
     <AppContext.Provider value={{ previousPathname }}>
       <CtfProvider>
         <CtfLivePreviewProvider>
-          <ThemeProvider attribute="class" disableTransitionOnChange>
-            <ThemeWatcherProvider />
-            {children}
-          </ThemeProvider>
+          <QueryClientProvider client={queryClient}>
+            <ReactQueryDevtools
+              position="bottom"
+              buttonPosition="bottom-left"
+              initialIsOpen={IS_DEV}
+            />
+            <ThemeProvider attribute="class" disableTransitionOnChange>
+              <ThemeWatcherProvider />
+              {children}
+            </ThemeProvider>
+          </QueryClientProvider>
         </CtfLivePreviewProvider>
       </CtfProvider>
     </AppContext.Provider>
