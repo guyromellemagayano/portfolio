@@ -2,7 +2,7 @@
 
 import { forwardRef, useMemo } from 'react'
 
-import Link, { LinkProps } from 'next/link'
+import Link, { type LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import {
@@ -15,9 +15,7 @@ import {
 import { cn } from '@react-utils'
 
 export type NavigationListItemRef = ListItemRef
-export type NavigationListItemProps = ListItemProps & {
-  href: LinkProps['href']
-}
+export type NavigationListItemProps = ListItemProps & Pick<LinkProps, 'href'>
 
 /**
  * Renders the navigation list component.

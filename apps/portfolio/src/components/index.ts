@@ -3,7 +3,10 @@
 // --------------------
 // export * from './apps/about'
 // export * from './apps/articles'
+export * from './apps/error'
 export * from './apps/home'
+export * from './apps/loading'
+export * from './apps/not-found'
 // export * from './apps/projects'
 
 // --------------------
@@ -42,6 +45,11 @@ export * from './containers/base'
 // --------------------
 export * from './forms/category'
 export * from './forms/newsletter'
+
+// --------------------
+// IMAGE COMPONENTS
+// --------------------
+export * from './images/contentful'
 
 // --------------------
 // LAYOUT COMPONENTS

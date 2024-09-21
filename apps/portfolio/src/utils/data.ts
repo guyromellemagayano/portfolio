@@ -1,33 +1,43 @@
+'use server'
+
 import { apiUrls } from '@portfolio/configs'
 import type {
+  FaviconsData,
   NavigationData,
   PagesData,
   PhotosData,
   SocialLinksData
 } from '@portfolio/types'
 
-import { fetchPageData } from './page'
+import { fetchData } from './helpers'
 
 /**
  * Fetches the pages data.
  * @returns The pages data.
  */
 export const pagesData = async (): Promise<PagesData[]> =>
-  await fetchPageData(apiUrls.pages)
+  await fetchData(apiUrls.pages)
 
 /**
  * Fetches the social data.
  * @returns The social data.
  */
 export const socialData = async (): Promise<SocialLinksData[]> =>
-  await fetchPageData(apiUrls.social)
+  await fetchData(apiUrls.social)
 
 /**
  * Returns the photos data.
  * @returns The photos data.
  */
 export const photosData = async (): Promise<PhotosData> =>
-  await fetchPageData(apiUrls.photos)
+  await fetchData(apiUrls.photos)
+
+/**
+ * Fetches the favicons metadata.
+ * @returns The favicons metadata.
+ */
+export const faviconsData = async (): Promise<FaviconsData> =>
+  await fetchData(apiUrls.icons)
 
 /**
  * The pages to filter.
