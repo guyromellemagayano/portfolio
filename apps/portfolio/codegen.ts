@@ -1,28 +1,29 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-import { ctfConfig } from '@portfolio/configs'
+import { ctfConfig } from './src/configs'
 
-const config: CodegenConfig = {
-  overwrite: true,
-  ignoreNoDocuments: true,
+export const config: CodegenConfig = {
   schema: [
     {
       [ctfConfig.endpoint]: ctfConfig.params
     }
   ],
+  overwrite: true,
+  ignoreNoDocuments: true,
+  require: ['dotenv/config', 'ts-node/register', 'tsconfig-paths/register'],
   generates: {
-    './src/libs/__generated/graphql.schema.json': {
+    'apps/portfolio/src/libs/__generated/graphql.schema.json': {
       plugins: ['introspection']
     },
-    './src/libs/__generated/graphql.schema.graphql': {
+    'apps/portfolio/src/libs/__generated/graphql.schema.graphql': {
       plugins: ['schema-ast']
     },
-    './src/libs/__generated/graphql.types.ts': {
+    'apps/portfolio/src/libs/__generated/graphql.types.ts': {
       plugins: ['typescript', 'typescript-operations'],
-      documents: ['./src/**/*.graphql']
+      documents: ['apps/portfolio/src/**/*.graphql']
     },
-    './src/': {
-      documents: ['./src/**/*.graphql'],
+    'apps/portfolio/src/': {
+      documents: ['apps/portfolio/src/**/*.graphql'],
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.ts',
@@ -40,7 +41,7 @@ const config: CodegenConfig = {
         dedupeFragments: true,
         preResolveTypes: true,
         withHooks: true,
-        fetcher: './src/libs#ctfFetcher'
+        fetcher: 'apps/portfolio/src/libs/contentful.ts#ctfFetcher'
       }
     }
   }
