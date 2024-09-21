@@ -14,8 +14,8 @@ import {
 
 import { cn } from '@react-utils'
 
-import type { TLocaleLayoutParams } from '@portfolio/app/[locale]/layout'
-import Providers from '@portfolio/app/[locale]/providers'
+import type { TLocaleLayoutParams } from '@portfolio/app/layout'
+import Providers from '@portfolio/app/providers'
 import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
   GOOGLE_ADSENSE_MEASUREMENT_URL,
