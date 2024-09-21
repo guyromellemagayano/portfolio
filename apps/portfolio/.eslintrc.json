@@ -1,23 +1,26 @@
 {
-  "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", ".next/**/*"],
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "ignorePatterns": [
+    "!**/*",
+    ".next/**/*"
+  ],
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": [
+        "**/*.ts?(x)"
+      ],
       "extends": [
-        "plugin:@nx/react-typescript",
-        "plugin:@tanstack/eslint-plugin-query/recommended",
-        "next",
-        "next/core-web-vitals"
+        "plugin:@tanstack/eslint-plugin-query/recommended"
       ],
       "rules": {
-        "@next/next/no-html-link-for-pages": "off",
-        "@tanstack/query/exhaustive-deps": "error",
+        "@tanstack/query/exhaustive-deps": "off",
         "no-restricted-imports": [
           "error",
           {
             "name": "next/link",
-            "message": "Please import from `@/i18n/routing` instead."
+            "message": "Please import from `@portfolio/i18n/routing` instead."
           },
           {
             "name": "next/navigation",
@@ -27,27 +30,15 @@
               "useRouter",
               "usePathname"
             ],
-            "message": "Please import from `@/i18n/routing` instead."
+            "message": "Please import from `@portfolio/i18n/routing` instead."
           }
         ]
       }
     },
     {
       "files": [
-        "**/__tests__/*.ts",
-        "**/__tests__/*.tsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "**/*.test.ts",
-        "**/*.test.tsx"
+        "**/*.mdx"
       ],
-      "extends": ["plugin:testing-library/react"],
-      "env": {
-        "jest": true
-      }
-    },
-    {
-      "files": ["**/*.mdx"],
       "rules": {}
     }
   ]
