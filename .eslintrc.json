@@ -1,31 +1,33 @@
 {
   "root": true,
-  "plugins": ["@nx", "@nx/react:hook"],
+  "plugins": [
+    "@nx"
+  ],
   "settings": {
     "react": {
       "version": "detect"
     }
   },
   "extends": [
-    "plugin:prettier/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:import/typescript",
+    "plugin:@nx/react-typescript",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/typescript",
+    "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
-    "plugin:@next/next/recommended"
+    "plugin:prettier/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:@next/next/recommended",
+    "next",
+    "next/core-web-vitals"
   ],
   "overrides": [
     {
-      "files": ["**/*.js?(x)"],
-      "parserOptions": {
-        "requireConfigFile": false
-      }
-    },
-    {
-      "files": ["**/*.ts?(x)"],
+      "files": [
+        "**/*.ts?(x)"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": "latest",
@@ -37,7 +39,10 @@
       },
       "settings": {
         "import/parsers": {
-          "@typescript-eslint/parser": [".ts", ".tsx"]
+          "@typescript-eslint/parser": [
+            ".ts",
+            ".tsx"
+          ]
         },
         "import/resolver": {
           "typescript": {
@@ -45,7 +50,9 @@
           }
         }
       },
-      "extends": ["plugin:@nx/typescript"],
+      "extends": [
+        "plugin:@nx/typescript"
+      ],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -56,11 +63,14 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
               }
             ]
           }
         ],
+        "@next/next/no-html-link-for-pages": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/ban-ts-ignore": "off",
         "@typescript-eslint/camelcase": "off",
@@ -84,11 +94,12 @@
         "import/namespace": "off",
         "import/no-named-as-default-member": "off",
         "import/no-named-as-default": "off",
+        "import/no-unresolved": "off",
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/click-events-have-key-events": "off",
         "no-irregular-whitespace": "off",
         "prettier/prettier": "off",
-        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/exhaustive-deps": "off",
         "react-hooks/rules-of-hooks": "error",
         "react/display-name": "off",
         "react/jsx-uses-react": "off",
@@ -98,8 +109,17 @@
       }
     },
     {
-      "files": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
-      "extends": ["plugin:testing-library/react"],
+      "files": [
+        "**/__tests__/*.ts",
+        "**/__tests__/*.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx"
+      ],
+      "extends": [
+        "plugin:testing-library/react"
+      ],
       "env": {
         "jest": true
       }
