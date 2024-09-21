@@ -18,7 +18,7 @@ const NotFoundApp = ({ className, children, ...rest }: TNotFoundAppProps) => {
 
   return (
     <ContentLayout.Simple
-      className={cn('mt-9 sm:mt-9', className)}
+      className={cn('sm:px-8', className)}
       intro={t('description')}
       title={t('title')}
       {...rest}
