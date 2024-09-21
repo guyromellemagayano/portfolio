@@ -25,7 +25,7 @@ import {
   Article as HomeArticleLayout,
   Prose
 } from '@portfolio/components'
-import { type ArticlesData } from '@portfolio/types'
+import type { ArticlesData } from '@portfolio/types'
 
 export type ArticleLayoutRef = DivisionRef
 export type ArticleLayoutProps = DivisionProps & {
@@ -99,7 +99,7 @@ const ArticleLayout = memo(
                 >
                   <ArrowLeftSvg
                     className={cn(
-                      'h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400'
+                      'group-hover:stroke-zinc-400:is(.dark *) h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500'
                     )}
                   />
                 </Button>
