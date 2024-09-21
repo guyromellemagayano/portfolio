@@ -95,3 +95,37 @@ export type NavigationData = {
   headerMenu: PagesData[]
   footerMenu: PagesData[]
 }
+
+// Favicons data
+export type FaviconsData = {
+  manifest: string
+  icons: FaviconsIconsData
+}
+
+// Favicons icons data
+export type FaviconsIconsData = {
+  shortcut: FaviconsShortcutData
+  icon: FaviconsIconData[]
+  apple: FaviconsAppleData[]
+  other: FaviconsOtherData[]
+}
+
+// Favicons shortcut data
+export type FaviconsShortcutData = {
+  url: string
+  type: string
+}
+
+// Favicons icon data
+export type FaviconsIconData = FaviconsShortcutData & {
+  sizes?: string
+}
+
+// Favicons apple data
+export type FaviconsAppleData = FaviconsIconData
+
+// Favicons other data
+export type FaviconsOtherData = Pick<FaviconsShortcutData, 'url'> & {
+  rel: string
+  color: string
+}
