@@ -1,4 +1,5 @@
-export const AVATAR = {
+// Avatar defaults
+export const avatarDefaults = {
   file: {
     src: '/images/avatar.jpg',
     width: 64,
