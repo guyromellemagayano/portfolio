@@ -23,7 +23,11 @@
         "schema": "./src/libs/__generated/graphql.schema.graphql"
       }
     ],
-    "types": ["jest", "node", "next"]
+    "types": [
+      "jest",
+      "node",
+      "next"
+    ]
   },
   "include": [
     "**/*.d.ts",
