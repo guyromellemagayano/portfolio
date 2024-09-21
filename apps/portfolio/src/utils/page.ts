@@ -7,61 +7,17 @@ import {
   WorkData,
   type BasePageData
 } from '@portfolio/types'
+
 // import { articlesData } from './articles'
 import { socialData } from './data'
-import { fullServerUrl } from './helpers'
-
-/**
- * Returns the full server URL with its protocol, host, and pathname.
- * @param url - The URL to fetch.
- * @param retries - The number of times to retry the request if it fails.
- * @param delay - The delay between retries in milliseconds.
- * @returns The page data
- */
-export const fetchPageData = async (
-  url: string,
-  retries = 3,
-  delay = 1000
-): Promise<any> => {
-  const fullUrl = await fullServerUrl(url)
-
-  for (let attempt = 0; attempt <= retries; attempt++) {
-    try {
-      const response = await fetch(fullUrl)
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to fetch data: ${response.status} ${response.statusText}`
-        )
-      }
-
-      return await response.json()
-    } catch (error) {
-      console.error(`Attempt ${attempt + 1} failed:`, error)
-
-      // If the last attempt fails, throw the error
-      if (attempt === retries) {
-        console.error('Max retries reached. Throwing error.')
-        throw new Error(
-          `Failed to fetch data after ${retries + 1} attempts: ${error}`
-        )
-      }
-
-      // Wait for a specified delay before retrying
-      await new Promise(res => setTimeout(res, delay))
-    }
-  }
-
-  // This return is just a safeguard; the function should never reach here
-  return {}
-}
+import { fetchData } from './helpers'
 
 /**
  * Fetches the home page data.
  * @returns The home page data.
  */
 export const homePageData = async (): Promise<BasePageData> =>
-  await fetchPageData(apiUrls.home)
+  await fetchData(apiUrls.home)
 
 /**
  * Returns the home app data.
@@ -114,14 +70,14 @@ export const homeAppData = async (): Promise<any> => {
  * @returns The about app data.
  */
 export const aboutPageData = async (): Promise<BasePageData> =>
-  await fetchPageData(apiUrls.about)
+  await fetchData(apiUrls.about)
 
 /**
  * Returns the work data.
  * @returns The work data.
  */
 export const workData = async (): Promise<WorkData> =>
-  await fetchPageData(apiUrls.work)
+  await fetchData(apiUrls.work)
 
 // FIXME: About app data
 /**
@@ -149,14 +105,14 @@ export const workData = async (): Promise<WorkData> =>
  * @returns The skills data.
  */
 export const skillsData = async (): Promise<SkillsData> =>
-  await fetchPageData(apiUrls.skills)
+  await fetchData(apiUrls.skills)
 
 /**
  * Returns the photos data.
  * @returns The photos data.
  */
 export const photosData = async (): Promise<PhotosData> =>
-  await fetchPageData(apiUrls.photos)
+  await fetchData(apiUrls.photos)
 
 // FIXME: Articles page data
 /**
@@ -164,7 +120,7 @@ export const photosData = async (): Promise<PhotosData> =>
  * @returns The articles page data.
  */
 // export const articlesPageData = async (): Promise<BasePageData> =>
-//   await fetchPageData(apiUrls.articles)
+//   await fetchData(apiUrls.articles)
 
 // FIXME: Articles app data
 /**
@@ -195,7 +151,7 @@ export const photosData = async (): Promise<PhotosData> =>
  * @returns The projects page data.
  */
 // export const projectsPageData = async (): Promise<ProjectsPageData> =>
-//   await fetchPageData(apiUrls.projects)
+//   await fetchData(apiUrls.projects)
 
 // FIXME: Projects app data
 /**
