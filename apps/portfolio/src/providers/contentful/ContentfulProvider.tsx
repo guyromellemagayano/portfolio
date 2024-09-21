@@ -3,7 +3,6 @@
 import { createContext, useContext } from 'react'
 
 import { ContentfulLivePreviewProvider } from '@contentful/live-preview/react'
-import { useLocale } from 'next-intl'
 import { useSearchParams } from 'next/navigation'
 
 import { CommonComponentsProps } from '@react-components'
@@ -70,7 +69,7 @@ export type TCtfProviderProps = Pick<CommonComponentsProps, 'children'>
 export const CtfProvider = ({ children }: TCtfProviderProps) => {
   const searchParams = useSearchParams()
   const previewActive = !!searchParams.get('preview')
-  const locale = useLocale()
+  const locale = routingDefaults.defaultLocale
 
   return (
     <CtfContext.Provider

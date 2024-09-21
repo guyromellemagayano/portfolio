@@ -8,6 +8,8 @@ import {
   memo
 } from 'react'
 
+import { usePathname } from 'next/navigation'
+
 import {
   Aside,
   Div,
@@ -21,7 +23,6 @@ import {
 import { cn } from '@react-utils'
 
 import { BaseContainer } from '@portfolio/components'
-import { usePathname } from '@portfolio/i18n/routing'
 
 export type ContentLayoutRef = DivisionRef
 export type ContentLayoutProps = DivisionProps & {
@@ -57,7 +58,6 @@ const ContentAsideLayout = memo(
               {title}
             </Heading>
           )}
-
           {intro && (
             <P
               className={cn('mt-6 text-base text-zinc-600 dark:text-zinc-400')}
@@ -71,7 +71,6 @@ const ContentAsideLayout = memo(
                 : intro}
             </P>
           )}
-
           {children && (
             <Div className={cn('mt-16 sm:mt-20', className)} {...rest}>
               {children}

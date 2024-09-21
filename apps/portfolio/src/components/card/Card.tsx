@@ -7,6 +7,8 @@ import {
   forwardRef
 } from 'react'
 
+import Link from 'next/link'
+
 import {
   Div,
   type DivisionProps,
@@ -21,7 +23,6 @@ import {
 import { cn } from '@react-utils'
 
 import { ChevronRightSvg } from '@portfolio/components'
-import { Link } from '@portfolio/i18n/routing'
 
 export type CardRef = DivisionRef
 export type CardProps = DivisionProps & {

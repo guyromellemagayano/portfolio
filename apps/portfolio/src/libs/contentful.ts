@@ -1,5 +1,3 @@
-'use server'
-
 import { withFetch } from '@react-libs'
 
 import { ctfConfig } from '@portfolio/configs'
