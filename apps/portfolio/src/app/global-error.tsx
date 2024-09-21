@@ -3,43 +3,26 @@
 import { useEffect } from 'react'
 
 import * as Sentry from '@sentry/nextjs'
-import { default as Error, default as NextError } from 'next/error'
+import Error from 'next/error'
 
-import { Body, Html } from '@react-components'
+import type { TCustomErrorPageProps } from './error'
+import type { TLocaleLayoutProps } from './layout'
 
-/**
- * Render the global error app.
- * @returns The rendered component
- */
-export const GlobalErrorApp = () => {
-  return (
-    <Html>
-      <Body>
-        <NextError statusCode={undefined as any} />
-      </Body>
-    </Html>
-  )
-}
-
-GlobalErrorApp.displayName = 'GlobalErrorApp'
-
-export interface GlobalErrorProps {
-  error: Error
-}
+export type TGlobalErrorPageProps = TCustomErrorPageProps & TLocaleLayoutProps
 
 /**
  * Render the global error page.
- * @param {GlobalErrorProps} props - The page props
- * @returns The rendered component
+ * @param {TGlobalErrorPageProps} props - The page props
+ * @returns The rendered global error page
  */
-const GlobalError = ({ error }: GlobalErrorProps) => {
+const GlobalErrorPage = ({ error }: TGlobalErrorPageProps) => {
   useEffect(() => {
     Sentry.captureException(error)
   }, [error])
 
-  return <GlobalErrorApp />
+  return <Error statusCode={0} />
 }
 
-GlobalError.displayName = 'GlobalError'
+GlobalErrorPage.displayName = 'GlobalErrorPage'
 
-export default GlobalError
+export default GlobalErrorPage

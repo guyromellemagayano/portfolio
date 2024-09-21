@@ -1,18 +1,13 @@
+import { withFetch } from '@react-libs'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
   const getJsonData = async (fileName: string) => {
     try {
-      const filePath = req.nextUrl.origin + '/data/' + fileName,
-        response = await fetch(filePath)
+      const filePath = req.nextUrl.origin + '/data/' + fileName
+      const data = await withFetch(filePath)
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch JSON')
-      }
-
-      const json = await response.json()
-
-      return NextResponse.json(json)
+      return NextResponse.json(data)
     } catch (err) {
       console.error(err)
 
@@ -36,7 +31,8 @@ export async function GET(req: NextRequest) {
       social: 'social.json',
       skills: 'skills.json',
       photos: 'photos.json',
-      pages: 'pages.json'
+      pages: 'pages.json',
+      icons: 'icons.json'
     }
 
   switch (query) {
@@ -62,6 +58,8 @@ export async function GET(req: NextRequest) {
       return await getJsonData(json.photos)
     case 'pages':
       return await getJsonData(json.pages)
+    case 'icons':
+      return await getJsonData(json.icons)
     default:
       return NextResponse.json({ error: 'Not Found' }, { status: 404 })
   }

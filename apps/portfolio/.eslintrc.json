@@ -9,32 +9,13 @@
   "overrides": [
     {
       "files": [
-        "**/*.ts",
-        "**/*.tsx"
+        "**/*.ts?(x)"
       ],
       "extends": [
-        "plugin:@nx/react-typescript",
-        "next",
-        "next/core-web-vitals"
+        "plugin:@tanstack/eslint-plugin-query/recommended"
       ],
       "rules": {
-        "@next/next/no-html-link-for-pages": "off"
-      }
-    },
-    {
-      "files": [
-        "**/__tests__/*.ts",
-        "**/__tests__/*.tsx",
-        "**/*.spec.ts",
-        "**/*.spec.tsx",
-        "**/*.test.ts",
-        "**/*.test.tsx"
-      ],
-      "extends": [
-        "plugin:testing-library/react"
-      ],
-      "env": {
-        "jest": true
+        "@tanstack/query/exhaustive-deps": "off"
       }
     },
     {

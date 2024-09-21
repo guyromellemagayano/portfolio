@@ -40,6 +40,7 @@
     ]
   },
   "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
   "files.associations": {
     "*.ts": "typescript",
     "*.tsx": "typescriptreact",
@@ -76,7 +77,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[dotenv]": {
-    "editor.defaultFormatter": "dotenv.dotenv-vscode"
+    "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[graphql]": {
     "editor.defaultFormatter": "GraphQL.vscode-graphql"
@@ -87,4 +88,9 @@
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
+  "i18n-ally.localesPaths": [
+    "apps/portfolio/messages"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en-US"
 }
