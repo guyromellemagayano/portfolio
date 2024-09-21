@@ -8,6 +8,7 @@ import type { HyperlinkProps, HyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
+import { AVATAR } from '@portfolio/configs'
 import { Link } from '@portfolio/i18n/routing'
 
 export type AvatarRef = HyperlinkRef
@@ -15,17 +16,6 @@ export type AvatarProps = HyperlinkProps & {
   large?: boolean
   alt?: string
 }
-
-const link = {
-  href: '/',
-  label: 'Go to Home Page'
-}
-const image = {
-  file: '/images/avatar.jpg',
-  width: 64,
-  height: 64
-}
-
 /**
  * Renders the avatar component.
  * @param {AvatarProps} props - The component props
@@ -40,17 +30,17 @@ const Avatar = forwardRef<AvatarRef, AvatarProps>(
     return (
       <Link
         ref={ref}
-        href={link.href}
+        href={AVATAR.link.href}
         className={cn('pointer-events-auto', className)}
-        aria-label={link.label}
+        aria-label={AVATAR.link.label}
         {...rest}
       >
         <Image
-          src={image.file}
+          src={AVATAR.file.src}
           alt={alt}
-          height={image.height}
+          height={AVATAR.file.height}
           sizes={imageSize}
-          width={image.width}
+          width={AVATAR.file.width}
           className={cn(
             'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
             sizeClass
