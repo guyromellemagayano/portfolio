@@ -15,24 +15,7 @@
         "plugin:@tanstack/eslint-plugin-query/recommended"
       ],
       "rules": {
-        "@tanstack/query/exhaustive-deps": "off",
-        "no-restricted-imports": [
-          "error",
-          {
-            "name": "next/link",
-            "message": "Please import from `@portfolio/i18n/routing` instead."
-          },
-          {
-            "name": "next/navigation",
-            "importNames": [
-              "redirect",
-              "permanentRedirect",
-              "useRouter",
-              "usePathname"
-            ],
-            "message": "Please import from `@portfolio/i18n/routing` instead."
-          }
-        ]
+        "@tanstack/query/exhaustive-deps": "off"
       }
     },
     {
