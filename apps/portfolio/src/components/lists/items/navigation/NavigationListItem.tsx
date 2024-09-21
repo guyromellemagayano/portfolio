@@ -2,8 +2,8 @@
 
 import { forwardRef, useMemo } from 'react'
 
-// eslint-disable-next-line no-restricted-imports
-import type { LinkProps } from 'next/link'
+import Link, { type LinkProps } from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import {
   Li,
@@ -13,8 +13,6 @@ import {
 } from '@react-components'
 
 import { cn } from '@react-utils'
-
-import { Link, usePathname } from '@portfolio/i18n/routing'
 
 export type NavigationListItemRef = ListItemRef
 export type NavigationListItemProps = ListItemProps & Pick<LinkProps, 'href'>
