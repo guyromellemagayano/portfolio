@@ -1,16 +1,15 @@
 // export { articlesByCategory, articlesData, importArticle } from './articles'
-export { navigationData, pagesData, socialData } from './data'
-export { fullServerUrl } from './helpers'
+export { faviconsData, navigationData, pagesData, socialData } from './data'
+export { fetchData, fullServerUrl } from './helpers'
 export {
   aboutPageData,
   // articlesAppData,
   // articlesPageData,
-  fetchPageData,
+  // projectsAppData,
+  // projectsPageData,
   homeAppData,
   homePageData,
   photosData,
-  // projectsAppData,
-  // projectsPageData,
   skillsData
 } from './page'
 // export { importProject, projectsByCategory, projectsData } from './projects'
