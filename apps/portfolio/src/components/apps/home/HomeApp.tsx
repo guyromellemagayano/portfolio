@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { Button, Dd, Div, Dl, Dt, Heading, Img, P } from '@react-components'
