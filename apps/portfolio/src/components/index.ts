@@ -47,6 +47,11 @@ export * from './forms/category'
 export * from './forms/newsletter'
 
 // --------------------
+// IMAGE COMPONENTS
+// --------------------
+export * from './images/contentful'
+
+// --------------------
 // LAYOUT COMPONENTS
 // --------------------
 export * from './layouts/about'
