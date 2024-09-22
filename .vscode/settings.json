@@ -8,12 +8,18 @@
   "editor.tabCompletion": "on",
   "editor.tabFocusMode": false,
   "editor.tabSize": 2,
+  "editor.wordWrap": "on",
   "emmet.triggerExpansionOnTab": true,
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
   "git.autofetch": true,
   "git.confirmSync": false,
   "npm.packageManager": "pnpm",
+  "i18n-ally.localesPaths": [
+    "apps/portfolio/messages"
+  ],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en-US",
   "eslint.format.enable": true,
   "eslint.validate": [
     "javascript",
@@ -87,10 +93,5 @@
   },
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
-  },
-  "i18n-ally.localesPaths": [
-    "apps/portfolio/messages"
-  ],
-  "i18n-ally.keystyle": "nested",
-  "i18n-ally.sourceLanguage": "en-US"
+  }
 }
