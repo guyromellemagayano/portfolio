@@ -152,10 +152,10 @@ pb_data/
 analyze/
 
 # PWA & Workbox
-public/sw.js
-public/sw.js.map
-public/workbox-*.js
-public/workbox-*.js.map
+**/sw.js
+**/sw.js.map
+**/workbox-*.js
+**/workbox-*.js.map
 
 # Bak files
 *.bak
