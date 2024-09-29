@@ -218,8 +218,8 @@ devDependencies:
     specifier: ^17.0.0
     version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.26)(@types/node@22.5.4)(nx@17.3.2)(typescript@5.5.4)(webpack@5.94.0)
   '@nx/workspace':
-    specifier: ^17.0.0
-    version: 17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.26)
+    specifier: ^19.8.2
+    version: 19.8.2(@swc-node/register@1.10.9)(@swc/core@1.7.26)
   '@parcel/watcher':
     specifier: ^2.4.1
     version: 2.4.1
