@@ -134,7 +134,7 @@
     "autoprefixer": "^10.4.20",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.3",
-    "commitizen": "^4.3.0",
+    "commitizen": "^4.3.1",
     "contentful-import": "^9.4.58",
     "cypress": "13.14.2",
     "eslint": "^8",
