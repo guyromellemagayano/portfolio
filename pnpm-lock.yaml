@@ -123,8 +123,8 @@ dependencies:
     specifier: ^19.1.0
     version: 19.1.0
   nx-ignore:
-    specifier: ^19.7.1
-    version: 19.7.1
+    specifier: ^19.8.0
+    version: 19.8.0
   react:
     specifier: ^18.3.1
     version: 18.3.1
@@ -4489,14 +4489,6 @@ packages:
       - nx
     dev: true
 
-  /@nrwl/devkit@19.8.2(nx@19.8.2):
-    resolution: {integrity: sha512-2l3Jb7loE8BnTKn6bl4MK0fKIQLAkl+OMBwo/+GedaqfDfQev+UEgBio38eOEdDHYDHH0lwhGdVQI/DpV4qicA==}
-    dependencies:
-      '@nx/devkit': 19.8.2(nx@19.8.2)
-    transitivePeerDependencies:
-      - nx
-    dev: true
-
   /@nrwl/eslint-plugin-nx@17.3.2(@swc-node/register@1.10.9)(@swc/core@1.7.26)(@types/node@22.5.4)(@typescript-eslint/parser@6.21.0)(eslint-config-prettier@9.1.0)(eslint@8.57.1)(nx@17.3.2)(typescript@5.5.4):
     resolution: {integrity: sha512-KfZtT+breRD7D8dy+YLIdKD7S9t4aqtEQLpRQCnJrCALYdqIRuql9rC2J69RUosozgrk55C0LERF0/kJVPe6Gg==}
     dependencies:
@@ -4825,7 +4817,7 @@ packages:
     peerDependencies:
       nx: '>= 17 <= 20'
     dependencies:
-      '@nrwl/devkit': 19.8.2(nx@19.8.2)
+      '@nrwl/devkit': 19.8.2(nx@17.3.2)
       ejs: 3.1.10
       enquirer: 2.3.6
       ignore: 5.3.2
@@ -14800,8 +14792,9 @@ packages:
       - debug
     dev: false
 
-  /nx-ignore@19.7.1:
-    resolution: {integrity: sha512-/H70yp0XjL+ZDZ4opd5CFcrZtZjnGAR5V9UWvjtbvGMy0gMh5K71HzPZNZSoXhkvjPFOK3MNeCikiTe1Hpyqtw==}
+  /nx-ignore@19.8.0:
+    resolution: {integrity: sha512-zJpaDs2Rafh9xtT8gZSaEu+WbUo524VNZX65RkaQEv4pfkzSrjNTpJqCmNQNHiFSJ+10jNUIKpjZ6r6X/lXyEQ==}
+    hasBin: true
     dependencies:
       '@swc/helpers': 0.5.1
       fs-extra: 10.1.0
