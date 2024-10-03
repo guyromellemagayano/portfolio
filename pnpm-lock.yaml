@@ -202,6 +202,9 @@ devDependencies:
   '@babel/core':
     specifier: ^7.25.7
     version: 7.25.7
+  '@babel/regjsgen':
+    specifier: ^0.8.0
+    version: 0.8.0
   '@commitlint/cli':
     specifier: ^19.5.0
     version: 19.5.0(@types/node@22.7.4)(typescript@5.3.3)
@@ -1840,6 +1843,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: false
+
+  /@babel/regjsgen@0.8.0:
+    resolution: {integrity: sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==}
+    dev: true
 
   /@babel/runtime@7.25.7:
     resolution: {integrity: sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==}
