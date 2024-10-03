@@ -1,10 +1,10 @@
 import * as Sentry from '@sentry/nextjs'
-import { IntlErrorCode } from 'next-intl'
+import { IntlConfig, IntlErrorCode } from 'next-intl'
 import { getRequestConfig } from 'next-intl/server'
 import { routingDefaults } from './routing'
 
 // Update `getRequestConfig` settings
-export default getRequestConfig(async () => {
+export default getRequestConfig(async (): Promise<IntlConfig> => {
   return {
     locale: routingDefaults.defaultLocale,
     messages: (
