@@ -11,11 +11,11 @@
     "clean": "pnpm exec nx run-many --target=clean --all",
     "commit": "git-cz",
     "dev:portfolio:spotlight": "pnpm exec spotlight",
-    "dev:portfolio": "pnpm exec nx dev portfolio --verbose",
+    "dev:portfolio": "pnpm exec nx run portfolio:dev",
     "dev": "pnpm exec nx run-many --target=dev --all",
     "graphql-codegen:generate": "pnpm exec graphql-codegen -c apps/portfolio/codegen.ts -r dotenv/config -p apps/portfolio/tsconfig.json dotenv_config_path=.env.local",
     "graphql-codegen:watch": "pnpm exec graphql-codegen -w -c apps/portfolio/codegen.ts -r dotenv/config -p apps/portfolio/tsconfig.json dotenv_config_path=.env.local",
-    "lint:portfolio": "pnpm exec nx lint portfolio --verbose",
+    "lint:portfolio": "pnpm exec nx run portfolio:lint",
     "lint:react-components": "pnpm exec nx run react-components:lint",
     "lint:react-hooks": "pnpm exec nx run react-hooks:lint",
     "lint:react-libs": "pnpm exec nx run react-libs:lint",
@@ -148,8 +148,7 @@
     "tailwindcss": "^3.4.13",
     "ts-jest": "^29.2.5",
     "ts-node": "10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "~5.6.2"
+    "tsconfig-paths": "^4.2.0"
   },
   "peerDependencies": {
     "@nx/cypress": "^17.0.0",
@@ -166,7 +165,8 @@
     "@typescript-eslint/parser": "^6.13.2",
     "eslint": "^8.0.0",
     "inquirer": "^9.0.0",
-    "nx": "^17.0.0"
+    "nx": "^17.0.0",
+    "typescript": "5.3.3"
   },
   "packageManager": "pnpm@8.15.8+sha512.d1a029e1a447ad90bc96cd58b0fad486d2993d531856396f7babf2d83eb1823bb83c5a3d0fc18f675b2d10321d49eb161fece36fe8134aa5823ecd215feed392",
   "repository": "git@github.com:guyromellemagayano/guyromellemagayano.git",
