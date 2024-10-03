@@ -82,6 +82,7 @@
   "devDependencies": {
     "@0no-co/graphqlsp": "^1.12.15",
     "@babel/core": "^7.25.7",
+    "@babel/regjsgen": "^0.8.0",
     "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "@commitlint/cz-commitlint": "^19.5.0",
@@ -152,8 +153,8 @@
   },
   "peerDependencies": {
     "@nx/cypress": "^17.0.0",
-    "@nx/eslint-plugin": "^17.0.0",
     "@nx/eslint": "^17.0.0",
+    "@nx/eslint-plugin": "^17.0.0",
     "@nx/jest": "^17.0.0",
     "@nx/js": "^17.0.0",
     "@nx/next": "^17.0.0",
