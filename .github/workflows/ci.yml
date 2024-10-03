@@ -27,7 +27,7 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - run: pnpm install --frozen-lockfile
+      - run: pnpm install
         working-directory: ./
 
       - uses: nrwl/nx-set-shas@v4
