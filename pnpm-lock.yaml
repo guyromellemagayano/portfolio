@@ -123,8 +123,8 @@ dependencies:
     specifier: ^19.1.0
     version: 19.1.0
   nx-ignore:
-    specifier: ^19.7.1
-    version: 19.7.1
+    specifier: ^19.8.0
+    version: 19.8.0
   react:
     specifier: ^18.3.1
     version: 18.3.1
@@ -14833,8 +14833,9 @@ packages:
       - debug
     dev: false
 
-  /nx-ignore@19.7.1:
-    resolution: {integrity: sha512-/H70yp0XjL+ZDZ4opd5CFcrZtZjnGAR5V9UWvjtbvGMy0gMh5K71HzPZNZSoXhkvjPFOK3MNeCikiTe1Hpyqtw==}
+  /nx-ignore@19.8.0:
+    resolution: {integrity: sha512-zJpaDs2Rafh9xtT8gZSaEu+WbUo524VNZX65RkaQEv4pfkzSrjNTpJqCmNQNHiFSJ+10jNUIKpjZ6r6X/lXyEQ==}
+    hasBin: true
     dependencies:
       '@swc/helpers': 0.5.1
       fs-extra: 10.1.0
