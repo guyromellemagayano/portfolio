@@ -2,7 +2,6 @@ import * as NextPWA from '@ducanh2912/next-pwa'
 import createMDX from '@next/mdx'
 import { composePlugins, withNx } from '@nx/next'
 import { withSentryConfig } from '@sentry/nextjs'
-import createNextIntlPlugin from 'next-intl/plugin'
 
 // Security headers configuration
 const securityHeaders = [
@@ -144,9 +143,6 @@ const sentryConfigOptions = {
   widenClientFileUpload: process.env.NODE_ENV === 'production'
 }
 
-// `next-intl` configuration
-const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
-
 // MDX configuration
 const withMDX = createMDX({
   options: {
@@ -163,7 +159,7 @@ const withPWA = NextPWA.default({
 })
 
 // Next.js plugins
-const plugins = [withNx, withMDX, withPWA, withNextIntl]
+const plugins = [withNx, withMDX, withPWA]
 
 export default withSentryConfig(
   composePlugins(...plugins)(nextConfig),
