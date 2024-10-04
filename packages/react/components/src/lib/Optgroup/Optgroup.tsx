@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type OptgroupRef = HTMLOptGroupElement
-export type OptgroupProps = React.OptgroupHTMLAttributes<OptgroupRef>
+export type TOptgroupRef = HTMLOptGroupElement
+export type TOptgroupProps = React.OptgroupHTMLAttributes<TOptgroupRef>
 
 /**
  * Render the optgroup component.
- * @param {OptgroupProps} props - The optgroup component properties
- * @param {OptgroupRef} ref - The optgroup component reference
+ * @param {TOptgroupProps} props - The optgroup component properties
+ * @param {TOptgroupRef} ref - The optgroup component reference
  * @returns The rendered optgroup component
  */
-const Optgroup = React.forwardRef<OptgroupRef, OptgroupProps>(
+const Optgroup = React.forwardRef<TOptgroupRef, TOptgroupProps>(
   ({ children, ...rest }, ref) => {
     return (
       <optgroup ref={ref} {...rest}>

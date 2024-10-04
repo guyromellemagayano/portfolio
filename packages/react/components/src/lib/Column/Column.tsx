@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type ColumnRef = HTMLTableColElement
-export type ColumnProps = React.ColHTMLAttributes<ColumnRef>
+export type TColumnRef = HTMLTableColElement
+export type TColumnProps = React.ColHTMLAttributes<TColumnRef>
 
 /**
  * Render the column component.
- * @param {ColumnProps} props - The column component properties
- * @param {ColumnRef} ref - The column component reference
+ * @param {TColumnProps} props - The column component properties
+ * @param {TColumnRef} ref - The column component reference
  * @returns The rendered column component
  */
-const Column = React.forwardRef<ColumnRef, ColumnProps>(
+const Column = React.forwardRef<TColumnRef, TColumnProps>(
   ({ children, ...rest }, ref) => {
     return (
       <col ref={ref} {...rest}>
