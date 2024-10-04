@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type TimeRef = HTMLTimeElement
-export type TimeProps = React.TimeHTMLAttributes<TimeRef>
+export type TTimeRef = HTMLTimeElement
+export type TTimeProps = React.TimeHTMLAttributes<TTimeRef>
 
 /**
  * Render the time component.
- * @param {TimeProps} props - The time component properties
- * @param {TimeRef} ref - The time component reference
+ * @param {TTimeProps} props - The time component properties
+ * @param {TTimeRef} ref - The time component reference
  * @returns The rendered time component
  */
-const Time = React.forwardRef<TimeRef, TimeProps>(
+const Time = React.forwardRef<TTimeRef, TTimeProps>(
   ({ children, ...rest }, ref) => {
     return (
       <time ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type StrikethroughRef = HTMLElement
-export type StrikethroughProps = React.HTMLAttributes<StrikethroughRef>
+export type TStrikethroughRef = HTMLElement
+export type TStrikethroughProps = React.HTMLAttributes<TStrikethroughRef>
 
 /**
  * Render the strikethrough component.
- * @param {StrikethroughProps} props - The strikethrough component properties
- * @param {StrikethroughRef} ref - The strikethrough component reference
+ * @param {TStrikethroughProps} props - The strikethrough component properties
+ * @param {TStrikethroughRef} ref - The strikethrough component reference
  * @returns The rendered strikethrough component
  */
-const Strikethrough = React.forwardRef<StrikethroughRef, StrikethroughProps>(
+const Strikethrough = React.forwardRef<TStrikethroughRef, TStrikethroughProps>(
   ({ children, ...rest }, ref) => {
     return (
       <s ref={ref} {...rest}>

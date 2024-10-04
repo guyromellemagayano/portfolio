@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SelectRef = HTMLSelectElement
-export type SelectProps = React.SelectHTMLAttributes<SelectRef>
+export type TSelectRef = HTMLSelectElement
+export type TSelectProps = React.SelectHTMLAttributes<TSelectRef>
 
 /**
  * Render the select component
- * @param {SelectProps} props - The select component properties
- * @param {SelectRef} ref - The select component reference
+ * @param {TSelectProps} props - The select component properties
+ * @param {TSelectRef} ref - The select component reference
  * @returns The rendered select component
  */
-const Select = React.forwardRef<SelectRef, SelectProps>(
+const Select = React.forwardRef<TSelectRef, TSelectProps>(
   ({ children, ...rest }, ref) => {
     return (
       <select ref={ref} {...rest}>

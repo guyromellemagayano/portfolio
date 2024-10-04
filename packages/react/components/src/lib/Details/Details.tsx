@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type DetailsRef = HTMLDetailsElement
-export type DetailsProps = React.HTMLAttributes<DetailsRef>
+export type TDetailsRef = HTMLDetailsElement
+export type TDetailsProps = React.HTMLAttributes<TDetailsRef>
 
 /**
  * Render the details component
- * @param {DetailsProps} props - The details component properties
- * @param {DetailsRef} ref - The details component reference
+ * @param {TDetailsProps} props - The details component properties
+ * @param {TDetailsRef} ref - The details component reference
  * @returns The rendered details component
  */
-const Details = React.forwardRef<DetailsRef, DetailsProps>(
+const Details = React.forwardRef<TDetailsRef, TDetailsProps>(
   ({ children, ...rest }, ref) => {
     return (
       <details ref={ref} {...rest}>

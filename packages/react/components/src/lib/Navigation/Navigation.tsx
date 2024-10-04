@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type NavigationRef = HTMLElement
-export type NavigationProps = React.HTMLAttributes<NavigationRef>
+export type TNavigationRef = HTMLElement
+export type TNavigationProps = React.HTMLAttributes<TNavigationRef>
 
 /**
  * Render the navigation component.
- * @param {NavigationProps} props - The navigation component properties
- * @param {NavigationRef} ref - The navigation component reference
+ * @param {TNavigationProps} props - The navigation component properties
+ * @param {TNavigationRef} ref - The navigation component reference
  * @returns The rendered navigation component
  */
-const Navigation = React.forwardRef<NavigationRef, NavigationProps>(
+const Navigation = React.forwardRef<TNavigationRef, TNavigationProps>(
   ({ children, ...rest }, ref) => {
     return (
       <nav ref={ref} {...rest}>

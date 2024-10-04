@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type RubyTextRef = HTMLElement
-export type RubyTextProps = React.HTMLAttributes<RubyTextRef>
+export type TRubyTextRef = HTMLElement
+export type TRubyTextProps = React.HTMLAttributes<TRubyTextRef>
 
 /**
  * Render the ruby text component.
- * @param {RubyTextProps} props - The ruby text component properties
- * @param {RubyTextRef} ref - The ruby text component reference
+ * @param {TRubyTextProps} props - The ruby text component properties
+ * @param {TRubyTextRef} ref - The ruby text component reference
  * @returns The rendered ruby text component
  */
-const RubyText = React.forwardRef<RubyTextRef, RubyTextProps>(
+const RubyText = React.forwardRef<TRubyTextRef, TRubyTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <rt ref={ref} {...rest}>

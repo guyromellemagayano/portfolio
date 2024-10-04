@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type OrderedListRef = HTMLOListElement
-export type OrderedListProps = React.OlHTMLAttributes<OrderedListRef>
+export type TOrderedListRef = HTMLOListElement
+export type TOrderedListProps = React.OlHTMLAttributes<TOrderedListRef>
 
 /**
  * Render the ordered list component.
- * @param {OrderedListProps} props - The ordered list component properties
- * @param {OrderedListRef} ref - The ordered list component reference
+ * @param {TOrderedListProps} props - The ordered list component properties
+ * @param {TOrderedListRef} ref - The ordered list component reference
  * @returns The rendered ordered list component
  */
-const OrderedList = React.forwardRef<OrderedListRef, OrderedListProps>(
+const OrderedList = React.forwardRef<TOrderedListRef, TOrderedListProps>(
   ({ children, ...rest }, ref) => {
     return (
       <ol ref={ref} {...rest}>

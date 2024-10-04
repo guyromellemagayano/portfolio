@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type AsideRef = HTMLElement
-export type AsideProps = React.HTMLAttributes<AsideRef>
+export type TAsideRef = HTMLElement
+export type TAsideProps = React.HTMLAttributes<TAsideRef>
 
 /**
  * Render the aside component.
- * @param {AsideProps} props - The aside component properties
- * @param {AsideRef} ref - The aside component reference
+ * @param {TAsideProps} props - The aside component properties
+ * @param {TAsideRef} ref - The aside component reference
  * @returns The rendered aside component
  */
-const Aside = React.forwardRef<AsideRef, AsideProps>(
+const Aside = React.forwardRef<TAsideRef, TAsideProps>(
   ({ children, ...rest }, ref) => {
     return (
       <aside ref={ref} {...rest}>

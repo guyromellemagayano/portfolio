@@ -1,17 +1,17 @@
 import React from 'react'
 
-export type PreformattedTextRef = HTMLPreElement
-export type PreformattedTextProps = React.HTMLAttributes<PreformattedTextRef>
+export type TPreformattedTextRef = HTMLPreElement
+export type TPreformattedTextProps = React.HTMLAttributes<TPreformattedTextRef>
 
 /**
  * Render the preformatted text component.
- * @param {PreformattedTextProps} props - The preformatted text component properties
- * @param {PreformattedTextRef} ref - The preformatted text component reference
+ * @param {TPreformattedTextProps} props - The preformatted text component properties
+ * @param {TPreformattedTextRef} ref - The preformatted text component reference
  * @returns The rendered preformatted text component
  */
 const PreformattedText = React.forwardRef<
-  PreformattedTextRef,
-  PreformattedTextProps
+  TPreformattedTextRef,
+  TPreformattedTextProps
 >(({ children, ...rest }, ref) => {
   return (
     <pre ref={ref} {...rest}>

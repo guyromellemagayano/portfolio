@@ -1,18 +1,18 @@
 import React from 'react'
 
-export type BiDirectionalOverrideRef = HTMLElement
-export type BiDirectionalOverrideProps =
-  React.HTMLAttributes<BiDirectionalOverrideRef>
+export type TBiDirectionalOverrideRef = HTMLElement
+export type TBiDirectionalOverrideProps =
+  React.HTMLAttributes<TBiDirectionalOverrideRef>
 
 /**
  * Render the bi-directional override component.
- * @param {BiDirectionalOverrideProps} props - The bi-directional override component properties
- * @param {BiDirectionalOverrideRef} ref - The bi-directional override component reference
+ * @param {TBiDirectionalOverrideProps} props - The bi-directional override component properties
+ * @param {TBiDirectionalOverrideRef} ref - The bi-directional override component reference
  * @returns The rendered bi-directional override component
  */
 const BiDirectionalOverride = React.forwardRef<
-  BiDirectionalOverrideRef,
-  BiDirectionalOverrideProps
+  TBiDirectionalOverrideRef,
+  TBiDirectionalOverrideProps
 >(({ children, ...rest }, ref) => {
   return (
     <bdo ref={ref} {...rest}>

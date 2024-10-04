@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type StrongRef = HTMLElement
-export type StrongProps = React.HTMLAttributes<StrongRef>
+export type TStrongRef = HTMLElement
+export type TStrongProps = React.HTMLAttributes<TStrongRef>
 
 /**
  * Render the strong component.
- * @param {StrongProps} props - The strong component properties
- * @param {StrongRef} ref - The strong component reference
+ * @param {TStrongProps} props - The strong component properties
+ * @param {TStrongRef} ref - The strong component reference
  * @returns The rendered strong component
  */
-const Strong = React.forwardRef<StrongRef, StrongProps>(
+const Strong = React.forwardRef<TStrongRef, TStrongProps>(
   ({ children, ...rest }, ref) => {
     return (
       <strong ref={ref} {...rest}>

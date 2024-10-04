@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type ParagraphRef = HTMLParagraphElement
-export type ParagraphProps = React.HTMLAttributes<ParagraphRef>
+export type TParagraphRef = HTMLParagraphElement
+export type TParagraphProps = React.HTMLAttributes<TParagraphRef>
 
 /**
  * Render the paragraph component.
- * @param {ParagraphProps} props - The paragraph component properties
- * @param {ParagraphRef} ref - The paragraph component reference
+ * @param {TParagraphProps} props - The paragraph component properties
+ * @param {TParagraphRef} ref - The paragraph component reference
  * @returns The rendered paragraph component
  */
-const Paragraph = React.forwardRef<ParagraphRef, ParagraphProps>(
+const Paragraph = React.forwardRef<TParagraphRef, TParagraphProps>(
   ({ children, ...rest }, ref) => {
     return (
       <p ref={ref} {...rest}>

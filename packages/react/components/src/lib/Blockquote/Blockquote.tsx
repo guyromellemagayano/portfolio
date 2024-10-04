@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type BlockquoteRef = HTMLQuoteElement
-export type BlockquoteProps = React.BlockquoteHTMLAttributes<BlockquoteRef>
+export type TBlockquoteRef = HTMLQuoteElement
+export type TBlockquoteProps = React.BlockquoteHTMLAttributes<TBlockquoteRef>
 
 /**
  * Render the blockquote component.
- * @param {BlockquoteProps} props - The blockquote component properties
- * @param {BlockquoteRef} ref - The blockquote component reference
+ * @param {TBlockquoteProps} props - The blockquote component properties
+ * @param {TBlockquoteRef} ref - The blockquote component reference
  * @returns The rendered blockquote component
  */
-const Blockquote = React.forwardRef<BlockquoteRef, BlockquoteProps>(
+const Blockquote = React.forwardRef<TBlockquoteRef, TBlockquoteProps>(
   ({ children, ...rest }, ref) => {
     return (
       <blockquote ref={ref} {...rest}>

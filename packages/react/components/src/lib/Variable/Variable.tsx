@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type VariableRef = HTMLElement
-export type VariableProps = React.HTMLAttributes<VariableRef>
+export type TVariableRef = HTMLElement
+export type TVariableProps = React.HTMLAttributes<TVariableRef>
 
 /**
  * Render the variable component.
- * @param {VariableProps} props - The variable component properties
- * @param {VariableRef} ref - The variable component reference
+ * @param {TVariableProps} props - The variable component properties
+ * @param {TVariableRef} ref - The variable component reference
  * @returns The rendered variable component
  */
-const Variable = React.forwardRef<VariableRef, VariableProps>(
+const Variable = React.forwardRef<TVariableRef, TVariableProps>(
   ({ children, ...rest }, ref) => {
     return (
       <var ref={ref} {...rest}>
