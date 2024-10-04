@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type TableRef = HTMLTableElement
-export type TableProps = React.TableHTMLAttributes<TableRef>
+export type TTableRef = HTMLTableElement
+export type TTableProps = React.TableHTMLAttributes<TTableRef>
 
 /**
  * Render the table component.
- * @param {TableProps} props - The table component properties
- * @param {TableRef} ref - The table component reference
+ * @param {TTableProps} props - The table component properties
+ * @param {TTableRef} ref - The table component reference
  * @returns The rendered table component
  */
-const Table = React.forwardRef<TableRef, TableProps>(
+const Table = React.forwardRef<TTableRef, TTableProps>(
   ({ children, ...rest }, ref) => {
     return (
       <table ref={ref} {...rest}>

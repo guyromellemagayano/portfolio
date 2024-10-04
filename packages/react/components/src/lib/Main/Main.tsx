@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type MainRef = HTMLElement
-export type MainProps = React.HTMLAttributes<MainRef>
+export type TMainRef = HTMLElement
+export type TMainProps = React.HTMLAttributes<TMainRef>
 
 /**
  * Render the main component.
- * @param {MainProps} props - The main component properties
- * @param {MainRef} ref - The main component reference
+ * @param {TMainProps} props - The main component properties
+ * @param {TMainRef} ref - The main component reference
  * @returns The rendered main component
  */
-const Main = React.forwardRef<MainRef, MainProps>(
+const Main = React.forwardRef<TMainRef, TMainProps>(
   ({ children, ...rest }, ref) => {
     return (
       <main ref={ref} {...rest}>

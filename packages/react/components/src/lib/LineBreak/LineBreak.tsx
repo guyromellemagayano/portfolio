@@ -1,18 +1,16 @@
 import React from 'react'
 
-export type LineBreakRef = HTMLBRElement
-export type LineBreakProps = React.HTMLAttributes<LineBreakRef>
+export type TLineBreakRef = HTMLBRElement
+export type TLineBreakProps = React.HTMLAttributes<TLineBreakRef>
 
 /**
  * Render the line break component
- * @param {LineBreakProps} props - The line break component properties
- * @param {LineBreakRef} ref - The line break component reference
+ * @param {TLineBreakProps} props - The line break component properties
+ * @param {TLineBreakRef} ref - The line break component reference
  * @returns The rendered line break component
  */
-const LineBreak = React.forwardRef<LineBreakRef, LineBreakProps>(
-  (props, ref) => {
-    const { ...rest } = props
-
+const LineBreak = React.forwardRef<TLineBreakRef, TLineBreakProps>(
+  ({ ...rest }, ref) => {
     return <br ref={ref} {...rest} />
   }
 )

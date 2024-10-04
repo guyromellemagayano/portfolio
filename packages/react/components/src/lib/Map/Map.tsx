@@ -1,23 +1,23 @@
-'use client'
-
 import React from 'react'
 
-export type MapRef = HTMLMapElement
-export type MapProps = React.MapHTMLAttributes<MapRef>
+export type TMapRef = HTMLMapElement
+export type TMapProps = React.MapHTMLAttributes<TMapRef>
 
 /**
  * Render the map component.
- * @param {MapProps} props - The map component properties
- * @param {MapRef} ref - The map component reference
+ * @param {TMapProps} props - The map component properties
+ * @param {TMapRef} ref - The map component reference
  * @returns The rendered map component
  */
-const Map = React.forwardRef<MapRef, MapProps>(({ children, ...rest }, ref) => {
-  return (
-    <map ref={ref} {...rest}>
-      {children}
-    </map>
-  )
-})
+const Map = React.forwardRef<TMapRef, TMapProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <map ref={ref} {...rest}>
+        {children}
+      </map>
+    )
+  }
+)
 
 Map.displayName = 'Map'
 

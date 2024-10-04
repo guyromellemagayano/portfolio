@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SpanRef = HTMLSpanElement
-export type SpanProps = React.HTMLAttributes<SpanRef>
+export type TSpanRef = HTMLSpanElement
+export type TSpanProps = React.HTMLAttributes<TSpanRef>
 
 /**
  * Render the span component.
- * @param {SpanProps} props - The span component properties
- * @param {SpanRef} ref - The span component reference
+ * @param {TSpanProps} props - The span component properties
+ * @param {TSpanRef} ref - The span component reference
  * @returns The rendered span component
  */
-const Span = React.forwardRef<SpanRef, SpanProps>(
+const Span = React.forwardRef<TSpanRef, TSpanProps>(
   ({ children, ...rest }, ref) => {
     return (
       <span ref={ref} {...rest}>

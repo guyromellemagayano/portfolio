@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type HeadingGroupRef = HTMLElement
-export type HeadingGroupProps = React.HTMLAttributes<HeadingGroupRef>
+export type THeadingGroupRef = HTMLElement
+export type THeadingGroupProps = React.HTMLAttributes<THeadingGroupRef>
 
 /**
  * Render the heading group component.
- * @param {HeadingGroupProps} props - The heading group component properties
- * @param {HeadingGroupRef} ref - The heading group component reference
+ * @param {THeadingGroupProps} props - The heading group component properties
+ * @param {THeadingGroupRef} ref - The heading group component reference
  * @returns The rendered heading group component
  */
-const HeadingGroup = React.forwardRef<HeadingGroupRef, HeadingGroupProps>(
+const HeadingGroup = React.forwardRef<THeadingGroupRef, THeadingGroupProps>(
   ({ children, ...rest }, ref) => {
     return (
       <hgroup ref={ref} {...rest}>

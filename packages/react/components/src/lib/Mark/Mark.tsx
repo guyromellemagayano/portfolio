@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type MarkRef = HTMLElement
-export type MarkProps = React.HTMLAttributes<MarkRef>
+export type TMarkRef = HTMLElement
+export type TMarkProps = React.HTMLAttributes<TMarkRef>
 
 /**
  * Render the mark component.
- * @param {MarkProps} props - The mark component properties
- * @param {MarkRef} ref - The mark component reference
+ * @param {TMarkProps} props - The mark component properties
+ * @param {TMarkRef} ref - The mark component reference
  * @returns The rendered mark component
  */
-const Mark = React.forwardRef<MarkRef, MarkProps>(
+const Mark = React.forwardRef<TMarkRef, TMarkProps>(
   ({ children, ...rest }, ref) => {
     return (
       <mark ref={ref} {...rest}>

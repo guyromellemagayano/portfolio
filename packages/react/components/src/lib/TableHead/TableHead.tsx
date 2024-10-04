@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type TableHeadRef = HTMLTableSectionElement
-export type TableHeadProps = React.HTMLAttributes<TableHeadRef>
+export type TTableHeadRef = HTMLTableSectionElement
+export type TTableHeadProps = React.HTMLAttributes<TTableHeadRef>
 
 /**
  * Render the table head component.
- * @param {TableHeadProps} props - The table head component properties
- * @param {TableHeadRef} ref - The table head component reference
+ * @param {TTableHeadProps} props - The table head component properties
+ * @param {TTableHeadRef} ref - The table head component reference
  * @returns The rendered table head component
  */
-const TableHead = React.forwardRef<TableHeadRef, TableHeadProps>(
+const TableHead = React.forwardRef<TTableHeadRef, TTableHeadProps>(
   ({ children, ...rest }, ref) => {
     return (
       <thead ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type HeaderRef = HTMLElement
-export type HeaderProps = React.HTMLAttributes<HeaderRef>
+export type THeaderRef = HTMLElement
+export type THeaderProps = React.HTMLAttributes<THeaderRef>
 
 /**
  * Render the header component.
- * @param {HeaderProps} props - The header component properties
- * @param {HeaderRef} ref - The header component reference
+ * @param {THeaderProps} props - The header component properties
+ * @param {THeaderRef} ref - The header component reference
  * @returns The rendered header component
  */
-const Header = React.forwardRef<HeaderRef, HeaderProps>(
+const Header = React.forwardRef<THeaderRef, THeaderProps>(
   ({ children, ...rest }, ref) => {
     return (
       <header ref={ref} {...rest}>

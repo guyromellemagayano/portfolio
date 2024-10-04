@@ -1,16 +1,14 @@
-'use client'
-
 import React from 'react'
 
-export type StyleRef = HTMLStyleElement
-export type StyleProps = React.StyleHTMLAttributes<StyleRef>
+export type TStyleRef = HTMLStyleElement
+export type TStyleProps = React.StyleHTMLAttributes<TStyleRef>
 
 /**
  * Render the style component
- * @param {StyleProps} props - The style component properties
+ * @param {TStyleProps} props - The style component properties
  * @returns The rendered style component
  */
-const Style = ({ children, ...rest }: StyleProps) => {
+const Style = ({ children, ...rest }: TStyleProps) => {
   return <style {...rest}>{children}</style>
 }
 
