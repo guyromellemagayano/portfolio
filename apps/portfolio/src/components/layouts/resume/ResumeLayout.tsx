@@ -8,8 +8,6 @@ import { useRouter } from 'next/navigation'
 
 import {
   Button,
-  type ButtonProps,
-  type ButtonRef,
   Dd,
   Div,
   Dl,
@@ -18,8 +16,10 @@ import {
   Span,
   Time,
   Ul,
-  type UnorderedListProps,
-  type UnorderedListRef
+  type TButtonProps,
+  type TButtonRef,
+  type TUnorderedListProps,
+  type TUnorderedListRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
@@ -27,10 +27,10 @@ import { cn } from '@react-utils'
 import {
   BriefcaseSvg,
   ContentLayout,
-  type ContentLayoutProps,
-  type ContentLayoutRef
+  type TContentLayoutProps,
+  type TContentLayoutRef
 } from '@portfolio/components'
-import type { WorkData, WorkExperiencesData } from '@portfolio/types'
+import type { TWorkData, TWorkExperiencesData } from '@portfolio/types'
 
 const strings = {
   work: 'Work',
@@ -40,9 +40,9 @@ const strings = {
   downloadCV: 'Download CV'
 }
 
-type WorkExperiencesRef = UnorderedListRef
-type WorkExperiencesProps = UnorderedListProps & {
-  data?: WorkExperiencesData[]
+type WorkExperiencesRef = TUnorderedListRef
+type WorkExperiencesProps = TUnorderedListProps & {
+  data?: TWorkExperiencesData[]
 }
 
 /**
@@ -172,9 +172,9 @@ const WorkExperiences = memo(
   )
 )
 
-type CvFileRef = ButtonRef
-type CvFileProps = ButtonProps & {
-  data?: WorkData['cvFile']
+type CvFileRef = TButtonRef
+type CvFileProps = TButtonProps & {
+  data?: TWorkData['cvFile']
 }
 
 /**
@@ -205,10 +205,10 @@ const CvFile = memo(
   })
 )
 
-export type ResumeLayoutRef = ContentLayoutRef
-export type ResumeLayoutProps = ContentLayoutProps & {
-  cvFile?: WorkData['cvFile']
-  workExperiences?: WorkData['workExperiences']
+export type ResumeLayoutRef = TContentLayoutRef
+export type ResumeLayoutProps = TContentLayoutProps & {
+  cvFile?: TWorkData['cvFile']
+  workExperiences?: TWorkData['workExperiences']
 }
 
 /**

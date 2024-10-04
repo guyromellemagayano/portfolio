@@ -10,16 +10,16 @@ import {
   type CardProps,
   type CardRef
 } from '@portfolio/components'
-import { CommonPhotosData, type ProjectsData } from '@portfolio/types'
+import { TCommonPhotosData, type TProjectsData } from '@portfolio/types'
 import { cn } from '@react-utils'
 
 export type ProjectsCardsListRef = CardRef
 export type ProjectsCardsListProps = CardProps &
   Pick<
-    ProjectsData,
+    TProjectsData,
     'slug' | 'title' | 'description' | 'link' | 'category' | 'logo'
   > &
-  Pick<CommonPhotosData, 'alt'>
+  Pick<TCommonPhotosData, 'alt'>
 
 const imageDimensions = {
   width: 32,
@@ -78,7 +78,7 @@ const ProjectsCardsList = memo(
           )}
 
           {link?.text && link?.text?.length > 0 && (
-            <P className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-amber-500 dark:text-zinc-200">
+            <P className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-sky-500 dark:text-zinc-200">
               <LinkSvg className="h-6 w-6 flex-none" />
               <Span className="ml-2">{link.text}</Span>
             </P>
