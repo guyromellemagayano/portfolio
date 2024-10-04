@@ -4,14 +4,14 @@ import { forwardRef, useEffect, useMemo, useState } from 'react'
 
 import { useTheme } from 'next-themes'
 
-import { Button, type ButtonProps, type ButtonRef } from '@react-components'
+import { Button, type TButtonProps, type TButtonRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
 import { MoonSvg, SunSvg } from '@portfolio/components'
 
-export type DarkModeButtonRef = ButtonRef
-export type DarkModeButtonProps = ButtonProps
+export type DarkModeButtonRef = TButtonRef
+export type DarkModeButtonProps = TButtonProps
 
 /**
  * Renders dark mode button component.

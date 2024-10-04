@@ -5,10 +5,10 @@ import { forwardRef } from 'react'
 import { cn, formatDate } from '@react-utils'
 
 import { Card, CardProps, type CardRef } from '@portfolio/components'
-import type { ArticlesData } from '@portfolio/types'
+import type { TArticlesData } from '@portfolio/types'
 
 export type ArticleRef = CardRef
-export type ArticleProps = CardProps & ArticlesData
+export type ArticleProps = CardProps & TArticlesData
 
 const strings = {
   read: 'Read article'

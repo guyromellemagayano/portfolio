@@ -7,9 +7,9 @@ import { usePathname } from 'next/navigation'
 import {
   Div,
   Header,
-  type DivisionRef,
-  type HeaderProps,
-  type HeaderRef
+  type TDivisionRef,
+  type THeaderProps,
+  type THeaderRef
 } from '@react-components'
 
 import { clamp, cn } from '@react-utils'
@@ -24,8 +24,8 @@ import {
 } from '@portfolio/components'
 import type { PagesData } from '@portfolio/types'
 
-export type HeaderLayoutRef = HeaderRef
-export type HeaderLayoutProps = HeaderProps & {
+export type HeaderLayoutRef = THeaderRef
+export type HeaderLayoutProps = THeaderProps & {
   data: PagesData[]
 }
 
@@ -38,8 +38,8 @@ export type HeaderLayoutProps = HeaderProps & {
 const HeaderLayout = forwardRef<HeaderLayoutRef, HeaderLayoutProps>(
   ({ data, className, ...rest }, ref) => {
     const pathname = usePathname()
-    const headerRef = useRef<DivisionRef | null>(null)
-    const avatarRef = useRef<DivisionRef | null>(null)
+    const headerRef = useRef<TDivisionRef | null>(null)
+    const avatarRef = useRef<TDivisionRef | null>(null)
     const isInitial = useRef<boolean>(true)
     const isHomePage = pathname === '/'
 

@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a Medium logo.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a Medium logo.
  */
-const MediumSvg = (rest: SvgProps) => {
+const MediumSvg = (rest: TSvgProps) => {
   return (
     <Svg
       aria-hidden="true"

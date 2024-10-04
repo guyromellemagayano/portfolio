@@ -11,21 +11,21 @@ import Link from 'next/link'
 
 import {
   Div,
-  type DivisionProps,
-  type DivisionRef,
   Heading,
   P,
-  type ParagraphProps,
-  type ParagraphRef,
-  Span
+  Span,
+  type TDivisionProps,
+  type TDivisionRef,
+  type TParagraphProps,
+  type TParagraphRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
 import { ChevronRightSvg } from '@portfolio/components'
 
-export type CardRef = DivisionRef
-export type CardProps = DivisionProps & {
+export type CardRef = TDivisionRef
+export type CardProps = TDivisionProps & {
   as?: ElementType
 }
 export type CardCommonProps = CardProps & {
@@ -68,7 +68,7 @@ const Card = forwardRef<CardRef, CardProps>(
 
 Card.displayName = 'Card'
 
-export type CardLinkRef = DivisionRef
+export type CardLinkRef = TDivisionRef
 export type CardLinkProps = CardCommonProps
 
 /**
@@ -148,8 +148,8 @@ const CardTitle = forwardRef<CardTitleRef, CardTitleProps>(
 
 CardTitle.displayName = 'CardTitle'
 
-export type CardDescriptionRef = ParagraphRef
-export type CardDescriptionProps = ParagraphProps & CardCommonProps
+export type CardDescriptionRef = TParagraphRef
+export type CardDescriptionProps = TParagraphProps & CardCommonProps
 
 /**
  * Renders the card description component.
@@ -178,7 +178,7 @@ const CardDescription = forwardRef<CardDescriptionRef, CardDescriptionProps>(
 
 CardDescription.displayName = 'CardDescription'
 
-export type CardCtaRef = DivisionRef
+export type CardCtaRef = TDivisionRef
 export type CardCtaProps = CardCommonProps
 
 /**
@@ -195,7 +195,7 @@ const CardCta = forwardRef<CardCtaRef, CardCtaProps>(
       <Div
         ref={ref}
         className={cn(
-          'relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500',
+          'relative z-10 mt-2 flex items-start text-sm font-medium text-sky-500',
           className
         )}
         aria-hidden="true"
@@ -203,7 +203,7 @@ const CardCta = forwardRef<CardCtaRef, CardCtaProps>(
       >
         {href ? (
           <Link
-            className="flex items-center transition hover:text-amber-600 dark:hover:text-amber-600"
+            className="flex items-center transition hover:text-sky-600 dark:hover:text-sky-600"
             href={href}
             title={title}
           >

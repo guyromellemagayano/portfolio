@@ -4,14 +4,14 @@ import {
   Div,
   Heading,
   Section,
-  type SectionProps,
-  type SectionRef
+  type TSectionProps,
+  type TSectionRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type SectionLayoutRef = SectionRef
-export type SectionLayoutProps = SectionProps & {
+export type SectionLayoutRef = TSectionRef
+export type SectionLayoutProps = TSectionProps & {
   title?: string
   decorate?: boolean
 }

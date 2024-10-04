@@ -3,9 +3,9 @@ import { FC, forwardRef, useMemo } from 'react'
 import {
   A,
   Span,
-  SvgProps,
-  type HyperlinkProps,
-  type HyperlinkRef
+  TSvgProps,
+  type THyperlinkProps,
+  type THyperlinkRef
 } from '@react-components'
 
 import { cn, convertStringToLowercase } from '@react-utils'
@@ -22,11 +22,11 @@ import {
   MediumSvg,
   TwitterSvg
 } from '@portfolio/components'
-import type { SocialLinksData } from '@portfolio/types'
+import type { TSocialLinksData } from '@portfolio/types'
 
-export type SocialLinkRef = HyperlinkRef
-export type SocialLinkProps = HyperlinkProps &
-  SocialLinksData & {
+export type SocialLinkRef = THyperlinkRef
+export type SocialLinkProps = THyperlinkProps &
+  TSocialLinksData & {
     showLabel?: boolean
   }
 
@@ -39,7 +39,7 @@ export type SocialLinkProps = HyperlinkProps &
 const SocialLink = forwardRef<SocialLinkRef, SocialLinkProps>(
   ({ icon, href, label, showLabel = false, className, ...rest }, ref) => {
     // Define the Icon component based on the icon prop.
-    const iconMap: Record<string, FC<SvgProps>> = useMemo(
+    const iconMap: Record<string, FC<TSvgProps>> = useMemo(
       () => ({
         facebook: FacebookSvg,
         instagram: InstagramSvg,

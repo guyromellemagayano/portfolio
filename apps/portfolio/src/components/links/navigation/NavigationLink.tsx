@@ -1,12 +1,12 @@
 import Link, { LinkProps } from 'next/link'
 
-import type { HyperlinkProps, HyperlinkRef } from '@react-components'
+import type { THyperlinkProps, THyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
 import { forwardRef, memo } from 'react'
 
-export type NavigationLinkRef = HyperlinkRef
-export type NavigationLinkProps = HyperlinkProps & LinkProps
+export type NavigationLinkRef = THyperlinkRef
+export type NavigationLinkProps = THyperlinkProps & LinkProps
 
 /**
  * Renders the nav link component.
@@ -23,7 +23,7 @@ const NavigationLink = memo(
           ref={ref}
           href={href}
           className={cn(
-            'transition hover:text-amber-500 dark:hover:text-amber-400',
+            'transition hover:text-sky-500 dark:hover:text-sky-400',
             className
           )}
           {...rest}

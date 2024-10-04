@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl'
 
 import { cn } from '@react-utils'
 
-import { type ContentLayoutProps, ContentLayout } from '@portfolio/components'
+import { type TContentLayoutProps, ContentLayout } from '@portfolio/components'
 
-export type TErrorAppProps = ContentLayoutProps
+export type TErrorAppProps = TContentLayoutProps
 
 /**
  * Render the error app component.
