@@ -2,12 +2,12 @@ import { forwardRef, memo } from 'react'
 
 import {
   ContentLayout,
-  type ContentLayoutProps,
-  type ContentLayoutRef
+  type TContentLayoutProps,
+  type TContentLayoutRef
 } from '@portfolio/components'
 
-export type AboutLayoutRef = ContentLayoutRef
-export type AboutLayoutProps = ContentLayoutProps
+export type AboutLayoutRef = TContentLayoutRef
+export type AboutLayoutProps = TContentLayoutProps
 
 /**
  * Renders the about layout component.

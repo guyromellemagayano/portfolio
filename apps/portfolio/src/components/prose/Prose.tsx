@@ -1,11 +1,11 @@
 import { forwardRef, memo } from 'react'
 
-import { Div, type DivisionProps, type DivisionRef } from '@react-components'
+import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type ProseRef = DivisionRef
-export type ProseProps = DivisionProps
+export type ProseRef = TDivisionRef
+export type ProseProps = TDivisionProps
 
 /**
  * Renders the prose component.

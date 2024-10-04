@@ -2,15 +2,15 @@ import { forwardRef, memo } from 'react'
 
 import Image from 'next/image'
 
-import { Div, type DivisionProps, type DivisionRef } from '@react-components'
+import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
-import type { PhotosData } from '@portfolio/types'
+import type { TPhotosData } from '@portfolio/types'
 
-export type PhotoLayoutRef = DivisionRef
-export type PhotoLayoutProps = DivisionProps & {
-  data?: PhotosData['slidePhotos']
+export type PhotoLayoutRef = TDivisionRef
+export type PhotoLayoutProps = TDivisionProps & {
+  data?: TPhotosData['slidePhotos']
 }
 
 // The rotations data.

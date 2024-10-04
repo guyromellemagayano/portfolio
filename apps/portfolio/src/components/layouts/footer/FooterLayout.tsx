@@ -6,18 +6,18 @@ import {
   Div,
   Footer,
   P,
-  type FooterProps,
-  type FooterRef
+  type TFooterProps,
+  type TFooterRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
 import { BaseContainer, NavigationLink } from '@portfolio/components'
-import { type PagesData } from '@portfolio/types'
+import type { TPagesData } from '@portfolio/types'
 
-export type FooterLayoutRef = FooterRef
-export type FooterLayoutProps = FooterProps & {
-  data: PagesData[]
+export type FooterLayoutRef = TFooterRef
+export type FooterLayoutProps = TFooterProps & {
+  data: TPagesData[]
 }
 
 /**

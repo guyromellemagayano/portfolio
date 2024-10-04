@@ -2,10 +2,10 @@
 
 import { forwardRef } from 'react'
 
-import { FormProps, FormRef, ReactHookForm } from '@react-components'
+import { Form, TFormProps, TFormRef } from '@react-components'
 
-export type CategoryFormRef = FormRef
-export type CategoryFormProps = FormProps & any
+export type CategoryFormRef = TFormRef
+export type CategoryFormProps = TFormProps
 
 /**
  * Renders the category form component.
@@ -14,8 +14,12 @@ export type CategoryFormProps = FormProps & any
  * @returns The rendered category form component
  */
 const CategoryForm = forwardRef<CategoryFormRef, CategoryFormProps>(
-  ({ ...rest }, ref) => {
-    return <ReactHookForm ref={ref} {...rest} />
+  ({ children, ...rest }, ref) => {
+    return (
+      <Form ref={ref} {...rest}>
+        {children}
+      </Form>
+    )
   }
 )
 
