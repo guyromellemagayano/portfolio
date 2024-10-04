@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SummaryRef = HTMLElement
-export type SummaryProps = React.HTMLAttributes<SummaryRef>
+export type TSummaryRef = HTMLElement
+export type TSummaryProps = React.HTMLAttributes<TSummaryRef>
 
 /**
  * Render the summary component.
- * @param {SummaryProps} props - The summary component properties
- * @param {SummaryRef} ref - The summary component reference
+ * @param {TSummaryProps} props - The summary component properties
+ * @param {TSummaryRef} ref - The summary component reference
  * @returns The rendered summary component
  */
-const Summary = React.forwardRef<SummaryRef, SummaryProps>(
+const Summary = React.forwardRef<TSummaryRef, TSummaryProps>(
   ({ children, ...rest }, ref) => {
     return (
       <summary ref={ref} {...rest}>

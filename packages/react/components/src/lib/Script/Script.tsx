@@ -1,16 +1,14 @@
-'use client'
-
 import React from 'react'
 
-export type ScriptRef = HTMLScriptElement
-export type ScriptProps = React.ScriptHTMLAttributes<ScriptRef>
+export type TScriptRef = HTMLScriptElement
+export type TScriptProps = React.ScriptHTMLAttributes<TScriptRef>
 
 /**
  * Render the script component.
- * @param {ScriptProps} props - The script component properties
+ * @param {TScriptProps} props - The script component properties
  * @returns The rendered script component
  */
-const Script = ({ children, ...rest }: ScriptProps) => {
+const Script = ({ children, ...rest }: TScriptProps) => {
   return <script {...rest}>{children}</script>
 }
 

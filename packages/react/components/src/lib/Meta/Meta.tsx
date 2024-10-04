@@ -1,14 +1,14 @@
 import React from 'react'
 
-export type MetaRef = HTMLMetaElement
-export type MetaProps = React.MetaHTMLAttributes<MetaRef>
+export type TMetaRef = HTMLMetaElement
+export type TMetaProps = React.MetaHTMLAttributes<TMetaRef>
 
 /**
  * Render the meta component.
- * @param {MetaProps} props - The meta component properties
+ * @param {TMetaProps} props - The meta component properties
  * @returns The rendered meta component
  */
-const Meta = ({ children, ...rest }: MetaProps) => {
+const Meta = ({ children, ...rest }: TMetaProps) => {
   return <meta {...rest}>{children}</meta>
 }
 

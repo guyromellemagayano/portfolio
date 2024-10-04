@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type BoldRef = HTMLElement
-export type BoldProps = React.HTMLAttributes<BoldRef>
+export type TBoldRef = HTMLElement
+export type TBoldProps = React.HTMLAttributes<TBoldRef>
 
 /**
  * Render the bold component.
- * @param {BoldProps} props - The bold component properties
- * @param {BoldRef} ref - The bold component reference
+ * @param {TBoldProps} props - The bold component properties
+ * @param {TBoldRef} ref - The bold component reference
  * @returns The rendered bold component
  */
-const Bold = React.forwardRef<BoldRef, BoldProps>(
+const Bold = React.forwardRef<TBoldRef, TBoldProps>(
   ({ children, ...rest }, ref) => {
     return (
       <b ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SampleRef = HTMLElement
-export type SampleProps = React.HTMLAttributes<SampleRef>
+export type TSampleRef = HTMLElement
+export type TSampleProps = React.HTMLAttributes<TSampleRef>
 
 /**
  * Render the sample component.
- * @param {SampleProps} props - The sample component properties
- * @param {SampleRef} ref - The sample component reference
+ * @param {TSampleProps} props - The sample component properties
+ * @param {TSampleRef} ref - The sample component reference
  * @returns The rendered sample component
  */
-const Sample = React.forwardRef<SampleRef, SampleProps>(
+const Sample = React.forwardRef<TSampleRef, TSampleProps>(
   ({ children, ...rest }, ref) => {
     return (
       <samp ref={ref} {...rest}>

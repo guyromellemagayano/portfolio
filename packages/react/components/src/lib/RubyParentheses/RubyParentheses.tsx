@@ -1,17 +1,17 @@
 import React from 'react'
 
-export type RubyParenthesesRef = HTMLElement
-export type RubyParenthesesProps = React.HTMLAttributes<RubyParenthesesRef>
+export type TRubyParenthesesRef = HTMLElement
+export type TRubyParenthesesProps = React.HTMLAttributes<TRubyParenthesesRef>
 
 /**
  * Render the ruby parentheses component.
- * @param {RubyParenthesesProps} props - The ruby parentheses component properties
- * @param {RubyParenthesesRef} ref - The ruby parentheses component reference
+ * @param {TRubyParenthesesProps} props - The ruby parentheses component properties
+ * @param {TRubyParenthesesRef} ref - The ruby parentheses component reference
  * @returns The rendered ruby parentheses component
  */
 const RubyParentheses = React.forwardRef<
-  RubyParenthesesRef,
-  RubyParenthesesProps
+  TRubyParenthesesRef,
+  TRubyParenthesesProps
 >(({ children, ...rest }, ref) => {
   return (
     <rp ref={ref} {...rest}>

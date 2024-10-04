@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type DialogRef = HTMLDialogElement
-export type DialogProps = React.DialogHTMLAttributes<DialogRef>
+export type TDialogRef = HTMLDialogElement
+export type TDialogProps = React.DialogHTMLAttributes<TDialogRef>
 
 /**
  * Render the dialog component
- * @param {DialogProps} props - The dialog component properties
- * @param {DialogRef} ref - The dialog component reference
+ * @param {TDialogProps} props - The dialog component properties
+ * @param {TDialogRef} ref - The dialog component reference
  * @returns The rendered dialog component
  */
-const Dialog = React.forwardRef<DialogRef, DialogProps>(
+const Dialog = React.forwardRef<TDialogRef, TDialogProps>(
   ({ children, ...rest }, ref) => {
     return (
       <dialog ref={ref} {...rest}>

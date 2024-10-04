@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type ArticleRef = HTMLElement
-export type ArticleProps = React.HTMLAttributes<ArticleRef>
+export type TArticleRef = HTMLElement
+export type TArticleProps = React.HTMLAttributes<TArticleRef>
 
 /**
  * Render the article component.
- * @param {ArticleProps} props - The article component properties
- * @param {ArticleRef} ref - The article component reference
+ * @param {TArticleProps} props - The article component properties
+ * @param {TArticleRef} ref - The article component reference
  * @returns The rendered article component
  */
-const Article = React.forwardRef<ArticleRef, ArticleProps>(
+const Article = React.forwardRef<TArticleRef, TArticleProps>(
   ({ children, ...rest }, ref) => {
     return (
       <article ref={ref} {...rest}>

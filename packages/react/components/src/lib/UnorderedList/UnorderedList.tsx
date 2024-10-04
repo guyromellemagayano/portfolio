@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type UnorderedListRef = HTMLUListElement
-export type UnorderedListProps = React.HTMLAttributes<UnorderedListRef>
+export type TUnorderedListRef = HTMLUListElement
+export type TUnorderedListProps = React.HTMLAttributes<TUnorderedListRef>
 
 /**
  * Render the unordered list component.
- * @param {UnorderedListProps} props - The unordered list component properties
- * @param {UnorderedListRef} ref - The unordered list component reference
+ * @param {TUnorderedListProps} props - The unordered list component properties
+ * @param {TUnorderedListRef} ref - The unordered list component reference
  * @returns The rendered unordered list component
  */
-const UnorderedList = React.forwardRef<UnorderedListRef, UnorderedListProps>(
+const UnorderedList = React.forwardRef<TUnorderedListRef, TUnorderedListProps>(
   ({ children, ...rest }, ref) => {
     return (
       <ul ref={ref} {...rest}>

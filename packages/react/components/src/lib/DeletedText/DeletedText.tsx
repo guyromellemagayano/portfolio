@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type DeletedTextRef = HTMLModElement
-export type DeletedTextProps = React.DelHTMLAttributes<DeletedTextRef>
+export type TDeletedTextRef = HTMLModElement
+export type TDeletedTextProps = React.DelHTMLAttributes<TDeletedTextRef>
 
 /**
  * Render the deleted text component.
- * @param {DeletedTextProps} props - The deleted text component properties
- * @param {DeletedTextRef} ref - The deleted text component reference
+ * @param {TDeletedTextProps} props - The deleted text component properties
+ * @param {TDeletedTextRef} ref - The deleted text component reference
  * @returns The rendered deleted text component
  */
-const DeletedText = React.forwardRef<DeletedTextRef, DeletedTextProps>(
+const DeletedText = React.forwardRef<TDeletedTextRef, TDeletedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <del ref={ref} {...rest}>

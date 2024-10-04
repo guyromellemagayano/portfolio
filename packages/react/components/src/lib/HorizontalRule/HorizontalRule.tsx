@@ -1,21 +1,20 @@
 import React from 'react'
 
-export type HorizontalRuleRef = HTMLHRElement
-export type HorizontalRuleProps = React.HTMLAttributes<HorizontalRuleRef>
+export type THorizontalRuleRef = HTMLHRElement
+export type THorizontalRuleProps = React.HTMLAttributes<THorizontalRuleRef>
 
 /**
  * Render the horizontal rule component
- * @param {HorizontalRuleProps} props - The horizontal rule component properties
- * @param {HorizontalRuleRef} ref - The horizontal rule component reference
+ * @param {THorizontalRuleProps} props - The horizontal rule component properties
+ * @param {THorizontalRuleRef} ref - The horizontal rule component reference
  * @returns The rendered horizontal rule component
  */
-const HorizontalRule = React.forwardRef<HorizontalRuleRef, HorizontalRuleProps>(
-  (props, ref) => {
-    const { ...rest } = props
-
-    return <hr ref={ref} {...rest} />
-  }
-)
+const HorizontalRule = React.forwardRef<
+  THorizontalRuleRef,
+  THorizontalRuleProps
+>(({ ...rest }, ref) => {
+  return <hr ref={ref} {...rest} />
+})
 
 HorizontalRule.displayName = 'HorizontalRule'
 
