@@ -2,12 +2,12 @@ import { forwardRef } from 'react'
 
 import {
   Ul,
-  type UnorderedListProps,
-  type UnorderedListRef
+  type TUnorderedListProps,
+  type TUnorderedListRef
 } from '@react-components'
 
-export type NavigationListRef = UnorderedListRef
-export type NavigationListProps = UnorderedListProps
+export type NavigationListRef = TUnorderedListRef
+export type NavigationListProps = TUnorderedListProps
 
 /**
  * Renders the navigation list component.

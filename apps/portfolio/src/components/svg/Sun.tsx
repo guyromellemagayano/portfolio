@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a sun.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a sun.
  */
-const SunSvg = (rest: SvgProps) => {
+const SunSvg = (rest: TSvgProps) => {
   return (
     <Svg
       aria-hidden="true"

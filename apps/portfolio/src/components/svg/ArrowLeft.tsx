@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of an arrow pointing left.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an arrow pointing left.
  */
-const ArrowLeftSvg = (rest: SvgProps) => {
+const ArrowLeftSvg = (rest: TSvgProps) => {
   return (
     <Svg aria-hidden="true" fill="none" viewBox="0 0 16 16" {...rest}>
       <Path

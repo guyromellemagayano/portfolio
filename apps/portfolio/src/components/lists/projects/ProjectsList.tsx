@@ -2,14 +2,14 @@ import { forwardRef } from 'react'
 
 import {
   Ul,
-  type UnorderedListProps,
-  type UnorderedListRef
+  type TUnorderedListProps,
+  type TUnorderedListRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type ProjectsListRef = UnorderedListRef
-export type ProjectsListProps = UnorderedListProps
+export type ProjectsListRef = TUnorderedListRef
+export type ProjectsListProps = TUnorderedListProps
 
 /**
  * Renders the projects list component.

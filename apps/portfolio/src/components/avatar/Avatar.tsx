@@ -5,14 +5,14 @@ import { forwardRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { HyperlinkProps, HyperlinkRef } from '@react-components'
+import type { THyperlinkProps, THyperlinkRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
 import { avatarDefaults } from '@portfolio/configs'
 
-export type AvatarRef = HyperlinkRef
-export type AvatarProps = HyperlinkProps & {
+export type AvatarRef = THyperlinkRef
+export type AvatarProps = THyperlinkProps & {
   large?: boolean
   alt?: string
 }

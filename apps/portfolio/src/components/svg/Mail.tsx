@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of an envelope.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an envelope.
  */
-const MailSvg = (rest: SvgProps) => {
+const MailSvg = (rest: TSvgProps) => {
   return (
     <Svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" {...rest}>
       <Path
