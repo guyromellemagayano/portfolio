@@ -1,14 +1,14 @@
 import React from 'react'
 
-export type TitleRef = HTMLTitleElement
-export type TitleProps = React.HTMLAttributes<TitleRef>
+export type TTitleRef = HTMLTitleElement
+export type TTitleProps = React.HTMLAttributes<TTitleRef>
 
 /**
  * Render the title component.
- * @param {TitleProps} props - The title component properties
+ * @param {TTitleProps} props - The title component properties
  * @returns The rendered title component
  */
-const Title = ({ children, ...rest }: TitleProps) => {
+const Title = ({ children, ...rest }: TTitleProps) => {
   return <title {...rest}>{children}</title>
 }
 

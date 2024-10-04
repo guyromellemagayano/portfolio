@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type TableRowRef = HTMLTableRowElement
-export type TableRowProps = React.HTMLAttributes<TableRowRef>
+export type TTableRowRef = HTMLTableRowElement
+export type TTableRowProps = React.HTMLAttributes<TTableRowRef>
 
 /**
  * Render the table row component.
- * @param {TableRowProps} props - The table row component properties
- * @param {TableRowRef} ref - The table row component reference
+ * @param {TTableRowProps} props - The table row component properties
+ * @param {TTableRowRef} ref - The table row component reference
  * @returns The rendered table row component
  */
-const TableRow = React.forwardRef<TableRowRef, TableRowProps>(
+const TableRow = React.forwardRef<TTableRowRef, TTableRowProps>(
   ({ children, ...rest }, ref) => {
     return (
       <tr ref={ref} {...rest}>

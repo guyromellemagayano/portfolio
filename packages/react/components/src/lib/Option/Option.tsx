@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type OptionRef = HTMLOptionElement
-export type OptionProps = React.OptionHTMLAttributes<OptionRef>
+export type TOptionRef = HTMLOptionElement
+export type TOptionProps = React.OptionHTMLAttributes<TOptionRef>
 
 /**
  * Render the option component.
- * @param {OptionProps} props - The option component properties
- * @param {OptionRef} ref - The option component reference
+ * @param {TOptionProps} props - The option component properties
+ * @param {TOptionRef} ref - The option component reference
  * @returns The rendered option component
  */
-const Option = React.forwardRef<OptionRef, OptionProps>(
+const Option = React.forwardRef<TOptionRef, TOptionProps>(
   ({ children, ...rest }, ref) => {
     return (
       <option ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SectionRef = HTMLElement
-export type SectionProps = React.HTMLAttributes<SectionRef>
+export type TSectionRef = HTMLElement
+export type TSectionProps = React.HTMLAttributes<TSectionRef>
 
 /**
  * Render the section component.
- * @param {SectionProps} props - The section component properties
- * @param {SectionRef} ref - The section component reference
+ * @param {TSectionProps} props - The section component properties
+ * @param {TSectionRef} ref - The section component reference
  * @returns The rendered section component
  */
-const Section = React.forwardRef<SectionRef, SectionProps>(
+const Section = React.forwardRef<TSectionRef, TSectionProps>(
   ({ children, ...rest }, ref) => {
     return (
       <section ref={ref} {...rest}>

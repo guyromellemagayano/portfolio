@@ -1,18 +1,18 @@
 import React from 'react'
 
-export type BiDirectionalIsolationRef = HTMLElement
-export type BiDirectionalIsolationProps =
-  React.HTMLAttributes<BiDirectionalIsolationRef>
+export type TBiDirectionalIsolationRef = HTMLElement
+export type TBiDirectionalIsolationProps =
+  React.HTMLAttributes<TBiDirectionalIsolationRef>
 
 /**
  * Render the bi-directional isolation component.
- * @param {BiDirectionalIsolationProps} props - The bi-directional isolation component properties
- * @param {BiDirectionalIsolationRef} ref - The bi-directional isolation component reference
+ * @param {TBiDirectionalIsolationProps} props - The bi-directional isolation component properties
+ * @param {TBiDirectionalIsolationRef} ref - The bi-directional isolation component reference
  * @returns The rendered bi-directional isolation component
  */
 const BiDirectionalIsolation = React.forwardRef<
-  BiDirectionalIsolationRef,
-  BiDirectionalIsolationProps
+  TBiDirectionalIsolationRef,
+  TBiDirectionalIsolationProps
 >(({ children, ...rest }, ref) => {
   return (
     <bdi ref={ref} {...rest}>

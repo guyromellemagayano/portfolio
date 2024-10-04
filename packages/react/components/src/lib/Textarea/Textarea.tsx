@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type TextareaRef = HTMLTextAreaElement
-export type TextareaProps = React.TextareaHTMLAttributes<TextareaRef>
+export type TTextareaRef = HTMLTextAreaElement
+export type TTextareaProps = React.TextareaHTMLAttributes<TTextareaRef>
 
 /**
  * Render the textarea component.
- * @param {TextareaProps} props - The textarea component properties
- * @param {TextareaRef} ref - The textarea component reference
+ * @param {TTextareaProps} props - The textarea component properties
+ * @param {TTextareaRef} ref - The textarea component reference
  * @returns The rendered textarea component
  */
-const Textarea = React.forwardRef<TextareaRef, TextareaProps>(
+const Textarea = React.forwardRef<TTextareaRef, TTextareaProps>(
   ({ children, ...rest }, ref) => {
     return (
       <textarea ref={ref} {...rest}>

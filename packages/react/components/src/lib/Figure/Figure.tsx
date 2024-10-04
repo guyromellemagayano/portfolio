@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type FigureRef = HTMLElement
-export type FigureProps = React.HTMLAttributes<FigureRef>
+export type TFigureRef = HTMLElement
+export type TFigureProps = React.HTMLAttributes<TFigureRef>
 
 /**
  * Render the figure component.
- * @param {FigureProps} props - The figure component properties
- * @param {FigureRef} ref - The figure component reference
+ * @param {TFigureProps} props - The figure component properties
+ * @param {TFigureRef} ref - The figure component reference
  * @returns The rendered figure component
  */
-const Figure = React.forwardRef<FigureRef, FigureProps>(
+const Figure = React.forwardRef<TFigureRef, TFigureProps>(
   ({ children, ...rest }, ref) => {
     return (
       <figure ref={ref} {...rest}>

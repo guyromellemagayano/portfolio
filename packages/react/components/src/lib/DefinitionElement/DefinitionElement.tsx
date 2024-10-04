@@ -1,17 +1,18 @@
 import React from 'react'
 
-export type DefinitionElementRef = HTMLElement
-export type DefinitionElementProps = React.HTMLAttributes<DefinitionElementRef>
+export type TDefinitionElementRef = HTMLElement
+export type TDefinitionElementProps =
+  React.HTMLAttributes<TDefinitionElementRef>
 
 /**
  * Render the definition element component.
- * @param {DefinitionElementProps} props - The definition element component properties
- * @param {DefinitionElementRef} ref - The definition element component reference
+ * @param {TDefinitionElementProps} props - The definition element component properties
+ * @param {TDefinitionElementRef} ref - The definition element component reference
  * @returns The rendered definition element component
  */
 const DefinitionElement = React.forwardRef<
-  DefinitionElementRef,
-  DefinitionElementProps
+  TDefinitionElementRef,
+  TDefinitionElementProps
 >(({ children, ...rest }, ref) => {
   return (
     <dfn ref={ref} {...rest}>

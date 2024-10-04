@@ -1,18 +1,18 @@
 import React from 'react'
 
-export type DescriptionDetailsRef = HTMLElement
-export type DescriptionDetailsProps =
-  React.HTMLAttributes<DescriptionDetailsRef>
+export type TDescriptionDetailsRef = HTMLElement
+export type TDescriptionDetailsProps =
+  React.HTMLAttributes<TDescriptionDetailsRef>
 
 /**
  * Render the description details component.
- * @param {DescriptionDetailsProps} props - The description details component properties
- * @param {DescriptionDetailsRef} ref - The description details component reference
+ * @param {TDescriptionDetailsProps} props - The description details component properties
+ * @param {TDescriptionDetailsRef} ref - The description details component reference
  * @returns The rendered description details component
  */
 const DescriptionDetails = React.forwardRef<
-  DescriptionDetailsRef,
-  DescriptionDetailsProps
+  TDescriptionDetailsRef,
+  TDescriptionDetailsProps
 >(({ children, ...rest }, ref) => {
   return (
     <dd ref={ref} {...rest}>
