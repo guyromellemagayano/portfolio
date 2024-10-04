@@ -1,10 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { cn } from '@react-utils'
 
-import { type TContentLayoutProps, ContentLayout } from '@portfolio/components'
+import { ContentLayout, type TContentLayoutProps } from '@portfolio/components'
+import { notFoundPageData } from '@portfolio/data'
 
 export type TNotFoundAppProps = TContentLayoutProps
 
@@ -14,13 +13,11 @@ export type TNotFoundAppProps = TContentLayoutProps
  * @returns The rendered not found app component
  */
 const NotFoundApp = ({ className, children, ...rest }: TNotFoundAppProps) => {
-  const t = useTranslations('NotFoundPage')
-
   return (
     <ContentLayout.Simple
       className={cn('sm:px-8', className)}
-      intro={t('description')}
-      title={t('title')}
+      intro={notFoundPageData.description}
+      title={notFoundPageData.title}
       {...rest}
     >
       {children}
