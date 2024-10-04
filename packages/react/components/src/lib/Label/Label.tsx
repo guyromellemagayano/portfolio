@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type LabelRef = HTMLLabelElement
-export type LabelProps = React.LabelHTMLAttributes<LabelRef>
+export type TLabelRef = HTMLLabelElement
+export type TLabelProps = React.LabelHTMLAttributes<TLabelRef>
 
 /**
  * Render the label component.
- * @param {LabelProps} props - The label component properties
- * @param {LabelRef} ref - The label component reference
+ * @param {TLabelProps} props - The label component properties
+ * @param {TLabelRef} ref - The label component reference
  * @returns The rendered label component
  */
-const Label = React.forwardRef<LabelRef, LabelProps>(
+const Label = React.forwardRef<TLabelRef, TLabelProps>(
   ({ children, ...rest }, ref) => {
     return (
       <label ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type CanvasRef = HTMLCanvasElement
-export type CanvasProps = React.CanvasHTMLAttributes<CanvasRef>
+export type TCanvasRef = HTMLCanvasElement
+export type TCanvasProps = React.CanvasHTMLAttributes<TCanvasRef>
 
 /**
  * Render the canvas component.
- * @param {CanvasProps} props - The canvas component properties
- * @param {CanvasRef} ref - The canvas component reference
+ * @param {TCanvasProps} props - The canvas component properties
+ * @param {TCanvasRef} ref - The canvas component reference
  * @returns The rendered canvas component
  */
-const Canvas = React.forwardRef<CanvasRef, CanvasProps>(
+const Canvas = React.forwardRef<TCanvasRef, TCanvasProps>(
   ({ children, ...rest }, ref) => {
     return (
       <canvas ref={ref} {...rest}>

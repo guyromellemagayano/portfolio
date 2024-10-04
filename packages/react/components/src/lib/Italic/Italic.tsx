@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type ItalicRef = HTMLElement
-export type ItalicProps = React.HTMLAttributes<ItalicRef>
+export type TItalicRef = HTMLElement
+export type TItalicProps = React.HTMLAttributes<TItalicRef>
 
 /**
  * Render the italic component.
- * @param {ItalicProps} props - The italic component properties
- * @param {ItalicRef} ref - The italic component reference
+ * @param {TItalicProps} props - The italic component properties
+ * @param {TItalicRef} ref - The italic component reference
  * @returns The rendered italic component
  */
-const Italic = React.forwardRef<ItalicRef, ItalicProps>(
+const Italic = React.forwardRef<TItalicRef, TItalicProps>(
   ({ children, ...rest }, ref) => {
     return (
       <i ref={ref} {...rest}>

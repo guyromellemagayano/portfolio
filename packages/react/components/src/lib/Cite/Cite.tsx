@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type CiteRef = HTMLQuoteElement
-export type CiteProps = React.HTMLAttributes<CiteRef>
+export type TCiteRef = HTMLQuoteElement
+export type TCiteProps = React.HTMLAttributes<TCiteRef>
 
 /**
  * Render the cite component.
- * @param {CiteProps} props - The cite component properties
- * @param {CiteRef} ref - The cite component reference
+ * @param {TCiteProps} props - The cite component properties
+ * @param {TCiteRef} ref - The cite component reference
  * @returns The rendered cite component
  */
-const Cite = React.forwardRef<CiteRef, CiteProps>(
+const Cite = React.forwardRef<TCiteRef, TCiteProps>(
   ({ children, ...rest }, ref) => {
     return (
       <cite ref={ref} {...rest}>

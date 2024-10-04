@@ -1,23 +1,17 @@
 import React from 'react'
 
-export type TrackRef = HTMLTrackElement
-export type TrackProps = React.TrackHTMLAttributes<TrackRef>
+export type TTrackRef = HTMLTrackElement
+export type TTrackProps = React.TrackHTMLAttributes<TTrackRef>
 
 /**
  * Render the track component.
- * @param {TrackProps} props - The track component properties
- * @param {TrackRef} ref - The track component reference
+ * @param {TTrackProps} props - The track component properties
+ * @param {TTrackRef} ref - The track component reference
  * @returns The rendered track component
  */
-const Track = React.forwardRef<TrackRef, TrackProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <track ref={ref} {...rest}>
-        {children}
-      </track>
-    )
-  }
-)
+const Track = React.forwardRef<TTrackRef, TTrackProps>(({ ...rest }, ref) => {
+  return <track ref={ref} {...rest} />
+})
 
 Track.displayName = 'Track'
 

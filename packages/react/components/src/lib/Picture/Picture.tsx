@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type PictureRef = HTMLPictureElement
-export type PictureProps = React.HTMLAttributes<PictureRef>
+export type TPictureRef = HTMLPictureElement
+export type TPictureProps = React.HTMLAttributes<TPictureRef>
 
 /**
  * Render the picture component.
- * @param {PictureProps} props - The picture component properties
- * @param {PictureRef} ref - The picture component reference
+ * @param {TPictureProps} props - The picture component properties
+ * @param {TPictureRef} ref - The picture component reference
  * @returns The rendered picture component
  */
-const Picture = React.forwardRef<PictureRef, PictureProps>(
+const Picture = React.forwardRef<TPictureRef, TPictureProps>(
   ({ children, ...rest }, ref) => {
     return (
       <picture ref={ref} {...rest}>

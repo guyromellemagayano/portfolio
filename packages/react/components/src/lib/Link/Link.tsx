@@ -1,16 +1,14 @@
-'use client'
-
 import React from 'react'
 
-export type LinkRef = HTMLLinkElement
-export type LinkProps = React.LinkHTMLAttributes<LinkRef>
+export type TLinkRef = HTMLLinkElement
+export type TLinkProps = React.LinkHTMLAttributes<TLinkRef>
 
 /**
  * Render the link component
- * @param {LinkProps} props - The link component properties
+ * @param {TLinkProps} props - The link component properties
  * @returns The rendered link component
  */
-export const Link = (props: LinkProps) => {
+export const Link = (props: TLinkProps) => {
   const { ...rest } = props
 
   return <link {...rest} />

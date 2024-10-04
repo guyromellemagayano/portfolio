@@ -1,18 +1,18 @@
 import React from 'react'
 
-export type WordBreakOpportunityRef = HTMLElement
-export type WordBreakOpportunityProps =
-  React.HTMLAttributes<WordBreakOpportunityRef>
+export type TWordBreakOpportunityRef = HTMLElement
+export type TWordBreakOpportunityProps =
+  React.HTMLAttributes<TWordBreakOpportunityRef>
 
 /**
  * Render the word break opportunity component.
- * @param {WordBreakOpportunityProps} props - The word break opportunity component properties
- * @param {WordBreakOpportunityRef} ref - The word break opportunity component reference
+ * @param {TWordBreakOpportunityProps} props - The word break opportunity component properties
+ * @param {TWordBreakOpportunityRef} ref - The word break opportunity component reference
  * @returns The rendered word break opportunity component
  */
 const WordBreakOpportunity = React.forwardRef<
-  WordBreakOpportunityRef,
-  WordBreakOpportunityProps
+  TWordBreakOpportunityRef,
+  TWordBreakOpportunityProps
 >(({ children, ...rest }, ref) => {
   return (
     <wbr ref={ref} {...rest}>

@@ -1,25 +1,25 @@
 import React from 'react'
 
-export type HeadingRef = HTMLHeadingElement
-export type HeadingProps = React.HTMLAttributes<HeadingRef> & {
+export type THeadingRef = HTMLHeadingElement
+export type THeadingProps = React.HTMLAttributes<THeadingRef> & {
   as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
 
 /**
  * Render the heading component
- * @param {HeadingProps} props - The heading component properties
- * @param {HeadingRef} ref - The heading component reference
+ * @param {THeadingProps} props - The heading component properties
+ * @param {THeadingRef} ref - The heading component reference
  * @returns The rendered heading component
  */
-const Heading = React.forwardRef<HeadingRef, HeadingProps>((props, ref) => {
-  const { as: Component = 'h1', children, ...rest } = props
-
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  )
-})
+const Heading = React.forwardRef<THeadingRef, THeadingProps>(
+  ({ as: Component = 'h1', children, ...rest }, ref) => {
+    return (
+      <Component ref={ref} {...rest}>
+        {children}
+      </Component>
+    )
+  }
+)
 
 Heading.displayName = 'Heading'
 

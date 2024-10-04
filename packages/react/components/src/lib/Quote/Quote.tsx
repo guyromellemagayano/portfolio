@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type QuoteRef = HTMLQuoteElement
-export type QuoteProps = React.HTMLAttributes<QuoteRef>
+export type TQuoteRef = HTMLQuoteElement
+export type TQuoteProps = React.HTMLAttributes<TQuoteRef>
 
 /**
  * Render the quote component.
- * @param {QuoteProps} props - The quote component properties
- * @param {QuoteRef} ref - The quote component reference
+ * @param {TQuoteProps} props - The quote component properties
+ * @param {TQuoteRef} ref - The quote component reference
  * @returns The rendered quote component
  */
-const Quote = React.forwardRef<QuoteRef, QuoteProps>(
+const Quote = React.forwardRef<TQuoteRef, TQuoteProps>(
   ({ children, ...rest }, ref) => {
     return (
       <q ref={ref} {...rest}>

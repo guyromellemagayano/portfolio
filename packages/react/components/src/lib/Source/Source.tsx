@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SourceRef = HTMLSourceElement
-export type SourceProps = React.SourceHTMLAttributes<SourceRef>
+export type TSourceRef = HTMLSourceElement
+export type TSourceProps = React.SourceHTMLAttributes<TSourceRef>
 
 /**
  * Render the source component.
- * @param {SourceProps} props - The source component properties
- * @param {SourceRef} ref - The source component reference
+ * @param {TSourceProps} props - The source component properties
+ * @param {TSourceRef} ref - The source component reference
  * @returns The rendered source component
  */
-const Source = React.forwardRef<SourceRef, SourceProps>(
+const Source = React.forwardRef<TSourceRef, TSourceProps>(
   ({ children, ...rest }, ref) => {
     return (
       <source ref={ref} {...rest}>

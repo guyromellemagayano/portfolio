@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type ProgressRef = HTMLProgressElement
-export type ProgressProps = React.ProgressHTMLAttributes<ProgressRef>
+export type TProgressRef = HTMLProgressElement
+export type TProgressProps = React.ProgressHTMLAttributes<TProgressRef>
 
 /**
  * Render the progress component.
- * @param {ProgressProps} props - The progress component properties
- * @param {ProgressRef} ref - The progress component reference
+ * @param {TProgressProps} props - The progress component properties
+ * @param {TProgressRef} ref - The progress component reference
  * @returns The rendered progress component
  */
-const Progress = React.forwardRef<ProgressRef, ProgressProps>(
+const Progress = React.forwardRef<TProgressRef, TProgressProps>(
   ({ children, ...rest }, ref) => {
     return (
       <progress ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type DataRef = HTMLDataElement
-export type DataProps = React.DataHTMLAttributes<DataRef>
+export type TDataRef = HTMLDataElement
+export type TDataProps = React.DataHTMLAttributes<TDataRef>
 
 /**
  * Render the data component.
- * @param {DataProps} props - The data component properties
- * @param {DataRef} ref - The data component reference
+ * @param {TDataProps} props - The data component properties
+ * @param {TDataRef} ref - The data component reference
  * @returns The rendered data component
  */
-const Data = React.forwardRef<DataRef, DataProps>(
+const Data = React.forwardRef<TDataRef, TDataProps>(
   ({ children, ...rest }, ref) => {
     return (
       <data ref={ref} {...rest}>

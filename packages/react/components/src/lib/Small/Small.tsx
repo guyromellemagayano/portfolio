@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SmallRef = HTMLElement
-export type SmallProps = React.HTMLAttributes<SmallRef>
+export type TSmallRef = HTMLElement
+export type TSmallProps = React.HTMLAttributes<TSmallRef>
 
 /**
  * Render the small component.
- * @param {SmallProps} props - The small component properties
- * @param {SmallRef} ref - The small component reference
+ * @param {TSmallProps} props - The small component properties
+ * @param {TSmallRef} ref - The small component reference
  * @returns The rendered small component
  */
-const Small = React.forwardRef<SmallRef, SmallProps>(
+const Small = React.forwardRef<TSmallRef, TSmallProps>(
   ({ children, ...rest }, ref) => {
     return (
       <small ref={ref} {...rest}>

@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type FieldsetRef = HTMLFieldSetElement
-export type FieldsetProps = React.FieldsetHTMLAttributes<FieldsetRef>
+export type TFieldsetRef = HTMLFieldSetElement
+export type TFieldsetProps = React.FieldsetHTMLAttributes<TFieldsetRef>
 
 /**
  * Render the fieldset component.
- * @param {FieldsetProps} props - The fieldset component properties
- * @param {FieldsetRef} ref - The fieldset component reference
+ * @param {TFieldsetProps} props - The fieldset component properties
+ * @param {TFieldsetRef} ref - The fieldset component reference
  * @returns The rendered fieldset component
  */
-export const Fieldset = React.forwardRef<FieldsetRef, FieldsetProps>(
+export const Fieldset = React.forwardRef<TFieldsetRef, TFieldsetProps>(
   ({ children, ...rest }, ref) => {
     return (
       <fieldset ref={ref} {...rest}>

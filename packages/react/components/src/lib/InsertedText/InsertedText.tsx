@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type InsertedTextRef = HTMLModElement
-export type InsertedTextProps = React.InsHTMLAttributes<InsertedTextRef>
+export type TInsertedTextRef = HTMLModElement
+export type TInsertedTextProps = React.InsHTMLAttributes<TInsertedTextRef>
 
 /**
  * Render the inserted text component.
- * @param {InsertedTextProps} props - The inserted text component properties
- * @param {InsertedTextRef} ref - The inserted text component reference
+ * @param {TInsertedTextProps} props - The inserted text component properties
+ * @param {TInsertedTextRef} ref - The inserted text component reference
  * @returns The rendered inserted text component
  */
-const InsertedText = React.forwardRef<InsertedTextRef, InsertedTextProps>(
+const InsertedText = React.forwardRef<TInsertedTextRef, TInsertedTextProps>(
   ({ children, ...rest }, ref) => {
     return (
       <ins ref={ref} {...rest}>

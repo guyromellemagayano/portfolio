@@ -1,15 +1,15 @@
 import React from 'react'
 
-export type SuperscriptRef = HTMLElement
-export type SuperscriptProps = React.HTMLAttributes<SuperscriptRef>
+export type TSuperscriptRef = HTMLElement
+export type TSuperscriptProps = React.HTMLAttributes<TSuperscriptRef>
 
 /**
  * Render the superscript component.
- * @param {SuperscriptProps} props - The superscript component properties
- * @param {SuperscriptRef} ref - The superscript component reference
+ * @param {TSuperscriptProps} props - The superscript component properties
+ * @param {TSuperscriptRef} ref - The superscript component reference
  * @returns The rendered superscript component
  */
-const Superscript = React.forwardRef<SuperscriptRef, SuperscriptProps>(
+const Superscript = React.forwardRef<TSuperscriptRef, TSuperscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
       <sup ref={ref} {...rest}>

@@ -1,17 +1,15 @@
-'use client'
-
 import React from 'react'
 
-export type NoscriptRef = HTMLScriptElement
-export type NoscriptProps = React.ScriptHTMLAttributes<NoscriptRef>
+export type TNoscriptRef = HTMLScriptElement
+export type TNoscriptProps = React.ScriptHTMLAttributes<TNoscriptRef>
 
 /**
  * Render the noscript component.
- * @param {NoscriptProps} props - The noscript component properties
- * @param {NoscriptRef} ref - The noscript component reference
+ * @param {TNoscriptProps} props - The noscript component properties
+ * @param {TNoscriptRef} ref - The noscript component reference
  * @returns The rendered noscript component
  */
-const Noscript = React.forwardRef<NoscriptRef, NoscriptProps>(
+const Noscript = React.forwardRef<TNoscriptRef, TNoscriptProps>(
   ({ children, ...rest }, ref) => {
     return (
       <noscript ref={ref} {...rest}>

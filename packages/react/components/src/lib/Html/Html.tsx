@@ -1,15 +1,19 @@
 import React from 'react'
 
-export type HtmlRef = HTMLHtmlElement
-export type HtmlProps = React.HtmlHTMLAttributes<HtmlRef>
+export type THtmlRef = HTMLHtmlElement
+export type THtmlProps = React.HtmlHTMLAttributes<THtmlRef>
 
 /**
  * Render the HTML component.
- * @param {HtmlProps} props - The HTML component properties
+ * @param {THtmlProps} props - The HTML component properties
  * @returns The rendered HTML component
  */
-const Html = ({ children, ...rest }: HtmlProps) => {
-  return <html {...rest}>{children}</html>
+const Html = ({ children, lang = 'en', ...rest }: THtmlProps) => {
+  return (
+    <html lang={lang} {...rest}>
+      {children}
+    </html>
+  )
 }
 
 Html.displayName = 'Html'

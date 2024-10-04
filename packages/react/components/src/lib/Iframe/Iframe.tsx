@@ -1,5 +1,3 @@
-'use client'
-
 import React from 'react'
 
 export type IframeRef = HTMLIFrameElement
@@ -11,15 +9,15 @@ export type IframeProps = React.IframeHTMLAttributes<IframeRef>
  * @param {IframeRef} ref - The iframe component reference
  * @returns The rendered iframe component
  */
-const Iframe = React.forwardRef<IframeRef, IframeProps>((props, ref) => {
-  const { src = '#', children, ...rest } = props
-
-  return (
-    <iframe ref={ref} src={src} {...rest}>
-      {children}
-    </iframe>
-  )
-})
+const Iframe = React.forwardRef<IframeRef, IframeProps>(
+  ({ src = '#', title = '', children, ...rest }, ref) => {
+    return (
+      <iframe ref={ref} src={src} title={title} {...rest}>
+        {children}
+      </iframe>
+    )
+  }
+)
 
 Iframe.displayName = 'Iframe'
 

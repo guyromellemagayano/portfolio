@@ -1,14 +1,15 @@
+/* eslint-disable @next/next/no-head-element */
 import React from 'react'
 
-export type HeadRef = HTMLHeadElement
-export type HeadProps = React.HTMLAttributes<HeadRef>
+export type THeadRef = HTMLHeadElement
+export type THeadProps = React.HTMLAttributes<THeadRef>
 
 /**
  * Render the head component.
- * @param {HeadProps} props - The head component properties
+ * @param {THeadProps} props - The head component properties
  * @returns The rendered head component
  */
-const Head = ({ children, ...rest }: HeadProps) => {
+const Head = ({ children, ...rest }: THeadProps) => {
   return <head {...rest}>{children}</head>
 }
 
