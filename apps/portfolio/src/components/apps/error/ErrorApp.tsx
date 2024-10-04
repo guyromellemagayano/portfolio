@@ -1,10 +1,9 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { cn } from '@react-utils'
 
-import { type TContentLayoutProps, ContentLayout } from '@portfolio/components'
+import { ContentLayout, type TContentLayoutProps } from '@portfolio/components'
+import { errorPageData } from '@portfolio/data'
 
 export type TErrorAppProps = TContentLayoutProps
 
@@ -14,13 +13,11 @@ export type TErrorAppProps = TContentLayoutProps
  * @returns The rendered error app component
  */
 const ErrorApp = ({ className, children, ...rest }: TErrorAppProps) => {
-  const t = useTranslations('ErrorPage')
-
   return (
     <ContentLayout.Simple
       className={cn('sm:px-8', className)}
-      intro={t('description')}
-      title={t('title')}
+      intro={errorPageData.description}
+      title={errorPageData.title}
       {...rest}
     >
       {children}
