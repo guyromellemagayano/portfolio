@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a link.
  * @param rest - Additional SVG props.
  * @returns The rendered SVG image of a link.
  */
-const LinkSvg = (rest: SvgProps) => {
+const LinkSvg = (rest: TSvgProps) => {
   return (
     <Svg aria-hidden="true" viewBox="0 0 24 24" {...rest}>
       <Path

@@ -12,8 +12,8 @@ import {
   Heading,
   Span,
   Time,
-  type DivisionProps,
-  type DivisionRef
+  type TDivisionProps,
+  type TDivisionRef
 } from '@react-components'
 
 import { cn, formatDate } from '@react-utils'
@@ -25,16 +25,16 @@ import {
   Article as HomeArticleLayout,
   Prose
 } from '@portfolio/components'
-import type { ArticlesData } from '@portfolio/types'
+import type { TArticlesData } from '@portfolio/types'
 
-export type ArticleLayoutRef = DivisionRef
-export type ArticleLayoutProps = DivisionProps & {
+export type ArticleLayoutRef = TDivisionRef
+export type ArticleLayoutProps = TDivisionProps & {
   article?: ArticleLayoutArticleData
-  articles?: Array<ArticlesData>
+  articles?: Array<TArticlesData>
   isHome?: boolean
 }
 export type ArticleLayoutArticleData = Pick<
-  ArticlesData,
+  TArticlesData,
   'title' | 'date' | 'description'
 >
 

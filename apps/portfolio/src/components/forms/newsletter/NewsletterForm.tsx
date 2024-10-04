@@ -5,22 +5,22 @@ import { forwardRef } from 'react'
 import {
   Button,
   Div,
-  type DivisionProps,
-  type DivisionRef,
   Form,
-  type FormProps,
   Heading,
   Input,
   Label,
-  P
+  P,
+  type TDivisionProps,
+  type TDivisionRef,
+  type TFormProps
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
 import { BaseContainer } from '@portfolio/components'
 
-export type NewsletterFormRef = DivisionRef
-export type NewsletterFormProps = DivisionProps & FormProps
+export type NewsletterFormRef = TDivisionRef
+export type NewsletterFormProps = TDivisionProps & TFormProps
 
 const strings = {
   stayUpToDate: 'Want product news and updates?',

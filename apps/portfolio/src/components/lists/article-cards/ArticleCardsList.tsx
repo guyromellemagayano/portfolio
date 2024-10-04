@@ -1,15 +1,19 @@
 import { forwardRef, memo } from 'react'
 
-import { Article, type ArticleProps, type ArticleRef } from '@react-components'
+import {
+  Article,
+  type TArticleProps,
+  type TArticleRef
+} from '@react-components'
 
 import { cn, formatDate } from '@react-utils'
 
 import { Card } from '@portfolio/components'
-import { type ArticlesData } from '@portfolio/types'
+import { type TArticlesData } from '@portfolio/types'
 
-export type ArticleCardsListRef = ArticleRef
-export type ArticleCardsListProps = ArticleProps &
-  Pick<ArticlesData, 'date' | 'slug' | 'title' | 'description' | 'category'>
+export type ArticleCardsListRef = TArticleRef
+export type ArticleCardsListProps = TArticleProps &
+  Pick<TArticlesData, 'date' | 'slug' | 'title' | 'description' | 'category'>
 
 const strings = {
   read: 'Read article'

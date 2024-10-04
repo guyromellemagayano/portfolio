@@ -1,11 +1,11 @@
-import { Path, Svg, SvgProps } from '@react-components'
+import { Path, Svg, TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a close icon.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a close icon.
  */
-const CloseSvg = (rest: SvgProps) => {
+const CloseSvg = (rest: TSvgProps) => {
   return (
     <Svg aria-hidden="true" viewBox="0 0 24 24" {...rest}>
       <Path

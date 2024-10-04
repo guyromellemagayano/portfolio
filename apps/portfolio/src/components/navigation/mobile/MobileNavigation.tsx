@@ -14,15 +14,15 @@ import {
   Div,
   Heading,
   Nav,
-  type NavigationProps,
-  type NavigationRef
+  type TNavigationProps,
+  type TNavigationRef
 } from '@react-components'
 
 import { ChevronDownSvg, CloseSvg } from '@portfolio/components'
 import type { PagesData } from '@portfolio/types'
 
-export type MobileNavigationRef = NavigationRef
-export type MobileNavigationProps = NavigationProps & {
+export type MobileNavigationRef = TNavigationRef
+export type MobileNavigationProps = TNavigationProps & {
   data: PagesData[]
 }
 
