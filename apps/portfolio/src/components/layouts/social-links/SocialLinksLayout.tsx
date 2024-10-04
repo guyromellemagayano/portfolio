@@ -1,11 +1,11 @@
 import { forwardRef, memo } from 'react'
 
-import { Div, type DivisionProps, type DivisionRef } from '@react-components'
+import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
 import { SocialLink, type SocialLinkProps } from '@portfolio/components'
 
-export type SocialLinksLayoutRef = DivisionRef
-export type SocialLinksLayoutProps = DivisionProps & {
+export type SocialLinksLayoutRef = TDivisionRef
+export type SocialLinksLayoutProps = TDivisionProps & {
   data?: SocialLinkProps[]
 }
 

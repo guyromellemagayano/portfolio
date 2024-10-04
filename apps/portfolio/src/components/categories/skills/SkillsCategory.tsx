@@ -17,14 +17,14 @@ import { cn } from '@react-utils'
 import {
   // CategoryForm,
   ContentLayout,
-  type ContentLayoutProps,
-  type ContentLayoutRef
+  type TContentLayoutProps,
+  type TContentLayoutRef
 } from '@portfolio/components'
-import type { SkillsData } from '@portfolio/types'
+import type { TSkillsData } from '@portfolio/types'
 
-export type SkillsCategoryRef = ContentLayoutRef
-export type SkillsCategoryProps = ContentLayoutProps & {
-  data?: SkillsData
+export type SkillsCategoryRef = TContentLayoutRef
+export type SkillsCategoryProps = TContentLayoutProps & {
+  data?: TSkillsData
 }
 
 /**

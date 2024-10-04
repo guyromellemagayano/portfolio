@@ -6,14 +6,14 @@ import Image, { type ImageLoaderProps } from 'next/image'
 
 import { avatarDefaults } from '@portfolio/configs'
 import type {
-  CommonComponentsProps,
-  ImageProps,
-  ImageRef
+  TCommonComponentsProps,
+  TImageProps,
+  TImageRef
 } from '@react-components'
 
-export type TContentfulImageRef = ImageRef
-export type TContentfulImageProps = ImageProps &
-  CommonComponentsProps &
+export type TContentfulImageRef = TImageRef
+export type TContentfulImageProps = TImageProps &
+  TCommonComponentsProps &
   ImageLoaderProps
 
 // Custom image loader for `contentful` images

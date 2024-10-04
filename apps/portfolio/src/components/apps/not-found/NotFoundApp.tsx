@@ -4,9 +4,9 @@ import { useTranslations } from 'next-intl'
 
 import { cn } from '@react-utils'
 
-import { type ContentLayoutProps, ContentLayout } from '@portfolio/components'
+import { type TContentLayoutProps, ContentLayout } from '@portfolio/components'
 
-export type TNotFoundAppProps = ContentLayoutProps
+export type TNotFoundAppProps = TContentLayoutProps
 
 /**
  * Render the not found app component.

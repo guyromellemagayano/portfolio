@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, useMemo } from 'react'
+import { forwardRef, memo, useMemo } from 'react'
 
 import Link, { type LinkProps } from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -8,14 +8,14 @@ import { usePathname } from 'next/navigation'
 import {
   Li,
   Span,
-  type ListItemProps,
-  type ListItemRef
+  type TListItemProps,
+  type TListItemRef
 } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type NavigationListItemRef = ListItemRef
-export type NavigationListItemProps = ListItemProps & Pick<LinkProps, 'href'>
+export type NavigationListItemRef = TListItemRef
+export type NavigationListItemProps = TListItemProps & Pick<LinkProps, 'href'>
 
 /**
  * Renders the navigation list component.
@@ -23,37 +23,38 @@ export type NavigationListItemProps = ListItemProps & Pick<LinkProps, 'href'>
  * @param {NavigationListItemRef} ref - The component reference
  * @returns The rendered navigation list component
  */
-const NavigationListItem = forwardRef<
-  NavigationListItemRef,
-  NavigationListItemProps
->(({ href, children, ...rest }, ref) => {
-  const pathname = usePathname()
-  const isActive = pathname === href
+const NavigationListItem = memo(
+  forwardRef<NavigationListItemRef, NavigationListItemProps>(
+    ({ href, children, ...rest }, ref) => {
+      const pathname = usePathname()
+      const isActive = pathname === href
 
-  const classNames = useMemo(
-    () =>
-      cn(
-        'relative block px-3 py-2 transition',
-        isActive
-          ? 'text-zinc-500 dark:text-zinc-400'
-          : 'hover:text-zinc-500 dark:hover:text-zinc-400'
-      ),
-    [isActive]
+      const classNames = useMemo(
+        () =>
+          cn(
+            'relative block px-3 py-2 transition',
+            isActive
+              ? 'text-sky-500 dark:text-sky-400'
+              : 'hover:text-sky-500 dark:hover:text-sky-400'
+          ),
+        [isActive]
+      )
+
+      if (!href || !children) return null
+
+      return (
+        <Li ref={ref} {...rest}>
+          <Link href={href} className={classNames}>
+            {children}
+            {isActive && (
+              <Span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-sky-500/0 via-sky-500/40 to-sky-500/0 dark:from-sky-400/0 dark:via-sky-400/40 dark:to-sky-400/0" />
+            )}
+          </Link>
+        </Li>
+      )
+    }
   )
-
-  if (!href || !children) return null
-
-  return (
-    <Li ref={ref} {...rest}>
-      <Link href={href} className={classNames}>
-        {children}
-        {isActive && (
-          <Span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-zinc-500/0 via-zinc-500/40 to-zinc-500/0 dark:from-zinc-400/0 dark:via-zinc-400/40 dark:to-zinc-400/0" />
-        )}
-      </Link>
-    </Li>
-  )
-})
+)
 
 NavigationListItem.displayName = 'NavigationListItem'
 

@@ -1,11 +1,11 @@
 import { forwardRef } from 'react'
 
-import { Div, type DivisionProps, type DivisionRef } from '@react-components'
+import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type ArticlesListRef = DivisionRef
-export type ArticlesListProps = DivisionProps
+export type ArticlesListRef = TDivisionRef
+export type ArticlesListProps = TDivisionProps
 
 /**
  * Renders the articles list component.

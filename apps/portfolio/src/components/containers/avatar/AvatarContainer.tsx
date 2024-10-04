@@ -1,11 +1,11 @@
 import { forwardRef } from 'react'
 
-import { Div, type DivisionProps, type DivisionRef } from '@react-components'
+import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
 import { cn } from '@react-utils'
 
-export type AvatarContainerRef = DivisionRef
-export type AvatarContainerProps = DivisionProps
+export type AvatarContainerRef = TDivisionRef
+export type AvatarContainerProps = TDivisionProps
 
 /**
  * Renders avatar container component.
