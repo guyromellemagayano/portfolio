@@ -1,10 +1,10 @@
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
-import type { BasePageData } from './base'
-import type { CommonPhotosData, CommonPostsData } from './common'
+import type { TBasePageData } from './base'
+import type { TCommonPhotosData, TCommonPostsData } from './common'
 
 // Pages data
-export type PagesData = {
+export type TPagesData = {
   id?: string
   title: string
   link: string
@@ -12,13 +12,13 @@ export type PagesData = {
 }
 
 // Work data
-export type WorkData = Pick<BasePageData, 'hero'> & {
-  workExperiences?: WorkExperiencesData[]
+export type TWorkData = Pick<TBasePageData, 'hero'> & {
+  workExperiences?: TWorkExperiencesData[]
   cvFile?: string
 }
 
 // Work experiences data
-export type WorkExperiencesData = CommonPhotosData & {
+export type TWorkExperiencesData = TCommonPhotosData & {
   company: string
   title: string
   start: string
@@ -30,102 +30,102 @@ export type WorkExperiencesData = CommonPhotosData & {
 }
 
 // Skills data
-export type SkillsData = Pick<BasePageData, 'hero'> & {
-  skills?: SkillsListData[]
+export type TSkillsData = Pick<TBasePageData, 'hero'> & {
+  skills?: TSkillsListData[]
 }
 
 // Skills list data
-export type SkillsListData = {
+export type TSkillsListData = {
   id?: string
   name: string
   type: string
-  image: SkillsListImageData
+  image: TSkillsListImageData
 }
 
 // Skills list image data
-export type SkillsListImageData = {
-  default: CommonPhotosData
-  dark?: CommonPhotosData
+export type TSkillsListImageData = {
+  default: TCommonPhotosData
+  dark?: TCommonPhotosData
 }
 
 // Photos data
-export type PhotosData = {
-  slidePhotos: CommonPhotosData[]
-  about: CommonPhotosData
-}
-
-// Social links data
-export type SocialLinksData = {
-  id?: string
-  href: string
-  label?: string
-  icon: string
+export type TPhotosData = {
+  slidePhotos: TCommonPhotosData[]
+  aboutImage: TCommonPhotosData
 }
 
 // Articles data
-export type ArticlesData = CommonPostsData & {
+export type TArticlesData = TCommonPostsData & {
   date: string
 }
 
 // Articles app data
-export type ArticlesAppData = BasePageData['hero'] & {
-  articles?: ArticlesData[]
+export type TArticlesAppData = TBasePageData['hero'] & {
+  articles?: TArticlesData[]
 }
 
 // Projects app data
-export type ProjectsAppData = BasePageData['hero'] & {
-  projects?: ProjectsData[]
+export type TProjectsAppData = TBasePageData['hero'] & {
+  projects?: TProjectsData[]
 }
 
 // Projects data
-export type ProjectsData = CommonPostsData & {
+export type TProjectsData = TCommonPostsData & {
   logo: string | StaticImport
-  link: ProjectsLinkData
+  link: TProjectsLinkData
   tech: string[]
 }
 
 // Projects link data
-export type ProjectsLinkData = {
+export type TProjectsLinkData = {
   url: string
   text: string
 }
 
 // Navigation data
-export type NavigationData = {
-  headerMenu: PagesData[]
-  footerMenu: PagesData[]
+export type TNavigationData = {
+  headerMenu: TPagesData[]
+  footerMenu: TPagesData[]
 }
 
 // Favicons data
-export type FaviconsData = {
+export type TFaviconsData = {
   manifest: string
-  icons: FaviconsIconsData
+  icons: TFaviconsIconsData
 }
 
 // Favicons icons data
-export type FaviconsIconsData = {
-  shortcut: FaviconsShortcutData
-  icon: FaviconsIconData[]
-  apple: FaviconsAppleData[]
-  other: FaviconsOtherData[]
+export type TFaviconsIconsData = {
+  shortcut: TFaviconsShortcutData
+  icon: TFaviconsIconData[]
+  apple: TFaviconsAppleData[]
+  other: TFaviconsOtherData[]
 }
 
 // Favicons shortcut data
-export type FaviconsShortcutData = {
+export type TFaviconsShortcutData = {
   url: string
   type: string
 }
 
 // Favicons icon data
-export type FaviconsIconData = FaviconsShortcutData & {
+export type TFaviconsIconData = TFaviconsShortcutData & {
   sizes?: string
 }
 
 // Favicons apple data
-export type FaviconsAppleData = FaviconsIconData
+export type TFaviconsAppleData = TFaviconsIconData
 
 // Favicons other data
-export type FaviconsOtherData = Pick<FaviconsShortcutData, 'url'> & {
+export type TFaviconsOtherData = Pick<TFaviconsShortcutData, 'url'> & {
   rel: string
   color: string
+}
+
+// Social links data
+export type TSocialLinksData = {
+  id?: string
+  href: string
+  label?: string
+  icon: string
 }
