@@ -2,7 +2,7 @@ import { MDXContent } from 'mdx/types'
 import { StaticImport } from 'next/dist/shared/lib/get-img-props'
 
 // Common posts data
-export type CommonPostsData = {
+export type TCommonPostsData = {
   slug: string
   title: string
   description: string
@@ -11,8 +11,8 @@ export type CommonPostsData = {
 }
 
 // Common photos data
-export type CommonPhotosData = {
+export type TCommonPhotosData = {
   id?: string
-  alt: string
+  alt?: string
   src: string | StaticImport
 }
