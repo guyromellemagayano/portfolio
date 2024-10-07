@@ -19,6 +19,7 @@
       "@portfolio/app/*": ["apps/portfolio/src/app/*"],
       "@portfolio/components": ["apps/portfolio/src/components/index.ts"],
       "@portfolio/configs": ["apps/portfolio/src/configs/index.ts"],
+      "@portfolio/data": ["apps/portfolio/src/data/index.ts"],
       "@portfolio/i18n/*": ["apps/portfolio/src/i18n/*"],
       "@portfolio/libs": ["apps/portfolio/src/libs/index.ts"],
       "@portfolio/providers": ["apps/portfolio/src/providers/index.ts"],
