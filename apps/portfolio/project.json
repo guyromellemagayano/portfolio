@@ -50,9 +50,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/portfolio/jest.config.ts",
         "passWithNoTests": true
@@ -66,13 +64,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/portfolio/**/*.{ts,tsx}"
-        ],
+        "lintFilePatterns": ["apps/portfolio/**/*.ts?(x)"],
         "fix": true
       }
     }
