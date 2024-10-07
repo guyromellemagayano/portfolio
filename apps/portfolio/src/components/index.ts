@@ -1,12 +1,12 @@
 // --------------------
 // APP PAGE COMPONENTS
 // --------------------
-// export * from './apps/about'
-// export * from './apps/articles'
+export * from './apps/about'
 export * from './apps/error'
 export * from './apps/home'
 export * from './apps/loading'
 export * from './apps/not-found'
+// export * from './apps/articles'
 // export * from './apps/projects'
 
 // --------------------
@@ -47,16 +47,10 @@ export * from './forms/category'
 export * from './forms/newsletter'
 
 // --------------------
-// IMAGE COMPONENTS
-// --------------------
-export * from './images/contentful'
-
-// --------------------
 // LAYOUT COMPONENTS
 // --------------------
 export * from './layouts/about'
 export * from './layouts/article'
-export * from './layouts/base'
 export * from './layouts/content'
 export * from './layouts/footer'
 export * from './layouts/header'

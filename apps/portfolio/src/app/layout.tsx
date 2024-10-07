@@ -1,41 +1,91 @@
-import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages } from 'next-intl/server'
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Metadata } from 'next'
+import Script from 'next/script'
 
-import type { CommonComponentsProps } from '@react-components'
+import {
+  Body,
+  Div,
+  Head,
+  Html,
+  Main,
+  type TCommonComponentsProps
+} from '@react-components'
 
-import { BaseLayout } from '@portfolio/components'
-// import { routing } from '@portfolio/i18n/routing'
-import type { TCtfContextValue } from '@portfolio/providers'
+import Providers from '@portfolio/app/providers'
+import { FooterLayout, HeaderLayout } from '@portfolio/components'
+import {
+  GOOGLE_ADSENSE_MEASUREMENT_URL,
+  GOOGLE_ANALYTICS_MEASUREMENT_ID,
+  GOOGLE_TAG_MANAGER_CONTAINER_ID
+} from '@portfolio/configs'
+import { iconsData } from '@portfolio/data'
+import { navigationData } from '@portfolio/utils'
 
-// export const generateStaticParams = () =>
-//   routing.locales.map(locale => ({ locale }))
+import '@portfolio/styles/tailwind.css'
+import 'focus-visible'
 
-export type TLocaleLayoutProps = Pick<CommonComponentsProps, 'children'> & {
-  params: TLocaleLayoutParams
-}
-export type TLocaleLayoutParams = Pick<TCtfContextValue, 'locale'>
+export type TRootLayoutProps = Pick<TCommonComponentsProps, 'children'>
 
 /**
- * Renders the locale layout app.
- * @param {TLocaleLayoutProps} props - The app props
- * @returns The rendered locale layout app
+ * Generates the metadata for the home page.
+ * @returns The metadata for the home page.
  */
-const LocaleLayout = async ({ children }: TLocaleLayoutProps) => {
-  const locale = await getLocale()
+export const generateMetadata = async (): Promise<Metadata> => {
+  const { manifest, icons } = iconsData
 
-  // unstable_setRequestLocale(params.locale)
+  return {
+    manifest,
+    icons
+  }
+}
 
-  const messages = await getMessages()
+/**
+ * Renders the root layout app.
+ * @param {TRootLayoutProps} props - The app props
+ * @returns The rendered root layout app
+ */
+const RootLayout = async ({ children }: TRootLayoutProps) => {
+  const { headerMenu, footerMenu } = navigationData()
 
   return (
-    <BaseLayout locale={locale}>
-      <NextIntlClientProvider messages={messages}>
-        {children}
-      </NextIntlClientProvider>
-    </BaseLayout>
+    <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <Head>
+        {GOOGLE_ANALYTICS_MEASUREMENT_ID && (
+          <GoogleAnalytics gaId={GOOGLE_ANALYTICS_MEASUREMENT_ID} />
+        )}
+
+        {GOOGLE_TAG_MANAGER_CONTAINER_ID && (
+          <GoogleTagManager gtmId={GOOGLE_TAG_MANAGER_CONTAINER_ID} />
+        )}
+
+        {GOOGLE_ADSENSE_MEASUREMENT_URL && (
+          <Script
+            id="gadsense"
+            src={GOOGLE_ADSENSE_MEASUREMENT_URL}
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        )}
+      </Head>
+      <Body className="flex h-full bg-zinc-50 dark:bg-black">
+        <Providers>
+          <Div className="flex w-full">
+            <Div className="relative flex w-full flex-col">
+              <HeaderLayout data={headerMenu} />
+              <Main className="flex-auto">{children}</Main>
+              <FooterLayout data={footerMenu} />
+            </Div>
+          </Div>
+          <SpeedInsights />
+          <Analytics />
+        </Providers>
+      </Body>
+    </Html>
   )
 }
 
-LocaleLayout.displayName = 'LocaleLayout'
+RootLayout.displayName = 'RootLayout'
 
-export default LocaleLayout
+export default RootLayout
