@@ -1,20 +1,18 @@
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+
 import Script from 'next/script'
 
 import {
   Body,
-  type CommonComponentsProps,
   Div,
   Head,
   Html,
-  Main
+  Main,
+  type TCommonComponentsProps
 } from '@react-components'
 
-import { cn } from '@react-utils'
-
-import type { TLocaleLayoutParams } from '@portfolio/app/layout'
 import Providers from '@portfolio/app/providers'
 import { FooterLayout, HeaderLayout } from '@portfolio/components'
 import {
@@ -22,33 +20,23 @@ import {
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_TAG_MANAGER_CONTAINER_ID
 } from '@portfolio/configs'
-import { routingDefaults } from '@portfolio/i18n/routing'
 import { navigationData } from '@portfolio/utils'
 
 import '@portfolio/styles/tailwind.css'
-
 import 'focus-visible'
 
-export type TBaseLayoutProps = Pick<CommonComponentsProps, 'children'> &
-  TLocaleLayoutParams
+export type TBaseLayoutProps = Pick<TCommonComponentsProps, 'children'>
 
 /**
  * Render the base layout component.
  * @param {TBaseLayoutProps} props - The component props
  * @returns The rendered base layout component
  */
-const BaseLayout = async ({
-  children,
-  locale = routingDefaults.defaultLocale
-}: TBaseLayoutProps) => {
-  const { headerMenu, footerMenu } = await navigationData()
+const BaseLayout = ({ children }: TBaseLayoutProps) => {
+  const { headerMenu, footerMenu } = navigationData()
 
   return (
-    <Html
-      lang={locale}
-      className={cn('h-full antialiased')}
-      suppressHydrationWarning
-    >
+    <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <Head>
         {GOOGLE_ANALYTICS_MEASUREMENT_ID && (
           <GoogleAnalytics gaId={GOOGLE_ANALYTICS_MEASUREMENT_ID} />
@@ -67,12 +55,12 @@ const BaseLayout = async ({
           />
         )}
       </Head>
-      <Body className={cn('flex h-full bg-zinc-50 dark:bg-black')}>
+      <Body className="flex h-full bg-zinc-50 dark:bg-black">
         <Providers>
-          <Div className={cn('flex w-full')}>
-            <Div className={cn('relative flex w-full flex-col')}>
+          <Div className="flex w-full">
+            <Div className="relative flex w-full flex-col">
               <HeaderLayout data={headerMenu} />
-              <Main className={cn('flex-auto')}>{children}</Main>
+              <Main className="flex-auto">{children}</Main>
               <FooterLayout data={footerMenu} />
             </Div>
           </Div>
