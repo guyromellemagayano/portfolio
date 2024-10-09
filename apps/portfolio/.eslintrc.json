@@ -1,6 +1,9 @@
 {
   "extends": [
-    "../../.eslintrc.json"
+    "../../.eslintrc.json",
+    "plugin:@next/next/recommended",
+    "next/typescript",
+    "next/core-web-vitals"
   ],
   "ignorePatterns": [
     "!**/*",
