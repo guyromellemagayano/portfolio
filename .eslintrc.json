@@ -1,8 +1,6 @@
 {
   "root": true,
-  "plugins": [
-    "@nx"
-  ],
+  "plugins": ["@nx"],
   "settings": {
     "react": {
       "version": "detect"
@@ -18,16 +16,11 @@
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:react/recommended",
-    "plugin:@next/next/recommended",
-    "next",
-    "next/core-web-vitals"
+    "plugin:react/recommended"
   ],
   "overrides": [
     {
-      "files": [
-        "**/*.ts?(x)"
-      ],
+      "files": ["**/*.ts?(x)"],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": "latest",
@@ -39,10 +32,7 @@
       },
       "settings": {
         "import/parsers": {
-          "@typescript-eslint/parser": [
-            ".ts",
-            ".tsx"
-          ]
+          "@typescript-eslint/parser": [".ts", ".tsx"]
         },
         "import/resolver": {
           "typescript": {
@@ -50,9 +40,7 @@
           }
         }
       },
-      "extends": [
-        "plugin:@nx/typescript"
-      ],
+      "extends": ["plugin:@nx/typescript"],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -63,9 +51,7 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": [
-                  "*"
-                ]
+                "onlyDependOnLibsWithTags": ["*"]
               }
             ]
           }
@@ -117,9 +103,7 @@
         "**/*.test.ts",
         "**/*.test.tsx"
       ],
-      "extends": [
-        "plugin:testing-library/react"
-      ],
+      "extends": ["plugin:testing-library/react"],
       "env": {
         "jest": true
       }
