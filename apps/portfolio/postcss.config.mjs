@@ -1,4 +1,5 @@
-module.exports = {
+/** @type {import('postcss-load-config').Config} */
+const config = {
   plugins: {
     'postcss-import': {},
     'postcss-focus-visible': {
@@ -12,3 +13,5 @@ module.exports = {
     autoprefixer: {}
   }
 }
+
+export default config
