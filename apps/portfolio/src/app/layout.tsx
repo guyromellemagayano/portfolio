@@ -1,17 +1,12 @@
+import { ReactNode } from 'react'
+
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Metadata } from 'next'
 import Script from 'next/script'
 
-import {
-  Body,
-  Div,
-  Head,
-  Html,
-  Main,
-  type TCommonComponentsProps
-} from '@react-components'
+import { Body, Div, Head, Html, Main } from '@react-components'
 
 import Providers from '@portfolio/app/providers'
 import { FooterLayout, HeaderLayout } from '@portfolio/components'
@@ -26,7 +21,9 @@ import { navigationData } from '@portfolio/utils'
 import '@portfolio/styles/tailwind.css'
 import 'focus-visible'
 
-export type TRootLayoutProps = Pick<TCommonComponentsProps, 'children'>
+export type TRootLayoutProps = {
+  children?: ReactNode
+}
 
 /**
  * Generates the metadata for the home page.
@@ -69,8 +66,8 @@ const RootLayout = async ({ children }: TRootLayoutProps) => {
           />
         )}
       </Head>
-      <Body className="flex h-full bg-zinc-50 dark:bg-black">
-        <Providers>
+      <Providers>
+        <Body className="flex h-full bg-zinc-50 dark:bg-black">
           <Div className="flex w-full">
             <Div className="relative flex w-full flex-col">
               <HeaderLayout data={headerMenu} />
@@ -80,8 +77,8 @@ const RootLayout = async ({ children }: TRootLayoutProps) => {
           </Div>
           <SpeedInsights />
           <Analytics />
-        </Providers>
-      </Body>
+        </Body>
+      </Providers>
     </Html>
   )
 }
