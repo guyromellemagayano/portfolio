@@ -8,7 +8,7 @@ import { useTheme } from 'next-themes'
  * `ThemeWatcher` component that watches for changes in the system theme and updates the theme accordingly.
  * @returns The rendered `ThemeWatcher` component
  */
-const ThemeWatcher = (): null => {
+export const ThemeWatcher = (): null => {
   const { resolvedTheme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -33,5 +33,3 @@ const ThemeWatcher = (): null => {
 }
 
 ThemeWatcher.displayName = 'ThemeWatcher'
-
-export default ThemeWatcher
