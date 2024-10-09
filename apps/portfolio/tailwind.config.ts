@@ -1,13 +1,13 @@
-const { join } = require('path')
-const { createGlobPatternsForDependencies } = require('@nx/react/tailwind')
-const aspectRatio = require('@tailwindcss/aspect-ratio')
-const forms = require('@tailwindcss/forms')
-const typography = require('@tailwindcss/typography')
+import { createGlobPatternsForDependencies } from '@nx/react/tailwind'
+import aspectRatio from '@tailwindcss/aspect-ratio'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+import { join } from 'path'
+import type { Config } from 'tailwindcss'
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    join(__dirname, './src/**/*.{ts,tsx,mdx}'),
+    join(__dirname, './src/{components,app}/*.{js,ts,jsx,tsx,mdx}'),
     ...createGlobPatternsForDependencies(__dirname)
   ],
   darkMode: 'class',
@@ -27,7 +27,7 @@ module.exports = {
       '8xl': ['6rem', { lineHeight: '1' }],
       '9xl': ['8rem', { lineHeight: '1' }]
     },
-    typography: theme => ({
+    typography: (theme: (arg0: string) => unknown[]) => ({
       invert: {
         css: {
           '--tw-prose-body': 'var(--tw-prose-invert-body)',
@@ -309,4 +309,4 @@ module.exports = {
     })
   },
   plugins: [forms, typography, aspectRatio]
-}
+} satisfies Config
