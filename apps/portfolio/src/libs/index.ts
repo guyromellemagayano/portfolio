@@ -1,1 +1,1 @@
-export * from './tanstack-query'
+export * from './apollo-client'

@@ -32,6 +32,9 @@
       "@portfolio/data": [
         "apps/portfolio/src/data/index.ts"
       ],
+      "@portfolio/graphql": [
+        "apps/portfolio/src/graphql/index.ts"
+      ],
       "@portfolio/libs": [
         "apps/portfolio/src/libs/index.ts"
       ],

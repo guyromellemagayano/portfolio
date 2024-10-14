@@ -1,2 +1,2 @@
-export * from './ApolloAppProvider'
+export * from './ApolloWrapperProvider'
 export * from './ThemeWatcherProvider'
