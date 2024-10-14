@@ -62,23 +62,23 @@ const nextConfig = {
 
   // Environment variables configuration
   env: {
-    BUNDLE_ANALYZE: process.env.BUNDLE_ANALYZE || '',
-    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN || '',
+    BUNDLE_ANALYZE: process.env.BUNDLE_ANALYZE,
+    CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
     CONTENTFUL_PREVIEW_ACCESS_TOKEN:
-      process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN || '',
-    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID || '',
-    CONTENTFUL_MANAGEMENT_TOKEN: process.env.CONTENTFUL_MANAGEMENT_TOKEN || '',
-    GOOGLE_ADSENSE_CLIENT_ID: process.env.GOOGLE_ADSENSE_CLIENT_ID || '',
+      process.env.CONTENTFUL_PREVIEW_ACCESS_TOKEN,
+    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
+    CONTENTFUL_MANAGEMENT_TOKEN: process.env.CONTENTFUL_MANAGEMENT_TOKEN,
+    GOOGLE_ADSENSE_CLIENT_ID: process.env.GOOGLE_ADSENSE_CLIENT_ID,
     GOOGLE_ANALYTICS_MEASUREMENT_ID:
-      process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID || '',
+      process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID,
     GOOGLE_TAG_MANAGER_CONTAINER_ID:
-      process.env.GOOGLE_TAG_MANAGER_CONTAINER_ID || '',
-    PORTFOLIO_SITE_URL: process.env.PORTFOLIO_SITE_URL || '',
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN || '',
-    SENTRY_DSN: process.env.SENTRY_DSN || '',
-    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT || '',
-    SENTRY_ORG: process.env.SENTRY_ORG || '',
-    SENTRY_PROJECT: process.env.SENTRY_PROJECT || ''
+      process.env.GOOGLE_TAG_MANAGER_CONTAINER_ID,
+    PORTFOLIO_SITE_URL: process.env.PORTFOLIO_SITE_URL,
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    SENTRY_ENVIRONMENT: process.env.SENTRY_ENVIRONMENT,
+    SENTRY_ORG: process.env.SENTRY_ORG,
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT
   },
 
   // React compiler configuration
@@ -130,13 +130,13 @@ const nextConfig = {
 
 // Sentry configuration
 const sentryConfigOptions = {
-  authToken: process.env.SENTRY_AUTH_TOKEN || '',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   autoInstrumentServerFunctions: false,
   automaticVercelMonitors: process.env.NODE_ENV === 'production',
   disableLogger: process.env.NODE_ENV === 'development',
   hideSourceMaps: process.env.NODE_ENV === 'development',
-  org: process.env.SENTRY_ORG || '',
-  project: process.env.SENTRY_PROJECT || '',
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   silent: process.env.NODE_ENV === 'development',
   transpileClientSDK: process.env.NODE_ENV === 'production',
   tunnelRoute: '/monitoring',
