@@ -14,12 +14,8 @@
       "files": [
         "**/*.ts?(x)"
       ],
-      "extends": [
-        "plugin:@tanstack/eslint-plugin-query/recommended"
-      ],
-      "rules": {
-        "@tanstack/query/exhaustive-deps": "off"
-      }
+      "extends": [],
+      "rules": {}
     },
     {
       "files": [
