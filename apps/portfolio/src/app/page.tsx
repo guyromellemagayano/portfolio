@@ -1,36 +1,65 @@
+import { ApolloQueryResult } from '@apollo/client'
+import { getClient } from '@portfolio/libs'
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
+import Script from 'next/script'
 
-import { HomeApp } from '@portfolio/components'
-// import { getQueryClient } from '@portfolio/libs'
-import { faviconsData, homeAppData, homePageData } from '@portfolio/utils'
+import {
+  getHomePageAppQuery,
+  getHomePageMetaQuery,
+  type HomePageAppDataQuery,
+  type HomePageMetaQuery
+} from '@portfolio/graphql'
+
+export const revalidate = 5
 
 /**
  * Generates the metadata for the home page.
  * @returns The metadata for the home page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
-  const { meta } = await homePageData()
-  const { icons, manifest } = await faviconsData()
+  const { data } = (await getClient().query({
+    query: getHomePageMetaQuery
+  })) as ApolloQueryResult<HomePageMetaQuery>
 
   return {
-    title: meta?.title || '',
-    description: meta?.description || '',
-    manifest,
-    icons
+    title: data?.homePage?.meta?.title || undefined,
+    description: data?.homePage?.meta?.description || undefined
   }
 }
 
+// Dynamic imports
+const HomeApp = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.HomeApp)
+)
+
 /**
  * Renders the home page.
- * @param {THomePageProps} props - The page props
  * @returns The rendered home page
  */
 const HomePage = async () => {
-  // const queryClient = getQueryClient()
+  const { data } = (await getClient().query({
+    query: getHomePageAppQuery
+  })) as ApolloQueryResult<HomePageAppDataQuery>
 
-  const data = await homeAppData()
+  return (
+    <>
+      <Script
+        id="homepage-structured-data"
+        type="application/ld+json"
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            ...(data?.homePage?.structuredData || undefined)
+          })
+        }}
+      />
 
-  return <HomeApp {...data} />
+      <HomeApp {...data} />
+    </>
+  )
 }
+
+HomePage.displayName = 'HomePage'
 
 export default HomePage
