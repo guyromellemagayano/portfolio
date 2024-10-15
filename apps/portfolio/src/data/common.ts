@@ -1,5 +1,6 @@
 // Common data
 export const commonData = {
+  siteName: 'Guy Romelle Magayano',
   articles: 'Articles',
   checkProject: 'Go to this project',
   goToProjects: 'See all my projects',
@@ -7,7 +8,7 @@ export const commonData = {
   learnMore: 'Learn more about me',
   loading: 'Loading...',
   projects: 'Projects',
-  readArticle: 'Read the article',
+  readArticles: 'Read the article',
   work: 'Work',
   company: 'Company',
   role: 'Role',
@@ -18,5 +19,8 @@ export const commonData = {
   notifyMe: 'Notify me',
   defaultImageAlt: 'Default image alt text',
   latestProject: 'Latest Project',
-  checkSkills: 'See all my skills'
+  checkSkills: 'See all my skills',
+  menu: 'Menu',
+  closeMenu: 'Close menu',
+  navigation: 'Navigation'
 }
