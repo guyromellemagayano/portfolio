@@ -1,11 +1,15 @@
-import { Path, Svg, TSvgProps } from '@react-components'
+'use client'
+
+import { memo } from 'react'
+
+import { Path, Svg, type TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a chevron pointing down.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a chevron pointing down.
  */
-const ChevronDownSvg = (rest: TSvgProps) => {
+const ChevronDownSvg = memo(({ ...rest }: TSvgProps) => {
   return (
     <Svg aria-hidden="true" fill="none" viewBox="0 0 16 16" {...rest}>
       <Path
@@ -16,7 +20,7 @@ const ChevronDownSvg = (rest: TSvgProps) => {
       />
     </Svg>
   )
-}
+})
 
 ChevronDownSvg.displayName = 'ChevronDownSvg'
 
