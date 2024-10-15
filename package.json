@@ -205,6 +205,10 @@
   "engines": {
     "pnpm": "^8"
   },
+  "graphql": {
+    "schema": "https://localhost:3000/api/graphql",
+    "documents": "**/*.{graphql,js,ts,jsx,tsx}"
+  },
   "config": {
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
