@@ -1,7 +1,7 @@
 import React from 'react'
 
 export type TSvgRef = SVGSVGElement
-export type TSvgProps = React.SVGProps<TSvgRef>
+export type TSvgProps = React.SVGAttributes<TSvgRef>
 
 /**
  * Renders a SVG image.
@@ -22,7 +22,7 @@ export const Svg = React.forwardRef<TSvgRef, TSvgProps>(
 Svg.displayName = 'SVG'
 
 export type TSvgPathRef = SVGPathElement
-export type TSvgPathProps = React.SVGProps<TSvgPathRef>
+export type TSvgPathProps = React.SVGAttributes<TSvgPathRef>
 
 /**
  * Renders a shared SVG path.

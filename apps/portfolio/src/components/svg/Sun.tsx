@@ -1,11 +1,15 @@
-import { Path, Svg, TSvgProps } from '@react-components'
+'use client'
+
+import { memo } from 'react'
+
+import { Path, Svg, type TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a sun.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a sun.
  */
-const SunSvg = (rest: TSvgProps) => {
+const SunSvg = memo(({ ...rest }: TSvgProps) => {
   return (
     <Svg
       aria-hidden="true"
@@ -22,7 +26,7 @@ const SunSvg = (rest: TSvgProps) => {
       />
     </Svg>
   )
-}
+})
 
 SunSvg.displayName = 'SunSvg'
 
