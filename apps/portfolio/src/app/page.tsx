@@ -1,5 +1,4 @@
 import { ApolloQueryResult } from '@apollo/client'
-import { getClient } from '@portfolio/libs'
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 import Script from 'next/script'
@@ -10,6 +9,7 @@ import {
   type HomePageAppDataQuery,
   type HomePageMetaQuery
 } from '@portfolio/graphql'
+import { getClient } from '@portfolio/libs'
 
 export const revalidate = 5
 
@@ -54,7 +54,6 @@ const HomePage = async () => {
           })
         }}
       />
-
       <HomeApp {...data} />
     </>
   )
