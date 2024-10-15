@@ -46,11 +46,6 @@ const headers = async () => [
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  // Nx plugin configuration
-  nx: {
-    svgr: true
-  },
-
   pageExtensions: ['js', 'mdx', 'ts', 'tsx'],
   poweredByHeader: false,
 
@@ -89,43 +84,7 @@ const nextConfig = {
   },
 
   // Site headers configuration
-  headers,
-
-  // Image optimizations
-  images: {
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.ctfassets.net'
-      }
-    ]
-  },
-
-  // Custom Webpack config
-  webpack: config => {
-    const fileLoaderRule = config.module.rules.find(rule =>
-      rule.test?.test?.('.svg')
-    )
-
-    config.module.rules.push(
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/ // *.svg?url
-      },
-      {
-        test: /\.svg$/i,
-        issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
-        use: ['@svgr/webpack']
-      }
-    )
-
-    fileLoaderRule.exclude = /\.svg$/i
-
-    return config
-  }
+  headers
 }
 
 // Sentry configuration
