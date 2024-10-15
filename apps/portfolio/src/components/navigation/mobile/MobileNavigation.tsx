@@ -8,6 +8,7 @@ import {
   Transition,
   TransitionChild
 } from '@headlessui/react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 
 import {
@@ -18,19 +19,26 @@ import {
   type TNavigationRef
 } from '@react-components'
 
-import { ChevronDownSvg, CloseSvg } from '@portfolio/components'
-import type { PagesData } from '@portfolio/types'
+import {
+  pageFilterMap,
+  type TDesktopNavigationProps
+} from '@portfolio/components'
+
+// Dynamic imports
+const ChevronDownSvg = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.ChevronDownSvg)
+)
+const CloseSvg = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.CloseSvg)
+)
 
 export type MobileNavigationRef = TNavigationRef
-export type MobileNavigationProps = TNavigationProps & {
-  data: PagesData[]
-}
-
-const strings = {
-  menu: 'Menu',
-  closeMenu: 'Close menu',
-  navigation: 'Navigation'
-}
+export type MobileNavigationProps = TNavigationProps &
+  TDesktopNavigationProps & {
+    common: {
+      [key: string]: string
+    }
+  }
 
 /**
  * Renders the mobile navigation component.
@@ -40,13 +48,13 @@ const strings = {
  */
 const MobileNavigation = memo(
   forwardRef<MobileNavigationRef, MobileNavigationProps>(
-    ({ data, ...rest }, ref) => {
-      if (!data) return null
+    ({ pageFilter, pages, common, ...rest }, ref) => {
+      if (!pages && !pageFilter && !common) return null
 
       return (
         <Popover ref={ref} {...rest}>
           <PopoverButton className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
-            {strings.menu}
+            {common.menu}
             <ChevronDownSvg className="group-hover:stroke-zinc-400:is(.dark *) ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700" />
           </PopoverButton>
 
@@ -73,12 +81,12 @@ const MobileNavigation = memo(
               leaveTo="opacity-0 scale-95"
             >
               <PopoverPanel
-                focus
                 className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800"
+                focus
               >
                 <Div className="flex flex-row-reverse items-center justify-between">
                   <PopoverButton
-                    aria-label={strings.closeMenu}
+                    aria-label={common.closeMenu}
                     className="-m-1 p-1"
                   >
                     <CloseSvg className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
@@ -88,22 +96,25 @@ const MobileNavigation = memo(
                     as="h2"
                     className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
                   >
-                    {strings.navigation}
+                    {common.navigation}
                   </Heading>
                 </Div>
                 <Nav className="-my-2 mt-6 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                  {data.map(({ id, link, title }) => {
-                    return (
-                      <PopoverButton
-                        as={Link}
-                        className="block py-2"
-                        href={link}
-                        key={id}
-                      >
-                        {title}
-                      </PopoverButton>
-                    )
-                  })}
+                  {pages
+                    .filter(({ slug }) => pageFilter.includes(slug))
+                    .sort((a, b) => pageFilterMap(pageFilter, a, b))
+                    .map(({ id, link, title }) => {
+                      return (
+                        <PopoverButton
+                          key={id}
+                          as={Link}
+                          className="block py-2"
+                          href={link}
+                        >
+                          {title}
+                        </PopoverButton>
+                      )
+                    })}
                 </Nav>
               </PopoverPanel>
             </TransitionChild>
@@ -113,5 +124,7 @@ const MobileNavigation = memo(
     }
   )
 )
+
+MobileNavigation.displayName = 'MobileNavigation'
 
 export default MobileNavigation
