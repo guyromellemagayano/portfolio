@@ -47,6 +47,7 @@
   },
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
+  "graphql-config.load.rootDir": "../",
   "files.associations": {
     "*.ts": "typescript",
     "*.tsx": "typescriptreact",
@@ -94,5 +95,5 @@
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
-  "nxConsole.nxWorkspacePath": ""
+  "nxConsole.nxWorkspacePath": "../"
 }

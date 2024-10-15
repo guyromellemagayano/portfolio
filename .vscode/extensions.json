@@ -8,6 +8,9 @@
     "ms-azuretools.vscode-docker",
     "foxundermoon.shell-format",
     "ms-playwright.playwright",
-    "lokalise.i18n-ally"
+    "lokalise.i18n-ally",
+    "GraphQL.vscode-graphql",
+    "GraphQL.vscode-graphql-execution",
+    "GraphQL.vscode-graphql-syntax"
   ]
 }
