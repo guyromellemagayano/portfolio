@@ -1,11 +1,15 @@
-import { Path, Svg, TSvgProps } from '@react-components'
+'use client'
+
+import { memo } from 'react'
+
+import { Path, Svg, type TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of an envelope.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of an envelope.
  */
-const MailSvg = (rest: TSvgProps) => {
+const MailSvg = memo(({ ...rest }: TSvgProps) => {
   return (
     <Svg aria-hidden="true" fill="currentColor" viewBox="0 0 24 24" {...rest}>
       <Path
@@ -20,7 +24,7 @@ const MailSvg = (rest: TSvgProps) => {
       />
     </Svg>
   )
-}
+})
 
 MailSvg.displayName = 'MailSvg'
 

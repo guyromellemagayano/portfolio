@@ -1,11 +1,15 @@
-import { Path, Svg, TSvgProps } from '@react-components'
+'use client'
+
+import { memo } from 'react'
+
+import { Path, Svg, type TSvgProps } from '@react-components'
 
 /**
  * Renders an SVG image of a close icon.
  * @param rest - Additional SVG props
  * @returns The rendered SVG image of a close icon.
  */
-const CloseSvg = (rest: TSvgProps) => {
+const CloseSvg = memo(({ ...rest }: TSvgProps) => {
   return (
     <Svg aria-hidden="true" viewBox="0 0 24 24" {...rest}>
       <Path
@@ -18,7 +22,7 @@ const CloseSvg = (rest: TSvgProps) => {
       />
     </Svg>
   )
-}
+})
 
 CloseSvg.displayName = 'CloseSvg'
 
