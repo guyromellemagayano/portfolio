@@ -1,9 +1,12 @@
+import { ApolloQueryResult } from '@apollo/client'
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 
 import {
   getNotFoundMetaDataQuery,
-  getNotFoundPageDataQuery
+  getNotFoundPageDataQuery,
+  type NotFoundMetaDataQuery,
+  type NotFoundPageDataQuery
 } from '@portfolio/graphql'
 import { getClient } from '@portfolio/libs'
 
@@ -12,16 +15,13 @@ import { getClient } from '@portfolio/libs'
  * @returns The metadata for the home page.
  */
 export const generateMetadata = async (): Promise<Metadata> => {
-  const { data } = await getClient().query({ query: getNotFoundMetaDataQuery })
-
-  const pageMetadata = Object.fromEntries(
-    Object.entries(data.notFoundPage.meta).filter(
-      ([key]) => key !== '__typename'
-    )
-  )
+  const { data } = (await getClient().query({
+    query: getNotFoundMetaDataQuery
+  })) as ApolloQueryResult<NotFoundMetaDataQuery>
 
   return {
-    ...pageMetadata
+    title: data?.notFoundPage?.meta?.title || undefined,
+    description: data?.notFoundPage?.meta?.description || undefined
   }
 }
 
@@ -35,15 +35,17 @@ const ContentSimpleLayout = dynamic(() =>
  * @returns The rendered custom not found app page
  */
 const NotFoundPage = async () => {
-  const { data } = await getClient().query({
+  const { data } = (await getClient().query({
     query: getNotFoundPageDataQuery
-  })
+  })) as ApolloQueryResult<NotFoundPageDataQuery>
+
+  if (!data) return null
 
   return (
     <ContentSimpleLayout
       className="sm:px-8"
-      description={data?.notFoundPage?.hero?.description}
       heading={data?.notFoundPage?.hero?.heading}
+      description={data?.notFoundPage?.hero?.description}
     />
   )
 }

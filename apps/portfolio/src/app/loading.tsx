@@ -1,24 +1,25 @@
+import { ApolloQueryResult } from '@apollo/client'
+
 import { Div, P } from '@react-components'
 
-import { cn } from '@react-utils'
-
-export const strings = {
-  loading: 'Loading...'
-}
+import { CommonDataQuery, getCommonDataQuery } from '@portfolio/graphql'
+import { getClient } from '@portfolio/libs'
 
 /**
  * Render the loading page
  * @returns The rendered loading page
  */
-const Loading = () => {
+const Loading = async () => {
+  const { data } = (await getClient().query({
+    query: getCommonDataQuery
+  })) as ApolloQueryResult<CommonDataQuery>
+
+  if (!data) return null
+
   return (
-    <Div
-      className={cn(
-        'flex min-h-full items-center justify-center px-6 py-24 sm:py-32 lg:px-8'
-      )}
-    >
-      <Div className={cn('text-center')}>
-        <P className={cn('text-base font-semibold')}>{strings.loading}</P>
+    <Div className="flex min-h-full items-center justify-center px-6 py-24 sm:py-32 lg:px-8">
+      <Div className="text-center">
+        <P className="text-base font-semibold">{data.common.loading}</P>
       </Div>
     </Div>
   )
