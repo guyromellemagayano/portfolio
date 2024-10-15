@@ -1,6 +1,7 @@
-'use client'
-
 import { forwardRef, memo } from 'react'
+
+import dayjs from 'dayjs'
+import dynamic from 'next/dynamic'
 
 import {
   Div,
@@ -12,60 +13,64 @@ import {
 
 import { cn } from '@react-utils'
 
-import { BaseContainer, NavigationLink } from '@portfolio/components'
-import type { TPagesData } from '@portfolio/types'
+import { pageFilterMap } from '@portfolio/components'
+import { navPageFilter } from '@portfolio/configs'
+import { commonData } from '@portfolio/data'
+import { PagesDataQuery } from '@portfolio/graphql'
 
-export type FooterLayoutRef = TFooterRef
-export type FooterLayoutProps = TFooterProps & {
-  data: TPagesData[]
+// Dynamic imports
+const BaseContainerInner = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.BaseContainer.Inner)
+)
+const BaseContainerOuter = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.BaseContainer.Outer)
+)
+const NavigationLink = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.NavigationLink)
+)
+
+export type TFooterLayoutRef = TFooterRef
+export type TFooterLayoutProps = TFooterProps & {
+  data: PagesDataQuery
 }
 
 /**
  * Render the footer layout component.
- * @param {FooterLayoutProps} props - The component props
- * @param {FooterLayoutRef} ref - The component reference
+ * @param {TFooterLayoutProps} props - The component props
+ * @param {TFooterLayoutRef} ref - The component reference
  * @returns The rendered footer layout component
  */
 const FooterLayout = memo(
-  forwardRef<FooterLayoutRef, FooterLayoutProps>(
+  forwardRef<TFooterLayoutRef, TFooterLayoutProps>(
     ({ data, className, ...rest }, ref) => {
-      const yearNow = new Date().getFullYear()
-      const copyrightText = `${yearNow} Guy Romelle Magayano`
+      const yearNow = dayjs().year()
+      const copyrightText = `${yearNow} ${data.common.siteName || commonData.siteName}`
 
       if (!data) return null
 
       return (
         <Footer ref={ref} className={cn('mt-32', className)} {...rest}>
-          <BaseContainer.Outer>
-            <Div
-              className={cn(
-                'mx-auto w-full max-w-2xl border-t border-zinc-300 pb-16 pt-10 lg:max-w-4xl dark:border-zinc-700'
-              )}
-            >
-              <BaseContainer.Inner className="lg:px-4">
-                <Div
-                  className={cn(
-                    'flex flex-col items-center justify-between gap-6 sm:flex-row'
-                  )}
-                >
-                  <Div
-                    className={cn(
-                      'flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200'
-                    )}
-                  >
-                    {data.map(({ id, title, link, ...rest }) => (
-                      <NavigationLink key={id} href={link} {...rest}>
-                        {title}
-                      </NavigationLink>
-                    ))}
+          <BaseContainerOuter>
+            <Div className="mx-auto w-full max-w-2xl border-t border-zinc-300 pb-16 pt-10 lg:max-w-4xl dark:border-zinc-700">
+              <BaseContainerInner className="lg:px-4">
+                <Div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+                  <Div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                    {data.pages.links
+                      .filter(({ slug }) => navPageFilter.footer.includes(slug))
+                      .sort((a, b) => pageFilterMap(navPageFilter.footer, a, b))
+                      .map(({ id, title, link, ...rest }) => (
+                        <NavigationLink key={id} href={link} {...rest}>
+                          {title}
+                        </NavigationLink>
+                      ))}
                   </Div>
-                  <P className={cn('text-sm text-zinc-600 dark:text-zinc-300')}>
+                  <P className="text-sm text-zinc-600 dark:text-zinc-300">
                     &copy; {copyrightText}
                   </P>
                 </Div>
-              </BaseContainer.Inner>
+              </BaseContainerInner>
             </Div>
-          </BaseContainer.Outer>
+          </BaseContainerOuter>
         </Footer>
       )
     }

@@ -1,2 +1,8 @@
-export type * from './DesktopNavigation'
-export { default as DesktopNavigation } from './DesktopNavigation'
+export {
+  default as DesktopNavigation,
+  pageFilterMap
+} from './DesktopNavigation'
+export type {
+  TDesktopNavigationProps,
+  TDesktopNavigationRef
+} from './DesktopNavigation'
