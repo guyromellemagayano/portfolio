@@ -5,10 +5,9 @@ import { useEffect } from 'react'
 import * as Sentry from '@sentry/nextjs'
 import Error from 'next/error'
 
-import type { TCustomErrorPageProps } from './error'
-import type { TLocaleLayoutProps } from './layout'
+import type { TCustomErrorPageProps } from '@portfolio/app/error'
 
-export type TGlobalErrorPageProps = TCustomErrorPageProps & TLocaleLayoutProps
+export type TGlobalErrorPageProps = TCustomErrorPageProps
 
 /**
  * Render the global error page.
