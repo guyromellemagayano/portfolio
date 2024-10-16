@@ -72,7 +72,7 @@ const IntroSection = memo(
 
           {cta && (
             <Div className="mt-10 flex flex-row flex-wrap gap-3">
-              {cta.map(({ id, slug, link, buttonType }) => {
+              {cta?.map(({ id, slug, link, buttonType }) => {
                 const label =
                   slug === 'contact'
                     ? common?.hireMe || commonData.hireMe
