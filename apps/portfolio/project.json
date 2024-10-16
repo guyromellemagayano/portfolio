@@ -15,11 +15,11 @@
       },
       "configurations": {
         "development": {
-          "outputPath": "apps/portfolio",
-          "debug": true,
-          "profile": true
+          "mode": "development",
+          "outputPath": "apps/portfolio"
         },
         "production": {
+          "mode": "production",
           "generateLockfile": true
         }
       }
