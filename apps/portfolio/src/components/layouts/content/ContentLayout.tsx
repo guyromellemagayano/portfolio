@@ -1,9 +1,9 @@
 'use client'
 
 import {
-  ElementType,
-  ForwardRefExoticComponent,
-  RefAttributes,
+  type ElementType,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
   forwardRef,
   memo
 } from 'react'
