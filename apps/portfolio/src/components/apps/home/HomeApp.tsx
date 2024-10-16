@@ -1,258 +1,273 @@
-'use client'
+import { forwardRef, memo } from 'react'
 
-import { Button, Dd, Div, Dl, Dt, Heading, Img, P } from '@react-components'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+
+import { Div } from '@react-components'
 
 import { cn } from '@react-utils'
 
-import {
-  ArrowPathIcon,
-  CloudArrowUpIcon,
-  Cog6ToothIcon,
-  FingerPrintIcon,
-  LockClosedIcon,
-  ServerIcon
-} from '@heroicons/react/20/solid'
-
-import {
-  AboutLayout,
-  ContentLayout,
-  type ContentLayoutProps,
-  NewsletterForm,
-  PhotoLayout,
-  ResumeLayout,
-  SkillsCategory,
-  SocialLinksLayout
-} from '@portfolio/components'
 import type {
-  BasePageData,
-  PhotosData,
-  SkillsData,
-  SocialLinksData,
-  WorkData
-} from '@portfolio/types'
+  TContentLayoutProps,
+  TContentLayoutRef
+} from '@portfolio/components'
+import { commonData } from '@portfolio/data'
+import type { HomePageAppDataQuery } from '@portfolio/graphql'
+import type { TCommonProps } from '@portfolio/types'
 
-export type HomeAppProps = BasePageData & {
-  aboutInfo: Pick<BasePageData, 'hero'>
-  workInfo: WorkData
-  skillsInfo: SkillsData
-  photos: PhotosData
-  links?: SocialLinksData[]
-  articles?: any
-  projects?: any
-}
+// Dynamic imports
+const ContentSimpleLayout = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.ContentSimpleLayout)
+)
+const PhotoLayout = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.PhotoLayout)
+)
+const ResumeLayout = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.ResumeLayout)
+)
+const SkillsCategory = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.SkillsCategory)
+)
+const SocialLinksLayout = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.SocialLinksLayout)
+)
+const NewsletterForm = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.NewsletterForm)
+)
+const HomeProjectsLayout = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.HomeProjectsLayout)
+)
 
-const strings = {
-  articles: 'Articles',
-  projects: 'Projects',
-  hireMe: 'Hire me',
-  readArticle: 'Read the article',
-  learnMore: 'Learn more about me',
-  checkProject: 'Go to this project',
-  goToProjects: 'See all my projects'
-}
-
-export type IntroSectionProps = ContentLayoutProps & {
-  socialLinks: HomeAppProps['links']
-}
+export type TIntroSectionRef = TContentLayoutRef
+export type TIntroSectionProps = Omit<
+  TContentLayoutProps,
+  'heading' | 'description'
+> &
+  HomePageAppDataQuery['homePage']['hero'] &
+  Pick<HomePageAppDataQuery, 'links' | 'common'>
 
 /**
  * Render the intro section component.
- * @param {IntroSectionProps} props - The component props
+ * @param {TIntroSectionProps} props - The component props
+ * @param {TIntroSectionRef} ref - The component reference
  * @returns The rendered intro section component
  */
-const IntroSection = ({
-  title,
-  intro,
-  socialLinks,
-  className,
-  ...rest
-}: IntroSectionProps) => {
-  // const t = useTranslations('HomePage')
+const IntroSection = memo(
+  forwardRef<TIntroSectionRef, TIntroSectionProps>(
+    ({ description, heading, cta, links, common, children, ...rest }, ref) => {
+      if (!description && !heading && !cta && !links && !children) return null
 
-  return (
-    <ContentLayout.Simple
-      className={cn('mt-9 sm:mt-9', className)}
-      intro={intro}
-      title={title}
-      {...rest}
-    >
-      <SocialLinksLayout
-        className="mt-6 flex w-full max-w-xl flex-wrap gap-6 md:max-w-3xl"
-        data={socialLinks}
-      />
-      <Div className="mt-10 flex flex-row flex-wrap gap-3">
-        <Button
-          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-50 outline-offset-2 transition hover:bg-zinc-600 active:bg-zinc-600 active:transition-none dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
-          onClick={() => '#'}
+      return (
+        <ContentSimpleLayout
+          ref={ref}
+          heading={heading}
+          description={description}
+          className="mt-9 sm:mt-9"
+          {...rest}
         >
-          {strings.hireMe}
-        </Button>
-        <Button
-          className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full border-2 border-zinc-800 bg-transparent px-8 py-4 font-semibold text-zinc-800 outline-offset-2 transition hover:border-transparent active:bg-transparent active:transition-none dark:border-zinc-300 dark:text-zinc-300 dark:hover:border-transparent"
-          onClick={() => '#'}
-        >
-          {strings.readArticle}
-        </Button>
-      </Div>
-    </ContentLayout.Simple>
+          <SocialLinksLayout
+            className="mt-6 flex w-full max-w-xl flex-wrap gap-6 md:max-w-3xl"
+            data={links?.social}
+          />
+
+          {cta && (
+            <Div className="mt-10 flex flex-row flex-wrap gap-3">
+              {cta.map(({ id, slug, link, buttonType }) => {
+                const label =
+                  slug === 'contact'
+                    ? common?.hireMe || commonData.hireMe
+                    : slug === 'articles'
+                      ? common?.readArticles || commonData.readArticles
+                      : ''
+
+                return (
+                  <Link
+                    key={id}
+                    href={link || '#'}
+                    className={cn(
+                      `text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full px-8 py-4 font-semibold outline-offset-2 transition active:transition-none`,
+                      buttonType === 'primary'
+                        ? 'bg-zinc-800 text-zinc-50 hover:bg-zinc-600 active:bg-zinc-600 dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300'
+                        : 'border-2 border-zinc-800 bg-transparent text-zinc-800 hover:border-transparent active:bg-transparent dark:border-zinc-300 dark:text-zinc-300 dark:hover:border-transparent'
+                    )}
+                  >
+                    {label}
+                  </Link>
+                )
+              })}
+            </Div>
+          )}
+
+          {children}
+        </ContentSimpleLayout>
+      )
+    }
   )
-}
+)
 
 IntroSection.displayName = 'IntroSection'
 
+export type TAboutSectionRef = TContentLayoutRef
+export type TAboutSectionProps = Pick<
+  HomePageAppDataQuery['homePage']['sections'][1],
+  'description' | 'heading' | 'cta'
+> &
+  TCommonProps
+
+/**
+ * Render the about section component.
+ * @param {TAboutSectionProps} props - The component props
+ * @returns The rendered about section component
+ */
+const AboutSection = memo(
+  forwardRef<TAboutSectionRef, TAboutSectionProps>(
+    ({ description, heading, cta, common }, ref) => {
+      if (!description && !heading && !cta) return null
+
+      return (
+        <ContentSimpleLayout
+          ref={ref}
+          className="mt-20 sm:mt-32 md:mt-24"
+          heading={heading}
+          description={description}
+        >
+          {cta && (
+            <Div className="mt-10 flex flex-row flex-wrap gap-3">
+              {cta.map(({ id, slug, link, buttonType }) => {
+                const label =
+                  slug === 'about'
+                    ? common?.learnMore || commonData.learnMore
+                    : ''
+
+                return (
+                  <Link
+                    key={id}
+                    href={link!}
+                    className={cn(
+                      `text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full px-8 py-4 font-semibold outline-offset-2 transition active:transition-none`,
+                      buttonType === 'primary'
+                        ? 'bg-zinc-800 text-zinc-50 hover:bg-zinc-600 active:bg-zinc-600 dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300'
+                        : 'border-2 border-zinc-800 bg-transparent text-zinc-800 hover:border-transparent active:bg-transparent dark:border-zinc-300 dark:text-zinc-300 dark:hover:border-transparent'
+                    )}
+                  >
+                    {label}
+                  </Link>
+                )
+              })}
+            </Div>
+          )}
+        </ContentSimpleLayout>
+      )
+    }
+  )
+)
+
+AboutSection.displayName = 'AboutSection'
+
+export type THomeAppProps = {
+  data: HomePageAppDataQuery
+}
+
 /**
  * Render the home app component.
- * @param {HomeAppProps} props - The component props
  * @returns The rendered home app component
  */
-const HomeApp = ({
-  hero,
-  links,
-  aboutInfo,
-  workInfo,
-  skillsInfo,
-  photos
-  // articles,
-  // projects
-}: HomeAppProps) => {
-  const features = [
-    {
-      name: 'Push to deploy.',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-      icon: CloudArrowUpIcon
-    },
-    {
-      name: 'SSL certificates.',
-      description:
-        'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-      icon: LockClosedIcon
-    },
-    {
-      name: 'Simple queues.',
-      description:
-        'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus.',
-      icon: ArrowPathIcon
-    },
-    {
-      name: 'Advanced security.',
-      description:
-        'Lorem ipsum, dolor sit amet consectetur adipisicing elit aute id magna.',
-      icon: FingerPrintIcon
-    },
-    {
-      name: 'Powerful API.',
-      description:
-        'Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.',
-      icon: Cog6ToothIcon
-    },
-    {
-      name: 'Database backups.',
-      description:
-        'Ac tincidunt sapien vehicula erat auctor pellentesque rhoncus. ',
-      icon: ServerIcon
-    }
-  ]
-
+const HomeApp = memo(({ data }: THomeAppProps) => {
   return (
     <>
       <IntroSection
-        intro={hero?.description}
-        socialLinks={links}
-        title={hero?.heading}
+        heading={data?.homePage?.hero?.heading}
+        description={data?.homePage?.hero?.description}
+        cta={data?.homePage?.hero?.cta}
+        links={data?.links}
+        common={data?.common}
       />
-      <PhotoLayout className="mt-20 md:mt-24" data={photos?.slidePhotos} />
-      <AboutLayout
-        className="mt-20 md:mt-24"
-        intro={aboutInfo?.hero?.description}
-        title={aboutInfo?.hero?.heading}
-      >
-        <Div className="mt-10 flex flex-row flex-wrap gap-3">
-          <Button
-            className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-600 active:bg-zinc-600 active:transition-none dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
-            onClick={() => '#'}
-          >
-            {strings.learnMore}
-          </Button>
-        </Div>
-      </AboutLayout>
-      <ResumeLayout
-        className="mt-20 md:mt-24"
-        cvFile={workInfo?.cvFile}
-        intro={workInfo?.hero?.description}
-        title={workInfo?.hero?.heading}
-        workExperiences={workInfo?.workExperiences}
-      />
-      <SkillsCategory className="mt-20 md:mt-24" data={skillsInfo} />
-      <Div className="mt-20 md:mt-24">
-        <Div className="mx-auto flex max-w-7xl flex-col flex-wrap px-6 lg:px-8">
-          <Div className="mx-auto max-w-2xl lg:text-center">
-            <Heading
-              as="h2"
-              className="text-base font-semibold leading-7 text-indigo-600"
-            >
-              Deploy faster
-            </Heading>
-            <P className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to deploy your app
-            </P>
-            <P className="mt-6 text-lg leading-8 text-gray-600">
-              Quis tellus eget adipiscing convallis sit sit eget aliquet quis.
-              Suspendisse eget egestas a elementum pulvinar et feugiat blandit
-              at. In mi viverra elit nunc.
-            </P>
-          </Div>
-          <Div className="relative overflow-hidden pt-12">
-            <Div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <Img
-                alt="App screenshot"
-                src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
-                width={2432}
-                height={1442}
-                className="rounded-2xl shadow-2xl ring-1 ring-gray-100 dark:ring-black"
+
+      {data?.homePage?.sections?.map(
+        ({ id, contentType, heading, description, cta }) => {
+          if (contentType === 'photo') {
+            return (
+              <PhotoLayout
+                key={id}
+                className="mt-20 sm:mt-32 md:mt-24"
+                slideImages={data?.images?.slideImages}
+                common={data?.common}
               />
-            </Div>
-          </Div>
-          <Div className="mx-auto mt-12 max-w-2xl sm:mt-16 lg:mt-20 lg:max-w-4xl">
-            <Dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-              {features.map(feature => (
-                <Div key={feature.name} className="relative pl-16">
-                  <Dt className="text-base font-semibold leading-7 text-gray-900">
-                    <Div className="absolute left-0 top-0 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600">
-                      <feature.icon
-                        aria-hidden="true"
-                        className="h-6 w-6 text-white"
-                      />
-                    </Div>
-                    {feature.name}
-                  </Dt>
-                  <Dd className="mt-2 text-base leading-7 text-gray-600">
-                    {feature.description}
-                  </Dd>
-                </Div>
-              ))}
-            </Dl>
-          </Div>
-          <Div className="mt-10 flex flex-row flex-wrap justify-center gap-3">
-            <Button
-              className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full bg-zinc-800 px-8 py-4 font-semibold text-zinc-50 outline-offset-2 transition hover:bg-zinc-600 active:bg-zinc-600 active:transition-none dark:bg-white dark:text-black dark:hover:bg-zinc-300 dark:active:bg-zinc-300"
-              onClick={() => '#'}
-            >
-              {strings.checkProject}
-            </Button>
-            <Button
-              className="text-md group inline-flex w-auto flex-none items-center justify-center gap-2 rounded-full border-2 border-zinc-800 bg-transparent px-8 py-4 font-semibold text-zinc-800 outline-offset-2 transition hover:border-transparent active:bg-transparent active:transition-none dark:border-zinc-300 dark:text-zinc-300 dark:hover:border-transparent"
-              onClick={() => '#'}
-            >
-              {strings.goToProjects}
-            </Button>
-          </Div>
-        </Div>
-      </Div>
-      <NewsletterForm className="mt-20 sm:mt-32 md:mt-24" />
+            )
+          }
+
+          if (contentType === 'about') {
+            return (
+              <AboutSection
+                key={id}
+                heading={heading}
+                description={description}
+                cta={cta}
+                common={data?.common}
+              />
+            )
+          }
+
+          if (contentType === 'work') {
+            return (
+              <ResumeLayout
+                key={id}
+                className="mt-20 sm:mt-32 md:mt-24"
+                cvFile={data?.work?.cvFile}
+                heading={heading}
+                description={description}
+                experiences={data?.work?.experiences}
+                cta={cta}
+                common={data?.common}
+              />
+            )
+          }
+
+          if (contentType === 'skills') {
+            return (
+              <SkillsCategory
+                key={id}
+                className="mt-20 sm:mt-32 md:mt-24"
+                skills={data?.skills}
+                heading={heading}
+                description={description}
+                cta={cta}
+                common={data?.common}
+                hasFeatured
+              />
+            )
+          }
+
+          if (contentType === 'newsletter') {
+            return (
+              <NewsletterForm
+                key={id}
+                className="mt-20 sm:mt-32 md:mt-24"
+                heading={heading}
+                description={description}
+                common={data?.common}
+              />
+            )
+          }
+
+          if (contentType === 'projects') {
+            return (
+              <HomeProjectsLayout
+                key={id}
+                className="mt-20 sm:mt-32 md:mt-24"
+                heading={heading}
+                cta={cta}
+                common={data?.common}
+              />
+            )
+          }
+
+          return null
+        }
+      )}
     </>
   )
-}
+})
 
 HomeApp.displayName = 'HomeApp'
 
