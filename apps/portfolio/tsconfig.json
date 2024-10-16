@@ -36,7 +36,12 @@
     "**/*.tsx",
     "**/*.mdx",
     ".next/types/**/*.ts",
-    "../../dist/apps/portfolio/.next/types/**/*.ts"
+    "../../dist/apps/portfolio/.next/types/**/*.ts",
+    "../../apps/portfolio/.next/types/**/*.ts",
+    "../../packages/react/components/src/index.ts",
+    "../../packages/react/hooks/src/index.ts",
+    "../../packages/react/libs/src/index.ts",
+    "../../packages/react/utils/src/index.ts"
   ],
   "exclude": [
     "../../node_modules",
