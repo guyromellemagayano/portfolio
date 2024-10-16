@@ -1,12 +1,19 @@
 import { forwardRef, memo } from 'react'
 
+import dynamic from 'next/dynamic'
+
 import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
-import { SocialLink, type SocialLinkProps } from '@portfolio/components'
+import type { HomePageAppDataQuery } from '@portfolio/graphql'
+
+// Dynamic imports
+const SocialLink = dynamic(() =>
+  import('@portfolio/components').then(mod => mod.SocialLink)
+)
 
 export type SocialLinksLayoutRef = TDivisionRef
 export type SocialLinksLayoutProps = TDivisionProps & {
-  data?: SocialLinkProps[]
+  data?: HomePageAppDataQuery['links']['social']
 }
 
 /**
@@ -21,11 +28,13 @@ const SocialLinksLayout = memo(
       if (!data) return null
 
       return (
-        <Div ref={ref} {...rest}>
-          {data.map(({ id, ...rest }) => {
-            return <SocialLink key={id} {...rest} />
-          })}
-        </Div>
+        data && (
+          <Div ref={ref} {...rest}>
+            {data?.map(({ id, ...rest }) => {
+              return <SocialLink key={id} {...rest} />
+            })}
+          </Div>
+        )
       )
     }
   )
