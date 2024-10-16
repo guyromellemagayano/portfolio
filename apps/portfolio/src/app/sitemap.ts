@@ -9,7 +9,7 @@ import { PORTFOLIO_SITE_URL } from '@portfolio/configs'
 const sitemap = (): MetadataRoute.Sitemap => {
   return [
     {
-      url: PORTFOLIO_SITE_URL,
+      url: PORTFOLIO_SITE_URL!,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1
