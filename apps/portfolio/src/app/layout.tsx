@@ -15,7 +15,7 @@ import {
   GOOGLE_ANALYTICS_MEASUREMENT_ID,
   GOOGLE_TAG_MANAGER_CONTAINER_ID
 } from '@portfolio/configs'
-import { getPagesDataQuery, PagesDataQuery } from '@portfolio/graphql'
+import { getPagesDataQuery, type PagesDataQuery } from '@portfolio/graphql'
 import { getClient } from '@portfolio/libs'
 import '@portfolio/styles/tailwind.css'
 
