@@ -15,12 +15,13 @@ export const commonData = {
   date: 'Date',
   downloadCv: 'Download CV',
   emailAddress: 'Email Address',
-  email: 'Enter you email',
+  enterEmail: 'Enter you email',
   notifyMe: 'Notify me',
   defaultImageAlt: 'Default image alt text',
   latestProject: 'Latest Project',
   checkSkills: 'See all my skills',
   menu: 'Menu',
   closeMenu: 'Close menu',
-  navigation: 'Navigation'
+  navigation: 'Navigation',
+  readArticle: 'Read article'
 }

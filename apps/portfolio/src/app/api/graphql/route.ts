@@ -4,6 +4,7 @@ import { startServerAndCreateNextHandler } from '@as-integrations/next'
 import * as Sentry from '@sentry/nextjs'
 import fs from 'fs'
 import { GraphQLScalarType, Kind } from 'graphql'
+import gql from 'graphql-tag'
 import path from 'path'
 
 // In-memory cache for JSON data
@@ -17,9 +18,11 @@ const readJSONData = (filePath: string): any => {
         path.join(process.cwd(), filePath),
         'utf8'
       )
+
       cache[filePath] = JSON.parse(jsonData)
     } catch (error) {
       Sentry.captureException(error)
+
       throw new Error(`Error reading or parsing JSON data from ${filePath}`)
     }
   }
@@ -32,7 +35,6 @@ const CommonScalar = new GraphQLScalarType({
   name: 'Common',
   description: 'Custom scalar for handling JSON-like Common data',
 
-  // Serialize: how to output data from the server to the client
   serialize(value) {
     if (typeof value === 'object') {
       return value
@@ -40,19 +42,19 @@ const CommonScalar = new GraphQLScalarType({
     throw new Error('CommonScalar can only serialize objects.')
   },
 
-  // ParseValue: how to handle input from the client (optional for this case)
   parseValue(value) {
     if (typeof value === 'object') {
       return value
     }
+
     throw new Error('CommonScalar can only parse objects.')
   },
 
-  // ParseLiteral: parse GraphQL literals directly (used in queries)
   parseLiteral(ast) {
     if (ast.kind === Kind.OBJECT) {
       return ast.fields
     }
+
     throw new Error('CommonScalar can only parse object literals.')
   }
 })
@@ -62,6 +64,7 @@ const sanitize = (value: any) => {
   if (typeof value === 'string') {
     return value.replace(/</g, '&lt;').replace(/>/g, '&gt;') // Basic XSS prevention
   }
+
   return value
 }
 
@@ -70,6 +73,8 @@ const getData = {
   common: () => readJSONData('public/data/common.json'),
   images: () => readJSONData('public/data/images.json'),
   links: () => readJSONData('public/data/links.json'),
+  skills: () => readJSONData('public/data/skills.json'),
+  work: () => readJSONData('public/data/work.json'),
   pageAbout: () => readJSONData('public/data/page-about.json'),
   pageArticles: () => readJSONData('public/data/page-articles.json'),
   pageError: () => readJSONData('public/data/page-error.json'),
@@ -77,16 +82,15 @@ const getData = {
   pageNotFound: () => readJSONData('public/data/page-not-found.json'),
   pageProjects: () => readJSONData('public/data/page-projects.json'),
   pageThankYou: () => readJSONData('public/data/page-thank-you.json'),
+  pages: () => readJSONData('public/data/pages.json'),
+  pageSkills: () => readJSONData('public/data/page-skills.json'),
   pageWorkExperiences: () =>
     readJSONData('public/data/page-work-experiences.json'),
-  pageUses: () => readJSONData('public/data/page-uses.json'),
-  pages: () => readJSONData('public/data/pages.json'),
-  skills: () => readJSONData('public/data/skills.json'),
-  work: () => readJSONData('public/data/work.json')
+  pageUses: () => readJSONData('public/data/page-uses.json')
 }
 
 // Define your GraphQL schema
-const typeDefs = `#graphql
+const typeDefs = gql`
   scalar Common
 
   union PageData =
@@ -111,7 +115,7 @@ const typeDefs = `#graphql
   type Meta {
     title: String!
     description: String!
-    openGraph: OpenGraph!
+    openGraph: OpenGraph
   }
 
   type OpenGraph {
@@ -120,7 +124,7 @@ const typeDefs = `#graphql
     type: String!
     url: String!
     siteName: String!
-    images: [OpenGraphImages!]!
+    images: [OpenGraphImages!]
   }
 
   type OpenGraphImages {
@@ -148,12 +152,20 @@ const typeDefs = `#graphql
   type Hero {
     heading: String!
     description: [String!]!
+    cta: [Cta!]
+  }
+
+  type Cta {
+    id: ID!
+    link: String
+    slug: String!
+    buttonType: String!
   }
 
   type HomePage {
     id: ID!
     meta: Meta!
-    structuredData: StructuredData!
+    structuredData: StructuredData
     hero: Hero!
     sections: [Sections!]!
   }
@@ -200,6 +212,13 @@ const typeDefs = `#graphql
     hero: Hero!
   }
 
+  type SkillsPage {
+    id: ID!
+    meta: Meta!
+    structuredData: StructuredData!
+    hero: Hero!
+  }
+
   type ErrorPage {
     id: ID!
     meta: Meta!
@@ -219,6 +238,7 @@ const typeDefs = `#graphql
     contentType: String!
     heading: String
     description: [String]
+    cta: [Cta!]
   }
 
   type Images {
@@ -311,21 +331,22 @@ const typeDefs = `#graphql
   }
 
   type Query {
-    aboutPage: AboutPage!
-    articlesPage: ArticlesPage!
     common: Common!
-    errorPage: ErrorPage!
-    homePage: HomePage!
     images: Images!
     links: Links!
-    notFoundPage: NotFoundPage!
     page(id: ID!): PageData
     pages: Pages!
-    projectsPage: ProjectsPage!
     skills: [Skills!]!
+    work: Work!
+    aboutPage: AboutPage!
+    articlesPage: ArticlesPage!
+    errorPage: ErrorPage!
+    homePage: HomePage!
+    notFoundPage: NotFoundPage!
+    projectsPage: ProjectsPage!
+    skillsPage: SkillsPage!
     thankYouPage: ThankYouPage!
     usesPage: UsesPage!
-    work: Work!
     workExperiencesPage: WorkExperiencesPage!
   }
 `
@@ -343,6 +364,7 @@ const resolvers = {
     thankYouPage: () => getData.pageThankYou(),
     errorPage: () => getData.pageError(),
     notFoundPage: () => getData.pageNotFound(),
+    skillsPage: () => getData.pageSkills(),
     common: () => sanitize(getData.common()),
     images: () => sanitize(getData.images()),
     pages: () => getData.pages(),
@@ -355,11 +377,10 @@ const resolvers = {
         'f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3': getData.pageArticles(),
         'c21e1b45-ff64-4c3f-9b1e-50a217841b1f': getData.pageHome(),
         'a98f3d92-2a3e-4bfc-b1be-42a4bdf8c1e9': getData.pageProjects(),
-        'c4b3e4d1-29a6-41d6-b5a7-9532a1b70e39': getData.pageThankYou(),
         '5d6f8a9b-4d91-4b33-9d8b-1e2f91778f32': getData.pageUses(),
-        'd4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2': getData.pageWorkExperiences()
+        'd4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2': getData.pageWorkExperiences(),
+        'abc12345-6def-7890-abcd-1234567890ef': getData.skills()
       }
-
       const page = pageMap[id]
 
       if (!page) {
@@ -376,9 +397,9 @@ const resolvers = {
         'f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3': getData.pageArticles(),
         'c21e1b45-ff64-4c3f-9b1e-50a217841b1f': getData.pageHome(),
         'a98f3d92-2a3e-4bfc-b1be-42a4bdf8c1e9': getData.pageProjects(),
-        'c4b3e4d1-29a6-41d6-b5a7-9532a1b70e39': getData.pageThankYou(),
         '5d6f8a9b-4d91-4b33-9d8b-1e2f91778f32': getData.pageUses(),
-        'd4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2': getData.pageWorkExperiences()
+        'd4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2': getData.pageWorkExperiences(),
+        'abc12345-6def-7890-abcd-1234567890ef': getData.skills()
       }
 
       return pageMap[parent.id] || null
