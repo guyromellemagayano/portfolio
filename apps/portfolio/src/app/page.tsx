@@ -42,6 +42,8 @@ const HomePage = async () => {
     query: getHomePageAppQuery
   })) as ApolloQueryResult<HomePageAppDataQuery>
 
+  if (!data) return null
+
   return (
     <>
       <Script
@@ -54,7 +56,7 @@ const HomePage = async () => {
           })
         }}
       />
-      <HomeApp {...data} />
+      <HomeApp data={data} />
     </>
   )
 }

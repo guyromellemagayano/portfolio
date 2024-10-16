@@ -4,31 +4,13 @@ import { useEffect, useState } from 'react'
 
 import { ApolloQueryResult } from '@apollo/client'
 import * as Sentry from '@sentry/nextjs'
-import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 
 import {
-  type ErrorMetaDataQuery,
   type ErrorPageDataQuery,
-  getErrorMetaDataQuery,
   getErrorPageDataQuery
 } from '@portfolio/graphql'
 import { getClient } from '@portfolio/libs'
-
-/**
- * Generates the metadata for the home page.
- * @returns The metadata for the home page.
- */
-export const generateMetadata = async (): Promise<Metadata> => {
-  const { data } = (await getClient().query({
-    query: getErrorMetaDataQuery
-  })) as ApolloQueryResult<ErrorMetaDataQuery>
-
-  return {
-    title: data?.errorPage?.meta?.title || undefined,
-    description: data?.errorPage?.meta?.description || undefined
-  }
-}
 
 // Dynamic imports
 const ContentSimpleLayout = dynamic(() =>
