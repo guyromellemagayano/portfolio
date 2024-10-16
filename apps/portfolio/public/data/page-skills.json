@@ -1,0 +1,51 @@
+{
+  "id": "abc12345-6def-7890-abcd-1234567890ef",
+  "meta": {
+    "title": "Skills - Guy Romelle Magayano",
+    "description": "Explore the technical skills and expertise of Guy Romelle Magayano, a seasoned full stack engineer proficient in frontend, backend, and DevOps technologies.",
+    "openGraph": {
+      "title": "Skills - Guy Romelle Magayano",
+      "description": "Discover the wide array of skills and tools Guy Romelle Magayano uses to build, deploy, and scale modern applications. From React to Python, delve into his tech stack and areas of expertise.",
+      "type": "website",
+      "url": "/skills",
+      "siteName": "Guy Romelle Magayano - Full Stack Engineer",
+      "images": [
+        {
+          "url": "/images/skills-og.jpg",
+          "width": 800,
+          "height": 600,
+          "alt": "Skills - Guy Romelle Magayano"
+        }
+      ]
+    }
+  },
+  "structuredData": {
+    "context": "https://schema.org",
+    "type": "WebPage",
+    "name": "Skills - Guy Romelle Magayano",
+    "description": "Highlighting the technical skills of Guy Romelle Magayano, including his proficiency in full stack development, DevOps, and modern cloud infrastructure technologies.",
+    "publisher": {
+      "type": "Person",
+      "name": "Guy Romelle Magayano"
+    },
+    "sameAs": [
+      "c21e1b45-ff64-4c3f-9b1e-50a217841b1f",
+      "f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3",
+      "e3f7b6b1-8e3f-4c6a-8f8e-41c2f7d9b9b1",
+      "a98f3d92-2a3e-4bfc-b1be-42a4bdf8c1e9",
+      "c4b3e4d1-29a6-41d6-b5a7-9532a1b70e39",
+      "5d6f8a9b-4d91-4b33-9d8b-1e2f91778f32",
+      "d4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2",
+      "6b108c8b-70f0-482e-9c0d-70e8f69b9c0c",
+      "f44c8dcb-10e4-44a4-a7d6-4deaa12a5a2e",
+      "a46c5f8d-60c2-41cf-a979-7d589de35b08"
+    ]
+  },
+  "hero": {
+    "heading": "Skills",
+    "description": [
+      "Throughout my career as a full stack engineer, I have gained extensive experience across a wide array of tools and technologies.",
+      "This page provides an in-depth look at the core skills I have mastered, from frontend frameworks like React and Vue to backend technologies like Node.js, Django, and cloud platforms."
+    ]
+  }
+}
