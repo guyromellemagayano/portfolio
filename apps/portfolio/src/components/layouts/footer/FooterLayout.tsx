@@ -16,7 +16,7 @@ import { cn } from '@react-utils'
 import { pageFilterMap } from '@portfolio/components'
 import { navPageFilter } from '@portfolio/configs'
 import { commonData } from '@portfolio/data'
-import { PagesDataQuery } from '@portfolio/graphql'
+import type { PagesDataQuery } from '@portfolio/graphql'
 
 // Dynamic imports
 const BaseContainerInner = dynamic(() =>
@@ -44,9 +44,7 @@ const FooterLayout = memo(
   forwardRef<TFooterLayoutRef, TFooterLayoutProps>(
     ({ data, className, ...rest }, ref) => {
       const yearNow = dayjs().year()
-      const copyrightText = `${yearNow} ${data.common.siteName || commonData.siteName}`
-
-      if (!data) return null
+      const copyrightText = `${yearNow} ${data?.common?.siteName || commonData.siteName}`
 
       return (
         <Footer ref={ref} className={cn('mt-32', className)} {...rest}>
@@ -55,10 +53,14 @@ const FooterLayout = memo(
               <BaseContainerInner className="lg:px-4">
                 <Div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                   <Div className="flex gap-6 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                    {data.pages.links
-                      .filter(({ slug }) => navPageFilter.footer.includes(slug))
-                      .sort((a, b) => pageFilterMap(navPageFilter.footer, a, b))
-                      .map(({ id, title, link, ...rest }) => (
+                    {data?.pages?.links
+                      ?.filter(({ slug }) =>
+                        navPageFilter.footer.includes(slug)
+                      )
+                      ?.sort((a, b) =>
+                        pageFilterMap(navPageFilter.footer, a, b)
+                      )
+                      ?.map(({ id, title, link, ...rest }) => (
                         <NavigationLink key={id} href={link} {...rest}>
                           {title}
                         </NavigationLink>
