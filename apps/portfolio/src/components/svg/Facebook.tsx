@@ -1,5 +1,3 @@
-'use client'
-
 import { memo } from 'react'
 
 import { Path, Svg, type TSvgProps } from '@react-components'
