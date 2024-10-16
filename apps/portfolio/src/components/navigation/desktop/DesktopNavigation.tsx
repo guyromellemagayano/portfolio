@@ -58,9 +58,9 @@ const DesktopNavigation = memo(
             {pages
               .filter(({ slug }) => pageFilter.includes(slug))
               .sort((a, b) => pageFilterMap(pageFilter, a, b))
-              .map(({ id, link, title }) => {
+              .map(({ id, link, title, ...rest }) => {
                 return (
-                  <NavigationListItem key={id} href={link}>
+                  <NavigationListItem key={id} href={link} {...rest}>
                     {title}
                   </NavigationListItem>
                 )

@@ -23,6 +23,8 @@ import {
   pageFilterMap,
   type TDesktopNavigationProps
 } from '@portfolio/components'
+import { commonData } from '@portfolio/data'
+import type { TCommonProps } from '@portfolio/types'
 
 // Dynamic imports
 const ChevronDownSvg = dynamic(() =>
@@ -34,11 +36,8 @@ const CloseSvg = dynamic(() =>
 
 export type MobileNavigationRef = TNavigationRef
 export type MobileNavigationProps = TNavigationProps &
-  TDesktopNavigationProps & {
-    common: {
-      [key: string]: string
-    }
-  }
+  TDesktopNavigationProps &
+  TCommonProps
 
 /**
  * Renders the mobile navigation component.
@@ -49,12 +48,12 @@ export type MobileNavigationProps = TNavigationProps &
 const MobileNavigation = memo(
   forwardRef<MobileNavigationRef, MobileNavigationProps>(
     ({ pageFilter, pages, common, ...rest }, ref) => {
-      if (!pages && !pageFilter && !common) return null
+      if (!pages && !pageFilter) return null
 
       return (
         <Popover ref={ref} {...rest}>
           <PopoverButton className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
-            {common.menu}
+            {common.menu || commonData.menu}
             <ChevronDownSvg className="group-hover:stroke-zinc-400:is(.dark *) ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700" />
           </PopoverButton>
 
@@ -86,7 +85,7 @@ const MobileNavigation = memo(
               >
                 <Div className="flex flex-row-reverse items-center justify-between">
                   <PopoverButton
-                    aria-label={common.closeMenu}
+                    aria-label={common.closeMenu || commonData.closeMenu}
                     className="-m-1 p-1"
                   >
                     <CloseSvg className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
@@ -96,7 +95,7 @@ const MobileNavigation = memo(
                     as="h2"
                     className="text-sm font-medium text-zinc-600 dark:text-zinc-400"
                   >
-                    {common.navigation}
+                    {common.navigation || commonData.navigation}
                   </Heading>
                 </Div>
                 <Nav className="-my-2 mt-6 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
