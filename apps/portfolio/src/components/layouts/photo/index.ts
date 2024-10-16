@@ -1,2 +1,2 @@
-export type * from './PhotoLayout'
-export { default as PhotoLayout } from './PhotoLayout'
+export { default as PhotoLayout, rotationsData } from './PhotoLayout'
+export type { TPhotoLayoutProps, TPhotoLayoutRef } from './PhotoLayout'
