@@ -13,34 +13,16 @@
       "slug": "articles"
     },
     {
-      "id": "f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3",
-      "title": "Error",
-      "link": "/error",
-      "slug": "error"
-    },
-    {
       "id": "c21e1b45-ff64-4c3f-9b1e-50a217841b1f",
       "title": "Home",
       "link": "/",
       "slug": "home"
     },
     {
-      "id": "f673e9d4-2a3c-4b14-b2b9-50d9a3b4d7f3",
-      "title": "Not Found",
-      "link": "/not-found",
-      "slug": "not-found"
-    },
-    {
       "id": "a98f3d92-2a3e-4bfc-b1be-42a4bdf8c1e9",
       "title": "Projects",
       "link": "/projects",
       "slug": "projects"
-    },
-    {
-      "id": "c4b3e4d1-29a6-41d6-b5a7-9532a1b70e39",
-      "title": "Thank You",
-      "link": "/thank-you",
-      "slug": "thank-you"
     },
     {
       "id": "5d6f8a9b-4d91-4b33-9d8b-1e2f91778f32",
@@ -50,9 +32,15 @@
     },
     {
       "id": "d4f7b6a1-5e3f-4c9b-8f7e-31b2f7d9c8a2",
-      "title": "Work Experiences",
+      "title": "Work",
       "link": "/work-experiences",
       "slug": "work-experiences"
+    },
+    {
+      "id": "abc12345-6def-7890-abcd-1234567890ef",
+      "title": "Skills",
+      "link": "/skills",
+      "slug": "skills"
     }
   ]
 }
