@@ -1,4 +1,4 @@
-import { forwardRef } from 'react'
+import { forwardRef, memo } from 'react'
 
 import { Div, type TDivisionProps, type TDivisionRef } from '@react-components'
 
@@ -13,19 +13,21 @@ export type AvatarContainerProps = TDivisionProps
  * @param {AvatarContainerRef} ref - The component reference
  * @returns The rendered avatar container component
  */
-const AvatarContainer = forwardRef<AvatarContainerRef, AvatarContainerProps>(
-  ({ className, ...rest }, ref) => {
-    return (
-      <Div
-        ref={ref}
-        className={cn(
-          'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10',
-          className
-        )}
-        {...rest}
-      />
-    )
-  }
+const AvatarContainer = memo(
+  forwardRef<AvatarContainerRef, AvatarContainerProps>(
+    ({ className, ...rest }, ref) => {
+      return (
+        <Div
+          ref={ref}
+          className={cn(
+            'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10',
+            className
+          )}
+          {...rest}
+        />
+      )
+    }
+  )
 )
 
 AvatarContainer.displayName = 'AvatarContainer'
