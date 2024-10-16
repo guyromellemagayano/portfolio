@@ -1,6 +1,7 @@
 import { memo } from 'react'
 
 import { Path, Svg, type TSvgProps } from '@react-components'
+
 /**
  * Renders an SVG image of a Facebook logo.
  * @param rest - Additional SVG props
