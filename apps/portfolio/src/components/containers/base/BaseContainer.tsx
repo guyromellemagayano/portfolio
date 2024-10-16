@@ -18,9 +18,7 @@ const OuterContainer = memo(
     ({ children, className, ...rest }, ref) => {
       return (
         <Div ref={ref} className={cn('sm:px-8', className)} {...rest}>
-          <Div className={cn('mx-auto w-full max-w-7xl lg:px-8')}>
-            {children}
-          </Div>
+          <Div className="mx-auto w-full max-w-7xl lg:px-8">{children}</Div>
         </Div>
       )
     }
@@ -38,13 +36,15 @@ OuterContainer.displayName = 'OuterContainer'
 const InnerContainer = memo(
   forwardRef<BaseContainerRef, BaseContainerProps>(
     ({ children, className, ...rest }, ref) => {
+      if (!children) return null
+
       return (
         <Div
           ref={ref}
           className={cn('relative px-4 sm:px-8 lg:px-12', className)}
           {...rest}
         >
-          <Div className={cn('mx-auto w-full max-w-2xl lg:max-w-4xl')}>
+          <Div className="mx-auto w-full max-w-2xl lg:max-w-4xl">
             {children}
           </Div>
         </Div>
@@ -64,6 +64,8 @@ InnerContainer.displayName = 'InnerContainer'
 const BaseContainerWithRef = memo(
   forwardRef<BaseContainerRef, BaseContainerProps>(
     ({ children, ...rest }, ref) => {
+      if (!children) return null
+
       return (
         <OuterContainer ref={ref} {...rest}>
           <InnerContainer>{children}</InnerContainer>
