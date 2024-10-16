@@ -5,7 +5,7 @@
     "description": "Discover the tools and technologies Guy Romelle Magayano uses for full-stack development, productivity, and efficient workflows. From coding environments to hardware setup, explore the essential tools that power his work.",
     "openGraph": {
       "title": "Uses - Guy Romelle Magayano",
-      "description": "Explore the software, hardware, and tools used by Guy Romelle Magayano in his daily work as a Senior Full Stack Engineer. From development tools like VS Code to productivity apps, get a look behind the scenes at what makes his workflow efficient.",
+      "description": "Explore the software, hardware, and tools used by Guy Romelle Magayano in his daily work as a Full Stack Engineer. From development tools like VS Code to productivity apps, get a look behind the scenes at what makes his workflow efficient.",
       "type": "website",
       "url": "/uses",
       "siteName": "Guy Romelle Magayano - Full Stack Engineer",
@@ -44,7 +44,7 @@
   "hero": {
     "heading": "My Tools & Setup",
     "description": [
-      "As a Senior Full Stack Engineer, my work requires reliable tools and a well-organized setup. Here’s a look at the software, hardware, and technologies that I use daily to build, test, and deliver high-performance solutions.",
+      "As a full stack engineer, my work requires reliable tools and a well-organized setup. Here’s a look at the software, hardware, and technologies that I use daily to build, test, and deliver high-performance solutions.",
       "From my coding environments to the productivity apps I rely on, this page covers everything that powers my work."
     ]
   }

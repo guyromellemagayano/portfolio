@@ -1,4 +1,27 @@
-import { gql } from '@apollo/client'
+import gql from 'graphql-tag'
+
+export const getPagesDataQuery = gql`
+  query PagesData {
+    pages {
+      links {
+        id
+        title
+        link
+        slug
+      }
+    }
+    common
+    images {
+      avatarImage {
+        id
+        src
+        alt
+        width
+        height
+      }
+    }
+  }
+`
 
 export const getHomePageMetaQuery = gql`
   query HomePageMeta {
@@ -32,12 +55,24 @@ export const getHomePageAppQuery = gql`
       hero {
         description
         heading
+        cta {
+          id
+          link
+          slug
+          buttonType
+        }
       }
       sections {
         id
         contentType
         heading
         description
+        cta {
+          id
+          link
+          slug
+          buttonType
+        }
       }
       structuredData {
         context
@@ -110,7 +145,7 @@ export const getHomePageAppQuery = gql`
 `
 
 export const getErrorMetaDataQuery = gql`
-  query getErrorMetaDataQuery {
+  query ErrorMetaData {
     errorPage {
       meta {
         description
@@ -121,7 +156,7 @@ export const getErrorMetaDataQuery = gql`
 `
 
 export const getErrorPageDataQuery = gql`
-  query getErrorPageDataQuery {
+  query ErrorPageData {
     errorPage {
       hero {
         description
@@ -132,7 +167,7 @@ export const getErrorPageDataQuery = gql`
 `
 
 export const getNotFoundMetaDataQuery = gql`
-  query getNotFoundMetaDataQuery {
+  query NotFoundMetaData {
     notFoundPage {
       meta {
         description
@@ -143,7 +178,7 @@ export const getNotFoundMetaDataQuery = gql`
 `
 
 export const getNotFoundPageDataQuery = gql`
-  query getNotFoundPageDataQuery {
+  query NotFoundPageData {
     notFoundPage {
       hero {
         description
