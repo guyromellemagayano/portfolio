@@ -1,12 +1,9 @@
 // --------------------
 // APP PAGE COMPONENTS
 // --------------------
-export * from './apps/about'
-export * from './apps/error'
-export * from './apps/home'
-export * from './apps/loading'
-export * from './apps/not-found'
+// export * from './apps/about'
 // export * from './apps/articles'
+export * from './apps/home'
 // export * from './apps/projects'
 
 // --------------------
@@ -49,12 +46,12 @@ export * from './forms/newsletter'
 // --------------------
 // LAYOUT COMPONENTS
 // --------------------
-export * from './layouts/about'
 export * from './layouts/article'
 export * from './layouts/content'
 export * from './layouts/footer'
 export * from './layouts/header'
 export * from './layouts/photo'
+export * from './layouts/projects'
 export * from './layouts/resume'
 export * from './layouts/section'
 export * from './layouts/social-links'
@@ -112,4 +109,3 @@ export { default as MediumSvg } from './svg/Medium'
 export { default as MoonSvg } from './svg/Moon'
 export { default as SunSvg } from './svg/Sun'
 export { default as TwitterSvg } from './svg/Twitter'
-
