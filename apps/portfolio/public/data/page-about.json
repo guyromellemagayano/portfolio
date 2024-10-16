@@ -2,16 +2,16 @@
   "id": "e3f7b6b1-8e3f-4c2a-8f8e-41c2f7d9b9b1",
   "meta": {
     "title": "About - Guy Romelle Magayano",
-    "description": "Learn more about Guy Romelle Magayano, a Senior Full Stack Engineer with over nine years of experience delivering cutting-edge software solutions globally. Guy is known for his deep technical expertise, leadership in full-cycle development, and commitment to building scalable and efficient applications.",
+    "description": "Learn more about Guy Romelle Magayano, a full stack engineer with over nine years of experience delivering cutting-edge software solutions globally. Guy is known for his deep technical expertise, leadership in full-cycle development, and commitment to building scalable and efficient applications.",
     "openGraph": {
       "title": "About - Guy Romelle Magayano",
-      "description": "Get to know Guy Romelle Magayano, a Senior Full Stack Engineer with over nine years of experience. Guy has built high-performance, scalable applications using technologies like React, Node.js, Python, and AWS for clients around the world.",
+      "description": "Get to know Guy Romelle Magayano, a full stack engineer with over nine years of experience. Guy has built high-performance, scalable applications using technologies like React, Node.js, Python, and AWS for clients around the world.",
       "type": "website",
       "url": "/about",
       "siteName": "Guy Romelle Magayano - Full Stack Engineer",
       "images": [
         {
-          "url": "/images/about-og-image.jpg",
+          "url": "/images/og-image.jpg",
           "width": 800,
           "height": 600,
           "alt": "About - Guy Romelle Magayano"
@@ -22,8 +22,8 @@
   "structuredData": {
     "context": "https://schema.org",
     "type": "WebPage",
-    "name": "About Guy Romelle Magayano",
-    "description": "Guy Romelle Magayano is a Senior Full Stack Engineer with over nine years of experience. He specializes in developing full-cycle software solutions using technologies like React, Node.js, and Python. Guy has worked with clients globally, delivering efficient, scalable applications that align with business goals.",
+    "name": "About - Guy Romelle Magayano",
+    "description": "Guy Romelle Magayano is a full stack engineer with over nine years of experience. He specializes in developing full-cycle software solutions using technologies like React, Node.js, and Python. Guy has worked with clients globally, delivering efficient, scalable applications that align with business goals.",
     "publisher": {
       "type": "Person",
       "name": "Guy Romelle Magayano"
@@ -44,7 +44,7 @@
   "hero": {
     "heading": "About Guy Romelle Magayano",
     "description": [
-      "Guy Romelle Magayano is a Senior Full Stack Engineer with over nine years of experience in delivering full-cycle software solutions. He specializes in building high-performance, scalable applications that meet business needs and exceed expectations."
+      "Guy Romelle Magayano is a full stack engineer with over nine years of experience in delivering full-cycle software solutions. He specializes in building high-performance, scalable applications that meet business needs and exceed expectations."
     ]
   }
 }
