@@ -1,2 +1,10 @@
-export type * from './ContentLayout'
-export { default as ContentLayout } from './ContentLayout'
+export {
+  ContentAsideLayout,
+  default as ContentLayout,
+  ContentSimpleLayout
+} from './ContentLayout'
+export type {
+  TContentLayoutProps,
+  TContentLayoutRef,
+  TContentLayoutStaticComponents
+} from './ContentLayout'
