@@ -16,10 +16,12 @@
       },
       "configurations": {
         "development": {
-          "mode": "development"
+          "mode": "development",
+          "outputPath": "apps/wedding-anniversary"
         },
         "production": {
-          "mode": "production"
+          "mode": "production",
+          "generateLockfile": true
         }
       }
     },
