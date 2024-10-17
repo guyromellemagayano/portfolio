@@ -1,14 +1,12 @@
-'use client'
-
-import { forwardRef } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { forwardRef, memo } from 'react'
 
 import { cn, formatDate } from '@react-utils'
 
 import { Card, CardProps, type CardRef } from '@portfolio/components'
-import type { TArticlesData } from '@portfolio/types'
 
-export type ArticleRef = CardRef
-export type ArticleProps = CardProps & TArticlesData
+export type TArticleRef = CardRef
+export type TArticleProps = CardProps & any
 
 const strings = {
   read: 'Read article'
@@ -16,32 +14,36 @@ const strings = {
 
 /**
  * Renders the article component.
- * @param {ArticleProps} props - The component props
- * @param {ArticleRef} ref - The component reference
+ * @param {TArticleProps} props - The component props
+ * @param {TArticleRef} ref - The component reference
  * @returns The rendered article component
  */
-const Article = forwardRef<ArticleRef, ArticleProps>(
-  ({ slug, title, date, description, ...rest }, ref) => {
-    const href = `/articles/${slug}`
+const Article = memo(
+  forwardRef<TArticleRef, TArticleProps>(
+    ({ slug, title, date, description, ...rest }, ref) => {
+      if (!slug && !title && !date && !description) return null
 
-    return (
-      <Card ref={ref} as="article" {...rest}>
-        {date && (
-          <Card.Eyebrow
-            as="time"
-            className={cn('mb-2 text-zinc-400 dark:text-zinc-500')}
-            dateTime={date}
-            decorate
-          >
-            {formatDate(date)}
-          </Card.Eyebrow>
-        )}
-        {title && slug && <Card.Title href={href}>{title}</Card.Title>}
-        {description && <Card.Description>{description}</Card.Description>}
-        {slug && <Card.Cta>{strings.read}</Card.Cta>}
-      </Card>
-    )
-  }
+      const href = `/articles/${slug}`
+
+      return (
+        <Card ref={ref} as="article" {...rest}>
+          {date && (
+            <Card.Eyebrow
+              as="time"
+              className={cn('mb-2 text-zinc-400 dark:text-zinc-500')}
+              dateTime={date}
+              decorate
+            >
+              {formatDate(date)}
+            </Card.Eyebrow>
+          )}
+          {title && slug && <Card.Title href={href}>{title}</Card.Title>}
+          {description && <Card.Description>{description}</Card.Description>}
+          {slug && <Card.Cta>{strings.read}</Card.Cta>}
+        </Card>
+      )
+    }
+  )
 )
 
 Article.displayName = 'Article'
