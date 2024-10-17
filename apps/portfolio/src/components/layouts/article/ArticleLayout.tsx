@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { forwardRef, memo, useContext } from 'react'
@@ -25,18 +26,14 @@ import {
   Article as HomeArticleLayout,
   Prose
 } from '@portfolio/components'
-import type { TArticlesData } from '@portfolio/types'
 
 export type ArticleLayoutRef = TDivisionRef
 export type ArticleLayoutProps = TDivisionProps & {
   article?: ArticleLayoutArticleData
-  articles?: Array<TArticlesData>
+  articles?: Array<any>
   isHome?: boolean
 }
-export type ArticleLayoutArticleData = Pick<
-  TArticlesData,
-  'title' | 'date' | 'description'
->
+export type ArticleLayoutArticleData = any
 
 const strings = {
   goBack: 'Go back to articles'
