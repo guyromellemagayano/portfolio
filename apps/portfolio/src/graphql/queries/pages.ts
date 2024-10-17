@@ -187,3 +187,73 @@ export const getNotFoundPageDataQuery = gql`
     }
   }
 `
+
+export const getSkillsPageMetaQuery = gql`
+  query SkillsPageMeta {
+    skillsPage {
+      meta {
+        description
+        openGraph {
+          title
+          description
+          type
+          url
+          siteName
+          images {
+            id
+            url
+            alt
+            width
+            height
+          }
+        }
+        title
+      }
+    }
+  }
+`
+
+export const getSkillsPageAppQuery = gql`
+  query SkillsPageAppData {
+    common
+    skillsPage {
+      hero {
+        description
+        heading
+        cta {
+          id
+          link
+          slug
+          buttonType
+        }
+      }
+      structuredData {
+        context
+        description
+        name
+        publisher {
+          name
+          type
+        }
+        type
+        sameAs
+      }
+    }
+    skills {
+      id
+      image {
+        default {
+          alt
+          src
+        }
+        dark {
+          alt
+          src
+        }
+      }
+      name
+      type
+      isFeatured
+    }
+  }
+`

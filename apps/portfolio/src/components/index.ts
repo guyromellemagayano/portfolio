@@ -1,9 +1,10 @@
 // --------------------
 // APP PAGE COMPONENTS
 // --------------------
+export * from './apps/home'
+export * from './apps/skills'
 // export * from './apps/about'
 // export * from './apps/articles'
-export * from './apps/home'
 // export * from './apps/projects'
 
 // --------------------
