@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef, memo } from 'react'
 
 import Image from 'next/image'
 
 import { Div, Heading, P, Span } from '@react-components'
+
+import { cn } from '@react-utils'
 
 import {
   Card,
@@ -10,16 +14,9 @@ import {
   type CardProps,
   type CardRef
 } from '@portfolio/components'
-import { TCommonPhotosData, type TProjectsData } from '@portfolio/types'
-import { cn } from '@react-utils'
 
 export type ProjectsCardsListRef = CardRef
-export type ProjectsCardsListProps = CardProps &
-  Pick<
-    TProjectsData,
-    'slug' | 'title' | 'description' | 'link' | 'category' | 'logo'
-  > &
-  Pick<TCommonPhotosData, 'alt'>
+export type ProjectsCardsListProps = CardProps & any
 
 const imageDimensions = {
   width: 32,
@@ -53,8 +50,6 @@ const ProjectsCardsList = memo(
                   alt={alt}
                   width={imageDimensions.width}
                   height={imageDimensions.height}
-                  priority
-                  unoptimized
                 />
               </Span>
             </Div>

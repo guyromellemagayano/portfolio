@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { forwardRef, memo } from 'react'
 
 import {
@@ -9,11 +10,9 @@ import {
 import { cn, formatDate } from '@react-utils'
 
 import { Card } from '@portfolio/components'
-import { type TArticlesData } from '@portfolio/types'
 
 export type ArticleCardsListRef = TArticleRef
-export type ArticleCardsListProps = TArticleProps &
-  Pick<TArticlesData, 'date' | 'slug' | 'title' | 'description' | 'category'>
+export type ArticleCardsListProps = TArticleProps & any
 
 const strings = {
   read: 'Read article'
