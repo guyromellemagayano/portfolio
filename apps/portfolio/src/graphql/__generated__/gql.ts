@@ -23,6 +23,8 @@ const documents = {
     "\n  query ErrorPageData {\n    errorPage {\n      hero {\n        description\n        heading\n      }\n    }\n  }\n": types.ErrorPageDataDocument,
     "\n  query NotFoundMetaData {\n    notFoundPage {\n      meta {\n        description\n        title\n      }\n    }\n  }\n": types.NotFoundMetaDataDocument,
     "\n  query NotFoundPageData {\n    notFoundPage {\n      hero {\n        description\n        heading\n      }\n    }\n  }\n": types.NotFoundPageDataDocument,
+    "\n  query SkillsPageMeta {\n    skillsPage {\n      meta {\n        description\n        openGraph {\n          title\n          description\n          type\n          url\n          siteName\n          images {\n            id\n            url\n            alt\n            width\n            height\n          }\n        }\n        title\n      }\n    }\n  }\n": types.SkillsPageMetaDocument,
+    "\n  query SkillsPageAppData {\n    common\n    skillsPage {\n      hero {\n        description\n        heading\n        cta {\n          id\n          link\n          slug\n          buttonType\n        }\n      }\n      structuredData {\n        context\n        description\n        name\n        publisher {\n          name\n          type\n        }\n        type\n        sameAs\n      }\n    }\n    skills {\n      id\n      image {\n        default {\n          alt\n          src\n        }\n        dark {\n          alt\n          src\n        }\n      }\n      name\n      type\n      isFeatured\n    }\n  }\n": types.SkillsPageAppDataDocument,
 };
 
 /**
@@ -75,6 +77,14 @@ export function graphql(source: "\n  query NotFoundMetaData {\n    notFoundPage 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query NotFoundPageData {\n    notFoundPage {\n      hero {\n        description\n        heading\n      }\n    }\n  }\n"): (typeof documents)["\n  query NotFoundPageData {\n    notFoundPage {\n      hero {\n        description\n        heading\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query SkillsPageMeta {\n    skillsPage {\n      meta {\n        description\n        openGraph {\n          title\n          description\n          type\n          url\n          siteName\n          images {\n            id\n            url\n            alt\n            width\n            height\n          }\n        }\n        title\n      }\n    }\n  }\n"): (typeof documents)["\n  query SkillsPageMeta {\n    skillsPage {\n      meta {\n        description\n        openGraph {\n          title\n          description\n          type\n          url\n          siteName\n          images {\n            id\n            url\n            alt\n            width\n            height\n          }\n        }\n        title\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query SkillsPageAppData {\n    common\n    skillsPage {\n      hero {\n        description\n        heading\n        cta {\n          id\n          link\n          slug\n          buttonType\n        }\n      }\n      structuredData {\n        context\n        description\n        name\n        publisher {\n          name\n          type\n        }\n        type\n        sameAs\n      }\n    }\n    skills {\n      id\n      image {\n        default {\n          alt\n          src\n        }\n        dark {\n          alt\n          src\n        }\n      }\n      name\n      type\n      isFeatured\n    }\n  }\n"): (typeof documents)["\n  query SkillsPageAppData {\n    common\n    skillsPage {\n      hero {\n        description\n        heading\n        cta {\n          id\n          link\n          slug\n          buttonType\n        }\n      }\n      structuredData {\n        context\n        description\n        name\n        publisher {\n          name\n          type\n        }\n        type\n        sameAs\n      }\n    }\n    skills {\n      id\n      image {\n        default {\n          alt\n          src\n        }\n        dark {\n          alt\n          src\n        }\n      }\n      name\n      type\n      isFeatured\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
