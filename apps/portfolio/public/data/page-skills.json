@@ -44,8 +44,7 @@
   "hero": {
     "heading": "Skills",
     "description": [
-      "Throughout my career as a full stack engineer, I have gained extensive experience across a wide array of tools and technologies.",
-      "This page provides an in-depth look at the core skills I have mastered, from frontend frameworks like React and Vue to backend technologies like Node.js, Django, and cloud platforms."
+      "Throughout my career as a full stack engineer, I have gained extensive experience across a wide array of tools and technologies."
     ]
   }
 }
