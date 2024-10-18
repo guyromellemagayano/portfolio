@@ -27,12 +27,12 @@ export type TRootLayoutProps = {
 const Providers = dynamic(() =>
   import('@portfolio/app/providers').then(mod => mod.default)
 )
-const HeaderLayout = dynamic(() =>
-  import('@portfolio/components').then(mod => mod.HeaderLayout)
-)
-const FooterLayout = dynamic(() =>
-  import('@portfolio/components').then(mod => mod.FooterLayout)
-)
+// const HeaderLayout = dynamic(() =>
+//   import('@portfolio/components').then(mod => mod.HeaderLayout)
+// )
+// const FooterLayout = dynamic(() =>
+//   import('@portfolio/components').then(mod => mod.FooterLayout)
+// )
 
 /**
  * Renders the root layout app.
@@ -84,9 +84,9 @@ const RootLayout = async ({ children }: TRootLayoutProps) => {
         <Providers>
           <Div className="flex w-full">
             <Div className="relative flex w-full flex-col">
-              <HeaderLayout data={data} />
+              {/* <HeaderLayout data={data} /> */}
               <Main className="flex-auto">{children}</Main>
-              <FooterLayout data={data} />
+              {/* <FooterLayout data={data} /> */}
             </Div>
           </Div>
           <SpeedInsights />
