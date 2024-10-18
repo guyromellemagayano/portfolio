@@ -1,10 +1,12 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
-const PORTFOLIO_SITE_URL =
+const NEXT_PUBLIC_PORTFOLIO_SITE_URL =
   process.env.NODE_ENV === 'production'
-    ? process.env.PORTFOLIO_SITE_URL
+    ? process.env.NEXT_PUBLIC_PORTFOLIO_SITE_URL
     : 'http://localhost:3000'
-const PORTFOLIO_SITE_GRAPHQL_API_URL = `${PORTFOLIO_SITE_URL}/api/graphql`
+const NEXT_PUBLIC_PORTFOLIO_SITE_GRAPHQL_API_PATHNAME =
+  process.env.NEXT_PUBLIC_PORTFOLIO_SITE_GRAPHQL_API_PATHNAME
+const PORTFOLIO_SITE_GRAPHQL_API_URL = `${NEXT_PUBLIC_PORTFOLIO_SITE_URL}${NEXT_PUBLIC_PORTFOLIO_SITE_GRAPHQL_API_PATHNAME}`
 
 const config: CodegenConfig = {
   config: {
