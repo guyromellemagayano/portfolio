@@ -185,6 +185,7 @@ Thumbs.db
 # NX
 .nx/cache/
 apps/*-server-*/
+.nx/workspace-data/
 
 # Sentry Config File
 .sentryclirc
