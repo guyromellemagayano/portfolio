@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-head-element */
 import React from 'react'
 
 export type THeadRef = HTMLHeadElement
