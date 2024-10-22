@@ -1,6 +1,8 @@
 {
   "root": true,
-  "plugins": ["@nx"],
+  "plugins": [
+    "@nx"
+  ],
   "settings": {
     "react": {
       "version": "detect"
@@ -20,7 +22,9 @@
   ],
   "overrides": [
     {
-      "files": ["**/*.ts?(x)"],
+      "files": [
+        "**/*.ts?(x)"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "ecmaVersion": "latest",
@@ -32,7 +36,10 @@
       },
       "settings": {
         "import/parsers": {
-          "@typescript-eslint/parser": [".ts", ".tsx"]
+          "@typescript-eslint/parser": [
+            ".ts",
+            ".tsx"
+          ]
         },
         "import/resolver": {
           "typescript": {
@@ -40,7 +47,9 @@
           }
         }
       },
-      "extends": ["plugin:@nx/typescript"],
+      "extends": [
+        "plugin:@nx/typescript"
+      ],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -51,12 +60,13 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
               }
             ]
           }
         ],
-        "@next/next/no-html-link-for-pages": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "@typescript-eslint/ban-ts-ignore": "off",
         "@typescript-eslint/camelcase": "off",
@@ -72,7 +82,7 @@
         "@typescript-eslint/no-unused-vars": [
           "warn",
           {
-            "argsIgnorePattern": "^_|req|res|next|err|ctx|args|context|info"
+            "argsIgnorePattern": "^_|req|res|err|ctx|args|context|info"
           }
         ],
         "import/default": "off",
@@ -103,7 +113,9 @@
         "**/*.test.ts",
         "**/*.test.tsx"
       ],
-      "extends": ["plugin:testing-library/react"],
+      "extends": [
+        "plugin:testing-library/react"
+      ],
       "env": {
         "jest": true
       }
