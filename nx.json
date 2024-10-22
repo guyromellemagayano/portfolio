@@ -121,5 +121,6 @@
         "verbose": true
       }
     }
-  }
+  },
+  "useInferencePlugins": false
 }
