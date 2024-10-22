@@ -7,21 +7,15 @@
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/react/libs/src/**/*.ts?(x)"
-        ],
+        "lintFilePatterns": ["packages/react/libs/src/**/*.ts?(x)"],
         "fix": true
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/portfolio/jest.config.ts",
         "passWithNoTests": true
