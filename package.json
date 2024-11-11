@@ -102,7 +102,7 @@
     "@nx/web": "20.0.3",
     "@nx/workspace": "20.0.3",
     "@parcel/watcher": "^2.4.1",
-    "@playwright/test": "^1.48.1",
+    "@playwright/test": "^1.48.2",
     "@remix-run/dev": "2.9.2",
     "@remix-run/eslint-config": "2.9.2",
     "@remix-run/testing": "^2.3.0",
