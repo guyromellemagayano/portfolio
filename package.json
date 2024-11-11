@@ -65,7 +65,7 @@
     "focus-visible": "^5.2.1",
     "install": "^0.13.0",
     "intersection-observer": "^0.12.2",
-    "isbot": "4.4.0",
+    "isbot": "5.1.17",
     "logrocket": "^9.0.0",
     "logrocket-react": "^6.0.3",
     "nx-cloud": "19.1.0",
