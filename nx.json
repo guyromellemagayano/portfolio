@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/cypress/**/*",
@@ -35,14 +38,18 @@
     },
     {
       "plugin": "@nx/jest/plugin",
-      "exclude": ["e2e/**/*"],
+      "exclude": [
+        "e2e/**/*"
+      ],
       "options": {
         "targetName": "test"
       }
     },
     {
       "plugin": "@nx/jest/plugin",
-      "include": ["e2e/**/*"],
+      "include": [
+        "e2e/**/*"
+      ],
       "options": {
         "targetName": "e2e-local",
         "ciTargetName": "e2e-ci"
@@ -58,7 +65,10 @@
   "parallel": 4,
   "targetDefaults": {
     "build": {
-      "inputs": ["production", "^production"],
+      "inputs": [
+        "production",
+        "^production"
+      ],
       "cache": true
     },
     "lint": {
@@ -81,17 +91,30 @@
     },
     "@nx/vite:test": {
       "cache": true,
-      "inputs": ["default", "^production"]
+      "inputs": [
+        "default",
+        "^production"
+      ]
     },
     "@nx/vite:build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     },
     "@nx/remix:build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     }
   },
   "generators": {
@@ -113,14 +136,5 @@
   },
   "nxCloudAccessToken": "ZTYyMDM4ZTAtMWQxYS00MjFkLWFjYTItZWM5Mzk3ZWVmZWE3fHJlYWQtd3JpdGU=",
   "defaultBase": "main",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@vercel/remote-nx",
-      "options": {
-        "cacheableOperations": ["build", "test", "lint", "e2e"],
-        "verbose": true
-      }
-    }
-  },
   "useInferencePlugins": false
 }
