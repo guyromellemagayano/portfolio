@@ -100,7 +100,7 @@
     "@nx/remix": "20.0.3",
     "@nx/vite": "20.0.3",
     "@nx/web": "20.0.3",
-    "@nx/workspace": "20.0.3",
+    "@nx/workspace": "20.1.4",
     "@parcel/watcher": "^2.4.1",
     "@playwright/test": "^1.48.2",
     "@remix-run/dev": "2.9.2",
