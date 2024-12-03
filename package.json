@@ -51,7 +51,7 @@
     "@remix-run/node": "2.15.0",
     "@remix-run/react": "2.15.0",
     "@remix-run/serve": "2.15.0",
-    "@spotlightjs/spotlight": "^2.6.3",
+    "@spotlightjs/spotlight": "^2.7.0",
     "@stripe/react-stripe-js": "^3.0.0",
     "@stripe/stripe-js": "^5.2.0",
     "@uidotdev/usehooks": "^2.4.1",
