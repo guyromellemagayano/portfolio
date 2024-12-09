@@ -107,7 +107,7 @@
     "@remix-run/eslint-config": "2.15.0",
     "@remix-run/testing": "^2.15.0",
     "@sentry/utils": "^8.42.0",
-    "@spotlightjs/overlay": "^2.7.1",
+    "@spotlightjs/overlay": "^2.8.0",
     "@swc-node/register": "1.10.9",
     "@swc/cli": "0.5.2",
     "@swc/core": "1.9.3",
