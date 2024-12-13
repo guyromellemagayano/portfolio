@@ -136,5 +136,6 @@
   },
   "nxCloudAccessToken": "ZTYyMDM4ZTAtMWQxYS00MjFkLWFjYTItZWM5Mzk3ZWVmZWE3fHJlYWQtd3JpdGU=",
   "defaultBase": "main",
-  "useInferencePlugins": false
+  "useInferencePlugins": false,
+  "nxCloudId": "66cbc08484a793b218a777f1"
 }
