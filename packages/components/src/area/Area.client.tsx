@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { AreaProps, AreaRef } from ".";
+import type { AreaProps, AreaRef } from "./Area";
 
 /**
  * Render the area client component.
