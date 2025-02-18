@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { AddressProps, AddressRef } from ".";
+import type { AddressProps, AddressRef } from "./Address";
 
 /**
  * Render the address client component.
@@ -13,9 +13,9 @@ import type { AddressProps, AddressRef } from ".";
 const AddressClient = forwardRef<AddressRef, AddressProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <abbr ref={ref} {...rest}>
+      <address ref={ref} {...rest}>
         {children}
-      </abbr>
+      </address>
     );
   }
 );
