@@ -1,9 +1,10 @@
 import { type AreaHTMLAttributes, lazy, Suspense } from "react";
 
 // Dynamically import the client component
-const AreaClient = lazy(() =>
-  import("./index.client").then((m) => ({ default: m.default }))
-);
+const AreaClient = lazy(async () => {
+  const module = await import("./Area.client");
+  return { default: module.default };
+});
 
 export type AreaRef = HTMLAreaElement;
 export type AreaProps = AreaHTMLAttributes<AreaRef> & {
@@ -15,15 +16,16 @@ export type AreaProps = AreaHTMLAttributes<AreaRef> & {
  * @param {AreaProps} props - The default area server component properties
  * @returns The rendered default area server component
  */
-export const Area = ({
-  alt = "",
-  isClient = false,
-  children,
-  ...rest
-}: AreaProps) => {
+const Area = ({ alt = "", isClient = false, children, ...rest }: AreaProps) => {
+  const element = (
+    <area alt={alt} {...rest}>
+      {children}
+    </area>
+  );
+
   if (isClient) {
     return (
-      <Suspense>
+      <Suspense fallback={element}>
         <AreaClient alt={alt} {...rest}>
           {children}
         </AreaClient>
@@ -31,11 +33,9 @@ export const Area = ({
     );
   }
 
-  return (
-    <area alt={alt} {...rest}>
-      {children}
-    </area>
-  );
+  return element;
 };
 
 Area.displayName = "Area";
+
+export default Area;
