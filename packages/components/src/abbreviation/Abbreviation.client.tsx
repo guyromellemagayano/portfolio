@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { AbbreviationProps, AbbreviationRef } from ".";
+import type { AbbreviationProps, AbbreviationRef } from "./Abbreviation";
 
 /**
  * Render the abbreviation client component.
