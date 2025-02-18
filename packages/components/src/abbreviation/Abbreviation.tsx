@@ -1,8 +1,8 @@
-import { lazy, Suspense, type HTMLAttributes } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
 // Dynamically import the client component
 const AbbreviationClient = lazy(async () => {
-  const module = await import("./index.client");
+  const module = await import("./Abbreviation.client");
   return { default: module.default };
 });
 
@@ -16,20 +16,24 @@ export type AbbreviationProps = HTMLAttributes<AbbreviationRef> & {
  * @param {AbbreviationProps} props - The default abbreviation server component properties
  * @returns The rendered default abbreviation server component
  */
-export const Abbreviation = ({
+const Abbreviation = ({
   isClient = false,
   children,
   ...rest
 }: AbbreviationProps) => {
+  const element = <abbr {...rest}>{children}</abbr>;
+
   if (isClient) {
     return (
-      <Suspense>
-        <AbbreviationClient {...rest}>{children} </AbbreviationClient>
+      <Suspense fallback={element}>
+        <AbbreviationClient {...rest}>{children}</AbbreviationClient>
       </Suspense>
     );
   }
 
-  return <abbr {...rest}>{children}</abbr>;
+  return element;
 };
 
 Abbreviation.displayName = "Abbreviation";
+
+export default Abbreviation;
