@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { AudioProps, AudioRef } from ".";
+import type { AudioProps, AudioRef } from "./Audio";
 
 /**
  * Render the audio client component.
