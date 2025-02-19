@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { BaseProps, BaseRef } from ".";
+import type { BaseProps, BaseRef } from "./Base";
 
 /**
  * Render the base client component.
