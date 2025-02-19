@@ -1,5 +1,7 @@
 import { type HTMLAttributes, lazy, Suspense } from "react";
 
+import type { CommonComponentProps } from "../components";
+
 // Dynamically import the client component
 const AddressClient = lazy(async () => {
   const module = await import("./Address.client");
@@ -7,9 +9,7 @@ const AddressClient = lazy(async () => {
 });
 
 export type AddressRef = HTMLElement;
-export type AddressProps = HTMLAttributes<AddressRef> & {
-  isClient?: boolean;
-};
+export type AddressProps = HTMLAttributes<AddressRef> & CommonComponentProps;
 
 /**
  * Render the default address server component.
