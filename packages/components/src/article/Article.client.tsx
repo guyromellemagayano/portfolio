@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { ArticleProps, ArticleRef } from ".";
+import type { ArticleProps, ArticleRef } from "./Article";
 
 /**
  * Render the article client component.
