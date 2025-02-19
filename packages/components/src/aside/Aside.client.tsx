@@ -2,7 +2,7 @@
 
 import { forwardRef } from "react";
 
-import type { AsideProps, AsideRef } from ".";
+import type { AsideProps, AsideRef } from "./Aside";
 
 /**
  * Render the aside client component.
