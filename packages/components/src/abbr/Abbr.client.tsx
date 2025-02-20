@@ -10,7 +10,7 @@ import type { AbbrProps, AbbrRef } from "./Abbr";
  * @param {AbbrRef} ref - The abbreviation client component reference
  * @returns The rendered abbreviation client component
  */
-const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
+export const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
   ({ children, ...rest }, ref) => {
     return (
       <abbr ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
 );
 
 AbbrClient.displayName = "AbbrClient";
-
-export default AbbrClient;

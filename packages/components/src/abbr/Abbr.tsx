@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const AbbrClient = lazy(async () => {
   const module = await import("./Abbr.client");
-  return { default: module.default };
+  return { default: module.AbbrClient };
 });
 
 export type AbbrRef = HTMLElement;
