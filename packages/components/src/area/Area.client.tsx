@@ -10,7 +10,7 @@ import type { AreaProps, AreaRef } from "./Area";
  * @param {AreaRef} ref - The area client component reference
  * @returns The rendered area client component
  */
-const AreaClient = forwardRef<AreaRef, AreaProps>(
+export const AreaClient = forwardRef<AreaRef, AreaProps>(
   ({ children, ...rest }, ref) => {
     return (
       <area ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const AreaClient = forwardRef<AreaRef, AreaProps>(
 );
 
 AreaClient.displayName = "AreaClient";
-
-export default AreaClient;
