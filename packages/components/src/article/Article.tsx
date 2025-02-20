@@ -1,15 +1,12 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { ArticleProps } from "./Article.client";
 
 // Dynamically import the client component
 const ArticleClient = lazy(async () => {
   const module = await import("./Article.client");
   return { default: module.ArticleClient };
 });
-
-export type ArticleRef = HTMLElement;
-export type ArticleProps = HTMLAttributes<ArticleRef> & CommonComponentProps;
 
 /**
  * Render the default article server component.
