@@ -16,7 +16,11 @@ export type AddressProps = HTMLAttributes<AddressRef> & CommonComponentProps;
  * @param {AddressProps} props - The default address server component properties
  * @returns The rendered default address server component
  */
-const Address = ({ isClient = false, children, ...rest }: AddressProps) => {
+export const Address = ({
+  isClient = false,
+  children,
+  ...rest
+}: AddressProps) => {
   const element = <address {...rest}>{children}</address>;
 
   if (isClient) {
@@ -31,5 +35,3 @@ const Address = ({ isClient = false, children, ...rest }: AddressProps) => {
 };
 
 Address.displayName = "Address";
-
-export default Address;
