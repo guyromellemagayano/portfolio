@@ -10,7 +10,7 @@ import type { AddressProps, AddressRef } from "./Address";
  * @param {AddressRef} ref - The address client component reference
  * @returns The rendered address client component
  */
-const AddressClient = forwardRef<AddressRef, AddressProps>(
+export const AddressClient = forwardRef<AddressRef, AddressProps>(
   ({ children, ...rest }, ref) => {
     return (
       <address ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const AddressClient = forwardRef<AddressRef, AddressProps>(
 );
 
 AddressClient.displayName = "AddressClient";
-
-export default AddressClient;
