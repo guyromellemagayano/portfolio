@@ -10,7 +10,7 @@ import type { AudioProps, AudioRef } from "./Audio";
  * @param {AudioRef} ref - The audio client component reference
  * @returns The rendered audio client component
  */
-const AudioClient = forwardRef<AudioRef, AudioProps>(
+export const AudioClient = forwardRef<AudioRef, AudioProps>(
   ({ children, ...rest }, ref) => {
     return (
       <audio ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const AudioClient = forwardRef<AudioRef, AudioProps>(
 );
 
 AudioClient.displayName = "AudioClient";
-
-export default AudioClient;
