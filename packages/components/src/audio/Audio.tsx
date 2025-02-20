@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const AudioClient = lazy(async () => {
   const module = await import("./Audio.client");
-  return { default: module.default };
+  return { default: module.AudioClient };
 });
 
 export type AudioRef = HTMLAudioElement;
