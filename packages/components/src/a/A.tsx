@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const AClient = lazy(async () => {
   const module = await import("./A.client");
-  return { default: module.default };
+  return { default: module.AClient };
 });
 
 export type ARef = HTMLAnchorElement;
