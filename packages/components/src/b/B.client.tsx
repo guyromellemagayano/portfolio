@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { BProps, BRef } from "./B";
+import type { CommonComponentProps } from "../components";
+
+export type BRef = HTMLElement;
+export type BProps = HTMLAttributes<BRef> & CommonComponentProps;
 
 /**
  * Render the bring attention to client component.
