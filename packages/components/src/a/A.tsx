@@ -1,15 +1,12 @@
-import { type AnchorHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { AProps } from "./A.client";
 
 // Dynamically import the client component
 const AClient = lazy(async () => {
   const module = await import("./A.client");
   return { default: module.AClient };
 });
-
-export type ARef = HTMLAnchorElement;
-export type AProps = AnchorHTMLAttributes<ARef> & CommonComponentProps;
 
 /**
  * Render the default anchor server component.
