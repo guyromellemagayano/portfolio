@@ -10,7 +10,7 @@ import type { AsideProps, AsideRef } from "./Aside";
  * @param {AsideRef} ref - The aside client component reference
  * @returns The rendered aside client component
  */
-const AsideClient = forwardRef<AsideRef, AsideProps>(
+export const AsideClient = forwardRef<AsideRef, AsideProps>(
   ({ children, ...rest }, ref) => {
     return (
       <aside ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const AsideClient = forwardRef<AsideRef, AsideProps>(
 );
 
 AsideClient.displayName = "AsideClient";
-
-export default AsideClient;
