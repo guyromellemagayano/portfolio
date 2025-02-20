@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type BaseHTMLAttributes, forwardRef } from "react";
 
-import type { BaseProps, BaseRef } from "./Base";
+import type { CommonComponentProps } from "../components";
+
+export type BaseRef = HTMLBaseElement;
+export type BaseProps = BaseHTMLAttributes<BaseRef> & CommonComponentProps;
 
 /**
  * Render the base client component.
@@ -10,7 +13,7 @@ import type { BaseProps, BaseRef } from "./Base";
  * @param {BaseRef} ref - The base client component reference
  * @returns The rendered base client component
  */
-const BaseClient = forwardRef<BaseRef, BaseProps>(
+export const BaseClient = forwardRef<BaseRef, BaseProps>(
   ({ children, ...rest }, ref) => {
     return (
       <base ref={ref} {...rest}>
@@ -21,5 +24,3 @@ const BaseClient = forwardRef<BaseRef, BaseProps>(
 );
 
 BaseClient.displayName = "BaseClient";
-
-export default BaseClient;
