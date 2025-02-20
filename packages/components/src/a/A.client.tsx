@@ -10,14 +10,14 @@ import type { AProps, ARef } from "./A";
  * @param {ARef} ref - The anchor client component reference
  * @returns The rendered anchor client component
  */
-const AClient = forwardRef<ARef, AProps>(({ children, ...rest }, ref) => {
-  return (
-    <a ref={ref} {...rest}>
-      {children}
-    </a>
-  );
-});
+export const AClient = forwardRef<ARef, AProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <a ref={ref} {...rest}>
+        {children}
+      </a>
+    );
+  }
+);
 
 AClient.displayName = "AClient";
-
-export default AClient;
