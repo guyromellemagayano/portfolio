@@ -1,15 +1,15 @@
 import { type AreaHTMLAttributes, lazy, Suspense } from "react";
 
+import type { CommonComponentProps } from "../components";
+
 // Dynamically import the client component
 const AreaClient = lazy(async () => {
   const module = await import("./Area.client");
-  return { default: module.default };
+  return { default: module.AreaClient };
 });
 
 export type AreaRef = HTMLAreaElement;
-export type AreaProps = AreaHTMLAttributes<AreaRef> & {
-  isClient?: boolean;
-};
+export type AreaProps = AreaHTMLAttributes<AreaRef> & CommonComponentProps;
 
 /**
  * Render the default area server component.
