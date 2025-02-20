@@ -16,7 +16,7 @@ export type AsideProps = HTMLAttributes<AsideRef> & CommonComponentProps;
  * @param {AsideProps} props - The default aside server component properties
  * @returns The rendered default aside server component
  */
-const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
+export const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
   const element = <aside {...rest}>{children}</aside>;
 
   if (isClient) {
@@ -31,5 +31,3 @@ const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
 };
 
 Aside.displayName = "Aside";
-
-export default Aside;
