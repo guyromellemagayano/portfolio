@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { AbbrProps, AbbrRef } from "./Abbr";
+import type { CommonComponentProps } from "../components";
+
+export type AbbrRef = HTMLElement;
+export type AbbrProps = HTMLAttributes<AbbrRef> & CommonComponentProps;
 
 /**
  * Render the abbreviation client component.
