@@ -10,7 +10,7 @@ import type { ArticleProps, ArticleRef } from "./Article";
  * @param {ArticleRef} ref - The article client component reference
  * @returns The rendered article client component
  */
-const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
+export const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
   ({ children, ...rest }, ref) => {
     return (
       <article ref={ref} {...rest}>
@@ -21,5 +21,3 @@ const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
 );
 
 ArticleClient.displayName = "ArticleClient";
-
-export default ArticleClient;
