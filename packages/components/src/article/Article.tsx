@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const ArticleClient = lazy(async () => {
   const module = await import("./Article.client");
-  return { default: module.default };
+  return { default: module.ArticleClient };
 });
 
 export type ArticleRef = HTMLElement;
@@ -16,7 +16,11 @@ export type ArticleProps = HTMLAttributes<ArticleRef> & CommonComponentProps;
  * @param {ArticleProps} props - The default article server component properties
  * @returns The rendered default article server component
  */
-const Article = ({ isClient = false, children, ...rest }: ArticleProps) => {
+export const Article = ({
+  isClient = false,
+  children,
+  ...rest
+}: ArticleProps) => {
   const element = <article {...rest}>{children}</article>;
 
   if (isClient) {
@@ -31,5 +35,3 @@ const Article = ({ isClient = false, children, ...rest }: ArticleProps) => {
 };
 
 Article.displayName = "Article";
-
-export default Article;
