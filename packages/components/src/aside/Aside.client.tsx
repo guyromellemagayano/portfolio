@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { AsideProps, AsideRef } from "./Aside";
+import type { CommonComponentProps } from "../components";
+
+export type AsideRef = HTMLElement;
+export type AsideProps = HTMLAttributes<AsideRef> & CommonComponentProps;
 
 /**
  * Render the aside client component.
