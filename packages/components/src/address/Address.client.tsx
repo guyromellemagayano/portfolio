@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { AddressProps, AddressRef } from "./Address";
+import type { CommonComponentProps } from "../components";
+
+export type AddressRef = HTMLElement;
+export type AddressProps = HTMLAttributes<AddressRef> & CommonComponentProps;
 
 /**
  * Render the address client component.
