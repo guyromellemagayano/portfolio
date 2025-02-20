@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const AddressClient = lazy(async () => {
   const module = await import("./Address.client");
-  return { default: module.default };
+  return { default: module.AddressClient };
 });
 
 export type AddressRef = HTMLElement;
