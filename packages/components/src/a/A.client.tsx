@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type AnchorHTMLAttributes, forwardRef } from "react";
 
-import type { AProps, ARef } from "./A";
+import type { CommonComponentProps } from "../components";
+
+export type ARef = HTMLAnchorElement;
+export type AProps = AnchorHTMLAttributes<ARef> & CommonComponentProps;
 
 /**
  * Render the anchor client component.
