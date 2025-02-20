@@ -5,7 +5,7 @@ import type { CommonComponentProps } from "../components";
 // Dynamically import the client component
 const AsideClient = lazy(async () => {
   const module = await import("./Aside.client");
-  return { default: module.default };
+  return { default: module.AsideClient };
 });
 
 export type AsideRef = HTMLElement;
