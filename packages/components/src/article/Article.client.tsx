@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { ArticleProps, ArticleRef } from "./Article";
+import type { CommonComponentProps } from "../components";
+
+export type ArticleRef = HTMLElement;
+export type ArticleProps = HTMLAttributes<ArticleRef> & CommonComponentProps;
 
 /**
  * Render the article client component.
