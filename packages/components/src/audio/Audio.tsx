@@ -16,7 +16,7 @@ export type AudioProps = AudioHTMLAttributes<AudioRef> & CommonComponentProps;
  * @param {AudioProps} props - The default audio server component properties
  * @returns The rendered default audio server component
  */
-const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
+export const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
   const element = <audio {...rest}>{children}</audio>;
 
   if (isClient) {
@@ -31,5 +31,3 @@ const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
 };
 
 Audio.displayName = "Audio";
-
-export default Audio;
