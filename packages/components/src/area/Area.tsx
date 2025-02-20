@@ -16,7 +16,12 @@ export type AreaProps = AreaHTMLAttributes<AreaRef> & {
  * @param {AreaProps} props - The default area server component properties
  * @returns The rendered default area server component
  */
-const Area = ({ alt = "", isClient = false, children, ...rest }: AreaProps) => {
+export const Area = ({
+  alt = "",
+  isClient = false,
+  children,
+  ...rest
+}: AreaProps) => {
   const element = (
     <area alt={alt} {...rest}>
       {children}
@@ -37,5 +42,3 @@ const Area = ({ alt = "", isClient = false, children, ...rest }: AreaProps) => {
 };
 
 Area.displayName = "Area";
-
-export default Area;
