@@ -1,16 +1,12 @@
-import { type ButtonHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { ButtonProps } from "./Button.client";
 
 // Dynamically import the client component
 const ButtonClient = lazy(async () => {
   const module = await import("./Button.client");
   return { default: module.default };
 });
-
-export type ButtonRef = HTMLButtonElement;
-export type ButtonProps = ButtonHTMLAttributes<ButtonRef> &
-  CommonComponentProps;
 
 /**
  * Render the default button server component.
