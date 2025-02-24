@@ -1,23 +1,19 @@
-import { type BlockquoteHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { BlockquoteProps } from "./Blockquote.client";
 
 // Dynamically import the client component
 const BlockquoteClient = lazy(async () => {
   const module = await import("./Blockquote.client");
-  return { default: module.default };
+  return { default: module.BlockquoteClient };
 });
-
-export type BlockquoteRef = HTMLQuoteElement;
-export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef> &
-  CommonComponentProps;
 
 /**
  * Render the default blockquote server component.
  * @param {BlockquoteProps} props - The default blockquote server component properties
  * @returns The rendered default blockquote server component
  */
-const Blockquote = ({
+export const Blockquote = ({
   isClient = false,
   children,
   ...rest
@@ -36,5 +32,3 @@ const Blockquote = ({
 };
 
 Blockquote.displayName = "Blockquote";
-
-export default Blockquote;
