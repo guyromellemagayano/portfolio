@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { CiteProps, CiteRef } from "./Cite";
+import type { CommonComponentProps } from "../components";
+
+export type CiteRef = HTMLQuoteElement;
+export type CiteProps = HTMLAttributes<CiteRef> & CommonComponentProps;
 
 /**
  * Render the cite client component.
@@ -10,7 +13,7 @@ import type { CiteProps, CiteRef } from "./Cite";
  * @param {CiteRef} ref - The cite client component reference
  * @returns The rendered cite client component
  */
-const CiteClient = forwardRef<CiteRef, CiteProps>(
+export const CiteClient = forwardRef<CiteRef, CiteProps>(
   ({ children, ...rest }, ref) => {
     return (
       <cite ref={ref} {...rest}>
@@ -21,5 +24,3 @@ const CiteClient = forwardRef<CiteRef, CiteProps>(
 );
 
 CiteClient.displayName = "CiteClient";
-
-export default CiteClient;
