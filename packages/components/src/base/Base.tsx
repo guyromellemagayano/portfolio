@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type BaseHTMLAttributes, lazy, Suspense } from "react";
 
-import type { BaseProps } from "./Base.client";
+import { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BaseClient = lazy(async () => {
   const module = await import("./Base.client");
   return { default: module.BaseClient };
 });
+
+export type BaseRef = HTMLBaseElement;
+export type BaseProps = BaseHTMLAttributes<BaseRef> & CommonComponentProps;
 
 /**
  * Render the default base server component.
