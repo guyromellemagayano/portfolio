@@ -1,12 +1,16 @@
-import { lazy, Suspense } from "react";
+import { type DialogHTMLAttributes, lazy, Suspense } from "react";
 
-import type { DialogProps } from "./Dialog.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const DialogClient = lazy(async () => {
   const module = await import("./Dialog.client");
   return { default: module.DialogClient };
 });
+
+export type DialogRef = HTMLDialogElement;
+export type DialogProps = DialogHTMLAttributes<DialogRef> &
+  CommonComponentProps;
 
 /**
  * Render the default dialog server component.
