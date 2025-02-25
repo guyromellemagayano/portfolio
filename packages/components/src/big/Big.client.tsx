@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type BigRef = HTMLElement;
-export type BigProps = HTMLAttributes<BigRef> & CommonComponentProps;
+import type { BigProps, BigRef } from "./Big";
 
 /**
  * Render the bigger text client component.
@@ -16,9 +13,9 @@ export type BigProps = HTMLAttributes<BigRef> & CommonComponentProps;
 export const BigClient = forwardRef<BigRef, BigProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <b ref={ref} {...rest}>
+      <big ref={ref} {...rest}>
         {children}
-      </b>
+      </big>
     );
   }
 );
