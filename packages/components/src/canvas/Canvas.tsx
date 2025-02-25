@@ -1,23 +1,23 @@
-import { type CanvasHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { CanvasProps } from "./Canvas.client";
 
 // Dynamically import the client component
 const CanvasClient = lazy(async () => {
   const module = await import("./Canvas.client");
-  return { default: module.default };
+  return { default: module.CanvasClient };
 });
-
-export type CanvasRef = HTMLCanvasElement;
-export type CanvasProps = CanvasHTMLAttributes<CanvasRef> &
-  CommonComponentProps;
 
 /**
  * Render the default canvas server component.
  * @param {CanvasProps} props - The default canvas server component properties
  * @returns The rendered default canvas server component
  */
-const Canvas = ({ isClient = false, children, ...rest }: CanvasProps) => {
+export const Canvas = ({
+  isClient = false,
+  children,
+  ...rest
+}: CanvasProps) => {
   const element = <canvas {...rest}>{children}</canvas>;
 
   if (isClient) {
@@ -32,5 +32,3 @@ const Canvas = ({ isClient = false, children, ...rest }: CanvasProps) => {
 };
 
 Canvas.displayName = "Canvas";
-
-export default Canvas;
