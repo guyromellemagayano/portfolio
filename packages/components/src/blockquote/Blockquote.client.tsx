@@ -1,12 +1,8 @@
 "use client";
 
-import { type BlockquoteHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type BlockquoteRef = HTMLQuoteElement;
-export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef> &
-  CommonComponentProps;
+import type { BlockquoteProps, BlockquoteRef } from "./Blockquote";
 
 /**
  * Render the blockquote client component.
