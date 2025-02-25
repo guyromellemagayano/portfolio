@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { CenterProps } from "./Center.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const CenterClient = lazy(async () => {
   const module = await import("./Center.client");
   return { default: module.CenterClient };
 });
+
+export type CenterRef = HTMLElement;
+export type CenterProps = HTMLAttributes<CenterRef> & CommonComponentProps;
 
 /**
  * Render the default center server component.
