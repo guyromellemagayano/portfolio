@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { BProps } from "./B.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BClient = lazy(async () => {
   const module = await import("./B.client");
   return { default: module.BClient };
 });
+
+export type BRef = HTMLElement;
+export type BProps = HTMLAttributes<BRef> & CommonComponentProps;
 
 /**
  * Render the default bring attention to server component.
