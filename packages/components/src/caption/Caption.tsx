@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { CaptionProps } from "./Caption.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const CaptionClient = lazy(async () => {
   const module = await import("./Caption.client");
   return { default: module.CaptionClient };
 });
+
+export type CaptionRef = HTMLTableCaptionElement;
+export type CaptionProps = HTMLAttributes<CaptionRef> & CommonComponentProps;
 
 /**
  * Render the default caption server component.
