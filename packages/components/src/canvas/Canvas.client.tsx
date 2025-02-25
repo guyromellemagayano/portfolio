@@ -1,8 +1,12 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type CanvasHTMLAttributes, forwardRef } from "react";
 
-import type { CanvasProps, CanvasRef } from "./Canvas";
+import type { CommonComponentProps } from "../components";
+
+export type CanvasRef = HTMLCanvasElement;
+export type CanvasProps = CanvasHTMLAttributes<CanvasRef> &
+  CommonComponentProps;
 
 /**
  * Render the canvas client component.
@@ -10,7 +14,7 @@ import type { CanvasProps, CanvasRef } from "./Canvas";
  * @param {CanvasRef} ref - The canvas client component reference
  * @returns The rendered canvas client component
  */
-const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
+export const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
   ({ children, ...rest }, ref) => {
     return (
       <canvas ref={ref} {...rest}>
@@ -21,5 +25,3 @@ const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
 );
 
 CanvasClient.displayName = "CanvasClient";
-
-export default CanvasClient;
