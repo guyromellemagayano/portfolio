@@ -1,11 +1,8 @@
 "use client";
 
-import { type AudioHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type AudioRef = HTMLAudioElement;
-export type AudioProps = AudioHTMLAttributes<AudioRef> & CommonComponentProps;
+import type { AudioProps, AudioRef } from "./Audio";
 
 /**
  * Render the audio client component.
