@@ -1,22 +1,19 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { CodeProps } from "./Code.client";
 
 // Dynamically import the client component
 const CodeClient = lazy(async () => {
   const module = await import("./Code.client");
-  return { default: module.default };
+  return { default: module.CodeClient };
 });
-
-export type CodeRef = HTMLElement;
-export type CodeProps = HTMLAttributes<CodeRef> & CommonComponentProps;
 
 /**
  * Render the default code server component.
  * @param {CodeProps} props - The default code server component properties
  * @returns The rendered default code server component
  */
-const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
+export const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
   const element = <code {...rest}>{children}</code>;
 
   if (isClient) {
@@ -31,5 +28,3 @@ const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
 };
 
 Code.displayName = "Code";
-
-export default Code;

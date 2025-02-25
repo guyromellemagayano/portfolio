@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { CodeProps, CodeRef } from "./Code";
+import type { CommonComponentProps } from "../components";
+
+export type CodeRef = HTMLElement;
+export type CodeProps = HTMLAttributes<CodeRef> & CommonComponentProps;
 
 /**
  * Render the code client component.
@@ -10,7 +13,7 @@ import type { CodeProps, CodeRef } from "./Code";
  * @param {CodeRef} ref - The code client component reference
  * @returns The rendered code client component
  */
-const CodeClient = forwardRef<CodeRef, CodeProps>(
+export const CodeClient = forwardRef<CodeRef, CodeProps>(
   ({ children, ...rest }, ref) => {
     return (
       <code ref={ref} {...rest}>
@@ -21,5 +24,3 @@ const CodeClient = forwardRef<CodeRef, CodeProps>(
 );
 
 CodeClient.displayName = "CodeClient";
-
-export default CodeClient;
