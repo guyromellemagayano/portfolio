@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type CenterRef = HTMLElement;
-export type CenterProps = HTMLAttributes<CenterRef> & CommonComponentProps;
+import type { CenterProps, CenterRef } from "./Center";
 
 /**
  * Render the center client component.
