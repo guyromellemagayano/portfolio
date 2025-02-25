@@ -1,11 +1,8 @@
 "use client";
 
-import { type AreaHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type AreaRef = HTMLAreaElement;
-export type AreaProps = AreaHTMLAttributes<AreaRef> & CommonComponentProps;
+import type { AreaProps, AreaRef } from "./Area";
 
 /**
  * Render the area client component.
