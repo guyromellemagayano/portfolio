@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { BigProps } from "./Big.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BigClient = lazy(async () => {
   const module = await import("./Big.client");
   return { default: module.BigClient };
 });
+
+export type BigRef = HTMLElement;
+export type BigProps = HTMLAttributes<BigRef> & CommonComponentProps;
 
 /**
  * Render the default bigger text server component.
