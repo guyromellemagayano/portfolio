@@ -1,12 +1,8 @@
 "use client";
 
-import { type DialogHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DialogRef = HTMLDialogElement;
-export type DialogProps = DialogHTMLAttributes<DialogRef> &
-  CommonComponentProps;
+import type { DialogProps, DialogRef } from "./Dialog";
 
 /**
  * Render the dialog client component.
