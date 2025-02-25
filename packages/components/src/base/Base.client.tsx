@@ -1,11 +1,8 @@
 "use client";
 
-import { type BaseHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type BaseRef = HTMLBaseElement;
-export type BaseProps = BaseHTMLAttributes<BaseRef> & CommonComponentProps;
+import type { BaseProps, BaseRef } from "./Base";
 
 /**
  * Render the base client component.
