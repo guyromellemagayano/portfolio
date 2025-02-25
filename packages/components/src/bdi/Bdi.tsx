@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { BdiProps } from "./Bdi.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BdiClient = lazy(async () => {
   const module = await import("./Bdi.client");
   return { default: module.BdiClient };
 });
+
+export type BdiRef = HTMLElement;
+export type BdiProps = HTMLAttributes<BdiRef> & CommonComponentProps;
 
 /**
  * Render the default bidirectional isolate server component.
