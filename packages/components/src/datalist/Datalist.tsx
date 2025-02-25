@@ -1,22 +1,23 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "../components";
+import type { DatalistProps } from "./Datalist.client";
 
 // Dynamically import the client component
 const DatalistClient = lazy(async () => {
   const module = await import("./Datalist.client");
-  return { default: module.default };
+  return { default: module.DatalistClient };
 });
-
-export type DatalistRef = HTMLDataListElement;
-export type DatalistProps = HTMLAttributes<DatalistRef> & CommonComponentProps;
 
 /**
  * Render the default datalist server component.
  * @param {DatalistProps} props - The default datalist server component properties
  * @returns The rendered default datalist server component
  */
-const Datalist = ({ isClient = false, children, ...rest }: DatalistProps) => {
+export const Datalist = ({
+  isClient = false,
+  children,
+  ...rest
+}: DatalistProps) => {
   const element = <datalist {...rest}>{children}</datalist>;
 
   if (isClient) {
@@ -31,5 +32,3 @@ const Datalist = ({ isClient = false, children, ...rest }: DatalistProps) => {
 };
 
 Datalist.displayName = "Datalist";
-
-export default Datalist;
