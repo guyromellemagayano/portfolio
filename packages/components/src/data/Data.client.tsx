@@ -1,6 +1,6 @@
 "use client";
 
-import { DataHTMLAttributes, forwardRef } from "react";
+import { type DataHTMLAttributes, forwardRef } from "react";
 
 import type { CommonComponentProps } from "../components";
 
