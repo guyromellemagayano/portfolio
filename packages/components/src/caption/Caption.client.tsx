@@ -1,8 +1,11 @@
 "use client";
 
-import { forwardRef } from "react";
+import { type HTMLAttributes, forwardRef } from "react";
 
-import type { CaptionProps, CaptionRef } from "./Caption";
+import type { CommonComponentProps } from "../components";
+
+export type CaptionRef = HTMLTableCaptionElement;
+export type CaptionProps = HTMLAttributes<CaptionRef> & CommonComponentProps;
 
 /**
  * Render the caption client component.
@@ -10,7 +13,7 @@ import type { CaptionProps, CaptionRef } from "./Caption";
  * @param {CaptionRef} ref - The caption client component reference
  * @returns The rendered caption client component
  */
-const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
+export const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
   ({ children, ...rest }, ref) => {
     return (
       <caption ref={ref} {...rest}>
@@ -21,5 +24,3 @@ const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
 );
 
 CaptionClient.displayName = "CaptionClient";
-
-export default CaptionClient;
