@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type BdoRef = HTMLElement;
-export type BdoProps = HTMLAttributes<BdoRef> & CommonComponentProps;
+import type { BdoProps, BdoRef } from "./Bdo";
 
 /**
  * Render the bidirectional text override client component.
