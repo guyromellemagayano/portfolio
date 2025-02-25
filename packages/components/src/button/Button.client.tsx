@@ -14,7 +14,7 @@ export type ButtonProps = ButtonHTMLAttributes<ButtonRef> &
  * @param {ButtonRef} ref - The button client component reference
  * @returns The rendered button client component
  */
-const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
+export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
   ({ children, ...rest }, ref) => {
     return (
       <button ref={ref} {...rest}>
@@ -25,5 +25,3 @@ const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
 );
 
 ButtonClient.displayName = "ButtonClient";
-
-export default ButtonClient;
