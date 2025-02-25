@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { BdoProps } from "./Bdo.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BdoClient = lazy(async () => {
   const module = await import("./Bdo.client");
   return { default: module.BdoClient };
 });
+
+export type BdoRef = HTMLElement;
+export type BdoProps = HTMLAttributes<BdoRef> & CommonComponentProps;
 
 /**
  * Render the default bidirectional text override server component.
