@@ -5,7 +5,7 @@ import type { ButtonProps } from "./Button.client";
 // Dynamically import the client component
 const ButtonClient = lazy(async () => {
   const module = await import("./Button.client");
-  return { default: module.default };
+  return { default: module.ButtonClient };
 });
 
 /**
@@ -13,7 +13,7 @@ const ButtonClient = lazy(async () => {
  * @param {ButtonProps} props - The default button server component properties
  * @returns The rendered default button server component
  */
-const Button = ({
+export const Button = ({
   type = "button",
   isClient = false,
   children,
@@ -39,5 +39,3 @@ const Button = ({
 };
 
 Button.displayName = "Button";
-
-export default Button;
