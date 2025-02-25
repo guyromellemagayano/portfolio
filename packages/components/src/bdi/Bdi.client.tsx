@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type BdiRef = HTMLElement;
-export type BdiProps = HTMLAttributes<BdiRef> & CommonComponentProps;
+import type { BdiProps, BdiRef } from "./Bdi";
 
 /**
  * Render the bidirectional isolate client component.
