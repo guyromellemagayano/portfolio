@@ -1,12 +1,16 @@
-import { lazy, Suspense } from "react";
+import { type BlockquoteHTMLAttributes, lazy, Suspense } from "react";
 
-import type { BlockquoteProps } from "./Blockquote.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const BlockquoteClient = lazy(async () => {
   const module = await import("./Blockquote.client");
   return { default: module.BlockquoteClient };
 });
+
+export type BlockquoteRef = HTMLQuoteElement;
+export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef> &
+  CommonComponentProps;
 
 /**
  * Render the default blockquote server component.
