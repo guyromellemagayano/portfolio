@@ -1,12 +1,8 @@
 "use client";
 
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type ButtonRef = HTMLButtonElement;
-export type ButtonProps = ButtonHTMLAttributes<ButtonRef> &
-  CommonComponentProps;
+import type { ButtonProps, ButtonRef } from "./Button";
 
 /**
  * Render the button client component.
