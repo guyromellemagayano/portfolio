@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type CaptionRef = HTMLTableCaptionElement;
-export type CaptionProps = HTMLAttributes<CaptionRef> & CommonComponentProps;
+import type { CaptionProps, CaptionRef } from "./Caption";
 
 /**
  * Render the caption client component.
