@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type AudioHTMLAttributes, lazy, Suspense } from "react";
 
-import type { AudioProps } from "./Audio.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const AudioClient = lazy(async () => {
   const module = await import("./Audio.client");
   return { default: module.AudioClient };
 });
+
+export type AudioRef = HTMLAudioElement;
+export type AudioProps = AudioHTMLAttributes<AudioRef> & CommonComponentProps;
 
 /**
  * Render the default audio server component.
