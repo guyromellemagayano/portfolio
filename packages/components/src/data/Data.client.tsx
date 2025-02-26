@@ -1,11 +1,8 @@
 "use client";
 
-import { type DataHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DataRef = HTMLDataElement;
-export type DataProps = DataHTMLAttributes<DataRef> & CommonComponentProps;
+import type { DataProps, DataRef } from "./Data";
 
 /**
  * Render the data client component.
