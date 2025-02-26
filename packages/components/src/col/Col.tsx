@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type ColHTMLAttributes, lazy, Suspense } from "react";
 
-import type { ColProps } from "./Col.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const ColClient = lazy(async () => {
   const module = await import("./Col.client");
   return { default: module.ColClient };
 });
+
+export type ColRef = HTMLTableColElement;
+export type ColProps = ColHTMLAttributes<ColRef> & CommonComponentProps;
 
 /**
  * Render the default column server component.
