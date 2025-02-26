@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DfnRef = HTMLElement;
-export type DfnProps = HTMLAttributes<DfnRef> & CommonComponentProps;
+import type { DfnProps, DfnRef } from "./Dfn";
 
 /**
  * Render the definition element client component.
