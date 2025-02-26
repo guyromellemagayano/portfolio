@@ -1,11 +1,15 @@
-import { lazy, Suspense } from "react";
-import { DataProps } from "./Data.client";
+import { type DataHTMLAttributes, lazy, Suspense } from "react";
+
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const DataClient = lazy(async () => {
   const module = await import("./Data.client");
   return { default: module.DataClient };
 });
+
+export type DataRef = HTMLDataElement;
+export type DataProps = DataHTMLAttributes<DataRef> & CommonComponentProps;
 
 /**
  * Render the default data server component.
