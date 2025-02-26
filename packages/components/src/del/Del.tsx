@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type DelHTMLAttributes, lazy, Suspense } from "react";
 
-import type { DelProps } from "./Del.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const DelClient = lazy(async () => {
   const module = await import("./Del.client");
   return { default: module.DelClient };
 });
+
+export type DelRef = HTMLModElement;
+export type DelProps = DelHTMLAttributes<DelRef> & CommonComponentProps;
 
 /**
  * Render the default deleted text server component.
