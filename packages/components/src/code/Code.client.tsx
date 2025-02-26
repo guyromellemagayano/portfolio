@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type CodeRef = HTMLElement;
-export type CodeProps = HTMLAttributes<CodeRef> & CommonComponentProps;
+import type { CodeProps, CodeRef } from "./Code";
 
 /**
  * Render the code client component.
