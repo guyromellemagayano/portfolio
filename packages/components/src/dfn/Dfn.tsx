@@ -1,29 +1,28 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { DfnProps } from "./Dfn.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
-const DefinitionElementClient = lazy(async () => {
+const DfnClient = lazy(async () => {
   const module = await import("./Dfn.client");
   return { default: module.DfnClient };
 });
+
+export type DfnRef = HTMLElement;
+export type DfnProps = HTMLAttributes<DfnRef> & CommonComponentProps;
 
 /**
  * Render the default definition element server component.
  * @param {DfnProps} props - The default definition element server component properties
  * @returns The rendered default definition element server component
  */
-export const DefinitionElement = ({
-  isClient = false,
-  children,
-  ...rest
-}: DfnProps) => {
+export const Dfn = ({ isClient = false, children, ...rest }: DfnProps) => {
   const element = <dfn {...rest}>{children}</dfn>;
 
   if (isClient) {
     return (
       <Suspense fallback={element}>
-        <DefinitionElementClient {...rest}>{children}</DefinitionElementClient>
+        <DfnClient {...rest}>{children}</DfnClient>
       </Suspense>
     );
   }
@@ -31,4 +30,4 @@ export const DefinitionElement = ({
   return element;
 };
 
-DefinitionElement.displayName = "DefinitionElement";
+Dfn.displayName = "Dfn";
