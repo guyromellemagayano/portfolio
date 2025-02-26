@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DatalistRef = HTMLDataListElement;
-export type DatalistProps = HTMLAttributes<DatalistRef> & CommonComponentProps;
+import type { DatalistProps, DatalistRef } from "./Datalist";
 
 /**
  * Render the datalist client component.
