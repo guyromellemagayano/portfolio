@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { CiteProps } from "./Cite.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const CiteClient = lazy(async () => {
   const module = await import("./Cite.client");
   return { default: module.CiteClient };
 });
+
+export type CiteRef = HTMLQuoteElement;
+export type CiteProps = HTMLAttributes<CiteRef> & CommonComponentProps;
 
 /**
  * Render the default cite server component.
