@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type CiteRef = HTMLQuoteElement;
-export type CiteProps = HTMLAttributes<CiteRef> & CommonComponentProps;
+import type { CiteProps, CiteRef } from "./Cite";
 
 /**
  * Render the cite client component.
