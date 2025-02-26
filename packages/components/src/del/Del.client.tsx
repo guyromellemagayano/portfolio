@@ -1,11 +1,8 @@
 "use client";
 
-import { type DelHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DelRef = HTMLModElement;
-export type DelProps = DelHTMLAttributes<DelRef> & CommonComponentProps;
+import type { DelProps, DelRef } from "./Del";
 
 /**
  * Render the deleted text client component.
