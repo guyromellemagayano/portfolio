@@ -1,11 +1,8 @@
 "use client";
 
-import { type HTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DdRef = HTMLDataListElement;
-export type DdProps = HTMLAttributes<DdRef> & CommonComponentProps;
+import type { DdProps, DdRef } from "./Dd";
 
 /**
  * Render the description details client component.
