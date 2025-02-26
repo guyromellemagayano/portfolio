@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { CodeProps } from "./Code.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const CodeClient = lazy(async () => {
   const module = await import("./Code.client");
   return { default: module.CodeClient };
 });
+
+export type CodeRef = HTMLElement;
+export type CodeProps = HTMLAttributes<CodeRef> & CommonComponentProps;
 
 /**
  * Render the default code server component.
