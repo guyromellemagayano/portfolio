@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { DatalistProps } from "./Datalist.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const DatalistClient = lazy(async () => {
   const module = await import("./Datalist.client");
   return { default: module.DatalistClient };
 });
+
+export type DatalistRef = HTMLDataListElement;
+export type DatalistProps = HTMLAttributes<DatalistRef> & CommonComponentProps;
 
 /**
  * Render the default datalist server component.
