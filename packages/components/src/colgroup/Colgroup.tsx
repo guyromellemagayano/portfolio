@@ -1,12 +1,16 @@
-import { lazy, Suspense } from "react";
+import { type ColgroupHTMLAttributes, lazy, Suspense } from "react";
 
-import type { ColgroupProps } from "./Colgroup.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const ColgroupClient = lazy(async () => {
   const module = await import("./Colgroup.client");
   return { default: module.ColgroupClient };
 });
+
+export type ColgroupRef = HTMLTableColElement;
+export type ColgroupProps = ColgroupHTMLAttributes<ColgroupRef> &
+  CommonComponentProps;
 
 /**
  * Render the default table column group server component.

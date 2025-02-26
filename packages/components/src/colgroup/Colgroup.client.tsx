@@ -1,12 +1,8 @@
 "use client";
 
-import { type ColgroupHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type ColgroupRef = HTMLTableColElement;
-export type ColgroupProps = ColgroupHTMLAttributes<ColgroupRef> &
-  CommonComponentProps;
+import type { ColgroupProps, ColgroupRef } from "./Colgroup";
 
 /**
  * Render the table column group client component.
