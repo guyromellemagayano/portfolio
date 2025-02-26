@@ -1,12 +1,15 @@
-import { lazy, Suspense } from "react";
+import { type HTMLAttributes, lazy, Suspense } from "react";
 
-import type { DdProps } from "./Dd.client";
+import type { CommonComponentProps } from "../components";
 
 // Dynamically import the client component
 const DdClient = lazy(async () => {
   const module = await import("./Dd.client");
   return { default: module.DdClient };
 });
+
+export type DdRef = HTMLDataListElement;
+export type DdProps = HTMLAttributes<DdRef> & CommonComponentProps;
 
 /**
  * Render the default description details server component.
