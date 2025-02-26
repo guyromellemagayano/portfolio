@@ -1,11 +1,8 @@
 "use client";
 
-import { type ColHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type ColRef = HTMLTableColElement;
-export type ColProps = ColHTMLAttributes<ColRef> & CommonComponentProps;
+import type { ColProps, ColRef } from "./Col";
 
 /**
  * Render the column client component.
