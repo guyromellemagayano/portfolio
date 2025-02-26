@@ -1,12 +1,8 @@
 "use client";
 
-import { type DetailsHTMLAttributes, forwardRef } from "react";
+import { forwardRef } from "react";
 
-import type { CommonComponentProps } from "../components";
-
-export type DetailsRef = HTMLDetailsElement;
-export type DetailsProps = DetailsHTMLAttributes<DetailsRef> &
-  CommonComponentProps;
+import type { DetailsProps, DetailsRef } from "./Details";
 
 /**
  * Render the details disclosure client component.
