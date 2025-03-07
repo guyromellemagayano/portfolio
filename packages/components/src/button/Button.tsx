@@ -1,4 +1,4 @@
-import { type ButtonHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ButtonClient = lazy(async () => {
   return { default: module.ButtonClient };
 });
 
-export type ButtonRef = HTMLButtonElement;
-export type ButtonProps = ButtonHTMLAttributes<ButtonRef> &
+export type ButtonRef = React.ElementRef<"button">;
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
   CommonComponentProps;
 
 /**
