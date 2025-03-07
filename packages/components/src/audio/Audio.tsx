@@ -1,4 +1,4 @@
-import { type AudioHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const AudioClient = lazy(async () => {
   return { default: module.AudioClient };
 });
 
-export type AudioRef = HTMLAudioElement;
-export type AudioProps = AudioHTMLAttributes<AudioRef> & CommonComponentProps;
+export type AudioRef = React.ElementRef<"audio">;
+export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
+  CommonComponentProps;
 
 /**
  * Render the default audio server component.
