@@ -1,4 +1,4 @@
-import { type OlHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const OlClient = lazy(async () => {
   return { default: module.OlClient };
 });
 
-export type OlRef = HTMLOListElement;
-export type OlProps = OlHTMLAttributes<OlRef> & CommonComponentProps;
+export type OlRef = React.ElementRef<"ol">;
+export type OlProps = React.ComponentPropsWithoutRef<"ol"> &
+  CommonComponentProps;
 
 /**
  * Render the default ordered list server component.
