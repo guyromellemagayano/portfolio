@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const NoscriptClient = lazy(async () => {
   return { default: module.NoscriptClient };
 });
 
-export type NoscriptRef = HTMLElement;
-export type NoscriptProps = HTMLAttributes<NoscriptRef> & CommonComponentProps;
+export type NoscriptRef = React.ElementRef<"noscript">;
+export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
+  CommonComponentProps;
 
 /**
  * Render the default noscript server component.
