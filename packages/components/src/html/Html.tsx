@@ -1,4 +1,4 @@
-import { type HtmlHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const HtmlClient = lazy(async () => {
   return { default: module.HtmlClient };
 });
 
-export type HtmlRef = HTMLHtmlElement;
-export type HtmlProps = HtmlHTMLAttributes<HtmlRef> & CommonComponentProps;
+export type HtmlRef = React.ElementRef<"html">;
+export type HtmlProps = React.ComponentPropsWithoutRef<"html"> &
+  CommonComponentProps;
 
 /**
  * Render the default HTML document/root server component.
