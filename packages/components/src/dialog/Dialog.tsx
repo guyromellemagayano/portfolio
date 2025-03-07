@@ -1,4 +1,4 @@
-import { type DialogHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const DialogClient = lazy(async () => {
   return { default: module.DialogClient };
 });
 
-export type DialogRef = HTMLDialogElement;
-export type DialogProps = DialogHTMLAttributes<DialogRef> &
+export type DialogRef = React.ElementRef<"dialog">;
+export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> &
   CommonComponentProps;
 
 /**
