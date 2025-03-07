@@ -1,4 +1,4 @@
-import { type BlockquoteHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const BlockquoteClient = lazy(async () => {
   return { default: module.BlockquoteClient };
 });
 
-export type BlockquoteRef = HTMLQuoteElement;
-export type BlockquoteProps = BlockquoteHTMLAttributes<BlockquoteRef> &
+export type BlockquoteRef = React.ElementRef<"blockquote">;
+export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
   CommonComponentProps;
 
 /**
