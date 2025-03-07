@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const PictureClient = lazy(async () => {
   return { default: module.PictureClient };
 });
 
-export type PictureRef = HTMLElement;
-export type PictureProps = HTMLAttributes<PictureRef> & CommonComponentProps;
+export type PictureRef = React.ElementRef<"picture">;
+export type PictureProps = React.ComponentPropsWithoutRef<"picture"> &
+  CommonComponentProps;
 
 /**
  * Render the default picture server component.
