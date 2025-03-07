@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const AbbrClient = lazy(async () => {
   return { default: module.AbbrClient };
 });
 
-export type AbbrRef = HTMLElement;
-export type AbbrProps = HTMLAttributes<AbbrRef> & CommonComponentProps;
+export type AbbrRef = React.ElementRef<"abbr">;
+export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
+  CommonComponentProps;
 
 /**
  * Render the default abbreviation server component.
