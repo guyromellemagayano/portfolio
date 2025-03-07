@@ -1,4 +1,4 @@
-import { type FieldsetHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const FieldsetClient = lazy(async () => {
   return { default: module.FieldsetClient };
 });
 
-export type FieldsetRef = HTMLFieldSetElement;
-export type FieldsetProps = FieldsetHTMLAttributes<FieldsetRef> &
+export type FieldsetRef = React.ElementRef<"fieldset">;
+export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
   CommonComponentProps;
 
 /**
