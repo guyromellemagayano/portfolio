@@ -1,4 +1,4 @@
-import { type DetailsHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const DetailsClient = lazy(async () => {
   return { default: module.DetailsClient };
 });
 
-export type DetailsRef = HTMLDetailsElement;
-export type DetailsProps = DetailsHTMLAttributes<DetailsRef> &
+export type DetailsRef = React.ElementRef<"details">;
+export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
   CommonComponentProps;
 
 /**
