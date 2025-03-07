@@ -1,4 +1,4 @@
-import { type MenuHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MenuClient = lazy(async () => {
   return { default: module.MenuClient };
 });
 
-export type MenuRef = HTMLElement;
-export type MenuProps = MenuHTMLAttributes<MenuRef> & CommonComponentProps;
+export type MenuRef = React.ElementRef<"menu">;
+export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
+  CommonComponentProps;
 
 /**
  * Render the default menu server component.
