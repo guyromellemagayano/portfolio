@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DivClient = lazy(async () => {
   return { default: module.DivClient };
 });
 
-export type DivRef = HTMLDivElement;
-export type DivProps = HTMLAttributes<DivRef> & CommonComponentProps;
+export type DivRef = React.ElementRef<"div">;
+export type DivProps = React.ComponentPropsWithoutRef<"div"> &
+  CommonComponentProps;
 
 /**
  * Render the default content division server component.
