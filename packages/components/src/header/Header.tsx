@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const HeaderClient = lazy(async () => {
   return { default: module.HeaderClient };
 });
 
-export type HeaderRef = HTMLElement;
-export type HeaderProps = HTMLAttributes<HeaderRef> & CommonComponentProps;
+export type HeaderRef = React.ElementRef<"header">;
+export type HeaderProps = React.ComponentPropsWithoutRef<"header"> &
+  CommonComponentProps;
 
 /**
  * Render the default header server component.
