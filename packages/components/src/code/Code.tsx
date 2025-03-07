@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const CodeClient = lazy(async () => {
   return { default: module.CodeClient };
 });
 
-export type CodeRef = HTMLElement;
-export type CodeProps = HTMLAttributes<CodeRef> & CommonComponentProps;
+export type CodeRef = React.ElementRef<"code">;
+export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
+  CommonComponentProps;
 
 /**
  * Render the default code server component.
