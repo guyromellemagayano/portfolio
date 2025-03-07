@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MainClient = lazy(async () => {
   return { default: module.MainClient };
 });
 
-export type MainRef = HTMLElement;
-export type MainProps = HTMLAttributes<MainRef> & CommonComponentProps;
+export type MainRef = React.ElementRef<"main">;
+export type MainProps = React.ComponentPropsWithoutRef<"main"> &
+  CommonComponentProps;
 
 /**
  * Render the default main server component.
