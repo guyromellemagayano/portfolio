@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DatalistClient = lazy(async () => {
   return { default: module.DatalistClient };
 });
 
-export type DatalistRef = HTMLDataListElement;
-export type DatalistProps = HTMLAttributes<DatalistRef> & CommonComponentProps;
+export type DatalistRef = React.ElementRef<"datalist">;
+export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> &
+  CommonComponentProps;
 
 /**
  * Render the default datalist server component.
