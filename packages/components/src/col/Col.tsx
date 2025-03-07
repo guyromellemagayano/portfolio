@@ -1,4 +1,4 @@
-import { type ColHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const ColClient = lazy(async () => {
   return { default: module.ColClient };
 });
 
-export type ColRef = HTMLTableColElement;
-export type ColProps = ColHTMLAttributes<ColRef> & CommonComponentProps;
+export type ColRef = React.ElementRef<"col">;
+export type ColProps = React.ComponentPropsWithoutRef<"col"> &
+  CommonComponentProps;
 
 /**
  * Render the default column server component.
