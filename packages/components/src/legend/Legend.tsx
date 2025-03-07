@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const LegendClient = lazy(async () => {
   return { default: module.LegendClient };
 });
 
-export type LegendRef = HTMLLegendElement;
-export type LegendProps = HTMLAttributes<LegendRef> & CommonComponentProps;
+export type LegendRef = React.ElementRef<"legend">;
+export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
+  CommonComponentProps;
 
 /**
  * Render the default field set legend server component.
