@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const FigureClient = lazy(async () => {
   return { default: module.FigureClient };
 });
 
-export type FigureRef = HTMLElement;
-export type FigureProps = HTMLAttributes<FigureRef> & CommonComponentProps;
+export type FigureRef = React.ElementRef<"figure">;
+export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
+  CommonComponentProps;
 
 /**
  * Render the default figure with optional caption server component.
