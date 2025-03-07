@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const AsideClient = lazy(async () => {
   return { default: module.AsideClient };
 });
 
-export type AsideRef = HTMLElement;
-export type AsideProps = HTMLAttributes<AsideRef> & CommonComponentProps;
+export type AsideRef = React.ElementRef<"aside">;
+export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
+  CommonComponentProps;
 
 /**
  * Render the default aside server component.
