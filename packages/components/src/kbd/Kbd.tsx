@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const KbdClient = lazy(async () => {
   return { default: module.KbdClient };
 });
 
-export type KbdRef = HTMLElement;
-export type KbdProps = HTMLAttributes<KbdRef> & CommonComponentProps;
+export type KbdRef = React.ElementRef<"kbd">;
+export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
+  CommonComponentProps;
 
 /**
  * Render the default keyboard input server component.
