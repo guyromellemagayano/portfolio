@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DlClient = lazy(async () => {
   return { default: module.DlClient };
 });
 
-export type DlRef = HTMLDListElement;
-export type DlProps = HTMLAttributes<DlRef> & CommonComponentProps;
+export type DlRef = React.ElementRef<"dl">;
+export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
+  CommonComponentProps;
 
 /**
  * Render the default description list server component.
