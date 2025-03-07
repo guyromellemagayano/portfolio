@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ParagraphClient = lazy(async () => {
   return { default: module.ParagraphClient };
 });
 
-export type ParagraphRef = HTMLParagraphElement;
-export type ParagraphProps = HTMLAttributes<ParagraphRef> &
+export type ParagraphRef = React.ElementRef<"p">;
+export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> &
   CommonComponentProps;
 
 /**
