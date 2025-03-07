@@ -1,4 +1,4 @@
-import { type ObjectHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ObjectClient = lazy(async () => {
   return { default: module.ObjectClient };
 });
 
-export type ObjectRef = HTMLObjectElement;
-export type ObjectProps = ObjectHTMLAttributes<ObjectRef> &
+export type ObjectRef = React.ElementRef<"object">;
+export type ObjectProps = React.ComponentPropsWithoutRef<"object"> &
   CommonComponentProps;
 
 /**
