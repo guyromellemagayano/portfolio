@@ -1,4 +1,4 @@
-import { type FormHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const FormClient = lazy(async () => {
   return { default: module.FormClient };
 });
 
-export type FormRef = HTMLFormElement;
-export type FormProps = FormHTMLAttributes<FormRef> & CommonComponentProps;
+export type FormRef = React.ElementRef<"form">;
+export type FormProps = React.ComponentPropsWithoutRef<"form"> &
+  CommonComponentProps;
 
 /**
  * Render the default form server component.
