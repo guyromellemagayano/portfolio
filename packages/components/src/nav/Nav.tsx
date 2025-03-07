@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const NavClient = lazy(async () => {
   return { default: module.NavClient };
 });
 
-export type NavRef = HTMLElement;
-export type NavProps = HTMLAttributes<NavRef> & CommonComponentProps;
+export type NavRef = React.ElementRef<"nav">;
+export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
+  CommonComponentProps;
 
 /**
  * Render the default navigation section server component.
