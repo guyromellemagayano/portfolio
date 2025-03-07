@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MarkClient = lazy(async () => {
   return { default: module.MarkClient };
 });
 
-export type MarkRef = HTMLElement;
-export type MarkProps = HTMLAttributes<MarkRef> & CommonComponentProps;
+export type MarkRef = React.ElementRef<"mark">;
+export type MarkProps = React.ComponentPropsWithoutRef<"mark"> &
+  CommonComponentProps;
 
 /**
  * Render the default mark text server component.
