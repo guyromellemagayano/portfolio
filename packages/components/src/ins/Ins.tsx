@@ -1,4 +1,4 @@
-import { type InsHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const InsClient = lazy(async () => {
   return { default: module.InsClient };
 });
 
-export type InsRef = HTMLModElement;
-export type InsProps = InsHTMLAttributes<InsRef> & CommonComponentProps;
+export type InsRef = React.ElementRef<"ins">;
+export type InsProps = React.ComponentPropsWithoutRef<"ins"> &
+  CommonComponentProps;
 
 /**
  * Render the default inserted text server component.
