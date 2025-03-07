@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const BClient = lazy(async () => {
   return { default: module.BClient };
 });
 
-export type BRef = HTMLElement;
-export type BProps = HTMLAttributes<BRef> & CommonComponentProps;
+export type BRef = React.ElementRef<"b">;
+export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
 
 /**
  * Render the default bring attention to server component.
