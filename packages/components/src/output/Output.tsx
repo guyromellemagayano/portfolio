@@ -1,4 +1,4 @@
-import { type OutputHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const OutputClient = lazy(async () => {
   return { default: module.OutputClient };
 });
 
-export type OutputRef = HTMLOutputElement;
-export type OutputProps = OutputHTMLAttributes<OutputRef> &
+export type OutputRef = React.ElementRef<"output">;
+export type OutputProps = React.ComponentPropsWithoutRef<"output"> &
   CommonComponentProps;
 
 /**
