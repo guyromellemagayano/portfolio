@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const HgroupClient = lazy(async () => {
   return { default: module.HgroupClient };
 });
 
-export type HgroupRef = HTMLElement;
-export type HgroupProps = HTMLAttributes<HgroupRef> & CommonComponentProps;
+export type HgroupRef = React.ElementRef<"hgroup">;
+export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> &
+  CommonComponentProps;
 
 /**
  * Render the default heading group component.
