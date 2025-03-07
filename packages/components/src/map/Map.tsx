@@ -1,4 +1,4 @@
-import { type MapHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MapClient = lazy(async () => {
   return { default: module.MapClient };
 });
 
-export type MapRef = HTMLMapElement;
-export type MapProps = MapHTMLAttributes<MapRef> & CommonComponentProps;
+export type MapRef = React.ElementRef<"map">;
+export type MapProps = React.ComponentPropsWithoutRef<"map"> &
+  CommonComponentProps;
 
 /**
  * Render the default image map server component.
