@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const FigcaptionClient = lazy(async () => {
   return { default: module.FigcaptionClient };
 });
 
-export type FigcaptionRef = HTMLElement;
-export type FigcaptionProps = HTMLAttributes<FigcaptionRef> &
+export type FigcaptionRef = React.ElementRef<"figcaption">;
+export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> &
   CommonComponentProps;
 
 /**
