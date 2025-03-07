@@ -1,4 +1,4 @@
-import { type OptionHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const OptionClient = lazy(async () => {
   return { default: module.OptionClient };
 });
 
-export type OptionRef = HTMLOptionElement;
-export type OptionProps = OptionHTMLAttributes<OptionRef> &
+export type OptionRef = React.ElementRef<"option">;
+export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
   CommonComponentProps;
 
 /**
