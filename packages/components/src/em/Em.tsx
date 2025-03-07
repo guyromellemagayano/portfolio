@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const EmClient = lazy(async () => {
   return { default: module.EmClient };
 });
 
-export type EmRef = HTMLElement;
-export type EmProps = HTMLAttributes<EmRef> & CommonComponentProps;
+export type EmRef = React.ElementRef<"em">;
+export type EmProps = React.ComponentPropsWithoutRef<"em"> &
+  CommonComponentProps;
 
 /**
  * Render the default emphasis server component.
