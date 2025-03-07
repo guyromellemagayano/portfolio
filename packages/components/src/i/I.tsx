@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const IClient = lazy(async () => {
   return { default: module.IClient };
 });
 
-export type IRef = HTMLElement;
-export type IProps = HTMLAttributes<IRef> & CommonComponentProps;
+export type IRef = React.ElementRef<"i">;
+export type IProps = React.ComponentPropsWithoutRef<"i"> & CommonComponentProps;
 
 /**
  * Render the default idiomatic text server component.
