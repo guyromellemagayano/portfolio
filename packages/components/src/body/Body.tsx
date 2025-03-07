@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const BodyClient = lazy(async () => {
   return { default: module.BodyClient };
 });
 
-export type BodyRef = HTMLBodyElement;
-export type BodyProps = HTMLAttributes<BodyRef> & CommonComponentProps;
+export type BodyRef = React.ElementRef<"body">;
+export type BodyProps = React.ComponentPropsWithoutRef<"body"> &
+  CommonComponentProps;
 
 /**
  * Render the default document body server component.
