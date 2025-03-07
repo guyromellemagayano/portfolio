@@ -1,4 +1,4 @@
-import { type LiHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const LiClient = lazy(async () => {
   return { default: module.LiClient };
 });
 
-export type LiRef = HTMLLIElement;
-export type LiProps = LiHTMLAttributes<LiRef> & CommonComponentProps;
+export type LiRef = React.ElementRef<"li">;
+export type LiProps = React.ComponentPropsWithoutRef<"li"> &
+  CommonComponentProps;
 
 /**
  * Render the default list item server component.
