@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const HrClient = lazy(async () => {
   return { default: module.HrClient };
 });
 
-export type HrRef = HTMLHRElement;
-export type HrProps = HTMLAttributes<HrRef> & CommonComponentProps;
+export type HrRef = React.ElementRef<"hr">;
+export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
+  CommonComponentProps;
 
 /**
  * Render the default thematic break (horizontal rule) server component.
