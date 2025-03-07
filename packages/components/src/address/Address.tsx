@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const AddressClient = lazy(async () => {
   return { default: module.AddressClient };
 });
 
-export type AddressRef = HTMLElement;
-export type AddressProps = HTMLAttributes<AddressRef> & CommonComponentProps;
+export type AddressRef = React.ElementRef<"address">;
+export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
+  CommonComponentProps;
 
 /**
  * Render the default address server component.
