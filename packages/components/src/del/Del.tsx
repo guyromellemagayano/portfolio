@@ -1,4 +1,4 @@
-import { type DelHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DelClient = lazy(async () => {
   return { default: module.DelClient };
 });
 
-export type DelRef = HTMLModElement;
-export type DelProps = DelHTMLAttributes<DelRef> & CommonComponentProps;
+export type DelRef = React.ElementRef<"del">;
+export type DelProps = React.ComponentPropsWithoutRef<"del"> &
+  CommonComponentProps;
 
 /**
  * Render the default deleted text server component.
