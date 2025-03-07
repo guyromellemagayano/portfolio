@@ -1,4 +1,4 @@
-import { type ColgroupHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ColgroupClient = lazy(async () => {
   return { default: module.ColgroupClient };
 });
 
-export type ColgroupRef = HTMLTableColElement;
-export type ColgroupProps = ColgroupHTMLAttributes<ColgroupRef> &
+export type ColgroupRef = React.ElementRef<"colgroup">;
+export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
   CommonComponentProps;
 
 /**
