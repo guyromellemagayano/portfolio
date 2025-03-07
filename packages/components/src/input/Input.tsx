@@ -1,4 +1,4 @@
-import { type InputHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const InputClient = lazy(async () => {
   return { default: module.InputClient };
 });
 
-export type InputRef = HTMLInputElement;
-export type InputProps = InputHTMLAttributes<InputRef> & CommonComponentProps;
+export type InputRef = React.ElementRef<"input">;
+export type InputProps = React.ComponentPropsWithoutRef<"input"> &
+  CommonComponentProps;
 
 /**
  * Render the default HTML input server component.
