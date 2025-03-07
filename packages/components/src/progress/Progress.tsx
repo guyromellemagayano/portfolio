@@ -1,4 +1,4 @@
-import { type ProgressHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ProgressClient = lazy(async () => {
   return { default: module.ProgressClient };
 });
 
-export type ProgressRef = HTMLProgressElement;
-export type ProgressProps = ProgressHTMLAttributes<ProgressRef> &
+export type ProgressRef = React.ElementRef<"progress">;
+export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
   CommonComponentProps;
 
 /**
