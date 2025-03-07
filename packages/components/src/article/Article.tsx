@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const ArticleClient = lazy(async () => {
   return { default: module.ArticleClient };
 });
 
-export type ArticleRef = HTMLElement;
-export type ArticleProps = HTMLAttributes<ArticleRef> & CommonComponentProps;
+export type ArticleRef = React.ElementRef<"article">;
+export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
+  CommonComponentProps;
 
 /**
  * Render the default article server component.
