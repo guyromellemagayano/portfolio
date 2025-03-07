@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DfnClient = lazy(async () => {
   return { default: module.DfnClient };
 });
 
-export type DfnRef = HTMLElement;
-export type DfnProps = HTMLAttributes<DfnRef> & CommonComponentProps;
+export type DfnRef = React.ElementRef<"dfn">;
+export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> &
+  CommonComponentProps;
 
 /**
  * Render the default definition element server component.
