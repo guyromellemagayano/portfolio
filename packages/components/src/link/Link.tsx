@@ -1,4 +1,4 @@
-import { type LinkHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const LinkClient = lazy(async () => {
   return { default: module.LinkClient };
 });
 
-export type LinkRef = HTMLLinkElement;
-export type LinkProps = LinkHTMLAttributes<LinkRef> & CommonComponentProps;
+export type LinkRef = React.ElementRef<"link">;
+export type LinkProps = React.ComponentPropsWithoutRef<"link"> &
+  CommonComponentProps;
 
 /**
  * Render the default external resource link server component.
