@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const PreClient = lazy(async () => {
   return { default: module.PreClient };
 });
 
-export type PreRef = HTMLPreElement;
-export type PreProps = HTMLAttributes<PreRef> & CommonComponentProps;
+export type PreRef = React.ElementRef<"pre">;
+export type PreProps = React.ComponentPropsWithoutRef<"pre"> &
+  CommonComponentProps;
 
 /**
  * Render the default preformatted text server component.
