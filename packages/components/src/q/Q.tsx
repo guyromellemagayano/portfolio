@@ -8,8 +8,8 @@ const QClient = lazy(async () => {
   return { default: module.QClient };
 });
 
-export type QRef = HTMLQuoteElement;
-export type QProps = QuoteHTMLAttributes<QRef> & CommonComponentProps;
+export type QRef = React.ElementRef<"q">;
+export type QProps = React.ComponentPropsWithoutRef<"q"> & CommonComponentProps;
 
 /**
  * Render the default inline quotation server component.
