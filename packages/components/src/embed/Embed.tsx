@@ -1,4 +1,4 @@
-import { type EmbedHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const EmbedClient = lazy(async () => {
   return { default: module.EmbedClient };
 });
 
-export type EmbedRef = HTMLEmbedElement;
-export type EmbedProps = EmbedHTMLAttributes<EmbedRef> & CommonComponentProps;
+export type EmbedRef = React.ElementRef<"embed">;
+export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
+  CommonComponentProps;
 
 /**
  * Render the default embed external content server component.
