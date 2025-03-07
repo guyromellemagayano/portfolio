@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const FooterClient = lazy(async () => {
   return { default: module.FooterClient };
 });
 
-export type FooterRef = HTMLElement;
-export type FooterProps = HTMLAttributes<FooterRef> & CommonComponentProps;
+export type FooterRef = React.ElementRef<"footer">;
+export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
+  CommonComponentProps;
 
 /**
  * Render the default footer server component.
