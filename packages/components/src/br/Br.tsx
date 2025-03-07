@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const BrClient = lazy(async () => {
   return { default: module.BrClient };
 });
 
-export type BrRef = HTMLBRElement;
-export type BrProps = HTMLAttributes<BrRef> & CommonComponentProps;
+export type BrRef = React.ElementRef<"br">;
+export type BrProps = React.ComponentPropsWithoutRef<"br"> &
+  CommonComponentProps;
 
 /**
  * Render the default line break server component.
