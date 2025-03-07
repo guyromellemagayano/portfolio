@@ -1,4 +1,4 @@
-import { type LabelHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const LabelClient = lazy(async () => {
   return { default: module.LabelClient };
 });
 
-export type LabelRef = HTMLLabelElement;
-export type LabelProps = LabelHTMLAttributes<LabelRef> & CommonComponentProps;
+export type LabelRef = React.ElementRef<"label">;
+export type LabelProps = React.ComponentPropsWithoutRef<"label"> &
+  CommonComponentProps;
 
 /**
  * Render the default label server component.
