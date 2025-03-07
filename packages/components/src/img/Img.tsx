@@ -1,4 +1,4 @@
-import { type ImgHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const ImgClient = lazy(async () => {
   return { default: module.ImgClient };
 });
 
-export type ImgRef = HTMLImageElement;
-export type ImgProps = ImgHTMLAttributes<ImgRef> & CommonComponentProps;
+export type ImgRef = React.ElementRef<"img">;
+export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
+  CommonComponentProps;
 
 /**
  * Render the default image embed server component.
