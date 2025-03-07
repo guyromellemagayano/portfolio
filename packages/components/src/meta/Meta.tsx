@@ -1,4 +1,4 @@
-import { type MetaHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MetaClient = lazy(async () => {
   return { default: module.MetaClient };
 });
 
-export type MetaRef = HTMLMetaElement;
-export type MetaProps = MetaHTMLAttributes<MetaRef> & CommonComponentProps;
+export type MetaRef = React.ElementRef<"meta">;
+export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
+  CommonComponentProps;
 
 /**
  * Render the default metadata server component.
