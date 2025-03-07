@@ -1,4 +1,4 @@
-import { type DataHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const DataClient = lazy(async () => {
   return { default: module.DataClient };
 });
 
-export type DataRef = HTMLDataElement;
-export type DataProps = DataHTMLAttributes<DataRef> & CommonComponentProps;
+export type DataRef = React.ElementRef<"data">;
+export type DataProps = React.ComponentPropsWithoutRef<"data"> &
+  CommonComponentProps;
 
 /**
  * Render the default data server component.
