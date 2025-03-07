@@ -1,4 +1,4 @@
-import { type IframeHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const IframeClient = lazy(async () => {
   return { default: module.IframeClient };
 });
 
-export type IframeRef = HTMLIFrameElement;
-export type IframeProps = IframeHTMLAttributes<IframeRef> &
+export type IframeRef = React.ElementRef<"iframe">;
+export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
   CommonComponentProps;
 
 /**
