@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const HeadingClient = lazy(async () => {
   return { default: module.HeadingClient };
 });
 
-export type HeadingRef = HTMLHeadingElement;
-export type HeadingProps = HTMLAttributes<HeadingRef> &
+export type HeadingRef = React.ElementRef<"h1">;
+export type HeadingProps = React.ComponentPropsWithoutRef<"h1"> &
   CommonComponentProps & {
     as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   };
