@@ -1,4 +1,4 @@
-import { type CanvasHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const CanvasClient = lazy(async () => {
   return { default: module.CanvasClient };
 });
 
-export type CanvasRef = HTMLCanvasElement;
-export type CanvasProps = CanvasHTMLAttributes<CanvasRef> &
+export type CanvasRef = React.ElementRef<"canvas">;
+export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
   CommonComponentProps;
 
 /**
