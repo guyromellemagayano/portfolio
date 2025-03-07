@@ -1,4 +1,4 @@
-import { type MeterHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const MeterClient = lazy(async () => {
   return { default: module.MeterClient };
 });
 
-export type MeterRef = HTMLMeterElement;
-export type MeterProps = MeterHTMLAttributes<MeterRef> & CommonComponentProps;
+export type MeterRef = React.ElementRef<"meter">;
+export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
+  CommonComponentProps;
 
 /**
  * Render the default HTML meter server component.
