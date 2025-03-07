@@ -1,4 +1,4 @@
-import { type OptgroupHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const OptgroupClient = lazy(async () => {
   return { default: module.OptgroupClient };
 });
 
-export type OptgroupRef = HTMLOptGroupElement;
-export type OptgroupProps = OptgroupHTMLAttributes<OptgroupRef> &
+export type OptgroupRef = React.ElementRef<"optgroup">;
+export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
   CommonComponentProps;
 
 /**
