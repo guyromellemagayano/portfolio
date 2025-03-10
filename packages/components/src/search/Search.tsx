@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SearchClient = lazy(async () => {
   return { default: module.SearchClient };
 });
 
-export type SearchRef = HTMLElement;
-export type SearchProps = HTMLAttributes<SearchRef> & CommonComponentProps;
+export type SearchRef = React.ElementRef<"search">;
+export type SearchProps = React.ComponentPropsWithoutRef<"search"> &
+  CommonComponentProps;
 
 /**
  * Render the default generic search server component.
