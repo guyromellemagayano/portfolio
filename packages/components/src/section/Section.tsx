@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SectionClient = lazy(async () => {
   return { default: module.SectionClient };
 });
 
-export type SectionRef = HTMLElement;
-export type SectionProps = HTMLAttributes<SectionRef> & CommonComponentProps;
+export type SectionRef = React.ElementRef<"section">;
+export type SectionProps = React.ComponentPropsWithoutRef<"section"> &
+  CommonComponentProps;
 
 /**
  * Render the default generic section server component.
