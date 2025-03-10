@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const RtClient = lazy(async () => {
   return { default: module.RtClient };
 });
 
-export type RtRef = HTMLElement;
-export type RtProps = HTMLAttributes<RtRef> & CommonComponentProps;
+export type RtRef = React.ElementRef<"rt">;
+export type RtProps = React.ComponentPropsWithoutRef<"rt"> &
+  CommonComponentProps;
 
 /**
  * Render the default ruby text server component.
