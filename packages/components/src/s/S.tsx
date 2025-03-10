@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const SClient = lazy(async () => {
   return { default: module.SClient };
 });
 
-export type SRef = HTMLElement;
-export type SProps = HTMLAttributes<SRef> & CommonComponentProps;
+export type SRef = React.ElementRef<"s">;
+export type SProps = React.ComponentPropsWithoutRef<"s"> & CommonComponentProps;
 
 /**
  * Render the default strikethrough server component.
