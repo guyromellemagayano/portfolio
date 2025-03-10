@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SampClient = lazy(async () => {
   return { default: module.SampClient };
 });
 
-export type SampRef = HTMLElement;
-export type SampProps = HTMLAttributes<SampRef> & CommonComponentProps;
+export type SampRef = React.ElementRef<"samp">;
+export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
+  CommonComponentProps;
 
 /**
  * Render the default sample output server component.
