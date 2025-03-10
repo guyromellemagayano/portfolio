@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const RubyClient = lazy(async () => {
   return { default: module.RubyClient };
 });
 
-export type RubyRef = HTMLElement;
-export type RubyProps = HTMLAttributes<RubyRef> & CommonComponentProps;
+export type RubyRef = React.ElementRef<"ruby">;
+export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
+  CommonComponentProps;
 
 /**
  * Render the default ruby annotation server component.
