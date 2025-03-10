@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const RpClient = lazy(async () => {
   return { default: module.RpClient };
 });
 
-export type RpRef = HTMLElement;
-export type RpProps = HTMLAttributes<RpRef> & CommonComponentProps;
+export type RpRef = React.ElementRef<"rp">;
+export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
+  CommonComponentProps;
 
 /**
  * Render the default ruby fallback parenthesis server component.
@@ -17,7 +18,7 @@ export type RpProps = HTMLAttributes<RpRef> & CommonComponentProps;
  * @returns The rendered default ruby fallback parenthesis server component
  */
 export const Rp = ({ isClient = false, children, ...rest }: RpProps) => {
-  const element = <q {...rest}>{children}</q>;
+  const element = <rp {...rest}>{children}</rp>;
 
   if (isClient) {
     return (
