@@ -1,4 +1,4 @@
-import { type SelectHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const SelectClient = lazy(async () => {
   return { default: module.SelectClient };
 });
 
-export type SelectRef = HTMLSelectElement;
-export type SelectProps = SelectHTMLAttributes<SelectRef> &
+export type SelectRef = React.ElementRef<"select">;
+export type SelectProps = React.ComponentPropsWithoutRef<"select"> &
   CommonComponentProps;
 
 /**
