@@ -1,4 +1,4 @@
-import { type ScriptHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const ScriptClient = lazy(async () => {
   return { default: module.ScriptClient };
 });
 
-export type ScriptRef = HTMLScriptElement;
-export type ScriptProps = ScriptHTMLAttributes<ScriptRef> &
+export type ScriptRef = React.ElementRef<"script">;
+export type ScriptProps = React.ComponentPropsWithoutRef<"script"> &
   CommonComponentProps;
 
 /**
