@@ -69,8 +69,8 @@ import type {
   EmbedRef,
   EmProps,
   EmRef,
-  //   FieldsetProps,
-  //   FieldsetRef,
+  FieldsetProps,
+  FieldsetRef,
   //   FigcaptionProps,
   //   FigcaptionRef,
   //   FigureProps,
@@ -667,17 +667,17 @@ EmbedClient.displayName = "EmbedClient";
  * @param {FieldsetRef} ref - The field set client component reference
  * @returns The rendered field set client component
  */
-// export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <fieldset ref={ref} {...rest}>
-//         {children}
-//       </fieldset>
-//     );
-//   }
-// );
+export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <fieldset ref={ref} {...rest}>
+        {children}
+      </fieldset>
+    );
+  }
+);
 
-// FieldsetClient.displayName = "FieldsetClient";
+FieldsetClient.displayName = "FieldsetClient";
 
 /**
  * Render the figure caption client component.
