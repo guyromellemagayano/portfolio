@@ -85,8 +85,8 @@ import type {
   HeadingRef,
   HeadProps,
   HeadRef,
-  //   HgroupProps,
-  //   HgroupRef,
+  HgroupProps,
+  HgroupRef,
   //   HrProps,
   //   HrRef,
   //   HtmlProps,
@@ -837,17 +837,17 @@ HeadingClient.displayName = "HeadingClient";
  * @param {HgroupRef} ref - The heading group client component reference
  * @returns The rendered heading group client component
  */
-// export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <hgroup ref={ref} {...rest}>
-//         {children}
-//       </hgroup>
-//     );
-//   }
-// );
+export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <hgroup ref={ref} {...rest}>
+        {children}
+      </hgroup>
+    );
+  }
+);
 
-// HgroupClient.displayName = "HgroupClient";
+HgroupClient.displayName = "HgroupClient";
 
 /**
  * Render the thematic break (horizontal rule) client component.
