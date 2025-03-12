@@ -1909,32 +1909,32 @@ export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
 Menu.displayName = "Menu";
 
 // Dynamically import the client component
-// const MetaClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.MetaClient };
-// });
+const MetaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MetaClient };
+});
 
-// export type MetaRef = React.ElementRef<"meta">;
-// export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
-//   CommonComponentProps;
+export type MetaRef = React.ElementRef<"meta">;
+export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
+  CommonComponentProps;
 
 /**
  * Render the default metadata server component.
  * @param {MetaProps} props - The default metadata server component properties
  * @returns The rendered default metadata server component
  */
-// export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
-//   const element = <meta {...rest} />;
+export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
+  const element = <meta {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <MetaClient {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <MetaClient {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Meta.displayName = "Meta";
+Meta.displayName = "Meta";
