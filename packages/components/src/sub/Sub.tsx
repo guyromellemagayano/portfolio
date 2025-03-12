@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SubClient = lazy(async () => {
   return { default: module.SubClient };
 });
 
-export type SubRef = HTMLElement;
-export type SubProps = HTMLAttributes<SubRef> & CommonComponentProps;
+export type SubRef = React.ElementRef<"sub">;
+export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
+  CommonComponentProps;
 
 /**
  * Render the default subscript server component.
