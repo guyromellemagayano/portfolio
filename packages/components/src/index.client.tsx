@@ -63,8 +63,8 @@ import type {
   DivRef,
   DlProps,
   DlRef,
-  //   DtProps,
-  //   DtRef,
+  DtProps,
+  DtRef,
   //   EmbedProps,
   //   EmbedRef,
   //   EmProps,
@@ -617,17 +617,17 @@ DlClient.displayName = "DlClient";
  * @param {DtRef} ref - The description term client component reference
  * @returns The rendered description term client component
  */
-// export const DtClient = forwardRef<DtRef, DtProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <dt ref={ref} {...rest}>
-//         {children}
-//       </dt>
-//     );
-//   }
-// );
+export const DtClient = forwardRef<DtRef, DtProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dt ref={ref} {...rest}>
+        {children}
+      </dt>
+    );
+  }
+);
 
-// DtClient.displayName = "DtClient";
+DtClient.displayName = "DtClient";
 
 /**
  * Render the emphasis client component.
