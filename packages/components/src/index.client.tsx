@@ -123,8 +123,8 @@ import type {
   MetaRef,
   MeterProps,
   MeterRef,
-  //   NavProps,
-  //   NavRef,
+  NavProps,
+  NavRef,
   //   NoscriptProps,
   //   NoscriptRef,
 } from ".";
@@ -1169,17 +1169,17 @@ MeterClient.displayName = "MeterClient";
  * @param {NavRef} ref - The navigation section client component reference
  * @returns The rendered navigation section client component
  */
-// export const NavClient = forwardRef<NavRef, NavProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <nav ref={ref} {...rest}>
-//         {children}
-//       </nav>
-//     );
-//   }
-// );
+export const NavClient = forwardRef<NavRef, NavProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <nav ref={ref} {...rest}>
+        {children}
+      </nav>
+    );
+  }
+);
 
-// NavClient.displayName = "NavClient";
+NavClient.displayName = "NavClient";
 
 /**
  * Render the noscript client component.
