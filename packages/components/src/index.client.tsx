@@ -65,8 +65,8 @@ import type {
   DlRef,
   DtProps,
   DtRef,
-  //   EmbedProps,
-  //   EmbedRef,
+  EmbedProps,
+  EmbedRef,
   EmProps,
   EmRef,
   //   FieldsetProps,
@@ -653,13 +653,13 @@ EmClient.displayName = "EmClient";
  * @param {EmbedRef} ref - The embed external content client component reference
  * @returns The rendered embed external content client component
  */
-// export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
-//   ({ ...rest }, ref) => {
-//     return <embed ref={ref} {...rest} />;
-//   }
-// );
+export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
+  ({ ...rest }, ref) => {
+    return <embed ref={ref} {...rest} />;
+  }
+);
 
-// EmbedClient.displayName = "EmbedClient";
+EmbedClient.displayName = "EmbedClient";
 
 /**
  * Render the field set client component.
