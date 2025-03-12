@@ -1262,32 +1262,32 @@ export const Form = ({ isClient = false, children, ...rest }: FormProps) => {
 Form.displayName = "Form";
 
 // Dynamically import the client component
-// const HeadClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.HeadClient };
-// });
+const HeadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.HeadClient };
+});
 
-// export type HeadRef = React.ElementRef<"head">;
-// export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
-//   CommonComponentProps;
+export type HeadRef = React.ElementRef<"head">;
+export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
+  CommonComponentProps;
 
 /**
  * Render the default document metadata (header) server component.
  * @param {HeadProps} props - The default document metadata (header) server component properties
  * @returns The rendered default document metadata (header) server component
  */
-// export const Head = ({ isClient = false, children, ...rest }: HeadProps) => {
-//   const element = <head {...rest}>{children}</head>;
+export const Head = ({ isClient = false, children, ...rest }: HeadProps) => {
+  const element = <head {...rest}>{children}</head>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <HeadClient {...rest}>{children}</HeadClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <HeadClient {...rest}>{children}</HeadClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Head.displayName = "Head";
+Head.displayName = "Head";
