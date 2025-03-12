@@ -1133,8 +1133,8 @@ MenuClient.displayName = "MenuClient";
  * @param {MetaRef} ref - The meta client component reference
  * @returns The rendered meta client component
  */
-// export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
-//   return <meta ref={ref} {...rest} />;
-// });
+export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
+  return <meta ref={ref} {...rest} />;
+});
 
-// MetaClient.displayName = "MetaClient";
+MetaClient.displayName = "MetaClient";
