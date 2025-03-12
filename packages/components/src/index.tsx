@@ -998,35 +998,35 @@ export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
 Dl.displayName = "Dl";
 
 // Dynamically import the client component
-// const DtClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.DtClient };
-// });
+const DtClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.DtClient };
+});
 
-// export type DtRef = React.ElementRef<"dt">;
-// export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
-//   CommonComponentProps;
+export type DtRef = React.ElementRef<"dt">;
+export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
+  CommonComponentProps;
 
 /**
  * Render the default description term server component.
  * @param {DtProps} props - The default description term server component properties
  * @returns The rendered default description term server component
  */
-// export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
-//   const element = <dt {...rest}>{children}</dt>;
+export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
+  const element = <dt {...rest}>{children}</dt>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <DtClient {...rest}>{children}</DtClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <DtClient {...rest}>{children}</DtClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Dt.displayName = "Dt";
+Dt.displayName = "Dt";
 
 // Dynamically import the client component
 // const EmClient = lazy(async () => {
