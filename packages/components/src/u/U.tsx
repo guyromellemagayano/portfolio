@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const UClient = lazy(async () => {
   return { default: module.UClient };
 });
 
-export type URef = HTMLElement;
-export type UProps = HTMLAttributes<URef> & CommonComponentProps;
+export type URef = React.ElementRef<"u">;
+export type UProps = React.ComponentPropsWithoutRef<"u"> & CommonComponentProps;
 
 /**
  * Render the default unarticulated annotation (underline) server component.
