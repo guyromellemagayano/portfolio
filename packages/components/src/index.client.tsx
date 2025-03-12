@@ -115,6 +115,12 @@ import type {
   MainRef,
   MapProps,
   MapRef,
+  MarkProps,
+  MarkRef,
+  MenuProps,
+  MenuRef,
+  MetaProps,
+  MetaRef,
 } from ".";
 
 /**
@@ -1084,3 +1090,51 @@ export const MapClient = forwardRef<MapRef, MapProps>(
 );
 
 MapClient.displayName = "MapClient";
+
+/**
+ * Render the mark text client component.
+ * @param {MarkProps} props - The mark text client component properties
+ * @param {MarkRef} ref - The mark text client component reference
+ * @returns The rendered mark text client component
+ */
+export const MarkClient = forwardRef<MarkRef, MarkProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <mark ref={ref} {...rest}>
+        {children}
+      </mark>
+    );
+  }
+);
+
+MarkClient.displayName = "MarkClient";
+
+/**
+ * Render the menu client component.
+ * @param {MenuProps} props - The menu client component properties
+ * @param {MenuRef} ref - The menu client component reference
+ * @returns The rendered menu client component
+ */
+// export const MenuClient = forwardRef<MenuRef, MenuProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <menu ref={ref} {...rest}>
+//         {children}
+//       </menu>
+//     );
+//   }
+// );
+
+// MenuClient.displayName = "MenuClient";
+
+/**
+ * Render the meta client component.
+ * @param {MetaProps} props - The meta client component properties
+ * @param {MetaRef} ref - The meta client component reference
+ * @returns The rendered meta client component
+ */
+// export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
+//   return <meta ref={ref} {...rest} />;
+// });
+
+// MetaClient.displayName = "MetaClient";
