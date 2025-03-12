@@ -1845,3 +1845,96 @@ export const Map = ({ isClient = false, children, ...rest }: MapProps) => {
 };
 
 Map.displayName = "Map";
+
+// Dynamically import the client component
+const MarkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MarkClient };
+});
+
+export type MarkRef = React.ElementRef<"mark">;
+export type MarkProps = React.ComponentPropsWithoutRef<"mark"> &
+  CommonComponentProps;
+
+/**
+ * Render the default mark text server component.
+ * @param {MarkProps} props - The default mark text server component properties
+ * @returns The rendered default mark text server component
+ */
+export const Mark = ({ isClient = false, children, ...rest }: MarkProps) => {
+  const element = <mark {...rest}>{children}</mark>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <MarkClient {...rest}>{children}</MarkClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Mark.displayName = "Mark";
+
+// Dynamically import the client component
+// const MenuClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.MenuClient };
+// });
+
+// export type MenuRef = React.ElementRef<"menu">;
+// export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default menu server component.
+ * @param {MenuProps} props - The default menu server component properties
+ * @returns The rendered default menu server component
+ */
+// export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
+//   const element = <menu {...rest}>{children}</menu>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <MenuClient {...rest}>{children}</MenuClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Menu.displayName = "Menu";
+
+// Dynamically import the client component
+// const MetaClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.MetaClient };
+// });
+
+// export type MetaRef = React.ElementRef<"meta">;
+// export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default metadata server component.
+ * @param {MetaProps} props - The default metadata server component properties
+ * @returns The rendered default metadata server component
+ */
+// export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
+//   const element = <meta {...rest} />;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <MetaClient {...rest} />
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Meta.displayName = "Meta";
