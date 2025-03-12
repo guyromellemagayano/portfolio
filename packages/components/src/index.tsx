@@ -1029,35 +1029,35 @@ export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
 Dt.displayName = "Dt";
 
 // Dynamically import the client component
-// const EmClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.EmClient };
-// });
+const EmClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.EmClient };
+});
 
-// export type EmRef = React.ElementRef<"em">;
-// export type EmProps = React.ComponentPropsWithoutRef<"em"> &
-//   CommonComponentProps;
+export type EmRef = React.ElementRef<"em">;
+export type EmProps = React.ComponentPropsWithoutRef<"em"> &
+  CommonComponentProps;
 
 /**
  * Render the default emphasis server component.
  * @param {EmProps} props - The default emphasis server component properties
  * @returns The rendered default emphasis server component
  */
-// export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
-//   const element = <em {...rest}>{children}</em>;
+export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
+  const element = <em {...rest}>{children}</em>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <EmClient {...rest}>{children}</EmClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <EmClient {...rest}>{children}</EmClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Em.displayName = "Em";
+Em.displayName = "Em";
 
 // Dynamically import the client component
 // const EmbedClient = lazy(async () => {
