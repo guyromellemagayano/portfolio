@@ -1783,3 +1783,65 @@ export const Link = ({ isClient = false, ...rest }: LinkProps) => {
 };
 
 Link.displayName = "Link";
+
+// Dynamically import the client component
+const MainClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MainClient };
+});
+
+export type MainRef = React.ElementRef<"main">;
+export type MainProps = React.ComponentPropsWithoutRef<"main"> &
+  CommonComponentProps;
+
+/**
+ * Render the default main server component.
+ * @param {MainProps} props - The default main server component properties
+ * @returns The rendered default main server component
+ */
+export const Main = ({ isClient = false, children, ...rest }: MainProps) => {
+  const element = <main {...rest}>{children}</main>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <MainClient {...rest}>{children}</MainClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Main.displayName = "Main";
+
+// Dynamically import the client component
+// const MapClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.MapClient };
+// });
+
+// export type MapRef = React.ElementRef<"map">;
+// export type MapProps = React.ComponentPropsWithoutRef<"map"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default image map server component.
+ * @param {MapProps} props - The default image map server component properties
+ * @returns The rendered default image map server component
+ */
+// export const Map = ({ isClient = false, children, ...rest }: MapProps) => {
+//   const element = <map {...rest}>{children}</map>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <MapClient {...rest}>{children}</MapClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Map.displayName = "Map";
