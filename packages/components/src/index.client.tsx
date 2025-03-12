@@ -55,8 +55,8 @@ import type {
   DelRef,
   DetailsProps,
   DetailsRef,
-  //   DfnProps,
-  //   DfnRef,
+  DfnProps,
+  DfnRef,
   //   DialogProps,
   //   DialogRef,
 } from ".";
@@ -523,17 +523,17 @@ DetailsClient.displayName = "DetailsClient";
  * @param {DfnRef} ref - The definition element client component reference
  * @returns The rendered definition element client component
  */
-// export const DfnClient = forwardRef<DfnRef, DfnProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <dfn ref={ref} {...rest}>
-//         {children}
-//       </dfn>
-//     );
-//   }
-// );
+export const DfnClient = forwardRef<DfnRef, DfnProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dfn ref={ref} {...rest}>
+        {children}
+      </dfn>
+    );
+  }
+);
 
-// DfnClient.displayName = "DfnClient";
+DfnClient.displayName = "DfnClient";
 
 /**
  * Render the dialog client component.
