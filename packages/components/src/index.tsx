@@ -1196,39 +1196,39 @@ export const Figure = ({
 Figure.displayName = "Figure";
 
 // Dynamically import the client component
-// const FooterClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.FooterClient };
-// });
+const FooterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.FooterClient };
+});
 
-// export type FooterRef = React.ElementRef<"footer">;
-// export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
-//   CommonComponentProps;
+export type FooterRef = React.ElementRef<"footer">;
+export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
+  CommonComponentProps;
 
 /**
  * Render the default footer server component.
  * @param {FooterProps} props - The default footer server component properties
  * @returns The rendered default footer server component
  */
-// export const Footer = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: FooterProps) => {
-//   const element = <footer {...rest}>{children}</footer>;
+export const Footer = ({
+  isClient = false,
+  children,
+  ...rest
+}: FooterProps) => {
+  const element = <footer {...rest}>{children}</footer>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <FooterClient {...rest}>{children}</FooterClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <FooterClient {...rest}>{children}</FooterClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Footer.displayName = "Footer";
+Footer.displayName = "Footer";
 
 // Dynamically import the client component
 // const FormClient = lazy(async () => {
