@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TrClient = lazy(async () => {
   return { default: module.TrClient };
 });
 
-export type TrRef = HTMLTableRowElement;
-export type TrProps = HTMLAttributes<TrRef> & CommonComponentProps;
+export type TrRef = React.ElementRef<"tr">;
+export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
+  CommonComponentProps;
 
 /**
  * Render the default table row server component.
