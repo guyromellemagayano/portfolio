@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TfootClient = lazy(async () => {
   return { default: module.TfootClient };
 });
 
-export type TfootRef = HTMLTableSectionElement;
-export type TfootProps = HTMLAttributes<TfootRef> & CommonComponentProps;
+export type TfootRef = React.ElementRef<"tfoot">;
+export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
+  CommonComponentProps;
 
 /**
  * Render the default table foot server component.
