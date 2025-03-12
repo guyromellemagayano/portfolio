@@ -1,4 +1,4 @@
-import { type SlotHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SlotClient = lazy(async () => {
   return { default: module.SlotClient };
 });
 
-export type SlotRef = HTMLSlotElement;
-export type SlotProps = SlotHTMLAttributes<SlotRef> & CommonComponentProps;
+export type SlotRef = React.ElementRef<"slot">;
+export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
+  CommonComponentProps;
 
 /**
  * Render the default web component slot server component.
