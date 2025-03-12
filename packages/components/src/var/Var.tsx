@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const VarClient = lazy(async () => {
   return { default: module.VarClient };
 });
 
-export type VarRef = HTMLElement;
-export type VarProps = HTMLAttributes<VarRef> & CommonComponentProps;
+export type VarRef = React.ElementRef<"var">;
+export type VarProps = React.ComponentPropsWithoutRef<"var"> &
+  CommonComponentProps;
 
 /**
  * Render the default variable server component.
