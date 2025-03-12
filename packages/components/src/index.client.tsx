@@ -91,8 +91,8 @@ import type {
   HrRef,
   HtmlProps,
   HtmlRef,
-  //   IframeProps,
-  //   IframeRef,
+  IframeProps,
+  IframeRef,
   //   ImgProps,
   //   ImgRef,
   //   InputProps,
@@ -903,13 +903,13 @@ HtmlClient.displayName = "HtmlClient";
  * @param {IframeRef} ref - The inline frame client component reference
  * @returns The rendered inline frame client component
  */
-// export const IframeClient = forwardRef<IframeRef, IframeProps>(
-//   ({ ...rest }, ref) => {
-//     return <iframe ref={ref} {...rest} />;
-//   }
-// );
+export const IframeClient = forwardRef<IframeRef, IframeProps>(
+  ({ ...rest }, ref) => {
+    return <iframe ref={ref} {...rest} />;
+  }
+);
 
-// IframeClient.displayName = "IframeClient";
+IframeClient.displayName = "IframeClient";
 
 /**
  * Render the image embed client component.
