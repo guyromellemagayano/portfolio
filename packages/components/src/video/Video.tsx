@@ -1,4 +1,4 @@
-import { type VideoHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const VideoClient = lazy(async () => {
   return { default: module.VideoClient };
 });
 
-export type VideoRef = HTMLVideoElement;
-export type VideoProps = VideoHTMLAttributes<VideoRef> & CommonComponentProps;
+export type VideoRef = React.ElementRef<"video">;
+export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
+  CommonComponentProps;
 
 /**
  * Render the default video embed server component.
