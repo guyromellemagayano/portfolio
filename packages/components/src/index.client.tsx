@@ -29,6 +29,10 @@ import type {
   BodyRef,
   BProps,
   BRef,
+  BrProps,
+  BrRef,
+  ButtonProps,
+  ButtonRef,
 } from ".";
 
 /**
@@ -264,3 +268,33 @@ export const BodyClient = forwardRef<BodyRef, BodyProps>(
 );
 
 BodyClient.displayName = "BodyClient";
+
+/**
+ * Render the document line break client component.
+ * @param {BrProps} props - The document line break client component properties
+ * @param {BrRef} ref - The document line break client component reference
+ * @returns The rendered document line break client component
+ */
+export const BrClient = forwardRef<BrRef, BrProps>(({ ...rest }, ref) => {
+  return <br ref={ref} {...rest} />;
+});
+
+BrClient.displayName = "BrClient";
+
+/**
+ * Render the button client component.
+ * @param {ButtonProps} props - The button client component properties
+ * @param {ButtonRef} ref - The button client component reference
+ * @returns The rendered button client component
+ */
+export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <button ref={ref} {...rest}>
+        {children}
+      </button>
+    );
+  }
+);
+
+ButtonClient.displayName = "ButtonClient";
