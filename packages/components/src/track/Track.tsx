@@ -1,4 +1,4 @@
-import { type TrackHTMLAttributes, lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TrackClient = lazy(async () => {
   return { default: module.TrackClient };
 });
 
-export type TrackRef = HTMLTrackElement;
-export type TrackProps = TrackHTMLAttributes<TrackRef> & CommonComponentProps;
+export type TrackRef = React.ElementRef<"track">;
+export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
+  CommonComponentProps;
 
 /**
  * Render the default embed text track server component.
