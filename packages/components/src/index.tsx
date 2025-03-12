@@ -1524,40 +1524,40 @@ export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
 Iframe.displayName = "Iframe";
 
 // Dynamically import the client component
-// const ImgClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.ImgClient };
-// });
+const ImgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ImgClient };
+});
 
-// export type ImgRef = React.ElementRef<"img">;
-// export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
-//   CommonComponentProps;
+export type ImgRef = React.ElementRef<"img">;
+export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
+  CommonComponentProps;
 
 /**
  * Render the default image embed server component.
  * @param {ImgProps} props - The default image embed server component properties
  * @returns The rendered default image embed server component
  */
-// export const Img = ({
-//   isClient = false,
-//   src = "#",
-//   alt = "",
-//   ...rest
-// }: ImgProps) => {
-//   const element = <img src={src} alt={alt} {...rest} />;
+export const Img = ({
+  isClient = false,
+  src = "#",
+  alt = "",
+  ...rest
+}: ImgProps) => {
+  const element = <img src={src} alt={alt} {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <ImgClient src={src} alt={alt} {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ImgClient src={src} alt={alt} {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Img.displayName = "Img";
+Img.displayName = "Img";
 
 // Dynamically import the client component
 // const InputClient = lazy(async () => {
