@@ -967,35 +967,35 @@ export const Div = ({ isClient = false, children, ...rest }: DivProps) => {
 Div.displayName = "Div";
 
 // Dynamically import the client component
-// const DlClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.DlClient };
-// });
+const DlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.DlClient };
+});
 
-// export type DlRef = React.ElementRef<"dl">;
-// export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
-//   CommonComponentProps;
+export type DlRef = React.ElementRef<"dl">;
+export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
+  CommonComponentProps;
 
 /**
  * Render the default description list server component.
  * @param {DlProps} props - The default description list server component properties
  * @returns The rendered default description list server component
  */
-// export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
-//   const element = <dl {...rest}>{children}</dl>;
+export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
+  const element = <dl {...rest}>{children}</dl>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <DlClient {...rest}>{children}</DlClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <DlClient {...rest}>{children}</DlClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Dl.displayName = "Dl";
+Dl.displayName = "Dl";
 
 // Dynamically import the client component
 // const DtClient = lazy(async () => {
