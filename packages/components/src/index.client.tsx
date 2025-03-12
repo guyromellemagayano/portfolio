@@ -21,6 +21,8 @@ import type {
   BaseRef,
   BdiProps,
   BdiRef,
+  BdoProps,
+  BdoRef,
   BProps,
   BRef,
 } from ".";
@@ -204,3 +206,21 @@ export const BaseClient = forwardRef<BaseRef, BaseProps>(
 );
 
 BaseClient.displayName = "BaseClient";
+
+/**
+ * Render the bidirectional text override client component.
+ * @param {BdoProps} props - The bidirectional text override client component properties
+ * @param {BdoRef} ref - The bidirectional text override client component reference
+ * @returns The rendered bidirectional text override client component
+ */
+export const BdoClient = forwardRef<BdoRef, BdoProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <bdo ref={ref} {...rest}>
+        {children}
+      </bdo>
+    );
+  }
+);
+
+BdoClient.displayName = "BdoClient";
