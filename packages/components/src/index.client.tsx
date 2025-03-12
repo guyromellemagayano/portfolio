@@ -23,6 +23,8 @@ import type {
   BdiRef,
   BdoProps,
   BdoRef,
+  BlockquoteProps,
+  BlockquoteRef,
   BProps,
   BRef,
 } from ".";
@@ -224,3 +226,21 @@ export const BdoClient = forwardRef<BdoRef, BdoProps>(
 );
 
 BdoClient.displayName = "BdoClient";
+
+/**
+ * Render the blockquote client component.
+ * @param {BlockquoteProps} props - The blockquote client component properties
+ * @param {BlockquoteRef} ref - The blockquote client component reference
+ * @returns The rendered blockquote client component
+ */
+export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <blockquote ref={ref} {...rest}>
+        {children}
+      </blockquote>
+    );
+  }
+);
+
+BlockquoteClient.displayName = "BlockquoteClient";
