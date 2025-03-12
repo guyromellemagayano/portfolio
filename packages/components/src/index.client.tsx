@@ -61,8 +61,8 @@ import type {
   DialogRef,
   DivProps,
   DivRef,
-  //   DlProps,
-  //   DlRef,
+  DlProps,
+  DlRef,
   //   DtProps,
   //   DtRef,
   //   EmbedProps,
@@ -599,17 +599,17 @@ DivClient.displayName = "DivClient";
  * @param {DlRef} ref - The description list client component reference
  * @returns The rendered description list client component
  */
-// export const DlClient = forwardRef<DlRef, DlProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <dl ref={ref} {...rest}>
-//         {children}
-//       </dl>
-//     );
-//   }
-// );
+export const DlClient = forwardRef<DlRef, DlProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dl ref={ref} {...rest}>
+        {children}
+      </dl>
+    );
+  }
+);
 
-// DlClient.displayName = "DlClient";
+DlClient.displayName = "DlClient";
 
 /**
  * Render the description term client component.
