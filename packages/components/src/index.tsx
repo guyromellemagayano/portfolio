@@ -1626,35 +1626,35 @@ export const Ins = ({ isClient = false, children, ...rest }: InsProps) => {
 Ins.displayName = "Ins";
 
 // Dynamically import the client component
-// const KbdClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.KbdClient };
-// });
+const KbdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.KbdClient };
+});
 
-// export type KbdRef = React.ElementRef<"kbd">;
-// export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
-//   CommonComponentProps;
+export type KbdRef = React.ElementRef<"kbd">;
+export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
+  CommonComponentProps;
 
 /**
  * Render the default keyboard input server component.
  * @param {KbdProps} props - The default keyboard input server component properties
  * @returns The rendered default keyboard input server component
  */
-// export const Kbd = ({ isClient = false, children, ...rest }: KbdProps) => {
-//   const element = <kbd {...rest}>{children}</kbd>;
+export const Kbd = ({ isClient = false, children, ...rest }: KbdProps) => {
+  const element = <kbd {...rest}>{children}</kbd>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <KbdClient {...rest}>{children}</KbdClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <KbdClient {...rest}>{children}</KbdClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Kbd.displayName = "Kbd";
+Kbd.displayName = "Kbd";
 
 // Dynamically import the client component
 // const LabelClient = lazy(async () => {
