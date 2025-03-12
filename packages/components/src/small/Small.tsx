@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SmallClient = lazy(async () => {
   return { default: module.SmallClient };
 });
 
-export type SmallRef = HTMLElement;
-export type SmallProps = HTMLAttributes<SmallRef> & CommonComponentProps;
+export type SmallRef = React.ElementRef<"small">;
+export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
+  CommonComponentProps;
 
 /**
  * Render the default side comment server component.
