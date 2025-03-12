@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TitleClient = lazy(async () => {
   return { default: module.TitleClient };
 });
 
-export type TitleRef = HTMLTitleElement;
-export type TitleProps = HTMLAttributes<TitleRef> & CommonComponentProps;
+export type TitleRef = React.ElementRef<"title">;
+export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
+  CommonComponentProps;
 
 /**
  * Render the default document title server component.
