@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SpanClient = lazy(async () => {
   return { default: module.SpanClient };
 });
 
-export type SpanRef = HTMLSpanElement;
-export type SpanProps = HTMLAttributes<SpanRef> & CommonComponentProps;
+export type SpanRef = React.ElementRef<"span">;
+export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
+  CommonComponentProps;
 
 /**
  * Render the default content span server component.
