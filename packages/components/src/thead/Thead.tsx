@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TheadClient = lazy(async () => {
   return { default: module.TheadClient };
 });
 
-export type TheadRef = HTMLTableSectionElement;
-export type TheadProps = HTMLAttributes<TheadRef> & CommonComponentProps;
+export type TheadRef = React.ElementRef<"thead">;
+export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
+  CommonComponentProps;
 
 /**
  * Render the default table head server component.
