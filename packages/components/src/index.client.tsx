@@ -79,8 +79,8 @@ import type {
   FooterRef,
   FormProps,
   FormRef,
-  //   HeadProps,
-  //   HeadRef,
+  HeadProps,
+  HeadRef,
 } from ".";
 
 /**
@@ -757,14 +757,14 @@ FormClient.displayName = "FormClient";
  * @param {HeadRef} ref - The document metadata (header) client component reference
  * @returns The rendered document metadata (header) client component
  */
-// export const HeadClient = forwardRef<HeadRef, HeadProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <head ref={ref} {...rest}>
-//         {children}
-//       </head>
-//     );
-//   }
-// );
+export const HeadClient = forwardRef<HeadRef, HeadProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <head ref={ref} {...rest}>
+        {children}
+      </head>
+    );
+  }
+);
 
-// HeadClient.displayName = "HeadClient";
+HeadClient.displayName = "HeadClient";
