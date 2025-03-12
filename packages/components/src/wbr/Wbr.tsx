@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const WbrClient = lazy(async () => {
   return { default: module.WbrClient };
 });
 
-export type WbrRef = HTMLElement;
-export type WbrProps = HTMLAttributes<WbrRef> & CommonComponentProps;
+export type WbrRef = React.ElementRef<"wbr">;
+export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
+  CommonComponentProps;
 
 /**
  * Render the default line break opportunity server component.
