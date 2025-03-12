@@ -1,4 +1,4 @@
-import { type ThHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const ThClient = lazy(async () => {
   return { default: module.ThClient };
 });
 
-export type ThRef = HTMLTableHeaderCellElement;
-export type ThProps = ThHTMLAttributes<ThRef> & CommonComponentProps;
+export type ThRef = React.ElementRef<"th">;
+export type ThProps = React.ComponentPropsWithoutRef<"th"> &
+  CommonComponentProps;
 
 /**
  * Render the default table header server component.
