@@ -89,8 +89,8 @@ import type {
   HgroupRef,
   HrProps,
   HrRef,
-  //   HtmlProps,
-  //   HtmlRef,
+  HtmlProps,
+  HtmlRef,
   //   IframeProps,
   //   IframeRef,
   //   ImgProps,
@@ -867,17 +867,17 @@ HrClient.displayName = "HrClient";
  * @param {HtmlRef} ref - The HTML document/root client component reference
  * @returns The rendered HTML document/root client component
  */
-// export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <html ref={ref} {...rest}>
-//         {children}
-//       </html>
-//     );
-//   }
-// );
+export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <html ref={ref} {...rest}>
+        {children}
+      </html>
+    );
+  }
+);
 
-// HtmlClient.displayName = "HtmlClient";
+HtmlClient.displayName = "HtmlClient";
 
 /**
  * Render the idiomatic text client component.
