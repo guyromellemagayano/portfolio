@@ -51,8 +51,8 @@ import type {
   DataRef,
   DdProps,
   DdRef,
-  //   DelProps,
-  //   DelRef,
+  DelProps,
+  DelRef,
   //   DetailsProps,
   //   DetailsRef,
   //   DfnProps,
@@ -487,17 +487,17 @@ DdClient.displayName = "DdClient";
  * @param {DelRef} ref - The deleted text client component reference
  * @returns The rendered deleted text client component
  */
-// export const DelClient = forwardRef<DelRef, DelProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <del ref={ref} {...rest}>
-//         {children}
-//       </del>
-//     );
-//   }
-// );
+export const DelClient = forwardRef<DelRef, DelProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <del ref={ref} {...rest}>
+        {children}
+      </del>
+    );
+  }
+);
 
-// DelClient.displayName = "DelClient";
+DelClient.displayName = "DelClient";
 
 /**
  * Render the details disclosure client component.

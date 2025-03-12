@@ -804,35 +804,35 @@ export const Dd = ({ isClient = false, children, ...rest }: DdProps) => {
 Dd.displayName = "Dd";
 
 // Dynamically import the client component
-// const DelClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.DelClient };
-// });
+const DelClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.DelClient };
+});
 
-// export type DelRef = React.ElementRef<"del">;
-// export type DelProps = React.ComponentPropsWithoutRef<"del"> &
-//   CommonComponentProps;
+export type DelRef = React.ElementRef<"del">;
+export type DelProps = React.ComponentPropsWithoutRef<"del"> &
+  CommonComponentProps;
 
 /**
  * Render the default deleted text server component.
  * @param {DelProps} props - The default deleted text server component properties
  * @returns The rendered default deleted text server component
  */
-// export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
-//   const element = <del {...rest}>{children}</del>;
+export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
+  const element = <del {...rest}>{children}</del>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <DelClient {...rest}>{children}</DelClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <DelClient {...rest}>{children}</DelClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Del.displayName = "Del";
+Del.displayName = "Del";
 
 // Dynamically import the client component
 // const DetailsClient = lazy(async () => {
