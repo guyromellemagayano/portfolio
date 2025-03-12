@@ -1161,39 +1161,39 @@ export const Figcaption = ({
 Figcaption.displayName = "Figcaption";
 
 // Dynamically import the client component
-// const FigureClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.FigureClient };
-// });
+const FigureClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.FigureClient };
+});
 
-// export type FigureRef = React.ElementRef<"figure">;
-// export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
-//   CommonComponentProps;
+export type FigureRef = React.ElementRef<"figure">;
+export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
+  CommonComponentProps;
 
 /**
  * Render the default figure with optional caption server component.
  * @param {FigureProps} props - The default figure with optional caption server component properties
  * @returns The rendered default figure with optional caption server component
  */
-// export const Figure = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: FigureProps) => {
-//   const element = <figure {...rest}>{children}</figure>;
+export const Figure = ({
+  isClient = false,
+  children,
+  ...rest
+}: FigureProps) => {
+  const element = <figure {...rest}>{children}</figure>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <FigureClient {...rest}>{children}</FigureClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <FigureClient {...rest}>{children}</FigureClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Figure.displayName = "Figure";
+Figure.displayName = "Figure";
 
 // Dynamically import the client component
 // const FooterClient = lazy(async () => {
