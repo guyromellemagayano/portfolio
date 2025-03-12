@@ -57,8 +57,8 @@ import type {
   DetailsRef,
   DfnProps,
   DfnRef,
-  //   DialogProps,
-  //   DialogRef,
+  DialogProps,
+  DialogRef,
 } from ".";
 
 /**
@@ -541,14 +541,14 @@ DfnClient.displayName = "DfnClient";
  * @param {DialogRef} ref - The dialog client component reference
  * @returns The rendered dialog client component
  */
-// export const DialogClient = forwardRef<DialogRef, DialogProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <dialog ref={ref} {...rest}>
-//         {children}
-//       </dialog>
-//     );
-//   }
-// );
+export const DialogClient = forwardRef<DialogRef, DialogProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dialog ref={ref} {...rest}>
+        {children}
+      </dialog>
+    );
+  }
+);
 
-// DialogClient.displayName = "DialogClient";
+DialogClient.displayName = "DialogClient";
