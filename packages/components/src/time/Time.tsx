@@ -8,8 +8,9 @@ const TimeClient = lazy(async () => {
   return { default: module.TimeClient };
 });
 
-export type TimeRef = HTMLTimeElement;
-export type TimeProps = TimeHTMLAttributes<TimeRef> & CommonComponentProps;
+export type TimeRef = React.ElementRef<"time">;
+export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
+  CommonComponentProps;
 
 /**
  * Render the default (date) time server component.
