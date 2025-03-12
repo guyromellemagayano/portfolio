@@ -99,8 +99,8 @@ import type {
   //   InputRef,
   //   InsProps,
   //   InsRef,
-  //   IProps,
-  //   IRef,
+  IProps,
+  IRef,
   //   KbdProps,
   //   KbdRef,
   //   LabelProps,
@@ -885,17 +885,17 @@ HtmlClient.displayName = "HtmlClient";
  * @param {IRef} ref - The idiomatic text client component reference
  * @returns The rendered idiomatic text client component
  */
-// export const IClient = forwardRef<IRef, IProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <i ref={ref} {...rest}>
-//         {children}
-//       </i>
-//     );
-//   }
-// );
+export const IClient = forwardRef<IRef, IProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <i ref={ref} {...rest}>
+        {children}
+      </i>
+    );
+  }
+);
 
-// IClient.displayName = "IClient";
+IClient.displayName = "IClient";
 
 /**
  * Render the inline frame client component.
