@@ -25,6 +25,8 @@ import type {
   BdoRef,
   BlockquoteProps,
   BlockquoteRef,
+  BodyProps,
+  BodyRef,
   BProps,
   BRef,
 } from ".";
@@ -244,3 +246,21 @@ export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
 );
 
 BlockquoteClient.displayName = "BlockquoteClient";
+
+/**
+ * Render the document body client component.
+ * @param {BodyProps} props - The document body client component properties
+ * @param {BodyRef} ref - The document body client component reference
+ * @returns The rendered document body client component
+ */
+export const BodyClient = forwardRef<BodyRef, BodyProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <body ref={ref} {...rest}>
+        {children}
+      </body>
+    );
+  }
+);
+
+BodyClient.displayName = "BodyClient";
