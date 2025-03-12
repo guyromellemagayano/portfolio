@@ -125,8 +125,8 @@ import type {
   MeterRef,
   NavProps,
   NavRef,
-  //   NoscriptProps,
-  //   NoscriptRef,
+  NoscriptProps,
+  NoscriptRef,
 } from ".";
 
 /**
@@ -1187,14 +1187,14 @@ NavClient.displayName = "NavClient";
  * @param {NoscriptRef} ref - The noscript client component reference
  * @returns The rendered noscript client component
  */
-// export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <noscript ref={ref} {...rest}>
-//         {children}
-//       </noscript>
-//     );
-//   }
-// );
+export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <noscript ref={ref} {...rest}>
+        {children}
+      </noscript>
+    );
+  }
+);
 
-// NoscriptClient.displayName = "NoscriptClient";
+NoscriptClient.displayName = "NoscriptClient";
