@@ -278,7 +278,7 @@ Audio.displayName = "Audio";
 
 // Dynamically import the client component
 const BaseClient = lazy(async () => {
-  const module = await import("./Base.client");
+  const module = await import("./index.client");
   return { default: module.BaseClient };
 });
 
@@ -337,3 +337,34 @@ export const Bdi = ({ isClient = false, children, ...rest }: BdiProps) => {
 };
 
 Bdi.displayName = "Bdi";
+
+// Dynamically import the client component
+const BdoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.BdoClient };
+});
+
+export type BdoRef = React.ElementRef<"bdo">;
+export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
+  CommonComponentProps;
+
+/**
+ * Render the default bidirectional text override server component.
+ * @param {BdoProps} props - The default bidirectional text override server component properties
+ * @returns The rendered default bidirectional text override server component
+ */
+export const Bdo = ({ isClient = false, children, ...rest }: BdoProps) => {
+  const element = <bdo {...rest}>{children}</bdo>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <BdoClient {...rest}>{children}</BdoClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Bdo.displayName = "Bdo";
