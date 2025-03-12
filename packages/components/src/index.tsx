@@ -1493,35 +1493,35 @@ Html.displayName = "Html";
 // I.displayName = "I";
 
 // Dynamically import the client component
-// const IframeClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.IframeClient };
-// });
+const IframeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.IframeClient };
+});
 
-// export type IframeRef = React.ElementRef<"iframe">;
-// export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
-//   CommonComponentProps;
+export type IframeRef = React.ElementRef<"iframe">;
+export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
+  CommonComponentProps;
 
 /**
  * Render the default inline frame server component.
  * @param {IframeProps} props - The default inline frame server component properties
  * @returns The rendered default inline frame server component
  */
-// export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
-//   const element = <iframe {...rest} />;
+export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
+  const element = <iframe {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <IframeClient {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <IframeClient {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Iframe.displayName = "Iframe";
+Iframe.displayName = "Iframe";
 
 // Dynamically import the client component
 // const ImgClient = lazy(async () => {
