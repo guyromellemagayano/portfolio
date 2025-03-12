@@ -87,8 +87,8 @@ import type {
   HeadRef,
   HgroupProps,
   HgroupRef,
-  //   HrProps,
-  //   HrRef,
+  HrProps,
+  HrRef,
   //   HtmlProps,
   //   HtmlRef,
   //   IframeProps,
@@ -855,11 +855,11 @@ HgroupClient.displayName = "HgroupClient";
  * @param {HrRef} ref - The thematic break (horizontal rule) client component reference
  * @returns The rendered thematic break (horizontal rule) client component
  */
-// export const HrClient = forwardRef<HrRef, HrProps>(({ ...rest }, ref) => {
-//   return <hr ref={ref} {...rest} />;
-// });
+export const HrClient = forwardRef<HrRef, HrProps>(({ ...rest }, ref) => {
+  return <hr ref={ref} {...rest} />;
+});
 
-// HrClient.displayName = "HrClient";
+HrClient.displayName = "HrClient";
 
 /**
  * Render the HTML document/root client component.
