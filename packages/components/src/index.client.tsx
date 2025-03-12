@@ -111,6 +111,10 @@ import type {
   LinkRef,
   LiProps,
   LiRef,
+  MainProps,
+  MainRef,
+  MapProps,
+  MapRef,
 } from ".";
 
 /**
@@ -1044,3 +1048,39 @@ export const LinkClient = forwardRef<LinkRef, LinkProps>(({ ...rest }, ref) => {
 });
 
 LinkClient.displayName = "LinkClient";
+
+/**
+ * Render the main client component.
+ * @param {MainProps} props - The main client component properties
+ * @param {MainRef} ref - The main client component reference
+ * @returns The rendered main client component
+ */
+export const MainClient = forwardRef<MainRef, MainProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <main ref={ref} {...rest}>
+        {children}
+      </main>
+    );
+  }
+);
+
+MainClient.displayName = "MainClient";
+
+/**
+ * Render the image map client component.
+ * @param {MapProps} props - The image map client component properties
+ * @param {MapRef} ref - The image map client component reference
+ * @returns The rendered image map client component
+ */
+// export const MapClient = forwardRef<MapRef, MapProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <map ref={ref} {...rest}>
+//         {children}
+//       </map>
+//     );
+//   }
+// );
+
+// MapClient.displayName = "MapClient";
