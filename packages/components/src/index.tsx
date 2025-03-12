@@ -608,3 +608,131 @@ export const Cite = ({ isClient = false, children, ...rest }: CiteProps) => {
 };
 
 Cite.displayName = "Cite";
+
+// Dynamically import the client component
+const CodeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.CodeClient };
+});
+
+export type CodeRef = React.ElementRef<"code">;
+export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
+  CommonComponentProps;
+
+/**
+ * Render the default code server component.
+ * @param {CodeProps} props - The default code server component properties
+ * @returns The rendered default code server component
+ */
+export const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
+  const element = <code {...rest}>{children}</code>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <CodeClient {...rest}>{children}</CodeClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Code.displayName = "Code";
+
+// Dynamically import the client component
+const ColClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ColClient };
+});
+
+export type ColRef = React.ElementRef<"col">;
+export type ColProps = React.ComponentPropsWithoutRef<"col"> &
+  CommonComponentProps;
+
+/**
+ * Render the default column server component.
+ * @param {ColProps} props - The default column server component properties
+ * @returns The rendered default column server component
+ */
+export const Col = ({ isClient = false, ...rest }: ColProps) => {
+  const element = <col {...rest} />;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ColClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Col.displayName = "Col";
+
+// Dynamically import the client component
+const ColgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ColgroupClient };
+});
+
+export type ColgroupRef = React.ElementRef<"colgroup">;
+export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table column group server component.
+ * @param {ColgroupProps} props - The default table column group server component properties
+ * @returns The rendered default table column group server component
+ */
+export const Colgroup = ({
+  isClient = false,
+  children,
+  ...rest
+}: ColgroupProps) => {
+  const element = <colgroup {...rest}>{children}</colgroup>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ColgroupClient {...rest}>{children}</ColgroupClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Colgroup.displayName = "Colgroup";
+
+// Dynamically import the client component
+const DataClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.DataClient };
+});
+
+export type DataRef = React.ElementRef<"data">;
+export type DataProps = React.ComponentPropsWithoutRef<"data"> &
+  CommonComponentProps;
+
+/**
+ * Render the default data server component.
+ * @param {DataProps} props - The default data server component properties
+ * @returns The rendered default data server component
+ */
+export const Data = ({ isClient = false, children, ...rest }: DataProps) => {
+  const element = <data {...rest}>{children}</data>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <DataClient {...rest}>{children}</DataClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Data.displayName = "Data";
