@@ -53,8 +53,8 @@ import type {
   DdRef,
   DelProps,
   DelRef,
-  //   DetailsProps,
-  //   DetailsRef,
+  DetailsProps,
+  DetailsRef,
   //   DfnProps,
   //   DfnRef,
   //   DialogProps,
@@ -505,17 +505,17 @@ DelClient.displayName = "DelClient";
  * @param {DetailsRef} ref - The details disclosure client component reference
  * @returns The rendered details disclosure client component
  */
-// export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <details ref={ref} {...rest}>
-//         {children}
-//       </details>
-//     );
-//   }
-// );
+export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <details ref={ref} {...rest}>
+        {children}
+      </details>
+    );
+  }
+);
 
-// DetailsClient.displayName = "DetailsClient";
+DetailsClient.displayName = "DetailsClient";
 
 /**
  * Render the definition element client component.

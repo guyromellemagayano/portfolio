@@ -835,39 +835,39 @@ export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
 Del.displayName = "Del";
 
 // Dynamically import the client component
-// const DetailsClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.DetailsClient };
-// });
+const DetailsClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.DetailsClient };
+});
 
-// export type DetailsRef = React.ElementRef<"details">;
-// export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
-//   CommonComponentProps;
+export type DetailsRef = React.ElementRef<"details">;
+export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
+  CommonComponentProps;
 
 /**
  * Render the default details disclosure server component.
  * @param {DetailsProps} props - The default details disclosure server component properties
  * @returns The rendered default details disclosure server component
  */
-// export const Details = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: DetailsProps) => {
-//   const element = <details {...rest}>{children}</details>;
+export const Details = ({
+  isClient = false,
+  children,
+  ...rest
+}: DetailsProps) => {
+  const element = <details {...rest}>{children}</details>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <DetailsClient {...rest}>{children}</DetailsClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <DetailsClient {...rest}>{children}</DetailsClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Details.displayName = "Details";
+Details.displayName = "Details";
 
 // Dynamically import the client component
 // const DfnClient = lazy(async () => {
