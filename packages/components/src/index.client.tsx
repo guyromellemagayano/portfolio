@@ -95,8 +95,8 @@ import type {
   IframeRef,
   ImgProps,
   ImgRef,
-  //   InputProps,
-  //   InputRef,
+  InputProps,
+  InputRef,
   //   InsProps,
   //   InsRef,
   IProps,
@@ -931,13 +931,13 @@ ImgClient.displayName = "ImgClient";
  * @param {InputRef} ref - The HTML input client component reference
  * @returns The rendered HTML input client component
  */
-// export const InputClient = forwardRef<InputRef, InputProps>(
-//   ({ type = "text", ...rest }, ref) => {
-//     return <input ref={ref} type={type} {...rest} />;
-//   }
-// );
+export const InputClient = forwardRef<InputRef, InputProps>(
+  ({ type = "text", ...rest }, ref) => {
+    return <input ref={ref} type={type} {...rest} />;
+  }
+);
 
-// InputClient.displayName = "InputClient";
+InputClient.displayName = "InputClient";
 
 /**
  * Render the inserted text client component.
