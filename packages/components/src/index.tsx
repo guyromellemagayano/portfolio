@@ -1938,3 +1938,100 @@ export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
 };
 
 Meta.displayName = "Meta";
+
+// Dynamically import the client component
+const MeterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MeterClient };
+});
+
+export type MeterRef = React.ElementRef<"meter">;
+export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
+  CommonComponentProps;
+
+/**
+ * Render the default HTML meter server component.
+ * @param {MeterProps} props - The default HTML meter server component properties
+ * @returns The rendered default HTML meter server component
+ */
+export const Meter = ({ isClient = false, children, ...rest }: MeterProps) => {
+  const element = <meter {...rest}>{children}</meter>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <MeterClient {...rest}>{children}</MeterClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Meter.displayName = "Meter";
+
+// Dynamically import the client component
+// const NavClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.NavClient };
+// });
+
+// export type NavRef = React.ElementRef<"nav">;
+// export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default navigation section server component.
+ * @param {NavProps} props - The default navigation section server component properties
+ * @returns The rendered default navigation section server component
+ */
+// export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
+//   const element = <nav {...rest}>{children}</nav>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <NavClient {...rest}>{children}</NavClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Nav.displayName = "Nav";
+
+// Dynamically import the client component
+// const NoscriptClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.NoscriptClient };
+// });
+
+// export type NoscriptRef = React.ElementRef<"noscript">;
+// export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default noscript server component.
+ * @param {NoscriptProps} props - The default noscript server component properties
+ * @returns The rendered default noscript server component
+ */
+// export const Noscript = ({
+//   isClient = false,
+//   children,
+//   ...rest
+// }: NoscriptProps) => {
+//   const element = <noscript {...rest}>{children}</noscript>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <NoscriptClient {...rest}>{children}</NoscriptClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Noscript.displayName = "Noscript";
