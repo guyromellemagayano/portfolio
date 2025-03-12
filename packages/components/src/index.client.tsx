@@ -75,8 +75,8 @@ import type {
   FigcaptionRef,
   FigureProps,
   FigureRef,
-  //   FooterProps,
-  //   FooterRef,
+  FooterProps,
+  FooterRef,
   //   FormProps,
   //   FormRef,
   //   HeadProps,
@@ -721,17 +721,17 @@ FigureClient.displayName = "FigureClient";
  * @param {FooterRef} ref - The footer client component reference
  * @returns The rendered footer client component
  */
-// export const FooterClient = forwardRef<FooterRef, FooterProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <footer ref={ref} {...rest}>
-//         {children}
-//       </footer>
-//     );
-//   }
-// );
+export const FooterClient = forwardRef<FooterRef, FooterProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <footer ref={ref} {...rest}>
+        {children}
+      </footer>
+    );
+  }
+);
 
-// FooterClient.displayName = "FooterClient";
+FooterClient.displayName = "FooterClient";
 
 /**
  * Render the form client component.
