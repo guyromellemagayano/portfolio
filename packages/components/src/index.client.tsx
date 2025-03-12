@@ -101,8 +101,8 @@ import type {
   InsRef,
   IProps,
   IRef,
-  //   KbdProps,
-  //   KbdRef,
+  KbdProps,
+  KbdRef,
   //   LabelProps,
   //   LabelRef,
   //   LegendProps,
@@ -963,17 +963,17 @@ InsClient.displayName = "InsClient";
  * @param {KbdRef} ref - The keyboard input client component reference
  * @returns The rendered keyboard input client component
  */
-// export const KbdClient = forwardRef<KbdRef, KbdProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <kbd ref={ref} {...rest}>
-//         {children}
-//       </kbd>
-//     );
-//   }
-// );
+export const KbdClient = forwardRef<KbdRef, KbdProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <kbd ref={ref} {...rest}>
+        {children}
+      </kbd>
+    );
+  }
+);
 
-// KbdClient.displayName = "KbdClient";
+KbdClient.displayName = "KbdClient";
 
 /**
  * Render the label client component.
