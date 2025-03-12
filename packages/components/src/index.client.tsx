@@ -45,8 +45,20 @@ import type {
   ColgroupRef,
   ColProps,
   ColRef,
+  DatalistProps,
+  DatalistRef,
   DataProps,
   DataRef,
+  DdProps,
+  DdRef,
+  DelProps,
+  DelRef,
+  DetailsProps,
+  DetailsRef,
+  DfnProps,
+  DfnRef,
+  DialogProps,
+  DialogRef,
 } from ".";
 
 /**
@@ -432,3 +444,111 @@ export const DataClient = forwardRef<DataRef, DataProps>(
 );
 
 DataClient.displayName = "DataClient";
+
+/**
+ * Render the datalist client component.
+ * @param {DatalistProps} props - The datalist client component properties
+ * @param {DatalistRef} ref - The datalist client component reference
+ * @returns The rendered datalist client component
+ */
+export const DatalistClient = forwardRef<DatalistRef, DatalistProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <datalist ref={ref} {...rest}>
+        {children}
+      </datalist>
+    );
+  }
+);
+
+DatalistClient.displayName = "DatalistClient";
+
+/**
+ * Render the description details client component.
+ * @param {DdProps} props - The description details client component properties
+ * @param {DdRef} ref - The description details client component reference
+ * @returns The rendered description details client component
+ */
+// export const DdClient = forwardRef<DdRef, DdProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <dd ref={ref} {...rest}>
+//         {children}
+//       </dd>
+//     );
+//   }
+// );
+
+// DdClient.displayName = "DdClient";
+
+/**
+ * Render the deleted text client component.
+ * @param {DelProps} props - The deleted text client component properties
+ * @param {DelRef} ref - The deleted text client component reference
+ * @returns The rendered deleted text client component
+ */
+// export const DelClient = forwardRef<DelRef, DelProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <del ref={ref} {...rest}>
+//         {children}
+//       </del>
+//     );
+//   }
+// );
+
+// DelClient.displayName = "DelClient";
+
+/**
+ * Render the details disclosure client component.
+ * @param {DetailsProps} props - The details disclosure client component properties
+ * @param {DetailsRef} ref - The details disclosure client component reference
+ * @returns The rendered details disclosure client component
+ */
+// export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <details ref={ref} {...rest}>
+//         {children}
+//       </details>
+//     );
+//   }
+// );
+
+// DetailsClient.displayName = "DetailsClient";
+
+/**
+ * Render the definition element client component.
+ * @param {DfnProps} props - The definition element client component properties
+ * @param {DfnRef} ref - The definition element client component reference
+ * @returns The rendered definition element client component
+ */
+// export const DfnClient = forwardRef<DfnRef, DfnProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <dfn ref={ref} {...rest}>
+//         {children}
+//       </dfn>
+//     );
+//   }
+// );
+
+// DfnClient.displayName = "DfnClient";
+
+/**
+ * Render the dialog client component.
+ * @param {DialogProps} props - The dialog client component properties
+ * @param {DialogRef} ref - The dialog client component reference
+ * @returns The rendered dialog client component
+ */
+// export const DialogClient = forwardRef<DialogRef, DialogProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <dialog ref={ref} {...rest}>
+//         {children}
+//       </dialog>
+//     );
+//   }
+// );
+
+// DialogClient.displayName = "DialogClient";
