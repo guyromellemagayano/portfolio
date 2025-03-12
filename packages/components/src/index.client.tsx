@@ -97,8 +97,8 @@ import type {
   ImgRef,
   InputProps,
   InputRef,
-  //   InsProps,
-  //   InsRef,
+  InsProps,
+  InsRef,
   IProps,
   IRef,
   //   KbdProps,
@@ -945,17 +945,17 @@ InputClient.displayName = "InputClient";
  * @param {InsRef} ref - The inserted text client component reference
  * @returns The rendered inserted text client component
  */
-// export const InsClient = forwardRef<InsRef, InsProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <ins ref={ref} {...rest}>
-//         {children}
-//       </ins>
-//     );
-//   }
-// );
+export const InsClient = forwardRef<InsRef, InsProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <ins ref={ref} {...rest}>
+        {children}
+      </ins>
+    );
+  }
+);
 
-// InsClient.displayName = "InsClient";
+InsClient.displayName = "InsClient";
 
 /**
  * Render the keyboard input client component.
