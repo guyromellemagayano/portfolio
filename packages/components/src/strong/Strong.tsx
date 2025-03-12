@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const StrongClient = lazy(async () => {
   return { default: module.StrongClient };
 });
 
-export type StrongRef = HTMLElement;
-export type StrongProps = HTMLAttributes<StrongRef> & CommonComponentProps;
+export type StrongRef = React.ElementRef<"strong">;
+export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
+  CommonComponentProps;
 
 /**
  * Render the default strong importance server component.
