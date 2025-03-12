@@ -81,8 +81,8 @@ import type {
   FormRef,
   HeaderProps,
   HeaderRef,
-  //   HeadingProps,
-  //   HeadingRef,
+  HeadingProps,
+  HeadingRef,
   HeadProps,
   HeadRef,
   //   HgroupProps,
@@ -819,17 +819,17 @@ HeaderClient.displayName = "HeaderClient";
  * @param {HeadingRef} ref - The HTML section heading client component reference
  * @returns The rendered HTML section heading client component
  */
-// export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
-//   ({ as: Component = "h1", children, ...rest }, ref) => {
-//     return (
-//       <Component ref={ref} {...rest}>
-//         {children}
-//       </Component>
-//     );
-//   }
-// );
+export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
+  ({ as: Component = "h1", children, ...rest }, ref) => {
+    return (
+      <Component ref={ref} {...rest}>
+        {children}
+      </Component>
+    );
+  }
+);
 
-// HeadingClient.displayName = "HeadingClient";
+HeadingClient.displayName = "HeadingClient";
 
 /**
  * Render the heading group client component.
