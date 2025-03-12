@@ -39,6 +39,14 @@ import type {
   CaptionRef,
   CiteProps,
   CiteRef,
+  CodeProps,
+  CodeRef,
+  ColgroupProps,
+  ColgroupRef,
+  ColProps,
+  ColRef,
+  DataProps,
+  DataRef,
 } from ".";
 
 /**
@@ -358,3 +366,69 @@ export const CiteClient = forwardRef<CiteRef, CiteProps>(
 );
 
 CiteClient.displayName = "CiteClient";
+
+/**
+ * Render the code client component.
+ * @param {CodeProps} props - The code client component properties
+ * @param {CodeRef} ref - The code client component reference
+ * @returns The rendered code client component
+ */
+export const CodeClient = forwardRef<CodeRef, CodeProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <code ref={ref} {...rest}>
+        {children}
+      </code>
+    );
+  }
+);
+
+CodeClient.displayName = "CodeClient";
+
+/**
+ * Render the column client component.
+ * @param {ColProps} props - The column client component properties
+ * @param {ColRef} ref - The column client component reference
+ * @returns The rendered column client component
+ */
+export const ColClient = forwardRef<ColRef, ColProps>(({ ...rest }, ref) => {
+  return <col ref={ref} {...rest} />;
+});
+
+ColClient.displayName = "ColClient";
+
+/**
+ * Render the table column group client component.
+ * @param {ColgroupProps} props - The table column group client component properties
+ * @param {ColgroupRef} ref - The table column group client component reference
+ * @returns The rendered table column group client component
+ */
+export const ColgroupClient = forwardRef<ColgroupRef, ColgroupProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <colgroup ref={ref} {...rest}>
+        {children}
+      </colgroup>
+    );
+  }
+);
+
+ColgroupClient.displayName = "ColgroupClient";
+
+/**
+ * Render the data client component.
+ * @param {DataProps} props - The data client component properties
+ * @param {DataRef} ref - The data client component reference
+ * @returns The rendered data client component
+ */
+export const DataClient = forwardRef<DataRef, DataProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <data ref={ref} {...rest}>
+        {children}
+      </data>
+    );
+  }
+);
+
+DataClient.displayName = "DataClient";
