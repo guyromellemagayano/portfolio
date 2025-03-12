@@ -1560,39 +1560,39 @@ export const Img = ({
 Img.displayName = "Img";
 
 // Dynamically import the client component
-// const InputClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.InputClient };
-// });
+const InputClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.InputClient };
+});
 
-// export type InputRef = React.ElementRef<"input">;
-// export type InputProps = React.ComponentPropsWithoutRef<"input"> &
-//   CommonComponentProps;
+export type InputRef = React.ElementRef<"input">;
+export type InputProps = React.ComponentPropsWithoutRef<"input"> &
+  CommonComponentProps;
 
 /**
  * Render the default HTML input server component.
  * @param {InputProps} props - The default HTML input server component properties
  * @returns The rendered default HTML input server component
  */
-// export const Input = ({
-//   isClient = false,
-//   type = "text",
-//   ...rest
-// }: InputProps) => {
-//   const element = <input type={type} {...rest} />;
+export const Input = ({
+  isClient = false,
+  type = "text",
+  ...rest
+}: InputProps) => {
+  const element = <input type={type} {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <InputClient type={type} {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <InputClient type={type} {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Input.displayName = "Input";
+Input.displayName = "Input";
 
 // Dynamically import the client component
 // const InsClient = lazy(async () => {
