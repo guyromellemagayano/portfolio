@@ -67,8 +67,8 @@ import type {
   DtRef,
   //   EmbedProps,
   //   EmbedRef,
-  //   EmProps,
-  //   EmRef,
+  EmProps,
+  EmRef,
   //   FieldsetProps,
   //   FieldsetRef,
   //   FigcaptionProps,
@@ -635,17 +635,17 @@ DtClient.displayName = "DtClient";
  * @param {EmRef} ref - The emphasis client component reference
  * @returns The rendered emphasis client component
  */
-// export const EmClient = forwardRef<EmRef, EmProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <em ref={ref} {...rest}>
-//         {children}
-//       </em>
-//     );
-//   }
-// );
+export const EmClient = forwardRef<EmRef, EmProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <em ref={ref} {...rest}>
+        {children}
+      </em>
+    );
+  }
+);
 
-// EmClient.displayName = "EmClient";
+EmClient.displayName = "EmClient";
 
 /**
  * Render the embed external content client component.
