@@ -33,6 +33,12 @@ import type {
   BrRef,
   ButtonProps,
   ButtonRef,
+  CanvasProps,
+  CanvasRef,
+  CaptionProps,
+  CaptionRef,
+  CiteProps,
+  CiteRef,
 } from ".";
 
 /**
@@ -298,3 +304,57 @@ export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
 );
 
 ButtonClient.displayName = "ButtonClient";
+
+/**
+ * Render the canvas client component.
+ * @param {CanvasProps} props - The canvas client component properties
+ * @param {CanvasRef} ref - The canvas client component reference
+ * @returns The rendered canvas client component
+ */
+export const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <canvas ref={ref} {...rest}>
+        {children}
+      </canvas>
+    );
+  }
+);
+
+CanvasClient.displayName = "CanvasClient";
+
+/**
+ * Render the caption client component.
+ * @param {CaptionProps} props - The caption client component properties
+ * @param {CaptionRef} ref - The caption client component reference
+ * @returns The rendered caption client component
+ */
+export const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <caption ref={ref} {...rest}>
+        {children}
+      </caption>
+    );
+  }
+);
+
+CaptionClient.displayName = "CaptionClient";
+
+/**
+ * Render the cite client component.
+ * @param {CiteProps} props - The cite client component properties
+ * @param {CiteRef} ref - The cite client component reference
+ * @returns The rendered cite client component
+ */
+export const CiteClient = forwardRef<CiteRef, CiteProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <cite ref={ref} {...rest}>
+        {children}
+      </cite>
+    );
+  }
+);
+
+CiteClient.displayName = "CiteClient";
