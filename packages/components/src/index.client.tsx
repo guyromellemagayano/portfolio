@@ -79,8 +79,34 @@ import type {
   FooterRef,
   FormProps,
   FormRef,
+  HeaderProps,
+  HeaderRef,
+  //   HeadingProps,
+  //   HeadingRef,
   HeadProps,
   HeadRef,
+  //   HgroupProps,
+  //   HgroupRef,
+  //   HrProps,
+  //   HrRef,
+  //   HtmlProps,
+  //   HtmlRef,
+  //   IframeProps,
+  //   IframeRef,
+  //   ImgProps,
+  //   ImgRef,
+  //   InputProps,
+  //   InputRef,
+  //   InsProps,
+  //   InsRef,
+  //   IProps,
+  //   IRef,
+  //   KbdProps,
+  //   KbdRef,
+  //   LabelProps,
+  //   LabelRef,
+  //   LegendProps,
+  //   LegendRef,
 } from ".";
 
 /**
@@ -768,3 +794,219 @@ export const HeadClient = forwardRef<HeadRef, HeadProps>(
 );
 
 HeadClient.displayName = "HeadClient";
+
+/**
+ * Render the header client component.
+ * @param {HeaderProps} props - The header client component properties
+ * @param {HeaderRef} ref - The header client component reference
+ * @returns The rendered header client component
+ */
+export const HeaderClient = forwardRef<HeaderRef, HeaderProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <header ref={ref} {...rest}>
+        {children}
+      </header>
+    );
+  }
+);
+
+HeaderClient.displayName = "HeaderClient";
+
+/**
+ * Render the HTML section heading client component.
+ * @param {HeadingProps} props - The HTML section heading client component properties
+ * @param {HeadingRef} ref - The HTML section heading client component reference
+ * @returns The rendered HTML section heading client component
+ */
+// export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
+//   ({ as: Component = "h1", children, ...rest }, ref) => {
+//     return (
+//       <Component ref={ref} {...rest}>
+//         {children}
+//       </Component>
+//     );
+//   }
+// );
+
+// HeadingClient.displayName = "HeadingClient";
+
+/**
+ * Render the heading group client component.
+ * @param {HgroupProps} props - The heading group client component properties
+ * @param {HgroupRef} ref - The heading group client component reference
+ * @returns The rendered heading group client component
+ */
+// export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <hgroup ref={ref} {...rest}>
+//         {children}
+//       </hgroup>
+//     );
+//   }
+// );
+
+// HgroupClient.displayName = "HgroupClient";
+
+/**
+ * Render the thematic break (horizontal rule) client component.
+ * @param {HrProps} props - The thematic break (horizontal rule) client component properties
+ * @param {HrRef} ref - The thematic break (horizontal rule) client component reference
+ * @returns The rendered thematic break (horizontal rule) client component
+ */
+// export const HrClient = forwardRef<HrRef, HrProps>(({ ...rest }, ref) => {
+//   return <hr ref={ref} {...rest} />;
+// });
+
+// HrClient.displayName = "HrClient";
+
+/**
+ * Render the HTML document/root client component.
+ * @param {HtmlProps} props - The HTML document/root client component properties
+ * @param {HtmlRef} ref - The HTML document/root client component reference
+ * @returns The rendered HTML document/root client component
+ */
+// export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <html ref={ref} {...rest}>
+//         {children}
+//       </html>
+//     );
+//   }
+// );
+
+// HtmlClient.displayName = "HtmlClient";
+
+/**
+ * Render the idiomatic text client component.
+ * @param {IProps} props - The idiomatic text client component properties
+ * @param {IRef} ref - The idiomatic text client component reference
+ * @returns The rendered idiomatic text client component
+ */
+// export const IClient = forwardRef<IRef, IProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <i ref={ref} {...rest}>
+//         {children}
+//       </i>
+//     );
+//   }
+// );
+
+// IClient.displayName = "IClient";
+
+/**
+ * Render the inline frame client component.
+ * @param {IframeProps} props - The inline frame client component properties
+ * @param {IframeRef} ref - The inline frame client component reference
+ * @returns The rendered inline frame client component
+ */
+// export const IframeClient = forwardRef<IframeRef, IframeProps>(
+//   ({ ...rest }, ref) => {
+//     return <iframe ref={ref} {...rest} />;
+//   }
+// );
+
+// IframeClient.displayName = "IframeClient";
+
+/**
+ * Render the image embed client component.
+ * @param {ImgProps} props - The image embed client component properties
+ * @param {ImgRef} ref - The image embed client component reference
+ * @returns The rendered image embed client component
+ */
+// export const ImgClient = forwardRef<ImgRef, ImgProps>(
+//   ({ src = "#", alt = "", ...rest }, ref) => {
+//     return <img ref={ref} src={src} alt={alt} {...rest} />;
+//   }
+// );
+
+// ImgClient.displayName = "ImgClient";
+
+/**
+ * Render the HTML input client component.
+ * @param {InputProps} props - The HTML input client component properties
+ * @param {InputRef} ref - The HTML input client component reference
+ * @returns The rendered HTML input client component
+ */
+// export const InputClient = forwardRef<InputRef, InputProps>(
+//   ({ type = "text", ...rest }, ref) => {
+//     return <input ref={ref} type={type} {...rest} />;
+//   }
+// );
+
+// InputClient.displayName = "InputClient";
+
+/**
+ * Render the inserted text client component.
+ * @param {InsProps} props - The inserted text client component properties
+ * @param {InsRef} ref - The inserted text client component reference
+ * @returns The rendered inserted text client component
+ */
+// export const InsClient = forwardRef<InsRef, InsProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <ins ref={ref} {...rest}>
+//         {children}
+//       </ins>
+//     );
+//   }
+// );
+
+// InsClient.displayName = "InsClient";
+
+/**
+ * Render the keyboard input client component.
+ * @param {KbdProps} props - The keyboard input client component properties
+ * @param {KbdRef} ref - The keyboard input client component reference
+ * @returns The rendered keyboard input client component
+ */
+// export const KbdClient = forwardRef<KbdRef, KbdProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <kbd ref={ref} {...rest}>
+//         {children}
+//       </kbd>
+//     );
+//   }
+// );
+
+// KbdClient.displayName = "KbdClient";
+
+/**
+ * Render the label client component.
+ * @param {LabelProps} props - The label client component properties
+ * @param {LabelRef} ref - The label client component reference
+ * @returns The rendered label client component
+ */
+// export const LabelClient = forwardRef<LabelRef, LabelProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <label ref={ref} {...rest}>
+//         {children}
+//       </label>
+//     );
+//   }
+// );
+
+// LabelClient.displayName = "LabelClient";
+
+/**
+ * Render the field set legend client component.
+ * @param {LegendProps} props - The field set legend client component properties
+ * @param {LegendRef} ref - The field set legend client component reference
+ * @returns The rendered field set legend client component
+ */
+// export const LegendClient = forwardRef<LegendRef, LegendProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <legend ref={ref} {...rest}>
+//         {children}
+//       </legend>
+//     );
+//   }
+// );
+
+// LegendClient.displayName = "LegendClient";
