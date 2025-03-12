@@ -1401,35 +1401,35 @@ export const Hgroup = ({
 Hgroup.displayName = "Hgroup";
 
 // Dynamically import the client component
-// const HrClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.HrClient };
-// });
+const HrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.HrClient };
+});
 
-// export type HrRef = React.ElementRef<"hr">;
-// export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
-//   CommonComponentProps;
+export type HrRef = React.ElementRef<"hr">;
+export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
+  CommonComponentProps;
 
 /**
  * Render the default thematic break (horizontal rule) server component.
  * @param {HrProps} props - The default thematic break (horizontal rule) server component properties
  * @returns The rendered default thematic break (horizontal rule) server component
  */
-// export const Hr = ({ isClient = false, ...rest }: HrProps) => {
-//   const element = <hr {...rest} />;
+export const Hr = ({ isClient = false, ...rest }: HrProps) => {
+  const element = <hr {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <HrClient {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <HrClient {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Hr.displayName = "Hr";
+Hr.displayName = "Hr";
 
 // Dynamically import the client component
 // const HtmlClient = lazy(async () => {
