@@ -1060,35 +1060,35 @@ export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
 Em.displayName = "Em";
 
 // Dynamically import the client component
-// const EmbedClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.EmbedClient };
-// });
+const EmbedClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.EmbedClient };
+});
 
-// export type EmbedRef = React.ElementRef<"embed">;
-// export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
-//   CommonComponentProps;
+export type EmbedRef = React.ElementRef<"embed">;
+export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
+  CommonComponentProps;
 
 /**
  * Render the default embed external content server component.
  * @param {EmbedProps} props - The default embed external content server component properties
  * @returns The rendered default embed external content server component
  */
-// export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
-//   const element = <embed {...rest} />;
+export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
+  const element = <embed {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <EmbedClient {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <EmbedClient {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Embed.displayName = "Embed";
+Embed.displayName = "Embed";
 
 // Dynamically import the client component
 // const FieldsetClient = lazy(async () => {
