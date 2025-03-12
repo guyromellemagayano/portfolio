@@ -1878,35 +1878,35 @@ export const Mark = ({ isClient = false, children, ...rest }: MarkProps) => {
 Mark.displayName = "Mark";
 
 // Dynamically import the client component
-// const MenuClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.MenuClient };
-// });
+const MenuClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MenuClient };
+});
 
-// export type MenuRef = React.ElementRef<"menu">;
-// export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
-//   CommonComponentProps;
+export type MenuRef = React.ElementRef<"menu">;
+export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
+  CommonComponentProps;
 
 /**
  * Render the default menu server component.
  * @param {MenuProps} props - The default menu server component properties
  * @returns The rendered default menu server component
  */
-// export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
-//   const element = <menu {...rest}>{children}</menu>;
+export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
+  const element = <menu {...rest}>{children}</menu>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <MenuClient {...rest}>{children}</MenuClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <MenuClient {...rest}>{children}</MenuClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Menu.displayName = "Menu";
+Menu.displayName = "Menu";
 
 // Dynamically import the client component
 // const MetaClient = lazy(async () => {
