@@ -2002,36 +2002,36 @@ export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
 Nav.displayName = "Nav";
 
 // Dynamically import the client component
-// const NoscriptClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.NoscriptClient };
-// });
+const NoscriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.NoscriptClient };
+});
 
-// export type NoscriptRef = React.ElementRef<"noscript">;
-// export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
-//   CommonComponentProps;
+export type NoscriptRef = React.ElementRef<"noscript">;
+export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
+  CommonComponentProps;
 
 /**
  * Render the default noscript server component.
  * @param {NoscriptProps} props - The default noscript server component properties
  * @returns The rendered default noscript server component
  */
-// export const Noscript = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: NoscriptProps) => {
-//   const element = <noscript {...rest}>{children}</noscript>;
+export const Noscript = ({
+  isClient = false,
+  children,
+  ...rest
+}: NoscriptProps) => {
+  const element = <noscript {...rest}>{children}</noscript>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <NoscriptClient {...rest}>{children}</NoscriptClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <NoscriptClient {...rest}>{children}</NoscriptClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Noscript.displayName = "Noscript";
+Noscript.displayName = "Noscript";
