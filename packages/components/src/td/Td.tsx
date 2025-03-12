@@ -1,4 +1,4 @@
-import { type TdHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TdClient = lazy(async () => {
   return { default: module.TdClient };
 });
 
-export type TdRef = HTMLTableDataCellElement;
-export type TdProps = TdHTMLAttributes<TdRef> & CommonComponentProps;
+export type TdRef = React.ElementRef<"td">;
+export type TdProps = React.ComponentPropsWithoutRef<"td"> &
+  CommonComponentProps;
 
 /**
  * Render the default table data cell server component.
