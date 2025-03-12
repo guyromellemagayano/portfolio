@@ -1,4 +1,4 @@
-import { type StyleHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const StyleClient = lazy(async () => {
   return { default: module.StyleClient };
 });
 
-export type StyleRef = HTMLStyleElement;
-export type StyleProps = StyleHTMLAttributes<StyleRef> & CommonComponentProps;
+export type StyleRef = React.ElementRef<"style">;
+export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
+  CommonComponentProps;
 
 /**
  * Render the default style information server component.
