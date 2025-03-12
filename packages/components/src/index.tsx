@@ -1752,3 +1752,34 @@ export const Li = ({ isClient = false, children, ...rest }: LiProps) => {
 };
 
 Li.displayName = "Li";
+
+// Dynamically import the client component
+const LinkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.LinkClient };
+});
+
+export type LinkRef = React.ElementRef<"link">;
+export type LinkProps = React.ComponentPropsWithoutRef<"link"> &
+  CommonComponentProps;
+
+/**
+ * Render the default external resource link server component.
+ * @param {LinkProps} props - The default external resource link server component properties
+ * @returns The rendered default external resource link server component
+ */
+export const Link = ({ isClient = false, ...rest }: LinkProps) => {
+  const element = <link {...rest} />;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <LinkClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Link.displayName = "Link";
