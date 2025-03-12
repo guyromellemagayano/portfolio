@@ -103,8 +103,8 @@ import type {
   IRef,
   KbdProps,
   KbdRef,
-  //   LabelProps,
-  //   LabelRef,
+  LabelProps,
+  LabelRef,
   //   LegendProps,
   //   LegendRef,
 } from ".";
@@ -981,17 +981,17 @@ KbdClient.displayName = "KbdClient";
  * @param {LabelRef} ref - The label client component reference
  * @returns The rendered label client component
  */
-// export const LabelClient = forwardRef<LabelRef, LabelProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <label ref={ref} {...rest}>
-//         {children}
-//       </label>
-//     );
-//   }
-// );
+export const LabelClient = forwardRef<LabelRef, LabelProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <label ref={ref} {...rest}>
+        {children}
+      </label>
+    );
+  }
+);
 
-// LabelClient.displayName = "LabelClient";
+LabelClient.displayName = "LabelClient";
 
 /**
  * Render the field set legend client component.
