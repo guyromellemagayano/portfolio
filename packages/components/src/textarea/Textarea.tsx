@@ -1,4 +1,4 @@
-import { type TextareaHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const TextareaClient = lazy(async () => {
   return { default: module.TextareaClient };
 });
 
-export type TextareaRef = HTMLTextAreaElement;
-export type TextareaProps = TextareaHTMLAttributes<TextareaRef> &
+export type TextareaRef = React.ElementRef<"textarea">;
+export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> &
   CommonComponentProps;
 
 /**
