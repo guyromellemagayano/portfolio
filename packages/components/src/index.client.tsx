@@ -121,6 +121,12 @@ import type {
   MenuRef,
   MetaProps,
   MetaRef,
+  MeterProps,
+  MeterRef,
+  //   NavProps,
+  //   NavRef,
+  //   NoscriptProps,
+  //   NoscriptRef,
 } from ".";
 
 /**
@@ -1138,3 +1144,57 @@ export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
 });
 
 MetaClient.displayName = "MetaClient";
+
+/**
+ * Render the HTML meter client component.
+ * @param {MeterProps} props - The HTML meter client component properties
+ * @param {MeterRef} ref - The HTML meter client component reference
+ * @returns The rendered HTML meter client component
+ */
+export const MeterClient = forwardRef<MeterRef, MeterProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <meter ref={ref} {...rest}>
+        {children}
+      </meter>
+    );
+  }
+);
+
+MeterClient.displayName = "MeterClient";
+
+/**
+ * Render the navigation section client component.
+ * @param {NavProps} props - The navigation section client component properties
+ * @param {NavRef} ref - The navigation section client component reference
+ * @returns The rendered navigation section client component
+ */
+// export const NavClient = forwardRef<NavRef, NavProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <nav ref={ref} {...rest}>
+//         {children}
+//       </nav>
+//     );
+//   }
+// );
+
+// NavClient.displayName = "NavClient";
+
+/**
+ * Render the noscript client component.
+ * @param {NoscriptProps} props - The noscript client component properties
+ * @param {NoscriptRef} ref - The noscript client component reference
+ * @returns The rendered noscript client component
+ */
+// export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <noscript ref={ref} {...rest}>
+//         {children}
+//       </noscript>
+//     );
+//   }
+// );
+
+// NoscriptClient.displayName = "NoscriptClient";
