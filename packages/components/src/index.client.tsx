@@ -51,14 +51,14 @@ import type {
   DataRef,
   DdProps,
   DdRef,
-  DelProps,
-  DelRef,
-  DetailsProps,
-  DetailsRef,
-  DfnProps,
-  DfnRef,
-  DialogProps,
-  DialogRef,
+  //   DelProps,
+  //   DelRef,
+  //   DetailsProps,
+  //   DetailsRef,
+  //   DfnProps,
+  //   DfnRef,
+  //   DialogProps,
+  //   DialogRef,
 } from ".";
 
 /**
@@ -469,17 +469,17 @@ DatalistClient.displayName = "DatalistClient";
  * @param {DdRef} ref - The description details client component reference
  * @returns The rendered description details client component
  */
-// export const DdClient = forwardRef<DdRef, DdProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <dd ref={ref} {...rest}>
-//         {children}
-//       </dd>
-//     );
-//   }
-// );
+export const DdClient = forwardRef<DdRef, DdProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <dd ref={ref} {...rest}>
+        {children}
+      </dd>
+    );
+  }
+);
 
-// DdClient.displayName = "DdClient";
+DdClient.displayName = "DdClient";
 
 /**
  * Render the deleted text client component.
