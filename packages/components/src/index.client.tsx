@@ -73,8 +73,8 @@ import type {
   FieldsetRef,
   FigcaptionProps,
   FigcaptionRef,
-  //   FigureProps,
-  //   FigureRef,
+  FigureProps,
+  FigureRef,
   //   FooterProps,
   //   FooterRef,
   //   FormProps,
@@ -703,17 +703,17 @@ FigcaptionClient.displayName = "FigcaptionClient";
  * @param {FigureRef} ref - The figure with optional caption client component reference
  * @returns The rendered figure with optional caption client component
  */
-// export const FigureClient = forwardRef<FigureRef, FigureProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <figure ref={ref} {...rest}>
-//         {children}
-//       </figure>
-//     );
-//   }
-// );
+export const FigureClient = forwardRef<FigureRef, FigureProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <figure ref={ref} {...rest}>
+        {children}
+      </figure>
+    );
+  }
+);
 
-// FigureClient.displayName = "FigureClient";
+FigureClient.displayName = "FigureClient";
 
 /**
  * Render the footer client component.
