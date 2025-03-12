@@ -1,4 +1,4 @@
-import { type SourceHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,8 @@ const SourceClient = lazy(async () => {
   return { default: module.SourceClient };
 });
 
-export type SourceRef = HTMLSourceElement;
-export type SourceProps = SourceHTMLAttributes<SourceRef> &
+export type SourceRef = React.ElementRef<"source">;
+export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
   CommonComponentProps;
 
 /**
