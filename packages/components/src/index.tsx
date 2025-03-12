@@ -507,3 +507,104 @@ export const Button = ({
 };
 
 Button.displayName = "Button";
+
+// Dynamically import the client component
+const CanvasClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.CanvasClient };
+});
+
+export type CanvasRef = React.ElementRef<"canvas">;
+export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
+  CommonComponentProps;
+
+/**
+ * Render the default canvas server component.
+ * @param {CanvasProps} props - The default canvas server component properties
+ * @returns The rendered default canvas server component
+ */
+export const Canvas = ({
+  isClient = false,
+  children,
+  ...rest
+}: CanvasProps) => {
+  const element = <canvas {...rest}>{children}</canvas>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <CanvasClient {...rest}>{children} </CanvasClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Canvas.displayName = "Canvas";
+
+// Dynamically import the client component
+const CaptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.CaptionClient };
+});
+
+export type CaptionRef = React.ElementRef<"caption">;
+export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> &
+  CommonComponentProps;
+
+/**
+ * Render the default caption server component.
+ * @param {CaptionProps} props - The default caption server component properties
+ * @returns The rendered default caption server component
+ */
+export const Caption = ({
+  isClient = false,
+  children,
+  ...rest
+}: CaptionProps) => {
+  const element = <caption {...rest}>{children}</caption>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <CaptionClient {...rest}>{children}</CaptionClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Caption.displayName = "Caption";
+
+// Dynamically import the client component
+const CiteClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.CiteClient };
+});
+
+export type CiteRef = React.ElementRef<"cite">;
+export type CiteProps = React.ComponentPropsWithoutRef<"cite"> &
+  CommonComponentProps;
+
+/**
+ * Render the default cite server component.
+ * @param {CiteProps} props - The default cite server component properties
+ * @returns The rendered default cite server component
+ */
+export const Cite = ({ isClient = false, children, ...rest }: CiteProps) => {
+  const element = <cite {...rest}>{children}</cite>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <CiteClient {...rest}>{children}</CiteClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Cite.displayName = "Cite";
