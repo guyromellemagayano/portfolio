@@ -1091,39 +1091,39 @@ export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
 Embed.displayName = "Embed";
 
 // Dynamically import the client component
-// const FieldsetClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.FieldsetClient };
-// });
+const FieldsetClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.FieldsetClient };
+});
 
-// export type FieldsetRef = React.ElementRef<"fieldset">;
-// export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
-//   CommonComponentProps;
+export type FieldsetRef = React.ElementRef<"fieldset">;
+export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
+  CommonComponentProps;
 
 /**
  * Render the default field set server component.
  * @param {FieldsetProps} props - The default field set server component properties
  * @returns The rendered default field set server component
  */
-// export const Fieldset = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: FieldsetProps) => {
-//   const element = <fieldset {...rest}>{children}</fieldset>;
+export const Fieldset = ({
+  isClient = false,
+  children,
+  ...rest
+}: FieldsetProps) => {
+  const element = <fieldset {...rest}>{children}</fieldset>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <FieldsetClient {...rest}>{children}</FieldsetClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <FieldsetClient {...rest}>{children}</FieldsetClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Fieldset.displayName = "Fieldset";
+Fieldset.displayName = "Fieldset";
 
 // Dynamically import the client component
 // const FigcaptionClient = lazy(async () => {
