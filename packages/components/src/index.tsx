@@ -434,3 +434,76 @@ export const Body = ({ isClient = false, children, ...rest }: BodyProps) => {
 };
 
 Body.displayName = "Body";
+
+// Dynamically import the client component
+const BrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.BrClient };
+});
+
+export type BrRef = React.ElementRef<"br">;
+export type BrProps = React.ComponentPropsWithoutRef<"br"> &
+  CommonComponentProps;
+
+/**
+ * Render the default line break server component.
+ * @param {BrProps} props - The default line break server component properties
+ * @returns The rendered default line break server component
+ */
+export const Br = ({ isClient = false, ...rest }: BrProps) => {
+  const element = <br {...rest} />;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <BrClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Br.displayName = "Br";
+
+// Dynamically import the client component
+const ButtonClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ButtonClient };
+});
+
+export type ButtonRef = React.ElementRef<"button">;
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
+  CommonComponentProps;
+
+/**
+ * Render the default button server component.
+ * @param {ButtonProps} props - The default button server component properties
+ * @returns The rendered default button server component
+ */
+export const Button = ({
+  type = "button",
+  isClient = false,
+  children,
+  ...rest
+}: ButtonProps) => {
+  const element = (
+    <button type={type} {...rest} disabled>
+      {children}
+    </button>
+  );
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ButtonClient type={type} {...rest}>
+          {children}
+        </ButtonClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Button.displayName = "Button";
