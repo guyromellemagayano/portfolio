@@ -1688,36 +1688,36 @@ export const Label = ({ isClient = false, children, ...rest }: LabelProps) => {
 Label.displayName = "Label";
 
 // Dynamically import the client component
-// const LegendClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.LegendClient };
-// });
+const LegendClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.LegendClient };
+});
 
-// export type LegendRef = React.ElementRef<"legend">;
-// export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
-//   CommonComponentProps;
+export type LegendRef = React.ElementRef<"legend">;
+export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
+  CommonComponentProps;
 
 /**
  * Render the default field set legend server component.
  * @param {LegendProps} props - The default field set legend server component properties
  * @returns The rendered default field set legend server component
  */
-// export const Legend = ({
-//   isClient = false,
-//   children,
-//   ...rest
-// }: LegendProps) => {
-//   const element = <legend {...rest}>{children}</legend>;
+export const Legend = ({
+  isClient = false,
+  children,
+  ...rest
+}: LegendProps) => {
+  const element = <legend {...rest}>{children}</legend>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <LegendClient {...rest}>{children}</LegendClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <LegendClient {...rest}>{children}</LegendClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Legend.displayName = "Legend";
+Legend.displayName = "Legend";
