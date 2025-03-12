@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TbodyClient = lazy(async () => {
   return { default: module.TbodyClient };
 });
 
-export type TbodyRef = HTMLTableSectionElement;
-export type TbodyProps = HTMLAttributes<TbodyRef> & CommonComponentProps;
+export type TbodyRef = React.ElementRef<"tbody">;
+export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
+  CommonComponentProps;
 
 /**
  * Render the default table body server component.
