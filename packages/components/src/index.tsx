@@ -1971,35 +1971,35 @@ export const Meter = ({ isClient = false, children, ...rest }: MeterProps) => {
 Meter.displayName = "Meter";
 
 // Dynamically import the client component
-// const NavClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.NavClient };
-// });
+const NavClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.NavClient };
+});
 
-// export type NavRef = React.ElementRef<"nav">;
-// export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
-//   CommonComponentProps;
+export type NavRef = React.ElementRef<"nav">;
+export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
+  CommonComponentProps;
 
 /**
  * Render the default navigation section server component.
  * @param {NavProps} props - The default navigation section server component properties
  * @returns The rendered default navigation section server component
  */
-// export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
-//   const element = <nav {...rest}>{children}</nav>;
+export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
+  const element = <nav {...rest}>{children}</nav>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <NavClient {...rest}>{children}</NavClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <NavClient {...rest}>{children}</NavClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Nav.displayName = "Nav";
+Nav.displayName = "Nav";
 
 // Dynamically import the client component
 // const NoscriptClient = lazy(async () => {
