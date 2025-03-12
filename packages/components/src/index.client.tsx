@@ -93,8 +93,8 @@ import type {
   HtmlRef,
   IframeProps,
   IframeRef,
-  //   ImgProps,
-  //   ImgRef,
+  ImgProps,
+  ImgRef,
   //   InputProps,
   //   InputRef,
   //   InsProps,
@@ -917,13 +917,13 @@ IframeClient.displayName = "IframeClient";
  * @param {ImgRef} ref - The image embed client component reference
  * @returns The rendered image embed client component
  */
-// export const ImgClient = forwardRef<ImgRef, ImgProps>(
-//   ({ src = "#", alt = "", ...rest }, ref) => {
-//     return <img ref={ref} src={src} alt={alt} {...rest} />;
-//   }
-// );
+export const ImgClient = forwardRef<ImgRef, ImgProps>(
+  ({ src = "#", alt = "", ...rest }, ref) => {
+    return <img ref={ref} src={src} alt={alt} {...rest} />;
+  }
+);
 
-// ImgClient.displayName = "ImgClient";
+ImgClient.displayName = "ImgClient";
 
 /**
  * Render the HTML input client component.
