@@ -59,6 +59,28 @@ import type {
   DfnRef,
   DialogProps,
   DialogRef,
+  DivProps,
+  DivRef,
+  //   DlProps,
+  //   DlRef,
+  //   DtProps,
+  //   DtRef,
+  //   EmbedProps,
+  //   EmbedRef,
+  //   EmProps,
+  //   EmRef,
+  //   FieldsetProps,
+  //   FieldsetRef,
+  //   FigcaptionProps,
+  //   FigcaptionRef,
+  //   FigureProps,
+  //   FigureRef,
+  //   FooterProps,
+  //   FooterRef,
+  //   FormProps,
+  //   FormRef,
+  //   HeadProps,
+  //   HeadRef,
 } from ".";
 
 /**
@@ -552,3 +574,197 @@ export const DialogClient = forwardRef<DialogRef, DialogProps>(
 );
 
 DialogClient.displayName = "DialogClient";
+
+/**
+ * Render the content division client component.
+ * @param {DivProps} props - The content division client component properties
+ * @param {DivRef} ref - The content division client component reference
+ * @returns The rendered content division client component
+ */
+export const DivClient = forwardRef<DivRef, DivProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <div ref={ref} {...rest}>
+        {children}
+      </div>
+    );
+  }
+);
+
+DivClient.displayName = "DivClient";
+
+/**
+ * Render the description list client component.
+ * @param {DlProps} props - The description list client component properties
+ * @param {DlRef} ref - The description list client component reference
+ * @returns The rendered description list client component
+ */
+// export const DlClient = forwardRef<DlRef, DlProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <dl ref={ref} {...rest}>
+//         {children}
+//       </dl>
+//     );
+//   }
+// );
+
+// DlClient.displayName = "DlClient";
+
+/**
+ * Render the description term client component.
+ * @param {DtProps} props - The description term client component properties
+ * @param {DtRef} ref - The description term client component reference
+ * @returns The rendered description term client component
+ */
+// export const DtClient = forwardRef<DtRef, DtProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <dt ref={ref} {...rest}>
+//         {children}
+//       </dt>
+//     );
+//   }
+// );
+
+// DtClient.displayName = "DtClient";
+
+/**
+ * Render the emphasis client component.
+ * @param {EmProps} props - The emphasis client component properties
+ * @param {EmRef} ref - The emphasis client component reference
+ * @returns The rendered emphasis client component
+ */
+// export const EmClient = forwardRef<EmRef, EmProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <em ref={ref} {...rest}>
+//         {children}
+//       </em>
+//     );
+//   }
+// );
+
+// EmClient.displayName = "EmClient";
+
+/**
+ * Render the embed external content client component.
+ * @param {EmbedProps} props - The embed external content client component properties
+ * @param {EmbedRef} ref - The embed external content client component reference
+ * @returns The rendered embed external content client component
+ */
+// export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
+//   ({ ...rest }, ref) => {
+//     return <embed ref={ref} {...rest} />;
+//   }
+// );
+
+// EmbedClient.displayName = "EmbedClient";
+
+/**
+ * Render the field set client component.
+ * @param {FieldsetProps} props - The field set client component properties
+ * @param {FieldsetRef} ref - The field set client component reference
+ * @returns The rendered field set client component
+ */
+// export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <fieldset ref={ref} {...rest}>
+//         {children}
+//       </fieldset>
+//     );
+//   }
+// );
+
+// FieldsetClient.displayName = "FieldsetClient";
+
+/**
+ * Render the figure caption client component.
+ * @param {FigcaptionProps} props - The figure caption client component properties
+ * @param {FigcaptionRef} ref - The figure caption client component reference
+ * @returns The rendered figure caption client component
+ */
+// export const FigcaptionClient = forwardRef<FigcaptionRef, FigcaptionProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <figcaption ref={ref} {...rest}>
+//         {children}
+//       </figcaption>
+//     );
+//   }
+// );
+
+// FigcaptionClient.displayName = "FigcaptionClient";
+
+/**
+ * Render the figure with optional caption client component.
+ * @param {FigureProps} props - The figure with optional caption client component properties
+ * @param {FigureRef} ref - The figure with optional caption client component reference
+ * @returns The rendered figure with optional caption client component
+ */
+// export const FigureClient = forwardRef<FigureRef, FigureProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <figure ref={ref} {...rest}>
+//         {children}
+//       </figure>
+//     );
+//   }
+// );
+
+// FigureClient.displayName = "FigureClient";
+
+/**
+ * Render the footer client component.
+ * @param {FooterProps} props - The footer client component properties
+ * @param {FooterRef} ref - The footer client component reference
+ * @returns The rendered footer client component
+ */
+// export const FooterClient = forwardRef<FooterRef, FooterProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <footer ref={ref} {...rest}>
+//         {children}
+//       </footer>
+//     );
+//   }
+// );
+
+// FooterClient.displayName = "FooterClient";
+
+/**
+ * Render the form client component.
+ * @param {FormProps} props - The form client component properties
+ * @param {FormRef} ref - The form client component reference
+ * @returns The rendered form client component
+ */
+// export const FormClient = forwardRef<FormRef, FormProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <form ref={ref} {...rest}>
+//         {children}
+//       </form>
+//     );
+//   }
+// );
+
+// FormClient.displayName = "FormClient";
+
+/**
+ * Render the document metadata (header) client component.
+ * @param {HeadProps} props - The document metadata (header) client component properties
+ * @param {HeadRef} ref - The document metadata (header) client component reference
+ * @returns The rendered document metadata (header) client component
+ */
+// export const HeadClient = forwardRef<HeadRef, HeadProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <head ref={ref} {...rest}>
+//         {children}
+//       </head>
+//     );
+//   }
+// );
+
+// HeadClient.displayName = "HeadClient";
