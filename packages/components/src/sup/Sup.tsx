@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const SummaryClient = lazy(async () => {
   return { default: module.SummaryClient };
 });
 
-export type SummaryRef = HTMLElement;
-export type SummaryProps = HTMLAttributes<SummaryRef> & CommonComponentProps;
+export type SummaryRef = React.ElementRef<"sup">;
+export type SummaryProps = React.ComponentPropsWithoutRef<"sup"> &
+  CommonComponentProps;
 
 /**
  * Render the default superscript server component.
