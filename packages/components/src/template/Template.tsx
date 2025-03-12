@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TemplateClient = lazy(async () => {
   return { default: module.TemplateClient };
 });
 
-export type TemplateRef = HTMLTemplateElement;
-export type TemplateProps = HTMLAttributes<TemplateRef> & CommonComponentProps;
+export type TemplateRef = React.ElementRef<"template">;
+export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
+  CommonComponentProps;
 
 /**
  * Render the default content template server component.
