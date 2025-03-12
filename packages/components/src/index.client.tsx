@@ -71,8 +71,8 @@ import type {
   EmRef,
   FieldsetProps,
   FieldsetRef,
-  //   FigcaptionProps,
-  //   FigcaptionRef,
+  FigcaptionProps,
+  FigcaptionRef,
   //   FigureProps,
   //   FigureRef,
   //   FooterProps,
@@ -685,17 +685,17 @@ FieldsetClient.displayName = "FieldsetClient";
  * @param {FigcaptionRef} ref - The figure caption client component reference
  * @returns The rendered figure caption client component
  */
-// export const FigcaptionClient = forwardRef<FigcaptionRef, FigcaptionProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <figcaption ref={ref} {...rest}>
-//         {children}
-//       </figcaption>
-//     );
-//   }
-// );
+export const FigcaptionClient = forwardRef<FigcaptionRef, FigcaptionProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <figcaption ref={ref} {...rest}>
+        {children}
+      </figcaption>
+    );
+  }
+);
 
-// FigcaptionClient.displayName = "FigcaptionClient";
+FigcaptionClient.displayName = "FigcaptionClient";
 
 /**
  * Render the figure with optional caption client component.
