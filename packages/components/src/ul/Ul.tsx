@@ -1,4 +1,4 @@
-import { type HTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const UlClient = lazy(async () => {
   return { default: module.UlClient };
 });
 
-export type UlRef = HTMLUListElement;
-export type UlProps = HTMLAttributes<UlRef> & CommonComponentProps;
+export type UlRef = React.ElementRef<"ul">;
+export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
+  CommonComponentProps;
 
 /**
  * Render the default unordered list server component.
