@@ -1,4 +1,4 @@
-import { type TableHTMLAttributes, lazy, Suspense } from "react";
+import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "../components";
 
@@ -8,8 +8,9 @@ const TableClient = lazy(async () => {
   return { default: module.TableClient };
 });
 
-export type TableRef = HTMLTableElement;
-export type TableProps = TableHTMLAttributes<TableRef> & CommonComponentProps;
+export type TableRef = React.ElementRef<"table">;
+export type TableProps = React.ComponentPropsWithoutRef<"table"> &
+  CommonComponentProps;
 
 /**
  * Render the default table server component.
