@@ -2101,3 +2101,73 @@ export const Ol = ({ isClient = false, children, ...rest }: OlProps) => {
 };
 
 Ol.displayName = "Ol";
+
+// Dynamically import the client component
+const OptgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.OptgroupClient };
+});
+
+export type OptgroupRef = React.ElementRef<"optgroup">;
+export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
+  CommonComponentProps;
+
+/**
+ * Render the default option group server component.
+ * @param {OptgroupProps} props - The default option group server component properties
+ * @returns The rendered default option group server component
+ */
+export const Optgroup = ({
+  isClient = false,
+  children,
+  ...rest
+}: OptgroupProps) => {
+  const element = <optgroup {...rest}>{children}</optgroup>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <OptgroupClient {...rest}>{children}</OptgroupClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Optgroup.displayName = "Optgroup";
+
+// Dynamically import the client component
+const OptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.OptionClient };
+});
+
+export type OptionRef = React.ElementRef<"option">;
+export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
+  CommonComponentProps;
+
+/**
+ * Render the default HTML option server component.
+ * @param {OptionProps} props - The default HTML option server component properties
+ * @returns The rendered default HTML option server component
+ */
+export const Option = ({
+  isClient = false,
+  children,
+  ...rest
+}: OptionProps) => {
+  const element = <option {...rest}>{children}</option>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <OptionClient {...rest}>{children}</OptionClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Option.displayName = "Option";
