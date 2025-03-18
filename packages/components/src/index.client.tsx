@@ -131,6 +131,10 @@ import type {
   ObjectRef,
   OlProps,
   OlRef,
+  OptgroupProps,
+  OptgroupRef,
+  OptionProps,
+  OptionRef,
 } from ".";
 
 /**
@@ -1238,3 +1242,39 @@ export const OlClient = forwardRef<OlRef, OlProps>(
 );
 
 OlClient.displayName = "OlClient";
+
+/**
+ * Render the option group client component.
+ * @param {OptgroupProps} props - The option group client component properties
+ * @param {OptgroupRef} ref - The option group client component reference
+ * @returns The rendered option group client component
+ */
+export const OptgroupClient = forwardRef<OptgroupRef, OptgroupProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <optgroup ref={ref} {...rest}>
+        {children}
+      </optgroup>
+    );
+  }
+);
+
+OptgroupClient.displayName = "OptgroupClient";
+
+/**
+ * Render the HTML option client component.
+ * @param {OptionProps} props - The HTML option client component properties
+ * @param {OptionRef} ref - The HTML option client component reference
+ * @returns The rendered HTML option client component
+ */
+export const OptionClient = forwardRef<OptionRef, OptionProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <option ref={ref} {...rest}>
+        {children}
+      </option>
+    );
+  }
+);
+
+OptionClient.displayName = "OptionClient";
