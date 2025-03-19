@@ -3364,3 +3364,157 @@ export const Track = ({ isClient = false, ...rest }: TrackProps) => {
 };
 
 Track.displayName = "Track";
+
+// Dynamically import the client component
+const UClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.UClient };
+});
+
+export type URef = React.ElementRef<"u">;
+export type UProps = React.ComponentPropsWithoutRef<"u"> & CommonComponentProps;
+
+/**
+ * Render the default unarticulated annotation (underline) server component.
+ * @param {UProps} props - The default unarticulated annotation (underline) server component properties
+ * @returns The rendered default unarticulated annotation (underline) server component
+ */
+export const U = ({ isClient = false, children, ...rest }: UProps) => {
+  const element = <u {...rest}>{children}</u>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <UClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+U.displayName = "U";
+
+// Dynamically import the client component
+const UlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.UlClient };
+});
+
+export type UlRef = React.ElementRef<"ul">;
+export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
+  CommonComponentProps;
+
+/**
+ * Render the default unordered list server component.
+ * @param {UlProps} props - The default unordered list server component properties
+ * @returns The rendered default unordered list server component
+ */
+export const Ul = ({ isClient = false, children, ...rest }: UlProps) => {
+  const element = <ul {...rest}>{children}</ul>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <UlClient {...rest}>{children}</UlClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Ul.displayName = "Ul";
+
+// Dynamically import the client component
+const VarClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.VarClient };
+});
+
+export type VarRef = React.ElementRef<"var">;
+export type VarProps = React.ComponentPropsWithoutRef<"var"> &
+  CommonComponentProps;
+
+/**
+ * Render the default variable server component.
+ * @param {VarProps} props - The default variable server component properties
+ * @returns The rendered default variable server component
+ */
+export const Var = ({ isClient = false, children, ...rest }: VarProps) => {
+  const element = <var {...rest}>{children}</var>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <VarClient {...rest}>{children}</VarClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Var.displayName = "Var";
+
+// Dynamically import the client component
+const VideoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.VideoClient };
+});
+
+export type VideoRef = React.ElementRef<"video">;
+export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
+  CommonComponentProps;
+
+/**
+ * Render the default video embed server component.
+ * @param {VideoProps} props - The default video embed server component properties
+ * @returns The rendered default video embed server component
+ */
+export const Video = ({ isClient = false, children, ...rest }: VideoProps) => {
+  const element = <video {...rest}>{children}</video>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <VideoClient {...rest}>{children}</VideoClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Video.displayName = "Video";
+
+// Dynamically import the client component
+const WbrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.WbrClient };
+});
+
+export type WbrRef = React.ElementRef<"wbr">;
+export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
+  CommonComponentProps;
+
+/**
+ * Render the default line break opportunity server component.
+ * @param {WbrProps} props - The default line break opportunity server component properties
+ * @returns The rendered default line break opportunity server component
+ */
+export const Wbr = ({ isClient = false, ...rest }: WbrProps) => {
+  const element = <wbr {...rest} />;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <WbrClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Wbr.displayName = "Wbr";
