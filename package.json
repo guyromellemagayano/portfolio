@@ -2,7 +2,7 @@
   "name": "guyromellemagayano",
   "private": true,
   "scripts": {
-    "commit": "git-cz",
+    "commit": "czg gpg",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
@@ -16,7 +16,7 @@
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@commitlint/cz-commitlint": "^19.6.1",
-    "cz-git": "^1.11.1",
+    "czg": "^1.11.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.3",
