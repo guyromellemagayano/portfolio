@@ -209,6 +209,16 @@ import type {
   TrackRef,
   TrProps,
   TrRef,
+  UlProps,
+  UlRef,
+  UProps,
+  URef,
+  VarProps,
+  VarRef,
+  VideoProps,
+  VideoRef,
+  WbrProps,
+  WbrRef,
 } from ".";
 
 /**
@@ -2010,3 +2020,87 @@ export const TrackClient = forwardRef<TrackRef, TrackProps>(
 );
 
 TrackClient.displayName = "TrackClient";
+
+/**
+ * Render the unarticulated annotation (underline) client component.
+ * @param {UProps} props - The unarticulated annotation (underline) client component properties
+ * @param {URef} ref - The unarticulated annotation (underline) client component reference
+ * @returns The rendered unarticulated annotation (underline) client component
+ */
+export const UClient = forwardRef<URef, UProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <u ref={ref} {...rest}>
+        {children}
+      </u>
+    );
+  }
+);
+
+UClient.displayName = "UClient";
+
+/**
+ * Render the unordered list client component.
+ * @param {UlProps} props - The unordered list client component properties
+ * @param {UlRef} ref - The unordered list client component reference
+ * @returns The rendered unordered list client component
+ */
+export const UlClient = forwardRef<UlRef, UlProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <ul ref={ref} {...rest}>
+        {children}
+      </ul>
+    );
+  }
+);
+
+UlClient.displayName = "UlClient";
+
+/**
+ * Render the variable client component.
+ * @param {VarProps} props - The variable client component properties
+ * @param {VarRef} ref - The variable client component reference
+ * @returns The rendered variable client component
+ */
+export const VarClient = forwardRef<VarRef, VarProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <var ref={ref} {...rest}>
+        {children}
+      </var>
+    );
+  }
+);
+
+VarClient.displayName = "VarClient";
+
+/**
+ * Render the video embed client component.
+ * @param {VideoProps} props - The video embed client component properties
+ * @param {VideoRef} ref - The video embed client component reference
+ * @returns The rendered video embed client component
+ */
+export const VideoClient = forwardRef<VideoRef, VideoProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <video ref={ref} {...rest}>
+        {children}
+      </video>
+    );
+  }
+);
+
+VideoClient.displayName = "VideoClient";
+
+/**
+ * Render the line break opportunity client component.
+ * @param {WbrProps} props - The line break opportunity client component properties
+ * @param {WbrRef} ref - The line break opportunity client component reference
+ * @returns The rendered line break opportunity client component
+ */
+export const WbrClient = forwardRef<WbrRef, WbrProps>(({ ...rest }, ref) => {
+  return <wbr ref={ref} {...rest} />;
+});
+
+WbrClient.displayName = "WbrClient";
