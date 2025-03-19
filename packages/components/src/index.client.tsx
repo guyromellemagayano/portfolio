@@ -169,8 +169,18 @@ import type {
   SmallRef,
   SourceProps,
   SourceRef,
+  SpanProps,
+  SpanRef,
   SProps,
   SRef,
+  StrongProps,
+  StrongRef,
+  StyleProps,
+  StyleRef,
+  SubProps,
+  SubRef,
+  SummaryProps,
+  SummaryRef,
 } from ".";
 
 /**
@@ -1634,3 +1644,93 @@ export const SourceClient = forwardRef<SourceRef, SourceProps>(
 );
 
 SourceClient.displayName = "SourceClient";
+
+/**
+ * Render the content span client component.
+ * @param {SpanProps} props - The content span client component properties
+ * @param {SpanRef} ref - The content span client component reference
+ * @returns The rendered content span client component
+ */
+export const SpanClient = forwardRef<SpanRef, SpanProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <span ref={ref} {...rest}>
+        {children}
+      </span>
+    );
+  }
+);
+
+SpanClient.displayName = "SpanClient";
+
+/**
+ * Render the strong importance client component.
+ * @param {StrongProps} props - The strong importance client component properties
+ * @param {StrongRef} ref - The strong importance client component reference
+ * @returns The rendered strong importance client component
+ */
+export const StrongClient = forwardRef<StrongRef, StrongProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <strong ref={ref} {...rest}>
+        {children}
+      </strong>
+    );
+  }
+);
+
+StrongClient.displayName = "StrongClient";
+
+/**
+ * Render the style information client component.
+ * @param {StyleProps} props - The style information client component properties
+ * @param {StyleRef} ref - The style information client component reference
+ * @returns The rendered style information client component
+ */
+export const StyleClient = forwardRef<StyleRef, StyleProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <style ref={ref} {...rest}>
+        {children}
+      </style>
+    );
+  }
+);
+
+StyleClient.displayName = "StyleClient";
+
+/**
+ * Render the subscript client component.
+ * @param {SubProps} props - The subscript client component properties
+ * @param {SubRef} ref - The subscript client component reference
+ * @returns The rendered subscript client component
+ */
+export const SubClient = forwardRef<SubRef, SubProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <sub ref={ref} {...rest}>
+        {children}
+      </sub>
+    );
+  }
+);
+
+SubClient.displayName = "SubClient";
+
+/**
+ * Render the disclosure summary client component.
+ * @param {SummaryProps} props - The disclosure summary client component properties
+ * @param {SummaryRef} ref - The disclosure summary client component reference
+ * @returns The rendered disclosure summary client component
+ */
+export const SummaryClient = forwardRef<SummaryRef, SummaryProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <summary ref={ref} {...rest}>
+        {children}
+      </summary>
+    );
+  }
+);
+
+SummaryClient.displayName = "SummaryClient";
