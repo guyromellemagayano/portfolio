@@ -2406,7 +2406,7 @@ Rp.displayName = "Rp";
 
 // Dynamically import the client component
 const RtClient = lazy(async () => {
-  const module = await import("./Rt.client");
+  const module = await import("./index.client");
   return { default: module.RtClient };
 });
 
@@ -2434,3 +2434,130 @@ export const Rt = ({ isClient = false, children, ...rest }: RtProps) => {
 };
 
 Rt.displayName = "Rt";
+
+// Dynamically import the client component
+const RubyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.RubyClient };
+});
+
+export type RubyRef = React.ElementRef<"ruby">;
+export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
+  CommonComponentProps;
+
+/**
+ * Render the default ruby annotation server component.
+ * @param {RubyProps} props - The default ruby annotation server component properties
+ * @returns The rendered default ruby annotation server component
+ */
+export const Ruby = ({ isClient = false, children, ...rest }: RubyProps) => {
+  const element = <ruby {...rest}>{children}</ruby>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <RubyClient {...rest}>{children}</RubyClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Ruby.displayName = "Ruby";
+
+// Dynamically import the client component
+const SClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SClient };
+});
+
+export type SRef = React.ElementRef<"s">;
+export type SProps = React.ComponentPropsWithoutRef<"s"> & CommonComponentProps;
+
+/**
+ * Render the default strikethrough server component.
+ * @param {SProps} props - The default strikethrough server component properties
+ * @returns The rendered default strikethrough server component
+ */
+export const S = ({ isClient = false, children, ...rest }: SProps) => {
+  const element = <s {...rest}>{children}</s>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SClient {...rest}>{children}</SClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+S.displayName = "S";
+
+// Dynamically import the client component
+const SampClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SampClient };
+});
+
+export type SampRef = React.ElementRef<"samp">;
+export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
+  CommonComponentProps;
+
+/**
+ * Render the default sample output server component.
+ * @param {SampProps} props - The default sample output server component properties
+ * @returns The rendered default sample output server component
+ */
+export const Samp = ({ isClient = false, children, ...rest }: SampProps) => {
+  const element = <samp {...rest}>{children}</samp>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SampClient {...rest}>{children}</SampClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Samp.displayName = "Samp";
+
+// Dynamically import the client component
+const ScriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ScriptClient };
+});
+
+export type ScriptRef = React.ElementRef<"script">;
+export type ScriptProps = React.ComponentPropsWithoutRef<"script"> &
+  CommonComponentProps;
+
+/**
+ * Render the default script server component.
+ * @param {ScriptProps} props - The default script server component properties
+ * @returns The rendered default script server component
+ */
+export const Script = ({
+  isClient = false,
+  children,
+  ...rest
+}: ScriptProps) => {
+  const element = <script {...rest}>{children}</script>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ScriptClient {...rest}>{children}</ScriptClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Script.displayName = "Script";
