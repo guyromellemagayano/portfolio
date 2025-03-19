@@ -151,6 +151,14 @@ import type {
   RpRef,
   RtProps,
   RtRef,
+  RubyProps,
+  RubyRef,
+  SampProps,
+  SampRef,
+  ScriptProps,
+  ScriptRef,
+  SProps,
+  SRef,
 } from ".";
 
 /**
@@ -1438,3 +1446,75 @@ export const RtClient = forwardRef<RtRef, RtProps>(
 );
 
 RtClient.displayName = "RtClient";
+
+/**
+ * Render the ruby annotation client component.
+ * @param {RubyProps} props - The ruby annotation client component properties
+ * @param {RubyRef} ref - The ruby annotation client component reference
+ * @returns The rendered ruby annotation client component
+ */
+export const RubyClient = forwardRef<RubyRef, RubyProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <ruby ref={ref} {...rest}>
+        {children}
+      </ruby>
+    );
+  }
+);
+
+RubyClient.displayName = "RubyClient";
+
+/**
+ * Render the strikethrough client component.
+ * @param {SProps} props - The strikethrough client component properties
+ * @param {SRef} ref - The strikethrough client component reference
+ * @returns The rendered strikethrough client component
+ */
+export const SClient = forwardRef<SRef, SProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <s ref={ref} {...rest}>
+        {children}
+      </s>
+    );
+  }
+);
+
+SClient.displayName = "SClient";
+
+/**
+ * Render the sample output client component.
+ * @param {SampProps} props - The sample output client component properties
+ * @param {SampRef} ref - The sample output client component reference
+ * @returns The rendered sample output client component
+ */
+export const SampClient = forwardRef<SampRef, SampProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <samp ref={ref} {...rest}>
+        {children}
+      </samp>
+    );
+  }
+);
+
+SampClient.displayName = "SampClient";
+
+/**
+ * Render the script client component.
+ * @param {ScriptProps} props - The script client component properties
+ * @param {ScriptRef} ref - The script client component reference
+ * @returns The rendered script client component
+ */
+export const ScriptClient = forwardRef<ScriptRef, ScriptProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <script ref={ref} {...rest}>
+        {children}
+      </script>
+    );
+  }
+);
+
+ScriptClient.displayName = "ScriptClient";
