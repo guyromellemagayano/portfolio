@@ -195,6 +195,18 @@ import type {
   TemplateRef,
   TextareaProps,
   TextareaRef,
+  TfootProps,
+  TfootRef,
+  TheadProps,
+  TheadRef,
+  ThProps,
+  ThRef,
+  TimeProps,
+  TimeRef,
+  // TitleProps,
+  // TitleRef,
+  // TrProps,
+  // TrRef,
 } from ".";
 
 /**
@@ -1874,3 +1886,111 @@ export const TextareaClient = forwardRef<TextareaRef, TextareaProps>(
 );
 
 TextareaClient.displayName = "TextareaClient";
+
+/**
+ * Render the table foot client component.
+ * @param {TfootProps} props - The table foot client component properties
+ * @param {TfootRef} ref - The table foot client component reference
+ * @returns The rendered table foot client component
+ */
+export const TfootClient = forwardRef<TfootRef, TfootProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <tfoot ref={ref} {...rest}>
+        {children}
+      </tfoot>
+    );
+  }
+);
+
+TfootClient.displayName = "TfootClient";
+
+/**
+ * Render the table header client component.
+ * @param {ThProps} props - The table header client component properties
+ * @param {ThRef} ref - The table header client component reference
+ * @returns The rendered table header client component
+ */
+export const ThClient = forwardRef<ThRef, ThProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <th ref={ref} {...rest}>
+        {children}
+      </th>
+    );
+  }
+);
+
+ThClient.displayName = "ThClient";
+
+/**
+ * Render the table head client component.
+ * @param {TheadProps} props - The table head client component properties
+ * @param {TheadRef} ref - The table head client component reference
+ * @returns The rendered table head client component
+ */
+export const TheadClient = forwardRef<TheadRef, TheadProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <thead ref={ref} {...rest}>
+        {children}
+      </thead>
+    );
+  }
+);
+
+TheadClient.displayName = "TheadClient";
+
+/**
+ * Render the (date) time client component.
+ * @param {TimeProps} props - The (date) time client component properties
+ * @param {TimeRef} ref - The (date) time client component reference
+ * @returns The rendered (date) time client component
+ */
+export const TimeClient = forwardRef<TimeRef, TimeProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <time ref={ref} {...rest}>
+        {children}
+      </time>
+    );
+  }
+);
+
+TimeClient.displayName = "TimeClient";
+
+/**
+ * Render the document title client component.
+ * @param {TitleProps} props - The document title client component properties
+ * @param {TitleRef} ref - The document title client component reference
+ * @returns The rendered document title client component
+ */
+// export const TitleClient = forwardRef<TitleRef, TitleProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <title ref={ref} {...rest}>
+//         {children}
+//       </title>
+//     );
+//   }
+// );
+
+// TitleClient.displayName = "TitleClient";
+
+/**
+ * Render the table row client component.
+ * @param {TrProps} props - The table row client component properties
+ * @param {TrRef} ref - The table row client component reference
+ * @returns The rendered table row client component
+ */
+// export const TrClient = forwardRef<TrRef, TrProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <tr ref={ref} {...rest}>
+//         {children}
+//       </tr>
+//     );
+//   }
+// );
+
+// TrClient.displayName = "TrClient";
