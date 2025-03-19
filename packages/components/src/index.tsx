@@ -2922,3 +2922,127 @@ export const Summary = ({
 };
 
 Summary.displayName = "Summary";
+
+// Dynamically import the client component
+const SupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SupClient };
+});
+
+export type SupRef = React.ElementRef<"sup">;
+export type SupProps = React.ComponentPropsWithoutRef<"sup"> &
+  CommonComponentProps;
+
+/**
+ * Render the default superscript server component.
+ * @param {SupProps} props - The default superscript server component properties
+ * @returns The rendered default superscript server component
+ */
+export const Sup = ({ isClient = false, children, ...rest }: SupProps) => {
+  const element = <sup {...rest}>{children}</sup>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SupClient {...rest}>{children}</SupClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Sup.displayName = "Sup";
+
+// Dynamically import the client component
+const SvgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SvgClient };
+});
+
+export type SvgRef = React.ElementRef<"svg">;
+export type SvgProps = React.ComponentPropsWithoutRef<"svg"> &
+  CommonComponentProps;
+
+/**
+ * Render the default scalable vector graphics server component.
+ * @param {SvgProps} props - The default scalable vector graphics server component properties
+ * @returns The rendered default scalable vector graphics server component
+ */
+export const Svg = ({ isClient = false, children, ...rest }: SvgProps) => {
+  const element = <svg {...rest}>{children}</svg>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SvgClient {...rest}>{children}</SvgClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Svg.displayName = "Svg";
+
+// Dynamically import the client component
+const TableClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TableClient };
+});
+
+export type TableRef = React.ElementRef<"table">;
+export type TableProps = React.ComponentPropsWithoutRef<"table"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table server component.
+ * @param {TableProps} props - The default table server component properties
+ * @returns The rendered default table server component
+ */
+export const Table = ({ isClient = false, children, ...rest }: TableProps) => {
+  const element = <table {...rest}>{children}</table>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TableClient {...rest}>{children}</TableClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Table.displayName = "Table";
+
+// Dynamically import the client component
+const TbodyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TbodyClient };
+});
+
+export type TbodyRef = React.ElementRef<"tbody">;
+export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table body server component.
+ * @param {TbodyProps} props - The default table body server component properties
+ * @returns The rendered default table body server component
+ */
+export const Tbody = ({ isClient = false, children, ...rest }: TbodyProps) => {
+  const element = <tbody {...rest}>{children}</tbody>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TbodyClient {...rest}>{children}</TbodyClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Tbody.displayName = "Tbody";
