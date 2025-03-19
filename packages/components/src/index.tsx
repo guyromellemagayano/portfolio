@@ -3273,63 +3273,94 @@ export const Time = ({ isClient = false, children, ...rest }: TimeProps) => {
 Time.displayName = "Time";
 
 // Dynamically import the client component
-// const TitleClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.TitleClient };
-// });
+const TitleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TitleClient };
+});
 
-// export type TitleRef = React.ElementRef<"title">;
-// export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
-//   CommonComponentProps;
+export type TitleRef = React.ElementRef<"title">;
+export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
+  CommonComponentProps;
 
 /**
  * Render the default document title server component.
  * @param {TitleProps} props - The default document title server component properties
  * @returns The rendered default document title server component
  */
-// export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
-//   const element = <title {...rest}>{children}</title>;
+export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
+  const element = <title {...rest}>{children}</title>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <TitleClient {...rest}>{children}</TitleClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TitleClient {...rest}>{children}</TitleClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Title.displayName = "Title";
+Title.displayName = "Title";
 
 // Dynamically import the client component
-// const TrClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.TrClient };
-// });
+const TrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TrClient };
+});
 
-// export type TrRef = React.ElementRef<"tr">;
-// export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
-//   CommonComponentProps;
+export type TrRef = React.ElementRef<"tr">;
+export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
+  CommonComponentProps;
 
 /**
  * Render the default table row server component.
  * @param {TrProps} props - The default table row server component properties
  * @returns The rendered default table row server component
  */
-// export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
-//   const element = <tr {...rest}>{children}</tr>;
+export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
+  const element = <tr {...rest}>{children}</tr>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <TrClient {...rest}>{children}</TrClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TrClient {...rest}>{children}</TrClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Tr.displayName = "Tr";
+Tr.displayName = "Tr";
+
+// Dynamically import the client component
+const TrackClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TrackClient };
+});
+
+export type TrackRef = React.ElementRef<"track">;
+export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
+  CommonComponentProps;
+
+/**
+ * Render the default embed text track server component.
+ * @param {TrackProps} props - The default embed text track server component properties
+ * @returns The rendered default embed text track server component
+ */
+export const Track = ({ isClient = false, ...rest }: TrackProps) => {
+  const element = <track {...rest} />;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TrackClient {...rest} />
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Track.displayName = "Track";
