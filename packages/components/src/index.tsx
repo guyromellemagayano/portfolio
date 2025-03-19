@@ -2668,94 +2668,94 @@ export const Select = ({
 Select.displayName = "Select";
 
 // Dynamically import the client component
-// const SlotClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.SlotClient };
-// });
+const SlotClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SlotClient };
+});
 
-// export type SlotRef = React.ElementRef<"slot">;
-// export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
-//   CommonComponentProps;
+export type SlotRef = React.ElementRef<"slot">;
+export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
+  CommonComponentProps;
 
 /**
  * Render the default web component slot server component.
  * @param {SlotProps} props - The default web component slot server component properties
  * @returns The rendered default web component slot server component
  */
-// export const Slot = ({ isClient = false, children, ...rest }: SlotProps) => {
-//   const element = <slot {...rest}>{children}</slot>;
+export const Slot = ({ isClient = false, children, ...rest }: SlotProps) => {
+  const element = <slot {...rest}>{children}</slot>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <SlotClient {...rest}>{children}</SlotClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SlotClient {...rest}>{children}</SlotClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Slot.displayName = "Slot";
+Slot.displayName = "Slot";
 
 // Dynamically import the client component
-// const SmallClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.SmallClient };
-// });
+const SmallClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SmallClient };
+});
 
-// export type SmallRef = React.ElementRef<"small">;
-// export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
-//   CommonComponentProps;
+export type SmallRef = React.ElementRef<"small">;
+export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
+  CommonComponentProps;
 
 /**
  * Render the default side comment server component.
  * @param {SmallProps} props - The default side comment server component properties
  * @returns The rendered default side comment server component
  */
-// export const Small = ({ isClient = false, children, ...rest }: SmallProps) => {
-//   const element = <small {...rest}>{children}</small>;
+export const Small = ({ isClient = false, children, ...rest }: SmallProps) => {
+  const element = <small {...rest}>{children}</small>;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <SmallClient {...rest}>{children}</SmallClient>
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SmallClient {...rest}>{children}</SmallClient>
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Small.displayName = "Small";
+Small.displayName = "Small";
 
 // Dynamically import the client component
-// const SourceClient = lazy(async () => {
-//   const module = await import("./index.client");
-//   return { default: module.SourceClient };
-// });
+const SourceClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SourceClient };
+});
 
-// export type SourceRef = React.ElementRef<"source">;
-// export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
-//   CommonComponentProps;
+export type SourceRef = React.ElementRef<"source">;
+export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
+  CommonComponentProps;
 
 /**
  * Render the default media or image source server component.
  * @param {SourceProps} props - The default media or image source server component properties
  * @returns The rendered default media or image source server component
  */
-// export const Source = ({ isClient = false, ...rest }: SourceProps) => {
-//   const element = <source {...rest} />;
+export const Source = ({ isClient = false, ...rest }: SourceProps) => {
+  const element = <source {...rest} />;
 
-//   if (isClient) {
-//     return (
-//       <Suspense fallback={element}>
-//         <SourceClient {...rest} />
-//       </Suspense>
-//     );
-//   }
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SourceClient {...rest} />
+      </Suspense>
+    );
+  }
 
-//   return element;
-// };
+  return element;
+};
 
-// Source.displayName = "Source";
+Source.displayName = "Source";

@@ -163,12 +163,12 @@ import type {
   SectionRef,
   SelectProps,
   SelectRef,
-  // SlotProps,
-  // SlotRef,
-  // SmallProps,
-  // SmallRef,
-  // SourceProps,
-  // SourceRef,
+  SlotProps,
+  SlotRef,
+  SmallProps,
+  SmallRef,
+  SourceProps,
+  SourceRef,
   SProps,
   SRef,
 } from ".";
@@ -1591,17 +1591,17 @@ SelectClient.displayName = "SelectClient";
  * @param {SlotRef} ref - The web component slot client component reference
  * @returns The rendered web component slot client component
  */
-// export const SlotClient = forwardRef<SlotRef, SlotProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <slot ref={ref} {...rest}>
-//         {children}
-//       </slot>
-//     );
-//   }
-// );
+export const SlotClient = forwardRef<SlotRef, SlotProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <slot ref={ref} {...rest}>
+        {children}
+      </slot>
+    );
+  }
+);
 
-// SlotClient.displayName = "SlotClient";
+SlotClient.displayName = "SlotClient";
 
 /**
  * Render the side comment client component.
@@ -1609,17 +1609,17 @@ SelectClient.displayName = "SelectClient";
  * @param {SmallRef} ref - The side comment client component reference
  * @returns The rendered side comment client component
  */
-// export const SmallClient = forwardRef<SmallRef, SmallProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <small ref={ref} {...rest}>
-//         {children}
-//       </small>
-//     );
-//   }
-// );
+export const SmallClient = forwardRef<SmallRef, SmallProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <small ref={ref} {...rest}>
+        {children}
+      </small>
+    );
+  }
+);
 
-// SmallClient.displayName = "SmallClient";
+SmallClient.displayName = "SmallClient";
 
 /**
  * Render the media or image source client component.
@@ -1627,10 +1627,10 @@ SelectClient.displayName = "SelectClient";
  * @param {SourceRef} ref - The media or image source client component reference
  * @returns The rendered media or image source client component
  */
-// export const SourceClient = forwardRef<SourceRef, SourceProps>(
-//   ({ ...rest }, ref) => {
-//     return <source ref={ref} {...rest} />;
-//   }
-// );
+export const SourceClient = forwardRef<SourceRef, SourceProps>(
+  ({ ...rest }, ref) => {
+    return <source ref={ref} {...rest} />;
+  }
+);
 
-// SourceClient.displayName = "SourceClient";
+SourceClient.displayName = "SourceClient";
