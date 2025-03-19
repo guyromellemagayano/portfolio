@@ -2276,3 +2276,130 @@ export const Picture = ({
 };
 
 Picture.displayName = "Picture";
+
+// Dynamically import the client component
+const PreClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.PreClient };
+});
+
+export type PreRef = React.ElementRef<"pre">;
+export type PreProps = React.ComponentPropsWithoutRef<"pre"> &
+  CommonComponentProps;
+
+/**
+ * Render the default preformatted text server component.
+ * @param {PreProps} props - The default preformatted text server component properties
+ * @returns The rendered default preformatted text server component
+ */
+export const Pre = ({ isClient = false, children, ...rest }: PreProps) => {
+  const element = <pre {...rest}>{children}</pre>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <PreClient {...rest}>{children}</PreClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Pre.displayName = "Pre";
+
+// Dynamically import the client component
+const ProgressClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ProgressClient };
+});
+
+export type ProgressRef = React.ElementRef<"progress">;
+export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
+  CommonComponentProps;
+
+/**
+ * Render the default progress indicator server component.
+ * @param {ProgressProps} props - The default progress indicator server component properties
+ * @returns The rendered default progress indicator server component
+ */
+export const Progress = ({
+  isClient = false,
+  children,
+  ...rest
+}: ProgressProps) => {
+  const element = <progress {...rest}>{children}</progress>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ProgressClient {...rest}>{children}</ProgressClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Progress.displayName = "Progress";
+
+// Dynamically import the client component
+const QClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.QClient };
+});
+
+export type QRef = React.ElementRef<"q">;
+export type QProps = React.ComponentPropsWithoutRef<"q"> & CommonComponentProps;
+
+/**
+ * Render the default inline quotation server component.
+ * @param {QProps} props - The default inline quotation server component properties
+ * @returns The rendered default inline quotation server component
+ */
+export const Q = ({ isClient = false, children, ...rest }: QProps) => {
+  const element = <q {...rest}>{children}</q>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <QClient {...rest}>{children}</QClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Q.displayName = "Q";
+
+// Dynamically import the client component
+const RpClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.RpClient };
+});
+
+export type RpRef = React.ElementRef<"rp">;
+export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
+  CommonComponentProps;
+
+/**
+ * Render the default ruby fallback parenthesis server component.
+ * @param {RpProps} props - The default ruby fallback parenthesis server component properties
+ * @returns The rendered default ruby fallback parenthesis server component
+ */
+export const Rp = ({ isClient = false, children, ...rest }: RpProps) => {
+  const element = <rp {...rest}>{children}</rp>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <RpClient {...rest}>{children}</RpClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Rp.displayName = "Rp";
