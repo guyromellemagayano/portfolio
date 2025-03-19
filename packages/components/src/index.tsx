@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 
 import type { CommonComponentProps } from "./components";
 
-// Dynamically import the client component
 const AClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
@@ -41,7 +40,6 @@ export const A = ({
 
 A.displayName = "A";
 
-// Dynamically import the client component
 const AbbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
@@ -72,7 +70,6 @@ export const Abbr = ({ isClient = false, children, ...rest }: AbbrProps) => {
 
 Abbr.displayName = "Abbr";
 
-// Dynamically import the client component
 const AddressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AddressClient };
@@ -107,7 +104,6 @@ export const Address = ({
 
 Address.displayName = "Address";
 
-// Dynamically import the client component
 const AreaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AreaClient };
@@ -149,7 +145,6 @@ export const Area = ({
 
 Area.displayName = "Area";
 
-// Dynamically import the client component
 const ArticleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ArticleClient };
@@ -184,7 +179,6 @@ export const Article = ({
 
 Article.displayName = "Article";
 
-// Dynamically import the client component
 const AsideClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AsideClient };
@@ -215,7 +209,6 @@ export const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
 
 Aside.displayName = "Aside";
 
-// Dynamically import the client component
 const BClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BClient };
@@ -245,7 +238,6 @@ export const B = ({ isClient = false, children, ...rest }: BProps) => {
 
 B.displayName = "B";
 
-// Dynamically import the client component
 const AudioClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AudioClient };
@@ -276,7 +268,6 @@ export const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
 
 Audio.displayName = "Audio";
 
-// Dynamically import the client component
 const BaseClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BaseClient };
@@ -307,7 +298,6 @@ export const Base = ({ isClient = false, children, ...rest }: BaseProps) => {
 
 Base.displayName = "Base";
 
-// Dynamically import the client component
 const BdiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdiClient };
@@ -338,7 +328,6 @@ export const Bdi = ({ isClient = false, children, ...rest }: BdiProps) => {
 
 Bdi.displayName = "Bdi";
 
-// Dynamically import the client component
 const BdoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdoClient };
@@ -369,7 +358,6 @@ export const Bdo = ({ isClient = false, children, ...rest }: BdoProps) => {
 
 Bdo.displayName = "Bdo";
 
-// Dynamically import the client component
 const BlockquoteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BlockquoteClient };
@@ -404,7 +392,6 @@ export const Blockquote = ({
 
 Blockquote.displayName = "Blockquote";
 
-// Dynamically import the client component
 const BodyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BodyClient };
@@ -435,7 +422,6 @@ export const Body = ({ isClient = false, children, ...rest }: BodyProps) => {
 
 Body.displayName = "Body";
 
-// Dynamically import the client component
 const BrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BrClient };
@@ -466,7 +452,6 @@ export const Br = ({ isClient = false, ...rest }: BrProps) => {
 
 Br.displayName = "Br";
 
-// Dynamically import the client component
 const ButtonClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ButtonClient };
@@ -508,7 +493,6 @@ export const Button = ({
 
 Button.displayName = "Button";
 
-// Dynamically import the client component
 const CanvasClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CanvasClient };
@@ -543,7 +527,6 @@ export const Canvas = ({
 
 Canvas.displayName = "Canvas";
 
-// Dynamically import the client component
 const CaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CaptionClient };
@@ -578,7 +561,6 @@ export const Caption = ({
 
 Caption.displayName = "Caption";
 
-// Dynamically import the client component
 const CiteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CiteClient };
@@ -609,7 +591,6 @@ export const Cite = ({ isClient = false, children, ...rest }: CiteProps) => {
 
 Cite.displayName = "Cite";
 
-// Dynamically import the client component
 const CodeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CodeClient };
@@ -640,7 +621,6 @@ export const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
 
 Code.displayName = "Code";
 
-// Dynamically import the client component
 const ColClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColClient };
@@ -671,7 +651,6 @@ export const Col = ({ isClient = false, ...rest }: ColProps) => {
 
 Col.displayName = "Col";
 
-// Dynamically import the client component
 const ColgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColgroupClient };
@@ -706,7 +685,6 @@ export const Colgroup = ({
 
 Colgroup.displayName = "Colgroup";
 
-// Dynamically import the client component
 const DataClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DataClient };
@@ -737,7 +715,6 @@ export const Data = ({ isClient = false, children, ...rest }: DataProps) => {
 
 Data.displayName = "Data";
 
-// Dynamically import the client component
 const DatalistClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DatalistClient };
@@ -772,7 +749,6 @@ export const Datalist = ({
 
 Datalist.displayName = "Datalist";
 
-// Dynamically import the client component
 const DdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DdClient };
@@ -803,7 +779,6 @@ export const Dd = ({ isClient = false, children, ...rest }: DdProps) => {
 
 Dd.displayName = "Dd";
 
-// Dynamically import the client component
 const DelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DelClient };
@@ -834,7 +809,6 @@ export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
 
 Del.displayName = "Del";
 
-// Dynamically import the client component
 const DetailsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DetailsClient };
@@ -869,7 +843,6 @@ export const Details = ({
 
 Details.displayName = "Details";
 
-// Dynamically import the client component
 const DfnClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DfnClient };
@@ -900,7 +873,6 @@ export const Dfn = ({ isClient = false, children, ...rest }: DfnProps) => {
 
 Dfn.displayName = "Dfn";
 
-// Dynamically import the client component
 const DialogClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DialogClient };
@@ -935,7 +907,6 @@ export const Dialog = ({
 
 Dialog.displayName = "Dialog";
 
-// Dynamically import the client component
 const DivClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DivClient };
@@ -966,7 +937,6 @@ export const Div = ({ isClient = false, children, ...rest }: DivProps) => {
 
 Div.displayName = "Div";
 
-// Dynamically import the client component
 const DlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DlClient };
@@ -997,7 +967,6 @@ export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
 
 Dl.displayName = "Dl";
 
-// Dynamically import the client component
 const DtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DtClient };
@@ -1028,7 +997,6 @@ export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
 
 Dt.displayName = "Dt";
 
-// Dynamically import the client component
 const EmClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmClient };
@@ -1059,7 +1027,6 @@ export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
 
 Em.displayName = "Em";
 
-// Dynamically import the client component
 const EmbedClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmbedClient };
@@ -1090,7 +1057,6 @@ export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
 
 Embed.displayName = "Embed";
 
-// Dynamically import the client component
 const FieldsetClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FieldsetClient };
@@ -1125,7 +1091,6 @@ export const Fieldset = ({
 
 Fieldset.displayName = "Fieldset";
 
-// Dynamically import the client component
 const FigcaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigcaptionClient };
@@ -1160,7 +1125,6 @@ export const Figcaption = ({
 
 Figcaption.displayName = "Figcaption";
 
-// Dynamically import the client component
 const FigureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigureClient };
@@ -1195,7 +1159,6 @@ export const Figure = ({
 
 Figure.displayName = "Figure";
 
-// Dynamically import the client component
 const FooterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FooterClient };
@@ -1230,7 +1193,6 @@ export const Footer = ({
 
 Footer.displayName = "Footer";
 
-// Dynamically import the client component
 const FormClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FormClient };
@@ -1261,7 +1223,6 @@ export const Form = ({ isClient = false, children, ...rest }: FormProps) => {
 
 Form.displayName = "Form";
 
-// Dynamically import the client component
 const HeadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadClient };
@@ -1292,7 +1253,6 @@ export const Head = ({ isClient = false, children, ...rest }: HeadProps) => {
 
 Head.displayName = "Head";
 
-// Dynamically import the client component
 const HeaderClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeaderClient };
@@ -1327,7 +1287,6 @@ export const Header = ({
 
 Header.displayName = "Header";
 
-// Dynamically import the client component
 const HeadingClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadingClient };
@@ -1365,7 +1324,6 @@ export const Heading = ({
 
 Heading.displayName = "Heading";
 
-// Dynamically import the client component
 const HgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HgroupClient };
@@ -1400,7 +1358,6 @@ export const Hgroup = ({
 
 Hgroup.displayName = "Hgroup";
 
-// Dynamically import the client component
 const HrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HrClient };
@@ -1431,7 +1388,6 @@ export const Hr = ({ isClient = false, ...rest }: HrProps) => {
 
 Hr.displayName = "Hr";
 
-// Dynamically import the client component
 const HtmlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HtmlClient };
@@ -1462,7 +1418,6 @@ export const Html = ({ isClient = false, children, ...rest }: HtmlProps) => {
 
 Html.displayName = "Html";
 
-// Dynamically import the client component
 const IClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IClient };
@@ -1492,7 +1447,6 @@ export const I = ({ isClient = false, children, ...rest }: IProps) => {
 
 I.displayName = "I";
 
-// Dynamically import the client component
 const IframeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IframeClient };
@@ -1523,7 +1477,6 @@ export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
 
 Iframe.displayName = "Iframe";
 
-// Dynamically import the client component
 const ImgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ImgClient };
@@ -1559,7 +1512,6 @@ export const Img = ({
 
 Img.displayName = "Img";
 
-// Dynamically import the client component
 const InputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InputClient };
@@ -1594,7 +1546,6 @@ export const Input = ({
 
 Input.displayName = "Input";
 
-// Dynamically import the client component
 const InsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InsClient };
@@ -1625,7 +1576,6 @@ export const Ins = ({ isClient = false, children, ...rest }: InsProps) => {
 
 Ins.displayName = "Ins";
 
-// Dynamically import the client component
 const KbdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.KbdClient };
@@ -1656,7 +1606,6 @@ export const Kbd = ({ isClient = false, children, ...rest }: KbdProps) => {
 
 Kbd.displayName = "Kbd";
 
-// Dynamically import the client component
 const LabelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LabelClient };
@@ -1687,7 +1636,6 @@ export const Label = ({ isClient = false, children, ...rest }: LabelProps) => {
 
 Label.displayName = "Label";
 
-// Dynamically import the client component
 const LegendClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LegendClient };
@@ -1722,7 +1670,6 @@ export const Legend = ({
 
 Legend.displayName = "Legend";
 
-// Dynamically import the client component
 const LiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LiClient };
@@ -1753,7 +1700,6 @@ export const Li = ({ isClient = false, children, ...rest }: LiProps) => {
 
 Li.displayName = "Li";
 
-// Dynamically import the client component
 const LinkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LinkClient };
@@ -1784,7 +1730,6 @@ export const Link = ({ isClient = false, ...rest }: LinkProps) => {
 
 Link.displayName = "Link";
 
-// Dynamically import the client component
 const MainClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MainClient };
@@ -1815,7 +1760,6 @@ export const Main = ({ isClient = false, children, ...rest }: MainProps) => {
 
 Main.displayName = "Main";
 
-// Dynamically import the client component
 const MapClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MapClient };
@@ -1846,7 +1790,6 @@ export const Map = ({ isClient = false, children, ...rest }: MapProps) => {
 
 Map.displayName = "Map";
 
-// Dynamically import the client component
 const MarkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MarkClient };
@@ -1877,7 +1820,6 @@ export const Mark = ({ isClient = false, children, ...rest }: MarkProps) => {
 
 Mark.displayName = "Mark";
 
-// Dynamically import the client component
 const MenuClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MenuClient };
@@ -1908,7 +1850,6 @@ export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
 
 Menu.displayName = "Menu";
 
-// Dynamically import the client component
 const MetaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MetaClient };
@@ -1939,7 +1880,6 @@ export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
 
 Meta.displayName = "Meta";
 
-// Dynamically import the client component
 const MeterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MeterClient };
@@ -1970,7 +1910,6 @@ export const Meter = ({ isClient = false, children, ...rest }: MeterProps) => {
 
 Meter.displayName = "Meter";
 
-// Dynamically import the client component
 const NavClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NavClient };
@@ -2001,7 +1940,6 @@ export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
 
 Nav.displayName = "Nav";
 
-// Dynamically import the client component
 const NoscriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NoscriptClient };
@@ -2036,7 +1974,6 @@ export const Noscript = ({
 
 Noscript.displayName = "Noscript";
 
-// Dynamically import the client component
 const ObjectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ObjectClient };
@@ -2071,7 +2008,6 @@ export const Object = ({
 
 Object.displayName = "Object";
 
-// Dynamically import the client component
 const OlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OlClient };
@@ -2102,7 +2038,6 @@ export const Ol = ({ isClient = false, children, ...rest }: OlProps) => {
 
 Ol.displayName = "Ol";
 
-// Dynamically import the client component
 const OptgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptgroupClient };
@@ -2137,7 +2072,6 @@ export const Optgroup = ({
 
 Optgroup.displayName = "Optgroup";
 
-// Dynamically import the client component
 const OptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptionClient };
@@ -2172,7 +2106,6 @@ export const Option = ({
 
 Option.displayName = "Option";
 
-// Dynamically import the client component
 const OutputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OutputClient };
@@ -2207,7 +2140,6 @@ export const Output = ({
 
 Output.displayName = "Output";
 
-// Dynamically import the client component
 const ParagraphClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ParagraphClient };
@@ -2242,7 +2174,6 @@ export const Paragraph = ({
 
 Paragraph.displayName = "Paragraph";
 
-// Dynamically import the client component
 const PictureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PictureClient };
@@ -2277,7 +2208,6 @@ export const Picture = ({
 
 Picture.displayName = "Picture";
 
-// Dynamically import the client component
 const PreClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PreClient };
@@ -2308,7 +2238,6 @@ export const Pre = ({ isClient = false, children, ...rest }: PreProps) => {
 
 Pre.displayName = "Pre";
 
-// Dynamically import the client component
 const ProgressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ProgressClient };
@@ -2343,7 +2272,6 @@ export const Progress = ({
 
 Progress.displayName = "Progress";
 
-// Dynamically import the client component
 const QClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.QClient };
@@ -2373,7 +2301,6 @@ export const Q = ({ isClient = false, children, ...rest }: QProps) => {
 
 Q.displayName = "Q";
 
-// Dynamically import the client component
 const RpClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RpClient };
@@ -2404,7 +2331,6 @@ export const Rp = ({ isClient = false, children, ...rest }: RpProps) => {
 
 Rp.displayName = "Rp";
 
-// Dynamically import the client component
 const RtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RtClient };
@@ -2435,7 +2361,6 @@ export const Rt = ({ isClient = false, children, ...rest }: RtProps) => {
 
 Rt.displayName = "Rt";
 
-// Dynamically import the client component
 const RubyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RubyClient };
@@ -2466,7 +2391,6 @@ export const Ruby = ({ isClient = false, children, ...rest }: RubyProps) => {
 
 Ruby.displayName = "Ruby";
 
-// Dynamically import the client component
 const SClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SClient };
@@ -2496,7 +2420,6 @@ export const S = ({ isClient = false, children, ...rest }: SProps) => {
 
 S.displayName = "S";
 
-// Dynamically import the client component
 const SampClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SampClient };
@@ -2527,7 +2450,6 @@ export const Samp = ({ isClient = false, children, ...rest }: SampProps) => {
 
 Samp.displayName = "Samp";
 
-// Dynamically import the client component
 const ScriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ScriptClient };
@@ -2562,7 +2484,6 @@ export const Script = ({
 
 Script.displayName = "Script";
 
-// Dynamically import the client component
 const SearchClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SearchClient };
@@ -2597,7 +2518,6 @@ export const Search = ({
 
 Search.displayName = "Search";
 
-// Dynamically import the client component
 const SectionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SectionClient };
@@ -2632,7 +2552,6 @@ export const Section = ({
 
 Section.displayName = "Section";
 
-// Dynamically import the client component
 const SelectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SelectClient };
@@ -2667,7 +2586,6 @@ export const Select = ({
 
 Select.displayName = "Select";
 
-// Dynamically import the client component
 const SlotClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SlotClient };
@@ -2698,7 +2616,6 @@ export const Slot = ({ isClient = false, children, ...rest }: SlotProps) => {
 
 Slot.displayName = "Slot";
 
-// Dynamically import the client component
 const SmallClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SmallClient };
@@ -2729,7 +2646,6 @@ export const Small = ({ isClient = false, children, ...rest }: SmallProps) => {
 
 Small.displayName = "Small";
 
-// Dynamically import the client component
 const SourceClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SourceClient };
@@ -2760,7 +2676,6 @@ export const Source = ({ isClient = false, ...rest }: SourceProps) => {
 
 Source.displayName = "Source";
 
-// Dynamically import the client component
 const SpanClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SpanClient };
@@ -2791,7 +2706,6 @@ export const Span = ({ isClient = false, children, ...rest }: SpanProps) => {
 
 Span.displayName = "Span";
 
-// Dynamically import the client component
 const StrongClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StrongClient };
@@ -2826,7 +2740,6 @@ export const Strong = ({
 
 Strong.displayName = "Strong";
 
-// Dynamically import the client component
 const StyleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StyleClient };
@@ -2857,7 +2770,6 @@ export const Style = ({ isClient = false, children, ...rest }: StyleProps) => {
 
 Style.displayName = "Style";
 
-// Dynamically import the client component
 const SubClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SubClient };
@@ -2888,7 +2800,6 @@ export const Sub = ({ isClient = false, children, ...rest }: SubProps) => {
 
 Sub.displayName = "Sub";
 
-// Dynamically import the client component
 const SummaryClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SummaryClient };
@@ -2923,7 +2834,6 @@ export const Summary = ({
 
 Summary.displayName = "Summary";
 
-// Dynamically import the client component
 const SupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SupClient };
@@ -2954,7 +2864,6 @@ export const Sup = ({ isClient = false, children, ...rest }: SupProps) => {
 
 Sup.displayName = "Sup";
 
-// Dynamically import the client component
 const SvgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SvgClient };
@@ -2985,7 +2894,6 @@ export const Svg = ({ isClient = false, children, ...rest }: SvgProps) => {
 
 Svg.displayName = "Svg";
 
-// Dynamically import the client component
 const TableClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TableClient };
@@ -3016,7 +2924,6 @@ export const Table = ({ isClient = false, children, ...rest }: TableProps) => {
 
 Table.displayName = "Table";
 
-// Dynamically import the client component
 const TbodyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TbodyClient };
@@ -3047,7 +2954,6 @@ export const Tbody = ({ isClient = false, children, ...rest }: TbodyProps) => {
 
 Tbody.displayName = "Tbody";
 
-// Dynamically import the client component
 const TdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TdClient };
@@ -3078,7 +2984,6 @@ export const Td = ({ isClient = false, children, ...rest }: TdProps) => {
 
 Td.displayName = "Td";
 
-// Dynamically import the client component
 const TemplateClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TemplateClient };
@@ -3113,7 +3018,6 @@ export const Template = ({
 
 Template.displayName = "Template";
 
-// Dynamically import the client component
 const TextareaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TextareaClient };
@@ -3148,7 +3052,6 @@ export const Textarea = ({
 
 Textarea.displayName = "Textarea";
 
-// Dynamically import the client component
 const TfootClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TfootClient };
@@ -3179,7 +3082,6 @@ export const Tfoot = ({ isClient = false, children, ...rest }: TfootProps) => {
 
 Tfoot.displayName = "Tfoot";
 
-// Dynamically import the client component
 const ThClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ThClient };
@@ -3210,7 +3112,6 @@ export const Th = ({ isClient = false, children, ...rest }: ThProps) => {
 
 Th.displayName = "Th";
 
-// Dynamically import the client component
 const TheadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TheadClient };
@@ -3241,7 +3142,6 @@ export const Thead = ({ isClient = false, children, ...rest }: TheadProps) => {
 
 Thead.displayName = "Thead";
 
-// Dynamically import the client component
 const TimeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TimeClient };
@@ -3272,7 +3172,6 @@ export const Time = ({ isClient = false, children, ...rest }: TimeProps) => {
 
 Time.displayName = "Time";
 
-// Dynamically import the client component
 const TitleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TitleClient };
@@ -3303,7 +3202,6 @@ export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
 
 Title.displayName = "Title";
 
-// Dynamically import the client component
 const TrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrClient };
@@ -3334,7 +3232,6 @@ export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
 
 Tr.displayName = "Tr";
 
-// Dynamically import the client component
 const TrackClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrackClient };
@@ -3365,7 +3262,6 @@ export const Track = ({ isClient = false, ...rest }: TrackProps) => {
 
 Track.displayName = "Track";
 
-// Dynamically import the client component
 const UClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UClient };
@@ -3395,7 +3291,6 @@ export const U = ({ isClient = false, children, ...rest }: UProps) => {
 
 U.displayName = "U";
 
-// Dynamically import the client component
 const UlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UlClient };
@@ -3426,7 +3321,6 @@ export const Ul = ({ isClient = false, children, ...rest }: UlProps) => {
 
 Ul.displayName = "Ul";
 
-// Dynamically import the client component
 const VarClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VarClient };
@@ -3457,7 +3351,6 @@ export const Var = ({ isClient = false, children, ...rest }: VarProps) => {
 
 Var.displayName = "Var";
 
-// Dynamically import the client component
 const VideoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VideoClient };
@@ -3488,7 +3381,6 @@ export const Video = ({ isClient = false, children, ...rest }: VideoProps) => {
 
 Video.displayName = "Video";
 
-// Dynamically import the client component
 const WbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.WbrClient };
