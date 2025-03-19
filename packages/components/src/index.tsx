@@ -2759,3 +2759,166 @@ export const Source = ({ isClient = false, ...rest }: SourceProps) => {
 };
 
 Source.displayName = "Source";
+
+// Dynamically import the client component
+const SpanClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SpanClient };
+});
+
+export type SpanRef = React.ElementRef<"span">;
+export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
+  CommonComponentProps;
+
+/**
+ * Render the default content span server component.
+ * @param {SpanProps} props - The default content span server component properties
+ * @returns The rendered default content span server component
+ */
+export const Span = ({ isClient = false, children, ...rest }: SpanProps) => {
+  const element = <span {...rest}>{children}</span>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SpanClient {...rest}>{children}</SpanClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Span.displayName = "Span";
+
+// Dynamically import the client component
+const StrongClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.StrongClient };
+});
+
+export type StrongRef = React.ElementRef<"strong">;
+export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
+  CommonComponentProps;
+
+/**
+ * Render the default strong importance server component.
+ * @param {StrongProps} props - The default strong importance server component properties
+ * @returns The rendered default strong importance server component
+ */
+export const Strong = ({
+  isClient = false,
+  children,
+  ...rest
+}: StrongProps) => {
+  const element = <strong {...rest}>{children}</strong>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <StrongClient {...rest}>{children}</StrongClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Strong.displayName = "Strong";
+
+// Dynamically import the client component
+const StyleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.StyleClient };
+});
+
+export type StyleRef = React.ElementRef<"style">;
+export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
+  CommonComponentProps;
+
+/**
+ * Render the default style information server component.
+ * @param {StyleProps} props - The default style information server component properties
+ * @returns The rendered default style information server component
+ */
+export const Style = ({ isClient = false, children, ...rest }: StyleProps) => {
+  const element = <style {...rest}>{children}</style>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <StyleClient {...rest}>{children}</StyleClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Style.displayName = "Style";
+
+// Dynamically import the client component
+const SubClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SubClient };
+});
+
+export type SubRef = React.ElementRef<"sub">;
+export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
+  CommonComponentProps;
+
+/**
+ * Render the default subscript server component.
+ * @param {SubProps} props - The default subscript server component properties
+ * @returns The rendered default subscript server component
+ */
+export const Sub = ({ isClient = false, children, ...rest }: SubProps) => {
+  const element = <sub {...rest}>{children}</sub>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SubClient {...rest}>{children}</SubClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Sub.displayName = "Sub";
+
+// Dynamically import the client component
+const SummaryClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.SummaryClient };
+});
+
+export type SummaryRef = React.ElementRef<"summary">;
+export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> &
+  CommonComponentProps;
+
+/**
+ * Render the default disclosure summary server component.
+ * @param {SummaryProps} props - The default disclosure summary server component properties
+ * @returns The rendered default disclosure summary server component
+ */
+export const Summary = ({
+  isClient = false,
+  children,
+  ...rest
+}: SummaryProps) => {
+  const element = <summary {...rest}>{children}</summary>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <SummaryClient {...rest}>{children}</SummaryClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Summary.displayName = "Summary";
