@@ -3046,3 +3046,104 @@ export const Tbody = ({ isClient = false, children, ...rest }: TbodyProps) => {
 };
 
 Tbody.displayName = "Tbody";
+
+// Dynamically import the client component
+const TdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TdClient };
+});
+
+export type TdRef = React.ElementRef<"td">;
+export type TdProps = React.ComponentPropsWithoutRef<"td"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table data cell server component.
+ * @param {TdProps} props - The default table data cell server component properties
+ * @returns The rendered default table data cell server component
+ */
+export const Td = ({ isClient = false, children, ...rest }: TdProps) => {
+  const element = <td {...rest}>{children}</td>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TdClient {...rest}>{children}</TdClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Td.displayName = "Td";
+
+// Dynamically import the client component
+const TemplateClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TemplateClient };
+});
+
+export type TemplateRef = React.ElementRef<"template">;
+export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
+  CommonComponentProps;
+
+/**
+ * Render the default content template server component.
+ * @param {TemplateProps} props - The default content template server component properties
+ * @returns The rendered default content template server component
+ */
+export const Template = ({
+  isClient = false,
+  children,
+  ...rest
+}: TemplateProps) => {
+  const element = <template {...rest}>{children}</template>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TemplateClient {...rest}>{children}</TemplateClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Template.displayName = "Template";
+
+// Dynamically import the client component
+const TextareaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TextareaClient };
+});
+
+export type TextareaRef = React.ElementRef<"textarea">;
+export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> &
+  CommonComponentProps;
+
+/**
+ * Render the default textarea server component.
+ * @param {TextareaProps} props - The default textarea server component properties
+ * @returns The rendered default textarea server component
+ */
+export const Textarea = ({
+  isClient = false,
+  children,
+  ...rest
+}: TextareaProps) => {
+  const element = <textarea {...rest}>{children}</textarea>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TextareaClient {...rest}>{children}</TextareaClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Textarea.displayName = "Textarea";
