@@ -141,6 +141,14 @@ import type {
   ParagraphRef,
   PictureProps,
   PictureRef,
+  PreProps,
+  PreRef,
+  ProgressProps,
+  ProgressRef,
+  QProps,
+  QRef,
+  RpProps,
+  RpRef,
 } from ".";
 
 /**
@@ -1338,3 +1346,75 @@ export const PictureClient = forwardRef<PictureRef, PictureProps>(
 );
 
 PictureClient.displayName = "PictureClient";
+
+/**
+ * Render the preformatted text client component.
+ * @param {PreProps} props - The preformatted text client component properties
+ * @param {PreRef} ref - The preformatted text client component reference
+ * @returns The rendered preformatted text client component
+ */
+export const PreClient = forwardRef<PreRef, PreProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <pre ref={ref} {...rest}>
+        {children}
+      </pre>
+    );
+  }
+);
+
+PreClient.displayName = "PreClient";
+
+/**
+ * Render the progress indicator client component.
+ * @param {ProgressProps} props - The progress indicator client component properties
+ * @param {ProgressRef} ref - The progress indicator client component reference
+ * @returns The rendered progress indicator client component
+ */
+export const ProgressClient = forwardRef<ProgressRef, ProgressProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <progress ref={ref} {...rest}>
+        {children}
+      </progress>
+    );
+  }
+);
+
+ProgressClient.displayName = "ProgressClient";
+
+/**
+ * Render the inline quotation client component.
+ * @param {QProps} props - The inline quotation client component properties
+ * @param {QRef} ref - The inline quotation client component reference
+ * @returns The rendered inline quotation client component
+ */
+export const QClient = forwardRef<QRef, QProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <q ref={ref} {...rest}>
+        {children}
+      </q>
+    );
+  }
+);
+
+QClient.displayName = "QClient";
+
+/**
+ * Render the ruby fallback parenthesis client component.
+ * @param {RpProps} props - The ruby fallback parenthesis client component properties
+ * @param {RpRef} ref - The ruby fallback parenthesis client component reference
+ * @returns The rendered ruby fallback parenthesis client component
+ */
+export const RpClient = forwardRef<RpRef, RpProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <rp ref={ref} {...rest}>
+        {children}
+      </rp>
+    );
+  }
+);
+
+RpClient.displayName = "RpClient";
