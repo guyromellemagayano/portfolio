@@ -3147,3 +3147,189 @@ export const Textarea = ({
 };
 
 Textarea.displayName = "Textarea";
+
+// Dynamically import the client component
+const TfootClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TfootClient };
+});
+
+export type TfootRef = React.ElementRef<"tfoot">;
+export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table foot server component.
+ * @param {TfootProps} props - The default table foot server component properties
+ * @returns The rendered default table foot server component
+ */
+export const Tfoot = ({ isClient = false, children, ...rest }: TfootProps) => {
+  const element = <tfoot {...rest}>{children}</tfoot>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TfootClient {...rest}>{children}</TfootClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Tfoot.displayName = "Tfoot";
+
+// Dynamically import the client component
+const ThClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.ThClient };
+});
+
+export type ThRef = React.ElementRef<"th">;
+export type ThProps = React.ComponentPropsWithoutRef<"th"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table header server component.
+ * @param {ThProps} props - The default table header server component properties
+ * @returns The rendered default table header server component
+ */
+export const Th = ({ isClient = false, children, ...rest }: ThProps) => {
+  const element = <th {...rest}>{children}</th>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <ThClient {...rest}>{children}</ThClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Th.displayName = "Th";
+
+// Dynamically import the client component
+const TheadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TheadClient };
+});
+
+export type TheadRef = React.ElementRef<"thead">;
+export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
+  CommonComponentProps;
+
+/**
+ * Render the default table head server component.
+ * @param {TheadProps} props - The default table head server component properties
+ * @returns The rendered default table head server component
+ */
+export const Thead = ({ isClient = false, children, ...rest }: TheadProps) => {
+  const element = <thead {...rest}>{children}</thead>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TheadClient {...rest}>{children}</TheadClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Thead.displayName = "Thead";
+
+// Dynamically import the client component
+const TimeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.TimeClient };
+});
+
+export type TimeRef = React.ElementRef<"time">;
+export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
+  CommonComponentProps;
+
+/**
+ * Render the default (date) time server component.
+ * @param {TimeProps} props - The default (date) time server component properties
+ * @returns The rendered default (date) time server component
+ */
+export const Time = ({ isClient = false, children, ...rest }: TimeProps) => {
+  const element = <time {...rest}>{children}</time>;
+
+  if (isClient) {
+    return (
+      <Suspense fallback={element}>
+        <TimeClient {...rest}>{children}</TimeClient>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+
+Time.displayName = "Time";
+
+// Dynamically import the client component
+// const TitleClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.TitleClient };
+// });
+
+// export type TitleRef = React.ElementRef<"title">;
+// export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default document title server component.
+ * @param {TitleProps} props - The default document title server component properties
+ * @returns The rendered default document title server component
+ */
+// export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
+//   const element = <title {...rest}>{children}</title>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <TitleClient {...rest}>{children}</TitleClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Title.displayName = "Title";
+
+// Dynamically import the client component
+// const TrClient = lazy(async () => {
+//   const module = await import("./index.client");
+//   return { default: module.TrClient };
+// });
+
+// export type TrRef = React.ElementRef<"tr">;
+// export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
+//   CommonComponentProps;
+
+/**
+ * Render the default table row server component.
+ * @param {TrProps} props - The default table row server component properties
+ * @returns The rendered default table row server component
+ */
+// export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
+//   const element = <tr {...rest}>{children}</tr>;
+
+//   if (isClient) {
+//     return (
+//       <Suspense fallback={element}>
+//         <TrClient {...rest}>{children}</TrClient>
+//       </Suspense>
+//     );
+//   }
+
+//   return element;
+// };
+
+// Tr.displayName = "Tr";
