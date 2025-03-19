@@ -203,10 +203,12 @@ import type {
   ThRef,
   TimeProps,
   TimeRef,
-  // TitleProps,
-  // TitleRef,
-  // TrProps,
-  // TrRef,
+  TitleProps,
+  TitleRef,
+  TrackProps,
+  TrackRef,
+  TrProps,
+  TrRef,
 } from ".";
 
 /**
@@ -1965,17 +1967,17 @@ TimeClient.displayName = "TimeClient";
  * @param {TitleRef} ref - The document title client component reference
  * @returns The rendered document title client component
  */
-// export const TitleClient = forwardRef<TitleRef, TitleProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <title ref={ref} {...rest}>
-//         {children}
-//       </title>
-//     );
-//   }
-// );
+export const TitleClient = forwardRef<TitleRef, TitleProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <title ref={ref} {...rest}>
+        {children}
+      </title>
+    );
+  }
+);
 
-// TitleClient.displayName = "TitleClient";
+TitleClient.displayName = "TitleClient";
 
 /**
  * Render the table row client component.
@@ -1983,14 +1985,28 @@ TimeClient.displayName = "TimeClient";
  * @param {TrRef} ref - The table row client component reference
  * @returns The rendered table row client component
  */
-// export const TrClient = forwardRef<TrRef, TrProps>(
-//   ({ children, ...rest }, ref) => {
-//     return (
-//       <tr ref={ref} {...rest}>
-//         {children}
-//       </tr>
-//     );
-//   }
-// );
+export const TrClient = forwardRef<TrRef, TrProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <tr ref={ref} {...rest}>
+        {children}
+      </tr>
+    );
+  }
+);
 
-// TrClient.displayName = "TrClient";
+TrClient.displayName = "TrClient";
+
+/**
+ * Render the embed text track client component.
+ * @param {TrackProps} props - The embed text track client component properties
+ * @param {TrackRef} ref - The embed text track client component reference
+ * @returns The rendered embed text track client component
+ */
+export const TrackClient = forwardRef<TrackRef, TrackProps>(
+  ({ ...rest }, ref) => {
+    return <track ref={ref} {...rest} />;
+  }
+);
+
+TrackClient.displayName = "TrackClient";
