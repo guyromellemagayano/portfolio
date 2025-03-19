@@ -137,6 +137,8 @@ import type {
   OptionRef,
   OutputProps,
   OutputRef,
+  ParagraphProps,
+  ParagraphRef,
 } from ".";
 
 /**
@@ -1298,3 +1300,21 @@ export const OutputClient = forwardRef<OutputRef, OutputProps>(
 );
 
 OutputClient.displayName = "OutputClient";
+
+/**
+ * Render the paragraph client component.
+ * @param {ParagraphProps} props - The paragraph client component properties
+ * @param {ParagraphRef} ref - The paragraph client component reference
+ * @returns The rendered paragraph client component
+ */
+export const ParagraphClient = forwardRef<ParagraphRef, ParagraphProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <p ref={ref} {...rest}>
+        {children}
+      </p>
+    );
+  }
+);
+
+ParagraphClient.displayName = "ParagraphClient";
