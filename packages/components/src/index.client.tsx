@@ -157,6 +157,18 @@ import type {
   SampRef,
   ScriptProps,
   ScriptRef,
+  SearchProps,
+  SearchRef,
+  SectionProps,
+  SectionRef,
+  SelectProps,
+  SelectRef,
+  // SlotProps,
+  // SlotRef,
+  // SmallProps,
+  // SmallRef,
+  // SourceProps,
+  // SourceRef,
   SProps,
   SRef,
 } from ".";
@@ -1518,3 +1530,107 @@ export const ScriptClient = forwardRef<ScriptRef, ScriptProps>(
 );
 
 ScriptClient.displayName = "ScriptClient";
+
+/**
+ * Render the generic search client component.
+ * @param {SearchProps} props - The generic search client component properties
+ * @param {SearchRef} ref - The generic search client component reference
+ * @returns The rendered generic search client component
+ */
+export const SearchClient = forwardRef<SearchRef, SearchProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <search ref={ref} {...rest}>
+        {children}
+      </search>
+    );
+  }
+);
+
+SearchClient.displayName = "SearchClient";
+
+/**
+ * Render the generic section client component.
+ * @param {SectionProps} props - The generic section client component properties
+ * @param {SectionRef} ref - The generic section client component reference
+ * @returns The rendered generic section client component
+ */
+export const SectionClient = forwardRef<SectionRef, SectionProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <section ref={ref} {...rest}>
+        {children}
+      </section>
+    );
+  }
+);
+
+SectionClient.displayName = "SectionClient";
+
+/**
+ * Render the HTML select client component.
+ * @param {SelectProps} props - The HTML select client component properties
+ * @param {SelectRef} ref - The HTML select client component reference
+ * @returns The rendered HTML select client component
+ */
+export const SelectClient = forwardRef<SelectRef, SelectProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <select ref={ref} {...rest}>
+        {children}
+      </select>
+    );
+  }
+);
+
+SelectClient.displayName = "SelectClient";
+
+/**
+ * Render the web component slot client component.
+ * @param {SlotProps} props - The web component slot client component properties
+ * @param {SlotRef} ref - The web component slot client component reference
+ * @returns The rendered web component slot client component
+ */
+// export const SlotClient = forwardRef<SlotRef, SlotProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <slot ref={ref} {...rest}>
+//         {children}
+//       </slot>
+//     );
+//   }
+// );
+
+// SlotClient.displayName = "SlotClient";
+
+/**
+ * Render the side comment client component.
+ * @param {SmallProps} props - The side comment client component properties
+ * @param {SmallRef} ref - The side comment client component reference
+ * @returns The rendered side comment client component
+ */
+// export const SmallClient = forwardRef<SmallRef, SmallProps>(
+//   ({ children, ...rest }, ref) => {
+//     return (
+//       <small ref={ref} {...rest}>
+//         {children}
+//       </small>
+//     );
+//   }
+// );
+
+// SmallClient.displayName = "SmallClient";
+
+/**
+ * Render the media or image source client component.
+ * @param {SourceProps} props - The media or image source client component properties
+ * @param {SourceRef} ref - The media or image source client component reference
+ * @returns The rendered media or image source client component
+ */
+// export const SourceClient = forwardRef<SourceRef, SourceProps>(
+//   ({ ...rest }, ref) => {
+//     return <source ref={ref} {...rest} />;
+//   }
+// );
+
+// SourceClient.displayName = "SourceClient";
