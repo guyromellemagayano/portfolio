@@ -181,6 +181,14 @@ import type {
   SubRef,
   SummaryProps,
   SummaryRef,
+  SupProps,
+  SupRef,
+  SvgProps,
+  SvgRef,
+  TableProps,
+  TableRef,
+  TbodyProps,
+  TbodyRef,
 } from ".";
 
 /**
@@ -1734,3 +1742,75 @@ export const SummaryClient = forwardRef<SummaryRef, SummaryProps>(
 );
 
 SummaryClient.displayName = "SummaryClient";
+
+/**
+ * Render the superscript client component.
+ * @param {SupProps} props - The superscript client component properties
+ * @param {SupRef} ref - The superscript client component reference
+ * @returns The rendered superscript client component
+ */
+export const SupClient = forwardRef<SupRef, SupProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <sup ref={ref} {...rest}>
+        {children}
+      </sup>
+    );
+  }
+);
+
+SupClient.displayName = "SupClient";
+
+/**
+ * Render the scalable vector graphics client component.
+ * @param {SvgProps} props - The scalable vector graphics client component properties
+ * @param {SvgRef} ref - The scalable vector graphics client component reference
+ * @returns The rendered scalable vector graphics client component
+ */
+export const SvgClient = forwardRef<SvgRef, SvgProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <svg ref={ref} {...rest}>
+        {children}
+      </svg>
+    );
+  }
+);
+
+SvgClient.displayName = "SvgClient";
+
+/**
+ * Render the table client component.
+ * @param {TableProps} props - The table client component properties
+ * @param {TableRef} ref - The table client component reference
+ * @returns The rendered table client component
+ */
+export const TableClient = forwardRef<TableRef, TableProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <table ref={ref} {...rest}>
+        {children}
+      </table>
+    );
+  }
+);
+
+TableClient.displayName = "TableClient";
+
+/**
+ * Render the table body client component.
+ * @param {TbodyProps} props - The table body client component properties
+ * @param {TbodyRef} ref - The table body client component reference
+ * @returns The rendered table body client component
+ */
+export const TbodyClient = forwardRef<TbodyRef, TbodyProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <tbody ref={ref} {...rest}>
+        {children}
+      </tbody>
+    );
+  }
+);
+
+TbodyClient.displayName = "TbodyClient";
