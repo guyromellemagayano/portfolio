@@ -189,6 +189,12 @@ import type {
   TableRef,
   TbodyProps,
   TbodyRef,
+  TdProps,
+  TdRef,
+  TemplateProps,
+  TemplateRef,
+  TextareaProps,
+  TextareaRef,
 } from ".";
 
 /**
@@ -1814,3 +1820,57 @@ export const TbodyClient = forwardRef<TbodyRef, TbodyProps>(
 );
 
 TbodyClient.displayName = "TbodyClient";
+
+/**
+ * Render the table data cell client component.
+ * @param {TdProps} props - The table data cell client component properties
+ * @param {TdRef} ref - The table data cell client component reference
+ * @returns The rendered table data cell client component
+ */
+export const TdClient = forwardRef<TdRef, TdProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <td ref={ref} {...rest}>
+        {children}
+      </td>
+    );
+  }
+);
+
+TdClient.displayName = "TdClient";
+
+/**
+ * Render the content template client component.
+ * @param {TemplateProps} props - The content template client component properties
+ * @param {TemplateRef} ref - The content template client component reference
+ * @returns The rendered content template client component
+ */
+export const TemplateClient = forwardRef<TemplateRef, TemplateProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <template ref={ref} {...rest}>
+        {children}
+      </template>
+    );
+  }
+);
+
+TemplateClient.displayName = "TemplateClient";
+
+/**
+ * Render the textarea client component.
+ * @param {TextareaProps} props - The textarea client component properties
+ * @param {TextareaRef} ref - The textarea client component reference
+ * @returns The rendered textarea client component
+ */
+export const TextareaClient = forwardRef<TextareaRef, TextareaProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <textarea ref={ref} {...rest}>
+        {children}
+      </textarea>
+    );
+  }
+);
+
+TextareaClient.displayName = "TextareaClient";
