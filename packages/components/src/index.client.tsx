@@ -21,6 +21,7 @@ import {
   Caption,
   Cite,
   Code,
+  Col,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -621,11 +622,15 @@ export const MemoizedCodeClient = memo(CodeClient);
  * @param {ColRef} ref - The column client component reference
  * @returns The rendered column client component
  */
-export const ColClient = forwardRef<ColRef, ColProps>(({ ...rest }, ref) => {
-  return <col ref={ref} {...rest} />;
-});
-
+export const ColClient = forwardRef<ColRef, ColProps>(
+  ({ as: Component = Col, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 ColClient.displayName = "ColClient";
+
+// Memoized version of `ColClient`.
+export const MemoizedColClient = memo(ColClient);
 
 /**
  * Render the table column group client component.
