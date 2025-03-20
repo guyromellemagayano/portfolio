@@ -1508,6 +1508,10 @@ const FooterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FooterClient };
 });
+const MemoizedFooterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFooterClient };
+});
 
 export type FooterRef = React.ElementRef<"footer">;
 export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
@@ -1519,23 +1523,26 @@ export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
  * @returns The rendered default footer server component
  */
 export const Footer = ({
+  as: Component = "footer",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FooterProps) => {
-  const element = <footer {...rest}>{children}</footer>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFooterClient : FooterClient;
+
     return (
       <Suspense fallback={element}>
-        <FooterClient {...rest}>{children}</FooterClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Footer.displayName = "Footer";
 
 const FormClient = lazy(async () => {

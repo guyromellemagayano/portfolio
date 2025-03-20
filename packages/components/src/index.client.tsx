@@ -38,6 +38,7 @@ import {
   Fieldset,
   Figcaption,
   Figure,
+  Footer,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -971,16 +972,18 @@ export const MemoizedFigureClient = memo(FigureClient);
  * @returns The rendered footer client component
  */
 export const FooterClient = forwardRef<FooterRef, FooterProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Footer, children, ...rest }, ref) => {
     return (
-      <footer ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </footer>
+      </Component>
     );
   }
 );
-
 FooterClient.displayName = "FooterClient";
+
+// Memoized version of `FooterClient`.
+export const MemoizedFooterClient = memo(FooterClient);
 
 /**
  * Render the form client component.
