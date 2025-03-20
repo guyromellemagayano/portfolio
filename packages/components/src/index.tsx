@@ -540,6 +540,10 @@ const BrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BrClient };
 });
+const MemoizedBrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBrClient };
+});
 
 export type BrRef = React.ElementRef<"br">;
 export type BrProps = React.ComponentPropsWithoutRef<"br"> &
@@ -550,20 +554,25 @@ export type BrProps = React.ComponentPropsWithoutRef<"br"> &
  * @param {BrProps} props - The default line break server component properties
  * @returns The rendered default line break server component
  */
-export const Br = ({ isClient = false, ...rest }: BrProps) => {
+export const Br = ({
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: BrProps) => {
   const element = <br {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBrClient : BrClient;
+
     return (
       <Suspense fallback={element}>
-        <BrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Br.displayName = "Br";
 
 const ButtonClient = lazy(async () => {
