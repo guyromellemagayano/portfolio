@@ -5,6 +5,7 @@ import { forwardRef, memo } from "react";
 import {
   A,
   Abbr,
+  Address,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -270,11 +271,11 @@ export const MemoizedAbbrClient = memo(AbbrClient);
  * @returns The rendered address client component
  */
 export const AddressClient = forwardRef<AddressRef, AddressProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Address, children, ...rest }, ref) => {
     return (
-      <address ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </address>
+      </Component>
     );
   }
 );
@@ -282,7 +283,6 @@ AddressClient.displayName = "AddressClient";
 
 // Memoized version of `AddressClient`.
 export const MemoizedAddressClient = memo(AddressClient);
-MemoizedAddressClient.displayName = "MemoizedAddressClient";
 
 /**
  * Render the area client component.
