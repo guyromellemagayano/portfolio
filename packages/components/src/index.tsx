@@ -845,6 +845,10 @@ const ColgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColgroupClient };
 });
+const MemoizedColgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedColgroupClient };
+});
 
 export type ColgroupRef = React.ElementRef<"colgroup">;
 export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
@@ -856,23 +860,28 @@ export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
  * @returns The rendered default table column group server component
  */
 export const Colgroup = ({
+  as: Component = "colgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ColgroupProps) => {
-  const element = <colgroup {...rest}>{children}</colgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedColgroupClient
+      : ColgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <ColgroupClient {...rest}>{children}</ColgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Colgroup.displayName = "Colgroup";
 
 const DataClient = lazy(async () => {
