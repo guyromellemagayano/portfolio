@@ -54,6 +54,11 @@ const AbbrClient = lazy(async () => {
   return { default: module.AbbrClient };
 });
 
+const MemoizedAbbrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAbbrClient };
+});
+
 export type AbbrRef = React.ElementRef<"abbr">;
 export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
   CommonComponentProps;
@@ -63,20 +68,26 @@ export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
  * @param {AbbrProps} props - The default abbreviation server component properties
  * @returns The rendered default abbreviation server component
  */
-export const Abbr = ({ isClient = false, children, ...rest }: AbbrProps) => {
+export const Abbr = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AbbrProps) => {
   const element = <abbr {...rest}>{children}</abbr>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;
+
     return (
       <Suspense fallback={element}>
-        <AbbrClient {...rest}>{children}</AbbrClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Abbr.displayName = "Abbr";
 
 const AddressClient = lazy(async () => {
