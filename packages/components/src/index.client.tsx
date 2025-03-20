@@ -404,8 +404,11 @@ export const BaseClient = forwardRef<BaseRef, BaseProps>(
     );
   }
 );
-
 BaseClient.displayName = "BaseClient";
+
+// Memoized version of `BaseClient`.
+export const MemoizedBaseClient = memo(BaseClient);
+MemoizedBaseClient.displayName = "MemoizedBaseClient";
 
 /**
  * Render the bidirectional isolate client component.
