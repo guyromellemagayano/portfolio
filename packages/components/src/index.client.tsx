@@ -15,6 +15,7 @@ import {
   Bdi,
   Bdo,
   Blockquote,
+  Body,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -480,11 +481,11 @@ export const MemoizedBlockquoteClient = memo(BlockquoteClient);
  * @returns The rendered document body client component
  */
 export const BodyClient = forwardRef<BodyRef, BodyProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Body, children, ...rest }, ref) => {
     return (
-      <body ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </body>
+      </Component>
     );
   }
 );
@@ -492,7 +493,6 @@ BodyClient.displayName = "BodyClient";
 
 // Memoized version of `BodyClient`.
 export const MemoizedBodyClient = memo(BodyClient);
-MemoizedBodyClient.displayName = "MemoizedBodyClient";
 
 /**
  * Render the document line break client component.
