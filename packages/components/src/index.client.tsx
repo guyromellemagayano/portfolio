@@ -24,6 +24,7 @@ import {
   Col,
   Colgroup,
   Data,
+  Datalist,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -681,16 +682,18 @@ export const MemoizedDataClient = memo(DataClient);
  * @returns The rendered datalist client component
  */
 export const DatalistClient = forwardRef<DatalistRef, DatalistProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Datalist, children, ...rest }, ref) => {
     return (
-      <datalist ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </datalist>
+      </Component>
     );
   }
 );
-
 DatalistClient.displayName = "DatalistClient";
+
+// Memoized version of `DatalistClient`.
+export const MemoizedDatalistClient = memo(DatalistClient);
 
 /**
  * Render the description details client component.
