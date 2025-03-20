@@ -146,7 +146,8 @@ const MemoizedAreaClient = lazy(async () => {
 
 export type AreaRef = React.ElementRef<"area">;
 export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default area server component.
@@ -154,6 +155,7 @@ export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
  * @returns The rendered default area server component
  */
 export const Area = ({
+  as: Component = "area",
   alt = "",
   isClient = false,
   isMemoized = false,
@@ -161,9 +163,9 @@ export const Area = ({
   ...rest
 }: AreaProps) => {
   const element = (
-    <area alt={alt} {...rest}>
+    <Component alt={alt} {...rest}>
       {children}
-    </area>
+    </Component>
   );
 
   if (isClient) {
