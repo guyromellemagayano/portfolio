@@ -503,8 +503,11 @@ MemoizedBodyClient.displayName = "MemoizedBodyClient";
 export const BrClient = forwardRef<BrRef, BrProps>(({ ...rest }, ref) => {
   return <br ref={ref} {...rest} />;
 });
-
 BrClient.displayName = "BrClient";
+
+// Memoized version of `BrClient`.
+export const MemoizedBrClient = memo(BrClient);
+MemoizedBrClient.displayName = "MemoizedBrClient";
 
 /**
  * Render the button client component.
