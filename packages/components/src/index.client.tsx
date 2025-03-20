@@ -299,8 +299,11 @@ export const AreaClient = forwardRef<AreaRef, AreaProps>(
     );
   }
 );
-
 AreaClient.displayName = "AreaClient";
+
+// Memoized version of `AreaClient`.
+export const MemoizedAreaClient = memo(AreaClient);
+MemoizedAreaClient.displayName = "MemoizedAreaClient";
 
 /**
  * Render the article client component.
