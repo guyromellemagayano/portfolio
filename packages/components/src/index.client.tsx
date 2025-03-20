@@ -257,8 +257,11 @@ export const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
     );
   }
 );
-
 AbbrClient.displayName = "AbbrClient";
+
+// Memoized version of `AbbrClient`
+export const MemoizedAbbrClient = memo(AbbrClient);
+MemoizedAbbrClient.displayName = "MemoizedAbbrClient";
 
 /**
  * Render the address client component.
