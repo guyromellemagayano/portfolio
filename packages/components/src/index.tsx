@@ -6,7 +6,6 @@ const AClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
 });
-
 const MemoizedAClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAClient };
@@ -53,7 +52,6 @@ const AbbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
 });
-
 const MemoizedAbbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAbbrClient };
@@ -94,6 +92,10 @@ const AddressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AddressClient };
 });
+const MemoizedAddressClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAddressClient };
+});
 
 export type AddressRef = React.ElementRef<"address">;
 export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
@@ -106,22 +108,24 @@ export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
  */
 export const Address = ({
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AddressProps) => {
   const element = <address {...rest}>{children}</address>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAddressClient : AddressClient;
+
     return (
       <Suspense fallback={element}>
-        <AddressClient {...rest}>{children}</AddressClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Address.displayName = "Address";
 
 const AreaClient = lazy(async () => {
