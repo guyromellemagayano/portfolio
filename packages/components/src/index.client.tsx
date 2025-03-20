@@ -10,6 +10,7 @@ import {
   Article,
   Aside,
   Audio,
+  B,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -375,11 +376,11 @@ export const MemoizedAudioClient = memo(AudioClient);
  * @returns The rendered bring attention to client component
  */
 export const BClient = forwardRef<BRef, BProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = B, children, ...rest }, ref) => {
     return (
-      <b ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </b>
+      </Component>
     );
   }
 );
@@ -387,7 +388,6 @@ BClient.displayName = "BClient";
 
 // Memoized version of `BClient`.
 export const MemoizedBClient = memo(BClient);
-MemoizedBClient.displayName = "MemoizedBClient";
 
 /**
  * Render the base client component.

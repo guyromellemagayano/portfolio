@@ -320,12 +320,13 @@ export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
  * @returns The rendered default bring attention to server component
  */
 export const B = ({
+  as: Component = "b",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BProps) => {
-  const element = <b {...rest}>{children}</b>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBClient : BClient;
