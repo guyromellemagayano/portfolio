@@ -1341,6 +1341,10 @@ const EmbedClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmbedClient };
 });
+const MemoizedEmbedClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedEmbedClient };
+});
 
 export type EmbedRef = React.ElementRef<"embed">;
 export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
@@ -1351,20 +1355,26 @@ export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
  * @param {EmbedProps} props - The default embed external content server component properties
  * @returns The rendered default embed external content server component
  */
-export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
-  const element = <embed {...rest} />;
+export const Embed = ({
+  as: Component = "embed",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: EmbedProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedEmbedClient : EmbedClient;
+
     return (
       <Suspense fallback={element}>
-        <EmbedClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Embed.displayName = "Embed";
 
 const FieldsetClient = lazy(async () => {
