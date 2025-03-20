@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 
-import type { CommonComponentProps } from "./components";
+import type { AsComponentProps, CommonComponentProps } from "./components";
 
 const AClient = lazy(async () => {
   const module = await import("./index.client");
@@ -579,10 +579,15 @@ const ButtonClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ButtonClient };
 });
+const MemoizedButtonClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedButtonClient };
+});
 
 export type ButtonRef = React.ElementRef<"button">;
 export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default button server component.
@@ -590,30 +595,33 @@ export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
  * @returns The rendered default button server component
  */
 export const Button = ({
+  as: Component = "button",
   type = "button",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ButtonProps) => {
   const element = (
-    <button type={type} {...rest} disabled>
+    <Component type={type} disabled={isClient} {...rest}>
       {children}
-    </button>
+    </Component>
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedButtonClient : ButtonClient;
+
     return (
       <Suspense fallback={element}>
-        <ButtonClient type={type} {...rest}>
+        <ClientComponent type={type} {...rest}>
           {children}
-        </ButtonClient>
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Button.displayName = "Button";
 
 const CanvasClient = lazy(async () => {
