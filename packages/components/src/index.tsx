@@ -1013,6 +1013,10 @@ const DelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DelClient };
 });
+const MemoizedDelClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDelClient };
+});
 
 export type DelRef = React.ElementRef<"del">;
 export type DelProps = React.ComponentPropsWithoutRef<"del"> &
@@ -1023,20 +1027,27 @@ export type DelProps = React.ComponentPropsWithoutRef<"del"> &
  * @param {DelProps} props - The default deleted text server component properties
  * @returns The rendered default deleted text server component
  */
-export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
-  const element = <del {...rest}>{children}</del>;
+export const Del = ({
+  as: Component = "del",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DelProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDelClient : DelClient;
+
     return (
       <Suspense fallback={element}>
-        <DelClient {...rest}>{children}</DelClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Del.displayName = "Del";
 
 const DetailsClient = lazy(async () => {
