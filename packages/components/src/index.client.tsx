@@ -8,6 +8,7 @@ import {
   Address,
   Area,
   Article,
+  Aside,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -333,11 +334,11 @@ export const MemoizedArticleClient = memo(ArticleClient);
  * @returns The rendered aside client component
  */
 export const AsideClient = forwardRef<AsideRef, AsideProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Aside, children, ...rest }, ref) => {
     return (
-      <aside ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </aside>
+      </Component>
     );
   }
 );
