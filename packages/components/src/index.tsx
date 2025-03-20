@@ -418,6 +418,10 @@ const BdoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdoClient };
 });
+const MemoizedBdoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBdoClient };
+});
 
 export type BdoRef = React.ElementRef<"bdo">;
 export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
@@ -428,20 +432,26 @@ export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
  * @param {BdoProps} props - The default bidirectional text override server component properties
  * @returns The rendered default bidirectional text override server component
  */
-export const Bdo = ({ isClient = false, children, ...rest }: BdoProps) => {
+export const Bdo = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BdoProps) => {
   const element = <bdo {...rest}>{children}</bdo>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBdoClient : BdoClient;
+
     return (
       <Suspense fallback={element}>
-        <BdoClient {...rest}>{children}</BdoClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Bdo.displayName = "Bdo";
 
 const BlockquoteClient = lazy(async () => {
