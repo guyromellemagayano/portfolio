@@ -16,6 +16,7 @@ import {
   Bdo,
   Blockquote,
   Body,
+  Br,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -500,14 +501,15 @@ export const MemoizedBodyClient = memo(BodyClient);
  * @param {BrRef} ref - The document line break client component reference
  * @returns The rendered document line break client component
  */
-export const BrClient = forwardRef<BrRef, BrProps>(({ ...rest }, ref) => {
-  return <br ref={ref} {...rest} />;
-});
+export const BrClient = forwardRef<BrRef, BrProps>(
+  ({ as: Component = Br, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 BrClient.displayName = "BrClient";
 
 // Memoized version of `BrClient`.
 export const MemoizedBrClient = memo(BrClient);
-MemoizedBrClient.displayName = "MemoizedBrClient";
 
 /**
  * Render the button client component.
