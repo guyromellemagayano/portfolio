@@ -338,6 +338,10 @@ const BaseClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BaseClient };
 });
+const MemoizedBaseClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBaseClient };
+});
 
 export type BaseRef = React.ElementRef<"base">;
 export type BaseProps = React.ComponentPropsWithoutRef<"base"> &
@@ -348,20 +352,26 @@ export type BaseProps = React.ComponentPropsWithoutRef<"base"> &
  * @param {BaseProps} props - The default base server component properties
  * @returns The rendered default base server component
  */
-export const Base = ({ isClient = false, children, ...rest }: BaseProps) => {
+export const Base = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BaseProps) => {
   const element = <base {...rest}>{children}</base>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBaseClient : BaseClient;
+
     return (
       <Suspense fallback={element}>
-        <BaseClient {...rest}>{children} </BaseClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Base.displayName = "Base";
 
 const BdiClient = lazy(async () => {
