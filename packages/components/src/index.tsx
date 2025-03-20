@@ -1259,6 +1259,10 @@ const DtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DtClient };
 });
+const MemoizedDtClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDtClient };
+});
 
 export type DtRef = React.ElementRef<"dt">;
 export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
@@ -1269,20 +1273,27 @@ export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
  * @param {DtProps} props - The default description term server component properties
  * @returns The rendered default description term server component
  */
-export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
-  const element = <dt {...rest}>{children}</dt>;
+export const Dt = ({
+  as: Component = "dt",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DtProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDtClient : DtClient;
+
     return (
       <Suspense fallback={element}>
-        <DtClient {...rest}>{children}</DtClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dt.displayName = "Dt";
 
 const EmClient = lazy(async () => {
