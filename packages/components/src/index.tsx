@@ -1,6 +1,6 @@
 import { lazy, Suspense } from "react";
 
-import type { AsComponentProps, CommonComponentProps } from "./components";
+import type { CommonComponentProps } from "./components";
 
 const AClient = lazy(async () => {
   const module = await import("./index.client");
@@ -12,9 +12,7 @@ const MemoizedAClient = lazy(async () => {
 });
 
 export type ARef = React.ElementRef<"a">;
-export type AProps = React.ComponentPropsWithoutRef<"a"> &
-  CommonComponentProps &
-  AsComponentProps;
+export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
 
 /**
  * Render the default anchor server component.
@@ -62,8 +60,7 @@ const MemoizedAbbrClient = lazy(async () => {
 
 export type AbbrRef = React.ElementRef<"abbr">;
 export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default abbreviation server component.
@@ -104,8 +101,7 @@ const MemoizedAddressClient = lazy(async () => {
 
 export type AddressRef = React.ElementRef<"address">;
 export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default address server component.
@@ -146,8 +142,7 @@ const MemoizedAreaClient = lazy(async () => {
 
 export type AreaRef = React.ElementRef<"area">;
 export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default area server component.
@@ -195,8 +190,7 @@ const MemoizedArticleClient = lazy(async () => {
 
 export type ArticleRef = React.ElementRef<"article">;
 export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default article server component.
@@ -237,8 +231,7 @@ const MemoizedAsideClient = lazy(async () => {
 
 export type AsideRef = React.ElementRef<"aside">;
 export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default aside server component.
@@ -599,8 +592,7 @@ const MemoizedButtonClient = lazy(async () => {
 
 export type ButtonRef = React.ElementRef<"button">;
 export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
-  CommonComponentProps &
-  AsComponentProps;
+  CommonComponentProps;
 
 /**
  * Render the default button server component.
