@@ -259,6 +259,10 @@ const AudioClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AudioClient };
 });
+const MemoizedAudioClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAudioClient };
+});
 
 export type AudioRef = React.ElementRef<"audio">;
 export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
@@ -269,20 +273,26 @@ export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
  * @param {AudioProps} props - The default audio server component properties
  * @returns The rendered default audio server component
  */
-export const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
+export const Audio = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AudioProps) => {
   const element = <audio {...rest}>{children}</audio>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAudioClient : AudioClient;
+
     return (
       <Suspense fallback={element}>
-        <AudioClient {...rest}>{children} </AudioClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Audio.displayName = "Audio";
 
 const BClient = lazy(async () => {
