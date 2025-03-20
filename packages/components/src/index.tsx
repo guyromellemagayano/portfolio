@@ -1467,6 +1467,10 @@ const FigureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigureClient };
 });
+const MemoizedFigureClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFigureClient };
+});
 
 export type FigureRef = React.ElementRef<"figure">;
 export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
@@ -1478,23 +1482,26 @@ export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
  * @returns The rendered default figure with optional caption server component
  */
 export const Figure = ({
+  as: Component = "figure",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FigureProps) => {
-  const element = <figure {...rest}>{children}</figure>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFigureClient : FigureClient;
+
     return (
       <Suspense fallback={element}>
-        <FigureClient {...rest}>{children}</FigureClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Figure.displayName = "Figure";
 
 const FooterClient = lazy(async () => {
