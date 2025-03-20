@@ -362,8 +362,11 @@ export const AudioClient = forwardRef<AudioRef, AudioProps>(
     );
   }
 );
-
 AudioClient.displayName = "AudioClient";
+
+// Memoized version of `AudioClient`.
+export const MemoizedAudioClient = memo(AudioClient);
+MemoizedAudioClient.displayName = "MemoizedAudioClient";
 
 /**
  * Render the bring attention to client component.
