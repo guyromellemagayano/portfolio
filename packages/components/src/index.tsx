@@ -1672,6 +1672,10 @@ const HeadingClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadingClient };
 });
+const MemoizedHeadingClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeadingClient };
+});
 
 export type HeadingRef = React.ElementRef<"h1">;
 export type HeadingProps = React.ComponentPropsWithoutRef<"h1"> &
@@ -1687,22 +1691,24 @@ export type HeadingProps = React.ComponentPropsWithoutRef<"h1"> &
 export const Heading = ({
   as: Component = "h1",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HeadingProps) => {
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeadingClient : HeadingClient;
+
     return (
       <Suspense fallback={element}>
-        <HeadingClient {...rest}>{children}</HeadingClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Heading.displayName = "Heading";
 
 const HgroupClient = lazy(async () => {
