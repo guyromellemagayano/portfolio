@@ -805,6 +805,10 @@ const ColClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColClient };
 });
+const MemoizedColClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedColClient };
+});
 
 export type ColRef = React.ElementRef<"col">;
 export type ColProps = React.ComponentPropsWithoutRef<"col"> &
@@ -815,20 +819,26 @@ export type ColProps = React.ComponentPropsWithoutRef<"col"> &
  * @param {ColProps} props - The default column server component properties
  * @returns The rendered default column server component
  */
-export const Col = ({ isClient = false, ...rest }: ColProps) => {
-  const element = <col {...rest} />;
+export const Col = ({
+  as: Component = "col",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: ColProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedColClient : ColClient;
+
     return (
       <Suspense fallback={element}>
-        <ColClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Col.displayName = "Col";
 
 const ColgroupClient = lazy(async () => {
