@@ -1218,6 +1218,10 @@ const DlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DlClient };
 });
+const MemoizedDlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDlClient };
+});
 
 export type DlRef = React.ElementRef<"dl">;
 export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
@@ -1228,20 +1232,27 @@ export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
  * @param {DlProps} props - The default description list server component properties
  * @returns The rendered default description list server component
  */
-export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
-  const element = <dl {...rest}>{children}</dl>;
+export const Dl = ({
+  as: Component = "dl",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDlClient : DlClient;
+
     return (
       <Suspense fallback={element}>
-        <DlClient {...rest}>{children}</DlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dl.displayName = "Dl";
 
 const DtClient = lazy(async () => {
