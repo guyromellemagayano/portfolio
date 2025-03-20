@@ -1136,6 +1136,10 @@ const DialogClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DialogClient };
 });
+const MemoizedDialogClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDialogClient };
+});
 
 export type DialogRef = React.ElementRef<"dialog">;
 export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> &
@@ -1147,23 +1151,26 @@ export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> &
  * @returns The rendered default dialog server component
  */
 export const Dialog = ({
+  as: Component = "dialog",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DialogProps) => {
-  const element = <dialog {...rest}>{children}</dialog>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDialogClient : DialogClient;
+
     return (
       <Suspense fallback={element}>
-        <DialogClient {...rest}>{children}</DialogClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dialog.displayName = "Dialog";
 
 const DivClient = lazy(async () => {
