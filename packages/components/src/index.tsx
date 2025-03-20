@@ -7,6 +7,11 @@ const AClient = lazy(async () => {
   return { default: module.AClient };
 });
 
+const MemoizedAClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAClient };
+});
+
 export type ARef = React.ElementRef<"a">;
 export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
 
@@ -18,6 +23,7 @@ export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
 export const A = ({
   href = "#",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AProps) => {
@@ -28,16 +34,19 @@ export const A = ({
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAClient : AClient;
+
     return (
       <Suspense fallback={element}>
-        <AClient {...rest}>{children}</AClient>
+        <ClientComponent href={href} {...rest}>
+          {children}
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 A.displayName = "A";
 
 const AbbrClient = lazy(async () => {
