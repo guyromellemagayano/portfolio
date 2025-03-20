@@ -1715,6 +1715,10 @@ const HgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HgroupClient };
 });
+const MemoizedHgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHgroupClient };
+});
 
 export type HgroupRef = React.ElementRef<"hgroup">;
 export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> &
@@ -1726,23 +1730,26 @@ export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> &
  * @returns The rendered default heading group component
  */
 export const Hgroup = ({
+  as: Component = "hgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HgroupProps) => {
-  const element = <hgroup {...rest}>{children}</hgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHgroupClient : HgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <HgroupClient {...rest}>{children}</HgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Hgroup.displayName = "Hgroup";
 
 const HrClient = lazy(async () => {
