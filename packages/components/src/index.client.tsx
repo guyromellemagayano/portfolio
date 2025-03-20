@@ -27,6 +27,7 @@ import {
   Datalist,
   Dd,
   Del,
+  Details,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -744,16 +745,18 @@ export const MemoizedDelClient = memo(DelClient);
  * @returns The rendered details disclosure client component
  */
 export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Details, children, ...rest }, ref) => {
     return (
-      <details ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </details>
+      </Component>
     );
   }
 );
-
 DetailsClient.displayName = "DetailsClient";
+
+// Memoized version of `DetailsClient`.
+export const MemoizedDetailsClient = memo(DetailsClient);
 
 /**
  * Render the definition element client component.
