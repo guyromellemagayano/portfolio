@@ -11,6 +11,7 @@ import {
   Aside,
   Audio,
   B,
+  Base,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -396,11 +397,11 @@ export const MemoizedBClient = memo(BClient);
  * @returns The rendered base client component
  */
 export const BaseClient = forwardRef<BaseRef, BaseProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Base, children, ...rest }, ref) => {
     return (
-      <base ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </base>
+      </Component>
     );
   }
 );
@@ -408,7 +409,6 @@ BaseClient.displayName = "BaseClient";
 
 // Memoized version of `BaseClient`.
 export const MemoizedBaseClient = memo(BaseClient);
-MemoizedBaseClient.displayName = "MemoizedBaseClient";
 
 /**
  * Render the bidirectional isolate client component.
