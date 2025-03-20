@@ -19,6 +19,7 @@ import {
   Br,
   Canvas,
   Caption,
+  Cite,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -580,16 +581,18 @@ export const MemoizedCaptionClient = memo(CaptionClient);
  * @returns The rendered cite client component
  */
 export const CiteClient = forwardRef<CiteRef, CiteProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Cite, children, ...rest }, ref) => {
     return (
-      <cite ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </cite>
+      </Component>
     );
   }
 );
-
 CiteClient.displayName = "CiteClient";
+
+// Memoized version of `CiteClient`.
+export const MemoizedCiteClient = memo(CiteClient);
 
 /**
  * Render the code client component.
