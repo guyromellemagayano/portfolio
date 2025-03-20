@@ -37,6 +37,7 @@ import {
   Embed,
   Fieldset,
   Figcaption,
+  Figure,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -950,16 +951,18 @@ export const MemoizedFigcaptionClient = memo(FigcaptionClient);
  * @returns The rendered figure with optional caption client component
  */
 export const FigureClient = forwardRef<FigureRef, FigureProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Figure, children, ...rest }, ref) => {
     return (
-      <figure ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </figure>
+      </Component>
     );
   }
 );
-
 FigureClient.displayName = "FigureClient";
+
+// Memoized version of `FigureClient`.
+export const MemoizedFigureClient = memo(FigureClient);
 
 /**
  * Render the footer client component.
