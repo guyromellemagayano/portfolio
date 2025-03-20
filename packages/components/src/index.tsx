@@ -1549,6 +1549,10 @@ const FormClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FormClient };
 });
+const MemoizedFormClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFormClient };
+});
 
 export type FormRef = React.ElementRef<"form">;
 export type FormProps = React.ComponentPropsWithoutRef<"form"> &
@@ -1559,20 +1563,27 @@ export type FormProps = React.ComponentPropsWithoutRef<"form"> &
  * @param {FormProps} props - The default form server component properties
  * @returns The rendered default form server component
  */
-export const Form = ({ isClient = false, children, ...rest }: FormProps) => {
-  const element = <form {...rest}>{children}</form>;
+export const Form = ({
+  as: Component = "form",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: FormProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFormClient : FormClient;
+
     return (
       <Suspense fallback={element}>
-        <FormClient {...rest}>{children}</FormClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Form.displayName = "Form";
 
 const HeadClient = lazy(async () => {
