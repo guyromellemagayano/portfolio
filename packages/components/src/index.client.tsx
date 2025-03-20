@@ -1077,16 +1077,18 @@ export const MemoizedHeadingClient = memo(HeadingClient);
  * @returns The rendered heading group client component
  */
 export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Hgroup, children, ...rest }, ref) => {
     return (
-      <hgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </hgroup>
+      </Component>
     );
   }
 );
-
 HgroupClient.displayName = "HgroupClient";
+
+// Memoized version of `HgroupClient`.
+export const MemoizedHgroupClient = memo(HgroupClient);
 
 /**
  * Render the thematic break (horizontal rule) client component.
