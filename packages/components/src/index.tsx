@@ -402,12 +402,13 @@ export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> &
  * @returns The rendered default bidirectional isolate server component
  */
 export const Bdi = ({
+  as: Component = "bdi",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BdiProps) => {
-  const element = <bdi {...rest}>{children}</bdi>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBdiClient : BdiClient;

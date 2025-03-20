@@ -12,6 +12,7 @@ import {
   Audio,
   B,
   Base,
+  Bdi,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -417,11 +418,11 @@ export const MemoizedBaseClient = memo(BaseClient);
  * @returns The rendered bidirectional isolate client component
  */
 export const BdiClient = forwardRef<BdiRef, BdiProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Bdi, children, ...rest }, ref) => {
     return (
-      <bdi ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </bdi>
+      </Component>
     );
   }
 );
@@ -429,7 +430,6 @@ BdiClient.displayName = "BdiClient";
 
 // Memoized version of `BdiClient`.
 export const MemoizedBdiClient = memo(BdiClient);
-MemoizedBdiClient.displayName = "MemoizedBdiClient";
 
 /**
  * Render the bidirectional text override client component.
