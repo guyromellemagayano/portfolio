@@ -527,12 +527,13 @@ export type BodyProps = React.ComponentPropsWithoutRef<"body"> &
  * @returns The rendered default document body server component
  */
 export const Body = ({
+  as: Component = "body",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BodyProps) => {
-  const element = <body {...rest}>{children}</body>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBodyClient : BodyClient;
