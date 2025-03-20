@@ -458,6 +458,10 @@ const BlockquoteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BlockquoteClient };
 });
+const MemoizedBlockquoteClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBlockquoteClient };
+});
 
 export type BlockquoteRef = React.ElementRef<"blockquote">;
 export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
@@ -470,22 +474,26 @@ export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
  */
 export const Blockquote = ({
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: BlockquoteProps) => {
   const element = <blockquote {...rest}>{children}</blockquote>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedBlockquoteClient
+      : BlockquoteClient;
+
     return (
       <Suspense fallback={element}>
-        <BlockquoteClient {...rest}>{children} </BlockquoteClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Blockquote.displayName = "Blockquote";
 
 const BodyClient = lazy(async () => {
