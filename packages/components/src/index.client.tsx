@@ -25,6 +25,7 @@ import {
   Colgroup,
   Data,
   Datalist,
+  Dd,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -702,16 +703,18 @@ export const MemoizedDatalistClient = memo(DatalistClient);
  * @returns The rendered description details client component
  */
 export const DdClient = forwardRef<DdRef, DdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dd, children, ...rest }, ref) => {
     return (
-      <dd ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dd>
+      </Component>
     );
   }
 );
-
 DdClient.displayName = "DdClient";
+
+// Memoized version of `DdClient`.
+export const MemoizedDdClient = memo(DdClient);
 
 /**
  * Render the deleted text client component.
