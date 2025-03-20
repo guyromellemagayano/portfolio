@@ -259,7 +259,7 @@ export const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
 );
 AbbrClient.displayName = "AbbrClient";
 
-// Memoized version of `AbbrClient`
+// Memoized version of `AbbrClient`.
 export const MemoizedAbbrClient = memo(AbbrClient);
 MemoizedAbbrClient.displayName = "MemoizedAbbrClient";
 
@@ -278,8 +278,11 @@ export const AddressClient = forwardRef<AddressRef, AddressProps>(
     );
   }
 );
-
 AddressClient.displayName = "AddressClient";
+
+// Memoized version of `AddressClient`.
+export const MemoizedAddressClient = memo(AddressClient);
+MemoizedAddressClient.displayName = "MemoizedAddressClient";
 
 /**
  * Render the area client component.
