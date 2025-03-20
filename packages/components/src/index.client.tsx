@@ -516,16 +516,19 @@ MemoizedBrClient.displayName = "MemoizedBrClient";
  * @returns The rendered button client component
  */
 export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = "button", type, children, ...rest }, ref) => {
     return (
-      <button ref={ref} {...rest}>
+      <Component ref={ref} type={type} {...rest}>
         {children}
-      </button>
+      </Component>
     );
   }
 );
-
 ButtonClient.displayName = "ButtonClient";
+
+// Memoized version of `ButtonClient`.
+export const MemoizedButtonClient = memo(ButtonClient);
+MemoizedButtonClient.displayName = "Memo(ButtonClient)";
 
 /**
  * Render the canvas client component.
