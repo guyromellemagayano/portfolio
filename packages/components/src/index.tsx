@@ -12,7 +12,9 @@ const MemoizedAClient = lazy(async () => {
 });
 
 export type ARef = React.ElementRef<"a">;
-export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
+export type AProps = React.ComponentPropsWithoutRef<"a"> &
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default anchor server component.
@@ -20,6 +22,7 @@ export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
  * @returns The rendered default anchor server component
  */
 export const A = ({
+  as: Component = "a",
   href = "#",
   isClient = false,
   isMemoized = false,
@@ -27,9 +30,9 @@ export const A = ({
   ...rest
 }: AProps) => {
   const element = (
-    <a href={href} {...rest}>
+    <Component href={href} {...rest}>
       {children}
-    </a>
+    </Component>
   );
 
   if (isClient) {
