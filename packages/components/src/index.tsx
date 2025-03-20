@@ -1095,6 +1095,10 @@ const DfnClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DfnClient };
 });
+const MemoizedDfnClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDfnClient };
+});
 
 export type DfnRef = React.ElementRef<"dfn">;
 export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> &
@@ -1105,20 +1109,27 @@ export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> &
  * @param {DfnProps} props - The default definition element server component properties
  * @returns The rendered default definition element server component
  */
-export const Dfn = ({ isClient = false, children, ...rest }: DfnProps) => {
-  const element = <dfn {...rest}>{children}</dfn>;
+export const Dfn = ({
+  as: Component = "dfn",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DfnProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDfnClient : DfnClient;
+
     return (
       <Suspense fallback={element}>
-        <DfnClient {...rest}>{children}</DfnClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dfn.displayName = "Dfn";
 
 const DialogClient = lazy(async () => {
