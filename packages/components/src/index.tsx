@@ -641,6 +641,10 @@ const CanvasClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CanvasClient };
 });
+const MemoizedCanvasClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCanvasClient };
+});
 
 export type CanvasRef = React.ElementRef<"canvas">;
 export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
@@ -652,23 +656,26 @@ export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
  * @returns The rendered default canvas server component
  */
 export const Canvas = ({
+  as: Component = "canvas",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: CanvasProps) => {
-  const element = <canvas {...rest}>{children}</canvas>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCanvasClient : CanvasClient;
+
     return (
       <Suspense fallback={element}>
-        <CanvasClient {...rest}>{children} </CanvasClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Canvas.displayName = "Canvas";
 
 const CaptionClient = lazy(async () => {
