@@ -1300,6 +1300,10 @@ const EmClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmClient };
 });
+const MemoizedEmClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedEmClient };
+});
 
 export type EmRef = React.ElementRef<"em">;
 export type EmProps = React.ComponentPropsWithoutRef<"em"> &
@@ -1310,20 +1314,27 @@ export type EmProps = React.ComponentPropsWithoutRef<"em"> &
  * @param {EmProps} props - The default emphasis server component properties
  * @returns The rendered default emphasis server component
  */
-export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
-  const element = <em {...rest}>{children}</em>;
+export const Em = ({
+  as: Component = "em",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: EmProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedEmClient : EmClient;
+
     return (
       <Suspense fallback={element}>
-        <EmClient {...rest}>{children}</EmClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Em.displayName = "Em";
 
 const EmbedClient = lazy(async () => {
