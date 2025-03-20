@@ -348,24 +348,6 @@ export const MemoizedAsideClient = memo(AsideClient);
 MemoizedAsideClient.displayName = "MemoizedAsideClient";
 
 /**
- * Render the bring attention to client component.
- * @param {BProps} props - The bring attention to client component properties
- * @param {BRef} ref - The bring attention to client component reference
- * @returns The rendered bring attention to client component
- */
-export const BClient = forwardRef<BRef, BProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <b ref={ref} {...rest}>
-        {children}
-      </b>
-    );
-  }
-);
-
-BClient.displayName = "BClient";
-
-/**
  * Render the audio client component.
  * @param {AudioProps} props - The audio client component properties
  * @param {AudioRef} ref - The audio client component reference
@@ -384,22 +366,25 @@ export const AudioClient = forwardRef<AudioRef, AudioProps>(
 AudioClient.displayName = "AudioClient";
 
 /**
- * Render the bidirectional isolate client component.
- * @param {BdiProps} props - The bidirectional isolate client component properties
- * @param {BdiRef} ref - The bidirectional isolate client component reference
- * @returns The rendered bidirectional isolate client component
+ * Render the bring attention to client component.
+ * @param {BProps} props - The bring attention to client component properties
+ * @param {BRef} ref - The bring attention to client component reference
+ * @returns The rendered bring attention to client component
  */
-export const BdiClient = forwardRef<BdiRef, BdiProps>(
+export const BClient = forwardRef<BRef, BProps>(
   ({ children, ...rest }, ref) => {
     return (
-      <bdi ref={ref} {...rest}>
+      <b ref={ref} {...rest}>
         {children}
-      </bdi>
+      </b>
     );
   }
 );
+BClient.displayName = "BClient";
 
-BdiClient.displayName = "BdiClient";
+// Memoized version of `BClient`.
+export const MemoizedBClient = memo(BClient);
+MemoizedBClient.displayName = "MemoizedBClient";
 
 /**
  * Render the base client component.
@@ -418,6 +403,24 @@ export const BaseClient = forwardRef<BaseRef, BaseProps>(
 );
 
 BaseClient.displayName = "BaseClient";
+
+/**
+ * Render the bidirectional isolate client component.
+ * @param {BdiProps} props - The bidirectional isolate client component properties
+ * @param {BdiRef} ref - The bidirectional isolate client component reference
+ * @returns The rendered bidirectional isolate client component
+ */
+export const BdiClient = forwardRef<BdiRef, BdiProps>(
+  ({ children, ...rest }, ref) => {
+    return (
+      <bdi ref={ref} {...rest}>
+        {children}
+      </bdi>
+    );
+  }
+);
+
+BdiClient.displayName = "BdiClient";
 
 /**
  * Render the bidirectional text override client component.
