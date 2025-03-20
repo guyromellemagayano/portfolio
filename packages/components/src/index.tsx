@@ -104,7 +104,8 @@ const MemoizedAddressClient = lazy(async () => {
 
 export type AddressRef = React.ElementRef<"address">;
 export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default address server component.
@@ -112,12 +113,13 @@ export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
  * @returns The rendered default address server component
  */
 export const Address = ({
+  as: Component = "address",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: AddressProps) => {
-  const element = <address {...rest}>{children}</address>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAddressClient : AddressClient;
