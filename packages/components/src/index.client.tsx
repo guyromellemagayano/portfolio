@@ -446,8 +446,11 @@ export const BdoClient = forwardRef<BdoRef, BdoProps>(
     );
   }
 );
-
 BdoClient.displayName = "BdoClient";
+
+// Memoized version of `BdoClient`.
+export const MemoizedBdoClient = memo(BdoClient);
+MemoizedBdoClient.displayName = "MemoizedBdoClient";
 
 /**
  * Render the blockquote client component.
