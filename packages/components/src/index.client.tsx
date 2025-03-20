@@ -22,6 +22,7 @@ import {
   Cite,
   Code,
   Col,
+  Colgroup,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -639,16 +640,18 @@ export const MemoizedColClient = memo(ColClient);
  * @returns The rendered table column group client component
  */
 export const ColgroupClient = forwardRef<ColgroupRef, ColgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Colgroup, children, ...rest }, ref) => {
     return (
-      <colgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </colgroup>
+      </Component>
     );
   }
 );
-
 ColgroupClient.displayName = "ColgroupClient";
+
+// Memoized version of `ColgroupClient`.
+export const MemoizedColgroupClient = memo(ColgroupClient);
 
 /**
  * Render the data client component.
