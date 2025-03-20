@@ -9,6 +9,7 @@ import {
   Area,
   Article,
   Aside,
+  Audio,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -346,7 +347,6 @@ AsideClient.displayName = "AsideClient";
 
 // Memoized version of `AsideClient`.
 export const MemoizedAsideClient = memo(AsideClient);
-MemoizedAsideClient.displayName = "MemoizedAsideClient";
 
 /**
  * Render the audio client component.
@@ -355,11 +355,11 @@ MemoizedAsideClient.displayName = "MemoizedAsideClient";
  * @returns The rendered audio client component
  */
 export const AudioClient = forwardRef<AudioRef, AudioProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Audio, children, ...rest }, ref) => {
     return (
-      <audio ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </audio>
+      </Component>
     );
   }
 );
@@ -367,7 +367,6 @@ AudioClient.displayName = "AudioClient";
 
 // Memoized version of `AudioClient`.
 export const MemoizedAudioClient = memo(AudioClient);
-MemoizedAudioClient.displayName = "MemoizedAudioClient";
 
 /**
  * Render the bring attention to client component.
