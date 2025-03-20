@@ -1590,6 +1590,10 @@ const HeadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadClient };
 });
+const MemoizedHeadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeadClient };
+});
 
 export type HeadRef = React.ElementRef<"head">;
 export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
@@ -1600,25 +1604,36 @@ export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
  * @param {HeadProps} props - The default document metadata (header) server component properties
  * @returns The rendered default document metadata (header) server component
  */
-export const Head = ({ isClient = false, children, ...rest }: HeadProps) => {
-  const element = <head {...rest}>{children}</head>;
+export const Head = ({
+  as: Component = "head",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: HeadProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeadClient : HeadClient;
+
     return (
       <Suspense fallback={element}>
-        <HeadClient {...rest}>{children}</HeadClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Head.displayName = "Head";
 
 const HeaderClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeaderClient };
+});
+const MemoizedHeaderClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeaderClient };
 });
 
 export type HeaderRef = React.ElementRef<"header">;
@@ -1631,23 +1646,26 @@ export type HeaderProps = React.ComponentPropsWithoutRef<"header"> &
  * @returns The rendered default header server component
  */
 export const Header = ({
+  as: Component = "header",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HeaderProps) => {
-  const element = <header {...rest}>{children}</header>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeaderClient : HeaderClient;
+
     return (
       <Suspense fallback={element}>
-        <HeaderClient {...rest}>{children}</HeaderClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Header.displayName = "Header";
 
 const HeadingClient = lazy(async () => {
