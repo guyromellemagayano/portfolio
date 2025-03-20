@@ -34,6 +34,7 @@ import {
   Dl,
   Dt,
   Em,
+  Embed,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -891,12 +892,14 @@ export const MemoizedEmClient = memo(EmClient);
  * @returns The rendered embed external content client component
  */
 export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
-  ({ ...rest }, ref) => {
-    return <embed ref={ref} {...rest} />;
+  ({ as: Component = Embed, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 EmbedClient.displayName = "EmbedClient";
+
+// Memoized version of `EmbedClient`.
+export const MemoizedEmbedClient = memo(EmbedClient);
 
 /**
  * Render the field set client component.
