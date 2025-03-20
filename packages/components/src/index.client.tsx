@@ -17,6 +17,7 @@ import {
   Blockquote,
   Body,
   Br,
+  Canvas,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -538,16 +539,18 @@ export const MemoizedButtonClient = memo(ButtonClient);
  * @returns The rendered canvas client component
  */
 export const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Canvas, children, ...rest }, ref) => {
     return (
-      <canvas ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </canvas>
+      </Component>
     );
   }
 );
-
 CanvasClient.displayName = "CanvasClient";
+
+// Memoized version of `CanvasClient`.
+export const MemoizedCanvasClient = memo(CanvasClient);
 
 /**
  * Render the caption client component.
