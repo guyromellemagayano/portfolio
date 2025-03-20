@@ -764,6 +764,10 @@ const CodeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CodeClient };
 });
+const MemoizedCodeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCodeClient };
+});
 
 export type CodeRef = React.ElementRef<"code">;
 export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
@@ -774,20 +778,27 @@ export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
  * @param {CodeProps} props - The default code server component properties
  * @returns The rendered default code server component
  */
-export const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
-  const element = <code {...rest}>{children}</code>;
+export const Code = ({
+  as: Component = "code",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: CodeProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCodeClient : CodeClient;
+
     return (
       <Suspense fallback={element}>
-        <CodeClient {...rest}>{children}</CodeClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Code.displayName = "Code";
 
 const ColClient = lazy(async () => {
