@@ -888,6 +888,10 @@ const DataClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DataClient };
 });
+const MemoizedDataClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDataClient };
+});
 
 export type DataRef = React.ElementRef<"data">;
 export type DataProps = React.ComponentPropsWithoutRef<"data"> &
@@ -898,20 +902,27 @@ export type DataProps = React.ComponentPropsWithoutRef<"data"> &
  * @param {DataProps} props - The default data server component properties
  * @returns The rendered default data server component
  */
-export const Data = ({ isClient = false, children, ...rest }: DataProps) => {
-  const element = <data {...rest}>{children}</data>;
+export const Data = ({
+  as: Component = "data",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DataProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDataClient : DataClient;
+
     return (
       <Suspense fallback={element}>
-        <DataClient {...rest}>{children}</DataClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Data.displayName = "Data";
 
 const DatalistClient = lazy(async () => {
