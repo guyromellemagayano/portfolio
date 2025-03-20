@@ -488,8 +488,11 @@ export const BodyClient = forwardRef<BodyRef, BodyProps>(
     );
   }
 );
-
 BodyClient.displayName = "BodyClient";
+
+// Memoized version of `BodyClient`.
+export const MemoizedBodyClient = memo(BodyClient);
+MemoizedBodyClient.displayName = "MemoizedBodyClient";
 
 /**
  * Render the document line break client component.
