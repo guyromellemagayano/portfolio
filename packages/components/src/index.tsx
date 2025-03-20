@@ -179,6 +179,10 @@ const ArticleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ArticleClient };
 });
+const MemoizedArticleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedArticleClient };
+});
 
 export type ArticleRef = React.ElementRef<"article">;
 export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
@@ -191,22 +195,24 @@ export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
  */
 export const Article = ({
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ArticleProps) => {
   const element = <article {...rest}>{children}</article>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedArticleClient : ArticleClient;
+
     return (
       <Suspense fallback={element}>
-        <ArticleClient {...rest}>{children} </ArticleClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Article.displayName = "Article";
 
 const AsideClient = lazy(async () => {
