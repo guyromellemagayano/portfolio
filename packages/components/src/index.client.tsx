@@ -341,8 +341,11 @@ export const AsideClient = forwardRef<AsideRef, AsideProps>(
     );
   }
 );
-
 AsideClient.displayName = "AsideClient";
+
+// Memoized version of `AsideClient`.
+export const MemoizedAsideClient = memo(AsideClient);
+MemoizedAsideClient.displayName = "MemoizedAsideClient";
 
 /**
  * Render the bring attention to client component.

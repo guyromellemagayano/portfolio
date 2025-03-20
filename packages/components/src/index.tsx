@@ -219,6 +219,10 @@ const AsideClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AsideClient };
 });
+const MemoizedAsideClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAsideClient };
+});
 
 export type AsideRef = React.ElementRef<"aside">;
 export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
@@ -229,20 +233,26 @@ export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
  * @param {AsideProps} props - The default aside server component properties
  * @returns The rendered default aside server component
  */
-export const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
+export const Aside = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AsideProps) => {
   const element = <aside {...rest}>{children}</aside>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAsideClient : AsideClient;
+
     return (
       <Suspense fallback={element}>
-        <AsideClient {...rest}>{children} </AsideClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Aside.displayName = "Aside";
 
 const BClient = lazy(async () => {
