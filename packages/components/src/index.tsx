@@ -62,7 +62,8 @@ const MemoizedAbbrClient = lazy(async () => {
 
 export type AbbrRef = React.ElementRef<"abbr">;
 export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default abbreviation server component.
@@ -70,12 +71,13 @@ export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
  * @returns The rendered default abbreviation server component
  */
 export const Abbr = ({
+  as: Component = "abbr",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: AbbrProps) => {
-  const element = <abbr {...rest}>{children}</abbr>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;
