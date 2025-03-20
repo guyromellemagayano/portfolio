@@ -530,7 +530,6 @@ ButtonClient.displayName = "ButtonClient";
 
 // Memoized version of `ButtonClient`.
 export const MemoizedButtonClient = memo(ButtonClient);
-MemoizedButtonClient.displayName = "Memo(ButtonClient)";
 
 /**
  * Render the canvas client component.
