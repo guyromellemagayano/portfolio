@@ -378,6 +378,10 @@ const BdiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdiClient };
 });
+const MemoizedBdiClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBdiClient };
+});
 
 export type BdiRef = React.ElementRef<"bdi">;
 export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> &
@@ -388,20 +392,26 @@ export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> &
  * @param {BdiProps} props - The default bidirectional isolate server component properties
  * @returns The rendered default bidirectional isolate server component
  */
-export const Bdi = ({ isClient = false, children, ...rest }: BdiProps) => {
+export const Bdi = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BdiProps) => {
   const element = <bdi {...rest}>{children}</bdi>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBdiClient : BdiClient;
+
     return (
       <Suspense fallback={element}>
-        <BdiClient {...rest}>{children}</BdiClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Bdi.displayName = "Bdi";
 
 const BdoClient = lazy(async () => {
