@@ -195,7 +195,8 @@ const MemoizedArticleClient = lazy(async () => {
 
 export type ArticleRef = React.ElementRef<"article">;
 export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default article server component.
@@ -203,12 +204,13 @@ export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
  * @returns The rendered default article server component
  */
 export const Article = ({
+  as: Component = "article",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: ArticleProps) => {
-  const element = <article {...rest}>{children}</article>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedArticleClient : ArticleClient;
