@@ -40,6 +40,8 @@ import {
   Figure,
   Footer,
   Form,
+  Head,
+  Header,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1013,16 +1015,18 @@ export const MemoizedFormClient = memo(FormClient);
  * @returns The rendered document metadata (header) client component
  */
 export const HeadClient = forwardRef<HeadRef, HeadProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Head, children, ...rest }, ref) => {
     return (
-      <head ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </head>
+      </Component>
     );
   }
 );
-
 HeadClient.displayName = "HeadClient";
+
+// Memoized version of `HeadClient`.
+export const MemoizedHeadClient = memo(HeadClient);
 
 /**
  * Render the header client component.
@@ -1031,16 +1035,18 @@ HeadClient.displayName = "HeadClient";
  * @returns The rendered header client component
  */
 export const HeaderClient = forwardRef<HeaderRef, HeaderProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Header, children, ...rest }, ref) => {
     return (
-      <header ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </header>
+      </Component>
     );
   }
 );
-
 HeaderClient.displayName = "HeaderClient";
+
+// Memoized version of `HeaderClient`.
+export const MemoizedHeaderClient = memo(HeaderClient);
 
 /**
  * Render the HTML section heading client component.
