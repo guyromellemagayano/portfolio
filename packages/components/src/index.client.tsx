@@ -320,8 +320,11 @@ export const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
     );
   }
 );
-
 ArticleClient.displayName = "ArticleClient";
+
+// Memoized version of `ArticleClient`.
+export const MemoizedArticleClient = memo(ArticleClient);
+MemoizedArticleClient.displayName = "MemoizedArticleClient";
 
 /**
  * Render the aside client component.
