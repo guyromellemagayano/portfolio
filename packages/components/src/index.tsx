@@ -682,6 +682,10 @@ const CaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CaptionClient };
 });
+const MemoizedCaptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCaptionClient };
+});
 
 export type CaptionRef = React.ElementRef<"caption">;
 export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> &
@@ -693,16 +697,20 @@ export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> &
  * @returns The rendered default caption server component
  */
 export const Caption = ({
+  as: Component = "caption",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: CaptionProps) => {
-  const element = <caption {...rest}>{children}</caption>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCaptionClient : CaptionClient;
+
     return (
       <Suspense fallback={element}>
-        <CaptionClient {...rest}>{children}</CaptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
