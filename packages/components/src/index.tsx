@@ -568,11 +568,12 @@ export type BrProps = React.ComponentPropsWithoutRef<"br"> &
  * @returns The rendered default line break server component
  */
 export const Br = ({
+  as: Component = "br",
   isClient = false,
   isMemoized = false,
   ...rest
 }: BrProps) => {
-  const element = <br {...rest} />;
+  const element = <Component {...rest} />;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBrClient : BrClient;
