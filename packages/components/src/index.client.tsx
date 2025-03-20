@@ -33,6 +33,7 @@ import {
   Div,
   Dl,
   Dt,
+  Em,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -870,16 +871,18 @@ export const MemoizedDtClient = memo(DtClient);
  * @returns The rendered emphasis client component
  */
 export const EmClient = forwardRef<EmRef, EmProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Em, children, ...rest }, ref) => {
     return (
-      <em ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </em>
+      </Component>
     );
   }
 );
-
 EmClient.displayName = "EmClient";
+
+// Memoized version of `EmClient`.
+export const MemoizedEmClient = memo(EmClient);
 
 /**
  * Render the embed external content client component.
