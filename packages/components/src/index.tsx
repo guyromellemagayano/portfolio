@@ -361,12 +361,13 @@ export type BaseProps = React.ComponentPropsWithoutRef<"base"> &
  * @returns The rendered default base server component
  */
 export const Base = ({
+  as: Component = "base",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BaseProps) => {
-  const element = <base {...rest}>{children}</base>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBaseClient : BaseClient;
