@@ -18,6 +18,7 @@ import {
   Body,
   Br,
   Canvas,
+  Caption,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -559,16 +560,18 @@ export const MemoizedCanvasClient = memo(CanvasClient);
  * @returns The rendered caption client component
  */
 export const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Caption, children, ...rest }, ref) => {
     return (
-      <caption ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </caption>
+      </Component>
     );
   }
 );
-
 CaptionClient.displayName = "CaptionClient";
+
+// Memoized version of `CaptionClient`.
+export const MemoizedCaptionClient = memo(CaptionClient);
 
 /**
  * Render the cite client component.
