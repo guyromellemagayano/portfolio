@@ -467,8 +467,11 @@ export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
     );
   }
 );
-
 BlockquoteClient.displayName = "BlockquoteClient";
+
+// Memoized version of `BlockquoteClient`.
+export const MemoizedBlockquoteClient = memo(BlockquoteClient);
+MemoizedBlockquoteClient.displayName = "MemoizedBlockquoteClient";
 
 /**
  * Render the document body client component.
