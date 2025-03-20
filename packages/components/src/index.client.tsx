@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 
 import type {
   AbbrProps,
@@ -228,16 +228,19 @@ import type {
  * @returns The rendered anchor client component
  */
 export const AClient = forwardRef<ARef, AProps>(
-  ({ children, ...rest }, ref) => {
+  ({ href = "#", children, ...rest }, ref) => {
     return (
-      <a ref={ref} {...rest}>
+      <a ref={ref} href={href} {...rest}>
         {children}
       </a>
     );
   }
 );
-
 AClient.displayName = "AClient";
+
+// Memoized version of `AClient`
+export const MemoizedAClient = memo(AClient);
+MemoizedAClient.displayName = "MemoizedAClient";
 
 /**
  * Render the abbreviation client component.
