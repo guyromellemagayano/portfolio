@@ -26,6 +26,7 @@ import {
   Data,
   Datalist,
   Dd,
+  Del,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -723,16 +724,18 @@ export const MemoizedDdClient = memo(DdClient);
  * @returns The rendered deleted text client component
  */
 export const DelClient = forwardRef<DelRef, DelProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Del, children, ...rest }, ref) => {
     return (
-      <del ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </del>
+      </Component>
     );
   }
 );
-
 DelClient.displayName = "DelClient";
+
+// Memoized version of `DelClient`.
+export const MemoizedDelClient = memo(DelClient);
 
 /**
  * Render the details disclosure client component.
