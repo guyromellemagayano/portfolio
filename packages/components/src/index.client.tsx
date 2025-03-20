@@ -14,6 +14,7 @@ import {
   Base,
   Bdi,
   Bdo,
+  Blockquote,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -459,11 +460,11 @@ export const MemoizedBdoClient = memo(BdoClient);
  * @returns The rendered blockquote client component
  */
 export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Blockquote, children, ...rest }, ref) => {
     return (
-      <blockquote ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </blockquote>
+      </Component>
     );
   }
 );
@@ -471,7 +472,6 @@ BlockquoteClient.displayName = "BlockquoteClient";
 
 // Memoized version of `BlockquoteClient`.
 export const MemoizedBlockquoteClient = memo(BlockquoteClient);
-MemoizedBlockquoteClient.displayName = "MemoizedBlockquoteClient";
 
 /**
  * Render the document body client component.
