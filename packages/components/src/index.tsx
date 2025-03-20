@@ -717,12 +717,15 @@ export const Caption = ({
 
   return element;
 };
-
 Caption.displayName = "Caption";
 
 const CiteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CiteClient };
+});
+const MemoizedCiteClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCiteClient };
 });
 
 export type CiteRef = React.ElementRef<"cite">;
@@ -734,20 +737,27 @@ export type CiteProps = React.ComponentPropsWithoutRef<"cite"> &
  * @param {CiteProps} props - The default cite server component properties
  * @returns The rendered default cite server component
  */
-export const Cite = ({ isClient = false, children, ...rest }: CiteProps) => {
-  const element = <cite {...rest}>{children}</cite>;
+export const Cite = ({
+  as: Component = "cite",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: CiteProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCiteClient : CiteClient;
+
     return (
       <Suspense fallback={element}>
-        <CiteClient {...rest}>{children}</CiteClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Cite.displayName = "Cite";
 
 const CodeClient = lazy(async () => {
