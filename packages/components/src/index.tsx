@@ -1177,6 +1177,10 @@ const DivClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DivClient };
 });
+const MemoizedDivClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDivClient };
+});
 
 export type DivRef = React.ElementRef<"div">;
 export type DivProps = React.ComponentPropsWithoutRef<"div"> &
@@ -1187,20 +1191,27 @@ export type DivProps = React.ComponentPropsWithoutRef<"div"> &
  * @param {DivProps} props - The default content division server component properties
  * @returns The rendered default content division server component
  */
-export const Div = ({ isClient = false, children, ...rest }: DivProps) => {
-  const element = <div {...rest}>{children}</div>;
+export const Div = ({
+  as: Component = "div",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DivProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDivClient : DivClient;
+
     return (
       <Suspense fallback={element}>
-        <DivClient {...rest}>{children}</DivClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Div.displayName = "Div";
 
 const DlClient = lazy(async () => {
