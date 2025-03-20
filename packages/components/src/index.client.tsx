@@ -13,6 +13,7 @@ import {
   B,
   Base,
   Bdi,
+  Bdo,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -438,11 +439,11 @@ export const MemoizedBdiClient = memo(BdiClient);
  * @returns The rendered bidirectional text override client component
  */
 export const BdoClient = forwardRef<BdoRef, BdoProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Bdo, children, ...rest }, ref) => {
     return (
-      <bdo ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </bdo>
+      </Component>
     );
   }
 );
@@ -450,7 +451,6 @@ BdoClient.displayName = "BdoClient";
 
 // Memoized version of `BdoClient`.
 export const MemoizedBdoClient = memo(BdoClient);
-MemoizedBdoClient.displayName = "MemoizedBdoClient";
 
 /**
  * Render the blockquote client component.
