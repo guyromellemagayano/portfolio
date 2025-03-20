@@ -42,6 +42,8 @@ import {
   Form,
   Head,
   Header,
+  Heading,
+  Hgroup,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1055,7 +1057,7 @@ export const MemoizedHeaderClient = memo(HeaderClient);
  * @returns The rendered HTML section heading client component
  */
 export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
-  ({ as: Component = "h1", children, ...rest }, ref) => {
+  ({ as: Component = Heading, children, ...rest }, ref) => {
     return (
       <Component ref={ref} {...rest}>
         {children}
@@ -1063,8 +1065,10 @@ export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
     );
   }
 );
-
 HeadingClient.displayName = "HeadingClient";
+
+// Memoized version of `HeadingClient`.
+export const MemoizedHeadingClient = memo(HeadingClient);
 
 /**
  * Render the heading group client component.
