@@ -280,12 +280,13 @@ export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
  * @returns The rendered default audio server component
  */
 export const Audio = ({
+  as: Component = "audio",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: AudioProps) => {
-  const element = <audio {...rest}>{children}</audio>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAudioClient : AudioClient;
