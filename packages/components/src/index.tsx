@@ -443,12 +443,13 @@ export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
  * @returns The rendered default bidirectional text override server component
  */
 export const Bdo = ({
+  as: Component = "bdo",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BdoProps) => {
-  const element = <bdo {...rest}>{children}</bdo>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedBdoClient : BdoClient;
