@@ -929,6 +929,10 @@ const DatalistClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DatalistClient };
 });
+const MemoizedDatalistClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDatalistClient };
+});
 
 export type DatalistRef = React.ElementRef<"datalist">;
 export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> &
@@ -940,23 +944,28 @@ export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> &
  * @returns The rendered default datalist server component
  */
 export const Datalist = ({
+  as: Component = "datalist",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DatalistProps) => {
-  const element = <datalist {...rest}>{children}</datalist>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedDatalistClient
+      : DatalistClient;
+
     return (
       <Suspense fallback={element}>
-        <DatalistClient {...rest}>{children}</DatalistClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Datalist.displayName = "Datalist";
 
 const DdClient = lazy(async () => {
