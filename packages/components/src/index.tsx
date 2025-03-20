@@ -484,12 +484,13 @@ export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
  * @returns The rendered default blockquote server component
  */
 export const Blockquote = ({
+  as: Component = "blockquote",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: BlockquoteProps) => {
-  const element = <blockquote {...rest}>{children}</blockquote>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized
