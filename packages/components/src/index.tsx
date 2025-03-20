@@ -1424,6 +1424,10 @@ const FigcaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigcaptionClient };
 });
+const MemoizedFigcaptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFigcaptionClient };
+});
 
 export type FigcaptionRef = React.ElementRef<"figcaption">;
 export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> &
@@ -1435,23 +1439,28 @@ export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> &
  * @returns The rendered default figure caption server component
  */
 export const Figcaption = ({
+  as: Component = "figcaption",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FigcaptionProps) => {
-  const element = <figcaption {...rest}>{children}</figcaption>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedFigcaptionClient
+      : FigcaptionClient;
+
     return (
       <Suspense fallback={element}>
-        <FigcaptionClient {...rest}>{children}</FigcaptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Figcaption.displayName = "Figcaption";
 
 const FigureClient = lazy(async () => {
