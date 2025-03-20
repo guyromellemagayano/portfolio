@@ -6,6 +6,7 @@ import {
   A,
   Abbr,
   Address,
+  Area,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -291,11 +292,11 @@ export const MemoizedAddressClient = memo(AddressClient);
  * @returns The rendered area client component
  */
 export const AreaClient = forwardRef<AreaRef, AreaProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Area, children, ...rest }, ref) => {
     return (
-      <area ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </area>
+      </Component>
     );
   }
 );
@@ -303,7 +304,6 @@ AreaClient.displayName = "AreaClient";
 
 // Memoized version of `AreaClient`.
 export const MemoizedAreaClient = memo(AreaClient);
-MemoizedAreaClient.displayName = "MemoizedAreaClient";
 
 /**
  * Render the article client component.
