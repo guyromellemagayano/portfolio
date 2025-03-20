@@ -31,6 +31,7 @@ import {
   Dfn,
   Dialog,
   Div,
+  Dl,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -828,16 +829,18 @@ export const MemoizedDivClient = memo(DivClient);
  * @returns The rendered description list client component
  */
 export const DlClient = forwardRef<DlRef, DlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dl, children, ...rest }, ref) => {
     return (
-      <dl ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dl>
+      </Component>
     );
   }
 );
-
 DlClient.displayName = "DlClient";
+
+// Memoized version of `DlClient`.
+export const MemoizedDlClient = memo(DlClient);
 
 /**
  * Render the description term client component.
