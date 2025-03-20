@@ -255,35 +255,6 @@ export const Aside = ({
 };
 Aside.displayName = "Aside";
 
-const BClient = lazy(async () => {
-  const module = await import("./index.client");
-  return { default: module.BClient };
-});
-
-export type BRef = React.ElementRef<"b">;
-export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
-
-/**
- * Render the default bring attention to server component.
- * @param {BProps} props - The default bring attention to server component properties
- * @returns The rendered default bring attention to server component
- */
-export const B = ({ isClient = false, children, ...rest }: BProps) => {
-  const element = <b {...rest}>{children}</b>;
-
-  if (isClient) {
-    return (
-      <Suspense fallback={element}>
-        <BClient {...rest}>{children}</BClient>
-      </Suspense>
-    );
-  }
-
-  return element;
-};
-
-B.displayName = "B";
-
 const AudioClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AudioClient };
@@ -313,6 +284,45 @@ export const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
 };
 
 Audio.displayName = "Audio";
+
+const BClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.BClient };
+});
+const MemoizedBClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBClient };
+});
+
+export type BRef = React.ElementRef<"b">;
+export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
+
+/**
+ * Render the default bring attention to server component.
+ * @param {BProps} props - The default bring attention to server component properties
+ * @returns The rendered default bring attention to server component
+ */
+export const B = ({
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BProps) => {
+  const element = <b {...rest}>{children}</b>;
+
+  if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBClient : BClient;
+
+    return (
+      <Suspense fallback={element}>
+        <ClientComponent {...rest}>{children}</ClientComponent>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+B.displayName = "B";
 
 const BaseClient = lazy(async () => {
   const module = await import("./index.client");
