@@ -425,8 +425,11 @@ export const BdiClient = forwardRef<BdiRef, BdiProps>(
     );
   }
 );
-
 BdiClient.displayName = "BdiClient";
+
+// Memoized version of `BdiClient`.
+export const MemoizedBdiClient = memo(BdiClient);
+MemoizedBdiClient.displayName = "MemoizedBdiClient";
 
 /**
  * Render the bidirectional text override client component.
