@@ -28,6 +28,7 @@ import {
   Dd,
   Del,
   Details,
+  Dfn,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -765,16 +766,18 @@ export const MemoizedDetailsClient = memo(DetailsClient);
  * @returns The rendered definition element client component
  */
 export const DfnClient = forwardRef<DfnRef, DfnProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dfn, children, ...rest }, ref) => {
     return (
-      <dfn ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dfn>
+      </Component>
     );
   }
 );
-
 DfnClient.displayName = "DfnClient";
+
+// Memoized version of `DfnClient`.
+export const MemoizedDfnClient = memo(DfnClient);
 
 /**
  * Render the dialog client component.
