@@ -132,6 +132,10 @@ const AreaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AreaClient };
 });
+const MemoizedAreaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAreaClient };
+});
 
 export type AreaRef = React.ElementRef<"area">;
 export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
@@ -145,6 +149,7 @@ export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
 export const Area = ({
   alt = "",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AreaProps) => {
@@ -155,18 +160,19 @@ export const Area = ({
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAreaClient : AreaClient;
+
     return (
       <Suspense fallback={element}>
-        <AreaClient alt={alt} {...rest}>
+        <ClientComponent alt={alt} {...rest}>
           {children}
-        </AreaClient>
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Area.displayName = "Area";
 
 const ArticleClient = lazy(async () => {
