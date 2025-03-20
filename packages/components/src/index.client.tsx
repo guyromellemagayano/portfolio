@@ -35,6 +35,7 @@ import {
   Dt,
   Em,
   Embed,
+  Fieldset,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -908,16 +909,18 @@ export const MemoizedEmbedClient = memo(EmbedClient);
  * @returns The rendered field set client component
  */
 export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Fieldset, children, ...rest }, ref) => {
     return (
-      <fieldset ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </fieldset>
+      </Component>
     );
   }
 );
-
 FieldsetClient.displayName = "FieldsetClient";
+
+// Memoized version of `FieldsetClient`.
+export const MemoizedFieldsetClient = memo(FieldsetClient);
 
 /**
  * Render the figure caption client component.

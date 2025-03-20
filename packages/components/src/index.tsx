@@ -1381,6 +1381,10 @@ const FieldsetClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FieldsetClient };
 });
+const MemoizedFieldsetClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFieldsetClient };
+});
 
 export type FieldsetRef = React.ElementRef<"fieldset">;
 export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
@@ -1392,23 +1396,28 @@ export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
  * @returns The rendered default field set server component
  */
 export const Fieldset = ({
+  as: Component = "fieldset",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FieldsetProps) => {
-  const element = <fieldset {...rest}>{children}</fieldset>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedFieldsetClient
+      : FieldsetClient;
+
     return (
       <Suspense fallback={element}>
-        <FieldsetClient {...rest}>{children}</FieldsetClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Fieldset.displayName = "Fieldset";
 
 const FigcaptionClient = lazy(async () => {
