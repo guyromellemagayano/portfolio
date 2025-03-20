@@ -20,6 +20,7 @@ import {
   Canvas,
   Caption,
   Cite,
+  Code,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -601,16 +602,18 @@ export const MemoizedCiteClient = memo(CiteClient);
  * @returns The rendered code client component
  */
 export const CodeClient = forwardRef<CodeRef, CodeProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Code, children, ...rest }, ref) => {
     return (
-      <code ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </code>
+      </Component>
     );
   }
 );
-
 CodeClient.displayName = "CodeClient";
+
+// Memoized version of `CodeClient`.
+export const MemoizedCodeClient = memo(CodeClient);
 
 /**
  * Render the column client component.
