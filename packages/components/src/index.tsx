@@ -237,7 +237,8 @@ const MemoizedAsideClient = lazy(async () => {
 
 export type AsideRef = React.ElementRef<"aside">;
 export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
-  CommonComponentProps;
+  CommonComponentProps &
+  AsComponentProps;
 
 /**
  * Render the default aside server component.
@@ -245,12 +246,13 @@ export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
  * @returns The rendered default aside server component
  */
 export const Aside = ({
+  as: Component = "aside",
   isClient = false,
   isMemoized = false,
   children,
   ...rest
 }: AsideProps) => {
-  const element = <aside {...rest}>{children}</aside>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAsideClient : AsideClient;
