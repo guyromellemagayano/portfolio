@@ -39,6 +39,7 @@ import {
   Figcaption,
   Figure,
   Footer,
+  Form,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -992,16 +993,18 @@ export const MemoizedFooterClient = memo(FooterClient);
  * @returns The rendered form client component
  */
 export const FormClient = forwardRef<FormRef, FormProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Form, children, ...rest }, ref) => {
     return (
-      <form ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </form>
+      </Component>
     );
   }
 );
-
 FormClient.displayName = "FormClient";
+
+// Memoized version of `FormClient`.
+export const MemoizedFormClient = memo(FormClient);
 
 /**
  * Render the document metadata (header) client component.
