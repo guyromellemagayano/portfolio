@@ -1054,6 +1054,10 @@ const DetailsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DetailsClient };
 });
+const MemoizedDetailsClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDetailsClient };
+});
 
 export type DetailsRef = React.ElementRef<"details">;
 export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
@@ -1065,23 +1069,26 @@ export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
  * @returns The rendered default details disclosure server component
  */
 export const Details = ({
+  as: Component = "details",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DetailsProps) => {
-  const element = <details {...rest}>{children}</details>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDetailsClient : DetailsClient;
+
     return (
       <Suspense fallback={element}>
-        <DetailsClient {...rest}>{children}</DetailsClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Details.displayName = "Details";
 
 const DfnClient = lazy(async () => {
