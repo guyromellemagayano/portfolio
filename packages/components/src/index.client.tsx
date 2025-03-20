@@ -32,6 +32,7 @@ import {
   Dialog,
   Div,
   Dl,
+  Dt,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -849,16 +850,18 @@ export const MemoizedDlClient = memo(DlClient);
  * @returns The rendered description term client component
  */
 export const DtClient = forwardRef<DtRef, DtProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dt, children, ...rest }, ref) => {
     return (
-      <dt ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dt>
+      </Component>
     );
   }
 );
-
 DtClient.displayName = "DtClient";
+
+// Memoized version of `DtClient`.
+export const MemoizedDtClient = memo(DtClient);
 
 /**
  * Render the emphasis client component.
