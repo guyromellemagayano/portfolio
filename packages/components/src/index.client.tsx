@@ -61,6 +61,7 @@ import {
   Mark,
   Menu,
   Meta,
+  Meter,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1430,16 +1431,18 @@ export const MemoizedMetaClient = memo(MetaClient);
  * @returns The rendered HTML meter client component
  */
 export const MeterClient = forwardRef<MeterRef, MeterProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Meter, children, ...rest }, ref) => {
     return (
-      <meter ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </meter>
+      </Component>
     );
   }
 );
-
 MeterClient.displayName = "MeterClient";
+
+// Memoized version of `MeterClient`.
+export const MemoizedMeterClient = memo(MeterClient);
 
 /**
  * Render the navigation section client component.
