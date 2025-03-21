@@ -46,6 +46,7 @@ import {
   Hgroup,
   Hr,
   Html,
+  I,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1135,16 +1136,18 @@ export const MemoizedHtmlClient = memo(HtmlClient);
  * @returns The rendered idiomatic text client component
  */
 export const IClient = forwardRef<IRef, IProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = I, children, ...rest }, ref) => {
     return (
-      <i ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </i>
+      </Component>
     );
   }
 );
-
 IClient.displayName = "IClient";
+
+// Memoized version of `IClient`.
+export const MemoizedIClient = memo(IClient);
 
 /**
  * Render the inline frame client component.
