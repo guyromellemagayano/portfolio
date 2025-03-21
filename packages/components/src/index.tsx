@@ -2574,6 +2574,10 @@ const ObjectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ObjectClient };
 });
+const MemoizedObjectClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedObjectClient };
+});
 
 export type ObjectRef = React.ElementRef<"object">;
 export type ObjectProps = React.ComponentPropsWithoutRef<"object"> &
@@ -2585,23 +2589,26 @@ export type ObjectProps = React.ComponentPropsWithoutRef<"object"> &
  * @returns The rendered default object server component
  */
 export const Object = ({
+  as: Component = "object",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ObjectProps) => {
-  const element = <object {...rest}>{children}</object>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedObjectClient : ObjectClient;
+
     return (
       <Suspense fallback={element}>
-        <ObjectClient {...rest}>{children}</ObjectClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Object.displayName = "Object";
 
 const OlClient = lazy(async () => {
