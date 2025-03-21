@@ -2164,6 +2164,10 @@ const LiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LiClient };
 });
+const MemoizedLiClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLiClient };
+});
 
 export type LiRef = React.ElementRef<"li">;
 export type LiProps = React.ComponentPropsWithoutRef<"li"> &
@@ -2174,25 +2178,36 @@ export type LiProps = React.ComponentPropsWithoutRef<"li"> &
  * @param {LiProps} props - The default list item server component properties
  * @returns The rendered default list item server component
  */
-export const Li = ({ isClient = false, children, ...rest }: LiProps) => {
-  const element = <li {...rest}>{children}</li>;
+export const Li = ({
+  as: Component = "li",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: LiProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLiClient : LiClient;
+
     return (
       <Suspense fallback={element}>
-        <LiClient {...rest}>{children}</LiClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Li.displayName = "Li";
 
 const LinkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LinkClient };
+});
+const MemoizedLinkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLinkClient };
 });
 
 export type LinkRef = React.ElementRef<"link">;
@@ -2204,20 +2219,26 @@ export type LinkProps = React.ComponentPropsWithoutRef<"link"> &
  * @param {LinkProps} props - The default external resource link server component properties
  * @returns The rendered default external resource link server component
  */
-export const Link = ({ isClient = false, ...rest }: LinkProps) => {
-  const element = <link {...rest} />;
+export const Link = ({
+  as: Component = "link",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: LinkProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLinkClient : LinkClient;
+
     return (
       <Suspense fallback={element}>
-        <LinkClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Link.displayName = "Link";
 
 const MainClient = lazy(async () => {
