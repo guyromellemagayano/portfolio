@@ -1796,6 +1796,10 @@ const HtmlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HtmlClient };
 });
+const MemoizedHtmlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHtmlClient };
+});
 
 export type HtmlRef = React.ElementRef<"html">;
 export type HtmlProps = React.ComponentPropsWithoutRef<"html"> &
@@ -1806,20 +1810,27 @@ export type HtmlProps = React.ComponentPropsWithoutRef<"html"> &
  * @param {HtmlProps} props - The default HTML document/root server component properties
  * @returns The rendered default HTML document/root server component
  */
-export const Html = ({ isClient = false, children, ...rest }: HtmlProps) => {
-  const element = <html {...rest}>{children}</html>;
+export const Html = ({
+  as: Component = "html",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: HtmlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHtmlClient : HtmlClient;
+
     return (
       <Suspense fallback={element}>
-        <HtmlClient {...rest}>{children}</HtmlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Html.displayName = "Html";
 
 const IClient = lazy(async () => {
