@@ -60,6 +60,7 @@ import {
   Map,
   Mark,
   Menu,
+  Meta,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1412,11 +1413,15 @@ export const MemoizedMenuClient = memo(MenuClient);
  * @param {MetaRef} ref - The meta client component reference
  * @returns The rendered meta client component
  */
-export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
-  return <meta ref={ref} {...rest} />;
-});
-
+export const MetaClient = forwardRef<MetaRef, MetaProps>(
+  ({ as: Component = Meta, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 MetaClient.displayName = "MetaClient";
+
+// Memoized version of `MetaClient`.
+export const MemoizedMetaClient = memo(MetaClient);
 
 /**
  * Render the HTML meter client component.
