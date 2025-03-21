@@ -50,6 +50,7 @@ import {
   Iframe,
   Img,
   Input,
+  Ins,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1207,16 +1208,18 @@ export const MemoizedInputClient = memo(InputClient);
  * @returns The rendered inserted text client component
  */
 export const InsClient = forwardRef<InsRef, InsProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ins, children, ...rest }, ref) => {
     return (
-      <ins ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ins>
+      </Component>
     );
   }
 );
-
 InsClient.displayName = "InsClient";
+
+// Memoized version of `InsClient`.
+export const MemoizedInsClient = memo(InsClient);
 
 /**
  * Render the keyboard input client component.

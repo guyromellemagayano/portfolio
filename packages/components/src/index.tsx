@@ -2000,6 +2000,10 @@ const InsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InsClient };
 });
+const MemoizedInsClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedInsClient };
+});
 
 export type InsRef = React.ElementRef<"ins">;
 export type InsProps = React.ComponentPropsWithoutRef<"ins"> &
@@ -2010,20 +2014,27 @@ export type InsProps = React.ComponentPropsWithoutRef<"ins"> &
  * @param {InsProps} props - The default inserted text server component properties
  * @returns The rendered default inserted text server component
  */
-export const Ins = ({ isClient = false, children, ...rest }: InsProps) => {
-  const element = <ins {...rest}>{children}</ins>;
+export const Ins = ({
+  as: Component = "ins",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: InsProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedInsClient : InsClient;
+
     return (
       <Suspense fallback={element}>
-        <InsClient {...rest}>{children}</InsClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ins.displayName = "Ins";
 
 const KbdClient = lazy(async () => {
