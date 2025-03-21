@@ -2449,6 +2449,10 @@ const MeterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MeterClient };
 });
+const MemoizedMeterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMeterClient };
+});
 
 export type MeterRef = React.ElementRef<"meter">;
 export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
@@ -2459,20 +2463,27 @@ export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
  * @param {MeterProps} props - The default HTML meter server component properties
  * @returns The rendered default HTML meter server component
  */
-export const Meter = ({ isClient = false, children, ...rest }: MeterProps) => {
-  const element = <meter {...rest}>{children}</meter>;
+export const Meter = ({
+  as: Component = "meter",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MeterProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMeterClient : MeterClient;
+
     return (
       <Suspense fallback={element}>
-        <MeterClient {...rest}>{children}</MeterClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Meter.displayName = "Meter";
 
 const NavClient = lazy(async () => {
