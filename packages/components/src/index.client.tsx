@@ -55,6 +55,7 @@ import {
   Label,
   Legend,
   Li,
+  Link,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1311,11 +1312,15 @@ export const MemoizedLiClient = memo(LiClient);
  * @param {LinkRef} ref - The external resource link client component reference
  * @returns The rendered external resource link client component
  */
-export const LinkClient = forwardRef<LinkRef, LinkProps>(({ ...rest }, ref) => {
-  return <link ref={ref} {...rest} />;
-});
-
+export const LinkClient = forwardRef<LinkRef, LinkProps>(
+  ({ as: Component = Link, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 LinkClient.displayName = "LinkClient";
+
+// Memoized version of `LinkClient`.
+export const MemoizedLinkClient = memo(LinkClient);
 
 /**
  * Render the main client component.
