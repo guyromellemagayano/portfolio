@@ -2615,6 +2615,10 @@ const OlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OlClient };
 });
+const MemoizedOlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOlClient };
+});
 
 export type OlRef = React.ElementRef<"ol">;
 export type OlProps = React.ComponentPropsWithoutRef<"ol"> &
@@ -2625,20 +2629,27 @@ export type OlProps = React.ComponentPropsWithoutRef<"ol"> &
  * @param {OlProps} props - The default ordered list server component properties
  * @returns The rendered default ordered list server component
  */
-export const Ol = ({ isClient = false, children, ...rest }: OlProps) => {
-  const element = <ol {...rest}>{children}</ol>;
+export const Ol = ({
+  as: Component = "ol",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: OlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOlClient : OlClient;
+
     return (
       <Suspense fallback={element}>
-        <OlClient {...rest}>{children}</OlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ol.displayName = "Ol";
 
 const OptgroupClient = lazy(async () => {
