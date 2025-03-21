@@ -53,6 +53,7 @@ import {
   Ins,
   Kbd,
   Label,
+  Legend,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1270,16 +1271,18 @@ export const MemoizedLabelClient = memo(LabelClient);
  * @returns The rendered field set legend client component
  */
 export const LegendClient = forwardRef<LegendRef, LegendProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Legend, children, ...rest }, ref) => {
     return (
-      <legend ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </legend>
+      </Component>
     );
   }
 );
-
 LegendClient.displayName = "LegendClient";
+
+// Memoized version of `LegendClient`.
+export const MemoizedLegendClient = memo(LegendClient);
 
 /**
  * Render the list item client component.
