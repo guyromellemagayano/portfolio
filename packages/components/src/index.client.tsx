@@ -59,6 +59,7 @@ import {
   Main,
   Map,
   Mark,
+  Menu,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1392,16 +1393,18 @@ export const MemoizedMarkClient = memo(MarkClient);
  * @returns The rendered menu client component
  */
 export const MenuClient = forwardRef<MenuRef, MenuProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Menu, children, ...rest }, ref) => {
     return (
-      <menu ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </menu>
+      </Component>
     );
   }
 );
-
 MenuClient.displayName = "MenuClient";
+
+// Memoized version of `MenuClient`.
+export const MemoizedMenuClient = memo(MenuClient);
 
 /**
  * Render the meta client component.
