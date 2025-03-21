@@ -2409,6 +2409,10 @@ const MetaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MetaClient };
 });
+const MemoizedMetaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMetaClient };
+});
 
 export type MetaRef = React.ElementRef<"meta">;
 export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
@@ -2419,20 +2423,26 @@ export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
  * @param {MetaProps} props - The default metadata server component properties
  * @returns The rendered default metadata server component
  */
-export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
-  const element = <meta {...rest} />;
+export const Meta = ({
+  as: Component = "meta",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: MetaProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMetaClient : MetaClient;
+
     return (
       <Suspense fallback={element}>
-        <MetaClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Meta.displayName = "Meta";
 
 const MeterClient = lazy(async () => {
