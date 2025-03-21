@@ -2531,6 +2531,10 @@ const NoscriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NoscriptClient };
 });
+const MemoizedNoscriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedNoscriptClient };
+});
 
 export type NoscriptRef = React.ElementRef<"noscript">;
 export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
@@ -2542,23 +2546,28 @@ export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
  * @returns The rendered default noscript server component
  */
 export const Noscript = ({
+  as: Component = "noscript",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: NoscriptProps) => {
-  const element = <noscript {...rest}>{children}</noscript>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedNoscriptClient
+      : NoscriptClient;
+
     return (
       <Suspense fallback={element}>
-        <NoscriptClient {...rest}>{children}</NoscriptClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Noscript.displayName = "Noscript";
 
 const ObjectClient = lazy(async () => {
