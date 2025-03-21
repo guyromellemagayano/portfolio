@@ -54,6 +54,7 @@ import {
   Kbd,
   Label,
   Legend,
+  Li,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1291,16 +1292,18 @@ export const MemoizedLegendClient = memo(LegendClient);
  * @returns The rendered list item client component
  */
 export const LiClient = forwardRef<LiRef, LiProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Li, children, ...rest }, ref) => {
     return (
-      <li ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </li>
+      </Component>
     );
   }
 );
-
 LiClient.displayName = "LiClient";
+
+// Memoized version of `LiClient`.
+export const MemoizedLiClient = memo(LiClient);
 
 /**
  * Render the external resource link client component.
