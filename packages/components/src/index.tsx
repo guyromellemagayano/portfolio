@@ -2123,6 +2123,10 @@ const LegendClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LegendClient };
 });
+const MemoizedLegendClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLegendClient };
+});
 
 export type LegendRef = React.ElementRef<"legend">;
 export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
@@ -2134,23 +2138,26 @@ export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
  * @returns The rendered default field set legend server component
  */
 export const Legend = ({
+  as: Component = "legend",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: LegendProps) => {
-  const element = <legend {...rest}>{children}</legend>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLegendClient : LegendClient;
+
     return (
       <Suspense fallback={element}>
-        <LegendClient {...rest}>{children}</LegendClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Legend.displayName = "Legend";
 
 const LiClient = lazy(async () => {
