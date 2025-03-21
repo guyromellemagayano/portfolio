@@ -49,6 +49,7 @@ import {
   I,
   Iframe,
   Img,
+  Input,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1190,12 +1191,14 @@ export const MemoizedImgClient = memo(ImgClient);
  * @returns The rendered HTML input client component
  */
 export const InputClient = forwardRef<InputRef, InputProps>(
-  ({ type = "text", ...rest }, ref) => {
-    return <input ref={ref} type={type} {...rest} />;
+  ({ as: Component = Input, type, ...rest }, ref) => {
+    return <Component ref={ref} type={type} {...rest} />;
   }
 );
-
 InputClient.displayName = "InputClient";
+
+// Memoized version of `InputClient`.
+export const MemoizedInputClient = memo(InputClient);
 
 /**
  * Render the inserted text client component.
