@@ -1837,6 +1837,10 @@ const IClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IClient };
 });
+const MemoizedIClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedIClient };
+});
 
 export type IRef = React.ElementRef<"i">;
 export type IProps = React.ComponentPropsWithoutRef<"i"> & CommonComponentProps;
@@ -1846,20 +1850,27 @@ export type IProps = React.ComponentPropsWithoutRef<"i"> & CommonComponentProps;
  * @param {IProps} props - The default idiomatic text server component properties
  * @returns The rendered default idiomatic text server component
  */
-export const I = ({ isClient = false, children, ...rest }: IProps) => {
-  const element = <i {...rest}>{children}</i>;
+export const I = ({
+  as: Component = "i",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: IProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedIClient : IClient;
+
     return (
       <Suspense fallback={element}>
-        <IClient {...rest}>{children}</IClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 I.displayName = "I";
 
 const IframeClient = lazy(async () => {
