@@ -2490,6 +2490,10 @@ const NavClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NavClient };
 });
+const MemoizedNavClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedNavClient };
+});
 
 export type NavRef = React.ElementRef<"nav">;
 export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
@@ -2500,20 +2504,27 @@ export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
  * @param {NavProps} props - The default navigation section server component properties
  * @returns The rendered default navigation section server component
  */
-export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
-  const element = <nav {...rest}>{children}</nav>;
+export const Nav = ({
+  as: Component = "nav",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: NavProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedNavClient : NavClient;
+
     return (
       <Suspense fallback={element}>
-        <NavClient {...rest}>{children}</NavClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Nav.displayName = "Nav";
 
 const NoscriptClient = lazy(async () => {
