@@ -2368,6 +2368,10 @@ const MenuClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MenuClient };
 });
+const MemoizedMenuClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMenuClient };
+});
 
 export type MenuRef = React.ElementRef<"menu">;
 export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
@@ -2378,20 +2382,27 @@ export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
  * @param {MenuProps} props - The default menu server component properties
  * @returns The rendered default menu server component
  */
-export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
-  const element = <menu {...rest}>{children}</menu>;
+export const Menu = ({
+  as: Component = "menu",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MenuProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMenuClient : MenuClient;
+
     return (
       <Suspense fallback={element}>
-        <MenuClient {...rest}>{children}</MenuClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Menu.displayName = "Menu";
 
 const MetaClient = lazy(async () => {
