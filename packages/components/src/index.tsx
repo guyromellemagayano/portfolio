@@ -1756,6 +1756,10 @@ const HrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HrClient };
 });
+const MemoizedHrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHrClient };
+});
 
 export type HrRef = React.ElementRef<"hr">;
 export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
@@ -1766,20 +1770,26 @@ export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
  * @param {HrProps} props - The default thematic break (horizontal rule) server component properties
  * @returns The rendered default thematic break (horizontal rule) server component
  */
-export const Hr = ({ isClient = false, ...rest }: HrProps) => {
-  const element = <hr {...rest} />;
+export const Hr = ({
+  as: Component = "hr",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: HrProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHrClient : HrClient;
+
     return (
       <Suspense fallback={element}>
-        <HrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Hr.displayName = "Hr";
 
 const HtmlClient = lazy(async () => {
