@@ -1877,6 +1877,10 @@ const IframeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IframeClient };
 });
+const MemoizedIframeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedIframeClient };
+});
 
 export type IframeRef = React.ElementRef<"iframe">;
 export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
@@ -1887,20 +1891,26 @@ export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
  * @param {IframeProps} props - The default inline frame server component properties
  * @returns The rendered default inline frame server component
  */
-export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
-  const element = <iframe {...rest} />;
+export const Iframe = ({
+  as: Component = "iframe",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: IframeProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedIframeClient : IframeClient;
+
     return (
       <Suspense fallback={element}>
-        <IframeClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Iframe.displayName = "Iframe";
 
 const ImgClient = lazy(async () => {
