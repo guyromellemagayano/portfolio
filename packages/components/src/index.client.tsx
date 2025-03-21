@@ -63,6 +63,7 @@ import {
   Meta,
   Meter,
   Nav,
+  Noscript,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1472,16 +1473,18 @@ export const MemoizedNavClient = memo(NavClient);
  * @returns The rendered noscript client component
  */
 export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Noscript, children, ...rest }, ref) => {
     return (
-      <noscript ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </noscript>
+      </Component>
     );
   }
 );
-
 NoscriptClient.displayName = "NoscriptClient";
+
+// Memoized version of `NoscriptClient`.
+export const MemoizedNoscriptClient = memo(NoscriptClient);
 
 /**
  * Render the object client component.
