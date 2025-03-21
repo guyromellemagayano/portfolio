@@ -2041,6 +2041,10 @@ const KbdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.KbdClient };
 });
+const MemoizedKbdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedKbdClient };
+});
 
 export type KbdRef = React.ElementRef<"kbd">;
 export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
@@ -2051,20 +2055,27 @@ export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
  * @param {KbdProps} props - The default keyboard input server component properties
  * @returns The rendered default keyboard input server component
  */
-export const Kbd = ({ isClient = false, children, ...rest }: KbdProps) => {
-  const element = <kbd {...rest}>{children}</kbd>;
+export const Kbd = ({
+  as: Component = "kbd",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: KbdProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedKbdClient : KbdClient;
+
     return (
       <Suspense fallback={element}>
-        <KbdClient {...rest}>{children}</KbdClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Kbd.displayName = "Kbd";
 
 const LabelClient = lazy(async () => {
