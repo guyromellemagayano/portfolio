@@ -57,6 +57,8 @@ import {
   Li,
   Link,
   Main,
+  Map,
+  Mark,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1350,16 +1352,18 @@ export const MemoizedMainClient = memo(MainClient);
  * @returns The rendered image map client component
  */
 export const MapClient = forwardRef<MapRef, MapProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Map, children, ...rest }, ref) => {
     return (
-      <map ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </map>
+      </Component>
     );
   }
 );
-
 MapClient.displayName = "MapClient";
+
+// Memoized version of `MapClient`.
+export const MemoizedMapClient = memo(MapClient);
 
 /**
  * Render the mark text client component.
@@ -1368,16 +1372,18 @@ MapClient.displayName = "MapClient";
  * @returns The rendered mark text client component
  */
 export const MarkClient = forwardRef<MarkRef, MarkProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Mark, children, ...rest }, ref) => {
     return (
-      <mark ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </mark>
+      </Component>
     );
   }
 );
-
 MarkClient.displayName = "MarkClient";
+
+// Memoized version of `MarkClient`.
+export const MemoizedMarkClient = memo(MarkClient);
 
 /**
  * Render the menu client component.
