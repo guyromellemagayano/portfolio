@@ -1917,6 +1917,10 @@ const ImgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ImgClient };
 });
+const MemoizedImgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedImgClient };
+});
 
 export type ImgRef = React.ElementRef<"img">;
 export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
@@ -1928,24 +1932,27 @@ export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
  * @returns The rendered default image embed server component
  */
 export const Img = ({
+  as: Component = "img",
   isClient = false,
+  isMemoized = false,
   src = "#",
   alt = "",
   ...rest
 }: ImgProps) => {
-  const element = <img src={src} alt={alt} {...rest} />;
+  const element = <Component src={src} alt={alt} {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedImgClient : ImgClient;
+
     return (
       <Suspense fallback={element}>
-        <ImgClient src={src} alt={alt} {...rest} />
+        <ClientComponent src={src} alt={alt} {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Img.displayName = "Img";
 
 const InputClient = lazy(async () => {
