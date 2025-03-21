@@ -56,6 +56,7 @@ import {
   Legend,
   Li,
   Link,
+  Main,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1329,16 +1330,18 @@ export const MemoizedLinkClient = memo(LinkClient);
  * @returns The rendered main client component
  */
 export const MainClient = forwardRef<MainRef, MainProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Main, children, ...rest }, ref) => {
     return (
-      <main ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </main>
+      </Component>
     );
   }
 );
-
 MainClient.displayName = "MainClient";
+
+// Memoized version of `MainClient`.
+export const MemoizedMainClient = memo(MainClient);
 
 /**
  * Render the image map client component.
