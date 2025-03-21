@@ -64,6 +64,7 @@ import {
   Meter,
   Nav,
   Noscript,
+  Object,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1493,16 +1494,18 @@ export const MemoizedNoscriptClient = memo(NoscriptClient);
  * @returns The rendered object client component
  */
 export const ObjectClient = forwardRef<ObjectRef, ObjectProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Object, children, ...rest }, ref) => {
     return (
-      <object ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </object>
+      </Component>
     );
   }
 );
-
 ObjectClient.displayName = "ObjectClient";
+
+// Memoized version of `ObjectClient`.
+export const MemoizedObjectClient = memo(ObjectClient);
 
 /**
  * Render the ordered list client component.
