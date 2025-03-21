@@ -52,6 +52,7 @@ import {
   Input,
   Ins,
   Kbd,
+  Label,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1249,16 +1250,18 @@ export const MemoizedKbdClient = memo(KbdClient);
  * @returns The rendered label client component
  */
 export const LabelClient = forwardRef<LabelRef, LabelProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Label, children, ...rest }, ref) => {
     return (
-      <label ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </label>
+      </Component>
     );
   }
 );
-
 LabelClient.displayName = "LabelClient";
+
+// Memoized version of `LabelClient`.
+export const MemoizedLabelClient = memo(LabelClient);
 
 /**
  * Render the field set legend client component.

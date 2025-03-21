@@ -2082,6 +2082,10 @@ const LabelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LabelClient };
 });
+const MemoizedLabelClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLabelClient };
+});
 
 export type LabelRef = React.ElementRef<"label">;
 export type LabelProps = React.ComponentPropsWithoutRef<"label"> &
@@ -2092,20 +2096,27 @@ export type LabelProps = React.ComponentPropsWithoutRef<"label"> &
  * @param {LabelProps} props - The default label server component properties
  * @returns The rendered default label server component
  */
-export const Label = ({ isClient = false, children, ...rest }: LabelProps) => {
-  const element = <label {...rest}>{children}</label>;
+export const Label = ({
+  as: Component = "label",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: LabelProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLabelClient : LabelClient;
+
     return (
       <Suspense fallback={element}>
-        <LabelClient {...rest}>{children}</LabelClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Label.displayName = "Label";
 
 const LegendClient = lazy(async () => {
