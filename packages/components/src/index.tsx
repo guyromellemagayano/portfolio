@@ -2245,6 +2245,10 @@ const MainClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MainClient };
 });
+const MemoizedMainClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMainClient };
+});
 
 export type MainRef = React.ElementRef<"main">;
 export type MainProps = React.ComponentPropsWithoutRef<"main"> &
@@ -2255,20 +2259,27 @@ export type MainProps = React.ComponentPropsWithoutRef<"main"> &
  * @param {MainProps} props - The default main server component properties
  * @returns The rendered default main server component
  */
-export const Main = ({ isClient = false, children, ...rest }: MainProps) => {
-  const element = <main {...rest}>{children}</main>;
+export const Main = ({
+  as: Component = "main",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MainProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMainClient : MainClient;
+
     return (
       <Suspense fallback={element}>
-        <MainClient {...rest}>{children}</MainClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Main.displayName = "Main";
 
 const MapClient = lazy(async () => {
