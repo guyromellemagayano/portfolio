@@ -1959,6 +1959,10 @@ const InputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InputClient };
 });
+const MemoizedInputClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedInputClient };
+});
 
 export type InputRef = React.ElementRef<"input">;
 export type InputProps = React.ComponentPropsWithoutRef<"input"> &
@@ -1970,23 +1974,26 @@ export type InputProps = React.ComponentPropsWithoutRef<"input"> &
  * @returns The rendered default HTML input server component
  */
 export const Input = ({
+  as: Component = "input",
   isClient = false,
+  isMemoized = false,
   type = "text",
   ...rest
 }: InputProps) => {
-  const element = <input type={type} {...rest} />;
+  const element = <Component type={type} {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedInputClient : InputClient;
+
     return (
       <Suspense fallback={element}>
-        <InputClient type={type} {...rest} />
+        <ClientComponent type={type} {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Input.displayName = "Input";
 
 const InsClient = lazy(async () => {
