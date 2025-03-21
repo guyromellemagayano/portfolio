@@ -48,6 +48,7 @@ import {
   Html,
   I,
   Iframe,
+  Img,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1173,12 +1174,14 @@ export const MemoizedIframeClient = memo(IframeClient);
  * @returns The rendered image embed client component
  */
 export const ImgClient = forwardRef<ImgRef, ImgProps>(
-  ({ src = "#", alt = "", ...rest }, ref) => {
-    return <img ref={ref} src={src} alt={alt} {...rest} />;
+  ({ as: Component = Img, src, alt, ...rest }, ref) => {
+    return <Component ref={ref} src={src} alt={alt} {...rest} />;
   }
 );
-
 ImgClient.displayName = "ImgClient";
+
+// Memoized version of `ImgClient`.
+export const MemoizedImgClient = memo(ImgClient);
 
 /**
  * Render the HTML input client component.
