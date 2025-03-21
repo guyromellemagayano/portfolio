@@ -62,6 +62,7 @@ import {
   Menu,
   Meta,
   Meter,
+  Nav,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1451,16 +1452,18 @@ export const MemoizedMeterClient = memo(MeterClient);
  * @returns The rendered navigation section client component
  */
 export const NavClient = forwardRef<NavRef, NavProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Nav, children, ...rest }, ref) => {
     return (
-      <nav ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </nav>
+      </Component>
     );
   }
 );
-
 NavClient.displayName = "NavClient";
+
+// Memoized version of `NavClient`.
+export const MemoizedNavClient = memo(NavClient);
 
 /**
  * Render the noscript client component.
