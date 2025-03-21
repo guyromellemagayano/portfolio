@@ -51,6 +51,7 @@ import {
   Img,
   Input,
   Ins,
+  Kbd,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1228,16 +1229,18 @@ export const MemoizedInsClient = memo(InsClient);
  * @returns The rendered keyboard input client component
  */
 export const KbdClient = forwardRef<KbdRef, KbdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Kbd, children, ...rest }, ref) => {
     return (
-      <kbd ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </kbd>
+      </Component>
     );
   }
 );
-
 KbdClient.displayName = "KbdClient";
+
+// Memoized version of `KbdClient`.
+export const MemoizedKbdClient = memo(KbdClient);
 
 /**
  * Render the label client component.
