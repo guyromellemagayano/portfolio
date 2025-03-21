@@ -2286,6 +2286,10 @@ const MapClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MapClient };
 });
+const MemoizedMapClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMapClient };
+});
 
 export type MapRef = React.ElementRef<"map">;
 export type MapProps = React.ComponentPropsWithoutRef<"map"> &
@@ -2296,25 +2300,36 @@ export type MapProps = React.ComponentPropsWithoutRef<"map"> &
  * @param {MapProps} props - The default image map server component properties
  * @returns The rendered default image map server component
  */
-export const Map = ({ isClient = false, children, ...rest }: MapProps) => {
-  const element = <map {...rest}>{children}</map>;
+export const Map = ({
+  as: Component = "map",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MapProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMapClient : MapClient;
+
     return (
       <Suspense fallback={element}>
-        <MapClient {...rest}>{children}</MapClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Map.displayName = "Map";
 
 const MarkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MarkClient };
+});
+const MemoizedMarkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMarkClient };
 });
 
 export type MarkRef = React.ElementRef<"mark">;
@@ -2326,20 +2341,27 @@ export type MarkProps = React.ComponentPropsWithoutRef<"mark"> &
  * @param {MarkProps} props - The default mark text server component properties
  * @returns The rendered default mark text server component
  */
-export const Mark = ({ isClient = false, children, ...rest }: MarkProps) => {
-  const element = <mark {...rest}>{children}</mark>;
+export const Mark = ({
+  as: Component = "mark",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MarkProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMarkClient : MarkClient;
+
     return (
       <Suspense fallback={element}>
-        <MarkClient {...rest}>{children}</MarkClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Mark.displayName = "Mark";
 
 const MenuClient = lazy(async () => {
