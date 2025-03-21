@@ -45,6 +45,7 @@ import {
   Heading,
   Hgroup,
   Hr,
+  Html,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1114,16 +1115,18 @@ export const MemoizedHrClient = memo(HrClient);
  * @returns The rendered HTML document/root client component
  */
 export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Html, children, ...rest }, ref) => {
     return (
-      <html ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </html>
+      </Component>
     );
   }
 );
-
 HtmlClient.displayName = "HtmlClient";
+
+// Memoized version of `HtmlClient`.
+export const MemoizedHtmlClient = memo(HtmlClient);
 
 /**
  * Render the idiomatic text client component.
