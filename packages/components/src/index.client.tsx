@@ -65,6 +65,7 @@ import {
   Nav,
   Noscript,
   Object,
+  Ol,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1514,16 +1515,18 @@ export const MemoizedObjectClient = memo(ObjectClient);
  * @returns The rendered ordered list client component
  */
 export const OlClient = forwardRef<OlRef, OlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ol, children, ...rest }, ref) => {
     return (
-      <ol ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ol>
+      </Component>
     );
   }
 );
-
 OlClient.displayName = "OlClient";
+
+// Memoized version of `OlClient`.
+export const MemoizedOlClient = memo(OlClient);
 
 /**
  * Render the option group client component.
