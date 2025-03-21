@@ -44,6 +44,7 @@ import {
   Header,
   Heading,
   Hgroup,
+  Hr,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1096,11 +1097,15 @@ export const MemoizedHgroupClient = memo(HgroupClient);
  * @param {HrRef} ref - The thematic break (horizontal rule) client component reference
  * @returns The rendered thematic break (horizontal rule) client component
  */
-export const HrClient = forwardRef<HrRef, HrProps>(({ ...rest }, ref) => {
-  return <hr ref={ref} {...rest} />;
-});
-
+export const HrClient = forwardRef<HrRef, HrProps>(
+  ({ as: Component = Hr, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 HrClient.displayName = "HrClient";
+
+// Memoized version of `HrClient`.
+export const MemoizedHrClient = memo(HrClient);
 
 /**
  * Render the HTML document/root client component.
