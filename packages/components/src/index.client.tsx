@@ -72,6 +72,7 @@ import {
   Paragraph,
   Picture,
   Pre,
+  Progress,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1661,16 +1662,18 @@ export const MemoizedPreClient = memo(PreClient);
  * @returns The rendered progress indicator client component
  */
 export const ProgressClient = forwardRef<ProgressRef, ProgressProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Progress, children, ...rest }, ref) => {
     return (
-      <progress ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </progress>
+      </Component>
     );
   }
 );
-
 ProgressClient.displayName = "ProgressClient";
+
+// Memoized version of `ProgressClient`.
+export const MemoizedProgressClient = memo(ProgressClient);
 
 /**
  * Render the inline quotation client component.
