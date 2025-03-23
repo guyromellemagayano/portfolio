@@ -2949,6 +2949,10 @@ const QClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.QClient };
 });
+const MemoizedQClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedQClient };
+});
 
 export type QRef = React.ElementRef<"q">;
 export type QProps = React.ComponentPropsWithoutRef<"q"> & CommonComponentProps;
@@ -2958,20 +2962,27 @@ export type QProps = React.ComponentPropsWithoutRef<"q"> & CommonComponentProps;
  * @param {QProps} props - The default inline quotation server component properties
  * @returns The rendered default inline quotation server component
  */
-export const Q = ({ isClient = false, children, ...rest }: QProps) => {
-  const element = <q {...rest}>{children}</q>;
+export const Q = ({
+  as: Component = "q",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: QProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedQClient : QClient;
+
     return (
       <Suspense fallback={element}>
-        <QClient {...rest}>{children}</QClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Q.displayName = "Q";
 
 const RpClient = lazy(async () => {
