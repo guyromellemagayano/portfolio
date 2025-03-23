@@ -2699,6 +2699,10 @@ const OptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptionClient };
 });
+const MemoizedOptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOptionClient };
+});
 
 export type OptionRef = React.ElementRef<"option">;
 export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
@@ -2710,23 +2714,26 @@ export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
  * @returns The rendered default HTML option server component
  */
 export const Option = ({
+  as: Component = "option",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OptionProps) => {
-  const element = <option {...rest}>{children}</option>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOptionClient : OptionClient;
+
     return (
       <Suspense fallback={element}>
-        <OptionClient {...rest}>{children}</OptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Option.displayName = "Option";
 
 const OutputClient = lazy(async () => {
