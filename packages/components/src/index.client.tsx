@@ -68,6 +68,7 @@ import {
   Ol,
   Optgroup,
   Option,
+  Output,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1577,16 +1578,18 @@ export const MemoizedOptionClient = memo(OptionClient);
  * @returns The rendered output client component
  */
 export const OutputClient = forwardRef<OutputRef, OutputProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Output, children, ...rest }, ref) => {
     return (
-      <output ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </output>
+      </Component>
     );
   }
 );
-
 OutputClient.displayName = "OutputClient";
+
+// Memoized version of `OutputClient`.
+export const MemoizedOutputClient = memo(OutputClient);
 
 /**
  * Render the paragraph client component.
