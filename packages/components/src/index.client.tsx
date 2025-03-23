@@ -70,6 +70,8 @@ import {
   Option,
   Output,
   Paragraph,
+  Picture,
+  Pre,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1619,16 +1621,18 @@ export const MemoizedParagraphClient = memo(ParagraphClient);
  * @returns The rendered picture client component
  */
 export const PictureClient = forwardRef<PictureRef, PictureProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Picture, children, ...rest }, ref) => {
     return (
-      <picture ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </picture>
+      </Component>
     );
   }
 );
-
 PictureClient.displayName = "PictureClient";
+
+// Memoized version of `PictureClient`.
+export const MemoizedPictureClient = memo(PictureClient);
 
 /**
  * Render the preformatted text client component.
@@ -1637,16 +1641,18 @@ PictureClient.displayName = "PictureClient";
  * @returns The rendered preformatted text client component
  */
 export const PreClient = forwardRef<PreRef, PreProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Pre, children, ...rest }, ref) => {
     return (
-      <pre ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </pre>
+      </Component>
     );
   }
 );
-
 PreClient.displayName = "PreClient";
+
+// Memoized version of `PreClient`.
+export const MemoizedPreClient = memo(PreClient);
 
 /**
  * Render the progress indicator client component.

@@ -2824,6 +2824,10 @@ const PictureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PictureClient };
 });
+const MemoizedPictureClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedPictureClient };
+});
 
 export type PictureRef = React.ElementRef<"picture">;
 export type PictureProps = React.ComponentPropsWithoutRef<"picture"> &
@@ -2835,28 +2839,35 @@ export type PictureProps = React.ComponentPropsWithoutRef<"picture"> &
  * @returns The rendered default picture server component
  */
 export const Picture = ({
+  as: Component = "picture",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: PictureProps) => {
-  const element = <picture {...rest}>{children}</picture>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedPictureClient : PictureClient;
+
     return (
       <Suspense fallback={element}>
-        <PictureClient {...rest}>{children}</PictureClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Picture.displayName = "Picture";
 
 const PreClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PreClient };
+});
+const MemoizedPreClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedPreClient };
 });
 
 export type PreRef = React.ElementRef<"pre">;
@@ -2868,20 +2879,27 @@ export type PreProps = React.ComponentPropsWithoutRef<"pre"> &
  * @param {PreProps} props - The default preformatted text server component properties
  * @returns The rendered default preformatted text server component
  */
-export const Pre = ({ isClient = false, children, ...rest }: PreProps) => {
-  const element = <pre {...rest}>{children}</pre>;
+export const Pre = ({
+  as: Component = "pre",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: PreProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedPreClient : PreClient;
+
     return (
       <Suspense fallback={element}>
-        <PreClient {...rest}>{children}</PreClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Pre.displayName = "Pre";
 
 const ProgressClient = lazy(async () => {
