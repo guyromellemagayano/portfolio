@@ -73,6 +73,7 @@ import {
   Picture,
   Pre,
   Progress,
+  Q,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1682,16 +1683,18 @@ export const MemoizedProgressClient = memo(ProgressClient);
  * @returns The rendered inline quotation client component
  */
 export const QClient = forwardRef<QRef, QProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Q, children, ...rest }, ref) => {
     return (
-      <q ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </q>
+      </Component>
     );
   }
 );
-
 QClient.displayName = "QClient";
+
+// Memoized version of `QClient`.
+export const MemoizedQClient = memo(QClient);
 
 /**
  * Render the ruby fallback parenthesis client component.
