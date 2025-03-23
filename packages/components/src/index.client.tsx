@@ -67,6 +67,7 @@ import {
   Object,
   Ol,
   Optgroup,
+  Option,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1556,16 +1557,18 @@ export const MemoizedOptgroupClient = memo(OptgroupClient);
  * @returns The rendered HTML option client component
  */
 export const OptionClient = forwardRef<OptionRef, OptionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Option, children, ...rest }, ref) => {
     return (
-      <option ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </option>
+      </Component>
     );
   }
 );
-
 OptionClient.displayName = "OptionClient";
+
+// Memoized version of `OptionClient`.
+export const MemoizedOptionClient = memo(OptionClient);
 
 /**
  * Render the output client component.
