@@ -74,6 +74,8 @@ import {
   Pre,
   Progress,
   Q,
+  Rp,
+  Rt,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1703,16 +1705,18 @@ export const MemoizedQClient = memo(QClient);
  * @returns The rendered ruby fallback parenthesis client component
  */
 export const RpClient = forwardRef<RpRef, RpProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Rp, children, ...rest }, ref) => {
     return (
-      <rp ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </rp>
+      </Component>
     );
   }
 );
-
 RpClient.displayName = "RpClient";
+
+// Memoized version of `RpClient`.
+export const MemoizedRpClient = memo(RpClient);
 
 /**
  * Render the ruby text client component.
@@ -1721,16 +1725,18 @@ RpClient.displayName = "RpClient";
  * @returns The rendered ruby text client component
  */
 export const RtClient = forwardRef<RtRef, RtProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Rt, children, ...rest }, ref) => {
     return (
-      <rt ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </rt>
+      </Component>
     );
   }
 );
-
 RtClient.displayName = "RtClient";
+
+// Memoized version of `RtClient`.
+export const MemoizedRtClient = memo(RtClient);
 
 /**
  * Render the ruby annotation client component.
