@@ -69,6 +69,7 @@ import {
   Optgroup,
   Option,
   Output,
+  Paragraph,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1598,16 +1599,18 @@ export const MemoizedOutputClient = memo(OutputClient);
  * @returns The rendered paragraph client component
  */
 export const ParagraphClient = forwardRef<ParagraphRef, ParagraphProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Paragraph, children, ...rest }, ref) => {
     return (
-      <p ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </p>
+      </Component>
     );
   }
 );
-
 ParagraphClient.displayName = "ParagraphClient";
+
+// Memoized version of `ParagraphClient`.
+export const MemoizedParagraphClient = memo(ParagraphClient);
 
 /**
  * Render the picture client component.
