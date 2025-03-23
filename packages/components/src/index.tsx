@@ -2656,6 +2656,10 @@ const OptgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptgroupClient };
 });
+const MemoizedOptgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOptgroupClient };
+});
 
 export type OptgroupRef = React.ElementRef<"optgroup">;
 export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
@@ -2667,23 +2671,28 @@ export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
  * @returns The rendered default option group server component
  */
 export const Optgroup = ({
+  as: Component = "optgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OptgroupProps) => {
-  const element = <optgroup {...rest}>{children}</optgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedOptgroupClient
+      : OptgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <OptgroupClient {...rest}>{children}</OptgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Optgroup.displayName = "Optgroup";
 
 const OptionClient = lazy(async () => {
