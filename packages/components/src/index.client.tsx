@@ -66,6 +66,7 @@ import {
   Noscript,
   Object,
   Ol,
+  Optgroup,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1535,16 +1536,18 @@ export const MemoizedOlClient = memo(OlClient);
  * @returns The rendered option group client component
  */
 export const OptgroupClient = forwardRef<OptgroupRef, OptgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Optgroup, children, ...rest }, ref) => {
     return (
-      <optgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </optgroup>
+      </Component>
     );
   }
 );
-
 OptgroupClient.displayName = "OptgroupClient";
+
+// Memoized version of `OptgroupClient`.
+export const MemoizedOptgroupClient = memo(OptgroupClient);
 
 /**
  * Render the HTML option client component.
