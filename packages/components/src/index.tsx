@@ -2906,6 +2906,10 @@ const ProgressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ProgressClient };
 });
+const MemoizedProgressClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedProgressClient };
+});
 
 export type ProgressRef = React.ElementRef<"progress">;
 export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
@@ -2917,23 +2921,28 @@ export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
  * @returns The rendered default progress indicator server component
  */
 export const Progress = ({
+  as: Component = "progress",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ProgressProps) => {
-  const element = <progress {...rest}>{children}</progress>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedProgressClient
+      : ProgressClient;
+
     return (
       <Suspense fallback={element}>
-        <ProgressClient {...rest}>{children}</ProgressClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Progress.displayName = "Progress";
 
 const QClient = lazy(async () => {
