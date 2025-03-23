@@ -2781,6 +2781,10 @@ const ParagraphClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ParagraphClient };
 });
+const MemoizedParagraphClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedParagraphClient };
+});
 
 export type ParagraphRef = React.ElementRef<"p">;
 export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> &
@@ -2792,23 +2796,28 @@ export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> &
  * @returns The rendered default paragraph server component
  */
 export const Paragraph = ({
+  as: Component = "p",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ParagraphProps) => {
-  const element = <p {...rest}>{children}</p>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedParagraphClient
+      : ParagraphClient;
+
     return (
       <Suspense fallback={element}>
-        <ParagraphClient {...rest}>{children}</ParagraphClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Paragraph.displayName = "Paragraph";
 
 const PictureClient = lazy(async () => {
