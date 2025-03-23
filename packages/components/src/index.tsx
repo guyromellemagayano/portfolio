@@ -2989,6 +2989,10 @@ const RpClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RpClient };
 });
+const MemoizedRpClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRpClient };
+});
 
 export type RpRef = React.ElementRef<"rp">;
 export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
@@ -2999,25 +3003,36 @@ export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
  * @param {RpProps} props - The default ruby fallback parenthesis server component properties
  * @returns The rendered default ruby fallback parenthesis server component
  */
-export const Rp = ({ isClient = false, children, ...rest }: RpProps) => {
-  const element = <rp {...rest}>{children}</rp>;
+export const Rp = ({
+  as: Component = "rp",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RpProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRpClient : RpClient;
+
     return (
       <Suspense fallback={element}>
-        <RpClient {...rest}>{children}</RpClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Rp.displayName = "Rp";
 
 const RtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RtClient };
+});
+const MemoizedRtClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRtClient };
 });
 
 export type RtRef = React.ElementRef<"rt">;
@@ -3029,20 +3044,27 @@ export type RtProps = React.ComponentPropsWithoutRef<"rt"> &
  * @param {RtProps} props - The default ruby text server component properties
  * @returns The rendered default ruby text server component
  */
-export const Rt = ({ isClient = false, children, ...rest }: RtProps) => {
-  const element = <rt {...rest}>{children}</rt>;
+export const Rt = ({
+  as: Component = "rt",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RtProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRtClient : RtClient;
+
     return (
       <Suspense fallback={element}>
-        <RtClient {...rest}>{children}</RtClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Rt.displayName = "Rt";
 
 const RubyClient = lazy(async () => {
