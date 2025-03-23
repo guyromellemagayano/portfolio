@@ -2740,6 +2740,10 @@ const OutputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OutputClient };
 });
+const MemoizedOutputClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOutputClient };
+});
 
 export type OutputRef = React.ElementRef<"output">;
 export type OutputProps = React.ComponentPropsWithoutRef<"output"> &
@@ -2751,23 +2755,26 @@ export type OutputProps = React.ComponentPropsWithoutRef<"output"> &
  * @returns The rendered default output server component
  */
 export const Output = ({
+  as: Component = "output",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OutputProps) => {
-  const element = <output {...rest}>{children}</output>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOutputClient : OutputClient;
+
     return (
       <Suspense fallback={element}>
-        <OutputClient {...rest}>{children}</OutputClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Output.displayName = "Output";
 
 const ParagraphClient = lazy(async () => {
