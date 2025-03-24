@@ -3275,6 +3275,10 @@ const SectionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SectionClient };
 });
+const MemoizedSectionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSectionClient };
+});
 
 export type SectionRef = React.ElementRef<"section">;
 export type SectionProps = React.ComponentPropsWithoutRef<"section"> &
@@ -3286,23 +3290,26 @@ export type SectionProps = React.ComponentPropsWithoutRef<"section"> &
  * @returns The rendered default generic section server component
  */
 export const Section = ({
+  as: Component = "section",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SectionProps) => {
-  const element = <section {...rest}>{children}</section>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSectionClient : SectionClient;
+
     return (
       <Suspense fallback={element}>
-        <SectionClient {...rest}>{children}</SectionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Section.displayName = "Section";
 
 const SelectClient = lazy(async () => {
