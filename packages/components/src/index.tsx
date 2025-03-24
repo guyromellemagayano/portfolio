@@ -3234,6 +3234,10 @@ const SearchClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SearchClient };
 });
+const MemoizedSearchClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSearchClient };
+});
 
 export type SearchRef = React.ElementRef<"search">;
 export type SearchProps = React.ComponentPropsWithoutRef<"search"> &
@@ -3245,23 +3249,26 @@ export type SearchProps = React.ComponentPropsWithoutRef<"search"> &
  * @returns The rendered default generic search server component
  */
 export const Search = ({
+  as: Component = "search",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SearchProps) => {
-  const element = <search {...rest}>{children}</search>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSearchClient : SearchClient;
+
     return (
       <Suspense fallback={element}>
-        <SearchClient {...rest}>{children}</SearchClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Search.displayName = "Search";
 
 const SectionClient = lazy(async () => {
