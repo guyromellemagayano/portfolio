@@ -3643,6 +3643,10 @@ const SummaryClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SummaryClient };
 });
+const MemoizedSummaryClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSummaryClient };
+});
 
 export type SummaryRef = React.ElementRef<"summary">;
 export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> &
@@ -3654,23 +3658,26 @@ export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> &
  * @returns The rendered default disclosure summary server component
  */
 export const Summary = ({
+  as: Component = "summary",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SummaryProps) => {
-  const element = <summary {...rest}>{children}</summary>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSummaryClient : SummaryClient;
+
     return (
       <Suspense fallback={element}>
-        <SummaryClient {...rest}>{children}</SummaryClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Summary.displayName = "Summary";
 
 const SupClient = lazy(async () => {
