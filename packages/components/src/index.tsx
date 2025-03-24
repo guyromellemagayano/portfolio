@@ -3561,6 +3561,10 @@ const StyleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StyleClient };
 });
+const MemoizedStyleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedStyleClient };
+});
 
 export type StyleRef = React.ElementRef<"style">;
 export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
@@ -3571,20 +3575,27 @@ export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
  * @param {StyleProps} props - The default style information server component properties
  * @returns The rendered default style information server component
  */
-export const Style = ({ isClient = false, children, ...rest }: StyleProps) => {
-  const element = <style {...rest}>{children}</style>;
+export const Style = ({
+  as: Component = "style",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: StyleProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedStyleClient : StyleClient;
+
     return (
       <Suspense fallback={element}>
-        <StyleClient {...rest}>{children}</StyleClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Style.displayName = "Style";
 
 const SubClient = lazy(async () => {

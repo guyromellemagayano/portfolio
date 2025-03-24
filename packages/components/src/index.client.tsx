@@ -88,6 +88,7 @@ import {
   Source,
   Span,
   Strong,
+  Style,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1993,16 +1994,18 @@ export const MemoizedStrongClient = memo(StrongClient);
  * @returns The rendered style information client component
  */
 export const StyleClient = forwardRef<StyleRef, StyleProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Style, children, ...rest }, ref) => {
     return (
-      <style ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </style>
+      </Component>
     );
   }
 );
-
 StyleClient.displayName = "StyleClient";
+
+// Memoized version of `StyleClient`.
+export const MemoizedStyleClient = memo(StyleClient);
 
 /**
  * Render the subscript client component.
