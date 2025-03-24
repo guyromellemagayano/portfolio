@@ -78,6 +78,8 @@ import {
   Rt,
   Ruby,
   S,
+  Samp,
+  Script,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1787,16 +1789,18 @@ export const MemoizedSClient = memo(SClient);
  * @returns The rendered sample output client component
  */
 export const SampClient = forwardRef<SampRef, SampProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Samp, children, ...rest }, ref) => {
     return (
-      <samp ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </samp>
+      </Component>
     );
   }
 );
-
 SampClient.displayName = "SampClient";
+
+// Memoized version of `SampClient`.
+export const MemoizedSampClient = memo(SampClient);
 
 /**
  * Render the script client component.
@@ -1805,16 +1809,18 @@ SampClient.displayName = "SampClient";
  * @returns The rendered script client component
  */
 export const ScriptClient = forwardRef<ScriptRef, ScriptProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Script, children, ...rest }, ref) => {
     return (
-      <script ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </script>
+      </Component>
     );
   }
 );
-
 ScriptClient.displayName = "ScriptClient";
+
+// Memoized version of `ScriptClient`.
+export const MemoizedScriptClient = memo(ScriptClient);
 
 /**
  * Render the generic search client component.
