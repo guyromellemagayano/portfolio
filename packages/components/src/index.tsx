@@ -3357,6 +3357,10 @@ const SlotClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SlotClient };
 });
+const MemoizedSlotClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSlotClient };
+});
 
 export type SlotRef = React.ElementRef<"slot">;
 export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
@@ -3367,20 +3371,27 @@ export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
  * @param {SlotProps} props - The default web component slot server component properties
  * @returns The rendered default web component slot server component
  */
-export const Slot = ({ isClient = false, children, ...rest }: SlotProps) => {
-  const element = <slot {...rest}>{children}</slot>;
+export const Slot = ({
+  as: Component = "slot",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SlotProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSlotClient : SlotClient;
+
     return (
       <Suspense fallback={element}>
-        <SlotClient {...rest}>{children}</SlotClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Slot.displayName = "Slot";
 
 const SmallClient = lazy(async () => {
