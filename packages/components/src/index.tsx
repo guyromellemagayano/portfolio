@@ -3439,6 +3439,10 @@ const SourceClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SourceClient };
 });
+const MemoizedSourceClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSourceClient };
+});
 
 export type SourceRef = React.ElementRef<"source">;
 export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
@@ -3449,20 +3453,26 @@ export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
  * @param {SourceProps} props - The default media or image source server component properties
  * @returns The rendered default media or image source server component
  */
-export const Source = ({ isClient = false, ...rest }: SourceProps) => {
-  const element = <source {...rest} />;
+export const Source = ({
+  as: Component = "source",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: SourceProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSourceClient : SourceClient;
+
     return (
       <Suspense fallback={element}>
-        <SourceClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Source.displayName = "Source";
 
 const SpanClient = lazy(async () => {
