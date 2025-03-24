@@ -83,6 +83,7 @@ import {
   Search,
   Section,
   Select,
+  Slot,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1892,16 +1893,18 @@ export const MemoizedSelectClient = memo(SelectClient);
  * @returns The rendered web component slot client component
  */
 export const SlotClient = forwardRef<SlotRef, SlotProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Slot, children, ...rest }, ref) => {
     return (
-      <slot ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </slot>
+      </Component>
     );
   }
 );
-
 SlotClient.displayName = "SlotClient";
+
+// Memoized version of `SlotClient`.
+export const MemoizedSlotClient = memo(SlotClient);
 
 /**
  * Render the side comment client component.
