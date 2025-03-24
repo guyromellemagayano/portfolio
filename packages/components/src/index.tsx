@@ -3725,6 +3725,10 @@ const SvgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SvgClient };
 });
+const MemoizedSvgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSvgClient };
+});
 
 export type SvgRef = React.ElementRef<"svg">;
 export type SvgProps = React.ComponentPropsWithoutRef<"svg"> &
@@ -3735,20 +3739,27 @@ export type SvgProps = React.ComponentPropsWithoutRef<"svg"> &
  * @param {SvgProps} props - The default scalable vector graphics server component properties
  * @returns The rendered default scalable vector graphics server component
  */
-export const Svg = ({ isClient = false, children, ...rest }: SvgProps) => {
-  const element = <svg {...rest}>{children}</svg>;
+export const Svg = ({
+  as: Component = "svg",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SvgProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSvgClient : SvgClient;
+
     return (
       <Suspense fallback={element}>
-        <SvgClient {...rest}>{children}</SvgClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Svg.displayName = "Svg";
 
 const TableClient = lazy(async () => {
