@@ -85,6 +85,7 @@ import {
   Select,
   Slot,
   Small,
+  Source,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1934,12 +1935,14 @@ export const MemoizedSmallClient = memo(SmallClient);
  * @returns The rendered media or image source client component
  */
 export const SourceClient = forwardRef<SourceRef, SourceProps>(
-  ({ ...rest }, ref) => {
-    return <source ref={ref} {...rest} />;
+  ({ as: Component = Source, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 SourceClient.displayName = "SourceClient";
+
+// Memoized version of `SourceClient`.
+export const MemoizedSourceClient = memo(SourceClient);
 
 /**
  * Render the content span client component.
