@@ -77,6 +77,7 @@ import {
   Rp,
   Rt,
   Ruby,
+  S,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1766,16 +1767,18 @@ export const MemoizedRubyClient = memo(RubyClient);
  * @returns The rendered strikethrough client component
  */
 export const SClient = forwardRef<SRef, SProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = S, children, ...rest }, ref) => {
     return (
-      <s ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </s>
+      </Component>
     );
   }
 );
-
 SClient.displayName = "SClient";
+
+// Memoized version of `SClient`.
+export const MemoizedSClient = memo(SClient);
 
 /**
  * Render the sample output client component.
