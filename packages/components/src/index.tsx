@@ -3316,6 +3316,10 @@ const SelectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SelectClient };
 });
+const MemoizedSelectClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSelectClient };
+});
 
 export type SelectRef = React.ElementRef<"select">;
 export type SelectProps = React.ComponentPropsWithoutRef<"select"> &
@@ -3327,23 +3331,26 @@ export type SelectProps = React.ComponentPropsWithoutRef<"select"> &
  * @returns The rendered default HTML select server component
  */
 export const Select = ({
+  as: Component = "select",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SelectProps) => {
-  const element = <select {...rest}>{children}</select>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSelectClient : SelectClient;
+
     return (
       <Suspense fallback={element}>
-        <SelectClient {...rest}>{children}</SelectClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Select.displayName = "Select";
 
 const SlotClient = lazy(async () => {

@@ -82,6 +82,7 @@ import {
   Script,
   Search,
   Section,
+  Select,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1871,16 +1872,18 @@ export const MemoizedSectionClient = memo(SectionClient);
  * @returns The rendered HTML select client component
  */
 export const SelectClient = forwardRef<SelectRef, SelectProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Select, children, ...rest }, ref) => {
     return (
-      <select ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </select>
+      </Component>
     );
   }
 );
-
 SelectClient.displayName = "SelectClient";
+
+// Memoized version of `SelectClient`.
+export const MemoizedSelectClient = memo(SelectClient);
 
 /**
  * Render the web component slot client component.
