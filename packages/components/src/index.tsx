@@ -3479,6 +3479,10 @@ const SpanClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SpanClient };
 });
+const MemoizedSpanClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSpanClient };
+});
 
 export type SpanRef = React.ElementRef<"span">;
 export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
@@ -3489,20 +3493,27 @@ export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
  * @param {SpanProps} props - The default content span server component properties
  * @returns The rendered default content span server component
  */
-export const Span = ({ isClient = false, children, ...rest }: SpanProps) => {
-  const element = <span {...rest}>{children}</span>;
+export const Span = ({
+  as: Component = "span",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SpanProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSpanClient : SpanClient;
+
     return (
       <Suspense fallback={element}>
-        <SpanClient {...rest}>{children}</SpanClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Span.displayName = "Span";
 
 const StrongClient = lazy(async () => {
