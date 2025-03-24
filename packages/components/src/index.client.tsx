@@ -87,6 +87,7 @@ import {
   Small,
   Source,
   Span,
+  Strong,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1972,16 +1973,18 @@ export const MemoizedSpanClient = memo(SpanClient);
  * @returns The rendered strong importance client component
  */
 export const StrongClient = forwardRef<StrongRef, StrongProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Strong, children, ...rest }, ref) => {
     return (
-      <strong ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </strong>
+      </Component>
     );
   }
 );
-
 StrongClient.displayName = "StrongClient";
+
+// Memoized version of `StrongClient`.
+export const MemoizedStrongClient = memo(StrongClient);
 
 /**
  * Render the style information client component.
