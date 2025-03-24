@@ -3152,6 +3152,10 @@ const SampClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SampClient };
 });
+const MemoizedSampClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSampClient };
+});
 
 export type SampRef = React.ElementRef<"samp">;
 export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
@@ -3162,25 +3166,36 @@ export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
  * @param {SampProps} props - The default sample output server component properties
  * @returns The rendered default sample output server component
  */
-export const Samp = ({ isClient = false, children, ...rest }: SampProps) => {
-  const element = <samp {...rest}>{children}</samp>;
+export const Samp = ({
+  as: Component = "samp",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SampProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSampClient : SampClient;
+
     return (
       <Suspense fallback={element}>
-        <SampClient {...rest}>{children}</SampClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Samp.displayName = "Samp";
 
 const ScriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ScriptClient };
+});
+const MemoizedScriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedScriptClient };
 });
 
 export type ScriptRef = React.ElementRef<"script">;
@@ -3193,23 +3208,26 @@ export type ScriptProps = React.ComponentPropsWithoutRef<"script"> &
  * @returns The rendered default script server component
  */
 export const Script = ({
+  as: Component = "script",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ScriptProps) => {
-  const element = <script {...rest}>{children}</script>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedScriptClient : ScriptClient;
+
     return (
       <Suspense fallback={element}>
-        <ScriptClient {...rest}>{children}</ScriptClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Script.displayName = "Script";
 
 const SearchClient = lazy(async () => {
