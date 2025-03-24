@@ -3398,6 +3398,10 @@ const SmallClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SmallClient };
 });
+const MemoizedSmallClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSmallClient };
+});
 
 export type SmallRef = React.ElementRef<"small">;
 export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
@@ -3408,20 +3412,27 @@ export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
  * @param {SmallProps} props - The default side comment server component properties
  * @returns The rendered default side comment server component
  */
-export const Small = ({ isClient = false, children, ...rest }: SmallProps) => {
-  const element = <small {...rest}>{children}</small>;
+export const Small = ({
+  as: Component = "small",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SmallProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSmallClient : SmallClient;
+
     return (
       <Suspense fallback={element}>
-        <SmallClient {...rest}>{children}</SmallClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Small.displayName = "Small";
 
 const SourceClient = lazy(async () => {
