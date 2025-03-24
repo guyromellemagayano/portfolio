@@ -3112,6 +3112,10 @@ const SClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SClient };
 });
+const MemoizedSClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSClient };
+});
 
 export type SRef = React.ElementRef<"s">;
 export type SProps = React.ComponentPropsWithoutRef<"s"> & CommonComponentProps;
@@ -3121,20 +3125,27 @@ export type SProps = React.ComponentPropsWithoutRef<"s"> & CommonComponentProps;
  * @param {SProps} props - The default strikethrough server component properties
  * @returns The rendered default strikethrough server component
  */
-export const S = ({ isClient = false, children, ...rest }: SProps) => {
-  const element = <s {...rest}>{children}</s>;
+export const S = ({
+  as: Component = "s",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSClient : SClient;
+
     return (
       <Suspense fallback={element}>
-        <SClient {...rest}>{children}</SClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 S.displayName = "S";
 
 const SampClient = lazy(async () => {
