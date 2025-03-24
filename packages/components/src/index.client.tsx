@@ -84,6 +84,7 @@ import {
   Section,
   Select,
   Slot,
+  Small,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1913,16 +1914,18 @@ export const MemoizedSlotClient = memo(SlotClient);
  * @returns The rendered side comment client component
  */
 export const SmallClient = forwardRef<SmallRef, SmallProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Small, children, ...rest }, ref) => {
     return (
-      <small ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </small>
+      </Component>
     );
   }
 );
-
 SmallClient.displayName = "SmallClient";
+
+// Memoized version of `SmallClient`.
+export const MemoizedSmallClient = memo(SmallClient);
 
 /**
  * Render the media or image source client component.
