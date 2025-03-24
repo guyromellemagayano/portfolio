@@ -3071,6 +3071,10 @@ const RubyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RubyClient };
 });
+const MemoizedRubyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRubyClient };
+});
 
 export type RubyRef = React.ElementRef<"ruby">;
 export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
@@ -3081,20 +3085,27 @@ export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
  * @param {RubyProps} props - The default ruby annotation server component properties
  * @returns The rendered default ruby annotation server component
  */
-export const Ruby = ({ isClient = false, children, ...rest }: RubyProps) => {
-  const element = <ruby {...rest}>{children}</ruby>;
+export const Ruby = ({
+  as: Component = "ruby",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RubyProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRubyClient : RubyClient;
+
     return (
       <Suspense fallback={element}>
-        <RubyClient {...rest}>{children}</RubyClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ruby.displayName = "Ruby";
 
 const SClient = lazy(async () => {

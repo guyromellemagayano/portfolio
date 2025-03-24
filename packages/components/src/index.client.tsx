@@ -76,6 +76,7 @@ import {
   Q,
   Rp,
   Rt,
+  Ruby,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1745,16 +1746,18 @@ export const MemoizedRtClient = memo(RtClient);
  * @returns The rendered ruby annotation client component
  */
 export const RubyClient = forwardRef<RubyRef, RubyProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ruby, children, ...rest }, ref) => {
     return (
-      <ruby ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ruby>
+      </Component>
     );
   }
 );
-
 RubyClient.displayName = "RubyClient";
+
+// Memoized version of `RubyClient`.
+export const MemoizedRubyClient = memo(RubyClient);
 
 /**
  * Render the strikethrough client component.
