@@ -3602,6 +3602,10 @@ const SubClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SubClient };
 });
+const MemoizedSubClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSubClient };
+});
 
 export type SubRef = React.ElementRef<"sub">;
 export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
@@ -3612,20 +3616,27 @@ export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
  * @param {SubProps} props - The default subscript server component properties
  * @returns The rendered default subscript server component
  */
-export const Sub = ({ isClient = false, children, ...rest }: SubProps) => {
-  const element = <sub {...rest}>{children}</sub>;
+export const Sub = ({
+  as: Component = "sub",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SubProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSubClient : SubClient;
+
     return (
       <Suspense fallback={element}>
-        <SubClient {...rest}>{children}</SubClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Sub.displayName = "Sub";
 
 const SummaryClient = lazy(async () => {
