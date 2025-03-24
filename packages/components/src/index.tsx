@@ -3684,6 +3684,10 @@ const SupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SupClient };
 });
+const MemoizedSupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSupClient };
+});
 
 export type SupRef = React.ElementRef<"sup">;
 export type SupProps = React.ComponentPropsWithoutRef<"sup"> &
@@ -3694,20 +3698,27 @@ export type SupProps = React.ComponentPropsWithoutRef<"sup"> &
  * @param {SupProps} props - The default superscript server component properties
  * @returns The rendered default superscript server component
  */
-export const Sup = ({ isClient = false, children, ...rest }: SupProps) => {
-  const element = <sup {...rest}>{children}</sup>;
+export const Sup = ({
+  as: Component = "sup",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SupProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSupClient : SupClient;
+
     return (
       <Suspense fallback={element}>
-        <SupClient {...rest}>{children}</SupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Sup.displayName = "Sup";
 
 const SvgClient = lazy(async () => {

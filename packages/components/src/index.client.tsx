@@ -91,6 +91,7 @@ import {
   Style,
   Sub,
   Summary,
+  Sup,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2056,16 +2057,18 @@ export const MemoizedSummaryClient = memo(SummaryClient);
  * @returns The rendered superscript client component
  */
 export const SupClient = forwardRef<SupRef, SupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Sup, children, ...rest }, ref) => {
     return (
-      <sup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </sup>
+      </Component>
     );
   }
 );
-
 SupClient.displayName = "SupClient";
+
+// Memoized version of `SupClient`.
+export const MemoizedSupClient = memo(SupClient);
 
 /**
  * Render the scalable vector graphics client component.
