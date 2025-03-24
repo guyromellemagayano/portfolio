@@ -89,6 +89,7 @@ import {
   Span,
   Strong,
   Style,
+  Sub,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2014,16 +2015,18 @@ export const MemoizedStyleClient = memo(StyleClient);
  * @returns The rendered subscript client component
  */
 export const SubClient = forwardRef<SubRef, SubProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Sub, children, ...rest }, ref) => {
     return (
-      <sub ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </sub>
+      </Component>
     );
   }
 );
-
 SubClient.displayName = "SubClient";
+
+// Memoized version of `SubClient`.
+export const MemoizedSubClient = memo(SubClient);
 
 /**
  * Render the disclosure summary client component.
