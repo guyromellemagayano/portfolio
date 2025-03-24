@@ -81,6 +81,7 @@ import {
   Samp,
   Script,
   Search,
+  Section,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1850,16 +1851,18 @@ export const MemoizedSearchClient = memo(SearchClient);
  * @returns The rendered generic section client component
  */
 export const SectionClient = forwardRef<SectionRef, SectionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Section, children, ...rest }, ref) => {
     return (
-      <section ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </section>
+      </Component>
     );
   }
 );
-
 SectionClient.displayName = "SectionClient";
+
+// Memoized version of `SectionClient`.
+export const MemoizedSectionClient = memo(SectionClient);
 
 /**
  * Render the HTML select client component.
