@@ -90,6 +90,7 @@ import {
   Strong,
   Style,
   Sub,
+  Summary,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2035,16 +2036,18 @@ export const MemoizedSubClient = memo(SubClient);
  * @returns The rendered disclosure summary client component
  */
 export const SummaryClient = forwardRef<SummaryRef, SummaryProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Summary, children, ...rest }, ref) => {
     return (
-      <summary ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </summary>
+      </Component>
     );
   }
 );
-
 SummaryClient.displayName = "SummaryClient";
+
+// Memoized version of `SummaryClient`.
+export const MemoizedSummaryClient = memo(SummaryClient);
 
 /**
  * Render the superscript client component.
