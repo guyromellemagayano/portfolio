@@ -3520,6 +3520,10 @@ const StrongClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StrongClient };
 });
+const MemoizedStrongClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedStrongClient };
+});
 
 export type StrongRef = React.ElementRef<"strong">;
 export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
@@ -3531,23 +3535,26 @@ export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
  * @returns The rendered default strong importance server component
  */
 export const Strong = ({
+  as: Component = "strong",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: StrongProps) => {
-  const element = <strong {...rest}>{children}</strong>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedStrongClient : StrongClient;
+
     return (
       <Suspense fallback={element}>
-        <StrongClient {...rest}>{children}</StrongClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Strong.displayName = "Strong";
 
 const StyleClient = lazy(async () => {
