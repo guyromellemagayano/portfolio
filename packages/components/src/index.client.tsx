@@ -80,6 +80,7 @@ import {
   S,
   Samp,
   Script,
+  Search,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -1829,16 +1830,18 @@ export const MemoizedScriptClient = memo(ScriptClient);
  * @returns The rendered generic search client component
  */
 export const SearchClient = forwardRef<SearchRef, SearchProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Search, children, ...rest }, ref) => {
     return (
-      <search ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </search>
+      </Component>
     );
   }
 );
-
 SearchClient.displayName = "SearchClient";
+
+// Memoized version of `SearchClient`.
+export const MemoizedSearchClient = memo(SearchClient);
 
 /**
  * Render the generic section client component.
