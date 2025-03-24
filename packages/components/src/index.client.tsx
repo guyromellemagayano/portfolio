@@ -92,6 +92,7 @@ import {
   Sub,
   Summary,
   Sup,
+  Svg,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2077,16 +2078,18 @@ export const MemoizedSupClient = memo(SupClient);
  * @returns The rendered scalable vector graphics client component
  */
 export const SvgClient = forwardRef<SvgRef, SvgProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Svg, children, ...rest }, ref) => {
     return (
-      <svg ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </svg>
+      </Component>
     );
   }
 );
-
 SvgClient.displayName = "SvgClient";
+
+// Memoized version of `SvgClient`.
+export const MemoizedSvgClient = memo(SvgClient);
 
 /**
  * Render the table client component.
