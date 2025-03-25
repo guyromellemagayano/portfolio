@@ -105,6 +105,7 @@ import {
   Title,
   Tr,
   Track,
+  U,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2346,16 +2347,18 @@ export const MemoizedTrackClient = memo(TrackClient);
  * @returns The rendered unarticulated annotation (underline) client component
  */
 export const UClient = forwardRef<URef, UProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = U, children, ...rest }, ref) => {
     return (
-      <u ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </u>
+      </Component>
     );
   }
 );
-
 UClient.displayName = "UClient";
+
+// Memoized version of `UClient`.
+export const MemoizedUClient = memo(UClient);
 
 /**
  * Render the unordered list client component.
