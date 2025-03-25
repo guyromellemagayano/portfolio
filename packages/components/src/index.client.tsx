@@ -101,6 +101,7 @@ import {
   Tfoot,
   Th,
   Thead,
+  Time,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2266,16 +2267,18 @@ export const MemoizedTheadClient = memo(TheadClient);
  * @returns The rendered (date) time client component
  */
 export const TimeClient = forwardRef<TimeRef, TimeProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Time, children, ...rest }, ref) => {
     return (
-      <time ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </time>
+      </Component>
     );
   }
 );
-
 TimeClient.displayName = "TimeClient";
+
+// Memoized version of `TimeClient`.
+export const MemoizedTimeClient = memo(TimeClient);
 
 /**
  * Render the document title client component.
