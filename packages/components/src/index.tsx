@@ -4057,6 +4057,10 @@ const TheadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TheadClient };
 });
+const MemoizedTheadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTheadClient };
+});
 
 export type TheadRef = React.ElementRef<"thead">;
 export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
@@ -4067,20 +4071,27 @@ export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
  * @param {TheadProps} props - The default table head server component properties
  * @returns The rendered default table head server component
  */
-export const Thead = ({ isClient = false, children, ...rest }: TheadProps) => {
-  const element = <thead {...rest}>{children}</thead>;
+export const Thead = ({
+  as: Component = "thead",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TheadProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTheadClient : TheadClient;
+
     return (
       <Suspense fallback={element}>
-        <TheadClient {...rest}>{children}</TheadClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Thead.displayName = "Thead";
 
 const TimeClient = lazy(async () => {

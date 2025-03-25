@@ -100,6 +100,7 @@ import {
   Textarea,
   Tfoot,
   Th,
+  Thead,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2245,16 +2246,18 @@ export const MemoizedThClient = memo(ThClient);
  * @returns The rendered table head client component
  */
 export const TheadClient = forwardRef<TheadRef, TheadProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Thead, children, ...rest }, ref) => {
     return (
-      <thead ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </thead>
+      </Component>
     );
   }
 );
-
 TheadClient.displayName = "TheadClient";
+
+// Memoized version of `TheadClient`.
+export const MemoizedTheadClient = memo(TheadClient);
 
 /**
  * Render the (date) time client component.
