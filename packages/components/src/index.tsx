@@ -3889,6 +3889,10 @@ const TemplateClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TemplateClient };
 });
+const MemoizedTemplateClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTemplateClient };
+});
 
 export type TemplateRef = React.ElementRef<"template">;
 export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
@@ -3900,28 +3904,37 @@ export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
  * @returns The rendered default content template server component
  */
 export const Template = ({
+  as: Component = "template",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: TemplateProps) => {
-  const element = <template {...rest}>{children}</template>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedTemplateClient
+      : TemplateClient;
+
     return (
       <Suspense fallback={element}>
-        <TemplateClient {...rest}>{children}</TemplateClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Template.displayName = "Template";
 
 const TextareaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TextareaClient };
+});
+const MemoizedTextareaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTextareaClient };
 });
 
 export type TextareaRef = React.ElementRef<"textarea">;
@@ -3934,23 +3947,28 @@ export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> &
  * @returns The rendered default textarea server component
  */
 export const Textarea = ({
+  as: Component = "textarea",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: TextareaProps) => {
-  const element = <textarea {...rest}>{children}</textarea>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedTextareaClient
+      : TextareaClient;
+
     return (
       <Suspense fallback={element}>
-        <TextareaClient {...rest}>{children}</TextareaClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Textarea.displayName = "Textarea";
 
 const TfootClient = lazy(async () => {
