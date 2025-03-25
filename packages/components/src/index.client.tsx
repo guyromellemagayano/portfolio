@@ -93,6 +93,7 @@ import {
   Summary,
   Sup,
   Svg,
+  Table,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2098,16 +2099,18 @@ export const MemoizedSvgClient = memo(SvgClient);
  * @returns The rendered table client component
  */
 export const TableClient = forwardRef<TableRef, TableProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Table, children, ...rest }, ref) => {
     return (
-      <table ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </table>
+      </Component>
     );
   }
 );
-
 TableClient.displayName = "TableClient";
+
+// Memoized version of `TableClient`.
+export const MemoizedTableClient = memo(TableClient);
 
 /**
  * Render the table body client component.
