@@ -4098,6 +4098,10 @@ const TimeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TimeClient };
 });
+const MemoizedTimeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTimeClient };
+});
 
 export type TimeRef = React.ElementRef<"time">;
 export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
@@ -4108,20 +4112,27 @@ export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
  * @param {TimeProps} props - The default (date) time server component properties
  * @returns The rendered default (date) time server component
  */
-export const Time = ({ isClient = false, children, ...rest }: TimeProps) => {
-  const element = <time {...rest}>{children}</time>;
+export const Time = ({
+  as: Component = "time",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TimeProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTimeClient : TimeClient;
+
     return (
       <Suspense fallback={element}>
-        <TimeClient {...rest}>{children}</TimeClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Time.displayName = "Time";
 
 const TitleClient = lazy(async () => {
