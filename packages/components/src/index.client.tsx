@@ -96,6 +96,8 @@ import {
   Table,
   Tbody,
   Td,
+  Template,
+  Textarea,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2161,16 +2163,18 @@ export const MemoizedTdClient = memo(TdClient);
  * @returns The rendered content template client component
  */
 export const TemplateClient = forwardRef<TemplateRef, TemplateProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Template, children, ...rest }, ref) => {
     return (
-      <template ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </template>
+      </Component>
     );
   }
 );
-
 TemplateClient.displayName = "TemplateClient";
+
+// Memoized version of `TemplateClient`.
+export const MemoizedTemplateClient = memo(TemplateClient);
 
 /**
  * Render the textarea client component.
@@ -2179,16 +2183,18 @@ TemplateClient.displayName = "TemplateClient";
  * @returns The rendered textarea client component
  */
 export const TextareaClient = forwardRef<TextareaRef, TextareaProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Textarea, children, ...rest }, ref) => {
     return (
-      <textarea ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </textarea>
+      </Component>
     );
   }
 );
-
 TextareaClient.displayName = "TextareaClient";
+
+// Memoized version of `TextareaClient`.
+export const MemoizedTextareaClient = memo(TextareaClient);
 
 /**
  * Render the table foot client component.
