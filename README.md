@@ -1,82 +1,40 @@
-# 
+# Hi 👋, I'm Guy Romelle Magayano
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Full Stack Developer, Software Engineer, and a Minimalist
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+- 🌱 I’m currently deepening my expertise in **Python, Django, Go, and DevOps**.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- 👨‍💻 Explore all of my projects at [https://www.guyromellemagayano.dev/projects](https://www.guyromellemagayano.dev/projects).
 
-## Finish your CI setup
+- 📝 I regularly write about tech and development at [https://www.guyromellemagayano.dev/articles](https://www.guyromellemagayano.dev/articles).
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/YX1mFPWiVm)
+- 💬 Ask me about **React, TypeScript, JavaScript, PHP, WordPress, Python**.
 
+- 📫 You can reach me at **<aspiredtechie2010@gmail.com>**.
 
-## Run tasks
+- 📄 Learn more about my professional experiences at [https://www.guyromellemagayano.dev/work](https://www.guyromellemagayano.dev/work).
 
-To run the dev server for your app, use:
+- ⚡ Fun fact: _I'm an introvert, but I'm quite friendly and always up for a chat :)_
 
-```sh
-npx nx dev portfolio
-```
+## Connect with Me
 
-To create a production bundle:
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="Follow me on Facebook" height="30" width="40" />](https://www.facebook.com/iiaamgee)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="Follow me on Instagram" height="30" width="40" />](https://www.instagram.com/iiaamgee)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="Follow me on LinkedIn" height="30" width="40" />](https://www.linkedin.com/in/mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="Follow me on Twitter" height="30" width="40" />](https://x.com/mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/discord.svg" alt="Follow me on Discord" height="30" width="40" />](https://discord.com/users/1004684457837596673)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="Follow me on GitHub" height="30" width="40" />](https://github.com/guyromellemagayano)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/medium.svg" alt="Follow me on Medium" height="30" width="40" />](https://medium.com/@mguyromelle)
+[<img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/behance.svg" alt="Follow me on Behance" height="30" width="40" />](https://www.behance.net/mguyromelle)
 
-```sh
-npx nx build portfolio
-```
+## Most Used Languages
 
-To see all available targets to run for a project, run:
+<a href="https://github.com/guyromellemagayano/github-stats">
+<img src="https://github.com/guyromellemagayano/github-stats/blob/master/generated/languages.svg#gh-light-mode-only" />
+</a>
 
-```sh
-npx nx show project portfolio
-```
+## Github Stats
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-Use the plugin's generator to create new projects.
-
-To generate a new application, use:
-
-```sh
-npx nx g @nx/next:app demo
-```
-
-To generate a new library, use:
-
-```sh
-npx nx g @nx/react:lib mylib
-```
-
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
-
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/nx-api/next?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+<a href="https://github.com/guyromellemagayano/github-stats">
+<img src="https://github.com/guyromellemagayano/github-stats/blob/master/generated/overview.svg#gh-light-mode-only" />
+</a>
