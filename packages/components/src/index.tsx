@@ -4221,6 +4221,10 @@ const TrackClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrackClient };
 });
+const MemoizedTrackClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTrackClient };
+});
 
 export type TrackRef = React.ElementRef<"track">;
 export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
@@ -4231,20 +4235,26 @@ export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
  * @param {TrackProps} props - The default embed text track server component properties
  * @returns The rendered default embed text track server component
  */
-export const Track = ({ isClient = false, ...rest }: TrackProps) => {
-  const element = <track {...rest} />;
+export const Track = ({
+  as: Component = "track",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: TrackProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTrackClient : TrackClient;
+
     return (
       <Suspense fallback={element}>
-        <TrackClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Track.displayName = "Track";
 
 const UClient = lazy(async () => {
