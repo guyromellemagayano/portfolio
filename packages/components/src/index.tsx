@@ -4139,6 +4139,10 @@ const TitleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TitleClient };
 });
+const MemoizedTitleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTitleClient };
+});
 
 export type TitleRef = React.ElementRef<"title">;
 export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
@@ -4149,20 +4153,27 @@ export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
  * @param {TitleProps} props - The default document title server component properties
  * @returns The rendered default document title server component
  */
-export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
-  const element = <title {...rest}>{children}</title>;
+export const Title = ({
+  as: Component = "title",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TitleProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTitleClient : TitleClient;
+
     return (
       <Suspense fallback={element}>
-        <TitleClient {...rest}>{children}</TitleClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Title.displayName = "Title";
 
 const TrClient = lazy(async () => {
