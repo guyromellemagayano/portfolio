@@ -6,6 +6,10 @@ const AClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
 });
+const MemoizedAClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAClient };
+});
 
 export type ARef = React.ElementRef<"a">;
 export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
@@ -16,33 +20,42 @@ export type AProps = React.ComponentPropsWithoutRef<"a"> & CommonComponentProps;
  * @returns The rendered default anchor server component
  */
 export const A = ({
+  as: Component = "a",
   href = "#",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AProps) => {
   const element = (
-    <a href={href} {...rest}>
+    <Component href={href} {...rest}>
       {children}
-    </a>
+    </Component>
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAClient : AClient;
+
     return (
       <Suspense fallback={element}>
-        <AClient {...rest}>{children}</AClient>
+        <ClientComponent href={href} {...rest}>
+          {children}
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 A.displayName = "A";
 
 const AbbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
+});
+const MemoizedAbbrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAbbrClient };
 });
 
 export type AbbrRef = React.ElementRef<"abbr">;
@@ -54,25 +67,36 @@ export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
  * @param {AbbrProps} props - The default abbreviation server component properties
  * @returns The rendered default abbreviation server component
  */
-export const Abbr = ({ isClient = false, children, ...rest }: AbbrProps) => {
-  const element = <abbr {...rest}>{children}</abbr>;
+export const Abbr = ({
+  as: Component = "abbr",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AbbrProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;
+
     return (
       <Suspense fallback={element}>
-        <AbbrClient {...rest}>{children}</AbbrClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Abbr.displayName = "Abbr";
 
 const AddressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AddressClient };
+});
+const MemoizedAddressClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAddressClient };
 });
 
 export type AddressRef = React.ElementRef<"address">;
@@ -85,28 +109,35 @@ export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
  * @returns The rendered default address server component
  */
 export const Address = ({
+  as: Component = "address",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AddressProps) => {
-  const element = <address {...rest}>{children}</address>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAddressClient : AddressClient;
+
     return (
       <Suspense fallback={element}>
-        <AddressClient {...rest}>{children}</AddressClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Address.displayName = "Address";
 
 const AreaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AreaClient };
+});
+const MemoizedAreaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAreaClient };
 });
 
 export type AreaRef = React.ElementRef<"area">;
@@ -119,35 +150,42 @@ export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
  * @returns The rendered default area server component
  */
 export const Area = ({
+  as: Component = "area",
   alt = "",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: AreaProps) => {
   const element = (
-    <area alt={alt} {...rest}>
+    <Component alt={alt} {...rest}>
       {children}
-    </area>
+    </Component>
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAreaClient : AreaClient;
+
     return (
       <Suspense fallback={element}>
-        <AreaClient alt={alt} {...rest}>
+        <ClientComponent alt={alt} {...rest}>
           {children}
-        </AreaClient>
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Area.displayName = "Area";
 
 const ArticleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ArticleClient };
+});
+const MemoizedArticleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedArticleClient };
 });
 
 export type ArticleRef = React.ElementRef<"article">;
@@ -160,28 +198,35 @@ export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
  * @returns The rendered default article server component
  */
 export const Article = ({
+  as: Component = "article",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ArticleProps) => {
-  const element = <article {...rest}>{children}</article>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedArticleClient : ArticleClient;
+
     return (
       <Suspense fallback={element}>
-        <ArticleClient {...rest}>{children} </ArticleClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Article.displayName = "Article";
 
 const AsideClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AsideClient };
+});
+const MemoizedAsideClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAsideClient };
 });
 
 export type AsideRef = React.ElementRef<"aside">;
@@ -193,54 +238,36 @@ export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
  * @param {AsideProps} props - The default aside server component properties
  * @returns The rendered default aside server component
  */
-export const Aside = ({ isClient = false, children, ...rest }: AsideProps) => {
-  const element = <aside {...rest}>{children}</aside>;
+export const Aside = ({
+  as: Component = "aside",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AsideProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAsideClient : AsideClient;
+
     return (
       <Suspense fallback={element}>
-        <AsideClient {...rest}>{children} </AsideClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Aside.displayName = "Aside";
-
-const BClient = lazy(async () => {
-  const module = await import("./index.client");
-  return { default: module.BClient };
-});
-
-export type BRef = React.ElementRef<"b">;
-export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
-
-/**
- * Render the default bring attention to server component.
- * @param {BProps} props - The default bring attention to server component properties
- * @returns The rendered default bring attention to server component
- */
-export const B = ({ isClient = false, children, ...rest }: BProps) => {
-  const element = <b {...rest}>{children}</b>;
-
-  if (isClient) {
-    return (
-      <Suspense fallback={element}>
-        <BClient {...rest}>{children}</BClient>
-      </Suspense>
-    );
-  }
-
-  return element;
-};
-
-B.displayName = "B";
 
 const AudioClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AudioClient };
+});
+const MemoizedAudioClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedAudioClient };
 });
 
 export type AudioRef = React.ElementRef<"audio">;
@@ -252,25 +279,76 @@ export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
  * @param {AudioProps} props - The default audio server component properties
  * @returns The rendered default audio server component
  */
-export const Audio = ({ isClient = false, children, ...rest }: AudioProps) => {
-  const element = <audio {...rest}>{children}</audio>;
+export const Audio = ({
+  as: Component = "audio",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: AudioProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedAudioClient : AudioClient;
+
     return (
       <Suspense fallback={element}>
-        <AudioClient {...rest}>{children} </AudioClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Audio.displayName = "Audio";
+
+const BClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.BClient };
+});
+const MemoizedBClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBClient };
+});
+
+export type BRef = React.ElementRef<"b">;
+export type BProps = React.ComponentPropsWithoutRef<"b"> & CommonComponentProps;
+
+/**
+ * Render the default bring attention to server component.
+ * @param {BProps} props - The default bring attention to server component properties
+ * @returns The rendered default bring attention to server component
+ */
+export const B = ({
+  as: Component = "b",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BProps) => {
+  const element = <Component {...rest}>{children}</Component>;
+
+  if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBClient : BClient;
+
+    return (
+      <Suspense fallback={element}>
+        <ClientComponent {...rest}>{children}</ClientComponent>
+      </Suspense>
+    );
+  }
+
+  return element;
+};
+B.displayName = "B";
 
 const BaseClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BaseClient };
+});
+const MemoizedBaseClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBaseClient };
 });
 
 export type BaseRef = React.ElementRef<"base">;
@@ -282,25 +360,36 @@ export type BaseProps = React.ComponentPropsWithoutRef<"base"> &
  * @param {BaseProps} props - The default base server component properties
  * @returns The rendered default base server component
  */
-export const Base = ({ isClient = false, children, ...rest }: BaseProps) => {
-  const element = <base {...rest}>{children}</base>;
+export const Base = ({
+  as: Component = "base",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BaseProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBaseClient : BaseClient;
+
     return (
       <Suspense fallback={element}>
-        <BaseClient {...rest}>{children} </BaseClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Base.displayName = "Base";
 
 const BdiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdiClient };
+});
+const MemoizedBdiClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBdiClient };
 });
 
 export type BdiRef = React.ElementRef<"bdi">;
@@ -312,25 +401,36 @@ export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> &
  * @param {BdiProps} props - The default bidirectional isolate server component properties
  * @returns The rendered default bidirectional isolate server component
  */
-export const Bdi = ({ isClient = false, children, ...rest }: BdiProps) => {
-  const element = <bdi {...rest}>{children}</bdi>;
+export const Bdi = ({
+  as: Component = "bdi",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BdiProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBdiClient : BdiClient;
+
     return (
       <Suspense fallback={element}>
-        <BdiClient {...rest}>{children}</BdiClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Bdi.displayName = "Bdi";
 
 const BdoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BdoClient };
+});
+const MemoizedBdoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBdoClient };
 });
 
 export type BdoRef = React.ElementRef<"bdo">;
@@ -342,25 +442,36 @@ export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
  * @param {BdoProps} props - The default bidirectional text override server component properties
  * @returns The rendered default bidirectional text override server component
  */
-export const Bdo = ({ isClient = false, children, ...rest }: BdoProps) => {
-  const element = <bdo {...rest}>{children}</bdo>;
+export const Bdo = ({
+  as: Component = "bdo",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BdoProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBdoClient : BdoClient;
+
     return (
       <Suspense fallback={element}>
-        <BdoClient {...rest}>{children}</BdoClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Bdo.displayName = "Bdo";
 
 const BlockquoteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BlockquoteClient };
+});
+const MemoizedBlockquoteClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBlockquoteClient };
 });
 
 export type BlockquoteRef = React.ElementRef<"blockquote">;
@@ -373,28 +484,37 @@ export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
  * @returns The rendered default blockquote server component
  */
 export const Blockquote = ({
+  as: Component = "blockquote",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: BlockquoteProps) => {
-  const element = <blockquote {...rest}>{children}</blockquote>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedBlockquoteClient
+      : BlockquoteClient;
+
     return (
       <Suspense fallback={element}>
-        <BlockquoteClient {...rest}>{children} </BlockquoteClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Blockquote.displayName = "Blockquote";
 
 const BodyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BodyClient };
+});
+const MemoizedBodyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBodyClient };
 });
 
 export type BodyRef = React.ElementRef<"body">;
@@ -406,25 +526,36 @@ export type BodyProps = React.ComponentPropsWithoutRef<"body"> &
  * @param {BodyProps} props - The default document body server component properties
  * @returns The rendered default document body server component
  */
-export const Body = ({ isClient = false, children, ...rest }: BodyProps) => {
-  const element = <body {...rest}>{children}</body>;
+export const Body = ({
+  as: Component = "body",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: BodyProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBodyClient : BodyClient;
+
     return (
       <Suspense fallback={element}>
-        <BodyClient {...rest}>{children}</BodyClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Body.displayName = "Body";
 
 const BrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.BrClient };
+});
+const MemoizedBrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedBrClient };
 });
 
 export type BrRef = React.ElementRef<"br">;
@@ -436,25 +567,35 @@ export type BrProps = React.ComponentPropsWithoutRef<"br"> &
  * @param {BrProps} props - The default line break server component properties
  * @returns The rendered default line break server component
  */
-export const Br = ({ isClient = false, ...rest }: BrProps) => {
-  const element = <br {...rest} />;
+export const Br = ({
+  as: Component = "br",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: BrProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedBrClient : BrClient;
+
     return (
       <Suspense fallback={element}>
-        <BrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Br.displayName = "Br";
 
 const ButtonClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ButtonClient };
+});
+const MemoizedButtonClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedButtonClient };
 });
 
 export type ButtonRef = React.ElementRef<"button">;
@@ -467,35 +608,42 @@ export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
  * @returns The rendered default button server component
  */
 export const Button = ({
+  as: Component = "button",
   type = "button",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ButtonProps) => {
   const element = (
-    <button type={type} {...rest} disabled>
+    <Component type={type} disabled={isClient} {...rest}>
       {children}
-    </button>
+    </Component>
   );
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedButtonClient : ButtonClient;
+
     return (
       <Suspense fallback={element}>
-        <ButtonClient type={type} {...rest}>
+        <ClientComponent type={type} {...rest}>
           {children}
-        </ButtonClient>
+        </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Button.displayName = "Button";
 
 const CanvasClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CanvasClient };
+});
+const MemoizedCanvasClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCanvasClient };
 });
 
 export type CanvasRef = React.ElementRef<"canvas">;
@@ -508,28 +656,35 @@ export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
  * @returns The rendered default canvas server component
  */
 export const Canvas = ({
+  as: Component = "canvas",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: CanvasProps) => {
-  const element = <canvas {...rest}>{children}</canvas>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCanvasClient : CanvasClient;
+
     return (
       <Suspense fallback={element}>
-        <CanvasClient {...rest}>{children} </CanvasClient>
+        <ClientComponent {...rest}>{children} </ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Canvas.displayName = "Canvas";
 
 const CaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CaptionClient };
+});
+const MemoizedCaptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCaptionClient };
 });
 
 export type CaptionRef = React.ElementRef<"caption">;
@@ -542,28 +697,35 @@ export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> &
  * @returns The rendered default caption server component
  */
 export const Caption = ({
+  as: Component = "caption",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: CaptionProps) => {
-  const element = <caption {...rest}>{children}</caption>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCaptionClient : CaptionClient;
+
     return (
       <Suspense fallback={element}>
-        <CaptionClient {...rest}>{children}</CaptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Caption.displayName = "Caption";
 
 const CiteClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CiteClient };
+});
+const MemoizedCiteClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCiteClient };
 });
 
 export type CiteRef = React.ElementRef<"cite">;
@@ -575,25 +737,36 @@ export type CiteProps = React.ComponentPropsWithoutRef<"cite"> &
  * @param {CiteProps} props - The default cite server component properties
  * @returns The rendered default cite server component
  */
-export const Cite = ({ isClient = false, children, ...rest }: CiteProps) => {
-  const element = <cite {...rest}>{children}</cite>;
+export const Cite = ({
+  as: Component = "cite",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: CiteProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCiteClient : CiteClient;
+
     return (
       <Suspense fallback={element}>
-        <CiteClient {...rest}>{children}</CiteClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Cite.displayName = "Cite";
 
 const CodeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.CodeClient };
+});
+const MemoizedCodeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedCodeClient };
 });
 
 export type CodeRef = React.ElementRef<"code">;
@@ -605,25 +778,36 @@ export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
  * @param {CodeProps} props - The default code server component properties
  * @returns The rendered default code server component
  */
-export const Code = ({ isClient = false, children, ...rest }: CodeProps) => {
-  const element = <code {...rest}>{children}</code>;
+export const Code = ({
+  as: Component = "code",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: CodeProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedCodeClient : CodeClient;
+
     return (
       <Suspense fallback={element}>
-        <CodeClient {...rest}>{children}</CodeClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Code.displayName = "Code";
 
 const ColClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColClient };
+});
+const MemoizedColClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedColClient };
 });
 
 export type ColRef = React.ElementRef<"col">;
@@ -635,25 +819,35 @@ export type ColProps = React.ComponentPropsWithoutRef<"col"> &
  * @param {ColProps} props - The default column server component properties
  * @returns The rendered default column server component
  */
-export const Col = ({ isClient = false, ...rest }: ColProps) => {
-  const element = <col {...rest} />;
+export const Col = ({
+  as: Component = "col",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: ColProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedColClient : ColClient;
+
     return (
       <Suspense fallback={element}>
-        <ColClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Col.displayName = "Col";
 
 const ColgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ColgroupClient };
+});
+const MemoizedColgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedColgroupClient };
 });
 
 export type ColgroupRef = React.ElementRef<"colgroup">;
@@ -666,28 +860,37 @@ export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
  * @returns The rendered default table column group server component
  */
 export const Colgroup = ({
+  as: Component = "colgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ColgroupProps) => {
-  const element = <colgroup {...rest}>{children}</colgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedColgroupClient
+      : ColgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <ColgroupClient {...rest}>{children}</ColgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Colgroup.displayName = "Colgroup";
 
 const DataClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DataClient };
+});
+const MemoizedDataClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDataClient };
 });
 
 export type DataRef = React.ElementRef<"data">;
@@ -699,25 +902,36 @@ export type DataProps = React.ComponentPropsWithoutRef<"data"> &
  * @param {DataProps} props - The default data server component properties
  * @returns The rendered default data server component
  */
-export const Data = ({ isClient = false, children, ...rest }: DataProps) => {
-  const element = <data {...rest}>{children}</data>;
+export const Data = ({
+  as: Component = "data",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DataProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDataClient : DataClient;
+
     return (
       <Suspense fallback={element}>
-        <DataClient {...rest}>{children}</DataClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Data.displayName = "Data";
 
 const DatalistClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DatalistClient };
+});
+const MemoizedDatalistClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDatalistClient };
 });
 
 export type DatalistRef = React.ElementRef<"datalist">;
@@ -730,28 +944,37 @@ export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> &
  * @returns The rendered default datalist server component
  */
 export const Datalist = ({
+  as: Component = "datalist",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DatalistProps) => {
-  const element = <datalist {...rest}>{children}</datalist>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedDatalistClient
+      : DatalistClient;
+
     return (
       <Suspense fallback={element}>
-        <DatalistClient {...rest}>{children}</DatalistClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Datalist.displayName = "Datalist";
 
 const DdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DdClient };
+});
+const MemoizedDdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDdClient };
 });
 
 export type DdRef = React.ElementRef<"dd">;
@@ -763,25 +986,36 @@ export type DdProps = React.ComponentPropsWithoutRef<"dd"> &
  * @param {DdProps} props - The default description details server component properties
  * @returns The rendered default description details server component
  */
-export const Dd = ({ isClient = false, children, ...rest }: DdProps) => {
-  const element = <dd {...rest}>{children}</dd>;
+export const Dd = ({
+  as: Component = "dd",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DdProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDdClient : DdClient;
+
     return (
       <Suspense fallback={element}>
-        <DdClient {...rest}>{children}</DdClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dd.displayName = "Dd";
 
 const DelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DelClient };
+});
+const MemoizedDelClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDelClient };
 });
 
 export type DelRef = React.ElementRef<"del">;
@@ -793,25 +1027,36 @@ export type DelProps = React.ComponentPropsWithoutRef<"del"> &
  * @param {DelProps} props - The default deleted text server component properties
  * @returns The rendered default deleted text server component
  */
-export const Del = ({ isClient = false, children, ...rest }: DelProps) => {
-  const element = <del {...rest}>{children}</del>;
+export const Del = ({
+  as: Component = "del",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DelProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDelClient : DelClient;
+
     return (
       <Suspense fallback={element}>
-        <DelClient {...rest}>{children}</DelClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Del.displayName = "Del";
 
 const DetailsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DetailsClient };
+});
+const MemoizedDetailsClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDetailsClient };
 });
 
 export type DetailsRef = React.ElementRef<"details">;
@@ -824,28 +1069,35 @@ export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
  * @returns The rendered default details disclosure server component
  */
 export const Details = ({
+  as: Component = "details",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DetailsProps) => {
-  const element = <details {...rest}>{children}</details>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDetailsClient : DetailsClient;
+
     return (
       <Suspense fallback={element}>
-        <DetailsClient {...rest}>{children}</DetailsClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Details.displayName = "Details";
 
 const DfnClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DfnClient };
+});
+const MemoizedDfnClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDfnClient };
 });
 
 export type DfnRef = React.ElementRef<"dfn">;
@@ -857,25 +1109,36 @@ export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> &
  * @param {DfnProps} props - The default definition element server component properties
  * @returns The rendered default definition element server component
  */
-export const Dfn = ({ isClient = false, children, ...rest }: DfnProps) => {
-  const element = <dfn {...rest}>{children}</dfn>;
+export const Dfn = ({
+  as: Component = "dfn",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DfnProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDfnClient : DfnClient;
+
     return (
       <Suspense fallback={element}>
-        <DfnClient {...rest}>{children}</DfnClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dfn.displayName = "Dfn";
 
 const DialogClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DialogClient };
+});
+const MemoizedDialogClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDialogClient };
 });
 
 export type DialogRef = React.ElementRef<"dialog">;
@@ -888,28 +1151,35 @@ export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> &
  * @returns The rendered default dialog server component
  */
 export const Dialog = ({
+  as: Component = "dialog",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: DialogProps) => {
-  const element = <dialog {...rest}>{children}</dialog>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDialogClient : DialogClient;
+
     return (
       <Suspense fallback={element}>
-        <DialogClient {...rest}>{children}</DialogClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dialog.displayName = "Dialog";
 
 const DivClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DivClient };
+});
+const MemoizedDivClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDivClient };
 });
 
 export type DivRef = React.ElementRef<"div">;
@@ -921,25 +1191,36 @@ export type DivProps = React.ComponentPropsWithoutRef<"div"> &
  * @param {DivProps} props - The default content division server component properties
  * @returns The rendered default content division server component
  */
-export const Div = ({ isClient = false, children, ...rest }: DivProps) => {
-  const element = <div {...rest}>{children}</div>;
+export const Div = ({
+  as: Component = "div",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DivProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDivClient : DivClient;
+
     return (
       <Suspense fallback={element}>
-        <DivClient {...rest}>{children}</DivClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Div.displayName = "Div";
 
 const DlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DlClient };
+});
+const MemoizedDlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDlClient };
 });
 
 export type DlRef = React.ElementRef<"dl">;
@@ -951,25 +1232,36 @@ export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
  * @param {DlProps} props - The default description list server component properties
  * @returns The rendered default description list server component
  */
-export const Dl = ({ isClient = false, children, ...rest }: DlProps) => {
-  const element = <dl {...rest}>{children}</dl>;
+export const Dl = ({
+  as: Component = "dl",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDlClient : DlClient;
+
     return (
       <Suspense fallback={element}>
-        <DlClient {...rest}>{children}</DlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dl.displayName = "Dl";
 
 const DtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.DtClient };
+});
+const MemoizedDtClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedDtClient };
 });
 
 export type DtRef = React.ElementRef<"dt">;
@@ -981,25 +1273,36 @@ export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
  * @param {DtProps} props - The default description term server component properties
  * @returns The rendered default description term server component
  */
-export const Dt = ({ isClient = false, children, ...rest }: DtProps) => {
-  const element = <dt {...rest}>{children}</dt>;
+export const Dt = ({
+  as: Component = "dt",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: DtProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedDtClient : DtClient;
+
     return (
       <Suspense fallback={element}>
-        <DtClient {...rest}>{children}</DtClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Dt.displayName = "Dt";
 
 const EmClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmClient };
+});
+const MemoizedEmClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedEmClient };
 });
 
 export type EmRef = React.ElementRef<"em">;
@@ -1011,25 +1314,36 @@ export type EmProps = React.ComponentPropsWithoutRef<"em"> &
  * @param {EmProps} props - The default emphasis server component properties
  * @returns The rendered default emphasis server component
  */
-export const Em = ({ isClient = false, children, ...rest }: EmProps) => {
-  const element = <em {...rest}>{children}</em>;
+export const Em = ({
+  as: Component = "em",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: EmProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedEmClient : EmClient;
+
     return (
       <Suspense fallback={element}>
-        <EmClient {...rest}>{children}</EmClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Em.displayName = "Em";
 
 const EmbedClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.EmbedClient };
+});
+const MemoizedEmbedClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedEmbedClient };
 });
 
 export type EmbedRef = React.ElementRef<"embed">;
@@ -1041,25 +1355,35 @@ export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
  * @param {EmbedProps} props - The default embed external content server component properties
  * @returns The rendered default embed external content server component
  */
-export const Embed = ({ isClient = false, ...rest }: EmbedProps) => {
-  const element = <embed {...rest} />;
+export const Embed = ({
+  as: Component = "embed",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: EmbedProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedEmbedClient : EmbedClient;
+
     return (
       <Suspense fallback={element}>
-        <EmbedClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Embed.displayName = "Embed";
 
 const FieldsetClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FieldsetClient };
+});
+const MemoizedFieldsetClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFieldsetClient };
 });
 
 export type FieldsetRef = React.ElementRef<"fieldset">;
@@ -1072,28 +1396,37 @@ export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
  * @returns The rendered default field set server component
  */
 export const Fieldset = ({
+  as: Component = "fieldset",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FieldsetProps) => {
-  const element = <fieldset {...rest}>{children}</fieldset>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedFieldsetClient
+      : FieldsetClient;
+
     return (
       <Suspense fallback={element}>
-        <FieldsetClient {...rest}>{children}</FieldsetClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Fieldset.displayName = "Fieldset";
 
 const FigcaptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigcaptionClient };
+});
+const MemoizedFigcaptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFigcaptionClient };
 });
 
 export type FigcaptionRef = React.ElementRef<"figcaption">;
@@ -1106,28 +1439,37 @@ export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> &
  * @returns The rendered default figure caption server component
  */
 export const Figcaption = ({
+  as: Component = "figcaption",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FigcaptionProps) => {
-  const element = <figcaption {...rest}>{children}</figcaption>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedFigcaptionClient
+      : FigcaptionClient;
+
     return (
       <Suspense fallback={element}>
-        <FigcaptionClient {...rest}>{children}</FigcaptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Figcaption.displayName = "Figcaption";
 
 const FigureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FigureClient };
+});
+const MemoizedFigureClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFigureClient };
 });
 
 export type FigureRef = React.ElementRef<"figure">;
@@ -1140,28 +1482,35 @@ export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
  * @returns The rendered default figure with optional caption server component
  */
 export const Figure = ({
+  as: Component = "figure",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FigureProps) => {
-  const element = <figure {...rest}>{children}</figure>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFigureClient : FigureClient;
+
     return (
       <Suspense fallback={element}>
-        <FigureClient {...rest}>{children}</FigureClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Figure.displayName = "Figure";
 
 const FooterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FooterClient };
+});
+const MemoizedFooterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFooterClient };
 });
 
 export type FooterRef = React.ElementRef<"footer">;
@@ -1174,28 +1523,35 @@ export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
  * @returns The rendered default footer server component
  */
 export const Footer = ({
+  as: Component = "footer",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: FooterProps) => {
-  const element = <footer {...rest}>{children}</footer>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFooterClient : FooterClient;
+
     return (
       <Suspense fallback={element}>
-        <FooterClient {...rest}>{children}</FooterClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Footer.displayName = "Footer";
 
 const FormClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.FormClient };
+});
+const MemoizedFormClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedFormClient };
 });
 
 export type FormRef = React.ElementRef<"form">;
@@ -1207,25 +1563,36 @@ export type FormProps = React.ComponentPropsWithoutRef<"form"> &
  * @param {FormProps} props - The default form server component properties
  * @returns The rendered default form server component
  */
-export const Form = ({ isClient = false, children, ...rest }: FormProps) => {
-  const element = <form {...rest}>{children}</form>;
+export const Form = ({
+  as: Component = "form",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: FormProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedFormClient : FormClient;
+
     return (
       <Suspense fallback={element}>
-        <FormClient {...rest}>{children}</FormClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Form.displayName = "Form";
 
 const HeadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadClient };
+});
+const MemoizedHeadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeadClient };
 });
 
 export type HeadRef = React.ElementRef<"head">;
@@ -1237,25 +1604,36 @@ export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
  * @param {HeadProps} props - The default document metadata (header) server component properties
  * @returns The rendered default document metadata (header) server component
  */
-export const Head = ({ isClient = false, children, ...rest }: HeadProps) => {
-  const element = <head {...rest}>{children}</head>;
+export const Head = ({
+  as: Component = "head",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: HeadProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeadClient : HeadClient;
+
     return (
       <Suspense fallback={element}>
-        <HeadClient {...rest}>{children}</HeadClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Head.displayName = "Head";
 
 const HeaderClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeaderClient };
+});
+const MemoizedHeaderClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeaderClient };
 });
 
 export type HeaderRef = React.ElementRef<"header">;
@@ -1268,28 +1646,35 @@ export type HeaderProps = React.ComponentPropsWithoutRef<"header"> &
  * @returns The rendered default header server component
  */
 export const Header = ({
+  as: Component = "header",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HeaderProps) => {
-  const element = <header {...rest}>{children}</header>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeaderClient : HeaderClient;
+
     return (
       <Suspense fallback={element}>
-        <HeaderClient {...rest}>{children}</HeaderClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Header.displayName = "Header";
 
 const HeadingClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HeadingClient };
+});
+const MemoizedHeadingClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHeadingClient };
 });
 
 export type HeadingRef = React.ElementRef<"h1">;
@@ -1306,27 +1691,33 @@ export type HeadingProps = React.ComponentPropsWithoutRef<"h1"> &
 export const Heading = ({
   as: Component = "h1",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HeadingProps) => {
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHeadingClient : HeadingClient;
+
     return (
       <Suspense fallback={element}>
-        <HeadingClient {...rest}>{children}</HeadingClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Heading.displayName = "Heading";
 
 const HgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HgroupClient };
+});
+const MemoizedHgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHgroupClient };
 });
 
 export type HgroupRef = React.ElementRef<"hgroup">;
@@ -1339,28 +1730,35 @@ export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> &
  * @returns The rendered default heading group component
  */
 export const Hgroup = ({
+  as: Component = "hgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: HgroupProps) => {
-  const element = <hgroup {...rest}>{children}</hgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHgroupClient : HgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <HgroupClient {...rest}>{children}</HgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Hgroup.displayName = "Hgroup";
 
 const HrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HrClient };
+});
+const MemoizedHrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHrClient };
 });
 
 export type HrRef = React.ElementRef<"hr">;
@@ -1372,25 +1770,35 @@ export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
  * @param {HrProps} props - The default thematic break (horizontal rule) server component properties
  * @returns The rendered default thematic break (horizontal rule) server component
  */
-export const Hr = ({ isClient = false, ...rest }: HrProps) => {
-  const element = <hr {...rest} />;
+export const Hr = ({
+  as: Component = "hr",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: HrProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHrClient : HrClient;
+
     return (
       <Suspense fallback={element}>
-        <HrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Hr.displayName = "Hr";
 
 const HtmlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.HtmlClient };
+});
+const MemoizedHtmlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedHtmlClient };
 });
 
 export type HtmlRef = React.ElementRef<"html">;
@@ -1402,25 +1810,36 @@ export type HtmlProps = React.ComponentPropsWithoutRef<"html"> &
  * @param {HtmlProps} props - The default HTML document/root server component properties
  * @returns The rendered default HTML document/root server component
  */
-export const Html = ({ isClient = false, children, ...rest }: HtmlProps) => {
-  const element = <html {...rest}>{children}</html>;
+export const Html = ({
+  as: Component = "html",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: HtmlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedHtmlClient : HtmlClient;
+
     return (
       <Suspense fallback={element}>
-        <HtmlClient {...rest}>{children}</HtmlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Html.displayName = "Html";
 
 const IClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IClient };
+});
+const MemoizedIClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedIClient };
 });
 
 export type IRef = React.ElementRef<"i">;
@@ -1431,25 +1850,36 @@ export type IProps = React.ComponentPropsWithoutRef<"i"> & CommonComponentProps;
  * @param {IProps} props - The default idiomatic text server component properties
  * @returns The rendered default idiomatic text server component
  */
-export const I = ({ isClient = false, children, ...rest }: IProps) => {
-  const element = <i {...rest}>{children}</i>;
+export const I = ({
+  as: Component = "i",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: IProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedIClient : IClient;
+
     return (
       <Suspense fallback={element}>
-        <IClient {...rest}>{children}</IClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 I.displayName = "I";
 
 const IframeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.IframeClient };
+});
+const MemoizedIframeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedIframeClient };
 });
 
 export type IframeRef = React.ElementRef<"iframe">;
@@ -1461,25 +1891,35 @@ export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
  * @param {IframeProps} props - The default inline frame server component properties
  * @returns The rendered default inline frame server component
  */
-export const Iframe = ({ isClient = false, ...rest }: IframeProps) => {
-  const element = <iframe {...rest} />;
+export const Iframe = ({
+  as: Component = "iframe",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: IframeProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedIframeClient : IframeClient;
+
     return (
       <Suspense fallback={element}>
-        <IframeClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Iframe.displayName = "Iframe";
 
 const ImgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ImgClient };
+});
+const MemoizedImgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedImgClient };
 });
 
 export type ImgRef = React.ElementRef<"img">;
@@ -1492,29 +1932,36 @@ export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
  * @returns The rendered default image embed server component
  */
 export const Img = ({
+  as: Component = "img",
   isClient = false,
+  isMemoized = false,
   src = "#",
   alt = "",
   ...rest
 }: ImgProps) => {
-  const element = <img src={src} alt={alt} {...rest} />;
+  const element = <Component src={src} alt={alt} {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedImgClient : ImgClient;
+
     return (
       <Suspense fallback={element}>
-        <ImgClient src={src} alt={alt} {...rest} />
+        <ClientComponent src={src} alt={alt} {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Img.displayName = "Img";
 
 const InputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InputClient };
+});
+const MemoizedInputClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedInputClient };
 });
 
 export type InputRef = React.ElementRef<"input">;
@@ -1527,28 +1974,35 @@ export type InputProps = React.ComponentPropsWithoutRef<"input"> &
  * @returns The rendered default HTML input server component
  */
 export const Input = ({
+  as: Component = "input",
   isClient = false,
+  isMemoized = false,
   type = "text",
   ...rest
 }: InputProps) => {
-  const element = <input type={type} {...rest} />;
+  const element = <Component type={type} {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedInputClient : InputClient;
+
     return (
       <Suspense fallback={element}>
-        <InputClient type={type} {...rest} />
+        <ClientComponent type={type} {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Input.displayName = "Input";
 
 const InsClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.InsClient };
+});
+const MemoizedInsClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedInsClient };
 });
 
 export type InsRef = React.ElementRef<"ins">;
@@ -1560,25 +2014,36 @@ export type InsProps = React.ComponentPropsWithoutRef<"ins"> &
  * @param {InsProps} props - The default inserted text server component properties
  * @returns The rendered default inserted text server component
  */
-export const Ins = ({ isClient = false, children, ...rest }: InsProps) => {
-  const element = <ins {...rest}>{children}</ins>;
+export const Ins = ({
+  as: Component = "ins",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: InsProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedInsClient : InsClient;
+
     return (
       <Suspense fallback={element}>
-        <InsClient {...rest}>{children}</InsClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ins.displayName = "Ins";
 
 const KbdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.KbdClient };
+});
+const MemoizedKbdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedKbdClient };
 });
 
 export type KbdRef = React.ElementRef<"kbd">;
@@ -1590,25 +2055,36 @@ export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
  * @param {KbdProps} props - The default keyboard input server component properties
  * @returns The rendered default keyboard input server component
  */
-export const Kbd = ({ isClient = false, children, ...rest }: KbdProps) => {
-  const element = <kbd {...rest}>{children}</kbd>;
+export const Kbd = ({
+  as: Component = "kbd",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: KbdProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedKbdClient : KbdClient;
+
     return (
       <Suspense fallback={element}>
-        <KbdClient {...rest}>{children}</KbdClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Kbd.displayName = "Kbd";
 
 const LabelClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LabelClient };
+});
+const MemoizedLabelClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLabelClient };
 });
 
 export type LabelRef = React.ElementRef<"label">;
@@ -1620,25 +2096,36 @@ export type LabelProps = React.ComponentPropsWithoutRef<"label"> &
  * @param {LabelProps} props - The default label server component properties
  * @returns The rendered default label server component
  */
-export const Label = ({ isClient = false, children, ...rest }: LabelProps) => {
-  const element = <label {...rest}>{children}</label>;
+export const Label = ({
+  as: Component = "label",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: LabelProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLabelClient : LabelClient;
+
     return (
       <Suspense fallback={element}>
-        <LabelClient {...rest}>{children}</LabelClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Label.displayName = "Label";
 
 const LegendClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LegendClient };
+});
+const MemoizedLegendClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLegendClient };
 });
 
 export type LegendRef = React.ElementRef<"legend">;
@@ -1651,28 +2138,35 @@ export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
  * @returns The rendered default field set legend server component
  */
 export const Legend = ({
+  as: Component = "legend",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: LegendProps) => {
-  const element = <legend {...rest}>{children}</legend>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLegendClient : LegendClient;
+
     return (
       <Suspense fallback={element}>
-        <LegendClient {...rest}>{children}</LegendClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Legend.displayName = "Legend";
 
 const LiClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LiClient };
+});
+const MemoizedLiClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLiClient };
 });
 
 export type LiRef = React.ElementRef<"li">;
@@ -1684,25 +2178,36 @@ export type LiProps = React.ComponentPropsWithoutRef<"li"> &
  * @param {LiProps} props - The default list item server component properties
  * @returns The rendered default list item server component
  */
-export const Li = ({ isClient = false, children, ...rest }: LiProps) => {
-  const element = <li {...rest}>{children}</li>;
+export const Li = ({
+  as: Component = "li",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: LiProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLiClient : LiClient;
+
     return (
       <Suspense fallback={element}>
-        <LiClient {...rest}>{children}</LiClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Li.displayName = "Li";
 
 const LinkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.LinkClient };
+});
+const MemoizedLinkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedLinkClient };
 });
 
 export type LinkRef = React.ElementRef<"link">;
@@ -1714,25 +2219,35 @@ export type LinkProps = React.ComponentPropsWithoutRef<"link"> &
  * @param {LinkProps} props - The default external resource link server component properties
  * @returns The rendered default external resource link server component
  */
-export const Link = ({ isClient = false, ...rest }: LinkProps) => {
-  const element = <link {...rest} />;
+export const Link = ({
+  as: Component = "link",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: LinkProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedLinkClient : LinkClient;
+
     return (
       <Suspense fallback={element}>
-        <LinkClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Link.displayName = "Link";
 
 const MainClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MainClient };
+});
+const MemoizedMainClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMainClient };
 });
 
 export type MainRef = React.ElementRef<"main">;
@@ -1744,25 +2259,36 @@ export type MainProps = React.ComponentPropsWithoutRef<"main"> &
  * @param {MainProps} props - The default main server component properties
  * @returns The rendered default main server component
  */
-export const Main = ({ isClient = false, children, ...rest }: MainProps) => {
-  const element = <main {...rest}>{children}</main>;
+export const Main = ({
+  as: Component = "main",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MainProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMainClient : MainClient;
+
     return (
       <Suspense fallback={element}>
-        <MainClient {...rest}>{children}</MainClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Main.displayName = "Main";
 
 const MapClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MapClient };
+});
+const MemoizedMapClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMapClient };
 });
 
 export type MapRef = React.ElementRef<"map">;
@@ -1774,25 +2300,36 @@ export type MapProps = React.ComponentPropsWithoutRef<"map"> &
  * @param {MapProps} props - The default image map server component properties
  * @returns The rendered default image map server component
  */
-export const Map = ({ isClient = false, children, ...rest }: MapProps) => {
-  const element = <map {...rest}>{children}</map>;
+export const Map = ({
+  as: Component = "map",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MapProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMapClient : MapClient;
+
     return (
       <Suspense fallback={element}>
-        <MapClient {...rest}>{children}</MapClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Map.displayName = "Map";
 
 const MarkClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MarkClient };
+});
+const MemoizedMarkClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMarkClient };
 });
 
 export type MarkRef = React.ElementRef<"mark">;
@@ -1804,25 +2341,36 @@ export type MarkProps = React.ComponentPropsWithoutRef<"mark"> &
  * @param {MarkProps} props - The default mark text server component properties
  * @returns The rendered default mark text server component
  */
-export const Mark = ({ isClient = false, children, ...rest }: MarkProps) => {
-  const element = <mark {...rest}>{children}</mark>;
+export const Mark = ({
+  as: Component = "mark",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MarkProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMarkClient : MarkClient;
+
     return (
       <Suspense fallback={element}>
-        <MarkClient {...rest}>{children}</MarkClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Mark.displayName = "Mark";
 
 const MenuClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MenuClient };
+});
+const MemoizedMenuClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMenuClient };
 });
 
 export type MenuRef = React.ElementRef<"menu">;
@@ -1834,25 +2382,36 @@ export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
  * @param {MenuProps} props - The default menu server component properties
  * @returns The rendered default menu server component
  */
-export const Menu = ({ isClient = false, children, ...rest }: MenuProps) => {
-  const element = <menu {...rest}>{children}</menu>;
+export const Menu = ({
+  as: Component = "menu",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MenuProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMenuClient : MenuClient;
+
     return (
       <Suspense fallback={element}>
-        <MenuClient {...rest}>{children}</MenuClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Menu.displayName = "Menu";
 
 const MetaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MetaClient };
+});
+const MemoizedMetaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMetaClient };
 });
 
 export type MetaRef = React.ElementRef<"meta">;
@@ -1864,25 +2423,35 @@ export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
  * @param {MetaProps} props - The default metadata server component properties
  * @returns The rendered default metadata server component
  */
-export const Meta = ({ isClient = false, ...rest }: MetaProps) => {
-  const element = <meta {...rest} />;
+export const Meta = ({
+  as: Component = "meta",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: MetaProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMetaClient : MetaClient;
+
     return (
       <Suspense fallback={element}>
-        <MetaClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Meta.displayName = "Meta";
 
 const MeterClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MeterClient };
+});
+const MemoizedMeterClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedMeterClient };
 });
 
 export type MeterRef = React.ElementRef<"meter">;
@@ -1894,25 +2463,36 @@ export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
  * @param {MeterProps} props - The default HTML meter server component properties
  * @returns The rendered default HTML meter server component
  */
-export const Meter = ({ isClient = false, children, ...rest }: MeterProps) => {
-  const element = <meter {...rest}>{children}</meter>;
+export const Meter = ({
+  as: Component = "meter",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: MeterProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedMeterClient : MeterClient;
+
     return (
       <Suspense fallback={element}>
-        <MeterClient {...rest}>{children}</MeterClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Meter.displayName = "Meter";
 
 const NavClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NavClient };
+});
+const MemoizedNavClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedNavClient };
 });
 
 export type NavRef = React.ElementRef<"nav">;
@@ -1924,25 +2504,36 @@ export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
  * @param {NavProps} props - The default navigation section server component properties
  * @returns The rendered default navigation section server component
  */
-export const Nav = ({ isClient = false, children, ...rest }: NavProps) => {
-  const element = <nav {...rest}>{children}</nav>;
+export const Nav = ({
+  as: Component = "nav",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: NavProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedNavClient : NavClient;
+
     return (
       <Suspense fallback={element}>
-        <NavClient {...rest}>{children}</NavClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Nav.displayName = "Nav";
 
 const NoscriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.NoscriptClient };
+});
+const MemoizedNoscriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedNoscriptClient };
 });
 
 export type NoscriptRef = React.ElementRef<"noscript">;
@@ -1955,28 +2546,37 @@ export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
  * @returns The rendered default noscript server component
  */
 export const Noscript = ({
+  as: Component = "noscript",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: NoscriptProps) => {
-  const element = <noscript {...rest}>{children}</noscript>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedNoscriptClient
+      : NoscriptClient;
+
     return (
       <Suspense fallback={element}>
-        <NoscriptClient {...rest}>{children}</NoscriptClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Noscript.displayName = "Noscript";
 
 const ObjectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ObjectClient };
+});
+const MemoizedObjectClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedObjectClient };
 });
 
 export type ObjectRef = React.ElementRef<"object">;
@@ -1989,28 +2589,35 @@ export type ObjectProps = React.ComponentPropsWithoutRef<"object"> &
  * @returns The rendered default object server component
  */
 export const Object = ({
+  as: Component = "object",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ObjectProps) => {
-  const element = <object {...rest}>{children}</object>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedObjectClient : ObjectClient;
+
     return (
       <Suspense fallback={element}>
-        <ObjectClient {...rest}>{children}</ObjectClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Object.displayName = "Object";
 
 const OlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OlClient };
+});
+const MemoizedOlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOlClient };
 });
 
 export type OlRef = React.ElementRef<"ol">;
@@ -2022,25 +2629,36 @@ export type OlProps = React.ComponentPropsWithoutRef<"ol"> &
  * @param {OlProps} props - The default ordered list server component properties
  * @returns The rendered default ordered list server component
  */
-export const Ol = ({ isClient = false, children, ...rest }: OlProps) => {
-  const element = <ol {...rest}>{children}</ol>;
+export const Ol = ({
+  as: Component = "ol",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: OlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOlClient : OlClient;
+
     return (
       <Suspense fallback={element}>
-        <OlClient {...rest}>{children}</OlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ol.displayName = "Ol";
 
 const OptgroupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptgroupClient };
+});
+const MemoizedOptgroupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOptgroupClient };
 });
 
 export type OptgroupRef = React.ElementRef<"optgroup">;
@@ -2053,28 +2671,37 @@ export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
  * @returns The rendered default option group server component
  */
 export const Optgroup = ({
+  as: Component = "optgroup",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OptgroupProps) => {
-  const element = <optgroup {...rest}>{children}</optgroup>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedOptgroupClient
+      : OptgroupClient;
+
     return (
       <Suspense fallback={element}>
-        <OptgroupClient {...rest}>{children}</OptgroupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Optgroup.displayName = "Optgroup";
 
 const OptionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OptionClient };
+});
+const MemoizedOptionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOptionClient };
 });
 
 export type OptionRef = React.ElementRef<"option">;
@@ -2087,28 +2714,35 @@ export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
  * @returns The rendered default HTML option server component
  */
 export const Option = ({
+  as: Component = "option",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OptionProps) => {
-  const element = <option {...rest}>{children}</option>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOptionClient : OptionClient;
+
     return (
       <Suspense fallback={element}>
-        <OptionClient {...rest}>{children}</OptionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Option.displayName = "Option";
 
 const OutputClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.OutputClient };
+});
+const MemoizedOutputClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedOutputClient };
 });
 
 export type OutputRef = React.ElementRef<"output">;
@@ -2121,28 +2755,35 @@ export type OutputProps = React.ComponentPropsWithoutRef<"output"> &
  * @returns The rendered default output server component
  */
 export const Output = ({
+  as: Component = "output",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: OutputProps) => {
-  const element = <output {...rest}>{children}</output>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedOutputClient : OutputClient;
+
     return (
       <Suspense fallback={element}>
-        <OutputClient {...rest}>{children}</OutputClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Output.displayName = "Output";
 
 const ParagraphClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ParagraphClient };
+});
+const MemoizedParagraphClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedParagraphClient };
 });
 
 export type ParagraphRef = React.ElementRef<"p">;
@@ -2155,28 +2796,37 @@ export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> &
  * @returns The rendered default paragraph server component
  */
 export const Paragraph = ({
+  as: Component = "p",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ParagraphProps) => {
-  const element = <p {...rest}>{children}</p>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedParagraphClient
+      : ParagraphClient;
+
     return (
       <Suspense fallback={element}>
-        <ParagraphClient {...rest}>{children}</ParagraphClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Paragraph.displayName = "Paragraph";
 
 const PictureClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PictureClient };
+});
+const MemoizedPictureClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedPictureClient };
 });
 
 export type PictureRef = React.ElementRef<"picture">;
@@ -2189,28 +2839,35 @@ export type PictureProps = React.ComponentPropsWithoutRef<"picture"> &
  * @returns The rendered default picture server component
  */
 export const Picture = ({
+  as: Component = "picture",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: PictureProps) => {
-  const element = <picture {...rest}>{children}</picture>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedPictureClient : PictureClient;
+
     return (
       <Suspense fallback={element}>
-        <PictureClient {...rest}>{children}</PictureClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Picture.displayName = "Picture";
 
 const PreClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.PreClient };
+});
+const MemoizedPreClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedPreClient };
 });
 
 export type PreRef = React.ElementRef<"pre">;
@@ -2222,25 +2879,36 @@ export type PreProps = React.ComponentPropsWithoutRef<"pre"> &
  * @param {PreProps} props - The default preformatted text server component properties
  * @returns The rendered default preformatted text server component
  */
-export const Pre = ({ isClient = false, children, ...rest }: PreProps) => {
-  const element = <pre {...rest}>{children}</pre>;
+export const Pre = ({
+  as: Component = "pre",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: PreProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedPreClient : PreClient;
+
     return (
       <Suspense fallback={element}>
-        <PreClient {...rest}>{children}</PreClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Pre.displayName = "Pre";
 
 const ProgressClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ProgressClient };
+});
+const MemoizedProgressClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedProgressClient };
 });
 
 export type ProgressRef = React.ElementRef<"progress">;
@@ -2253,28 +2921,37 @@ export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
  * @returns The rendered default progress indicator server component
  */
 export const Progress = ({
+  as: Component = "progress",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ProgressProps) => {
-  const element = <progress {...rest}>{children}</progress>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedProgressClient
+      : ProgressClient;
+
     return (
       <Suspense fallback={element}>
-        <ProgressClient {...rest}>{children}</ProgressClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Progress.displayName = "Progress";
 
 const QClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.QClient };
+});
+const MemoizedQClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedQClient };
 });
 
 export type QRef = React.ElementRef<"q">;
@@ -2285,25 +2962,36 @@ export type QProps = React.ComponentPropsWithoutRef<"q"> & CommonComponentProps;
  * @param {QProps} props - The default inline quotation server component properties
  * @returns The rendered default inline quotation server component
  */
-export const Q = ({ isClient = false, children, ...rest }: QProps) => {
-  const element = <q {...rest}>{children}</q>;
+export const Q = ({
+  as: Component = "q",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: QProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedQClient : QClient;
+
     return (
       <Suspense fallback={element}>
-        <QClient {...rest}>{children}</QClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Q.displayName = "Q";
 
 const RpClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RpClient };
+});
+const MemoizedRpClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRpClient };
 });
 
 export type RpRef = React.ElementRef<"rp">;
@@ -2315,25 +3003,36 @@ export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
  * @param {RpProps} props - The default ruby fallback parenthesis server component properties
  * @returns The rendered default ruby fallback parenthesis server component
  */
-export const Rp = ({ isClient = false, children, ...rest }: RpProps) => {
-  const element = <rp {...rest}>{children}</rp>;
+export const Rp = ({
+  as: Component = "rp",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RpProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRpClient : RpClient;
+
     return (
       <Suspense fallback={element}>
-        <RpClient {...rest}>{children}</RpClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Rp.displayName = "Rp";
 
 const RtClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RtClient };
+});
+const MemoizedRtClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRtClient };
 });
 
 export type RtRef = React.ElementRef<"rt">;
@@ -2345,25 +3044,36 @@ export type RtProps = React.ComponentPropsWithoutRef<"rt"> &
  * @param {RtProps} props - The default ruby text server component properties
  * @returns The rendered default ruby text server component
  */
-export const Rt = ({ isClient = false, children, ...rest }: RtProps) => {
-  const element = <rt {...rest}>{children}</rt>;
+export const Rt = ({
+  as: Component = "rt",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RtProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRtClient : RtClient;
+
     return (
       <Suspense fallback={element}>
-        <RtClient {...rest}>{children}</RtClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Rt.displayName = "Rt";
 
 const RubyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.RubyClient };
+});
+const MemoizedRubyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedRubyClient };
 });
 
 export type RubyRef = React.ElementRef<"ruby">;
@@ -2375,25 +3085,36 @@ export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
  * @param {RubyProps} props - The default ruby annotation server component properties
  * @returns The rendered default ruby annotation server component
  */
-export const Ruby = ({ isClient = false, children, ...rest }: RubyProps) => {
-  const element = <ruby {...rest}>{children}</ruby>;
+export const Ruby = ({
+  as: Component = "ruby",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: RubyProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedRubyClient : RubyClient;
+
     return (
       <Suspense fallback={element}>
-        <RubyClient {...rest}>{children}</RubyClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ruby.displayName = "Ruby";
 
 const SClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SClient };
+});
+const MemoizedSClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSClient };
 });
 
 export type SRef = React.ElementRef<"s">;
@@ -2404,25 +3125,36 @@ export type SProps = React.ComponentPropsWithoutRef<"s"> & CommonComponentProps;
  * @param {SProps} props - The default strikethrough server component properties
  * @returns The rendered default strikethrough server component
  */
-export const S = ({ isClient = false, children, ...rest }: SProps) => {
-  const element = <s {...rest}>{children}</s>;
+export const S = ({
+  as: Component = "s",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSClient : SClient;
+
     return (
       <Suspense fallback={element}>
-        <SClient {...rest}>{children}</SClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 S.displayName = "S";
 
 const SampClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SampClient };
+});
+const MemoizedSampClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSampClient };
 });
 
 export type SampRef = React.ElementRef<"samp">;
@@ -2434,25 +3166,36 @@ export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
  * @param {SampProps} props - The default sample output server component properties
  * @returns The rendered default sample output server component
  */
-export const Samp = ({ isClient = false, children, ...rest }: SampProps) => {
-  const element = <samp {...rest}>{children}</samp>;
+export const Samp = ({
+  as: Component = "samp",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SampProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSampClient : SampClient;
+
     return (
       <Suspense fallback={element}>
-        <SampClient {...rest}>{children}</SampClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Samp.displayName = "Samp";
 
 const ScriptClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ScriptClient };
+});
+const MemoizedScriptClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedScriptClient };
 });
 
 export type ScriptRef = React.ElementRef<"script">;
@@ -2465,28 +3208,35 @@ export type ScriptProps = React.ComponentPropsWithoutRef<"script"> &
  * @returns The rendered default script server component
  */
 export const Script = ({
+  as: Component = "script",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: ScriptProps) => {
-  const element = <script {...rest}>{children}</script>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedScriptClient : ScriptClient;
+
     return (
       <Suspense fallback={element}>
-        <ScriptClient {...rest}>{children}</ScriptClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Script.displayName = "Script";
 
 const SearchClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SearchClient };
+});
+const MemoizedSearchClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSearchClient };
 });
 
 export type SearchRef = React.ElementRef<"search">;
@@ -2499,28 +3249,35 @@ export type SearchProps = React.ComponentPropsWithoutRef<"search"> &
  * @returns The rendered default generic search server component
  */
 export const Search = ({
+  as: Component = "search",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SearchProps) => {
-  const element = <search {...rest}>{children}</search>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSearchClient : SearchClient;
+
     return (
       <Suspense fallback={element}>
-        <SearchClient {...rest}>{children}</SearchClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Search.displayName = "Search";
 
 const SectionClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SectionClient };
+});
+const MemoizedSectionClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSectionClient };
 });
 
 export type SectionRef = React.ElementRef<"section">;
@@ -2533,28 +3290,35 @@ export type SectionProps = React.ComponentPropsWithoutRef<"section"> &
  * @returns The rendered default generic section server component
  */
 export const Section = ({
+  as: Component = "section",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SectionProps) => {
-  const element = <section {...rest}>{children}</section>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSectionClient : SectionClient;
+
     return (
       <Suspense fallback={element}>
-        <SectionClient {...rest}>{children}</SectionClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Section.displayName = "Section";
 
 const SelectClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SelectClient };
+});
+const MemoizedSelectClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSelectClient };
 });
 
 export type SelectRef = React.ElementRef<"select">;
@@ -2567,28 +3331,35 @@ export type SelectProps = React.ComponentPropsWithoutRef<"select"> &
  * @returns The rendered default HTML select server component
  */
 export const Select = ({
+  as: Component = "select",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SelectProps) => {
-  const element = <select {...rest}>{children}</select>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSelectClient : SelectClient;
+
     return (
       <Suspense fallback={element}>
-        <SelectClient {...rest}>{children}</SelectClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Select.displayName = "Select";
 
 const SlotClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SlotClient };
+});
+const MemoizedSlotClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSlotClient };
 });
 
 export type SlotRef = React.ElementRef<"slot">;
@@ -2600,25 +3371,36 @@ export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
  * @param {SlotProps} props - The default web component slot server component properties
  * @returns The rendered default web component slot server component
  */
-export const Slot = ({ isClient = false, children, ...rest }: SlotProps) => {
-  const element = <slot {...rest}>{children}</slot>;
+export const Slot = ({
+  as: Component = "slot",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SlotProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSlotClient : SlotClient;
+
     return (
       <Suspense fallback={element}>
-        <SlotClient {...rest}>{children}</SlotClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Slot.displayName = "Slot";
 
 const SmallClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SmallClient };
+});
+const MemoizedSmallClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSmallClient };
 });
 
 export type SmallRef = React.ElementRef<"small">;
@@ -2630,25 +3412,36 @@ export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
  * @param {SmallProps} props - The default side comment server component properties
  * @returns The rendered default side comment server component
  */
-export const Small = ({ isClient = false, children, ...rest }: SmallProps) => {
-  const element = <small {...rest}>{children}</small>;
+export const Small = ({
+  as: Component = "small",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SmallProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSmallClient : SmallClient;
+
     return (
       <Suspense fallback={element}>
-        <SmallClient {...rest}>{children}</SmallClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Small.displayName = "Small";
 
 const SourceClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SourceClient };
+});
+const MemoizedSourceClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSourceClient };
 });
 
 export type SourceRef = React.ElementRef<"source">;
@@ -2660,25 +3453,35 @@ export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
  * @param {SourceProps} props - The default media or image source server component properties
  * @returns The rendered default media or image source server component
  */
-export const Source = ({ isClient = false, ...rest }: SourceProps) => {
-  const element = <source {...rest} />;
+export const Source = ({
+  as: Component = "source",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: SourceProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSourceClient : SourceClient;
+
     return (
       <Suspense fallback={element}>
-        <SourceClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Source.displayName = "Source";
 
 const SpanClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SpanClient };
+});
+const MemoizedSpanClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSpanClient };
 });
 
 export type SpanRef = React.ElementRef<"span">;
@@ -2690,25 +3493,36 @@ export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
  * @param {SpanProps} props - The default content span server component properties
  * @returns The rendered default content span server component
  */
-export const Span = ({ isClient = false, children, ...rest }: SpanProps) => {
-  const element = <span {...rest}>{children}</span>;
+export const Span = ({
+  as: Component = "span",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SpanProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSpanClient : SpanClient;
+
     return (
       <Suspense fallback={element}>
-        <SpanClient {...rest}>{children}</SpanClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Span.displayName = "Span";
 
 const StrongClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StrongClient };
+});
+const MemoizedStrongClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedStrongClient };
 });
 
 export type StrongRef = React.ElementRef<"strong">;
@@ -2721,28 +3535,35 @@ export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
  * @returns The rendered default strong importance server component
  */
 export const Strong = ({
+  as: Component = "strong",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: StrongProps) => {
-  const element = <strong {...rest}>{children}</strong>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedStrongClient : StrongClient;
+
     return (
       <Suspense fallback={element}>
-        <StrongClient {...rest}>{children}</StrongClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Strong.displayName = "Strong";
 
 const StyleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.StyleClient };
+});
+const MemoizedStyleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedStyleClient };
 });
 
 export type StyleRef = React.ElementRef<"style">;
@@ -2754,25 +3575,36 @@ export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
  * @param {StyleProps} props - The default style information server component properties
  * @returns The rendered default style information server component
  */
-export const Style = ({ isClient = false, children, ...rest }: StyleProps) => {
-  const element = <style {...rest}>{children}</style>;
+export const Style = ({
+  as: Component = "style",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: StyleProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedStyleClient : StyleClient;
+
     return (
       <Suspense fallback={element}>
-        <StyleClient {...rest}>{children}</StyleClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Style.displayName = "Style";
 
 const SubClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SubClient };
+});
+const MemoizedSubClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSubClient };
 });
 
 export type SubRef = React.ElementRef<"sub">;
@@ -2784,25 +3616,36 @@ export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
  * @param {SubProps} props - The default subscript server component properties
  * @returns The rendered default subscript server component
  */
-export const Sub = ({ isClient = false, children, ...rest }: SubProps) => {
-  const element = <sub {...rest}>{children}</sub>;
+export const Sub = ({
+  as: Component = "sub",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SubProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSubClient : SubClient;
+
     return (
       <Suspense fallback={element}>
-        <SubClient {...rest}>{children}</SubClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Sub.displayName = "Sub";
 
 const SummaryClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SummaryClient };
+});
+const MemoizedSummaryClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSummaryClient };
 });
 
 export type SummaryRef = React.ElementRef<"summary">;
@@ -2815,28 +3658,35 @@ export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> &
  * @returns The rendered default disclosure summary server component
  */
 export const Summary = ({
+  as: Component = "summary",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: SummaryProps) => {
-  const element = <summary {...rest}>{children}</summary>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSummaryClient : SummaryClient;
+
     return (
       <Suspense fallback={element}>
-        <SummaryClient {...rest}>{children}</SummaryClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Summary.displayName = "Summary";
 
 const SupClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SupClient };
+});
+const MemoizedSupClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSupClient };
 });
 
 export type SupRef = React.ElementRef<"sup">;
@@ -2848,25 +3698,36 @@ export type SupProps = React.ComponentPropsWithoutRef<"sup"> &
  * @param {SupProps} props - The default superscript server component properties
  * @returns The rendered default superscript server component
  */
-export const Sup = ({ isClient = false, children, ...rest }: SupProps) => {
-  const element = <sup {...rest}>{children}</sup>;
+export const Sup = ({
+  as: Component = "sup",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SupProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSupClient : SupClient;
+
     return (
       <Suspense fallback={element}>
-        <SupClient {...rest}>{children}</SupClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Sup.displayName = "Sup";
 
 const SvgClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.SvgClient };
+});
+const MemoizedSvgClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedSvgClient };
 });
 
 export type SvgRef = React.ElementRef<"svg">;
@@ -2878,25 +3739,36 @@ export type SvgProps = React.ComponentPropsWithoutRef<"svg"> &
  * @param {SvgProps} props - The default scalable vector graphics server component properties
  * @returns The rendered default scalable vector graphics server component
  */
-export const Svg = ({ isClient = false, children, ...rest }: SvgProps) => {
-  const element = <svg {...rest}>{children}</svg>;
+export const Svg = ({
+  as: Component = "svg",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: SvgProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedSvgClient : SvgClient;
+
     return (
       <Suspense fallback={element}>
-        <SvgClient {...rest}>{children}</SvgClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Svg.displayName = "Svg";
 
 const TableClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TableClient };
+});
+const MemoizedTableClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTableClient };
 });
 
 export type TableRef = React.ElementRef<"table">;
@@ -2908,25 +3780,36 @@ export type TableProps = React.ComponentPropsWithoutRef<"table"> &
  * @param {TableProps} props - The default table server component properties
  * @returns The rendered default table server component
  */
-export const Table = ({ isClient = false, children, ...rest }: TableProps) => {
-  const element = <table {...rest}>{children}</table>;
+export const Table = ({
+  as: Component = "table",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TableProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTableClient : TableClient;
+
     return (
       <Suspense fallback={element}>
-        <TableClient {...rest}>{children}</TableClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Table.displayName = "Table";
 
 const TbodyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TbodyClient };
+});
+const MemoizedTbodyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTbodyClient };
 });
 
 export type TbodyRef = React.ElementRef<"tbody">;
@@ -2938,25 +3821,36 @@ export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
  * @param {TbodyProps} props - The default table body server component properties
  * @returns The rendered default table body server component
  */
-export const Tbody = ({ isClient = false, children, ...rest }: TbodyProps) => {
-  const element = <tbody {...rest}>{children}</tbody>;
+export const Tbody = ({
+  as: Component = "tbody",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TbodyProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTbodyClient : TbodyClient;
+
     return (
       <Suspense fallback={element}>
-        <TbodyClient {...rest}>{children}</TbodyClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tbody.displayName = "Tbody";
 
 const TdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TdClient };
+});
+const MemoizedTdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTdClient };
 });
 
 export type TdRef = React.ElementRef<"td">;
@@ -2968,25 +3862,36 @@ export type TdProps = React.ComponentPropsWithoutRef<"td"> &
  * @param {TdProps} props - The default table data cell server component properties
  * @returns The rendered default table data cell server component
  */
-export const Td = ({ isClient = false, children, ...rest }: TdProps) => {
-  const element = <td {...rest}>{children}</td>;
+export const Td = ({
+  as: Component = "td",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TdProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTdClient : TdClient;
+
     return (
       <Suspense fallback={element}>
-        <TdClient {...rest}>{children}</TdClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Td.displayName = "Td";
 
 const TemplateClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TemplateClient };
+});
+const MemoizedTemplateClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTemplateClient };
 });
 
 export type TemplateRef = React.ElementRef<"template">;
@@ -2999,28 +3904,37 @@ export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
  * @returns The rendered default content template server component
  */
 export const Template = ({
+  as: Component = "template",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: TemplateProps) => {
-  const element = <template {...rest}>{children}</template>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedTemplateClient
+      : TemplateClient;
+
     return (
       <Suspense fallback={element}>
-        <TemplateClient {...rest}>{children}</TemplateClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Template.displayName = "Template";
 
 const TextareaClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TextareaClient };
+});
+const MemoizedTextareaClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTextareaClient };
 });
 
 export type TextareaRef = React.ElementRef<"textarea">;
@@ -3033,28 +3947,37 @@ export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> &
  * @returns The rendered default textarea server component
  */
 export const Textarea = ({
+  as: Component = "textarea",
   isClient = false,
+  isMemoized = false,
   children,
   ...rest
 }: TextareaProps) => {
-  const element = <textarea {...rest}>{children}</textarea>;
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized
+      ? MemoizedTextareaClient
+      : TextareaClient;
+
     return (
       <Suspense fallback={element}>
-        <TextareaClient {...rest}>{children}</TextareaClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Textarea.displayName = "Textarea";
 
 const TfootClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TfootClient };
+});
+const MemoizedTfootClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTfootClient };
 });
 
 export type TfootRef = React.ElementRef<"tfoot">;
@@ -3066,25 +3989,36 @@ export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
  * @param {TfootProps} props - The default table foot server component properties
  * @returns The rendered default table foot server component
  */
-export const Tfoot = ({ isClient = false, children, ...rest }: TfootProps) => {
-  const element = <tfoot {...rest}>{children}</tfoot>;
+export const Tfoot = ({
+  as: Component = "tfoot",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TfootProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTfootClient : TfootClient;
+
     return (
       <Suspense fallback={element}>
-        <TfootClient {...rest}>{children}</TfootClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tfoot.displayName = "Tfoot";
 
 const ThClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ThClient };
+});
+const MemoizedThClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedThClient };
 });
 
 export type ThRef = React.ElementRef<"th">;
@@ -3096,25 +4030,36 @@ export type ThProps = React.ComponentPropsWithoutRef<"th"> &
  * @param {ThProps} props - The default table header server component properties
  * @returns The rendered default table header server component
  */
-export const Th = ({ isClient = false, children, ...rest }: ThProps) => {
-  const element = <th {...rest}>{children}</th>;
+export const Th = ({
+  as: Component = "th",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: ThProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedThClient : ThClient;
+
     return (
       <Suspense fallback={element}>
-        <ThClient {...rest}>{children}</ThClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Th.displayName = "Th";
 
 const TheadClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TheadClient };
+});
+const MemoizedTheadClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTheadClient };
 });
 
 export type TheadRef = React.ElementRef<"thead">;
@@ -3126,25 +4071,36 @@ export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
  * @param {TheadProps} props - The default table head server component properties
  * @returns The rendered default table head server component
  */
-export const Thead = ({ isClient = false, children, ...rest }: TheadProps) => {
-  const element = <thead {...rest}>{children}</thead>;
+export const Thead = ({
+  as: Component = "thead",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TheadProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTheadClient : TheadClient;
+
     return (
       <Suspense fallback={element}>
-        <TheadClient {...rest}>{children}</TheadClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Thead.displayName = "Thead";
 
 const TimeClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TimeClient };
+});
+const MemoizedTimeClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTimeClient };
 });
 
 export type TimeRef = React.ElementRef<"time">;
@@ -3156,25 +4112,36 @@ export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
  * @param {TimeProps} props - The default (date) time server component properties
  * @returns The rendered default (date) time server component
  */
-export const Time = ({ isClient = false, children, ...rest }: TimeProps) => {
-  const element = <time {...rest}>{children}</time>;
+export const Time = ({
+  as: Component = "time",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TimeProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTimeClient : TimeClient;
+
     return (
       <Suspense fallback={element}>
-        <TimeClient {...rest}>{children}</TimeClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Time.displayName = "Time";
 
 const TitleClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TitleClient };
+});
+const MemoizedTitleClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTitleClient };
 });
 
 export type TitleRef = React.ElementRef<"title">;
@@ -3186,25 +4153,36 @@ export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
  * @param {TitleProps} props - The default document title server component properties
  * @returns The rendered default document title server component
  */
-export const Title = ({ isClient = false, children, ...rest }: TitleProps) => {
-  const element = <title {...rest}>{children}</title>;
+export const Title = ({
+  as: Component = "title",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TitleProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTitleClient : TitleClient;
+
     return (
       <Suspense fallback={element}>
-        <TitleClient {...rest}>{children}</TitleClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Title.displayName = "Title";
 
 const TrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrClient };
+});
+const MemoizedTrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTrClient };
 });
 
 export type TrRef = React.ElementRef<"tr">;
@@ -3216,25 +4194,36 @@ export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
  * @param {TrProps} props - The default table row server component properties
  * @returns The rendered default table row server component
  */
-export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
-  const element = <tr {...rest}>{children}</tr>;
+export const Tr = ({
+  as: Component = "tr",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TrProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTrClient : TrClient;
+
     return (
       <Suspense fallback={element}>
-        <TrClient {...rest}>{children}</TrClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tr.displayName = "Tr";
 
 const TrackClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrackClient };
+});
+const MemoizedTrackClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTrackClient };
 });
 
 export type TrackRef = React.ElementRef<"track">;
@@ -3246,25 +4235,35 @@ export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
  * @param {TrackProps} props - The default embed text track server component properties
  * @returns The rendered default embed text track server component
  */
-export const Track = ({ isClient = false, ...rest }: TrackProps) => {
-  const element = <track {...rest} />;
+export const Track = ({
+  as: Component = "track",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: TrackProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTrackClient : TrackClient;
+
     return (
       <Suspense fallback={element}>
-        <TrackClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Track.displayName = "Track";
 
 const UClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UClient };
+});
+const MemoizedUClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedUClient };
 });
 
 export type URef = React.ElementRef<"u">;
@@ -3275,25 +4274,36 @@ export type UProps = React.ComponentPropsWithoutRef<"u"> & CommonComponentProps;
  * @param {UProps} props - The default unarticulated annotation (underline) server component properties
  * @returns The rendered default unarticulated annotation (underline) server component
  */
-export const U = ({ isClient = false, children, ...rest }: UProps) => {
-  const element = <u {...rest}>{children}</u>;
+export const U = ({
+  as: Component = "u",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: UProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedUClient : UClient;
+
     return (
       <Suspense fallback={element}>
-        <UClient {...rest} />
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 U.displayName = "U";
 
 const UlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UlClient };
+});
+const MemoizedUlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedUlClient };
 });
 
 export type UlRef = React.ElementRef<"ul">;
@@ -3305,25 +4315,36 @@ export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
  * @param {UlProps} props - The default unordered list server component properties
  * @returns The rendered default unordered list server component
  */
-export const Ul = ({ isClient = false, children, ...rest }: UlProps) => {
-  const element = <ul {...rest}>{children}</ul>;
+export const Ul = ({
+  as: Component = "ul",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: UlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedUlClient : UlClient;
+
     return (
       <Suspense fallback={element}>
-        <UlClient {...rest}>{children}</UlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ul.displayName = "Ul";
 
 const VarClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VarClient };
+});
+const MemoizedVarClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedVarClient };
 });
 
 export type VarRef = React.ElementRef<"var">;
@@ -3335,25 +4356,36 @@ export type VarProps = React.ComponentPropsWithoutRef<"var"> &
  * @param {VarProps} props - The default variable server component properties
  * @returns The rendered default variable server component
  */
-export const Var = ({ isClient = false, children, ...rest }: VarProps) => {
-  const element = <var {...rest}>{children}</var>;
+export const Var = ({
+  as: Component = "var",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: VarProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedVarClient : VarClient;
+
     return (
       <Suspense fallback={element}>
-        <VarClient {...rest}>{children}</VarClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Var.displayName = "Var";
 
 const VideoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VideoClient };
+});
+const MemoizedVideoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedVideoClient };
 });
 
 export type VideoRef = React.ElementRef<"video">;
@@ -3365,25 +4397,36 @@ export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
  * @param {VideoProps} props - The default video embed server component properties
  * @returns The rendered default video embed server component
  */
-export const Video = ({ isClient = false, children, ...rest }: VideoProps) => {
-  const element = <video {...rest}>{children}</video>;
+export const Video = ({
+  as: Component = "video",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: VideoProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedVideoClient : VideoClient;
+
     return (
       <Suspense fallback={element}>
-        <VideoClient {...rest}>{children}</VideoClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Video.displayName = "Video";
 
 const WbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.WbrClient };
+});
+const MemoizedWbrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedWbrClient };
 });
 
 export type WbrRef = React.ElementRef<"wbr">;
@@ -3395,18 +4438,24 @@ export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
  * @param {WbrProps} props - The default line break opportunity server component properties
  * @returns The rendered default line break opportunity server component
  */
-export const Wbr = ({ isClient = false, ...rest }: WbrProps) => {
-  const element = <wbr {...rest} />;
+export const Wbr = ({
+  as: Component = "wbr",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: WbrProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedWbrClient : WbrClient;
+
     return (
       <Suspense fallback={element}>
-        <WbrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Wbr.displayName = "Wbr";
