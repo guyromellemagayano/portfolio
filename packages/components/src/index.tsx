@@ -3807,6 +3807,10 @@ const TbodyClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TbodyClient };
 });
+const MemoizedTbodyClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTbodyClient };
+});
 
 export type TbodyRef = React.ElementRef<"tbody">;
 export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
@@ -3817,20 +3821,27 @@ export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
  * @param {TbodyProps} props - The default table body server component properties
  * @returns The rendered default table body server component
  */
-export const Tbody = ({ isClient = false, children, ...rest }: TbodyProps) => {
-  const element = <tbody {...rest}>{children}</tbody>;
+export const Tbody = ({
+  as: Component = "tbody",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TbodyProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTbodyClient : TbodyClient;
+
     return (
       <Suspense fallback={element}>
-        <TbodyClient {...rest}>{children}</TbodyClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tbody.displayName = "Tbody";
 
 const TdClient = lazy(async () => {
