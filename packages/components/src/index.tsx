@@ -4016,6 +4016,10 @@ const ThClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ThClient };
 });
+const MemoizedThClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedThClient };
+});
 
 export type ThRef = React.ElementRef<"th">;
 export type ThProps = React.ComponentPropsWithoutRef<"th"> &
@@ -4026,20 +4030,27 @@ export type ThProps = React.ComponentPropsWithoutRef<"th"> &
  * @param {ThProps} props - The default table header server component properties
  * @returns The rendered default table header server component
  */
-export const Th = ({ isClient = false, children, ...rest }: ThProps) => {
-  const element = <th {...rest}>{children}</th>;
+export const Th = ({
+  as: Component = "th",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: ThProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedThClient : ThClient;
+
     return (
       <Suspense fallback={element}>
-        <ThClient {...rest}>{children}</ThClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Th.displayName = "Th";
 
 const TheadClient = lazy(async () => {
