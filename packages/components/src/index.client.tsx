@@ -102,6 +102,8 @@ import {
   Th,
   Thead,
   Time,
+  Title,
+  Tr,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2287,15 +2289,14 @@ export const MemoizedTimeClient = memo(TimeClient);
  * @returns The rendered document title client component
  */
 export const TitleClient = forwardRef<TitleRef, TitleProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Title, children, ...rest }, ref) => {
     return (
-      <title ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </title>
+      </Component>
     );
   }
 );
-
 TitleClient.displayName = "TitleClient";
 
 // Memoized version of `TitleClient`.
@@ -2308,16 +2309,18 @@ export const MemoizedTitleClient = memo(TitleClient);
  * @returns The rendered table row client component
  */
 export const TrClient = forwardRef<TrRef, TrProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Tr, children, ...rest }, ref) => {
     return (
-      <tr ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </tr>
+      </Component>
     );
   }
 );
-
 TrClient.displayName = "TrClient";
+
+// Memoized version of `TrClient`.
+export const MemoizedTrClient = memo(TrClient);
 
 /**
  * Render the embed text track client component.
