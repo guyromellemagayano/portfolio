@@ -4301,6 +4301,10 @@ const UlClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UlClient };
 });
+const MemoizedUlClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedUlClient };
+});
 
 export type UlRef = React.ElementRef<"ul">;
 export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
@@ -4311,20 +4315,27 @@ export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
  * @param {UlProps} props - The default unordered list server component properties
  * @returns The rendered default unordered list server component
  */
-export const Ul = ({ isClient = false, children, ...rest }: UlProps) => {
-  const element = <ul {...rest}>{children}</ul>;
+export const Ul = ({
+  as: Component = "ul",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: UlProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedUlClient : UlClient;
+
     return (
       <Suspense fallback={element}>
-        <UlClient {...rest}>{children}</UlClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Ul.displayName = "Ul";
 
 const VarClient = lazy(async () => {

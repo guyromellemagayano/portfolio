@@ -106,6 +106,7 @@ import {
   Tr,
   Track,
   U,
+  Ul,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2367,16 +2368,18 @@ export const MemoizedUClient = memo(UClient);
  * @returns The rendered unordered list client component
  */
 export const UlClient = forwardRef<UlRef, UlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ul, children, ...rest }, ref) => {
     return (
-      <ul ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ul>
+      </Component>
     );
   }
 );
-
 UlClient.displayName = "UlClient";
+
+// Memoized version of `UlClient`.
+export const MemoizedUlClient = memo(UlClient);
 
 /**
  * Render the variable client component.
