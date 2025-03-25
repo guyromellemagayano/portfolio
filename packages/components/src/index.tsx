@@ -3766,6 +3766,10 @@ const TableClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TableClient };
 });
+const MemoizedTableClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTableClient };
+});
 
 export type TableRef = React.ElementRef<"table">;
 export type TableProps = React.ComponentPropsWithoutRef<"table"> &
@@ -3776,20 +3780,27 @@ export type TableProps = React.ComponentPropsWithoutRef<"table"> &
  * @param {TableProps} props - The default table server component properties
  * @returns The rendered default table server component
  */
-export const Table = ({ isClient = false, children, ...rest }: TableProps) => {
-  const element = <table {...rest}>{children}</table>;
+export const Table = ({
+  as: Component = "table",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TableProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTableClient : TableClient;
+
     return (
       <Suspense fallback={element}>
-        <TableClient {...rest}>{children}</TableClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Table.displayName = "Table";
 
 const TbodyClient = lazy(async () => {
