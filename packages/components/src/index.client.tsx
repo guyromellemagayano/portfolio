@@ -108,6 +108,7 @@ import {
   U,
   Ul,
   Var,
+  Video,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2409,16 +2410,18 @@ export const MemoizedVarClient = memo(VarClient);
  * @returns The rendered video embed client component
  */
 export const VideoClient = forwardRef<VideoRef, VideoProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Video, children, ...rest }, ref) => {
     return (
-      <video ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </video>
+      </Component>
     );
   }
 );
-
 VideoClient.displayName = "VideoClient";
+
+// Memoized version of `VideoClient`.
+export const MemoizedVideoClient = memo(VideoClient);
 
 /**
  * Render the line break opportunity client component.
