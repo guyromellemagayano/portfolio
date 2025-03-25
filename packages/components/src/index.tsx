@@ -4342,6 +4342,10 @@ const VarClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VarClient };
 });
+const MemoizedVarClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedVarClient };
+});
 
 export type VarRef = React.ElementRef<"var">;
 export type VarProps = React.ComponentPropsWithoutRef<"var"> &
@@ -4352,20 +4356,27 @@ export type VarProps = React.ComponentPropsWithoutRef<"var"> &
  * @param {VarProps} props - The default variable server component properties
  * @returns The rendered default variable server component
  */
-export const Var = ({ isClient = false, children, ...rest }: VarProps) => {
-  const element = <var {...rest}>{children}</var>;
+export const Var = ({
+  as: Component = "var",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: VarProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedVarClient : VarClient;
+
     return (
       <Suspense fallback={element}>
-        <VarClient {...rest}>{children}</VarClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Var.displayName = "Var";
 
 const VideoClient = lazy(async () => {
