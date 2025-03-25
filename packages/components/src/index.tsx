@@ -3848,6 +3848,10 @@ const TdClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TdClient };
 });
+const MemoizedTdClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTdClient };
+});
 
 export type TdRef = React.ElementRef<"td">;
 export type TdProps = React.ComponentPropsWithoutRef<"td"> &
@@ -3858,20 +3862,27 @@ export type TdProps = React.ComponentPropsWithoutRef<"td"> &
  * @param {TdProps} props - The default table data cell server component properties
  * @returns The rendered default table data cell server component
  */
-export const Td = ({ isClient = false, children, ...rest }: TdProps) => {
-  const element = <td {...rest}>{children}</td>;
+export const Td = ({
+  as: Component = "td",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TdProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTdClient : TdClient;
+
     return (
       <Suspense fallback={element}>
-        <TdClient {...rest}>{children}</TdClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Td.displayName = "Td";
 
 const TemplateClient = lazy(async () => {
