@@ -2298,6 +2298,9 @@ export const TitleClient = forwardRef<TitleRef, TitleProps>(
 
 TitleClient.displayName = "TitleClient";
 
+// Memoized version of `TitleClient`.
+export const MemoizedTitleClient = memo(TitleClient);
+
 /**
  * Render the table row client component.
  * @param {TrProps} props - The table row client component properties
