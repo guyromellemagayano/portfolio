@@ -1,224 +1,331 @@
 "use client";
 
-import { forwardRef } from "react";
+import { forwardRef, memo } from "react";
 
-import type {
-  AbbrProps,
-  AbbrRef,
-  AddressProps,
-  AddressRef,
-  AProps,
-  AreaProps,
-  AreaRef,
-  ARef,
-  ArticleProps,
-  ArticleRef,
-  AsideProps,
-  AsideRef,
-  AudioProps,
-  AudioRef,
-  BaseProps,
-  BaseRef,
-  BdiProps,
-  BdiRef,
-  BdoProps,
-  BdoRef,
-  BlockquoteProps,
-  BlockquoteRef,
-  BodyProps,
-  BodyRef,
-  BProps,
-  BRef,
-  BrProps,
-  BrRef,
-  ButtonProps,
-  ButtonRef,
-  CanvasProps,
-  CanvasRef,
-  CaptionProps,
-  CaptionRef,
-  CiteProps,
-  CiteRef,
-  CodeProps,
-  CodeRef,
-  ColgroupProps,
-  ColgroupRef,
-  ColProps,
-  ColRef,
-  DatalistProps,
-  DatalistRef,
-  DataProps,
-  DataRef,
-  DdProps,
-  DdRef,
-  DelProps,
-  DelRef,
-  DetailsProps,
-  DetailsRef,
-  DfnProps,
-  DfnRef,
-  DialogProps,
-  DialogRef,
-  DivProps,
-  DivRef,
-  DlProps,
-  DlRef,
-  DtProps,
-  DtRef,
-  EmbedProps,
-  EmbedRef,
-  EmProps,
-  EmRef,
-  FieldsetProps,
-  FieldsetRef,
-  FigcaptionProps,
-  FigcaptionRef,
-  FigureProps,
-  FigureRef,
-  FooterProps,
-  FooterRef,
-  FormProps,
-  FormRef,
-  HeaderProps,
-  HeaderRef,
-  HeadingProps,
-  HeadingRef,
-  HeadProps,
-  HeadRef,
-  HgroupProps,
-  HgroupRef,
-  HrProps,
-  HrRef,
-  HtmlProps,
-  HtmlRef,
-  IframeProps,
-  IframeRef,
-  ImgProps,
-  ImgRef,
-  InputProps,
-  InputRef,
-  InsProps,
-  InsRef,
-  IProps,
-  IRef,
-  KbdProps,
-  KbdRef,
-  LabelProps,
-  LabelRef,
-  LegendProps,
-  LegendRef,
-  LinkProps,
-  LinkRef,
-  LiProps,
-  LiRef,
-  MainProps,
-  MainRef,
-  MapProps,
-  MapRef,
-  MarkProps,
-  MarkRef,
-  MenuProps,
-  MenuRef,
-  MetaProps,
-  MetaRef,
-  MeterProps,
-  MeterRef,
-  NavProps,
-  NavRef,
-  NoscriptProps,
-  NoscriptRef,
-  ObjectProps,
-  ObjectRef,
-  OlProps,
-  OlRef,
-  OptgroupProps,
-  OptgroupRef,
-  OptionProps,
-  OptionRef,
-  OutputProps,
-  OutputRef,
-  ParagraphProps,
-  ParagraphRef,
-  PictureProps,
-  PictureRef,
-  PreProps,
-  PreRef,
-  ProgressProps,
-  ProgressRef,
-  QProps,
-  QRef,
-  RpProps,
-  RpRef,
-  RtProps,
-  RtRef,
-  RubyProps,
-  RubyRef,
-  SampProps,
-  SampRef,
-  ScriptProps,
-  ScriptRef,
-  SearchProps,
-  SearchRef,
-  SectionProps,
-  SectionRef,
-  SelectProps,
-  SelectRef,
-  SlotProps,
-  SlotRef,
-  SmallProps,
-  SmallRef,
-  SourceProps,
-  SourceRef,
-  SpanProps,
-  SpanRef,
-  SProps,
-  SRef,
-  StrongProps,
-  StrongRef,
-  StyleProps,
-  StyleRef,
-  SubProps,
-  SubRef,
-  SummaryProps,
-  SummaryRef,
-  SupProps,
-  SupRef,
-  SvgProps,
-  SvgRef,
-  TableProps,
-  TableRef,
-  TbodyProps,
-  TbodyRef,
-  TdProps,
-  TdRef,
-  TemplateProps,
-  TemplateRef,
-  TextareaProps,
-  TextareaRef,
-  TfootProps,
-  TfootRef,
-  TheadProps,
-  TheadRef,
-  ThProps,
-  ThRef,
-  TimeProps,
-  TimeRef,
-  TitleProps,
-  TitleRef,
-  TrackProps,
-  TrackRef,
-  TrProps,
-  TrRef,
-  UlProps,
-  UlRef,
-  UProps,
-  URef,
-  VarProps,
-  VarRef,
-  VideoProps,
-  VideoRef,
-  WbrProps,
-  WbrRef,
+import {
+  A,
+  Abbr,
+  Address,
+  Area,
+  Article,
+  Aside,
+  Audio,
+  B,
+  Base,
+  Bdi,
+  Bdo,
+  Blockquote,
+  Body,
+  Br,
+  Canvas,
+  Caption,
+  Cite,
+  Code,
+  Col,
+  Colgroup,
+  Data,
+  Datalist,
+  Dd,
+  Del,
+  Details,
+  Dfn,
+  Dialog,
+  Div,
+  Dl,
+  Dt,
+  Em,
+  Embed,
+  Fieldset,
+  Figcaption,
+  Figure,
+  Footer,
+  Form,
+  Head,
+  Header,
+  Heading,
+  Hgroup,
+  Hr,
+  Html,
+  I,
+  Iframe,
+  Img,
+  Input,
+  Ins,
+  Kbd,
+  Label,
+  Legend,
+  Li,
+  Link,
+  Main,
+  Map,
+  Mark,
+  Menu,
+  Meta,
+  Meter,
+  Nav,
+  Noscript,
+  Object,
+  Ol,
+  Optgroup,
+  Option,
+  Output,
+  Paragraph,
+  Picture,
+  Pre,
+  Progress,
+  Q,
+  Rp,
+  Rt,
+  Ruby,
+  S,
+  Samp,
+  Script,
+  Search,
+  Section,
+  Select,
+  Slot,
+  Small,
+  Source,
+  Span,
+  Strong,
+  Style,
+  Sub,
+  Summary,
+  Sup,
+  Svg,
+  Table,
+  Tbody,
+  Td,
+  Template,
+  Textarea,
+  Tfoot,
+  Th,
+  Thead,
+  Time,
+  Title,
+  Tr,
+  Track,
+  U,
+  Ul,
+  Var,
+  Video,
+  Wbr,
+  type AbbrProps,
+  type AbbrRef,
+  type AddressProps,
+  type AddressRef,
+  type AProps,
+  type AreaProps,
+  type AreaRef,
+  type ARef,
+  type ArticleProps,
+  type ArticleRef,
+  type AsideProps,
+  type AsideRef,
+  type AudioProps,
+  type AudioRef,
+  type BaseProps,
+  type BaseRef,
+  type BdiProps,
+  type BdiRef,
+  type BdoProps,
+  type BdoRef,
+  type BlockquoteProps,
+  type BlockquoteRef,
+  type BodyProps,
+  type BodyRef,
+  type BProps,
+  type BRef,
+  type BrProps,
+  type BrRef,
+  type ButtonProps,
+  type ButtonRef,
+  type CanvasProps,
+  type CanvasRef,
+  type CaptionProps,
+  type CaptionRef,
+  type CiteProps,
+  type CiteRef,
+  type CodeProps,
+  type CodeRef,
+  type ColgroupProps,
+  type ColgroupRef,
+  type ColProps,
+  type ColRef,
+  type DatalistProps,
+  type DatalistRef,
+  type DataProps,
+  type DataRef,
+  type DdProps,
+  type DdRef,
+  type DelProps,
+  type DelRef,
+  type DetailsProps,
+  type DetailsRef,
+  type DfnProps,
+  type DfnRef,
+  type DialogProps,
+  type DialogRef,
+  type DivProps,
+  type DivRef,
+  type DlProps,
+  type DlRef,
+  type DtProps,
+  type DtRef,
+  type EmbedProps,
+  type EmbedRef,
+  type EmProps,
+  type EmRef,
+  type FieldsetProps,
+  type FieldsetRef,
+  type FigcaptionProps,
+  type FigcaptionRef,
+  type FigureProps,
+  type FigureRef,
+  type FooterProps,
+  type FooterRef,
+  type FormProps,
+  type FormRef,
+  type HeaderProps,
+  type HeaderRef,
+  type HeadingProps,
+  type HeadingRef,
+  type HeadProps,
+  type HeadRef,
+  type HgroupProps,
+  type HgroupRef,
+  type HrProps,
+  type HrRef,
+  type HtmlProps,
+  type HtmlRef,
+  type IframeProps,
+  type IframeRef,
+  type ImgProps,
+  type ImgRef,
+  type InputProps,
+  type InputRef,
+  type InsProps,
+  type InsRef,
+  type IProps,
+  type IRef,
+  type KbdProps,
+  type KbdRef,
+  type LabelProps,
+  type LabelRef,
+  type LegendProps,
+  type LegendRef,
+  type LinkProps,
+  type LinkRef,
+  type LiProps,
+  type LiRef,
+  type MainProps,
+  type MainRef,
+  type MapProps,
+  type MapRef,
+  type MarkProps,
+  type MarkRef,
+  type MenuProps,
+  type MenuRef,
+  type MetaProps,
+  type MetaRef,
+  type MeterProps,
+  type MeterRef,
+  type NavProps,
+  type NavRef,
+  type NoscriptProps,
+  type NoscriptRef,
+  type ObjectProps,
+  type ObjectRef,
+  type OlProps,
+  type OlRef,
+  type OptgroupProps,
+  type OptgroupRef,
+  type OptionProps,
+  type OptionRef,
+  type OutputProps,
+  type OutputRef,
+  type ParagraphProps,
+  type ParagraphRef,
+  type PictureProps,
+  type PictureRef,
+  type PreProps,
+  type PreRef,
+  type ProgressProps,
+  type ProgressRef,
+  type QProps,
+  type QRef,
+  type RpProps,
+  type RpRef,
+  type RtProps,
+  type RtRef,
+  type RubyProps,
+  type RubyRef,
+  type SampProps,
+  type SampRef,
+  type ScriptProps,
+  type ScriptRef,
+  type SearchProps,
+  type SearchRef,
+  type SectionProps,
+  type SectionRef,
+  type SelectProps,
+  type SelectRef,
+  type SlotProps,
+  type SlotRef,
+  type SmallProps,
+  type SmallRef,
+  type SourceProps,
+  type SourceRef,
+  type SpanProps,
+  type SpanRef,
+  type SProps,
+  type SRef,
+  type StrongProps,
+  type StrongRef,
+  type StyleProps,
+  type StyleRef,
+  type SubProps,
+  type SubRef,
+  type SummaryProps,
+  type SummaryRef,
+  type SupProps,
+  type SupRef,
+  type SvgProps,
+  type SvgRef,
+  type TableProps,
+  type TableRef,
+  type TbodyProps,
+  type TbodyRef,
+  type TdProps,
+  type TdRef,
+  type TemplateProps,
+  type TemplateRef,
+  type TextareaProps,
+  type TextareaRef,
+  type TfootProps,
+  type TfootRef,
+  type TheadProps,
+  type TheadRef,
+  type ThProps,
+  type ThRef,
+  type TimeProps,
+  type TimeRef,
+  type TitleProps,
+  type TitleRef,
+  type TrackProps,
+  type TrackRef,
+  type TrProps,
+  type TrRef,
+  type UlProps,
+  type UlRef,
+  type UProps,
+  type URef,
+  type VarProps,
+  type VarRef,
+  type VideoProps,
+  type VideoRef,
+  type WbrProps,
+  type WbrRef,
 } from ".";
 
 /**
@@ -228,16 +335,18 @@ import type {
  * @returns The rendered anchor client component
  */
 export const AClient = forwardRef<ARef, AProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = A, href, children, ...rest }, ref) => {
     return (
-      <a ref={ref} {...rest}>
+      <Component ref={ref} href={href} {...rest}>
         {children}
-      </a>
+      </Component>
     );
   }
 );
-
 AClient.displayName = "AClient";
+
+// Memoized version of `AClient`
+export const MemoizedAClient = memo(AClient);
 
 /**
  * Render the abbreviation client component.
@@ -246,16 +355,18 @@ AClient.displayName = "AClient";
  * @returns The rendered abbreviation client component
  */
 export const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Abbr, children, ...rest }, ref) => {
     return (
-      <abbr ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </abbr>
+      </Component>
     );
   }
 );
-
 AbbrClient.displayName = "AbbrClient";
+
+// Memoized version of `AbbrClient`.
+export const MemoizedAbbrClient = memo(AbbrClient);
 
 /**
  * Render the address client component.
@@ -264,16 +375,18 @@ AbbrClient.displayName = "AbbrClient";
  * @returns The rendered address client component
  */
 export const AddressClient = forwardRef<AddressRef, AddressProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Address, children, ...rest }, ref) => {
     return (
-      <address ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </address>
+      </Component>
     );
   }
 );
-
 AddressClient.displayName = "AddressClient";
+
+// Memoized version of `AddressClient`.
+export const MemoizedAddressClient = memo(AddressClient);
 
 /**
  * Render the area client component.
@@ -282,16 +395,18 @@ AddressClient.displayName = "AddressClient";
  * @returns The rendered area client component
  */
 export const AreaClient = forwardRef<AreaRef, AreaProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Area, children, ...rest }, ref) => {
     return (
-      <area ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </area>
+      </Component>
     );
   }
 );
-
 AreaClient.displayName = "AreaClient";
+
+// Memoized version of `AreaClient`.
+export const MemoizedAreaClient = memo(AreaClient);
 
 /**
  * Render the article client component.
@@ -300,16 +415,18 @@ AreaClient.displayName = "AreaClient";
  * @returns The rendered article client component
  */
 export const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Article, children, ...rest }, ref) => {
     return (
-      <article ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </article>
+      </Component>
     );
   }
 );
-
 ArticleClient.displayName = "ArticleClient";
+
+// Memoized version of `ArticleClient`.
+export const MemoizedArticleClient = memo(ArticleClient);
 
 /**
  * Render the aside client component.
@@ -318,34 +435,18 @@ ArticleClient.displayName = "ArticleClient";
  * @returns The rendered aside client component
  */
 export const AsideClient = forwardRef<AsideRef, AsideProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Aside, children, ...rest }, ref) => {
     return (
-      <aside ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </aside>
+      </Component>
     );
   }
 );
-
 AsideClient.displayName = "AsideClient";
 
-/**
- * Render the bring attention to client component.
- * @param {BProps} props - The bring attention to client component properties
- * @param {BRef} ref - The bring attention to client component reference
- * @returns The rendered bring attention to client component
- */
-export const BClient = forwardRef<BRef, BProps>(
-  ({ children, ...rest }, ref) => {
-    return (
-      <b ref={ref} {...rest}>
-        {children}
-      </b>
-    );
-  }
-);
-
-BClient.displayName = "BClient";
+// Memoized version of `AsideClient`.
+export const MemoizedAsideClient = memo(AsideClient);
 
 /**
  * Render the audio client component.
@@ -354,34 +455,38 @@ BClient.displayName = "BClient";
  * @returns The rendered audio client component
  */
 export const AudioClient = forwardRef<AudioRef, AudioProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Audio, children, ...rest }, ref) => {
     return (
-      <audio ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </audio>
+      </Component>
     );
   }
 );
-
 AudioClient.displayName = "AudioClient";
 
+// Memoized version of `AudioClient`.
+export const MemoizedAudioClient = memo(AudioClient);
+
 /**
- * Render the bidirectional isolate client component.
- * @param {BdiProps} props - The bidirectional isolate client component properties
- * @param {BdiRef} ref - The bidirectional isolate client component reference
- * @returns The rendered bidirectional isolate client component
+ * Render the bring attention to client component.
+ * @param {BProps} props - The bring attention to client component properties
+ * @param {BRef} ref - The bring attention to client component reference
+ * @returns The rendered bring attention to client component
  */
-export const BdiClient = forwardRef<BdiRef, BdiProps>(
-  ({ children, ...rest }, ref) => {
+export const BClient = forwardRef<BRef, BProps>(
+  ({ as: Component = B, children, ...rest }, ref) => {
     return (
-      <bdi ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </bdi>
+      </Component>
     );
   }
 );
+BClient.displayName = "BClient";
 
-BdiClient.displayName = "BdiClient";
+// Memoized version of `BClient`.
+export const MemoizedBClient = memo(BClient);
 
 /**
  * Render the base client component.
@@ -390,16 +495,38 @@ BdiClient.displayName = "BdiClient";
  * @returns The rendered base client component
  */
 export const BaseClient = forwardRef<BaseRef, BaseProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Base, children, ...rest }, ref) => {
     return (
-      <base ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </base>
+      </Component>
     );
   }
 );
-
 BaseClient.displayName = "BaseClient";
+
+// Memoized version of `BaseClient`.
+export const MemoizedBaseClient = memo(BaseClient);
+
+/**
+ * Render the bidirectional isolate client component.
+ * @param {BdiProps} props - The bidirectional isolate client component properties
+ * @param {BdiRef} ref - The bidirectional isolate client component reference
+ * @returns The rendered bidirectional isolate client component
+ */
+export const BdiClient = forwardRef<BdiRef, BdiProps>(
+  ({ as: Component = Bdi, children, ...rest }, ref) => {
+    return (
+      <Component ref={ref} {...rest}>
+        {children}
+      </Component>
+    );
+  }
+);
+BdiClient.displayName = "BdiClient";
+
+// Memoized version of `BdiClient`.
+export const MemoizedBdiClient = memo(BdiClient);
 
 /**
  * Render the bidirectional text override client component.
@@ -408,16 +535,18 @@ BaseClient.displayName = "BaseClient";
  * @returns The rendered bidirectional text override client component
  */
 export const BdoClient = forwardRef<BdoRef, BdoProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Bdo, children, ...rest }, ref) => {
     return (
-      <bdo ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </bdo>
+      </Component>
     );
   }
 );
-
 BdoClient.displayName = "BdoClient";
+
+// Memoized version of `BdoClient`.
+export const MemoizedBdoClient = memo(BdoClient);
 
 /**
  * Render the blockquote client component.
@@ -426,16 +555,18 @@ BdoClient.displayName = "BdoClient";
  * @returns The rendered blockquote client component
  */
 export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Blockquote, children, ...rest }, ref) => {
     return (
-      <blockquote ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </blockquote>
+      </Component>
     );
   }
 );
-
 BlockquoteClient.displayName = "BlockquoteClient";
+
+// Memoized version of `BlockquoteClient`.
+export const MemoizedBlockquoteClient = memo(BlockquoteClient);
 
 /**
  * Render the document body client component.
@@ -444,16 +575,18 @@ BlockquoteClient.displayName = "BlockquoteClient";
  * @returns The rendered document body client component
  */
 export const BodyClient = forwardRef<BodyRef, BodyProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Body, children, ...rest }, ref) => {
     return (
-      <body ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </body>
+      </Component>
     );
   }
 );
-
 BodyClient.displayName = "BodyClient";
+
+// Memoized version of `BodyClient`.
+export const MemoizedBodyClient = memo(BodyClient);
 
 /**
  * Render the document line break client component.
@@ -461,11 +594,15 @@ BodyClient.displayName = "BodyClient";
  * @param {BrRef} ref - The document line break client component reference
  * @returns The rendered document line break client component
  */
-export const BrClient = forwardRef<BrRef, BrProps>(({ ...rest }, ref) => {
-  return <br ref={ref} {...rest} />;
-});
-
+export const BrClient = forwardRef<BrRef, BrProps>(
+  ({ as: Component = Br, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 BrClient.displayName = "BrClient";
+
+// Memoized version of `BrClient`.
+export const MemoizedBrClient = memo(BrClient);
 
 /**
  * Render the button client component.
@@ -474,16 +611,18 @@ BrClient.displayName = "BrClient";
  * @returns The rendered button client component
  */
 export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = "button", type, children, ...rest }, ref) => {
     return (
-      <button ref={ref} {...rest}>
+      <Component ref={ref} type={type} {...rest}>
         {children}
-      </button>
+      </Component>
     );
   }
 );
-
 ButtonClient.displayName = "ButtonClient";
+
+// Memoized version of `ButtonClient`.
+export const MemoizedButtonClient = memo(ButtonClient);
 
 /**
  * Render the canvas client component.
@@ -492,16 +631,18 @@ ButtonClient.displayName = "ButtonClient";
  * @returns The rendered canvas client component
  */
 export const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Canvas, children, ...rest }, ref) => {
     return (
-      <canvas ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </canvas>
+      </Component>
     );
   }
 );
-
 CanvasClient.displayName = "CanvasClient";
+
+// Memoized version of `CanvasClient`.
+export const MemoizedCanvasClient = memo(CanvasClient);
 
 /**
  * Render the caption client component.
@@ -510,16 +651,18 @@ CanvasClient.displayName = "CanvasClient";
  * @returns The rendered caption client component
  */
 export const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Caption, children, ...rest }, ref) => {
     return (
-      <caption ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </caption>
+      </Component>
     );
   }
 );
-
 CaptionClient.displayName = "CaptionClient";
+
+// Memoized version of `CaptionClient`.
+export const MemoizedCaptionClient = memo(CaptionClient);
 
 /**
  * Render the cite client component.
@@ -528,16 +671,18 @@ CaptionClient.displayName = "CaptionClient";
  * @returns The rendered cite client component
  */
 export const CiteClient = forwardRef<CiteRef, CiteProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Cite, children, ...rest }, ref) => {
     return (
-      <cite ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </cite>
+      </Component>
     );
   }
 );
-
 CiteClient.displayName = "CiteClient";
+
+// Memoized version of `CiteClient`.
+export const MemoizedCiteClient = memo(CiteClient);
 
 /**
  * Render the code client component.
@@ -546,16 +691,18 @@ CiteClient.displayName = "CiteClient";
  * @returns The rendered code client component
  */
 export const CodeClient = forwardRef<CodeRef, CodeProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Code, children, ...rest }, ref) => {
     return (
-      <code ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </code>
+      </Component>
     );
   }
 );
-
 CodeClient.displayName = "CodeClient";
+
+// Memoized version of `CodeClient`.
+export const MemoizedCodeClient = memo(CodeClient);
 
 /**
  * Render the column client component.
@@ -563,11 +710,15 @@ CodeClient.displayName = "CodeClient";
  * @param {ColRef} ref - The column client component reference
  * @returns The rendered column client component
  */
-export const ColClient = forwardRef<ColRef, ColProps>(({ ...rest }, ref) => {
-  return <col ref={ref} {...rest} />;
-});
-
+export const ColClient = forwardRef<ColRef, ColProps>(
+  ({ as: Component = Col, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 ColClient.displayName = "ColClient";
+
+// Memoized version of `ColClient`.
+export const MemoizedColClient = memo(ColClient);
 
 /**
  * Render the table column group client component.
@@ -576,16 +727,18 @@ ColClient.displayName = "ColClient";
  * @returns The rendered table column group client component
  */
 export const ColgroupClient = forwardRef<ColgroupRef, ColgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Colgroup, children, ...rest }, ref) => {
     return (
-      <colgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </colgroup>
+      </Component>
     );
   }
 );
-
 ColgroupClient.displayName = "ColgroupClient";
+
+// Memoized version of `ColgroupClient`.
+export const MemoizedColgroupClient = memo(ColgroupClient);
 
 /**
  * Render the data client component.
@@ -594,16 +747,18 @@ ColgroupClient.displayName = "ColgroupClient";
  * @returns The rendered data client component
  */
 export const DataClient = forwardRef<DataRef, DataProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Data, children, ...rest }, ref) => {
     return (
-      <data ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </data>
+      </Component>
     );
   }
 );
-
 DataClient.displayName = "DataClient";
+
+// Memoized version of `DataClient`.
+export const MemoizedDataClient = memo(DataClient);
 
 /**
  * Render the datalist client component.
@@ -612,16 +767,18 @@ DataClient.displayName = "DataClient";
  * @returns The rendered datalist client component
  */
 export const DatalistClient = forwardRef<DatalistRef, DatalistProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Datalist, children, ...rest }, ref) => {
     return (
-      <datalist ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </datalist>
+      </Component>
     );
   }
 );
-
 DatalistClient.displayName = "DatalistClient";
+
+// Memoized version of `DatalistClient`.
+export const MemoizedDatalistClient = memo(DatalistClient);
 
 /**
  * Render the description details client component.
@@ -630,16 +787,18 @@ DatalistClient.displayName = "DatalistClient";
  * @returns The rendered description details client component
  */
 export const DdClient = forwardRef<DdRef, DdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dd, children, ...rest }, ref) => {
     return (
-      <dd ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dd>
+      </Component>
     );
   }
 );
-
 DdClient.displayName = "DdClient";
+
+// Memoized version of `DdClient`.
+export const MemoizedDdClient = memo(DdClient);
 
 /**
  * Render the deleted text client component.
@@ -648,16 +807,18 @@ DdClient.displayName = "DdClient";
  * @returns The rendered deleted text client component
  */
 export const DelClient = forwardRef<DelRef, DelProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Del, children, ...rest }, ref) => {
     return (
-      <del ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </del>
+      </Component>
     );
   }
 );
-
 DelClient.displayName = "DelClient";
+
+// Memoized version of `DelClient`.
+export const MemoizedDelClient = memo(DelClient);
 
 /**
  * Render the details disclosure client component.
@@ -666,16 +827,18 @@ DelClient.displayName = "DelClient";
  * @returns The rendered details disclosure client component
  */
 export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Details, children, ...rest }, ref) => {
     return (
-      <details ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </details>
+      </Component>
     );
   }
 );
-
 DetailsClient.displayName = "DetailsClient";
+
+// Memoized version of `DetailsClient`.
+export const MemoizedDetailsClient = memo(DetailsClient);
 
 /**
  * Render the definition element client component.
@@ -684,16 +847,18 @@ DetailsClient.displayName = "DetailsClient";
  * @returns The rendered definition element client component
  */
 export const DfnClient = forwardRef<DfnRef, DfnProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dfn, children, ...rest }, ref) => {
     return (
-      <dfn ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dfn>
+      </Component>
     );
   }
 );
-
 DfnClient.displayName = "DfnClient";
+
+// Memoized version of `DfnClient`.
+export const MemoizedDfnClient = memo(DfnClient);
 
 /**
  * Render the dialog client component.
@@ -702,16 +867,18 @@ DfnClient.displayName = "DfnClient";
  * @returns The rendered dialog client component
  */
 export const DialogClient = forwardRef<DialogRef, DialogProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dialog, children, ...rest }, ref) => {
     return (
-      <dialog ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dialog>
+      </Component>
     );
   }
 );
-
 DialogClient.displayName = "DialogClient";
+
+// Memoized version of `DialogClient`.
+export const MemoizedDialogClient = memo(DialogClient);
 
 /**
  * Render the content division client component.
@@ -720,16 +887,18 @@ DialogClient.displayName = "DialogClient";
  * @returns The rendered content division client component
  */
 export const DivClient = forwardRef<DivRef, DivProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Div, children, ...rest }, ref) => {
     return (
-      <div ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </div>
+      </Component>
     );
   }
 );
-
 DivClient.displayName = "DivClient";
+
+// Memoized version of `DivClient`.
+export const MemoizedDivClient = memo(DivClient);
 
 /**
  * Render the description list client component.
@@ -738,16 +907,18 @@ DivClient.displayName = "DivClient";
  * @returns The rendered description list client component
  */
 export const DlClient = forwardRef<DlRef, DlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dl, children, ...rest }, ref) => {
     return (
-      <dl ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dl>
+      </Component>
     );
   }
 );
-
 DlClient.displayName = "DlClient";
+
+// Memoized version of `DlClient`.
+export const MemoizedDlClient = memo(DlClient);
 
 /**
  * Render the description term client component.
@@ -756,16 +927,18 @@ DlClient.displayName = "DlClient";
  * @returns The rendered description term client component
  */
 export const DtClient = forwardRef<DtRef, DtProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Dt, children, ...rest }, ref) => {
     return (
-      <dt ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </dt>
+      </Component>
     );
   }
 );
-
 DtClient.displayName = "DtClient";
+
+// Memoized version of `DtClient`.
+export const MemoizedDtClient = memo(DtClient);
 
 /**
  * Render the emphasis client component.
@@ -774,16 +947,18 @@ DtClient.displayName = "DtClient";
  * @returns The rendered emphasis client component
  */
 export const EmClient = forwardRef<EmRef, EmProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Em, children, ...rest }, ref) => {
     return (
-      <em ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </em>
+      </Component>
     );
   }
 );
-
 EmClient.displayName = "EmClient";
+
+// Memoized version of `EmClient`.
+export const MemoizedEmClient = memo(EmClient);
 
 /**
  * Render the embed external content client component.
@@ -792,12 +967,14 @@ EmClient.displayName = "EmClient";
  * @returns The rendered embed external content client component
  */
 export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
-  ({ ...rest }, ref) => {
-    return <embed ref={ref} {...rest} />;
+  ({ as: Component = Embed, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 EmbedClient.displayName = "EmbedClient";
+
+// Memoized version of `EmbedClient`.
+export const MemoizedEmbedClient = memo(EmbedClient);
 
 /**
  * Render the field set client component.
@@ -806,16 +983,18 @@ EmbedClient.displayName = "EmbedClient";
  * @returns The rendered field set client component
  */
 export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Fieldset, children, ...rest }, ref) => {
     return (
-      <fieldset ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </fieldset>
+      </Component>
     );
   }
 );
-
 FieldsetClient.displayName = "FieldsetClient";
+
+// Memoized version of `FieldsetClient`.
+export const MemoizedFieldsetClient = memo(FieldsetClient);
 
 /**
  * Render the figure caption client component.
@@ -824,16 +1003,18 @@ FieldsetClient.displayName = "FieldsetClient";
  * @returns The rendered figure caption client component
  */
 export const FigcaptionClient = forwardRef<FigcaptionRef, FigcaptionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Figcaption, children, ...rest }, ref) => {
     return (
-      <figcaption ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </figcaption>
+      </Component>
     );
   }
 );
-
 FigcaptionClient.displayName = "FigcaptionClient";
+
+// Memoized version of `FigcaptionClient`.
+export const MemoizedFigcaptionClient = memo(FigcaptionClient);
 
 /**
  * Render the figure with optional caption client component.
@@ -842,16 +1023,18 @@ FigcaptionClient.displayName = "FigcaptionClient";
  * @returns The rendered figure with optional caption client component
  */
 export const FigureClient = forwardRef<FigureRef, FigureProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Figure, children, ...rest }, ref) => {
     return (
-      <figure ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </figure>
+      </Component>
     );
   }
 );
-
 FigureClient.displayName = "FigureClient";
+
+// Memoized version of `FigureClient`.
+export const MemoizedFigureClient = memo(FigureClient);
 
 /**
  * Render the footer client component.
@@ -860,16 +1043,18 @@ FigureClient.displayName = "FigureClient";
  * @returns The rendered footer client component
  */
 export const FooterClient = forwardRef<FooterRef, FooterProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Footer, children, ...rest }, ref) => {
     return (
-      <footer ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </footer>
+      </Component>
     );
   }
 );
-
 FooterClient.displayName = "FooterClient";
+
+// Memoized version of `FooterClient`.
+export const MemoizedFooterClient = memo(FooterClient);
 
 /**
  * Render the form client component.
@@ -878,16 +1063,18 @@ FooterClient.displayName = "FooterClient";
  * @returns The rendered form client component
  */
 export const FormClient = forwardRef<FormRef, FormProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Form, children, ...rest }, ref) => {
     return (
-      <form ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </form>
+      </Component>
     );
   }
 );
-
 FormClient.displayName = "FormClient";
+
+// Memoized version of `FormClient`.
+export const MemoizedFormClient = memo(FormClient);
 
 /**
  * Render the document metadata (header) client component.
@@ -896,16 +1083,18 @@ FormClient.displayName = "FormClient";
  * @returns The rendered document metadata (header) client component
  */
 export const HeadClient = forwardRef<HeadRef, HeadProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Head, children, ...rest }, ref) => {
     return (
-      <head ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </head>
+      </Component>
     );
   }
 );
-
 HeadClient.displayName = "HeadClient";
+
+// Memoized version of `HeadClient`.
+export const MemoizedHeadClient = memo(HeadClient);
 
 /**
  * Render the header client component.
@@ -914,16 +1103,18 @@ HeadClient.displayName = "HeadClient";
  * @returns The rendered header client component
  */
 export const HeaderClient = forwardRef<HeaderRef, HeaderProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Header, children, ...rest }, ref) => {
     return (
-      <header ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </header>
+      </Component>
     );
   }
 );
-
 HeaderClient.displayName = "HeaderClient";
+
+// Memoized version of `HeaderClient`.
+export const MemoizedHeaderClient = memo(HeaderClient);
 
 /**
  * Render the HTML section heading client component.
@@ -932,7 +1123,7 @@ HeaderClient.displayName = "HeaderClient";
  * @returns The rendered HTML section heading client component
  */
 export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
-  ({ as: Component = "h1", children, ...rest }, ref) => {
+  ({ as: Component = Heading, children, ...rest }, ref) => {
     return (
       <Component ref={ref} {...rest}>
         {children}
@@ -940,8 +1131,10 @@ export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
     );
   }
 );
-
 HeadingClient.displayName = "HeadingClient";
+
+// Memoized version of `HeadingClient`.
+export const MemoizedHeadingClient = memo(HeadingClient);
 
 /**
  * Render the heading group client component.
@@ -950,16 +1143,18 @@ HeadingClient.displayName = "HeadingClient";
  * @returns The rendered heading group client component
  */
 export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Hgroup, children, ...rest }, ref) => {
     return (
-      <hgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </hgroup>
+      </Component>
     );
   }
 );
-
 HgroupClient.displayName = "HgroupClient";
+
+// Memoized version of `HgroupClient`.
+export const MemoizedHgroupClient = memo(HgroupClient);
 
 /**
  * Render the thematic break (horizontal rule) client component.
@@ -967,11 +1162,15 @@ HgroupClient.displayName = "HgroupClient";
  * @param {HrRef} ref - The thematic break (horizontal rule) client component reference
  * @returns The rendered thematic break (horizontal rule) client component
  */
-export const HrClient = forwardRef<HrRef, HrProps>(({ ...rest }, ref) => {
-  return <hr ref={ref} {...rest} />;
-});
-
+export const HrClient = forwardRef<HrRef, HrProps>(
+  ({ as: Component = Hr, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 HrClient.displayName = "HrClient";
+
+// Memoized version of `HrClient`.
+export const MemoizedHrClient = memo(HrClient);
 
 /**
  * Render the HTML document/root client component.
@@ -980,16 +1179,18 @@ HrClient.displayName = "HrClient";
  * @returns The rendered HTML document/root client component
  */
 export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Html, children, ...rest }, ref) => {
     return (
-      <html ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </html>
+      </Component>
     );
   }
 );
-
 HtmlClient.displayName = "HtmlClient";
+
+// Memoized version of `HtmlClient`.
+export const MemoizedHtmlClient = memo(HtmlClient);
 
 /**
  * Render the idiomatic text client component.
@@ -998,16 +1199,18 @@ HtmlClient.displayName = "HtmlClient";
  * @returns The rendered idiomatic text client component
  */
 export const IClient = forwardRef<IRef, IProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = I, children, ...rest }, ref) => {
     return (
-      <i ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </i>
+      </Component>
     );
   }
 );
-
 IClient.displayName = "IClient";
+
+// Memoized version of `IClient`.
+export const MemoizedIClient = memo(IClient);
 
 /**
  * Render the inline frame client component.
@@ -1016,12 +1219,14 @@ IClient.displayName = "IClient";
  * @returns The rendered inline frame client component
  */
 export const IframeClient = forwardRef<IframeRef, IframeProps>(
-  ({ ...rest }, ref) => {
-    return <iframe ref={ref} {...rest} />;
+  ({ as: Component = Iframe, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 IframeClient.displayName = "IframeClient";
+
+// Memoized version of `IframeClient`.
+export const MemoizedIframeClient = memo(IframeClient);
 
 /**
  * Render the image embed client component.
@@ -1030,12 +1235,14 @@ IframeClient.displayName = "IframeClient";
  * @returns The rendered image embed client component
  */
 export const ImgClient = forwardRef<ImgRef, ImgProps>(
-  ({ src = "#", alt = "", ...rest }, ref) => {
-    return <img ref={ref} src={src} alt={alt} {...rest} />;
+  ({ as: Component = Img, src, alt, ...rest }, ref) => {
+    return <Component ref={ref} src={src} alt={alt} {...rest} />;
   }
 );
-
 ImgClient.displayName = "ImgClient";
+
+// Memoized version of `ImgClient`.
+export const MemoizedImgClient = memo(ImgClient);
 
 /**
  * Render the HTML input client component.
@@ -1044,12 +1251,14 @@ ImgClient.displayName = "ImgClient";
  * @returns The rendered HTML input client component
  */
 export const InputClient = forwardRef<InputRef, InputProps>(
-  ({ type = "text", ...rest }, ref) => {
-    return <input ref={ref} type={type} {...rest} />;
+  ({ as: Component = Input, type, ...rest }, ref) => {
+    return <Component ref={ref} type={type} {...rest} />;
   }
 );
-
 InputClient.displayName = "InputClient";
+
+// Memoized version of `InputClient`.
+export const MemoizedInputClient = memo(InputClient);
 
 /**
  * Render the inserted text client component.
@@ -1058,16 +1267,18 @@ InputClient.displayName = "InputClient";
  * @returns The rendered inserted text client component
  */
 export const InsClient = forwardRef<InsRef, InsProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ins, children, ...rest }, ref) => {
     return (
-      <ins ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ins>
+      </Component>
     );
   }
 );
-
 InsClient.displayName = "InsClient";
+
+// Memoized version of `InsClient`.
+export const MemoizedInsClient = memo(InsClient);
 
 /**
  * Render the keyboard input client component.
@@ -1076,16 +1287,18 @@ InsClient.displayName = "InsClient";
  * @returns The rendered keyboard input client component
  */
 export const KbdClient = forwardRef<KbdRef, KbdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Kbd, children, ...rest }, ref) => {
     return (
-      <kbd ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </kbd>
+      </Component>
     );
   }
 );
-
 KbdClient.displayName = "KbdClient";
+
+// Memoized version of `KbdClient`.
+export const MemoizedKbdClient = memo(KbdClient);
 
 /**
  * Render the label client component.
@@ -1094,16 +1307,18 @@ KbdClient.displayName = "KbdClient";
  * @returns The rendered label client component
  */
 export const LabelClient = forwardRef<LabelRef, LabelProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Label, children, ...rest }, ref) => {
     return (
-      <label ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </label>
+      </Component>
     );
   }
 );
-
 LabelClient.displayName = "LabelClient";
+
+// Memoized version of `LabelClient`.
+export const MemoizedLabelClient = memo(LabelClient);
 
 /**
  * Render the field set legend client component.
@@ -1112,16 +1327,18 @@ LabelClient.displayName = "LabelClient";
  * @returns The rendered field set legend client component
  */
 export const LegendClient = forwardRef<LegendRef, LegendProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Legend, children, ...rest }, ref) => {
     return (
-      <legend ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </legend>
+      </Component>
     );
   }
 );
-
 LegendClient.displayName = "LegendClient";
+
+// Memoized version of `LegendClient`.
+export const MemoizedLegendClient = memo(LegendClient);
 
 /**
  * Render the list item client component.
@@ -1130,16 +1347,18 @@ LegendClient.displayName = "LegendClient";
  * @returns The rendered list item client component
  */
 export const LiClient = forwardRef<LiRef, LiProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Li, children, ...rest }, ref) => {
     return (
-      <li ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </li>
+      </Component>
     );
   }
 );
-
 LiClient.displayName = "LiClient";
+
+// Memoized version of `LiClient`.
+export const MemoizedLiClient = memo(LiClient);
 
 /**
  * Render the external resource link client component.
@@ -1147,11 +1366,15 @@ LiClient.displayName = "LiClient";
  * @param {LinkRef} ref - The external resource link client component reference
  * @returns The rendered external resource link client component
  */
-export const LinkClient = forwardRef<LinkRef, LinkProps>(({ ...rest }, ref) => {
-  return <link ref={ref} {...rest} />;
-});
-
+export const LinkClient = forwardRef<LinkRef, LinkProps>(
+  ({ as: Component = Link, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 LinkClient.displayName = "LinkClient";
+
+// Memoized version of `LinkClient`.
+export const MemoizedLinkClient = memo(LinkClient);
 
 /**
  * Render the main client component.
@@ -1160,16 +1383,18 @@ LinkClient.displayName = "LinkClient";
  * @returns The rendered main client component
  */
 export const MainClient = forwardRef<MainRef, MainProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Main, children, ...rest }, ref) => {
     return (
-      <main ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </main>
+      </Component>
     );
   }
 );
-
 MainClient.displayName = "MainClient";
+
+// Memoized version of `MainClient`.
+export const MemoizedMainClient = memo(MainClient);
 
 /**
  * Render the image map client component.
@@ -1178,16 +1403,18 @@ MainClient.displayName = "MainClient";
  * @returns The rendered image map client component
  */
 export const MapClient = forwardRef<MapRef, MapProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Map, children, ...rest }, ref) => {
     return (
-      <map ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </map>
+      </Component>
     );
   }
 );
-
 MapClient.displayName = "MapClient";
+
+// Memoized version of `MapClient`.
+export const MemoizedMapClient = memo(MapClient);
 
 /**
  * Render the mark text client component.
@@ -1196,16 +1423,18 @@ MapClient.displayName = "MapClient";
  * @returns The rendered mark text client component
  */
 export const MarkClient = forwardRef<MarkRef, MarkProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Mark, children, ...rest }, ref) => {
     return (
-      <mark ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </mark>
+      </Component>
     );
   }
 );
-
 MarkClient.displayName = "MarkClient";
+
+// Memoized version of `MarkClient`.
+export const MemoizedMarkClient = memo(MarkClient);
 
 /**
  * Render the menu client component.
@@ -1214,16 +1443,18 @@ MarkClient.displayName = "MarkClient";
  * @returns The rendered menu client component
  */
 export const MenuClient = forwardRef<MenuRef, MenuProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Menu, children, ...rest }, ref) => {
     return (
-      <menu ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </menu>
+      </Component>
     );
   }
 );
-
 MenuClient.displayName = "MenuClient";
+
+// Memoized version of `MenuClient`.
+export const MemoizedMenuClient = memo(MenuClient);
 
 /**
  * Render the meta client component.
@@ -1231,11 +1462,15 @@ MenuClient.displayName = "MenuClient";
  * @param {MetaRef} ref - The meta client component reference
  * @returns The rendered meta client component
  */
-export const MetaClient = forwardRef<MetaRef, MetaProps>(({ ...rest }, ref) => {
-  return <meta ref={ref} {...rest} />;
-});
-
+export const MetaClient = forwardRef<MetaRef, MetaProps>(
+  ({ as: Component = Meta, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 MetaClient.displayName = "MetaClient";
+
+// Memoized version of `MetaClient`.
+export const MemoizedMetaClient = memo(MetaClient);
 
 /**
  * Render the HTML meter client component.
@@ -1244,16 +1479,18 @@ MetaClient.displayName = "MetaClient";
  * @returns The rendered HTML meter client component
  */
 export const MeterClient = forwardRef<MeterRef, MeterProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Meter, children, ...rest }, ref) => {
     return (
-      <meter ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </meter>
+      </Component>
     );
   }
 );
-
 MeterClient.displayName = "MeterClient";
+
+// Memoized version of `MeterClient`.
+export const MemoizedMeterClient = memo(MeterClient);
 
 /**
  * Render the navigation section client component.
@@ -1262,16 +1499,18 @@ MeterClient.displayName = "MeterClient";
  * @returns The rendered navigation section client component
  */
 export const NavClient = forwardRef<NavRef, NavProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Nav, children, ...rest }, ref) => {
     return (
-      <nav ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </nav>
+      </Component>
     );
   }
 );
-
 NavClient.displayName = "NavClient";
+
+// Memoized version of `NavClient`.
+export const MemoizedNavClient = memo(NavClient);
 
 /**
  * Render the noscript client component.
@@ -1280,16 +1519,18 @@ NavClient.displayName = "NavClient";
  * @returns The rendered noscript client component
  */
 export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Noscript, children, ...rest }, ref) => {
     return (
-      <noscript ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </noscript>
+      </Component>
     );
   }
 );
-
 NoscriptClient.displayName = "NoscriptClient";
+
+// Memoized version of `NoscriptClient`.
+export const MemoizedNoscriptClient = memo(NoscriptClient);
 
 /**
  * Render the object client component.
@@ -1298,16 +1539,18 @@ NoscriptClient.displayName = "NoscriptClient";
  * @returns The rendered object client component
  */
 export const ObjectClient = forwardRef<ObjectRef, ObjectProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Object, children, ...rest }, ref) => {
     return (
-      <object ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </object>
+      </Component>
     );
   }
 );
-
 ObjectClient.displayName = "ObjectClient";
+
+// Memoized version of `ObjectClient`.
+export const MemoizedObjectClient = memo(ObjectClient);
 
 /**
  * Render the ordered list client component.
@@ -1316,16 +1559,18 @@ ObjectClient.displayName = "ObjectClient";
  * @returns The rendered ordered list client component
  */
 export const OlClient = forwardRef<OlRef, OlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ol, children, ...rest }, ref) => {
     return (
-      <ol ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ol>
+      </Component>
     );
   }
 );
-
 OlClient.displayName = "OlClient";
+
+// Memoized version of `OlClient`.
+export const MemoizedOlClient = memo(OlClient);
 
 /**
  * Render the option group client component.
@@ -1334,16 +1579,18 @@ OlClient.displayName = "OlClient";
  * @returns The rendered option group client component
  */
 export const OptgroupClient = forwardRef<OptgroupRef, OptgroupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Optgroup, children, ...rest }, ref) => {
     return (
-      <optgroup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </optgroup>
+      </Component>
     );
   }
 );
-
 OptgroupClient.displayName = "OptgroupClient";
+
+// Memoized version of `OptgroupClient`.
+export const MemoizedOptgroupClient = memo(OptgroupClient);
 
 /**
  * Render the HTML option client component.
@@ -1352,16 +1599,18 @@ OptgroupClient.displayName = "OptgroupClient";
  * @returns The rendered HTML option client component
  */
 export const OptionClient = forwardRef<OptionRef, OptionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Option, children, ...rest }, ref) => {
     return (
-      <option ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </option>
+      </Component>
     );
   }
 );
-
 OptionClient.displayName = "OptionClient";
+
+// Memoized version of `OptionClient`.
+export const MemoizedOptionClient = memo(OptionClient);
 
 /**
  * Render the output client component.
@@ -1370,16 +1619,18 @@ OptionClient.displayName = "OptionClient";
  * @returns The rendered output client component
  */
 export const OutputClient = forwardRef<OutputRef, OutputProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Output, children, ...rest }, ref) => {
     return (
-      <output ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </output>
+      </Component>
     );
   }
 );
-
 OutputClient.displayName = "OutputClient";
+
+// Memoized version of `OutputClient`.
+export const MemoizedOutputClient = memo(OutputClient);
 
 /**
  * Render the paragraph client component.
@@ -1388,16 +1639,18 @@ OutputClient.displayName = "OutputClient";
  * @returns The rendered paragraph client component
  */
 export const ParagraphClient = forwardRef<ParagraphRef, ParagraphProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Paragraph, children, ...rest }, ref) => {
     return (
-      <p ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </p>
+      </Component>
     );
   }
 );
-
 ParagraphClient.displayName = "ParagraphClient";
+
+// Memoized version of `ParagraphClient`.
+export const MemoizedParagraphClient = memo(ParagraphClient);
 
 /**
  * Render the picture client component.
@@ -1406,16 +1659,18 @@ ParagraphClient.displayName = "ParagraphClient";
  * @returns The rendered picture client component
  */
 export const PictureClient = forwardRef<PictureRef, PictureProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Picture, children, ...rest }, ref) => {
     return (
-      <picture ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </picture>
+      </Component>
     );
   }
 );
-
 PictureClient.displayName = "PictureClient";
+
+// Memoized version of `PictureClient`.
+export const MemoizedPictureClient = memo(PictureClient);
 
 /**
  * Render the preformatted text client component.
@@ -1424,16 +1679,18 @@ PictureClient.displayName = "PictureClient";
  * @returns The rendered preformatted text client component
  */
 export const PreClient = forwardRef<PreRef, PreProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Pre, children, ...rest }, ref) => {
     return (
-      <pre ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </pre>
+      </Component>
     );
   }
 );
-
 PreClient.displayName = "PreClient";
+
+// Memoized version of `PreClient`.
+export const MemoizedPreClient = memo(PreClient);
 
 /**
  * Render the progress indicator client component.
@@ -1442,16 +1699,18 @@ PreClient.displayName = "PreClient";
  * @returns The rendered progress indicator client component
  */
 export const ProgressClient = forwardRef<ProgressRef, ProgressProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Progress, children, ...rest }, ref) => {
     return (
-      <progress ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </progress>
+      </Component>
     );
   }
 );
-
 ProgressClient.displayName = "ProgressClient";
+
+// Memoized version of `ProgressClient`.
+export const MemoizedProgressClient = memo(ProgressClient);
 
 /**
  * Render the inline quotation client component.
@@ -1460,16 +1719,18 @@ ProgressClient.displayName = "ProgressClient";
  * @returns The rendered inline quotation client component
  */
 export const QClient = forwardRef<QRef, QProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Q, children, ...rest }, ref) => {
     return (
-      <q ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </q>
+      </Component>
     );
   }
 );
-
 QClient.displayName = "QClient";
+
+// Memoized version of `QClient`.
+export const MemoizedQClient = memo(QClient);
 
 /**
  * Render the ruby fallback parenthesis client component.
@@ -1478,16 +1739,18 @@ QClient.displayName = "QClient";
  * @returns The rendered ruby fallback parenthesis client component
  */
 export const RpClient = forwardRef<RpRef, RpProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Rp, children, ...rest }, ref) => {
     return (
-      <rp ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </rp>
+      </Component>
     );
   }
 );
-
 RpClient.displayName = "RpClient";
+
+// Memoized version of `RpClient`.
+export const MemoizedRpClient = memo(RpClient);
 
 /**
  * Render the ruby text client component.
@@ -1496,16 +1759,18 @@ RpClient.displayName = "RpClient";
  * @returns The rendered ruby text client component
  */
 export const RtClient = forwardRef<RtRef, RtProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Rt, children, ...rest }, ref) => {
     return (
-      <rt ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </rt>
+      </Component>
     );
   }
 );
-
 RtClient.displayName = "RtClient";
+
+// Memoized version of `RtClient`.
+export const MemoizedRtClient = memo(RtClient);
 
 /**
  * Render the ruby annotation client component.
@@ -1514,16 +1779,18 @@ RtClient.displayName = "RtClient";
  * @returns The rendered ruby annotation client component
  */
 export const RubyClient = forwardRef<RubyRef, RubyProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ruby, children, ...rest }, ref) => {
     return (
-      <ruby ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ruby>
+      </Component>
     );
   }
 );
-
 RubyClient.displayName = "RubyClient";
+
+// Memoized version of `RubyClient`.
+export const MemoizedRubyClient = memo(RubyClient);
 
 /**
  * Render the strikethrough client component.
@@ -1532,16 +1799,18 @@ RubyClient.displayName = "RubyClient";
  * @returns The rendered strikethrough client component
  */
 export const SClient = forwardRef<SRef, SProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = S, children, ...rest }, ref) => {
     return (
-      <s ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </s>
+      </Component>
     );
   }
 );
-
 SClient.displayName = "SClient";
+
+// Memoized version of `SClient`.
+export const MemoizedSClient = memo(SClient);
 
 /**
  * Render the sample output client component.
@@ -1550,16 +1819,18 @@ SClient.displayName = "SClient";
  * @returns The rendered sample output client component
  */
 export const SampClient = forwardRef<SampRef, SampProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Samp, children, ...rest }, ref) => {
     return (
-      <samp ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </samp>
+      </Component>
     );
   }
 );
-
 SampClient.displayName = "SampClient";
+
+// Memoized version of `SampClient`.
+export const MemoizedSampClient = memo(SampClient);
 
 /**
  * Render the script client component.
@@ -1568,16 +1839,18 @@ SampClient.displayName = "SampClient";
  * @returns The rendered script client component
  */
 export const ScriptClient = forwardRef<ScriptRef, ScriptProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Script, children, ...rest }, ref) => {
     return (
-      <script ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </script>
+      </Component>
     );
   }
 );
-
 ScriptClient.displayName = "ScriptClient";
+
+// Memoized version of `ScriptClient`.
+export const MemoizedScriptClient = memo(ScriptClient);
 
 /**
  * Render the generic search client component.
@@ -1586,16 +1859,18 @@ ScriptClient.displayName = "ScriptClient";
  * @returns The rendered generic search client component
  */
 export const SearchClient = forwardRef<SearchRef, SearchProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Search, children, ...rest }, ref) => {
     return (
-      <search ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </search>
+      </Component>
     );
   }
 );
-
 SearchClient.displayName = "SearchClient";
+
+// Memoized version of `SearchClient`.
+export const MemoizedSearchClient = memo(SearchClient);
 
 /**
  * Render the generic section client component.
@@ -1604,16 +1879,18 @@ SearchClient.displayName = "SearchClient";
  * @returns The rendered generic section client component
  */
 export const SectionClient = forwardRef<SectionRef, SectionProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Section, children, ...rest }, ref) => {
     return (
-      <section ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </section>
+      </Component>
     );
   }
 );
-
 SectionClient.displayName = "SectionClient";
+
+// Memoized version of `SectionClient`.
+export const MemoizedSectionClient = memo(SectionClient);
 
 /**
  * Render the HTML select client component.
@@ -1622,16 +1899,18 @@ SectionClient.displayName = "SectionClient";
  * @returns The rendered HTML select client component
  */
 export const SelectClient = forwardRef<SelectRef, SelectProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Select, children, ...rest }, ref) => {
     return (
-      <select ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </select>
+      </Component>
     );
   }
 );
-
 SelectClient.displayName = "SelectClient";
+
+// Memoized version of `SelectClient`.
+export const MemoizedSelectClient = memo(SelectClient);
 
 /**
  * Render the web component slot client component.
@@ -1640,16 +1919,18 @@ SelectClient.displayName = "SelectClient";
  * @returns The rendered web component slot client component
  */
 export const SlotClient = forwardRef<SlotRef, SlotProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Slot, children, ...rest }, ref) => {
     return (
-      <slot ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </slot>
+      </Component>
     );
   }
 );
-
 SlotClient.displayName = "SlotClient";
+
+// Memoized version of `SlotClient`.
+export const MemoizedSlotClient = memo(SlotClient);
 
 /**
  * Render the side comment client component.
@@ -1658,16 +1939,18 @@ SlotClient.displayName = "SlotClient";
  * @returns The rendered side comment client component
  */
 export const SmallClient = forwardRef<SmallRef, SmallProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Small, children, ...rest }, ref) => {
     return (
-      <small ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </small>
+      </Component>
     );
   }
 );
-
 SmallClient.displayName = "SmallClient";
+
+// Memoized version of `SmallClient`.
+export const MemoizedSmallClient = memo(SmallClient);
 
 /**
  * Render the media or image source client component.
@@ -1676,12 +1959,14 @@ SmallClient.displayName = "SmallClient";
  * @returns The rendered media or image source client component
  */
 export const SourceClient = forwardRef<SourceRef, SourceProps>(
-  ({ ...rest }, ref) => {
-    return <source ref={ref} {...rest} />;
+  ({ as: Component = Source, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 SourceClient.displayName = "SourceClient";
+
+// Memoized version of `SourceClient`.
+export const MemoizedSourceClient = memo(SourceClient);
 
 /**
  * Render the content span client component.
@@ -1690,16 +1975,18 @@ SourceClient.displayName = "SourceClient";
  * @returns The rendered content span client component
  */
 export const SpanClient = forwardRef<SpanRef, SpanProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Span, children, ...rest }, ref) => {
     return (
-      <span ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </span>
+      </Component>
     );
   }
 );
-
 SpanClient.displayName = "SpanClient";
+
+// Memoized version of `SpanClient`.
+export const MemoizedSpanClient = memo(SpanClient);
 
 /**
  * Render the strong importance client component.
@@ -1708,16 +1995,18 @@ SpanClient.displayName = "SpanClient";
  * @returns The rendered strong importance client component
  */
 export const StrongClient = forwardRef<StrongRef, StrongProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Strong, children, ...rest }, ref) => {
     return (
-      <strong ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </strong>
+      </Component>
     );
   }
 );
-
 StrongClient.displayName = "StrongClient";
+
+// Memoized version of `StrongClient`.
+export const MemoizedStrongClient = memo(StrongClient);
 
 /**
  * Render the style information client component.
@@ -1726,16 +2015,18 @@ StrongClient.displayName = "StrongClient";
  * @returns The rendered style information client component
  */
 export const StyleClient = forwardRef<StyleRef, StyleProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Style, children, ...rest }, ref) => {
     return (
-      <style ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </style>
+      </Component>
     );
   }
 );
-
 StyleClient.displayName = "StyleClient";
+
+// Memoized version of `StyleClient`.
+export const MemoizedStyleClient = memo(StyleClient);
 
 /**
  * Render the subscript client component.
@@ -1744,16 +2035,18 @@ StyleClient.displayName = "StyleClient";
  * @returns The rendered subscript client component
  */
 export const SubClient = forwardRef<SubRef, SubProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Sub, children, ...rest }, ref) => {
     return (
-      <sub ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </sub>
+      </Component>
     );
   }
 );
-
 SubClient.displayName = "SubClient";
+
+// Memoized version of `SubClient`.
+export const MemoizedSubClient = memo(SubClient);
 
 /**
  * Render the disclosure summary client component.
@@ -1762,16 +2055,18 @@ SubClient.displayName = "SubClient";
  * @returns The rendered disclosure summary client component
  */
 export const SummaryClient = forwardRef<SummaryRef, SummaryProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Summary, children, ...rest }, ref) => {
     return (
-      <summary ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </summary>
+      </Component>
     );
   }
 );
-
 SummaryClient.displayName = "SummaryClient";
+
+// Memoized version of `SummaryClient`.
+export const MemoizedSummaryClient = memo(SummaryClient);
 
 /**
  * Render the superscript client component.
@@ -1780,16 +2075,18 @@ SummaryClient.displayName = "SummaryClient";
  * @returns The rendered superscript client component
  */
 export const SupClient = forwardRef<SupRef, SupProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Sup, children, ...rest }, ref) => {
     return (
-      <sup ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </sup>
+      </Component>
     );
   }
 );
-
 SupClient.displayName = "SupClient";
+
+// Memoized version of `SupClient`.
+export const MemoizedSupClient = memo(SupClient);
 
 /**
  * Render the scalable vector graphics client component.
@@ -1798,16 +2095,18 @@ SupClient.displayName = "SupClient";
  * @returns The rendered scalable vector graphics client component
  */
 export const SvgClient = forwardRef<SvgRef, SvgProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Svg, children, ...rest }, ref) => {
     return (
-      <svg ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </svg>
+      </Component>
     );
   }
 );
-
 SvgClient.displayName = "SvgClient";
+
+// Memoized version of `SvgClient`.
+export const MemoizedSvgClient = memo(SvgClient);
 
 /**
  * Render the table client component.
@@ -1816,16 +2115,18 @@ SvgClient.displayName = "SvgClient";
  * @returns The rendered table client component
  */
 export const TableClient = forwardRef<TableRef, TableProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Table, children, ...rest }, ref) => {
     return (
-      <table ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </table>
+      </Component>
     );
   }
 );
-
 TableClient.displayName = "TableClient";
+
+// Memoized version of `TableClient`.
+export const MemoizedTableClient = memo(TableClient);
 
 /**
  * Render the table body client component.
@@ -1834,16 +2135,18 @@ TableClient.displayName = "TableClient";
  * @returns The rendered table body client component
  */
 export const TbodyClient = forwardRef<TbodyRef, TbodyProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Tbody, children, ...rest }, ref) => {
     return (
-      <tbody ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </tbody>
+      </Component>
     );
   }
 );
-
 TbodyClient.displayName = "TbodyClient";
+
+// Memoized version of `TbodyClient`.
+export const MemoizedTbodyClient = memo(TbodyClient);
 
 /**
  * Render the table data cell client component.
@@ -1852,16 +2155,18 @@ TbodyClient.displayName = "TbodyClient";
  * @returns The rendered table data cell client component
  */
 export const TdClient = forwardRef<TdRef, TdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Td, children, ...rest }, ref) => {
     return (
-      <td ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </td>
+      </Component>
     );
   }
 );
-
 TdClient.displayName = "TdClient";
+
+// Memoized version of `TdClient`.
+export const MemoizedTdClient = memo(TdClient);
 
 /**
  * Render the content template client component.
@@ -1870,16 +2175,18 @@ TdClient.displayName = "TdClient";
  * @returns The rendered content template client component
  */
 export const TemplateClient = forwardRef<TemplateRef, TemplateProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Template, children, ...rest }, ref) => {
     return (
-      <template ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </template>
+      </Component>
     );
   }
 );
-
 TemplateClient.displayName = "TemplateClient";
+
+// Memoized version of `TemplateClient`.
+export const MemoizedTemplateClient = memo(TemplateClient);
 
 /**
  * Render the textarea client component.
@@ -1888,16 +2195,18 @@ TemplateClient.displayName = "TemplateClient";
  * @returns The rendered textarea client component
  */
 export const TextareaClient = forwardRef<TextareaRef, TextareaProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Textarea, children, ...rest }, ref) => {
     return (
-      <textarea ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </textarea>
+      </Component>
     );
   }
 );
-
 TextareaClient.displayName = "TextareaClient";
+
+// Memoized version of `TextareaClient`.
+export const MemoizedTextareaClient = memo(TextareaClient);
 
 /**
  * Render the table foot client component.
@@ -1906,16 +2215,18 @@ TextareaClient.displayName = "TextareaClient";
  * @returns The rendered table foot client component
  */
 export const TfootClient = forwardRef<TfootRef, TfootProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Tfoot, children, ...rest }, ref) => {
     return (
-      <tfoot ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </tfoot>
+      </Component>
     );
   }
 );
-
 TfootClient.displayName = "TfootClient";
+
+// Memoized version of `TfootClient`.
+export const MemoizedTfootClient = memo(TfootClient);
 
 /**
  * Render the table header client component.
@@ -1924,16 +2235,18 @@ TfootClient.displayName = "TfootClient";
  * @returns The rendered table header client component
  */
 export const ThClient = forwardRef<ThRef, ThProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Th, children, ...rest }, ref) => {
     return (
-      <th ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </th>
+      </Component>
     );
   }
 );
-
 ThClient.displayName = "ThClient";
+
+// Memoized version of `ThClient`.
+export const MemoizedThClient = memo(ThClient);
 
 /**
  * Render the table head client component.
@@ -1942,16 +2255,18 @@ ThClient.displayName = "ThClient";
  * @returns The rendered table head client component
  */
 export const TheadClient = forwardRef<TheadRef, TheadProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Thead, children, ...rest }, ref) => {
     return (
-      <thead ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </thead>
+      </Component>
     );
   }
 );
-
 TheadClient.displayName = "TheadClient";
+
+// Memoized version of `TheadClient`.
+export const MemoizedTheadClient = memo(TheadClient);
 
 /**
  * Render the (date) time client component.
@@ -1960,16 +2275,18 @@ TheadClient.displayName = "TheadClient";
  * @returns The rendered (date) time client component
  */
 export const TimeClient = forwardRef<TimeRef, TimeProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Time, children, ...rest }, ref) => {
     return (
-      <time ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </time>
+      </Component>
     );
   }
 );
-
 TimeClient.displayName = "TimeClient";
+
+// Memoized version of `TimeClient`.
+export const MemoizedTimeClient = memo(TimeClient);
 
 /**
  * Render the document title client component.
@@ -1978,16 +2295,18 @@ TimeClient.displayName = "TimeClient";
  * @returns The rendered document title client component
  */
 export const TitleClient = forwardRef<TitleRef, TitleProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Title, children, ...rest }, ref) => {
     return (
-      <title ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </title>
+      </Component>
     );
   }
 );
-
 TitleClient.displayName = "TitleClient";
+
+// Memoized version of `TitleClient`.
+export const MemoizedTitleClient = memo(TitleClient);
 
 /**
  * Render the table row client component.
@@ -1996,16 +2315,18 @@ TitleClient.displayName = "TitleClient";
  * @returns The rendered table row client component
  */
 export const TrClient = forwardRef<TrRef, TrProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Tr, children, ...rest }, ref) => {
     return (
-      <tr ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </tr>
+      </Component>
     );
   }
 );
-
 TrClient.displayName = "TrClient";
+
+// Memoized version of `TrClient`.
+export const MemoizedTrClient = memo(TrClient);
 
 /**
  * Render the embed text track client component.
@@ -2014,12 +2335,14 @@ TrClient.displayName = "TrClient";
  * @returns The rendered embed text track client component
  */
 export const TrackClient = forwardRef<TrackRef, TrackProps>(
-  ({ ...rest }, ref) => {
-    return <track ref={ref} {...rest} />;
+  ({ as: Component = Track, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 TrackClient.displayName = "TrackClient";
+
+// Memoized version of `TrackClient`.
+export const MemoizedTrackClient = memo(TrackClient);
 
 /**
  * Render the unarticulated annotation (underline) client component.
@@ -2028,16 +2351,18 @@ TrackClient.displayName = "TrackClient";
  * @returns The rendered unarticulated annotation (underline) client component
  */
 export const UClient = forwardRef<URef, UProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = U, children, ...rest }, ref) => {
     return (
-      <u ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </u>
+      </Component>
     );
   }
 );
-
 UClient.displayName = "UClient";
+
+// Memoized version of `UClient`.
+export const MemoizedUClient = memo(UClient);
 
 /**
  * Render the unordered list client component.
@@ -2046,16 +2371,18 @@ UClient.displayName = "UClient";
  * @returns The rendered unordered list client component
  */
 export const UlClient = forwardRef<UlRef, UlProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Ul, children, ...rest }, ref) => {
     return (
-      <ul ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </ul>
+      </Component>
     );
   }
 );
-
 UlClient.displayName = "UlClient";
+
+// Memoized version of `UlClient`.
+export const MemoizedUlClient = memo(UlClient);
 
 /**
  * Render the variable client component.
@@ -2064,16 +2391,18 @@ UlClient.displayName = "UlClient";
  * @returns The rendered variable client component
  */
 export const VarClient = forwardRef<VarRef, VarProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Var, children, ...rest }, ref) => {
     return (
-      <var ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </var>
+      </Component>
     );
   }
 );
-
 VarClient.displayName = "VarClient";
+
+// Memoized version of `VarClient`.
+export const MemoizedVarClient = memo(VarClient);
 
 /**
  * Render the video embed client component.
@@ -2082,16 +2411,18 @@ VarClient.displayName = "VarClient";
  * @returns The rendered video embed client component
  */
 export const VideoClient = forwardRef<VideoRef, VideoProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Video, children, ...rest }, ref) => {
     return (
-      <video ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </video>
+      </Component>
     );
   }
 );
-
 VideoClient.displayName = "VideoClient";
+
+// Memoized version of `VideoClient`.
+export const MemoizedVideoClient = memo(VideoClient);
 
 /**
  * Render the line break opportunity client component.
@@ -2099,8 +2430,12 @@ VideoClient.displayName = "VideoClient";
  * @param {WbrRef} ref - The line break opportunity client component reference
  * @returns The rendered line break opportunity client component
  */
-export const WbrClient = forwardRef<WbrRef, WbrProps>(({ ...rest }, ref) => {
-  return <wbr ref={ref} {...rest} />;
-});
-
+export const WbrClient = forwardRef<WbrRef, WbrProps>(
+  ({ as: Component = Wbr, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 WbrClient.displayName = "WbrClient";
+
+// Memoized version of `WbrClient`.
+export const MemoizedWbrClient = memo(WbrClient);
