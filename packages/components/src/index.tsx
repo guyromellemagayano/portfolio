@@ -4261,6 +4261,10 @@ const UClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.UClient };
 });
+const MemoizedUClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedUClient };
+});
 
 export type URef = React.ElementRef<"u">;
 export type UProps = React.ComponentPropsWithoutRef<"u"> & CommonComponentProps;
@@ -4270,20 +4274,27 @@ export type UProps = React.ComponentPropsWithoutRef<"u"> & CommonComponentProps;
  * @param {UProps} props - The default unarticulated annotation (underline) server component properties
  * @returns The rendered default unarticulated annotation (underline) server component
  */
-export const U = ({ isClient = false, children, ...rest }: UProps) => {
-  const element = <u {...rest}>{children}</u>;
+export const U = ({
+  as: Component = "u",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: UProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedUClient : UClient;
+
     return (
       <Suspense fallback={element}>
-        <UClient {...rest} />
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 U.displayName = "U";
 
 const UlClient = lazy(async () => {
