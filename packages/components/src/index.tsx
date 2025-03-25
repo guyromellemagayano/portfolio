@@ -4180,6 +4180,10 @@ const TrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TrClient };
 });
+const MemoizedTrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTrClient };
+});
 
 export type TrRef = React.ElementRef<"tr">;
 export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
@@ -4190,20 +4194,27 @@ export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
  * @param {TrProps} props - The default table row server component properties
  * @returns The rendered default table row server component
  */
-export const Tr = ({ isClient = false, children, ...rest }: TrProps) => {
-  const element = <tr {...rest}>{children}</tr>;
+export const Tr = ({
+  as: Component = "tr",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TrProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTrClient : TrClient;
+
     return (
       <Suspense fallback={element}>
-        <TrClient {...rest}>{children}</TrClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tr.displayName = "Tr";
 
 const TrackClient = lazy(async () => {
