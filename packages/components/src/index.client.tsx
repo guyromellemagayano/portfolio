@@ -107,6 +107,7 @@ import {
   Track,
   U,
   Ul,
+  Var,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2388,16 +2389,18 @@ export const MemoizedUlClient = memo(UlClient);
  * @returns The rendered variable client component
  */
 export const VarClient = forwardRef<VarRef, VarProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Var, children, ...rest }, ref) => {
     return (
-      <var ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </var>
+      </Component>
     );
   }
 );
-
 VarClient.displayName = "VarClient";
+
+// Memoized version of `VarClient`.
+export const MemoizedVarClient = memo(VarClient);
 
 /**
  * Render the video embed client component.
