@@ -95,6 +95,7 @@ import {
   Svg,
   Table,
   Tbody,
+  Td,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2140,16 +2141,18 @@ export const MemoizedTbodyClient = memo(TbodyClient);
  * @returns The rendered table data cell client component
  */
 export const TdClient = forwardRef<TdRef, TdProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Td, children, ...rest }, ref) => {
     return (
-      <td ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </td>
+      </Component>
     );
   }
 );
-
 TdClient.displayName = "TdClient";
+
+// Memoized version of `TdClient`.
+export const MemoizedTdClient = memo(TdClient);
 
 /**
  * Render the content template client component.
