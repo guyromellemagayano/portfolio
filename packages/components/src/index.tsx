@@ -4424,6 +4424,10 @@ const WbrClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.WbrClient };
 });
+const MemoizedWbrClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedWbrClient };
+});
 
 export type WbrRef = React.ElementRef<"wbr">;
 export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
@@ -4434,18 +4438,24 @@ export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
  * @param {WbrProps} props - The default line break opportunity server component properties
  * @returns The rendered default line break opportunity server component
  */
-export const Wbr = ({ isClient = false, ...rest }: WbrProps) => {
-  const element = <wbr {...rest} />;
+export const Wbr = ({
+  as: Component = "wbr",
+  isClient = false,
+  isMemoized = false,
+  ...rest
+}: WbrProps) => {
+  const element = <Component {...rest} />;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedWbrClient : WbrClient;
+
     return (
       <Suspense fallback={element}>
-        <WbrClient {...rest} />
+        <ClientComponent {...rest} />
       </Suspense>
     );
   }
 
   return element;
 };
-
 Wbr.displayName = "Wbr";
