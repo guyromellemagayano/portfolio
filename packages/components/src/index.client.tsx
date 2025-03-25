@@ -109,6 +109,7 @@ import {
   Ul,
   Var,
   Video,
+  Wbr,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2429,8 +2430,12 @@ export const MemoizedVideoClient = memo(VideoClient);
  * @param {WbrRef} ref - The line break opportunity client component reference
  * @returns The rendered line break opportunity client component
  */
-export const WbrClient = forwardRef<WbrRef, WbrProps>(({ ...rest }, ref) => {
-  return <wbr ref={ref} {...rest} />;
-});
-
+export const WbrClient = forwardRef<WbrRef, WbrProps>(
+  ({ as: Component = Wbr, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
+  }
+);
 WbrClient.displayName = "WbrClient";
+
+// Memoized version of `WbrClient`.
+export const MemoizedWbrClient = memo(WbrClient);
