@@ -104,6 +104,7 @@ import {
   Time,
   Title,
   Tr,
+  Track,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2329,12 +2330,14 @@ export const MemoizedTrClient = memo(TrClient);
  * @returns The rendered embed text track client component
  */
 export const TrackClient = forwardRef<TrackRef, TrackProps>(
-  ({ ...rest }, ref) => {
-    return <track ref={ref} {...rest} />;
+  ({ as: Component = Track, ...rest }, ref) => {
+    return <Component ref={ref} {...rest} />;
   }
 );
-
 TrackClient.displayName = "TrackClient";
+
+// Memoized version of `TrackClient`.
+export const MemoizedTrackClient = memo(TrackClient);
 
 /**
  * Render the unarticulated annotation (underline) client component.
