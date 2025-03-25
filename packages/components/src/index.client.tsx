@@ -98,6 +98,7 @@ import {
   Td,
   Template,
   Textarea,
+  Tfoot,
   type AbbrProps,
   type AbbrRef,
   type AddressProps,
@@ -2203,16 +2204,18 @@ export const MemoizedTextareaClient = memo(TextareaClient);
  * @returns The rendered table foot client component
  */
 export const TfootClient = forwardRef<TfootRef, TfootProps>(
-  ({ children, ...rest }, ref) => {
+  ({ as: Component = Tfoot, children, ...rest }, ref) => {
     return (
-      <tfoot ref={ref} {...rest}>
+      <Component ref={ref} {...rest}>
         {children}
-      </tfoot>
+      </Component>
     );
   }
 );
-
 TfootClient.displayName = "TfootClient";
+
+// Memoized version of `TfootClient`.
+export const MemoizedTfootClient = memo(TfootClient);
 
 /**
  * Render the table header client component.
