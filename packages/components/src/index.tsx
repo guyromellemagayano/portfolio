@@ -3975,6 +3975,10 @@ const TfootClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.TfootClient };
 });
+const MemoizedTfootClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedTfootClient };
+});
 
 export type TfootRef = React.ElementRef<"tfoot">;
 export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
@@ -3985,20 +3989,27 @@ export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
  * @param {TfootProps} props - The default table foot server component properties
  * @returns The rendered default table foot server component
  */
-export const Tfoot = ({ isClient = false, children, ...rest }: TfootProps) => {
-  const element = <tfoot {...rest}>{children}</tfoot>;
+export const Tfoot = ({
+  as: Component = "tfoot",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: TfootProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedTfootClient : TfootClient;
+
     return (
       <Suspense fallback={element}>
-        <TfootClient {...rest}>{children}</TfootClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Tfoot.displayName = "Tfoot";
 
 const ThClient = lazy(async () => {
