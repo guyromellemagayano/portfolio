@@ -4383,6 +4383,10 @@ const VideoClient = lazy(async () => {
   const module = await import("./index.client");
   return { default: module.VideoClient };
 });
+const MemoizedVideoClient = lazy(async () => {
+  const module = await import("./index.client");
+  return { default: module.MemoizedVideoClient };
+});
 
 export type VideoRef = React.ElementRef<"video">;
 export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
@@ -4393,20 +4397,27 @@ export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
  * @param {VideoProps} props - The default video embed server component properties
  * @returns The rendered default video embed server component
  */
-export const Video = ({ isClient = false, children, ...rest }: VideoProps) => {
-  const element = <video {...rest}>{children}</video>;
+export const Video = ({
+  as: Component = "video",
+  isClient = false,
+  isMemoized = false,
+  children,
+  ...rest
+}: VideoProps) => {
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
+    const ClientComponent = isMemoized ? MemoizedVideoClient : VideoClient;
+
     return (
       <Suspense fallback={element}>
-        <VideoClient {...rest}>{children}</VideoClient>
+        <ClientComponent {...rest}>{children}</ClientComponent>
       </Suspense>
     );
   }
 
   return element;
 };
-
 Video.displayName = "Video";
 
 const WbrClient = lazy(async () => {
