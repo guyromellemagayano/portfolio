@@ -13,10 +13,10 @@
     "incremental": false,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleDetection": "force",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
@@ -26,7 +26,7 @@
     "resolveJsonModule": true,
     "noEmit": true,
     "strictNullChecks": true,
-    "target": "ES2022"
+    "target": "ESNext"
   },
   "exclude": ["node_modules"]
 }
