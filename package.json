@@ -16,6 +16,8 @@
     "@commitlint/cli": "^19.8.0",
     "@commitlint/config-conventional": "^19.8.0",
     "@commitlint/cz-commitlint": "^19.8.0",
+    "@guyromellemagayano/eslint-config": "workspace:*",
+    "@guyromellemagayano/typescript-config": "workspace:*",
     "czg": "^1.11.1",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
