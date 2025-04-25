@@ -1,4 +1,10 @@
 {
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": false,
+  "eslint.format.enable": false,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSaveMode": "file",
   "eslint.workingDirectories": [
     {
       "mode": "auto"
