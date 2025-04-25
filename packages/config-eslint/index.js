@@ -26,12 +26,13 @@ export const config = [
     },
     rules: {
       "@typescript-eslint/consistent-type-imports": "error",
-      "prettier/prettier": "error",
+      "prettier/prettier": ["error", { trailingComma: "es5" }],
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
       "simple-import-sort/exports": "error",
       "simple-import-sort/imports": "error",
       "turbo/no-undeclared-env-vars": "warn",
+      "import/no-default-export": "off",
     },
   },
   {
@@ -40,6 +41,6 @@ export const config = [
     },
   },
   {
-    ignores: ["dist/**"],
+    ignores: ["dist/**", "node_modules"],
   },
 ];
