@@ -1,6 +1,6 @@
 import { log } from "@guyromellemagayano/logger";
-import { Link } from "@guyromellemagayano/ui/link";
 import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@guyromellemagayano/ui/link";
 
 export const metadata = {
   title: "Store | Kitchen Sink",
