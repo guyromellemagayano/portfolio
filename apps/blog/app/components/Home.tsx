@@ -1,6 +1,5 @@
-import { Link } from "@remix-run/react";
-
 import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@remix-run/react";
 
 export const Home = () => {
   return (
