@@ -1,5 +1,5 @@
 import pluginNext from "@next/eslint-plugin-next";
-import { config as reactConfig } from "./react.js";
+import { config as baseConfig } from "./index.js";
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
@@ -7,7 +7,7 @@ import { config as reactConfig } from "./react.js";
  * @type {import("eslint").Linter.Config}
  * */
 export const config = [
-  ...reactConfig,
+  ...baseConfig,
   {
     plugins: {
       "@next/next": pluginNext,
