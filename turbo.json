@@ -15,27 +15,37 @@
       "dependsOn": ["^build"],
       "outputs": [
         "build/**",
-        ".vercel/**",
-        ".sanity/**",
         "dist/**",
         ".next/**",
-        "!.next/cache/**"
+        ".vercel/**",
+        ".sanity/**",
+        "!**/.next/cache/**"
       ]
     },
     "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": []
+      "inputs": ["$TURBO_DEFAULT$"],
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
     },
     "lint": {
-      "dependsOn": ["^build", "^lint"]
+      "inputs": ["$TURBO_DEFAULT$", ".eslintrc*", "eslint.config.*", "tsconfig.json"],
+      "dependsOn": ["^lint"],
+      "outputs": []
     },
     "check-types": {
-      "dependsOn": ["^build", "^check-types"]
+      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
+      "dependsOn": ["^check-types"],
+      "outputs": []
     },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
+    },
+    "format": {
+      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*", ".prettierrc*"],
+      "outputs": [],
+      "dependsOn": []
     }
   }
 }
