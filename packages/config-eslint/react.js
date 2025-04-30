@@ -1,8 +1,9 @@
-import tseslint from "typescript-eslint";
-import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
+import pluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
-import { config as baseConfig } from "./index.js";
+import tseslint from "typescript-eslint";
+
+import { config as baseConfig } from "./index";
 
 /**
  * A custom ESLint configuration for libraries that use React.
