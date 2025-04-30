@@ -1,0 +1,18 @@
+{
+  "name": "@guyromellemagayano/prettier-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "PROPRIETARY",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "prettier-plugin-packagejson": "^2.5.10",
+    "prettier-plugin-tailwindcss": "^0.6.11"
+  },
+  "peerDependencies": {
+    "prettier": "^3.5.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
