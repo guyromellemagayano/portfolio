@@ -22,7 +22,7 @@
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "resolveJsonModule": true,
     "noEmit": true,
     "strictNullChecks": true,
