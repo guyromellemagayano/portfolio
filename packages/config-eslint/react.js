@@ -3,15 +3,15 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
-import { config as baseConfig } from "./index";
+import { default as baseConfig } from "@guyromellemagayano/eslint-config";
 
 /**
- * A custom ESLint configuration for libraries that use React.
- *
- * @type {import("eslint").Linter.Config} */
-export const config = [
-  ...baseConfig,
+ * A shared React ESLint configuration for the repository.
+ * @type {import("eslint").Linter.Config[]}
+ * */
+export default [
   pluginReact.configs.flat.recommended,
+  ...baseConfig,
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -33,6 +33,7 @@ export const config = [
     settings: { react: { version: "detect" } },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
+      "react/react-in-jsx-scope": "off",
     },
   },
 ];
