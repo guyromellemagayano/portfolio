@@ -1,13 +1,12 @@
 import { defineField } from "sanity";
 
-import { GROUP } from "./constant";
+import { GROUP } from "./constants";
 
 export const seoFields = [
   defineField({
     name: "seoTitle",
     title: "SEO meta title override",
-    description:
-      "This will override the meta title. If left blank it will inherit the page title.",
+    description: "This will override the meta title. If left blank it will inherit the page title.",
     type: "string",
     validation: (rule) => rule.warning("A page title is required"),
     group: GROUP.SEO,

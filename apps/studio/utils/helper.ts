@@ -1,6 +1,6 @@
-import { isPortableTextTextBlock, type StringOptions } from "sanity";
+import { isPortableTextTextBlock, type SanityDocument, type StringOptions } from "sanity";
 
-import type { DocumentWithLocale, Page, Tree, TreeNode } from "./types";
+import type { Page, Tree, TreeNode } from "./types";
 
 /**
  * -------------------------------------------------
@@ -37,8 +37,7 @@ export const isValidUrl = (url: string): boolean => {
 /**
  * Capitalises just the first character of a string.
  */
-export const capitalize = (str: string): string =>
-  str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (str: string): string => str.charAt(0).toUpperCase() + str.slice(1);
 
 /**
  * Converts `camelCase` or `PascalCase` to `Title Case`.
@@ -54,7 +53,7 @@ export const getTitleCase = (name: string): string => {
  */
 export const createRadioListLayout = (
   items: Array<string | { title: string; value: string }>,
-  options?: StringOptions
+  options?: StringOptions,
 ): StringOptions => {
   const list = items.map((item) => {
     if (typeof item === "string") {
@@ -79,7 +78,7 @@ export const createRadioListLayout = (
  */
 export const parseRichTextToString = (
   value: unknown,
-  maxWords: number | undefined = undefined
+  maxWords: number | undefined = undefined,
 ): string => {
   if (!Array.isArray(value)) return "No Content";
 
@@ -91,8 +90,7 @@ export const parseRichTextToString = (
       .filter(Boolean)
       .join(" ");
   });
-  if (maxWords)
-    return `${text.join(" ").split(" ").slice(0, maxWords).join(" ")}...`;
+  if (maxWords) return `${text.join(" ").split(" ").slice(0, maxWords).join(" ")}...`;
   return text.join(" ");
 };
 
@@ -125,14 +123,9 @@ export interface RetryOptions {
  */
 export const retryPromise = async <T>(
   promiseFn: () => Promise<T>,
-  options: RetryOptions = {}
+  options: RetryOptions = {},
 ): Promise<T> => {
-  const {
-    maxRetries = 3,
-    initialDelay = 1000,
-    maxDelay = 30000,
-    onRetry,
-  } = options;
+  const { maxRetries = 3, initialDelay = 1000, maxDelay = 30000, onRetry } = options;
 
   for (let attempts = 0; attempts < maxRetries; attempts++) {
     try {
@@ -140,13 +133,10 @@ export const retryPromise = async <T>(
     } catch (error) {
       const isLastAttempt = attempts === maxRetries - 1;
       if (isLastAttempt) {
-        throw error instanceof Error
-          ? error
-          : new Error("Promise retry failed");
+        throw error instanceof Error ? error : new Error("Promise retry failed");
       }
 
-      const normalizedError =
-        error instanceof Error ? error : new Error("Unknown error");
+      const normalizedError = error instanceof Error ? error : new Error("Unknown error");
       if (onRetry) {
         onRetry(normalizedError, attempts + 1);
       }
@@ -164,10 +154,7 @@ export const retryPromise = async <T>(
 export const pathnameToTitle = (pathname: string): string => {
   if (pathname === "/") return "Home";
   const lastSegment = pathname.split("/").filter(Boolean).pop() || "";
-  return lastSegment
-    .charAt(0)
-    .toUpperCase()
-    .concat(lastSegment.slice(1).replace(/-/g, " "));
+  return lastSegment.charAt(0).toUpperCase().concat(lastSegment.slice(1).replace(/-/g, " "));
 };
 
 /**
@@ -176,11 +163,7 @@ export const pathnameToTitle = (pathname: string): string => {
 export const buildTree = (pages: Page[]): Tree => {
   const root: Tree = {};
 
-  const createNode = (
-    item: Page,
-    pathSoFar: string,
-    isFolder: boolean
-  ): TreeNode => {
+  const createNode = (item: Page, pathSoFar: string, isFolder: boolean): TreeNode => {
     return {
       ...item,
       slug: pathSoFar,
@@ -192,11 +175,7 @@ export const buildTree = (pages: Page[]): Tree => {
     };
   };
 
-  const processSegments = (
-    item: Page,
-    segments: string[],
-    currentFolder: Tree
-  ): void => {
+  const processSegments = (item: Page, segments: string[], currentFolder: Tree): void => {
     let pathSoFar = "";
 
     segments.forEach((segment, index) => {
@@ -220,8 +199,7 @@ export const buildTree = (pages: Page[]): Tree => {
   };
 
   for (const page of pages) {
-    const segments =
-      page.slug === "/" ? [""] : page.slug?.split("/").filter(Boolean) || [];
+    const segments = page.slug === "/" ? [""] : page.slug?.split("/").filter(Boolean) || [];
     processSegments(page, segments, root);
   }
 
@@ -277,19 +255,14 @@ export const getPathVariations = (path: string | undefined): string[] => {
 
   const normalizedPath = formatPath(path).slice(1); // Remove leading slash
 
-  return [
-    normalizedPath,
-    `/${normalizedPath}/`,
-    `${normalizedPath}/`,
-    `/${normalizedPath}`,
-  ];
+  return [normalizedPath, `/${normalizedPath}/`, `${normalizedPath}/`, `/${normalizedPath}`];
 };
 
 export const getTemplateName = (template: string) => {
   return `${template}-with-slug`;
 };
 
-export const getDocumentPath = (document: DocumentWithLocale) => {
+export const getDocumentPath = (document: SanityDocument) => {
   if (typeof document.slug !== "string") return;
   return formatPath(document.slug);
 };
@@ -350,9 +323,7 @@ export const createPageTemplate = () => {
       title: `${page.title} with slug`,
       value: (props: { slug?: string }) => {
         return {
-          ...(props.slug
-            ? { slug: { current: props.slug, _type: "slug" } }
-            : {}),
+          ...(props.slug ? { slug: { current: props.slug, _type: "slug" } } : {}),
         };
       },
       parameters: [
