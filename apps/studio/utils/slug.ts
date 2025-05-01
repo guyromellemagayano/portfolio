@@ -6,6 +6,8 @@ import {
 } from "sanity";
 import slugify from "slugify";
 
+import { SlugField } from "@studio/components";
+
 import type { PathnameParams } from "./types";
 
 /**
@@ -16,9 +18,7 @@ import type { PathnameParams } from "./types";
  *   through `schema`.
  * - Injects the `isUnique` validator unless one is already provided.
  */
-export const defineSlug = (
-  schema: PathnameParams = { name: "slug" }
-): FieldDefinition<"slug"> => {
+export const defineSlug = (schema: PathnameParams = { name: "slug" }): FieldDefinition<"slug"> => {
   const slugOptions = schema?.options;
 
   return defineField({
@@ -28,7 +28,7 @@ export const defineSlug = (
     type: "slug",
     components: {
       ...schema.components,
-      // field: schema.components?.field ?? PathnameFieldComponent,
+      field: schema.components?.field ?? SlugField,
     },
     options: {
       ...(slugOptions ?? {}),
@@ -41,12 +41,9 @@ export const defineSlug = (
  * Checks whether another document (excluding drafts of the same doc) already
  * uses the proposed slug. Returns `true` when **no** conflicts are found.
  */
-export const isUnique = async (
-  slug: string,
-  context: SlugValidationContext
-): Promise<boolean> => {
+export const isUnique = async (slug: string, context: SlugValidationContext): Promise<boolean> => {
   const { document, getClient } = context;
-  const client = getClient({ apiVersion: "2023-06-21" });
+  const client = getClient({ apiVersion: "2025-02-10" });
   const id = document?._id.replace(/^drafts\./, "");
   const params = {
     draft: `drafts.${id}`,
@@ -65,8 +62,7 @@ export const isUnique = async (
  * e.g. `blogPost` to `"blogPost"`, but core pages like `"page"` return an empty
  * string so that `/page-title` isn’t double-prefixed.
  */
-export const getDocTypePrefix = (type: string): string =>
-  ["page"].includes(type) ? "" : type;
+export const getDocTypePrefix = (type: string): string => (["page"].includes(type) ? "" : type);
 
 /**
  * Serves as a slugifier.
@@ -75,11 +71,7 @@ export const getDocTypePrefix = (type: string): string =>
  * - Otherwise slugifies the input text, prepending a doc-type prefix where
  *   applicable, and always returns an **absolute** path that begins with `/`.
  */
-export const createSlug: SlugifierFn = (
-  input,
-  _,
-  { parent }
-): string | Promise<string> => {
+export const createSlug: SlugifierFn = (input, _, { parent }): string | Promise<string> => {
   const { _type } = parent as {
     _type: string;
   };
