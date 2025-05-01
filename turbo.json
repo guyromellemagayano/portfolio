@@ -13,14 +13,7 @@
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": ["^build"],
-      "outputs": [
-        "build/**",
-        "dist/**",
-        ".next/**",
-        ".vercel/**",
-        ".sanity/**",
-        "!**/.next/cache/**"
-      ]
+      "outputs": ["build/**", "dist/**", ".next/**", ".vercel/**", ".sanity/**", "!.next/cache/**"]
     },
     "test": {
       "inputs": ["$TURBO_DEFAULT$"],
