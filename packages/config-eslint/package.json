@@ -1,8 +1,8 @@
 {
   "name": "@guyromellemagayano/eslint-config",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "exports": {
     ".": "./index.js",
     "./next": "./next.js",
@@ -19,13 +19,15 @@
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-prettier": "^5.2.5",
+    "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-turbo": "^2.4.4",
     "globals": "^15.14.0",
-    "prettier": "^3.5.3",
     "typescript-eslint": "^8.22.0"
+  },
+  "peerDependencies": {
+    "prettier": "^3.5.3"
   }
 }
