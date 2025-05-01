@@ -1,16 +1,16 @@
 {
   "name": "studio",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
+  "type": "module",
   "scripts": {
+    "build": "sanity build",
+    "check-types": "tsc --noEmit",
+    "deploy": "sanity deploy",
     "dev": "sanity dev",
     "format": "prettier --write .",
-    "start": "sanity start",
     "lint": "eslint .",
-    "build": "sanity build",
-    "deploy": "sanity deploy",
-    "check-types": "tsc --noEmit",
+    "start": "sanity start",
     "test": "echo 'Add test script here'",
     "type": "sanity schema extract --enforce-required-fields && sanity typegen generate"
   },
@@ -43,10 +43,10 @@
     "@types/jsdom": "^21.1.7",
     "@types/node": "^22",
     "@types/react": "^18.3.18",
-    "eslint": "^9.20.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.2.6",
-    "eslint-plugin-simple-import-sort": "^12.1.1",
     "jsdom": "^26.1.0"
+  },
+  "peerDependencies": {
+    "eslint": "^9.20.0",
+    "prettier": "^3.5.3"
   }
 }
