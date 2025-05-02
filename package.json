@@ -7,7 +7,7 @@
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
     "commit": "czg gpg",
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --parallel",
     "format": "prettier \"**/*.{js,jsx,ts,tsx,json,css,md,mdx}\" --write",
     "format:check": "prettier \"**/*.{js,jsx,ts,tsx,json,css,md,mdx}\" --check",
     "lint": "turbo run lint",
