@@ -36,7 +36,7 @@
       "persistent": true
     },
     "format": {
-      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*", ".prettierrc*"],
+      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*"],
       "outputs": [],
       "dependsOn": []
     }
