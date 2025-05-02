@@ -15,6 +15,7 @@
     "type": "sanity schema extract --enforce-required-fields && sanity typegen generate"
   },
   "dependencies": {
+    "@guyromellemagayano/components": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
     "@sanity/assist": "^3.2.2",
     "@sanity/client": "^6.29.1",
