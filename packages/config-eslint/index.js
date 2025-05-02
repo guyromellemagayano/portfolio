@@ -1,10 +1,10 @@
+import js from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginOnlyWarn from "eslint-plugin-only-warn";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
-import js from "@eslint/js";
 
 /**
  * A shared ESLint configuration for the repository.
