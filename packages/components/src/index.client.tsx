@@ -5,325 +5,325 @@ import { forwardRef, memo } from "react";
 import {
   A,
   Abbr,
-  Address,
-  Area,
-  Article,
-  Aside,
-  Audio,
-  B,
-  Base,
-  Bdi,
-  Bdo,
-  Blockquote,
-  Body,
-  Br,
-  Canvas,
-  Caption,
-  Cite,
-  Code,
-  Col,
-  Colgroup,
-  Data,
-  Datalist,
-  Dd,
-  Del,
-  Details,
-  Dfn,
-  Dialog,
-  Div,
-  Dl,
-  Dt,
-  Em,
-  Embed,
-  Fieldset,
-  Figcaption,
-  Figure,
-  Footer,
-  Form,
-  Head,
-  Header,
-  Heading,
-  Hgroup,
-  Hr,
-  Html,
-  I,
-  Iframe,
-  Img,
-  Input,
-  Ins,
-  Kbd,
-  Label,
-  Legend,
-  Li,
-  Link,
-  Main,
-  Map,
-  Mark,
-  Menu,
-  Meta,
-  Meter,
-  Nav,
-  Noscript,
-  Object,
-  Ol,
-  Optgroup,
-  Option,
-  Output,
-  Paragraph,
-  Picture,
-  Pre,
-  Progress,
-  Q,
-  Rp,
-  Rt,
-  Ruby,
-  S,
-  Samp,
-  Script,
-  Search,
-  Section,
-  Select,
-  Slot,
-  Small,
-  Source,
-  Span,
-  Strong,
-  Style,
-  Sub,
-  Summary,
-  Sup,
-  Svg,
-  Table,
-  Tbody,
-  Td,
-  Template,
-  Textarea,
-  Tfoot,
-  Th,
-  Thead,
-  Time,
-  Title,
-  Tr,
-  Track,
-  U,
-  Ul,
-  Var,
-  Video,
-  Wbr,
   type AbbrProps,
   type AbbrRef,
+  Address,
   type AddressProps,
   type AddressRef,
   type AProps,
+  Area,
   type AreaProps,
   type AreaRef,
   type ARef,
+  Article,
   type ArticleProps,
   type ArticleRef,
+  Aside,
   type AsideProps,
   type AsideRef,
+  Audio,
   type AudioProps,
   type AudioRef,
+  B,
+  Base,
   type BaseProps,
   type BaseRef,
+  Bdi,
   type BdiProps,
   type BdiRef,
+  Bdo,
   type BdoProps,
   type BdoRef,
+  Blockquote,
   type BlockquoteProps,
   type BlockquoteRef,
+  Body,
   type BodyProps,
   type BodyRef,
   type BProps,
+  Br,
   type BRef,
   type BrProps,
   type BrRef,
   type ButtonProps,
   type ButtonRef,
+  Canvas,
   type CanvasProps,
   type CanvasRef,
+  Caption,
   type CaptionProps,
   type CaptionRef,
+  Cite,
   type CiteProps,
   type CiteRef,
+  Code,
   type CodeProps,
   type CodeRef,
+  Col,
+  Colgroup,
   type ColgroupProps,
   type ColgroupRef,
   type ColProps,
   type ColRef,
+  Data,
+  Datalist,
   type DatalistProps,
   type DatalistRef,
   type DataProps,
   type DataRef,
+  Dd,
   type DdProps,
   type DdRef,
+  Del,
   type DelProps,
   type DelRef,
+  Details,
   type DetailsProps,
   type DetailsRef,
+  Dfn,
   type DfnProps,
   type DfnRef,
+  Dialog,
   type DialogProps,
   type DialogRef,
+  Div,
   type DivProps,
   type DivRef,
+  Dl,
   type DlProps,
   type DlRef,
+  Dt,
   type DtProps,
   type DtRef,
+  Em,
+  Embed,
   type EmbedProps,
   type EmbedRef,
   type EmProps,
   type EmRef,
+  Fieldset,
   type FieldsetProps,
   type FieldsetRef,
+  Figcaption,
   type FigcaptionProps,
   type FigcaptionRef,
+  Figure,
   type FigureProps,
   type FigureRef,
+  Footer,
   type FooterProps,
   type FooterRef,
+  Form,
   type FormProps,
   type FormRef,
+  Head,
+  Header,
   type HeaderProps,
   type HeaderRef,
+  Heading,
   type HeadingProps,
   type HeadingRef,
   type HeadProps,
   type HeadRef,
+  Hgroup,
   type HgroupProps,
   type HgroupRef,
+  Hr,
   type HrProps,
   type HrRef,
+  Html,
   type HtmlProps,
   type HtmlRef,
+  I,
+  Iframe,
   type IframeProps,
   type IframeRef,
+  Img,
   type ImgProps,
   type ImgRef,
+  Input,
   type InputProps,
   type InputRef,
+  Ins,
   type InsProps,
   type InsRef,
   type IProps,
   type IRef,
+  Kbd,
   type KbdProps,
   type KbdRef,
+  Label,
   type LabelProps,
   type LabelRef,
+  Legend,
   type LegendProps,
   type LegendRef,
+  Li,
+  Link,
   type LinkProps,
   type LinkRef,
   type LiProps,
   type LiRef,
+  Main,
   type MainProps,
   type MainRef,
+  Map,
   type MapProps,
   type MapRef,
+  Mark,
   type MarkProps,
   type MarkRef,
+  Menu,
   type MenuProps,
   type MenuRef,
+  Meta,
   type MetaProps,
   type MetaRef,
+  Meter,
   type MeterProps,
   type MeterRef,
+  Nav,
   type NavProps,
   type NavRef,
+  Noscript,
   type NoscriptProps,
   type NoscriptRef,
+  Object,
   type ObjectProps,
   type ObjectRef,
+  Ol,
   type OlProps,
   type OlRef,
+  Optgroup,
   type OptgroupProps,
   type OptgroupRef,
+  Option,
   type OptionProps,
   type OptionRef,
+  Output,
   type OutputProps,
   type OutputRef,
+  Paragraph,
   type ParagraphProps,
   type ParagraphRef,
+  Picture,
   type PictureProps,
   type PictureRef,
+  Pre,
   type PreProps,
   type PreRef,
+  Progress,
   type ProgressProps,
   type ProgressRef,
+  Q,
   type QProps,
   type QRef,
+  Rp,
   type RpProps,
   type RpRef,
+  Rt,
   type RtProps,
   type RtRef,
+  Ruby,
   type RubyProps,
   type RubyRef,
+  S,
+  Samp,
   type SampProps,
   type SampRef,
+  Script,
   type ScriptProps,
   type ScriptRef,
+  Search,
   type SearchProps,
   type SearchRef,
+  Section,
   type SectionProps,
   type SectionRef,
+  Select,
   type SelectProps,
   type SelectRef,
+  Slot,
   type SlotProps,
   type SlotRef,
+  Small,
   type SmallProps,
   type SmallRef,
+  Source,
   type SourceProps,
   type SourceRef,
+  Span,
   type SpanProps,
   type SpanRef,
   type SProps,
   type SRef,
+  Strong,
   type StrongProps,
   type StrongRef,
+  Style,
   type StyleProps,
   type StyleRef,
+  Sub,
   type SubProps,
   type SubRef,
+  Summary,
   type SummaryProps,
   type SummaryRef,
+  Sup,
   type SupProps,
   type SupRef,
+  Svg,
   type SvgProps,
   type SvgRef,
+  Table,
   type TableProps,
   type TableRef,
+  Tbody,
   type TbodyProps,
   type TbodyRef,
+  Td,
   type TdProps,
   type TdRef,
+  Template,
   type TemplateProps,
   type TemplateRef,
+  Textarea,
   type TextareaProps,
   type TextareaRef,
+  Tfoot,
   type TfootProps,
   type TfootRef,
+  Th,
+  Thead,
   type TheadProps,
   type TheadRef,
   type ThProps,
   type ThRef,
+  Time,
   type TimeProps,
   type TimeRef,
+  Title,
   type TitleProps,
   type TitleRef,
+  Tr,
+  Track,
   type TrackProps,
   type TrackRef,
   type TrProps,
   type TrRef,
+  U,
+  Ul,
   type UlProps,
   type UlRef,
   type UProps,
   type URef,
+  Var,
   type VarProps,
   type VarRef,
+  Video,
   type VideoProps,
   type VideoRef,
+  Wbr,
   type WbrProps,
   type WbrRef,
 } from ".";
@@ -341,7 +341,7 @@ export const AClient = forwardRef<ARef, AProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AClient.displayName = "AClient";
 
@@ -361,7 +361,7 @@ export const AbbrClient = forwardRef<AbbrRef, AbbrProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AbbrClient.displayName = "AbbrClient";
 
@@ -381,7 +381,7 @@ export const AddressClient = forwardRef<AddressRef, AddressProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AddressClient.displayName = "AddressClient";
 
@@ -401,7 +401,7 @@ export const AreaClient = forwardRef<AreaRef, AreaProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AreaClient.displayName = "AreaClient";
 
@@ -421,7 +421,7 @@ export const ArticleClient = forwardRef<ArticleRef, ArticleProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ArticleClient.displayName = "ArticleClient";
 
@@ -441,7 +441,7 @@ export const AsideClient = forwardRef<AsideRef, AsideProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AsideClient.displayName = "AsideClient";
 
@@ -461,7 +461,7 @@ export const AudioClient = forwardRef<AudioRef, AudioProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 AudioClient.displayName = "AudioClient";
 
@@ -474,15 +474,13 @@ export const MemoizedAudioClient = memo(AudioClient);
  * @param {BRef} ref - The bring attention to client component reference
  * @returns The rendered bring attention to client component
  */
-export const BClient = forwardRef<BRef, BProps>(
-  ({ as: Component = B, children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const BClient = forwardRef<BRef, BProps>(({ as: Component = B, children, ...rest }, ref) => {
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  );
+});
 BClient.displayName = "BClient";
 
 // Memoized version of `BClient`.
@@ -501,7 +499,7 @@ export const BaseClient = forwardRef<BaseRef, BaseProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 BaseClient.displayName = "BaseClient";
 
@@ -521,7 +519,7 @@ export const BdiClient = forwardRef<BdiRef, BdiProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 BdiClient.displayName = "BdiClient";
 
@@ -541,7 +539,7 @@ export const BdoClient = forwardRef<BdoRef, BdoProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 BdoClient.displayName = "BdoClient";
 
@@ -561,7 +559,7 @@ export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 BlockquoteClient.displayName = "BlockquoteClient";
 
@@ -581,7 +579,7 @@ export const BodyClient = forwardRef<BodyRef, BodyProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 BodyClient.displayName = "BodyClient";
 
@@ -594,11 +592,9 @@ export const MemoizedBodyClient = memo(BodyClient);
  * @param {BrRef} ref - The document line break client component reference
  * @returns The rendered document line break client component
  */
-export const BrClient = forwardRef<BrRef, BrProps>(
-  ({ as: Component = Br, ...rest }, ref) => {
-    return <Component ref={ref} {...rest} />;
-  }
-);
+export const BrClient = forwardRef<BrRef, BrProps>(({ as: Component = Br, ...rest }, ref) => {
+  return <Component ref={ref} {...rest} />;
+});
 BrClient.displayName = "BrClient";
 
 // Memoized version of `BrClient`.
@@ -617,7 +613,7 @@ export const ButtonClient = forwardRef<ButtonRef, ButtonProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ButtonClient.displayName = "ButtonClient";
 
@@ -637,7 +633,7 @@ export const CanvasClient = forwardRef<CanvasRef, CanvasProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 CanvasClient.displayName = "CanvasClient";
 
@@ -657,7 +653,7 @@ export const CaptionClient = forwardRef<CaptionRef, CaptionProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 CaptionClient.displayName = "CaptionClient";
 
@@ -677,7 +673,7 @@ export const CiteClient = forwardRef<CiteRef, CiteProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 CiteClient.displayName = "CiteClient";
 
@@ -697,7 +693,7 @@ export const CodeClient = forwardRef<CodeRef, CodeProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 CodeClient.displayName = "CodeClient";
 
@@ -710,11 +706,9 @@ export const MemoizedCodeClient = memo(CodeClient);
  * @param {ColRef} ref - The column client component reference
  * @returns The rendered column client component
  */
-export const ColClient = forwardRef<ColRef, ColProps>(
-  ({ as: Component = Col, ...rest }, ref) => {
-    return <Component ref={ref} {...rest} />;
-  }
-);
+export const ColClient = forwardRef<ColRef, ColProps>(({ as: Component = Col, ...rest }, ref) => {
+  return <Component ref={ref} {...rest} />;
+});
 ColClient.displayName = "ColClient";
 
 // Memoized version of `ColClient`.
@@ -733,7 +727,7 @@ export const ColgroupClient = forwardRef<ColgroupRef, ColgroupProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ColgroupClient.displayName = "ColgroupClient";
 
@@ -753,7 +747,7 @@ export const DataClient = forwardRef<DataRef, DataProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DataClient.displayName = "DataClient";
 
@@ -773,7 +767,7 @@ export const DatalistClient = forwardRef<DatalistRef, DatalistProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DatalistClient.displayName = "DatalistClient";
 
@@ -793,7 +787,7 @@ export const DdClient = forwardRef<DdRef, DdProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DdClient.displayName = "DdClient";
 
@@ -813,7 +807,7 @@ export const DelClient = forwardRef<DelRef, DelProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DelClient.displayName = "DelClient";
 
@@ -833,7 +827,7 @@ export const DetailsClient = forwardRef<DetailsRef, DetailsProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DetailsClient.displayName = "DetailsClient";
 
@@ -853,7 +847,7 @@ export const DfnClient = forwardRef<DfnRef, DfnProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DfnClient.displayName = "DfnClient";
 
@@ -873,7 +867,7 @@ export const DialogClient = forwardRef<DialogRef, DialogProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DialogClient.displayName = "DialogClient";
 
@@ -893,7 +887,7 @@ export const DivClient = forwardRef<DivRef, DivProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DivClient.displayName = "DivClient";
 
@@ -913,7 +907,7 @@ export const DlClient = forwardRef<DlRef, DlProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DlClient.displayName = "DlClient";
 
@@ -933,7 +927,7 @@ export const DtClient = forwardRef<DtRef, DtProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 DtClient.displayName = "DtClient";
 
@@ -953,7 +947,7 @@ export const EmClient = forwardRef<EmRef, EmProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 EmClient.displayName = "EmClient";
 
@@ -969,7 +963,7 @@ export const MemoizedEmClient = memo(EmClient);
 export const EmbedClient = forwardRef<EmbedRef, EmbedProps>(
   ({ as: Component = Embed, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 EmbedClient.displayName = "EmbedClient";
 
@@ -989,7 +983,7 @@ export const FieldsetClient = forwardRef<FieldsetRef, FieldsetProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 FieldsetClient.displayName = "FieldsetClient";
 
@@ -1009,7 +1003,7 @@ export const FigcaptionClient = forwardRef<FigcaptionRef, FigcaptionProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 FigcaptionClient.displayName = "FigcaptionClient";
 
@@ -1029,7 +1023,7 @@ export const FigureClient = forwardRef<FigureRef, FigureProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 FigureClient.displayName = "FigureClient";
 
@@ -1049,7 +1043,7 @@ export const FooterClient = forwardRef<FooterRef, FooterProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 FooterClient.displayName = "FooterClient";
 
@@ -1069,7 +1063,7 @@ export const FormClient = forwardRef<FormRef, FormProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 FormClient.displayName = "FormClient";
 
@@ -1089,7 +1083,7 @@ export const HeadClient = forwardRef<HeadRef, HeadProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 HeadClient.displayName = "HeadClient";
 
@@ -1109,7 +1103,7 @@ export const HeaderClient = forwardRef<HeaderRef, HeaderProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 HeaderClient.displayName = "HeaderClient";
 
@@ -1129,7 +1123,7 @@ export const HeadingClient = forwardRef<HeadingRef, HeadingProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 HeadingClient.displayName = "HeadingClient";
 
@@ -1149,7 +1143,7 @@ export const HgroupClient = forwardRef<HgroupRef, HgroupProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 HgroupClient.displayName = "HgroupClient";
 
@@ -1162,11 +1156,9 @@ export const MemoizedHgroupClient = memo(HgroupClient);
  * @param {HrRef} ref - The thematic break (horizontal rule) client component reference
  * @returns The rendered thematic break (horizontal rule) client component
  */
-export const HrClient = forwardRef<HrRef, HrProps>(
-  ({ as: Component = Hr, ...rest }, ref) => {
-    return <Component ref={ref} {...rest} />;
-  }
-);
+export const HrClient = forwardRef<HrRef, HrProps>(({ as: Component = Hr, ...rest }, ref) => {
+  return <Component ref={ref} {...rest} />;
+});
 HrClient.displayName = "HrClient";
 
 // Memoized version of `HrClient`.
@@ -1185,7 +1177,7 @@ export const HtmlClient = forwardRef<HtmlRef, HtmlProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 HtmlClient.displayName = "HtmlClient";
 
@@ -1198,15 +1190,13 @@ export const MemoizedHtmlClient = memo(HtmlClient);
  * @param {IRef} ref - The idiomatic text client component reference
  * @returns The rendered idiomatic text client component
  */
-export const IClient = forwardRef<IRef, IProps>(
-  ({ as: Component = I, children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const IClient = forwardRef<IRef, IProps>(({ as: Component = I, children, ...rest }, ref) => {
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  );
+});
 IClient.displayName = "IClient";
 
 // Memoized version of `IClient`.
@@ -1221,7 +1211,7 @@ export const MemoizedIClient = memo(IClient);
 export const IframeClient = forwardRef<IframeRef, IframeProps>(
   ({ as: Component = Iframe, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 IframeClient.displayName = "IframeClient";
 
@@ -1237,7 +1227,7 @@ export const MemoizedIframeClient = memo(IframeClient);
 export const ImgClient = forwardRef<ImgRef, ImgProps>(
   ({ as: Component = Img, src, alt, ...rest }, ref) => {
     return <Component ref={ref} src={src} alt={alt} {...rest} />;
-  }
+  },
 );
 ImgClient.displayName = "ImgClient";
 
@@ -1253,7 +1243,7 @@ export const MemoizedImgClient = memo(ImgClient);
 export const InputClient = forwardRef<InputRef, InputProps>(
   ({ as: Component = Input, type, ...rest }, ref) => {
     return <Component ref={ref} type={type} {...rest} />;
-  }
+  },
 );
 InputClient.displayName = "InputClient";
 
@@ -1273,7 +1263,7 @@ export const InsClient = forwardRef<InsRef, InsProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 InsClient.displayName = "InsClient";
 
@@ -1293,7 +1283,7 @@ export const KbdClient = forwardRef<KbdRef, KbdProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 KbdClient.displayName = "KbdClient";
 
@@ -1313,7 +1303,7 @@ export const LabelClient = forwardRef<LabelRef, LabelProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 LabelClient.displayName = "LabelClient";
 
@@ -1333,7 +1323,7 @@ export const LegendClient = forwardRef<LegendRef, LegendProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 LegendClient.displayName = "LegendClient";
 
@@ -1353,7 +1343,7 @@ export const LiClient = forwardRef<LiRef, LiProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 LiClient.displayName = "LiClient";
 
@@ -1369,7 +1359,7 @@ export const MemoizedLiClient = memo(LiClient);
 export const LinkClient = forwardRef<LinkRef, LinkProps>(
   ({ as: Component = Link, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 LinkClient.displayName = "LinkClient";
 
@@ -1389,7 +1379,7 @@ export const MainClient = forwardRef<MainRef, MainProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 MainClient.displayName = "MainClient";
 
@@ -1409,7 +1399,7 @@ export const MapClient = forwardRef<MapRef, MapProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 MapClient.displayName = "MapClient";
 
@@ -1429,7 +1419,7 @@ export const MarkClient = forwardRef<MarkRef, MarkProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 MarkClient.displayName = "MarkClient";
 
@@ -1449,7 +1439,7 @@ export const MenuClient = forwardRef<MenuRef, MenuProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 MenuClient.displayName = "MenuClient";
 
@@ -1465,7 +1455,7 @@ export const MemoizedMenuClient = memo(MenuClient);
 export const MetaClient = forwardRef<MetaRef, MetaProps>(
   ({ as: Component = Meta, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 MetaClient.displayName = "MetaClient";
 
@@ -1485,7 +1475,7 @@ export const MeterClient = forwardRef<MeterRef, MeterProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 MeterClient.displayName = "MeterClient";
 
@@ -1505,7 +1495,7 @@ export const NavClient = forwardRef<NavRef, NavProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 NavClient.displayName = "NavClient";
 
@@ -1525,7 +1515,7 @@ export const NoscriptClient = forwardRef<NoscriptRef, NoscriptProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 NoscriptClient.displayName = "NoscriptClient";
 
@@ -1545,7 +1535,7 @@ export const ObjectClient = forwardRef<ObjectRef, ObjectProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ObjectClient.displayName = "ObjectClient";
 
@@ -1565,7 +1555,7 @@ export const OlClient = forwardRef<OlRef, OlProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 OlClient.displayName = "OlClient";
 
@@ -1585,7 +1575,7 @@ export const OptgroupClient = forwardRef<OptgroupRef, OptgroupProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 OptgroupClient.displayName = "OptgroupClient";
 
@@ -1605,7 +1595,7 @@ export const OptionClient = forwardRef<OptionRef, OptionProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 OptionClient.displayName = "OptionClient";
 
@@ -1625,7 +1615,7 @@ export const OutputClient = forwardRef<OutputRef, OutputProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 OutputClient.displayName = "OutputClient";
 
@@ -1645,7 +1635,7 @@ export const ParagraphClient = forwardRef<ParagraphRef, ParagraphProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ParagraphClient.displayName = "ParagraphClient";
 
@@ -1665,7 +1655,7 @@ export const PictureClient = forwardRef<PictureRef, PictureProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 PictureClient.displayName = "PictureClient";
 
@@ -1685,7 +1675,7 @@ export const PreClient = forwardRef<PreRef, PreProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 PreClient.displayName = "PreClient";
 
@@ -1705,7 +1695,7 @@ export const ProgressClient = forwardRef<ProgressRef, ProgressProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ProgressClient.displayName = "ProgressClient";
 
@@ -1718,15 +1708,13 @@ export const MemoizedProgressClient = memo(ProgressClient);
  * @param {QRef} ref - The inline quotation client component reference
  * @returns The rendered inline quotation client component
  */
-export const QClient = forwardRef<QRef, QProps>(
-  ({ as: Component = Q, children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const QClient = forwardRef<QRef, QProps>(({ as: Component = Q, children, ...rest }, ref) => {
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  );
+});
 QClient.displayName = "QClient";
 
 // Memoized version of `QClient`.
@@ -1745,7 +1733,7 @@ export const RpClient = forwardRef<RpRef, RpProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 RpClient.displayName = "RpClient";
 
@@ -1765,7 +1753,7 @@ export const RtClient = forwardRef<RtRef, RtProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 RtClient.displayName = "RtClient";
 
@@ -1785,7 +1773,7 @@ export const RubyClient = forwardRef<RubyRef, RubyProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 RubyClient.displayName = "RubyClient";
 
@@ -1798,15 +1786,13 @@ export const MemoizedRubyClient = memo(RubyClient);
  * @param {SRef} ref - The strikethrough client component reference
  * @returns The rendered strikethrough client component
  */
-export const SClient = forwardRef<SRef, SProps>(
-  ({ as: Component = S, children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const SClient = forwardRef<SRef, SProps>(({ as: Component = S, children, ...rest }, ref) => {
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  );
+});
 SClient.displayName = "SClient";
 
 // Memoized version of `SClient`.
@@ -1825,7 +1811,7 @@ export const SampClient = forwardRef<SampRef, SampProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SampClient.displayName = "SampClient";
 
@@ -1845,7 +1831,7 @@ export const ScriptClient = forwardRef<ScriptRef, ScriptProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ScriptClient.displayName = "ScriptClient";
 
@@ -1865,7 +1851,7 @@ export const SearchClient = forwardRef<SearchRef, SearchProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SearchClient.displayName = "SearchClient";
 
@@ -1885,7 +1871,7 @@ export const SectionClient = forwardRef<SectionRef, SectionProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SectionClient.displayName = "SectionClient";
 
@@ -1905,7 +1891,7 @@ export const SelectClient = forwardRef<SelectRef, SelectProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SelectClient.displayName = "SelectClient";
 
@@ -1925,7 +1911,7 @@ export const SlotClient = forwardRef<SlotRef, SlotProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SlotClient.displayName = "SlotClient";
 
@@ -1945,7 +1931,7 @@ export const SmallClient = forwardRef<SmallRef, SmallProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SmallClient.displayName = "SmallClient";
 
@@ -1961,7 +1947,7 @@ export const MemoizedSmallClient = memo(SmallClient);
 export const SourceClient = forwardRef<SourceRef, SourceProps>(
   ({ as: Component = Source, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 SourceClient.displayName = "SourceClient";
 
@@ -1981,7 +1967,7 @@ export const SpanClient = forwardRef<SpanRef, SpanProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SpanClient.displayName = "SpanClient";
 
@@ -2001,7 +1987,7 @@ export const StrongClient = forwardRef<StrongRef, StrongProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 StrongClient.displayName = "StrongClient";
 
@@ -2021,7 +2007,7 @@ export const StyleClient = forwardRef<StyleRef, StyleProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 StyleClient.displayName = "StyleClient";
 
@@ -2041,7 +2027,7 @@ export const SubClient = forwardRef<SubRef, SubProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SubClient.displayName = "SubClient";
 
@@ -2061,7 +2047,7 @@ export const SummaryClient = forwardRef<SummaryRef, SummaryProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SummaryClient.displayName = "SummaryClient";
 
@@ -2081,7 +2067,7 @@ export const SupClient = forwardRef<SupRef, SupProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SupClient.displayName = "SupClient";
 
@@ -2101,7 +2087,7 @@ export const SvgClient = forwardRef<SvgRef, SvgProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 SvgClient.displayName = "SvgClient";
 
@@ -2121,7 +2107,7 @@ export const TableClient = forwardRef<TableRef, TableProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TableClient.displayName = "TableClient";
 
@@ -2141,7 +2127,7 @@ export const TbodyClient = forwardRef<TbodyRef, TbodyProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TbodyClient.displayName = "TbodyClient";
 
@@ -2161,7 +2147,7 @@ export const TdClient = forwardRef<TdRef, TdProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TdClient.displayName = "TdClient";
 
@@ -2181,7 +2167,7 @@ export const TemplateClient = forwardRef<TemplateRef, TemplateProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TemplateClient.displayName = "TemplateClient";
 
@@ -2201,7 +2187,7 @@ export const TextareaClient = forwardRef<TextareaRef, TextareaProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TextareaClient.displayName = "TextareaClient";
 
@@ -2221,7 +2207,7 @@ export const TfootClient = forwardRef<TfootRef, TfootProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TfootClient.displayName = "TfootClient";
 
@@ -2241,7 +2227,7 @@ export const ThClient = forwardRef<ThRef, ThProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 ThClient.displayName = "ThClient";
 
@@ -2261,7 +2247,7 @@ export const TheadClient = forwardRef<TheadRef, TheadProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TheadClient.displayName = "TheadClient";
 
@@ -2281,7 +2267,7 @@ export const TimeClient = forwardRef<TimeRef, TimeProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TimeClient.displayName = "TimeClient";
 
@@ -2301,7 +2287,7 @@ export const TitleClient = forwardRef<TitleRef, TitleProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TitleClient.displayName = "TitleClient";
 
@@ -2321,7 +2307,7 @@ export const TrClient = forwardRef<TrRef, TrProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 TrClient.displayName = "TrClient";
 
@@ -2337,7 +2323,7 @@ export const MemoizedTrClient = memo(TrClient);
 export const TrackClient = forwardRef<TrackRef, TrackProps>(
   ({ as: Component = Track, ...rest }, ref) => {
     return <Component ref={ref} {...rest} />;
-  }
+  },
 );
 TrackClient.displayName = "TrackClient";
 
@@ -2350,15 +2336,13 @@ export const MemoizedTrackClient = memo(TrackClient);
  * @param {URef} ref - The unarticulated annotation (underline) client component reference
  * @returns The rendered unarticulated annotation (underline) client component
  */
-export const UClient = forwardRef<URef, UProps>(
-  ({ as: Component = U, children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const UClient = forwardRef<URef, UProps>(({ as: Component = U, children, ...rest }, ref) => {
+  return (
+    <Component ref={ref} {...rest}>
+      {children}
+    </Component>
+  );
+});
 UClient.displayName = "UClient";
 
 // Memoized version of `UClient`.
@@ -2377,7 +2361,7 @@ export const UlClient = forwardRef<UlRef, UlProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 UlClient.displayName = "UlClient";
 
@@ -2397,7 +2381,7 @@ export const VarClient = forwardRef<VarRef, VarProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 VarClient.displayName = "VarClient";
 
@@ -2417,7 +2401,7 @@ export const VideoClient = forwardRef<VideoRef, VideoProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 VideoClient.displayName = "VideoClient";
 
@@ -2430,11 +2414,9 @@ export const MemoizedVideoClient = memo(VideoClient);
  * @param {WbrRef} ref - The line break opportunity client component reference
  * @returns The rendered line break opportunity client component
  */
-export const WbrClient = forwardRef<WbrRef, WbrProps>(
-  ({ as: Component = Wbr, ...rest }, ref) => {
-    return <Component ref={ref} {...rest} />;
-  }
-);
+export const WbrClient = forwardRef<WbrRef, WbrProps>(({ as: Component = Wbr, ...rest }, ref) => {
+  return <Component ref={ref} {...rest} />;
+});
 WbrClient.displayName = "WbrClient";
 
 // Memoized version of `WbrClient`.

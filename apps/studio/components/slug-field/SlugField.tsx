@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
+
 import { CopyIcon, EditIcon, FolderIcon, WarningOutlineIcon } from "@sanity/icons";
 import { Badge, Box, Button, Card, Flex, Stack, Text, TextInput } from "@sanity/ui";
 import {
@@ -151,6 +152,7 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
   }, []);
 
   const handleBlur = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (e: FocusEvent<HTMLInputElement>) => {
       setFolderLocked(segments.length > 1);
     },

@@ -65,6 +65,7 @@ export const homePage = defineType({
       description: "description",
       slug: "slug.current",
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     prepare: ({ title, description, slug }) => ({
       title: title || "Untitled Home Page",
       media: HomeIcon,
