@@ -1,7 +1,7 @@
-import "./styles.css";
-
 import { CounterButton } from "@guyromellemagayano/ui/counter-button";
 import { Link } from "@guyromellemagayano/ui/link";
+
+import "./styles.css";
 
 function App() {
   return (

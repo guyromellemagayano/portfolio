@@ -59,8 +59,7 @@ const MemoizedAbbrClient = lazy(async () => {
 });
 
 export type AbbrRef = React.ElementRef<"abbr">;
-export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> &
-  CommonComponentProps;
+export type AbbrProps = React.ComponentPropsWithoutRef<"abbr"> & CommonComponentProps;
 
 /**
  * Render the default abbreviation server component.
@@ -100,8 +99,7 @@ const MemoizedAddressClient = lazy(async () => {
 });
 
 export type AddressRef = React.ElementRef<"address">;
-export type AddressProps = React.ComponentPropsWithoutRef<"address"> &
-  CommonComponentProps;
+export type AddressProps = React.ComponentPropsWithoutRef<"address"> & CommonComponentProps;
 
 /**
  * Render the default address server component.
@@ -141,8 +139,7 @@ const MemoizedAreaClient = lazy(async () => {
 });
 
 export type AreaRef = React.ElementRef<"area">;
-export type AreaProps = React.ComponentPropsWithoutRef<"area"> &
-  CommonComponentProps;
+export type AreaProps = React.ComponentPropsWithoutRef<"area"> & CommonComponentProps;
 
 /**
  * Render the default area server component.
@@ -189,8 +186,7 @@ const MemoizedArticleClient = lazy(async () => {
 });
 
 export type ArticleRef = React.ElementRef<"article">;
-export type ArticleProps = React.ComponentPropsWithoutRef<"article"> &
-  CommonComponentProps;
+export type ArticleProps = React.ComponentPropsWithoutRef<"article"> & CommonComponentProps;
 
 /**
  * Render the default article server component.
@@ -230,8 +226,7 @@ const MemoizedAsideClient = lazy(async () => {
 });
 
 export type AsideRef = React.ElementRef<"aside">;
-export type AsideProps = React.ComponentPropsWithoutRef<"aside"> &
-  CommonComponentProps;
+export type AsideProps = React.ComponentPropsWithoutRef<"aside"> & CommonComponentProps;
 
 /**
  * Render the default aside server component.
@@ -271,8 +266,7 @@ const MemoizedAudioClient = lazy(async () => {
 });
 
 export type AudioRef = React.ElementRef<"audio">;
-export type AudioProps = React.ComponentPropsWithoutRef<"audio"> &
-  CommonComponentProps;
+export type AudioProps = React.ComponentPropsWithoutRef<"audio"> & CommonComponentProps;
 
 /**
  * Render the default audio server component.
@@ -352,8 +346,7 @@ const MemoizedBaseClient = lazy(async () => {
 });
 
 export type BaseRef = React.ElementRef<"base">;
-export type BaseProps = React.ComponentPropsWithoutRef<"base"> &
-  CommonComponentProps;
+export type BaseProps = React.ComponentPropsWithoutRef<"base"> & CommonComponentProps;
 
 /**
  * Render the default base server component.
@@ -393,8 +386,7 @@ const MemoizedBdiClient = lazy(async () => {
 });
 
 export type BdiRef = React.ElementRef<"bdi">;
-export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> &
-  CommonComponentProps;
+export type BdiProps = React.ComponentPropsWithoutRef<"bdi"> & CommonComponentProps;
 
 /**
  * Render the default bidirectional isolate server component.
@@ -434,8 +426,7 @@ const MemoizedBdoClient = lazy(async () => {
 });
 
 export type BdoRef = React.ElementRef<"bdo">;
-export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> &
-  CommonComponentProps;
+export type BdoProps = React.ComponentPropsWithoutRef<"bdo"> & CommonComponentProps;
 
 /**
  * Render the default bidirectional text override server component.
@@ -475,8 +466,7 @@ const MemoizedBlockquoteClient = lazy(async () => {
 });
 
 export type BlockquoteRef = React.ElementRef<"blockquote">;
-export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> &
-  CommonComponentProps;
+export type BlockquoteProps = React.ComponentPropsWithoutRef<"blockquote"> & CommonComponentProps;
 
 /**
  * Render the default blockquote server component.
@@ -493,9 +483,7 @@ export const Blockquote = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedBlockquoteClient
-      : BlockquoteClient;
+    const ClientComponent = isMemoized ? MemoizedBlockquoteClient : BlockquoteClient;
 
     return (
       <Suspense fallback={element}>
@@ -518,8 +506,7 @@ const MemoizedBodyClient = lazy(async () => {
 });
 
 export type BodyRef = React.ElementRef<"body">;
-export type BodyProps = React.ComponentPropsWithoutRef<"body"> &
-  CommonComponentProps;
+export type BodyProps = React.ComponentPropsWithoutRef<"body"> & CommonComponentProps;
 
 /**
  * Render the default document body server component.
@@ -559,8 +546,7 @@ const MemoizedBrClient = lazy(async () => {
 });
 
 export type BrRef = React.ElementRef<"br">;
-export type BrProps = React.ComponentPropsWithoutRef<"br"> &
-  CommonComponentProps;
+export type BrProps = React.ComponentPropsWithoutRef<"br"> & CommonComponentProps;
 
 /**
  * Render the default line break server component.
@@ -599,8 +585,7 @@ const MemoizedButtonClient = lazy(async () => {
 });
 
 export type ButtonRef = React.ElementRef<"button">;
-export type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
-  CommonComponentProps;
+export type ButtonProps = React.ComponentPropsWithoutRef<"button"> & CommonComponentProps;
 
 /**
  * Render the default button server component.
@@ -647,8 +632,7 @@ const MemoizedCanvasClient = lazy(async () => {
 });
 
 export type CanvasRef = React.ElementRef<"canvas">;
-export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> &
-  CommonComponentProps;
+export type CanvasProps = React.ComponentPropsWithoutRef<"canvas"> & CommonComponentProps;
 
 /**
  * Render the default canvas server component.
@@ -688,8 +672,7 @@ const MemoizedCaptionClient = lazy(async () => {
 });
 
 export type CaptionRef = React.ElementRef<"caption">;
-export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> &
-  CommonComponentProps;
+export type CaptionProps = React.ComponentPropsWithoutRef<"caption"> & CommonComponentProps;
 
 /**
  * Render the default caption server component.
@@ -729,8 +712,7 @@ const MemoizedCiteClient = lazy(async () => {
 });
 
 export type CiteRef = React.ElementRef<"cite">;
-export type CiteProps = React.ComponentPropsWithoutRef<"cite"> &
-  CommonComponentProps;
+export type CiteProps = React.ComponentPropsWithoutRef<"cite"> & CommonComponentProps;
 
 /**
  * Render the default cite server component.
@@ -770,8 +752,7 @@ const MemoizedCodeClient = lazy(async () => {
 });
 
 export type CodeRef = React.ElementRef<"code">;
-export type CodeProps = React.ComponentPropsWithoutRef<"code"> &
-  CommonComponentProps;
+export type CodeProps = React.ComponentPropsWithoutRef<"code"> & CommonComponentProps;
 
 /**
  * Render the default code server component.
@@ -811,8 +792,7 @@ const MemoizedColClient = lazy(async () => {
 });
 
 export type ColRef = React.ElementRef<"col">;
-export type ColProps = React.ComponentPropsWithoutRef<"col"> &
-  CommonComponentProps;
+export type ColProps = React.ComponentPropsWithoutRef<"col"> & CommonComponentProps;
 
 /**
  * Render the default column server component.
@@ -851,8 +831,7 @@ const MemoizedColgroupClient = lazy(async () => {
 });
 
 export type ColgroupRef = React.ElementRef<"colgroup">;
-export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> &
-  CommonComponentProps;
+export type ColgroupProps = React.ComponentPropsWithoutRef<"colgroup"> & CommonComponentProps;
 
 /**
  * Render the default table column group server component.
@@ -869,9 +848,7 @@ export const Colgroup = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedColgroupClient
-      : ColgroupClient;
+    const ClientComponent = isMemoized ? MemoizedColgroupClient : ColgroupClient;
 
     return (
       <Suspense fallback={element}>
@@ -894,8 +871,7 @@ const MemoizedDataClient = lazy(async () => {
 });
 
 export type DataRef = React.ElementRef<"data">;
-export type DataProps = React.ComponentPropsWithoutRef<"data"> &
-  CommonComponentProps;
+export type DataProps = React.ComponentPropsWithoutRef<"data"> & CommonComponentProps;
 
 /**
  * Render the default data server component.
@@ -935,8 +911,7 @@ const MemoizedDatalistClient = lazy(async () => {
 });
 
 export type DatalistRef = React.ElementRef<"datalist">;
-export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> &
-  CommonComponentProps;
+export type DatalistProps = React.ComponentPropsWithoutRef<"datalist"> & CommonComponentProps;
 
 /**
  * Render the default datalist server component.
@@ -953,9 +928,7 @@ export const Datalist = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedDatalistClient
-      : DatalistClient;
+    const ClientComponent = isMemoized ? MemoizedDatalistClient : DatalistClient;
 
     return (
       <Suspense fallback={element}>
@@ -978,8 +951,7 @@ const MemoizedDdClient = lazy(async () => {
 });
 
 export type DdRef = React.ElementRef<"dd">;
-export type DdProps = React.ComponentPropsWithoutRef<"dd"> &
-  CommonComponentProps;
+export type DdProps = React.ComponentPropsWithoutRef<"dd"> & CommonComponentProps;
 
 /**
  * Render the default description details server component.
@@ -1019,8 +991,7 @@ const MemoizedDelClient = lazy(async () => {
 });
 
 export type DelRef = React.ElementRef<"del">;
-export type DelProps = React.ComponentPropsWithoutRef<"del"> &
-  CommonComponentProps;
+export type DelProps = React.ComponentPropsWithoutRef<"del"> & CommonComponentProps;
 
 /**
  * Render the default deleted text server component.
@@ -1060,8 +1031,7 @@ const MemoizedDetailsClient = lazy(async () => {
 });
 
 export type DetailsRef = React.ElementRef<"details">;
-export type DetailsProps = React.ComponentPropsWithoutRef<"details"> &
-  CommonComponentProps;
+export type DetailsProps = React.ComponentPropsWithoutRef<"details"> & CommonComponentProps;
 
 /**
  * Render the default details disclosure server component.
@@ -1101,8 +1071,7 @@ const MemoizedDfnClient = lazy(async () => {
 });
 
 export type DfnRef = React.ElementRef<"dfn">;
-export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> &
-  CommonComponentProps;
+export type DfnProps = React.ComponentPropsWithoutRef<"dfn"> & CommonComponentProps;
 
 /**
  * Render the default definition element server component.
@@ -1142,8 +1111,7 @@ const MemoizedDialogClient = lazy(async () => {
 });
 
 export type DialogRef = React.ElementRef<"dialog">;
-export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> &
-  CommonComponentProps;
+export type DialogProps = React.ComponentPropsWithoutRef<"dialog"> & CommonComponentProps;
 
 /**
  * Render the default dialog server component.
@@ -1183,8 +1151,7 @@ const MemoizedDivClient = lazy(async () => {
 });
 
 export type DivRef = React.ElementRef<"div">;
-export type DivProps = React.ComponentPropsWithoutRef<"div"> &
-  CommonComponentProps;
+export type DivProps = React.ComponentPropsWithoutRef<"div"> & CommonComponentProps;
 
 /**
  * Render the default content division server component.
@@ -1224,8 +1191,7 @@ const MemoizedDlClient = lazy(async () => {
 });
 
 export type DlRef = React.ElementRef<"dl">;
-export type DlProps = React.ComponentPropsWithoutRef<"dl"> &
-  CommonComponentProps;
+export type DlProps = React.ComponentPropsWithoutRef<"dl"> & CommonComponentProps;
 
 /**
  * Render the default description list server component.
@@ -1265,8 +1231,7 @@ const MemoizedDtClient = lazy(async () => {
 });
 
 export type DtRef = React.ElementRef<"dt">;
-export type DtProps = React.ComponentPropsWithoutRef<"dt"> &
-  CommonComponentProps;
+export type DtProps = React.ComponentPropsWithoutRef<"dt"> & CommonComponentProps;
 
 /**
  * Render the default description term server component.
@@ -1306,8 +1271,7 @@ const MemoizedEmClient = lazy(async () => {
 });
 
 export type EmRef = React.ElementRef<"em">;
-export type EmProps = React.ComponentPropsWithoutRef<"em"> &
-  CommonComponentProps;
+export type EmProps = React.ComponentPropsWithoutRef<"em"> & CommonComponentProps;
 
 /**
  * Render the default emphasis server component.
@@ -1347,8 +1311,7 @@ const MemoizedEmbedClient = lazy(async () => {
 });
 
 export type EmbedRef = React.ElementRef<"embed">;
-export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> &
-  CommonComponentProps;
+export type EmbedProps = React.ComponentPropsWithoutRef<"embed"> & CommonComponentProps;
 
 /**
  * Render the default embed external content server component.
@@ -1387,8 +1350,7 @@ const MemoizedFieldsetClient = lazy(async () => {
 });
 
 export type FieldsetRef = React.ElementRef<"fieldset">;
-export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> &
-  CommonComponentProps;
+export type FieldsetProps = React.ComponentPropsWithoutRef<"fieldset"> & CommonComponentProps;
 
 /**
  * Render the default field set server component.
@@ -1405,9 +1367,7 @@ export const Fieldset = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedFieldsetClient
-      : FieldsetClient;
+    const ClientComponent = isMemoized ? MemoizedFieldsetClient : FieldsetClient;
 
     return (
       <Suspense fallback={element}>
@@ -1430,8 +1390,7 @@ const MemoizedFigcaptionClient = lazy(async () => {
 });
 
 export type FigcaptionRef = React.ElementRef<"figcaption">;
-export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> &
-  CommonComponentProps;
+export type FigcaptionProps = React.ComponentPropsWithoutRef<"figcaption"> & CommonComponentProps;
 
 /**
  * Render the default figure caption server component.
@@ -1448,9 +1407,7 @@ export const Figcaption = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedFigcaptionClient
-      : FigcaptionClient;
+    const ClientComponent = isMemoized ? MemoizedFigcaptionClient : FigcaptionClient;
 
     return (
       <Suspense fallback={element}>
@@ -1473,8 +1430,7 @@ const MemoizedFigureClient = lazy(async () => {
 });
 
 export type FigureRef = React.ElementRef<"figure">;
-export type FigureProps = React.ComponentPropsWithoutRef<"figure"> &
-  CommonComponentProps;
+export type FigureProps = React.ComponentPropsWithoutRef<"figure"> & CommonComponentProps;
 
 /**
  * Render the default figure with optional caption server component.
@@ -1514,8 +1470,7 @@ const MemoizedFooterClient = lazy(async () => {
 });
 
 export type FooterRef = React.ElementRef<"footer">;
-export type FooterProps = React.ComponentPropsWithoutRef<"footer"> &
-  CommonComponentProps;
+export type FooterProps = React.ComponentPropsWithoutRef<"footer"> & CommonComponentProps;
 
 /**
  * Render the default footer server component.
@@ -1555,8 +1510,7 @@ const MemoizedFormClient = lazy(async () => {
 });
 
 export type FormRef = React.ElementRef<"form">;
-export type FormProps = React.ComponentPropsWithoutRef<"form"> &
-  CommonComponentProps;
+export type FormProps = React.ComponentPropsWithoutRef<"form"> & CommonComponentProps;
 
 /**
  * Render the default form server component.
@@ -1596,8 +1550,7 @@ const MemoizedHeadClient = lazy(async () => {
 });
 
 export type HeadRef = React.ElementRef<"head">;
-export type HeadProps = React.ComponentPropsWithoutRef<"head"> &
-  CommonComponentProps;
+export type HeadProps = React.ComponentPropsWithoutRef<"head"> & CommonComponentProps;
 
 /**
  * Render the default document metadata (header) server component.
@@ -1637,8 +1590,7 @@ const MemoizedHeaderClient = lazy(async () => {
 });
 
 export type HeaderRef = React.ElementRef<"header">;
-export type HeaderProps = React.ComponentPropsWithoutRef<"header"> &
-  CommonComponentProps;
+export type HeaderProps = React.ComponentPropsWithoutRef<"header"> & CommonComponentProps;
 
 /**
  * Render the default header server component.
@@ -1721,8 +1673,7 @@ const MemoizedHgroupClient = lazy(async () => {
 });
 
 export type HgroupRef = React.ElementRef<"hgroup">;
-export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> &
-  CommonComponentProps;
+export type HgroupProps = React.ComponentPropsWithoutRef<"hgroup"> & CommonComponentProps;
 
 /**
  * Render the default heading group component.
@@ -1762,8 +1713,7 @@ const MemoizedHrClient = lazy(async () => {
 });
 
 export type HrRef = React.ElementRef<"hr">;
-export type HrProps = React.ComponentPropsWithoutRef<"hr"> &
-  CommonComponentProps;
+export type HrProps = React.ComponentPropsWithoutRef<"hr"> & CommonComponentProps;
 
 /**
  * Render the default thematic break (horizontal rule) server component.
@@ -1802,8 +1752,7 @@ const MemoizedHtmlClient = lazy(async () => {
 });
 
 export type HtmlRef = React.ElementRef<"html">;
-export type HtmlProps = React.ComponentPropsWithoutRef<"html"> &
-  CommonComponentProps;
+export type HtmlProps = React.ComponentPropsWithoutRef<"html"> & CommonComponentProps;
 
 /**
  * Render the default HTML document/root server component.
@@ -1883,8 +1832,7 @@ const MemoizedIframeClient = lazy(async () => {
 });
 
 export type IframeRef = React.ElementRef<"iframe">;
-export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> &
-  CommonComponentProps;
+export type IframeProps = React.ComponentPropsWithoutRef<"iframe"> & CommonComponentProps;
 
 /**
  * Render the default inline frame server component.
@@ -1923,8 +1871,7 @@ const MemoizedImgClient = lazy(async () => {
 });
 
 export type ImgRef = React.ElementRef<"img">;
-export type ImgProps = React.ComponentPropsWithoutRef<"img"> &
-  CommonComponentProps;
+export type ImgProps = React.ComponentPropsWithoutRef<"img"> & CommonComponentProps;
 
 /**
  * Render the default image embed server component.
@@ -1965,8 +1912,7 @@ const MemoizedInputClient = lazy(async () => {
 });
 
 export type InputRef = React.ElementRef<"input">;
-export type InputProps = React.ComponentPropsWithoutRef<"input"> &
-  CommonComponentProps;
+export type InputProps = React.ComponentPropsWithoutRef<"input"> & CommonComponentProps;
 
 /**
  * Render the default HTML input server component.
@@ -2006,8 +1952,7 @@ const MemoizedInsClient = lazy(async () => {
 });
 
 export type InsRef = React.ElementRef<"ins">;
-export type InsProps = React.ComponentPropsWithoutRef<"ins"> &
-  CommonComponentProps;
+export type InsProps = React.ComponentPropsWithoutRef<"ins"> & CommonComponentProps;
 
 /**
  * Render the default inserted text server component.
@@ -2047,8 +1992,7 @@ const MemoizedKbdClient = lazy(async () => {
 });
 
 export type KbdRef = React.ElementRef<"kbd">;
-export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> &
-  CommonComponentProps;
+export type KbdProps = React.ComponentPropsWithoutRef<"kbd"> & CommonComponentProps;
 
 /**
  * Render the default keyboard input server component.
@@ -2088,8 +2032,7 @@ const MemoizedLabelClient = lazy(async () => {
 });
 
 export type LabelRef = React.ElementRef<"label">;
-export type LabelProps = React.ComponentPropsWithoutRef<"label"> &
-  CommonComponentProps;
+export type LabelProps = React.ComponentPropsWithoutRef<"label"> & CommonComponentProps;
 
 /**
  * Render the default label server component.
@@ -2129,8 +2072,7 @@ const MemoizedLegendClient = lazy(async () => {
 });
 
 export type LegendRef = React.ElementRef<"legend">;
-export type LegendProps = React.ComponentPropsWithoutRef<"legend"> &
-  CommonComponentProps;
+export type LegendProps = React.ComponentPropsWithoutRef<"legend"> & CommonComponentProps;
 
 /**
  * Render the default field set legend server component.
@@ -2170,8 +2112,7 @@ const MemoizedLiClient = lazy(async () => {
 });
 
 export type LiRef = React.ElementRef<"li">;
-export type LiProps = React.ComponentPropsWithoutRef<"li"> &
-  CommonComponentProps;
+export type LiProps = React.ComponentPropsWithoutRef<"li"> & CommonComponentProps;
 
 /**
  * Render the default list item server component.
@@ -2211,8 +2152,7 @@ const MemoizedLinkClient = lazy(async () => {
 });
 
 export type LinkRef = React.ElementRef<"link">;
-export type LinkProps = React.ComponentPropsWithoutRef<"link"> &
-  CommonComponentProps;
+export type LinkProps = React.ComponentPropsWithoutRef<"link"> & CommonComponentProps;
 
 /**
  * Render the default external resource link server component.
@@ -2251,8 +2191,7 @@ const MemoizedMainClient = lazy(async () => {
 });
 
 export type MainRef = React.ElementRef<"main">;
-export type MainProps = React.ComponentPropsWithoutRef<"main"> &
-  CommonComponentProps;
+export type MainProps = React.ComponentPropsWithoutRef<"main"> & CommonComponentProps;
 
 /**
  * Render the default main server component.
@@ -2292,8 +2231,7 @@ const MemoizedMapClient = lazy(async () => {
 });
 
 export type MapRef = React.ElementRef<"map">;
-export type MapProps = React.ComponentPropsWithoutRef<"map"> &
-  CommonComponentProps;
+export type MapProps = React.ComponentPropsWithoutRef<"map"> & CommonComponentProps;
 
 /**
  * Render the default image map server component.
@@ -2333,8 +2271,7 @@ const MemoizedMarkClient = lazy(async () => {
 });
 
 export type MarkRef = React.ElementRef<"mark">;
-export type MarkProps = React.ComponentPropsWithoutRef<"mark"> &
-  CommonComponentProps;
+export type MarkProps = React.ComponentPropsWithoutRef<"mark"> & CommonComponentProps;
 
 /**
  * Render the default mark text server component.
@@ -2374,8 +2311,7 @@ const MemoizedMenuClient = lazy(async () => {
 });
 
 export type MenuRef = React.ElementRef<"menu">;
-export type MenuProps = React.ComponentPropsWithoutRef<"menu"> &
-  CommonComponentProps;
+export type MenuProps = React.ComponentPropsWithoutRef<"menu"> & CommonComponentProps;
 
 /**
  * Render the default menu server component.
@@ -2415,8 +2351,7 @@ const MemoizedMetaClient = lazy(async () => {
 });
 
 export type MetaRef = React.ElementRef<"meta">;
-export type MetaProps = React.ComponentPropsWithoutRef<"meta"> &
-  CommonComponentProps;
+export type MetaProps = React.ComponentPropsWithoutRef<"meta"> & CommonComponentProps;
 
 /**
  * Render the default metadata server component.
@@ -2455,8 +2390,7 @@ const MemoizedMeterClient = lazy(async () => {
 });
 
 export type MeterRef = React.ElementRef<"meter">;
-export type MeterProps = React.ComponentPropsWithoutRef<"meter"> &
-  CommonComponentProps;
+export type MeterProps = React.ComponentPropsWithoutRef<"meter"> & CommonComponentProps;
 
 /**
  * Render the default HTML meter server component.
@@ -2496,8 +2430,7 @@ const MemoizedNavClient = lazy(async () => {
 });
 
 export type NavRef = React.ElementRef<"nav">;
-export type NavProps = React.ComponentPropsWithoutRef<"nav"> &
-  CommonComponentProps;
+export type NavProps = React.ComponentPropsWithoutRef<"nav"> & CommonComponentProps;
 
 /**
  * Render the default navigation section server component.
@@ -2537,8 +2470,7 @@ const MemoizedNoscriptClient = lazy(async () => {
 });
 
 export type NoscriptRef = React.ElementRef<"noscript">;
-export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> &
-  CommonComponentProps;
+export type NoscriptProps = React.ComponentPropsWithoutRef<"noscript"> & CommonComponentProps;
 
 /**
  * Render the default noscript server component.
@@ -2555,9 +2487,7 @@ export const Noscript = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedNoscriptClient
-      : NoscriptClient;
+    const ClientComponent = isMemoized ? MemoizedNoscriptClient : NoscriptClient;
 
     return (
       <Suspense fallback={element}>
@@ -2580,8 +2510,7 @@ const MemoizedObjectClient = lazy(async () => {
 });
 
 export type ObjectRef = React.ElementRef<"object">;
-export type ObjectProps = React.ComponentPropsWithoutRef<"object"> &
-  CommonComponentProps;
+export type ObjectProps = React.ComponentPropsWithoutRef<"object"> & CommonComponentProps;
 
 /**
  * Render the default object server component.
@@ -2621,8 +2550,7 @@ const MemoizedOlClient = lazy(async () => {
 });
 
 export type OlRef = React.ElementRef<"ol">;
-export type OlProps = React.ComponentPropsWithoutRef<"ol"> &
-  CommonComponentProps;
+export type OlProps = React.ComponentPropsWithoutRef<"ol"> & CommonComponentProps;
 
 /**
  * Render the default ordered list server component.
@@ -2662,8 +2590,7 @@ const MemoizedOptgroupClient = lazy(async () => {
 });
 
 export type OptgroupRef = React.ElementRef<"optgroup">;
-export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> &
-  CommonComponentProps;
+export type OptgroupProps = React.ComponentPropsWithoutRef<"optgroup"> & CommonComponentProps;
 
 /**
  * Render the default option group server component.
@@ -2680,9 +2607,7 @@ export const Optgroup = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedOptgroupClient
-      : OptgroupClient;
+    const ClientComponent = isMemoized ? MemoizedOptgroupClient : OptgroupClient;
 
     return (
       <Suspense fallback={element}>
@@ -2705,8 +2630,7 @@ const MemoizedOptionClient = lazy(async () => {
 });
 
 export type OptionRef = React.ElementRef<"option">;
-export type OptionProps = React.ComponentPropsWithoutRef<"option"> &
-  CommonComponentProps;
+export type OptionProps = React.ComponentPropsWithoutRef<"option"> & CommonComponentProps;
 
 /**
  * Render the default HTML option server component.
@@ -2746,8 +2670,7 @@ const MemoizedOutputClient = lazy(async () => {
 });
 
 export type OutputRef = React.ElementRef<"output">;
-export type OutputProps = React.ComponentPropsWithoutRef<"output"> &
-  CommonComponentProps;
+export type OutputProps = React.ComponentPropsWithoutRef<"output"> & CommonComponentProps;
 
 /**
  * Render the default output server component.
@@ -2787,8 +2710,7 @@ const MemoizedParagraphClient = lazy(async () => {
 });
 
 export type ParagraphRef = React.ElementRef<"p">;
-export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> &
-  CommonComponentProps;
+export type ParagraphProps = React.ComponentPropsWithoutRef<"p"> & CommonComponentProps;
 
 /**
  * Render the default paragraph server component.
@@ -2805,9 +2727,7 @@ export const Paragraph = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedParagraphClient
-      : ParagraphClient;
+    const ClientComponent = isMemoized ? MemoizedParagraphClient : ParagraphClient;
 
     return (
       <Suspense fallback={element}>
@@ -2830,8 +2750,7 @@ const MemoizedPictureClient = lazy(async () => {
 });
 
 export type PictureRef = React.ElementRef<"picture">;
-export type PictureProps = React.ComponentPropsWithoutRef<"picture"> &
-  CommonComponentProps;
+export type PictureProps = React.ComponentPropsWithoutRef<"picture"> & CommonComponentProps;
 
 /**
  * Render the default picture server component.
@@ -2871,8 +2790,7 @@ const MemoizedPreClient = lazy(async () => {
 });
 
 export type PreRef = React.ElementRef<"pre">;
-export type PreProps = React.ComponentPropsWithoutRef<"pre"> &
-  CommonComponentProps;
+export type PreProps = React.ComponentPropsWithoutRef<"pre"> & CommonComponentProps;
 
 /**
  * Render the default preformatted text server component.
@@ -2912,8 +2830,7 @@ const MemoizedProgressClient = lazy(async () => {
 });
 
 export type ProgressRef = React.ElementRef<"progress">;
-export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> &
-  CommonComponentProps;
+export type ProgressProps = React.ComponentPropsWithoutRef<"progress"> & CommonComponentProps;
 
 /**
  * Render the default progress indicator server component.
@@ -2930,9 +2847,7 @@ export const Progress = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedProgressClient
-      : ProgressClient;
+    const ClientComponent = isMemoized ? MemoizedProgressClient : ProgressClient;
 
     return (
       <Suspense fallback={element}>
@@ -2995,8 +2910,7 @@ const MemoizedRpClient = lazy(async () => {
 });
 
 export type RpRef = React.ElementRef<"rp">;
-export type RpProps = React.ComponentPropsWithoutRef<"rp"> &
-  CommonComponentProps;
+export type RpProps = React.ComponentPropsWithoutRef<"rp"> & CommonComponentProps;
 
 /**
  * Render the default ruby fallback parenthesis server component.
@@ -3036,8 +2950,7 @@ const MemoizedRtClient = lazy(async () => {
 });
 
 export type RtRef = React.ElementRef<"rt">;
-export type RtProps = React.ComponentPropsWithoutRef<"rt"> &
-  CommonComponentProps;
+export type RtProps = React.ComponentPropsWithoutRef<"rt"> & CommonComponentProps;
 
 /**
  * Render the default ruby text server component.
@@ -3077,8 +2990,7 @@ const MemoizedRubyClient = lazy(async () => {
 });
 
 export type RubyRef = React.ElementRef<"ruby">;
-export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> &
-  CommonComponentProps;
+export type RubyProps = React.ComponentPropsWithoutRef<"ruby"> & CommonComponentProps;
 
 /**
  * Render the default ruby annotation server component.
@@ -3158,8 +3070,7 @@ const MemoizedSampClient = lazy(async () => {
 });
 
 export type SampRef = React.ElementRef<"samp">;
-export type SampProps = React.ComponentPropsWithoutRef<"samp"> &
-  CommonComponentProps;
+export type SampProps = React.ComponentPropsWithoutRef<"samp"> & CommonComponentProps;
 
 /**
  * Render the default sample output server component.
@@ -3199,8 +3110,7 @@ const MemoizedScriptClient = lazy(async () => {
 });
 
 export type ScriptRef = React.ElementRef<"script">;
-export type ScriptProps = React.ComponentPropsWithoutRef<"script"> &
-  CommonComponentProps;
+export type ScriptProps = React.ComponentPropsWithoutRef<"script"> & CommonComponentProps;
 
 /**
  * Render the default script server component.
@@ -3240,8 +3150,7 @@ const MemoizedSearchClient = lazy(async () => {
 });
 
 export type SearchRef = React.ElementRef<"search">;
-export type SearchProps = React.ComponentPropsWithoutRef<"search"> &
-  CommonComponentProps;
+export type SearchProps = React.ComponentPropsWithoutRef<"search"> & CommonComponentProps;
 
 /**
  * Render the default generic search server component.
@@ -3281,8 +3190,7 @@ const MemoizedSectionClient = lazy(async () => {
 });
 
 export type SectionRef = React.ElementRef<"section">;
-export type SectionProps = React.ComponentPropsWithoutRef<"section"> &
-  CommonComponentProps;
+export type SectionProps = React.ComponentPropsWithoutRef<"section"> & CommonComponentProps;
 
 /**
  * Render the default generic section server component.
@@ -3322,8 +3230,7 @@ const MemoizedSelectClient = lazy(async () => {
 });
 
 export type SelectRef = React.ElementRef<"select">;
-export type SelectProps = React.ComponentPropsWithoutRef<"select"> &
-  CommonComponentProps;
+export type SelectProps = React.ComponentPropsWithoutRef<"select"> & CommonComponentProps;
 
 /**
  * Render the default HTML select server component.
@@ -3363,8 +3270,7 @@ const MemoizedSlotClient = lazy(async () => {
 });
 
 export type SlotRef = React.ElementRef<"slot">;
-export type SlotProps = React.ComponentPropsWithoutRef<"slot"> &
-  CommonComponentProps;
+export type SlotProps = React.ComponentPropsWithoutRef<"slot"> & CommonComponentProps;
 
 /**
  * Render the default web component slot server component.
@@ -3404,8 +3310,7 @@ const MemoizedSmallClient = lazy(async () => {
 });
 
 export type SmallRef = React.ElementRef<"small">;
-export type SmallProps = React.ComponentPropsWithoutRef<"small"> &
-  CommonComponentProps;
+export type SmallProps = React.ComponentPropsWithoutRef<"small"> & CommonComponentProps;
 
 /**
  * Render the default side comment server component.
@@ -3445,8 +3350,7 @@ const MemoizedSourceClient = lazy(async () => {
 });
 
 export type SourceRef = React.ElementRef<"source">;
-export type SourceProps = React.ComponentPropsWithoutRef<"source"> &
-  CommonComponentProps;
+export type SourceProps = React.ComponentPropsWithoutRef<"source"> & CommonComponentProps;
 
 /**
  * Render the default media or image source server component.
@@ -3485,8 +3389,7 @@ const MemoizedSpanClient = lazy(async () => {
 });
 
 export type SpanRef = React.ElementRef<"span">;
-export type SpanProps = React.ComponentPropsWithoutRef<"span"> &
-  CommonComponentProps;
+export type SpanProps = React.ComponentPropsWithoutRef<"span"> & CommonComponentProps;
 
 /**
  * Render the default content span server component.
@@ -3526,8 +3429,7 @@ const MemoizedStrongClient = lazy(async () => {
 });
 
 export type StrongRef = React.ElementRef<"strong">;
-export type StrongProps = React.ComponentPropsWithoutRef<"strong"> &
-  CommonComponentProps;
+export type StrongProps = React.ComponentPropsWithoutRef<"strong"> & CommonComponentProps;
 
 /**
  * Render the default strong importance server component.
@@ -3567,8 +3469,7 @@ const MemoizedStyleClient = lazy(async () => {
 });
 
 export type StyleRef = React.ElementRef<"style">;
-export type StyleProps = React.ComponentPropsWithoutRef<"style"> &
-  CommonComponentProps;
+export type StyleProps = React.ComponentPropsWithoutRef<"style"> & CommonComponentProps;
 
 /**
  * Render the default style information server component.
@@ -3608,8 +3509,7 @@ const MemoizedSubClient = lazy(async () => {
 });
 
 export type SubRef = React.ElementRef<"sub">;
-export type SubProps = React.ComponentPropsWithoutRef<"sub"> &
-  CommonComponentProps;
+export type SubProps = React.ComponentPropsWithoutRef<"sub"> & CommonComponentProps;
 
 /**
  * Render the default subscript server component.
@@ -3649,8 +3549,7 @@ const MemoizedSummaryClient = lazy(async () => {
 });
 
 export type SummaryRef = React.ElementRef<"summary">;
-export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> &
-  CommonComponentProps;
+export type SummaryProps = React.ComponentPropsWithoutRef<"summary"> & CommonComponentProps;
 
 /**
  * Render the default disclosure summary server component.
@@ -3690,8 +3589,7 @@ const MemoizedSupClient = lazy(async () => {
 });
 
 export type SupRef = React.ElementRef<"sup">;
-export type SupProps = React.ComponentPropsWithoutRef<"sup"> &
-  CommonComponentProps;
+export type SupProps = React.ComponentPropsWithoutRef<"sup"> & CommonComponentProps;
 
 /**
  * Render the default superscript server component.
@@ -3731,8 +3629,7 @@ const MemoizedSvgClient = lazy(async () => {
 });
 
 export type SvgRef = React.ElementRef<"svg">;
-export type SvgProps = React.ComponentPropsWithoutRef<"svg"> &
-  CommonComponentProps;
+export type SvgProps = React.ComponentPropsWithoutRef<"svg"> & CommonComponentProps;
 
 /**
  * Render the default scalable vector graphics server component.
@@ -3772,8 +3669,7 @@ const MemoizedTableClient = lazy(async () => {
 });
 
 export type TableRef = React.ElementRef<"table">;
-export type TableProps = React.ComponentPropsWithoutRef<"table"> &
-  CommonComponentProps;
+export type TableProps = React.ComponentPropsWithoutRef<"table"> & CommonComponentProps;
 
 /**
  * Render the default table server component.
@@ -3813,8 +3709,7 @@ const MemoizedTbodyClient = lazy(async () => {
 });
 
 export type TbodyRef = React.ElementRef<"tbody">;
-export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> &
-  CommonComponentProps;
+export type TbodyProps = React.ComponentPropsWithoutRef<"tbody"> & CommonComponentProps;
 
 /**
  * Render the default table body server component.
@@ -3854,8 +3749,7 @@ const MemoizedTdClient = lazy(async () => {
 });
 
 export type TdRef = React.ElementRef<"td">;
-export type TdProps = React.ComponentPropsWithoutRef<"td"> &
-  CommonComponentProps;
+export type TdProps = React.ComponentPropsWithoutRef<"td"> & CommonComponentProps;
 
 /**
  * Render the default table data cell server component.
@@ -3895,8 +3789,7 @@ const MemoizedTemplateClient = lazy(async () => {
 });
 
 export type TemplateRef = React.ElementRef<"template">;
-export type TemplateProps = React.ComponentPropsWithoutRef<"template"> &
-  CommonComponentProps;
+export type TemplateProps = React.ComponentPropsWithoutRef<"template"> & CommonComponentProps;
 
 /**
  * Render the default content template server component.
@@ -3913,9 +3806,7 @@ export const Template = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedTemplateClient
-      : TemplateClient;
+    const ClientComponent = isMemoized ? MemoizedTemplateClient : TemplateClient;
 
     return (
       <Suspense fallback={element}>
@@ -3938,8 +3829,7 @@ const MemoizedTextareaClient = lazy(async () => {
 });
 
 export type TextareaRef = React.ElementRef<"textarea">;
-export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> &
-  CommonComponentProps;
+export type TextareaProps = React.ComponentPropsWithoutRef<"textarea"> & CommonComponentProps;
 
 /**
  * Render the default textarea server component.
@@ -3956,9 +3846,7 @@ export const Textarea = ({
   const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
-    const ClientComponent = isMemoized
-      ? MemoizedTextareaClient
-      : TextareaClient;
+    const ClientComponent = isMemoized ? MemoizedTextareaClient : TextareaClient;
 
     return (
       <Suspense fallback={element}>
@@ -3981,8 +3869,7 @@ const MemoizedTfootClient = lazy(async () => {
 });
 
 export type TfootRef = React.ElementRef<"tfoot">;
-export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> &
-  CommonComponentProps;
+export type TfootProps = React.ComponentPropsWithoutRef<"tfoot"> & CommonComponentProps;
 
 /**
  * Render the default table foot server component.
@@ -4022,8 +3909,7 @@ const MemoizedThClient = lazy(async () => {
 });
 
 export type ThRef = React.ElementRef<"th">;
-export type ThProps = React.ComponentPropsWithoutRef<"th"> &
-  CommonComponentProps;
+export type ThProps = React.ComponentPropsWithoutRef<"th"> & CommonComponentProps;
 
 /**
  * Render the default table header server component.
@@ -4063,8 +3949,7 @@ const MemoizedTheadClient = lazy(async () => {
 });
 
 export type TheadRef = React.ElementRef<"thead">;
-export type TheadProps = React.ComponentPropsWithoutRef<"thead"> &
-  CommonComponentProps;
+export type TheadProps = React.ComponentPropsWithoutRef<"thead"> & CommonComponentProps;
 
 /**
  * Render the default table head server component.
@@ -4104,8 +3989,7 @@ const MemoizedTimeClient = lazy(async () => {
 });
 
 export type TimeRef = React.ElementRef<"time">;
-export type TimeProps = React.ComponentPropsWithoutRef<"time"> &
-  CommonComponentProps;
+export type TimeProps = React.ComponentPropsWithoutRef<"time"> & CommonComponentProps;
 
 /**
  * Render the default (date) time server component.
@@ -4145,8 +4029,7 @@ const MemoizedTitleClient = lazy(async () => {
 });
 
 export type TitleRef = React.ElementRef<"title">;
-export type TitleProps = React.ComponentPropsWithoutRef<"title"> &
-  CommonComponentProps;
+export type TitleProps = React.ComponentPropsWithoutRef<"title"> & CommonComponentProps;
 
 /**
  * Render the default document title server component.
@@ -4186,8 +4069,7 @@ const MemoizedTrClient = lazy(async () => {
 });
 
 export type TrRef = React.ElementRef<"tr">;
-export type TrProps = React.ComponentPropsWithoutRef<"tr"> &
-  CommonComponentProps;
+export type TrProps = React.ComponentPropsWithoutRef<"tr"> & CommonComponentProps;
 
 /**
  * Render the default table row server component.
@@ -4227,8 +4109,7 @@ const MemoizedTrackClient = lazy(async () => {
 });
 
 export type TrackRef = React.ElementRef<"track">;
-export type TrackProps = React.ComponentPropsWithoutRef<"track"> &
-  CommonComponentProps;
+export type TrackProps = React.ComponentPropsWithoutRef<"track"> & CommonComponentProps;
 
 /**
  * Render the default embed text track server component.
@@ -4307,8 +4188,7 @@ const MemoizedUlClient = lazy(async () => {
 });
 
 export type UlRef = React.ElementRef<"ul">;
-export type UlProps = React.ComponentPropsWithoutRef<"ul"> &
-  CommonComponentProps;
+export type UlProps = React.ComponentPropsWithoutRef<"ul"> & CommonComponentProps;
 
 /**
  * Render the default unordered list server component.
@@ -4348,8 +4228,7 @@ const MemoizedVarClient = lazy(async () => {
 });
 
 export type VarRef = React.ElementRef<"var">;
-export type VarProps = React.ComponentPropsWithoutRef<"var"> &
-  CommonComponentProps;
+export type VarProps = React.ComponentPropsWithoutRef<"var"> & CommonComponentProps;
 
 /**
  * Render the default variable server component.
@@ -4389,8 +4268,7 @@ const MemoizedVideoClient = lazy(async () => {
 });
 
 export type VideoRef = React.ElementRef<"video">;
-export type VideoProps = React.ComponentPropsWithoutRef<"video"> &
-  CommonComponentProps;
+export type VideoProps = React.ComponentPropsWithoutRef<"video"> & CommonComponentProps;
 
 /**
  * Render the default video embed server component.
@@ -4430,8 +4308,7 @@ const MemoizedWbrClient = lazy(async () => {
 });
 
 export type WbrRef = React.ElementRef<"wbr">;
-export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> &
-  CommonComponentProps;
+export type WbrProps = React.ComponentPropsWithoutRef<"wbr"> & CommonComponentProps;
 
 /**
  * Render the default line break opportunity server component.
