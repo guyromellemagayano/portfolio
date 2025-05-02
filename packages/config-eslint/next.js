@@ -1,6 +1,6 @@
 import pluginNext from "@next/eslint-plugin-next";
 
-import baseConfig from ".";
+import { default as baseConfig } from "@guyromellemagayano/eslint-config";
 
 /**
  * A custom ESLint configuration for libraries that use Next.js.
