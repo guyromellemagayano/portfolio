@@ -1,12 +1,21 @@
+# Files
 .DS_Store
-node_modules
-.turbo
-*.log
-.next
-dist
-dist-ssr
-*.local
 .env
-.cache
-server/dist
-public/dist
+.pnp.js
+
+# Wildcard
+*.local
+*.log
+*.tsbuildinfo
+
+# Folders
+.cache/
+.turbo/
+.vercel/
+.next/
+coverage/
+dist-ssr/
+dist/
+logs/
+node_modules/
+.pnp/
