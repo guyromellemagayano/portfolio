@@ -15,6 +15,6 @@
       "@studio/*": ["./*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js"],
+  "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
