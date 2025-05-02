@@ -1,4 +1,5 @@
-import { describe, it, expect, jest } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+
 import { log } from "..";
 
 jest.spyOn(global.console, "log");
@@ -6,7 +7,7 @@ jest.spyOn(global.console, "log");
 describe("@guyromellemagayano/logger", () => {
   it("prints a message", () => {
     log("hello");
-    // eslint-disable-next-line no-console -- testing console
+
     expect(console.log).toBeCalledWith("LOGGER: ", "hello");
   });
 });
