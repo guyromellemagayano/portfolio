@@ -2,18 +2,34 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalEnv": [
-    "SANITY_API_READ_TOKEN",
-    "SANITY_API_WRITE_TOKEN",
+    "NODE_ENV",
+    "VERCEL_ENV",
     "VERCEL_URL",
     "VERCEL_PROJECT_PRODUCTION_URL",
-    "VERCEL_ENV",
-    "NODE_ENV"
+    "BUNDLE_ANALYZE",
+    "ENABLE_EXPERIMENTAL_COREPACK",
+    "GOOGLE_ADSENSE_CLIENT_ID",
+    "GOOGLE_ANALYTICS_MEASUREMENT_ID",
+    "GOOGLE_TAG_MANAGER_CONTAINER_ID",
+    "NEXT_PUBLIC_PORTFOLIO_SITE_GRAPHQL_API_PATHNAME",
+    "NEXT_PUBLIC_PORTFOLIO_SITE_URL",
+    "SANITY_DEPLOY_TOKEN",
+    "SANITY_STUDIO_PROJECT_ID",
+    "SANITY_STUDIO_DATASET",
+    "SANITY_STUDIO_TITLE",
+    "SANITY_STUDIO_PRESENTATION_URL",
+    "SENTRY_AUTH_TOKEN",
+    "SENTRY_DSN",
+    "SENTRY_ENVIRONMENT",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT",
+    "SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING"
   ],
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": ["^build"],
-      "outputs": ["build/**", "dist/**", ".next/**", ".vercel/**", ".sanity/**", "!.next/cache/**"]
+      "outputs": ["build/**", "dist/**", ".next/**", ".sanity/**", ".vercel/**", "!.next/cache/**"]
     },
     "test": {
       "inputs": ["$TURBO_DEFAULT$"],
@@ -36,9 +52,9 @@
       "persistent": true
     },
     "format": {
-      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*"],
-      "outputs": [],
-      "dependsOn": []
+      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*", ".prettierrc*"],
+      "dependsOn": [],
+      "outputs": []
     }
   }
 }
