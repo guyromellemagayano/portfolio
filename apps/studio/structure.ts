@@ -14,8 +14,8 @@ import {
 } from "lucide-react";
 import type { ListItemBuilder, StructureBuilder, StructureResolverContext } from "sanity/structure";
 
-import type { SchemaType, SingletonType } from "@studio/schemaTypes";
-import { getTitleCase } from "@studio/utils/helper";
+import type { SchemaType, SingletonType } from "./schemaTypes";
+import { getTitleCase } from "./utils/helper";
 
 type Base<T = SchemaType> = {
   id?: string;
