@@ -7,33 +7,34 @@ import { unsplashAssetSource, unsplashImageAsset } from "sanity-plugin-asset-sou
 import { iconPicker } from "sanity-plugin-icon-picker";
 import { media, mediaAssetSource } from "sanity-plugin-media";
 
-import { Logo } from "@studio/components";
-import { locations } from "@studio/location";
-import { presentationUrl } from "@studio/plugins/presentation-url";
-import schemaTypes from "@studio/schemaTypes";
-import { structure } from "@studio/structure";
-import { createPageTemplate } from "@studio/utils/helper";
+import { Logo } from "./components";
+import { locations } from "./location";
+import { presentationUrl } from "./plugins/presentation-url";
+import schemaTypes from "./schemaTypes";
+import { structure } from "./structure";
+import { createPageTemplate } from "./utils/helper";
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
-const dataset = process.env.SANITY_STUDIO_DATASET;
-const title = process.env.SANITY_STUDIO_TITLE;
-const presentationOriginUrl = process.env.SANITY_STUDIO_PRESENTATION_URL;
+const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
+const title = process.env.SANITY_STUDIO_TITLE ?? "Portfolio";
+const previewOrigin = process.env.SANITY_STUDIO_PRESENTATION_URL ?? "http://localhost:3000";
+const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL ?? "/api/presentation-draft";
 
 export default defineConfig({
   name: "default",
-  title: title ?? "Turbo Studio",
-  projectId: projectId,
+  title,
+  projectId,
+  dataset,
   icon: Logo,
-  dataset: dataset ?? "production",
   plugins: [
     presentationTool({
       resolve: {
         locations,
       },
       previewUrl: {
-        origin: presentationOriginUrl ?? "http://localhost:3000",
+        origin: previewOrigin,
         previewMode: {
-          enable: "/api/presentation-draft",
+          enable: previewUrl,
         },
       },
     }),
@@ -47,6 +48,28 @@ export default defineConfig({
     presentationUrl(),
     unsplashImageAsset(),
   ],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  vite: async (prev: { resolve: { alias: any } }) => {
+    const PATH = await import("node:path");
+    const URL = await import("node:url");
+    const DOTENV = await import("dotenv");
+
+    const ROOT = PATH.dirname(URL.fileURLToPath(import.meta.url));
+    const MONOREPO = PATH.join(ROOT, "..", "..");
+    DOTENV.config({ path: PATH.join(MONOREPO, ".env") });
+
+    return {
+      ...prev,
+      envDir: MONOREPO,
+      resolve: {
+        alias: [
+          ...(prev.resolve?.alias ?? []),
+          { find: /^@studio$/, replacement: ROOT },
+          { find: /^@studio\/(.*)$/, replacement: `${ROOT}/$1` },
+        ],
+      },
+    };
+  },
   form: {
     image: {
       assetSources: (previousAssetSources) => {
@@ -57,11 +80,8 @@ export default defineConfig({
     },
   },
   document: {
-    newDocumentOptions: (prev, { creationContext }) => {
-      const { type } = creationContext;
-      if (type === "global") return [];
-      return prev;
-    },
+    newDocumentOptions: (prev, { creationContext }) =>
+      creationContext.type === "global" ? [] : prev,
   },
   schema: {
     types: schemaTypes,
