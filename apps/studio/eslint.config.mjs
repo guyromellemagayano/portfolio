@@ -19,6 +19,14 @@ export default [
       "simple-import-sort": eslintPluginSimpleImportSort,
       "@typescript-eslint": tseslint.plugin,
     },
+    settings: {
+      "import/resolver": {
+        alias: {
+          map: [["@studio", "./"]],
+          extensions: [".ts", ".tsx"],
+        },
+      },
+    },
     rules: {
       "turbo/no-undeclared-env-vars": "off",
     },
