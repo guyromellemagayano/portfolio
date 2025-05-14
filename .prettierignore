@@ -1,0 +1,32 @@
+# Build outputs
+dist/
+dist-ssr/
+build/
+.next/
+out/
+coverage/
+logs/
+
+# Node modules & lockfiles
+node_modules/
+.pnp/
+.pnp.js
+
+# Monorepo cache
+.turbo/
+.cache/
+
+# Sanity artifacts
+.sanity/
+
+# Generated files
+*.tsbuildinfo
+
+# Vercel
+.vercel/
+
+# OS & logs
+.DS_Store
+.env*
+*.local
+*.log
