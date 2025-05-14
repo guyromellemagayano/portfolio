@@ -24,10 +24,6 @@ dist/
 *.local
 *.log
 
-# IDE configs
-.vscode/
-.idea/
-
 # Sanity
 .sanity/
 
