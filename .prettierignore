@@ -22,11 +22,15 @@ node_modules/
 # Generated files
 *.tsbuildinfo
 
-# Vercel
-.vercel/
-
 # OS & logs
 .DS_Store
 .env*
 *.local
 *.log
+
+# IDE configs
+.vscode/
+.idea/
+
+# Vercel
+.vercel/
