@@ -1,6 +1,3 @@
-# Node modules
-node_modules/
-
 # Build outputs
 dist/
 dist-ssr/
@@ -8,6 +5,11 @@ build/
 .next/
 out/
 coverage/
+
+# Node modules & lockfiles
+node_modules/
+.pnp/
+.pnp.js
 
 # Monorepo cache
 .turbo/
