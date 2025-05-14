@@ -1,3 +1,3 @@
-import baseConfig from "@guyromellemagayano/eslint-config";
+import { baseEslintConfig } from '@packages/eslint-config';
 
-export default baseConfig;
+export default baseEslintConfig;
