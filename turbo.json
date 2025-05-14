@@ -1,6 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "globalDependencies": [
+    ".env*"
+  ],
   "globalEnv": [
     "NODE_ENV",
     "VERCEL_ENV",
@@ -14,10 +17,13 @@
     "NEXT_PUBLIC_PORTFOLIO_SITE_GRAPHQL_API_PATHNAME",
     "NEXT_PUBLIC_PORTFOLIO_SITE_URL",
     "SANITY_DEPLOY_TOKEN",
-    "SANITY_STUDIO_PROJECT_ID",
+    "SANITY_HOST_NAME",
     "SANITY_STUDIO_DATASET",
-    "SANITY_STUDIO_TITLE",
     "SANITY_STUDIO_PRESENTATION_URL",
+    "SANITY_STUDIO_PREVIEW_URL",
+    "SANITY_STUDIO_PROJECT_ID",
+    "SANITY_STUDIO_TITLE",
+    "SANITY_STUDIO_URL",
     "SENTRY_AUTH_TOKEN",
     "SENTRY_DSN",
     "SENTRY_ENVIRONMENT",
@@ -27,34 +33,75 @@
   ],
   "tasks": {
     "build": {
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "dependsOn": ["^build"],
-      "outputs": ["build/**", "dist/**", ".next/**", ".sanity/**", ".vercel/**", "!.next/cache/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*"
+      ],
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "build/**",
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        ".vercel/**",
+        ".sanity/**"
+      ]
     },
     "test": {
-      "inputs": ["$TURBO_DEFAULT$"],
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
+      "inputs": [
+        "$TURBO_DEFAULT$"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "dependsOn": []
+    },
+    "format": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "eslint.config.*"
+      ],
+      "dependsOn": [],
+      "outputs": []
     },
     "lint": {
-      "inputs": ["$TURBO_DEFAULT$", ".eslintrc*", "eslint.config.*", "tsconfig.json"],
-      "dependsOn": ["^lint"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "eslint.config.*",
+        "tsconfig.json"
+      ],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": []
     },
     "check-types": {
-      "inputs": ["$TURBO_DEFAULT$", "tsconfig.json"],
-      "dependsOn": ["^check-types"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "tsconfig.json"
+      ],
+      "dependsOn": [
+        "^build"
+      ],
       "outputs": []
     },
     "dev": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
       "cache": false,
       "persistent": true
     },
-    "format": {
-      "inputs": ["$TURBO_DEFAULT$", "prettier.config.*", ".prettierrc*"],
-      "dependsOn": [],
-      "outputs": []
+    "clean": {
+      "inputs": [
+        ".turbo/**",
+        "node_modules/**",
+        "dist/**"
+      ],
+      "outputs": [],
+      "cache": false
     }
   }
 }
