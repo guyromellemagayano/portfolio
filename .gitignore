@@ -1,21 +1,38 @@
-# Files
-.DS_Store
-.env
+# Node modules and lock files
+node_modules/
+pnpm-lock.yaml
+.pnp/
 .pnp.js
 
-# Wildcard
+# Build outputs
+dist/
+dist-ssr/
+build/
+.next/
+out/
+coverage/
+logs/
+dist/
+
+# Turbo/monorepo cache
+.turbo/
+.cache/
+
+# OS/system/editor files
+.DS_Store
+.env*
 *.local
 *.log
+
+# IDE configs
+.vscode/
+.idea/
+
+# Sanity
+.sanity/
+
+# TypeScript build info
 *.tsbuildinfo
 
-# Folders
-.cache/
-.turbo/
+# Vercel
 .vercel/
-.next/
-coverage/
-dist-ssr/
-dist/
-logs/
-node_modules/
-.pnp/

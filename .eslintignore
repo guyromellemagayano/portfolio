@@ -8,8 +8,6 @@ build/
 .next/
 out/
 coverage/
-server/dist/
-public/dist/
 
 # Monorepo cache
 .turbo/
