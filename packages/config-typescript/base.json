@@ -1,32 +1,28 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Default",
+  "display": "Base - TypeScript",
   "compilerOptions": {
-    "allowJs": false,
-    "composite": false,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowImportingTsExtensions": true,
-    "inlineSources": false,
     "incremental": false,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "es2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
+    "noUncheckedIndexedAccess": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "noUncheckedIndexedAccess": false,
-    "resolveJsonModule": true,
-    "noEmit": true,
-    "strictNullChecks": true,
-    "target": "ESNext"
-  },
-  "exclude": ["node_modules"]
+    "target": "ES2022",
+    "baseUrl": ".",
+    "composite": false,
+    "forceConsistentCasingInFileNames": true,
+    "inlineSources": false
+  }
 }
