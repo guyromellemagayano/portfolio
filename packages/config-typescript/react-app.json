@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "React App",
+  "display": "React App - TypeScript",
   "extends": "./base.json",
   "compilerOptions": {
     "allowJs": true,
