@@ -1,7 +1,10 @@
 {
   "name": "portfolio",
+  "version": "1.0.0",
   "private": true,
+  "description": "Full stack developer, open-source enthusiast, and a minimalist",
   "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
   "type": "module",
   "scripts": {
     "build": "turbo run build",
@@ -15,10 +18,10 @@
     "test": "turbo run test"
   },
   "lint-staged": {
-    "**/*.{js,ts,jsx,tsx,css,md,mdx,json,jsonc}": [
+    "**/*.{js,ts,tsx,css,md,mdx,json,jsonc}": [
       "pnpm format"
     ],
-    "**/*.{js,ts,jsx,tsx}": [
+    "**/*.{js,ts,tsx}": [
       "pnpm lint"
     ],
     "**/*.{ts,tsx}": [
@@ -53,6 +56,7 @@
   },
   "packageManager": "pnpm@9.15.5",
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "pnpm": ">=9"
   }
 }
