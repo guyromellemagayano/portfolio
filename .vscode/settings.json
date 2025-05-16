@@ -1,13 +1,24 @@
 {
+  "dotenv.enableAutocloaking": false,
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.formatOnSaveMode": "file",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.insertSpaces": true,
+  "editor.tabCompletion": "on",
+  "editor.tabFocusMode": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.ts": "always",
-    "source.fixAll.eslint": "always"
+    "source.fixAll": "always",
+    "source.fixAll.eslint": "always",
+    "source.fixAll.stylelint": "always",
+    "source.removeUnusedImports": "always",
+    "source.organizeImports": "always",
+    "source.sortImports": "always"
   },
+  "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
   "eslint.workingDirectories": [
     {
@@ -19,5 +30,53 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.preferences.importModuleSpecifierEnding": "minimal",
   "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "files.associations": {
+    ".env*": "dotenv",
+    "*ignore": "ignore"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[graphql]": {
+    "editor.defaultFormatter": "GraphQL.vscode-graphql"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "vscode.markdown-language-features",
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    }
+  },
+  "i18n-ally.localesPaths": [],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en-US"
 }
