@@ -23,7 +23,7 @@ module.exports = {
       },
     },
     {
-      files: ["**/*.{js,ts,jsx,tsx}"],
+      files: ["**/*.{js,ts,tsx}"],
       options: {
         parser: "typescript",
         singleQuote: true,
