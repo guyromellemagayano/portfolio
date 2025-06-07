@@ -3,7 +3,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
-import { baseEslintConfig } from '.';
+import { baseEslintConfig } from '..';
 
 /**
  * Shared `eslint` configuration for apps using `next`.
