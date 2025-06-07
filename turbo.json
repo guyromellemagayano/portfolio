@@ -33,12 +33,12 @@
   ],
   "tasks": {
     "build": {
+      "dependsOn": [
+        "^build"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         ".env*"
-      ],
-      "dependsOn": [
-        "^build"
       ],
       "outputs": [
         "build/**",
@@ -50,40 +50,64 @@
       ]
     },
     "test": {
+      "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$"
       ],
       "outputs": [
         "coverage/**"
       ],
-      "dependsOn": []
+      "cache": false
     },
     "format": {
+      "dependsOn": [
+        "^format"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "prettier.config.*"
+      ],
+      "outputs": []
+    },
+    "format:check": {
+      "dependsOn": [
+        "^format:check"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "prettier.config.*"
+      ],
+      "outputs": [],
+      "cache": false
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         "eslint.config.*"
       ],
-      "dependsOn": [],
       "outputs": []
     },
-    "lint": {
+    "lint:fix": {
+      "dependsOn": [
+        "^lint:fix"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "eslint.config.*",
-        "tsconfig.json"
+        "eslint.config.*"
       ],
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": []
+      "outputs": [],
+      "cache": false
     },
     "check-types": {
+      "dependsOn": [
+        "^check-types"
+      ],
       "inputs": [
         "$TURBO_DEFAULT$",
         "tsconfig.json"
-      ],
-      "dependsOn": [
-        "^build"
       ],
       "outputs": []
     },
@@ -91,14 +115,12 @@
       "dependsOn": [
         "^build"
       ],
-      "cache": false,
-      "persistent": true
+      "persistent": true,
+      "cache": false
     },
     "clean": {
-      "inputs": [
-        ".turbo/**",
-        "node_modules/**",
-        "dist/**"
+      "dependsOn": [
+        "^clean"
       ],
       "outputs": [],
       "cache": false
