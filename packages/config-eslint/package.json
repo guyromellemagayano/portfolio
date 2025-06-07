@@ -2,28 +2,35 @@
   "name": "@packages/eslint-config",
   "version": "1.0.0",
   "private": true,
+  "description": "Shared ESLint config presets",
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./index.js",
-    "./react": "./react.js",
-    "./next": "./next.js"
+    ".": "./src/index.js",
+    "./react": "./src/presets/react.js",
+    "./next": "./src/presets/next.js"
   },
+  "main": "./src/index.js",
+  "module": "./src/index.js",
   "scripts": {
-    "clean": "rm -rf node_modules .turbo dist",
-    "format": "prettier --check --write \"**/*.{js,mjs,cjs,md,mdx}\""
+    "clean": "rimraf node_modules .turbo dist",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "lint": "eslint --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/"
   },
   "devDependencies": {
     "@eslint/js": "^9.26.0",
     "@next/eslint-plugin-next": "^15.1.6",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
+    "bunchee": "^6.5.2",
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.20",
@@ -31,7 +38,16 @@
     "eslint-plugin-turbo": "^2.4.4",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.1.0",
-    "jiti": "^2.4.2",
+    "rimraf": "^6.0.1",
     "typescript-eslint": "^8.22.0"
+  },
+  "peerDependencies": {
+    "prettier": "^3.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "^5.8"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -12,12 +12,12 @@ import { dirname, resolve } from 'path';
 import tseslint from 'typescript-eslint';
 import { fileURLToPath } from 'url';
 
-const require = createRequire(import.meta.url);
-const prettierConfig = require('../../prettier.config.cjs');
+const nodeRequire = createRequire(import.meta.url);
+const prettierConfig = nodeRequire('../../../prettier.config.cjs');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const repoRoot = resolve(__dirname, '..', '..');
+const fileName = fileURLToPath(import.meta.url);
+const dirName = dirname(fileName);
+const repoRoot = resolve(dirName, '..', '..', '..');
 const tsProjects = [
   resolve(repoRoot, 'tsconfig.json'),
   resolve(repoRoot, 'apps', 'admin', 'tsconfig.json'),
@@ -44,20 +44,9 @@ export const baseEslintConfig = [
       turbo: turboPlugin,
       prettier: prettierPlugin,
       import: importPlugin,
-      '@typescript-eslint': tseslint.plugin,
       'react-refresh': reactRefresh,
       'simple-import-sort': simpleImportSort,
       'unused-imports': unusedImports,
-    },
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: tsProjects,
-        tsconfigRootDir: repoRoot,
-        warnOnMultipleProjects: false,
-        sourceType: 'module',
-        ecmaVersion: 'latest',
-      },
     },
     settings: {
       'import/resolver': {
@@ -68,8 +57,6 @@ export const baseEslintConfig = [
       },
     },
     rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unused-vars': 'error',
       'import/no-duplicates': [
         'error',
         { considerQueryString: true, 'prefer-inline': true },
@@ -121,5 +108,32 @@ export const baseEslintConfig = [
       ],
     },
     ignores: ['dist'],
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
+    plugins: { '@typescript-eslint': tseslint.plugin },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: tsProjects,
+        tsconfigRootDir: repoRoot,
+        warnOnMultipleProjects: false,
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+      },
+    },
+    rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-unused-vars': 'error',
+    },
+  },
+  {
+    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
+    languageOptions: {
+      parserOptions: {
+        sourceType: 'module',
+        ecmaVersion: 'latest',
+      },
+    },
   },
 ];
