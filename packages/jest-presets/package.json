@@ -1,8 +1,7 @@
 {
-  "name": "@guyromellemagayano/jest-presets",
-  "version": "0.0.0",
+  "name": "@packages/jest-presets",
+  "version": "1.0.0",
   "private": true,
-  "license": "MIT",
   "files": [
     "browser/jest-preset.ts",
     "node/jest-preset.ts"
@@ -12,6 +11,7 @@
     "ts-jest": "^29.2.5"
   },
   "devDependencies": {
+    "bunchee": "^6.5.2",
     "jest-environment-jsdom": "^29.7.0"
   }
 }
