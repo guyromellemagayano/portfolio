@@ -2,12 +2,12 @@
   "name": "@packages/typescript-config",
   "version": "1.0.0",
   "private": true,
-  "description": "",
+  "description": "Shared TypeScript configuration",
   "license": "MIT",
   "type": "module",
   "devDependencies": {
     "bunchee": "^6.5.2",
-    "typescript": "^5.8"
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public"
