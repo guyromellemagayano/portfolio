@@ -13,10 +13,7 @@
     },
     "editor.suggest.insertMode": "replace"
   },
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[dotenv]": {
+  "[ignore,dotenv]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[graphql]": {
@@ -27,7 +24,6 @@
     "editor.unicodeHighlight.ambiguousCharacters": false,
     "editor.unicodeHighlight.invisibleCharacters": false,
     "diffEditor.ignoreTrimWhitespace": false,
-    "editor.wordWrap": "on",
     "editor.quickSuggestions": {
       "comments": "off",
       "strings": "off",
@@ -44,14 +40,13 @@
   "editor.insertSpaces": true,
   "editor.tabCompletion": "on",
   "editor.tabFocusMode": false,
+  "editor.wordWrap": "on",
   "editor.codeActionsOnSave": {
-    "source.fixAll.ts": "always",
     "source.fixAll": "always",
     "source.fixAll.eslint": "always",
     "source.fixAll.stylelint": "always",
     "source.removeUnusedImports": "always",
     "source.organizeImports": "always",
-    "source.sortImports": "always"
   },
   "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
