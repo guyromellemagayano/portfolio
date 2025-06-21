@@ -1,13 +1,13 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it, jest } from '@jest/globals';
 
-import { log } from "..";
+import { log } from '..';
 
-jest.spyOn(global.console, "log");
+jest.spyOn(global.console, 'log');
 
-describe("@guyromellemagayano/logger", () => {
-  it("prints a message", () => {
-    log("hello");
+describe('@packages/logger', () => {
+  it('prints a message', () => {
+    log('hello');
 
-    expect(console.log).toBeCalledWith("LOGGER: ", "hello");
+    expect(console.log).toBeCalledWith('LOGGER: ', 'hello');
   });
 });
