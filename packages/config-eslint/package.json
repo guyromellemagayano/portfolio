@@ -12,6 +12,7 @@
   },
   "main": "./src/index.js",
   "module": "./src/index.js",
+  "types": "./src/presets/react.d.ts",
   "scripts": {
     "clean": "rimraf node_modules .turbo dist",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
@@ -21,15 +22,15 @@
   },
   "dependencies": {
     "@eslint/js": "^9.29.0",
-    "@next/eslint-plugin-next": "^15.3.3",
-    "@typescript-eslint/eslint-plugin": "^8.34.0",
-    "@typescript-eslint/parser": "^8.34.0",
+    "@next/eslint-plugin-next": "^15.3.4",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
     "eslint": "catalog:",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.3",
-    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-only-warn": "^1.1.0",
-    "eslint-plugin-prettier": "^5.4.1",
+    "eslint-plugin-prettier": "^5.5.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
@@ -38,10 +39,10 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
     "typescript": "catalog:",
-    "typescript-eslint": "^8.34.0"
+    "typescript-eslint": "^8.34.1"
   },
   "devDependencies": {
-    "bunchee": "^6.5.2",
+    "bunchee": "^6.5.3",
     "rimraf": "^6.0.1"
   },
   "peerDependencies": {
