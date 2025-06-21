@@ -13,18 +13,17 @@
     "commit": "czg gpg",
     "dev": "turbo run dev --parallel",
     "format": "turbo run format",
+    "format:check": "turbo run format:check",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "prepare": "husky",
     "test": "turbo run test"
   },
   "lint-staged": {
-    "**/*.{js,ts,tsx,css,md,mdx,json,jsonc}": [
+    "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx,css,md,mdx,json,jsonc}": [
       "pnpm format"
     ],
-    "**/*.{js,ts,tsx}": [
-      "pnpm lint"
-    ],
-    "**/*.{ts,tsx}": [
+    "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}": [
       "pnpm test"
     ]
   },
@@ -34,29 +33,35 @@
       "useEmoji": true
     }
   },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "turbo": "^2.5.4"
+  },
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
-    "@commitlint/cz-commitlint": "^19.8.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/cz-commitlint": "^19.8.1",
     "@commitlint/types": "^19.8.1",
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "czg": "^1.11.1",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "czg": "^1.11.2",
     "husky": "^9.1.7",
-    "lint-staged": "^16.0.0",
+    "lint-staged": "^16.1.2",
     "prettier": "^3.5.3",
-    "prettier-plugin-packagejson": "^2.5.12",
-    "prettier-plugin-pkg": "^0.19.1",
-    "prettier-plugin-tailwindcss": "^0.6.11",
-    "turbo": "^2.5.3"
+    "prettier-plugin-packagejson": "^2.5.15",
+    "prettier-plugin-pkg": "^0.21.1",
+    "prettier-plugin-tailwindcss": "^0.6.13"
   },
   "peerDependencies": {
-    "eslint": "^9.25.1",
-    "typescript": "^5.8"
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   },
-  "packageManager": "pnpm@9.15.5",
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
   "engines": {
     "node": ">=20",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   }
 }
