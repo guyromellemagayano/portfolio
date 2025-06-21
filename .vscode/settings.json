@@ -13,7 +13,10 @@
     },
     "editor.suggest.insertMode": "replace"
   },
-  "[ignore,dotenv]": {
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dotenv]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[graphql]": {
@@ -43,10 +46,9 @@
   "editor.wordWrap": "on",
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
-    "source.fixAll.eslint": "always",
-    "source.fixAll.stylelint": "always",
     "source.removeUnusedImports": "always",
     "source.organizeImports": "always",
+    "source.sortImports": "always"
   },
   "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
@@ -72,5 +74,8 @@
   "javascript.preferences.importModuleSpecifierEnding": "minimal",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.preferences.importModuleSpecifierEnding": "minimal",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": true,
+  "prettier.configPath": "prettier.config.cjs"
 }
