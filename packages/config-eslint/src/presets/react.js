@@ -2,7 +2,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 
-import { baseEslintConfig } from '..';
+import { baseEslintConfig } from '../index.js';
 
 /**
  * Shared `eslint` configuration for apps using `react`.
@@ -34,7 +34,27 @@ export const reactEslintConfig = [
     rules: {
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
-      'simple-import-sort/imports': 'error',
+      'simple-import-sort/imports': [
+        'error',
+        {
+          groups: [
+            ['^react$', '^react-dom$', '^react\\b'],
+            [
+              '^node:',
+              '^@(?!packages/|admin/|api/|blog/|storefront/|studio/|web/).+',
+              '^[a-z]',
+            ],
+            ['^@packages/', '^~'],
+            ['^@admin/'],
+            ['^@api/'],
+            ['^@blog/'],
+            ['^@storefront/'],
+            ['^@studio/'],
+            ['^@web/'],
+            ['^\\.'],
+          ],
+        },
+      ],
       'simple-import-sort/exports': 'error',
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': [
