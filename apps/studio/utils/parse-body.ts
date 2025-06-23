@@ -4,7 +4,7 @@ import { Schema } from "@sanity/schema";
 import { JSDOM } from "jsdom";
 import type { FieldDefinition } from "sanity";
 
-import schemaTypes from "../schemaTypes";
+import schemaTypes from "@studio/schemaTypes";
 
 const defaultSchema = Schema.compile({ types: schemaTypes });
 const blockContentSchema = defaultSchema
@@ -17,8 +17,15 @@ interface HTMLGeneratorOptions {
   marks?: Array<"strong" | "em">;
 }
 
-const generateHTML = (count: number, options: HTMLGeneratorOptions = {}): string => {
-  const { enableLists = false, headingLevels = [], marks = ["strong", "em"] } = options;
+const generateHTML = (
+  count: number,
+  options: HTMLGeneratorOptions = {}
+): string => {
+  const {
+    enableLists = false,
+    headingLevels = [],
+    marks = ["strong", "em"],
+  } = options;
 
   const formatWord = (word: string): string => {
     const randomValue = faker.number.int({ min: 1, max: 10 });
@@ -61,7 +68,7 @@ export const createFakeBlockContent = (
     minParagraphs?: number;
     maxParagraphs?: number;
     rich?: boolean;
-  } = {},
+  } = {}
 ) => {
   const { minParagraphs = 2, maxParagraphs = 5, rich = false } = options ?? {};
   const count = faker.number.int({

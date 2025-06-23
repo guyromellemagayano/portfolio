@@ -10,7 +10,8 @@ export const faqAccordion = defineType({
       name: "eyebrow",
       type: "string",
       title: "Eyebrow",
-      description: "The smaller text that sits above the title to provide context",
+      description:
+        "The smaller text that sits above the title to provide context",
     }),
     defineField({
       name: "title",

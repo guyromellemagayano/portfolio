@@ -1,4 +1,7 @@
-import { orderRankField, orderRankOrdering } from "@sanity/orderable-document-list";
+import {
+  orderRankField,
+  orderRankOrdering,
+} from "@sanity/orderable-document-list";
 import { FileTextIcon } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 
@@ -32,18 +35,19 @@ export const blog = defineType({
       name: "description",
       type: "text",
       rows: 3,
-      description: "A short summary of what your blog post is about (appears in search results)",
+      description:
+        "A short summary of what your blog post is about (appears in search results)",
       group: GROUP.MAIN_CONTENT,
       validation: (rule) => [
         rule
           .min(140)
           .warning(
-            "The meta description should be at least 140 characters for optimal SEO visibility in search results",
+            "The meta description should be at least 140 characters for optimal SEO visibility in search results"
           ),
         rule
           .max(160)
           .warning(
-            "The meta description should not exceed 160 characters as it will be truncated in search results",
+            "The meta description should not exceed 160 characters as it will be truncated in search results"
           ),
       ],
     }),
@@ -51,7 +55,8 @@ export const blog = defineType({
       name: "slug",
       type: "slug",
       title: "URL",
-      description: "The web address where people can find your blog post (automatically created from title)",
+      description:
+        "The web address where people can find your blog post (automatically created from title)",
       group: GROUP.MAIN_CONTENT,
       components: {
         field: SlugField,
@@ -94,7 +99,12 @@ export const blog = defineType({
           },
         }),
       ],
-      validation: (Rule) => [Rule.required(), Rule.max(1), Rule.min(1), Rule.unique()],
+      validation: (Rule) => [
+        Rule.required(),
+        Rule.max(1),
+        Rule.min(1),
+        Rule.unique(),
+      ],
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
@@ -102,13 +112,15 @@ export const blog = defineType({
       type: "date",
       initialValue: () => new Date().toISOString().split("T")[0]!,
       title: "Published At",
-      description: "The date when your blog post will appear to have been published",
+      description:
+        "The date when your blog post will appear to have been published",
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
       name: "image",
       title: "Image",
-      description: "The main picture that will appear at the top of your blog post and in previews",
+      description:
+        "The main picture that will appear at the top of your blog post and in previews",
       type: "image",
       group: GROUP.MAIN_CONTENT,
       validation: (Rule) => Rule.required(),
@@ -119,7 +131,8 @@ export const blog = defineType({
     defineField({
       name: "richText",
       type: "richText",
-      description: "The main content of your blog post with text, images, and formatting",
+      description:
+        "The main content of your blog post with text, images, and formatting",
       group: GROUP.MAIN_CONTENT,
     }),
     ...seoFields,
@@ -135,14 +148,28 @@ export const blog = defineType({
       author: "authors.0.name",
       publishDate: "publishedAt",
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    prepare: ({ title, media, slug, isPrivate, isHidden, author, publishDate }) => {
+
+    prepare: ({
+      title,
+      media,
+      slug,
+      isPrivate,
+      isHidden,
+      author,
+      publishDate,
+    }) => {
       // Status indicators
-      const visibility = isPrivate ? "🔒 Private" : isHidden ? "🙈 Hidden" : "🌎 Public";
+      const visibility = isPrivate
+        ? "🔒 Private"
+        : isHidden
+          ? "🙈 Hidden"
+          : "🌎 Public";
 
       // Author and date
       const authorInfo = author ? `✍️ ${author}` : "👻 No author";
-      const dateInfo = publishDate ? `📅 ${new Date(publishDate).toLocaleDateString()}` : "⏳ Draft";
+      const dateInfo = publishDate
+        ? `📅 ${new Date(publishDate).toLocaleDateString()}`
+        : "⏳ Draft";
 
       return {
         title: title || "Untitled Blog",

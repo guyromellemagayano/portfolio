@@ -47,19 +47,27 @@ export const QUESTIONS = [
     answer: `<p>You can <strong>track your order</strong> by logging into your account and viewing the order status. We also send <em>tracking information</em> via email once your order ships.</p>`,
   },
   {
-    value: faker.helpers.fake("What payment methods do you accept for {{commerce.product}}?"),
+    value: faker.helpers.fake(
+      "What payment methods do you accept for {{commerce.product}}?"
+    ),
     answer: `<p>We accept all <strong>major credit cards</strong> (<em>Visa</em>, <em>Mastercard</em>, <em>American Express</em>), <strong>PayPal</strong>, and <strong>Apple Pay</strong>. Payment information is securely encrypted.</p>`,
   },
   {
-    value: faker.helpers.fake("How long does shipping take to {{location.city}}?"),
+    value: faker.helpers.fake(
+      "How long does shipping take to {{location.city}}?"
+    ),
     answer: `<p><strong>Standard shipping</strong> typically takes <em>3-5 business days</em>. <strong>Express shipping</strong> options are available for <em>1-2 day delivery</em> in most areas.</p>`,
   },
   {
-    value: faker.helpers.fake("Do you offer international shipping to {{location.country}}?"),
+    value: faker.helpers.fake(
+      "Do you offer international shipping to {{location.country}}?"
+    ),
     answer: `<p>Yes, we offer <strong>international shipping</strong> to most countries. Delivery times vary by location, typically <em>7-14 business days</em>. Additional <strong>customs fees</strong> may apply.</p>`,
   },
   {
-    value: faker.helpers.fake("What are your shipping rates to {{location.state}}?"),
+    value: faker.helpers.fake(
+      "What are your shipping rates to {{location.state}}?"
+    ),
     answer: `<p><strong>Shipping rates</strong> are calculated based on weight and destination. <strong>Standard shipping</strong> starts at <em>$5.99</em>. <strong>Free shipping</strong> is available for orders over <em>$50</em>.</p>`,
   },
   {
@@ -68,13 +76,13 @@ export const QUESTIONS = [
   },
   {
     value: faker.helpers.fake(
-      "What makes your {{commerce.productName}} different from competitors?",
+      "What makes your {{commerce.productName}} different from competitors?"
     ),
     answer: `<p>Our products feature <strong>premium materials</strong>, <strong>innovative design</strong>, and <strong>rigorous quality testing</strong>. We also provide <em>comprehensive post-purchase support</em>.</p>`,
   },
   {
     value: faker.helpers.fake(
-      "Do you have any {{commerce.productAdjective}} {{commerce.product}} in stock?",
+      "Do you have any {{commerce.productAdjective}} {{commerce.product}} in stock?"
     ),
     answer: `<p>Our <strong>inventory</strong> is updated in <em>real-time</em> on our website. You can check <strong>current availability</strong> and set up notifications for <strong>out-of-stock</strong> items.</p>`,
   },
@@ -83,11 +91,15 @@ export const QUESTIONS = [
     answer: `<p>Yes, <strong>refunds</strong> are available within our <em>30-day return window</em>. Contact our <strong>customer service team</strong> to initiate the refund process.</p>`,
   },
   {
-    value: faker.helpers.fake("What is your {{company.name}}'s warranty policy?"),
+    value: faker.helpers.fake(
+      "What is your {{company.name}}'s warranty policy?"
+    ),
     answer: `<p>Our products come with a <strong>comprehensive warranty</strong> that covers <em>manufacturing defects</em> for up to <strong>one year</strong> from the purchase date. Extended warranty options are also available.</p>`,
   },
   {
-    value: faker.helpers.fake("How can I contact {{company.name}}'s customer support?"),
+    value: faker.helpers.fake(
+      "How can I contact {{company.name}}'s customer support?"
+    ),
     answer: `<p>Our <strong>customer support team</strong> is available through multiple channels: <em>live chat</em>, <em>email</em>, and <em>phone</em>. Support hours are <strong>24/7</strong> for your convenience.</p>`,
   },
   {
@@ -95,31 +107,45 @@ export const QUESTIONS = [
     answer: `<p>We offer <strong>price matching</strong> on identical items from authorized retailers. Simply provide proof of the lower price within <em>14 days</em> of your purchase for a <strong>price adjustment</strong>.</p>`,
   },
   {
-    value: faker.helpers.fake("Do you offer bulk discounts for {{commerce.product}}?"),
+    value: faker.helpers.fake(
+      "Do you offer bulk discounts for {{commerce.product}}?"
+    ),
     answer: `<p>Yes, we provide <strong>volume discounts</strong> for bulk orders. Discounts start at <em>10% off</em> for orders over $500 and increase based on quantity. Contact our <strong>sales team</strong> for custom quotes.</p>`,
   },
   {
-    value: faker.helpers.fake("What is your {{company.name}}'s privacy policy?"),
+    value: faker.helpers.fake(
+      "What is your {{company.name}}'s privacy policy?"
+    ),
     answer: `<p>We take your privacy seriously. Your <strong>personal information</strong> is securely encrypted and never shared with third parties. View our detailed <em>privacy policy</em> for complete information.</p>`,
   },
   {
-    value: faker.helpers.fake("How do I set up my {{commerce.product}} account?"),
+    value: faker.helpers.fake(
+      "How do I set up my {{commerce.product}} account?"
+    ),
     answer: `<p>Setting up your account is <strong>quick and simple</strong>. Visit our website, click <em>'Create Account'</em>, and follow the <strong>step-by-step instructions</strong>. Verification is usually completed within minutes.</p>`,
   },
   {
-    value: faker.helpers.fake("What loyalty programs does {{company.name}} offer?"),
+    value: faker.helpers.fake(
+      "What loyalty programs does {{company.name}} offer?"
+    ),
     answer: `<p>Our <strong>rewards program</strong> offers <em>points on every purchase</em>, <strong>exclusive member discounts</strong>, and <strong>early access</strong> to new products and sales. Membership is completely free.</p>`,
   },
   {
-    value: faker.helpers.fake("How do I report a defective {{commerce.product}}?"),
+    value: faker.helpers.fake(
+      "How do I report a defective {{commerce.product}}?"
+    ),
     answer: `<p>For defective products, please <strong>document the issue</strong> with photos and contact our <em>quality assurance team</em>. We'll provide <strong>immediate assistance</strong> and arrange replacement if needed.</p>`,
   },
   {
-    value: faker.helpers.fake("What certifications does {{company.name}} have?"),
+    value: faker.helpers.fake(
+      "What certifications does {{company.name}} have?"
+    ),
     answer: `<p>We maintain <strong>ISO 9001 certification</strong> and are <em>industry-certified</em> in all operating regions. Our facilities undergo <strong>regular audits</strong> to ensure compliance with international standards.</p>`,
   },
   {
-    value: faker.helpers.fake("Do you offer custom {{commerce.product}} solutions?"),
+    value: faker.helpers.fake(
+      "Do you offer custom {{commerce.product}} solutions?"
+    ),
     answer: `<p>Yes, our <strong>customization team</strong> works directly with clients to develop <em>tailored solutions</em>. We offer <strong>flexible customization options</strong> to meet specific requirements and preferences.</p>`,
   },
 ];
@@ -387,13 +413,13 @@ export const generateNavbarColumns = ({ links }: { links: Link[] }) => {
     {
       _key: faker.string.uuid(),
       _type: "navbarColumn",
-      links: buildLinks(firstPart),
+      links: buildLinks(firstPart ?? []),
       title: "Resources",
     },
     {
       _key: faker.string.uuid(),
       _type: "navbarColumn",
-      links: buildLinks(secondPart),
+      links: buildLinks(secondPart ?? []),
       title: "Products",
     },
   ];
@@ -425,19 +451,19 @@ export const generateFooterColumns = ({ links }: { links: Link[] }) => {
     {
       _key: faker.string.uuid(),
       _type: "footerColumn",
-      links: buildLinks(firstPart),
+      links: buildLinks(firstPart ?? []),
       title: "Product",
     },
     {
       _key: faker.string.uuid(),
       _type: "footerColumn",
-      links: buildLinks(secondPart),
+      links: buildLinks(secondPart ?? []),
       title: "Company",
     },
     {
       _key: faker.string.uuid(),
       _type: "footerColumn",
-      links: buildLinks(thirdPart),
+      links: buildLinks(thirdPart ?? []),
       title: "Resources",
     },
   ];
@@ -456,14 +482,19 @@ export const getMockNavbarData = ({ columns }: { columns: NavbarColumns }) => {
   };
 };
 
-export const generateMockFooterData = ({ columns }: { columns: FooterColumns }) => {
+export const generateMockFooterData = ({
+  columns,
+}: {
+  columns: FooterColumns;
+}) => {
   return {
     _id: "footer",
     _type: "footer",
     _createdAt: "2025-01-17T11:55:54Z",
     label: "Footer",
     columns,
-    subtitle: "Powered by Next.js and Sanity, crafted in a seamless monorepo architecture.",
+    subtitle:
+      "Powered by Next.js and Sanity, crafted in a seamless monorepo architecture.",
   };
 };
 
@@ -482,7 +513,8 @@ export const generateGlobalSettingsData = (logoImageId?: string) => {
           },
         }
       : undefined,
-    siteDescription: "Powered by Next.js and Sanity, crafted in a seamless monorepo architecture.",
+    siteDescription:
+      "Powered by Next.js and Sanity, crafted in a seamless monorepo architecture.",
     siteTitle: "Template Robot Next Sanity",
     socialLinks: {
       linkedin: "https://uk.linkedin.com/company/robotostudio",

@@ -60,7 +60,8 @@ export const settings = defineType({
       name: "siteTitle",
       type: "string",
       title: "Site Title",
-      description: "The main title of your website, used in browser tabs and SEO",
+      description:
+        "The main title of your website, used in browser tabs and SEO",
       validation: (rule) => rule.required(),
     }),
     defineField({

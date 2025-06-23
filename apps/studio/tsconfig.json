@@ -1,8 +1,12 @@
 {
-  "extends": "@guyromellemagayano/typescript-config/react-app.json",
+  "extends": "@packages/typescript-config/src/react-app.json",
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,9 +16,17 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@studio/*": ["./*"]
+      "@studio/*": [
+        "./*"
+      ]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "types.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -1,16 +1,13 @@
+import { config as loadEnv } from "dotenv";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { config as loadEnv } from "dotenv";
 import { defineCliConfig } from "sanity/cli";
+
+import { dataset, projectId, studioHost } from "@studio/configs";
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const MONOREPO = join(ROOT, "..", "..");
 loadEnv({ path: "../../.env" });
-
-const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
-const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
-const host = process.env.HOST_NAME;
-const studioHost = host && host !== "main" ? `${host}-portfolio` : "portfolio";
 
 export default defineCliConfig({
   api: {
