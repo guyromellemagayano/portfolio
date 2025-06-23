@@ -8,12 +8,14 @@
   "type": "module",
   "exports": {
     "./counter-button": {
-      "import": "./dist/counter-button/index.js",
-      "types": "./dist/counter-button/index.d.ts"
+      "types": "./dist/counter-button/index.d.ts",
+      "import": "./dist/counter-button/index.mjs",
+      "require": "./dist/counter-button/index.cjs"
     },
     "./link": {
-      "import": "./dist/link/index.js",
-      "types": "./dist/link/index.d.ts"
+      "types": "./dist/link/index.d.ts",
+      "import": "./dist/link/index.mjs",
+      "require": "./dist/link/index.cjs"
     },
     ".": {
       "types": "./dist/index.d.ts",
@@ -50,7 +52,7 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "bunchee": "^6.5.3",
+    "bunchee": "^6.5.4",
     "eslint": "catalog:",
     "jest": "catalog:",
     "rimraf": "^6.0.1",
