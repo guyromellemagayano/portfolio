@@ -8,8 +8,22 @@ import {
   useState,
 } from "react";
 
-import { CopyIcon, EditIcon, FolderIcon, WarningOutlineIcon } from "@sanity/icons";
-import { Badge, Box, Button, Card, Flex, Stack, Text, TextInput } from "@sanity/ui";
+import {
+  CopyIcon,
+  EditIcon,
+  FolderIcon,
+  WarningOutlineIcon,
+} from "@sanity/icons";
+import {
+  Badge,
+  Box,
+  Button,
+  Card,
+  Flex,
+  Stack,
+  Text,
+  TextInput,
+} from "@sanity/ui";
 import {
   getPublishedId,
   type ObjectFieldProps,
@@ -79,12 +93,16 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
   const slugValidationError = useMemo(
     () =>
       validation.validation.find(
-        (v) => (v?.path.includes("current") || v?.path.includes("slug")) && v.message,
+        (v) =>
+          (v?.path.includes("current") || v?.path.includes("slug")) && v.message
       ),
-    [validation.validation],
+    [validation.validation]
   );
 
-  const segments = useMemo(() => value?.current?.split("/").filter(Boolean) || [], [value]);
+  const segments = useMemo(
+    () => value?.current?.split("/").filter(Boolean) || [],
+    [value]
+  );
   const [folderLocked, setFolderLocked] = useState(segments.length > 1);
 
   const fullPathInputRef = useRef<HTMLInputElement>(null);
@@ -92,17 +110,19 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
 
   const handleChange = useCallback(
     (value?: string) => {
-      const finalValue = value ? stringToPathname(value, { allowTrailingSlash: true }) : undefined;
+      const finalValue = value
+        ? stringToPathname(value, { allowTrailingSlash: true })
+        : undefined;
       onChange(
         typeof value === "string"
           ? set({
               current: finalValue,
               _type: "slug",
             })
-          : unset(),
+          : unset()
       );
     },
-    [onChange],
+    [onChange]
   );
 
   const handleGenerate = useCallback(() => {
@@ -133,14 +153,14 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
       });
       handleChange(newSegments.join("/"));
     },
-    [segments, handleChange],
+    [segments, handleChange]
   );
 
   const updateFullPath = useCallback(
     (e: FormEvent<HTMLInputElement>) => {
       handleChange(e.currentTarget.value);
     },
-    [handleChange],
+    [handleChange]
   );
 
   const unlockFolder = useCallback((e: MouseEvent<HTMLButtonElement>) => {
@@ -156,7 +176,7 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
     (e: FocusEvent<HTMLInputElement>) => {
       setFolderLocked(segments.length > 1);
     },
-    [segments],
+    [segments]
   );
 
   const localizedPathname = getDocumentPath({
@@ -189,7 +209,9 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
                 <TextInput
                   width="100%"
                   value={segments[segments.length - 1] || ""}
-                  onChange={(e) => updateSegment(segments.length - 1, e.currentTarget.value)}
+                  onChange={(e) =>
+                    updateSegment(segments.length - 1, e.currentTarget.value)
+                  }
                   ref={pathSegmentInputRef}
                   onBlur={handleBlur}
                   disabled={readOnly}
@@ -264,7 +286,9 @@ export const SlugField = (props: ObjectFieldProps<SlugValue>) => {
             <CopyButton
               icon={CopyIcon}
               onClick={() =>
-                navigator.clipboard.writeText(`${presentationOriginUrl ?? ""}${localizedPathname}`)
+                navigator.clipboard.writeText(
+                  `${presentationOriginUrl ?? ""}${localizedPathname}`
+                )
               }
               title="Copy link"
               mode="bleed"

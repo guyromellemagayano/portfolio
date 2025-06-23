@@ -34,7 +34,8 @@ const navbarLink = defineField({
     prepare({ title, externalUrl, urlType, internalUrl, openInNewTab }) {
       const url = urlType === "external" ? externalUrl : internalUrl;
       const newTabIndicator = openInNewTab ? " ↗" : "";
-      const truncatedUrl = url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      const truncatedUrl =
+        url?.length > 30 ? `${url.substring(0, 30)}...` : url;
 
       return {
         title: title || "Untitled Link",
@@ -83,7 +84,8 @@ const navbarColumnLink = defineField({
     prepare({ title, externalUrl, urlType, internalUrl, openInNewTab }) {
       const url = urlType === "external" ? externalUrl : internalUrl;
       const newTabIndicator = openInNewTab ? " ↗" : "";
-      const truncatedUrl = url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      const truncatedUrl =
+        url?.length > 30 ? `${url.substring(0, 30)}...` : url;
 
       return {
         title: title || "Untitled Link",
@@ -105,7 +107,8 @@ const navbarColumn = defineField({
       name: "title",
       type: "string",
       title: "Column Title",
-      description: "The heading text displayed above this group of navigation links",
+      description:
+        "The heading text displayed above this group of navigation links",
     }),
     defineField({
       name: "links",
@@ -142,7 +145,8 @@ export const navbar = defineType({
       type: "string",
       initialValue: "Navbar",
       title: "Navigation Label",
-      description: "Internal label to identify this navigation configuration in the CMS",
+      description:
+        "Internal label to identify this navigation configuration in the CMS",
       validation: (rule) => rule.required(),
     }),
     defineField({

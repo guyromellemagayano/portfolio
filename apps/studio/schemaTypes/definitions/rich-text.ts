@@ -68,9 +68,14 @@ export const memberTypes = richTextMembers.map((member) => member.name);
 
 type Type = NonNullable<(typeof memberTypes)[number]>;
 
-export const customRichText = (type: Type[], options?: { name?: string; title?: string; group?: string }) => {
+export const customRichText = (
+  type: Type[],
+  options?: { name?: string; title?: string; group?: string }
+) => {
   const { name } = options ?? {};
-  const customMembers = richTextMembers.filter((member) => member.name && type.includes(member.name));
+  const customMembers = richTextMembers.filter(
+    (member) => member.name && type.includes(member.name)
+  );
   return defineField({
     ...options,
     name: name ?? "richText",

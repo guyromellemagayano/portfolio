@@ -19,7 +19,8 @@ export const homePage = defineType({
     defineField({
       name: "title",
       type: "string",
-      description: "The main heading that will appear at the top of your home page",
+      description:
+        "The main heading that will appear at the top of your home page",
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
@@ -34,12 +35,12 @@ export const homePage = defineType({
         rule
           .min(140)
           .warning(
-            "The meta description should be at least 140 characters for optimal SEO visibility in search results",
+            "The meta description should be at least 140 characters for optimal SEO visibility in search results"
           ),
         rule
           .max(160)
           .warning(
-            "The meta description should not exceed 160 characters as it will be truncated in search results",
+            "The meta description should not exceed 160 characters as it will be truncated in search results"
           ),
       ],
     }),
@@ -56,7 +57,9 @@ export const homePage = defineType({
       validation: (Rule) => Rule.required(),
     }),
     pageBuilderField,
-    ...seoFields.filter((field) => !["seoNoIndex", "seoHideFromLists"].includes(field.name)),
+    ...seoFields.filter(
+      (field) => !["seoNoIndex", "seoHideFromLists"].includes(field.name)
+    ),
     ...ogFields,
   ],
   preview: {
