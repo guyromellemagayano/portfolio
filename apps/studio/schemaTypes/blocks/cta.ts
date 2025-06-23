@@ -12,7 +12,8 @@ export const cta = defineType({
       name: "eyebrow",
       title: "Eyebrow",
       type: "string",
-      description: "The smaller text that sits above the title to provide context",
+      description:
+        "The smaller text that sits above the title to provide context",
     }),
     defineField({
       name: "title",

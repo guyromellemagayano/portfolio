@@ -17,7 +17,8 @@ export const blogIndex = defineType({
     defineField({
       name: "title",
       type: "string",
-      description: "The main heading that will appear at the top of your blog listing page",
+      description:
+        "The main heading that will appear at the top of your blog listing page",
       group: GROUP.MAIN_CONTENT,
     }),
     defineField({
@@ -75,7 +76,9 @@ export const blogIndex = defineType({
       group: GROUP.MAIN_CONTENT,
     }),
     pageBuilderField,
-    ...seoFields.filter((field) => !["seoNoIndex", "seoHideFromLists"].includes(field.name)),
+    ...seoFields.filter(
+      (field) => !["seoNoIndex", "seoHideFromLists"].includes(field.name)
+    ),
     ...ogFields,
   ],
   preview: {

@@ -21,7 +21,8 @@ export const page = defineType({
       name: "title",
       type: "string",
       title: "Title",
-      description: "The main heading that appears at the top of your page and in browser tabs",
+      description:
+        "The main heading that appears at the top of your page and in browser tabs",
       group: GROUP.MAIN_CONTENT,
       validation: (Rule) => Rule.required().error("A page title is required"),
     }),
@@ -37,12 +38,12 @@ export const page = defineType({
         rule
           .min(140)
           .warning(
-            "The meta description should be at least 140 characters for optimal SEO visibility in search results",
+            "The meta description should be at least 140 characters for optimal SEO visibility in search results"
           ),
         rule
           .max(160)
           .warning(
-            "The meta description should not exceed 160 characters as it will be truncated in search results",
+            "The meta description should not exceed 160 characters as it will be truncated in search results"
           ),
       ],
     }),
@@ -61,7 +62,8 @@ export const page = defineType({
         slugify: createSlug,
         isUnique,
       },
-      validation: (Rule) => Rule.required().error("A URL slug is required for the page"),
+      validation: (Rule) =>
+        Rule.required().error("A URL slug is required for the page"),
     }),
     defineField({
       name: "image",
@@ -88,7 +90,9 @@ export const page = defineType({
     },
     prepare: ({ title, slug, media, isPrivate, hasPageBuilder }) => {
       const statusEmoji = isPrivate ? "🔒" : "🌎";
-      const builderEmoji = hasPageBuilder?.length ? `🧱 ${hasPageBuilder.length}` : "🏗️";
+      const builderEmoji = hasPageBuilder?.length
+        ? `🧱 ${hasPageBuilder.length}`
+        : "🏗️";
 
       return {
         title: `${title || "Untitled Page"}`,

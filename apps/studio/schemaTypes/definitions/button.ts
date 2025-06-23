@@ -39,10 +39,18 @@ export const button = defineType({
       internalUrl: "url.internal.slug.current",
       openInNewTab: "url.openInNewTab",
     },
-    prepare: ({ title, variant, externalUrl, urlType, internalUrl, openInNewTab }) => {
+    prepare: ({
+      title,
+      variant,
+      externalUrl,
+      urlType,
+      internalUrl,
+      openInNewTab,
+    }) => {
       const url = urlType === "external" ? externalUrl : internalUrl;
       const newTabIndicator = openInNewTab ? " ↗" : "";
-      const truncatedUrl = url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      const truncatedUrl =
+        url?.length > 30 ? `${url.substring(0, 30)}...` : url;
 
       return {
         title: title || "Untitled Button",
