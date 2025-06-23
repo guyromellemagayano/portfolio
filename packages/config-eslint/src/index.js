@@ -1,33 +1,33 @@
-import js from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier/flat';
-import importPlugin from 'eslint-plugin-import';
-import onlyWarn from 'eslint-plugin-only-warn';
-import prettierPlugin from 'eslint-plugin-prettier';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import simpleImportSort from 'eslint-plugin-simple-import-sort';
-import turboPlugin from 'eslint-plugin-turbo';
-import unusedImports from 'eslint-plugin-unused-imports';
-import { createRequire } from 'module';
-import { dirname, resolve } from 'path';
-import tseslint from 'typescript-eslint';
-import { fileURLToPath } from 'url';
+import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
+import importPlugin from "eslint-plugin-import";
+import onlyWarn from "eslint-plugin-only-warn";
+import prettierPlugin from "eslint-plugin-prettier";
+import reactRefresh from "eslint-plugin-react-refresh";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
+import turboPlugin from "eslint-plugin-turbo";
+import unusedImports from "eslint-plugin-unused-imports";
+import { createRequire } from "module";
+import { dirname, resolve } from "path";
+import tseslint from "typescript-eslint";
+import { fileURLToPath } from "url";
 
 const nodeRequire = createRequire(import.meta.url);
-const prettierConfig = nodeRequire('../../../prettier.config.cjs');
+const prettierConfig = nodeRequire("../../../prettier.config.cjs");
 
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
-const repoRoot = resolve(dirName, '..', '..', '..');
+const repoRoot = resolve(dirName, "..", "..", "..");
 const tsProjects = [
-  resolve(repoRoot, 'tsconfig.json'),
-  resolve(repoRoot, 'apps', 'admin', 'tsconfig.json'),
-  resolve(repoRoot, 'apps', 'api', 'tsconfig.json'),
-  resolve(repoRoot, 'apps', 'blog', 'tsconfig.json'),
-  resolve(repoRoot, 'apps', 'storefront', 'tsconfig.json'),
-  resolve(repoRoot, 'apps', 'studio', 'tsconfig.json'),
-  resolve(repoRoot, 'packages', 'ui', 'tsconfig.json'),
-  resolve(repoRoot, 'packages', 'logger', 'tsconfig.json'),
-  resolve(repoRoot, 'packages', 'components', 'tsconfig.json'),
+  resolve(repoRoot, "tsconfig.json"),
+  resolve(repoRoot, "apps", "admin", "tsconfig.json"),
+  resolve(repoRoot, "apps", "api", "tsconfig.json"),
+  resolve(repoRoot, "apps", "blog", "tsconfig.json"),
+  resolve(repoRoot, "apps", "storefront", "tsconfig.json"),
+  resolve(repoRoot, "apps", "studio", "tsconfig.json"),
+  resolve(repoRoot, "packages", "ui", "tsconfig.json"),
+  resolve(repoRoot, "packages", "logger", "tsconfig.json"),
+  resolve(repoRoot, "packages", "components", "tsconfig.json"),
 ];
 
 /**
@@ -44,12 +44,12 @@ export const baseEslintConfig = [
       turbo: turboPlugin,
       prettier: prettierPlugin,
       import: importPlugin,
-      'react-refresh': reactRefresh,
-      'simple-import-sort': simpleImportSort,
-      'unused-imports': unusedImports,
+      "react-refresh": reactRefresh,
+      "simple-import-sort": simpleImportSort,
+      "unused-imports": unusedImports,
     },
     settings: {
-      'import/resolver': {
+      "import/resolver": {
         typescript: {
           project: tsProjects,
           noWarnOnMultipleProjects: true,
@@ -57,82 +57,84 @@ export const baseEslintConfig = [
       },
     },
     rules: {
-      'import/no-duplicates': [
-        'error',
-        { considerQueryString: true, 'prefer-inline': true },
+      "import/no-duplicates": [
+        "error",
+        { considerQueryString: true, "prefer-inline": true },
       ],
-      'no-duplicate-imports': ['error', { includeExports: true }],
-      'no-unused-vars': 'off',
-      'prettier/prettier': [
-        'error',
+      "no-duplicate-imports": ["error", { includeExports: true }],
+      "no-unused-vars": "off",
+      "prettier/prettier": [
+        "warn",
         {
           resolveConfigFile: prettierConfig,
+          singleQuote: false,
+          quoteProps: "as-needed",
         },
       ],
-      'react-refresh/only-export-components': [
-        'warn',
+      "react-refresh/only-export-components": [
+        "warn",
         { allowConstantExport: true },
       ],
-      'simple-import-sort/imports': [
-        'error',
+      "simple-import-sort/imports": [
+        "error",
         {
           groups: [
-            ['^react$', '^react-dom$', '^react\\b'],
+            ["^react$", "^react-dom$", "^react\\b"],
             [
-              '^node:',
-              '^@(?!packages/|admin/|api/|blog/|storefront/|studio/|web/).+',
-              '^[a-z]',
+              "^node:",
+              "^@(?!packages/|admin/|api/|blog/|storefront/|studio/|web/).+",
+              "^[a-z]",
             ],
-            ['^@packages/', '^~'],
-            ['^@admin/'],
-            ['^@api/'],
-            ['^@blog/'],
-            ['^@storefront/'],
-            ['^@studio/'],
-            ['^@web/'],
-            ['^\\.'],
+            ["^@packages/", "^~"],
+            ["^@admin/"],
+            ["^@api/"],
+            ["^@blog/"],
+            ["^@storefront/"],
+            ["^@studio/"],
+            ["^@web/"],
+            ["^\\."],
           ],
         },
       ],
-      'simple-import-sort/exports': 'error',
-      'turbo/no-undeclared-env-vars': 'warn',
-      'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      "simple-import-sort/exports": "error",
+      "turbo/no-undeclared-env-vars": "warn",
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": [
+        "warn",
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'after-used',
-          argsIgnorePattern: '^_',
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "after-used",
+          argsIgnorePattern: "^_",
         },
       ],
     },
-    ignores: ['dist'],
+    ignores: ["dist"],
   },
   {
-    files: ['**/*.ts', '**/*.tsx', '**/*.mts', '**/*.cts'],
-    plugins: { '@typescript-eslint': tseslint.plugin },
+    files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
+    plugins: { "@typescript-eslint": tseslint.plugin },
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         project: tsProjects,
         tsconfigRootDir: repoRoot,
         warnOnMultipleProjects: false,
-        sourceType: 'module',
-        ecmaVersion: 'latest',
+        sourceType: "module",
+        ecmaVersion: "latest",
       },
     },
     rules: {
-      '@typescript-eslint/consistent-type-imports': 'error',
-      '@typescript-eslint/no-unused-vars': 'error',
+      "@typescript-eslint/consistent-type-imports": "error",
+      "@typescript-eslint/no-unused-vars": "error",
     },
   },
   {
-    files: ['**/*.js', '**/*.cjs', '**/*.mjs'],
+    files: ["**/*.js", "**/*.cjs", "**/*.mjs"],
     languageOptions: {
       parserOptions: {
-        sourceType: 'module',
-        ecmaVersion: 'latest',
+        sourceType: "module",
+        ecmaVersion: "latest",
       },
     },
   },
