@@ -12,10 +12,14 @@ import {
   Settings2,
   User,
 } from "lucide-react";
-import type { ListItemBuilder, StructureBuilder, StructureResolverContext } from "sanity/structure";
+import type {
+  ListItemBuilder,
+  StructureBuilder,
+  StructureResolverContext,
+} from "sanity/structure";
 
-import type { SchemaType, SingletonType } from "./schemaTypes";
-import { getTitleCase } from "./utils/helper";
+import type { SchemaType, SingletonType } from "@studio/schemaTypes";
+import { getTitleCase } from "@studio/utils/helper";
 
 type Base<T = SchemaType> = {
   id?: string;
@@ -94,7 +98,10 @@ const createIndexListWithOrderableItems = ({
             .title(indexTitle)
             .icon(index.icon ?? File)
             .child(
-              S.document().views([S.view.form()]).schemaType(index.type).documentId(index.type),
+              S.document()
+                .views([S.view.form()])
+                .schemaType(index.type)
+                .documentId(index.type)
             ),
           orderableDocumentListDeskItem({
             type: list.type,
@@ -103,11 +110,14 @@ const createIndexListWithOrderableItems = ({
             icon: list.icon ?? File,
             title: `${listTitle}`,
           }),
-        ]),
+        ])
     );
 };
 
-export const structure = (S: StructureBuilder, context: StructureResolverContext) =>
+export const structure = (
+  S: StructureBuilder,
+  context: StructureResolverContext
+) =>
   S.list()
     .title("Content")
     .items([
@@ -153,6 +163,6 @@ export const structure = (S: StructureBuilder, context: StructureResolverContext
                 title: "Global Settings",
                 icon: CogIcon,
               }),
-            ]),
+            ])
         ),
     ]);

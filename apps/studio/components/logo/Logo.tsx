@@ -1,8 +1,14 @@
-import { Svg } from "@guyromellemagayano/components";
+import { Svg } from "@packages/components";
 
 export const Logo = () => {
   return (
-    <Svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <Svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <title>Turbo Start</title>
       <rect width="32" height="32" rx="16" fill="var(--card-fg-color)" />
       <path

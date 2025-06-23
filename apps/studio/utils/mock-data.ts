@@ -44,7 +44,7 @@ const LOGO_URL =
 
 const generateImage = async (
   client: SanityClient,
-  { width, height, url, type, category }: ImageOptions,
+  { width, height, url, type, category }: ImageOptions
 ): Promise<ImageAsset> => {
   const imageUrl = url ?? getImageUrl({ width, height, category });
   const imageBuffer = await fetchImageBuffer(imageUrl);
@@ -56,7 +56,11 @@ const generateImage = async (
   };
 };
 
-const getImageUrl = ({ width, height, category }: Partial<ImageOptions>): string => {
+const getImageUrl = ({
+  width,
+  height,
+  category,
+}: Partial<ImageOptions>): string => {
   if (category === "author") {
     return faker.image.avatar();
   }
@@ -74,7 +78,7 @@ const fetchImageBuffer = async (url: string): Promise<ArrayBuffer> => {
 
 const uploadImageToSanity = async (
   client: SanityClient,
-  buffer: ArrayBuffer,
+  buffer: ArrayBuffer
 ): Promise<SanityImageAssetDocument> => {
   return client.assets.upload("image", Buffer.from(buffer), {
     title: faker.lorem.words(3),
@@ -101,19 +105,23 @@ const IMAGE_ASSETS_CONFIG = [
 ] as const;
 
 // Main export for image generation
-export const generateAndUploadMockImages = async (client: SanityClient): Promise<ImageAsset[]> => {
+export const generateAndUploadMockImages = async (
+  client: SanityClient
+): Promise<ImageAsset[]> => {
   console.log("🎨 Starting image generation...");
 
   const { results } = await PromisePool.withConcurrency(2)
     .for(IMAGE_ASSETS_CONFIG)
     .process(async (asset, index) => {
-      console.log(`📸 Generating image ${index + 1}/${IMAGE_ASSETS_CONFIG.length} (${asset.type})`);
+      console.log(
+        `📸 Generating image ${index + 1}/${IMAGE_ASSETS_CONFIG.length} (${asset.type})`
+      );
 
       return retryPromise(async () => generateImage(client, asset), {
         onRetry(error, attempt) {
           console.log(
             `🔄 Retrying image generation attempt ${attempt} for ${asset.type}:`,
-            error.message,
+            error.message
           );
         },
       });
@@ -126,7 +134,10 @@ export const generateAndUploadMockImages = async (client: SanityClient): Promise
 type ImageStore = Awaited<ReturnType<typeof generateAndUploadMockImages>>;
 
 // Block generation utilities
-const generateHeroBlock = (imagesStore: ImageStore, { title }: { title?: string } = {}) => {
+const generateHeroBlock = (
+  imagesStore: ImageStore,
+  { title }: { title?: string } = {}
+) => {
   const heroImages = imagesStore.filter((image) => image.type === "heroBlock");
   const heroImage = faker.helpers.arrayElement(heroImages);
 
@@ -196,12 +207,16 @@ interface FAQGenerationOptions {
   maxParagraphs?: number;
 }
 
-export const generateFAQs = ({ min = 5, max = 7 }: FAQGenerationOptions = {}) => {
+export const generateFAQs = ({
+  min = 5,
+  max = 7,
+}: FAQGenerationOptions = {}) => {
   const length = faker.number.int({ min, max });
 
   return Array.from({ length }).map(() => {
-    const questionsPool = Array.from({ length: faker.number.int({ min: 20, max: 50 }) }, () =>
-      faker.helpers.arrayElement(QUESTIONS),
+    const questionsPool = Array.from(
+      { length: faker.number.int({ min: 20, max: 50 }) },
+      () => faker.helpers.arrayElement(QUESTIONS)
     );
     const selectedQuestion = faker.helpers.arrayElement(questionsPool);
 
@@ -231,7 +246,9 @@ const generateFAQBlock = (faqs: FAQs) => {
   };
 };
 
-export const checkIfDataExists = async (client: SanityClient): Promise<boolean> => {
+export const checkIfDataExists = async (
+  client: SanityClient
+): Promise<boolean> => {
   const { homePage } = await client.fetch(`{
     "homePage": defined(*[_type == 'homePage' && _id == 'homePage'][0]._id),
   }`);
@@ -243,7 +260,10 @@ interface HomePageGenerationOptions {
   faqs: FAQs;
 }
 
-export const getMockHomePageData = ({ imagesStore, faqs }: HomePageGenerationOptions) => {
+export const getMockHomePageData = ({
+  imagesStore,
+  faqs,
+}: HomePageGenerationOptions) => {
   const seoImage = imagesStore.find((image) => image.type === "og");
   const blocks = [
     generateHeroBlock(imagesStore, {
@@ -283,9 +303,14 @@ interface SlugPageGenerationOptions {
   imagesStore: ImageStore;
 }
 
-export const generateMockSlugPages = ({ faqs, imagesStore }: SlugPageGenerationOptions) => {
+export const generateMockSlugPages = ({
+  faqs,
+  imagesStore,
+}: SlugPageGenerationOptions) => {
   const length = faker.number.int({ min: 2, max: 5 });
-  const slugPageImages = imagesStore.filter((image) => image.type === "slugPage");
+  const slugPageImages = imagesStore.filter(
+    (image) => image.type === "slugPage"
+  );
 
   return Array.from({ length }).map(() => {
     const image = faker.helpers.arrayElement(slugPageImages);
@@ -353,7 +378,10 @@ interface BlogPageGenerationOptions {
   authors: Author[];
 }
 
-export const generateMockBlogPages = ({ imagesStore, authors }: BlogPageGenerationOptions) => {
+export const generateMockBlogPages = ({
+  imagesStore,
+  authors,
+}: BlogPageGenerationOptions) => {
   const length = faker.number.int({ min: 2, max: 5 });
   const blogImages = imagesStore.filter((image) => image.type === "blog");
 

@@ -1,24 +1,28 @@
 import { assist } from "@sanity/assist";
 import { visionTool } from "@sanity/vision";
 import { defineConfig } from "sanity";
-import { presentationTool } from "sanity/presentation";
-import { structureTool } from "sanity/structure";
-import { unsplashAssetSource, unsplashImageAsset } from "sanity-plugin-asset-source-unsplash";
+import {
+  unsplashAssetSource,
+  unsplashImageAsset,
+} from "sanity-plugin-asset-source-unsplash";
 import { iconPicker } from "sanity-plugin-icon-picker";
 import { media, mediaAssetSource } from "sanity-plugin-media";
+import { presentationTool } from "sanity/presentation";
+import { structureTool } from "sanity/structure";
 
-import { Logo } from "./components";
-import { locations } from "./location";
-import { presentationUrl } from "./plugins/presentation-url";
-import schemaTypes from "./schemaTypes";
-import { structure } from "./structure";
-import { createPageTemplate } from "./utils/helper";
-
-const projectId = process.env.SANITY_STUDIO_PROJECT_ID ?? "";
-const dataset = process.env.SANITY_STUDIO_DATASET ?? "production";
-const title = process.env.SANITY_STUDIO_TITLE ?? "Portfolio";
-const previewOrigin = process.env.SANITY_STUDIO_PRESENTATION_URL ?? "http://localhost:3000";
-const previewUrl = process.env.SANITY_STUDIO_PREVIEW_URL ?? "/api/presentation-draft";
+import { Logo } from "@studio/components";
+import {
+  dataset,
+  previewOrigin,
+  previewUrl,
+  projectId,
+  title,
+} from "@studio/configs/env";
+import { locations } from "@studio/location";
+import { presentationUrl } from "@studio/plugins/presentation-url";
+import schemaTypes from "@studio/schemaTypes";
+import { structure } from "@studio/structure";
+import { createPageTemplate } from "@studio/utils/helper";
 
 export default defineConfig({
   name: "default",
@@ -74,7 +78,9 @@ export default defineConfig({
     image: {
       assetSources: (previousAssetSources) => {
         return previousAssetSources.filter(
-          (assetSource) => assetSource === mediaAssetSource || assetSource === unsplashAssetSource,
+          (assetSource) =>
+            assetSource === mediaAssetSource ||
+            assetSource === unsplashAssetSource
         );
       },
     },
