@@ -1,13 +1,22 @@
 {
-  "exclude": ["node_modules"],
-  "extends": "@guyromellemagayano/typescript-config/nextjs.json",
+  "exclude": [
+    "node_modules"
+  ],
+  "extends": "@packages/typescript-config/src/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "noEmit": true,
+    "jsx": "preserve"
   },
-  "include": ["src", "next.config.ts", "next-env.d.ts", ".next/types/**/*.ts"]
+  "include": [
+    "src",
+    "next.config.ts",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ]
 }

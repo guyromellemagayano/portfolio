@@ -1,29 +1,32 @@
 {
   "name": "storefront",
-  "version": "0.0.0",
-  "type": "module",
+  "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "next build",
+    "check-types": "tsc --noEmit",
     "dev": "next dev -p 3002",
     "lint": "next lint",
-    "check-types": "tsc --noEmit",
     "start": "next start"
   },
   "dependencies": {
-    "@guyromellemagayano/logger": "workspace:*",
-    "@guyromellemagayano/ui": "workspace:*",
-    "next": "^15.1.6",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@packages/components": "workspace:*",
+    "@packages/logger": "workspace:*",
+    "@packages/ui": "workspace:*",
+    "next": "^15.3.4",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^15.1.6",
-    "@guyromellemagayano/eslint-config": "workspace:*",
-    "@guyromellemagayano/typescript-config": "workspace:*",
-    "@types/node": "^22.12.0",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "eslint": "^9.20.0"
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "bunchee": "^6.5.3",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }
