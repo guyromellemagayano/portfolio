@@ -6,10 +6,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "bunchee": "^6.5.3",
+    "bunchee": "^6.5.4",
     "typescript": "catalog:"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
