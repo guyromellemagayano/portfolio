@@ -1,13 +1,9 @@
-import { log } from "@guyromellemagayano/logger";
-import { CounterButton } from "@guyromellemagayano/ui/counter-button";
-import { Link } from "@guyromellemagayano/ui/link";
+import { log } from '@packages/logger';
+import { CounterButton } from '@packages/ui/counter-button';
+import { Link } from '@packages/ui/link';
 
-export const metadata = {
-  title: "Store | Kitchen Sink",
-};
-
-export default function Store() {
-  log("Hey! This is the Store page.");
+const Store = () => {
+  log('Hey! This is the Store page.');
 
   return (
     <div className="container">
@@ -17,15 +13,17 @@ export default function Store() {
       </h1>
       <CounterButton />
       <p className="description">
-        Built With{" "}
+        Built With{' '}
         <Link href="https://turbo.build/repo" newTab>
           Turborepo
         </Link>
-        {" & "}
+        {' & '}
         <Link href="https://nextjs.org/" newTab>
           Next.js
         </Link>
       </p>
     </div>
   );
-}
+};
+
+export default Store;

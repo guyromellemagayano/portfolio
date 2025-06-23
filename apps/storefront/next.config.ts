@@ -1,4 +1,4 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ["@guyromellemagayano/components", "@guyromellemagayano/ui"],
+  transpilePackages: ['@packages/components', '@packages/ui'],
 };
 
 export default nextConfig;
