@@ -45,8 +45,11 @@
   "editor.tabFocusMode": false,
   "editor.wordWrap": "on",
   "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
     "source.fixAll.eslint": "always",
-    "source.removeUnusedImports": "always"
+    "source.removeUnusedImports": "always",
+    "source.organizeImports": "always",
+    "source.sortImports": "always"
   },
   "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
@@ -63,6 +66,7 @@
   ],
   "eslint.run": "onSave",
   "eslint.autoFixOnSave": true,
+  "eslint.experimental.useFlatConfig": true,
   "files.associations": {
     ".env*": "dotenv",
     "*ignore": "ignore"
