@@ -2,7 +2,11 @@ import { defineField, defineType } from "sanity";
 
 import { createRadioListLayout, isValidUrl } from "@studio/utils/helper";
 
-const allLinkableTypes = [{ type: "blog" }, { type: "blogIndex" }, { type: "page" }];
+const allLinkableTypes = [
+  { type: "blog" },
+  { type: "blogIndex" },
+  { type: "page" },
+];
 
 export const customUrl = defineType({
   name: "customUrl",
@@ -55,7 +59,8 @@ export const customUrl = defineType({
       validation: (rule) => [
         rule.custom((value, { parent }) => {
           const type = (parent as { type?: string })?.type;
-          if (type === "internal" && !value?._ref) return "internal can't be empty";
+          if (type === "internal" && !value?._ref)
+            return "internal can't be empty";
           return true;
         }),
       ],
@@ -71,7 +76,8 @@ export const customUrl = defineType({
     prepare({ externalUrl, urlType, internalUrl, openInNewTab }) {
       const url = urlType === "external" ? externalUrl : `/${internalUrl}`;
       const newTabIndicator = openInNewTab ? " ↗" : "";
-      const truncatedUrl = url?.length > 30 ? `${url.substring(0, 30)}...` : url;
+      const truncatedUrl =
+        url?.length > 30 ? `${url.substring(0, 30)}...` : url;
 
       return {
         title: `${urlType === "external" ? "External" : "Internal"} Link`,
