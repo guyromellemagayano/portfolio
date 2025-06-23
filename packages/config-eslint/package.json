@@ -6,13 +6,22 @@
   "license": "MIT",
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
-    "./react": "./src/presets/react.js",
-    "./next": "./src/presets/next.js"
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./react": {
+      "types": "./src/presets/react.d.ts",
+      "default": "./src/presets/react.js"
+    },
+    "./next": {
+      "types": "./src/presets/next.d.ts",
+      "default": "./src/presets/next.js"
+    }
   },
   "main": "./src/index.js",
   "module": "./src/index.js",
-  "types": "./src/presets/react.d.ts",
+  "types": "./src/index.d.ts",
   "scripts": {
     "clean": "rimraf node_modules .turbo dist",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
@@ -23,8 +32,8 @@
   "dependencies": {
     "@eslint/js": "^9.29.0",
     "@next/eslint-plugin-next": "^15.3.4",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
     "eslint": "catalog:",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.3",
@@ -39,18 +48,15 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.2.0",
     "typescript": "catalog:",
-    "typescript-eslint": "^8.34.1"
+    "typescript-eslint": "^8.35.0"
   },
   "devDependencies": {
-    "bunchee": "^6.5.3",
+    "bunchee": "^6.5.4",
     "rimraf": "^6.0.1"
   },
   "peerDependencies": {
     "prettier": "^3.0.0",
     "react": "catalog:",
     "react-dom": "catalog:"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
