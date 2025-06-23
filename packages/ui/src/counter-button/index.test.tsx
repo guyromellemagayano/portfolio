@@ -1,12 +1,12 @@
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 
-import { describe, it } from '@jest/globals';
+import { describe, it } from "@jest/globals";
 
-import { CounterButton } from '.';
+import { CounterButton } from ".";
 
-describe('CounterButton', () => {
-  it('renders without crashing', () => {
-    const div = document.createElement('div');
+describe("CounterButton", () => {
+  it("renders without crashing", () => {
+    const div = document.createElement("div");
     const root = createRoot(div);
     root.render(<CounterButton />);
     root.unmount();
