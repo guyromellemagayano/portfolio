@@ -32,7 +32,7 @@
     "@packages/typescript-config": "workspace:*",
     "@types/jest": "^30.0.0",
     "@types/node": "catalog:",
-    "bunchee": "^6.5.3",
+    "bunchee": "^6.5.4",
     "eslint": "catalog:",
     "jest": "catalog:",
     "typescript": "catalog:"
