@@ -50,13 +50,11 @@
     "typescript": "catalog:",
     "typescript-eslint": "^8.35.0"
   },
-  "devDependencies": {
-    "bunchee": "^6.5.4",
-    "rimraf": "^6.0.1"
-  },
   "peerDependencies": {
-    "prettier": "^3.0.0",
+    "bunchee": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "rimraf": "catalog:"
   }
 }
