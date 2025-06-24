@@ -1,4 +1,4 @@
-import './styles.css';
+import "./styles.css";
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
