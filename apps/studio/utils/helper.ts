@@ -110,9 +110,17 @@ export const parseRichTextToString = (
  * Splits an array into `numChunks` chunks of (roughly) equal length.
  */
 export const splitArray = <T>(array: T[], numChunks: number): T[][] => {
+  if (numChunks <= 0) return [];
+
   const result: T[][] = Array.from({ length: numChunks }, () => []);
   for (let i = 0; i < array.length; i++) {
-    result[i % numChunks].push(array[i]);
+    const chunkIndex = i % numChunks;
+    const chunk = result[chunkIndex];
+    const item = array[i];
+
+    if (chunk && item !== undefined) {
+      chunk.push(item);
+    }
   }
   return result;
 };
@@ -293,8 +301,10 @@ export const getTemplateName = (template: string) => {
   return `${template}-with-slug`;
 };
 
-export const getDocumentPath = (document: SanityDocument) => {
-  if (typeof document.slug !== "string") return;
+export const getDocumentPath = (
+  document: SanityDocument
+): string | undefined => {
+  if (typeof document.slug !== "string") return undefined;
   return formatPath(document.slug);
 };
 
