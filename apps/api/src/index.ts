@@ -1,6 +1,6 @@
-import { log } from '@packages/logger';
+import { log } from "@packages/logger";
 
-import { createServer } from './server';
+import { createServer } from "@api/server";
 
 const port = process.env.PORT || 5001;
 const server = createServer();
