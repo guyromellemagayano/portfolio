@@ -1,5 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
+import type { Metadata } from "next";
+
 import { log } from "@packages/logger";
 import { CounterButton, Link } from "@packages/ui";
+
+export const metadata: Metadata = {
+  title: "Store | Kitchen Sink",
+};
 
 const Store = () => {
   log("Hey! This is the Store page.");
