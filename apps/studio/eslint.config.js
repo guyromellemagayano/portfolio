@@ -15,9 +15,6 @@ export default [
         },
       },
     },
-    rules: {
-      "turbo/no-undeclared-env-vars": "off",
-    },
     ignores: [".sanity"],
   },
 ];
