@@ -1,13 +1,13 @@
-import { baseEslintConfig } from "@packages/eslint-config";
+import { reactEslintConfig } from "@packages/eslint-config/react";
 
 /** @type {import("eslint").Linter.Config} */
 export default [
-  ...baseEslintConfig,
+  ...reactEslintConfig,
   {
     settings: {
       "import/resolver": {
         alias: {
-          map: [["@api", "./"]],
+          map: [["@blog", "./"]],
           extensions: [".js", ".ts", ".tsx"],
         },
       },
