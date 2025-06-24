@@ -1,7 +1,4 @@
 {
-  "exclude": [
-    "node_modules"
-  ],
   "extends": "@packages/typescript-config/src/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
@@ -14,9 +11,12 @@
     "jsx": "preserve"
   },
   "include": [
-    "src",
-    "next.config.ts",
-    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
     ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

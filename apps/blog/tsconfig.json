@@ -1,8 +1,4 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
   "compilerOptions": {
     "lib": [
       "DOM",
@@ -31,5 +27,13 @@
       ]
     },
     "noEmit": true
-  }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
