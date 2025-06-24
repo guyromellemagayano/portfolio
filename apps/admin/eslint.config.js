@@ -1,4 +1,4 @@
-import { baseEslintConfig } from '@packages/eslint-config';
+import { reactEslintConfig } from "@packages/eslint-config";
 
 /** @type {import("eslint").Linter.Config} */
-export default baseEslintConfig;
+export default reactEslintConfig;
