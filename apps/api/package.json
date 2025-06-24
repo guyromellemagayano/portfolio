@@ -30,13 +30,14 @@
     "@types/cors": "^2.8.19",
     "@types/express": "5.0.3",
     "@types/morgan": "^1.9.10",
-    "@types/node": "catalog:",
     "@types/supertest": "^6.0.3",
-    "bunchee": "^6.5.4",
+    "supertest": "^7.1.1"
+  },
+  "peerDependencies": {
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "jest": "catalog:",
-    "supertest": "^7.1.1",
-    "tsup": "^8.5.0",
+    "tsup": "catalog:",
     "typescript": "catalog:"
   }
 }
