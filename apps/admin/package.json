@@ -12,25 +12,27 @@
   },
   "dependencies": {
     "@packages/ui": "workspace:*",
-    "@react-router/dev": "^7.0.0",
-    "@react-router/node": "^7.0.0",
+    "@react-router/dev": "^7.6.2",
+    "@react-router/node": "^7.6.2",
     "blog": "^1.0.0",
     "inquirer": "^12.6.3",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-router": "^7.0.0",
+    "react-router": "^7.6.2",
     "storefront": "^0.8.1",
     "studio": "^0.13.5"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
+    "@vitejs/plugin-react": "^4.6.0"
+  },
+  "peerDependencies": {
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitejs/plugin-react": "^4.6.0",
-    "bunchee": "^6.5.4",
+    "bunchee": "catalog:",
     "eslint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"
   }
