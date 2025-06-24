@@ -7,20 +7,15 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./counter-button": {
-      "types": "./dist/counter-button/index.d.ts",
-      "import": "./dist/counter-button/index.mjs",
-      "require": "./dist/counter-button/index.cjs"
-    },
-    "./link": {
-      "types": "./dist/link/index.d.ts",
-      "import": "./dist/link/index.mjs",
-      "require": "./dist/link/index.cjs"
-    },
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
   },
   "files": [
@@ -42,26 +37,24 @@
   "jest": {
     "preset": "@packages/jest-presets/browser"
   },
-  "dependencies": {
-    "react": "catalog:",
-    "react-dom": "catalog:"
-  },
   "devDependencies": {
     "@jest/globals": "^30.0.2",
-    "@types/jest": "^30.0.0",
+    "@packages/eslint-config": "workspace:*",
+    "@packages/jest-presets": "workspace:*",
+    "@packages/typescript-config": "workspace:*"
+  },
+  "peerDependencies": {
+    "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "bunchee": "^6.5.4",
+    "bunchee": "catalog:",
     "eslint": "catalog:",
     "jest": "catalog:",
-    "rimraf": "^6.0.1",
-    "tsup": "^8.0.2",
-    "typescript": "catalog:"
-  },
-  "peerDependencies": {
-    "eslint": "catalog:",
-    "jest": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "rimraf": "catalog:",
+    "tsup": "catalog:",
     "typescript": "catalog:"
   }
 }

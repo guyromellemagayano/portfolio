@@ -9,11 +9,13 @@
     "node/jest-preset.ts"
   ],
   "dependencies": {
-    "jest": "catalog:",
     "ts-jest": "^29.4.0"
   },
   "devDependencies": {
-    "bunchee": "^6.5.4",
     "jest-environment-jsdom": "^30.0.2"
+  },
+  "peerDependencies": {
+    "bunchee": "catalog:",
+    "jest": "catalog:"
   }
 }

@@ -3,12 +3,17 @@ packages:
   - packages/*
 
 catalog:
+  '@types/jest': ^30.0.0
   '@types/node': ^24.0.3
-  '@types/react': ^19.1.8
   '@types/react-dom': ^19.1.6
-  eslint: ^9.0.0
+  '@types/react': ^19.1.8
+  bunchee: ^6.5.4
+  eslint: ^9.29.0
   jest: ^30.0.2
+  prettier: ^3.6.0
   react: ^19.1.0
   react-dom: ^19.1.0
-  typescript: ^5.3.3
+  rimraf: ^6.0.1
+  tsup: ^8.5.0
+  typescript: ^5.8.3
   vite: ^6.3.5

@@ -5,8 +5,8 @@
   "description": "Shared TypeScript configuration",
   "license": "MIT",
   "type": "module",
-  "devDependencies": {
-    "bunchee": "^6.5.4",
+  "peerDependencies": {
+    "bunchee": "catalog:",
     "typescript": "catalog:"
   }
 }
