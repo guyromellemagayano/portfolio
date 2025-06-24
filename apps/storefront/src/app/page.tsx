@@ -1,9 +1,8 @@
-import { log } from '@packages/logger';
-import { CounterButton } from '@packages/ui/counter-button';
-import { Link } from '@packages/ui/link';
+import { log } from "@packages/logger";
+import { CounterButton, Link } from "@packages/ui";
 
 const Store = () => {
-  log('Hey! This is the Store page.');
+  log("Hey! This is the Store page.");
 
   return (
     <div className="container">
@@ -13,11 +12,11 @@ const Store = () => {
       </h1>
       <CounterButton />
       <p className="description">
-        Built With{' '}
+        Built With{" "}
         <Link href="https://turbo.build/repo" newTab>
           Turborepo
         </Link>
-        {' & '}
+        {" & "}
         <Link href="https://nextjs.org/" newTab>
           Next.js
         </Link>
