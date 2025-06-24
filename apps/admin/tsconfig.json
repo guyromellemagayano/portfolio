@@ -22,12 +22,17 @@
     "baseUrl": ".",
     "paths": {
       "@admin/*": [
-        "./*"
+        "./src/*"
       ]
     }
   },
   "include": [
-    "src"
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ],
   "references": [
     {
