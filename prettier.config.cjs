@@ -14,19 +14,9 @@ module.exports = {
   parser: "json-stringify",
   overrides: [
     {
-      files: ["**/*.{json,jsonc}"],
-    },
-    {
-      files: ["**/*.{mjs,cjs,mts,cts}"],
+      files: ["**/*.{mjs,cjs,mts,cts,js,ts,tsx}"],
       options: {
         parser: "typescript",
-      },
-    },
-    {
-      files: ["**/*.{js,ts,tsx}"],
-      options: {
-        parser: "typescript",
-        singleQuote: true,
       },
     },
     {
