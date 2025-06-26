@@ -1,11 +1,11 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "firsttris.vscode-jest-runner",
-    "Vercel.turbo-vsc",
     "dotenv.dotenv-vscode",
+    "esbenp.prettier-vscode",
     "foxundermoon.shell-format",
-    "lokalise.i18n-ally"
+    "lokalise.i18n-ally",
+    "Vercel.turbo-vsc",
+    "vitest.explorer"
   ]
 }
