@@ -7,7 +7,7 @@
     ],
     "sourceMap": true,
     "types": [
-      "jest",
+      "vitest/globals",
       "node"
     ]
   },

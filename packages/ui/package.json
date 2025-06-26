@@ -7,14 +7,24 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": {
+    "./counter-button": {
       "import": {
-        "types": "./dist/es/index.d.mts",
-        "default": "./dist/es/index.mjs"
+        "types": "./dist/es/counter-button.d.mts",
+        "default": "./dist/es/counter-button.mjs"
       },
       "require": {
-        "types": "./dist/cjs/index.d.ts",
-        "default": "./dist/cjs/index.cjs"
+        "types": "./dist/cjs/counter-button.d.ts",
+        "default": "./dist/cjs/counter-button.cjs"
+      }
+    },
+    "./link": {
+      "import": {
+        "types": "./dist/es/link.d.mts",
+        "default": "./dist/es/link.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/link.d.ts",
+        "default": "./dist/cjs/link.cjs"
       }
     }
   },
@@ -25,36 +35,39 @@
     "build": "bunchee",
     "build-storybook": "storybook build",
     "check-types": "tsc --noEmit",
-    "clean": "rimraf node_modules .turbo dist",
+    "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "storybook": "storybook dev -p 6006",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "@packages/jest-presets/browser"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
+    "test:run": "vitest run",
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "@jest/globals": "^30.0.2",
     "@packages/eslint-config": "workspace:*",
-    "@packages/jest-presets": "workspace:*",
-    "@packages/typescript-config": "workspace:*"
+    "@packages/typescript-config": "workspace:*",
+    "@packages/vitest-presets": "workspace:*",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:"
   },
   "peerDependencies": {
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
-    "jest": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
-    "tsup": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

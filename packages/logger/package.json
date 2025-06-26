@@ -18,25 +18,27 @@
   "scripts": {
     "build": "bunchee",
     "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
     "lint": "eslint src/",
-    "test": "jest"
-  },
-  "jest": {
-    "preset": "@packages/jest-presets/node"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
+    "test:run": "vitest run",
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "@jest/globals": "^30.0.2",
     "@packages/eslint-config": "workspace:*",
-    "@packages/jest-presets": "workspace:*",
-    "@packages/typescript-config": "workspace:*"
+    "@packages/typescript-config": "workspace:*",
+    "@packages/vitest-presets": "workspace:*"
   },
   "peerDependencies": {
-    "@types/jest": "catalog:",
     "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
-    "jest": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

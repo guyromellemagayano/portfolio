@@ -6,9 +6,9 @@ export default [
   {
     settings: {
       "import/resolver": {
-        alias: {
-          map: [["@components", "./"]],
-          extensions: [".js", ".ts", ".tsx"],
+        typescript: {
+          project: ["./tsconfig.json"],
+          alwaysTryTypes: true,
         },
       },
     },
