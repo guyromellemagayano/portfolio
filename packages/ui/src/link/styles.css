@@ -1,0 +1,192 @@
+/* Link Component Styles */
+
+.link {
+  /* Base styles */
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.125rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  color: #3b82f6;
+  
+  /* Focus styles */
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+    border-radius: 0.125rem;
+  }
+}
+
+.link:hover:not(.link--disabled) {
+  color: #2563eb;
+  text-decoration-thickness: 2px;
+}
+
+/* Size variants */
+.link--small {
+  font-size: 0.875rem;
+}
+
+.link--large {
+  font-size: 1.125rem;
+}
+
+/* Style variants */
+.link--primary {
+  color: #3b82f6;
+}
+
+.link--secondary {
+  color: #6b7280;
+}
+
+.link--underline {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.link--button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: white;
+  border: 1px solid #3b82f6;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link--button:hover:not(.link--disabled) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  text-decoration: none;
+}
+
+/* External link styles */
+.link--external {
+  &::after {
+    content: "";
+    /* External indicator handled by component */
+  }
+}
+
+.link-external-indicator {
+  display: inline-block;
+  margin-left: 0.25rem;
+  font-size: 0.875em;
+  opacity: 0.7;
+}
+
+.link--external:hover .link-external-indicator {
+  opacity: 1;
+}
+
+/* Disabled state */
+.link--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Invalid link styles */
+.link--invalid {
+  color: #dc2626;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  .link {
+    text-decoration-thickness: 2px;
+  }
+  
+  .link--button {
+    border-width: 2px;
+  }
+  
+  .link-external-indicator {
+    opacity: 1;
+    font-weight: bold;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .link-external-indicator {
+    transition: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .link--primary {
+    color: var(--link-primary-color-dark, #60a5fa);
+    
+    &:hover:not(.link--disabled) {
+      color: var(--link-primary-color-hover-dark, #3b82f6);
+    }
+    
+    &:active:not(.link--disabled) {
+      color: var(--link-primary-color-active-dark, #2563eb);
+    }
+  }
+  
+  .link--secondary {
+    color: var(--link-secondary-color-dark, #9ca3af);
+    
+    &:hover:not(.link--disabled) {
+      color: var(--link-secondary-color-hover-dark, #d1d5db);
+    }
+    
+    &:active:not(.link--disabled) {
+      color: var(--link-secondary-color-active-dark, #f3f4f6);
+    }
+  }
+  
+  .link--underline {
+    &:hover:not(.link--disabled) {
+      color: var(--link-underline-color-hover-dark, #60a5fa);
+    }
+  }
+  
+  .link--button {
+    background-color: var(--link-button-bg-dark, #2563eb);
+    border-color: var(--link-button-border-dark, #2563eb);
+    
+    &:hover:not(.link--disabled) {
+      background-color: var(--link-button-bg-hover-dark, #1d4ed8);
+      border-color: var(--link-button-border-hover-dark, #1d4ed8);
+    }
+    
+    &:active:not(.link--disabled) {
+      background-color: var(--link-button-bg-active-dark, #1e40af);
+      border-color: var(--link-button-border-active-dark, #1e40af);
+    }
+  }
+  
+  .link--invalid {
+    color: var(--link-invalid-color-dark, #f87171);
+  }
+}
+
+/* Print styles */
+@media print {
+  .link--external .link-external-indicator::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #666;
+  }
+  
+  .link--button {
+    background-color: transparent !important;
+    color: inherit !important;
+    border: 1px solid #666 !important;
+  }
+} 
