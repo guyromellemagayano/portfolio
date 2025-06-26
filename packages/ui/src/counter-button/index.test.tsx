@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 
-import { describe, it } from "@jest/globals";
+import { describe, it } from "vitest";
 
 import { CounterButton } from ".";
 
