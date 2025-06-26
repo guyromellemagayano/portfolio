@@ -1,8 +1,8 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, expect, it, vi } from "vitest";
 
 import { log } from "..";
 
-jest.spyOn(global.console, "log");
+vi.spyOn(global.console, "log");
 
 describe("@packages/logger", () => {
   it("prints a message", () => {

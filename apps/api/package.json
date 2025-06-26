@@ -9,10 +9,12 @@
     "dev": "tsup --watch --onSuccess \"node dist/index.cjs\"",
     "lint": "eslint src/ --max-warnings 0",
     "start": "node dist/index.js",
-    "test": "jest --detectOpenHandles"
-  },
-  "jest": {
-    "preset": "@packages/jest-presets/node"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
+    "test:run": "vitest run",
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@packages/logger": "workspace:*",
@@ -22,22 +24,22 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@jest/globals": "^30.0.2",
     "@packages/eslint-config": "workspace:*",
-    "@packages/jest-presets": "workspace:*",
     "@packages/typescript-config": "workspace:*",
+    "@packages/vitest-presets": "workspace:*",
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
     "@types/express": "5.0.3",
     "@types/morgan": "^1.9.10",
     "@types/supertest": "^6.0.3",
-    "supertest": "^7.1.1"
+    "supertest": "^7.1.1",
+    "tsup": "^8.5.0"
   },
   "peerDependencies": {
     "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
-    "jest": "catalog:",
-    "tsup": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

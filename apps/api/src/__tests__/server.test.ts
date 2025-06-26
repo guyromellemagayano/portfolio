@@ -1,5 +1,5 @@
-import { describe, expect, it } from "@jest/globals";
 import supertest from "supertest";
+import { describe, expect, it } from "vitest";
 
 import { createServer } from "@api/server";
 
