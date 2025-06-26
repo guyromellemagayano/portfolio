@@ -20,7 +20,6 @@
     "type": "sanity schema extract --enforce-required-fields && sanity typegen generate"
   },
   "dependencies": {
-    "@packages/components": "workspace:*",
     "@packages/logger": "workspace:*",
     "@sanity/assist": "^4.3.2",
     "@sanity/client": "^7.6.0",
