@@ -1,8 +1,6 @@
-import { Svg } from "@packages/components";
-
 export const Logo = () => {
   return (
-    <Svg
+    <svg
       width="32"
       height="32"
       viewBox="0 0 32 32"
@@ -43,7 +41,7 @@ export const Logo = () => {
           <stop offset="1" stopColor="var(--card-bg-color)" />
         </linearGradient>
       </defs>
-    </Svg>
+    </svg>
   );
 };
 
