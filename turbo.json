@@ -52,12 +52,70 @@
     "test": {
       "dependsOn": [],
       "inputs": [
-        "$TURBO_DEFAULT$"
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
+      ],
+      "outputs": [],
+      "cache": false
+    },
+    "test:ui": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
+      ],
+      "outputs": [],
+      "cache": false,
+      "persistent": true
+    },
+    "test:run": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
+      ],
+      "outputs": [],
+      "cache": true
+    },
+    "test:coverage": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
       ],
       "outputs": [
         "coverage/**"
       ],
       "cache": false
+    },
+    "test:coverage:ui": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "test:run:coverage": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "vitest.config.*",
+        "src/test-setup.*"
+      ],
+      "outputs": [
+        "coverage/**"
+      ],
+      "cache": true
     },
     "format": {
       "dependsOn": [
