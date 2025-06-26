@@ -1,4 +1,5 @@
-import { CounterButton, Link } from "@packages/ui";
+import { CounterButton } from "@packages/ui/counter-button";
+import { Link } from "@packages/ui/link";
 
 export default function Index() {
   return (
