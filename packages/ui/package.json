@@ -1,9 +1,26 @@
 {
-  "name": "@packages/ui",
+  "name": "@guyromellemagayano/ui",
   "version": "1.0.0",
-  "private": true,
-  "description": "",
+  "description": "Enhanced UI components library with analytics, accessibility, and performance optimizations",
+  "keywords": [
+    "react",
+    "ui-components",
+    "typescript",
+    "next.js",
+    "accessibility",
+    "analytics"
+  ],
+  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/ui",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyromellemagayano/portal.git",
+    "directory": "packages/ui"
+  },
   "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -69,5 +86,9 @@
     "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
   }
 }

@@ -8,6 +8,10 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "changeset": "changeset",
+    "changeset:publish": "changeset publish",
+    "changeset:status": "changeset status",
+    "changeset:version": "changeset version",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
     "commit": "czg gpg",
@@ -17,6 +21,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "prepare": "husky",
+    "release": "pnpm build --filter=\"@guyromellemagayano/*\" && pnpm changeset:publish",
     "test": "turbo run test",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
@@ -27,7 +32,8 @@
     "test:run": "turbo run test:run",
     "test:run:coverage": "turbo run test:run:coverage",
     "test:ui": "turbo run test:ui",
-    "test:watch": "turbo run test --parallel"
+    "test:watch": "turbo run test --parallel",
+    "version-packages": "changeset version && pnpm install --lockfile-only"
   },
   "lint-staged": {
     "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx,css,md,mdx,json,jsonc}": [
@@ -49,6 +55,7 @@
     "turbo": "^2.5.4"
   },
   "devDependencies": {
+    "@changesets/cli": "2.29.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@commitlint/cz-commitlint": "^19.8.1",
@@ -60,7 +67,7 @@
     "czg": "^1.11.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
-    "prettier-plugin-packagejson": "^2.5.15",
+    "prettier-plugin-packagejson": "^2.5.16",
     "prettier-plugin-pkg": "^0.21.1",
     "prettier-plugin-tailwindcss": "^0.6.13"
   },
