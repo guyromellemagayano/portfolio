@@ -503,6 +503,9 @@ importers:
       eslint:
         specifier: 'catalog:'
         version: 9.29.0(jiti@2.4.2)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
       react:
         specifier: 'catalog:'
         version: 19.1.0
