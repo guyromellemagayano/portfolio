@@ -1,4 +1,4 @@
-import { log } from "@packages/logger";
+import { log } from "@guyromellemagayano/logger";
 
 import { createServer } from "@api/server";
 
