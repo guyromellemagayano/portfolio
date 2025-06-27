@@ -1,5 +1,5 @@
-import { CounterButton } from "@packages/ui/counter-button";
-import { Link } from "@packages/ui/link";
+import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@guyromellemagayano/ui/link";
 
 import "./styles.css";
 

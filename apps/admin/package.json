@@ -16,14 +16,14 @@
     "test:ui": "echo 'No tests configured for admin app'"
   },
   "dependencies": {
-    "@packages/ui": "workspace:*",
+    "@guyromellemagayano/ui": "workspace:*",
     "@react-router/dev": "^7.6.2",
     "@react-router/node": "^7.6.2",
-    "blog": "^1.0.0",
+    "blog": "workspace:^",
     "inquirer": "^12.6.3",
     "react-router": "^7.6.2",
-    "storefront": "^0.8.1",
-    "studio": "^0.13.5"
+    "storefront": "workspace:^",
+    "studio": "workspace:^"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",

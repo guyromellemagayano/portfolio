@@ -1,4 +1,13 @@
 {
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[graphql]": {
+    "editor.defaultFormatter": "GraphQL.vscode-graphql"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.quickSuggestions": {
@@ -13,15 +22,6 @@
     },
     "editor.suggest.insertMode": "replace"
   },
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
-  },
-  "[graphql]": {
-    "editor.defaultFormatter": "GraphQL.vscode-graphql"
-  },
   "[markdown]": {
     "editor.defaultFormatter": "vscode.markdown-language-features",
     "editor.unicodeHighlight.ambiguousCharacters": false,
@@ -32,6 +32,9 @@
       "strings": "off",
       "other": "off"
     }
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "dotenv.enableAutocloaking": false,
   "editor.tabSize": 2,
@@ -82,7 +85,4 @@
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": true,
   "prettier.configPath": "prettier.config.cjs",
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml"
-  }
 }
