@@ -1,13 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  transpilePackages: ["@packages/components", "@packages/ui"],
+  reactStrictMode: true,
+  transpilePackages: [
+    "@guyromellemagayano/components",
+    "@guyromellemagayano/ui",
+  ],
+  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 };
 
 export default nextConfig;
