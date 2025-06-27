@@ -1,0 +1,214 @@
+/**
+ * Abbr Component Styles
+ * Enhanced abbreviation component with accessibility and interaction support
+ */
+
+/* Base abbreviation styles */
+.abbr {
+  /* Visual indicators */
+  border-bottom: 1px dotted currentColor;
+  text-decoration: none;
+  cursor: help;
+  
+  /* Transitions for smooth interactions */
+  transition: 
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+  
+  /* Ensure proper focus behavior */
+  outline-offset: 2px;
+}
+
+/* Hover state */
+.abbr:hover {
+  border-bottom-style: solid;
+  border-color: var(--abbr-hover-border, #333);
+}
+
+/* Focus state for accessibility */
+.abbr:focus {
+  outline: 2px solid var(--abbr-focus-color, #0066cc);
+  outline-offset: 2px;
+  border-bottom-style: solid;
+}
+
+/* Active state */
+.abbr:active {
+  transform: translateY(1px);
+}
+
+/* Emphasized variant */
+.abbr--emphasized {
+  font-weight: 600;
+  color: var(--abbr-emphasized-color, #0066cc);
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.abbr--emphasized:hover {
+  color: var(--abbr-emphasized-hover-color, #0052a3);
+  background-color: var(--abbr-emphasized-hover-bg, rgba(0, 102, 204, 0.1));
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .abbr {
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+  }
+  
+  .abbr--emphasized {
+    border-bottom-width: 3px;
+    font-weight: 700;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .abbr {
+    transition: none;
+  }
+  
+  .abbr:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .abbr {
+    border-color: var(--abbr-dark-border, #ccc);
+  }
+  
+  .abbr:hover {
+    border-color: var(--abbr-dark-hover-border, #fff);
+  }
+  
+  .abbr--emphasized {
+    color: var(--abbr-dark-emphasized-color, #66b3ff);
+  }
+  
+  .abbr--emphasized:hover {
+    color: var(--abbr-dark-emphasized-hover-color, #80c4ff);
+    background-color: var(--abbr-dark-emphasized-hover-bg, rgba(102, 179, 255, 0.1));
+  }
+}
+
+/* Print styles */
+@media print {
+  .abbr {
+    border-bottom: none;
+    text-decoration: none;
+    cursor: default;
+  }
+  
+  /* Show expansion in print using CSS content */
+  .abbr[title]:after {
+    content: " (" attr(title) ")";
+    font-size: 0.9em;
+    color: #666;
+  }
+}
+
+/* Mobile and touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .abbr {
+    /* Larger touch target */
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Remove hover-dependent styles */
+    cursor: default;
+  }
+  
+  .abbr:hover {
+    border-bottom-style: dotted;
+  }
+}
+
+/* Size variants */
+.abbr--small {
+  font-size: 0.875em;
+  border-bottom-width: 1px;
+}
+
+.abbr--large {
+  font-size: 1.125em;
+  border-bottom-width: 2px;
+}
+
+/* Color variants */
+.abbr--primary {
+  color: var(--abbr-primary-color, #0066cc);
+  border-color: var(--abbr-primary-border, #0066cc);
+}
+
+.abbr--secondary {
+  color: var(--abbr-secondary-color, #666);
+  border-color: var(--abbr-secondary-border, #666);
+}
+
+.abbr--success {
+  color: var(--abbr-success-color, #28a745);
+  border-color: var(--abbr-success-border, #28a745);
+}
+
+.abbr--warning {
+  color: var(--abbr-warning-color, #ffc107);
+  border-color: var(--abbr-warning-border, #ffc107);
+}
+
+.abbr--danger {
+  color: var(--abbr-danger-color, #dc3545);
+  border-color: var(--abbr-danger-border, #dc3545);
+}
+
+/* Utility classes */
+.abbr--no-underline {
+  border-bottom: none;
+}
+
+.abbr--solid-underline {
+  border-bottom-style: solid;
+}
+
+.abbr--dashed-underline {
+  border-bottom-style: dashed;
+}
+
+/* Custom properties for theming */
+:root {
+  /* Base colors */
+  --abbr-color: inherit;
+  --abbr-border: currentColor;
+  --abbr-hover-border: #333;
+  --abbr-focus-color: #0066cc;
+  
+  /* Emphasized colors */
+  --abbr-emphasized-color: #0066cc;
+  --abbr-emphasized-hover-color: #0052a3;
+  --abbr-emphasized-hover-bg: rgba(0, 102, 204, 0.1);
+  
+  /* Dark mode colors */
+  --abbr-dark-border: #ccc;
+  --abbr-dark-hover-border: #fff;
+  --abbr-dark-emphasized-color: #66b3ff;
+  --abbr-dark-emphasized-hover-color: #80c4ff;
+  --abbr-dark-emphasized-hover-bg: rgba(102, 179, 255, 0.1);
+  
+  /* Variant colors */
+  --abbr-primary-color: #0066cc;
+  --abbr-primary-border: #0066cc;
+  --abbr-secondary-color: #666;
+  --abbr-secondary-border: #666;
+  --abbr-success-color: #28a745;
+  --abbr-success-border: #28a745;
+  --abbr-warning-color: #ffc107;
+  --abbr-warning-border: #ffc107;
+  --abbr-danger-color: #dc3545;
+  --abbr-danger-border: #dc3545;
+}
