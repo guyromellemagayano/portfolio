@@ -17,9 +17,9 @@
     "test:ui": "echo 'No tests configured for storefront app'"
   },
   "dependencies": {
-    "@packages/components": "workspace:*",
-    "@packages/logger": "workspace:*",
-    "@packages/ui": "workspace:*",
+    "@guyromellemagayano/components": "workspace:*",
+    "@guyromellemagayano/logger": "workspace:*",
+    "@guyromellemagayano/ui": "workspace:*",
     "next": "^15.3.4"
   },
   "devDependencies": {

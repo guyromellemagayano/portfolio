@@ -1,9 +1,30 @@
 {
-  "name": "@packages/logger",
+  "name": "@guyromellemagayano/logger",
   "version": "1.0.0",
-  "private": true,
-  "description": "",
+  "description": "Simple and lightweight logging utility for Node.js and browser environments",
   "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyromellemagayano/portal.git",
+    "directory": "packages/logger"
+  },
+  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/logger",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portal/issues"
+  },
+  "keywords": [
+    "logger",
+    "logging",
+    "typescript",
+    "node.js",
+    "browser",
+    "utility"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/",
+    "access": "restricted"
+  },
   "type": "module",
   "exports": {
     ".": {
