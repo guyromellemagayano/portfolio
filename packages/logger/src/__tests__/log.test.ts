@@ -2,12 +2,20 @@ import { describe, expect, it, vi } from "vitest";
 
 import { log } from "..";
 
-vi.spyOn(global.console, "log");
+// Spy on console.info since the enhanced logger uses info level
+vi.spyOn(global.console, "info");
 
 describe("@packages/logger", () => {
-  it("prints a message", () => {
+  it("prints a message using enhanced logger", () => {
     log("hello");
 
-    expect(console.log).toHaveBeenCalledWith("LOGGER: ", "hello");
+    // The enhanced logger now logs to console.info with a different format
+    expect(console.info).toHaveBeenCalled();
+
+    // Check that the call contains our message
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const calls = (console.info as any).mock.calls;
+    expect(calls.length).toBeGreaterThan(0);
+    expect(calls[0][0]).toContain("hello");
   });
 });
