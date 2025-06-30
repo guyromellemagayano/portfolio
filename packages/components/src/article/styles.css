@@ -1,0 +1,258 @@
+/**
+ * Article Component Styles
+ * Semantic styling for articles with enhanced features
+ */
+
+/* Base article styles */
+.article {
+  /* Layout */
+  display: block;
+  position: relative;
+  
+  /* Typography */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.6;
+  color: inherit;
+  
+  /* Spacing */
+  margin: 0;
+  padding: 0;
+  
+  /* Visual styling */
+  background: transparent;
+  border: none;
+  
+  /* Accessibility */
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Enhanced focus state for accessibility */
+.article:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Interactive article styles */
+.article[data-analytics-id]:hover {
+  cursor: pointer;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Featured article variant */
+.article--featured {
+  position: relative;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.article--featured::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 2px 0 0 2px;
+}
+
+.article--featured:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  border-color: #3b82f6;
+}
+
+/* Summary article variant */
+.article--summary {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.95em;
+  color: #4b5563;
+}
+
+.article--summary:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+}
+
+/* Combined featured + summary styles */
+.article--featured.article--summary {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+}
+
+.article--featured.article--summary::before {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+/* Invalid structure warning styles */
+.article--invalid-structure {
+  border: 2px dashed #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 4px;
+  font-style: italic;
+}
+
+.article--invalid-structure::after {
+  content: " (⚠️ Invalid article structure)";
+  font-size: 0.8em;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+/* Reading time indicator */
+.article[data-reading-time]::after {
+  content: "📖 " attr(data-reading-time) " min read";
+  display: block;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.article:hover[data-reading-time]::after {
+  opacity: 1;
+}
+
+/* Ensure reading time is positioned relative to article */
+.article--featured[data-reading-time],
+.article--summary[data-reading-time] {
+  position: relative;
+}
+
+/* Analytics tracking indicator (development only) */
+.article[data-analytics-id][data-NODE_ENV="development"]::before {
+  content: "📊";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 12px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .article--featured {
+    padding: 1rem;
+    margin: 0.5rem 0;
+  }
+  
+  .article[data-reading-time]::after {
+    position: static;
+    display: inline-block;
+    margin-top: 0.5rem;
+    opacity: 1;
+    font-size: 0.7rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .article--featured {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-color: #475569;
+    color: #e2e8f0;
+  }
+  
+  .article--summary {
+    background: #1f2937;
+    border-color: #374151;
+    color: #d1d5db;
+  }
+  
+  .article--summary:hover {
+    background: #111827;
+    border-color: #4b5563;
+  }
+  
+  .article--invalid-structure {
+    background: #1f1315;
+    border-color: #dc2626;
+    color: #fca5a5;
+  }
+  
+  .article[data-reading-time]::after {
+    background: rgba(31, 41, 55, 0.9);
+    color: #d1d5db;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .article--featured {
+    border-width: 2px;
+    border-color: #000;
+  }
+  
+  .article--featured::before {
+    width: 6px;
+    background: #000;
+  }
+  
+  .article--summary {
+    border-width: 2px;
+    border-color: #000;
+  }
+  
+  .article:focus-visible {
+    outline-width: 3px;
+    outline-color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .article,
+  .article:hover,
+  .article[data-reading-time]::after {
+    transition: none;
+    transform: none;
+  }
+  
+  .article:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Print styles */
+@media print {
+  .article--featured::before,
+  .article[data-reading-time]::after,
+  .article[data-analytics-id]::before {
+    display: none;
+  }
+  
+  .article--featured,
+  .article--summary {
+    background: transparent !important;
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+}

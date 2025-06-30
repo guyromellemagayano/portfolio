@@ -16,13 +16,13 @@
     "formatters",
     "enterprise"
   ],
-  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/logger",
+  "homepage": "https://github.com/stackmarketlabs/portal/tree/main/packages/logger",
   "bugs": {
-    "url": "https://github.com/guyromellemagayano/portal/issues"
+    "url": "https://github.com/stackmarketlabs/portal/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guyromellemagayano/portal.git",
+    "url": "https://github.com/stackmarketlabs/portal.git",
     "directory": "packages/logger"
   },
   "license": "MIT",
