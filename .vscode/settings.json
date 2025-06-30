@@ -85,4 +85,5 @@
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": true,
   "prettier.configPath": "prettier.config.cjs",
+  "vitest.disableWorkspaceWarning": true,
 }
