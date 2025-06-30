@@ -10,7 +10,7 @@ import type { CommonComponentProps } from "../types";
 
 import "./styles.css";
 
-// Lazy load client components
+// Lazy load client components for code splitting
 const AreaClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AreaClient };
