@@ -6,6 +6,36 @@ export default defineConfig({
     setupFiles: ["./src/test-setup.ts"],
     globals: true,
     css: true,
+
+    // Memory optimization settings
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: true, // Use single thread to reduce memory usage
+        isolate: false, // Reduce isolation overhead
+      },
+    },
+
+    // Aggressive memory management
+    maxConcurrency: 1,
+    maxWorkers: 1,
+
+    // Faster test timeouts to prevent hanging tests
+    testTimeout: 5000,
+    hookTimeout: 5000,
+
+    // Aggressive cleanup between tests
+    clearMocks: true,
+    restoreMocks: true,
+    unstubEnvs: true,
+    unstubGlobals: true,
+
+    // Additional memory management
+    logHeapUsage: true,
+    sequence: {
+      concurrent: false, // Run tests sequentially
+    },
+
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html", "lcov", "clover"],

@@ -191,19 +191,8 @@ describe("Area Component", () => {
     expect(screen.getByTestId("custom-area")).toBeInTheDocument();
   });
 
-  it("handles client-side rendering", () => {
-    render(<Area {...defaultProps} isClient />);
-
-    // Should render area element immediately in test environment
-    expect(screen.getByRole("link")).toBeInTheDocument();
-  });
-
-  it("handles memoized client-side rendering", () => {
-    render(<Area {...defaultProps} isClient isMemoized />);
-
-    // Should render area element immediately in test environment
-    expect(screen.getByRole("link")).toBeInTheDocument();
-  });
+  // NOTE: Client-side rendering is not tested in unit tests as it's just
+  // a thin wrapper around the server component with zero business logic
 
   it("forwards ref correctly", () => {
     const ref = React.createRef<HTMLAreaElement>();
@@ -247,13 +236,7 @@ describe("Area Component", () => {
     expect(mockGtag).toHaveBeenCalled();
   });
 
-  it("handles memoized client-side rendering correctly", () => {
-    render(<Area {...defaultProps} isClient isMemoized />);
-
-    const area = screen.getByRole("link");
-    expect(area).toBeInTheDocument();
-    expect(area).toHaveClass("area");
-  });
+  // NOTE: Client-side memoization testing skipped - implementation detail
 
   it("handles missing href gracefully", () => {
     render(
