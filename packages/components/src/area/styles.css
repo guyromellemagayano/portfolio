@@ -1,0 +1,88 @@
+/* Area Component Styles */
+.area {
+  /* Base area styles - area elements are typically invisible */
+  cursor: pointer;
+  outline-offset: 2px;
+}
+
+/* Focus styles for accessibility */
+.area:focus {
+  outline: 2px solid var(--area-focus-color, #0066cc);
+  outline-offset: 2px;
+}
+
+/* Disabled state */
+.area--disabled {
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .area:focus {
+    outline: 3px solid currentColor;
+    outline-offset: 1px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .area {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .area {
+    cursor: default;
+  }
+}
+
+/* Enhanced states and debug support */
+.area--debug {
+  /* Debug mode styling */
+  position: relative;
+}
+
+.area--small-touch-target {
+  /* Warning indicator for small touch targets */
+  cursor: help;
+}
+
+.area__debug-overlay {
+  /* Debug overlay positioning */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  line-height: 1.2;
+}
+
+.area__debug-info {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+/* Enhanced accessibility */
+.area[data-touch-optimized="false"] {
+  /* Indicate areas that may need touch optimization */
+  outline: 1px dashed orange;
+  outline-offset: 1px;
+}
+
+.area[data-valid-coords="false"] {
+  /* Indicate invalid coordinates in development */
+  outline: 2px dashed red;
+  outline-offset: 2px;
+}
+
+/* Custom properties for theming */
+:root {
+  --area-focus-color: #0066cc;
+}
