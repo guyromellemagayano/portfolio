@@ -53,6 +53,16 @@
         "types": "./dist/cjs/address.d.ts",
         "default": "./dist/cjs/address.cjs"
       }
+    },
+    "./area": {
+      "import": {
+        "types": "./dist/es/area.d.mts",
+        "default": "./dist/es/area.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/area.d.ts",
+        "default": "./dist/cjs/area.cjs"
+      }
     }
   },
   "files": [
@@ -70,11 +80,24 @@
     "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "storybook": "storybook dev -p 6006",
     "test": "vitest",
+    "test:a": "vitest run src/a/index.test.tsx --config vitest.light.config.ts",
+    "test:abbr": "vitest run src/abbr/index.test.tsx --config vitest.light.config.ts",
+    "test:address": "vitest run src/address/index.test.tsx --config vitest.light.config.ts",
+    "test:all-components": "pnpm test:a && pnpm test:abbr && pnpm test:address && pnpm test:area",
+    "test:area": "vitest run src/area/index.test.tsx --config vitest.light.config.ts",
+    "test:component": "vitest run --config vitest.light.config.ts",
+    "test:components": "vitest run src/a src/abbr src/address src/area",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
+    "test:isolated": "tsx scripts/test-components.ts",
+    "test:isolated:node": "node --loader tsx/esm scripts/test-components.ts",
+    "test:light": "vitest --config vitest.light.config.ts",
+    "test:light:run": "vitest run --config vitest.light.config.ts",
+    "test:memory": "node --max-old-space-size=4096 ./node_modules/.bin/vitest run --config vitest.light.config.ts",
     "test:run": "vitest run",
     "test:run:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:watch:light": "vitest --config vitest.light.config.ts --watch"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
@@ -95,6 +118,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

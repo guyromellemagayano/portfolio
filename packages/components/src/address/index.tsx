@@ -60,43 +60,42 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
 
     const hasAnalytics = analyticsId || onAnalytics;
 
-    // Event handlers
-    const handleClick = hasAnalytics
-      ? useCallback(
-          (event: React.MouseEvent<HTMLElement>) => {
-            if (analyticsId || onAnalytics) {
-              const analyticsData = {
-                event: "click",
-                category: "address",
-                label: analyticsId || "address-click",
-                content: String(children || ""),
-              };
+    // Event handlers - always use useCallback to maintain hooks order
+    const handleClick = useCallback(
+      (event: React.MouseEvent<HTMLElement>) => {
+        // Only execute analytics if we have analytics setup
+        if (hasAnalytics && (analyticsId || onAnalytics)) {
+          const analyticsData = {
+            event: "click",
+            category: "address",
+            label: analyticsId || "address-click",
+            content: String(children || ""),
+          };
 
-              if (onAnalytics) {
-                onAnalytics(analyticsData);
-              } else if (analyticsId && typeof window !== "undefined") {
-                try {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  const gtag = (window as any).gtag;
-                  if (gtag) {
-                    gtag("event", "click", {
-                      event_category: analyticsData.category,
-                      event_label: analyticsData.label,
-                      address_content: analyticsData.content,
-                    });
-                  }
-                } catch (error) {
-                  if (process.env.NODE_ENV === "development") {
-                    console.warn("Analytics tracking failed:", error);
-                  }
-                }
+          if (onAnalytics) {
+            onAnalytics(analyticsData);
+          } else if (analyticsId && typeof window !== "undefined") {
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const gtag = (window as any).gtag;
+              if (gtag) {
+                gtag("event", "click", {
+                  event_category: analyticsData.category,
+                  event_label: analyticsData.label,
+                  address_content: analyticsData.content,
+                });
+              }
+            } catch (error) {
+              if (process.env.NODE_ENV === "development") {
+                console.warn("Analytics tracking failed:", error);
               }
             }
-            onClick?.(event);
-          },
-          [analyticsId, onAnalytics, children, onClick]
-        )
-      : onClick;
+          }
+        }
+        onClick?.(event);
+      },
+      [hasAnalytics, analyticsId, onAnalytics, children, onClick]
+    );
 
     // Props with accessibility and security
     const enhancedProps = useMemo(
