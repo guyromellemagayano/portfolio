@@ -1,30 +1,33 @@
 {
   "name": "@guyromellemagayano/logger",
   "version": "1.0.0",
-  "description": "Simple and lightweight logging utility for Node.js and browser environments",
-  "license": "MIT",
-  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "description": "Comprehensive, robust, scalable, and flexible logging system for Node.js and browser environments with structured logging, multiple transports, formatters, performance monitoring, and enterprise features",
+  "keywords": [
+    "logger",
+    "logging",
+    "structured-logging",
+    "typescript",
+    "node.js",
+    "browser",
+    "performance",
+    "monitoring",
+    "metrics",
+    "transports",
+    "formatters",
+    "enterprise"
+  ],
+  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/logger",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portal/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/guyromellemagayano/portal.git",
     "directory": "packages/logger"
   },
-  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/logger",
-  "bugs": {
-    "url": "https://github.com/guyromellemagayano/portal/issues"
-  },
-  "keywords": [
-    "logger",
-    "logging",
-    "typescript",
-    "node.js",
-    "browser",
-    "utility"
-  ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/",
-    "access": "restricted"
-  },
+  "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
@@ -36,23 +39,62 @@
         "types": "./dist/cjs/index.d.ts",
         "default": "./dist/cjs/index.cjs"
       }
+    },
+    "./formatters": {
+      "import": {
+        "types": "./dist/es/formatters.d.mts",
+        "default": "./dist/es/formatters.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/formatters.d.ts",
+        "default": "./dist/cjs/formatters.cjs"
+      }
+    },
+    "./transports": {
+      "import": {
+        "types": "./dist/es/transports.d.mts",
+        "default": "./dist/es/transports.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/transports.d.ts",
+        "default": "./dist/cjs/transports.cjs"
+      }
+    },
+    "./utils": {
+      "import": {
+        "types": "./dist/es/utils.d.mts",
+        "default": "./dist/es/utils.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/utils.d.ts",
+        "default": "./dist/cjs/utils.cjs"
+      }
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "scripts"
   ],
   "scripts": {
     "build": "bunchee",
+    "build:production": "NODE_ENV=production bunchee --minify",
+    "build:watch": "bunchee --watch",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint src/",
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "prepublishOnly": "npm run build:production && npm run test:run",
     "test": "vitest",
+    "test:build": "node scripts/test-build.mjs",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",
     "test:run:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
@@ -60,11 +102,20 @@
     "@packages/vitest-presets": "workspace:*"
   },
   "peerDependencies": {
+    "@testing-library/jest-dom": "catalog:",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "eslint-plugin-import": "catalog:",
+    "eslint-plugin-simple-import-sort": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
   }
 }
