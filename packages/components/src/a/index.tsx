@@ -45,18 +45,55 @@ export interface AProps
   showSpinner?: boolean;
 }
 
-// Utility functions
-const isExternal = (href: string): boolean => /^https?:\/\//.test(href);
-const isSafeHref = (href: string): boolean => !/^javascript:/i.test(href);
-const isMailto = (href: string): boolean => href.startsWith("mailto:");
-const isTel = (href: string): boolean => href.startsWith("tel:");
+// =============================================================================
+// LINK VALIDATION & SECURITY UTILITIES
+// =============================================================================
 
-// Google Analytics tracking
-const fireAnalytics = (
+/**
+ * Checks if a URL is external (starts with http:// or https://)
+ * Used to apply security attributes and styling
+ */
+function isExternal(href: string): boolean {
+  return /^https?:\/\//.test(href);
+}
+
+/**
+ * Validates href safety by checking for javascript: protocol
+ * Prevents XSS attacks via malicious javascript: URLs
+ */
+function isSafeHref(href: string): boolean {
+  return !/^javascript:/i.test(href);
+}
+
+/**
+ * Checks if URL is a mailto link
+ * Used for special handling of email links
+ */
+function isMailto(href: string): boolean {
+  return href.startsWith("mailto:");
+}
+
+/**
+ * Checks if URL is a telephone link
+ * Used for special handling of phone number links
+ */
+function isTel(href: string): boolean {
+  return href.startsWith("tel:");
+}
+
+// =============================================================================
+// ANALYTICS INTEGRATION
+// =============================================================================
+
+/**
+ * Fires Google Analytics event for link interactions
+ * Gracefully handles missing gtag and provides error logging
+ */
+function fireAnalytics(
   analyticsId?: string,
   event?: React.MouseEvent<HTMLAnchorElement>,
   href?: string
-): void => {
+): void {
   if (!analyticsId || !event) return;
 
   try {
@@ -73,56 +110,65 @@ const fireAnalytics = (
   } catch (error) {
     console.warn("Analytics tracking failed:", error);
   }
-};
+}
 
-// Loading spinner component
-const LoadingSpinner: React.FC = () => (
-  <span className="a__spinner" role="status">
-    <svg
-      className="a__spinner-icon"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <circle
-        className="a__spinner-track"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="2"
+// =============================================================================
+// UI COMPONENTS
+// =============================================================================
+
+/**
+ * Loading spinner component for link loading states
+ * Provides accessible loading indicator with ARIA support
+ */
+function LoadingSpinner(): React.ReactElement {
+  return (
+    <span className="a__spinner" role="status">
+      <svg
+        className="a__spinner-icon"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
         fill="none"
-        opacity="0.25"
-      />
-      <path
-        className="a__spinner-indicator"
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="currentColor"
-        strokeWidth="2"
-        fill="none"
-        strokeLinecap="round"
-        strokeDasharray="31.416"
-        strokeDashoffset="31.416"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <animateTransform
-          attributeName="transform"
-          type="rotate"
-          values="0 12 12;360 12 12"
-          dur="1s"
-          repeatCount="indefinite"
+        <circle
+          className="a__spinner-track"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="2"
+          fill="none"
+          opacity="0.25"
         />
-        <animate
-          attributeName="stroke-dashoffset"
-          values="31.416;0"
-          dur="1s"
-          repeatCount="indefinite"
-        />
-      </path>
-    </svg>
-  </span>
-);
+        <path
+          className="a__spinner-indicator"
+          d="M12 2a10 10 0 0 1 10 10"
+          stroke="currentColor"
+          strokeWidth="2"
+          fill="none"
+          strokeLinecap="round"
+          strokeDasharray="31.416"
+          strokeDashoffset="31.416"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="0 12 12;360 12 12"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="stroke-dashoffset"
+            values="31.416;0"
+            dur="1s"
+            repeatCount="indefinite"
+          />
+        </path>
+      </svg>
+    </span>
+  );
+}
 
 /**
  * Universal anchor component with variants, analytics, and accessibility.

@@ -87,32 +87,51 @@ export interface AreaProps
   priority?: "high" | "normal" | "low";
 }
 
-// Coordinate validation utilities
-const validateRectCoords = (coords: string): boolean => {
+// =============================================================================
+// COORDINATE VALIDATION UTILITIES
+// =============================================================================
+
+/**
+ * Validates rectangular coordinates in format: x1,y1,x2,y2
+ * Ensures x2 > x1, y2 > y1, and all values are non-negative numbers
+ */
+function validateRectCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   if (parts.length !== 4) return false;
   const [x1, y1, x2, y2] = parts;
   return x2! > x1! && y2! > y1! && parts.every((n) => !isNaN(n) && n >= 0);
-};
+}
 
-const validateCircleCoords = (coords: string): boolean => {
+/**
+ * Validates circular coordinates in format: x,y,radius
+ * Ensures radius > 0 and all values are non-negative numbers
+ */
+function validateCircleCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   if (parts.length !== 3) return false;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_x, _y, r] = parts;
   return r! > 0 && parts.every((n) => !isNaN(n) && n >= 0);
-};
+}
 
-const validatePolyCoords = (coords: string): boolean => {
+/**
+ * Validates polygon coordinates in format: x1,y1,x2,y2,x3,y3,...
+ * Requires minimum 3 points (6 coordinates) and even number of coordinates
+ */
+function validatePolyCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   return (
     parts.length >= 6 &&
     parts.length % 2 === 0 &&
     parts.every((n) => !isNaN(n) && n >= 0)
   );
-};
+}
 
-const validateCoordinates = (shape: AreaShape, coords?: string): boolean => {
+/**
+ * Validates coordinates based on the area shape type
+ * Returns true for valid coordinates or when validation is not applicable
+ */
+function validateCoordinates(shape: AreaShape, coords?: string): boolean {
   if (!coords || shape === "default") return true;
 
   switch (shape) {
@@ -125,10 +144,17 @@ const validateCoordinates = (shape: AreaShape, coords?: string): boolean => {
     default:
       return true;
   }
-};
+}
 
-// Calculate area size for analytics and touch optimization
-const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
+// =============================================================================
+// GEOMETRIC CALCULATIONS
+// =============================================================================
+
+/**
+ * Calculates the area size in pixels² for analytics and touch optimization
+ * Uses appropriate formula based on shape: rectangle, circle, or polygon (shoelace)
+ */
+function calculateAreaSize(shape: AreaShape, coords?: string): number {
   if (!coords) return 0;
 
   switch (shape) {
@@ -143,7 +169,7 @@ const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
       return Math.PI * parts[2]! * parts[2]!;
     }
     case "poly": {
-      // Simplified polygon area calculation using shoelace formula
+      // Shoelace formula for polygon area calculation
       const points = coords.split(",").map(Number);
       let area = 0;
       for (let i = 0; i < points.length; i += 2) {
@@ -156,13 +182,16 @@ const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
     default:
       return 0;
   }
-};
+}
 
-// Calculate center point for analytics
-const calculateCenterPoint = (
+/**
+ * Calculates the geometric center point for analytics and positioning
+ * Returns centroid for rectangles/polygons, center for circles
+ */
+function calculateCenterPoint(
   shape: AreaShape,
   coords?: string
-): { x: number; y: number } | undefined => {
+): { x: number; y: number } | undefined {
   if (!coords) return undefined;
 
   switch (shape) {
@@ -189,14 +218,22 @@ const calculateCenterPoint = (
     default:
       return undefined;
   }
-};
+}
 
-// Check if area meets minimum touch target requirements
-const checkTouchOptimization = (
+// =============================================================================
+// ACCESSIBILITY & TOUCH OPTIMIZATION
+// =============================================================================
+
+/**
+ * Checks if area meets minimum touch target requirements
+ * Follows WCAG guidelines (44px minimum recommended)
+ * Uses shape-specific calculations for accurate assessment
+ */
+function checkTouchOptimization(
   shape: AreaShape,
   coords?: string,
   minSize = 44
-): boolean => {
+): boolean {
   if (!coords) return false;
 
   const areaSize = calculateAreaSize(shape, coords);
@@ -218,7 +255,7 @@ const checkTouchOptimization = (
     default:
       return areaSize >= minArea;
   }
-};
+}
 
 /** Universal area component with coordinate validation, touch optimization, and enhanced analytics */
 const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
@@ -505,35 +542,66 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
 
 AreaComponent.displayName = "Area";
 
-/** Utility functions for advanced coordinate manipulation */
+// =============================================================================
+// PUBLIC API - UTILITY FUNCTIONS
+// =============================================================================
+
+/**
+ * Comprehensive utility functions for area coordinate manipulation and validation
+ * Provides a clean API for common area operations in external usage
+ */
 // eslint-disable-next-line react-refresh/only-export-components
 export const AreaUtils = {
-  // Core functions
+  // Core validation and calculation functions
   validateCoordinates,
   calculateAreaSize,
   calculateCenterPoint,
   checkTouchOptimization,
 
-  // Coordinate generators
-  createRectCoords: (
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number
-  ): RectCoords => `${x1},${y1},${x2},${y2}`,
+  /**
+   * Creates rectangular coordinates string from individual values
+   * @param x1 Left X coordinate
+   * @param y1 Top Y coordinate
+   * @param x2 Right X coordinate
+   * @param y2 Bottom Y coordinate
+   * @returns Formatted coordinates string "x1,y1,x2,y2"
+   */
+  createRectCoords(x1: number, y1: number, x2: number, y2: number): RectCoords {
+    return `${x1},${y1},${x2},${y2}`;
+  },
 
-  createCircleCoords: (x: number, y: number, r: number): CircleCoords =>
-    `${x},${y},${r}`,
+  /**
+   * Creates circular coordinates string from center point and radius
+   * @param x Center X coordinate
+   * @param y Center Y coordinate
+   * @param r Radius in pixels
+   * @returns Formatted coordinates string "x,y,r"
+   */
+  createCircleCoords(x: number, y: number, r: number): CircleCoords {
+    return `${x},${y},${r}`;
+  },
 
-  createPolyCoords: (points: Array<{ x: number; y: number }>): PolyCoords =>
-    points.map((p) => `${p.x},${p.y}`).join(","),
+  /**
+   * Creates polygon coordinates string from array of points
+   * @param points Array of {x, y} coordinate objects
+   * @returns Formatted coordinates string "x1,y1,x2,y2,..."
+   */
+  createPolyCoords(points: Array<{ x: number; y: number }>): PolyCoords {
+    return points.map((p) => `${p.x},${p.y}`).join(",");
+  },
 
-  // Responsive helpers
-  percentToAbsolute: (
+  /**
+   * Converts percentage-based coordinates to absolute pixel coordinates
+   * @param coords Percentage coordinates string
+   * @param imageWidth Container width in pixels
+   * @param imageHeight Container height in pixels
+   * @returns Absolute coordinates string
+   */
+  percentToAbsolute(
     coords: string,
     imageWidth: number,
     imageHeight: number
-  ): string => {
+  ): string {
     return coords
       .split(",")
       .map((coord, index) => {
@@ -544,7 +612,15 @@ export const AreaUtils = {
       .join(",");
   },
 
-  expandForTouch: (shape: AreaShape, coords: string, minSize = 44): string => {
+  /**
+   * Expands area coordinates to meet minimum touch target requirements
+   * Automatically adjusts small areas for better accessibility
+   * @param shape Area shape type
+   * @param coords Current coordinates string
+   * @param minSize Minimum target size in pixels (default: 44px)
+   * @returns Adjusted coordinates string
+   */
+  expandForTouch(shape: AreaShape, coords: string, minSize = 44): string {
     if (shape === "rect") {
       const [x1, y1, x2, y2] = coords.split(",").map(Number);
       const width = x2! - x1!;
