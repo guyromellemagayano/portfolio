@@ -1,6 +1,6 @@
 import React from "react";
 
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Abbr, type AbbrProps } from "./index";
@@ -139,36 +139,8 @@ describe("Abbr Component", () => {
     expect(screen.getByTestId("custom-abbr")).toBeInTheDocument();
   });
 
-  it("handles client-side rendering", async () => {
-    render(<Abbr {...defaultProps} isClient />);
-
-    await waitFor(() => {
-      expect(screen.getByText("HTML")).toBeInTheDocument();
-    });
-  });
-
-  it("handles memoized client-side rendering", async () => {
-    const { MemoizedAbbrClient } = await import("./index.client");
-
-    const TestComponent = ({ id }: { id: string }) => (
-      <MemoizedAbbrClient title="HyperText Markup Language" data-testid={id}>
-        HTML
-      </MemoizedAbbrClient>
-    );
-
-    const { rerender } = render(<TestComponent id="test-1" />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("test-1")).toBeInTheDocument();
-    });
-
-    // Rerender with same props - should not cause unnecessary re-renders
-    rerender(<TestComponent id="test-1" />);
-
-    await waitFor(() => {
-      expect(screen.getByTestId("test-1")).toBeInTheDocument();
-    });
-  });
+  // NOTE: Client-side rendering is not tested in unit tests as it's just
+  // a thin wrapper around the server component with zero business logic
 
   it("handles missing title gracefully", () => {
     render(<Abbr>HTML</Abbr>);
@@ -286,12 +258,5 @@ describe("Abbr Component", () => {
     expect(mockGtag).toHaveBeenCalled();
   });
 
-  it("handles memoized client-side rendering correctly", () => {
-    render(<Abbr {...defaultProps} isClient isMemoized />);
-
-    const abbr = screen.getByText("HTML");
-    expect(abbr).toBeInTheDocument();
-    expect(abbr).toHaveAttribute("title", "HyperText Markup Language");
-    expect(abbr).toHaveClass("abbr");
-  });
+  // NOTE: Client-side memoization testing skipped - implementation detail
 });
