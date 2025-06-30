@@ -50,9 +50,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": "always",
     "source.fixAll.eslint": "always",
-    "source.removeUnusedImports": "always",
-    "source.organizeImports": "always",
-    "source.sortImports": "always"
+    "source.removeUnusedImports": "always"
   },
   "eslint.useFlatConfig": true,
   "eslint.format.enable": true,
@@ -70,6 +68,12 @@
   "eslint.run": "onSave",
   "eslint.autoFixOnSave": true,
   "eslint.experimental.useFlatConfig": true,
+  "eslint.codeAction.showDocumentation": {
+    "enable": true
+  },
+  "source.organizeImports.enabled": false,
+  "typescript.organizeImports.enabled": false,
+  "javascript.organizeImports.enabled": false,
   "files.associations": {
     ".env*": "dotenv",
     "*ignore": "ignore"
@@ -81,6 +85,10 @@
   "javascript.preferences.importModuleSpecifierEnding": "minimal",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "typescript.preferences.importModuleSpecifierEnding": "minimal",
+  "typescript.suggest.autoImports": "off",
+  "javascript.suggest.autoImports": "off",
+  "typescript.suggest.organizeImports": false,
+  "javascript.suggest.organizeImports": false,
   "typescript.tsdk": "node_modules/typescript/lib",
   "prettier.requireConfig": true,
   "prettier.useEditorConfig": true,

@@ -1,6 +1,6 @@
-import { config as loadEnv } from "dotenv";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { config as loadEnv } from "dotenv";
 import { defineCliConfig } from "sanity/cli";
 
 import { dataset, projectId, studioHost } from "@studio/configs";
