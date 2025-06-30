@@ -1,3 +1,3 @@
 import type { Linter } from 'eslint';
 
-export const nextEslintConfig: Linter.Config; 
+export declare const nextEslintConfig: Linter.Config[]; 
