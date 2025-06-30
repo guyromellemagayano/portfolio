@@ -635,8 +635,8 @@ file for details.
 
 ## 🔗 Links
 
-- [GitHub Repository](https://github.com/guyromellemagayano/portal)
-- [Issue Tracker](https://github.com/guyromellemagayano/portal/issues)
+- [GitHub Repository](https://github.com/stackmarketlabs/portal)
+- [Issue Tracker](https://github.com/stackmarketlabs/portal/issues)
 - [Package Registry](https://npm.pkg.github.com/)
 - [Integrations Guide](./INTEGRATIONS.md) - Detailed integration examples
   and configurations
