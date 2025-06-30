@@ -10,13 +10,13 @@
     "analytics",
     "html-components"
   ],
-  "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/components",
+  "homepage": "https://github.com/stackmarketlabs/portal/tree/main/packages/components",
   "bugs": {
-    "url": "https://github.com/guyromellemagayano/portal/issues"
+    "url": "https://github.com/stackmarketlabs/portal/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guyromellemagayano/portal.git",
+    "url": "https://github.com/stackmarketlabs/portal.git",
     "directory": "packages/components"
   },
   "license": "MIT",
@@ -63,6 +63,16 @@
         "types": "./dist/cjs/area.d.ts",
         "default": "./dist/cjs/area.cjs"
       }
+    },
+    "./article": {
+      "import": {
+        "types": "./dist/es/article.d.mts",
+        "default": "./dist/es/article.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/article.d.ts",
+        "default": "./dist/cjs/article.cjs"
+      }
     }
   },
   "files": [
@@ -83,10 +93,11 @@
     "test:a": "vitest run src/a/index.test.tsx --config vitest.light.config.ts",
     "test:abbr": "vitest run src/abbr/index.test.tsx --config vitest.light.config.ts",
     "test:address": "vitest run src/address/index.test.tsx --config vitest.light.config.ts",
-    "test:all-components": "pnpm test:a && pnpm test:abbr && pnpm test:address && pnpm test:area",
+    "test:all-components": "pnpm test:a && pnpm test:abbr && pnpm test:address && pnpm test:area && pnpm test:article",
     "test:area": "vitest run src/area/index.test.tsx --config vitest.light.config.ts",
+    "test:article": "vitest run src/article/index.test.tsx --config vitest.light.config.ts",
     "test:component": "vitest run --config vitest.light.config.ts",
-    "test:components": "vitest run src/a src/abbr src/address src/area",
+    "test:components": "vitest run src/a src/abbr src/address src/area src/article",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:isolated": "tsx scripts/test-components.ts",
