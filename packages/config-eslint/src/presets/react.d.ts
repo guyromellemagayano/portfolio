@@ -1,3 +1,3 @@
 import type { Linter } from 'eslint';
 
-export const reactEslintConfig: Linter.Config; 
+export declare const reactEslintConfig: Linter.Config[]; 
