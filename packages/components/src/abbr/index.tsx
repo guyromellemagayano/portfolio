@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback } from "react";
+import React, { Suspense, useCallback, useMemo } from "react";
 
 import type { CommonComponentProps } from "../types";
 
@@ -109,45 +109,40 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
       )
     : onClick;
 
-  // Build className efficiently
-  let finalClassName = "abbr";
-  if (emphasized) finalClassName += " abbr--emphasized";
-  if (className) finalClassName += ` ${className}`;
-
-  // Optimized props object - avoid spreading large objects
-  const elementProps: React.HTMLAttributes<HTMLElement> & {
-    ref?: React.Ref<HTMLElement>;
-    "data-emphasized"?: string;
-    "data-analytics-id"?: string;
-  } = {
-    ...rest,
-    ref,
-    className: finalClassName,
-    style,
-    onClick: handleClick,
-    onMouseEnter,
-    onFocus,
-  };
-
-  // Add accessibility and tooltip props only when needed
-  if (showTooltip && displayTitle) {
-    elementProps.title = displayTitle;
-  }
-
-  if (displayTitle || rest["aria-label"]) {
-    elementProps["aria-label"] = displayTitle || rest["aria-label"];
-  }
-
-  if (emphasized) {
-    elementProps["data-emphasized"] = "true";
-  }
-
-  if (analyticsId) {
-    elementProps["data-analytics-id"] = analyticsId;
-  }
+  // Enhanced props with consistent className pattern
+  const enhancedProps = useMemo(
+    () => ({
+      ...rest,
+      ref,
+      className: ["abbr", emphasized && "abbr--emphasized", className]
+        .filter(Boolean)
+        .join(" "),
+      style,
+      onClick: handleClick,
+      onMouseEnter,
+      onFocus,
+      // Add accessibility and tooltip props
+      title: showTooltip && displayTitle ? displayTitle : undefined,
+      "aria-label": displayTitle || rest["aria-label"],
+      "data-emphasized": emphasized ? "true" : undefined,
+      "data-analytics-id": analyticsId || undefined,
+    }),
+    [
+      rest,
+      emphasized,
+      className,
+      style,
+      handleClick,
+      onMouseEnter,
+      onFocus,
+      showTooltip,
+      displayTitle,
+      analyticsId,
+    ]
+  );
 
   // Create the base element
-  const element = <Component {...elementProps}>{children}</Component>;
+  const element = <Component {...enhancedProps}>{children}</Component>;
 
   // Handle client-side rendering
   if (isClient) {
