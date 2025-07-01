@@ -69,47 +69,45 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
   const hasAnalytics = analyticsId || onAnalytics;
 
   // Optimized click handler - only create when analytics are needed
-  const handleClick = hasAnalytics
-    ? useCallback(
-        (event: React.MouseEvent<HTMLElement>) => {
-          if (analyticsId || onAnalytics) {
-            const analyticsData = {
-              event: "click",
-              category: "abbreviation",
-              label: analyticsId || "abbr-click",
-              abbreviation: String(children || ""),
-              expanded: displayTitle || "",
-            };
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      if (hasAnalytics && (analyticsId || onAnalytics)) {
+        const analyticsData = {
+          event: "click",
+          category: "abbreviation",
+          label: analyticsId || "abbr-click",
+          abbreviation: String(children || ""),
+          expanded: displayTitle || "",
+        };
 
-            if (onAnalytics) {
-              onAnalytics(analyticsData);
-            } else if (analyticsId && typeof window !== "undefined") {
-              // Flexible analytics - works with gtag, dataLayer, or custom
-              try {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const gtag = (window as any).gtag;
-                if (gtag) {
-                  gtag("event", "click", {
-                    event_category: analyticsData.category,
-                    event_label: analyticsData.label,
-                    abbreviation_text: analyticsData.abbreviation,
-                    expanded_text: analyticsData.expanded,
-                  });
-                }
-              } catch (error) {
-                if (process.env.NODE_ENV === "development") {
-                  console.warn("Analytics tracking failed:", error);
-                }
-              }
+        if (onAnalytics) {
+          onAnalytics(analyticsData);
+        } else if (analyticsId && typeof window !== "undefined") {
+          // Flexible analytics - works with gtag, dataLayer, or custom
+          try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const gtag = (window as any).gtag;
+            if (gtag) {
+              gtag("event", "click", {
+                event_category: analyticsData.category,
+                event_label: analyticsData.label,
+                abbreviation_text: analyticsData.abbreviation,
+                expanded_text: analyticsData.expanded,
+              });
+            }
+          } catch (error) {
+            if (process.env.NODE_ENV === "development") {
+              console.warn("Analytics tracking failed:", error);
             }
           }
-          onClick?.(event);
-        },
-        [analyticsId, onAnalytics, children, displayTitle, onClick]
-      )
-    : onClick;
+        }
+      }
+      onClick?.(event);
+    },
+    [hasAnalytics, analyticsId, onAnalytics, children, displayTitle, onClick]
+  );
 
-  // Enhanced props with consistent className pattern
+  // Props with accessibility and enhanced features
   const enhancedProps = useMemo(
     () => ({
       ...rest,
@@ -121,7 +119,6 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
       onClick: handleClick,
       onMouseEnter,
       onFocus,
-      // Add accessibility and tooltip props
       title: showTooltip && displayTitle ? displayTitle : undefined,
       "aria-label": displayTitle || rest["aria-label"],
       "data-emphasized": emphasized ? "true" : undefined,
