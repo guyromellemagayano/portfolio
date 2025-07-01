@@ -1,34 +1,72 @@
-import type { AreaShape, CircleCoords, PolyCoords, RectCoords } from "./index";
+// This file contains utility functions for the Area component
+// that are separated for better maintainability and reusability
 
-/** Validates rectangular coordinates format: x1,y1,x2,y2 */
-const validateRectCoords = (coords: string): boolean => {
+export type AreaShape = "rect" | "circle" | "poly" | "default";
+
+/** Type-safe coordinate definitions for different shapes */
+export type RectCoords = `${number},${number},${number},${number}`;
+export type CircleCoords = `${number},${number},${number}`;
+export type PolyCoords = string;
+export type DefaultCoords = undefined;
+
+export type AreaCoords<T extends AreaShape> = T extends "rect"
+  ? RectCoords
+  : T extends "circle"
+    ? CircleCoords
+    : T extends "poly"
+      ? PolyCoords
+      : T extends "default"
+        ? DefaultCoords
+        : string;
+
+// =============================================================================
+// COORDINATE VALIDATION UTILITIES
+// =============================================================================
+
+/**
+ * Validates rectangular coordinates in format: x1,y1,x2,y2
+ * Ensures x2 > x1, y2 > y1, and all values are non-negative numbers
+ */
+export function validateRectCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   if (parts.length !== 4) return false;
   const [x1, y1, x2, y2] = parts;
   return x2! > x1! && y2! > y1! && parts.every((n) => !isNaN(n) && n >= 0);
-};
+}
 
-/** Validates circular coordinates format: x,y,radius */
-const validateCircleCoords = (coords: string): boolean => {
+/**
+ * Validates circular coordinates in format: x,y,radius
+ * Ensures radius > 0 and all values are non-negative numbers
+ */
+export function validateCircleCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   if (parts.length !== 3) return false;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_x, _y, r] = parts;
   return r! > 0 && parts.every((n) => !isNaN(n) && n >= 0);
-};
+}
 
-/** Validates polygon coordinates format: x1,y1,x2,y2,... (minimum 3 points) */
-const validatePolyCoords = (coords: string): boolean => {
+/**
+ * Validates polygon coordinates in format: x1,y1,x2,y2,x3,y3,...
+ * Requires minimum 3 points (6 coordinates) and even number of coordinates
+ */
+export function validatePolyCoords(coords: string): boolean {
   const parts = coords.split(",").map(Number);
   return (
     parts.length >= 6 &&
     parts.length % 2 === 0 &&
     parts.every((n) => !isNaN(n) && n >= 0)
   );
-};
+}
 
-/** Validates coordinates based on shape type */
-const validateCoordinates = (shape: AreaShape, coords?: string): boolean => {
+/**
+ * Validates coordinates based on the area shape type
+ * Returns true for valid coordinates or when validation is not applicable
+ */
+export function validateCoordinates(
+  shape: AreaShape,
+  coords?: string
+): boolean {
   if (!coords || shape === "default") return true;
 
   switch (shape) {
@@ -41,10 +79,17 @@ const validateCoordinates = (shape: AreaShape, coords?: string): boolean => {
     default:
       return true;
   }
-};
+}
 
-/** Calculates area size in pixels² for analytics and touch optimization */
-const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
+// =============================================================================
+// GEOMETRIC CALCULATIONS
+// =============================================================================
+
+/**
+ * Calculates the area size in pixels² for analytics and touch optimization
+ * Uses appropriate formula based on shape: rectangle, circle, or polygon (shoelace)
+ */
+export function calculateAreaSize(shape: AreaShape, coords?: string): number {
   if (!coords) return 0;
 
   switch (shape) {
@@ -59,7 +104,7 @@ const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
       return Math.PI * parts[2]! * parts[2]!;
     }
     case "poly": {
-      // Shoelace formula for polygon area
+      // Shoelace formula for polygon area calculation
       const points = coords.split(",").map(Number);
       let area = 0;
       for (let i = 0; i < points.length; i += 2) {
@@ -72,13 +117,16 @@ const calculateAreaSize = (shape: AreaShape, coords?: string): number => {
     default:
       return 0;
   }
-};
+}
 
-/** Calculates geometric center point for analytics */
-const calculateCenterPoint = (
+/**
+ * Calculates the geometric center point for analytics and positioning
+ * Returns centroid for rectangles/polygons, center for circles
+ */
+export function calculateCenterPoint(
   shape: AreaShape,
   coords?: string
-): { x: number; y: number } | undefined => {
+): { x: number; y: number } | undefined {
   if (!coords) return undefined;
 
   switch (shape) {
@@ -94,25 +142,33 @@ const calculateCenterPoint = (
     }
     case "poly": {
       const points = coords.split(",").map(Number);
-      let _x = 0,
-        _y = 0;
+      let x = 0,
+        y = 0;
       for (let i = 0; i < points.length; i += 2) {
-        _x += points[i]!;
-        _y += points[i + 1]!;
+        x += points[i]!;
+        y += points[i + 1]!;
       }
-      return { x: _x / (points.length / 2), y: _y / (points.length / 2) };
+      return { x: x / (points.length / 2), y: y / (points.length / 2) };
     }
     default:
       return undefined;
   }
-};
+}
 
-/** Checks if area meets minimum touch target requirements (44px recommended) */
-const checkTouchOptimization = (
+// =============================================================================
+// ACCESSIBILITY & TOUCH OPTIMIZATION
+// =============================================================================
+
+/**
+ * Checks if area meets minimum touch target requirements
+ * Follows WCAG guidelines (44px minimum recommended)
+ * Uses shape-specific calculations for accurate assessment
+ */
+export function checkTouchOptimization(
   shape: AreaShape,
   coords?: string,
   minSize = 44
-): boolean => {
+): boolean {
   if (!coords) return false;
 
   const areaSize = calculateAreaSize(shape, coords);
@@ -134,65 +190,100 @@ const checkTouchOptimization = (
     default:
       return areaSize >= minArea;
   }
-};
+}
 
-/** Utility functions for area coordinate manipulation and validation */
-export const AreaUtils = {
-  // Core validation and calculation functions
-  validateCoordinates,
-  calculateAreaSize,
-  calculateCenterPoint,
-  checkTouchOptimization,
+// =============================================================================
+// COORDINATE GENERATION UTILITIES
+// =============================================================================
 
-  /** Creates rectangular coordinates string */
-  createRectCoords: (
-    x1: number,
-    y1: number,
-    x2: number,
-    y2: number
-  ): RectCoords => `${x1},${y1},${x2},${y2}`,
+/**
+ * Creates type-safe rectangular coordinates
+ */
+export function createRectCoords(
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+): RectCoords {
+  return `${x1},${y1},${x2},${y2}`;
+}
 
-  /** Creates circular coordinates string */
-  createCircleCoords: (x: number, y: number, r: number): CircleCoords =>
-    `${x},${y},${r}`,
+/**
+ * Creates type-safe circular coordinates
+ */
+export function createCircleCoords(
+  x: number,
+  y: number,
+  r: number
+): CircleCoords {
+  return `${x},${y},${r}`;
+}
 
-  /** Creates polygon coordinates string from point array */
-  createPolyCoords: (points: Array<{ x: number; y: number }>): PolyCoords =>
-    points.map((p) => `${p.x},${p.y}`).join(","),
+/**
+ * Creates polygon coordinates from array of points
+ */
+export function createPolyCoords(
+  points: Array<{ x: number; y: number }>
+): PolyCoords {
+  return points.map((p) => `${p.x},${p.y}`).join(",");
+}
 
-  /** Converts percentage coordinates to absolute pixels */
-  percentToAbsolute: (
-    coords: string,
-    imageWidth: number,
-    imageHeight: number
-  ): string => {
-    return coords
-      .split(",")
-      .map((coord, index) => {
-        const isEven = index % 2 === 0;
-        const dimension = isEven ? imageWidth : imageHeight;
-        return Math.round((parseFloat(coord) / 100) * dimension);
-      })
-      .join(",");
-  },
+/**
+ * Converts percentage-based coordinates to absolute pixel coordinates
+ */
+export function percentToAbsolute(
+  coords: string,
+  imageWidth: number,
+  imageHeight: number
+): string {
+  const parts = coords.split(",").map(Number);
+  const result: number[] = [];
 
-  /** Expands area to meet minimum touch target size */
-  expandForTouch: (shape: AreaShape, coords: string, minSize = 44): string => {
-    if (shape === "rect") {
-      const [x1, y1, x2, y2] = coords.split(",").map(Number);
+  for (let i = 0; i < parts.length; i += 2) {
+    const x = (parts[i]! / 100) * imageWidth;
+    const y = (parts[i + 1]! / 100) * imageHeight;
+    result.push(x, y);
+  }
+
+  return result.join(",");
+}
+
+/**
+ * Expands area coordinates to meet minimum touch target size
+ */
+export function expandForTouch(
+  shape: AreaShape,
+  coords: string,
+  minSize = 44
+): string {
+  if (checkTouchOptimization(shape, coords, minSize)) {
+    return coords; // Already optimal
+  }
+
+  switch (shape) {
+    case "rect": {
+      const parts = coords.split(",").map(Number);
+      if (parts.length !== 4) return coords;
+
+      const [x1, y1, x2, y2] = parts;
       const width = x2! - x1!;
       const height = y2! - y1!;
 
-      if (width < minSize || height < minSize) {
-        const centerX = (x1! + x2!) / 2;
-        const centerY = (y1! + y2!) / 2;
-        const newHalfWidth = Math.max(width, minSize) / 2;
-        const newHalfHeight = Math.max(height, minSize) / 2;
+      const expandX = Math.max(0, (minSize - width) / 2);
+      const expandY = Math.max(0, (minSize - height) / 2);
 
-        return `${centerX - newHalfWidth},${centerY - newHalfHeight},${centerX + newHalfWidth},${centerY + newHalfHeight}`;
-      }
+      return `${x1! - expandX},${y1! - expandY},${x2! + expandX},${y2! + expandY}`;
     }
+    case "circle": {
+      const parts = coords.split(",").map(Number);
+      if (parts.length !== 3) return coords;
 
-    return coords;
-  },
-};
+      const [x, y, r] = parts;
+      const newRadius = Math.max(r!, minSize / 2);
+
+      return `${x},${y},${newRadius}`;
+    }
+    default:
+      return coords; // Complex polygons require manual adjustment
+  }
+}
