@@ -19,7 +19,7 @@ A universal sidebar component with positioning, collapsible functionality, conte
 ## Basic Usage
 
 ```tsx
-import { Aside } from "@portal/components";
+import { Aside } from "@guyromellemagayano/components/aside";
 
 // Basic aside
 <Aside>

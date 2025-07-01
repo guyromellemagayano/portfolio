@@ -18,7 +18,7 @@ A universal, semantic article component with enhanced features for content struc
 ## Basic Usage
 
 ```tsx
-import { Article } from "@portal/components";
+import { Article } from "@guyromellemagayano/components/article";
 
 // Basic article
 <Article>
@@ -230,7 +230,7 @@ The component respects system preferences:
 Access utility functions for advanced use cases:
 
 ```tsx
-import { ArticleUtils } from "@portal/components";
+import { ArticleUtils } from "@guyromellemagayano/components/article";
 
 // Validate content structure
 const isValid = ArticleUtils.validateStructure(content);
