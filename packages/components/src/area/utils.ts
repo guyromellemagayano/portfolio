@@ -287,3 +287,33 @@ export function expandForTouch(
       return coords; // Complex polygons require manual adjustment
   }
 }
+
+// =============================================================================
+// UNIFIED UTILITY OBJECT EXPORT
+// =============================================================================
+
+/**
+ * Comprehensive utility object for area coordinate manipulation and validation
+ * Provides a clean API for common area operations
+ */
+export const AreaUtils = {
+  // Core validation and calculation functions
+  validateCoordinates,
+  calculateAreaSize,
+  calculateCenterPoint,
+  checkTouchOptimization,
+
+  // Coordinate generation utilities
+  createRectCoords,
+  createCircleCoords,
+  createPolyCoords,
+
+  // Coordinate transformation utilities
+  percentToAbsolute,
+  expandForTouch,
+
+  // Individual validation functions for advanced usage
+  validateRectCoords,
+  validateCircleCoords,
+  validatePolyCoords,
+};
