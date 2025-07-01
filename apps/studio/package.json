@@ -2,15 +2,19 @@
   "name": "studio",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "sanity build",
     "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo .sanity coverage",
     "deploy": "sanity deploy",
     "deploy:graphql": "sanity graphql deploy",
     "dev": "sanity dev",
-    "format": "prettier --write .",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "start": "sanity start",
     "test": "echo 'No tests configured for studio app'",
     "test:coverage": "echo 'No tests configured for studio app'",
@@ -53,8 +57,10 @@
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "rimraf": "catalog:",
     "typescript": "catalog:"
   }
 }

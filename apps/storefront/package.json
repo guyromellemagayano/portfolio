@@ -7,8 +7,12 @@
   "scripts": {
     "build": "next build",
     "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo .next coverage",
     "dev": "next dev -p 3002",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "start": "next start",
     "test": "echo 'No tests configured for storefront app'",
     "test:coverage": "echo 'No tests configured for storefront app'",
@@ -32,8 +36,10 @@
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "rimraf": "catalog:",
     "typescript": "catalog:"
   }
 }
