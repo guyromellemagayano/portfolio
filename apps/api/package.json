@@ -2,12 +2,17 @@
   "name": "api",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsup",
     "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "tsup --watch --onSuccess \"node dist/index.cjs\"",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint src/ --max-warnings 0",
+    "lint:fix": "eslint --fix src/ --max-warnings 0",
     "start": "node dist/index.js",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -39,6 +44,8 @@
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
