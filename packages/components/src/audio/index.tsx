@@ -107,7 +107,7 @@ function getAudioFormat(src?: string): string {
   if (!src) return "Unknown";
 
   const match = src.match(/\.([^.?]+)(\?.*)?$/);
-  if (match) {
+  if (match && match[1]) {
     return match[1].toUpperCase();
   }
 
