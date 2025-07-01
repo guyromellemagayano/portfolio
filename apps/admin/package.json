@@ -7,8 +7,12 @@
   "scripts": {
     "build": "vite build",
     "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "vite --host 0.0.0.0 --port 3001 --clearScreen false",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint src/ --max-warnings 0",
+    "lint:fix": "eslint --fix src/ --max-warnings 0",
     "test": "echo 'No tests configured for admin app'",
     "test:coverage": "echo 'No tests configured for admin app'",
     "test:run": "echo 'No tests configured for admin app'",
@@ -36,8 +40,10 @@
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "rimraf": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-devtools-json": "catalog:"
