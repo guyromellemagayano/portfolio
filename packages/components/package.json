@@ -113,6 +113,16 @@
         "types": "./dist/cjs/base.d.ts",
         "default": "./dist/cjs/base.cjs"
       }
+    },
+    "./bdi": {
+      "import": {
+        "types": "./dist/es/bdi.d.mts",
+        "default": "./dist/es/bdi.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/bdi.d.ts",
+        "default": "./dist/cjs/bdi.cjs"
+      }
     }
   },
   "files": [
@@ -139,7 +149,8 @@
     "test:audio": "vitest run src/audio/index.test.tsx --config vitest.light.config.ts",
     "test:b": "vitest run src/b/index.test.tsx --config vitest.light.config.ts",
     "test:base": "vitest run src/base/index.test.tsx --config vitest.light.config.ts",
-    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b src/base --config vitest.light.config.ts",
+    "test:bdi": "vitest run src/bdi/index.test.tsx --config vitest.light.config.ts",
+    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b src/base src/bdi --config vitest.light.config.ts",
     "test:coverage": "vitest run --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:isolated": "tsx scripts/test-components.ts",
