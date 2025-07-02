@@ -93,6 +93,16 @@
         "types": "./dist/cjs/audio.d.ts",
         "default": "./dist/cjs/audio.cjs"
       }
+    },
+    "./b": {
+      "import": {
+        "types": "./dist/es/b.d.mts",
+        "default": "./dist/es/b.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/b.d.ts",
+        "default": "./dist/cjs/b.cjs"
+      }
     }
   },
   "files": [
@@ -117,7 +127,8 @@
     "test:article": "vitest run src/article/index.test.tsx --config vitest.light.config.ts",
     "test:aside": "vitest run src/aside/index.test.tsx --config vitest.light.config.ts",
     "test:audio": "vitest run src/audio/index.test.tsx --config vitest.light.config.ts",
-    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio --config vitest.light.config.ts",
+    "test:b": "vitest run src/b/index.test.tsx --config vitest.light.config.ts",
+    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b --config vitest.light.config.ts",
     "test:coverage": "vitest run --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:isolated": "tsx scripts/test-components.ts",
