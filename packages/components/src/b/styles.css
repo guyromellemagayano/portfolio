@@ -1,0 +1,122 @@
+/**
+ * B Component Styles
+ * Enhanced bring attention to (bold) component with accessibility and interaction support
+ */
+
+/* Base styles for the <b> component */
+.b {
+  font-weight: var(--b-font-weight, bold);
+  display: inline;
+  color: var(--b-color, inherit);
+  
+  /* Transitions for smooth interactions */
+  transition: 
+    font-weight 0.1s ease,
+    color 0.2s ease,
+    text-shadow 0.2s ease;
+  
+  /* Ensure proper focus behavior */
+  outline-offset: 2px;
+}
+
+/* Emphasized variant */
+.b--emphasized {
+  font-weight: var(--b-emphasized-font-weight, 900);
+  color: var(--b-emphasized-color, inherit);
+  text-shadow: var(--b-emphasized-text-shadow, 0.5px 0 0 currentColor);
+}
+
+/* Focus styles for accessibility */
+.b:focus-visible {
+  outline: 2px solid var(--b-focus-color, currentColor);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+/* Interactive states */
+.b:hover {
+  color: var(--b-hover-color, inherit);
+}
+
+.b:active {
+  transform: var(--b-active-transform, none);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .b {
+    font-weight: var(--b-high-contrast-font-weight, 700);
+  }
+  
+  .b--emphasized {
+    font-weight: var(--b-high-contrast-emphasized-font-weight, 900);
+    text-shadow: var(--b-high-contrast-text-shadow, 1px 0 0 currentColor);
+  }
+  
+  .b:focus-visible {
+    outline: 3px solid var(--b-high-contrast-focus-color, currentColor);
+    outline-offset: 1px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .b {
+    transition: none;
+  }
+  
+  .b:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .b {
+    color: var(--b-dark-color, inherit);
+  }
+  
+  .b--emphasized {
+    color: var(--b-dark-emphasized-color, inherit);
+    text-shadow: var(--b-dark-emphasized-text-shadow, 0.75px 0 0 currentColor);
+  }
+}
+
+/* Print styles */
+@media print {
+  .b {
+    font-weight: bold;
+    color: black;
+    text-shadow: none;
+  }
+  
+  .b--emphasized {
+    font-weight: 900;
+  }
+}
+
+/* Custom properties for theming */
+:root {
+  /* Base styles */
+  --b-color: inherit;
+  --b-font-weight: bold;
+  --b-hover-color: inherit;
+  --b-focus-color: currentColor;
+  --b-active-transform: none;
+  
+  /* Emphasized variant */
+  --b-emphasized-color: inherit;
+  --b-emphasized-font-weight: 900;
+  --b-emphasized-text-shadow: 0.5px 0 0 currentColor;
+  
+  /* High contrast mode */
+  --b-high-contrast-font-weight: 700;
+  --b-high-contrast-emphasized-font-weight: 900;
+  --b-high-contrast-text-shadow: 1px 0 0 currentColor;
+  --b-high-contrast-focus-color: currentColor;
+  
+  /* Dark mode */
+  --b-dark-color: inherit;
+  --b-dark-emphasized-color: inherit;
+  --b-dark-emphasized-text-shadow: 0.75px 0 0 currentColor;
+}
