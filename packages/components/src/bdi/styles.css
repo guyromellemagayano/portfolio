@@ -1,0 +1,166 @@
+/**
+ * BDI Component Styles
+ * Bidirectional isolate component for text direction control with accessibility and interaction support
+ */
+
+/* Base styles for the <bdi> component */
+.bdi {
+  display: var(--bdi-display, inline);
+  color: var(--bdi-color, inherit);
+  unicode-bidi: isolate;
+  
+  /* Transitions for smooth interactions */
+  transition: 
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  
+  /* Ensure proper focus behavior */
+  outline-offset: 2px;
+}
+
+/* Emphasized variant */
+.bdi--emphasized {
+  font-weight: var(--bdi-emphasized-font-weight, 600);
+  color: var(--bdi-emphasized-color, inherit);
+  background-color: var(--bdi-emphasized-bg, transparent);
+  border: var(--bdi-emphasized-border, none);
+}
+
+/* Focus styles for accessibility */
+.bdi:focus-visible {
+  outline: 2px solid var(--bdi-focus-color, currentColor);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Interactive states */
+.bdi:hover {
+  color: var(--bdi-hover-color, inherit);
+  background-color: var(--bdi-hover-bg, transparent);
+}
+
+.bdi:active {
+  transform: var(--bdi-active-transform, none);
+}
+
+/* Direction-specific styles */
+.bdi[dir="ltr"] {
+  direction: ltr;
+  text-align: var(--bdi-ltr-text-align, left);
+}
+
+.bdi[dir="rtl"] {
+  direction: rtl;
+  text-align: var(--bdi-rtl-text-align, right);
+}
+
+.bdi[dir="auto"] {
+  direction: var(--bdi-auto-direction, ltr);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bdi {
+    font-weight: var(--bdi-high-contrast-font-weight, normal);
+  }
+  
+  .bdi--emphasized {
+    font-weight: var(--bdi-high-contrast-emphasized-font-weight, 700);
+    border: var(--bdi-high-contrast-emphasized-border, 1px solid currentColor);
+  }
+  
+  .bdi:focus-visible {
+    outline: 3px solid var(--bdi-high-contrast-focus-color, currentColor);
+    outline-offset: 1px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .bdi {
+    transition: none;
+  }
+  
+  .bdi:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bdi {
+    color: var(--bdi-dark-color, inherit);
+  }
+  
+  .bdi--emphasized {
+    color: var(--bdi-dark-emphasized-color, inherit);
+    background-color: var(--bdi-dark-emphasized-bg, transparent);
+  }
+}
+
+/* Print styles */
+@media print {
+  .bdi {
+    color: black;
+    background: transparent;
+    border: none;
+  }
+  
+  .bdi--emphasized {
+    font-weight: bold;
+  }
+  
+  /* Ensure proper text direction in print */
+  .bdi[dir="rtl"] {
+    direction: rtl;
+  }
+  
+  .bdi[dir="ltr"] {
+    direction: ltr;
+  }
+}
+
+/* RTL language support */
+[dir="rtl"] .bdi {
+  text-align: var(--bdi-rtl-context-text-align, right);
+}
+
+[dir="ltr"] .bdi {
+  text-align: var(--bdi-ltr-context-text-align, left);
+}
+
+/* Custom properties for theming */
+:root {
+  /* Base styles */
+  --bdi-display: inline;
+  --bdi-color: inherit;
+  --bdi-hover-color: inherit;
+  --bdi-hover-bg: transparent;
+  --bdi-focus-color: currentColor;
+  --bdi-active-transform: none;
+  
+  /* Emphasized variant */
+  --bdi-emphasized-color: inherit;
+  --bdi-emphasized-font-weight: 600;
+  --bdi-emphasized-bg: transparent;
+  --bdi-emphasized-border: none;
+  
+  /* Direction-specific */
+  --bdi-ltr-text-align: left;
+  --bdi-rtl-text-align: right;
+  --bdi-auto-direction: ltr;
+  --bdi-ltr-context-text-align: left;
+  --bdi-rtl-context-text-align: right;
+  
+  /* High contrast mode */
+  --bdi-high-contrast-font-weight: normal;
+  --bdi-high-contrast-emphasized-font-weight: 700;
+  --bdi-high-contrast-emphasized-border: 1px solid currentColor;
+  --bdi-high-contrast-focus-color: currentColor;
+  
+  /* Dark mode */
+  --bdi-dark-color: inherit;
+  --bdi-dark-emphasized-color: inherit;
+  --bdi-dark-emphasized-bg: transparent;
+}
