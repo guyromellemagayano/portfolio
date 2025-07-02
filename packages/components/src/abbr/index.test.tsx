@@ -3,7 +3,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Abbr, type AbbrProps } from "./index";
+import { Abbr, type AbbrProps } from ".";
 
 // Mock analytics
 const mockGtag = vi.fn();
@@ -256,6 +256,211 @@ describe("Abbr Component", () => {
     fireEvent.click(screen.getByText("HTML"));
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(mockGtag).toHaveBeenCalled();
+  });
+
+  // ==========================================
+  // NEW TESTS FOR IMPROVED COVERAGE
+  // ==========================================
+
+  describe("Client-Side Rendering", () => {
+    it("renders with client-side component", () => {
+      render(<Abbr {...defaultProps} isClient />);
+      // Should render the server component as fallback during Suspense
+      expect(screen.getByText("HTML")).toBeInTheDocument();
+    });
+
+    it("renders with memoized client component", () => {
+      render(<Abbr {...defaultProps} isClient isMemoized />);
+      // Should render the server component as fallback during Suspense
+      expect(screen.getByText("HTML")).toBeInTheDocument();
+    });
+
+    it("preserves props in client rendering", () => {
+      render(
+        <Abbr
+          {...defaultProps}
+          isClient
+          emphasized
+          analyticsId="client-test"
+          className="client-abbr"
+        />
+      );
+
+      const abbr = screen.getByText("HTML");
+      expect(abbr).toHaveClass("abbr", "abbr--emphasized", "client-abbr");
+      expect(abbr).toHaveAttribute("data-analytics-id", "client-test");
+    });
+  });
+
+  describe("Analytics Edge Cases", () => {
+    it("handles analytics with both analyticsId and onAnalytics", () => {
+      const customAnalytics = vi.fn();
+      render(
+        <Abbr
+          {...defaultProps}
+          analyticsId="test-id"
+          onAnalytics={customAnalytics}
+        />
+      );
+
+      fireEvent.click(screen.getByText("HTML"));
+
+      // Custom analytics should be called when both are provided
+      expect(customAnalytics).toHaveBeenCalledWith({
+        event: "click",
+        category: "abbreviation",
+        label: "test-id",
+        abbreviation: "HTML",
+        expanded: "HyperText Markup Language",
+      });
+
+      // gtag should not be called when custom analytics is provided
+      expect(mockGtag).not.toHaveBeenCalled();
+    });
+
+    it("handles analytics when gtag is not available", () => {
+      // Temporarily mock gtag to undefined
+      const originalGtag = (window as any).gtag;
+      (window as any).gtag = undefined;
+
+      const { container } = render(
+        <Abbr {...defaultProps} analyticsId="test" />
+      );
+
+      // Should not throw error when gtag is not available
+      fireEvent.click(screen.getByText("HTML"));
+      expect(container).toBeInTheDocument();
+
+      // Restore gtag
+      (window as any).gtag = originalGtag;
+    });
+
+    it("handles empty children in analytics", () => {
+      const customAnalytics = vi.fn();
+      render(
+        <Abbr title="Empty Content" onAnalytics={customAnalytics}>
+          {/* Empty children */}
+        </Abbr>
+      );
+
+      // Use a more specific selector for empty abbr element
+      const abbr = screen.getByTitle("Empty Content");
+      fireEvent.click(abbr);
+
+      expect(customAnalytics).toHaveBeenCalledWith({
+        event: "click",
+        category: "abbreviation",
+        label: "abbr-click",
+        abbreviation: "",
+        expanded: "Empty Content",
+      });
+    });
+  });
+
+  describe("Props and Accessibility Edge Cases", () => {
+    it("handles tooltip precedence correctly", () => {
+      render(
+        <Abbr title="Original Title" tooltip="Override Tooltip">
+          CSS
+        </Abbr>
+      );
+
+      const abbr = screen.getByText("CSS");
+      expect(abbr).toHaveAttribute("title", "Override Tooltip");
+      expect(abbr).toHaveAttribute("aria-label", "Override Tooltip");
+    });
+
+    it("handles missing title and tooltip", () => {
+      render(<Abbr>CSS</Abbr>);
+
+      const abbr = screen.getByText("CSS");
+      expect(abbr).not.toHaveAttribute("title");
+      expect(abbr).not.toHaveAttribute("aria-label");
+    });
+
+    it("preserves existing aria-label when no title/tooltip", () => {
+      render(<Abbr aria-label="Custom ARIA Label">CSS</Abbr>);
+
+      const abbr = screen.getByText("CSS");
+      expect(abbr).toHaveAttribute("aria-label", "Custom ARIA Label");
+    });
+
+    it("handles emphasized with custom className combination", () => {
+      render(
+        <Abbr
+          {...defaultProps}
+          emphasized
+          className="primary-abbr secondary-abbr"
+        />
+      );
+
+      const abbr = screen.getByText("HTML");
+      expect(abbr.className).toBe(
+        "abbr abbr--emphasized primary-abbr secondary-abbr"
+      );
+    });
+
+    it("handles data attributes correctly", () => {
+      render(
+        <Abbr
+          {...defaultProps}
+          emphasized={false}
+          analyticsId=""
+          data-testid="abbr-test"
+        />
+      );
+
+      const abbr = screen.getByText("HTML");
+      expect(abbr).not.toHaveAttribute("data-emphasized");
+      expect(abbr).not.toHaveAttribute("data-analytics-id");
+      expect(abbr).toHaveAttribute("data-testid", "abbr-test");
+    });
+  });
+
+  describe("Performance and Optimization", () => {
+    it("does not create analytics handler when no analytics props", () => {
+      const onClick = vi.fn();
+      render(<Abbr {...defaultProps} onClick={onClick} />);
+
+      fireEvent.click(screen.getByText("HTML"));
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(mockGtag).not.toHaveBeenCalled();
+    });
+
+    it("handles complex children types", () => {
+      render(
+        <Abbr title="HyperText Markup Language">
+          <span>H</span>
+          <span>T</span>
+          <span>M</span>
+          <span>L</span>
+        </Abbr>
+      );
+
+      // Use title selector for abbr elements
+      const abbr = screen.getByTitle("HyperText Markup Language");
+      expect(abbr).toHaveAttribute("title", "HyperText Markup Language");
+      expect(abbr.children).toHaveLength(4);
+    });
+
+    it("handles numeric children in analytics", () => {
+      const customAnalytics = vi.fn();
+      render(
+        <Abbr title="Year 2024" onAnalytics={customAnalytics}>
+          {2024}
+        </Abbr>
+      );
+
+      fireEvent.click(screen.getByText("2024"));
+
+      expect(customAnalytics).toHaveBeenCalledWith({
+        event: "click",
+        category: "abbreviation",
+        label: "abbr-click",
+        abbreviation: "2024",
+        expanded: "Year 2024",
+      });
+    });
   });
 
   // NOTE: Client-side memoization testing skipped - implementation detail
