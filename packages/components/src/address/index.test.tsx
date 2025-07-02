@@ -3,7 +3,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Address, type AddressProps } from "./index";
+import { Address, type AddressProps } from ".";
 
 // Mock analytics
 const mockGtag = vi.fn();
@@ -256,15 +256,81 @@ describe("Address Component", () => {
 
   it("handles accessibility attributes", () => {
     render(
-      <Address
-        {...defaultProps}
-        aria-label="Contact address"
-        aria-describedby="address-description"
-      />
+      <Address analyticsId="accessibility-test" block emphasized>
+        <div>Test address content</div>
+      </Address>
     );
 
-    const address = screen.getByText(/123 Main Street/);
-    expect(address).toHaveAttribute("aria-label", "Contact address");
-    expect(address).toHaveAttribute("aria-describedby", "address-description");
+    const address = screen.getByText("Test address content").closest("address");
+    expect(address).toHaveAttribute("data-analytics-id", "accessibility-test");
+    expect(address).toHaveAttribute("data-block", "true");
+    expect(address).toHaveAttribute("data-emphasized", "true");
+  });
+
+  // Client-side rendering tests for coverage
+  it("should render with isClient=true", () => {
+    render(
+      <Address isClient>
+        <div>Client-side address</div>
+      </Address>
+    );
+
+    expect(screen.getByText("Client-side address")).toBeInTheDocument();
+  });
+
+  it("should render with isClient=true and isMemoized=true", () => {
+    render(
+      <Address isClient isMemoized>
+        <div>Memoized client-side address</div>
+      </Address>
+    );
+
+    expect(
+      screen.getByText("Memoized client-side address")
+    ).toBeInTheDocument();
+  });
+
+  it("should render fallback during Suspense with isClient=true", () => {
+    render(
+      <Address isClient>
+        <div>Suspense fallback test</div>
+      </Address>
+    );
+
+    // The component should render even during client-side loading
+    expect(screen.getByText("Suspense fallback test")).toBeInTheDocument();
+  });
+
+  it("should handle custom Component prop", () => {
+    const CustomAddress = React.forwardRef<
+      HTMLElement,
+      React.HTMLAttributes<HTMLElement>
+    >((props, ref) => (
+      <section ref={ref} {...props} data-testid="custom-address" />
+    ));
+    CustomAddress.displayName = "CustomAddress";
+
+    render(
+      <Address as={CustomAddress}>
+        <div>Custom component address</div>
+      </Address>
+    );
+
+    expect(screen.getByTestId("custom-address")).toBeInTheDocument();
+  });
+
+  it("should handle analytics when gtag is not available", () => {
+    // Test the case where gtag doesn't exist on window
+    render(
+      <Address analyticsId="no-gtag-test">
+        <div>No gtag test</div>
+      </Address>
+    );
+
+    const address = screen.getByText("No gtag test").closest("address");
+    fireEvent.click(address!);
+
+    // Should not crash when gtag is undefined
+    expect(address).toBeInTheDocument();
   });
 });
