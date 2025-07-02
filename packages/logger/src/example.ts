@@ -9,7 +9,7 @@ import {
   LogLevel,
   type Transport,
   transports,
-} from "./index";
+} from ".";
 
 // Example: Production Logger with Multiple Integrations
 export function createProductionLogger() {
