@@ -1,22 +1,20 @@
 # Audio Component
 
-A highly optimized, accessible audio component with support for custom controls, analytics, loading states, and more.
+Accessible audio component with custom controls and analytics support.
 
 ## Features
 
-- 🚀 **Performance Optimized**: Uses `useCallback`, `useMemo`, and React.memo for optimal rendering
-- ♿ **Accessible**: Full ARIA support, keyboard navigation, and screen reader compatibility
-- 📊 **Analytics Ready**: Built-in analytics tracking with Google Analytics support
-- 🎛️ **Custom Controls**: Optional custom player controls with full functionality
-- 🎵 **Format Support**: Supports MP3, WAV, OGG, AAC, M4A, and FLAC formats
-- 🔧 **TypeScript**: Comprehensive type definitions and prop validation
-- 📱 **Responsive**: Mobile-first design with responsive breakpoints
-- 🌐 **Universal**: Works in both server-side and client-side environments
+- Performance optimized with React.memo and hooks
+- Full accessibility with ARIA support
+- Analytics tracking with Google Analytics
+- Custom player controls with full functionality
+- Multiple audio format support
+- TypeScript support with comprehensive types
+- Universal rendering for SSR and client-side
 
 ## Installation
 
 ```bash
-# Install the components package
 pnpm add @packages/components
 ```
 
@@ -41,21 +39,12 @@ import { Audio } from "@packages/components";
 // With analytics
 <Audio src="interview.mp3" analyticsId="interview-audio" />
 
-// With custom loading/error content
-<Audio
-  src="speech.mp3"
-  customControls
-  loadingContent={<div>Loading audio...</div>}
-  errorContent={<div>Failed to load audio</div>}
-/>
-
 // With callbacks
 <Audio
   src="presentation.mp3"
   onPlayStart={() => console.log("Started playing")}
   onPlayPause={() => console.log("Paused")}
   onPlayEnd={() => console.log("Finished")}
-  onVolumeChangeCallback={(volume) => console.log("Volume:", volume)}
 />
 ```
 
@@ -63,128 +52,22 @@ import { Audio } from "@packages/components";
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `src` | `string` | - | The URL of the audio file |
-| `customControls` | `boolean` | `false` | Whether to show custom controls instead of browser default |
-| `showPlayButton` | `boolean` | `true` | Whether to show play/pause button in custom controls |
-| `showVolumeControl` | `boolean` | `true` | Whether to show volume control in custom controls |
-| `showTimeDisplay` | `boolean` | `true` | Whether to show time display in custom controls |
-| `showProgressBar` | `boolean` | `true` | Whether to show progress bar in custom controls |
+| `src` | `string` | - | Audio file URL |
+| `customControls` | `boolean` | `false` | Use custom controls instead of browser default |
+| `showPlayButton` | `boolean` | `true` | Show play/pause button |
+| `showVolumeControl` | `boolean` | `true` | Show volume control |
+| `showTimeDisplay` | `boolean` | `true` | Show time display |
+| `showProgressBar` | `boolean` | `true` | Show progress bar |
 | `defaultVolume` | `number` | `1` | Default volume level (0-1) |
 | `playbackRate` | `number` | `1` | Default playback rate |
-| `defaultMuted` | `boolean` | `false` | Whether to start muted |
-| `loadingContent` | `React.ReactNode` | - | Content to show during loading |
-| `errorContent` | `React.ReactNode` | - | Content to show on error |
-| `analyticsId` | `string` | - | Analytics identifier for tracking |
+| `defaultMuted` | `boolean` | `false` | Start muted |
+| `analyticsId` | `string` | - | Analytics tracking identifier |
 | `onAnalytics` | `function` | - | Custom analytics function |
 | `onPlayStart` | `function` | - | Callback when playback starts |
 | `onPlayPause` | `function` | - | Callback when playback pauses |
 | `onPlayEnd` | `function` | - | Callback when playback ends |
-| `onVolumeChangeCallback` | `function` | - | Callback when volume changes |
-| `isClient` | `boolean` | `false` | Whether to render as client component |
-| `isMemoized` | `boolean` | `false` | Whether to use memoized client component |
-
-## Custom Controls
-
-When `customControls` is enabled, the component provides a rich set of interactive controls:
-
-### Play/Pause Button
-
-- Toggles audio playback
-- Shows loading state during buffering
-- Keyboard accessible
-
-### Volume Control
-
-- Volume slider (0-100%)
-- Mute/unmute button
-- Visual feedback for volume levels
-
-### Time Display
-
-- Current time / Total duration
-- MM:SS format
-- Updates in real-time
-
-### Progress Bar
-
-- Seek to any position
-- Visual progress indicator
-- Drag and click support
-
-## Accessibility
-
-The component includes comprehensive accessibility features:
-
-- **ARIA Attributes**: Proper `role="application"`, `aria-label`, and `aria-live`
-- **Keyboard Navigation**: Full keyboard support for all controls
-- **Focus Management**: Visible focus indicators with `:focus-visible`
-- **Screen Reader Support**: Proper semantic markup and ARIA labels
-- **High Contrast**: Support for high contrast mode
-- **Reduced Motion**: Respects `prefers-reduced-motion` preference
-
-## Analytics
-
-The component automatically tracks audio interactions when `analyticsId` is provided:
-
-```tsx
-// Tracks with Google Analytics
-<Audio src="podcast.mp3" analyticsId="podcast-episode-1" />
-
-// Custom analytics function
-<Audio
-  src="music.mp3"
-  onAnalytics={(data) => {
-    console.log("Audio event:", data);
-    // Send to your analytics service
-  }}
-/>
-```
-
-### Analytics Events
-
-- `play` - Audio playback started
-- `pause` - Audio playback paused
-- `ended` - Audio playback completed
-
-Each event includes:
-
-- Event category: "audio"
-- Event label: analyticsId
-- Audio duration
-- Current position
-- Progress percentage
-
-## Security
-
-- **Source Validation**: Validates and filters unsafe audio sources
-- **Format Detection**: Automatic audio format detection and validation
-- **Error Handling**: Graceful error handling for unsupported formats
-
-## Performance
-
-- **Code Splitting**: Client components are lazy-loaded
-- **Memoization**: Uses React.memo and useMemo for optimal rendering
-- **Event Optimization**: Event handlers are memoized with useCallback
-- **Bundle Size**: Minimal impact on bundle size
-
-## Styling
-
-The component uses CSS classes for styling:
-
-```css
-.audio                      /* Base styles */
-.audio--custom-controls     /* Custom controls variant */
-.audio--loading            /* Loading state */
-.audio--error              /* Error state */
-.audio--invalid-source     /* Invalid source */
-.audio__controls           /* Custom controls container */
-.audio__play-button        /* Play/pause button */
-.audio__time-display       /* Time display */
-.audio__progress-bar       /* Progress bar */
-.audio__volume-controls    /* Volume controls container */
-.audio__mute-button        /* Mute button */
-.audio__volume-slider      /* Volume slider */
-```
+| `isClient` | `boolean` | `false` | Enable client-side rendering |
+| `isMemoized` | `boolean` | `false` | Use memoized component |
 
 ## Examples
 
@@ -207,69 +90,48 @@ The component uses CSS classes for styling:
   src="song.mp3"
   customControls
   defaultVolume={0.8}
-  playbackRate={1.0}
   analyticsId="music-player"
-  loadingContent={<MusicLoadingSpinner />}
 />
 ```
 
-### Audio with Fallback
+### Basic Audio
 
 ```tsx
-<Audio src="audio.mp3" customControls>
+<Audio src="audio.mp3" controls>
   <source src="audio.ogg" type="audio/ogg" />
   <source src="audio.wav" type="audio/wav" />
   Your browser does not support the audio element.
 </Audio>
 ```
 
-### Interview Recording
+## Styling
 
-```tsx
-<Audio
-  src="interview.m4a"
-  customControls
-  showTimeDisplay
-  showProgressBar
-  analyticsId="interview-audio"
-  onVolumeChangeCallback={(volume) => saveUserPreference("volume", volume)}
-/>
+```css
+.audio                      /* Base audio styles */
+.audio--custom-controls     /* Custom controls variant */
+.audio--loading            /* Loading state */
+.audio--error              /* Error state */
+.audio__controls           /* Controls container */
+.audio__play-button        /* Play/pause button */
+.audio__time-display       /* Time display */
+.audio__progress-bar       /* Progress bar */
+.audio__volume-controls    /* Volume controls */
 ```
+
+## Accessibility
+
+- ARIA attributes with proper roles and labels
+- Keyboard navigation for all controls
+- Screen reader compatibility
+- Focus management with visible indicators
+- High contrast mode support
 
 ## Testing
 
-The component includes comprehensive tests covering:
-
-- Rendering with different props
-- Event handling (play, pause, ended, volume change)
-- Custom controls functionality
-- Analytics tracking
-- Accessibility features
-- State management
-- Utility functions
-
-Run tests with:
-
 ```bash
-pnpm test:audio
+pnpm test
 ```
-
-## Browser Support
-
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-## Supported Audio Formats
-
-- **MP3**: Widely supported, good compression
-- **WAV**: Uncompressed, high quality
-- **OGG**: Open source, good compression
-- **AAC**: Advanced Audio Coding
-- **M4A**: Apple's audio format
-- **FLAC**: Lossless compression
 
 ## LICENSE
 
-This component is part of the component library and follows the same LICENSE terms.
+MIT

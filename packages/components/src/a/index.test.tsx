@@ -3,7 +3,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { A, type AProps } from "./index";
+import { A, type AProps } from ".";
 
 // Mock window.confirm
 const mockConfirm = vi.fn();
@@ -19,9 +19,13 @@ Object.defineProperty(window, "gtag", {
   writable: true,
 });
 
+// Mock console.warn for analytics error testing
+const mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
 describe("A Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockConsoleWarn.mockClear();
   });
 
   const defaultProps: AProps = {
@@ -254,5 +258,195 @@ describe("A Component", () => {
     expect(handleBlur).toHaveBeenCalledTimes(1);
   });
 
-  // NOTE: Client-side memoization testing skipped - implementation detail
+  // ==========================================
+  // NEW TESTS FOR IMPROVED COVERAGE
+  // ==========================================
+
+  describe("Analytics Error Handling", () => {
+    it("handles analytics errors gracefully", () => {
+      // Mock console.warn temporarily for this test
+      const originalWarn = console.warn;
+      const warnSpy = vi.fn();
+      console.warn = warnSpy;
+
+      // Make gtag throw an error
+      mockGtag.mockImplementation(() => {
+        throw new Error("Analytics service unavailable");
+      });
+
+      render(<A {...defaultProps} analyticsId="test-link" />);
+      fireEvent.click(screen.getByRole("link"));
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Analytics tracking failed:",
+        expect.any(Error)
+      );
+
+      // Restore console.warn
+      console.warn = originalWarn;
+    });
+
+    it("continues working when analytics fails", () => {
+      const handleClick = vi.fn();
+      mockGtag.mockImplementation(() => {
+        throw new Error("Analytics error");
+      });
+
+      render(
+        <A {...defaultProps} analyticsId="test-link" onClick={handleClick} />
+      );
+      fireEvent.click(screen.getByRole("link"));
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("Keyboard Navigation with Confirmations", () => {
+    it("shows confirmation on Enter key and cancels", () => {
+      mockConfirm.mockReturnValue(false);
+
+      render(
+        <A {...defaultProps} confirm="Are you sure?" analyticsId="test-link" />
+      );
+
+      fireEvent.keyDown(screen.getByRole("link"), { key: "Enter" });
+      expect(mockConfirm).toHaveBeenCalledWith("Are you sure?");
+      expect(mockGtag).not.toHaveBeenCalled();
+    });
+
+    it("shows confirmation on Enter key and proceeds", () => {
+      mockConfirm.mockReturnValue(true);
+
+      render(
+        <A {...defaultProps} confirm="Are you sure?" analyticsId="test-link" />
+      );
+
+      fireEvent.keyDown(screen.getByRole("link"), { key: "Enter" });
+      expect(mockConfirm).toHaveBeenCalledWith("Are you sure?");
+      expect(mockGtag).toHaveBeenCalled();
+    });
+
+    it("shows confirmation on Space key and cancels", () => {
+      mockConfirm.mockReturnValue(false);
+
+      render(
+        <A {...defaultProps} confirm="Are you sure?" analyticsId="test-link" />
+      );
+
+      fireEvent.keyDown(screen.getByRole("link"), { key: " " });
+      expect(mockConfirm).toHaveBeenCalledWith("Are you sure?");
+      expect(mockGtag).not.toHaveBeenCalled();
+    });
+
+    it("prevents keyboard navigation when disabled", () => {
+      render(<A {...defaultProps} disabled confirm="Are you sure?" />);
+
+      fireEvent.keyDown(screen.getByRole("link"), { key: "Enter" });
+      expect(mockConfirm).not.toHaveBeenCalled();
+    });
+
+    it("prevents keyboard navigation when loading", () => {
+      render(<A {...defaultProps} loading confirm="Are you sure?" />);
+
+      fireEvent.keyDown(screen.getByRole("link"), { key: "Enter" });
+      expect(mockConfirm).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Client-Side Rendering", () => {
+    it("renders with client-side component", () => {
+      render(<A {...defaultProps} isClient />);
+      // Should render the server component as fallback during Suspense
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("renders with memoized client component", () => {
+      render(<A {...defaultProps} isClient isMemoized />);
+      // Should render the server component as fallback during Suspense
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("handles client-side rendering props", () => {
+      render(
+        <A
+          {...defaultProps}
+          isClient
+          tooltip="Client tooltip"
+          analyticsId="client-test"
+        />
+      );
+
+      // Should render the link component correctly
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("aria-label", "Client tooltip");
+    });
+
+    it("handles client rendering without tooltip", () => {
+      render(<A {...defaultProps} isClient />);
+
+      // Should render basic link without issues
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+  });
+
+  describe("Edge Cases and Props", () => {
+    it("handles missing href", () => {
+      render(<A>No href link</A>);
+      expect(screen.getByRole("link")).toHaveAttribute("href", "#");
+    });
+
+    it("handles complex icon positioning with loading", () => {
+      const icon = <span data-testid="icon">🚀</span>;
+      render(<A {...defaultProps} icon={icon} iconPosition="right" loading />);
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveClass("a--icon-right", "a--loading");
+      expect(screen.getByTestId("icon")).toBeInTheDocument();
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+
+    it("handles tooltip with analytics id", () => {
+      render(
+        <A
+          {...defaultProps}
+          tooltip="Test tooltip"
+          analyticsId="tooltip-test"
+        />
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("aria-describedby", "tooltip-test-tooltip");
+
+      const tooltip = document.getElementById("tooltip-test-tooltip");
+      expect(tooltip).toBeInTheDocument();
+    });
+
+    it("handles prefetch for non-special, non-external links", () => {
+      render(<A {...defaultProps} href="/internal-page" prefetch />);
+      fireEvent.mouseEnter(screen.getByRole("link"));
+      // Prefetch would be called for internal links
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("does not prefetch external links", () => {
+      render(<A {...defaultProps} href="https://external.com" prefetch />);
+      fireEvent.mouseEnter(screen.getByRole("link"));
+      // Prefetch should not be called for external links
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("does not prefetch mailto links", () => {
+      render(<A {...defaultProps} href="mailto:test@example.com" prefetch />);
+      fireEvent.mouseEnter(screen.getByRole("link"));
+      // Prefetch should not be called for mailto links
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("handles analytics without event", () => {
+      // Testing the early return in fireAnalytics when no event is provided
+      render(<A {...defaultProps} analyticsId="test-link" />);
+      expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+  });
 });

@@ -8,7 +8,8 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Area, type AreaProps } from "./index";
+import { Area, type AreaProps } from ".";
+import { AreaUtils } from "./utils";
 
 // Mock analytics
 const mockGtag = vi.fn();
@@ -281,5 +282,346 @@ describe("Area Component", () => {
     const area = screen.getByRole("link");
     expect(area).toHaveAttribute("aria-label", "Custom area label");
     expect(area).toHaveAttribute("aria-describedby", "custom-area-coords"); // Generated based on analyticsId
+  });
+
+  it("handles polygon shapes with analytics", () => {
+    render(
+      <Area
+        alt="Polygon area"
+        coords="0,0,50,25,100,0,75,50,25,50"
+        shape="poly"
+        href="/polygon"
+        analyticsId="poly-area"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("link"));
+
+    expect(mockGtag).toHaveBeenCalledWith(
+      "event",
+      "click",
+      expect.objectContaining({
+        area_shape: "poly",
+        area_coords: "0,0,50,25,100,0,75,50,25,50",
+        area_size: expect.any(Number),
+      })
+    );
+  });
+
+  it("handles circle shapes with analytics", () => {
+    render(
+      <Area
+        alt="Circle area"
+        coords="50,50,25"
+        shape="circle"
+        href="/circle"
+        analyticsId="circle-area"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("link"));
+
+    expect(mockGtag).toHaveBeenCalledWith(
+      "event",
+      "click",
+      expect.objectContaining({
+        area_shape: "circle",
+        area_coords: "50,50,25",
+        area_size: expect.any(Number),
+      })
+    );
+  });
+
+  it("handles invalid coordinates gracefully", () => {
+    render(
+      <Area
+        alt="Invalid coords"
+        coords="invalid,coords"
+        href="/invalid"
+        analyticsId="invalid-area"
+      />
+    );
+
+    fireEvent.click(screen.getByRole("link"));
+
+    expect(mockGtag).toHaveBeenCalledWith(
+      "event",
+      "click",
+      expect.objectContaining({
+        area_coords: "invalid,coords",
+        area_size: 0, // Should handle invalid coords gracefully
+      })
+    );
+  });
+});
+
+// =============================================================================
+// UTILITY FUNCTIONS TESTS
+// =============================================================================
+
+describe("AreaUtils", () => {
+  describe("validateRectCoords", () => {
+    it("validates correct rectangular coordinates", () => {
+      expect(AreaUtils.validateRectCoords("0,0,100,100")).toBe(true);
+      expect(AreaUtils.validateRectCoords("10,20,150,200")).toBe(true);
+    });
+
+    it("rejects invalid rectangular coordinates", () => {
+      expect(AreaUtils.validateRectCoords("0,0,0,100")).toBe(false); // x2 not > x1
+      expect(AreaUtils.validateRectCoords("0,0,100,0")).toBe(false); // y2 not > y1
+      expect(AreaUtils.validateRectCoords("0,0,100")).toBe(false); // too few coordinates
+      expect(AreaUtils.validateRectCoords("0,0,100,100,200")).toBe(false); // too many coordinates
+      expect(AreaUtils.validateRectCoords("-10,0,100,100")).toBe(false); // negative coordinate
+      expect(AreaUtils.validateRectCoords("0,0,invalid,100")).toBe(false); // NaN coordinate
+    });
+  });
+
+  describe("validateCircleCoords", () => {
+    it("validates correct circular coordinates", () => {
+      expect(AreaUtils.validateCircleCoords("50,50,25")).toBe(true);
+      expect(AreaUtils.validateCircleCoords("0,0,10")).toBe(true);
+    });
+
+    it("rejects invalid circular coordinates", () => {
+      expect(AreaUtils.validateCircleCoords("50,50,0")).toBe(false); // radius not > 0
+      expect(AreaUtils.validateCircleCoords("50,50,-5")).toBe(false); // negative radius
+      expect(AreaUtils.validateCircleCoords("50,50")).toBe(false); // too few coordinates
+      expect(AreaUtils.validateCircleCoords("50,50,25,25")).toBe(false); // too many coordinates
+      expect(AreaUtils.validateCircleCoords("-10,50,25")).toBe(false); // negative coordinate
+      expect(AreaUtils.validateCircleCoords("50,invalid,25")).toBe(false); // NaN coordinate
+    });
+  });
+
+  describe("validatePolyCoords", () => {
+    it("validates correct polygon coordinates", () => {
+      expect(AreaUtils.validatePolyCoords("0,0,50,25,100,0")).toBe(true); // triangle
+      expect(AreaUtils.validatePolyCoords("0,0,50,0,50,50,0,50")).toBe(true); // square
+    });
+
+    it("rejects invalid polygon coordinates", () => {
+      expect(AreaUtils.validatePolyCoords("0,0,50,25")).toBe(false); // too few points (need 3 points = 6 coords)
+      expect(AreaUtils.validatePolyCoords("0,0,50")).toBe(false); // odd number of coordinates
+      expect(AreaUtils.validatePolyCoords("0,0,-50,25,100,0")).toBe(false); // negative coordinate
+      expect(AreaUtils.validatePolyCoords("0,0,invalid,25,100,0")).toBe(false); // NaN coordinate
+    });
+  });
+
+  describe("validateCoordinates", () => {
+    it("validates coordinates based on shape", () => {
+      expect(AreaUtils.validateCoordinates("rect", "0,0,100,100")).toBe(true);
+      expect(AreaUtils.validateCoordinates("circle", "50,50,25")).toBe(true);
+      expect(AreaUtils.validateCoordinates("poly", "0,0,50,25,100,0")).toBe(
+        true
+      );
+      expect(AreaUtils.validateCoordinates("default", undefined)).toBe(true);
+    });
+
+    it("returns true for default shape or missing coords", () => {
+      expect(AreaUtils.validateCoordinates("default", "anything")).toBe(true);
+      expect(AreaUtils.validateCoordinates("rect", undefined)).toBe(true);
+    });
+
+    it("validates invalid coordinates correctly", () => {
+      expect(AreaUtils.validateCoordinates("rect", "invalid")).toBe(false);
+      expect(AreaUtils.validateCoordinates("circle", "50,50")).toBe(false);
+      expect(AreaUtils.validateCoordinates("poly", "0,0")).toBe(false);
+    });
+  });
+
+  describe("calculateAreaSize", () => {
+    it("calculates rectangular area correctly", () => {
+      expect(AreaUtils.calculateAreaSize("rect", "0,0,100,100")).toBe(10000);
+      expect(AreaUtils.calculateAreaSize("rect", "10,20,60,70")).toBe(2500);
+    });
+
+    it("calculates circular area correctly", () => {
+      expect(AreaUtils.calculateAreaSize("circle", "50,50,10")).toBeCloseTo(
+        Math.PI * 100,
+        1
+      );
+      expect(AreaUtils.calculateAreaSize("circle", "0,0,5")).toBeCloseTo(
+        Math.PI * 25,
+        1
+      );
+    });
+
+    it("calculates polygon area correctly", () => {
+      // Simple triangle: (0,0), (10,0), (5,10)
+      expect(AreaUtils.calculateAreaSize("poly", "0,0,10,0,5,10")).toBe(50);
+      // Square: (0,0), (10,0), (10,10), (0,10)
+      expect(AreaUtils.calculateAreaSize("poly", "0,0,10,0,10,10,0,10")).toBe(
+        100
+      );
+    });
+
+    it("handles invalid inputs gracefully", () => {
+      expect(AreaUtils.calculateAreaSize("rect", undefined)).toBe(0);
+      expect(AreaUtils.calculateAreaSize("rect", "invalid")).toBe(0);
+      expect(AreaUtils.calculateAreaSize("circle", "50,50")).toBe(0);
+      expect(AreaUtils.calculateAreaSize("default", "0,0,100,100")).toBe(0);
+    });
+  });
+
+  describe("calculateCenterPoint", () => {
+    it("calculates rectangular center correctly", () => {
+      expect(AreaUtils.calculateCenterPoint("rect", "0,0,100,100")).toEqual({
+        x: 50,
+        y: 50,
+      });
+      expect(AreaUtils.calculateCenterPoint("rect", "10,20,60,80")).toEqual({
+        x: 35,
+        y: 50,
+      });
+    });
+
+    it("calculates circular center correctly", () => {
+      expect(AreaUtils.calculateCenterPoint("circle", "50,75,25")).toEqual({
+        x: 50,
+        y: 75,
+      });
+    });
+
+    it("calculates polygon centroid correctly", () => {
+      // Triangle: (0,0), (10,0), (5,10) - centroid should be (5, 3.33)
+      expect(AreaUtils.calculateCenterPoint("poly", "0,0,10,0,5,10")).toEqual({
+        x: 5,
+        y: expect.closeTo(3.33, 1),
+      });
+    });
+
+    it("handles invalid inputs gracefully", () => {
+      expect(AreaUtils.calculateCenterPoint("rect", undefined)).toBeUndefined();
+      expect(AreaUtils.calculateCenterPoint("rect", "invalid")).toBeUndefined();
+      expect(AreaUtils.calculateCenterPoint("circle", "50,50")).toBeUndefined();
+      expect(
+        AreaUtils.calculateCenterPoint("default", "0,0,100,100")
+      ).toBeUndefined();
+    });
+  });
+
+  describe("checkTouchOptimization", () => {
+    it("checks rectangular touch optimization correctly", () => {
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,44,44")).toBe(true);
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,50,50")).toBe(true);
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,30,30")).toBe(false);
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,44,30")).toBe(false); // height too small
+    });
+
+    it("checks circular touch optimization correctly", () => {
+      expect(AreaUtils.checkTouchOptimization("circle", "50,50,22")).toBe(true); // radius >= 22 (44/2)
+      expect(AreaUtils.checkTouchOptimization("circle", "50,50,25")).toBe(true);
+      expect(AreaUtils.checkTouchOptimization("circle", "50,50,20")).toBe(
+        false
+      );
+    });
+
+    it("checks polygon touch optimization by area", () => {
+      // Large polygon - should pass
+      expect(
+        AreaUtils.checkTouchOptimization("poly", "0,0,50,0,50,50,0,50")
+      ).toBe(true);
+      // Small polygon - should fail
+      expect(
+        AreaUtils.checkTouchOptimization("poly", "0,0,10,0,10,10,0,10")
+      ).toBe(false);
+    });
+
+    it("handles custom minimum size", () => {
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,30,30", 30)).toBe(
+        true
+      );
+      expect(AreaUtils.checkTouchOptimization("rect", "0,0,30,30", 32)).toBe(
+        false
+      );
+    });
+
+    it("handles invalid inputs gracefully", () => {
+      expect(AreaUtils.checkTouchOptimization("rect", undefined)).toBe(false);
+      expect(AreaUtils.checkTouchOptimization("rect", "invalid")).toBe(false);
+    });
+  });
+
+  describe("createRectCoords", () => {
+    it("creates rectangular coordinates correctly", () => {
+      expect(AreaUtils.createRectCoords(0, 0, 100, 100)).toBe("0,0,100,100");
+      expect(AreaUtils.createRectCoords(10, 20, 60, 80)).toBe("10,20,60,80");
+    });
+  });
+
+  describe("createCircleCoords", () => {
+    it("creates circular coordinates correctly", () => {
+      expect(AreaUtils.createCircleCoords(50, 50, 25)).toBe("50,50,25");
+      expect(AreaUtils.createCircleCoords(0, 0, 10)).toBe("0,0,10");
+    });
+  });
+
+  describe("createPolyCoords", () => {
+    it("creates polygon coordinates correctly", () => {
+      const points = [
+        { x: 0, y: 0 },
+        { x: 50, y: 25 },
+        { x: 100, y: 0 },
+      ];
+      expect(AreaUtils.createPolyCoords(points)).toBe("0,0,50,25,100,0");
+    });
+
+    it("handles empty points array", () => {
+      expect(AreaUtils.createPolyCoords([])).toBe("");
+    });
+  });
+
+  describe("percentToAbsolute", () => {
+    it("converts percentage coordinates to absolute pixels", () => {
+      expect(AreaUtils.percentToAbsolute("0,0,50,50", 200, 100)).toBe(
+        "0,0,100,50"
+      );
+      expect(AreaUtils.percentToAbsolute("25,25,75,75", 400, 200)).toBe(
+        "100,50,300,150"
+      );
+    });
+
+    it("handles odd number of coordinates", () => {
+      // Should still process pairs, ignoring the last odd coordinate
+      expect(AreaUtils.percentToAbsolute("0,0,50", 200, 100)).toBe(
+        "0,0,100,NaN"
+      );
+    });
+  });
+
+  describe("expandForTouch", () => {
+    it("expands rectangular coordinates when needed", () => {
+      const small = "10,10,30,30"; // 20x20 area, needs expansion to 44x44
+      const expanded = AreaUtils.expandForTouch("rect", small, 44);
+      expect(expanded).toBe("-2,-2,42,42"); // Should expand by 12 pixels on each side
+    });
+
+    it("does not expand already optimal rectangles", () => {
+      const optimal = "0,0,50,50"; // 50x50 area, already optimal
+      const result = AreaUtils.expandForTouch("rect", optimal, 44);
+      expect(result).toBe(optimal);
+    });
+
+    it("expands circular coordinates when needed", () => {
+      const small = "50,50,20"; // radius 20, needs to be 22 for 44px diameter
+      const expanded = AreaUtils.expandForTouch("circle", small, 44);
+      expect(expanded).toBe("50,50,22");
+    });
+
+    it("does not expand already optimal circles", () => {
+      const optimal = "50,50,25"; // radius 25, already optimal
+      const result = AreaUtils.expandForTouch("circle", optimal, 44);
+      expect(result).toBe(optimal);
+    });
+
+    it("returns polygon coordinates unchanged", () => {
+      const poly = "0,0,50,25,100,0";
+      const result = AreaUtils.expandForTouch("poly", poly, 44);
+      expect(result).toBe(poly); // Polygons require manual adjustment
+    });
+
+    it("handles invalid coordinates gracefully", () => {
+      expect(AreaUtils.expandForTouch("rect", "invalid", 44)).toBe("invalid");
+      expect(AreaUtils.expandForTouch("circle", "50,50", 44)).toBe("50,50");
+    });
   });
 });
