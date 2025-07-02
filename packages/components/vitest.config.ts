@@ -74,6 +74,7 @@ export default defineConfig({
         "**/README.md",
         "src/index.tsx",
         "src/index.client.tsx",
+        "**/index.client.tsx",
       ],
       include: [
         "src/**/*.{js,jsx,ts,tsx}",
