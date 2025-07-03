@@ -82,6 +82,7 @@ const BaseComponent = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
 
   // Event handlers - always use useCallback to maintain hooks order
   const handleClick = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (event: React.MouseEvent<any>) => {
       // Only execute analytics if we have analytics setup
       if (hasAnalytics && (analyticsId || onAnalytics)) {
