@@ -6,7 +6,11 @@ import React, {
   useRef,
 } from "react";
 
-import type { CommonComponentProps } from "../types";
+import {
+  type CommonComponentProps,
+  ELEMENT_CONFIGS,
+  validatePolymorphicProps,
+} from "../types";
 import {
   type AreaCoords,
   type AreaShape,
@@ -81,7 +85,12 @@ export interface AreaProps
   priority?: "high" | "normal" | "low";
 }
 
-/** Universal area component with coordinate validation, touch optimization, and enhanced analytics */
+/**
+ * Universal area component with coordinate validation, touch optimization, and enhanced analytics.
+ *
+ * ⚠️ Warning: coords, shape, alt, href, and target props are only semantically valid for <area> elements.
+ * When using with other elements via the 'as' prop, these attributes may be invalid or meaningless.
+ */
 const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
   const {
     alt,
@@ -111,7 +120,18 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
   } = props;
 
   const elementRef = useRef<HTMLAreaElement>(null);
+  const asElement = typeof Component === "string" ? Component : "unknown";
   const hasAnalytics = analyticsId || onAnalytics;
+
+  // Runtime validation for development - warns about invalid prop usage
+  useMemo(() => {
+    validatePolymorphicProps(
+      "Area",
+      asElement,
+      { coords, shape, alt, href, target },
+      ELEMENT_CONFIGS.AREA
+    );
+  }, [asElement, coords, shape, alt, href, target]);
 
   // Development validation warnings
   useEffect(() => {
@@ -153,7 +173,7 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
 
   // Click handler with interaction type detection
   const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLAreaElement>) => {
+    (event: React.MouseEvent<any>) => {
       if (disabled) {
         event.preventDefault();
         return;
@@ -197,7 +217,7 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
   );
 
   const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLAreaElement>) => {
+    (event: React.KeyboardEvent<any>) => {
       if (event.key === "Enter" || event.key === " ") {
         if (disabled) {
           event.preventDefault();
@@ -291,6 +311,11 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
         minTouchTarget
       ),
       "data-valid-coords": AreaUtils.validateCoordinates(shape, coords),
+      "data-polymorphic-element": asElement !== "area" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "area"
+          ? "warning"
+          : undefined,
     };
   }, [
     rest,
@@ -314,6 +339,7 @@ const AreaComponent = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
     analyticsId,
     minTouchTarget,
     debug,
+    asElement,
   ]);
 
   // Base element

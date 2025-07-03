@@ -148,6 +148,7 @@ const ArticleComponent = React.forwardRef<ArticleRef, ArticleProps>(
       ...rest
     } = props;
 
+    const asElement = typeof Component === "string" ? Component : "unknown";
     const hasAnalytics = analyticsId || onAnalytics;
     const content = extractArticleContent(children);
     const isValidStructure = validateArticleStructure(children);
@@ -198,6 +199,8 @@ const ArticleComponent = React.forwardRef<ArticleRef, ArticleProps>(
         "data-analytics-id": analyticsId || undefined,
         "data-reading-time": calculateReadingTime(content || ""),
         "data-valid-structure": isValidStructure ? "true" : "false",
+        "data-polymorphic-element":
+          asElement !== "article" ? asElement : undefined,
         // Enhanced accessibility
         "aria-label":
           rest["aria-label"] || (featured ? "Featured article" : undefined),
@@ -215,6 +218,7 @@ const ArticleComponent = React.forwardRef<ArticleRef, ArticleProps>(
         onFocus,
         analyticsId,
         content,
+        asElement,
       ]
     );
 
