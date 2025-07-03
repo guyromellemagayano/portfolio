@@ -58,6 +58,7 @@ const BdiComponent = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
     ...rest
   } = props;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
   const hasAnalytics = analyticsId || onAnalytics;
 
   // Event handlers - always use useCallback to maintain hooks order
@@ -114,6 +115,7 @@ const BdiComponent = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
       onFocus,
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
+      "data-polymorphic-element": asElement !== "bdi" ? asElement : undefined,
     }),
     [
       rest,
@@ -125,6 +127,7 @@ const BdiComponent = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
       onMouseEnter,
       onFocus,
       analyticsId,
+      asElement,
     ]
   );
 

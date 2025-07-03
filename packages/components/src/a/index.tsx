@@ -1,6 +1,6 @@
 import React, { Suspense, useCallback, useMemo } from "react";
 
-import type { CommonComponentProps } from "../types";
+import { type CommonComponentProps } from "../types";
 
 import "./styles.css";
 
@@ -173,6 +173,10 @@ function LoadingSpinner(): React.ReactElement {
 /**
  * Universal anchor component with variants, analytics, and accessibility.
  * Supports server-side and client-side rendering.
+ *
+ * ⚠️ Warning: href, target, download, hrefLang, ping, rel, and referrerPolicy props are
+ * primarily meaningful for <a> elements. When using with other elements via the 'as' prop,
+ * these attributes may be invalid or have no effect.
  */
 const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
   const {
@@ -198,6 +202,46 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
     ...rest
   } = props;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
+
+  // Runtime validation for development - warns about invalid prop usage
+  useMemo(() => {
+    if (process.env.NODE_ENV === "development" && asElement !== "a") {
+      const anchorProps = {
+        href,
+        target: rest.target,
+        download: rest.download,
+        hrefLang: rest.hrefLang,
+        ping: rest.ping,
+        rel: rest.rel,
+        referrerPolicy: rest.referrerPolicy,
+      };
+
+      const invalidProps = Object.keys(anchorProps).filter(
+        (prop) =>
+          anchorProps[prop as keyof typeof anchorProps] !== undefined &&
+          anchorProps[prop as keyof typeof anchorProps] !== null
+      );
+
+      if (invalidProps.length > 0) {
+        console.warn(
+          `A: The following props are only valid for <a> elements: ${invalidProps.join(", ")}.\n` +
+            `You're rendering as <${asElement}>. These props define link behavior and are primarily meaningful for anchor elements.\n` +
+            `Consider using a semantic <a> element or removing these props.`
+        );
+      }
+    }
+  }, [
+    asElement,
+    href,
+    rest.target,
+    rest.download,
+    rest.hrefLang,
+    rest.ping,
+    rest.rel,
+    rest.referrerPolicy,
+  ]);
+
   // Computed values
   const safeHref = useMemo(() => (isSafeHref(href) ? href : "#"), [href]);
   const isExternalLink = useMemo(() => isExternal(href), [href]);
@@ -220,6 +264,11 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
       "data-active": active,
       "data-disabled": disabled || loading,
       "data-loading": loading,
+      "data-polymorphic-element": asElement !== "a" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "a"
+          ? "warning"
+          : undefined,
       className: [
         "a",
         `a--${variant}`,
