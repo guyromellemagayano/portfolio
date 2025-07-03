@@ -58,6 +58,7 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
       ...rest
     } = props;
 
+    const asElement = typeof Component === "string" ? Component : "unknown";
     const hasAnalytics = analyticsId || onAnalytics;
 
     // Event handlers - always use useCallback to maintain hooks order
@@ -117,6 +118,8 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
         "data-block": block ? "true" : undefined,
         "data-emphasized": emphasized ? "true" : undefined,
         "data-analytics-id": analyticsId || undefined,
+        "data-polymorphic-element":
+          asElement !== "address" ? asElement : undefined,
       }),
       [
         rest,
@@ -128,6 +131,7 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
         onMouseEnter,
         onFocus,
         analyticsId,
+        asElement,
       ]
     );
 
