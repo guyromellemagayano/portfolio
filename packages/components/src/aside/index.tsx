@@ -219,6 +219,7 @@ const AsideComponent = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
   const isCollapsed =
     controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
   const hasAnalytics = analyticsId || onAnalytics;
   const content = extractAsideContent(children);
   const isValidStructure = validateAsideStructure(children, contentType);
@@ -309,6 +310,7 @@ const AsideComponent = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
       "data-highlighted": highlighted ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
       "data-valid-structure": isValidStructure ? "true" : "false",
+      "data-polymorphic-element": asElement !== "aside" ? asElement : undefined,
       // Enhanced accessibility
       "aria-label": getAsideAriaLabel(
         contentType,
@@ -332,6 +334,7 @@ const AsideComponent = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
       onMouseEnter,
       onFocus,
       analyticsId,
+      asElement,
     ]
   );
 

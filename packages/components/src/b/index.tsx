@@ -100,6 +100,7 @@ const BComponent = React.forwardRef<BRef, BProps>((props, ref) => {
     ...rest
   } = props;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
   // Only compute when needed - avoid unnecessary memoization
   const hasAnalytics = analyticsId || onAnalytics;
 
@@ -128,6 +129,7 @@ const BComponent = React.forwardRef<BRef, BProps>((props, ref) => {
       onFocus,
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
+      "data-polymorphic-element": asElement !== "b" ? asElement : undefined,
     }),
     [
       rest,
@@ -138,6 +140,7 @@ const BComponent = React.forwardRef<BRef, BProps>((props, ref) => {
       onMouseEnter,
       onFocus,
       analyticsId,
+      asElement,
     ]
   );
 
