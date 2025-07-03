@@ -123,6 +123,16 @@
         "types": "./dist/cjs/bdi.d.ts",
         "default": "./dist/cjs/bdi.cjs"
       }
+    },
+    "./bdo": {
+      "import": {
+        "types": "./dist/es/bdo.d.mts",
+        "default": "./dist/es/bdo.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/bdo.d.ts",
+        "default": "./dist/cjs/bdo.cjs"
+      }
     }
   },
   "files": [
@@ -150,7 +160,8 @@
     "test:b": "vitest run src/b/index.test.tsx --config vitest.light.config.ts",
     "test:base": "vitest run src/base/index.test.tsx --config vitest.light.config.ts",
     "test:bdi": "vitest run src/bdi/index.test.tsx --config vitest.light.config.ts",
-    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b src/base src/bdi --config vitest.light.config.ts",
+    "test:bdo": "vitest run src/bdo/index.test.tsx --config vitest.light.config.ts",
+    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b src/base src/bdi src/bdo --config vitest.light.config.ts",
     "test:coverage": "vitest run --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:isolated": "tsx scripts/test-components.ts",

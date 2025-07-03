@@ -1,0 +1,211 @@
+/**
+ * BDO Component Styles
+ * Bidirectional override component for forced text direction control with accessibility and interaction support
+ */
+
+/* Base styles for the <bdo> component */
+.bdo {
+  display: var(--bdo-display, inline);
+  color: var(--bdo-color, inherit);
+  unicode-bidi: bidi-override;
+  
+  /* Transitions for smooth interactions */
+  transition: 
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+  
+  /* Ensure proper focus behavior */
+  outline-offset: 2px;
+}
+
+/* Direction-specific styles */
+.bdo--ltr {
+  direction: ltr;
+  text-align: var(--bdo-ltr-text-align, left);
+}
+
+.bdo--rtl {
+  direction: rtl;
+  text-align: var(--bdo-rtl-text-align, right);
+}
+
+/* Emphasized variant */
+.bdo--emphasized {
+  font-weight: var(--bdo-emphasized-font-weight, 600);
+  color: var(--bdo-emphasized-color, inherit);
+  background-color: var(--bdo-emphasized-bg, transparent);
+  border: var(--bdo-emphasized-border, none);
+}
+
+/* Focus styles for accessibility */
+.bdo:focus-visible {
+  outline: 2px solid var(--bdo-focus-color, currentColor);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Interactive states */
+.bdo:hover {
+  color: var(--bdo-hover-color, inherit);
+  background-color: var(--bdo-hover-bg, transparent);
+}
+
+.bdo:active {
+  transform: var(--bdo-active-transform, none);
+}
+
+/* Enhanced emphasized styles for better override visibility */
+.bdo--emphasized.bdo--ltr {
+  border-left: var(--bdo-emphasized-ltr-border, 2px solid currentColor);
+  padding-left: var(--bdo-emphasized-ltr-padding, 4px);
+}
+
+.bdo--emphasized.bdo--rtl {
+  border-right: var(--bdo-emphasized-rtl-border, 2px solid currentColor);
+  padding-right: var(--bdo-emphasized-rtl-padding, 4px);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bdo {
+    font-weight: var(--bdo-high-contrast-font-weight, normal);
+  }
+  
+  .bdo--emphasized {
+    font-weight: var(--bdo-high-contrast-emphasized-font-weight, 700);
+    border: var(--bdo-high-contrast-emphasized-border, 1px solid currentColor);
+  }
+  
+  .bdo:focus-visible {
+    outline: 3px solid var(--bdo-high-contrast-focus-color, currentColor);
+    outline-offset: 1px;
+  }
+  
+  .bdo--emphasized.bdo--ltr {
+    border-left-width: var(--bdo-high-contrast-ltr-border-width, 3px);
+  }
+  
+  .bdo--emphasized.bdo--rtl {
+    border-right-width: var(--bdo-high-contrast-rtl-border-width, 3px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .bdo {
+    transition: none;
+  }
+  
+  .bdo:active {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bdo {
+    color: var(--bdo-dark-color, inherit);
+  }
+  
+  .bdo--emphasized {
+    color: var(--bdo-dark-emphasized-color, inherit);
+    background-color: var(--bdo-dark-emphasized-bg, transparent);
+  }
+}
+
+/* Print styles */
+@media print {
+  .bdo {
+    color: black;
+    background: transparent;
+    border: none;
+  }
+  
+  .bdo--emphasized {
+    font-weight: bold;
+  }
+  
+  /* Ensure proper text direction in print */
+  .bdo--rtl {
+    direction: rtl;
+  }
+  
+  .bdo--ltr {
+    direction: ltr;
+  }
+  
+  /* Remove visual indicators in print */
+  .bdo--emphasized.bdo--ltr,
+  .bdo--emphasized.bdo--rtl {
+    border: none;
+    padding: 0;
+  }
+}
+
+/* RTL/LTR context support */
+[dir="rtl"] .bdo--ltr {
+  /* Override parent RTL context */
+  direction: ltr;
+  text-align: var(--bdo-context-override-ltr-text-align, left);
+}
+
+[dir="ltr"] .bdo--rtl {
+  /* Override parent LTR context */
+  direction: rtl;
+  text-align: var(--bdo-context-override-rtl-text-align, right);
+}
+
+/* Special styling for direction mismatch warning */
+.bdo[data-direction-warning="true"] {
+  background-color: var(--bdo-warning-bg, rgba(255, 165, 0, 0.1));
+  border: var(--bdo-warning-border, 1px dashed orange);
+  border-radius: var(--bdo-warning-border-radius, 2px);
+}
+
+/* Custom properties for theming */
+:root {
+  /* Base styles */
+  --bdo-display: inline;
+  --bdo-color: inherit;
+  --bdo-hover-color: inherit;
+  --bdo-hover-bg: transparent;
+  --bdo-focus-color: currentColor;
+  --bdo-active-transform: none;
+  
+  /* Direction-specific */
+  --bdo-ltr-text-align: left;
+  --bdo-rtl-text-align: right;
+  --bdo-context-override-ltr-text-align: left;
+  --bdo-context-override-rtl-text-align: right;
+  
+  /* Emphasized variant */
+  --bdo-emphasized-color: inherit;
+  --bdo-emphasized-font-weight: 600;
+  --bdo-emphasized-bg: transparent;
+  --bdo-emphasized-border: none;
+  
+  /* Emphasized direction indicators */
+  --bdo-emphasized-ltr-border: 2px solid currentColor;
+  --bdo-emphasized-ltr-padding: 4px;
+  --bdo-emphasized-rtl-border: 2px solid currentColor;
+  --bdo-emphasized-rtl-padding: 4px;
+  
+  /* High contrast mode */
+  --bdo-high-contrast-font-weight: normal;
+  --bdo-high-contrast-emphasized-font-weight: 700;
+  --bdo-high-contrast-emphasized-border: 1px solid currentColor;
+  --bdo-high-contrast-focus-color: currentColor;
+  --bdo-high-contrast-ltr-border-width: 3px;
+  --bdo-high-contrast-rtl-border-width: 3px;
+  
+  /* Dark mode */
+  --bdo-dark-color: inherit;
+  --bdo-dark-emphasized-color: inherit;
+  --bdo-dark-emphasized-bg: transparent;
+  
+  /* Warning styles */
+  --bdo-warning-bg: rgba(255, 165, 0, 0.1);
+  --bdo-warning-border: 1px dashed orange;
+  --bdo-warning-border-radius: 2px;
+}
