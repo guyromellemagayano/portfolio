@@ -41,8 +41,12 @@ export interface AbbrProps
 }
 
 /**
- * Enhanced abbreviation component with accessibility and analytics support.
- * Optimized for performance with minimal re-renders and efficient prop handling.
+ * Universal abbreviation component with analytics and accessibility.
+ * Supports server-side and client-side rendering.
+ *
+ * ⚠️ Warning: The title attribute is most meaningful for <abbr> elements where it provides
+ * the expansion of the abbreviation. When using with other elements via the 'as' prop,
+ * this attribute may be less semantically meaningful.
  */
 const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
   const {
@@ -64,9 +68,25 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
     ...rest
   } = props;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
+  const hasAnalytics = analyticsId || onAnalytics;
+
+  // Runtime validation for development - warns about invalid prop usage
+  useMemo(() => {
+    if (
+      process.env.NODE_ENV === "development" &&
+      asElement !== "abbr" &&
+      title
+    ) {
+      console.warn(
+        `Abbr: The title prop is most meaningful for <abbr> elements where it provides the expansion of the abbreviation.\n` +
+          `You're rendering as <${asElement}>. Consider using a semantic <abbr> element or using a different approach for providing additional information.`
+      );
+    }
+  }, [asElement, title]);
+
   // Only compute when needed - avoid unnecessary memoization
   const displayTitle = tooltip || title;
-  const hasAnalytics = analyticsId || onAnalytics;
 
   // Optimized click handler - only create when analytics are needed
   const handleClick = useCallback(
@@ -123,6 +143,11 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
       "aria-label": displayTitle || rest["aria-label"],
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
+      "data-polymorphic-element": asElement !== "abbr" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "abbr" && title
+          ? "warning"
+          : undefined,
     }),
     [
       rest,
@@ -135,6 +160,7 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
       showTooltip,
       displayTitle,
       analyticsId,
+      asElement,
     ]
   );
 

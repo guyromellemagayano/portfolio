@@ -1,6 +1,10 @@
 import React, { Suspense, useCallback, useMemo } from "react";
 
-import type { CommonComponentProps } from "../types";
+import {
+  type CommonComponentProps,
+  ELEMENT_CONFIGS,
+  validatePolymorphicProps,
+} from "../types";
 
 import "./styles.css";
 
@@ -40,7 +44,10 @@ export interface BaseProps
 
 /**
  * Universal base component for setting document base URL and default target.
- * Supports server-side and client-side rendering.
+ * Supports server-side and client-side rendering with polymorphic rendering.
+ *
+ * ⚠️ Warning: href and target props are only semantically valid for <base> elements.
+ * When using with other elements via the 'as' prop, these attributes may be invalid.
  */
 const BaseComponent = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
   const {
@@ -60,11 +67,22 @@ const BaseComponent = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
     ...rest
   } = props;
 
+  const asElement = typeof Component === "string" ? Component : "unknown";
   const hasAnalytics = analyticsId || onAnalytics;
+
+  // Runtime validation for development - warns about invalid prop usage
+  useMemo(() => {
+    validatePolymorphicProps(
+      "Base",
+      asElement,
+      { href, target },
+      ELEMENT_CONFIGS.BASE
+    );
+  }, [asElement, href, target]);
 
   // Event handlers - always use useCallback to maintain hooks order
   const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLBaseElement>) => {
+    (event: React.MouseEvent<any>) => {
       // Only execute analytics if we have analytics setup
       if (hasAnalytics && (analyticsId || onAnalytics)) {
         const analyticsData = {
@@ -117,9 +135,15 @@ const BaseComponent = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
       onFocus,
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
+      "data-polymorphic-element": asElement !== "base" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "base"
+          ? "warning"
+          : undefined,
     }),
     [
       rest,
+      ref,
       href,
       target,
       emphasized,
@@ -129,10 +153,11 @@ const BaseComponent = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
       onMouseEnter,
       onFocus,
       analyticsId,
+      asElement,
     ]
   );
 
-  // Base element (void element - no children)
+  // Base element (void element - no children when as="base")
   const element = <Component {...enhancedProps} />;
 
   // Client-side rendering
