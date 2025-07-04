@@ -120,6 +120,10 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
         "data-analytics-id": analyticsId || undefined,
         "data-polymorphic-element":
           asElement !== "address" ? asElement : undefined,
+        "data-element-validation":
+          process.env.NODE_ENV === "development" && asElement !== "address"
+            ? "warning"
+            : undefined,
       }),
       [
         rest,

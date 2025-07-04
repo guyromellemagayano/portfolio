@@ -130,6 +130,10 @@ const BComponent = React.forwardRef<BRef, BProps>((props, ref) => {
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
       "data-polymorphic-element": asElement !== "b" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "b"
+          ? "warning"
+          : undefined,
     }),
     [
       rest,
