@@ -140,6 +140,11 @@ export const ELEMENT_CONFIGS = {
     ["cite"],
     "The cite attribute specifies the source URL of the quotation and is only meaningful for blockquote elements."
   ),
+  BODY: createElementConfig(
+    "body",
+    ["scrollable", "hasBackground"],
+    "These props control body-specific behavior like scrolling and background display."
+  ),
 } as const;
 
 export type ElementConfigKey = keyof typeof ELEMENT_CONFIGS;
