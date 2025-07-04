@@ -14,6 +14,7 @@ import { Base } from "./base";
 import { Bdi } from "./bdi";
 import { Bdo } from "./bdo";
 import { Blockquote } from "./blockquote";
+import { Body } from "./body";
 
 describe("Polymorphic Validation System", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
@@ -149,6 +150,39 @@ describe("Polymorphic Validation System", () => {
         >
           Proper quote
         </Blockquote>
+      );
+
+      expect(consoleSpy).not.toHaveBeenCalled();
+    });
+
+    it("Body component warns when using body-specific props with other elements", () => {
+      render(
+        <Body
+          as="div"
+          scrollable={false}
+          hasBackground={false}
+          data-testid="body-as-div"
+        >
+          Body content
+        </Body>
+      );
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Body: The following props are only valid for <body> elements: scrollable, hasBackground"
+        )
+      );
+    });
+
+    it("Body component does not warn when using proper body element", () => {
+      render(
+        <Body
+          scrollable={false}
+          hasBackground={false}
+          data-testid="proper-body"
+        >
+          Proper body
+        </Body>
       );
 
       expect(consoleSpy).not.toHaveBeenCalled();
@@ -410,6 +444,9 @@ describe("Polymorphic Validation System", () => {
           <Blockquote as="div" cite="#" data-testid="blockquote-1">
             Blockquote
           </Blockquote>
+          <Body as="div" scrollable={false} data-testid="body-1">
+            Body
+          </Body>
         </div>
       );
 
@@ -426,6 +463,7 @@ describe("Polymorphic Validation System", () => {
         "bdi-1",
         "bdo-1",
         "blockquote-1",
+        "body-1",
       ];
 
       expectedComponents.forEach((testId) => {
@@ -433,8 +471,8 @@ describe("Polymorphic Validation System", () => {
         expect(element).toHaveAttribute("data-polymorphic-element");
       });
 
-      // Verify we tested exactly 11 components (Audio requires special setup)
-      expect(expectedComponents).toHaveLength(11);
+      // Verify we tested exactly 12 components (Audio requires special setup)
+      expect(expectedComponents).toHaveLength(12);
     });
 
     it("covers Audio component polymorphic tracking separately", () => {

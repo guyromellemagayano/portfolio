@@ -1,0 +1,66 @@
+/* =============================================================================
+   BODY COMPONENT STYLES
+   ============================================================================= */
+
+.body {
+  /* Base body styles */
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: inherit;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Scrollable variant */
+.body--scrollable {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Background variant */
+.body--has-background {
+  background-color: #ffffff;
+  background-image: none;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .body--has-background {
+    background-color: #1a1a1a;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .body {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .body {
+    scroll-behavior: auto;
+  }
+}
+
+/* Focus styles for accessibility */
+.body:focus-visible {
+  outline: 2px solid #007acc;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .body--scrollable {
+    overflow: visible !important;
+  }
+}
