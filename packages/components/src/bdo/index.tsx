@@ -123,6 +123,10 @@ const BdoComponent = React.forwardRef<BdoRef, BdoProps>((props, ref) => {
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
       "data-polymorphic-element": asElement !== "bdo" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "bdo"
+          ? "warning"
+          : undefined,
     }),
     [
       rest,
