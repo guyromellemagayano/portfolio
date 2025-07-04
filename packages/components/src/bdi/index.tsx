@@ -116,6 +116,10 @@ const BdiComponent = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
       "data-emphasized": emphasized ? "true" : undefined,
       "data-analytics-id": analyticsId || undefined,
       "data-polymorphic-element": asElement !== "bdi" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "bdi"
+          ? "warning"
+          : undefined,
     }),
     [
       rest,

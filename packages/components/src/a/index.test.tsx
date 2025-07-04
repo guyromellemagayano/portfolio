@@ -19,13 +19,16 @@ Object.defineProperty(window, "gtag", {
   writable: true,
 });
 
-// Mock console.warn for analytics error testing
-const mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
-
 describe("A Component", () => {
+  let mockConsoleWarn: ReturnType<typeof vi.spyOn>;
+
   beforeEach(() => {
-    vi.clearAllMocks();
-    mockConsoleWarn.mockClear();
+    mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    process.env.NODE_ENV = "development";
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   const defaultProps: AProps = {
@@ -447,6 +450,20 @@ describe("A Component", () => {
       // Testing the early return in fireAnalytics when no event is provided
       render(<A {...defaultProps} analyticsId="test-link" />);
       expect(screen.getByRole("link")).toBeInTheDocument();
+    });
+
+    it("warns when using anchor-specific props with non-anchor element", () => {
+      render(
+        <A as="div" href="https://example.com">
+          Not an anchor
+        </A>
+      );
+      expect(mockConsoleWarn).toHaveBeenCalledTimes(1);
+      expect(mockConsoleWarn).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "A: The following props are only valid for <a> elements: href"
+        )
+      );
     });
   });
 });

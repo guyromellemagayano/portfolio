@@ -1,6 +1,10 @@
 import React, { Suspense, useCallback, useMemo } from "react";
 
-import { type CommonComponentProps } from "../types";
+import {
+  type CommonComponentProps,
+  ELEMENT_CONFIGS,
+  validatePolymorphicProps,
+} from "../types";
 
 import "./styles.css";
 
@@ -198,7 +202,16 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
     className,
     onClick,
     onKeyDown,
+    onMouseEnter,
+    onFocus,
+    onBlur,
     style,
+    target,
+    download,
+    hrefLang,
+    ping,
+    rel,
+    referrerPolicy,
     ...rest
   } = props;
 
@@ -206,41 +219,13 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
 
   // Runtime validation for development - warns about invalid prop usage
   useMemo(() => {
-    if (process.env.NODE_ENV === "development" && asElement !== "a") {
-      const anchorProps = {
-        href,
-        target: rest.target,
-        download: rest.download,
-        hrefLang: rest.hrefLang,
-        ping: rest.ping,
-        rel: rest.rel,
-        referrerPolicy: rest.referrerPolicy,
-      };
-
-      const invalidProps = Object.keys(anchorProps).filter(
-        (prop) =>
-          anchorProps[prop as keyof typeof anchorProps] !== undefined &&
-          anchorProps[prop as keyof typeof anchorProps] !== null
-      );
-
-      if (invalidProps.length > 0) {
-        console.warn(
-          `A: The following props are only valid for <a> elements: ${invalidProps.join(", ")}.\n` +
-            `You're rendering as <${asElement}>. These props define link behavior and are primarily meaningful for anchor elements.\n` +
-            `Consider using a semantic <a> element or removing these props.`
-        );
-      }
-    }
-  }, [
-    asElement,
-    href,
-    rest.target,
-    rest.download,
-    rest.hrefLang,
-    rest.ping,
-    rest.rel,
-    rest.referrerPolicy,
-  ]);
+    validatePolymorphicProps(
+      "A",
+      asElement,
+      { href, target, download, hrefLang, ping, rel, referrerPolicy },
+      ELEMENT_CONFIGS.A
+    );
+  }, [asElement, href, target, download, hrefLang, ping, rel, referrerPolicy]);
 
   // Computed values
   const safeHref = useMemo(() => (isSafeHref(href) ? href : "#"), [href]);
@@ -252,8 +237,8 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
     () => ({
       ...rest,
       href: safeHref,
-      rel: isExternalLink ? "noopener noreferrer" : rest.rel,
-      target: isExternalLink ? "_blank" : rest.target,
+      rel: isExternalLink ? "noopener noreferrer" : rel,
+      target: isExternalLink ? "_blank" : target,
       "aria-disabled": disabled || loading,
       "aria-label": tooltip || rest["aria-label"],
       "aria-describedby": tooltip
@@ -393,6 +378,8 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleMouseEnter}
+      onFocus={onFocus}
+      onBlur={onBlur}
     >
       {renderContent()}
     </Component>
