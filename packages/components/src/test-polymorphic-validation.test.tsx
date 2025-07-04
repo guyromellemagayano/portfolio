@@ -13,6 +13,7 @@ import { B } from "./b";
 import { Base } from "./base";
 import { Bdi } from "./bdi";
 import { Bdo } from "./bdo";
+import { Blockquote } from "./blockquote";
 
 describe("Polymorphic Validation System", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
@@ -117,9 +118,40 @@ describe("Polymorphic Validation System", () => {
 
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining(
-          "Abbr: The title prop is most meaningful for <abbr> elements"
+          "Abbr: The following props are only valid for <abbr> elements: title"
         )
       );
+    });
+
+    it("Blockquote component warns when using cite prop with other elements", () => {
+      render(
+        <Blockquote
+          as="div"
+          cite="https://example.com/source"
+          data-testid="blockquote-as-div"
+        >
+          Quote content
+        </Blockquote>
+      );
+
+      expect(consoleSpy).toHaveBeenCalledWith(
+        expect.stringContaining(
+          "Blockquote: The following props are only valid for <blockquote> elements: cite"
+        )
+      );
+    });
+
+    it("Blockquote component does not warn when using proper blockquote element", () => {
+      render(
+        <Blockquote
+          cite="https://example.com/source"
+          data-testid="proper-blockquote"
+        >
+          Proper quote
+        </Blockquote>
+      );
+
+      expect(consoleSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -199,6 +231,9 @@ describe("Polymorphic Validation System", () => {
           <B as="strong" data-testid="b-strong">
             Bold text
           </B>
+          <Blockquote as="div" cite="#" data-testid="blockquote-div">
+            Quote text
+          </Blockquote>
         </div>
       );
 
@@ -227,6 +262,9 @@ describe("Polymorphic Validation System", () => {
       expect(
         container.querySelector('[data-testid="b-strong"]')
       ).toHaveAttribute("data-polymorphic-element", "strong");
+      expect(
+        container.querySelector('[data-testid="blockquote-div"]')
+      ).toHaveAttribute("data-polymorphic-element", "div");
     });
 
     it("does not add polymorphic attributes when using correct semantic elements", () => {
@@ -236,6 +274,7 @@ describe("Polymorphic Validation System", () => {
           <Article data-testid="proper-article">Article content</Article>
           <Aside data-testid="proper-aside">Sidebar content</Aside>
           <B data-testid="proper-b">Bold text</B>
+          <Blockquote data-testid="proper-blockquote">Quote content</Blockquote>
         </div>
       );
 
@@ -250,6 +289,9 @@ describe("Polymorphic Validation System", () => {
       ).not.toHaveAttribute("data-polymorphic-element");
       expect(
         container.querySelector('[data-testid="proper-b"]')
+      ).not.toHaveAttribute("data-polymorphic-element");
+      expect(
+        container.querySelector('[data-testid="proper-blockquote"]')
       ).not.toHaveAttribute("data-polymorphic-element");
     });
   });
@@ -336,7 +378,7 @@ describe("Polymorphic Validation System", () => {
   });
 
   describe("Component Coverage", () => {
-    it("ensures all 11 components have polymorphic tracking implemented", () => {
+    it("ensures all 12 components have polymorphic tracking implemented", () => {
       const { container } = render(
         <div>
           <A as="span" href="#" data-testid="a-1">
@@ -365,6 +407,9 @@ describe("Polymorphic Validation System", () => {
           <Bdo as="span" dir="rtl" data-testid="bdo-1">
             Bdo
           </Bdo>
+          <Blockquote as="div" cite="#" data-testid="blockquote-1">
+            Blockquote
+          </Blockquote>
         </div>
       );
 
@@ -380,6 +425,7 @@ describe("Polymorphic Validation System", () => {
         "base-1",
         "bdi-1",
         "bdo-1",
+        "blockquote-1",
       ];
 
       expectedComponents.forEach((testId) => {
@@ -387,8 +433,8 @@ describe("Polymorphic Validation System", () => {
         expect(element).toHaveAttribute("data-polymorphic-element");
       });
 
-      // Verify we tested exactly 10 components (Audio requires special setup)
-      expect(expectedComponents).toHaveLength(10);
+      // Verify we tested exactly 11 components (Audio requires special setup)
+      expect(expectedComponents).toHaveLength(11);
     });
 
     it("covers Audio component polymorphic tracking separately", () => {
