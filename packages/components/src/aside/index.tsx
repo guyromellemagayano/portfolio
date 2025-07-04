@@ -311,6 +311,10 @@ const AsideComponent = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
       "data-analytics-id": analyticsId || undefined,
       "data-valid-structure": isValidStructure ? "true" : "false",
       "data-polymorphic-element": asElement !== "aside" ? asElement : undefined,
+      "data-element-validation":
+        process.env.NODE_ENV === "development" && asElement !== "aside"
+          ? "warning"
+          : undefined,
       // Enhanced accessibility
       "aria-label": getAsideAriaLabel(
         contentType,

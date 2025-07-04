@@ -201,6 +201,10 @@ const ArticleComponent = React.forwardRef<ArticleRef, ArticleProps>(
         "data-valid-structure": isValidStructure ? "true" : "false",
         "data-polymorphic-element":
           asElement !== "article" ? asElement : undefined,
+        "data-element-validation":
+          process.env.NODE_ENV === "development" && asElement !== "article"
+            ? "warning"
+            : undefined,
         // Enhanced accessibility
         "aria-label":
           rest["aria-label"] || (featured ? "Featured article" : undefined),
