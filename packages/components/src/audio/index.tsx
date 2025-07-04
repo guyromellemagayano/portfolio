@@ -7,7 +7,11 @@ import React, {
   useState,
 } from "react";
 
-import { type CommonComponentProps } from "../types";
+import {
+  type CommonComponentProps,
+  ELEMENT_CONFIGS,
+  validatePolymorphicProps,
+} from "../types";
 
 import "./styles.css";
 
@@ -219,15 +223,21 @@ function AudioError({
 
 /**
  * Universal audio component with custom controls, analytics, and accessibility.
- * Supports both native browser controls and custom interactive controls.
+ * Supports server-side and client-side rendering with enhanced features.
  *
- * ⚠️ Warning: src, controls, autoPlay, loop, muted, preload, and crossOrigin props are only
- * semantically valid for <audio> elements. When using with other elements via the 'as' prop,
+ * ⚠️ Warning: controls, autoPlay, loop, muted, preload, src, and crossOrigin props are
+ * only valid for <audio> elements. When using with other elements via the 'as' prop,
  * these attributes may be invalid or have no effect.
  */
 const AudioComponent = React.forwardRef<AudioRef, AudioProps>((props, ref) => {
   const {
     src,
+    controls,
+    autoPlay,
+    loop,
+    muted,
+    preload,
+    crossOrigin,
     customControls = false,
     showPlayButton = true,
     showVolumeControl = true,
@@ -261,6 +271,19 @@ const AudioComponent = React.forwardRef<AudioRef, AudioProps>((props, ref) => {
     ...rest
   } = props;
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const asElement = typeof Component === "string" ? Component : "unknown";
+
+  // Runtime validation for development - warns about invalid prop usage
+  useMemo(() => {
+    validatePolymorphicProps(
+      "Audio",
+      asElement,
+      { controls, autoPlay, loop, muted, preload, src, crossOrigin },
+      ELEMENT_CONFIGS.AUDIO
+    );
+  }, [asElement, controls, autoPlay, loop, muted, preload, src, crossOrigin]);
+
   // State management
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -270,49 +293,9 @@ const AudioComponent = React.forwardRef<AudioRef, AudioProps>((props, ref) => {
   const [volume, setVolume] = useState(defaultVolume);
   const [isMuted, setIsMuted] = useState(defaultMuted);
 
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const asElement = typeof Component === "string" ? Component : "unknown";
   const hasAnalytics = analyticsId || onAnalytics;
   const isValidSource = validateAudioSource(src);
   const audioFormat = getAudioFormat(src);
-
-  // Runtime validation for development - warns about invalid prop usage
-  useMemo(() => {
-    if (process.env.NODE_ENV === "development" && asElement !== "audio") {
-      const audioProps = {
-        src,
-        controls: rest.controls,
-        autoPlay: rest.autoPlay,
-        loop: rest.loop,
-        muted: rest.muted,
-        preload: rest.preload,
-        crossOrigin: rest.crossOrigin,
-      };
-
-      const invalidProps = Object.keys(audioProps).filter(
-        (prop) =>
-          audioProps[prop as keyof typeof audioProps] !== undefined &&
-          audioProps[prop as keyof typeof audioProps] !== null
-      );
-
-      if (invalidProps.length > 0) {
-        console.warn(
-          `Audio: The following props are only valid for <audio> elements: ${invalidProps.join(", ")}.\n` +
-            `You're rendering as <${asElement}>. These props control audio playback and have no effect on non-media elements.\n` +
-            `Consider using a semantic <audio> element or removing these props.`
-        );
-      }
-    }
-  }, [
-    asElement,
-    src,
-    rest.controls,
-    rest.autoPlay,
-    rest.loop,
-    rest.muted,
-    rest.preload,
-    rest.crossOrigin,
-  ]);
 
   // Enhanced event handlers
   const handlePlay = useCallback(

@@ -1,6 +1,10 @@
 import React, { Suspense, useCallback, useMemo } from "react";
 
-import type { CommonComponentProps } from "../types";
+import {
+  type CommonComponentProps,
+  ELEMENT_CONFIGS,
+  validatePolymorphicProps,
+} from "../types";
 
 import "./styles.css";
 
@@ -73,16 +77,12 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
 
   // Runtime validation for development - warns about invalid prop usage
   useMemo(() => {
-    if (
-      process.env.NODE_ENV === "development" &&
-      asElement !== "abbr" &&
-      title
-    ) {
-      console.warn(
-        `Abbr: The title prop is most meaningful for <abbr> elements where it provides the expansion of the abbreviation.\n` +
-          `You're rendering as <${asElement}>. Consider using a semantic <abbr> element or using a different approach for providing additional information.`
-      );
-    }
+    validatePolymorphicProps(
+      "Abbr",
+      asElement,
+      { title },
+      ELEMENT_CONFIGS.ABBR
+    );
   }, [asElement, title]);
 
   // Only compute when needed - avoid unnecessary memoization
@@ -145,7 +145,7 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
       "data-analytics-id": analyticsId || undefined,
       "data-polymorphic-element": asElement !== "abbr" ? asElement : undefined,
       "data-element-validation":
-        process.env.NODE_ENV === "development" && asElement !== "abbr" && title
+        process.env.NODE_ENV === "development" && asElement !== "abbr"
           ? "warning"
           : undefined,
     }),
