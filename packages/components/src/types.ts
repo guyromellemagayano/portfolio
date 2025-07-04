@@ -135,6 +135,11 @@ export const ELEMENT_CONFIGS = {
     ["title"],
     "The title attribute provides the expansion of the abbreviation."
   ),
+  BLOCKQUOTE: createElementConfig(
+    "blockquote",
+    ["cite"],
+    "The cite attribute specifies the source URL of the quotation and is only meaningful for blockquote elements."
+  ),
 } as const;
 
 export type ElementConfigKey = keyof typeof ELEMENT_CONFIGS;
