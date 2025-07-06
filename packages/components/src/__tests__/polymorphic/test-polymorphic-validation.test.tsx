@@ -3,18 +3,20 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { A } from "./a";
-import { Abbr } from "./abbr";
-import { Address } from "./address";
-import { Area } from "./area";
-import { Article } from "./article";
-import { Aside } from "./aside";
-import { B } from "./b";
-import { Base } from "./base";
-import { Bdi } from "./bdi";
-import { Bdo } from "./bdo";
-import { Blockquote } from "./blockquote";
-import { Body } from "./body";
+import { A } from "../../a";
+import { Abbr } from "../../abbr";
+import { Address } from "../../address";
+import { Area } from "../../area";
+import { Article } from "../../article";
+import { Aside } from "../../aside";
+import { B } from "../../b";
+import { Base } from "../../base";
+import { Bdi } from "../../bdi";
+import { Bdo } from "../../bdo";
+import { Blockquote } from "../../blockquote";
+import { Body } from "../../body";
+import { Br } from "../../br";
+import { Button } from "../../button";
 
 describe("Polymorphic Validation System", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
@@ -342,9 +344,11 @@ describe("Polymorphic Validation System", () => {
 
   describe("Edge Cases", () => {
     it("handles custom components gracefully", () => {
-      const CustomComponent = React.forwardRef<HTMLDivElement, any>(
-        (props, ref) => <div ref={ref} {...props} data-custom="true" />
-      );
+      const CustomComponent = React.forwardRef<
+        HTMLDivElement,
+        React.HTMLAttributes<HTMLDivElement>
+      >((props, ref) => <div ref={ref} {...props} data-custom="true" />);
+      CustomComponent.displayName = "CustomComponent";
 
       render(
         <Base
@@ -412,7 +416,7 @@ describe("Polymorphic Validation System", () => {
   });
 
   describe("Component Coverage", () => {
-    it("ensures all 12 components have polymorphic tracking implemented", () => {
+    it("ensures all 14 components have polymorphic tracking implemented", () => {
       const { container } = render(
         <div>
           <A as="span" href="#" data-testid="a-1">
@@ -447,6 +451,10 @@ describe("Polymorphic Validation System", () => {
           <Body as="div" scrollable={false} data-testid="body-1">
             Body
           </Body>
+          <Br as="hr" data-testid="br-1" />
+          <Button as="span" data-testid="button-1">
+            Button
+          </Button>
         </div>
       );
 
@@ -464,6 +472,8 @@ describe("Polymorphic Validation System", () => {
         "bdo-1",
         "blockquote-1",
         "body-1",
+        "br-1",
+        "button-1",
       ];
 
       expectedComponents.forEach((testId) => {
@@ -471,8 +481,8 @@ describe("Polymorphic Validation System", () => {
         expect(element).toHaveAttribute("data-polymorphic-element");
       });
 
-      // Verify we tested exactly 12 components (Audio requires special setup)
-      expect(expectedComponents).toHaveLength(12);
+      // Verify we tested exactly 14 components (Audio requires special setup)
+      expect(expectedComponents).toHaveLength(14);
     });
 
     it("covers Audio component polymorphic tracking separately", () => {
