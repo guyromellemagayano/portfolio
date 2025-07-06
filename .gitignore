@@ -39,9 +39,6 @@ dist/
 # Vercel
 .vercel/
 
-# Custom folders
-docs/
-
 # Old folders
 *.old
 *-old/

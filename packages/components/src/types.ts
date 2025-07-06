@@ -18,7 +18,7 @@ export interface CommonComponentProps {
  */
 export type PolymorphicComponentProps<
   TElement extends ElementType,
-  TElementSpecificProps = {},
+  TElementSpecificProps = unknown,
   TDefaultElement extends ElementType = TElement,
 > = {
   as?: TElement;
@@ -144,6 +144,11 @@ export const ELEMENT_CONFIGS = {
     "body",
     ["scrollable", "hasBackground"],
     "These props control body-specific behavior like scrolling and background display."
+  ),
+  BR: createElementConfig(
+    "br",
+    [],
+    "The br element has no specific props beyond standard HTML attributes."
   ),
 } as const;
 
