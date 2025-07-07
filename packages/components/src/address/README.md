@@ -1,7 +1,7 @@
 <!-- markdownlint-disable line-length proper-names -->
 # Address Component
 
-A polymorphic and accessible wrapper for the HTML `<address>` element, designed for semantically marking up contact information and addresses. This component maintains high performance and adheres to strict accessibility standards.
+A polymorphic and accessible wrapper for the HTML `<address>` element with analytics tracking, designed for semantically marking up contact information and addresses. This component maintains high performance and adheres to strict accessibility standards.
 
 ## 📋 Table of Contents
 
@@ -18,6 +18,7 @@ A polymorphic and accessible wrapper for the HTML `<address>` element, designed 
     - [Component-Specific Props](#component-specific-props)
   - [💡 Examples](#-examples)
     - [Basic Example](#basic-example)
+    - [Emphasized Block Example](#emphasized-block-example)
     - [With Custom Styling](#with-custom-styling)
     - [With Analytics](#with-analytics)
     - [Polymorphic Rendering](#polymorphic-rendering)
@@ -50,14 +51,15 @@ A polymorphic and accessible wrapper for the HTML `<address>` element, designed 
 
 ### Purpose
 
-The `Address` component provides a flexible, accessible HTML `<address>` element. It is specifically designed for semantically marking up contact information, authors, or addresses, ensuring that this crucial data is correctly structured and accessible while maintaining high performance.
+The `Address` component provides a flexible, accessible HTML `<address>` element. It is specifically designed for semantically marking up contact information, authors, or addresses, ensuring that this crucial data is correctly structured and accessible while maintaining high performance. The component includes built-in analytics tracking and display mode options.
 
 ### Key Features
 
 - **Semantic Markup**: Utilizes the native `<address>` HTML element for proper semantic meaning.
+- **Display Modes**: Supports block and emphasized display modes for different layout needs.
+- **Analytics Integration**: Built-in analytics tracking with flexible implementation options.
 - **Polymorphic Rendering**: Ability to render as different HTML elements or custom components.
-- **Comprehensive Event Handling**: Robust handling of various user events.
-- **High Performance**: Optimized for fast rendering and efficient updates.
+- **Performance Optimized**: Client-side code splitting and memoization support.
 - **Accessibility Compliance**: Built with WCAG 2.1 AA standards in mind.
 
 ## 🚀 Quick Start
@@ -112,11 +114,12 @@ These props are common across many components in the library.
 
 ### Component-Specific Props
 
-The `Address` component does not have unique, element-specific props beyond the standard HTML attributes it inherits (e.g., `title`, `dir`). Its primary purpose is semantic grouping of content.
+These props are unique to the `Address` component.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `title` | `string` | - | Text to display in a tooltip when the mouse hovers over the element. |
+| `block` | `boolean` | `false` | If `true`, the address is styled as a block-level element with bottom margin. |
+| `emphasized` | `boolean` | `false` | If `true`, applies emphasized styling with heavier font weight and distinct color. |
 
 ## 💡 Examples
 
@@ -135,6 +138,25 @@ function BasicAddressExample() {
       Example.com<br/>
       123 Example Street<br/>
       Example City, EX 12345</p>
+    </Address>
+  );
+}
+```
+
+### Emphasized Block Example
+
+Demonstrates using the `block` and `emphasized` props together.
+
+```tsx
+import { Address } from '@guyromellemagayano/components';
+
+function EmphasizedAddressExample() {
+  return (
+    <Address block emphasized style={{ padding: '1rem', border: '1px solid #ccc' }}>
+      <strong>Corporate Headquarters</strong><br/>
+      123 Business Rd.<br/>
+      Suite 100<br/>
+      Metropolis, 12345
     </Address>
   );
 }
@@ -192,6 +214,7 @@ Shows how to render the `Address` component as a different HTML element or a cus
 
 ```tsx
 import { Address } from '@guyromellemagayano/components';
+import React from 'react';
 
 function PolymorphicAddressExample() {
   const CustomDiv = React.forwardRef((props, ref) => (
@@ -257,12 +280,12 @@ This component uses BEM (Block Element Modifier) methodology for its CSS classes
 
 ### Base Classes
 
-- `.address` : The base class for the `Address` component, defining its fundamental styles.
+- `.address` : The base class for the `Address` component, defining its fundamental styles with normal font style and line height.
 
 ### Modifiers
 
-- `.address--[modifier-name]` : Used for variations in state or appearance (e.g., `.address--footer`, `.address--highlighted`).
-- `.address__[element-name]` : Used for elements within the `Address` component (e.g., `.address__email`, `.address__phone`).
+- `.address--block`: Applied when the `block` prop is `true`, providing block display with bottom margin.
+- `.address--emphasized`: Applied when the `emphasized` prop is `true`, providing heavier font weight and distinct color.
 
 ### Customization Options
 
@@ -275,17 +298,17 @@ You can customize the component's appearance using various methods:
 
 ### CSS Variables
 
-Example CSS variables available for customization:
+The component provides basic CSS variables for customization:
 
 ```css
 .address {
-  --address-color: inherit;
-  --address-background: transparent;
-  --address-border: none;
-  --address-padding: 0;
-  --address-font-size: 1rem;
-  --address-line-height: 1.5;
-  --address-font-style: normal; /* Typically `font-style: normal` for address elements */
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.address--emphasized {
+  font-weight: 600;
+  color: var(--color-text-emphasis, #1a1a1a);
 }
 ```
 
@@ -303,11 +326,12 @@ Comprehensive test coverage is provided across these files:
 Tests cover a wide range of scenarios to ensure reliability:
 
 - **Rendering**: Verifies basic rendering, prop application, and correct DOM output.
+- **Display Modes**: Tests `block` and `emphasized` props functionality and data attributes.
 - **Interactions**: Tests user interactions (clicks, hovers) and event handling.
-- **Accessibility**: Ensures ARIA attributes, keyboard navigation, and screen reader compatibility.
-- **Analytics**: Validates analytics tracking and custom analytics functions.
+- **Accessibility**: Ensures proper accessibility attributes and keyboard navigation.
+- **Analytics**: Validates both `analyticsId` and `onAnalytics` functionality with graceful error handling.
 - **Polymorphic**: Confirms correct rendering when used with the `as` prop for different elements or custom components.
-- **Edge Cases**: Covers error states, boundary conditions, and invalid inputs.
+- **Edge Cases**: Covers error states, complex content, and analytics failures.
 
 ### Running Tests
 
@@ -330,6 +354,8 @@ pnpm test --coverage
 
 This component is highly optimized for performance:
 
+- **Minimal Overhead**: Simple implementation with efficient class name building.
+- **Conditional Analytics**: Analytics handlers are only created when analytics props are provided.
 - **Memoization**: Utilizes `React.memo` for its client-side components (`MemoizedAddressClient`) to prevent unnecessary re-renders.
 - **Lazy Loading**: Client-side components are dynamically imported and lazy-loaded on demand, reducing initial bundle size.
 - **Bundle Splitting**: Server-side and client-side code are naturally separated, further optimizing load times.
@@ -338,8 +364,9 @@ This component is highly optimized for performance:
 ## 🌐 Browser Support
 
 - **Modern Browsers**: Fully supported on the latest two versions of Chrome, Firefox, Safari, and Edge.
-- **Mobile Devices**: Optimized for iOS Safari and Chrome Mobile, providing a seamless experience.
+- **Mobile Devices**: Optimized for iOS Safari and Chrome Mobile with responsive font sizing.
 - **Accessibility Tools**: Compatible with major screen readers and assistive technologies.
+- **Print Media**: Special print styles ensure proper display in printed documents.
 
 ## 📘 TypeScript
 
@@ -352,8 +379,17 @@ import React, { useRef } from 'react';
 const MyComponent: React.FC = () => {
   const ref = useRef<AddressRef>(null);
   
+  const handleAnalytics = (data: Parameters<NonNullable<AddressProps['onAnalytics']>>[0]) => {
+    console.log(`Address clicked: ${data.content}`);
+  };
+  
   return (
-    <Address ref={ref}>
+    <Address 
+      ref={ref} 
+      block 
+      emphasized 
+      onAnalytics={handleAnalytics}
+    >
       <p>Our Address:</p>
       <p>123 Dev Street</p>
       <p>Codeville, CA 90210</p>
@@ -370,8 +406,8 @@ If you are migrating from a legacy version of a similar component to this `Addre
 
 1. **Import Changes**: Update your import statements to `import { Address } from '@guyromellemagayano/components';`.
 2. **Prop Changes**: Review and update any prop names or types that may have changed to align with the new API.
-3. **Styling**: Adjust your CSS class names to conform to the BEM format (`.address`, `.address--modifier`).
-4. **Analytics**: Migrate to the new analytics integration pattern if you were using a custom tracking solution.
+3. **Styling**: Adjust your CSS class names to conform to the BEM format (`.address`, `.address--block`, `.address--emphasized`).
+4. **Analytics**: Migrate to the new analytics integration pattern with support for both `analyticsId` and `onAnalytics` props.
 
 ### Breaking Changes
 
