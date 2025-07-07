@@ -31,7 +31,7 @@ export interface ButtonProps
  * Button component with polymorphic support, analytics, and modern styling.
  *
  * @example
- * ```tsx
+ * ```typescript
  * <Button variant="primary" size="md" onClick={handleClick}>
  *   Click me
  * </Button>

@@ -84,7 +84,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Bdo` component and use it in your React application:
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function ForcedDirection() {
@@ -129,7 +129,7 @@ These props are unique to the `Bdo` component.
 
 Demonstrates the fundamental usage of the `Bdo` component for text direction override.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function BasicBdoExample() {
@@ -145,7 +145,7 @@ function BasicBdoExample() {
 
 Shows explicit text direction override for different scenarios.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function DirectionBdoExample() {
@@ -163,7 +163,7 @@ function DirectionBdoExample() {
 
 Applies emphasized styling with direction-specific visual indicators.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function EmphasizedBdoExample() {
@@ -180,7 +180,7 @@ function EmphasizedBdoExample() {
 
 Applies custom CSS classes and inline styles to the `Bdo` component.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function StyledBdoExample() {
@@ -206,7 +206,7 @@ function StyledBdoExample() {
 
 Integrates analytics tracking for interactions with direction override content.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function AnalyticsBdoExample() {
@@ -234,7 +234,7 @@ function AnalyticsBdoExample() {
 
 Shows how to render the `Bdo` component as a different HTML element or a custom React component.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function PolymorphicBdoExample() {
@@ -256,7 +256,7 @@ function PolymorphicBdoExample() {
 
 Demonstrates usage of `Bdo` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Bdo } from '@guyromellemagayano/components';
 
 function ClientBdoExample() {
@@ -451,7 +451,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Bdo, type BdoProps, type BdoRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

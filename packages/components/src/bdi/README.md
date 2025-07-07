@@ -83,7 +83,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Bdi` component and use it in your React application:
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function UserMessage({ username, message }) {
@@ -128,7 +128,7 @@ These props are unique to the `Bdi` component.
 
 Demonstrates the fundamental usage of the `Bdi` component for text isolation.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function BasicBdiExample() {
@@ -144,7 +144,7 @@ function BasicBdiExample() {
 
 Shows setting explicit text direction for different types of content.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function DirectionBdiExample() {
@@ -162,7 +162,7 @@ function DirectionBdiExample() {
 
 Applies emphasized styling to make important content stand out.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function EmphasizedBdiExample() {
@@ -178,7 +178,7 @@ function EmphasizedBdiExample() {
 
 Applies custom CSS classes and inline styles to the `Bdi` component.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function StyledBdiExample() {
@@ -200,7 +200,7 @@ function StyledBdiExample() {
 
 Integrates analytics tracking for interactions with isolated text content.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function AnalyticsBdiExample() {
@@ -228,7 +228,7 @@ function AnalyticsBdiExample() {
 
 Shows how to render the `Bdi` component as a different HTML element or a custom React component.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function PolymorphicBdiExample() {
@@ -250,7 +250,7 @@ function PolymorphicBdiExample() {
 
 Demonstrates usage of `Bdi` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Bdi } from '@guyromellemagayano/components';
 
 function ClientBdiExample() {
@@ -420,7 +420,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Bdi, type BdiProps, type BdiRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

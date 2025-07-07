@@ -214,7 +214,7 @@ pnpm test:isolated
 
 **Best for**: Development with adequate memory
 
-```tsx
+```typescript
 export default defineConfig({
   test: {
     environment: 'jsdom',
@@ -245,7 +245,7 @@ export default defineConfig({
 
 **Best for**: CI, memory-constrained environments, component-level testing
 
-```tsx
+```typescript
 export default defineConfig({
   test: {
     environment: 'jsdom',
@@ -446,7 +446,7 @@ Every component must include tests for:
 
 **Primary testing framework** with excellent performance:
 
-```tsx
+```typescript
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Component } from './index';
@@ -475,7 +475,7 @@ describe('Component', () => {
 
 **Component testing utilities** for realistic testing:
 
-```tsx
+```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -556,7 +556,7 @@ pnpm test:coverage --reporter=html
 
 **Organize tests logically**:
 
-```tsx
+```typescript
 describe('Component', () => {
   // Setup and teardown
   beforeEach(() => {
@@ -598,7 +598,7 @@ describe('Component', () => {
 
 **Optimize test memory usage**:
 
-```tsx
+```typescript
 // Use cleanup in teardown
 afterEach(() => {
   cleanup();
@@ -626,7 +626,7 @@ const minimalProps = { /* minimal props */ };
 
 **Optimize test performance**:
 
-```tsx
+```typescript
 // Use efficient queries
 screen.getByRole('button'); // ✅ Good
 screen.getByTestId('button'); // ❌ Avoid
