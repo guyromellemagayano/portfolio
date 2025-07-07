@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length -->
+<!-- markdownlint-disable line-length ol-prefix -->
 # 🎯 Polymorphic Component Validation System
 
 This document describes the polymorphic validation system implemented across all components in this library to ensure type safety and proper semantic usage when components are rendered as different HTML elements.
@@ -104,7 +104,7 @@ The validation system consists of several key components working together:
 
 Located in `src/types.ts`, this function validates component usage at runtime:
 
-```tsx
+```typescript
 validatePolymorphicProps(
   componentName: string,
   asElement: string,
@@ -126,7 +126,7 @@ Pre-defined configurations for components with element-specific properties ensur
 
 ### Configuration Structure
 
-```tsx
+```typescript
 interface ElementSpecificPropsConfig {
   element: string;
   specificProps: string[];
@@ -186,7 +186,7 @@ Components where props work correctly across multiple element types:
 - **Risk Level**: **High** - These props only function on `<base>` elements
 - **Validation**: Always warns when used with other elements
 
-```tsx
+```typescript
 // ❌ Invalid usage - will show warning
 <Base as="div" href="https://example.com" target="_blank" />
 
@@ -196,7 +196,7 @@ Components where props work correctly across multiple element types:
 
 **Warning Message:**
 
-```
+```bash
 Base: The following props are only valid for <base> elements: href, target.
 You're rendering as <div>. These props set document-wide defaults and don't apply to other elements.
 Consider using a semantic <base> element or removing these props.
@@ -208,7 +208,7 @@ Consider using a semantic <base> element or removing these props.
 - **Risk Level**: **High** - These props are meaningless outside image maps
 - **Validation**: Always warns when used with other elements
 
-```tsx
+```typescript
 // ❌ Invalid usage - will show warning
 <Area as="button" coords="0,0,100,100" shape="rect" alt="Click me" />
 
@@ -218,7 +218,7 @@ Consider using a semantic <base> element or removing these props.
 
 **Warning Message:**
 
-```
+```bash
 Area: The following props are only valid for <area> elements: coords, shape, alt.
 You're rendering as <button>. These props define clickable regions in image maps and are meaningless on other elements.
 Consider using a semantic <area> element or removing these props.
@@ -230,7 +230,7 @@ Consider using a semantic <area> element or removing these props.
 - **Risk Level**: **High** - Media props have no effect on non-media elements
 - **Validation**: Always warns when used with other elements
 
-```tsx
+```typescript
 // ❌ Invalid usage - will show warning
 <Audio as="div" src="audio.mp3" controls autoPlay />
 
@@ -240,7 +240,7 @@ Consider using a semantic <area> element or removing these props.
 
 **Warning Message:**
 
-```
+```bash
 Audio: The following props are only valid for <audio> elements: src, controls, autoPlay.
 You're rendering as <div>. These props control audio playback and have no effect on non-media elements.
 Consider using a semantic <audio> element or removing these props.
@@ -254,7 +254,7 @@ Consider using a semantic <audio> element or removing these props.
 - **Risk Level**: **Medium** - Some props may work on other elements but lose semantic meaning
 - **Validation**: Warns when used with other elements
 
-```tsx
+```typescript
 // ❌ Semantically incorrect - will show warning
 <A as="button" href="https://example.com" target="_blank">Navigate</A>
 
@@ -269,7 +269,7 @@ Consider using a semantic <audio> element or removing these props.
 
 **Warning Message:**
 
-```
+```bash
 A: The following props are only valid for <a> elements: href, target.
 You're rendering as <button>. These props define navigation behavior and lose semantic meaning on other elements.
 Consider using a semantic <a> element or implementing navigation differently.
@@ -281,7 +281,7 @@ Consider using a semantic <a> element or implementing navigation differently.
 - **Risk Level**: **Medium** - `title` works on other elements but loses semantic meaning
 - **Validation**: Warns when used with other elements
 
-```tsx
+```typescript
 // ❌ Less semantic - will show warning
 <Abbr as="span" title="HyperText Markup Language">HTML</Abbr>
 
@@ -294,7 +294,7 @@ Consider using a semantic <a> element or implementing navigation differently.
 
 **Warning Message:**
 
-```
+```bash
 Abbr: The following props are only valid for <abbr> elements: title.
 You're rendering as <span>. The title prop loses its abbreviation semantic meaning on other elements.
 Consider using a semantic <abbr> element for proper abbreviation markup.
@@ -308,7 +308,7 @@ Consider using a semantic <abbr> element for proper abbreviation markup.
 - **Risk Level**: **Low** - Props work correctly on other elements
 - **Validation**: No warnings shown
 
-```tsx
+```typescript
 // ✅ Valid usage - no warning
 <Bdi as="span" dir="rtl">نص عربي</Bdi>
 <Bdo as="div" dir="ltr">Left-to-right text</Bdo>
@@ -326,7 +326,7 @@ Consider using a semantic <abbr> element for proper abbreviation markup.
 
 Warnings are only shown in development mode to avoid performance overhead in production:
 
-```tsx
+```typescript
 // Development environment
 if (process.env.NODE_ENV === "development") {
   console.warn(
@@ -380,7 +380,7 @@ Each warning provides comprehensive information to help developers understand an
 
 **Example Warning Breakdown:**
 
-```
+```bash
 [Component]: The following props are only valid for <[element]> elements: [props].
 You're rendering as <[asElement]>. [Context explanation].
 Consider [suggested solution].
@@ -396,7 +396,7 @@ When creating components with element-specific properties, follow this implement
 
 1. **Add to ELEMENT_CONFIGS** in `src/types.ts`:
 
-```tsx
+```typescript
 export const ELEMENT_CONFIGS = {
   // ... existing configs
   NEW_COMPONENT: {
@@ -411,13 +411,13 @@ export const ELEMENT_CONFIGS = {
 
 2. **Import validation utilities**:
 
-```tsx
+```typescript
 import { validatePolymorphicProps, ELEMENT_CONFIGS } from "../types";
 ```
 
 3. **Add validation logic** in the component:
 
-```tsx
+```typescript
 const Component = React.forwardRef<Ref, Props>((props, ref) => {
   const { as: Component = "targetElement", ...rest } = props;
   const asElement = typeof Component === "string" ? Component : "unknown";
@@ -448,7 +448,7 @@ const Component = React.forwardRef<Ref, Props>((props, ref) => {
 
 ### Complete Implementation Example
 
-```tsx
+```typescript
 import React, { useMemo } from "react";
 import { validatePolymorphicProps, ELEMENT_CONFIGS } from "../types";
 
@@ -536,7 +536,7 @@ npx vitest run src/component-name/index.test.tsx
 
 ### Test Examples
 
-```tsx
+```typescript
 describe("Polymorphic Validation", () => {
   beforeEach(() => {
     mockConsoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -594,7 +594,7 @@ The validation system is designed to provide maximum value during development wh
 
 ### Bundle Size Impact
 
-```tsx
+```typescript
 // This code is completely removed in production builds
 if (process.env.NODE_ENV === "development") {
   validatePolymorphicProps(/* ... */);
@@ -610,7 +610,7 @@ if (process.env.NODE_ENV === "development") {
 
 For complex validation scenarios, you can extend the system:
 
-```tsx
+```typescript
 // Custom validation function
 function validateCustomComponent(props: CustomProps, asElement: string) {
   if (process.env.NODE_ENV === "development") {
@@ -632,7 +632,7 @@ useMemo(() => {
 
 The system works alongside TypeScript's type system:
 
-```tsx
+```typescript
 // TypeScript prevents invalid combinations at compile time
 type ConditionalProps<T extends React.ElementType> = 
   T extends "base" 
@@ -651,7 +651,7 @@ interface ComponentProps<T extends React.ElementType = "base">
 
 Track validation warnings for insights into usage patterns:
 
-```tsx
+```typescript
 if (process.env.NODE_ENV === "development" && hasInvalidProps) {
   // Log validation warning
   console.warn(warningMessage);
@@ -673,7 +673,7 @@ if (process.env.NODE_ENV === "development" && hasInvalidProps) {
 
 The centralized configuration system ensures consistency across all components:
 
-```tsx
+```typescript
 interface ElementSpecificPropsConfig {
   element: string;           // Target element name
   specificProps: string[];  // Props specific to this element
@@ -683,7 +683,7 @@ interface ElementSpecificPropsConfig {
 
 ### Available Configurations
 
-```tsx
+```typescript
 export const ELEMENT_CONFIGS = {
   BASE: createElementConfig(
     "base",
@@ -709,7 +709,7 @@ export const ELEMENT_CONFIGS = {
 
 ### Creating Custom Configurations
 
-```tsx
+```typescript
 // Helper function for creating configurations
 function createElementConfig(
   element: string,
@@ -745,7 +745,7 @@ export const ELEMENT_CONFIGS = {
 
 Planned ESLint rules for static analysis:
 
-```js
+```javascript
 // .eslintrc.js
 {
   "rules": {
@@ -780,7 +780,7 @@ For teams adopting the validation system:
 
 For existing components without validation:
 
-```tsx
+```typescript
 // Before: No validation
 const LegacyComponent = ({ as: Component = "element", ...props }) => (
   <Component {...props} />
@@ -833,7 +833,7 @@ Integration with TypeScript provides compile-time safety:
 
 The system enhances TypeScript's built-in type checking:
 
-```tsx
+```typescript
 // TypeScript + Runtime validation working together
 interface BaseProps<T extends React.ElementType = "base"> {
   as?: T;
