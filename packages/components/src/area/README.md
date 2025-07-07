@@ -87,7 +87,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Area` component and use it within a `<Map>` component (or a native `<map>` element) in your React application:
 
-```tsx
+```typescript
 import { Img, Map, Area } from '@guyromellemagayano/components';
 
 function MyImageMap() {
@@ -147,7 +147,7 @@ These props are unique to the `Area` component and provide its advanced function
 
 The component exports a comprehensive `AreaUtils` object with utility functions for coordinate manipulation:
 
-```tsx
+```typescript
 import { AreaUtils } from '@guyromellemagayano/components';
 
 // Validate coordinates
@@ -193,7 +193,7 @@ const touchOptimized = AreaUtils.checkTouchOptimization('rect', '0,0,100,100', 4
 
 Demonstrates the fundamental usage of the `Area` component within an image map.
 
-```tsx
+```typescript
 import { Img, Map, Area } from '@guyromellemagayano/components';
 
 function BasicAreaExample() {
@@ -213,7 +213,7 @@ function BasicAreaExample() {
 
 Demonstrates the rich analytics data available with geometric calculations and interaction detection.
 
-```tsx
+```typescript
 import { Img, Map, Area, type AreaAnalyticsData } from '@guyromellemagayano/components';
 
 function AdvancedAnalyticsExample() {
@@ -267,7 +267,7 @@ function AdvancedAnalyticsExample() {
 
 Demonstrates the debug visualization and automatic coordinate validation.
 
-```tsx
+```typescript
 import { Img, Map, Area } from '@guyromellemagayano/components';
 
 function DebugValidationExample() {
@@ -312,7 +312,7 @@ function DebugValidationExample() {
 
 Demonstrates touch optimization checking and validation.
 
-```tsx
+```typescript
 import { Img, Map, Area, AreaUtils } from '@guyromellemagayano/components';
 
 function TouchValidationExample() {
@@ -354,7 +354,7 @@ function TouchValidationExample() {
 
 Demonstrates programmatic coordinate generation and validation.
 
-```tsx
+```typescript
 import { Img, Map, Area, AreaUtils } from '@guyromellemagayano/components';
 
 function UtilityFunctionsExample() {
@@ -402,7 +402,7 @@ function UtilityFunctionsExample() {
 
 Shows how to use the `as` prop to render as a different element (with semantic warnings).
 
-```tsx
+```typescript
 import { Area } from '@guyromellemagayano/components';
 import React from 'react';
 
@@ -428,7 +428,7 @@ function PolymorphicAreaExample() {
 
 Demonstrates client-side rendering with dynamic coordinates.
 
-```tsx
+```typescript
 import { Area, Img, Map } from '@guyromellemagayano/components';
 import React, { useState, useEffect } from 'react';
 
@@ -603,7 +603,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided with comprehensive type safety:
 
-```tsx
+```typescript
 import { 
   Area, 
   AreaUtils,

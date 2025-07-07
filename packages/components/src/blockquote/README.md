@@ -87,7 +87,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Blockquote` component and use it in your React application:
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function QuotedContent() {
@@ -131,7 +131,7 @@ These props are unique to the `Blockquote` component.
 
 Demonstrates the fundamental usage of the `Blockquote` component for semantic quotations.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function BasicBlockquoteExample() {
@@ -147,7 +147,7 @@ function BasicBlockquoteExample() {
 
 Shows how to add a citation source using the `cite` attribute.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function CitedBlockquoteExample() {
@@ -168,7 +168,7 @@ function CitedBlockquoteExample() {
 
 Demonstrates usage with complex nested HTML content including paragraphs and citations.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function NestedBlockquoteExample() {
@@ -189,7 +189,7 @@ function NestedBlockquoteExample() {
 
 Applies custom CSS classes and inline styles to the `Blockquote` component.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function StyledBlockquoteExample() {
@@ -212,7 +212,7 @@ function StyledBlockquoteExample() {
 
 Integrates analytics tracking for interactions with quoted content.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function AnalyticsBlockquoteExample() {
@@ -240,7 +240,7 @@ Shows how to render the `Blockquote` component as a different HTML element or a 
 
 ⚠️ **Warning**: When using the `as` prop with non-blockquote elements, the `cite` attribute will trigger validation warnings in development mode since it's only semantically valid for `<blockquote>` elements.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function PolymorphicBlockquoteExample() {
@@ -266,7 +266,7 @@ function PolymorphicBlockquoteExample() {
 
 Demonstrates usage of `Blockquote` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Blockquote } from '@guyromellemagayano/components';
 
 function ClientBlockquoteExample() {
@@ -469,7 +469,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Blockquote, type BlockquoteProps, type BlockquoteRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

@@ -88,7 +88,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Body` component and use it in your React application:
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function DocumentBody() {
@@ -133,7 +133,7 @@ These props are unique to the `Body` component.
 
 Demonstrates the fundamental usage of the `Body` component for document structure.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function BasicBodyExample() {
@@ -151,7 +151,7 @@ function BasicBodyExample() {
 
 Shows how to control scrolling behavior for different layout needs.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function ScrollControlExample() {
@@ -179,7 +179,7 @@ function ScrollControlExample() {
 
 Demonstrates background styling options with theme support.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function BackgroundBodyExample() {
@@ -203,7 +203,7 @@ function BackgroundBodyExample() {
 
 Applies custom CSS classes and inline styles to the `Body` component.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function StyledBodyExample() {
@@ -226,7 +226,7 @@ function StyledBodyExample() {
 
 Integrates analytics tracking for interactions with document body content.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function AnalyticsBodyExample() {
@@ -255,7 +255,7 @@ Shows how to render the `Body` component as a different HTML element or a custom
 
 ⚠️ **Warning**: When using the `as` prop with non-body elements, some body-specific behaviors may not apply, and validation warnings will appear in development mode.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function PolymorphicBodyExample() {
@@ -281,7 +281,7 @@ function PolymorphicBodyExample() {
 
 Demonstrates usage of `Body` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Body } from '@guyromellemagayano/components';
 
 function ClientBodyExample() {
@@ -526,7 +526,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Body, type BodyProps, type BodyRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 
