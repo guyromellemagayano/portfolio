@@ -116,7 +116,8 @@ These props are unique to the `A` component.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `href` | `string` | `"#"` | The URL that the hyperlink points to. Unsafe protocols like `javascript:` are ignored. |
+| `href` | `string` | `"#"` | The URL that the hyperlink points to. |
+| `target` | `string` | `"_self"` | Specifies where to open the linked document (e.g., `_blank`, `_self`, `_parent`, `_top`). |
 | `variant` | `'default' \| 'primary' \| 'secondary' \| 'unstyled'` | `'default'` | The visual variant of the link, affecting its color and decoration. |
 | `active` | `boolean` | `false` | If `true`, applies active styling and sets `aria-current="page"`. |
 | `disabled` | `boolean` | `false` | If `true`, disables the link, making it non-interactive. |
@@ -126,7 +127,6 @@ These props are unique to the `A` component.
 | `tooltip` | `string` | - | Text to display in an accessible tooltip on hover. |
 | `confirm` | `string` | - | If set, displays a `window.confirm()` dialog with this message before navigating. |
 | `prefetch` | `boolean` | `false` | If `true`, enables prefetching for internal links on hover. |
-| `target` | `string` | `"_self"` | Specifies where to open the linked document. Automatically set to `_blank` for external links. |
 | `download` | `string` \| `boolean` | `false` | Specifies that the target will be downloaded when a user clicks on the hyperlink. |
 | `hreflang` | `string` | - | Specifies the language of the linked document. |
 | `ping` | `string` | - | A space-separated list of URLs to which, when the hyperlink is followed, `POST` requests will be sent. |
@@ -329,7 +329,6 @@ This component uses BEM (Block Element Modifier) methodology for its CSS classes
 - `.a--loading`: Applied when the `loading` prop is `true`.
 - `.a--with-icon`: Applied when an `icon` is provided.
 - `.a--icon-left` / `.a--icon-right`: Applied based on the `iconPosition` prop.
-- `.a__[element-name]` : Used for elements within the `A` component (e.g., `.a__icon`).
 
 ### Customization Options
 
@@ -374,9 +373,9 @@ Comprehensive test coverage is provided across these files:
 Tests cover a wide range of scenarios to ensure reliability:
 
 - **Rendering**: Verifies basic rendering, prop application, and correct DOM output.
-- **Interactions**: Tests user interactions (clicks, hovers) and event handling.
+- **Interactions**: Tests user interactions (clicks, hovers) and event handling, including keyboard (`Enter`/`Space`) activation of the `confirm` dialog.
 - **Accessibility**: Ensures ARIA attributes, keyboard navigation, and screen reader compatibility.
-- **Analytics**: Validates analytics tracking and custom analytics functions.
+- **Analytics**: Validates analytics tracking and custom analytics functions, including graceful failure if the tracking service is unavailable.
 - **Polymorphic**: Confirms correct rendering when used with the `as` prop for different elements or custom components.
 - **Edge Cases**: Covers error states, boundary conditions, and invalid inputs.
 
