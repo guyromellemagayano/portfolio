@@ -1,0 +1,23 @@
+/* =============================================================================
+   BR COMPONENT STYLES
+   ============================================================================= */
+
+.br {
+  display: inline;
+  /* No visible style by default, but can be targeted for debugging */
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .br {
+    outline: 1px dashed #007acc;
+    outline-offset: 2px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .br {
+    /* No special print style for <br> */
+  }
+}
