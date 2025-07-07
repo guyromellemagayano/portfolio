@@ -88,7 +88,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Button` component and use it in your React application:
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function ActionButton() {
@@ -135,7 +135,7 @@ These props are unique to the `Button` component.
 
 Demonstrates the fundamental usage of the `Button` component with different variants.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function BasicButtonExample() {
@@ -155,7 +155,7 @@ function BasicButtonExample() {
 
 Shows all available variants and sizes for comprehensive styling options.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function VariantsAndSizesExample() {
@@ -190,7 +190,7 @@ function VariantsAndSizesExample() {
 
 Demonstrates loading spinners and disabled button states.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 import { useState } from 'react';
 
@@ -227,7 +227,7 @@ function LoadingDisabledExample() {
 
 Applies custom CSS classes and inline styles to the `Button` component.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function StyledButtonExample() {
@@ -276,7 +276,7 @@ function StyledButtonExample() {
 
 Integrates comprehensive analytics tracking for button interactions.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function AnalyticsButtonExample() {
@@ -328,7 +328,7 @@ function AnalyticsButtonExample() {
 
 Shows how to render the `Button` component as different HTML elements or custom React components.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function PolymorphicButtonExample() {
@@ -383,7 +383,7 @@ function PolymorphicButtonExample() {
 
 Demonstrates usage of `Button` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function ClientButtonExample() {
@@ -667,7 +667,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Button, type ButtonProps, type ButtonRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

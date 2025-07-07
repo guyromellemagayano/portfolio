@@ -80,7 +80,7 @@ yarn add @guyromellemagayano/components
 
 Import the `A` component and use it in your React application:
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function MyComponent() {
@@ -139,7 +139,7 @@ These props are unique to the `A` component.
 
 Demonstrates the fundamental usage of the `A` component.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function BasicAExample() {
@@ -155,7 +155,7 @@ function BasicAExample() {
 
 Shows the different visual variants of the `A` component.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 import React from 'react';
 
@@ -175,7 +175,7 @@ function VariantsAExample() {
 
 Demonstrates using the `icon` and `iconPosition` props.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 import React from 'react';
 
@@ -201,7 +201,7 @@ function IconAExample() {
 
 Applies custom CSS classes and inline styles to the `A` component.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function StyledAExample() {
@@ -221,7 +221,7 @@ function StyledAExample() {
 
 Integrates analytics tracking for clicks on the `A` component.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function AnalyticsAExample() {
@@ -247,7 +247,7 @@ function AnalyticsAExample() {
 
 Shows how to render the `A` component as a different HTML element or a custom React component.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function PolymorphicAExample() {
@@ -267,7 +267,7 @@ function PolymorphicAExample() {
 
 Demonstrates usage of `A` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function ClientAExample() {
@@ -415,7 +415,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { A, type AProps, type ARef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

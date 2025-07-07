@@ -107,7 +107,7 @@ src/component-name/
 
 ### Main Component (`index.tsx`)
 
-```tsx
+```typescript
 import React, { Suspense, useCallback, useMemo } from "react";
 
 import {
@@ -293,7 +293,7 @@ export default Component;
 
 ### Client Component (`index.client.tsx`)
 
-```tsx
+```typescript
 import React, { forwardRef, memo } from "react";
 import type { ComponentProps, ComponentRef } from "./index";
 
@@ -319,7 +319,7 @@ MemoizedComponentClient.displayName = "MemoizedComponentClient";
 
 Follow this specific import order for consistency:
 
-```tsx
+```typescript
 // 1. React imports
 import React, { Suspense, useCallback, useMemo } from "react";
 
@@ -336,7 +336,7 @@ import "./styles.css";
 
 ### Required Imports
 
-```tsx
+```typescript
 import React, { Suspense, useCallback, useMemo } from "react";
 import type { CommonComponentProps } from "../types";
 import { ELEMENT_CONFIGS, validatePolymorphicProps } from "../types";
@@ -344,7 +344,7 @@ import { ELEMENT_CONFIGS, validatePolymorphicProps } from "../types";
 
 ### Type Definitions
 
-```tsx
+```typescript
 export type ComponentRef = React.ComponentRef<"element">;
 
 export interface ComponentProps
@@ -362,7 +362,7 @@ export interface ComponentProps
 
 ### Analytics Data Type
 
-```tsx
+```typescript
 interface AnalyticsData {
   event: string;
   category: string;
@@ -375,7 +375,7 @@ interface AnalyticsData {
 
 Follow these patterns for code organization and documentation:
 
-```tsx
+```typescript
 // Lazy load client components for code splitting
 const ComponentClient = React.lazy(async () => {
   const module = await import("./index.client");
@@ -427,7 +427,7 @@ if (isClient) {
 
 For components with element-specific props, add to `types.ts`:
 
-```tsx
+```typescript
 export const ELEMENT_CONFIGS = {
   // ... existing configs
   COMPONENT: createElementConfig(
@@ -440,7 +440,7 @@ export const ELEMENT_CONFIGS = {
 
 ### Implementation in Component
 
-```tsx
+```typescript
 // Polymorphic validation - warn about element-specific props when rendering as different element
 useMemo(() => {
   validatePolymorphicProps("ComponentName", asElement, props as Record<string, unknown>, ELEMENT_CONFIGS.COMPONENT);
@@ -451,7 +451,7 @@ useMemo(() => {
 
 Always include these data attributes:
 
-```tsx
+```typescript
 "data-polymorphic-element":
   asElement !== "element" ? asElement : undefined,
 "data-element-validation":
@@ -464,14 +464,14 @@ Always include these data attributes:
 
 ### Required Props
 
-```tsx
+```typescript
 analyticsId?: string;
 onAnalytics?: (data: AnalyticsData) => void;
 ```
 
 ### Implementation Pattern
 
-```tsx
+```typescript
 const hasAnalytics = analyticsId || onAnalytics;
 
 const handleClick = useCallback(
@@ -511,7 +511,7 @@ const handleClick = useCallback(
 
 ### Data Attribute
 
-```tsx
+```typescript
 "data-analytics-id": analyticsId || undefined,
 ```
 
@@ -521,7 +521,7 @@ const handleClick = useCallback(
 
 Always support these event handlers:
 
-```tsx
+```typescript
 onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 onMouseEnter?: (event: React.MouseEvent<HTMLElement>) => void;
 onFocus?: (event: React.FocusEvent<HTMLElement>) => void;
@@ -531,7 +531,7 @@ onFocus?: (event: React.FocusEvent<HTMLElement>) => void;
 
 Implement robust error handling for external integrations:
 
-```tsx
+```typescript
 // Analytics error handling
 try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -552,7 +552,7 @@ try {
 
 ### Environment-Aware Behavior
 
-```tsx
+```typescript
 // Only execute in browser environment
 if (typeof window !== "undefined") {
   // Browser-specific code
@@ -566,7 +566,7 @@ if (process.env.NODE_ENV === "development") {
 
 ### Implementation Pattern
 
-```tsx
+```typescript
 // Always use useCallback for event handlers
 const handleClick = useCallback(
   (event: React.MouseEvent<HTMLElement>) => {
@@ -649,7 +649,7 @@ const enhancedProps = useMemo(
 
 ### Class Name Building
 
-```tsx
+```typescript
 className: [
   "component",
   variant && "component--variant",
@@ -693,7 +693,7 @@ Every component must include:
 
 - **🏷️ Props Interface with JSDoc comments**
 
-  ```tsx
+  ```typescript
   interface ComponentProps {
     /** Clear description of what this prop does */
     propName: PropType;
@@ -702,7 +702,7 @@ Every component must include:
 
 - **📝 Component JSDoc**
 
-  ```tsx
+  ```typescript
   /**
    * Brief component description.
    * 
@@ -722,7 +722,7 @@ Every component must include:
 
 When implementing analytics:
 
-```tsx
+```typescript
 interface AnalyticsData {
   event: string;
   category: string;
@@ -767,7 +767,7 @@ For components with significant complexity (>300 lines):
 
 1. **🔧 Extract utilities to `utils.ts`**:
 
-```tsx
+```typescript
 // utils.ts
 export function validateInput(value: string): boolean {
   // Implementation
@@ -780,7 +780,7 @@ export function calculateDimensions(props: Props): Dimensions {
 
 2. **🧩 Use sub-components for UI parts**:
 
-```tsx
+```typescript
 function ComponentSubpart({ data }: SubpartProps) {
   return <div>{/* Implementation */}</div>;
 }
@@ -788,7 +788,7 @@ function ComponentSubpart({ data }: SubpartProps) {
 
 3. **📊 Group related functionality**:
 
-```tsx
+```typescript
 // =============================================================================
 // VALIDATION UTILITIES
 // =============================================================================
@@ -806,7 +806,7 @@ function ComponentSubpart({ data }: SubpartProps) {
 
 ### Test File Structure
 
-```tsx
+```typescript
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -852,7 +852,7 @@ describe("Component Component", () => {
 
 For components that render as `<body>`, `<html>`, or other restricted elements:
 
-```tsx
+```typescript
 // Use smoke tests for restricted elements
 it("renders as <body> without throwing (smoke test)", () => {
   expect(() => render(<Body {...defaultProps} />)).not.toThrow();
@@ -884,7 +884,7 @@ Brief description of the component.
 
 ### Basic Usage
 
-```tsx
+```typescript
 import { Component } from '@your-org/components';
 
 <Component>Content</Component>
@@ -892,19 +892,19 @@ import { Component } from '@your-org/components';
 
 ### With Variants
 
-```tsx
+```typescript
 <Component variant>Variant content</Component>
 ```
 
 ### Polymorphic Rendering
 
-```tsx
+```typescript
 <Component as="div">Div with component semantics</Component>
 ```
 
 ### Analytics Integration
 
-```tsx
+```typescript
 <Component analyticsId="tracked-component">Tracked content</Component>
 ```
 
@@ -944,7 +944,7 @@ import { Component } from '@your-org/components';
 
 ### Example 1
 
-```tsx
+```typescript
 // Code example
 ```
 
@@ -952,7 +952,7 @@ import { Component } from '@your-org/components';
 
 ### From Basic HTML
 
-```tsx
+```typescript
 // Before
 <element className="custom">Content</element>
 
@@ -986,7 +986,7 @@ pnpm test src/component-name/index.test.tsx
 
 ### Lazy Loading
 
-```tsx
+```typescript
 const ComponentClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ComponentClient };
@@ -995,7 +995,7 @@ const ComponentClient = React.lazy(async () => {
 
 ### 💾 Memoization
 
-```tsx
+```typescript
 // Use useMemo for expensive computations
 const enhancedProps = useMemo(
   () => ({
@@ -1027,7 +1027,7 @@ const handleClick = useCallback(
 
 ### Implementation
 
-```tsx
+```typescript
 // Focus styles in CSS
 .component:focus-visible {
   outline: 2px solid #007acc;
@@ -1092,7 +1092,7 @@ For existing components that don't follow these standards:
 
 All components MUST properly support external CSS classes:
 
-```tsx
+```typescript
 // REQUIRED: Always merge external className with component classes
 className: [
   "component",           // Base component class
@@ -1107,7 +1107,7 @@ className: [
 
 ### Variant Management
 
-```tsx
+```typescript
 // Multiple boolean variants with clear naming
 scrollable?: boolean;
 hasBackground?: boolean;
@@ -1129,7 +1129,7 @@ className: [
 
 ### Style Merging Pattern
 
-```tsx
+```typescript
 // Merge custom styles with component logic
 style: {
   ...style,
@@ -1139,7 +1139,7 @@ style: {
 
 ### Element-Specific Defaults
 
-```tsx
+```typescript
 // Use semantic element as default
 as: Component = "body",
 
@@ -1149,7 +1149,7 @@ ELEMENT_CONFIGS.BODY
 
 ### JSDoc Documentation
 
-```tsx
+```typescript
 /**
  * Universal body component with semantic structure, analytics, and accessibility.
  * Supports server-side and client-side rendering.
@@ -1158,7 +1158,7 @@ ELEMENT_CONFIGS.BODY
 
 ### Export Pattern
 
-```tsx
+```typescript
 // Named export for the component
 export const Body = BodyComponent;
 
