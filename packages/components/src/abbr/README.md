@@ -80,7 +80,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Abbr` component and use it to define an abbreviation:
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 
 function MyDocument() {
@@ -127,7 +127,7 @@ These props are unique to the `Abbr` component.
 
 Demonstrates the fundamental usage of the `Abbr` component with its `title` attribute.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 
 function BasicAbbrExample() {
@@ -143,7 +143,7 @@ function BasicAbbrExample() {
 
 Applies custom CSS classes and inline styles to the `Abbr` component.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 
 function StyledAbbrExample() {
@@ -165,7 +165,7 @@ function StyledAbbrExample() {
 
 Integrates analytics tracking for interactions with the `Abbr` component.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 
 function AnalyticsAbbrExample() {
@@ -193,7 +193,7 @@ function AnalyticsAbbrExample() {
 
 Shows how to render the `Abbr` component as a different HTML element or a custom React component. **Note**: Rendering `<abbr>` as a generic element will cause semantic meaning to be lost and trigger a development warning.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 import React from 'react';
 
@@ -216,7 +216,7 @@ function PolymorphicAbbrExample() {
 
 Demonstrates the `emphasized` prop and a custom `tooltip` that overrides the title.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 
 function EmphasizedAbbrExample() {
@@ -238,7 +238,7 @@ function EmphasizedAbbrExample() {
 
 Demonstrates usage of the `Abbr` component with client-side rendering and optional memoization for dynamic abbreviations.
 
-```tsx
+```typescript
 import { Abbr } from '@guyromellemagayano/components';
 import React, { useState, useEffect } from 'react';
 
@@ -396,7 +396,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Abbr, type AbbrProps, type AbbrRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

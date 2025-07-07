@@ -81,7 +81,7 @@ pnpm add @guyromellemagayano/components
 
 ### Basic Usage
 
-```tsx
+```typescript
 import { Base } from '@guyromellemagayano/components';
 
 function App() {
@@ -124,13 +124,13 @@ These props are unique to the `Base` component.
 
 ### Basic Example
 
-```tsx
+```typescript
 <Base href="https://example.com/api/" />
 ```
 
 ### With Target
 
-```tsx
+```typescript
 <Base 
   href="https://example.com/" 
   target="_blank" 
@@ -139,7 +139,7 @@ These props are unique to the `Base` component.
 
 ### Emphasized for Debugging
 
-```tsx
+```typescript
 <Base 
   href="https://example.com/" 
   emphasized
@@ -151,7 +151,7 @@ These props are unique to the `Base` component.
 
 Enable visual debugging with a fixed overlay that displays href and target:
 
-```tsx
+```typescript
 <Base 
   href="https://example.com/" 
   target="_blank"
@@ -162,7 +162,7 @@ Enable visual debugging with a fixed overlay that displays href and target:
 
 ### With Analytics
 
-```tsx
+```typescript
 <Base 
   href="https://example.com/" 
   analyticsId="main-base"
@@ -175,7 +175,7 @@ Enable visual debugging with a fixed overlay that displays href and target:
 ⚠️ **Warning**: Using `as` with non-base elements loses semantic meaning and
 triggers validation warnings in development.
 
-```tsx
+```typescript
 <Base 
   as="div" 
   href="https://example.com/" 
@@ -187,7 +187,7 @@ triggers validation warnings in development.
 
 Demonstrates usage of `Base` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 <Base 
   href="https://dynamic.example.com/"
   target="_self"
@@ -212,7 +212,7 @@ The component includes a sophisticated polymorphic validation system that:
 
 Example of validation warning:
 
-```tsx
+```typescript
 // This will trigger a development warning
 <Base as="div" href="/api/" target="_blank">
   ⚠️ Invalid usage - href/target not semantically valid for div elements
@@ -230,7 +230,7 @@ The validation system provides helpful warnings during development:
 
 Example of validation warning:
 
-```tsx
+```typescript
 // This will trigger a development warning
 <Base as="div" href="/api/" target="_blank">
   ⚠️ Invalid usage - href/target not semantically valid for div elements
@@ -363,7 +363,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Base, type BaseProps, type BaseRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 

@@ -80,7 +80,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Address` component and use it in your React application:
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function MyContactInfo() {
@@ -127,7 +127,7 @@ These props are unique to the `Address` component.
 
 Demonstrates the fundamental usage of the `Address` component for contact information.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function BasicAddressExample() {
@@ -147,7 +147,7 @@ function BasicAddressExample() {
 
 Demonstrates using the `block` and `emphasized` props together.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function EmphasizedAddressExample() {
@@ -166,7 +166,7 @@ function EmphasizedAddressExample() {
 
 Applies custom CSS classes and inline styles to the `Address` component.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function StyledAddressExample() {
@@ -187,7 +187,7 @@ function StyledAddressExample() {
 
 Integrates analytics tracking for interactions within the `Address` component.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function AnalyticsAddressExample() {
@@ -212,7 +212,7 @@ function AnalyticsAddressExample() {
 
 Shows how to render the `Address` component as a different HTML element or a custom React component, while still maintaining semantic intent where possible.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 import React from 'react';
 
@@ -235,7 +235,7 @@ function PolymorphicAddressExample() {
 
 Demonstrates usage of the `Address` component with client-side rendering and optional memoization.
 
-```tsx
+```typescript
 import { Address } from '@guyromellemagayano/components';
 
 function ClientAddressExample() {
@@ -372,7 +372,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Address, type AddressProps, type AddressRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 
