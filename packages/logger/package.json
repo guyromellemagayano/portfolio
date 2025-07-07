@@ -107,8 +107,6 @@
     "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
-    "eslint-plugin-import": "catalog:",
-    "eslint-plugin-simple-import-sort": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
