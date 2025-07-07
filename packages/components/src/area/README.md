@@ -1,7 +1,7 @@
 <!-- markdownlint-disable line-length -->
 # Area Component
 
-A polymorphic and accessible wrapper for the HTML `<area>` element, specifically designed for defining clickable regions within an image map. This component ensures high performance and adheres to strict accessibility standards for interactive image maps.
+A sophisticated, polymorphic wrapper for the HTML `<area>` element with advanced coordinate validation, touch optimization, debug mode, and comprehensive analytics. Specifically designed for defining clickable regions within image maps with enterprise-grade features.
 
 ## 📋 Table of Contents
 
@@ -16,10 +16,17 @@ A polymorphic and accessible wrapper for the HTML `<area>` element, specifically
   - [⚙️ Props](#️-props)
     - [Standard Props](#standard-props)
     - [Component-Specific Props](#component-specific-props)
+  - [🛠️ Utility Functions](#️-utility-functions)
+    - [AreaUtils Export](#areautils-export)
+    - [Coordinate Generation](#coordinate-generation)
+    - [Validation Functions](#validation-functions)
+    - [Geometric Calculations](#geometric-calculations)
   - [💡 Examples](#-examples)
     - [Basic Example](#basic-example)
-    - [With Custom Styling](#with-custom-styling)
-    - [With Analytics](#with-analytics)
+    - [With Advanced Analytics](#with-advanced-analytics)
+    - [With Debug Mode and Validation](#with-debug-mode-and-validation)
+    - [Touch Validation Example](#touch-validation-example)
+    - [Using Utility Functions](#using-utility-functions)
     - [Polymorphic Rendering](#polymorphic-rendering)
     - [Client-Side Rendering](#client-side-rendering)
   - [♿ Accessibility](#-accessibility)
@@ -50,15 +57,17 @@ A polymorphic and accessible wrapper for the HTML `<area>` element, specifically
 
 ### Purpose
 
-The `Area` component provides a flexible, accessible HTML `<area>` element, exclusively used within `<map>` elements to define clickable regions in an image map. It ensures that interactive areas of an image are semantically correct and accessible, while maintaining high performance.
+The `Area` component provides a sophisticated, accessible HTML `<area>` element for defining clickable regions within image maps. Beyond basic functionality, it includes advanced coordinate validation, touch optimization checking, geometric calculations, debug visualization, and comprehensive analytics tracking with interaction type detection.
 
 ### Key Features
 
-- **Semantic Markup**: Utilizes the native `<area>` HTML element for proper semantic meaning within image maps.
-- **Polymorphic Rendering**: Ability to render as different HTML elements or custom components (with appropriate warnings if semantic meaning is lost).
-- **Comprehensive Event Handling**: Robust handling of various user events specific to interactive map areas.
-- **High Performance**: Optimized for fast rendering and efficient updates.
-- **Accessibility Compliance**: Built with WCAG 2.1 AA standards for interactive image maps.
+- **Coordinate Validation**: Automatic validation of coordinates based on shape with development warnings
+- **Touch Optimization**: WCAG-compliant touch target validation with 44px minimum recommendations
+- **Debug Mode**: Visual debug overlays in development showing area boundaries and coordinates
+- **Advanced Analytics**: Rich analytics data including geometric calculations, interaction types, and touch optimization status
+- **Utility Functions**: Comprehensive `AreaUtils` export for coordinate manipulation
+- **Accessibility Excellence**: Full WCAG 2.1 AA compliance with focus management and screen reader support
+- **Performance Optimized**: Client-side code splitting, memoization, and efficient geometric calculations
 
 ## 🚀 Quick Start
 
@@ -110,25 +119,73 @@ These props are common across many components in the library.
 | `isClient` | `boolean` | `false` | If `true`, the component will be rendered client-side, enabling client-only features. |
 | `isMemoized` | `boolean` | `false` | If `true` and `isClient` is also `true`, the client component will be memoized for performance optimization. |
 | `analyticsId` | `string` | - | A unique identifier for analytics tracking of component interactions. |
-| `onAnalytics` | `(data: { event: string; category: string; label: string; content: string; }) => void` | - | A custom function to handle analytics events. If provided, it overrides the default analytics behavior. |
 | `[key: data-${string}]` | `string \| undefined` | - | Supports arbitrary `data-*` attributes for testing and debugging purposes. |
 
 ### Component-Specific Props
 
-These props are unique to the `Area` component and are essential for defining image map regions.
+These props are unique to the `Area` component and provide its advanced functionality.
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `alt` | `string` | - | A short, descriptive alternative text for the area, crucial for accessibility. |
+| `alt` | `string` | - | **Required**. A short, descriptive alternative text for the area, crucial for accessibility. |
 | `coords` | `string` | - | A set of comma-separated coordinates defining the shape of the area. Format varies by `shape`. |
 | `shape` | `"rect" \| "circle" \| "poly" \| "default"` | `"rect"` | The shape of the area. |
 | `href` | `string` | - | The URL that the hyperlink points to when the area is clicked. |
 | `target` | `string` | `"_self"` | Specifies where to open the linked document (e.g., `_blank`, `_self`, `_parent`, `_top`). |
-| `download` | `string` \| `boolean` | `false` | Specifies that the target will be downloaded when a user clicks on the hyperlink. |
-| `hreflang` | `string` | - | Specifies the language of the linked document. |
-| `ping` | `string` | - | A space-separated list of URLs to which, when the hyperlink is followed, `POST` requests will be sent. |
-| `rel` | `string` | - | Specifies the relationship between the current document and the linked document. |
-| `referrerpolicy` | `string` | - | How much referrer information to send with the link. |
+| `disabled` | `boolean` | `false` | If `true`, disables the area, making it non-interactive. |
+| `onAnalytics` | `(data: AreaAnalyticsData) => void` | - | A custom function for handling advanced analytics with geometric and interaction data. |
+| `minTouchTarget` | `number` | `44` | The minimum size (in pixels) for an area to be considered touch-optimized. |
+| `debug` | `boolean` | `false` | If `true` in a development environment, renders a visual debug overlay for the area. |
+| `validateCoords` | `boolean` | `true` | If `true`, validates the coordinates against the shape on mount and warns if invalid. |
+| `ariaLabel` | `string` | - | Custom aria-label override. Defaults to `alt` text. |
+| `focusable` | `boolean` | `true` | If `true`, the area will be focusable via keyboard navigation. |
+| `priority` | `'high' \| 'normal' \| 'low'` | `'normal'` | Sets the tab order priority for screen readers and keyboard navigation. |
+
+## 🛠️ Utility Functions
+
+### AreaUtils Export
+
+The component exports a comprehensive `AreaUtils` object with utility functions for coordinate manipulation:
+
+```tsx
+import { AreaUtils } from '@guyromellemagayano/components';
+
+// Validate coordinates
+const isValid = AreaUtils.validateCoordinates('rect', '0,0,100,100');
+
+// Calculate area size
+const size = AreaUtils.calculateAreaSize('circle', '50,50,25');
+
+// Check touch optimization
+const touchOptimized = AreaUtils.checkTouchOptimization('rect', '0,0,100,100', 44);
+```
+
+### Coordinate Generation
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `createRectCoords(x1, y1, x2, y2)` | Creates type-safe rectangular coordinates | `AreaUtils.createRectCoords(0, 0, 100, 100)` |
+| `createCircleCoords(x, y, r)` | Creates type-safe circular coordinates | `AreaUtils.createCircleCoords(50, 50, 25)` |
+| `createPolyCoords(points)` | Creates polygon coordinates from point array | `AreaUtils.createPolyCoords([{x:0,y:0}, {x:50,y:25}])` |
+
+### Validation Functions
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `validateCoordinates(shape, coords)` | Validates coordinates for any shape | `AreaUtils.validateCoordinates('rect', '0,0,100,100')` |
+| `validateRectCoords(coords)` | Validates rectangular coordinates | `AreaUtils.validateRectCoords('0,0,100,100')` |
+| `validateCircleCoords(coords)` | Validates circular coordinates | `AreaUtils.validateCircleCoords('50,50,25')` |
+| `validatePolyCoords(coords)` | Validates polygon coordinates | `AreaUtils.validatePolyCoords('0,0,50,25,100,0')` |
+
+### Geometric Calculations
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `calculateAreaSize(shape, coords)` | Calculates area size in pixels² | `AreaUtils.calculateAreaSize('circle', '50,50,25')` |
+| `calculateCenterPoint(shape, coords)` | Calculates geometric center point | `AreaUtils.calculateCenterPoint('rect', '0,0,100,100')` |
+| `checkTouchOptimization(shape, coords, minSize)` | Checks if area meets touch requirements | `AreaUtils.checkTouchOptimization('rect', '0,0,44,44')` |
+| `percentToAbsolute(coords, width, height)` | Converts percentage to absolute coordinates | `AreaUtils.percentToAbsolute('0,0,50,50', 200, 200)` |
+| `expandForTouch(shape, coords, minSize)` | Expands area to meet touch requirements | `AreaUtils.expandForTouch('rect', '0,0,20,20', 44)` |
 
 ## 💡 Examples
 
@@ -152,43 +209,32 @@ function BasicAreaExample() {
 }
 ```
 
-### With Custom Styling
+### With Advanced Analytics
 
-Applies custom CSS classes and inline styles to the `Area` component (though direct visual styling of `<area>` elements is limited).
-
-```tsx
-import { Img, Map, Area } from '@guyromellemagayano/components';
-
-function StyledAreaExample() {
-  return (
-    <>
-      <Img src="planets.gif" alt="Planets" useMap="#styledmap" />
-      <Map name="styledmap">
-        <Area 
-          shape="rect" 
-          coords="0,0,82,126" 
-          href="sun.htm" 
-          alt="Sun"
-          className="outline-blue-500 outline-2 outline-dashed"
-          style={{ opacity: 0.8 }}
-        />
-      </Map>
-    </>
-  );
-}
-```
-
-### With Analytics
-
-Integrates analytics tracking for clicks on `Area` components within an image map.
+Demonstrates the rich analytics data available with geometric calculations and interaction detection.
 
 ```tsx
-import { Img, Map, Area } from '@guyromellemagayano/components';
+import { Img, Map, Area, type AreaAnalyticsData } from '@guyromellemagayano/components';
 
-function AnalyticsAreaExample() {
-  const handleAreaClick = (data) => {
-    console.log('Area click analytics:', data);
-    // Example: trackEvent(data.event, data.category, data.label, data.content);
+function AdvancedAnalyticsExample() {
+  const handleAreaClick = (data: AreaAnalyticsData) => {
+    console.log('Rich analytics data:', {
+      event: data.event,
+      label: data.label,
+      areaSize: data.areaSize, // Calculated area in pixels²
+      centerPoint: data.centerPoint, // Geometric center {x, y}
+      touchOptimized: data.touchOptimized, // Boolean for touch suitability
+      interactionType: data.interactionType, // 'mouse' | 'keyboard' | 'touch'
+      shape: data.shape,
+      coords: data.coords,
+    });
+
+    // Send comprehensive data to analytics platform
+    gtag('event', 'area_interaction', {
+      area_size: data.areaSize,
+      interaction_method: data.interactionType,
+      touch_friendly: data.touchOptimized,
+    });
   };
 
   return (
@@ -217,12 +263,147 @@ function AnalyticsAreaExample() {
 }
 ```
 
-### Polymorphic Rendering
+### With Debug Mode and Validation
 
-Shows how to use the `as` prop to render an `Area` component as a different HTML element. Note: Semantic meaning and functionality will be lost if rendered as a non-`<area>` element without a `<map>` parent.
+Demonstrates the debug visualization and automatic coordinate validation.
 
 ```tsx
-import { Area } from '@guyromellemagayano/components/area';
+import { Img, Map, Area } from '@guyromellemagayano/components';
+
+function DebugValidationExample() {
+  return (
+    <div style={{ position: 'relative' }}>
+      <Img src="workplace.jpg" alt="Workplace" useMap="#debugmap" />
+      <Map name="debugmap">
+        {/* Valid area with debug overlay (development only) */}
+        <Area 
+          shape="rect" 
+          coords="34,44,270,350" 
+          href="#computer" 
+          alt="Computer" 
+          debug 
+          validateCoords 
+        />
+        
+        {/* Invalid coordinates - will show warning in console and red outline */}
+        <Area 
+          shape="rect" 
+          coords="invalid,coords,here" 
+          href="#invalid" 
+          alt="Invalid Area" 
+          debug 
+        />
+        
+        {/* Small touch target - will show orange outline warning */}
+        <Area 
+          shape="circle" 
+          coords="400,300,10" 
+          href="#small" 
+          alt="Too Small for Touch" 
+          minTouchTarget={44}
+        />
+      </Map>
+    </div>
+  );
+}
+```
+
+### Touch Validation Example
+
+Demonstrates touch optimization checking and validation.
+
+```tsx
+import { Img, Map, Area, AreaUtils } from '@guyromellemagayano/components';
+
+function TouchValidationExample() {
+  // Check touch optimization programmatically
+  const isOptimized = AreaUtils.checkTouchOptimization('rect', '0,0,50,50', 44);
+  
+  // Expand area to meet touch requirements
+  const expandedCoords = AreaUtils.expandForTouch('rect', '0,0,20,20', 44);
+
+  return (
+    <>
+      <Img src="mobile-map.png" alt="Mobile Friendly Map" useMap="#touchmap" />
+      <Map name="touchmap">
+        <Area 
+          shape="rect" 
+          coords={expandedCoords} // Uses expanded coordinates
+          href="#expanded" 
+          alt="Touch Optimized Area"
+          minTouchTarget={44}
+        />
+        
+        <Area 
+          shape="circle" 
+          coords="200,200,30" // 60px diameter - good for touch
+          href="#good-touch" 
+          alt="Touch Friendly Circle"
+        />
+      </Map>
+      
+      {!isOptimized && (
+        <p>Warning: Some areas may be too small for comfortable touch interaction.</p>
+      )}
+    </>
+  );
+}
+```
+
+### Using Utility Functions
+
+Demonstrates programmatic coordinate generation and validation.
+
+```tsx
+import { Img, Map, Area, AreaUtils } from '@guyromellemagayano/components';
+
+function UtilityFunctionsExample() {
+  // Generate coordinates programmatically
+  const rectCoords = AreaUtils.createRectCoords(10, 10, 100, 60);
+  const circleCoords = AreaUtils.createCircleCoords(200, 200, 30);
+  
+  // Calculate geometric properties
+  const rectArea = AreaUtils.calculateAreaSize('rect', rectCoords);
+  const circleCenter = AreaUtils.calculateCenterPoint('circle', circleCoords);
+  
+  // Validate coordinates
+  const isValidRect = AreaUtils.validateCoordinates('rect', rectCoords);
+  
+  return (
+    <>
+      <Img src="generated-map.png" alt="Generated Map" useMap="#generatedmap" />
+      <Map name="generatedmap">
+        <Area 
+          shape="rect" 
+          coords={rectCoords} 
+          href="#rect" 
+          alt={`Rectangle (${rectArea}px²)`}
+        />
+        
+        <Area 
+          shape="circle" 
+          coords={circleCoords} 
+          href="#circle" 
+          alt={`Circle centered at (${circleCenter?.x}, ${circleCenter?.y})`}
+        />
+      </Map>
+      
+      <div>
+        <p>Rectangle area: {rectArea}px²</p>
+        <p>Circle center: ({circleCenter?.x}, {circleCenter?.y})</p>
+        <p>Rectangle valid: {isValidRect ? 'Yes' : 'No'}</p>
+      </div>
+    </>
+  );
+}
+```
+
+### Polymorphic Rendering
+
+Shows how to use the `as` prop to render as a different element (with semantic warnings).
+
+```tsx
+import { Area } from '@guyromellemagayano/components';
 import React from 'react';
 
 function PolymorphicAreaExample() {
@@ -245,7 +426,7 @@ function PolymorphicAreaExample() {
 
 ### Client-Side Rendering
 
-Demonstrates usage of the `Area` component with client-side rendering and optional memoization. This is typically less common for `<area>` elements as they are declarative.
+Demonstrates client-side rendering with dynamic coordinates.
 
 ```tsx
 import { Area, Img, Map } from '@guyromellemagayano/components';
@@ -256,13 +437,7 @@ function ClientAreaExample() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      // Simulate dynamic coordinates for a client-side Area (uncommon but possible)
-      const newCoords = `
-        ${Math.floor(Math.random() * 100)},
-        ${Math.floor(Math.random() * 100)},
-        ${Math.floor(Math.random() * 50) + 50},
-        ${Math.floor(Math.random() * 50) + 50}
-      `.replace(/\s/g, ''); // Remove whitespace
+      const newCoords = `${Math.floor(Math.random() * 100)},${Math.floor(Math.random() * 100)},${Math.floor(Math.random() * 50) + 50},${Math.floor(Math.random() * 50) + 50}`;
       setCoords(newCoords);
     }, 2000);
     return () => clearInterval(interval);
@@ -293,20 +468,22 @@ function ClientAreaExample() {
 This component is built following key accessibility best practices, particularly important for image maps:
 
 - **Semantic HTML**: Utilizes the native `<area>` element, which intrinsically defines interactive regions within an image map for assistive technologies.
-- **Alternative Text (`alt`)**: The `alt` prop is crucial for screen readers, providing a textual description of the area's purpose or destination. This is enforced and highlighted.
-- **Keyboard Navigation**: Interactive areas within the image map are fully navigable via keyboard, supporting `Tab` key for focus and `Enter` for activation.
-- **Focus Management**: Ensures logical focus order and visible focus indicators for each defined area.
-- **Screen Reader Support**: Provides appropriate context for screen reader users by correctly associating areas with their `alt` text and `href` destinations.
-- **High Contrast**: Designed to be usable in high contrast mode preferences.
-- **Reduced Motion**: Respects user's `prefers-reduced-motion` preferences to disable unnecessary animations.
+- **Alternative Text (`alt`)**: The `alt` prop is required and crucial for screen readers, providing a textual description of the area's purpose or destination.
+- **Keyboard Navigation**: Interactive areas within the image map are fully navigable via keyboard, supporting `Tab` key for focus and `Enter`/`Space` for activation.
+- **Touch Target Validation**: Automatically checks if the defined area meets WCAG minimum touch target size (44px by default) with visual indicators for non-compliant areas.
+- **Focus Management**: Comprehensive focus management with `focusable`, `priority`, and `tabIndex` control for optimal screen reader experience.
+- **Screen Reader Support**: Provides appropriate context with automatic `aria-label`, `aria-describedby`, and coordinate information.
+- **High Contrast**: Enhanced outline support for high contrast mode with 3px borders.
+- **Reduced Motion**: Respects user's `prefers-reduced-motion` preferences.
 
 ### ARIA Attributes
 
-Relevant ARIA attributes are applied to enhance accessibility where needed:
+Relevant ARIA attributes are automatically applied:
 
-- `role`: Typically not needed when using the native `<area>` element within a `<map>`, as its semantic role is inherent. Can be applied if the `as` prop changes the element type and a specific semantic role is required.
-- `aria-label`: Can provide an accessible name for the interactive area if its visible context is not sufficiently descriptive. Often redundant if `alt` is well-defined for `<area>`.
-- `aria-describedby`: Links to descriptive text elsewhere on the page for additional context, useful for more complex interactive map areas.
+- `aria-label`: Automatically set to `alt` text or overridden with `ariaLabel` prop.
+- `aria-disabled`: Automatically set to `true` when the `disabled` prop is `true`.
+- `aria-describedby`: Automatically links to coordinate information when coordinates are provided.
+- `tabIndex`: Intelligently managed based on `focusable`, `priority`, and `disabled` props.
 
 ## 🎨 Styling
 
@@ -316,32 +493,50 @@ This component uses BEM (Block Element Modifier) methodology for its CSS classes
 
 ### Base Classes
 
-- `.area` : The base class for the `Area` component, defining its fundamental styles. Note: Direct visual styling of `<area>` elements is generally limited, as they are not visually rendered elements themselves but define interactive regions.
+- `.area` : The base class for the `Area` component with cursor pointer and focus styles.
+- `.area__debug-overlay`: Visual debugging overlay shown in development mode.
+- `.area__debug-info`: Text information within the debug overlay.
 
 ### Modifiers
 
-- `.area--[modifier-name]` : Used for variations in state or appearance (e.g., `.area--active`, `.area--selected`).
-- `.area__[element-name]` : Used for elements within the `Area` component (less common for `<area>` itself).
+- `.area--disabled`: Applied when the `disabled` prop is `true`, with `pointer-events: none`.
+- `.area--debug`: Applied when the `debug` prop is `true`.
+- `.area--small-touch-target`: Applied when the area doesn't meet `minTouchTarget` size requirements.
+
+### Data Attribute Styling
+
+- `[data-touch-optimized="false"]`: Orange dashed outline for touch-unfriendly areas.
+- `[data-valid-coords="false"]`: Red dashed outline for invalid coordinates.
 
 ### Customization Options
 
 You can customize the component's appearance using various methods:
 
-1. **CSS Classes**: Extend or override styles by passing your own classes via the `className` prop. Note: The visual effect of classes on `<area>` is usually indirect (e.g., affecting the parent `<map>` or highlighting through JavaScript).
-2. **Inline Styles**: Apply component-specific styling directly using the `style` prop (visual impact is limited).
-3. **CSS Variables**: Override default values by defining CSS custom properties within your stylesheets.
-4. **CSS Modules**: Integrate with CSS Modules for scoped and modular styling.
+1. **CSS Classes**: Extend or override styles by passing your own classes via the `className` prop.
+2. **Inline Styles**: Apply component-specific styling directly using the `style` prop.
+3. **CSS Variables**: Override default values by defining CSS custom properties.
+4. **CSS Modules**: Integrate with CSS Modules for scoped styling.
 
 ### CSS Variables
 
-Example CSS variables available for customization:
+The component provides CSS variables for customization:
 
 ```css
-.area {
-  --area-outline-color: var(--color-primary, blue);
-  --area-outline-style: dashed;
-  --area-outline-width: 2px;
-  /* These are more conceptual, as `<area>` is not a visual element */
+:root {
+  --area-focus-color: #0066cc;
+}
+
+.area:focus {
+  outline: 2px solid var(--area-focus-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .area:focus {
+    outline: 3px solid currentColor;
+    outline-offset: 1px;
+  }
 }
 ```
 
@@ -351,19 +546,23 @@ Example CSS variables available for customization:
 
 Comprehensive test coverage is provided across these files:
 
-- `index.test.tsx`: Contains main component tests, covering basic rendering, props, and interactions.
-- `index.client.test.tsx`: (If applicable) Specific tests for the client-side rendition of the component.
+- `index.test.tsx`: Contains main component tests and AreaUtils function tests.
+- `utils.test.tsx`: Dedicated tests for utility functions.
 
 ### Test Coverage
 
 Tests cover a wide range of scenarios to ensure reliability:
 
 - **Rendering**: Verifies basic rendering, prop application, and correct DOM output.
-- **Interactions**: Tests user interactions (clicks, hovers) and event handling for interactive areas.
-- **Accessibility**: Ensures `alt` attribute presence, keyboard navigation, and screen reader compatibility.
-- **Analytics**: Validates analytics tracking and custom analytics functions for area clicks.
-- **Polymorphic**: Confirms correct rendering when used with the `as` prop for different elements or custom components (with expected warnings for semantic misuse).
-- **Edge Cases**: Covers error states, boundary conditions (e.g., invalid `coords`), and invalid inputs.
+- **Shape Support**: Tests all shape types (rect, circle, poly, default) with various coordinate formats.
+- **Validation**: Tests coordinate validation for all shapes with valid and invalid inputs.
+- **Touch Optimization**: Tests touch target size validation and warnings.
+- **Interactions**: Tests user interactions including mouse, keyboard, and touch events.
+- **Analytics**: Validates comprehensive analytics data including geometric calculations and interaction types.
+- **Accessibility**: Ensures proper ARIA attributes, focus management, and screen reader compatibility.
+- **Utility Functions**: Comprehensive tests for all AreaUtils functions including edge cases.
+- **Debug Mode**: Tests debug overlay rendering and validation warnings.
+- **Error Handling**: Tests graceful handling of invalid coordinates and analytics failures.
 
 ### Running Tests
 
@@ -386,76 +585,110 @@ pnpm test --coverage
 
 This component is highly optimized for performance:
 
-- **Memoization**: Utilizes `React.memo` for its client-side components (`MemoizedAreaClient`) to prevent unnecessary re-renders.
-- **Lazy Loading**: Client-side components are dynamically imported and lazy-loaded on demand, reducing initial bundle size.
-- **Bundle Splitting**: Server-side and client-side code are naturally separated, further optimizing load times.
-- **Tree Shaking**: Unused exports and code are automatically eliminated in production builds, ensuring minimal footprint.
+- **Efficient Calculations**: Geometric calculations are memoized and only computed when coordinates change.
+- **Conditional Features**: Debug overlays, validation, and analytics are only active when explicitly enabled.
+- **Lazy Loading**: Client-side components are dynamically imported and lazy-loaded on demand.
+- **Memory Management**: Event handlers are optimized with useCallback to prevent unnecessary re-renders.
+- **Bundle Splitting**: Server-side and client-side code are naturally separated.
+- **Tree Shaking**: Unused AreaUtils functions are eliminated in production builds.
 
 ## 🌐 Browser Support
 
 - **Modern Browsers**: Fully supported on the latest two versions of Chrome, Firefox, Safari, and Edge.
-- **Mobile Devices**: Optimized for iOS Safari and Chrome Mobile, providing a seamless experience for interactive images.
+- **Mobile Devices**: Optimized for iOS Safari and Chrome Mobile with touch-specific validation.
 - **Accessibility Tools**: Compatible with major screen readers and assistive technologies.
+- **Image Maps**: Full support for native HTML image map functionality across all browsers.
 
 ## 📘 TypeScript
 
-Full TypeScript support is provided for enhanced type safety and developer experience:
+Full TypeScript support is provided with comprehensive type safety:
 
 ```tsx
-import { Area, type AreaProps, type AreaRef } from '@guyromellemagayano/components';
+import { 
+  Area, 
+  AreaUtils,
+  type AreaProps, 
+  type AreaRef, 
+  type AreaAnalyticsData,
+  type AreaShape,
+  type RectCoords,
+  type CircleCoords 
+} from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 
-function MyImageMapWithRefs() {
+function TypeSafeImageMap() {
   const areaRef = useRef<AreaRef>(null);
 
-  const handleAreaClick = () => {
-    if (areaRef.current) {
-      console.log('Area clicked:', areaRef.current);
-    }
+  const handleAnalytics = (data: AreaAnalyticsData) => {
+    // TypeScript ensures all properties are available
+    console.log(`Area ${data.label}: ${data.areaSize}px², touch-optimized: ${data.touchOptimized}`);
   };
 
+  // Type-safe coordinate generation
+  const rectCoords: RectCoords = AreaUtils.createRectCoords(0, 0, 100, 100);
+  const circleCoords: CircleCoords = AreaUtils.createCircleCoords(50, 50, 25);
+
   return (
-    <img src="map.png" useMap="#mapref" alt="Example map" />
-    <map name="mapref">
-      <Area 
-        ref={areaRef}
-        shape="rect" 
-        coords="0,0,100,100" 
-        href="#example"
-        alt="Example Area"
-        onClick={handleAreaClick}
-      />
-    </map>
+    <>
+      <img src="map.png" useMap="#typemap" alt="Type-safe map" />
+      <map name="typemap">
+        <Area 
+          ref={areaRef}
+          shape="rect" 
+          coords={rectCoords}
+          href="#example"
+          alt="Type-safe Rectangle"
+          onAnalytics={handleAnalytics}
+          minTouchTarget={44}
+          debug
+        />
+        <Area 
+          shape="circle" 
+          coords={circleCoords}
+          href="#circle"
+          alt="Type-safe Circle"
+          priority="high"
+        />
+      </map>
+    </>
   );
 }
+
+// Utility function usage with full type safety
+const validation = AreaUtils.validateCoordinates('rect', '0,0,100,100');
+const areaSize = AreaUtils.calculateAreaSize('circle', '50,50,25');
+const centerPoint = AreaUtils.calculateCenterPoint('poly', '0,0,50,25,100,0');
 ```
 
 ## 📚 Migration Guide
 
 ### From Legacy Component
 
-If you are migrating from a legacy version of a similar component to this `Area` component, please follow these steps:
+If you are migrating from a legacy version to this `Area` component:
 
-1. **Import Changes**: Update your import statements to `import { Area } from '@guyromellemagayano/components/area';`.
-2. **Prop Changes**: Review and update any prop names or types that may have changed to align with the new API, especially `coords` and `shape`.
-3. **Styling**: Adjust your CSS class names to conform to the BEM format (`.area`, `.area--modifier`).
-4. **Analytics**: Migrate to the new analytics integration pattern if you were using a custom tracking solution.
+1. **Import Changes**: Update to `import { Area, AreaUtils } from '@guyromellemagayano/components';`.
+2. **Analytics Migration**: Update to use the new `AreaAnalyticsData` interface for richer analytics.
+3. **Validation**: Enable automatic coordinate validation with `validateCoords={true}`.
+4. **Touch Optimization**: Review areas with the new touch target validation.
+5. **Utility Functions**: Migrate to use `AreaUtils` for coordinate manipulation.
 
 ### Breaking Changes
 
-(List any breaking changes from previous versions here, e.g., `Prop X removed`, `Behavior Y changed`)
+- Analytics interface changed to `AreaAnalyticsData` with additional geometric properties
+- Debug mode now requires explicit `debug={true}` prop
+- Coordinate validation is now enabled by default
 
 ## 🤝 Contributing
 
 ### Contribution Guidelines
 
-When contributing to the `Area` component or any other component in this library, please ensure you adhere to the following:
+When contributing to the `Area` component:
 
-1. **Follow Standards**: Adhere to the comprehensive [Component Development Standards](docs/components/COMPONENT_STANDARDS.md) for consistent code quality.
-2. **Add Comprehensive Tests**: Include full test coverage for all new features, bug fixes, and edge cases.
-3. **Update Documentation**: Keep the component's `README.md` and JSDoc comments current and accurate.
-4. **Ensure Accessibility**: Prioritize accessibility compliance, especially for image map interaction and `alt` text.
-5. **Consider Performance**: Optimize for performance implications and ensure minimal impact on bundle size.
+1. **Follow Standards**: Adhere to the comprehensive [Component Development Standards](docs/components/COMPONENT_STANDARDS.md).
+2. **Test Utilities**: Include tests for any new AreaUtils functions.
+3. **Update Documentation**: Keep coordinate format documentation current.
+4. **Accessibility Focus**: Prioritize image map accessibility and touch optimization.
+5. **Performance**: Ensure geometric calculations remain efficient.
 
 ## 🔗 Related Components
 
