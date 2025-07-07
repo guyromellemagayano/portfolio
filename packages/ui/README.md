@@ -70,7 +70,7 @@ This UI components library prioritizes **performance over convenience** by exclu
 
 This library only supports individual component imports, which is the recommended pattern for optimizing bundle size.
 
-```tsx
+```typescript
 // ✅ Tree-shakeable individual imports
 import { CounterButton } from "@packages/ui/counter-button";
 import { Link } from "@packages/ui/link";
@@ -93,7 +93,7 @@ To maintain optimal bundle size and perfect tree-shaking, this library does not 
 | **Individual** | ~3.1KB (single component) | ✅ Perfect | ✅ Available |
 | **Convenience** | N/A | N/A | ❌ Not Available |
 
-```tsx
+```typescript
 // ✅ The only way to import components for optimal bundle size
 import { CounterButton } from "@packages/ui/counter-button";
 import { Link } from "@packages/ui/link";
@@ -106,7 +106,7 @@ import { Link } from "@packages/ui/link";
 
 For advanced code splitting, you can use dynamic imports to lazy load individual components.
 
-```tsx
+```typescript
 import { lazy } from "react";
 
 // ✅ Lazy loading individual components for performance
@@ -123,7 +123,7 @@ const Link = lazy(() =>
 
 If you prefer a centralized import for your application, you can create your own barrel export within your app's codebase.
 
-```tsx
+```typescript
 // src/components/ui/index.ts - Example of creating your own barrel export
 export { CounterButton, MemoizedCounterButton } from "@packages/ui/counter-button";
 export { Link, MemoizedLink } from "@packages/ui/link";
@@ -138,7 +138,7 @@ import { CounterButton, Link } from "@/components/ui";
 
 An enhanced counter button with configurable `min`/`max` constraints, `step` increments, and comprehensive accessibility features.
 
-```tsx
+```typescript
 import { CounterButton } from "@packages/ui/counter-button";
 
 <CounterButton
@@ -157,7 +157,7 @@ import { CounterButton } from "@packages/ui/counter-button";
 
 A secure link component that automatically detects external links, applies security attributes, and supports analytics tracking.
 
-```tsx
+```typescript
 import { Link } from "@packages/ui/link";
 
 <Link
@@ -212,7 +212,7 @@ pnpm test:coverage  # Run tests with coverage report
 
 If you are migrating from UI libraries that use convenience imports (barrel exports), you will need to adjust your import statements to target individual components directly.
 
-```tsx
+```typescript
 // ❌ Old pattern (not supported in this library)
 // import { Button, Link } from "other-ui-library";
 

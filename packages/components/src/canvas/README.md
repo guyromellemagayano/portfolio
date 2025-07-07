@@ -88,7 +88,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Canvas` component and use it in your React application:
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function DrawingArea() {
@@ -136,7 +136,7 @@ These props are unique to the `Canvas` component.
 
 Demonstrates the fundamental usage of the `Canvas` component for graphics rendering.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function BasicCanvasExample() {
@@ -154,7 +154,7 @@ function BasicCanvasExample() {
 
 Shows various canvas sizes and responsive behavior.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function SizedCanvasExample() {
@@ -197,7 +197,7 @@ function SizedCanvasExample() {
 
 Demonstrates how to access and use the canvas drawing context.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 import { useRef, useEffect } from 'react';
 
@@ -243,7 +243,7 @@ function DrawingCanvasExample() {
 
 Applies custom CSS classes and inline styles to the `Canvas` component.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function StyledCanvasExample() {
@@ -287,7 +287,7 @@ function StyledCanvasExample() {
 
 Integrates comprehensive analytics tracking for canvas interactions.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function AnalyticsCanvasExample() {
@@ -336,7 +336,7 @@ Shows how to render the `Canvas` component as different HTML elements or custom 
 
 ⚠️ **Warning**: When using the `as` prop with non-canvas elements, canvas-specific props like `width` and `height` may not apply or may trigger validation warnings in development mode.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function PolymorphicCanvasExample() {
@@ -388,7 +388,7 @@ function PolymorphicCanvasExample() {
 
 Demonstrates usage of `Canvas` component with client-side rendering capabilities.
 
-```tsx
+```typescript
 import { Canvas } from '@guyromellemagayano/components';
 
 function ClientCanvasExample() {
@@ -679,7 +679,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Canvas, type CanvasProps, type CanvasRef } from '@guyromellemagayano/components';
 import React, { useRef, useEffect } from 'react';
 

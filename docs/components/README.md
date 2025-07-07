@@ -164,7 +164,7 @@ Our library uses advanced polymorphic validation to ensure semantic correctness:
 
 ### Runtime Validation
 
-```tsx
+```typescript
 // Example: Base component with element-specific props
 <Base href="https://example.com" target="_blank" /> // ✅ Valid
 <Base as="div" href="https://example.com" />        // ⚠️ Warning in development
@@ -172,7 +172,7 @@ Our library uses advanced polymorphic validation to ensure semantic correctness:
 
 ### TypeScript Integration
 
-```tsx
+```typescript
 // Conditional prop types based on 'as' prop
 interface ComponentProps<T extends React.ElementType = "defaultElement"> {
   as?: T;

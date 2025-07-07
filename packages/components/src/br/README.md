@@ -87,7 +87,7 @@ yarn add @guyromellemagayano/components
 
 Import the `Br` component and use it in your React application:
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function LineBreakText() {
@@ -129,7 +129,7 @@ The `Br` component inherits all standard HTML `<br>` element attributes and does
 
 Demonstrates the fundamental usage of the `Br` component for line breaks in text.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function BasicBrExample() {
@@ -149,7 +149,7 @@ function BasicBrExample() {
 
 Shows how to use line breaks for proper text formatting in different contexts.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function TextFormattingExample() {
@@ -174,7 +174,7 @@ function TextFormattingExample() {
 
 Demonstrates proper usage for poetry, addresses, and structured text content.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function PoetryExample() {
@@ -206,7 +206,7 @@ function PoetryExample() {
 
 Applies custom CSS classes and inline styles to the `Br` component.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function StyledBrExample() {
@@ -231,7 +231,7 @@ function StyledBrExample() {
 
 Integrates analytics tracking for interactions with line break elements.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function AnalyticsBrExample() {
@@ -261,7 +261,7 @@ Shows how to render the `Br` component as a different HTML element or a custom R
 
 ⚠️ **Warning**: When using the `as` prop with non-br elements, the void element behavior changes and children will be rendered. This may trigger validation warnings in development mode.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function PolymorphicBrExample() {
@@ -290,7 +290,7 @@ function PolymorphicBrExample() {
 
 Demonstrates usage of `Br` component with client-side rendering and memoization.
 
-```tsx
+```typescript
 import { Br } from '@guyromellemagayano/components';
 
 function ClientBrExample() {
@@ -491,7 +491,7 @@ This component is highly optimized for performance:
 
 Full TypeScript support is provided for enhanced type safety and developer experience:
 
-```tsx
+```typescript
 import { Br, type BrProps, type BrRef } from '@guyromellemagayano/components';
 import React, { useRef } from 'react';
 
