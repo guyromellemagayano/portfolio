@@ -1,69 +1,142 @@
-# @packages/ui
+<!-- markdownlint-disable line-length proper-names -->
+# 📦 UI Components Library
 
-High-quality React UI components following industry best practices with optimized tree-shakeable imports.
+High-quality React UI components engineered for optimal performance, accessibility, and developer experience. This library adheres to industry best practices, featuring tree-shakeable imports and comprehensive testing.
 
-## 🚀 **Quick Start**
+## 📋 Table of Contents
 
-### **Individual Component Imports (Only Available Pattern)**
+- [📦 UI Components Library](#-ui-components-library)
+  - [📋 Table of Contents](#-table-of-contents)
+  - [📖 Overview](#-overview)
+    - [Design Philosophy](#design-philosophy)
+    - [Core Principles](#core-principles)
+  - [✨ Features](#-features)
+    - [Key Highlights](#key-highlights)
+  - [🚀 Quick Start](#-quick-start)
+    - [Individual Component Imports](#individual-component-imports)
+  - [📦 Import Patterns](#-import-patterns)
+    - [Only Individual Imports Available](#only-individual-imports-available)
+    - [Dynamic Imports for Code Splitting](#dynamic-imports-for-code-splitting)
+    - [Re-exports in Your Application](#re-exports-in-your-application)
+  - [🎯 Available Components](#-available-components)
+    - [CounterButton Component](#counterbutton-component)
+    - [Link Component](#link-component)
+  - [🔒 Security Features](#-security-features)
+    - [Automatic XSS Protection](#automatic-xss-protection)
+    - [External Link Security](#external-link-security)
+  - [🧪 Testing](#-testing)
+    - [Comprehensive Test Suite](#comprehensive-test-suite)
+    - [Running Tests](#running-tests)
+  - [📚 Migration Guide](#-migration-guide)
+    - [From Libraries with Barrel Exports](#from-libraries-with-barrel-exports)
+    - [Bundle Size Benefits](#bundle-size-benefits)
+  - [🤝 Contributing](#-contributing)
+    - [Contribution Guidelines](#contribution-guidelines)
+
+## 📖 Overview
+
+### Design Philosophy
+
+This UI components library prioritizes **performance over convenience** by exclusively using individual component imports. This approach ensures optimal bundle sizes and perfect tree-shaking for production applications.
+
+### Core Principles
+
+- **Accessibility First**: All components are built with WCAG 2.1 AA compliance and comprehensive ARIA support.
+- **Performance Optimized**: Leveraging `React.memo`, `useCallback`, and efficient rendering techniques.
+- **Security Built-in**: Features like XSS protection and safe `href` validation for secure external links.
+- **Tree-shakeable**: Designed for minimal bundle sizes through individual component imports.
+- **TypeScript Native**: Full type definitions with JSDoc for enhanced developer experience.
+- **Thoroughly Tested**: Each component comes with a comprehensive test suite covering functionality, accessibility, and edge cases.
+- **Responsive Design**: Mobile-first approach with touch-friendly interactions.
+- **Customizable**: Supports multiple variants, sizes, and CSS custom properties for flexible styling.
+
+## ✨ Features
+
+### Key Highlights
+
+- **Accessibility**: WCAG 2.1 AA compliant with comprehensive ARIA support.
+- **Security**: XSS protection, safe `href` validation, and secure external links.
+- **Performance**: Optimized with `React.memo`, `useCallback`, and efficient rendering.
+- **Bundle Size**: Individual component imports for optimal tree-shaking.
+- **Customization**: Multiple variants, sizes, and CSS custom properties.
+- **TypeScript**: Comprehensive type definitions with JSDoc.
+- **Testing**: Thoroughly tested components with extensive coverage.
+- **Responsiveness**: Mobile-first design with touch-friendly interactions.
+- **Theming**: Automatic dark mode detection and CSS custom properties.
+
+## 🚀 Quick Start
+
+### Individual Component Imports
+
+This library only supports individual component imports, which is the recommended pattern for optimizing bundle size.
 
 ```tsx
 // ✅ Tree-shakeable individual imports
 import { CounterButton } from "@packages/ui/counter-button";
 import { Link } from "@packages/ui/link";
 
-// ✅ Memoized versions when needed
+// ✅ Memoized versions can also be imported
 import { MemoizedCounterButton } from "@packages/ui/counter-button";
 
-// ✅ Types from same module
+// ✅ Types are available from the same module path
 import type { CounterButtonProps } from "@packages/ui/counter-button";
 ```
 
-## 📦 **Import Patterns**
+## 📦 Import Patterns
+
+### Only Individual Imports Available
+
+To maintain optimal bundle size and perfect tree-shaking, this library does not provide a main barrel export. Components must be imported individually.
 
 | Import Method | Bundle Size | Tree Shaking | Status |
 |---------------|-------------|--------------|---------|
 | **Individual** | ~3.1KB (single component) | ✅ Perfect | ✅ Available |
 | **Convenience** | N/A | N/A | ❌ Not Available |
 
-### **Only Individual Imports Available**
-
 ```tsx
-// ✅ Only way to import - optimal bundle size
+// ✅ The only way to import components for optimal bundle size
 import { CounterButton } from "@packages/ui/counter-button";
 import { Link } from "@packages/ui/link";
+
+// ❌ This will NOT work - there is no main export
+// import { CounterButton, Link } from "@packages/ui";
 ```
 
-## 🎯 **Available Exports**
+### Dynamic Imports for Code Splitting
 
-### **Individual Component Exports**
+For advanced code splitting, you can use dynamic imports to lazy load individual components.
 
 ```tsx
-// @packages/ui/counter-button
-export { CounterButton, MemoizedCounterButton };
-export type { CounterButtonProps, CounterButtonRef };
+import { lazy } from "react";
 
-// @packages/ui/link  
-export { Link, MemoizedLink };
-export type { LinkProps, LinkRef };
+// ✅ Lazy loading individual components for performance
+const CounterButton = lazy(() => 
+  import("@packages/ui/counter-button").then(m => ({ default: m.CounterButton }))
+);
+
+const Link = lazy(() => 
+  import("@packages/ui/link").then(m => ({ default: m.Link }))
+);
 ```
 
-## Features
+### Re-exports in Your Application
 
-- 🎯 **Accessibility First**: WCAG 2.1 AA compliant with comprehensive ARIA support
-- 🔒 **Security Built-in**: XSS protection, safe href validation, and secure external links
-- ⚡ **Performance Optimized**: React.memo, useCallback, and efficient rendering
-- 📦 **Tree-shakeable**: Individual component imports for optimal bundle size
-- 🎨 **Customizable**: Multiple variants, sizes, and CSS custom properties
-- 🚀 **TypeScript Native**: Comprehensive type definitions with JSDoc
-- 🧪 **Thoroughly Tested**: 52 tests covering functionality, accessibility, and edge cases
-- 📱 **Responsive**: Mobile-first design with touch-friendly interactions
-- 🌗 **Dark Mode**: Automatic theme detection and CSS custom properties
+If you prefer a centralized import for your application, you can create your own barrel export within your app's codebase.
 
-## Components
+```tsx
+// src/components/ui/index.ts - Example of creating your own barrel export
+export { CounterButton, MemoizedCounterButton } from "@packages/ui/counter-button";
+export { Link, MemoizedLink } from "@packages/ui/link";
 
-### CounterButton
+// Then import from your custom barrel in your application
+import { CounterButton, Link } from "@/components/ui";
+```
 
-Enhanced counter button with min/max constraints, step increments, and accessibility.
+## 🎯 Available Components
+
+### CounterButton Component
+
+An enhanced counter button with configurable `min`/`max` constraints, `step` increments, and comprehensive accessibility features.
 
 ```tsx
 import { CounterButton } from "@packages/ui/counter-button";
@@ -80,9 +153,9 @@ import { CounterButton } from "@packages/ui/counter-button";
 />
 ```
 
-### Link
+### Link Component
 
-Secure link component with automatic external link detection and analytics.
+A secure link component that automatically detects external links, applies security attributes, and supports analytics tracking.
 
 ```tsx
 import { Link } from "@packages/ui/link";
@@ -98,110 +171,72 @@ import { Link } from "@packages/ui/link";
 </Link>
 ```
 
-## 🏗️ **Advanced Import Patterns**
-
-### **Dynamic Imports for Code Splitting**
-
-```tsx
-// ✅ Lazy loading individual components
-const CounterButton = lazy(() => 
-  import("@packages/ui/counter-button").then(m => ({ default: m.CounterButton }))
-);
-
-const Link = lazy(() => 
-  import("@packages/ui/link").then(m => ({ default: m.Link }))
-);
-```
-
-### **Re-exports in Your App**
-
-```tsx
-// src/components/ui.ts - Create your own barrel export if needed
-export { CounterButton, MemoizedCounterButton } from "@packages/ui/counter-button";
-export { Link, MemoizedLink } from "@packages/ui/link";
-
-// Then import from your barrel
-import { CounterButton, Link } from "@/components/ui";
-```
-
-## 🎯 **Import Guidelines**
-
-### **✅ Production Apps (Only Available Pattern)**
-
-```tsx
-import { CounterButton } from "@packages/ui/counter-button";
-import { Link } from "@packages/ui/link";
-import type { CounterButtonProps } from "@packages/ui/counter-button";
-```
-
-### **❌ Not Available**
-
-```tsx
-// ❌ This will NOT work - no main export
-import { CounterButton, Link } from "@packages/ui";
-```
-
-## Security Features
+## 🔒 Security Features
 
 ### Automatic XSS Protection
 
-- Validates all href attributes
-- Prevents `javascript:` URLs  
-- Warns about potentially unsafe links
+- Validates all `href` attributes to prevent injection attacks.
+- Prevents `javascript:` URLs in link `href`s.
+- Warns developers about potentially unsafe link destinations in development mode.
 
 ### External Link Security
 
-- Automatic `rel="noopener noreferrer"` for external links
-- Target `_blank` for external domains
-- Visual indicators for external links
+- Automatically adds `rel="noopener noreferrer"` to all external links for security and performance.
+- Sets `target="_blank"` for external domains to open in new tabs.
+- Provides visual indicators (e.g., an icon) for external links to inform users.
 
-## Testing
+## 🧪 Testing
 
-Comprehensive test suite with 52 tests covering:
+### Comprehensive Test Suite
 
-- **Functionality**: Basic behavior, props, state management
-- **Accessibility**: ARIA attributes, keyboard navigation
-- **Security**: XSS prevention, safe href validation  
-- **Performance**: Memoization, event handling
+This library includes a robust test suite with **52 tests** covering various aspects:
 
-Run tests:
+- **Functionality**: Basic behavior, prop handling, and state management.
+- **Accessibility**: ARIA attributes, keyboard navigation, and screen reader compatibility.
+- **Security**: XSS prevention, safe `href` validation, and external link security.
+- **Performance**: Memoization effects and efficient event handling.
+- **Edge Cases**: Handling of invalid inputs, null values, and boundary conditions.
+
+### Running Tests
+
+To execute the tests for the UI components library:
 
 ```bash
-pnpm test
-pnpm test:coverage
+pnpm test           # Run all tests
+pnpm test:coverage  # Run tests with coverage report
 ```
 
-## Migration Guide
+## 📚 Migration Guide
 
 ### From Libraries with Barrel Exports
 
-**If migrating from libraries that use convenience imports:**
+If you are migrating from UI libraries that use convenience imports (barrel exports), you will need to adjust your import statements to target individual components directly.
 
 ```tsx
-// ❌ Old pattern (not available here)
-import { Button, Link } from "other-ui-library";
+// ❌ Old pattern (not supported in this library)
+// import { Button, Link } from "other-ui-library";
 
-// ✅ New pattern (optimal for performance)
+// ✅ New pattern (required for optimal performance and bundle size)
 import { CounterButton } from "@packages/ui/counter-button";
 import { Link } from "@packages/ui/link";
 ```
 
 ### Bundle Size Benefits
 
-- **Individual imports**: 3.1KB (single component)
-- **Typical barrel export**: 7.1KB+ (all components)
-- **Savings**: **56%+ smaller bundles!**
+By enforcing individual imports, this library achieves significant bundle size reductions:
 
-## Contributing
+- **Individual imports (single component)**: Approximately 3.1KB
+- **Typical barrel export (all components)**: Often 7.1KB or more
+- **Potential Savings**: **56%+ smaller application bundles!**
 
-When adding new components:
+## 🤝 Contributing
 
-1. Create individual component exports only
-2. No main index.ts barrel exports
-3. Include comprehensive tests
-4. Document import patterns
-5. Verify tree-shaking works
+### Contribution Guidelines
 
----
+When contributing new components or features to this library, please adhere to the following guidelines:
 
-**💡 Design Philosophy**: This library prioritizes performance over convenience by using individual imports exclusively, ensuring optimal bundle sizes and perfect tree-shaking for production applications.
+1. **Individual Component Exports Only**: Ensure new components are exported individually (e.g., `export { MyComponent } from './my-component';`). Do not add them to a main `index.ts` barrel export at the root of `packages/ui/src/`.
+2. **Comprehensive Tests**: Include a robust test suite for your new component, covering functionality, accessibility, and security.
+3. **Document Import Patterns**: Clearly document how your component should be imported and used in its `README.md`.
+4. **Verify Tree-shaking**: Confirm that your component is effectively tree-shakable and contributes minimally to bundle size when imported individually.
+5. **Follow Existing Standards**: Align with the project's existing coding standards, design philosophy, and documentation conventions (refer to `docs/components/COMPONENT_STANDARDS.md`).
