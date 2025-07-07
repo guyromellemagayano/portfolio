@@ -133,7 +133,7 @@ function getAudioFormat(src?: string): string {
  * @returns formatted time string
  */
 function formatTime(seconds: number): string {
-  if (!isFinite(seconds) || isNaN(seconds)) {
+  if (!isFinite(seconds) || isNaN(seconds) || seconds < 0) {
     return "00:00";
   }
 

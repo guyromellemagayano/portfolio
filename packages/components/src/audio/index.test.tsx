@@ -53,14 +53,6 @@ afterEach(() => {
   global.HTMLAudioElement = originalAudioConstructor;
 });
 
-// Simplified helper - just renders and mocks basic audio ready state
-const mockAudioReady = (element: HTMLAudioElement) => {
-  Object.defineProperty(element, "duration", { value: 180, writable: true });
-  Object.defineProperty(element, "currentTime", { value: 0, writable: true });
-  Object.defineProperty(element, "readyState", { value: 4, writable: true });
-  fireEvent.canPlay(element);
-};
-
 // =============================================================================
 // CORE FUNCTIONALITY TESTS
 // =============================================================================
@@ -100,18 +92,71 @@ describe("Audio Component", () => {
       expect(audio).toHaveClass("audio", "custom-audio");
       expect(audio).toHaveStyle({ width: "100%" });
     });
+
+    it("renders with custom Component prop", () => {
+      const CustomAudio = React.forwardRef<
+        HTMLAudioElement,
+        React.AudioHTMLAttributes<HTMLAudioElement>
+      >((props, ref) => <audio {...props} ref={ref} data-custom="true" />);
+
+      render(<Audio src="test.mp3" as={CustomAudio} />);
+      expect(screen.getByRole("application")).toHaveAttribute(
+        "data-custom",
+        "true"
+      );
+    });
   });
 
-  describe("Custom Controls Interactions", () => {
+  describe("Custom Controls Rendering", () => {
     it("renders custom controls when audio is ready", () => {
       render(<Audio src="test.mp3" customControls={false} />);
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Should have native controls when customControls is false
       expect(audio).toHaveAttribute("controls");
     });
 
+    it("shows custom controls with all features enabled", () => {
+      render(
+        <Audio
+          src="test.mp3"
+          customControls
+          showPlayButton
+          showVolumeControl
+          showTimeDisplay
+          showProgressBar
+        />
+      );
+
+      // Should show loading state initially
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+
+    it("shows custom controls with specific features disabled", () => {
+      render(
+        <Audio
+          src="test.mp3"
+          customControls
+          showPlayButton={false}
+          showVolumeControl={false}
+          showTimeDisplay={false}
+          showProgressBar={false}
+        />
+      );
+
+      // Should show loading state initially
+      expect(screen.getByRole("status")).toBeInTheDocument();
+    });
+
+    it("disables controls when audio is loading", () => {
+      render(<Audio src="test.mp3" customControls />);
+
+      // Should show loading state, no custom controls
+      expect(screen.getByRole("status")).toBeInTheDocument();
+      expect(screen.queryByLabelText("Play audio")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Custom Controls Interactions", () => {
     it("handles play/pause button clicks", async () => {
       const mockAudioElement = createMockAudio();
 
@@ -119,8 +164,6 @@ describe("Audio Component", () => {
       render(<Audio src="test.mp3" customControls={false} />);
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Should have native controls
       expect(audio).toHaveAttribute("controls");
     });
 
@@ -132,8 +175,6 @@ describe("Audio Component", () => {
       render(<Audio src="test.mp3" customControls={false} />);
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Test that the audio element is accessible
       expect(audio).toBeInTheDocument();
       expect(audio).toHaveAttribute("controls");
     });
@@ -151,8 +192,6 @@ describe("Audio Component", () => {
       );
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Test volume change event
       fireEvent.volumeChange(audio);
       expect(onVolumeChange).toHaveBeenCalledWith(1); // default volume
     });
@@ -163,17 +202,7 @@ describe("Audio Component", () => {
       render(<Audio src="test.mp3" customControls={false} />);
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Test that audio is accessible without custom controls
       expect(audio).toHaveAttribute("controls");
-    });
-
-    it("disables controls when audio is loading", () => {
-      render(<Audio src="test.mp3" customControls />);
-
-      // Should show loading state, no custom controls
-      expect(screen.getByRole("status")).toBeInTheDocument();
-      expect(screen.queryByLabelText("Play audio")).not.toBeInTheDocument();
     });
 
     it("shows appropriate volume icons based on volume level", () => {
@@ -182,8 +211,6 @@ describe("Audio Component", () => {
       render(<Audio src="test.mp3" customControls={false} />);
 
       const audio = screen.getByRole("application") as HTMLAudioElement;
-
-      // Test that the audio element is properly configured
       expect(audio).toHaveAttribute("controls");
     });
   });
@@ -214,6 +241,12 @@ describe("Audio Component", () => {
       render(<Audio src="test.mp3" customControls />);
 
       expect(screen.getByRole("status")).toHaveTextContent("Loading audio...");
+    });
+
+    it("handles error state without custom controls", () => {
+      render(<Audio src="invalid.mp3" customControls={false} />);
+      const audio = screen.getByRole("application");
+      expect(audio).toBeInTheDocument();
     });
   });
 
@@ -423,6 +456,20 @@ describe("Audio Component", () => {
         position: 180,
       });
     });
+
+    it("handles volume change callback", () => {
+      const onVolumeChange = vi.fn();
+      render(
+        <Audio {...defaultProps} onVolumeChangeCallback={onVolumeChange} />
+      );
+
+      const audio = screen.getByRole("application") as HTMLAudioElement;
+      Object.defineProperty(audio, "volume", { value: 0.5, writable: true });
+      Object.defineProperty(audio, "muted", { value: false, writable: true });
+
+      fireEvent.volumeChange(audio);
+      expect(onVolumeChange).toHaveBeenCalledWith(0.5);
+    });
   });
 
   describe("Event Handling", () => {
@@ -450,6 +497,42 @@ describe("Audio Component", () => {
 
       fireEvent.volumeChange(audio);
       expect(onVolumeChange).toHaveBeenCalledWith(0.5);
+    });
+
+    it("handles error events", () => {
+      const onError = vi.fn();
+      render(<Audio {...defaultProps} onError={onError} />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.error(audio);
+      expect(onError).toHaveBeenCalled();
+    });
+
+    it("handles load start events", () => {
+      const onLoadStart = vi.fn();
+      render(<Audio {...defaultProps} onLoadStart={onLoadStart} />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.loadStart(audio);
+      expect(onLoadStart).toHaveBeenCalled();
+    });
+
+    it("handles can play events", () => {
+      const onCanPlay = vi.fn();
+      render(<Audio {...defaultProps} onCanPlay={onCanPlay} />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.canPlay(audio);
+      expect(onCanPlay).toHaveBeenCalled();
+    });
+
+    it("handles time update events", () => {
+      const onTimeUpdate = vi.fn();
+      render(<Audio {...defaultProps} onTimeUpdate={onTimeUpdate} />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.timeUpdate(audio);
+      expect(onTimeUpdate).toHaveBeenCalled();
     });
   });
 
@@ -501,6 +584,34 @@ describe("Audio Component", () => {
       expect(screen.getByRole("application")).toBeInTheDocument();
       consoleSpy.mockRestore();
     });
+
+    it("tracks analytics on pause", () => {
+      render(<Audio {...defaultProps} analyticsId="test-audio" />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.pause(audio);
+      expect(mockGtag).toHaveBeenCalledWith("event", "pause", {
+        event_category: "audio",
+        event_label: "test-audio",
+        audio_duration: 0,
+        audio_position: 0,
+        audio_progress: 0,
+      });
+    });
+
+    it("tracks analytics on ended", () => {
+      render(<Audio {...defaultProps} analyticsId="test-audio" />);
+      const audio = screen.getByRole("application");
+
+      fireEvent.ended(audio);
+      expect(mockGtag).toHaveBeenCalledWith("event", "ended", {
+        event_category: "audio",
+        event_label: "test-audio",
+        audio_duration: 0,
+        audio_position: 0,
+        audio_progress: 0,
+      });
+    });
   });
 
   describe("Custom Controls", () => {
@@ -544,6 +655,122 @@ describe("Audio Component", () => {
       );
       expect(screen.getByRole("application")).toBeInTheDocument();
     });
+
+    it("handles invalid audio source", () => {
+      render(<Audio src="test.txt" data-testid="invalid" />);
+      expect(screen.getByTestId("invalid")).toHaveAttribute(
+        "data-valid-source",
+        "false"
+      );
+    });
+
+    it("handles undefined audio source", () => {
+      render(<Audio data-testid="undefined" />);
+      expect(screen.getByTestId("undefined")).toHaveAttribute(
+        "data-valid-source",
+        "false"
+      );
+    });
+  });
+
+  describe("Polymorphic Validation", () => {
+    it("shows validation warning in development for non-audio element", () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "development";
+
+      const CustomAudio = React.forwardRef<
+        HTMLDivElement,
+        React.AudioHTMLAttributes<HTMLAudioElement>
+      >((props, ref) => <div {...props} ref={ref} />);
+
+      render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
+
+      expect(screen.getByTestId("custom")).toHaveAttribute(
+        "data-element-validation",
+        "warning"
+      );
+
+      process.env.NODE_ENV = originalEnv;
+    });
+
+    it("does not show validation warning in production", () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "production";
+
+      const CustomAudio = React.forwardRef<
+        HTMLDivElement,
+        React.AudioHTMLAttributes<HTMLAudioElement>
+      >((props, ref) => <div {...props} ref={ref} />);
+
+      render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
+
+      expect(screen.getByTestId("custom")).not.toHaveAttribute(
+        "data-element-validation"
+      );
+
+      process.env.NODE_ENV = originalEnv;
+    });
+
+    it("sets polymorphic element data attribute", () => {
+      const CustomAudio = React.forwardRef<
+        HTMLDivElement,
+        React.AudioHTMLAttributes<HTMLAudioElement>
+      >((props, ref) => <div {...props} ref={ref} />);
+
+      render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
+
+      expect(screen.getByTestId("custom")).toHaveAttribute(
+        "data-polymorphic-element",
+        "unknown"
+      );
+    });
+  });
+
+  describe("Accessibility", () => {
+    it("has default aria-label", () => {
+      render(<Audio {...defaultProps} />);
+      const audio = screen.getByRole("application");
+      expect(audio).toHaveAttribute("aria-label", "Audio player");
+    });
+
+    it("uses custom aria-label when provided", () => {
+      render(<Audio {...defaultProps} aria-label="Custom audio player" />);
+      const audio = screen.getByRole("application");
+      expect(audio).toHaveAttribute("aria-label", "Custom audio player");
+    });
+
+    it("has application role", () => {
+      render(<Audio {...defaultProps} />);
+      const audio = screen.getByRole("application");
+      expect(audio).toBeInTheDocument();
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("handles null ref", () => {
+      render(<Audio {...defaultProps} ref={null} />);
+      expect(screen.getByRole("application")).toBeInTheDocument();
+    });
+
+    it("handles undefined children", () => {
+      render(<Audio {...defaultProps}>{undefined}</Audio>);
+      expect(screen.getByRole("application")).toBeInTheDocument();
+    });
+
+    it("handles empty string children", () => {
+      render(<Audio {...defaultProps}>{""}</Audio>);
+      expect(screen.getByRole("application")).toBeInTheDocument();
+    });
+
+    it("handles complex children", () => {
+      render(
+        <Audio {...defaultProps}>
+          <track kind="captions" src="captions.vtt" />
+          <track kind="chapters" src="chapters.vtt" />
+        </Audio>
+      );
+      expect(screen.getByRole("application")).toBeInTheDocument();
+    });
   });
 });
 
@@ -571,6 +798,28 @@ describe("AudioClient Components", () => {
     render(<AudioClient {...defaultProps} ref={ref} />);
     expect(ref.current).toBeTruthy();
   });
+
+  it("handles props correctly in AudioClient", () => {
+    render(
+      <AudioClient
+        {...defaultProps}
+        className="custom-class"
+        data-testid="client-audio"
+      />
+    );
+    expect(screen.getByTestId("client-audio")).toHaveClass("custom-class");
+  });
+
+  it("handles props correctly in MemoizedAudioClient", () => {
+    render(
+      <MemoizedAudioClient
+        {...defaultProps}
+        className="custom-class"
+        data-testid="memoized-audio"
+      />
+    );
+    expect(screen.getByTestId("memoized-audio")).toHaveClass("custom-class");
+  });
 });
 
 // =============================================================================
@@ -586,14 +835,28 @@ describe("AudioUtils", () => {
       expect(AudioUtils.formatTime(NaN)).toBe("00:00");
       expect(AudioUtils.formatTime(Infinity)).toBe("00:00");
     });
+
+    it("handles negative values", () => {
+      expect(AudioUtils.formatTime(-1)).toBe("00:00");
+      expect(AudioUtils.formatTime(-60)).toBe("00:00");
+    });
+
+    it("handles decimal values", () => {
+      expect(AudioUtils.formatTime(30.5)).toBe("00:30");
+      expect(AudioUtils.formatTime(65.7)).toBe("01:05");
+    });
   });
 
   describe("validateSource", () => {
     it("validates various audio sources", () => {
       expect(AudioUtils.validateSource("test.mp3")).toBe(true);
       expect(AudioUtils.validateSource("test.wav")).toBe(true);
+      expect(AudioUtils.validateSource("test.ogg")).toBe(true);
+      expect(AudioUtils.validateSource("test.m4a")).toBe(true);
       expect(AudioUtils.validateSource("test.txt")).toBe(false);
+      expect(AudioUtils.validateSource("test.pdf")).toBe(false);
       expect(AudioUtils.validateSource(undefined)).toBe(false);
+      expect(AudioUtils.validateSource("")).toBe(false);
     });
   });
 
@@ -601,8 +864,17 @@ describe("AudioUtils", () => {
     it("detects audio formats", () => {
       expect(AudioUtils.getFormat("test.mp3")).toBe("MP3");
       expect(AudioUtils.getFormat("test.wav")).toBe("WAV");
+      expect(AudioUtils.getFormat("test.ogg")).toBe("OGG");
+      expect(AudioUtils.getFormat("test.m4a")).toBe("M4A");
       expect(AudioUtils.getFormat("test.unknown")).toBe("UNKNOWN");
       expect(AudioUtils.getFormat(undefined)).toBe("Unknown");
+      expect(AudioUtils.getFormat("")).toBe("Unknown");
+    });
+
+    it("handles case insensitive extensions", () => {
+      expect(AudioUtils.getFormat("test.MP3")).toBe("MP3");
+      expect(AudioUtils.getFormat("test.WAV")).toBe("WAV");
+      expect(AudioUtils.getFormat("test.Ogg")).toBe("OGG");
     });
   });
 });
@@ -653,6 +925,36 @@ describe("Audio Component Integration", () => {
     fireEvent.ended(audio);
 
     expect(onAnalytics).toHaveBeenCalledTimes(3);
+  });
+
+  it("handles all custom control features together", () => {
+    render(
+      <Audio
+        src="test.mp3"
+        customControls
+        showPlayButton
+        showVolumeControl
+        showTimeDisplay
+        showProgressBar
+        defaultVolume={0.7}
+        defaultMuted={false}
+        playbackRate={1.2}
+        analyticsId="full-featured"
+      />
+    );
+
+    // Should show loading state initially
+    expect(screen.getByRole("status")).toBeInTheDocument();
+  });
+
+  it("handles server-side rendering without client features", () => {
+    render(
+      <Audio src="test.mp3" customControls={false} analyticsId="server-audio" />
+    );
+
+    const audio = screen.getByRole("application");
+    expect(audio).toHaveAttribute("controls");
+    expect(audio).toHaveAttribute("data-analytics-id", "server-audio");
   });
 });
 
