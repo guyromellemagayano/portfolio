@@ -20,7 +20,6 @@ const MemoizedBlockquoteClient = React.lazy(async () => {
 });
 
 export type BlockquoteRef = React.ComponentRef<"blockquote">;
-
 export interface BlockquoteProps
   extends React.BlockquoteHTMLAttributes<HTMLQuoteElement>,
     CommonComponentProps {
@@ -36,8 +35,7 @@ export interface BlockquoteProps
 }
 
 /**
- * Universal blockquote component with semantic quotation support and polymorphic validation.
- * Supports server-side and client-side rendering with proper cite attribution.
+ * Universal blockquote component with semantic quotation support and polymorphic validation. Supports server-side and client-side rendering with proper cite attribution.
  */
 const BlockquoteComponent = React.forwardRef<BlockquoteRef, BlockquoteProps>(
   (props, ref) => {
