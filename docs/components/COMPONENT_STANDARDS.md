@@ -1,4 +1,4 @@
-<!-- markdownlint-disable line-length -->
+<!-- markdownlint-disable line-length ol-prefix -->
 # 🏗️ Component Development Standards & Conventions
 
 This document outlines the established conventions, standards, and patterns for developing components in this library. All new components should follow these guidelines to maintain consistency, maintainability, and quality.
@@ -63,6 +63,9 @@ This document outlines the established conventions, standards, and patterns for 
     - [From Basic HTML](#from-basic-html)
   - [Performance](#performance)
   - [Testing](#testing)
+  - [⚡ Performance Considerations](#-performance-considerations)
+    - [🖥️ Server-Side Rendering](#️-server-side-rendering)
+    - [Lazy Loading](#lazy-loading)
     - [💾 Memoization](#-memoization)
   - [♿ Accessibility Standards](#-accessibility-standards)
     - [Required Features](#required-features-1)
@@ -971,8 +974,6 @@ Run tests with:
 
 ```bash
 pnpm test src/component-name/index.test.tsx
-```
-
 ```
 
 ## ⚡ Performance Considerations
