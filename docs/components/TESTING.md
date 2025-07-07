@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length -->
 # 🧪 Memory-Efficient Testing Guide
 
 This document outlines comprehensive testing strategies for components, focusing on memory efficiency, performance optimization, and best practices for maintaining high-quality test coverage.
