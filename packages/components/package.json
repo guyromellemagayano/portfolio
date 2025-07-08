@@ -1,14 +1,13 @@
 {
   "name": "@guyromellemagayano/components",
   "version": "1.0.0",
-  "description": "Reusable React components library with TypeScript support, analytics, and accessibility features",
+  "description": "Reusable React components library with TypeScript support, analytics, accessibility features, and polymorphic support",
   "keywords": [
     "react",
     "components",
-    "typescript",
-    "accessibility",
-    "analytics",
-    "html-components"
+    "html",
+    "polymorphic",
+    "typescript"
   ],
   "homepage": "https://github.com/guyromellemagayano/portal/tree/main/packages/components",
   "bugs": {
@@ -20,177 +19,57 @@
     "directory": "packages/components"
   },
   "license": "MIT",
-  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.stackmarketlabs.com)",
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./a": {
-      "import": {
-        "types": "./dist/es/a.d.mts",
-        "default": "./dist/es/a.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/a.d.ts",
-        "default": "./dist/cjs/a.cjs"
-      }
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     },
-    "./abbr": {
-      "import": {
-        "types": "./dist/es/abbr.d.mts",
-        "default": "./dist/es/abbr.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/abbr.d.ts",
-        "default": "./dist/cjs/abbr.cjs"
-      }
-    },
-    "./address": {
-      "import": {
-        "types": "./dist/es/address.d.mts",
-        "default": "./dist/es/address.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/address.d.ts",
-        "default": "./dist/cjs/address.cjs"
-      }
-    },
-    "./area": {
-      "import": {
-        "types": "./dist/es/area.d.mts",
-        "default": "./dist/es/area.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/area.d.ts",
-        "default": "./dist/cjs/area.cjs"
-      }
-    },
-    "./article": {
-      "import": {
-        "types": "./dist/es/article.d.mts",
-        "default": "./dist/es/article.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/article.d.ts",
-        "default": "./dist/cjs/article.cjs"
-      }
-    },
-    "./aside": {
-      "import": {
-        "types": "./dist/es/aside.d.mts",
-        "default": "./dist/es/aside.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/aside.d.ts",
-        "default": "./dist/cjs/aside.cjs"
-      }
-    },
-    "./audio": {
-      "import": {
-        "types": "./dist/es/audio.d.mts",
-        "default": "./dist/es/audio.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/audio.d.ts",
-        "default": "./dist/cjs/audio.cjs"
-      }
-    },
-    "./b": {
-      "import": {
-        "types": "./dist/es/b.d.mts",
-        "default": "./dist/es/b.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/b.d.ts",
-        "default": "./dist/cjs/b.cjs"
-      }
-    },
-    "./base": {
-      "import": {
-        "types": "./dist/es/base.d.mts",
-        "default": "./dist/es/base.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/base.d.ts",
-        "default": "./dist/cjs/base.cjs"
-      }
-    },
-    "./bdi": {
-      "import": {
-        "types": "./dist/es/bdi.d.mts",
-        "default": "./dist/es/bdi.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/bdi.d.ts",
-        "default": "./dist/cjs/bdi.cjs"
-      }
-    },
-    "./bdo": {
-      "import": {
-        "types": "./dist/es/bdo.d.mts",
-        "default": "./dist/es/bdo.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/bdo.d.ts",
-        "default": "./dist/cjs/bdo.cjs"
-      }
-    }
+    "./package.json": "./package.json"
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/**"
   ],
   "scripts": {
-    "build": "bunchee",
-    "build-storybook": "storybook build",
-    "check-types": "tsc --noEmit",
-    "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "bunchee --watch",
-    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
-    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
-    "lint": "eslint src/",
-    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
-    "storybook": "storybook dev -p 6006",
+    "build": "tsup",
+    "clean": "rm -rf dist coverage",
+    "dev": "tsup --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "prepublishOnly": "npm run build",
+    "scaffold": "tsx scripts/scaffold-component.ts",
     "test": "vitest",
-    "test:a": "vitest run src/a/index.test.tsx --config vitest.light.config.ts",
-    "test:abbr": "vitest run src/abbr/index.test.tsx --config vitest.light.config.ts",
-    "test:address": "vitest run src/address/index.test.tsx --config vitest.light.config.ts",
-    "test:area": "vitest run src/area/index.test.tsx --config vitest.light.config.ts",
-    "test:article": "vitest run src/article/index.test.tsx --config vitest.light.config.ts",
-    "test:aside": "vitest run src/aside/index.test.tsx --config vitest.light.config.ts",
-    "test:audio": "vitest run src/audio/index.test.tsx --config vitest.light.config.ts",
-    "test:b": "vitest run src/b/index.test.tsx --config vitest.light.config.ts",
-    "test:base": "vitest run src/base/index.test.tsx --config vitest.light.config.ts",
-    "test:bdi": "vitest run src/bdi/index.test.tsx --config vitest.light.config.ts",
-    "test:bdo": "vitest run src/bdo/index.test.tsx --config vitest.light.config.ts",
-    "test:components": "vitest run src/a src/abbr src/address src/area src/article src/aside src/audio src/b src/base src/bdi src/bdo --config vitest.light.config.ts",
+    "test:components": "tsx scripts/test-components.ts",
     "test:coverage": "vitest run --coverage",
-    "test:coverage:ui": "vitest --coverage --ui",
-    "test:isolated": "tsx scripts/test-components.ts",
-    "test:light": "vitest --config vitest.light.config.ts",
-    "test:light:run": "vitest run --config vitest.light.config.ts",
-    "test:memory": "node --max-old-space-size=4096 ./node_modules/.bin/vitest run --config vitest.light.config.ts",
-    "test:ui": "vitest --ui"
+    "test:run": "vitest run",
+    "test:scripts": "vitest run --config vitest.scripts.config.ts scripts/__tests__/",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@guyromellemagayano/logger": "workspace:*"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@packages/vitest-presets": "workspace:*",
-    "tsx": "catalog:"
+    "tsx": "^4.20.3"
   },
   "peerDependencies": {
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
-    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
-    "bunchee": "catalog:",
-    "eslint": "catalog:",
-    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "rimraf": "catalog:",
-    "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {
