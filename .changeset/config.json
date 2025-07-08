@@ -9,14 +9,13 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@packages/eslint-config",
-    "@packages/typescript-config", 
+    "@packages/typescript-config",
     "@packages/tailwind-config",
     "@packages/vitest-presets",
     "admin",
     "api",
-    "blog",
+    "web",
     "storefront",
-    "studio",
     "@guyromellemagayano/components",
     "@guyromellemagayano/logger",
     "@guyromellemagayano/ui"

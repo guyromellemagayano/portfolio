@@ -22,9 +22,8 @@ const tsProjects = [
   resolve(repoRoot, "tsconfig.json"),
   resolve(repoRoot, "apps", "admin", "tsconfig.json"),
   resolve(repoRoot, "apps", "api", "tsconfig.json"),
-  resolve(repoRoot, "apps", "blog", "tsconfig.json"),
+  resolve(repoRoot, "apps", "web", "tsconfig.json"),
   resolve(repoRoot, "apps", "storefront", "tsconfig.json"),
-  resolve(repoRoot, "apps", "studio", "tsconfig.json"),
   resolve(repoRoot, "packages", "ui", "tsconfig.json"),
   resolve(repoRoot, "packages", "logger", "tsconfig.json"),
   resolve(repoRoot, "packages", "components", "tsconfig.json"),
@@ -123,6 +122,7 @@ export const baseEslintConfig = [
         warnOnMultipleProjects: false,
         sourceType: "module",
         ecmaVersion: "latest",
+        warnOnUnsupportedTypeScriptVersion: true,
       },
     },
     rules: {
