@@ -66,6 +66,9 @@
     "test:run:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
+  "dependencies": {
+    "@guyromellemagayano/logger": "workspace:*"
+  },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
@@ -81,9 +84,12 @@
     "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "nodemon": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
+    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
