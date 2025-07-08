@@ -1,0 +1,41 @@
+{
+  "extends": "@packages/typescript-config/src/nextjs.json",
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "noEmit": true,
+    "jsx": "preserve",
+    "skipDefaultLibCheck": true,
+    "paths": {
+      "@web/*": [
+        "./*"
+      ]
+    }
+  },
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ],
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "esnext"
+    },
+    "swc": true
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
