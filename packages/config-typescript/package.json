@@ -19,6 +19,8 @@
     "bunchee": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
+    "tsconfig-paths": "catalog:",
+    "tslib": "catalog:",
     "typescript": "catalog:"
   }
 }
