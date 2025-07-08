@@ -449,7 +449,7 @@ function AnalyticsAsideExample() {
   return (
     <div>
       {/* Click tracking aside */}
-      <Aside 
+      <Aside
         analyticsId="related-articles"
         onAnalytics={handleAnalytics}
         contentType="complementary"
