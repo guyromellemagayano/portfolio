@@ -26,8 +26,7 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -36,22 +35,24 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "tsup",
-    "clean": "rm -rf dist coverage",
-    "dev": "tsup --watch",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
-    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "prepublishOnly": "npm run build",
     "scaffold": "tsx scripts/scaffold-component.ts",
+    "scaffold:watch": "nodemon --exec \"tsx\" scripts/scaffold-component.ts",
     "test": "vitest",
     "test:components": "tsx scripts/test-components.ts",
+    "test:components:watch": "nodemon --exec \"tsx\" scripts/test-components.ts",
     "test:coverage": "vitest run --coverage",
     "test:run": "vitest run",
     "test:scripts": "vitest run --config vitest.scripts.config.ts scripts/__tests__/",
-    "test:ui": "vitest --ui",
-    "typecheck": "tsc --noEmit"
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@guyromellemagayano/logger": "workspace:*"
@@ -59,17 +60,25 @@
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@packages/vitest-presets": "workspace:*",
-    "tsx": "^4.20.3"
+    "@packages/vitest-presets": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "nodemon": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "rimraf": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {
