@@ -8,8 +8,7 @@
     ],
     "sourceMap": true,
     "types": [
-      "vitest/globals",
-      "node"
+      "vitest/globals"
     ]
   },
   "include": [
