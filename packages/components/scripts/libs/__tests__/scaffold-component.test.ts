@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import fs from "fs";
 
 // Mock the logger
 vi.mock("@guyromellemagayano/logger", () => ({
@@ -18,7 +19,7 @@ vi.mock("fs", () => ({
 // Mock path
 vi.mock("path", () => ({
   default: {
-    join: vi.fn((...args) => args.join("/")),
+    join: vi.fn((...args: string[]) => args.join("/")),
     dirname: vi.fn(),
   },
 }));
@@ -39,6 +40,10 @@ import {
 describe("scaffold-component library", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset mock implementations
+    vi.mocked(fs.existsSync).mockReturnValue(false);
+    vi.mocked(fs.mkdirSync).mockReturnValue(undefined);
+    vi.mocked(fs.writeFileSync).mockReturnValue(undefined);
   });
 
   describe("validateComponentName", () => {
@@ -200,29 +205,29 @@ describe("scaffold-component library", () => {
       expect(result.filesCreated).toHaveLength(5);
       expect(result.errors).toHaveLength(0);
 
-      expect(mockFs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
+      expect(fs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
         recursive: true,
       });
 
-      expect(mockFs.writeFileSync).toHaveBeenCalledTimes(5);
+      expect(fs.writeFileSync).toHaveBeenCalledTimes(5);
     });
 
     it("should create directory if it doesn't exist", async () => {
-      mockFs.existsSync.mockReturnValue(false);
+      vi.mocked(fs.existsSync).mockReturnValue(false);
 
       await scaffoldComponent(mockOptions, "/tmp/test");
 
-      expect(mockFs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
+      expect(fs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
         recursive: true,
       });
     });
 
     it("should not create directory if it already exists", async () => {
-      mockFs.existsSync.mockReturnValue(true);
+      vi.mocked(fs.existsSync).mockReturnValue(true);
 
       await scaffoldComponent(mockOptions, "/tmp/test");
 
-      expect(mockFs.mkdirSync).not.toHaveBeenCalled();
+      expect(fs.mkdirSync).not.toHaveBeenCalled();
     });
 
     it("should handle invalid component names", async () => {
@@ -255,7 +260,7 @@ describe("scaffold-component library", () => {
 
     it("should handle file write errors", async () => {
       const writeError = new Error("Permission denied");
-      mockFs.writeFileSync.mockImplementation(() => {
+      vi.mocked(fs.writeFileSync).mockImplementation(() => {
         throw writeError;
       });
 
@@ -268,7 +273,7 @@ describe("scaffold-component library", () => {
 
     it("should handle directory creation errors", async () => {
       const mkdirError = new Error("Permission denied");
-      mockFs.mkdirSync.mockImplementation(() => {
+      vi.mocked(fs.mkdirSync).mockImplementation(() => {
         throw mkdirError;
       });
 
@@ -280,7 +285,7 @@ describe("scaffold-component library", () => {
     });
 
     it("should respect overwrite flag", async () => {
-      mockFs.existsSync.mockImplementation((path) => {
+      vi.mocked(fs.existsSync).mockImplementation((path) => {
         return path.toString().includes("index.tsx");
       });
 
@@ -296,7 +301,7 @@ describe("scaffold-component library", () => {
     });
 
     it("should not overwrite files when overwrite is false", async () => {
-      mockFs.existsSync.mockImplementation((path) => {
+      vi.mocked(fs.existsSync).mockImplementation((path) => {
         return path.toString().includes("index.tsx");
       });
 
