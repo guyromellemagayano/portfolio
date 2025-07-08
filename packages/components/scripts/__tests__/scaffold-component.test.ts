@@ -1,27 +1,45 @@
-import fs from "fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+// Use vi.hoisted to create mocks that are available during module mocking
+const mocks = vi.hoisted(() => ({
+  // Logger mocks
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  // FS mocks
+  existsSync: vi.fn(),
+  mkdirSync: vi.fn(),
+  writeFileSync: vi.fn(),
+  // Path mocks
+  join: vi.fn((...args: string[]) => args.join("/")),
+  dirname: vi.fn(),
+}));
 
 // Mock the logger
 vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
+  logError: mocks.logError,
+  logInfo: mocks.logInfo,
 }));
 
 // Mock fs
 vi.mock("fs", () => ({
   default: {
-    existsSync: vi.fn(),
-    mkdirSync: vi.fn(),
-    writeFileSync: vi.fn(),
+    existsSync: mocks.existsSync,
+    mkdirSync: mocks.mkdirSync,
+    writeFileSync: mocks.writeFileSync,
   },
+  existsSync: mocks.existsSync,
+  mkdirSync: mocks.mkdirSync,
+  writeFileSync: mocks.writeFileSync,
 }));
 
 // Mock path
 vi.mock("path", () => ({
   default: {
-    join: vi.fn((...args) => args.join("/")),
-    dirname: vi.fn(),
+    join: mocks.join,
+    dirname: mocks.dirname,
   },
+  join: mocks.join,
+  dirname: mocks.dirname,
 }));
 
 // Import the functions to test
@@ -38,10 +56,12 @@ import {
 } from "../libs/scaffold-component";
 
 describe("scaffold-component lib", () => {
-  const mockFs = fs as any;
-
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset mock implementations
+    mocks.existsSync.mockReturnValue(false);
+    mocks.mkdirSync.mockReturnValue(undefined);
+    mocks.writeFileSync.mockReturnValue(undefined);
   });
 
   describe("validateComponentName", () => {
@@ -203,29 +223,29 @@ describe("scaffold-component lib", () => {
       expect(result.filesCreated).toHaveLength(5);
       expect(result.errors).toHaveLength(0);
 
-      expect(mockFs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
+      expect(mocks.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
         recursive: true,
       });
 
-      expect(mockFs.writeFileSync).toHaveBeenCalledTimes(5);
+      expect(mocks.writeFileSync).toHaveBeenCalledTimes(5);
     });
 
     it("should create directory if it doesn't exist", async () => {
-      mockFs.existsSync.mockReturnValue(false);
+      mocks.existsSync.mockReturnValue(false);
 
       await scaffoldComponent(mockOptions, "/tmp/test");
 
-      expect(mockFs.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
+      expect(mocks.mkdirSync).toHaveBeenCalledWith("/tmp/test/testcomponent", {
         recursive: true,
       });
     });
 
     it("should not create directory if it already exists", async () => {
-      mockFs.existsSync.mockReturnValue(true);
+      mocks.existsSync.mockReturnValue(true);
 
       await scaffoldComponent(mockOptions, "/tmp/test");
 
-      expect(mockFs.mkdirSync).not.toHaveBeenCalled();
+      expect(mocks.mkdirSync).not.toHaveBeenCalled();
     });
 
     it("should handle invalid component names", async () => {
@@ -258,7 +278,7 @@ describe("scaffold-component lib", () => {
 
     it("should handle file write errors", async () => {
       const writeError = new Error("Permission denied");
-      mockFs.writeFileSync.mockImplementation(() => {
+      mocks.writeFileSync.mockImplementation(() => {
         throw writeError;
       });
 
@@ -271,7 +291,7 @@ describe("scaffold-component lib", () => {
 
     it("should handle directory creation errors", async () => {
       const mkdirError = new Error("Permission denied");
-      mockFs.mkdirSync.mockImplementation(() => {
+      mocks.mkdirSync.mockImplementation(() => {
         throw mkdirError;
       });
 
@@ -283,7 +303,7 @@ describe("scaffold-component lib", () => {
     });
 
     it("should respect overwrite flag", async () => {
-      mockFs.existsSync.mockImplementation((path) => {
+      mocks.existsSync.mockImplementation((path: string) => {
         return path.toString().includes("index.tsx");
       });
 
@@ -299,7 +319,7 @@ describe("scaffold-component lib", () => {
     });
 
     it("should not overwrite files when overwrite is false", async () => {
-      mockFs.existsSync.mockImplementation((path) => {
+      mocks.existsSync.mockImplementation((path: string) => {
         return path.toString().includes("index.tsx");
       });
 
