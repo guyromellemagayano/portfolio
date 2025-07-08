@@ -21,13 +21,11 @@
   },
   "dependencies": {
     "@guyromellemagayano/ui": "workspace:*",
-    "@react-router/dev": "^7.6.2",
-    "@react-router/node": "^7.6.2",
-    "blog": "workspace:^",
-    "inquirer": "^12.6.3",
-    "react-router": "^7.6.2",
-    "storefront": "workspace:^",
-    "studio": "workspace:^"
+    "@react-router/dev": "^7.6.3",
+    "@react-router/node": "^7.6.3",
+    "inquirer": "^12.7.0",
+    "react-router": "^7.6.3",
+    "storefront": "workspace:^"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
