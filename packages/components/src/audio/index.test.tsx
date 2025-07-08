@@ -679,9 +679,9 @@ describe("Audio Component", () => {
       process.env.NODE_ENV = "development";
 
       const CustomAudio = React.forwardRef<
-        HTMLDivElement,
+        HTMLAudioElement,
         React.AudioHTMLAttributes<HTMLAudioElement>
-      >((props, ref) => <div {...props} ref={ref} />);
+      >((props, ref) => <audio {...props} ref={ref} />);
 
       render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
 
@@ -698,9 +698,9 @@ describe("Audio Component", () => {
       process.env.NODE_ENV = "production";
 
       const CustomAudio = React.forwardRef<
-        HTMLDivElement,
+        HTMLAudioElement,
         React.AudioHTMLAttributes<HTMLAudioElement>
-      >((props, ref) => <div {...props} ref={ref} />);
+      >((props, ref) => <audio {...props} ref={ref} />);
 
       render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
 
@@ -713,9 +713,9 @@ describe("Audio Component", () => {
 
     it("sets polymorphic element data attribute", () => {
       const CustomAudio = React.forwardRef<
-        HTMLDivElement,
+        HTMLAudioElement,
         React.AudioHTMLAttributes<HTMLAudioElement>
-      >((props, ref) => <div {...props} ref={ref} />);
+      >((props, ref) => <audio {...props} ref={ref} />);
 
       render(<Audio src="test.mp3" as={CustomAudio} data-testid="custom" />);
 
