@@ -403,7 +403,7 @@ function ClientArticleExample() {
 
   return (
     <Article 
-      isClient 
+      isClient
       isMemoized
       featured={updateCount > 5}
     >
