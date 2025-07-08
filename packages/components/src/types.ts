@@ -150,6 +150,11 @@ export const ELEMENT_CONFIGS = {
     [],
     "The br element has no specific props beyond standard HTML attributes."
   ),
+  CANVAS: createElementConfig(
+    "canvas",
+    ["width", "height"],
+    "These props control canvas dimensions for graphics rendering and have no effect on non-canvas elements."
+  ),
 } as const;
 
 export type ElementConfigKey = keyof typeof ELEMENT_CONFIGS;
