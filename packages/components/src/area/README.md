@@ -36,6 +36,7 @@ A sophisticated, polymorphic wrapper for the HTML `<area>` element with advanced
     - [BEM Methodology](#bem-methodology)
     - [Base Classes](#base-classes)
     - [Modifiers](#modifiers)
+    - [Data Attribute Styling](#data-attribute-styling)
     - [Customization Options](#customization-options)
     - [CSS Variables](#css-variables)
   - [🧪 Testing](#-testing)
@@ -249,8 +250,8 @@ function AdvancedAnalyticsExample() {
           analyticsId="circle-area"
           onAnalytics={handleAreaClick}
         />
-        <Area 
-          shape="rect" 
+        <Area
+          shape="rect"
           coords="120,10,220,90" 
           href="rectangle.htm" 
           alt="Rectangle"
@@ -276,7 +277,7 @@ function DebugValidationExample() {
       <Img src="workplace.jpg" alt="Workplace" useMap="#debugmap" />
       <Map name="debugmap">
         {/* Valid area with debug overlay (development only) */}
-        <Area 
+        <Area
           shape="rect" 
           coords="34,44,270,350" 
           href="#computer" 
@@ -286,7 +287,7 @@ function DebugValidationExample() {
         />
         
         {/* Invalid coordinates - will show warning in console and red outline */}
-        <Area 
+        <Area
           shape="rect" 
           coords="invalid,coords,here" 
           href="#invalid" 
@@ -295,7 +296,7 @@ function DebugValidationExample() {
         />
         
         {/* Small touch target - will show orange outline warning */}
-        <Area 
+        <Area
           shape="circle" 
           coords="400,300,10" 
           href="#small" 
@@ -321,20 +322,19 @@ function TouchValidationExample() {
   
   // Expand area to meet touch requirements
   const expandedCoords = AreaUtils.expandForTouch('rect', '0,0,20,20', 44);
-
+  
   return (
     <>
       <Img src="mobile-map.png" alt="Mobile Friendly Map" useMap="#touchmap" />
       <Map name="touchmap">
-        <Area 
+        <Area
           shape="rect" 
           coords={expandedCoords} // Uses expanded coordinates
           href="#expanded" 
           alt="Touch Optimized Area"
           minTouchTarget={44}
         />
-        
-        <Area 
+        <Area
           shape="circle" 
           coords="200,200,30" // 60px diameter - good for touch
           href="#good-touch" 
