@@ -1,29 +1,26 @@
 <!-- markdownlint-disable line-length descriptive-link-text -->
 # Canvas Component
 
-A polymorphic wrapper for the HTML `<canvas>` element with analytics integration, drawing capabilities, and comprehensive event handling. Designed for graphics rendering, data visualization, and interactive drawing applications, prioritizing proper canvas semantics and accessibility standards.
+Universal canvas component with context management, drawing utilities, comprehensive analytics, and accessibility features. Supports server-side and client-side rendering with advanced canvas capabilities.
 
 ## 📋 Table of Contents
 
 - [Canvas Component](#canvas-component)
   - [📋 Table of Contents](#-table-of-contents)
   - [📖 Overview](#-overview)
-    - [Purpose](#purpose)
-    - [Key Features](#key-features)
   - [🚀 Quick Start](#-quick-start)
-    - [Installation](#installation)
-    - [Basic Usage](#basic-usage)
   - [⚙️ Props](#️-props)
     - [Standard Props](#standard-props)
-    - [Component-Specific Props](#component-specific-props)
+    - [Canvas-Specific Props](#canvas-specific-props)
   - [💡 Examples](#-examples)
-    - [Basic Example](#basic-example)
-    - [Different Sizes](#different-sizes)
-    - [Drawing Context](#drawing-context)
-    - [With Custom Styling](#with-custom-styling)
-    - [With Analytics](#with-analytics)
-    - [Polymorphic Rendering](#polymorphic-rendering)
-    - [Client-Side Rendering](#client-side-rendering)
+    - [Basic Canvas](#basic-canvas)
+    - [Interactive Drawing Canvas](#interactive-drawing-canvas)
+    - [WebGL Canvas](#webgl-canvas)
+    - [Responsive Canvas](#responsive-canvas)
+    - [Canvas with Analytics](#canvas-with-analytics)
+    - [Canvas with Debug Mode](#canvas-with-debug-mode)
+    - [Polymorphic Canvas](#polymorphic-canvas)
+    - [Client-Side Canvas](#client-side-canvas)
   - [🔍 Validation System](#-validation-system)
     - [Polymorphic Validation](#polymorphic-validation)
     - [Development Warnings](#development-warnings)
@@ -45,7 +42,7 @@ A polymorphic wrapper for the HTML `<canvas>` element with analytics integration
   - [🌐 Browser Support](#-browser-support)
   - [📘 TypeScript](#-typescript)
   - [📚 Migration Guide](#-migration-guide)
-    - [From Legacy Component](#from-legacy-component)
+    - [From Basic HTML Canvas](#from-basic-html-canvas)
     - [Breaking Changes](#breaking-changes)
   - [🤝 Contributing](#-contributing)
     - [Contribution Guidelines](#contribution-guidelines)
@@ -53,569 +50,359 @@ A polymorphic wrapper for the HTML `<canvas>` element with analytics integration
 
 ## 📖 Overview
 
-### Purpose
+The Canvas component provides comprehensive canvas functionality with:
 
-The `Canvas` component provides a flexible, accessible HTML canvas element for graphics rendering and interactive drawing applications. It supports custom dimensions, context management, and can be rendered as different elements for versatile usage patterns. The component includes comprehensive analytics integration and event handling while maintaining high performance and accessibility standards for visual content.
-
-### Key Features
-
-- **Graphics Rendering**: Utilizes the native `<canvas>` element for 2D and 3D graphics rendering.
-- **Custom Dimensions**: Configurable width and height with responsive design support.
-- **Context Management**: Built-in support for canvas context initialization and management.
-- **Analytics Integration**: Comprehensive event tracking for canvas interactions including dimensions.
-- **Interactive Events**: Enhanced click handling with canvas-specific event callbacks.
-- **Polymorphic Rendering**: Ability to render as different HTML elements or custom components.
-- **Validation System**: Runtime validation warnings for invalid prop usage in development.
-- **Accessibility Support**: Proper ARIA attributes and screen reader compatibility.
-- **Responsive Design**: CSS support for responsive canvas behavior.
-- **High Performance**: Optimized for fast rendering and efficient graphics operations.
+- **🎨 Multiple Context Types**: Support for 2D, WebGL, WebGL2, and bitmap rendering contexts
+- **📱 Touch & Mouse Support**: Complete drawing event handling for all input methods
+- **📊 Analytics Integration**: Built-in Google Analytics tracking with custom analytics support
+- **♿ Accessibility**: Full ARIA support, keyboard navigation, and screen reader compatibility
+- **🔧 High DPI Support**: Automatic pixel ratio scaling for crisp rendering on high-resolution displays
+- **📐 Responsive Design**: Auto-resize capabilities with container-aware dimensions
+- **⚠️ Error Handling**: Graceful context initialization failure handling with fallback UI
+- **🐛 Debug Mode**: Developer-friendly debug overlay with real-time canvas information
+- **🔄 Polymorphic Rendering**: Render as any HTML element with validation warnings
+- **⚡ Performance Optimized**: Lazy loading, memoization, and hardware acceleration
 
 ## 🚀 Quick Start
 
-### Installation
-
-To use the `Canvas` component in your project, install the `@guyromellemagayano/components` package:
-
-```bash
-pnpm add @guyromellemagayano/components
-# or
-npm install @guyromellemagayano/components
-# or
-yarn add @guyromellemagayano/components
-```
-
-### Basic Usage
-
-Import the `Canvas` component and use it in your React application:
-
-```typescript
+```tsx
 import { Canvas } from '@guyromellemagayano/components';
 
-function DrawingArea() {
-  return (
-    <Canvas 
-      width={400} 
-      height={300}
-      onCanvasClick={(event) => console.log('Canvas clicked!')}
-    />
-  );
-}
+// Basic canvas
+<Canvas width={400} height={300}>
+  Fallback content for unsupported browsers
+</Canvas>
+
+// Interactive drawing canvas
+<Canvas
+  width={600}
+  height={400}
+  active
+  contextType="2d"
+  onDrawStart={(event) => console.log('Drawing started')}
+  onDrawing={(event) => console.log('Drawing...')}
+  onDrawEnd={(event) => console.log('Drawing ended')}
+  analyticsId="drawing-canvas"
+>
+  Interactive drawing surface
+</Canvas>
 ```
 
 ## ⚙️ Props
 
 ### Standard Props
 
-These props are common across many components in the library.
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `children` | `React.ReactNode` | `undefined` | Fallback content for canvas |
+| `className` | `string` | `undefined` | Additional CSS classes |
+| `style` | `React.CSSProperties` | `undefined` | Inline styles |
+| `as` | `React.ElementType` | `"canvas"` | Element type for polymorphic rendering |
+| `isClient` | `boolean` | `false` | Enable client-side rendering |
+| `isMemoized` | `boolean` | `false` | Enable memoization for performance |
+| `analyticsId` | `string` | `undefined` | Analytics identifier for tracking |
+| `onAnalytics` | `(data: CanvasAnalyticsData) => void` | `undefined` | Custom analytics function |
+| [key: data-${string}] | `string` | `undefined` | Data attributes for testing/styling |
+
+### Canvas-Specific Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `children` | `React.ReactNode` | - | The content to render inside the component. |
-| `className` | `string` | - | Additional CSS classes to apply to the component. |
-| `style` | `React.CSSProperties` | - | Inline styles to apply to the component. |
-| `as` | `React.ElementType` \| `string` | `"canvas"` | The HTML element or custom component to render as. Defaults to `"canvas"`. |
-| `isClient` | `boolean` | `false` | If `true`, the component will be rendered client-side, enabling client-only features. |
-| `analyticsId` | `string` | - | A unique identifier for analytics tracking of component interactions. |
-| `onAnalytics` | `(data: { event: string; category: string; label: string; action: string; canvasWidth?: number; canvasHeight?: number; }) => void` | - | A custom function to handle analytics events. If provided, it overrides the default analytics behavior. |
-| `[key: data-${string}]` | `string \| undefined` | - | Supports arbitrary `data-*` attributes for testing and debugging purposes. |
-
-### Component-Specific Props
-
-These props are unique to the `Canvas` component.
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `width` | `number` | - | Width of the canvas in pixels. Only valid for `<canvas>` elements. |
-| `height` | `number` | - | Height of the canvas in pixels. Only valid for `<canvas>` elements. |
-| `onCanvasClick` | `(event: React.MouseEvent<HTMLCanvasElement>) => void` | - | Callback function triggered when the canvas is clicked. |
-| `onContextReady` | `(context: CanvasRenderingContext2D \| null) => void` | - | Callback function triggered when the canvas context is ready for drawing operations. |
+| `width` | `number` | `300` | Canvas width in pixels |
+| `height` | `number` | `150` | Canvas height in pixels |
+| `dimensions` | `CanvasDimensions` | `undefined` | Custom dimensions with pixel ratio |
+| `variant` | `CanvasVariant` | `"default"` | Visual variant (`default`, `responsive`, `fullscreen`, `thumbnail`) |
+| `contextType` | `CanvasContextType` | `"2d"` | Rendering context type (`2d`, `webgl`, `webgl2`, `bitmaprenderer`) |
+| `active` | `boolean` | `false` | Enable drawing interactions |
+| `loading` | `boolean` | `false` | Show loading state |
+| `disabled` | `boolean` | `false` | Disable all interactions |
+| `enableHighDPI` | `boolean` | `true` | Enable high DPI support |
+| `preserveDrawingBuffer` | `boolean` | `false` | Preserve drawing buffer for context |
+| `alpha` | `boolean` | `true` | Enable alpha channel |
+| `antialias` | `boolean` | `true` | Enable antialiasing |
+| `debug` | `boolean` | `false` | Show debug information overlay |
+| `autoResize` | `boolean` | `false` | Auto-resize with container |
+| `maxWidth` | `number` | `undefined` | Maximum width for responsive sizing |
+| `maxHeight` | `number` | `undefined` | Maximum height for responsive sizing |
+| `onDrawStart` | `(event) => void` | `undefined` | Drawing start callback |
+| `onDrawing` | `(event) => void` | `undefined` | Drawing move callback |
+| `onDrawEnd` | `(event) => void` | `undefined` | Drawing end callback |
+| `onContextReady` | `(context, canvas) => void` | `undefined` | Context initialization callback |
+| `onResize` | `(dimensions) => void` | `undefined` | Resize callback |
+| `alt` | `string` | `undefined` | Alt text for accessibility |
+| `ariaLabel` | `string` | `undefined` | ARIA label for accessibility |
+| `description` | `string` | `undefined` | Description for screen readers |
 
 ## 💡 Examples
 
-### Basic Example
+### Basic Canvas
 
-Demonstrates the fundamental usage of the `Canvas` component for graphics rendering.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-
-function BasicCanvasExample() {
-  return (
-    <Canvas 
-      width={400} 
-      height={300}
-      style={{ border: '1px solid #ccc' }}
-    />
-  );
-}
+```tsx
+<Canvas width={400} height={300} className="my-canvas">
+  Your browser does not support canvas
+</Canvas>
 ```
 
-### Different Sizes
+### Interactive Drawing Canvas
 
-Shows various canvas sizes and responsive behavior.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-
-function SizedCanvasExample() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Small canvas */}
-      <Canvas 
-        width={200} 
-        height={150}
-        className="canvas--small"
-      />
-      
-      {/* Medium canvas */}
-      <Canvas 
-        width={400} 
-        height={300}
-        className="canvas--medium"
-      />
-      
-      {/* Large canvas */}
-      <Canvas 
-        width={600} 
-        height={450}
-        className="canvas--large"
-      />
-      
-      {/* Responsive canvas */}
-      <Canvas 
-        width={800} 
-        height={600}
-        className="canvas--responsive"
-        style={{ maxWidth: '100%', height: 'auto' }}
-      />
-    </div>
-  );
-}
-```
-
-### Drawing Context
-
-Demonstrates how to access and use the canvas drawing context.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-import { useRef, useEffect } from 'react';
-
-function DrawingCanvasExample() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    
-    // Draw a simple rectangle
-    context.fillStyle = '#3b82f6';
-    context.fillRect(50, 50, 100, 75);
-    
-    // Draw a circle
-    context.beginPath();
-    context.arc(200, 100, 40, 0, 2 * Math.PI);
-    context.fillStyle = '#ef4444';
-    context.fill();
-  }, []);
-  
-  const handleContextReady = (context: CanvasRenderingContext2D | null) => {
-    if (context) {
-      console.log('Canvas context is ready for drawing');
+```tsx
+<Canvas
+  width={600}
+  height={400}
+  variant="responsive"
+  active
+  contextType="2d"
+  enableHighDPI
+  onDrawStart={(event) => {
+    console.log('Drawing started at:', event.clientX, event.clientY);
+  }}
+  onDrawing={(event) => {
+    console.log('Drawing at:', event.clientX, event.clientY);
+  }}
+  onDrawEnd={(event) => {
+    console.log('Drawing ended');
+  }}
+  onContextReady={(context, canvas) => {
+    if (context instanceof CanvasRenderingContext2D) {
+      context.strokeStyle = '#3b82f6';
+      context.lineWidth = 2;
+      context.lineCap = 'round';
+      context.lineJoin = 'round';
     }
-  };
-
-  return (
-    <Canvas 
-      ref={canvasRef}
-      width={400} 
-      height={200}
-      onContextReady={handleContextReady}
-    />
-  );
-}
+  }}
+  ariaLabel="Interactive drawing canvas"
+  description="Use mouse or touch to draw on this canvas"
+>
+  Interactive drawing surface
+</Canvas>
 ```
 
-### With Custom Styling
+### WebGL Canvas
 
-Applies custom CSS classes and inline styles to the `Canvas` component.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-
-function StyledCanvasExample() {
-  return (
-    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-      <Canvas 
-        width={300} 
-        height={200}
-        className="canvas--dark"
-        style={{ 
-          borderRadius: '12px',
-          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-        }}
-      />
-      
-      <Canvas 
-        width={300} 
-        height={200}
-        className="canvas--minimal"
-        style={{ 
-          backgroundColor: '#f8fafc',
-          border: '2px dashed #cbd5e1'
-        }}
-      />
-      
-      <Canvas 
-        width={300} 
-        height={200}
-        className="canvas--bordered"
-        style={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          borderRadius: '8px'
-        }}
-      />
-    </div>
-  );
-}
+```tsx
+<Canvas
+  width={800}
+  height={600}
+  contextType="webgl"
+  alpha={false}
+  antialias={true}
+  preserveDrawingBuffer={true}
+  onContextReady={(context, canvas) => {
+    if (context instanceof WebGLRenderingContext) {
+      context.clearColor(0.0, 0.0, 0.0, 1.0);
+      context.clear(context.COLOR_BUFFER_BIT);
+    }
+  }}
+  ariaLabel="WebGL rendering canvas"
+>
+  WebGL content
+</Canvas>
 ```
 
-### With Analytics
+### Responsive Canvas
 
-Integrates comprehensive analytics tracking for canvas interactions.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-
-function AnalyticsCanvasExample() {
-  const handleAnalytics = (data) => {
-    console.log('Canvas interaction recorded:', data);
-    // Example: send to your analytics platform
-    // trackEvent(data.event, data.category, data.label, {
-    //   action: data.action,
-    //   canvasWidth: data.canvasWidth,
-    //   canvasHeight: data.canvasHeight
-    // });
-  };
-  
-  const handleCanvasClick = (event) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    console.log(`Canvas clicked at: (${x}, ${y})`);
-  };
-
-  return (
-    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-      <Canvas 
-        width={300} 
-        height={200}
-        analyticsId="drawing-canvas"
-        onAnalytics={handleAnalytics}
-        onCanvasClick={handleCanvasClick}
-      />
-      
-      <Canvas 
-        width={400} 
-        height={300}
-        analyticsId="visualization-canvas"
-        onAnalytics={handleAnalytics}
-        style={{ cursor: 'crosshair' }}
-      />
-    </div>
-  );
-}
+```tsx
+<Canvas
+  width={800}
+  height={600}
+  variant="responsive"
+  autoResize
+  maxWidth={1200}
+  maxHeight={800}
+  onResize={(dimensions) => {
+    console.log('Canvas resized to:', dimensions);
+  }}
+>
+  Responsive canvas content
+</Canvas>
 ```
 
-### Polymorphic Rendering
+### Canvas with Analytics
 
-Shows how to render the `Canvas` component as different HTML elements or custom React components.
-
-⚠️ **Warning**: When using the `as` prop with non-canvas elements, canvas-specific props like `width` and `height` may not apply or may trigger validation warnings in development mode.
-
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
-
-function PolymorphicCanvasExample() {
-  const CustomCanvasContainer = React.forwardRef((props, ref) => (
-    <div {...props} ref={ref} className="custom-canvas-container" />
-  ));
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {/* Render as div for non-canvas content */}
-      <Canvas 
-        as="div" 
-        style={{ 
-          width: '400px', 
-          height: '300px',
-          backgroundColor: '#f1f5f9',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        <p>Canvas-styled div container</p>
-      </Canvas>
-      
-      {/* Render as section for semantic content */}
-      <Canvas 
-        as="section" 
-        className="canvas--bordered"
-        style={{ padding: '20px' }}
-      >
-        <h3>Canvas Section</h3>
-        <p>This uses canvas styling but renders as a section element.</p>
-      </Canvas>
-      
-      {/* Render with custom component */}
-      <Canvas 
-        as={CustomCanvasContainer}
-        width={300}
-        height={200}
-      >
-        Custom canvas container component
-      </Canvas>
-    </div>
-  );
-}
+```tsx
+<Canvas
+  width={500}
+  height={300}
+  active
+  analyticsId="drawing-board"
+  onAnalytics={(data) => {
+    console.log('Canvas analytics:', data);
+    // Custom analytics tracking
+    myAnalytics.track(data.event, data);
+  }}
+  onDrawStart={() => console.log('User started drawing')}
+>
+  Analytics-enabled canvas
+</Canvas>
 ```
 
-### Client-Side Rendering
+### Canvas with Debug Mode
 
-Demonstrates usage of `Canvas` component with client-side rendering capabilities.
+```tsx
+<Canvas
+  width={400}
+  height={300}
+  debug
+  contextType="2d"
+  enableHighDPI
+  variant="responsive"
+  active
+>
+  Debug mode canvas - shows overlay with canvas information
+</Canvas>
+```
 
-```typescript
-import { Canvas } from '@guyromellemagayano/components';
+### Polymorphic Canvas
 
-function ClientCanvasExample() {
-  return (
-    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-      <Canvas 
-        width={400} 
-        height={300}
-        isClient
-        analyticsId="client-canvas"
-      />
-      
-      <Canvas 
-        width={300} 
-        height={200}
-        isClient
-        className="canvas--dark"
-        onCanvasClick={(event) => {
-          console.log('Client-side canvas clicked');
-        }}
-      />
-    </div>
-  );
-}
+```tsx
+{/* Renders as div with canvas functionality */}
+<Canvas
+  as="div"
+  width={300}
+  height={200}
+  className="canvas-like-div"
+>
+  Canvas functionality in a div
+</Canvas>
+
+{/* Custom component */}
+<Canvas
+  as={MyCustomComponent}
+  width={400}
+  height={300}
+  customProp="value"
+>
+  Canvas with custom component
+</Canvas>
+```
+
+### Client-Side Canvas
+
+```tsx
+<Canvas
+  width={600}
+  height={400}
+  isClient
+  isMemoized
+  active
+  contextType="2d"
+  onContextReady={(context, canvas) => {
+    // Client-side only initialization
+    initializeCanvasLibrary(context, canvas);
+  }}
+>
+  Client-side optimized canvas
+</Canvas>
 ```
 
 ## 🔍 Validation System
 
 ### Polymorphic Validation
 
-The `Canvas` component includes a sophisticated validation system to ensure proper usage of canvas-specific attributes when rendering as different elements.
+The Canvas component includes runtime validation for polymorphic usage:
 
-**Validated Attributes:**
+```tsx
+// ✅ Correct usage
+<Canvas width={400} height={300}>Canvas content</Canvas>
 
-- `width`: Only valid for `<canvas>` elements
-- `height`: Only valid for `<canvas>` elements
-
-When rendering as a non-canvas element (using the `as` prop), the component will:
-
-- Display development warnings for invalid attribute usage
-- Add `data-element-validation="warning"` attribute for debugging
-- Add `data-polymorphic-element` attribute for debugging
-- Continue to function normally in production
+// ⚠️ Warning in development
+<Canvas as="div" width={400} height={300}>
+  Canvas props on div element
+</Canvas>
+```
 
 ### Development Warnings
 
-In development mode, you'll see console warnings when using canvas-specific props with other elements:
+When using canvas-specific props with non-canvas elements, you'll see helpful warnings:
 
-```typescript
-// This will trigger validation warnings in development
-<Canvas as="div" width={400} height={300}>
-  Invalid canvas dimensions on div
-</Canvas>
-
-// Console output may include warnings about canvas-specific attributes
+```bash
+Canvas: The following props are only valid for <canvas> elements: width, height.
+You're rendering as <div>. Canvas-specific sizing and context properties.
+Consider using a semantic <canvas> element or removing these props.
 ```
 
 ## ♿ Accessibility
 
 ### Best Practices Followed
 
-This component is built following key accessibility best practices for graphics and visual content:
-
-- **Semantic HTML**: Utilizes the native `<canvas>` element, ensuring proper graphics semantics for assistive technologies.
-- **ARIA Support**: Includes default `aria-label` and `role="img"` for screen reader compatibility.
-- **Keyboard Navigation**: Supports focus management for interactive canvas applications.
-- **Focus Management**: Clear focus indicators and logical tab order when interactive.
-- **Screen Reader Support**: Proper labeling and alternative text support for canvas content.
-- **High Contrast**: Designed to be usable in high contrast mode preferences.
-- **Reduced Motion**: Respects user's `prefers-reduced-motion` preferences.
-- **Alternative Text**: Supports custom `aria-label` for describing canvas content.
+- **Semantic HTML**: Uses proper `<canvas>` element by default
+- **ARIA Support**: Comprehensive ARIA attributes for screen readers
+- **Keyboard Navigation**: Full keyboard support for interactions
+- **Focus Management**: Proper focus indicators and management
+- **Alternative Content**: Support for fallback content in children
+- **High Contrast**: High contrast mode support
+- **Reduced Motion**: Respects `prefers-reduced-motion` setting
 
 ### ARIA Attributes
 
-The `<canvas>` element requires additional accessibility considerations:
-
-- `role="img"` is automatically applied for screen reader compatibility
-- `aria-label="Canvas element"` is provided by default but can be overridden
-- Custom `aria-label` should describe the canvas content or purpose
-- `aria-describedby` can link to detailed descriptions of visual content
-- Interactive canvas applications may need additional ARIA attributes
+| Attribute | Description | Default Value |
+|-----------|-------------|---------------|
+| `aria-label` | Canvas description | `"Interactive canvas"` |
+| `aria-describedby` | References description element | Generated ID when description provided |
+| `role` | Element role | `"img"` or `"application"` based on interactivity |
 
 ## 🎨 Styling
 
 ### BEM Methodology
 
-This component uses BEM (Block Element Modifier) methodology for its CSS classes, ensuring a clear and maintainable styling structure.
+The component follows BEM naming conventions:
+
+```css
+.canvas                 /* Base component */
+.canvas--default        /* Default variant */
+.canvas--responsive     /* Responsive variant */
+.canvas--active         /* Active state */
+.canvas--disabled       /* Disabled state */
+.canvas--loading        /* Loading state */
+.canvas--drawing        /* Drawing state */
+.canvas--debug          /* Debug mode */
+```
 
 ### Base Classes
 
-- `.canvas` : The base class for the `Canvas` component, defining its fundamental styles.
+- `.canvas` - Base canvas styles
+- `.canvas-wrapper` - Wrapper for additional elements
 
 ### Modifiers
 
-- `.canvas--small` : Small size preset (200x150px).
-- `.canvas--medium` : Medium size preset (400x300px).
-- `.canvas--large` : Large size preset (600x450px).
-- `.canvas--full-width` : Full width responsive styling.
-- `.canvas--dark` : Dark theme styling.
-- `.canvas--minimal` : Minimal styling without borders or shadows.
-- `.canvas--bordered` : Enhanced border styling.
-- `.canvas--responsive` : Responsive behavior for mobile devices.
-- `.canvas--loading` : Loading state styling.
-- `.canvas--error` : Error state styling.
-- `.canvas--disabled` : Disabled state styling.
+- `.canvas--default` - Default canvas styling
+- `.canvas--responsive` - Responsive canvas that scales with container
+- `.canvas--fullscreen` - Full viewport canvas
+- `.canvas--thumbnail` - Small thumbnail canvas
+- `.canvas--active` - Interactive canvas with drawing capabilities
+- `.canvas--disabled` - Non-interactive disabled canvas
+- `.canvas--loading` - Canvas in loading state
+- `.canvas--drawing` - Canvas currently being drawn on
+- `.canvas--debug` - Canvas with debug overlay
+- `.canvas--error` - Canvas with initialization error
 
 ### Customization Options
 
-You can customize the component's appearance using various methods:
-
-1. **CSS Classes**: Extend or override styles by passing your own classes via the `className` prop.
-2. **Inline Styles**: Apply component-specific styling directly using the `style` prop.
-3. **CSS Variables**: Override default values by defining CSS custom properties within your stylesheets.
-4. **CSS Modules**: Integrate with CSS Modules for scoped and modular styling.
+```css
+/* CSS Custom Properties */
+.canvas {
+  --canvas-border-color: #e2e8f0;
+  --canvas-background-color: #ffffff;
+  --canvas-active-color: #3b82f6;
+  --canvas-disabled-opacity: 0.6;
+  --canvas-border-radius: 4px;
+  --canvas-focus-color: #3b82f6;
+  --canvas-error-color: #ef4444;
+  --canvas-success-color: #10b981;
+  --canvas-debug-color: #8b5cf6;
+}
+```
 
 ### CSS Variables
 
-Example CSS variables available for customization:
+The component supports extensive theming through CSS variables:
 
 ```css
-.canvas {
-  /* Base styling */
-  --canvas-display: block;
-  --canvas-max-width: 100%;
-  --canvas-height: auto;
-  --canvas-border: 1px solid #e2e8f0;
-  --canvas-border-radius: 0.375rem;
-  --canvas-background-color: #ffffff;
-  --canvas-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --canvas-transition: all 0.2s ease-in-out;
-  
-  /* Interactive states */
-  --canvas-hover-border-color: #cbd5e1;
-  --canvas-hover-box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --canvas-focus-outline: 2px solid #3b82f6;
-  --canvas-focus-outline-offset: 2px;
-  --canvas-focus-border-color: #3b82f6;
-  
-  /* State styling */
-  --canvas-loading-opacity: 0.6;
-  --canvas-error-border-color: #ef4444;
-  --canvas-error-background-color: #fef2f2;
-  --canvas-disabled-opacity: 0.5;
-  
-  /* Theme variations */
-  --canvas-dark-background-color: #1f2937;
-  --canvas-dark-border-color: #374151;
-  --canvas-dark-color: #f9fafb;
-}
-
-/* Base styles with CSS variables */
-.canvas {
-  display: var(--canvas-display);
-  max-width: var(--canvas-max-width);
-  height: var(--canvas-height);
-  border: var(--canvas-border);
-  border-radius: var(--canvas-border-radius);
-  background-color: var(--canvas-background-color);
-  box-shadow: var(--canvas-box-shadow);
-  transition: var(--canvas-transition);
-}
-
-.canvas:hover {
-  border-color: var(--canvas-hover-border-color);
-  box-shadow: var(--canvas-hover-box-shadow);
-}
-
-.canvas:focus {
-  outline: var(--canvas-focus-outline);
-  outline-offset: var(--canvas-focus-outline-offset);
-  border-color: var(--canvas-focus-border-color);
-}
-
-/* State implementations */
-.canvas--loading {
-  opacity: var(--canvas-loading-opacity);
-  pointer-events: none;
-}
-
-.canvas--error {
-  border-color: var(--canvas-error-border-color);
-  background-color: var(--canvas-error-background-color);
-}
-
-.canvas--disabled {
-  opacity: var(--canvas-disabled-opacity);
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-/* Theme implementations */
-.canvas--dark {
-  background-color: var(--canvas-dark-background-color);
-  border-color: var(--canvas-dark-border-color);
-  color: var(--canvas-dark-color);
-}
-
-.canvas--minimal {
-  border: none;
-  box-shadow: none;
-  background-color: transparent;
-}
-
-/* Responsive behavior */
-@media (max-width: 768px) {
-  .canvas--responsive {
-    width: 100%;
-    height: auto;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .canvas {
-    border: 2px solid #000000;
-  }
-  
-  .canvas:focus {
-    outline: 3px solid #000000;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .canvas {
-    transition: none;
-  }
+.my-canvas {
+  --canvas-border-color: #1e293b;
+  --canvas-background-color: #f8fafc;
+  --canvas-active-color: #059669;
+  --canvas-border-radius: 8px;
 }
 ```
 
@@ -623,134 +410,149 @@ Example CSS variables available for customization:
 
 ### Test Files
 
-Comprehensive test coverage is provided across these files:
-
-- `index.test.tsx`: Contains main component tests, covering basic rendering, props, and interactions.
+- `index.test.tsx` - Main component tests
+- `index.client.test.tsx` - Client-side specific tests
 
 ### Test Coverage
 
-Tests cover a wide range of scenarios to ensure reliability:
+The component has comprehensive test coverage including:
 
-- **Rendering**: Verifies basic rendering, prop application, and correct DOM output.
-- **Canvas Properties**: Tests width, height, and canvas-specific attribute handling.
-- **Event Handling**: Validates click events, canvas-specific callbacks, and mouse interactions.
-- **Analytics**: Validates analytics tracking including canvas dimensions with graceful failure handling.
-- **Polymorphic**: Confirms correct rendering when used with the `as` prop for different elements.
-- **Validation System**: Tests polymorphic validation warnings and proper development feedback.
-- **Accessibility**: Ensures proper ARIA attributes, roles, and screen reader support.
-- **Edge Cases**: Covers error states, boundary conditions, and invalid inputs including negative dimensions.
+- ✅ Basic rendering with all variants
+- ✅ Context initialization (2D, WebGL, WebGL2, bitmap)
+- ✅ Drawing event handling (mouse and touch)
+- ✅ Analytics integration and tracking
+- ✅ Accessibility features and ARIA support
+- ✅ Error handling and fallback states
+- ✅ Polymorphic rendering with validation
+- ✅ High DPI support and pixel ratio scaling
+- ✅ Responsive behavior and auto-resize
+- ✅ Client-side rendering capabilities
+- ✅ Edge cases and error conditions
 
 ### Running Tests
 
-To execute tests for the `Canvas` component:
-
 ```bash
-# Run all tests for the Canvas component
-pnpm test src/canvas/index.test.tsx
+# Run all canvas tests
+pnpm test src/canvas
 
-# Run all tests in the project (from root directory)
-pnpm test
+# Run tests in watch mode
+pnpm test:watch src/canvas
 
-# Run with coverage report
-pnpm test --coverage
+# Run with coverage
+pnpm test:coverage src/canvas
 ```
 
 ## ⚡ Performance
 
 ### Optimization Techniques
 
-This component is highly optimized for performance:
-
-- **Minimal Overhead**: As a graphics element, it provides essential canvas functionality with minimal runtime impact.
-- **Event Handler Optimization**: Efficient event handling prevents unnecessary re-renders during interactions.
-- **Context Management**: Optimized canvas context initialization and management.
-- **Responsive Design**: CSS-based responsive behavior reduces JavaScript overhead.
-- **Analytics Optimization**: Efficient analytics tracking with error handling and dimension capture.
-- **Memory Management**: Proper cleanup and memory management for canvas operations.
+- **Lazy Loading**: Client components are loaded only when needed
+- **Memoization**: Event handlers and computed values are memoized
+- **Hardware Acceleration**: CSS transforms for better performance
+- **High DPI Optimization**: Efficient pixel ratio scaling
+- **Context Reuse**: Canvas contexts are cached and reused
+- **Touch Optimization**: Optimized touch event handling
+- **Memory Management**: Proper cleanup of event listeners and contexts
 
 ## 🌐 Browser Support
 
-- **Modern Browsers**: Fully supported on the latest two versions of Chrome, Firefox, Safari, and Edge.
-- **Canvas Support**: Requires browsers with HTML5 Canvas API support.
-- **Mobile Devices**: Optimized for iOS Safari and Chrome Mobile, providing seamless touch interactions with canvas.
-- **Accessibility Tools**: Compatible with major screen readers and assistive technologies, ensuring proper graphics interpretation.
+- **Modern Browsers**: Chrome 88+, Firefox 85+, Safari 14+, Edge 88+
+- **Canvas Support**: All browsers with HTML5 canvas support
+- **WebGL Support**: Modern browsers with WebGL 1.0/2.0
+- **High DPI**: Browsers supporting devicePixelRatio
+- **Touch Events**: Mobile browsers with touch support
+- **Accessibility**: Browsers with ARIA support
 
 ## 📘 TypeScript
 
-Full TypeScript support is provided for enhanced type safety and developer experience:
+```tsx
+import React from 'react';
+import { Canvas, type CanvasProps, type CanvasDimensions, CanvasUtils } from '@guyromellemagayano/components';
 
-```typescript
-import { Canvas, type CanvasProps, type CanvasRef } from '@guyromellemagayano/components';
-import React, { useRef, useEffect } from 'react';
-
-const MyComponent: React.FC = () => {
-  const canvasRef = useRef<CanvasRef>(null);
+// Basic usage with TypeScript
+const MyCanvas: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    
-    // Type-safe canvas drawing operations
-    context.fillStyle = '#3b82f6';
-    context.fillRect(0, 0, 100, 100);
-  }, []);
-  
-  const handleCanvasClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
-    console.log('Canvas clicked at:', event.clientX, event.clientY);
+  const handleContextReady = (context: RenderingContext | null, canvas: HTMLCanvasElement) => {
+    if (context instanceof CanvasRenderingContext2D) {
+      // Type-safe 2D context operations
+      context.strokeStyle = '#3b82f6';
+      context.lineWidth = 2;
+    }
   };
-  
+
+  const handleDrawing = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    // Type-safe event handling
+    console.log('Drawing event:', event.type);
+  };
+
+  const customDimensions: CanvasDimensions = {
+    width: 800,
+    height: 600,
+    pixelRatio: window.devicePixelRatio || 1,
+  };
+
   return (
-    <Canvas 
+    <Canvas
       ref={canvasRef}
-      width={400}
-      height={300}
-      onCanvasClick={handleCanvasClick}
-      analyticsId="typed-canvas"
-    />
+      dimensions={customDimensions}
+      contextType="2d"
+      active
+      onContextReady={handleContextReady}
+      onDrawing={handleDrawing}
+      analyticsId="my-canvas"
+    >
+      Interactive canvas
+    </Canvas>
   );
 };
+
+// Utility functions
+const isValidDimensions = CanvasUtils.validateDimensions(800, 600);
+const pixelRatio = CanvasUtils.getPixelRatio();
+const responsiveDims = CanvasUtils.getResponsiveDimensions(800, 600, 1200, 800);
 ```
 
 ## 📚 Migration Guide
 
-### From Legacy Component
+### From Basic HTML Canvas
 
-If you are migrating from a legacy version of a similar component to this `Canvas` component, please follow these steps:
+```tsx
+// Before: Basic HTML canvas
+<canvas width="400" height="300" id="myCanvas">
+  Fallback content
+</canvas>
 
-1. **Import Changes**: Update your import statements to `import { Canvas } from '@guyromellemagayano/components';`.
-2. **Prop Changes**: Review and update any prop names or types that may have changed to align with the new API.
-3. **Styling**: Adjust your CSS class names to conform to the BEM format (`.canvas`, `.canvas--modifier`).
-4. **Analytics**: Migrate to the new analytics integration pattern with canvas dimension tracking.
-5. **Event Handling**: Update to use new `onCanvasClick` callback for canvas-specific interactions.
-6. **Context Management**: Migrate to new `onContextReady` callback for context initialization.
+// After: Component library canvas
+<Canvas width={400} height={300} analyticsId="myCanvas">
+  Fallback content
+</Canvas>
+```
 
 ### Breaking Changes
 
-- Component requires React 18+
-- TypeScript definitions updated for better type safety
-- Analytics integration includes canvas dimensions in event data
-- Validation system added for polymorphic usage
-- CSS class structure updated to BEM methodology
-- Event handling enhanced with canvas-specific callbacks
-- Accessibility improvements with automatic ARIA attributes
+- Canvas-specific props are validated when using polymorphic rendering
+- Event handlers receive enhanced event objects with drawing state
+- Context initialization is asynchronous with callback support
+- High DPI scaling is enabled by default (can be disabled)
 
 ## 🤝 Contributing
 
 ### Contribution Guidelines
 
-When contributing to the `Canvas` component or any other component in this library, please ensure you adhere to the following:
+When contributing to the Canvas component:
 
-1. **Follow Standards**: Adhere to the comprehensive [Component Development Standards](docs/components/COMPONENT_STANDARDS.md) for consistent code quality.
-2. **Add Comprehensive Tests**: Include full test coverage for all new features, bug fixes, and edge cases.
-3. **Update Documentation**: Keep the component's `README.md` and JSDoc comments current and accurate.
-4. **Ensure Accessibility**: Prioritize accessibility compliance for graphics and visual content.
-5. **Consider Performance**: Optimize for performance implications, especially for graphics rendering operations.
-6. **Test Canvas Operations**: Verify proper canvas functionality, context management, and drawing operations.
+1. **Follow TypeScript Patterns**: Use proper typing for all props and event handlers
+2. **Test Coverage**: Ensure comprehensive test coverage for new features
+3. **Accessibility**: Maintain WCAG 2.1 AA compliance
+4. **Performance**: Consider performance impact of new features
+5. **Documentation**: Update README and JSDoc comments
+6. **Canvas Standards**: Follow HTML5 canvas best practices
+7. **Browser Compatibility**: Test across supported browsers
 
 ## 🔗 Related Components
 
-- [Img](../img/README.md)
-- [Svg](../svg/README.md)
+- **Image**: For static image display with canvas-like features
+- **Video**: For video content with canvas integration capabilities
+- **SVG Components**: For vector graphics that complement canvas raster graphics
+- **Drawing Components**: Specialized drawing tools that use canvas internally
