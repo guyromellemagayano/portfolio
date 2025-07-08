@@ -100,8 +100,8 @@ import { Audio } from '@guyromellemagayano/components';
 </Audio>
 
 // Custom controls with analytics
-<Audio 
-  src="music.mp3" 
+<Audio
+  src="music.mp3"
   customControls
   showPlayButton
   showVolumeControl
@@ -217,7 +217,7 @@ function BasicAudioExample() {
   return (
     <div>
       <h3>Simple Podcast Player</h3>
-      <Audio 
+      <Audio
         src="/podcast/episode-01.mp3" 
         controls 
         preload="metadata"
@@ -388,7 +388,7 @@ function LoadingErrorStatesExample() {
       </Audio>
 
       {/* Example with likely error state */}
-      <Audio 
+      <Audio
         src="/nonexistent/file.mp3"
         customControls
         errorContent={customErrorContent}
@@ -472,7 +472,7 @@ function SourceValidationExample() {
         </div>
       )}
 
-      <Audio 
+      <Audio
         src={audioSrc}
         customControls
         analyticsId="validation-demo"
@@ -597,7 +597,7 @@ function PolymorphicAudioExample() {
       <h3>⚠️ Polymorphic Rendering (Development Warnings)</h3>
       
       {/* This will show validation warnings in development */}
-      <Audio 
+      <Audio
         as={CustomDiv}
         src="/audio/sample.mp3"
         controls  // This prop is invalid for div elements
