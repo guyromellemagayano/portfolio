@@ -24,7 +24,7 @@
     "@guyromellemagayano/components": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
     "@guyromellemagayano/ui": "workspace:*",
-    "next": "^15.3.5"
+    "next": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
