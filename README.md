@@ -1,3 +1,4 @@
+<!-- markdownlint-disable proper-names -->
 # Welcome to Stack Market Labs Portal
 
 Full stack developer, open-source enthusiast, and a minimalist
@@ -26,9 +27,8 @@ pnpm test:coverage
 - **Apps**:
   - `admin` - Admin dashboard (Vite + React Router)
   - `api` - Express.js API server
-  - `blog` - Blog application (Remix)
+  - `web` - Marketing website (Next.js)
   - `storefront` - E-commerce frontend (Next.js)
-  - `studio` - Sanity Studio CMS
 
 - **Packages**:
   - `components` - Shared React components
@@ -216,9 +216,8 @@ Each app has its own deployment configuration:
 
 - **Admin**: Static build
 - **API**: Server deployment
-- **Blog**: Remix deployment
+- **Web**: Next.js deployment
 - **Storefront**: Next.js deployment
-- **Studio**: Sanity Studio deployment
 
 ## 📚 Learn More
 
