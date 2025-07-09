@@ -16,7 +16,7 @@ export const AClient = React.forwardRef<ARef, AProps>((props, ref) => {
 AClient.displayName = "AClient";
 
 /**
- * Memoized version of `AClient` for performance optimization
+ * Memoized version of `AClient` for performance optimization.
  */
 export const MemoizedAClient = memo(AClient);
 
