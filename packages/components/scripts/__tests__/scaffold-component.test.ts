@@ -44,16 +44,15 @@ vi.mock("path", () => ({
 
 // Import the functions to test
 import {
-  validateComponentName,
-  createServerTemplate,
   createClientTemplate,
+  createServerTemplate,
   createStylesTemplate,
   createTestTemplate,
-  createReadmeTemplate,
   generateFileTemplates,
   scaffoldComponent,
   type ScaffoldOptions,
-} from "../libs/scaffold-component";
+  validateComponentName,
+} from "../scaffold-component";
 
 describe("scaffold-component lib", () => {
   beforeEach(() => {
@@ -171,19 +170,6 @@ describe("scaffold-component lib", () => {
       expect(template).toContain("import TestComponent from './index'");
       expect(template).toContain("describe('TestComponent'");
       expect(template).toContain("render(<TestComponent>Test</TestComponent>)");
-    });
-  });
-
-  describe("createReadmeTemplate", () => {
-    it("should generate README template", () => {
-      const template = createReadmeTemplate("TestComponent");
-
-      expect(template).toContain("# TestComponent");
-      expect(template).toContain(
-        "import { TestComponent } from '@guyromellemagayano/components'"
-      );
-      expect(template).toContain("TestComponentProps");
-      expect(template).toContain("testcomponent"); // lowercase for test files
     });
   });
 
