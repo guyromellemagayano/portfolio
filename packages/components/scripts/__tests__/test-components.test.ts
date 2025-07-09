@@ -23,15 +23,15 @@ vi.mock("path", () => ({
 }));
 
 // Import the class to test
-import { ComponentTestRunner } from "../libs/test-components";
+import { ComponentTestRunner } from "../test-components";
 
 describe("ComponentTestRunner", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Set up default return values
-    mockReaddirSync.mockReturnValue([]);
-    mockExistsSync.mockReturnValue(false);
-    mockSpawn.mockReturnValue({
+    mocks.readdirSync.mockReturnValue([]);
+    mocks.existsSync.mockReturnValue(false);
+    mocks.spawn.mockReturnValue({
       stdout: { on: vi.fn() },
       stderr: { on: vi.fn() },
       on: vi.fn(),
@@ -41,14 +41,14 @@ describe("ComponentTestRunner", () => {
 
   describe("findComponents", () => {
     it("should find components with test files", async () => {
-      vi.mocked(mockReaddirSync).mockReturnValue([
+      mocks.readdirSync.mockReturnValue([
         { name: "button", isDirectory: () => true },
         { name: "input", isDirectory: () => true },
         { name: "utils", isDirectory: () => false },
         { name: "styles.css", isDirectory: () => false },
       ]);
 
-      vi.mocked(mockExistsSync).mockImplementation((path: string) => {
+      mocks.existsSync.mockImplementation((path: string) => {
         return path.includes("button") || path.includes("input");
       });
 
@@ -56,18 +56,18 @@ describe("ComponentTestRunner", () => {
       const components = await runner.findComponents();
 
       expect(components).toEqual(["button", "input"]);
-      expect(mockReaddirSync).toHaveBeenCalledWith("src", {
+      expect(mocks.readdirSync).toHaveBeenCalledWith("src", {
         withFileTypes: true,
       });
     });
 
     it("should return empty array when no components found", async () => {
-      vi.mocked(mockReaddirSync).mockReturnValue([
+      mocks.readdirSync.mockReturnValue([
         { name: "utils", isDirectory: () => false },
         { name: "styles.css", isDirectory: () => false },
       ]);
 
-      vi.mocked(mockExistsSync).mockReturnValue(false);
+      mocks.existsSync.mockReturnValue(false);
 
       const runner = new ComponentTestRunner();
       const components = await runner.findComponents();
@@ -76,7 +76,7 @@ describe("ComponentTestRunner", () => {
     });
 
     it("should handle readdirSync errors", async () => {
-      vi.mocked(mockReaddirSync).mockImplementation(() => {
+      mocks.readdirSync.mockImplementation(() => {
         throw new Error("Permission denied");
       });
 
@@ -99,12 +99,12 @@ describe("ComponentTestRunner", () => {
         }),
       };
 
-      vi.mocked(mockSpawn).mockReturnValue(mockChildProcess);
+      mocks.spawn.mockReturnValue(mockChildProcess);
 
       const runner = new ComponentTestRunner();
       const result = await runner.runComponentTest("button");
 
-      expect(mockSpawn).toHaveBeenCalledWith(
+      expect(mocks.spawn).toHaveBeenCalledWith(
         "npx",
         [
           "vitest",
@@ -133,7 +133,7 @@ describe("ComponentTestRunner", () => {
         kill: vi.fn(),
       };
 
-      vi.mocked(mockSpawn).mockReturnValue(mockChildProcess);
+      mocks.spawn.mockReturnValue(mockChildProcess);
 
       // Mock setTimeout to trigger timeout immediately
       const originalSetTimeout = global.setTimeout;
@@ -164,7 +164,7 @@ describe("ComponentTestRunner", () => {
         }),
       };
 
-      vi.mocked(mockSpawn).mockReturnValue(mockChildProcess);
+      mocks.spawn.mockReturnValue(mockChildProcess);
 
       const runner = new ComponentTestRunner();
       const result = await runner.runComponentTest("button");
@@ -205,22 +205,22 @@ describe("ComponentTestRunner", () => {
         }),
       };
 
-      vi.mocked(mockSpawn).mockReturnValue(mockChildProcess);
-      vi.mocked(mockReaddirSync).mockReturnValue([
+      mocks.spawn.mockReturnValue(mockChildProcess);
+      mocks.readdirSync.mockReturnValue([
         { name: "button", isDirectory: () => true },
         { name: "input", isDirectory: () => true },
       ]);
-      vi.mocked(mockExistsSync).mockReturnValue(true);
+      mocks.existsSync.mockReturnValue(true);
 
       const runner = new ComponentTestRunner();
       const success = await runner.runAll();
 
       expect(success).toBe(true);
-      expect(mockSpawn).toHaveBeenCalledTimes(2);
+      expect(mocks.spawn).toHaveBeenCalledTimes(2);
     });
 
     it("should return false when no components found", async () => {
-      vi.mocked(mockReaddirSync).mockReturnValue([]);
+      mocks.readdirSync.mockReturnValue([]);
 
       const runner = new ComponentTestRunner();
       const success = await runner.runAll();
@@ -239,11 +239,11 @@ describe("ComponentTestRunner", () => {
         }),
       };
 
-      vi.mocked(mockSpawn).mockReturnValue(mockChildProcess);
-      vi.mocked(mockReaddirSync).mockReturnValue([
+      mocks.spawn.mockReturnValue(mockChildProcess);
+      mocks.readdirSync.mockReturnValue([
         { name: "button", isDirectory: () => true },
       ]);
-      vi.mocked(mockExistsSync).mockReturnValue(true);
+      mocks.existsSync.mockReturnValue(true);
 
       const runner = new ComponentTestRunner();
       const success = await runner.runAll();
