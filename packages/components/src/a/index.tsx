@@ -13,7 +13,6 @@ const AClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
 });
-
 const MemoizedAClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAClient };
@@ -62,15 +61,15 @@ function isExternal(href: string): boolean {
 }
 
 /**
- * Validates href safety by checking for javascript: protocol
- * Prevents XSS attacks via malicious javascript: URLs
+ * Validates `href` safety by checking for javascript: protocol
+ * Prevents **XSS** attacks via malicious javascript: URLs
  */
 function isSafeHref(href: string): boolean {
   return !/^javascript:/i.test(href);
 }
 
 /**
- * Checks if URL is a mailto link
+ * Checks if URL is a `mailto` link.
  * Used for special handling of email links
  */
 function isMailto(href: string): boolean {
@@ -78,7 +77,7 @@ function isMailto(href: string): boolean {
 }
 
 /**
- * Checks if URL is a telephone link
+ * Checks if URL is a telephone link.
  * Used for special handling of phone number links
  */
 function isTel(href: string): boolean {
@@ -90,7 +89,7 @@ function isTel(href: string): boolean {
 // =============================================================================
 
 /**
- * Fires Google Analytics event for link interactions
+ * Fires Google Analytics event for link interactions.
  * Gracefully handles missing gtag and provides error logging
  */
 function fireAnalytics(
@@ -102,9 +101,7 @@ function fireAnalytics(
 
   try {
     // Google Analytics implementation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (typeof window !== "undefined" && (window as any).gtag) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag("event", "click", {
         event_category: "link",
         event_label: analyticsId,
@@ -121,8 +118,8 @@ function fireAnalytics(
 // =============================================================================
 
 /**
- * Loading spinner component for link loading states
- * Provides accessible loading indicator with ARIA support
+ * Loading spinner component for link loading states.
+ * Provides accessible loading indicator with **ARIA** support.
  */
 function LoadingSpinner(): React.ReactElement {
   return (
@@ -178,8 +175,8 @@ function LoadingSpinner(): React.ReactElement {
  * Universal anchor component with variants, analytics, and accessibility.
  * Supports server-side and client-side rendering.
  *
- * ⚠️ Warning: href, target, download, hrefLang, ping, rel, and referrerPolicy props are
- * primarily meaningful for <a> elements. When using with other elements via the 'as' prop,
+ * ⚠️ Warning: `href`, `target`, `download`, `hrefLang`, `ping`, `rel`, and `referrerPolicy` props are
+ * primarily meaningful for `<a>` elements. When using with other elements via the `as` prop,
  * these attributes may be invalid or have no effect.
  */
 const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
@@ -321,7 +318,6 @@ const AComponent = React.forwardRef<ARef, AProps>((props, ref) => {
           return;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         fireAnalytics(analyticsId, event as any, href);
       }
 
@@ -422,7 +418,3 @@ AComponent.displayName = "A";
 
 // Export the server component
 export const A = AComponent;
-
-// For most use cases, the server component is sufficient
-// For client-side memoization, use isClient=true with isMemoized=true
-export default A;

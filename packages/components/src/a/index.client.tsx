@@ -5,9 +5,7 @@ import React, { memo } from "react";
 import { A, type AProps, type ARef } from ".";
 
 /**
- * Client-side anchor component.
- * For most use cases, the server component should be sufficient.
- * This exists for cases where client-side interactivity is specifically needed.
+ * Client-side `a` component with enhanced interactivity.
  */
 export const AClient = React.forwardRef<ARef, AProps>((props, ref) => {
   // Simply delegate to the main component
@@ -17,8 +15,9 @@ export const AClient = React.forwardRef<ARef, AProps>((props, ref) => {
 
 AClient.displayName = "AClient";
 
-// Memoized version for cases where props change frequently
+/**
+ * Memoized version of `AClient` for performance optimization
+ */
 export const MemoizedAClient = memo(AClient);
 
-// Export default for convenience
-export default AClient;
+MemoizedAClient.displayName = "MemoizedAClient";
