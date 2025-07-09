@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import typescriptParser from "@typescript-eslint/parser";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import importPlugin from "eslint-plugin-import";
 import onlyWarn from "eslint-plugin-only-warn";
@@ -9,7 +10,6 @@ import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
 import { createRequire } from "module";
 import { dirname, resolve } from "path";
-import tseslint from "typescript-eslint";
 import { fileURLToPath } from "url";
 
 const nodeRequire = createRequire(import.meta.url);
@@ -36,7 +36,6 @@ const tsProjects = [
 export const baseEslintConfig = [
   js.configs.recommended,
   eslintConfigPrettier,
-  ...tseslint.configs.recommended,
   {
     plugins: {
       onlyWarn,
@@ -51,6 +50,7 @@ export const baseEslintConfig = [
       "import/resolver": {
         typescript: {
           project: tsProjects,
+          alwaysTryTypes: true,
           noWarnOnMultipleProjects: true,
         },
       },
@@ -81,16 +81,14 @@ export const baseEslintConfig = [
             ["^react$", "^react-dom$", "^react\\b"],
             [
               "^node:",
-              "^@(?!guyromellemagayano|packages/|admin/|api/|blog/|storefront/|studio/|web/).+",
+              "^@(?!guyromellemagayano|packages/|admin/|api/|storefront/|web/).+",
               "^[a-z]",
             ],
             ["^@guyromellemagayano/"],
             ["^@packages/", "^~"],
             ["^@admin/"],
             ["^@api/"],
-            ["^@blog/"],
             ["^@storefront/"],
-            ["^@studio/"],
             ["^@web/"],
             ["^\\."],
           ],
@@ -113,21 +111,15 @@ export const baseEslintConfig = [
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
-    plugins: { "@typescript-eslint": tseslint.plugin },
     languageOptions: {
-      parser: tseslint.parser,
+      parser: typescriptParser,
       parserOptions: {
-        project: tsProjects,
-        tsconfigRootDir: repoRoot,
-        warnOnMultipleProjects: false,
         sourceType: "module",
         ecmaVersion: "latest",
-        warnOnUnsupportedTypeScriptVersion: true,
       },
     },
     rules: {
-      "@typescript-eslint/consistent-type-imports": "error",
-      "@typescript-eslint/no-unused-vars": "error",
+      "no-unused-vars": "off",
     },
   },
   {
