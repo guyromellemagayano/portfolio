@@ -29,14 +29,16 @@ npx tsx scripts/scaffold-component.ts --name MyComponent --overwrite
 - ✅ Includes test templates
 - ✅ Adds CSS styling structure
 - ✅ Supports overwrite mode for existing components
+- ✅ Automatically updates main exports
 
 **Generated Files**:
 
-- `index.tsx` - Server component with TypeScript interfaces
 - `index.client.tsx` - Client-side memoized component
-- `styles.css` - BEM-style CSS structure
-- `README.md` - Comprehensive documentation template
 - `index.test.tsx` - Vitest test suite
+- `index.tsx` - Server component with TypeScript interfaces
+- `README.md` - Comprehensive documentation template
+- `styles.css` - BEM-style CSS structure
+
 
 ### `test-components.ts`
 
@@ -61,28 +63,25 @@ npx tsx scripts/test-components.ts
 - ✅ Memory issue detection
 - ✅ Performance metrics
 
-## Library Files
+## Core Functions
 
-### `scaffold-lib.ts`
+### Scaffolding Functions
 
-Core scaffolding logic extracted for testing and reuse.
-
-**Exported Functions**:
+**Available from `scaffold-component.ts`:**
 
 - `validateComponentName(name: string)` - Validates PascalCase format
 - `createServerTemplate(name: string)` - Generates server component code
 - `createClientTemplate(name: string)` - Generates client component code
 - `createStylesTemplate(name: string)` - Generates CSS structure
 - `createTestTemplate(name: string)` - Generates test suite
-- `createReadmeTemplate(name: string)` - Generates documentation
 - `generateFileTemplates(name: string)` - Creates all file templates
 - `scaffoldComponent(options: ScaffoldOptions)` - Main scaffolding function
+- `updateMainExports(name: string, srcDir: string)` - Updates index.ts exports
+- `buildAfterScaffold(componentName: string)` - Builds component after scaffolding
 
-### `test-components-lib.ts`
+### Testing Functions
 
-Core testing logic extracted for testing and reuse.
-
-**Exported Classes**:
+**Available from `test-components.ts`:**
 
 - `ComponentTestRunner` - Memory-efficient test runner with detailed reporting
 
@@ -142,7 +141,7 @@ Scripts use the same TypeScript configuration as components:
 ### Adding New Scripts
 
 1. **Create the script** in `scripts/` directory
-2. **Extract testable logic** to a separate library file
+2. **Include all functionality** in the single script file
 3. **Write comprehensive tests** in `scripts/__tests__/`
 4. **Update documentation** in this README
 5. **Add to package.JSON** scripts if needed
@@ -156,6 +155,7 @@ Scripts use the same TypeScript configuration as components:
 - ✅ Detailed logging with @guyromellemagayano/logger
 - ✅ Unit tests for all logic
 - ✅ Clear documentation
+- ✅ All functionality in single file (no separate lib files)
 
 **Recommended**:
 
@@ -233,7 +233,7 @@ DEBUG=* npx tsx scripts/script-name.ts
 
 If tests are failing due to memory:
 
-1. Increase memory limit in `test-components-lib.ts`
+1. Increase memory limit in `test-components.ts`
 2. Reduce timeout duration
 3. Add more garbage collection calls
 
@@ -242,10 +242,11 @@ If tests are failing due to memory:
 When contributing to scripts:
 
 1. **Follow existing patterns** - Use established error handling and logging
-2. **Write tests first** - Ensure all logic is testable
-3. **Update documentation** - Keep this README current
-4. **Test thoroughly** - Verify with different scenarios
-5. **Consider performance** - Scripts should be fast and efficient
+2. **Keep everything in single files** - No separate lib files needed
+3. **Write tests first** - Ensure all logic is testable
+4. **Update documentation** - Keep this README current
+5. **Test thoroughly** - Verify with different scenarios
+6. **Consider performance** - Scripts should be fast and efficient
 
 ## Related Documentation
 
