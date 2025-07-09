@@ -3,6 +3,8 @@
 // @guyromellemagayano/components
 // =============================================================================
 
+import { A, type AProps, type ARef } from "./a";
+
 // =============================================================================
 // SHARED TYPES AND UTILITIES
 // =============================================================================
@@ -13,75 +15,71 @@ export * from "./types";
 // =============================================================================
 
 // A Component
-export { A } from "./a";
-export type { AProps, ARef } from "./a";
+export { A, AProps, ARef };
 
 // Abbr Component
-export { Abbr } from "./abbr";
 export type { AbbrProps, AbbrRef } from "./abbr";
+export { Abbr } from "./abbr";
 
 // Address Component
-export { Address } from "./address";
 export type { AddressProps, AddressRef } from "./address";
+export { Address } from "./address";
 
 // Area Component
-export { Area } from "./area";
 export type { AreaProps, AreaRef } from "./area";
+export { Area } from "./area";
 
 // Article Component
-export { Article } from "./article";
 export type { ArticleProps, ArticleRef } from "./article";
+export { Article } from "./article";
 
 // Aside Component
-export { Aside } from "./aside";
 export type { AsideProps, AsideRef } from "./aside";
+export { Aside } from "./aside";
 
 // Audio Component
-export { Audio } from "./audio";
 export type { AudioProps, AudioRef } from "./audio";
+export { Audio } from "./audio";
 
 // B Component
-export { B } from "./b";
 export type { BProps, BRef } from "./b";
+export { B } from "./b";
 
 // Base Component
-export { Base } from "./base";
 export type { BaseProps, BaseRef } from "./base";
+export { Base } from "./base";
 
 // Bdi Component
-export { Bdi } from "./bdi";
 export type { BdiProps, BdiRef } from "./bdi";
+export { Bdi } from "./bdi";
 
 // Bdo Component
-export { Bdo } from "./bdo";
 export type { BdoProps, BdoRef } from "./bdo";
+export { Bdo } from "./bdo";
 
 // Blockquote Component
-export { Blockquote } from "./blockquote";
 export type { BlockquoteProps, BlockquoteRef } from "./blockquote";
+export { Blockquote } from "./blockquote";
 
 // Body Component
-export { Body } from "./body";
 export type { BodyProps, BodyRef } from "./body";
+export { Body } from "./body";
 
 // Br Component
-export { Br } from "./br";
 export type { BrProps, BrRef } from "./br";
+export { Br } from "./br";
 
 // Button Component
-export { Button } from "./button";
 export type { ButtonProps, ButtonRef } from "./button";
+export { Button } from "./button";
 
 // Canvas Component
-export { Canvas } from "./canvas";
 export type { CanvasProps, CanvasRef } from "./canvas";
+export { Canvas } from "./canvas";
 
 // =============================================================================
 // CLIENT COMPONENT EXPORTS (for advanced use cases)
 // =============================================================================
-
-// A Client Components
-export { AClient, MemoizedAClient } from "./a/index.client";
 
 // Abbr Client Components
 export { AbbrClient, MemoizedAbbrClient } from "./abbr/index.client";
@@ -138,7 +136,7 @@ export { CanvasClient, MemoizedCanvasClient } from "./canvas/index.client";
 /**
  * Total number of migrated components available in this package
  */
-export const MIGRATED_COMPONENT_COUNT = 16;
+export const MIGRATED_COMPONENT_COUNT = 19;
 
 /**
  * List of all available migrated components
