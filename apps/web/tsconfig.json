@@ -19,16 +19,6 @@
       ]
     }
   },
-  "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ],
-    "transpileOnly": true,
-    "compilerOptions": {
-      "module": "esnext"
-    },
-    "swc": true
-  },
   "include": [
     "**/*.ts",
     "**/*.tsx",
