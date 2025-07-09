@@ -13,7 +13,6 @@ const AbbrClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
 });
-
 const MemoizedAbbrClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAbbrClient };
@@ -48,8 +47,8 @@ export interface AbbrProps
  * Universal abbreviation component with analytics and accessibility.
  * Supports server-side and client-side rendering.
  *
- * ⚠️ Warning: The title attribute is most meaningful for <abbr> elements where it provides
- * the expansion of the abbreviation. When using with other elements via the 'as' prop,
+ * ⚠️ Warning: The `title` attribute is most meaningful for `<abbr>` elements where it provides
+ * the expansion of the abbreviation. When using with other elements via the `as` prop,
  * this attribute may be less semantically meaningful.
  */
 const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
@@ -105,7 +104,6 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
         } else if (analyticsId && typeof window !== "undefined") {
           // Flexible analytics - works with gtag, dataLayer, or custom
           try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const gtag = (window as any).gtag;
             if (gtag) {
               gtag("event", "click", {
@@ -187,7 +185,3 @@ AbbrComponent.displayName = "Abbr";
 
 // Export the server component
 export const Abbr = AbbrComponent;
-
-// For most use cases, the server component is sufficient
-// For client-side memoization, use isClient=true with isMemoized=true
-export default Abbr;

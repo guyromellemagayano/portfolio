@@ -4,6 +4,7 @@
 // =============================================================================
 
 import { A, type AProps, type ARef } from "./a";
+import { Abbr, type AbbrProps, type AbbrRef } from "./abbr";
 
 // =============================================================================
 // SHARED TYPES AND UTILITIES
@@ -18,8 +19,7 @@ export * from "./types";
 export { A, AProps, ARef };
 
 // Abbr Component
-export type { AbbrProps, AbbrRef } from "./abbr";
-export { Abbr } from "./abbr";
+export { Abbr, AbbrProps, AbbrRef };
 
 // Address Component
 export type { AddressProps, AddressRef } from "./address";
