@@ -36,10 +36,11 @@
   },
   "dependencies": {
     "@eslint/js": "^9.30.1",
-    "@next/eslint-plugin-next": "^15.3.5",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
-    "eslint": "catalog:",
+    "@typescript-eslint/type-utils": "^8.36.0",
+    "@typescript-eslint/types": "8.36.0",
+    "@typescript-eslint/utils": "^8.36.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -52,14 +53,18 @@
     "eslint-plugin-turbo": "^2.5.4",
     "eslint-plugin-unused-imports": "^4.1.4",
     "globals": "^16.3.0",
-    "typescript": "catalog:",
     "typescript-eslint": "^8.36.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.3.5"
   },
   "peerDependencies": {
     "bunchee": "catalog:",
+    "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "rimraf": "catalog:"
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
   }
 }
