@@ -1,7 +1,4 @@
-import { FlatCompat } from "@eslint/js";
 import { reactEslintConfig } from "@packages/eslint-config/react";
-
-const compat = new FlatCompat();
 
 /** @type {import("eslint").Linter.Config} */
 export default [
@@ -23,9 +20,9 @@ export default [
   {
     settings: {
       "import/resolver": {
-        typescript: {
-          project: ["./tsconfig.json"],
-          alwaysTryTypes: true,
+        alias: {
+          map: [["@components", "./src", "./scripts"]],
+          extensions: [".js", ".ts", ".tsx"],
         },
       },
     },
