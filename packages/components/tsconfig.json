@@ -12,8 +12,11 @@
     ]
   },
   "include": [
-    "src/**/*",
-    "scripts/**/*"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts",
+    "scripts/**/*.ts",
+    "scripts/**/*.mjs"
   ],
   "exclude": [
     "dist",
