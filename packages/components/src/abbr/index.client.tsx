@@ -19,5 +19,3 @@ AbbrClient.displayName = "AbbrClient";
  * Memoized version of `AbbrClient` for performance optimization.
  */
 export const MemoizedAbbrClient = memo(AbbrClient);
-
-MemoizedAbbrClient.displayName = "MemoizedAbbrClient";
