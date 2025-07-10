@@ -1,14 +1,7 @@
-import React, { Suspense, useCallback, useMemo } from "react";
+import React, { Suspense } from "react";
 
-import {
-  type CommonComponentProps,
-  ELEMENT_CONFIGS,
-  validatePolymorphicProps,
-} from "../types";
+import type { CommonComponentProps } from "../types";
 
-import "./styles.css";
-
-// Lazy load client components for code splitting
 const AbbrClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
@@ -21,157 +14,29 @@ const MemoizedAbbrClient = React.lazy(async () => {
 export type AbbrRef = React.ComponentRef<"abbr">;
 
 export interface AbbrProps
-  extends React.HTMLAttributes<HTMLElement>,
-    CommonComponentProps {
-  /** The full form or expansion of the abbreviation */
-  title?: string;
-  /** Whether to show the title as a tooltip */
-  showTooltip?: boolean;
-  /** Custom tooltip content (overrides title) */
-  tooltip?: string;
-  /** Whether the abbreviation should be emphasized */
-  emphasized?: boolean;
-  /** Analytics identifier for tracking */
-  analyticsId?: string;
-  /** Custom analytics function */
-  onAnalytics?: (data: {
-    event: string;
-    category: string;
-    label: string;
-    abbreviation: string;
-    expanded: string;
-  }) => void;
-}
+  extends React.ComponentPropsWithoutRef<"abbr">,
+    CommonComponentProps {}
 
 /**
- * Universal abbreviation component with analytics and accessibility.
- * Supports server-side and client-side rendering.
- *
- * ⚠️ Warning: The `title` attribute is most meaningful for `<abbr>` elements where it provides
- * the expansion of the abbreviation. When using with other elements via the `as` prop,
- * this attribute may be less semantically meaningful.
+ * Render the abbreviation server component.
  */
-const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
+export const Abbr = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
   const {
-    title,
-    showTooltip = true,
-    tooltip,
-    emphasized = false,
-    analyticsId,
-    onAnalytics,
     as: Component = "abbr",
     isClient = false,
     isMemoized = false,
     children,
-    className,
-    onClick,
-    onMouseEnter,
-    onFocus,
-    style,
     ...rest
   } = props;
 
-  const asElement = typeof Component === "string" ? Component : "unknown";
-  const hasAnalytics = analyticsId || onAnalytics;
+  const element = <Component {...rest}>{children}</Component>;
 
-  // Runtime validation for development - warns about invalid prop usage
-  useMemo(() => {
-    validatePolymorphicProps(
-      "Abbr",
-      asElement,
-      { title },
-      ELEMENT_CONFIGS.ABBR
-    );
-  }, [asElement, title]);
-
-  // Only compute when needed - avoid unnecessary memoization
-  const displayTitle = tooltip || title;
-
-  // Optimized click handler - only create when analytics are needed
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (hasAnalytics && (analyticsId || onAnalytics)) {
-        const analyticsData = {
-          event: "click",
-          category: "abbreviation",
-          label: analyticsId || "abbr-click",
-          abbreviation: String(children || ""),
-          expanded: displayTitle || "",
-        };
-
-        if (onAnalytics) {
-          onAnalytics(analyticsData);
-        } else if (analyticsId && typeof window !== "undefined") {
-          // Flexible analytics - works with gtag, dataLayer, or custom
-          try {
-            const gtag = (window as any).gtag;
-            if (gtag) {
-              gtag("event", "click", {
-                event_category: analyticsData.category,
-                event_label: analyticsData.label,
-                abbreviation_text: analyticsData.abbreviation,
-                expanded_text: analyticsData.expanded,
-              });
-            }
-          } catch (error) {
-            if (process.env.NODE_ENV === "development") {
-              console.warn("Analytics tracking failed:", error);
-            }
-          }
-        }
-      }
-      onClick?.(event);
-    },
-    [hasAnalytics, analyticsId, onAnalytics, children, displayTitle, onClick]
-  );
-
-  // Props with accessibility and enhanced features
-  const enhancedProps = useMemo(
-    () => ({
-      ...rest,
-      ref,
-      className: ["abbr", emphasized && "abbr--emphasized", className]
-        .filter(Boolean)
-        .join(" "),
-      style,
-      onClick: handleClick,
-      onMouseEnter,
-      onFocus,
-      title: showTooltip && displayTitle ? displayTitle : undefined,
-      "aria-label": displayTitle || rest["aria-label"],
-      "data-emphasized": emphasized ? "true" : undefined,
-      "data-analytics-id": analyticsId || undefined,
-      "data-polymorphic-element": asElement !== "abbr" ? asElement : undefined,
-      "data-element-validation":
-        process.env.NODE_ENV === "development" && asElement !== "abbr"
-          ? "warning"
-          : undefined,
-    }),
-    [
-      rest,
-      emphasized,
-      className,
-      style,
-      handleClick,
-      onMouseEnter,
-      onFocus,
-      showTooltip,
-      displayTitle,
-      analyticsId,
-      asElement,
-    ]
-  );
-
-  // Create the base element
-  const element = <Component {...enhancedProps}>{children}</Component>;
-
-  // Handle client-side rendering
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;
 
     return (
       <Suspense fallback={element}>
-        <ClientComponent {...props} ref={ref}>
+        <ClientComponent {...rest} ref={ref}>
           {children}
         </ClientComponent>
       </Suspense>
@@ -181,7 +46,4 @@ const AbbrComponent = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
   return element;
 });
 
-AbbrComponent.displayName = "Abbr";
-
-// Export the server component
-export const Abbr = AbbrComponent;
+Abbr.displayName = "Abbr";
