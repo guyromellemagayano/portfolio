@@ -1,15 +1,11 @@
-import React, { Suspense, useCallback, useMemo } from "react";
+import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-import "./styles.css";
-
-// Lazy load client components for code splitting
 const AddressClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AddressClient };
 });
-
 const MemoizedAddressClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAddressClient };
@@ -18,131 +14,24 @@ const MemoizedAddressClient = React.lazy(async () => {
 export type AddressRef = React.ComponentRef<"address">;
 
 export interface AddressProps
-  extends React.HTMLAttributes<HTMLElement>,
-    CommonComponentProps {
-  /** Whether to show the address as a block element */
-  block?: boolean;
-  /** Whether the address should be emphasized */
-  emphasized?: boolean;
-  /** Analytics identifier for tracking */
-  analyticsId?: string;
-  /** Custom analytics function */
-  onAnalytics?: (data: {
-    event: string;
-    category: string;
-    label: string;
-    content: string;
-  }) => void;
-}
+  extends React.ComponentPropsWithoutRef<"address">,
+    CommonComponentProps {}
 
 /**
- * Universal address component with variants, analytics, and accessibility.
- * Supports server-side and client-side rendering.
+ * Render the address server component.
  */
-const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
+export const Address = React.forwardRef<AddressRef, AddressProps>(
   (props, ref) => {
     const {
-      block = false,
-      emphasized = false,
-      analyticsId,
-      onAnalytics,
       as: Component = "address",
       isClient = false,
       isMemoized = false,
       children,
-      className,
-      onClick,
-      onMouseEnter,
-      onFocus,
-      style,
       ...rest
     } = props;
 
-    const asElement = typeof Component === "string" ? Component : "unknown";
-    const hasAnalytics = analyticsId || onAnalytics;
+    const element = <Component {...rest}>{children}</Component>;
 
-    // Event handlers - always use useCallback to maintain hooks order
-    const handleClick = useCallback(
-      (event: React.MouseEvent<HTMLElement>) => {
-        // Only execute analytics if we have analytics setup
-        if (hasAnalytics && (analyticsId || onAnalytics)) {
-          const analyticsData = {
-            event: "click",
-            category: "address",
-            label: analyticsId || "address-click",
-            content: String(children || ""),
-          };
-
-          if (onAnalytics) {
-            onAnalytics(analyticsData);
-          } else if (analyticsId && typeof window !== "undefined") {
-            try {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const gtag = (window as any).gtag;
-              if (gtag) {
-                gtag("event", "click", {
-                  event_category: analyticsData.category,
-                  event_label: analyticsData.label,
-                  address_content: analyticsData.content,
-                });
-              }
-            } catch (error) {
-              if (process.env.NODE_ENV === "development") {
-                console.warn("Analytics tracking failed:", error);
-              }
-            }
-          }
-        }
-        onClick?.(event);
-      },
-      [hasAnalytics, analyticsId, onAnalytics, children, onClick]
-    );
-
-    // Props with accessibility and security
-    const enhancedProps = useMemo(
-      () => ({
-        ...rest,
-        ref,
-        className: [
-          "address",
-          block && "address--block",
-          emphasized && "address--emphasized",
-          className,
-        ]
-          .filter(Boolean)
-          .join(" "),
-        style,
-        onClick: handleClick,
-        onMouseEnter,
-        onFocus,
-        "data-block": block ? "true" : undefined,
-        "data-emphasized": emphasized ? "true" : undefined,
-        "data-analytics-id": analyticsId || undefined,
-        "data-polymorphic-element":
-          asElement !== "address" ? asElement : undefined,
-        "data-element-validation":
-          process.env.NODE_ENV === "development" && asElement !== "address"
-            ? "warning"
-            : undefined,
-      }),
-      [
-        rest,
-        block,
-        emphasized,
-        className,
-        style,
-        handleClick,
-        onMouseEnter,
-        onFocus,
-        analyticsId,
-        asElement,
-      ]
-    );
-
-    // Base element
-    const element = <Component {...enhancedProps}>{children}</Component>;
-
-    // Client-side rendering
     if (isClient) {
       const ClientComponent = isMemoized
         ? MemoizedAddressClient
@@ -150,7 +39,7 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
 
       return (
         <Suspense fallback={element}>
-          <ClientComponent {...props} ref={ref}>
+          <ClientComponent {...rest} ref={ref}>
             {children}
           </ClientComponent>
         </Suspense>
@@ -161,11 +50,4 @@ const AddressComponent = React.forwardRef<AddressRef, AddressProps>(
   }
 );
 
-AddressComponent.displayName = "Address";
-
-// Export the server component
-export const Address = AddressComponent;
-
-// For most use cases, the server component is sufficient
-// For client-side memoization, use isClient=true with isMemoized=true
-export default Address;
+Address.displayName = "Address";
