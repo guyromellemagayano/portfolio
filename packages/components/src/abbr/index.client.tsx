@@ -5,13 +5,11 @@ import React, { memo } from "react";
 import { Abbr, type AbbrProps, type AbbrRef } from ".";
 
 /**
- * Client-side `abbr` component with enhanced interactivity.
+ * Render the abbreviation client component.
  */
-export const AbbrClient = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
-  // Simply delegate to the main component
-  // The main component already handles all optimizations
-  return <Abbr ref={ref} {...props} />;
-});
+export const AbbrClient = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => (
+  <Abbr ref={ref} {...props} />
+));
 
 AbbrClient.displayName = "AbbrClient";
 
