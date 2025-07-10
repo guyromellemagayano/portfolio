@@ -42,3 +42,6 @@ dist/
 # Old folders
 *.old
 *-old/
+
+# Versioning
+v2/
