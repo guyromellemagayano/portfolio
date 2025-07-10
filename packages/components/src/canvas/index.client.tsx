@@ -3,16 +3,17 @@
 import React, {
   forwardRef,
   memo,
+  useCallback,
   useEffect,
   useRef,
   useState,
-  useCallback,
 } from "react";
+
 import type {
+  CanvasContextType,
+  CanvasDimensions,
   CanvasProps,
   CanvasRef,
-  CanvasDimensions,
-  CanvasContextType,
 } from "./index";
 
 /**
