@@ -81,9 +81,6 @@ export { Canvas } from "./canvas";
 // CLIENT COMPONENT EXPORTS (for advanced use cases)
 // =============================================================================
 
-// Abbr Client Components
-export { AbbrClient, MemoizedAbbrClient } from "./abbr/index.client";
-
 // Address Client Components
 export { AddressClient, MemoizedAddressClient } from "./address/index.client";
 
