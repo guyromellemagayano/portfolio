@@ -5,22 +5,15 @@ import React, { memo } from "react";
 import { Audio, type AudioProps, type AudioRef } from ".";
 
 /**
- * Client-side audio component.
- * For most use cases, the server component should be sufficient.
- * This exists for cases where client-side interactivity is specifically needed.
+ * Render the audio client component.
  */
 export const AudioClient = React.forwardRef<AudioRef, AudioProps>(
-  (props, ref) => {
-    // Simply delegate to the main component
-    // The main component already handles all optimizations
-    return <Audio ref={ref} {...props} />;
-  }
+  (props, ref) => <Audio ref={ref} {...props} />
 );
 
 AudioClient.displayName = "AudioClient";
 
-// Memoized version for cases where props change frequently
+/**
+ * Memoized version of `AudioClient` for performance optimization.
+ */
 export const MemoizedAudioClient = memo(AudioClient);
-
-// Export default for convenience
-export default AudioClient;
