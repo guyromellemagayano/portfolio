@@ -1,23 +1,20 @@
-import { forwardRef, memo } from "react";
+"use client";
 
-import type { BlockquoteProps, BlockquoteRef } from "./index";
+import React, { memo } from "react";
+
+import { Blockquote, type BlockquoteProps, type BlockquoteRef } from ".";
 
 /**
  * Render the blockquote client component.
- * @param {BlockquoteProps} props - The blockquote client component properties
- * @param {BlockquoteRef} ref - The blockquote client component reference
- * @returns The rendered blockquote client component
  */
-export const BlockquoteClient = forwardRef<BlockquoteRef, BlockquoteProps>(
-  ({ as: Component = "blockquote", children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const BlockquoteClient = React.forwardRef<
+  BlockquoteRef,
+  BlockquoteProps
+>((props, ref) => <Blockquote ref={ref} {...props} />);
+
 BlockquoteClient.displayName = "BlockquoteClient";
 
-// Memoized version of `BlockquoteClient`.
+/**
+ * Memoized version of `BlockquoteClient` for performance optimization.
+ */
 export const MemoizedBlockquoteClient = memo(BlockquoteClient);
