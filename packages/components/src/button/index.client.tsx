@@ -1,29 +1,19 @@
 "use client";
 
-import { forwardRef, memo } from "react";
+import React, { memo } from "react";
 
-import type { ButtonProps } from "./index";
-
-/**
- * Client-side Button component with memoization for performance optimization.
- * This component is used when isClient=true is passed to the server component.
- */
-const ButtonClientComponent = forwardRef<
-  React.ElementRef<"button">,
-  ButtonProps
->((props, ref) => {
-  // Import the server component dynamically to avoid SSR issues
-  const { Button } = require("./index");
-  return <Button {...props} ref={ref} />;
-});
-
-ButtonClientComponent.displayName = "ButtonClient";
+import { Button, type ButtonProps, type ButtonRef } from ".";
 
 /**
- * Memoized version of the Button client component for performance optimization.
- * This component is used when isMemoized=true is passed to the server component.
+ * Render the button client component.
  */
-export const ButtonClient = memo(ButtonClientComponent);
-export const MemoizedButtonClient = ButtonClient;
+export const ButtonClient = React.forwardRef<ButtonRef, ButtonProps>(
+  (props, ref) => <Button ref={ref} {...props} />
+);
 
-export default ButtonClient;
+ButtonClient.displayName = "ButtonClient";
+
+/**
+ * Memoized version of `ButtonClient` for performance optimization.
+ */
+export const MemoizedButtonClient = memo(ButtonClient);
