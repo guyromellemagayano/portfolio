@@ -1,16 +1,19 @@
-import { forwardRef, memo } from "react";
+"use client";
 
-import type { BrProps, BrRef } from "./index";
+import React, { memo } from "react";
 
-export const BrClient = forwardRef<BrRef, BrProps>((props, ref) => {
-  const { as: Component = "br", children, ...rest } = props;
-  return (
-    <Component ref={ref} {...rest}>
-      {children}
-    </Component>
-  );
-});
+import { Br, type BrProps, type BrRef } from ".";
+
+/**
+ * Render the line break client component.
+ */
+export const BrClient = React.forwardRef<BrRef, BrProps>((props, ref) => (
+  <Br ref={ref} {...props} />
+));
+
 BrClient.displayName = "BrClient";
 
+/**
+ * Memoized version of `BrClient` for performance optimization.
+ */
 export const MemoizedBrClient = memo(BrClient);
-MemoizedBrClient.displayName = "MemoizedBrClient";
