@@ -5,22 +5,15 @@ import React, { memo } from "react";
 import { Aside, type AsideProps, type AsideRef } from ".";
 
 /**
- * Client-side aside component.
- * For most use cases, the server component should be sufficient.
- * This exists for cases where client-side interactivity is specifically needed.
+ * Render the aside client component.
  */
 export const AsideClient = React.forwardRef<AsideRef, AsideProps>(
-  (props, ref) => {
-    // Simply delegate to the main component
-    // The main component already handles all optimizations
-    return <Aside ref={ref} {...props} />;
-  }
+  (props, ref) => <Aside ref={ref} {...props} />
 );
 
 AsideClient.displayName = "AsideClient";
 
-// Memoized version for cases where props change frequently
+/**
+ * Memoized version of `AsideClient` for performance optimization.
+ */
 export const MemoizedAsideClient = memo(AsideClient);
-
-// Export default for convenience
-export default AsideClient;
