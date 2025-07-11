@@ -1,24 +1,19 @@
-import { forwardRef, memo } from "react";
+"use client";
 
-import type { BodyProps, BodyRef } from "./index";
+import React, { memo } from "react";
+
+import { Body, type BodyProps, type BodyRef } from ".";
 
 /**
- * Universal body client component with enhanced interactivity.
- * Supports client-side rendering with memoization.
+ * Render the document body client component.
  */
-export const BodyClient = forwardRef<BodyRef, BodyProps>(
-  ({ as: Component = "body", children, ...rest }, ref) => {
-    return (
-      <Component ref={ref} {...rest}>
-        {children}
-      </Component>
-    );
-  }
-);
+export const BodyClient = React.forwardRef<BodyRef, BodyProps>((props, ref) => (
+  <Body ref={ref} {...props} />
+));
 
 BodyClient.displayName = "BodyClient";
 
-// Memoized version of BodyClient for performance optimization
+/**
+ * Memoized version of `BodyClient` for performance optimization.
+ */
 export const MemoizedBodyClient = memo(BodyClient);
-
-MemoizedBodyClient.displayName = "MemoizedBodyClient";
