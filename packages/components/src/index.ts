@@ -27,3 +27,4 @@ export * from "./cite";
 export * from "./code";
 export * from "./col";
 export * from "./colgroup";
+export * from "./data";
