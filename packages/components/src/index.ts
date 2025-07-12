@@ -36,3 +36,4 @@ export * from "./dfn";
 export * from "./dialog";
 export * from "./div";
 export * from "./dl";
+export * from "./dt";
