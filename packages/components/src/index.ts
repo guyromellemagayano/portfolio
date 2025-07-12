@@ -30,3 +30,4 @@ export * from "./colgroup";
 export * from "./data";
 export * from "./datalist";
 export * from "./dd";
+export * from "./del";
