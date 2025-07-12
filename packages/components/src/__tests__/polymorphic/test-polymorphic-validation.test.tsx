@@ -16,7 +16,7 @@ import { Bdo } from "../../bdo";
 import { Blockquote } from "../../blockquote";
 import { Body } from "../../body";
 import { Br } from "../../br";
-import { Button } from "../../button";
+import { Button } from "../../button/v2";
 
 describe("Polymorphic Validation System", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
