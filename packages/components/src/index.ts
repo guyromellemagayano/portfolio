@@ -32,3 +32,4 @@ export * from "./datalist";
 export * from "./dd";
 export * from "./del";
 export * from "./details";
+export * from "./dfn";
