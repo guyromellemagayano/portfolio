@@ -35,3 +35,4 @@ export * from "./details";
 export * from "./dfn";
 export * from "./dialog";
 export * from "./div";
+export * from "./dl";
