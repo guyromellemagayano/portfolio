@@ -41,3 +41,4 @@ export * from "./em";
 export * from "./embed";
 export * from "./fieldset";
 export * from "./figcaption";
+export * from "./figure";
