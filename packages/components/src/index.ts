@@ -56,3 +56,4 @@ export * from "./img";
 export * from "./input";
 export * from "./ins";
 export * from "./kbd";
+export * from "./label";
