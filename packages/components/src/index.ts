@@ -71,3 +71,4 @@ export * from "./noscript";
 export * from "./object";
 export * from "./ol";
 export * from "./optgroup";
+export * from "./option";
