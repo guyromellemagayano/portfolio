@@ -48,3 +48,4 @@ export * from "./head";
 export * from "./header";
 export * from "./heading";
 export * from "./hgroup";
+export * from "./hr";
