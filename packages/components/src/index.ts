@@ -61,3 +61,4 @@ export * from "./legend";
 export * from "./li";
 export * from "./link";
 export * from "./main";
+export * from "./map";
