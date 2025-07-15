@@ -70,3 +70,4 @@ export * from "./nav";
 export * from "./noscript";
 export * from "./object";
 export * from "./ol";
+export * from "./optgroup";
