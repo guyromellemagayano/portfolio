@@ -75,3 +75,4 @@ export * from "./option";
 export * from "./output";
 export * from "./paragraph";
 export * from "./picture";
+export * from "./pre";
