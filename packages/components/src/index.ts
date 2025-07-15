@@ -38,3 +38,4 @@ export * from "./div";
 export * from "./dl";
 export * from "./dt";
 export * from "./em";
+export * from "./embed";
