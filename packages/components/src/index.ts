@@ -67,3 +67,4 @@ export * from "./menu";
 export * from "./meta";
 export * from "./meter";
 export * from "./nav";
+export * from "./noscript";
