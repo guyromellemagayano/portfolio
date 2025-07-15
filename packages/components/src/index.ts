@@ -52,3 +52,4 @@ export * from "./hr";
 export * from "./html";
 export * from "./i";
 export * from "./iframe";
+export * from "./img";
