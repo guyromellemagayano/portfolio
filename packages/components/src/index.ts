@@ -51,3 +51,4 @@ export * from "./hgroup";
 export * from "./hr";
 export * from "./html";
 export * from "./i";
+export * from "./iframe";
