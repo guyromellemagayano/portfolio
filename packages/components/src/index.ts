@@ -68,3 +68,4 @@ export * from "./meta";
 export * from "./meter";
 export * from "./nav";
 export * from "./noscript";
+export * from "./object";
