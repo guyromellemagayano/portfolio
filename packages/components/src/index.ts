@@ -59,3 +59,4 @@ export * from "./kbd";
 export * from "./label";
 export * from "./legend";
 export * from "./li";
+export * from "./link";
