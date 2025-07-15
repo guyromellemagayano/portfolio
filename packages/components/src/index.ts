@@ -76,3 +76,4 @@ export * from "./output";
 export * from "./paragraph";
 export * from "./picture";
 export * from "./pre";
+export * from "./progress";
