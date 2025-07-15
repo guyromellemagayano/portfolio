@@ -45,3 +45,4 @@ export * from "./figure";
 export * from "./footer";
 export * from "./form";
 export * from "./head";
+export * from "./header";
