@@ -73,3 +73,4 @@ export * from "./ol";
 export * from "./optgroup";
 export * from "./option";
 export * from "./output";
+export * from "./paragraph";
