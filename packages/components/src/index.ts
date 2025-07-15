@@ -53,3 +53,4 @@ export * from "./html";
 export * from "./i";
 export * from "./iframe";
 export * from "./img";
+export * from "./input";
