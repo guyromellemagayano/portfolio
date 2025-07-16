@@ -80,3 +80,4 @@ export * from "./progress";
 export * from "./q";
 export * from "./rp";
 export * from "./rt";
+export * from "./ruby";
