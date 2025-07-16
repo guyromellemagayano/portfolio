@@ -78,3 +78,4 @@ export * from "./picture";
 export * from "./pre";
 export * from "./progress";
 export * from "./q";
+export * from "./rp";
