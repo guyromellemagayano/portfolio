@@ -88,3 +88,4 @@ export * from "./search";
 export * from "./section";
 export * from "./select";
 export * from "./slot";
+export * from "./small";
