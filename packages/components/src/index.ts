@@ -87,3 +87,4 @@ export * from "./script";
 export * from "./search";
 export * from "./section";
 export * from "./select";
+export * from "./slot";
