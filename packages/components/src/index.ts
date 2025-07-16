@@ -84,3 +84,4 @@ export * from "./ruby";
 export * from "./s";
 export * from "./samp";
 export * from "./script";
+export * from "./search";
