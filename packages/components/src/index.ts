@@ -96,3 +96,4 @@ export * from "./style";
 export * from "./sub";
 export * from "./summary";
 export * from "./sup";
+export * from "./svg";
