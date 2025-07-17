@@ -16,7 +16,7 @@ catalogs:
       specifier: ^14.6.1
       version: 14.6.1
     '@types/node':
-      specifier: ^24.0.4
+      specifier: ^24.0.10
       version: 24.0.10
     '@types/react':
       specifier: ^19.1.8
@@ -43,7 +43,7 @@ catalogs:
       specifier: ^15.3.5
       version: 15.3.5
     nodemon:
-      specifier: ^3.1.9
+      specifier: ^3.1.10
       version: 3.1.10
     prettier:
       specifier: ^3.6.2
@@ -64,7 +64,7 @@ catalogs:
       specifier: ^2.8.1
       version: 2.8.1
     tsx:
-      specifier: ^4.19.3
+      specifier: ^4.20.3
       version: 4.20.3
     typescript:
       specifier: ^5.8.3
@@ -562,16 +562,16 @@ importers:
         specifier: ^8.5.6
         version: 8.5.6
       postcss-focus-visible:
-        specifier: ^10.0.0
+        specifier: ^10.0.1
         version: 10.0.1(postcss@8.5.6)
       postcss-import:
-        specifier: ^16.1.0
+        specifier: ^16.1.1
         version: 16.1.1(postcss@8.5.6)
       postcss-nesting:
-        specifier: ^13.0.0
+        specifier: ^13.0.2
         version: 13.0.2(postcss@8.5.6)
       postcss-preset-env:
-        specifier: ^10.0.5
+        specifier: ^10.2.4
         version: 10.2.4(postcss@8.5.6)
       rimraf:
         specifier: 'catalog:'
@@ -11544,7 +11544,7 @@ snapshots:
       debug: 4.4.1(supports-color@5.5.0)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 6.3.5(@types/node@24.0.10)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0)
+      vite: 7.0.0(@types/node@24.0.10)(jiti@2.4.2)(tsx@4.20.3)(yaml@2.8.0)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
