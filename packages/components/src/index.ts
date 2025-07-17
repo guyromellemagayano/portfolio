@@ -92,3 +92,4 @@ export * from "./small";
 export * from "./source";
 export * from "./span";
 export * from "./strong";
+export * from "./style";
