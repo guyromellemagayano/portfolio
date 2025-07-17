@@ -102,3 +102,4 @@ export * from "./tbody";
 export * from "./td";
 export * from "./template";
 export * from "./textarea";
+export * from "./tfoot";
