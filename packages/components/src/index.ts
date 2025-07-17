@@ -93,3 +93,4 @@ export * from "./source";
 export * from "./span";
 export * from "./strong";
 export * from "./style";
+export * from "./sub";
