@@ -100,3 +100,4 @@ export * from "./svg";
 export * from "./table";
 export * from "./tbody";
 export * from "./td";
+export * from "./template";
