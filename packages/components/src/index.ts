@@ -91,3 +91,4 @@ export * from "./slot";
 export * from "./small";
 export * from "./source";
 export * from "./span";
+export * from "./strong";
