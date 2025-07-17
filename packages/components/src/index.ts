@@ -95,3 +95,4 @@ export * from "./strong";
 export * from "./style";
 export * from "./sub";
 export * from "./summary";
+export * from "./sup";
