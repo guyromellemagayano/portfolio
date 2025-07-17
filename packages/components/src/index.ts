@@ -97,3 +97,4 @@ export * from "./sub";
 export * from "./summary";
 export * from "./sup";
 export * from "./svg";
+export * from "./table";
