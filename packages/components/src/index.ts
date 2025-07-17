@@ -99,3 +99,4 @@ export * from "./sup";
 export * from "./svg";
 export * from "./table";
 export * from "./tbody";
+export * from "./td";
