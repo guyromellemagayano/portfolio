@@ -113,3 +113,4 @@ export * from "./u";
 export * from "./ul";
 export * from "./var";
 export * from "./video";
+export * from "./wbr";
