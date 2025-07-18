@@ -1,7 +1,11 @@
 <!-- markdownlint-disable proper-names -->
-# Welcome to Stack Market Labs Portal
+# Guy Romelle Magayano | Portfolio
 
 Full stack developer, open-source enthusiast, and a minimalist
+
+[![commit-check Enabled](https://img.shields.io/badge/commit--check-enabled-brightgreen?logo=Git&logoColor=white)](https://github.com/commit-check/commit-check)
+[![Commitizen Friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Husky Enabled](https://camo.githubusercontent.com/66c98f2bc36eeb23f21ef9af183727ac272ecf0370c61969808151cffdda640f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d656e61626c65642d6875736b793f7374796c653d666c6174266c6f676f436f6c6f723d677265656e266c6162656c3d2546302539462539302542364875736b79266c696e6b3d687474707325334125324625324674797069636f64652e6769746875622e696f2532466875736b79253246)](https://typicode.github.io/husky)
 
 ## 🚀 Quick Start
 
