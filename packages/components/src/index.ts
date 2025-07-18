@@ -105,3 +105,4 @@ export * from "./textarea";
 export * from "./tfoot";
 export * from "./th";
 export * from "./thead";
+export * from "./time";
