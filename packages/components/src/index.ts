@@ -104,3 +104,4 @@ export * from "./template";
 export * from "./textarea";
 export * from "./tfoot";
 export * from "./th";
+export * from "./thead";
