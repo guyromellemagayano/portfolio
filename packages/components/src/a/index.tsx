@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-const AClient = React.lazy(async () => {
+export const AClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
 });
-const MemoizedAClient = React.lazy(async () => {
+export const MemoizedAClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAClient };
 });
@@ -31,7 +31,7 @@ export const A = React.forwardRef<ARef, AProps>((props, ref) => {
   } = props;
 
   const element = (
-    <Component href={href} {...rest}>
+    <Component href={href} {...rest} ref={ref}>
       {children}
     </Component>
   );
