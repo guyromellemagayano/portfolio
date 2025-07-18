@@ -107,3 +107,4 @@ export * from "./th";
 export * from "./thead";
 export * from "./time";
 export * from "./title";
+export * from "./tr";
