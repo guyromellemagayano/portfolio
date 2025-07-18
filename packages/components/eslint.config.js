@@ -10,11 +10,34 @@ export default [
       sourceType: "module",
     },
     rules: {
-      // Node.js specific rules for scripts
-      "no-console": "off", // Scripts often need console output
-      "no-process-exit": "off", // Scripts may need to exit
+      "no-console": "off",
+      "no-process-exit": "off",
       "prefer-const": "error",
       "no-var": "error",
+    },
+  },
+  {
+    files: ["**/*.test.{js,ts,jsx,tsx}", "**/*.spec.{js,ts,jsx,tsx}"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+        vi: "readonly",
+        screen: "readonly",
+        render: "readonly",
+        fireEvent: "readonly",
+        waitFor: "readonly",
+        act: "readonly",
+      },
+    },
+    rules: {
+      "no-undef": "off",
     },
   },
   {
