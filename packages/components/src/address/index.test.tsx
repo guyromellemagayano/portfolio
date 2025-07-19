@@ -7,14 +7,15 @@ import { Address } from ".";
 // Basic render test
 it("renders an address with children", () => {
   render(
-    <Address>
+    <Address data-testid="address-element">
       123 Main Street
       <br />
       City, State 12345
     </Address>
   );
-  const address = screen.getByText("123 Main Street");
-  expect(address.closest("address")).toBeInTheDocument();
+  const address = screen.getByTestId("address-element");
+  expect(address.tagName).toBe("ADDRESS");
+  expect(address).toHaveTextContent("123 Main Street");
 });
 
 // as prop test
@@ -34,7 +35,7 @@ it("renders as a custom element with 'as' prop", () => {
 // isClient and isMemoized props (should use Suspense with lazy components)
 it("renders Suspense with lazy client components when isClient is true", async () => {
   render(
-    <Address isClient>
+    <Address isClient data-testid="address-element">
       789 Pine Road
       <br />
       Village, Country 11111
@@ -42,16 +43,17 @@ it("renders Suspense with lazy client components when isClient is true", async (
   );
 
   // Should render the fallback (the address) immediately
-  const address = screen.getByText("789 Pine Road");
-  expect(address.closest("address")).toBeInTheDocument();
+  const address = screen.getByTestId("address-element");
+  expect(address.tagName).toBe("ADDRESS");
+  expect(address).toHaveTextContent("789 Pine Road");
 
   // The lazy component should load and render the same content
-  await screen.findByText("789 Pine Road");
+  await screen.findByTestId("address-element");
 });
 
 it("renders Suspense with memoized lazy client components when isClient and isMemoized are true", async () => {
   render(
-    <Address isClient isMemoized>
+    <Address isClient isMemoized data-testid="address-element">
       321 Elm Street
       <br />
       Borough, District 22222
@@ -59,11 +61,12 @@ it("renders Suspense with memoized lazy client components when isClient and isMe
   );
 
   // Should render the fallback (the address) immediately
-  const address = screen.getByText("321 Elm Street");
-  expect(address.closest("address")).toBeInTheDocument();
+  const address = screen.getByTestId("address-element");
+  expect(address.tagName).toBe("ADDRESS");
+  expect(address).toHaveTextContent("321 Elm Street");
 
   // The lazy component should load and render the same content
-  await screen.findByText("321 Elm Street");
+  await screen.findByTestId("address-element");
 });
 
 // ref forwarding test
