@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-const AbbrClient = React.lazy(async () => {
+export const AbbrClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AbbrClient };
 });
-const MemoizedAbbrClient = React.lazy(async () => {
+export const MemoizedAbbrClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAbbrClient };
 });
@@ -29,7 +29,11 @@ export const Abbr = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
     ...rest
   } = props;
 
-  const element = <Component {...rest}>{children}</Component>;
+  const element = (
+    <Component {...rest} ref={ref}>
+      {children}
+    </Component>
+  );
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;

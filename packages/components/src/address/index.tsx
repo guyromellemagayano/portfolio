@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-const AddressClient = React.lazy(async () => {
+export const AddressClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AddressClient };
 });
-const MemoizedAddressClient = React.lazy(async () => {
+export const MemoizedAddressClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAddressClient };
 });
@@ -30,7 +30,11 @@ export const Address = React.forwardRef<AddressRef, AddressProps>(
       ...rest
     } = props;
 
-    const element = <Component {...rest}>{children}</Component>;
+    const element = (
+      <Component {...rest} ref={ref}>
+        {children}
+      </Component>
+    );
 
     if (isClient) {
       const ClientComponent = isMemoized
