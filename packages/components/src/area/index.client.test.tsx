@@ -12,7 +12,7 @@ describe("AreaClient (Lazy Component)", () => {
 
   it("can be rendered with Suspense", async () => {
     render(
-      <React.Suspense fallback={<div data-testid="loading">Loading...</div>}>
+      <React.Suspense fallback={<div>Loading...</div>}>
         <AreaClient
           data-testid="area-element"
           coords="0,0,100,100"
@@ -21,8 +21,18 @@ describe("AreaClient (Lazy Component)", () => {
       </React.Suspense>
     );
 
-    // In test environment, lazy components often render immediately
-    // Check if either the fallback or the actual component is rendered
+    // In test environment, lazy components may render immediately
+    // or show fallback briefly, so we handle both cases
+    try {
+      // Try to find the fallback first
+      await screen.findByText("Loading...", {}, { timeout: 100 });
+      // If fallback is found, wait for the component to load
+      await screen.findByTestId("area-element");
+    } catch {
+      // If no fallback, component rendered immediately
+      expect(screen.getByTestId("area-element")).toBeInTheDocument();
+    }
+
     const area = screen.getByTestId("area-element");
     expect(area.tagName).toBe("AREA");
     expect(area).toHaveAttribute("coords", "0,0,100,100");
@@ -38,7 +48,7 @@ describe("MemoizedAreaClient (Lazy Component)", () => {
 
   it("can be rendered with Suspense", async () => {
     render(
-      <React.Suspense fallback={<div data-testid="loading">Loading...</div>}>
+      <React.Suspense fallback={<div>Loading...</div>}>
         <MemoizedAreaClient
           data-testid="area-element"
           coords="0,0,50,50"
@@ -47,8 +57,18 @@ describe("MemoizedAreaClient (Lazy Component)", () => {
       </React.Suspense>
     );
 
-    // In test environment, lazy components often render immediately
-    // Check if either the fallback or the actual component is rendered
+    // In test environment, lazy components may render immediately
+    // or show fallback briefly, so we handle both cases
+    try {
+      // Try to find the fallback first
+      await screen.findByText("Loading...", {}, { timeout: 100 });
+      // If fallback is found, wait for the component to load
+      await screen.findByTestId("area-element");
+    } catch {
+      // If no fallback, component rendered immediately
+      expect(screen.getByTestId("area-element")).toBeInTheDocument();
+    }
+
     const area = screen.getByTestId("area-element");
     expect(area.tagName).toBe("AREA");
     expect(area).toHaveAttribute("coords", "0,0,50,50");
