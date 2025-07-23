@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-const ArticleClient = React.lazy(async () => {
+export const ArticleClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.ArticleClient };
 });
-const MemoizedArticleClient = React.lazy(async () => {
+export const MemoizedArticleClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedArticleClient };
 });
@@ -30,7 +30,11 @@ export const Article = React.forwardRef<ArticleRef, ArticleProps>(
       ...rest
     } = props;
 
-    const element = <Component {...rest}>{children}</Component>;
+    const element = (
+      <Component {...rest} ref={ref}>
+        {children}
+      </Component>
+    );
 
     if (isClient) {
       const ClientComponent = isMemoized
