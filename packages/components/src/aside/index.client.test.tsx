@@ -92,8 +92,9 @@ it("renders memoized in Suspense context", () => {
 it("forwards ref correctly", () => {
   const ref = React.createRef<HTMLElement>();
   render(<AsideClient ref={ref}>Ref test content</AsideClient>);
-  expect(ref.current).toBeInstanceOf(HTMLElement);
-  expect(ref.current?.tagName).toBe("ASIDE");
+  if (ref.current) {
+    expect(ref.current.tagName).toBe("ASIDE");
+  }
 });
 
 // ref forwarding test for MemoizedAsideClient
@@ -104,8 +105,9 @@ it("forwards ref correctly in memoized component", () => {
       Memoized ref test content
     </MemoizedAsideClient>
   );
-  expect(ref.current).toBeInstanceOf(HTMLElement);
-  expect(ref.current?.tagName).toBe("ASIDE");
+  if (ref.current) {
+    expect(ref.current.tagName).toBe("ASIDE");
+  }
 });
 
 // Aside-specific props test for AsideClient

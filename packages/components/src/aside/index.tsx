@@ -29,11 +29,7 @@ export const Aside = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
     ...rest
   } = props;
 
-  const element = (
-    <Component {...rest} ref={ref}>
-      {children}
-    </Component>
-  );
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAsideClient : AsideClient;
