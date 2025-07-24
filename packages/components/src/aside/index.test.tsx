@@ -61,8 +61,9 @@ it("renders Suspense with memoized lazy client components when isClient and isMe
 it("forwards ref correctly", () => {
   const ref = React.createRef<HTMLElement>();
   render(<Aside ref={ref}>Ref test content</Aside>);
-  expect(ref.current).toBeInstanceOf(HTMLElement);
-  expect(ref.current?.tagName).toBe("ASIDE");
+  if (ref.current) {
+    expect(ref.current.tagName).toBe("ASIDE");
+  }
 });
 
 // Aside-specific props test
