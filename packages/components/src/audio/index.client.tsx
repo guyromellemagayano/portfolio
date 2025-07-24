@@ -8,7 +8,7 @@ import { Audio, type AudioProps, type AudioRef } from ".";
  * Render the audio client component.
  */
 export const AudioClient = React.forwardRef<AudioRef, AudioProps>(
-  (props, ref) => <Audio ref={ref} {...props} />
+  (props, ref) => <Audio {...props} ref={ref} />
 );
 
 AudioClient.displayName = "AudioClient";
