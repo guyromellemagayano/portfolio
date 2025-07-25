@@ -30,11 +30,7 @@ export const Address = React.forwardRef<AddressRef, AddressProps>(
       ...rest
     } = props;
 
-    const element = (
-      <Component {...rest} ref={ref}>
-        {children}
-      </Component>
-    );
+    const element = <Component {...rest}>{children}</Component>;
 
     if (isClient) {
       const ClientComponent = isMemoized
