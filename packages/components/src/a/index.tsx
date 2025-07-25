@@ -2,11 +2,11 @@ import React, { Suspense } from "react";
 
 import type { CommonComponentProps } from "../types";
 
-export const AClient = React.lazy(async () => {
+const AClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.AClient };
 });
-export const MemoizedAClient = React.lazy(async () => {
+const MemoizedAClient = React.lazy(async () => {
   const module = await import("./index.client");
   return { default: module.MemoizedAClient };
 });
