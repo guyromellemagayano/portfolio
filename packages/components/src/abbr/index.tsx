@@ -29,11 +29,7 @@ export const Abbr = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
     ...rest
   } = props;
 
-  const element = (
-    <Component {...rest} ref={ref}>
-      {children}
-    </Component>
-  );
+  const element = <Component {...rest}>{children}</Component>;
 
   if (isClient) {
     const ClientComponent = isMemoized ? MemoizedAbbrClient : AbbrClient;
