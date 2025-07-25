@@ -30,11 +30,7 @@ export const Article = React.forwardRef<ArticleRef, ArticleProps>(
       ...rest
     } = props;
 
-    const element = (
-      <Component {...rest} ref={ref}>
-        {children}
-      </Component>
-    );
+    const element = <Component {...rest}>{children}</Component>;
 
     if (isClient) {
       const ClientComponent = isMemoized
