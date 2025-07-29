@@ -17,6 +17,14 @@ export default [
     },
   },
   {
+    files: ["src/**/*.{js,ts,jsx,tsx}"],
+    languageOptions: {
+      globals: {
+        process: "readonly",
+      },
+    },
+  },
+  {
     files: ["**/*.test.{js,ts,jsx,tsx}", "**/*.spec.{js,ts,jsx,tsx}"],
     languageOptions: {
       globals: {
