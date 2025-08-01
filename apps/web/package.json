@@ -24,7 +24,19 @@
     "@guyromellemagayano/components": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
     "@guyromellemagayano/ui": "workspace:*",
-    "next": "catalog:"
+    "@headlessui/react": "catalog:",
+    "@mapbox/rehype-prism": "catalog:",
+    "@mdx-js/loader": "catalog:",
+    "@mdx-js/react": "catalog:",
+    "@next/mdx": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "@tailwindcss/typography": "catalog:",
+    "cheerio": "catalog:",
+    "clsx": "catalog:",
+    "fast-glob": "catalog:",
+    "feed": "catalog:",
+    "next-themes": "catalog:",
+    "remark-gfm": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
@@ -36,10 +48,13 @@
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "next": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
+    "sharp": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
 }

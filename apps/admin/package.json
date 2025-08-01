@@ -21,15 +21,15 @@
   },
   "dependencies": {
     "@guyromellemagayano/ui": "workspace:*",
-    "@react-router/dev": "^7.6.3",
-    "@react-router/node": "^7.6.3",
-    "inquirer": "^12.7.0",
-    "react-router": "^7.6.3"
+    "@react-router/dev": "catalog:",
+    "@react-router/node": "catalog:",
+    "inquirer": "catalog:",
+    "react-router": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@vitejs/plugin-react": "^4.6.0"
+    "@vitejs/plugin-react": "catalog:"
   },
   "peerDependencies": {
     "@types/node": "catalog:",
@@ -41,6 +41,7 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
+    "sharp": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-devtools-json": "catalog:"
