@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /** @type {import("prettier").Config} */
 module.exports = {
   printWidth: 80,
