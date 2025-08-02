@@ -35,26 +35,25 @@
     "clsx": "catalog:",
     "fast-glob": "catalog:",
     "feed": "catalog:",
+    "next": "catalog:",
     "next-themes": "catalog:",
-    "remark-gfm": "catalog:"
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "remark-gfm": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*"
-  },
-  "peerDependencies": {
+    "@packages/tailwind-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
-    "next": "catalog:",
     "prettier": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "rimraf": "catalog:",
     "sharp": "catalog:",
-    "tailwindcss": "catalog:",
     "typescript": "catalog:"
   }
 }
