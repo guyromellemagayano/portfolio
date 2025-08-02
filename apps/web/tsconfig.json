@@ -1,25 +1,28 @@
 {
   "extends": "@packages/typescript-config/src/nextjs.json",
   "compilerOptions": {
+    "target": "ES2020",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
     "sourceMap": true,
     "outDir": "dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "esModuleInterop": true,
     "noEmit": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
     "paths": {
       "@web/*": [
-        "./*"
+        "./src/*"
       ]
     }
   },
   "include": [
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.d.ts",
