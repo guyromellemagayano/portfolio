@@ -36,16 +36,14 @@
     "@types/cors": "catalog:",
     "@types/express": "catalog:",
     "@types/morgan": "catalog:",
-    "@types/supertest": "catalog:",
-    "supertest": "catalog:",
-    "tsup": "catalog:"
-  },
-  "peerDependencies": {
     "@types/node": "catalog:",
+    "@types/supertest": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
+    "supertest": "catalog:",
+    "tsup": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
