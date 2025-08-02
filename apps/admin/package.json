@@ -24,22 +24,20 @@
     "@react-router/dev": "catalog:",
     "@react-router/node": "catalog:",
     "inquirer": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "react-router": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
-    "@vitejs/plugin-react": "catalog:"
-  },
-  "peerDependencies": {
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "rimraf": "catalog:",
     "sharp": "catalog:",
     "typescript": "catalog:",
