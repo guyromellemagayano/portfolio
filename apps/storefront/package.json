@@ -23,22 +23,20 @@
   "dependencies": {
     "@guyromellemagayano/components": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
-    "@guyromellemagayano/ui": "workspace:*"
+    "@guyromellemagayano/ui": "workspace:*",
+    "next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*"
-  },
-  "peerDependencies": {
+    "@packages/typescript-config": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
-    "next": "catalog:",
     "prettier": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "rimraf": "catalog:",
     "sharp": "catalog:",
     "typescript": "catalog:"
