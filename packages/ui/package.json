@@ -24,29 +24,16 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    "./counter-button": {
-      "import": {
-        "types": "./dist/es/counter-button.d.mts",
-        "default": "./dist/es/counter-button.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/counter-button.d.ts",
-        "default": "./dist/cjs/counter-button.cjs"
-      }
-    },
-    "./link": {
-      "import": {
-        "types": "./dist/es/link.d.mts",
-        "default": "./dist/es/link.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/link.d.ts",
-        "default": "./dist/cjs/link.cjs"
-      }
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist/**"
   ],
   "scripts": {
     "build": "bunchee",
