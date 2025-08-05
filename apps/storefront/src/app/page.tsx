@@ -2,8 +2,7 @@
 import type { Metadata } from "next";
 
 import { log } from "@guyromellemagayano/logger";
-import { CounterButton } from "@guyromellemagayano/ui/counter-button";
-import { Link } from "@guyromellemagayano/ui/link";
+import { CounterButton, Link } from "@guyromellemagayano/ui";
 
 export const metadata: Metadata = {
   title: "Store | Kitchen Sink",
