@@ -21,8 +21,6 @@
   },
   "dependencies": {
     "@guyromellemagayano/ui": "workspace:*",
-    "@react-router/dev": "catalog:",
-    "@react-router/node": "catalog:",
     "inquirer": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

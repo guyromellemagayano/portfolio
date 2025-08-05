@@ -8,15 +8,13 @@ catalog:
   "@commitlint/config-conventional": ^19.8.1
   "@commitlint/cz-commitlint": ^19.8.1
   "@commitlint/types": ^19.8.1
-  "@eslint/js": ^9.30.1
+  "@eslint/js": ^9.26.0
   "@headlessui/react": 2.2.7
   "@mapbox/rehype-prism": 0.9.0
   "@mdx-js/loader": 3.1.0
   "@mdx-js/react": 3.1.0
-  "@next/eslint-plugin-next": ^15.4.5
+  "@next/eslint-plugin-next": ^15.3.2
   "@next/mdx": 15.4.5
-  "@react-router/dev": ^7.6.3
-  "@react-router/node": ^7.6.3
   "@tailwindcss/aspect-ratio": ^0.4.2
   "@tailwindcss/container-queries": ^0.1.1
   "@tailwindcss/forms": ^0.5.10
@@ -25,80 +23,95 @@ catalog:
   "@testing-library/jest-dom": ^6.6.3
   "@testing-library/react": ^16.3.0
   "@testing-library/user-event": ^14.6.1
-  "@types/body-parser": ^1.19.6
-  "@types/cors": ^2.8.19
+  "@types/body-parser": ^1.19.5
+  "@types/cors": ^2.8.18
   "@types/express": 5.0.3
-  "@types/morgan": ^1.9.10
+  "@types/mapbox__rehype-prism": 0.8.3
+  "@types/mdx": 2.0.13
+  "@types/morgan": ^1.9.9
   "@types/node": 24.0.10
   "@types/react-dom": 19.1.6
   "@types/react": 19.1.8
   "@types/supertest": ^6.0.3
-  "@typescript-eslint/eslint-plugin": ^8.36.0
-  "@typescript-eslint/parser": ^8.36.0
-  "@typescript-eslint/type-utils": ^8.36.0
-  "@typescript-eslint/types": 8.36.0
-  "@typescript-eslint/utils": ^8.36.0
-  "@vitejs/plugin-react": ^4.6.0
+  "@typescript-eslint/eslint-plugin": ^8.32.1
+  "@typescript-eslint/parser": ^8.32.1
+  "@typescript-eslint/type-utils": ^8.39.0
+  "@typescript-eslint/types": 8.39.0
+  "@typescript-eslint/utils": ^8.39.0
+  "@vitejs/plugin-react": ^4.4.1
   "@vitest/coverage-v8": ^3.2.4
   "@vitest/ui": ^3.2.4
   autoprefixer: ^10.4.21
   body-parser: ^2.2.0
-  bunchee: ^6.5.4
+  bunchee: ^6.5.1
   cheerio: 1.1.2
   clsx: ^2.1.1
   cors: ^2.8.5
-  czg: ^1.11.2
+  czg: ^1.11.1
   eslint-config-prettier: ^10.1.5
-  eslint-import-resolver-typescript: ^4.4.4
-  eslint-plugin-import: ^2.32.0
+  eslint-import-resolver-typescript: ^4.3.4
+  eslint-plugin-import: ^2.31.0
   eslint-plugin-only-warn: ^1.1.0
-  eslint-plugin-prettier: ^5.5.1
+  eslint-plugin-prettier: ^5.4.0
   eslint-plugin-react-hooks: ^5.2.0
   eslint-plugin-react-refresh: ^0.4.20
   eslint-plugin-react: ^7.37.5
   eslint-plugin-simple-import-sort: ^12.1.1
-  eslint-plugin-turbo: ^2.5.4
+  eslint-plugin-turbo: ^2.5.3
   eslint-plugin-unused-imports: ^4.1.4
-  eslint: 9.30.1
+  eslint: ^9.26.0
   express: ^5.1.0
   fast-glob: 3.3.3
   feed: 5.1.0
-  globals: ^16.3.0
+  globals: ^16.1.0
   husky: ^9.1.7
-  inquirer: ^12.7.0
+  inquirer: ^12.6.1
   jsdom: ^26.1.0
-  lint-staged: ^16.1.2
+  lint-staged: ^16.0.0
   morgan: ^1.10.0
   next-themes: 0.4.6
   next: 15.3.5
   nodemon: ^3.1.10
   postcss-focus-visible: ^10.0.1
-  postcss-import: ^16.1.1
-  postcss-nesting: ^13.0.2
-  postcss-preset-env: ^10.2.4
-  postcss: ^8.5.6
-  prettier-plugin-packagejson: ^2.5.18
+  postcss-import: ^16.1.0
+  postcss-nesting: ^13.0.1
+  postcss-preset-env: ^10.1.6
+  postcss: ^8.5.3
+  prettier-plugin-packagejson: ^2.5.13
   prettier-plugin-pkg: ^0.21.1
   prettier-plugin-tailwindcss: 0.6.13
   prettier: 3.6.2
-  react-dom: 19.1.0
+  react-dom: 19.1.1
   react-router: ^7.6.3
-  react: 19.1.0
+  react: 19.1.1
   remark-gfm: 4.0.1
   rimraf: ^6.0.1
   sharp: 0.34.2
   sort-package-json: 3.4.0
-  supertest: ^7.1.3
-  tailwind-merge: ^3.3.1
-  tailwindcss: ^4.1.11
+  supertest: ^7.1.1
+  tailwind-merge: ^3.3.0
+  tailwindcss: ^4.1.7
   tsconfig-paths: ^4.2.0
   tslib: ^2.8.1
-  tsup: ^8.5.0
+  tsup: ^8.4.0
   tsx: ^4.20.3
-  turbo: ^2.5.4
-  typescript-eslint: ^8.36.0
+  turbo: ^2.5.3
+  typescript-eslint: ^8.32.1
   typescript: 5.8.3
   validate-branch-name: 1.3.2
-  vite-plugin-devtools-json: ^0.2.0
-  vite: ^6.3.5
+  vite-plugin-devtools-json: ^0.4.1
+  vite: ^7.0.0
   vitest: ^3.2.4
+
+catalogs:
+  react17:
+    next: 13.5.6
+    react-dom: 17.0.2
+    react-router: 6.22.3
+    react: 17.0.2
+
+  react18:
+    next: 14.2.5
+    react-dom: 18.3.1
+    react-router: 6.22.3
+    react: 18.3.1
