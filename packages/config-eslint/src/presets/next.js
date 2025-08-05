@@ -14,7 +14,8 @@ export const nextEslintConfig = [
     },
     languageOptions: {
       globals: {
-        ...reactBaseEslintConfig[2].languageOptions.globals,
+        ...reactBaseEslintConfig[reactBaseEslintConfig.length - 1]
+          .languageOptions.globals,
       },
     },
     rules: {
