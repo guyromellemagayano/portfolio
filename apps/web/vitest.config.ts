@@ -1,0 +1,104 @@
+import { defineConfig } from "vitest/config";
+
+import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
+
+export default defineConfig({
+  test: {
+    ...reactPreset.test,
+    setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
+
+    // Memory optimization settings
+    pool: "threads",
+    poolOptions: {
+      threads: {
+        singleThread: true,
+        isolate: false,
+      },
+    },
+
+    // Aggressive memory management
+    maxConcurrency: 1,
+    maxWorkers: 1,
+
+    // Faster test timeouts to prevent hanging tests
+    testTimeout: 5000,
+    hookTimeout: 5000,
+
+    // Aggressive cleanup between tests
+    clearMocks: true,
+    restoreMocks: true,
+    unstubEnvs: true,
+    unstubGlobals: true,
+
+    // Additional memory management
+    logHeapUsage: true,
+    sequence: {
+      concurrent: false,
+    },
+
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html", "lcov", "clover"],
+      reportOnFailure: true,
+      thresholds: {
+        statements: 80,
+        branches: 75,
+        functions: 80,
+        lines: 80,
+      },
+      exclude: [
+        "node_modules/",
+        "dist/",
+        "build/",
+        "coverage/",
+        ".next/",
+        "**/*.d.ts",
+        "**/*.config.*",
+        "**/test-setup.*",
+        "**/__tests__/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/*.stories.*",
+        "**/mocks/**",
+        "**/fixtures/**",
+        "**/types/**",
+        "**/__mocks__/**",
+        "**/vite.config.*",
+        "**/vitest.config.*",
+        "**/jest.config.*",
+        "**/webpack.config.*",
+        "**/rollup.config.*",
+        "**/tailwind.config.*",
+        "**/postcss.config.*",
+        "**/next.config.*",
+        "**/remix.config.*",
+        "**/README.md",
+        "src/app/layout.tsx",
+        "src/app/page.tsx",
+        "src/app/globals.css",
+        "src/app/styles.css",
+      ],
+      include: [
+        "src/**/*.{js,jsx,ts,tsx}",
+        "!src/**/*.{test,spec}.{js,jsx,ts,tsx}",
+        "!src/**/test-setup.*",
+        "!src/**/*.d.ts",
+        "!src/app/layout.tsx",
+        "!src/app/page.tsx",
+        "!src/app/globals.css",
+        "!src/app/styles.css",
+      ],
+    },
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    exclude: [
+      "node_modules",
+      "dist",
+      ".next",
+      ".idea",
+      ".git",
+      ".cache",
+      "**/*.d.ts",
+      "**/*.stories.*",
+    ],
+  },
+});
