@@ -1,8 +1,7 @@
 import remarkGfm from "remark-gfm";
-import nextMDX from "@next/mdx";
+import createMDX from "@next/mdx";
 import rehypePrism from "@mapbox/rehype-prism";
 
-/** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
@@ -10,14 +9,14 @@ const nextConfig = {
     "@guyromellemagayano/logger",
     "@guyromellemagayano/ui",
   ],
-  pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
-const withMDX = nextMDX({
+const withMDX = createMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypePrism],
+    rehypePlugins: [rehypePrism as any],
   },
 });
 
