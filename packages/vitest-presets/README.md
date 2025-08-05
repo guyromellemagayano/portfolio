@@ -1,4 +1,5 @@
-# @packages/vitest-presets
+<!-- markdownlint-disable no-emphasis-as-heading line-length -->
+# @packages/Vitest-presets
 
 Shared Vitest configuration presets for the monorepo with integrated V8 coverage support.
 
@@ -24,7 +25,7 @@ For DOM testing with JSDOM environment.
 - Functions: 80%
 - Lines: 80%
 
-```js
+```javascript
 import { defineConfig } from "vitest/config";
 import browserPreset from "@packages/vitest-presets/browser/vitest-preset.js";
 
@@ -42,7 +43,7 @@ For server-side testing with Node.js environment.
 - Functions: 85%
 - Lines: 85%
 
-```js
+```javascript
 import { defineConfig } from "vitest/config";
 import nodePreset from "@packages/vitest-presets/node/vitest-preset.js";
 
@@ -60,7 +61,7 @@ For React component testing with full Testing Library support.
 - Functions: 80%
 - Lines: 80%
 
-```js
+```javascript
 import { defineConfig } from "vitest/config";
 import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
 
@@ -172,7 +173,7 @@ Add to `package.json` peer dependencies:
 
 Create `vitest.config.ts` in your package:
 
-```ts
+```typescript
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -201,7 +202,7 @@ export default defineConfig({
 
 Create `src/test-setup.ts`:
 
-```ts
+```typescript
 import "@testing-library/jest-dom";
 
 // Browser API mocks
@@ -267,7 +268,7 @@ pnpm test:coverage
 
 Coverage fails if thresholds aren't met:
 
-```
+```bash
 ERROR: Coverage for lines (76.99%) does not meet global threshold (80%)
 ERROR: Coverage for statements (76.99%) does not meet global threshold (80%)
 ```
@@ -284,7 +285,7 @@ ERROR: Coverage for statements (76.99%) does not meet global threshold (80%)
 
 Exclude files that shouldn't be tested:
 
-```js
+```javascript
 coverage: {
   exclude: [
     "src/index.tsx", // Re-export files
@@ -321,7 +322,7 @@ pnpm add -D @vitest/coverage-v8
 **Low coverage on index files**
 Exclude re-export files:
 
-```js
+```javascript
 coverage: {
   exclude: ["src/index.tsx", "src/index.client.tsx"]
 }
@@ -330,7 +331,7 @@ coverage: {
 **Thresholds too strict**
 Adjust per your project needs:
 
-```js
+```javascript
 coverage: {
   thresholds: {
     statements: 70, // Lower threshold
