@@ -8,7 +8,7 @@ export default [
       "import/resolver": {
         alias: {
           map: [["@web", "./"]],
-          extensions: [".js", ".ts", ".tsx"],
+          extensions: [".js", ".jsx", ".ts", ".tsx"],
         },
       },
     },
