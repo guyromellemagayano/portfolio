@@ -17,7 +17,7 @@
     "skipDefaultLibCheck": true,
     "paths": {
       "@web/*": [
-        "./src/*"
+        "./*"
       ]
     }
   },
