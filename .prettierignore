@@ -34,3 +34,6 @@ node_modules/
 
 # Vercel
 .vercel/
+
+# MDX files
+**/*.mdx
