@@ -1,10 +1,9 @@
 import { defineConfig } from "vitest/config";
 
-import nodePreset from "@packages/vitest-presets/node/vitest-preset.js";
-
 export default defineConfig({
   test: {
-    ...nodePreset.test,
+    environment: "node",
+    globals: true,
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html", "lcov", "clover"],
