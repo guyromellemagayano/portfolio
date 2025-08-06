@@ -1,6 +1,4 @@
-import React from "react";
-
-import glob from "fast-glob";
+import { logError } from "@guyromellemagayano/logger";
 
 export interface Article {
   title: string;
@@ -14,35 +12,66 @@ export interface ArticleWithSlug extends Article {
   slug: string;
 }
 
-/**
- * Import an article from the articles directory
- */
-export const importArticle = async (
-  filename: string
-): Promise<ArticleWithSlug> => {
-  let { article } = (await import(`../app/articles/${filename}`)) as {
-    default: React.ComponentType<any>;
-    article: Article;
-  };
-
-  return {
-    slug: filename.replace(/(\/page)?\.mdx$/, ""),
-    ...article,
-  };
-};
-
-const MDXPageFile = "page.mdx";
-const MDXPageFilePattern = `*/${MDXPageFile}`;
-const ArticlesPath = "./src/app/articles";
+// Sample articles data - in a real app, this would come from a CMS or database
+const sampleArticles: ArticleWithSlug[] = [
+  {
+    slug: "sample-article",
+    title: "Sample Article",
+    date: "2024-01-15",
+    description: "This is a sample article for testing purposes",
+    image: "/images/sample-article.jpg",
+    tags: ["sample", "test", "article"],
+  },
+  {
+    slug: "another-article",
+    title: "Another Article",
+    date: "2024-01-20",
+    description: "This is another sample article for testing",
+    image: "/images/another-article.jpg",
+    tags: ["another", "test", "markdown"],
+  },
+];
 
 /**
  * Get all articles sorted by date
  */
-export const getAllArticles = async () => {
-  let articleFilenames = await glob(MDXPageFilePattern, {
-    cwd: ArticlesPath,
-  });
+export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
+  try {
+    // For now, return sample articles
+    // In a real app, this would fetch from a CMS or database
+    return sampleArticles.sort((a, b) => +new Date(b.date) - +new Date(a.date));
+  } catch (error) {
+    logError("Failed to get articles:", error);
+    return [];
+  }
+};
 
-  let articles = await Promise.all(articleFilenames.map(importArticle));
-  return articles.sort((a, b) => +new Date(b.date) - +new Date(a.date));
+/**
+ * Get a single article by slug
+ */
+export const getArticleBySlug = async (
+  slug: string
+): Promise<ArticleWithSlug | null> => {
+  try {
+    const articles = await getAllArticles();
+    return articles.find((article) => article.slug === slug) || null;
+  } catch (error) {
+    logError(`Failed to get article by slug: ${slug}`, error);
+    return null;
+  }
+};
+
+/**
+ * Get articles by tag
+ */
+export const getArticlesByTag = async (
+  tag: string
+): Promise<ArticleWithSlug[]> => {
+  try {
+    const articles = await getAllArticles();
+    return articles.filter((article) => article.tags.includes(tag));
+  } catch (error) {
+    logError(`Failed to get articles by tag: ${tag}`, error);
+    return [];
+  }
 };
