@@ -62,11 +62,7 @@ const MemoizedContainerClient = React.lazy(async () => {
 });
 
 export type ContainerRef = ContainerOuterRef;
-export interface ContainerProps extends ContainerOuterProps {
-  children: React.ReactNode;
-  isClient?: boolean;
-  isMemoized?: boolean;
-}
+export interface ContainerProps extends ContainerOuterProps {}
 
 /**
  * A container component that wraps its children in a div with a max-width of 7xl and 2xl.
