@@ -371,4 +371,33 @@ describe("formatDate", () => {
       expect(results).toEqual(expected);
     });
   });
+
+  describe("Additional Edge Cases", () => {
+    it("handles very old dates", () => {
+      expect(formatDate("1900-01-01")).toBe("January 1, 1900");
+      expect(formatDate("1800-12-31")).toBe("December 31, 1800");
+    });
+
+    it("handles very future dates", () => {
+      expect(formatDate("2100-01-01")).toBe("January 1, 2100");
+      expect(formatDate("2200-12-31")).toBe("December 31, 2200");
+    });
+
+    it("handles dates with different separators gracefully", () => {
+      // The function expects YYYY-MM-DD format, but should handle gracefully
+      expect(() => formatDate("2024/01/15")).not.toThrow();
+      expect(() => formatDate("2024.01.15")).not.toThrow();
+    });
+
+    it("handles dates with extra whitespace", () => {
+      expect(() => formatDate(" 2024-01-15 ")).not.toThrow();
+      expect(() => formatDate("2024-01-15\n")).not.toThrow();
+    });
+
+    it("handles dates with time components", () => {
+      // The function should handle dates with time components
+      expect(() => formatDate("2024-01-15T10:30:00")).not.toThrow();
+      expect(() => formatDate("2024-01-15 10:30:00")).not.toThrow();
+    });
+  });
 });
