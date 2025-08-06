@@ -73,7 +73,7 @@ export * from "./ol";
 export * from "./optgroup";
 export * from "./option";
 export * from "./output";
-export * from "./paragraph";
+export * from "./p";
 export * from "./picture";
 export * from "./pre";
 export * from "./progress";
