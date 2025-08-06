@@ -1,12 +1,24 @@
 import React from "react";
 
-import "./styles.css";
+import { Body, Div, Html } from "@guyromellemagayano/components";
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => {
+import { Providers } from "@web/app/providers";
+
+import "@web/app/styles.css";
+
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+const RootLayout = ({ children }: RootLayoutProps) => {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <Html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <Body as="body" className="flex h-full bg-zinc-50 dark:bg-black">
+        <Providers>
+          <Div className="flex h-full">{children}</Div>
+        </Providers>
+      </Body>
+    </Html>
   );
 };
 
