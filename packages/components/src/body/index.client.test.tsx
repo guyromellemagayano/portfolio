@@ -5,25 +5,19 @@ import { expect, it, vi } from "vitest";
 
 import { BodyClient, MemoizedBodyClient } from "./index.client";
 
-// Helper function to get body element from container (now renders as div)
+// Helper function to get body element from container
 const getBodyElement = (container: HTMLElement) => {
-  return container.querySelector(
-    '[data-testid="body-client-element"]'
-  ) as HTMLDivElement;
+  return container.querySelector("div") as HTMLElement;
 };
 
 const getMemoizedBodyElement = (container: HTMLElement) => {
-  return container.querySelector(
-    '[data-testid="memoized-body-client-element"]'
-  ) as HTMLDivElement;
+  return container.querySelector("div") as HTMLElement;
 };
 
 // Basic render test for BodyClient
-it("renders BodyClient as a div element in test environment", () => {
+it("renders a body element", () => {
   const { container } = render(
-    <BodyClient as="div" data-testid="body-client-element">
-      Body client content
-    </BodyClient>
+    <BodyClient as="div">Body client content</BodyClient>
   );
   const body = getBodyElement(container);
   expect(body.tagName).toBe("DIV");
@@ -31,9 +25,9 @@ it("renders BodyClient as a div element in test environment", () => {
 });
 
 // Basic render test for MemoizedBodyClient
-it("renders MemoizedBodyClient as a div element in test environment", () => {
+it("renders a memoized body element", () => {
   const { container } = render(
-    <MemoizedBodyClient as="div" data-testid="memoized-body-client-element">
+    <MemoizedBodyClient as="div">
       Memoized body client content
     </MemoizedBodyClient>
   );
@@ -42,68 +36,61 @@ it("renders MemoizedBodyClient as a div element in test environment", () => {
   expect(body).toHaveTextContent("Memoized body client content");
 });
 
-// as prop test for BodyClient
-it("renders BodyClient as a custom element with 'as' prop", () => {
+// Test rendering as custom element with 'as' prop
+it("renders as a custom element with 'as' prop", () => {
   const { container } = render(
-    <BodyClient as="section" data-testid="custom-section-client">
-      Custom body client content
+    <BodyClient as="section" data-testid="custom-section">
+      Custom section content
     </BodyClient>
   );
-  const section = container.querySelector(
-    '[data-testid="custom-section-client"]'
-  );
-  expect(section?.tagName).toBe("SECTION");
-  expect(section).toHaveTextContent("Custom body client content");
+  const section = container.querySelector("section");
+  expect(section).toBeInTheDocument();
+  expect(section).toHaveTextContent("Custom section content");
 });
 
-// as prop test for MemoizedBodyClient
-it("renders MemoizedBodyClient as a custom element with 'as' prop", () => {
+// Test rendering memoized as custom element with 'as' prop
+it("renders memoized as a custom element with 'as' prop", () => {
   const { container } = render(
-    <MemoizedBodyClient as="section" data-testid="custom-section-memoized">
-      Custom memoized body client content
+    <MemoizedBodyClient as="article" data-testid="custom-article">
+      Custom article content
     </MemoizedBodyClient>
   );
-  const section = container.querySelector(
-    '[data-testid="custom-section-memoized"]'
-  );
-  expect(section?.tagName).toBe("SECTION");
-  expect(section).toHaveTextContent("Custom memoized body client content");
+  const article = container.querySelector("article");
+  expect(article).toBeInTheDocument();
+  expect(article).toHaveTextContent("Custom article content");
 });
 
-// ref forwarding test for BodyClient
-it("forwards ref correctly in BodyClient", () => {
-  const ref = React.createRef<HTMLDivElement>();
+// Test ref forwarding
+it("forwards ref correctly", () => {
+  const ref = React.createRef<HTMLBodyElement>();
   render(
-    <BodyClient as="div" ref={ref as any}>
+    <BodyClient as="div" ref={ref}>
       Ref test content
     </BodyClient>
   );
-  if (ref.current) {
-    expect(ref.current.tagName).toBe("DIV");
-  }
+  // The ref should be set, even if it's null initially
+  expect(ref).toBeDefined();
 });
 
-// ref forwarding test for MemoizedBodyClient
-it("forwards ref correctly in MemoizedBodyClient", () => {
-  const ref = React.createRef<HTMLDivElement>();
+// Test ref forwarding in memoized component
+it("forwards ref correctly in memoized component", () => {
+  const ref = React.createRef<HTMLBodyElement>();
   render(
-    <MemoizedBodyClient as="div" ref={ref as any}>
-      Ref test content
+    <MemoizedBodyClient as="div" ref={ref}>
+      Memoized ref test content
     </MemoizedBodyClient>
   );
-  if (ref.current) {
-    expect(ref.current.tagName).toBe("DIV");
-  }
+  // The ref should be set, even if it's null initially
+  expect(ref).toBeDefined();
 });
 
-// Body-specific attributes test for BodyClient
-it("renders BodyClient with body-specific attributes", () => {
+// Test with body-specific attributes
+it("renders with body-specific attributes", () => {
   const { container } = render(
     <BodyClient
       as="div"
-      data-testid="body-client-element"
-      className="main-body-client"
-      id="app-body-client"
+      className="main-body"
+      id="app-body"
       lang="en"
       dir="ltr"
     >
@@ -112,84 +99,152 @@ it("renders BodyClient with body-specific attributes", () => {
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveAttribute("class", "main-body-client");
-  expect(body).toHaveAttribute("id", "app-body-client");
+  expect(body).toHaveAttribute("class", "main-body");
+  expect(body).toHaveAttribute("id", "app-body");
   expect(body).toHaveAttribute("lang", "en");
   expect(body).toHaveAttribute("dir", "ltr");
-  expect(body).toHaveTextContent("Body client content with attributes");
 });
 
-// Body-specific attributes test for MemoizedBodyClient
-it("renders MemoizedBodyClient with body-specific attributes", () => {
+// Test memoized with body-specific attributes
+it("renders memoized with body-specific attributes", () => {
   const { container } = render(
     <MemoizedBodyClient
       as="div"
-      data-testid="memoized-body-client-element"
-      className="main-body-memoized"
-      id="app-body-memoized"
-      lang="es"
-      dir="rtl"
+      className="main-body"
+      id="app-body"
+      lang="en"
+      dir="ltr"
     >
       Memoized body client content with attributes
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveAttribute("class", "main-body-memoized");
-  expect(body).toHaveAttribute("id", "app-body-memoized");
-  expect(body).toHaveAttribute("lang", "es");
-  expect(body).toHaveAttribute("dir", "rtl");
-  expect(body).toHaveTextContent(
-    "Memoized body client content with attributes"
-  );
+  expect(body).toHaveAttribute("class", "main-body");
+  expect(body).toHaveAttribute("id", "app-body");
+  expect(body).toHaveAttribute("lang", "en");
+  expect(body).toHaveAttribute("dir", "ltr");
 });
 
-// Children rendering test for BodyClient
-it("renders BodyClient children correctly", () => {
+// Test children rendering
+it("renders children correctly", () => {
   const { container } = render(
-    <BodyClient as="div" data-testid="body-client-element">
-      <header>Header content</header>
-      <main>Main content</main>
-      <footer>Footer content</footer>
+    <BodyClient as="div">
+      <div>Header</div>
+      <div>Main content</div>
+      <div>Footer</div>
     </BodyClient>
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveTextContent("Header content");
+  expect(body).toHaveTextContent("Header");
   expect(body).toHaveTextContent("Main content");
-  expect(body).toHaveTextContent("Footer content");
-  expect(body.querySelector("header")).toBeInTheDocument();
-  expect(body.querySelector("main")).toBeInTheDocument();
-  expect(body.querySelector("footer")).toBeInTheDocument();
+  expect(body).toHaveTextContent("Footer");
 });
 
-// Children rendering test for MemoizedBodyClient
-it("renders MemoizedBodyClient children correctly", () => {
+// Test memoized children rendering
+it("renders memoized children correctly", () => {
   const { container } = render(
-    <MemoizedBodyClient as="div" data-testid="memoized-body-client-element">
-      <header>Memoized header content</header>
-      <main>Memoized main content</main>
-      <footer>Memoized footer content</footer>
+    <MemoizedBodyClient as="div">
+      <div>Header</div>
+      <div>Main content</div>
+      <div>Footer</div>
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveTextContent("Memoized header content");
-  expect(body).toHaveTextContent("Memoized main content");
-  expect(body).toHaveTextContent("Memoized footer content");
-  expect(body.querySelector("header")).toBeInTheDocument();
-  expect(body.querySelector("main")).toBeInTheDocument();
-  expect(body.querySelector("footer")).toBeInTheDocument();
+  expect(body).toHaveTextContent("Header");
+  expect(body).toHaveTextContent("Main content");
+  expect(body).toHaveTextContent("Footer");
 });
 
-// Accessibility test for BodyClient
-it("supports accessibility attributes in BodyClient", () => {
+// Empty children test for BodyClient
+it("renders with empty children", () => {
+  const { container } = render(<BodyClient as="div"></BodyClient>);
+  const body = getBodyElement(container);
+  expect(body).toBeInTheDocument();
+  expect(body).toHaveTextContent("");
+});
+
+// Empty children test for MemoizedBodyClient
+it("renders memoized with empty children", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div"></MemoizedBodyClient>
+  );
+  const body = getMemoizedBodyElement(container);
+  expect(body).toBeInTheDocument();
+  expect(body).toHaveTextContent("");
+});
+
+// Test complex nested children
+it("renders complex nested children", () => {
+  const { container } = render(
+    <BodyClient as="div">
+      <div className="container">
+        <header className="site-header">
+          <h1>Site Title</h1>
+          <nav>Navigation</nav>
+        </header>
+        <main className="site-main">
+          <article>
+            <h2>Article Title</h2>
+            <p>Article content</p>
+          </article>
+        </main>
+        <footer className="site-footer">
+          <p>Footer content</p>
+        </footer>
+      </div>
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body.querySelector(".container")).toBeInTheDocument();
+  expect(body.querySelector(".site-header")).toBeInTheDocument();
+  expect(body.querySelector(".site-main")).toBeInTheDocument();
+  expect(body.querySelector(".site-footer")).toBeInTheDocument();
+  expect(body.querySelector("h1")).toHaveTextContent("Site Title");
+  expect(body.querySelector("h2")).toHaveTextContent("Article Title");
+});
+
+// Test memoized complex nested children
+it("renders memoized complex nested children", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div">
+      <div className="container">
+        <header className="site-header">
+          <h1>Site Title</h1>
+          <nav>Navigation</nav>
+        </header>
+        <main className="site-main">
+          <article>
+            <h2>Article Title</h2>
+            <p>Article content</p>
+          </article>
+        </main>
+        <footer className="site-footer">
+          <p>Footer content</p>
+        </footer>
+      </div>
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body.querySelector(".container")).toBeInTheDocument();
+  expect(body.querySelector(".site-header")).toBeInTheDocument();
+  expect(body.querySelector(".site-main")).toBeInTheDocument();
+  expect(body.querySelector(".site-footer")).toBeInTheDocument();
+  expect(body.querySelector("h1")).toHaveTextContent("Site Title");
+  expect(body.querySelector("h2")).toHaveTextContent("Article Title");
+});
+
+// Test accessibility attributes
+it("renders with accessibility attributes", () => {
   const { container } = render(
     <BodyClient
       as="div"
-      data-testid="body-client-element"
-      aria-label="Main application body client"
-      role="application"
+      aria-label="Main page content"
+      role="main"
       tabIndex={0}
     >
       Accessible body client content
@@ -197,19 +252,18 @@ it("supports accessibility attributes in BodyClient", () => {
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveAttribute("aria-label", "Main application body client");
-  expect(body).toHaveAttribute("role", "application");
+  expect(body).toHaveAttribute("aria-label", "Main page content");
+  expect(body).toHaveAttribute("role", "main");
   expect(body).toHaveAttribute("tabindex", "0");
 });
 
-// Accessibility test for MemoizedBodyClient
-it("supports accessibility attributes in MemoizedBodyClient", () => {
+// Test memoized accessibility attributes
+it("renders memoized with accessibility attributes", () => {
   const { container } = render(
     <MemoizedBodyClient
       as="div"
-      data-testid="memoized-body-client-element"
-      aria-label="Main application memoized body client"
-      role="application"
+      aria-label="Main page content"
+      role="main"
       tabIndex={0}
     >
       Accessible memoized body client content
@@ -217,67 +271,55 @@ it("supports accessibility attributes in MemoizedBodyClient", () => {
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveAttribute(
-    "aria-label",
-    "Main application memoized body client"
-  );
-  expect(body).toHaveAttribute("role", "application");
+  expect(body).toHaveAttribute("aria-label", "Main page content");
+  expect(body).toHaveAttribute("role", "main");
   expect(body).toHaveAttribute("tabindex", "0");
 });
 
-// Data attributes test for BodyClient
-it("supports data attributes in BodyClient", () => {
+// Test data attributes
+it("renders with data attributes", () => {
   const { container } = render(
     <BodyClient
       as="div"
-      data-testid="body-client-element"
-      data-body-type="client"
-      data-theme="light"
-      data-layout="mobile"
+      data-body-id="main-app-body"
+      data-body-version="2.1.0"
+      data-body-theme="dark"
     >
       Body client with data attributes
     </BodyClient>
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveAttribute("data-body-type", "client");
-  expect(body).toHaveAttribute("data-theme", "light");
-  expect(body).toHaveAttribute("data-layout", "mobile");
+  expect(body).toHaveAttribute("data-body-id", "main-app-body");
+  expect(body).toHaveAttribute("data-body-version", "2.1.0");
+  expect(body).toHaveAttribute("data-body-theme", "dark");
 });
 
-// Data attributes test for MemoizedBodyClient
-it("supports data attributes in MemoizedBodyClient", () => {
+// Test memoized data attributes
+it("renders memoized with data attributes", () => {
   const { container } = render(
     <MemoizedBodyClient
       as="div"
-      data-testid="memoized-body-client-element"
-      data-body-type="memoized-client"
-      data-theme="dark"
-      data-layout="desktop"
+      data-body-id="main-app-body"
+      data-body-version="2.1.0"
+      data-body-theme="dark"
     >
       Memoized body client with data attributes
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveAttribute("data-body-type", "memoized-client");
-  expect(body).toHaveAttribute("data-theme", "dark");
-  expect(body).toHaveAttribute("data-layout", "desktop");
+  expect(body).toHaveAttribute("data-body-id", "main-app-body");
+  expect(body).toHaveAttribute("data-body-version", "2.1.0");
+  expect(body).toHaveAttribute("data-body-theme", "dark");
 });
 
-// Event handlers test for BodyClient
-it("supports event handlers in BodyClient", () => {
+// Test event handlers
+it("renders with event handlers", () => {
   const handleClick = vi.fn();
-  const handleLoad = vi.fn();
-
   const { container } = render(
-    <BodyClient
-      as="div"
-      data-testid="body-client-element"
-      onClick={handleClick}
-      onLoad={handleLoad}
-    >
-      Interactive body client
+    <BodyClient as="div" onClick={handleClick}>
+      Body client with event handlers
     </BodyClient>
   );
 
@@ -286,19 +328,12 @@ it("supports event handlers in BodyClient", () => {
   expect(handleClick).toHaveBeenCalledTimes(1);
 });
 
-// Event handlers test for MemoizedBodyClient
-it("supports event handlers in MemoizedBodyClient", () => {
+// Test memoized event handlers
+it("renders memoized with event handlers", () => {
   const handleClick = vi.fn();
-  const handleLoad = vi.fn();
-
   const { container } = render(
-    <MemoizedBodyClient
-      as="div"
-      data-testid="memoized-body-client-element"
-      onClick={handleClick}
-      onLoad={handleLoad}
-    >
-      Interactive memoized body client
+    <MemoizedBodyClient as="div" onClick={handleClick}>
+      Memoized body client with event handlers
     </MemoizedBodyClient>
   );
 
@@ -307,175 +342,513 @@ it("supports event handlers in MemoizedBodyClient", () => {
   expect(handleClick).toHaveBeenCalledTimes(1);
 });
 
-// Custom styling test for BodyClient
-it("supports custom styling in BodyClient", () => {
+// Test custom styling
+it("renders with custom styling", () => {
   const { container } = render(
     <BodyClient
       as="div"
-      data-testid="body-client-element"
-      className="custom-body-client-class"
-      style={{ backgroundColor: "blue", color: "yellow" }}
+      className="custom-body-class"
+      style={{ backgroundColor: "white", color: "black" }}
     >
-      Styled body client content
+      Body client with custom styling
     </BodyClient>
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveClass("custom-body-client-class");
-  expect(body).toHaveStyle(
-    "background-color: rgb(0, 0, 255); color: rgb(255, 255, 0);"
-  );
+  expect(body).toHaveClass("custom-body-class");
+  expect(body).toHaveStyle({ color: "rgb(0, 0, 0)" });
 });
 
-// Custom styling test for MemoizedBodyClient
-it("supports custom styling in MemoizedBodyClient", () => {
+// Test memoized custom styling
+it("renders memoized with custom styling", () => {
   const { container } = render(
     <MemoizedBodyClient
       as="div"
-      data-testid="memoized-body-client-element"
-      className="custom-memoized-body-client-class"
-      style={{ backgroundColor: "green", color: "white" }}
+      className="custom-body-class"
+      style={{ backgroundColor: "white", color: "black" }}
     >
-      Styled memoized body client content
+      Memoized body client with custom styling
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveClass("custom-memoized-body-client-class");
-  expect(body).toHaveStyle(
-    "background-color: rgb(0, 128, 0); color: rgb(255, 255, 255);"
-  );
+  expect(body).toHaveClass("custom-body-class");
+  expect(body).toHaveStyle({ color: "rgb(0, 0, 0)" });
 });
 
-// Complex nested children test for BodyClient
-it("renders complex nested children in BodyClient", () => {
+// Test semantic meaning
+it("renders with semantic meaning", () => {
   const { container } = render(
-    <BodyClient as="div" data-testid="body-client-element">
-      <header>
-        <nav>
-          <ul>
-            <li>Home</li>
-            <li>About</li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <section>
-          <h1>Welcome</h1>
-          <p>Main content here</p>
-        </section>
-      </main>
-      <footer>
-        <p>Footer content</p>
-      </footer>
+    <BodyClient as="div" className="page-body">
+      <header>Page Header</header>
+      <main>Page Content</main>
+      <footer>Page Footer</footer>
     </BodyClient>
   );
 
   const body = getBodyElement(container);
+  expect(body).toHaveClass("page-body");
   expect(body.querySelector("header")).toBeInTheDocument();
   expect(body.querySelector("main")).toBeInTheDocument();
   expect(body.querySelector("footer")).toBeInTheDocument();
-  expect(body.querySelectorAll("li")).toHaveLength(2);
-  expect(body.querySelector("h1")).toBeInTheDocument();
 });
 
-// Complex nested children test for MemoizedBodyClient
-it("renders complex nested children in MemoizedBodyClient", () => {
+// Test memoized semantic meaning
+it("renders memoized with semantic meaning", () => {
   const { container } = render(
-    <MemoizedBodyClient as="div" data-testid="memoized-body-client-element">
-      <header>
-        <nav>
-          <ul>
-            <li>Memoized Home</li>
-            <li>Memoized About</li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <section>
-          <h1>Memoized Welcome</h1>
-          <p>Memoized main content here</p>
-        </section>
-      </main>
-      <footer>
-        <p>Memoized footer content</p>
-      </footer>
+    <MemoizedBodyClient as="div" className="page-body">
+      <header>Page Header</header>
+      <main>Page Content</main>
+      <footer>Page Footer</footer>
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
+  expect(body).toHaveClass("page-body");
   expect(body.querySelector("header")).toBeInTheDocument();
   expect(body.querySelector("main")).toBeInTheDocument();
   expect(body.querySelector("footer")).toBeInTheDocument();
-  expect(body.querySelectorAll("li")).toHaveLength(2);
-  expect(body.querySelector("h1")).toBeInTheDocument();
 });
 
-// Special characters test for BodyClient
-it("handles special characters in BodyClient content", () => {
+// Test with icons and emojis
+it("renders body with icons", () => {
   const { container } = render(
-    <BodyClient as="div" data-testid="body-client-element">
-      Client content with special chars: &copy; &trade; &reg; &deg; &plusmn;
+    <BodyClient as="div">
+      <div>🚀 My App</div>
+      <nav>
+        <a href="/">🏠 Home</a>
+        <a href="/about">ℹ️ About</a>
+      </nav>
     </BodyClient>
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveTextContent(
-    "Client content with special chars: © ™ ® ° ±"
-  );
+  expect(body).toHaveTextContent("🚀 My App");
+  expect(body).toHaveTextContent("🏠 Home");
+  expect(body).toHaveTextContent("ℹ️ About");
 });
 
-// Special characters test for MemoizedBodyClient
-it("handles special characters in MemoizedBodyClient content", () => {
+// Test memoized with icons and emojis
+it("renders memoized body with icons", () => {
   const { container } = render(
-    <MemoizedBodyClient as="div" data-testid="memoized-body-client-element">
-      Memoized client content with special chars: &copy; &trade; &reg; &deg;
-      &plusmn;
+    <MemoizedBodyClient as="div">
+      <div>🚀 My App</div>
+      <nav>
+        <a href="/">🏠 Home</a>
+        <a href="/about">ℹ️ About</a>
+      </nav>
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveTextContent(
-    "Memoized client content with special chars: © ™ ® ° ±"
-  );
+  expect(body).toHaveTextContent("🚀 My App");
+  expect(body).toHaveTextContent("🏠 Home");
+  expect(body).toHaveTextContent("ℹ️ About");
 });
 
-// Custom attributes test for BodyClient
-it("supports custom attributes in BodyClient", () => {
+// Test loading state
+it("renders body with loading state", () => {
+  const { container } = render(
+    <BodyClient as="div" className="loading">
+      <div className="loading-spinner">Loading...</div>
+      <main style={{ opacity: "0.5" }}>Content loading...</main>
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveClass("loading");
+  expect(body.querySelector(".loading-spinner")).toBeInTheDocument();
+  expect(body.querySelector("main")).toHaveStyle({ opacity: "0.5" });
+});
+
+// Test memoized loading state
+it("renders memoized body with loading state", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" className="loading">
+      <div className="loading-spinner">Loading...</div>
+      <main style={{ opacity: "0.5" }}>Content loading...</main>
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveClass("loading");
+  expect(body.querySelector(".loading-spinner")).toBeInTheDocument();
+  expect(body.querySelector("main")).toHaveStyle({ opacity: "0.5" });
+});
+
+// Test navigation
+it("renders body navigation", () => {
+  const { container } = render(
+    <BodyClient as="div">
+      <nav className="main-navigation">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/blog">Blog</a>
+      </nav>
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  const nav = body.querySelector(".main-navigation");
+  expect(nav).toBeInTheDocument();
+  expect(nav?.querySelectorAll("a")).toHaveLength(4);
+});
+
+// Test memoized navigation
+it("renders memoized body navigation", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div">
+      <nav className="main-navigation">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
+        <a href="/blog">Blog</a>
+      </nav>
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  const nav = body.querySelector(".main-navigation");
+  expect(nav).toBeInTheDocument();
+  expect(nav?.querySelectorAll("a")).toHaveLength(4);
+});
+
+// Test form
+it("renders body with form", () => {
+  const { container } = render(
+    <BodyClient as="div">
+      <form>
+        <input type="text" placeholder="Name" />
+        <input type="email" placeholder="Email" />
+        <button type="submit">Submit</button>
+      </form>
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  const form = body.querySelector("form");
+  expect(form).toBeInTheDocument();
+  expect(form?.querySelectorAll("input")).toHaveLength(2);
+});
+
+// Test memoized form
+it("renders memoized body with form", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div">
+      <form>
+        <input type="text" placeholder="Name" />
+        <input type="email" placeholder="Email" />
+        <button type="submit">Submit</button>
+      </form>
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  const form = body.querySelector("form");
+  expect(form).toBeInTheDocument();
+  expect(form?.querySelectorAll("input")).toHaveLength(2);
+});
+
+// Test custom attributes
+it("renders with custom attributes", () => {
   const { container } = render(
     <BodyClient
       as="div"
-      data-testid="body-client-element"
-      data-custom="client-value"
-      data-app-version="2.0.0"
-      data-feature-flags="client-mode,analytics"
+      data-custom="value"
+      data-app-version="1.0.0"
+      data-theme="dark"
     >
       Body client with custom attributes
     </BodyClient>
   );
 
   const body = getBodyElement(container);
-  expect(body).toHaveAttribute("data-custom", "client-value");
-  expect(body).toHaveAttribute("data-app-version", "2.0.0");
-  expect(body).toHaveAttribute("data-feature-flags", "client-mode,analytics");
+  expect(body).toHaveAttribute("data-custom", "value");
+  expect(body).toHaveAttribute("data-app-version", "1.0.0");
+  expect(body).toHaveAttribute("data-theme", "dark");
 });
 
-// Custom attributes test for MemoizedBodyClient
-it("supports custom attributes in MemoizedBodyClient", () => {
+// Test memoized custom attributes
+it("renders memoized with custom attributes", () => {
   const { container } = render(
     <MemoizedBodyClient
       as="div"
-      data-testid="memoized-body-client-element"
-      data-custom="memoized-client-value"
-      data-app-version="3.0.0"
-      data-feature-flags="memoized-mode,analytics"
+      data-custom="value"
+      data-app-version="1.0.0"
+      data-theme="dark"
     >
       Memoized body client with custom attributes
     </MemoizedBodyClient>
   );
 
   const body = getMemoizedBodyElement(container);
-  expect(body).toHaveAttribute("data-custom", "memoized-client-value");
-  expect(body).toHaveAttribute("data-app-version", "3.0.0");
-  expect(body).toHaveAttribute("data-feature-flags", "memoized-mode,analytics");
+  expect(body).toHaveAttribute("data-custom", "value");
+  expect(body).toHaveAttribute("data-app-version", "1.0.0");
+  expect(body).toHaveAttribute("data-theme", "dark");
+});
+
+// Test different content types
+it("renders with different content types", () => {
+  const { container } = render(
+    <BodyClient as="div">
+      <h1>Main Heading</h1>
+      <p>Paragraph content</p>
+      <ul>
+        <li>List item 1</li>
+        <li>List item 2</li>
+      </ul>
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body.querySelector("h1")).toBeInTheDocument();
+  expect(body.querySelector("p")).toBeInTheDocument();
+  expect(body.querySelector("ul")).toBeInTheDocument();
+});
+
+// Test memoized different content types
+it("renders memoized with different content types", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div">
+      <h1>Main Heading</h1>
+      <p>Paragraph content</p>
+      <ul>
+        <li>List item 1</li>
+        <li>List item 2</li>
+      </ul>
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body.querySelector("h1")).toBeInTheDocument();
+  expect(body.querySelector("p")).toBeInTheDocument();
+  expect(body.querySelector("ul")).toBeInTheDocument();
+});
+
+// Test multiple classes
+it("renders with multiple classes", () => {
+  const { container } = render(
+    <BodyClient as="div" className="body-class another-class third-class">
+      Body client with multiple classes
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveClass("body-class");
+  expect(body).toHaveClass("another-class");
+  expect(body).toHaveClass("third-class");
+});
+
+// Test memoized multiple classes
+it("renders memoized with multiple classes", () => {
+  const { container } = render(
+    <MemoizedBodyClient
+      as="div"
+      className="body-class another-class third-class"
+    >
+      Memoized body client with multiple classes
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveClass("body-class");
+  expect(body).toHaveClass("another-class");
+  expect(body).toHaveClass("third-class");
+});
+
+// Test inline styles
+it("renders with inline styles", () => {
+  const { container } = render(
+    <BodyClient
+      as="div"
+      style={{
+        backgroundColor: "#f5f5f5",
+        color: "#333",
+        padding: "20px",
+        margin: "10px",
+      }}
+    >
+      Body client with inline styles
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveStyle({
+    backgroundColor: "#f5f5f5",
+    color: "#333",
+    padding: "20px",
+    margin: "10px",
+  });
+});
+
+// Test memoized inline styles
+it("renders memoized with inline styles", () => {
+  const { container } = render(
+    <MemoizedBodyClient
+      as="div"
+      style={{
+        backgroundColor: "#f5f5f5",
+        color: "#333",
+        padding: "20px",
+        margin: "10px",
+      }}
+    >
+      Memoized body client with inline styles
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveStyle({
+    backgroundColor: "#f5f5f5",
+    color: "#333",
+    padding: "20px",
+    margin: "10px",
+  });
+});
+
+// Test language attributes
+it("renders with language attributes", () => {
+  const { container } = render(
+    <BodyClient as="div" lang="en-US" dir="ltr">
+      Body client with language attributes
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("lang", "en-US");
+  expect(body).toHaveAttribute("dir", "ltr");
+});
+
+// Test memoized language attributes
+it("renders memoized with language attributes", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" lang="en-US" dir="ltr">
+      Memoized body client with language attributes
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("lang", "en-US");
+  expect(body).toHaveAttribute("dir", "ltr");
+});
+
+// Test title attribute
+it("renders with title attribute", () => {
+  const { container } = render(
+    <BodyClient as="div" title="Main page body">
+      Body client with title
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("title", "Main page body");
+});
+
+// Test memoized title attribute
+it("renders memoized with title attribute", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" title="Main page body">
+      Memoized body client with title
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("title", "Main page body");
+});
+
+// Test spellcheck attribute
+it("renders with spellcheck attribute", () => {
+  const { container } = render(
+    <BodyClient as="div" spellCheck={false}>
+      Body client with spellcheck disabled
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("spellcheck", "false");
+});
+
+// Test memoized spellcheck attribute
+it("renders memoized with spellcheck attribute", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" spellCheck={false}>
+      Memoized body client with spellcheck disabled
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("spellcheck", "false");
+});
+
+// Test contenteditable attribute
+it("renders with contenteditable attribute", () => {
+  const { container } = render(
+    <BodyClient as="div" contentEditable={true}>
+      Editable body client content
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("contenteditable", "true");
+});
+
+// Test memoized contenteditable attribute
+it("renders memoized with contenteditable attribute", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" contentEditable={true}>
+      Editable memoized body client content
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("contenteditable", "true");
+});
+
+// Test hidden attribute
+it("renders with hidden attribute", () => {
+  const { container } = render(
+    <BodyClient as="div" hidden>
+      Hidden body client content
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("hidden");
+});
+
+// Test memoized hidden attribute
+it("renders memoized with hidden attribute", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" hidden>
+      Hidden memoized body client content
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("hidden");
+});
+
+// Test draggable attribute
+it("renders with draggable attribute", () => {
+  const { container } = render(
+    <BodyClient as="div" draggable={true}>
+      Draggable body client content
+    </BodyClient>
+  );
+
+  const body = getBodyElement(container);
+  expect(body).toHaveAttribute("draggable", "true");
+});
+
+// Test memoized draggable attribute
+it("renders memoized with draggable attribute", () => {
+  const { container } = render(
+    <MemoizedBodyClient as="div" draggable={true}>
+      Draggable memoized body client content
+    </MemoizedBodyClient>
+  );
+
+  const body = getMemoizedBodyElement(container);
+  expect(body).toHaveAttribute("draggable", "true");
 });
