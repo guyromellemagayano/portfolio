@@ -40,7 +40,7 @@ pnpm add @guyromellemagayano/components
 
 ### Basic Setup
 
-```tsx
+```typescript
 import { A, Button, Canvas } from '@guyromellemagayano/components';
 
 function App() {
@@ -56,7 +56,7 @@ function App() {
 
 ### Analytics Configuration
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function AnalyticsExample() {
@@ -79,7 +79,7 @@ function AnalyticsExample() {
 
 ### Polymorphic Rendering
 
-```tsx
+```typescript
 import { A } from '@guyromellemagayano/components';
 
 function PolymorphicExample() {
@@ -104,7 +104,7 @@ function PolymorphicExample() {
 
 ### Server-Side Rendering
 
-```tsx
+```typescript
 import { Button } from '@guyromellemagayano/components';
 
 function ServerExample() {
