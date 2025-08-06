@@ -1,8 +1,21 @@
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vitest/config";
 
 import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
 
+// Get __dirname equivalent for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@web": path.resolve(__dirname, "./src"),
+    },
+  },
   test: {
     ...reactPreset.test,
     setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
@@ -101,4 +114,4 @@ export default defineConfig({
       "**/*.stories.*",
     ],
   },
-});
+} as any);
