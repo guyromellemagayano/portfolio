@@ -8,20 +8,19 @@ import { Container, type ContainerProps } from ".";
 import "@testing-library/jest-dom";
 
 // Mock the Div component to control its behavior in tests
+const MockDiv = React.forwardRef((props: any, ref) => {
+  const { children, className, as: Component = "div", ...rest } = props;
+  return (
+    <Component ref={ref} className={className} data-testid="mock-div" {...rest}>
+      {children}
+    </Component>
+  );
+});
+
+MockDiv.displayName = "MockDiv";
+
 vi.mock("@guyromellemagayano/components", () => ({
-  Div: React.forwardRef((props: any, ref) => {
-    const { children, className, as: Component = "div", ...rest } = props;
-    return (
-      <Component
-        ref={ref}
-        className={className}
-        data-testid="mock-div"
-        {...rest}
-      >
-        {children}
-      </Component>
-    );
-  }),
+  Div: MockDiv,
 }));
 
 describe("Container Component", () => {
