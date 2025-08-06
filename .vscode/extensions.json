@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "foxundermoon.shell-format",
     "lokalise.i18n-ally",
+    "unifiedjs.vscode-mdx",
     "Vercel.turbo-vsc",
     "vitest.explorer"
   ]
