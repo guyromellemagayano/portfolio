@@ -1,0 +1,327 @@
+import { describe, expect, it } from "vitest";
+
+import { arrayToUrlSlug, cn } from "./helpers";
+
+describe("helpers", () => {
+  describe("arrayToUrlSlug", () => {
+    it("should convert a simple array to URL slug", () => {
+      const input = ["Hello", "World"];
+      const expected = "hello-world";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle empty array", () => {
+      const input: string[] = [];
+      const expected = "";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle single item array", () => {
+      const input = ["Single"];
+      const expected = "single";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with special characters", () => {
+      const input = ["Hello World!", "Test@123"];
+      const expected = "hello/world/-test/123";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with numbers", () => {
+      const input = ["Page", "123", "Title"];
+      const expected = "page-123-title";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with mixed case", () => {
+      const input = ["Hello", "WORLD", "Test"];
+      const expected = "hello-world-test";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with multiple spaces", () => {
+      const input = ["Hello   World", "Test   Case"];
+      const expected = "hello/world-test/case";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with hyphens and underscores", () => {
+      const input = ["Hello-World", "Test_Case"];
+      const expected = "hello/world-test_case";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle null input", () => {
+      const input = null as any;
+      const expected = "";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle undefined input", () => {
+      const input = undefined as any;
+      const expected = "";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with empty strings", () => {
+      const input = ["Hello", "", "World"];
+      const expected = "hello--world";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with only empty strings", () => {
+      const input = ["", "", ""];
+      const expected = "--";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with unicode characters", () => {
+      const input = ["Café", "Résumé"];
+      const expected = "caf/-r/sum/";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with emojis", () => {
+      const input = ["Hello", "👋", "World"];
+      const expected = "hello-/-world";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with multiple special characters", () => {
+      const input = ["Hello@World#Test", "Sample$Data%Value"];
+      const expected = "hello/world/test-sample/data/value";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with leading/trailing spaces", () => {
+      const input = ["  Hello  ", "  World  "];
+      const expected = "/hello/-/world/";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with only special characters", () => {
+      const input = ["!@#$%", "^&*()"];
+      const expected = "/-/";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with mixed content", () => {
+      const input = ["Hello World", "123", "Test@Case", "Final"];
+      const expected = "hello/world-123-test/case-final";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with very long strings", () => {
+      const input = [
+        "Very Long String That Should Be Handled",
+        "Another Long String",
+      ];
+      const expected =
+        "very/long/string/that/should/be/handled-another/long/string";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with only numbers", () => {
+      const input = ["123", "456", "789"];
+      const expected = "123-456-789";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+
+    it("should handle array with only special characters and spaces", () => {
+      const input = ["! @ #", "$ % ^"];
+      const expected = "/-/";
+      expect(arrayToUrlSlug(input)).toBe(expected);
+    });
+  });
+
+  describe("cn", () => {
+    it("should merge simple class names", () => {
+      const result = cn("text-red-500", "bg-blue-500");
+      expect(result).toBe("text-red-500 bg-blue-500");
+    });
+
+    it("should handle single class name", () => {
+      const result = cn("text-red-500");
+      expect(result).toBe("text-red-500");
+    });
+
+    it("should handle empty strings", () => {
+      const result = cn("", "text-red-500", "");
+      expect(result).toBe("text-red-500");
+    });
+
+    it("should handle null and undefined values", () => {
+      const result = cn(null, "text-red-500", undefined);
+      expect(result).toBe("text-red-500");
+    });
+
+    it("should handle conditional classes", () => {
+      const isActive = true;
+      const result = cn("base-class", isActive && "active-class");
+      expect(result).toBe("base-class active-class");
+    });
+
+    it("should handle conditional classes with false condition", () => {
+      const isActive = false;
+      const result = cn("base-class", isActive && "active-class");
+      expect(result).toBe("base-class");
+    });
+
+    it("should handle arrays of class names", () => {
+      const result = cn(["text-red-500", "bg-blue-500"], "p-4");
+      expect(result).toBe("text-red-500 bg-blue-500 p-4");
+    });
+
+    it("should handle nested arrays", () => {
+      const result = cn([["text-red-500", "bg-blue-500"], "p-4"]);
+      expect(result).toBe("text-red-500 bg-blue-500 p-4");
+    });
+
+    it("should handle objects with boolean values", () => {
+      const result = cn({
+        "text-red-500": true,
+        "bg-blue-500": false,
+        "p-4": true,
+      });
+      expect(result).toBe("text-red-500 p-4");
+    });
+
+    it("should handle mixed input types", () => {
+      const result = cn(
+        "base-class",
+        ["text-red-500", "bg-blue-500"],
+        { "p-4": true, "m-2": false },
+        "final-class"
+      );
+      expect(result).toBe(
+        "base-class text-red-500 bg-blue-500 p-4 final-class"
+      );
+    });
+
+    it("should handle Tailwind CSS conflicts", () => {
+      const result = cn("p-4", "p-8");
+      expect(result).toBe("p-8");
+    });
+
+    it("should handle complex Tailwind conflicts", () => {
+      const result = cn("text-red-500 bg-blue-500", "text-blue-500 bg-red-500");
+      expect(result).toBe("text-blue-500 bg-red-500");
+    });
+
+    it("should handle responsive classes", () => {
+      const result = cn("p-4 md:p-6 lg:p-8", "p-2 md:p-4");
+      expect(result).toBe("lg:p-8 p-2 md:p-4");
+    });
+
+    it("should handle state classes", () => {
+      const result = cn(
+        "text-gray-500",
+        "hover:text-blue-500 focus:text-red-500"
+      );
+      expect(result).toBe(
+        "text-gray-500 hover:text-blue-500 focus:text-red-500"
+      );
+    });
+
+    it("should handle dark mode classes", () => {
+      const result = cn(
+        "text-gray-900 dark:text-white",
+        "text-black dark:text-gray-100"
+      );
+      expect(result).toBe("text-black dark:text-gray-100");
+    });
+
+    it("should handle arbitrary values", () => {
+      const result = cn("w-[100px]", "w-[200px]");
+      expect(result).toBe("w-[200px]");
+    });
+
+    it("should handle custom CSS classes", () => {
+      const result = cn("custom-class", "another-custom-class");
+      expect(result).toBe("custom-class another-custom-class");
+    });
+
+    it("should handle empty input", () => {
+      const result = cn();
+      expect(result).toBe("");
+    });
+
+    it("should handle all falsy values", () => {
+      const result = cn(null, undefined, false, "", 0);
+      expect(result).toBe("");
+    });
+
+    it("should handle complex nested structures", () => {
+      const result = cn(
+        "base",
+        [["nested", "array"], "more"],
+        { conditional: true, other: false },
+        "final"
+      );
+      expect(result).toBe("base nested array more conditional final");
+    });
+
+    it("should handle function calls that return class names", () => {
+      const getClasses = () => "dynamic-class";
+      const result = cn("static-class", getClasses());
+      expect(result).toBe("static-class dynamic-class");
+    });
+
+    it("should handle template literals", () => {
+      const size = "lg";
+      const result = cn(`text-${size}`, "bg-blue-500");
+      expect(result).toBe("text-lg bg-blue-500");
+    });
+
+    it("should handle performance with many classes", () => {
+      const manyClasses = Array.from({ length: 100 }, (_, i) => `class-${i}`);
+      const result = cn(...manyClasses);
+      expect(result).toContain("class-0");
+      expect(result).toContain("class-99");
+      expect(result.split(" ")).toHaveLength(100);
+    });
+
+    it("should handle edge case with only spaces", () => {
+      const result = cn("   ", "  ", " ");
+      expect(result).toBe("");
+    });
+
+    it("should handle edge case with mixed spaces and classes", () => {
+      const result = cn("   ", "class", "  ", "another");
+      expect(result).toBe("class another");
+    });
+
+    it("should handle deeply nested arrays", () => {
+      const result = cn([[[["deep", "nesting"]]], "shallow"]);
+      expect(result).toBe("deep nesting shallow");
+    });
+
+    it("should handle objects with nested arrays", () => {
+      const result = cn({
+        "base-class": true,
+        "conditional-class": false,
+        "array-class": ["nested", "array"],
+      });
+      expect(result).toBe("base-class array-class");
+    });
+
+    it("should handle very long class names", () => {
+      const longClass =
+        "very-long-class-name-that-might-cause-issues-with-tailwind-merge";
+      const result = cn(longClass, "another-class");
+      expect(result).toBe(`${longClass} another-class`);
+    });
+
+    it("should handle classes with special characters", () => {
+      const result = cn(
+        "class-with-dashes",
+        "class_with_underscores",
+        "class.with.dots"
+      );
+      expect(result).toBe(
+        "class-with-dashes class_with_underscores class.with.dots"
+      );
+    });
+  });
+});
