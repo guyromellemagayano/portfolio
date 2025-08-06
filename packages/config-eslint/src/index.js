@@ -107,7 +107,7 @@ export const baseEslintConfig = [
         },
       ],
     },
-    ignores: ["dist"],
+    ignores: ["dist", "**/*.mdx"],
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
