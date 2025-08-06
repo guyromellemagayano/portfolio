@@ -1,4 +1,5 @@
-import { ArticleLayout } from '@/components/ArticleLayout'
+{/* eslint-disable */}
+import { ArticleLayout } from '@web/components'
 
 export const article = {
   author: 'Adam Wathan',
@@ -19,8 +20,8 @@ When you’re building a website for a company as ambitious as Planetaria, you n
 
 To make this possible, we needed to squeeze every drop of performance out of the browser possible. And so Animaginary was born.
 
-```js
-import { animate } from '@planetaria/animaginary'
+```javascript
+import { animate } from "@planetaria/animaginary";
 
 export function MyComponent({ open, children }) {
   return (
@@ -32,7 +33,7 @@ export function MyComponent({ open, children }) {
     >
       {children}
     </animate.div>
-  )
+  );
 }
 ```
 
