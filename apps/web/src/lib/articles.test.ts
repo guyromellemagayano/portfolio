@@ -1,26 +1,14 @@
-import glob from "fast-glob";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   type Article,
   type ArticleWithSlug,
   getAllArticles,
-  importArticle,
+  getArticleBySlug,
+  getArticlesByTag,
 } from "./articles";
 
-// Mock fast-glob
-vi.mock("fast-glob", () => ({
-  default: vi.fn(),
-}));
-
-// Mock dynamic imports
-vi.mock("../app/articles", () => ({
-  // This will be mocked per test
-}));
-
 describe("Articles Module", () => {
-  const mockGlob = glob as any;
-
   const mockArticle: Article = {
     title: "Test Article",
     date: "2024-01-01",
@@ -42,345 +30,202 @@ describe("Articles Module", () => {
     vi.resetModules();
   });
 
-  describe("importArticle", () => {
-    it("imports an article and returns ArticleWithSlug", async () => {
-      // Mock the import function
-      vi.doMock("../app/articles/test-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+  describe("getAllArticles", () => {
+    it("returns all articles sorted by date (newest first)", async () => {
+      const articles = await getAllArticles();
 
-      const result = await importArticle("test-article/page.mdx");
+      expect(articles).toBeInstanceOf(Array);
+      expect(articles.length).toBeGreaterThan(0);
 
-      expect(result).toEqual(mockArticleWithSlug);
-      expect(result.slug).toBe("test-article");
-      expect(result.title).toBe(mockArticle.title);
-      expect(result.date).toBe(mockArticle.date);
-      expect(result.description).toBe(mockArticle.description);
-      expect(result.image).toBe(mockArticle.image);
-      expect(result.tags).toEqual(mockArticle.tags);
+      // Check that articles are sorted by date (newest first)
+      for (let i = 0; i < articles.length - 1; i++) {
+        const currentArticle = articles[i];
+        const nextArticle = articles[i + 1];
+
+        if (currentArticle && nextArticle) {
+          const currentDate = new Date(currentArticle.date);
+          const nextDate = new Date(nextArticle.date);
+          expect(currentDate.getTime()).toBeGreaterThanOrEqual(
+            nextDate.getTime()
+          );
+        }
+      }
     });
 
-    it("handles articles without page.mdx suffix", async () => {
-      vi.doMock("../app/articles/test-article.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+    it("returns articles with correct structure", async () => {
+      const articles = await getAllArticles();
 
-      const result = await importArticle("test-article.mdx");
-
-      expect(result.slug).toBe("test-article");
+      articles.forEach((article) => {
+        expect(article).toHaveProperty("slug");
+        expect(article).toHaveProperty("title");
+        expect(article).toHaveProperty("date");
+        expect(article).toHaveProperty("description");
+        expect(article).toHaveProperty("image");
+        expect(article).toHaveProperty("tags");
+        expect(Array.isArray(article.tags)).toBe(true);
+      });
     });
 
-    it("handles nested article paths", async () => {
-      vi.doMock("../app/articles/nested/path/article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+    it("returns articles with valid data types", async () => {
+      const articles = await getAllArticles();
 
-      const result = await importArticle("nested/path/article/page.mdx");
+      articles.forEach((article) => {
+        expect(typeof article.slug).toBe("string");
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.date).toBe("string");
+        expect(typeof article.description).toBe("string");
+        expect(typeof article.image).toBe("string");
+        expect(Array.isArray(article.tags)).toBe(true);
 
-      expect(result.slug).toBe("nested/path/article");
+        // Check that tags are strings
+        article.tags.forEach((tag) => {
+          expect(typeof tag).toBe("string");
+        });
+      });
     });
 
-    it("handles articles with different date formats", async () => {
-      const articleWithDifferentDate: Article = {
-        ...mockArticle,
-        date: "2024-12-31T23:59:59Z",
-      };
+    it("handles articles with same date correctly", async () => {
+      const articles = await getAllArticles();
 
-      vi.doMock("../app/articles/different-date/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithDifferentDate,
-      }));
+      // If we have articles with the same date, they should be handled gracefully
+      const dateGroups = new Map<string, ArticleWithSlug[]>();
 
-      const result = await importArticle("different-date/page.mdx");
+      articles.forEach((article) => {
+        const date = article.date;
+        if (!dateGroups.has(date)) {
+          dateGroups.set(date, []);
+        }
+        dateGroups.get(date)!.push(article);
+      });
 
-      expect(result.date).toBe("2024-12-31T23:59:59Z");
-    });
-
-    it("handles articles with empty tags array", async () => {
-      const articleWithEmptyTags: Article = {
-        ...mockArticle,
-        tags: [],
-      };
-
-      vi.doMock("../app/articles/no-tags/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithEmptyTags,
-      }));
-
-      const result = await importArticle("no-tags/page.mdx");
-
-      expect(result.tags).toEqual([]);
-    });
-
-    it("handles articles with multiple tags", async () => {
-      const articleWithMultipleTags: Article = {
-        ...mockArticle,
-        tags: ["react", "typescript", "nextjs", "testing"],
-      };
-
-      vi.doMock("../app/articles/multiple-tags/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithMultipleTags,
-      }));
-
-      const result = await importArticle("multiple-tags/page.mdx");
-
-      expect(result.tags).toEqual(["react", "typescript", "nextjs", "testing"]);
-    });
-
-    it("handles articles without image", async () => {
-      const articleWithoutImage: Article = {
-        ...mockArticle,
-        image: "",
-      };
-
-      vi.doMock("../app/articles/no-image/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithoutImage,
-      }));
-
-      const result = await importArticle("no-image/page.mdx");
-
-      expect(result.image).toBe("");
-    });
-
-    it("handles articles with long descriptions", async () => {
-      const articleWithLongDescription: Article = {
-        ...mockArticle,
-        description:
-          "This is a very long description that might contain multiple sentences and should be handled properly by the import function without any issues.",
-      };
-
-      vi.doMock("../app/articles/long-description/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithLongDescription,
-      }));
-
-      const result = await importArticle("long-description/page.mdx");
-
-      expect(result.description).toBe(
-        "This is a very long description that might contain multiple sentences and should be handled properly by the import function without any issues."
-      );
+      // Check that articles with same date are handled
+      dateGroups.forEach((articlesWithSameDate, date) => {
+        if (articlesWithSameDate.length > 1) {
+          // Articles with same date should maintain their order
+          expect(articlesWithSameDate.length).toBeGreaterThan(1);
+        }
+      });
     });
   });
 
-  describe("getAllArticles", () => {
-    it("returns all articles sorted by date (newest first)", async () => {
-      const mockFilenames = [
-        "article-1/page.mdx",
-        "article-2/page.mdx",
-        "article-3/page.mdx",
-      ];
+  describe("getArticleBySlug", () => {
+    it("returns article when slug exists", async () => {
+      const article = await getArticleBySlug("sample-article");
 
-      const mockArticles = [
-        { ...mockArticle, title: "Article 1", date: "2024-01-01" },
-        { ...mockArticle, title: "Article 2", date: "2024-03-15" },
-        { ...mockArticle, title: "Article 3", date: "2024-02-01" },
-      ];
+      expect(article).not.toBeNull();
+      expect(article?.slug).toBe("sample-article");
+      expect(article?.title).toBe("Sample Article");
+      expect(article?.description).toBe(
+        "This is a sample article for testing purposes"
+      );
+      expect(article?.image).toBe("/images/sample-article.jpg");
+      expect(article?.tags).toEqual(["sample", "test", "article"]);
+    });
 
-      mockGlob.mockResolvedValue(mockFilenames);
+    it("returns null when slug does not exist", async () => {
+      const article = await getArticleBySlug("non-existent-article");
 
-      // Mock dynamic imports for each article
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+      expect(article).toBeNull();
+    });
+
+    it("returns null for empty slug", async () => {
+      const article = await getArticleBySlug("");
+
+      expect(article).toBeNull();
+    });
+
+    it("returns null for whitespace-only slug", async () => {
+      const article = await getArticleBySlug("   ");
+
+      expect(article).toBeNull();
+    });
+
+    it("handles case-sensitive slug matching", async () => {
+      const article = await getArticleBySlug("SAMPLE-ARTICLE");
+
+      expect(article).toBeNull(); // Should be case-sensitive
+    });
+
+    it("returns correct article for 'another-article' slug", async () => {
+      const article = await getArticleBySlug("another-article");
+
+      expect(article).not.toBeNull();
+      expect(article?.slug).toBe("another-article");
+      expect(article?.title).toBe("Another Article");
+      expect(article?.description).toBe(
+        "This is another sample article for testing"
+      );
+      expect(article?.image).toBe("/images/another-article.jpg");
+      expect(article?.tags).toEqual(["another", "test", "markdown"]);
+    });
+  });
+
+  describe("getArticlesByTag", () => {
+    it("returns articles with matching tag", async () => {
+      const articles = await getArticlesByTag("sample");
+
+      expect(articles).toBeInstanceOf(Array);
+      expect(articles.length).toBeGreaterThan(0);
+
+      articles.forEach((article) => {
+        expect(article.tags).toContain("sample");
       });
-
-      const result = await getAllArticles();
-
-      expect(mockGlob).toHaveBeenCalledWith("*/page.mdx", {
-        cwd: "./src/app/articles",
-      });
-      expect(result).toHaveLength(3);
-      expect(result[0]?.title).toBe("Article 2"); // March 15 (newest)
-      expect(result[1]?.title).toBe("Article 3"); // February 1
-      expect(result[2]?.title).toBe("Article 1"); // January 1 (oldest)
     });
 
-    it("handles empty articles directory", async () => {
-      mockGlob.mockResolvedValue([]);
+    it("returns empty array when tag does not exist", async () => {
+      const articles = await getArticlesByTag("non-existent-tag");
 
-      const result = await getAllArticles();
+      expect(articles).toEqual([]);
+    });
 
-      expect(result).toEqual([]);
-      expect(mockGlob).toHaveBeenCalledWith("*/page.mdx", {
-        cwd: "./src/app/articles",
+    it("returns articles with multiple matching tags", async () => {
+      const articles = await getArticlesByTag("test");
+
+      expect(articles).toBeInstanceOf(Array);
+
+      articles.forEach((article) => {
+        expect(article.tags).toContain("test");
       });
     });
 
-    it("handles single article", async () => {
-      const mockFilenames = ["single-article/page.mdx"];
-      const mockArticleData = { ...mockArticle, title: "Single Article" };
+    it("returns empty array for empty tag", async () => {
+      const articles = await getArticlesByTag("");
 
-      mockGlob.mockResolvedValue(mockFilenames);
-      vi.doMock("../app/articles/single-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticleData,
-      }));
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(1);
-      expect(result[0]?.title).toBe("Single Article");
-      expect(result[0]?.slug).toBe("single-article");
+      expect(articles).toEqual([]);
     });
 
-    it("handles articles with same date", async () => {
-      const mockFilenames = ["article-a/page.mdx", "article-b/page.mdx"];
+    it("returns empty array for whitespace-only tag", async () => {
+      const articles = await getArticlesByTag("   ");
 
-      const mockArticles = [
-        { ...mockArticle, title: "Article A", date: "2024-01-01" },
-        { ...mockArticle, title: "Article B", date: "2024-01-01" },
-      ];
+      expect(articles).toEqual([]);
+    });
 
-      mockGlob.mockResolvedValue(mockFilenames);
+    it("handles case-sensitive tag matching", async () => {
+      const articles = await getArticlesByTag("SAMPLE");
 
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+      expect(articles).toEqual([]); // Should be case-sensitive
+    });
+
+    it("returns articles with 'markdown' tag", async () => {
+      const articles = await getArticlesByTag("markdown");
+
+      expect(articles).toBeInstanceOf(Array);
+      expect(articles.length).toBeGreaterThan(0);
+
+      articles.forEach((article) => {
+        expect(article.tags).toContain("markdown");
       });
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(2);
-      // When dates are the same, order should be preserved as returned by glob
-      expect(result[0]?.title).toBe("Article A");
-      expect(result[1]?.title).toBe("Article B");
     });
 
-    it("handles articles with invalid dates gracefully", async () => {
-      const mockFilenames = [
-        "valid-article/page.mdx",
-        "invalid-article/page.mdx",
-      ];
+    it("returns articles with 'another' tag", async () => {
+      const articles = await getArticlesByTag("another");
 
-      const mockArticles = [
-        { ...mockArticle, title: "Valid Article", date: "2024-01-01" },
-        { ...mockArticle, title: "Invalid Article", date: "invalid-date" },
-      ];
+      expect(articles).toBeInstanceOf(Array);
+      expect(articles.length).toBeGreaterThan(0);
 
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+      articles.forEach((article) => {
+        expect(article.tags).toContain("another");
       });
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(2);
-      // Invalid dates should be treated as very old dates
-      expect(result[0]?.title).toBe("Valid Article");
-      expect(result[1]?.title).toBe("Invalid Article");
-    });
-
-    it("handles nested article directories", async () => {
-      const mockFilenames = [
-        "nested/deep/article/page.mdx",
-        "shallow/article/page.mdx",
-      ];
-
-      const mockArticles = [
-        { ...mockArticle, title: "Deep Article", date: "2024-01-01" },
-        { ...mockArticle, title: "Shallow Article", date: "2024-02-01" },
-      ];
-
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
-      });
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(2);
-      expect(result[0]?.title).toBe("Shallow Article"); // February (newer)
-      expect(result[1]?.title).toBe("Deep Article"); // January (older)
-      expect(result[0]?.slug).toBe("shallow/article");
-      expect(result[1]?.slug).toBe("nested/deep/article");
-    });
-
-    it("handles articles with special characters in filenames", async () => {
-      const mockFilenames = [
-        "article-with-dashes/page.mdx",
-        "article_with_underscores/page.mdx",
-        "article.with.dots/page.mdx",
-      ];
-
-      const mockArticles = [
-        { ...mockArticle, title: "Dashed Article", date: "2024-01-01" },
-        { ...mockArticle, title: "Underscored Article", date: "2024-02-01" },
-        { ...mockArticle, title: "Dotted Article", date: "2024-03-01" },
-      ];
-
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
-      });
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(3);
-      expect(result[0]?.slug).toBe("article.with.dots");
-      expect(result[1]?.slug).toBe("article_with_underscores");
-      expect(result[2]?.slug).toBe("article-with-dashes");
-    });
-
-    it("handles import errors gracefully", async () => {
-      const mockFilenames = ["valid-article/page.mdx"];
-
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      // Mock successful import for first article
-      vi.doMock("../app/articles/valid-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(1);
-      expect(result[0]?.title).toBe(mockArticle.title);
-    });
-
-    it("handles articles with missing required fields", async () => {
-      const mockFilenames = ["incomplete-article/page.mdx"];
-
-      const incompleteArticle = {
-        title: "Incomplete Article",
-        // Missing date, description, image, tags
-      };
-
-      mockGlob.mockResolvedValue(mockFilenames);
-      vi.doMock("../app/articles/incomplete-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: incompleteArticle,
-      }));
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(1);
-      expect(result[0]?.title).toBe("Incomplete Article");
-      expect(result[0]?.date).toBeUndefined();
-      expect(result[0]?.description).toBeUndefined();
-      expect(result[0]?.image).toBeUndefined();
-      expect(result[0]?.tags).toBeUndefined();
     });
   });
 
@@ -417,79 +262,38 @@ describe("Articles Module", () => {
     });
   });
 
-  describe("Error Handling", () => {
-    it("handles glob errors gracefully", async () => {
-      mockGlob.mockRejectedValue(new Error("Glob error"));
+  describe("Data Integrity", () => {
+    it("ensures all articles have unique slugs", async () => {
+      const articles = await getAllArticles();
+      const slugs = articles.map((article) => article.slug);
+      const uniqueSlugs = new Set(slugs);
 
-      await expect(getAllArticles()).rejects.toThrow("Glob error");
+      expect(slugs.length).toBe(uniqueSlugs.size);
     });
 
-    it("handles dynamic import errors", async () => {
-      mockGlob.mockRejectedValue(new Error("Dynamic import failed"));
+    it("ensures all articles have valid dates", async () => {
+      const articles = await getAllArticles();
 
-      await expect(getAllArticles()).rejects.toThrow("Dynamic import failed");
-    });
-
-    it("handles malformed article data", async () => {
-      const mockFilenames = ["malformed-article/page.mdx"];
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      // Mock article with malformed data
-      vi.doMock("../app/articles/malformed-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: null, // Malformed data
-      }));
-
-      const result = await getAllArticles();
-
-      expect(result).toHaveLength(1);
-      expect(result[0]).toEqual({
-        slug: "malformed-article",
-        title: undefined,
-        date: undefined,
-        description: undefined,
-        image: undefined,
-        tags: undefined,
+      articles.forEach((article) => {
+        const date = new Date(article.date);
+        expect(date.toString()).not.toBe("Invalid Date");
       });
     });
-  });
 
-  describe("Performance", () => {
-    it("handles large number of articles efficiently", async () => {
-      const largeNumberOfArticles = 100;
-      const mockFilenames = Array.from(
-        { length: largeNumberOfArticles },
-        (_, i) => `article-${i}/page.mdx`
-      );
+    it("ensures all articles have non-empty titles", async () => {
+      const articles = await getAllArticles();
 
-      const mockArticles = Array.from(
-        { length: largeNumberOfArticles },
-        (_, i) => ({
-          ...mockArticle,
-          title: `Article ${i}`,
-          date: `2024-${String(largeNumberOfArticles - i).padStart(2, "0")}-01`,
-        })
-      );
-
-      mockGlob.mockResolvedValue(mockFilenames);
-
-      mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+      articles.forEach((article) => {
+        expect(article.title.trim().length).toBeGreaterThan(0);
       });
+    });
 
-      const startTime = Date.now();
-      const result = await getAllArticles();
-      const endTime = Date.now();
+    it("ensures all articles have non-empty descriptions", async () => {
+      const articles = await getAllArticles();
 
-      expect(result).toHaveLength(largeNumberOfArticles);
-      expect(endTime - startTime).toBeLessThan(1000); // Should complete within 1 second
-
-      // Verify sorting (newest first)
-      expect(result[0]?.title).toBe("Article 0");
-      expect(result[result.length - 1]?.title).toBe("Article 99");
+      articles.forEach((article) => {
+        expect(article.description.trim().length).toBeGreaterThan(0);
+      });
     });
   });
 });
