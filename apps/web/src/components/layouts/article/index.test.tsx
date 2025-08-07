@@ -341,16 +341,17 @@ describe("ArticleLayout Component", () => {
     });
 
     it("forwards all props to container except article and children", () => {
-      const { article, children, ...restProps } = defaultProps;
+      const { article, children } = defaultProps;
 
       render(
         <ArticleLayout
           article={article}
-          children={children}
           id="test-id"
           className="test-class"
           data-custom="test-value"
-        />
+        >
+          {children}
+        </ArticleLayout>
       );
 
       // The container should be the outermost div with the forwarded props
@@ -473,14 +474,14 @@ describe("ArticleLayout Component", () => {
     });
 
     it("handles empty children", () => {
-      render(<ArticleLayout {...defaultProps} children={null} />);
+      render(<ArticleLayout {...defaultProps}>{null}</ArticleLayout>);
 
       const prose = screen.getByTestId("mock-prose");
       expect(prose).toBeInTheDocument();
     });
 
     it("handles undefined children", () => {
-      render(<ArticleLayout {...defaultProps} children={undefined} />);
+      render(<ArticleLayout {...defaultProps}>{undefined}</ArticleLayout>);
 
       const prose = screen.getByTestId("mock-prose");
       expect(prose).toBeInTheDocument();
@@ -498,7 +499,9 @@ describe("ArticleLayout Component", () => {
         </div>
       );
 
-      render(<ArticleLayout {...defaultProps} children={complexChildren} />);
+      render(
+        <ArticleLayout {...defaultProps}>{complexChildren}</ArticleLayout>
+      );
 
       expect(screen.getByText("Subheading")).toBeInTheDocument();
       expect(screen.getByText("Paragraph content")).toBeInTheDocument();
