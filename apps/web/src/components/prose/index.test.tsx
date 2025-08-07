@@ -1,7 +1,22 @@
+import React from "react";
+
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Prose } from "./index";
+
+import "@testing-library/jest-dom";
+
+vi.mock("@guyromellemagayano/components", () => {
+  const MockDiv = React.forwardRef((props: any, ref) => (
+    <div ref={ref} data-testid="mock-div" {...props} />
+  ));
+  MockDiv.displayName = "MockDiv";
+
+  return {
+    Div: MockDiv,
+  };
+});
 
 describe("Prose", () => {
   // Basic render test
@@ -15,14 +30,14 @@ describe("Prose", () => {
   // Test with default prose classes
   it("applies default prose classes", () => {
     render(<Prose>Prose content</Prose>);
-    const prose = screen.getByText("Prose content");
+    const prose = screen.getByTestId("mock-div");
     expect(prose).toHaveClass("prose", "dark:prose-invert");
   });
 
   // Test className merging
   it("merges custom className with default classes", () => {
     render(<Prose className="custom-class">Prose content</Prose>);
-    const prose = screen.getByText("Prose content");
+    const prose = screen.getByTestId("mock-div");
     expect(prose).toHaveClass("prose", "dark:prose-invert", "custom-class");
   });
 
@@ -33,7 +48,7 @@ describe("Prose", () => {
         Prose content
       </Prose>
     );
-    const prose = screen.getByText("Prose content");
+    const prose = screen.getByTestId("mock-div");
     expect(prose).toHaveClass(
       "prose",
       "dark:prose-invert",
