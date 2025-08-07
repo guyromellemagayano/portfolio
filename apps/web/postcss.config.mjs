@@ -55,17 +55,18 @@ export default {
     "postcss-import": {},
     "postcss-nesting": {},
     "postcss-focus-visible": {},
-    ...(isProduction && {
-      "postcss-obfuscator": {
-        obfuscateClassNames: true,
-        obfuscateIds: true,
-        prefix: "x",
-        exclude: [],
-        // Generate consistent obfuscation across builds
-        seed: process.env.CSS_OBFUSCATION_SEED || "default-seed-2024",
-        minify: true,
-        preserveSemantics: false,
-      },
-    }),
+    // Temporarily disabled CSS obfuscation for consistent styling
+    // ...(isProduction && {
+    //   "postcss-obfuscator": {
+    //     obfuscateClassNames: true,
+    //     obfuscateIds: true,
+    //     prefix: "x",
+    //     exclude: [],
+    //     // Generate consistent obfuscation across builds
+    //     seed: process.env.CSS_OBFUSCATION_SEED || "default-seed-2024",
+    //     minify: true,
+    //     preserveSemantics: false,
+    //   },
+    // }),
   },
 };
