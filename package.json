@@ -55,7 +55,6 @@
     "turbo": "catalog:"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
