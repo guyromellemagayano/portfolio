@@ -55,18 +55,43 @@ export default {
     "postcss-import": {},
     "postcss-nesting": {},
     "postcss-focus-visible": {},
-    // Temporarily disabled CSS obfuscation for consistent styling
-    // ...(isProduction && {
-    //   "postcss-obfuscator": {
-    //     obfuscateClassNames: true,
-    //     obfuscateIds: true,
-    //     prefix: "x",
-    //     exclude: [],
-    //     // Generate consistent obfuscation across builds
-    //     seed: process.env.CSS_OBFUSCATION_SEED || "default-seed-2024",
-    //     minify: true,
-    //     preserveSemantics: false,
-    //   },
-    // }),
+    // CSS Obfuscation - enabled in production with consistent seed
+    ...(process.env.NODE_ENV === "production" && {
+      "postcss-obfuscator": {
+        obfuscateClassNames: true,
+        obfuscateIds: true,
+        prefix: "x",
+        exclude: [
+          // Preserve critical layout classes
+          "container",
+          "mx-auto",
+          "max-w-*",
+          "w-*",
+          "h-*",
+          // Preserve common utility classes that might be used in JS
+          "flex",
+          "grid",
+          "hidden",
+          "block",
+          "relative",
+          "absolute",
+          // Preserve dark mode classes
+          "dark",
+          "dark:*",
+          // Preserve responsive classes
+          "sm:*",
+          "md:*",
+          "lg:*",
+          "xl:*",
+          "2xl:*",
+        ],
+        // Use environment variable for seed, fallback for local development
+        seed: process.env.CSS_OBFUSCATION_SEED || "dev-seed-2024",
+        minify: true,
+        preserveSemantics: true, // Keep semantic meaning where possible
+        // Generate mapping file for debugging
+        generateMapping: process.env.NODE_ENV === "development",
+      },
+    }),
   },
 };
