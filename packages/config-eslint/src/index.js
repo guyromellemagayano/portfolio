@@ -1,3 +1,8 @@
+/* eslint-disable simple-import-sort/imports */
+import { createRequire } from "node:module";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import js from "@eslint/js";
 import typescriptParser from "@typescript-eslint/parser";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
@@ -8,9 +13,6 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import { createRequire } from "module";
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
 
 const nodeRequire = createRequire(import.meta.url);
 const prettierConfig = nodeRequire("../../../prettier.config.cjs");
