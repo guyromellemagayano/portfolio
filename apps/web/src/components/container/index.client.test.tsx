@@ -7,21 +7,27 @@ import { ContainerClient, MemoizedContainerClient } from "./index.client";
 
 import "@testing-library/jest-dom";
 
-// Mock the Div component to control its behavior in tests
-const MockDiv = React.forwardRef((props: any, ref) => {
-  const { children, className, as: Component = "div", ...rest } = props;
-  return (
-    <Component ref={ref} className={className} data-testid="mock-div" {...rest}>
-      {children}
-    </Component>
-  );
+vi.mock("@guyromellemagayano/components", () => {
+  const MockDiv = React.forwardRef((props: any, ref) => {
+    const { children, className, as: Component = "div", ...rest } = props;
+    return (
+      <Component
+        ref={ref}
+        className={className}
+        data-testid="mock-div"
+        {...rest}
+      >
+        {children}
+      </Component>
+    );
+  });
+
+  MockDiv.displayName = "MockDiv";
+
+  return {
+    Div: MockDiv,
+  };
 });
-
-MockDiv.displayName = "MockDiv";
-
-vi.mock("@guyromellemagayano/components", () => ({
-  Div: MockDiv,
-}));
 
 describe("ContainerClient Component", () => {
   afterEach(() => {
