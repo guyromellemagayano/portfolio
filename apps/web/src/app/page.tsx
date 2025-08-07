@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { Metadata } from "next";
 
+import { Div, Heading, P, Span } from "@guyromellemagayano/components";
 import { log } from "@guyromellemagayano/logger";
 import { CounterButton, Link } from "@guyromellemagayano/ui";
 
@@ -14,16 +15,16 @@ const Web = () => {
   log("Hey! This is the Web page.");
 
   return (
-    <div className="container">
-      <h1 className="title">
+    <Div className="container">
+      <Heading className="title">
         Web <br />
-        <span>Kitchen Sink</span>
-      </h1>
+        <Span>Kitchen Sink</Span>
+      </Heading>
       <CounterButton />
       <Container isClient isMemoized>
-        <h2>Container</h2>
+        <Heading as={"h2"}>Container</Heading>
       </Container>
-      <p className="description">
+      <P className="description">
         Built With{" "}
         <Link href="https://turbo.build/repo" newTab>
           Turborepo
@@ -32,8 +33,8 @@ const Web = () => {
         <Link href="https://nextjs.org/" newTab>
           Next.js
         </Link>
-      </p>
-    </div>
+      </P>
+    </Div>
   );
 };
 
