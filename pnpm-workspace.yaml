@@ -10,6 +10,7 @@ catalog:
   "@commitlint/types": ^19.8.1
   "@eslint/js": ^9.26.0
   "@headlessui/react": 2.2.7
+  "@ianvs/prettier-plugin-sort-imports": ^4.6.0
   "@mapbox/rehype-prism": 0.9.0
   "@mdx-js/loader": 3.1.0
   "@mdx-js/react": 3.1.0
@@ -75,8 +76,8 @@ catalog:
   postcss-import: ^16.1.0
   postcss-modules: 6.0.1
   postcss-nesting: ^13.0.1
-  postcss-preset-env: 10.2.4
   postcss-obfuscator: 1.6.1
+  postcss-preset-env: 10.2.4
   postcss: ^8.5.3
   prettier-plugin-packagejson: ^2.5.13
   prettier-plugin-pkg: ^0.21.1
