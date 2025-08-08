@@ -16,7 +16,6 @@
     "test:ui": "echo 'No tests configured for typescript config package'"
   },
   "peerDependencies": {
-    "bunchee": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "tsconfig-paths": "catalog:",
