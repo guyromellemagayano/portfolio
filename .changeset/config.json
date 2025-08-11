@@ -10,7 +10,6 @@
   "ignore": [
     "@packages/eslint-config",
     "@packages/typescript-config",
-    "@packages/tailwind-config",
     "@packages/vitest-presets",
     "admin",
     "api",

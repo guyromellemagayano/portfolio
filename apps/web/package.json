@@ -49,7 +49,6 @@
     "postcss-import": "catalog:",
     "postcss-modules": "catalog:",
     "postcss-nesting": "catalog:",
-    "postcss-obfuscator": "catalog:",
     "postcss-preset-env": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
@@ -59,7 +58,6 @@
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
-    "@packages/tailwind-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@packages/vitest-presets": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
