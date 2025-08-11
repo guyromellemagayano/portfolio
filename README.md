@@ -39,7 +39,7 @@ pnpm test:coverage
   - `ui` - Base UI components
   - `logger` - Logging utilities
   - `vitest-presets` - Shared Vitest configurations with V8 coverage
-  - Config packages: `eslint-config`, `typescript-config`, `tailwind-config`
+  - Config packages: `eslint-config`, `typescript-config`
 
 ## 🧪 Testing & Coverage
 
