@@ -45,7 +45,6 @@
     "eslint-import-resolver-typescript": "catalog:",
     "eslint-plugin-import": "catalog:",
     "eslint-plugin-only-warn": "catalog:",
-    "eslint-plugin-prettier": "catalog:",
     "eslint-plugin-react": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
     "eslint-plugin-react-refresh": "catalog:",
@@ -56,7 +55,9 @@
     "typescript-eslint": "catalog:"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "catalog:"
+    "@next/eslint-plugin-next": "catalog:",
+    "eslint-plugin-prettier": "catalog:",
+    "eslint-plugin-vitest": "catalog:"
   },
   "peerDependencies": {
     "bunchee": "catalog:",
