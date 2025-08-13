@@ -1,0 +1,18 @@
+import { Svg } from "@guyromellemagayano/components";
+
+import type { ArrowLeftIconProps } from "../models";
+
+/** An icon for the arrow left. */
+export const ArrowLeftIcon = function (props: ArrowLeftIconProps) {
+  return (
+    <Svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
+      {/* FIXME: Fix missing `path` element. */}
+      <path
+        d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+};
