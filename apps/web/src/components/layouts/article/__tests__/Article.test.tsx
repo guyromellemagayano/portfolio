@@ -4,9 +4,10 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AppContext } from "@web/app/context";
+import { ArticleLayout } from "@web/components/layouts/article/Article";
 import type { ArticleWithSlug } from "@web/lib/articles";
 
-import { ArticleLayout, type ArticleLayoutProps } from "./index";
+import { type ArticleLayoutProps } from "../models";
 
 import "@testing-library/jest-dom";
 
@@ -438,15 +439,14 @@ describe("ArticleLayout Component", () => {
   });
 
   describe("Edge Cases", () => {
-    it("handles article with empty title", () => {
+    it("does not render heading when article title is an empty string", () => {
       const articleWithEmptyTitle = { ...mockArticle, title: "" };
 
       render(
         <ArticleLayout {...defaultProps} article={articleWithEmptyTitle} />
       );
 
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading).toHaveTextContent("");
+      expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
     });
 
     it("handles article with very long title", () => {
@@ -473,18 +473,16 @@ describe("ArticleLayout Component", () => {
       expect(heading).toHaveTextContent(specialTitle);
     });
 
-    it("handles empty children", () => {
+    it("does not render Prose when children is null", () => {
       render(<ArticleLayout {...defaultProps}>{null}</ArticleLayout>);
 
-      const prose = screen.getByTestId("mock-prose");
-      expect(prose).toBeInTheDocument();
+      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
     });
 
-    it("handles undefined children", () => {
+    it("does not render Prose when children is undefined", () => {
       render(<ArticleLayout {...defaultProps}>{undefined}</ArticleLayout>);
 
-      const prose = screen.getByTestId("mock-prose");
-      expect(prose).toBeInTheDocument();
+      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
     });
 
     it("handles complex children structure", () => {
@@ -507,6 +505,45 @@ describe("ArticleLayout Component", () => {
       expect(screen.getByText("Paragraph content")).toBeInTheDocument();
       expect(screen.getByText("List item 1")).toBeInTheDocument();
       expect(screen.getByText("List item 2")).toBeInTheDocument();
+    });
+  });
+
+  describe("Conditional Rendering", () => {
+    it("does not render article structure when article prop is undefined", () => {
+      render(
+        <ArticleLayout>
+          <div data-testid="article-content">Content</div>
+        </ArticleLayout>
+      );
+
+      expect(screen.getByTestId("mock-container")).toBeInTheDocument();
+      expect(screen.queryByTestId("mock-article")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("mock-header")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
+    });
+
+    it("does not render heading when article.title is undefined", () => {
+      const articleWithoutTitle = { ...mockArticle, title: undefined } as any;
+      render(<ArticleLayout {...defaultProps} article={articleWithoutTitle} />);
+
+      expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
+    });
+
+    it("does not render time when article.date is undefined", () => {
+      const articleWithoutDate = { ...mockArticle, date: undefined } as any;
+      render(<ArticleLayout {...defaultProps} article={articleWithoutDate} />);
+
+      expect(screen.queryByTestId("mock-time")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Ref Forwarding", () => {
+    it("forwards ref to Container element", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<ArticleLayout {...defaultProps} ref={ref} />);
+
+      const container = screen.getByTestId("mock-container");
+      expect(ref.current).toBe(container);
     });
   });
 
