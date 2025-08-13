@@ -25,25 +25,10 @@ export default [
     },
   },
   {
-    files: ["**/*.test.{js,ts,jsx,tsx}", "**/*.spec.{js,ts,jsx,tsx}"],
-    languageOptions: {
-      globals: {
-        describe: "readonly",
-        it: "readonly",
-        test: "readonly",
-        expect: "readonly",
-        beforeEach: "readonly",
-        afterEach: "readonly",
-        beforeAll: "readonly",
-        afterAll: "readonly",
-        vi: "readonly",
-        screen: "readonly",
-        render: "readonly",
-        fireEvent: "readonly",
-        waitFor: "readonly",
-        act: "readonly",
-      },
-    },
+    files: [
+      "**/__tests__/**/*.{js,ts,jsx,tsx}",
+      "**/*.{test,spec}.{js,ts,jsx,tsx}",
+    ],
     rules: {
       "no-undef": "off",
     },
@@ -51,8 +36,14 @@ export default [
   {
     settings: {
       "import/resolver": {
+        typescript: {
+          project: ["./tsconfig.json"],
+        },
         alias: {
-          map: [["@components", "./src", "./scripts"]],
+          map: [
+            ["@components", "./src"],
+            ["@components/scripts", "./scripts"],
+          ],
           extensions: [".js", ".ts", ".tsx"],
         },
       },

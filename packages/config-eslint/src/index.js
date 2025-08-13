@@ -13,6 +13,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
+import vitestPlugin from "eslint-plugin-vitest";
 
 const nodeRequire = createRequire(import.meta.url);
 const prettierConfig = nodeRequire("../../../prettier.config.cjs");
@@ -44,6 +45,7 @@ export const baseEslintConfig = [
       turbo: turboPlugin,
       prettier: prettierPlugin,
       import: importPlugin,
+      vitest: vitestPlugin,
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
@@ -58,10 +60,17 @@ export const baseEslintConfig = [
       },
     },
     rules: {
+      "@typescript-eslint/consistent-type-imports": [
+        "warn",
+        {
+          prefer: "type-imports",
+        },
+      ],
       "import/no-duplicates": [
         "error",
         { considerQueryString: true, "prefer-inline": true },
       ],
+      "import/no-unresolved": "error",
       "no-duplicate-imports": ["error", { includeExports: true }],
       "no-unused-vars": "off",
       "prettier/prettier": [
@@ -76,6 +85,7 @@ export const baseEslintConfig = [
         "warn",
         { allowConstantExport: true },
       ],
+      "import/order": "off",
       "simple-import-sort/imports": [
         "error",
         {
@@ -96,9 +106,16 @@ export const baseEslintConfig = [
           ],
         },
       ],
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "function-expression",
+          unnamedComponents: "arrow-function",
+        },
+      ],
       "simple-import-sort/exports": "error",
       "turbo/no-undeclared-env-vars": "warn",
-      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-imports": "warn",
       "unused-imports/no-unused-vars": [
         "warn",
         {
@@ -131,6 +148,32 @@ export const baseEslintConfig = [
         sourceType: "module",
         ecmaVersion: "latest",
       },
+    },
+  },
+  {
+    files: [
+      "**/__tests__/**/*.{js,ts,jsx,tsx}",
+      "**/*.{test,spec}.{js,ts,jsx,tsx}",
+    ],
+    languageOptions: {
+      globals: vitestPlugin.environments.env.globals,
+    },
+    rules: {
+      "no-restricted-imports": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "import/no-extraneous-dependencies": "off",
+      "vitest/no-focused-tests": "error",
+      "vitest/no-disabled-tests": "warn",
+    },
+  },
+  {
+    files: ["**/@types/**/*.{ts,tsx}", "**/models/types.ts"],
+    rules: {
+      "unused-imports/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { args: "none", varsIgnorePattern: "^_" },
+      ],
     },
   },
 ];

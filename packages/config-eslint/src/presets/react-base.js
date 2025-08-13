@@ -32,6 +32,7 @@ export const reactBaseEslintConfig = [
       },
     },
     rules: {
+      ...reactHooks.configs.recommended.rules,
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
     },
