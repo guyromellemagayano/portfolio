@@ -6,6 +6,9 @@ export default [
   {
     settings: {
       "import/resolver": {
+        typescript: {
+          project: ["./tsconfig.json"],
+        },
         alias: {
           map: [["@admin", "./"]],
           extensions: [".js", ".ts", ".tsx"],
