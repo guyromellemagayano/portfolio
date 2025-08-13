@@ -51,13 +51,14 @@ catalog:
   eslint-import-resolver-typescript: ^4.3.4
   eslint-plugin-import: ^2.31.0
   eslint-plugin-only-warn: ^1.1.0
-  eslint-plugin-prettier: ^5.4.0
+  eslint-plugin-prettier: 5.5.1
   eslint-plugin-react-hooks: ^5.2.0
   eslint-plugin-react-refresh: ^0.4.20
   eslint-plugin-react: ^7.37.5
   eslint-plugin-simple-import-sort: ^12.1.1
   eslint-plugin-turbo: ^2.5.3
   eslint-plugin-unused-imports: ^4.1.4
+  eslint-plugin-vitest: 0.5.4
   eslint: ^9.26.0
   express: ^5.1.0
   fast-glob: ^3.3.3
@@ -109,6 +110,7 @@ catalogs:
     react-dom: 17.0.2
     react-router: 6.22.3
     react: 17.0.2
+
   react18:
     next: 14.2.5
     react-dom: 18.3.1
