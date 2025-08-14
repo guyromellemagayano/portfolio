@@ -78,7 +78,7 @@ vi.mock("@guyromellemagayano/components", () => {
   };
 });
 
-vi.mock("@web/components/header/internal/HeaderIcons", () => ({
+vi.mock("@web/components/header/_internal/HeaderIcons", () => ({
   ChevronDownIcon: (p: any) => <svg data-testid="mock-chevron" {...p} />,
   CloseIcon: (p: any) => <svg data-testid="mock-close" {...p} />,
 }));
@@ -92,7 +92,7 @@ vi.mock("@web/lib", () => ({
 import {
   DesktopHeaderNav,
   MobileHeaderNav,
-} from "@web/components/header/internal";
+} from "@web/components/header/_internal";
 
 describe("Header Navigation components", () => {
   beforeEach(() => vi.clearAllMocks());

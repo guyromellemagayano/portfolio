@@ -1,6 +1,6 @@
 import { Svg } from "@guyromellemagayano/components";
 
-import type { CommonIconProps } from "../../models";
+import type { CommonIconProps } from "@web/components/header/models";
 
 /** A close icon component. */
 export const CloseIcon = function (props: CommonIconProps) {
