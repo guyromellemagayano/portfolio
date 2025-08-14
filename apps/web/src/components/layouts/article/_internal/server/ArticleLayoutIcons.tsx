@@ -1,6 +1,6 @@
 import { Svg } from "@guyromellemagayano/components";
 
-import type { ArrowLeftIconProps } from "@web/components/layouts/article/models";
+import type { ArrowLeftIconProps } from "@web/components/layouts/article";
 
 /** An icon for the arrow left. */
 export const ArrowLeftIcon = function (props: ArrowLeftIconProps) {

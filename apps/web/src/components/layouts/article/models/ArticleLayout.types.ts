@@ -16,3 +16,6 @@ export interface ArticleLayoutProps extends ContainerProps {
    */
   article?: ArticleWithSlug;
 }
+
+/** Labels for the `ArticleLayout` component. */
+export type ArticleLayoutComponentLabels = Readonly<Record<string, string>>;
