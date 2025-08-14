@@ -16,14 +16,14 @@ import {
 
 import { AppContext } from "@web/app/context";
 import { Container, Prose } from "@web/components";
+import { ArrowLeftIcon } from "@web/components/layouts/article/_internal";
+import type {
+  ArticleLayoutProps,
+  ArticleLayoutRef,
+} from "@web/components/layouts/article/models";
 import { cn, formatDate } from "@web/lib";
 
-import { ArrowLeftIcon } from "./internal";
-import type { ArticleLayoutProps, ArticleLayoutRef } from "./models";
-
-/**
- * A layout component for an article.
- */
+/** A layout component for an article. */
 export const ArticleLayout = React.forwardRef<
   ArticleLayoutRef,
   ArticleLayoutProps
@@ -51,7 +51,7 @@ export const ArticleLayout = React.forwardRef<
           {(article || children) && (
             <Article>
               <Header className="flex flex-col">
-                {article.title && (
+                {article?.title && (
                   <Heading
                     as={"h1"}
                     className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
@@ -60,7 +60,7 @@ export const ArticleLayout = React.forwardRef<
                   </Heading>
                 )}
 
-                {article.date && (
+                {article?.date && (
                   <Time
                     dateTime={article.date}
                     className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
