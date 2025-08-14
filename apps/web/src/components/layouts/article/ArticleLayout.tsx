@@ -16,11 +16,11 @@ import {
 
 import { AppContext } from "@web/app/context";
 import { Container, Prose } from "@web/components";
-import { ArrowLeftIcon } from "@web/components/layouts/article/_internal";
-import type {
-  ArticleLayoutProps,
-  ArticleLayoutRef,
-} from "@web/components/layouts/article/models";
+import {
+  ArrowLeftIcon,
+  type ArticleLayoutProps,
+  type ArticleLayoutRef,
+} from "@web/components/layouts/article";
 import { cn, formatDate } from "@web/lib";
 
 /** A layout component for an article. */
