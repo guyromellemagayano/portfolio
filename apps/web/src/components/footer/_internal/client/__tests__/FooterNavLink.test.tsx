@@ -26,7 +26,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 // Under test
-import { FooterNavLink } from "../internal";
+import { FooterNavLink } from "@web/components/footer/_internal";
 
 describe("FooterNavLink", () => {
   beforeEach(() => {

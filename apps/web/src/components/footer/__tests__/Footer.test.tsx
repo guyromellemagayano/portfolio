@@ -3,8 +3,6 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Footer } from "../Footer";
-
 import "@testing-library/jest-dom";
 
 // Mock next/link to render a real anchor for assertions
@@ -96,6 +94,9 @@ vi.mock("@web/lib", () => ({
   cn: (...classes: Array<string | undefined | null | false>) =>
     classes.filter(Boolean).join(" "),
 }));
+
+// Under test
+import { Footer } from "@web/components/footer";
 
 describe("Footer Component", () => {
   const links = [
