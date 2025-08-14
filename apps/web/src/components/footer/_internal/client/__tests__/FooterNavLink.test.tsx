@@ -19,19 +19,25 @@ vi.mock("next/link", () => {
   return { default: MockLink };
 });
 
-// Mock next/navigation usePathname with a controllable value
-let currentPathname: string | undefined;
+// Mock next/navigation to control pathname
+let mockPathname: string | undefined = "/";
 vi.mock("next/navigation", () => ({
-  usePathname: () => currentPathname,
+  usePathname: () => mockPathname,
 }));
 
 // Under test
 import { FooterNavLink } from "@web/components/footer/_internal";
 
+// Ensure isActivePath is available
+vi.mock("@web/lib", async () => {
+  const actual = await vi.importActual<any>("@web/lib");
+  return { ...actual };
+});
+
 describe("FooterNavLink", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    currentPathname = "/";
+    mockPathname = "/";
   });
   afterEach(() => cleanup());
 
@@ -43,21 +49,36 @@ describe("FooterNavLink", () => {
   });
 
   it("applies aria-current when link is active (exact)", () => {
-    currentPathname = "/projects";
+    mockPathname = "/projects";
+    // Force a re-render by clearing mocks
+    vi.clearAllMocks();
+    const { unmount } = render(
+      <FooterNavLink href="/projects">Projects</FooterNavLink>
+    );
+    unmount();
     render(<FooterNavLink href="/projects">Projects</FooterNavLink>);
     const a = screen.getByTestId("mock-link");
+    console.log("Mock pathname:", mockPathname);
+    console.log("Link aria-current:", a.getAttribute("aria-current"));
+    console.log("Link href:", a.getAttribute("href"));
     expect(a).toHaveAttribute("aria-current", "page");
   });
 
   it("applies aria-current when pathname starts with href (nested)", () => {
-    currentPathname = "/articles/slug";
+    mockPathname = "/articles/slug";
+    // Force a re-render by clearing mocks
+    vi.clearAllMocks();
+    const { unmount } = render(
+      <FooterNavLink href="/articles">Articles</FooterNavLink>
+    );
+    unmount();
     render(<FooterNavLink href="/articles">Articles</FooterNavLink>);
     const a = screen.getByTestId("mock-link");
     expect(a).toHaveAttribute("aria-current", "page");
   });
 
   it("does not apply aria-current when pathname is undefined", () => {
-    currentPathname = undefined;
+    mockPathname = undefined;
     render(<FooterNavLink href="/about">About</FooterNavLink>);
     const a = screen.getByTestId("mock-link");
     expect(a).not.toHaveAttribute("aria-current");
