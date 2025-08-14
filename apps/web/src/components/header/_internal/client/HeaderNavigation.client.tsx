@@ -20,7 +20,7 @@ import {
   Ul,
 } from "@guyromellemagayano/components";
 
-import { ChevronDownIcon, CloseIcon } from "@web/components/header/internal";
+import { ChevronDownIcon, CloseIcon } from "@web/components/header/_internal";
 import {
   DESKTOP_HEADER_NAV_LINKS,
   type DesktopHeaderNavItemProps,
@@ -30,8 +30,7 @@ import {
   type MobileHeaderNavItemProps,
   type MobileHeaderNavItemRef,
 } from "@web/components/header/models";
-import { isActivePath } from "@web/components/header/utils";
-import { cn } from "@web/lib";
+import { cn, isActivePath } from "@web/lib";
 
 /** A mobile navigation item component. */
 export const MobileHeaderNavItem = React.forwardRef<

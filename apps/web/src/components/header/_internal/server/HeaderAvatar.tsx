@@ -5,16 +5,15 @@ import Link from "next/link";
 
 import { Div } from "@guyromellemagayano/components";
 
-import avatarImage from "@web/images/avatar.jpg";
-import { cn } from "@web/lib";
-
 import {
   AVATAR_COMPONENT_LABELS,
   type AvatarContainerProps,
   type AvatarContainerRef,
   type AvatarProps,
   type AvatarRef,
-} from "../../models";
+} from "@web/components/header/models";
+import avatarImage from "@web/images/avatar.jpg";
+import { cn } from "@web/lib";
 
 /** An avatar container component. */
 export const AvatarContainer = React.forwardRef<
