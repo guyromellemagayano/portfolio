@@ -14,5 +14,5 @@ export interface ArticleLayoutProps extends ContainerProps {
   /**
    * The article to display.
    */
-  article: ArticleWithSlug;
+  article?: ArticleWithSlug;
 }
