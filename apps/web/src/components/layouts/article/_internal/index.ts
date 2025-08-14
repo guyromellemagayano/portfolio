@@ -1,1 +1,1 @@
-export * from "./ArticleLayoutIcons";
+export * from "./server/ArticleLayoutIcons";
