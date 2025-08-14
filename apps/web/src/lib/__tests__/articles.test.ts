@@ -1,12 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  __setArticlesForTests,
   type Article,
   type ArticleWithSlug,
   getAllArticles,
   getArticleBySlug,
   getArticlesByTag,
-} from "./articles";
+} from "@web/lib/articles";
 
 describe("Articles Module", () => {
   const mockArticle: Article = {
@@ -17,7 +18,7 @@ describe("Articles Module", () => {
     tags: ["test", "example"],
   };
 
-  const mockArticleWithSlug: ArticleWithSlug = {
+  const _mockArticleWithSlug: ArticleWithSlug = {
     ...mockArticle,
     slug: "test-article",
   };
@@ -99,7 +100,7 @@ describe("Articles Module", () => {
       });
 
       // Check that articles with same date are handled
-      dateGroups.forEach((articlesWithSameDate, date) => {
+      dateGroups.forEach((articlesWithSameDate, _date) => {
         if (articlesWithSameDate.length > 1) {
           // Articles with same date should maintain their order
           expect(articlesWithSameDate.length).toBeGreaterThan(1);
@@ -226,6 +227,21 @@ describe("Articles Module", () => {
       articles.forEach((article) => {
         expect(article.tags).toContain("another");
       });
+    });
+  });
+
+  describe("using _mockArticleWithSlug fixture", () => {
+    it("returns the fixture when querying by its slug", async () => {
+      __setArticlesForTests([_mockArticleWithSlug]);
+      const result = await getArticleBySlug("test-article");
+      expect(result).toEqual(_mockArticleWithSlug);
+    });
+
+    it("filters by a tag present on the fixture (example)", async () => {
+      __setArticlesForTests([_mockArticleWithSlug]);
+      const result = await getArticlesByTag("example");
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(_mockArticleWithSlug);
     });
   });
 

@@ -32,14 +32,24 @@ const sampleArticles: ArticleWithSlug[] = [
   },
 ];
 
+// Internal store to enable deterministic testing by swapping data
+let __articlesStore: ArticleWithSlug[] = sampleArticles;
+
+/** Test-only hook to replace articles data at runtime. */
+export const __setArticlesForTests = (articles: ArticleWithSlug[]): void => {
+  __articlesStore = articles;
+};
+
 /**
  * Get all articles sorted by date
  */
 export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
   try {
-    // For now, return sample articles
+    // For now, return current articles store
     // In a real app, this would fetch from a CMS or database
-    return sampleArticles.sort((a, b) => +new Date(b.date) - +new Date(a.date));
+    return __articlesStore
+      .slice()
+      .sort((a, b) => +new Date(b.date) - +new Date(a.date));
   } catch (error) {
     logError("Failed to get articles:", error);
     return [];
