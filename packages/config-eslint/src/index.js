@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import js from "@eslint/js";
 import typescriptParser from "@typescript-eslint/parser";
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import importPlugin from "eslint-plugin-import";
 import onlyWarn from "eslint-plugin-only-warn";
@@ -13,7 +14,7 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import vitestPlugin from "eslint-plugin-vitest";
+import vitestPlugin from "@vitest/eslint-plugin";
 
 const nodeRequire = createRequire(import.meta.url);
 const prettierConfig = nodeRequire("../../../prettier.config.cjs");
@@ -45,6 +46,7 @@ export const baseEslintConfig = [
       turbo: turboPlugin,
       prettier: prettierPlugin,
       import: importPlugin,
+      "@typescript-eslint": typescriptEslintPlugin,
       vitest: vitestPlugin,
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
@@ -60,12 +62,6 @@ export const baseEslintConfig = [
       },
     },
     rules: {
-      "@typescript-eslint/consistent-type-imports": [
-        "warn",
-        {
-          prefer: "type-imports",
-        },
-      ],
       "import/no-duplicates": [
         "error",
         { considerQueryString: true, "prefer-inline": true },
@@ -106,13 +102,6 @@ export const baseEslintConfig = [
           ],
         },
       ],
-      "react/function-component-definition": [
-        "error",
-        {
-          namedComponents: "function-expression",
-          unnamedComponents: "arrow-function",
-        },
-      ],
       "simple-import-sort/exports": "error",
       "turbo/no-undeclared-env-vars": "warn",
       "unused-imports/no-unused-imports": "warn",
@@ -133,8 +122,10 @@ export const baseEslintConfig = [
     languageOptions: {
       parser: typescriptParser,
       parserOptions: {
+        project: tsProjects,
         sourceType: "module",
         ecmaVersion: "latest",
+        tsconfigRootDir: repoRoot,
       },
     },
     rules: {
@@ -155,15 +146,22 @@ export const baseEslintConfig = [
       "**/__tests__/**/*.{js,ts,jsx,tsx}",
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
     ],
+    ...vitestPlugin.configs.recommended,
     languageOptions: {
       globals: vitestPlugin.environments.env.globals,
     },
     rules: {
+      ...vitestPlugin.configs.recommended.rules,
       "no-restricted-imports": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "import/no-extraneous-dependencies": "off",
       "vitest/no-focused-tests": "error",
       "vitest/no-disabled-tests": "warn",
+    },
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
     },
   },
   {
