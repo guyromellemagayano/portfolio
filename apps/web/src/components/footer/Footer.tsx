@@ -10,7 +10,7 @@ import {
 } from "@guyromellemagayano/components";
 
 import { ContainerInner, ContainerOuter } from "@web/components/container";
-import { FooterNavLink } from "@web/components/footer/internal";
+import { FooterNavLink } from "@web/components/footer/_internal";
 import {
   FOOTER_COMPONENT_LABELS,
   FOOTER_COMPONENT_NAV_LINKS,

@@ -1,15 +1,13 @@
 import { unstable_cache } from "next/cache";
 
-import type {
-  FooterData,
-  FooterLink,
-} from "@web/components/footer/@types/footer";
+import type { FooterData, FooterLink } from "@web/components/footer/models";
 import {
   FOOTER_COMPONENT_LABELS,
   FOOTER_COMPONENT_NAV_LINKS,
 } from "@web/components/footer/models/data";
 
-import "server-only";
+// This module is server-only, but Next.js pages directory doesn't support SC components across pages.
+// Remove server-only to keep compatibility in mixed environments.
 
 export const FOOTER_TAG = "footer";
 

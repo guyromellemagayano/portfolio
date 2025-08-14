@@ -1,9 +1,7 @@
-// import type { FooterComponentLabels, FooterLink } from "./types";
-
 import type {
   FooterComponentLabels,
   FooterComponentNavLinks,
-} from "@web/components/footer/models/types";
+} from "@web/components/footer/models";
 
 /** Brand used by the footer (override via data layer later if needed). */
 export const BRAND_NAME = "Guy Romelle Magayano";
