@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 import {
   Div,
-  DivRef,
+  type DivRef,
   Header as HeaderComponent,
 } from "@guyromellemagayano/components";
 
@@ -18,11 +18,11 @@ import {
   HeaderEffects,
   HeaderThemeToggle,
   MobileHeaderNav,
-} from "@web/components/header/internal";
+} from "@web/components/header/_internal";
 import {
   AVATAR_COMPONENT_LABELS,
-  HeaderProps,
-  HeaderRef,
+  type HeaderProps,
+  type HeaderRef,
 } from "@web/components/header/models";
 import { cn } from "@web/lib";
 

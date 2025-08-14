@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 
-import { DivRef } from "@guyromellemagayano/components";
+import type { DivRef } from "@guyromellemagayano/components";
 
-import { clamp } from "@web/components/header/utils";
+import { clamp } from "@web/lib/helpers";
 
-/** Props for the HeaderEffects component. */
+/** Props for the `HeaderEffects` component. */
 export interface HeaderEffectsProps {
   /** Reference to the header element. */
   headerEl: React.RefObject<DivRef | null>;

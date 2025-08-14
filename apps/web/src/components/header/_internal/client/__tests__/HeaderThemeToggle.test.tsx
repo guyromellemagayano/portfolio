@@ -24,7 +24,7 @@ vi.mock("@guyromellemagayano/components", () => {
 });
 
 // Under test
-import { HeaderThemeToggle as ThemeToggle } from "@web/components/header/internal";
+import { HeaderThemeToggle as ThemeToggle } from "@web/components/header/_internal";
 
 describe("Header ThemeToggle", () => {
   beforeEach(() => vi.clearAllMocks());
