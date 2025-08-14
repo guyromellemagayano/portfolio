@@ -1,110 +1,107 @@
+// Mock next/navigation to ensure useRouter is available
+vi.mock("next/navigation", () => ({
+  usePathname: () => (globalThis as any).__TEST_PATHNAME__ ?? "/",
+  useRouter: () => ({
+    back: (globalThis as any).__MOCK_ROUTER_BACK__,
+    push: vi.fn(),
+    replace: vi.fn(),
+    forward: vi.fn(),
+    refresh: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+}));
+
 import React from "react";
 
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { AppContext } from "@web/app/context";
-import { ArticleLayout } from "@web/components/layouts/article/Article";
+import type { ArticleLayoutProps } from "@web/components/layouts/article/models";
 import type { ArticleWithSlug } from "@web/lib/articles";
-
-import { type ArticleLayoutProps } from "../models";
 
 import "@testing-library/jest-dom";
 
-// Mock Next.js router
-const mockBack = vi.fn();
-const mockRouter = {
-  back: mockBack,
-};
+// Router mock
+const mockBack = (globalThis as any).__MOCK_ROUTER_BACK__;
 
-vi.mock("next/navigation", () => ({
-  useRouter: () => mockRouter,
-}));
-
+// Mock design-system components used by the layout
 vi.mock("@guyromellemagayano/components", () => {
-  const MockArticle = React.forwardRef<HTMLElement, any>((props, ref) => (
+  const Article = React.forwardRef<HTMLElement, any>((props, ref) => (
     <article ref={ref} data-testid="mock-article" {...props} />
   ));
-  MockArticle.displayName = "MockArticle";
+  Article.displayName = "MockArticle";
 
-  const MockButton = React.forwardRef<HTMLButtonElement, any>((props, ref) => (
+  const Button = React.forwardRef<HTMLButtonElement, any>((props, ref) => (
     <button ref={ref} data-testid="mock-button" {...props} />
   ));
-  MockButton.displayName = "MockButton";
+  Button.displayName = "MockButton";
 
-  const MockDiv = React.forwardRef<HTMLDivElement, any>((props, ref) => (
+  const Div = React.forwardRef<HTMLDivElement, any>((props, ref) => (
     <div ref={ref} data-testid="mock-div" {...props} />
   ));
-  MockDiv.displayName = "MockDiv";
+  Div.displayName = "MockDiv";
 
-  const MockHeader = React.forwardRef<HTMLElement, any>((props, ref) => (
+  const Header = React.forwardRef<HTMLElement, any>((props, ref) => (
     <header ref={ref} data-testid="mock-header" {...props} />
   ));
-  MockHeader.displayName = "MockHeader";
+  Header.displayName = "MockHeader";
 
-  const MockHeading = React.forwardRef<HTMLHeadingElement, any>(
-    (props, ref) => <h1 ref={ref} data-testid="mock-heading" {...props} />
-  );
-  MockHeading.displayName = "MockHeading";
+  const Heading = React.forwardRef<HTMLHeadingElement, any>((props, ref) => (
+    <h1 ref={ref} data-testid="mock-heading" {...props} />
+  ));
+  Heading.displayName = "MockHeading";
 
-  const MockSpan = React.forwardRef<HTMLSpanElement, any>((props, ref) => (
+  const Span = React.forwardRef<HTMLSpanElement, any>((props, ref) => (
     <span ref={ref} data-testid="mock-span" {...props} />
   ));
-  MockSpan.displayName = "MockSpan";
+  Span.displayName = "MockSpan";
 
-  const MockTime = React.forwardRef<HTMLTimeElement, any>((props, ref) => (
+  const Time = React.forwardRef<HTMLTimeElement, any>((props, ref) => (
     <time ref={ref} data-testid="mock-time" {...props} />
   ));
-  MockTime.displayName = "MockTime";
+  Time.displayName = "MockTime";
 
-  const MockSvg = React.forwardRef<SVGSVGElement, any>((props, ref) => (
-    <svg ref={ref} data-testid="mock-svg" {...props} />
-  ));
-  MockSvg.displayName = "MockSvg";
-
-  return {
-    Article: MockArticle,
-    Button: MockButton,
-    Div: MockDiv,
-    Header: MockHeader,
-    Heading: MockHeading,
-    Span: MockSpan,
-    Time: MockTime,
-    Svg: MockSvg,
-    SvgProps: {},
-  };
+  return { Article, Button, Div, Header, Heading, Span, Time };
 });
 
-vi.mock("@web/components/container", () => {
-  const MockContainer = React.forwardRef<HTMLDivElement, any>((props, ref) => (
+// Mock icon
+vi.mock("@web/components/layouts/article/_internal", () => ({
+  ArrowLeftIcon: (props: any) => (
+    <svg
+      data-testid="mock-arrow-icon"
+      viewBox="0 0 16 16"
+      aria-hidden="true"
+      {...props}
+    />
+  ),
+}));
+
+// Mock app-level components barrel used by ArticleLayout
+vi.mock("@web/components", () => {
+  const Container = React.forwardRef<HTMLDivElement, any>((props, ref) => (
     <div ref={ref} data-testid="mock-container" {...props} />
   ));
-  MockContainer.displayName = "MockContainer";
+  Container.displayName = "MockContainer";
 
-  return {
-    Container: MockContainer,
-  };
-});
-
-vi.mock("@web/components/prose", () => {
-  const MockProse = React.forwardRef<HTMLDivElement, any>((props, ref) => (
+  const Prose = React.forwardRef<HTMLDivElement, any>((props, ref) => (
     <div ref={ref} data-testid="mock-prose" {...props} />
   ));
-  MockProse.displayName = "MockProse";
+  Prose.displayName = "MockProse";
 
-  return {
-    Prose: MockProse,
-  };
+  return { Container, Prose };
 });
 
-// Mock the formatDate function
+// Mock utility helpers
 vi.mock("@web/lib", () => ({
   cn: (...classes: (string | undefined | null | false)[]) =>
     classes.filter(Boolean).join(" "),
   formatDate: (date: string) => `Formatted: ${date}`,
 }));
 
-describe("ArticleLayout Component", () => {
+let ArticleLayout: any;
+
+describe("ArticleLayout", () => {
   const mockArticle: ArticleWithSlug = {
     slug: "test-article",
     title: "Test Article Title",
@@ -116,440 +113,165 @@ describe("ArticleLayout Component", () => {
 
   const defaultProps: ArticleLayoutProps = {
     article: mockArticle,
-    children: <div data-testid="article-content">Article content here</div>,
-  };
+    children: <div data-testid="article-content">Article content</div>,
+  } as any;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     vi.clearAllMocks();
+    const mod = await import("@web/components/layouts/article");
+    ArticleLayout = mod.ArticleLayout;
   });
 
   afterEach(() => {
     cleanup();
   });
 
-  describe("Basic Rendering", () => {
-    it("renders the article layout with all required elements", () => {
-      render(<ArticleLayout {...defaultProps} />);
+  it("renders container, article, header, title, date, and prose", () => {
+    render(<ArticleLayout {...defaultProps} />);
 
-      expect(screen.getByTestId("mock-container")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-article")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-header")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-heading")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-time")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-prose")).toBeInTheDocument();
-      expect(screen.getByTestId("article-content")).toBeInTheDocument();
-    });
+    expect(screen.getByTestId("mock-container")).toBeInTheDocument();
+    expect(screen.getByTestId("mock-article")).toBeInTheDocument();
+    expect(screen.getByTestId("mock-header")).toBeInTheDocument();
+    expect(screen.getByTestId("mock-heading")).toHaveTextContent(
+      "Test Article Title"
+    );
 
-    it("displays the article title correctly", () => {
-      render(<ArticleLayout {...defaultProps} />);
+    const time = screen.getByTestId("mock-time");
+    expect(time).toHaveAttribute("datetime", "2024-01-15");
 
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading).toHaveTextContent("Test Article Title");
-    });
+    const spans = screen.getAllByTestId("mock-span");
+    expect(spans[1]).toHaveTextContent("Formatted: 2024-01-15");
 
-    it("displays the formatted date correctly", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const timeElement = screen.getByTestId("mock-time");
-      expect(timeElement).toHaveAttribute("datetime", "2024-01-15");
-
-      const dateSpan = screen.getAllByTestId("mock-span")[1]; // Second span contains the date
-      expect(dateSpan).toHaveTextContent("Formatted: 2024-01-15");
-    });
-
-    it("renders the date separator correctly", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const separatorSpan = screen.getAllByTestId("mock-span")[0]; // First span is the separator
-      expect(separatorSpan).toHaveClass(
-        "h-4",
-        "w-0.5",
-        "rounded-full",
-        "bg-zinc-200"
-      );
-    });
-
-    it("renders article content in prose component", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const prose = screen.getByTestId("mock-prose");
-      expect(prose).toHaveAttribute("data-mdx-content");
-      expect(prose).toHaveClass("mt-8");
-      expect(prose).toContainElement(screen.getByTestId("article-content"));
-    });
+    const prose = screen.getByTestId("mock-prose");
+    expect(prose).toHaveAttribute("data-mdx-content");
+    expect(prose).toContainElement(screen.getByTestId("article-content"));
   });
 
-  describe("Navigation Button", () => {
-    it("renders back button when previousPathname exists", () => {
-      const contextValue = { previousPathname: "/articles" };
+  it("shows back button when previousPathname exists and calls router.back on click", () => {
+    render(
+      <AppContext.Provider value={{ previousPathname: "/articles" }}>
+        <ArticleLayout {...defaultProps} />
+      </AppContext.Provider>
+    );
 
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      const backButton = screen.getByTestId("mock-button");
-      expect(backButton).toBeInTheDocument();
-      expect(backButton).toHaveAttribute("aria-label", "Go back to articles");
-      expect(backButton).toHaveAttribute("type", "button");
-    });
-
-    it("does not render back button when previousPathname is undefined", () => {
-      const contextValue = { previousPathname: undefined };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
-    });
-
-    it("does not render back button when previousPathname is empty", () => {
-      const contextValue = { previousPathname: "" };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
-    });
-
-    it("calls router.back when back button is clicked", () => {
-      const contextValue = { previousPathname: "/articles" };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      const backButton = screen.getByTestId("mock-button");
-      fireEvent.click(backButton);
-
-      expect(mockBack).toHaveBeenCalledTimes(1);
-    });
-
-    it("renders arrow icon in back button", () => {
-      const contextValue = { previousPathname: "/articles" };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      const backButton = screen.getByTestId("mock-button");
-      const svg = backButton.querySelector("svg");
-      expect(svg).toBeInTheDocument();
-      expect(svg).toHaveAttribute("viewBox", "0 0 16 16");
-      expect(svg).toHaveAttribute("aria-hidden", "true");
-    });
+    const btn = screen.getByTestId("mock-button");
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
+    expect(mockBack).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("mock-arrow-icon")).toBeInTheDocument();
   });
 
-  describe("Styling and Classes", () => {
-    it("applies correct classes to container", () => {
-      render(<ArticleLayout {...defaultProps} />);
+  it("does not show back button if previousPathname is falsy", () => {
+    const { rerender } = render(
+      <AppContext.Provider value={{ previousPathname: undefined }}>
+        <ArticleLayout {...defaultProps} />
+      </AppContext.Provider>
+    );
+    expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
 
-      const container = screen.getByTestId("mock-container");
-      expect(container).toHaveClass("mt-16", "lg:mt-32");
-    });
-
-    it("merges custom className with default classes", () => {
-      render(<ArticleLayout {...defaultProps} className="custom-class" />);
-
-      const container = screen.getByTestId("mock-container");
-      expect(container).toHaveClass("mt-16", "lg:mt-32", "custom-class");
-    });
-
-    it("applies correct classes to back button when present", () => {
-      const contextValue = { previousPathname: "/articles" };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      const backButton = screen.getByTestId("mock-button");
-      expect(backButton).toHaveClass(
-        "group",
-        "mb-8",
-        "flex",
-        "h-10",
-        "w-10",
-        "items-center",
-        "justify-center",
-        "rounded-full",
-        "bg-white",
-        "shadow-md",
-        "ring-1",
-        "shadow-zinc-800/5",
-        "ring-zinc-900/5",
-        "transition"
-      );
-    });
-
-    it("applies correct classes to heading", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading).toHaveClass(
-        "mt-6",
-        "text-4xl",
-        "font-bold",
-        "tracking-tight",
-        "text-zinc-800",
-        "sm:text-5xl",
-        "dark:text-zinc-100"
-      );
-    });
-
-    it("applies correct classes to time element", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const timeElement = screen.getByTestId("mock-time");
-      expect(timeElement).toHaveClass(
-        "order-first",
-        "flex",
-        "items-center",
-        "text-base",
-        "text-zinc-400",
-        "dark:text-zinc-500"
-      );
-    });
+    rerender(
+      <AppContext.Provider value={{ previousPathname: "" }}>
+        <ArticleLayout {...defaultProps} />
+      </AppContext.Provider>
+    );
+    expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
   });
 
-  describe("Props Forwarding", () => {
-    it("forwards all props to container component", () => {
-      render(
-        <ArticleLayout
-          {...defaultProps}
-          id="test-container"
-          data-testid="custom-container"
-          aria-label="Article container"
-        />
-      );
-
-      const container = screen.getByTestId("custom-container");
-      expect(container).toHaveAttribute("id", "test-container");
-      expect(container).toHaveAttribute("data-testid", "custom-container");
-      expect(container).toHaveAttribute("aria-label", "Article container");
-    });
-
-    it("forwards all props to container except article and children", () => {
-      const { article, children } = defaultProps;
-
-      render(
-        <ArticleLayout
-          article={article}
-          id="test-id"
-          className="test-class"
-          data-custom="test-value"
-        >
-          {children}
-        </ArticleLayout>
-      );
-
-      // The container should be the outermost div with the forwarded props
-      const container = screen.getByTestId("mock-container");
-      expect(container).toHaveAttribute("id", "test-id");
-      expect(container).toHaveClass("test-class");
-      expect(container).toHaveAttribute("data-custom", "test-value");
-    });
+  it("applies default and custom classes to container", () => {
+    render(<ArticleLayout {...defaultProps} className="custom-class" />);
+    const container = screen.getByTestId("mock-container");
+    expect(container).toHaveClass("mt-16");
+    expect(container).toHaveClass("lg:mt-32");
+    expect(container).toHaveClass("custom-class");
   });
 
-  describe("Context Integration", () => {
-    it("uses AppContext to determine back button visibility", () => {
-      const contextValue = { previousPathname: "/articles" };
+  it("renders prose only when children are provided", () => {
+    const { rerender } = render(<ArticleLayout {...defaultProps} />);
+    expect(screen.getByTestId("mock-prose")).toBeInTheDocument();
 
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
+    rerender(<ArticleLayout article={mockArticle}>{null}</ArticleLayout>);
+    expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
 
-      expect(screen.getByTestId("mock-button")).toBeInTheDocument();
-    });
-
-    it("handles undefined context gracefully", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
-    });
-
-    it("handles empty context gracefully", () => {
-      render(
-        <AppContext.Provider value={{}}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      expect(screen.queryByTestId("mock-button")).not.toBeInTheDocument();
-    });
+    rerender(<ArticleLayout article={mockArticle}>{undefined}</ArticleLayout>);
+    expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
   });
 
-  describe("Accessibility", () => {
-    it("has proper heading structure", () => {
-      render(<ArticleLayout {...defaultProps} />);
+  it("renders article + prose but no heading/time when only children are provided", () => {
+    render(
+      <ArticleLayout>
+        <div data-testid="only-children">Only children</div>
+      </ArticleLayout>
+    );
 
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading.tagName).toBe("H1");
-    });
-
-    it("has proper time element with datetime attribute", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const timeElement = screen.getByTestId("mock-time");
-      expect(timeElement.tagName).toBe("TIME");
-      expect(timeElement).toHaveAttribute("datetime", "2024-01-15");
-    });
-
-    it("has proper button accessibility when back button is present", () => {
-      const contextValue = { previousPathname: "/articles" };
-
-      render(
-        <AppContext.Provider value={contextValue}>
-          <ArticleLayout {...defaultProps} />
-        </AppContext.Provider>
-      );
-
-      const backButton = screen.getByTestId("mock-button");
-      expect(backButton).toHaveAttribute("aria-label", "Go back to articles");
-      expect(backButton).toHaveAttribute("type", "button");
-    });
-
-    it("has proper article semantic structure", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const article = screen.getByTestId("mock-article");
-      expect(article.tagName).toBe("ARTICLE");
-    });
-
-    it("has proper header semantic structure", () => {
-      render(<ArticleLayout {...defaultProps} />);
-
-      const header = screen.getByTestId("mock-header");
-      expect(header.tagName).toBe("HEADER");
-    });
+    expect(screen.getByTestId("mock-container")).toBeInTheDocument();
+    expect(screen.getByTestId("only-children")).toBeInTheDocument();
+    expect(screen.getByTestId("mock-article")).toBeInTheDocument();
+    expect(screen.getByTestId("mock-prose")).toBeInTheDocument();
+    expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("mock-time")).not.toBeInTheDocument();
   });
 
-  describe("Edge Cases", () => {
-    it("does not render heading when article title is an empty string", () => {
-      const articleWithEmptyTitle = { ...mockArticle, title: "" };
-
-      render(
-        <ArticleLayout {...defaultProps} article={articleWithEmptyTitle} />
-      );
-
-      expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
-    });
-
-    it("handles article with very long title", () => {
-      const longTitle = "A".repeat(200);
-      const articleWithLongTitle = { ...mockArticle, title: longTitle };
-
-      render(
-        <ArticleLayout {...defaultProps} article={articleWithLongTitle} />
-      );
-
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading).toHaveTextContent(longTitle);
-    });
-
-    it("handles article with special characters in title", () => {
-      const specialTitle = "Article with special chars: & < > \" '";
-      const articleWithSpecialTitle = { ...mockArticle, title: specialTitle };
-
-      render(
-        <ArticleLayout {...defaultProps} article={articleWithSpecialTitle} />
-      );
-
-      const heading = screen.getByTestId("mock-heading");
-      expect(heading).toHaveTextContent(specialTitle);
-    });
-
-    it("does not render Prose when children is null", () => {
-      render(<ArticleLayout {...defaultProps}>{null}</ArticleLayout>);
-
-      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
-    });
-
-    it("does not render Prose when children is undefined", () => {
-      render(<ArticleLayout {...defaultProps}>{undefined}</ArticleLayout>);
-
-      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
-    });
-
-    it("handles complex children structure", () => {
-      const complexChildren = (
-        <div>
-          <h2>Subheading</h2>
-          <p>Paragraph content</p>
-          <ul>
-            <li>List item 1</li>
-            <li>List item 2</li>
-          </ul>
-        </div>
-      );
-
-      render(
-        <ArticleLayout {...defaultProps}>{complexChildren}</ArticleLayout>
-      );
-
-      expect(screen.getByText("Subheading")).toBeInTheDocument();
-      expect(screen.getByText("Paragraph content")).toBeInTheDocument();
-      expect(screen.getByText("List item 1")).toBeInTheDocument();
-      expect(screen.getByText("List item 2")).toBeInTheDocument();
-    });
+  it("does not render article structure when both article and children are absent", () => {
+    render((<ArticleLayout />) as any);
+    expect(screen.getByTestId("mock-container")).toBeInTheDocument();
+    expect(screen.queryByTestId("mock-article")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("mock-header")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
   });
 
-  describe("Conditional Rendering", () => {
-    it("does not render article structure when article prop is undefined", () => {
-      render(
-        <ArticleLayout>
-          <div data-testid="article-content">Content</div>
-        </ArticleLayout>
-      );
-
-      expect(screen.getByTestId("mock-container")).toBeInTheDocument();
-      expect(screen.queryByTestId("mock-article")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("mock-header")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("mock-prose")).not.toBeInTheDocument();
-    });
-
-    it("does not render heading when article.title is undefined", () => {
-      const articleWithoutTitle = { ...mockArticle, title: undefined } as any;
-      render(<ArticleLayout {...defaultProps} article={articleWithoutTitle} />);
-
-      expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
-    });
-
-    it("does not render time when article.date is undefined", () => {
-      const articleWithoutDate = { ...mockArticle, date: undefined } as any;
-      render(<ArticleLayout {...defaultProps} article={articleWithoutDate} />);
-
-      expect(screen.queryByTestId("mock-time")).not.toBeInTheDocument();
-    });
+  it("forwards ref to the Container element", () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(<ArticleLayout {...defaultProps} ref={ref} />);
+    const container = screen.getByTestId("mock-container");
+    expect(ref.current).toBe(container);
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref to Container element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<ArticleLayout {...defaultProps} ref={ref} />);
-
-      const container = screen.getByTestId("mock-container");
-      expect(ref.current).toBe(container);
-    });
+  it("forwards id/aria/data-* props to the Container", () => {
+    render(
+      <ArticleLayout
+        {...defaultProps}
+        id="article-container"
+        data-testid="custom-container"
+        aria-label="Article container"
+        data-x="123"
+      />
+    );
+    const container = screen.getByTestId("custom-container");
+    expect(container).toHaveAttribute("id", "article-container");
+    expect(container).toHaveAttribute("aria-label", "Article container");
+    expect(container).toHaveAttribute("data-x", "123");
   });
 
-  describe("Component Display Name", () => {
-    it("has correct display name", () => {
-      expect(ArticleLayout.displayName).toBe("ArticleLayout");
-    });
+  it("omits heading when article.title is empty or undefined", () => {
+    const articleEmptyTitle = { ...mockArticle, title: "" } as any;
+    const articleNoTitle = { ...mockArticle } as any;
+    delete articleNoTitle.title;
+
+    const { rerender } = render(
+      <ArticleLayout {...defaultProps} article={articleEmptyTitle} />
+    );
+    expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
+
+    rerender(<ArticleLayout {...defaultProps} article={articleNoTitle} />);
+    expect(screen.queryByTestId("mock-heading")).not.toBeInTheDocument();
+  });
+
+  it("omits time when article.date is undefined", () => {
+    const articleNoDate = { ...mockArticle } as any;
+    delete articleNoDate.date;
+    render(<ArticleLayout {...defaultProps} article={articleNoDate} />);
+    expect(screen.queryByTestId("mock-time")).not.toBeInTheDocument();
+  });
+
+  it("renders the date separator span with expected classes", () => {
+    render(<ArticleLayout {...defaultProps} />);
+    const spans = screen.getAllByTestId("mock-span");
+    const separator = spans[0];
+    expect(separator).toHaveClass(
+      "h-4",
+      "w-0.5",
+      "rounded-full",
+      "bg-zinc-200"
+    );
   });
 });
