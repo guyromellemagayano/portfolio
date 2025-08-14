@@ -32,7 +32,7 @@ vi.mock("@web/lib", () => ({
 }));
 
 // Under test
-import { Avatar, AvatarContainer } from "@web/components/header/internal";
+import { Avatar, AvatarContainer } from "@web/components/header/_internal";
 
 describe("Header Avatar components", () => {
   beforeEach(() => vi.clearAllMocks());
