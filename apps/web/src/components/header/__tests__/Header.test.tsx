@@ -56,7 +56,7 @@ vi.mock("@headlessui/react", () => {
 // Mock the design system components used by Header
 vi.mock("@guyromellemagayano/components", () => {
   const MockHeader = React.forwardRef<HTMLElement, any>((props, ref) => (
-    <header ref={ref} data-testid="mock-header" {...props} />
+    <header ref={ref} {...props} data-testid="mock-header" />
   ));
   MockHeader.displayName = "MockHeader";
 
@@ -129,7 +129,7 @@ describe("Header Component", () => {
 
   it("renders wrapper header and basic UI", () => {
     render(<Header />);
-    expect(screen.getByTestId("mock-header")).toBeInTheDocument();
+    expect(screen.getByTestId("header-root")).toBeInTheDocument();
     expect(screen.getByText("Menu")).toBeInTheDocument();
     expect(screen.getByText("Navigation")).toBeInTheDocument();
   });
@@ -144,12 +144,12 @@ describe("Header Component", () => {
   it("forwards ref to the wrapper header element", () => {
     const ref = React.createRef<HTMLElement>();
     render(<Header ref={ref} />);
-    expect(ref.current).toBe(screen.getByTestId("mock-header"));
+    expect(ref.current).toBe(screen.getByTestId("header-root"));
   });
 
   it("merges custom className onto wrapper header", () => {
     render(<Header className="custom-header" />);
-    expect(screen.getByTestId("mock-header")).toHaveClass("custom-header");
+    expect(screen.getByTestId("header-root")).toHaveClass("custom-header");
   });
 
   it("toggles theme on button click using next-themes", () => {
