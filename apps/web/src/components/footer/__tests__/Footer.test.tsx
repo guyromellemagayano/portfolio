@@ -28,7 +28,7 @@ vi.mock("next/navigation", () => ({
   usePathname: () => currentPathname,
 }));
 
-// Mock component library primitives to simpler DOM nodes
+// Mock component library primitives to simpler DOM nodes (ensure testids)
 vi.mock("@guyromellemagayano/components", () => {
   const MockDiv = React.forwardRef<HTMLDivElement, any>((props, ref) => (
     <div
@@ -40,7 +40,11 @@ vi.mock("@guyromellemagayano/components", () => {
   MockDiv.displayName = "MockDiv";
 
   const MockFooter = React.forwardRef<HTMLElement, any>((props, ref) => (
-    <footer ref={ref} data-testid="mock-footer" {...props} />
+    <footer
+      ref={ref}
+      data-testid={props["data-testid"] ?? "mock-footer"}
+      {...props}
+    />
   ));
   MockFooter.displayName = "MockFooter";
 
@@ -89,11 +93,15 @@ vi.mock("@web/components/container", () => {
   return { ContainerOuter, ContainerInner };
 });
 
-// Mock helpers (cn)
-vi.mock("@web/lib", () => ({
-  cn: (...classes: Array<string | undefined | null | false>) =>
-    classes.filter(Boolean).join(" "),
-}));
+// Mock helpers (cn + isActivePath)
+vi.mock("@web/lib", async () => {
+  const actual = await vi.importActual<any>("@web/lib");
+  return {
+    ...actual,
+    cn: (...classes: Array<string | undefined | null | false>) =>
+      classes.filter(Boolean).join(" "),
+  };
+});
 
 // Under test
 import { Footer } from "@web/components/footer";
