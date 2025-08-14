@@ -13,18 +13,18 @@ import {
 import { Container } from "@web/components";
 import {
   Avatar,
+  AVATAR_COMPONENT_LABELS,
   AvatarContainer,
   DesktopHeaderNav,
   HeaderEffects,
-  HeaderThemeToggle,
-  MobileHeaderNav,
-} from "@web/components/header/_internal";
-import {
-  AVATAR_COMPONENT_LABELS,
   type HeaderProps,
   type HeaderRef,
-} from "@web/components/header/models";
+  HeaderThemeToggle,
+  MobileHeaderNav,
+} from "@web/components/header";
 import { cn } from "@web/lib";
+
+import styles from "./Header.module.css";
 
 /** A base header component (client, minimal effects split out). */
 const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
@@ -41,10 +41,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
       <>
         <HeaderComponent
           ref={ref}
-          className={cn(
-            "pointer-events-none relative z-50 flex flex-none flex-col",
-            className
-          )}
+          className={cn(styles.headerComponent, className)}
           style={{
             height: "var(--header-height)",
             marginBottom: "var(--header-mb)",
@@ -56,26 +53,26 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
             <>
               <Div
                 ref={avatarRef}
-                className="order-last mt-[calc(--spacing(16)-(--spacing(3)))]"
+                className={styles.avatarSection}
                 data-avatar
               />
               <Container
-                className="top-0 order-last -mb-3 pt-3"
+                className={styles.avatarContainer}
                 style={{
                   position:
                     "var(--header-position)" as React.CSSProperties["position"],
                 }}
               >
                 <Div
-                  className="top-(--avatar-top,--spacing(3)) w-full"
+                  className={styles.avatarPositioningWrapper}
                   style={{
                     position:
                       "var(--header-inner-position)" as React.CSSProperties["position"],
                   }}
                 >
-                  <Div className="relative">
+                  <Div className={styles.avatarRelativeContainer}>
                     <AvatarContainer
-                      className="absolute top-3 left-0 origin-left transition-opacity"
+                      className={styles.avatarBorderContainer}
                       style={{
                         opacity: "var(--avatar-border-opacity, 0)",
                         transform: "var(--avatar-border-transform)",
@@ -83,7 +80,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
                     />
                     <Avatar
                       large
-                      className="block h-16 w-16 origin-left"
+                      className={styles.avatarImage}
                       style={{ transform: "var(--avatar-image-transform)" }}
                       href={AVATAR_COMPONENT_LABELS.link}
                     />
@@ -95,7 +92,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
 
           <Div
             ref={headerRef}
-            className="top-0 z-10 h-16 pt-6"
+            className={styles.headerSection}
             style={{
               position:
                 "var(--header-position)" as React.CSSProperties["position"],
@@ -103,14 +100,14 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
             data-header
           >
             <Container
-              className="top-(--header-top,--spacing(6)) w-full"
+              className={styles.headerContainer}
               style={{
                 position:
                   "var(--header-inner-position)" as React.CSSProperties["position"],
               }}
             >
-              <Div className="relative flex gap-4">
-                <Div className="flex flex-1">
+              <Div className={styles.headerContent}>
+                <Div className={styles.headerLeftSection}>
                   {!isHomePage && (
                     <AvatarContainer>
                       <Avatar href={AVATAR_COMPONENT_LABELS.link} />
@@ -118,13 +115,13 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
                   )}
                 </Div>
 
-                <Div className="flex flex-1 justify-end md:justify-center">
-                  <MobileHeaderNav className="pointer-events-auto md:hidden" />
-                  <DesktopHeaderNav className="pointer-events-auto hidden md:block" />
+                <Div className={styles.headerCenterSection}>
+                  <MobileHeaderNav className={styles.mobileNavigation} />
+                  <DesktopHeaderNav className={styles.desktopNavigation} />
                 </Div>
 
-                <Div className="flex justify-end md:flex-1">
-                  <Div className="pointer-events-auto">
+                <Div className={styles.headerRightSection}>
+                  <Div className={styles.themeToggleWrapper}>
                     <HeaderThemeToggle />
                   </Div>
                 </Div>
@@ -135,7 +132,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
 
         {isHomePage && (
           <Div
-            className="flex-none"
+            className={styles.contentOffset}
             style={{ height: "var(--content-offset)" }}
           />
         )}
@@ -153,6 +150,8 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
   }
 );
 
+BaseHeader.displayName = "BaseHeader";
+
 /** A memoized header component. */
 const MemoizedHeader = React.memo(
   React.forwardRef<HeaderRef, HeaderProps>(function MemoizedHeader(props, ref) {
@@ -161,10 +160,12 @@ const MemoizedHeader = React.memo(
   })
 );
 
+MemoizedHeader.displayName = "MemoizedHeader";
+
 /** Public Header component. */
 export const Header = React.forwardRef<HeaderRef, HeaderProps>(
   function Header(props, ref) {
-    const { isMemoized, ...rest } = props;
+    const { isMemoized = false, ...rest } = props;
     return isMemoized ? (
       <MemoizedHeader ref={ref} {...rest} />
     ) : (
@@ -172,3 +173,5 @@ export const Header = React.forwardRef<HeaderRef, HeaderProps>(
     );
   }
 );
+
+Header.displayName = "Header";

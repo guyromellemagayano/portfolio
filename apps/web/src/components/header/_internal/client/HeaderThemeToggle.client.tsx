@@ -1,15 +1,20 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "next-themes";
 
-import { Button } from "@guyromellemagayano/components";
+import { Button, ButtonRef } from "@guyromellemagayano/components";
 
-import type {
-  ThemeToggleProps,
-  ThemeToggleRef,
-} from "@web/components/header/models";
+import {
+  MoonIcon,
+  SunIcon,
+  THEME_TOGGLE_LABELS,
+  type ThemeToggleProps,
+  type ThemeToggleRef,
+} from "@web/components/header";
+
+import styles from "./HeaderThemeToggle.client.module.css";
 
 /** A theme toggle component. */
 export const HeaderThemeToggle = React.forwardRef<
@@ -26,14 +31,42 @@ export const HeaderThemeToggle = React.forwardRef<
     setMounted(true);
   }, []);
 
-  return (
-    <Button
-      ref={ref}
-      data-testid="mock-button"
-      aria-label={mounted ? `Switch to ${otherTheme} theme` : "Toggle theme"}
-      className="group rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
-      onClick={() => setTheme(otherTheme)}
-      {...rest}
-    />
+  const handleClick = useCallback(() => {
+    setTheme(otherTheme);
+  }, [otherTheme, setTheme]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<ButtonRef>) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        handleClick();
+      }
+    },
+    [handleClick]
   );
+
+  const element = useMemo(() => {
+    return (
+      <Button
+        ref={ref}
+        data-testid="mock-button"
+        aria-label={
+          mounted
+            ? `Switch to ${otherTheme} theme`
+            : THEME_TOGGLE_LABELS.toggleTheme
+        }
+        className={styles.headerThemeToggleButton}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        {...rest}
+      >
+        <SunIcon className={styles.headerThemeToggleSunIcon} />
+        <MoonIcon className={styles.headerThemeToggleMoonIcon} />
+      </Button>
+    );
+  }, [ref, mounted, otherTheme, handleClick, handleKeyDown, rest]);
+
+  return element;
 });
+
+HeaderThemeToggle.displayName = "HeaderThemeToggle";
