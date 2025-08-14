@@ -1,6 +1,55 @@
 import { describe, expect, it } from "vitest";
 
-import { arrayToUrlSlug, cn } from "./helpers";
+import { arrayToUrlSlug, cn, isActivePath } from "@web/lib/helpers";
+
+describe("arrayToUrlSlug", () => {
+  it("converts array items to a slug with expected separators", () => {
+    const input = ["Hello World", "Foo-Bar", "B@z"];
+    const result = arrayToUrlSlug(input);
+    expect(result).toBe("hello/world-foo/bar-b/z");
+  });
+
+  it("returns empty string for empty array", () => {
+    expect(arrayToUrlSlug([])).toBe("");
+  });
+});
+
+describe("cn", () => {
+  it("merges Tailwind classes and keeps the last conflicting one", () => {
+    const result = cn("p-2", "p-4", "text-red-500", "text-blue-500", [
+      "mt-2",
+      "mt-4",
+    ]);
+    expect(result).toBe("p-4 text-blue-500 mt-4");
+  });
+
+  it("filters out falsy values and arrays", () => {
+    const result = cn("block", false, null, undefined, ["mt-2"]);
+    expect(result).toBe("block mt-2");
+  });
+});
+
+describe("isActivePath (lib)", () => {
+  it("returns false when pathname is null/undefined", () => {
+    expect(isActivePath(null, "/projects")).toBe(false);
+    expect(isActivePath(undefined, "/projects")).toBe(false);
+  });
+
+  it("handles root href correctly", () => {
+    expect(isActivePath("/", "/")).toBe(true);
+    expect(isActivePath("/projects", "/")).toBe(false);
+  });
+
+  it("matches exact path or segment-boundary prefix", () => {
+    expect(isActivePath("/projects", "/projects")).toBe(true);
+    expect(isActivePath("/projects/123", "/projects")).toBe(true);
+  });
+
+  it("does not match partial prefixes", () => {
+    expect(isActivePath("/projectx", "/projects")).toBe(false);
+    expect(isActivePath("/projects-2021", "/projects")).toBe(false);
+  });
+});
 
 describe("helpers", () => {
   describe("arrayToUrlSlug", () => {
