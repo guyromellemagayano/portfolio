@@ -9,8 +9,7 @@ import type {
   FooterNavLinkProps,
   FooterNavLinkRef,
 } from "@web/components/footer/models";
-import { isActivePath } from "@web/components/footer/utils";
-import { cn } from "@web/lib";
+import { cn, isActivePath } from "@web/lib";
 
 /** Client leaf: active-state + external link safety. */
 export const FooterNavLink = React.forwardRef<
