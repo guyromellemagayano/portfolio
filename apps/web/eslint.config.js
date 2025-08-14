@@ -10,7 +10,7 @@ export default [
           project: ["./tsconfig.json"],
         },
         alias: {
-          map: [["@web", "./"]],
+          map: [["@web", "./src/"]],
           extensions: [".ts", ".tsx"],
         },
       },
@@ -23,25 +23,12 @@ export default [
         {
           patterns: [
             {
-              group: [
-                "@web/components/header/internal/*",
-                "@web/components/footer/internal/*",
-              ],
+              group: ["@web/components/**/_internal/**"],
               message:
                 "Do not import component internals directly. Import from the package barrel instead.",
             },
           ],
         },
-      ],
-    },
-  },
-  {
-    files: ["**/@types/**/*.{ts,tsx}", "**/models/types.ts"],
-    rules: {
-      "unused-imports/no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { args: "none", varsIgnorePattern: "^_" },
       ],
     },
   },
