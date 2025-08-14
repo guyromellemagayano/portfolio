@@ -1,27 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
-import type { DivRef } from "@guyromellemagayano/components";
-
+import type { HeaderEffectsProps } from "@web/components/header";
 import { clamp } from "@web/lib/helpers";
 
-/** Props for the `HeaderEffects` component. */
-export interface HeaderEffectsProps {
-  /** Reference to the header element. */
-  headerEl: React.RefObject<DivRef | null>;
-  /** Reference to the avatar element. */
-  avatarEl: React.RefObject<DivRef | null>;
-  /** Whether the current page is the home page. */
-  isHomePage: boolean;
-}
-
 /** Runs the sticky/shrink effects and CSS var updates (rAF throttled). */
-export const HeaderEffects = function ({
-  headerEl,
-  avatarEl,
-  isHomePage,
-}: HeaderEffectsProps) {
+export const HeaderEffects = function (props: HeaderEffectsProps) {
+  const { headerEl, avatarEl, isHomePage } = props;
+
   useEffect(() => {
     const setProperty = (prop: string, value: string) =>
       document.documentElement.style.setProperty(prop, value);
@@ -129,3 +116,5 @@ export const HeaderEffects = function ({
 
   return null;
 };
+
+HeaderEffects.displayName = "HeaderEffects";

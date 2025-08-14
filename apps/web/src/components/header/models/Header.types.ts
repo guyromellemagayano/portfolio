@@ -40,7 +40,7 @@ export type DesktopHeaderNavItemRef = CommonNavItemRef;
 export interface DesktopHeaderNavItemProps extends CommonNavItemProps {}
 
 /** For mobile nav labels */
-export type MobileHeaderNav = Readonly<Record<string, string>>;
+export type MobileHeaderNavLabels = Readonly<Record<string, string>>;
 
 /** Shared links */
 export type HeaderNavLinks = ReadonlyArray<{ label: string; href: string }>;
@@ -77,3 +77,16 @@ export interface HeaderProps extends HeaderComponentProps {
   /** Opt-in memoization wrapper (for profiling) */
   isMemoized?: boolean;
 }
+
+/** Props for the `HeaderEffects` component. */
+export interface HeaderEffectsProps {
+  /** Reference to the header element. */
+  headerEl: React.RefObject<DivRef | null>;
+  /** Reference to the avatar element. */
+  avatarEl: React.RefObject<DivRef | null>;
+  /** Whether the current page is the home page. */
+  isHomePage: boolean;
+}
+
+/** Theme toggle labels */
+export type ThemeToggleLabels = Readonly<Record<string, string>>;
