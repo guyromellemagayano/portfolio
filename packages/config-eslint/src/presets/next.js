@@ -29,7 +29,7 @@ export const nextEslintConfig = [
   {
     files: [
       "**/src/components/**/**.client.{ts,tsx}",
-      "**/src/components/**/internal/client/**/*.{ts,tsx}",
+      "**/src/components/**/_internal/client/**/*.{ts,tsx}",
     ],
     rules: {
       // Clients can import whatever; app-level config may still restrict internals by alias
@@ -38,8 +38,8 @@ export const nextEslintConfig = [
   },
   {
     files: [
-      "**/src/components/**/[A-Z]*.tsx", // component entry files like Header.tsx, Footer.tsx
-      "**/src/components/**/internal/server/**/*.{ts,tsx}",
+      "**/src/components/**/[A-Z]*.tsx",
+      "**/src/components/**/_internal/server/**/*.{ts,tsx}",
     ],
     rules: {
       "no-restricted-imports": [
@@ -49,22 +49,22 @@ export const nextEslintConfig = [
             {
               name: "next/navigation",
               message:
-                "Client-only API in a server component. Move code to internal/client/* or mark the file 'use client'.",
+                "Client-only API in a server component. Move code to _internal/client/* or mark the file 'use client'.",
             },
             {
               name: "next-themes",
               message:
-                "Client-only API in a server component. Move code to internal/client/* or mark the file 'use client'.",
+                "Client-only API in a server component. Move code to _internal/client/* or mark the file 'use client'.",
             },
             {
               name: "@headlessui/react",
               message:
-                "Client-only UI in a server component. Move code to internal/client/* or mark the file 'use client'.",
+                "Client-only UI in a server component. Move code to _internal/client/* or mark the file 'use client'.",
             },
           ],
           patterns: [
             {
-              group: ["**/internal/client/*", "**/*.client.{ts,tsx}"],
+              group: ["**/_internal/client/*", "**/*.client.{ts,tsx}"],
               message:
                 "Do not import client internals into server modules. Render a client leaf instead.",
             },
