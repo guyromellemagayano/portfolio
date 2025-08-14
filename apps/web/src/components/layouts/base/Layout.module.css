@@ -1,0 +1,29 @@
+/* Main layout container */
+.layoutContainer {
+  @apply flex w-full;
+}
+
+/* Background wrapper */
+.layoutBackgroundWrapper {
+  @apply fixed inset-0 flex justify-center sm:px-8;
+}
+
+/* Background content */
+.layoutBackgroundContent {
+  @apply flex w-full max-w-7xl lg:px-8;
+}
+
+/* Background element */
+.layoutBackground {
+  @apply w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20;
+}
+
+/* Content wrapper */
+.layoutContentWrapper {
+  @apply relative flex w-full flex-col;
+}
+
+/* Main content area */
+.layoutMain {
+  @apply flex-auto;
+}
