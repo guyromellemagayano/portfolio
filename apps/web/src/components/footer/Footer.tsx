@@ -10,16 +10,18 @@ import {
 } from "@guyromellemagayano/components";
 
 import { ContainerInner, ContainerOuter } from "@web/components/container";
-import { FooterNavLink } from "@web/components/footer/_internal";
 import {
   FOOTER_COMPONENT_LABELS,
   FOOTER_COMPONENT_NAV_LINKS,
   type FooterData,
   type FooterLink,
+  FooterNavLink,
   type FooterProps,
   type FooterRef,
-} from "@web/components/footer/models";
+} from "@web/components/footer";
 import { cn } from "@web/lib";
+
+import styles from "./Footer.module.css";
 
 /** Server component: pure shell; tiny client leaf handles active state. */
 export const Footer = React.forwardRef<FooterRef, FooterProps>(
@@ -37,15 +39,15 @@ export const Footer = React.forwardRef<FooterRef, FooterProps>(
     return (
       <FooterComponent
         ref={ref}
-        className={cn("mt-32 flex-none", className)}
+        className={cn(styles.footerComponent, className)}
         {...rest}
       >
         <ContainerOuter>
-          <Div className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40">
+          <Div className={styles.footerContentWrapper}>
             <ContainerInner>
-              <Div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+              <Div className={styles.footerLayout}>
                 <Nav aria-label="Footer">
-                  <Ul className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                  <Ul className={styles.footerNavigationList}>
                     {data.nav.map((link: FooterLink) => (
                       <Li key={`${link.label}:${link.href}`}>
                         {/* Client leaf – applies aria-current and external safety */}
@@ -66,8 +68,7 @@ export const Footer = React.forwardRef<FooterRef, FooterProps>(
                     ))}
                   </Ul>
                 </Nav>
-
-                <P className="text-sm text-zinc-400 dark:text-zinc-500">
+                <P className={styles.footerLegalText}>
                   © {data.year} {data.legalText}
                 </P>
               </Div>
@@ -78,3 +79,5 @@ export const Footer = React.forwardRef<FooterRef, FooterProps>(
     );
   }
 );
+
+Footer.displayName = "Footer";
