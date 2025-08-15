@@ -3,7 +3,7 @@ import { Svg } from "@guyromellemagayano/components";
 import type { ArrowLeftIconProps } from "@web/components/layouts/article";
 
 /** An icon for the arrow left. */
-export const ArrowLeftIcon = function (props: ArrowLeftIconProps) {
+export const ArrowLeftIcon = function ArrowLeftIcon(props: ArrowLeftIconProps) {
   return (
     <Svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
       {/* FIXME: Fix missing `path` element. */}
