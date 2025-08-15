@@ -6,7 +6,7 @@ import type { HeaderEffectsProps } from "@web/components/header";
 import { clamp } from "@web/lib/helpers";
 
 /** Runs the sticky/shrink effects and CSS var updates (rAF throttled). */
-export const HeaderEffects = function (props: HeaderEffectsProps) {
+export const HeaderEffects = function HeaderEffects(props: HeaderEffectsProps) {
   const { headerEl, avatarEl, isHomePage } = props;
 
   useEffect(() => {
