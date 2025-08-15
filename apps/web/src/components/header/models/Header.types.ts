@@ -17,6 +17,9 @@ import type {
 /** For common icon props. */
 export interface CommonIconProps extends SvgProps {}
 
+/** Common icon component type. */
+export type CommonIconComponent = React.FC<CommonIconProps>;
+
 /** For common nav item ref/props. */
 export type CommonNavItemRef = LiRef;
 
@@ -87,6 +90,9 @@ export interface HeaderEffectsProps {
   /** Whether the current page is the home page. */
   isHomePage: boolean;
 }
+
+/** HeaderEffects component type. */
+export type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
 
 /** Theme toggle labels */
 export type ThemeToggleLabels = Readonly<Record<string, string>>;
