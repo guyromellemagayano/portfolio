@@ -7,7 +7,7 @@ module.exports = {
     "postcss-preset-env": {},
     "postcss-focus-visible": {},
     // CSS module obfuscation based on environment
-    "postcss-css-modules": {
+    "postcss-modules": {
       generateScopedName: (name, filename, _css) => {
         const isDevelopment = process.env.NODE_ENV === "development";
         const isStaging = process.env.NODE_ENV === "staging";

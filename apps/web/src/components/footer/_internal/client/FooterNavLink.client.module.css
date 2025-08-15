@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Footer navigation link base */
 .footerNavLink {
   @apply transition hover:text-teal-500 dark:hover:text-teal-400;

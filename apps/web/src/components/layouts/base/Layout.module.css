@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Main layout container */
 .layoutContainer {
   @apply flex w-full;

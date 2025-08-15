@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Main header component */
 .headerComponent {
   @apply pointer-events-none relative z-50 flex flex-none flex-col;
@@ -35,7 +37,7 @@
 
 /* Header section */
 .headerSection {
-  @apply top-0 z-10 h-16 pt-6;
+  @apply relative flex gap-4;
 }
 
 /* Header container */
@@ -60,12 +62,12 @@
 
 /* Mobile navigation */
 .mobileNavigation {
-  @apply pointer-events-auto md:hidden;
+  @apply flex flex-1;
 }
 
 /* Desktop navigation */
 .desktopNavigation {
-  @apply pointer-events-auto hidden md:block;
+  @apply flex flex-1 justify-end md:justify-center;
 }
 
 /* Header right section */
@@ -80,5 +82,29 @@
 
 /* Content offset */
 .contentOffset {
+  @apply flex-none;
+}
+
+.avatarImageDefault {
+  @apply top-0 z-10 h-16 pt-6;
+}
+
+.avatarImageLarge {
+  @apply top-(--header-top,--spacing(6)) w-full;
+}
+
+.headerThemeToggle {
+  @apply flex justify-end md:flex-1;
+}
+
+.headerThemeToggleButton {
+  @apply pointer-events-auto;
+}
+
+.headerThemeToggleSunIcon {
+  @apply flex-none;
+}
+
+.headerThemeToggleMoonIcon {
   @apply flex-none;
 }
