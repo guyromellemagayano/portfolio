@@ -3,7 +3,9 @@ import { Svg } from "@guyromellemagayano/components";
 import type { ChevronRightIconProps } from "@web/components/card";
 
 /** A component that renders a chevron right icon. */
-export const ChevronRightIcon = function (props: ChevronRightIconProps) {
+export const ChevronRightIcon = function ChevronRightIcon(
+  props: ChevronRightIconProps
+) {
   return (
     <Svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
       <path
