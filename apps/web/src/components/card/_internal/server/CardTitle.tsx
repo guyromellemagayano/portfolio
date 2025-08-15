@@ -4,7 +4,6 @@ import { Heading } from "@guyromellemagayano/components";
 
 import {
   CardLink,
-  type CardTitleComponent,
   type CardTitleProps,
   type CardTitleRef,
 } from "@web/components/card";
@@ -45,6 +44,6 @@ export const CardTitle = React.forwardRef<CardTitleRef, CardTitleProps>(
 
     return element;
   }
-) as CardTitleComponent;
+);
 
 CardTitle.displayName = "CardTitle";

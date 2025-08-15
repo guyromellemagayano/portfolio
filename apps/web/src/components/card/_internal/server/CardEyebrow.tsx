@@ -2,11 +2,7 @@ import React from "react";
 
 import { Span, Time } from "@guyromellemagayano/components";
 
-import type {
-  CardEyebrowComponent,
-  CardEyebrowProps,
-  CardEyebrowRef,
-} from "@web/components/card";
+import type { CardEyebrowProps, CardEyebrowRef } from "@web/components/card";
 import { cn } from "@web/lib";
 
 import styles from "./CardEyebrow.module.css";
@@ -23,26 +19,22 @@ export const CardEyebrow = React.forwardRef<CardEyebrowRef, CardEyebrowProps>(
         ref={ref}
         className={cn(
           styles.cardEyebrow,
-          className,
-          decorate && styles.cardEyebrowDecorated
+          decorate && styles.cardEyebrowDecorated,
+          className
         )}
         {...rest}
       >
         {decorate && (
-          <Span
-            className={styles.cardEyebrowDecoratorWrapper}
-            aria-hidden="true"
-          >
+          <Span className={styles.cardEyebrowDecoratorWrapper}>
             <Span className={styles.cardEyebrowDecorator} />
           </Span>
         )}
-
         {children}
       </Time>
     );
 
     return element;
   }
-) as CardEyebrowComponent;
+);
 
 CardEyebrow.displayName = "CardEyebrow";
