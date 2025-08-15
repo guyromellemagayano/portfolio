@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Div } from "@guyromellemagayano/components";
 
 import {
-  type CardCtaComponent,
   type CardCtaProps,
   type CardCtaRef,
   ChevronRightIcon,
@@ -20,24 +19,25 @@ export const CardCta = React.forwardRef<CardCtaRef, CardCtaProps>(
     const {
       children,
       className,
-      href,
-      title = "",
+      href = "#",
       target = "_self",
+      title = "",
       ...rest
     } = props;
+
+    if (!children && !href) return null;
 
     const element = (
       <Div
         ref={ref}
         className={cn(styles.cardCtaContainer, className)}
-        aria-hidden="true"
         {...rest}
       >
         {href ? (
           <Link
             href={href}
-            title={title}
             target={target}
+            title={title}
             className={styles.cardCtaLink}
           >
             {children}
@@ -51,6 +51,6 @@ export const CardCta = React.forwardRef<CardCtaRef, CardCtaProps>(
 
     return element;
   }
-) as CardCtaComponent;
+);
 
 CardCta.displayName = "CardCta";
