@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Container outer wrapper - max-width 7xl */
 .containerOuter {
   @apply sm:px-8;

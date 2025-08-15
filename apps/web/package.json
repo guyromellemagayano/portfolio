@@ -47,7 +47,6 @@
     "postcss": "catalog:",
     "postcss-focus-visible": "catalog:",
     "postcss-import": "catalog:",
-    "postcss-modules": "catalog:",
     "postcss-nesting": "catalog:",
     "postcss-preset-env": "catalog:",
     "react": "catalog:",
