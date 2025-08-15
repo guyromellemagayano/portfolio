@@ -1,3 +1,5 @@
+import type React from "react";
+
 import type { SvgProps } from "@guyromellemagayano/components";
 
 import type { ContainerProps, ContainerRef } from "@web/components";
@@ -5,6 +7,12 @@ import type { ArticleWithSlug } from "@web/lib";
 
 /** Props for the `ArrowLeftIcon` component. */
 export interface ArrowLeftIconProps extends SvgProps {}
+
+/** ArrowLeftIcon component type. */
+export type ArrowLeftIconComponent = React.FC<ArrowLeftIconProps>;
+
+/** ArticleNavButton component type. */
+export type ArticleNavButtonComponent = React.FC;
 
 /** Ref for the `ArticleLayout` component. */
 export type ArticleLayoutRef = ContainerRef;
