@@ -16,3 +16,5 @@ export const ArrowLeftIcon = function (props: ArrowLeftIconProps) {
     </Svg>
   );
 };
+
+ArrowLeftIcon.displayName = "ArrowLeftIcon";
