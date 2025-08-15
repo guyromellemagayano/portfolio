@@ -4,11 +4,7 @@ import Link from "next/link";
 
 import { Div, Heading, Span } from "@guyromellemagayano/components";
 
-import type {
-  CardLinkComponent,
-  CardLinkProps,
-  CardLinkRef,
-} from "@web/components/card";
+import type { CardLinkProps, CardLinkRef } from "@web/components/card";
 import { cn } from "@web/lib";
 
 import styles from "./CardLink.module.css";
@@ -49,6 +45,6 @@ export const CardLink = React.forwardRef<CardLinkRef, CardLinkProps>(
 
     return element;
   }
-) as CardLinkComponent;
+);
 
 CardLink.displayName = "CardLink";
