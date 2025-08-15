@@ -1,0 +1,24 @@
+/* Main footer component */
+.footerComponent {
+  @apply mt-32 flex-none;
+}
+
+/* Footer content wrapper */
+.footerContentWrapper {
+  @apply border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40;
+}
+
+/* Footer layout */
+.footerLayout {
+  @apply flex flex-col items-center justify-between gap-6 md:flex-row;
+}
+
+/* Footer navigation list */
+.footerNavigationList {
+  @apply flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200;
+}
+
+/* Footer legal text */
+.footerLegalText {
+  @apply text-sm text-zinc-400 dark:text-zinc-500;
+}
