@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Main container */
 .simpleLayoutContainer {
   @apply mt-16 sm:mt-32;
