@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Prose container */
 .proseContainer {
   @apply prose dark:prose-invert;
