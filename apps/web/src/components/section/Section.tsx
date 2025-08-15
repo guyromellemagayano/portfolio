@@ -1,4 +1,4 @@
-import React, { useId } from "react";
+import React from "react";
 
 import {
   Div,
@@ -7,9 +7,9 @@ import {
   type SectionProps as SectionComponentProps,
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
-import { logInfo } from "@guyromellemagayano/logger";
 
 import { CommonWebAppComponentProps } from "@web/@types/components";
+import { useComponentId } from "@web/hooks";
 import { cn } from "@web/lib";
 
 import styles from "./Section.module.css";
@@ -25,14 +25,12 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     const { title, children, className, _internalId, _debugMode, ...rest } =
       props;
 
-    // Use provided internal ID or generated one
-    const generatedId = useId();
-    const id = _internalId || generatedId;
-
-    // Internal debug logging
-    if (_debugMode && globalThis?.process?.env?.NODE_ENV === "development") {
-      logInfo(`Section rendered with ID: ${id}`);
-    }
+    // Use shared hook for ID generation and debug logging
+    // Component name will be auto-detected from export const declaration
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
 
     // If there is no title or children, return null
     if (!title && !children) return null;
@@ -45,7 +43,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
         aria-labelledby={id}
         className={cn(styles.section, className)}
         data-section-id={id}
-        data-debug-mode={_debugMode ? "true" : undefined}
+        data-debug-mode={isDebugMode ? "true" : undefined}
       >
         <Div className={styles.sectionGrid}>
           {title && (
