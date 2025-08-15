@@ -3,17 +3,15 @@ import React from "react";
 import { Article } from "@guyromellemagayano/components";
 
 import {
+  type CardComponent,
   CardCta,
   CardDescription,
   CardEyebrow,
   CardLink,
+  type CardProps,
+  type CardRef,
   CardTitle,
-} from "@web/components/card/_internal";
-import type {
-  CardComponent,
-  CardProps,
-  CardRef,
-} from "@web/components/card/models";
+} from "@web/components/card";
 import { cn } from "@web/lib";
 
 /** A card component that can be used to display content in a card-like format. */
