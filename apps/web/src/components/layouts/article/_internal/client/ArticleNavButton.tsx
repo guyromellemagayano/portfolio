@@ -10,29 +10,31 @@ import { AppContext } from "@web/app/context";
 import {
   ArrowLeftIcon,
   ARTICLE_LAYOUT_COMPONENT_LABELS,
+  type ArticleNavButtonComponent,
 } from "@web/components/layouts/article";
 
 import styles from "./ArticleNavButton.module.css";
 
 /** A button that navigates to the previous pathname. */
-export const ArticleNavButton = function ArticleNavButton() {
-  let router = useRouter();
-  let { previousPathname } = useContext(AppContext);
+export const ArticleNavButton: ArticleNavButtonComponent =
+  function ArticleNavButton() {
+    let router = useRouter();
+    let { previousPathname } = useContext(AppContext);
 
-  if (!previousPathname) return null;
+    if (!previousPathname) return null;
 
-  const element = (
-    <Button
-      type="button"
-      aria-label={ARTICLE_LAYOUT_COMPONENT_LABELS.goBackToArticles}
-      className={styles.articleNavButton}
-      onClick={() => router.back()}
-    >
-      <ArrowLeftIcon className={styles.articleNavButtonIcon} />
-    </Button>
-  );
+    const element = (
+      <Button
+        type="button"
+        aria-label={ARTICLE_LAYOUT_COMPONENT_LABELS.goBackToArticles}
+        className={styles.articleNavButton}
+        onClick={() => router.back()}
+      >
+        <ArrowLeftIcon className={styles.articleNavButtonIcon} />
+      </Button>
+    );
 
-  return element;
-};
+    return element;
+  };
 
 ArticleNavButton.displayName = "ArticleNavButton";
