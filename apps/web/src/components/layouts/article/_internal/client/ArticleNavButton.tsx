@@ -15,7 +15,7 @@ import {
 import styles from "./ArticleNavButton.module.css";
 
 /** A button that navigates to the previous pathname. */
-export const ArticleNavButton = function () {
+export const ArticleNavButton = function ArticleNavButton() {
   let router = useRouter();
   let { previousPathname } = useContext(AppContext);
 

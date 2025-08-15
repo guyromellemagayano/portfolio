@@ -3,7 +3,7 @@ import { Svg } from "@guyromellemagayano/components";
 import type { CommonIconProps } from "@web/components/header";
 
 /** A close icon component. */
-export const CloseIcon = function (props: CommonIconProps) {
+export const CloseIcon = function CloseIcon(props: CommonIconProps) {
   const { ...rest } = props;
 
   return (
@@ -23,7 +23,9 @@ export const CloseIcon = function (props: CommonIconProps) {
 CloseIcon.displayName = "CloseIcon";
 
 /** A chevron down icon component. */
-export const ChevronDownIcon = function (props: CommonIconProps) {
+export const ChevronDownIcon = function ChevronDownIcon(
+  props: CommonIconProps
+) {
   const { ...rest } = props;
 
   return (
@@ -43,7 +45,7 @@ export const ChevronDownIcon = function (props: CommonIconProps) {
 ChevronDownIcon.displayName = "ChevronDownIcon";
 
 /** A sun icon component. */
-export const SunIcon = function (props: CommonIconProps) {
+export const SunIcon = function SunIcon(props: CommonIconProps) {
   const { ...rest } = props;
 
   return (
@@ -72,7 +74,7 @@ export const SunIcon = function (props: CommonIconProps) {
 SunIcon.displayName = "SunIcon";
 
 /** A moon icon component. */
-export const MoonIcon = function (props: CommonIconProps) {
+export const MoonIcon = function MoonIcon(props: CommonIconProps) {
   const { ...rest } = props;
 
   return (
