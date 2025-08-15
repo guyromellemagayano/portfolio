@@ -3,7 +3,6 @@ import React from "react";
 import { P } from "@guyromellemagayano/components";
 
 import type {
-  CardDescriptionComponent,
   CardDescriptionProps,
   CardDescriptionRef,
 } from "@web/components/card";
@@ -27,6 +26,6 @@ export const CardDescription = React.forwardRef<
   );
 
   return element;
-}) as CardDescriptionComponent;
+});
 
 CardDescription.displayName = "CardDescription";
