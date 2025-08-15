@@ -85,6 +85,9 @@ export type CardDescriptionComponent = React.ForwardRefExoticComponent<
 /** A props interface for the `ChevronRightIcon` component. */
 export interface ChevronRightIconProps extends SvgProps {}
 
+/** ChevronRightIcon component type. */
+export type ChevronRightIconComponent = React.FC<ChevronRightIconProps>;
+
 /** A reference to a card call to action component. */
 export type CardCtaRef = DivRef;
 
