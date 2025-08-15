@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 /* Main CTA container */
 .cardCtaContainer {
   @apply relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500;
