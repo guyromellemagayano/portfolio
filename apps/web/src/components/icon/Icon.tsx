@@ -7,7 +7,7 @@ import {
 } from "@guyromellemagayano/components";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { useComponentId } from "@web/hooks";
+import { useComponentId } from "@web/hooks/useComponentId";
 
 type IconRef = SvgRef;
 interface IconProps extends SvgProps, CommonWebAppComponentProps {}

@@ -41,7 +41,7 @@ A shared hook for component ID generation and debug logging.
 #### Usage
 
 ```typescript
-import { useComponentId } from '@web/hooks'
+import { useComponentId } from '@web/hooks/useComponentId'
 
 function MyComponent({ _internalId, _debugMode, ...props }) {
   // Component name will be auto-detected from export const declaration
@@ -219,7 +219,7 @@ Comprehensive test coverage should include:
 
 ```typescript
 import { renderHook } from '@testing-library/react'
-import { useComponentId } from '@web/hooks'
+import { useComponentId } from '@web/hooks/useComponentId'
 
 describe('useComponentId', () => {
   it('generates unique IDs', () => {
@@ -266,7 +266,7 @@ These hooks are fully compliant with our development standards:
 1. **Import the hook**:
 
    ```typescript
-   import { useComponentId } from '@web/hooks'
+   import { useComponentId } from '@web/hooks/useComponentId'
    ```
 
 2. **Replace manual ID logic**:
