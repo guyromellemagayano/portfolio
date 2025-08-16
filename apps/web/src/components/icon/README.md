@@ -15,7 +15,7 @@ icon/
 
 ## 🏗️ Architecture
 
-This component follows the **"Inline types for all components"** pattern and uses a **compound component pattern** for better organization and reusability. For detailed information about these architectural patterns, see the [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns) section in the Development Optimization Guide.
+This component follows the **"Inline types for all components"** pattern and uses a **compound component pattern** for better organization and reusability. For detailed information about these architectural patterns, see the [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#component-architecture-patterns) section in the Development Optimization Guide.
 
 ## 🚀 Features
 
@@ -101,27 +101,17 @@ function MyComponent() {
 
 ## 🔧 Props
 
-### Main Icon Component Props
+### Public Props
 
 - `children?: ReactNode` - SVG content (paths, circles, etc.)
 - `as?: Component` - Custom component to render (defaults to `Svg`)
 - `className?: string` - CSS classes for styling
-- `_internalId?: string` - Custom ID override for debugging
-- `_debugMode?: boolean` - Enable debug logging
 - `...rest` - All standard SVG attributes
 
-### Individual Icon Props
+### Internal Props (Not for External Use)
 
-All icon sub-components accept the same props as the main component:
-
-- `className?: string` - CSS classes for styling
-- `width?: number | string` - Icon width
-- `height?: number | string` - Icon height
-- `fill?: string` - Fill color
-- `stroke?: string` - Stroke color
-- `_internalId?: string` - Custom ID override
-- `_debugMode?: boolean` - Enable debug logging
-- `...rest` - All standard SVG attributes
+- `_internalId?: string` - Override generated ID for debugging (inherited from CommonWebAppComponentProps)
+- `_debugMode?: boolean` - Enable debug logging in development (inherited from CommonWebAppComponentProps)
 
 ## 🎨 Styling
 
@@ -149,13 +139,55 @@ The components use standard SVG elements and can be styled with:
 
 This component follows security best practices by using inline types and hiding internal implementation details. For detailed information about security patterns and type safety, see the [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety) section in the Development Optimization Guide.
 
-## 🧪 Testing with Vitest
+## 🔧 Implementation Details
 
-This component uses **Vitest** for testing. For detailed information about why Vitest is superior to Jest for this monorepo setup, see the [Development Optimization Guide](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-testing-with-vitest).
+### Component Structure
 
-### Test Coverage
+```typescript
+// Icon.tsx - Main implementation
+export const Icon = React.forwardRef<IconRef, IconProps>(
+  function Icon(props, ref) {
+    const {
+      children,
+      as: Component = Svg,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
 
-The test suite provides comprehensive coverage including:
+    // Use shared hook for ID generation and debug logging
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    return (
+      <Component
+        ref={ref}
+        data-icon-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        {...rest}
+      >
+        {children}
+      </Component>
+    );
+  }
+) as IconComponent;
+```
+
+### Compound Component Assignment
+
+```typescript
+// Compound component pattern
+Icon.X = XIcon;
+Icon.Instagram = InstagramIcon;
+Icon.LinkedIn = LinkedInIcon;
+Icon.GitHub = GitHubIcon;
+```
+
+## 🧪 Testing
+
+Comprehensive test coverage in `Icon.test.tsx`:
 
 - **Main Icon Component**: Rendering, ref forwarding, props handling
 - **Compound Components**: All sub-components (X, Instagram, LinkedIn, GitHub)
@@ -164,32 +196,9 @@ The test suite provides comprehensive coverage including:
 - **Error Handling**: Graceful handling of edge cases
 - **Styling**: CSS classes and inline styles application
 
-### Test Structure
-
-```typescript
-// Example test structure
-describe("Icon", () => {
-  describe("Main Icon Component", () => {
-    it("renders with default props", () => {
-      // Test implementation
-    });
-    
-    it("forwards ref correctly", () => {
-      // Test implementation
-    });
-  });
-
-  describe("X Icon Component", () => {
-    it("renders X icon correctly", () => {
-      // Test implementation
-    });
-  });
-});
-```
-
 ## 📚 Related Documentation
 
 - [Development Optimization Guide](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md)
-- [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns)
+- [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#component-architecture-patterns)
 - [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety)
 - [Testing with Vitest](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-testing-with-vitest)
