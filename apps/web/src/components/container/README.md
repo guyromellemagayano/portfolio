@@ -16,7 +16,7 @@ container/
 
 ## 🏗️ Architecture
 
-This component follows the **"inline types for all components"** pattern and uses a **nested component structure** for consistent layout and styling. For detailed information about these architectural patterns, see the [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns) section in the Development Optimization Guide.
+This component follows the **"inline types for all components"** pattern and uses a **nested component structure** for consistent layout and styling. For detailed information about these architectural patterns, see the [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#component-architecture-patterns) section in the Development Optimization Guide.
 
 ## 🚀 Features
 
@@ -135,29 +135,16 @@ function MyComponent() {
 
 ## 🔧 Props
 
-### Main Container Component Props
+### Public Props
 
 - `children?: ReactNode` - Content to render inside the container
 - `className?: string` - CSS classes for styling
-- `_internalId?: string` - Custom ID override for debugging
-- `_debugMode?: boolean` - Enable debug logging
-- `...rest` - All standard `div` attributes
+- `...rest` - All standard HTML div attributes
 
-### `ContainerOuter` Component Props
+### Internal Props (Not for External Use)
 
-- `children?: ReactNode` - Content to render inside the outer container
-- `className?: string` - CSS classes for styling
-- `_internalId?: string` - Custom ID override for debugging
-- `_debugMode?: boolean` - Enable debug logging
-- `...rest` - All standard `div` attributes
-
-### `ContainerInner` Component Props
-
-- `children?: ReactNode` - Content to render inside the inner container
-- `className?: string` - CSS classes for styling
-- `_internalId?: string` - Custom ID override for debugging
-- `_debugMode?: boolean` - Enable debug logging
-- `...rest` - All standard `div` attributes
+- `_internalId?: string` - Override generated ID for debugging (inherited from CommonWebAppComponentProps)
+- `_debugMode?: boolean` - Enable debug logging in development (inherited from CommonWebAppComponentProps)
 
 ## 🎨 Styling
 
@@ -215,54 +202,78 @@ The components use CSS modules with Tailwind CSS integration:
 
 This component follows security best practices by using inline types and hiding internal implementation details. For detailed information about security patterns and type safety, see the [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety) section in the Development Optimization Guide.
 
-## 🧪 Testing with Vitest
+## 🔧 Implementation Details
 
-This component uses **Vitest** for testing. For detailed information about why Vitest is superior to Jest for this monorepo setup, see the [Development Optimization Guide](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-testing-with-vitest).
+### Component Structure
 
-### Test Coverage
+```typescript
+// Container.tsx - Main implementation
+export const Container = React.forwardRef<ContainerRef, ContainerProps>(
+  function Container(props, ref) {
+    const { children, _internalId, _debugMode, ...rest } = props;
 
-The test suite provides comprehensive coverage including:
+    // Use shared hook for ID generation and debug logging
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    if (!children) return null;
+
+    const element = (
+      <ContainerOuter
+        {...rest}
+        ref={ref}
+        data-container-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+      >
+        <ContainerInner>{children}</ContainerInner>
+      </ContainerOuter>
+    );
+
+    return element;
+  }
+);
+```
+
+### CSS Module Structure
+
+```css
+/* Container.module.css - Scoped styling */
+@reference "tailwindcss";
+
+.containerOuter {
+  @apply w-full;
+}
+
+.containerOuterContent {
+  @apply mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.containerInner {
+  @apply max-w-7xl mx-auto;
+}
+
+.containerInnerContent {
+  @apply w-full;
+}
+```
+
+## 🧪 Testing
+
+Comprehensive test coverage in `Container.test.tsx`:
 
 - **Main Container Component**: Rendering, ref forwarding, props handling
-- **`ContainerOuter` Component**: Individual outer container functionality
-- **`ContainerInner` Component**: Individual inner container functionality
+- **ContainerOuter Component**: Individual outer container functionality
+- **ContainerInner Component**: Individual inner container functionality
 - **Integration**: Real-world usage patterns with nested content
 - **Error Handling**: Graceful handling of `null`/`undefined` children
 - **Accessibility**: Proper ARIA attributes and semantic structure
 - **Styling**: CSS classes and responsive behavior
 
-### Test Structure
-
-```typescript
-// Example test structure
-describe("Container", () => {
-  describe("Main Container Component", () => {
-    it("renders children inside ContainerInner and ContainerOuter", () => {
-      // Test implementation
-    });
-    
-    it("forwards ref to ContainerOuter", () => {
-      // Test implementation
-    });
-  });
-
-  describe("ContainerOuter Component", () => {
-    it("renders children inside container", () => {
-      // Test implementation
-    });
-  });
-
-  describe("ContainerInner Component", () => {
-    it("renders children inside container", () => {
-      // Test implementation
-    });
-  });
-});
-```
-
 ## 📚 Related Documentation
 
 - [Development Optimization Guide](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md)
-- [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns)
+- [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#component-architecture-patterns)
 - [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety)
 - [Testing with Vitest](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-testing-with-vitest)

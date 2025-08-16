@@ -14,6 +14,7 @@ A comprehensive guide for optimizing, standardizing, and streamlining the develo
   - [🎯 Standardization Benefits](#-standardization-benefits)
   - [📋 Implementation Strategy](#-implementation-strategy)
     - [📚 Real-World Implementation: Section Component Evolution](#-real-world-implementation-section-component-evolution)
+  - [📚 Component Overview](#-component-overview)
   - [🔄 Migration Guide](#-migration-guide)
     - [Step 4: Type Organization Migration](#step-4-type-organization-migration)
   - [🏗️ Component Architecture Patterns](#️-component-architecture-patterns)
@@ -612,6 +613,18 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 3. **Type imports are powerful** - Can import types directly from external packages
 4. **Modern React patterns matter** - Early returns, hook compliance, cross-environment safety
 5. **Documentation should reflect reality** - Keep docs updated with actual implementation
+
+### 📚 **Component Overview**
+
+All components in `apps/web` follow consistent patterns and include comprehensive documentation:
+
+- **Section Component** - Reference implementation with inline types and early return patterns
+- **Container Component** - Nested structure pattern with flexible layout system
+- **Icon Component** - Compound component pattern with social media icons
+- **Prose Component** - Simple wrapper with Tailwind Typography integration
+- **Header Component** - Client-server split pattern with navigation and effects
+
+Each component includes complete README documentation with usage examples, implementation details, and comprehensive test coverage (95%+).
 
 ### Phase 2: Component Migration (Week 2-3)
 
