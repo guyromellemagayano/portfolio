@@ -7,6 +7,7 @@ import {
 } from "@guyromellemagayano/components";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
+import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib/helpers";
 
 import styles from "./Container.module.css";
@@ -73,12 +74,24 @@ type ContainerComponent = React.ForwardRefExoticComponent<
 /** Top-level layout container that provides consistent outer and inner structure for page content. */
 export const Container: ContainerComponent = React.forwardRef(
   function Container(props, ref) {
-    const { children, ...rest } = props;
+    const { children, _internalId, _debugMode, ...rest } = props;
+
+    // Use shared hook for ID generation and debug logging
+    // Component name will be auto-detected from export const declaration
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
 
     if (!children) return null;
 
     const element = (
-      <ContainerOuter {...rest} ref={ref}>
+      <ContainerOuter
+        {...rest}
+        ref={ref}
+        data-container-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+      >
         <ContainerInner>{children}</ContainerInner>
       </ContainerOuter>
     );

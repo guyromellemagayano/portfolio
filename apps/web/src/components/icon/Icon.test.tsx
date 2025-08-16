@@ -16,7 +16,7 @@ vi.mock("@guyromellemagayano/components", () => ({
   SvgRef: {},
 }));
 
-vi.mock("@web/hooks", () => ({
+vi.mock("@web/hooks/useComponentId", () => ({
   useComponentId: vi.fn((options) => ({
     id: options?.internalId || "test-id",
     isDebugMode: options?.debugMode || false,

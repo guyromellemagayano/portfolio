@@ -16,9 +16,13 @@ A comprehensive guide for optimizing, standardizing, and streamlining the develo
     - [📚 Real-World Implementation: Section Component Evolution](#-real-world-implementation-section-component-evolution)
   - [🔄 Migration Guide](#-migration-guide)
     - [Step 4: Type Organization Migration](#step-4-type-organization-migration)
+  - [🏗️ Component Architecture Patterns](#️-component-architecture-patterns)
+  - [🧪 Testing with Vitest](#-testing-with-vitest)
   - [🚀 React.FC Compatibility & Performance Patterns](#-reactfc-compatibility--performance-patterns)
   - [📚 Export/Import Patterns](#exportimport-patterns)
-  - [🔒 Security Benefits of Type Organization](#-security-benefits-of-type-organization)
+  - [🔒 Security & Type Safety](#-security--type-safety)
+  - [✅ Compliance Standards](#-compliance-standards)
+  - [🔍 Verification Checklist](#-verification-checklist)
   - [✅ Best Practices](#-best-practices)
   - [🛠️ Troubleshooting](#️-troubleshooting)
   - [📊 Expected Outcomes](#-expected-outcomes)
@@ -796,6 +800,189 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 - ✅ **Team consistency** - Everyone follows the same pattern
 - ✅ **Modern TypeScript** - Leverages the full power of type imports
 
+## 🏗️ Component Architecture Patterns
+
+This guide establishes common architectural patterns used across all components. These patterns ensure consistency, maintainability, and optimal performance.
+
+### Why Inline Types?
+
+**We use inline types for ALL components, regardless of complexity or external dependencies. This is the ONLY approach we recommend.**
+
+- **Single Source of Truth**: Types and components in one file
+- **Better Tree Shaking**: Only imports what's needed
+- **Easier Refactoring**: Changes in one place
+- **Simpler Structure**: Less files to manage
+- **External Dependency Support**: Works with any external types
+- **🔒 Enhanced Security**: Internal types hidden from consumers
+- **🛡️ API Surface Reduction**: Minimal public interface exposed
+
+#### ✅ **The Right Way: Inline Types (Always)**
+
+```typescript
+// components/section/Section.tsx - ALL components follow this pattern
+import React, { useId } from "react";
+import {
+  Div,
+  Heading,
+  Section as SectionComponent,
+  type SectionProps as SectionComponentProps,  // Import types directly
+  type SectionRef as SectionComponentRef,
+} from "@guyromellemagayano/components";
+import { CommonWebAppComponentProps } from "@web/@types/components";
+
+// Define types inline - ALWAYS
+type SectionRef = SectionComponentRef;
+interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
+
+export const Section = React.forwardRef<SectionRef, SectionProps>(
+  function Section(props, ref) {
+    // Component implementation
+  }
+);
+```
+
+#### ❌ **The Wrong Way: Separate Type Files (Never Use)**
+
+```typescript
+// ❌ DON'T DO THIS - Separate type files are deprecated
+// components/section/@types/Section.ts
+import type { SectionProps as SectionComponentProps, SectionRef as SectionComponentRef } from '@guyromellemagayano/components'
+import type { CommonWebAppComponentProps } from '@web/@types/components'
+
+export type SectionRef = SectionComponentRef
+export interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
+
+// components/section/Section.tsx
+import type { SectionProps, SectionRef } from './@types/Section'
+export const Section = React.forwardRef<SectionRef, SectionProps>(...)
+```
+
+### Why Nested Component Structure?
+
+**For complex components that need multiple sub-components, use nested component structures for better organization and reusability.**
+
+- **Consistent Layout**: Standardized outer and inner container structure
+- **Flexible Usage**: Use main component or individual containers
+- **CSS Module Integration**: Scoped styling for each container level
+- **Better Organization**: Clear separation of layout concerns
+- **Compound Component Pattern**: Related components grouped together
+- **Shared Logic**: Common functionality in main component
+- **Clean API**: Intuitive component usage patterns
+
+#### ✅ **Container Pattern Example**
+
+```typescript
+// components/container/Container.tsx
+export const Container = React.forwardRef<ContainerRef, ContainerProps>(
+  function Container(props, ref) {
+    return (
+      <ContainerOuter {...props} ref={ref}>
+        <ContainerInner>{props.children}</ContainerInner>
+      </ContainerOuter>
+    );
+  }
+);
+
+// Usage options:
+<Container>Content</Container>                    // Main component
+<ContainerOuter>Content</ContainerOuter>          // Individual outer
+<ContainerInner>Content</ContainerInner>          // Individual inner
+```
+
+#### ✅ **Compound Component Pattern Example**
+
+```typescript
+// components/icon/Icon.tsx
+export const Icon = React.forwardRef<IconRef, IconProps>(
+  function Icon(props, ref) {
+    // Main component implementation
+  }
+);
+
+// Compound sub-components
+Icon.X = XIcon;
+Icon.Instagram = InstagramIcon;
+Icon.LinkedIn = LinkedInIcon;
+Icon.GitHub = GitHubIcon;
+
+// Usage options:
+<Icon>Custom SVG</Icon>                          // Main component
+<Icon.X className="w-6 h-6" />                   // Compound component
+<Icon.Instagram className="w-6 h-6" />           // Compound component
+```
+
+## 🧪 Testing with Vitest
+
+This guide uses **Vitest** instead of Jest for testing across all components. Here's why Vitest is superior for this monorepo setup:
+
+### Why Vitest > Jest
+
+#### 🚀 **Performance Benefits**
+
+- **Native ESM Support**: Built for modern ES modules, no transpilation needed
+- **Parallel Execution**: Tests run in parallel by default, significantly faster
+- **Smart Caching**: Intelligent caching of test results and dependencies
+- **Watch Mode**: Extremely fast watch mode with selective re-runs
+
+#### 🏗️ **Monorepo Advantages**
+
+- **Workspace Awareness**: Native understanding of monorepo structures
+- **Shared Configurations**: Easy to share test configs across packages
+- **Cross-Package Testing**: Test components that depend on other packages
+- **Turborepo Integration**: Seamless integration with Turborepo for build optimization
+
+#### 🔧 **Developer Experience**
+
+- **TypeScript First**: Native TypeScript support without additional setup
+- **Better Error Messages**: More informative error reporting
+- **Hot Module Replacement**: Fast refresh during development
+- **Composable Configurations**: Easy to extend and customize
+
+#### 📦 **Modern Tooling**
+
+- **Vite Integration**: Leverages Vite's fast bundling and dev server
+- **ESM by Default**: No CommonJS compatibility layers needed
+- **Plugin Ecosystem**: Rich ecosystem of testing plugins
+- **Future-Proof**: Built for modern JavaScript standards
+
+### Test Coverage Standards
+
+All components should achieve:
+
+- **95%+ code coverage** for production components
+- **100% test pass rate** with no flaky tests
+- **Fast execution** (< 50ms per test file)
+- **Comprehensive scenarios** including edge cases and error handling
+
+### Test Structure
+
+```typescript
+// Example test structure for all components
+describe("ComponentName", () => {
+  describe("Main Component", () => {
+    it("renders with default props", () => {
+      // Test implementation
+    });
+    
+    it("forwards ref correctly", () => {
+      // Test implementation
+    });
+  });
+
+  describe("Props Handling", () => {
+    it("applies custom className", () => {
+      // Test implementation
+    });
+  });
+
+  describe("Integration Tests", () => {
+    it("works with other components", () => {
+      // Test implementation
+    });
+  });
+});
+```
+
 ## 🚀 React.FC Compatibility & Performance Patterns
 
 ### React.forwardRef with Security
@@ -804,29 +991,37 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 
 ```typescript
 // ✅ Recommended: React.forwardRef with security
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+import React, { useId } from "react";
+import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import { logInfo } from "@guyromellemagayano/logger";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type ButtonRef = ButtonComponentRef;
+interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {}
+
+export const Button = React.forwardRef<ButtonRef, ButtonProps>(
   function Button({ variant = 'primary', children, _debugMode, ...props }, ref) {
     // Always call hooks at the top level
     const generatedId = useId();
     
     // Internal debug logging with cross-environment safety
     if (_debugMode && globalThis?.process?.env?.NODE_ENV === "development") {
-      console.log(`Button rendered with ID: ${generatedId}`);
+      logInfo(`Button rendered with ID: ${generatedId}`);
     }
 
     // Early return pattern for performance
     if (!children) return null;
 
     return (
-      <button
+      <ButtonComponent
         ref={ref}
-        className={`button button--${variant}`}
+        variant={variant}
         data-button-id={generatedId}
         data-debug-mode={_debugMode ? "true" : undefined}
         {...props}
       >
         {children}
-      </button>
+      </ButtonComponent>
     );
   }
 );
@@ -840,6 +1035,14 @@ Button.displayName = 'Button'
 
 ```typescript
 // ✅ Recommended: Early return pattern
+import React, { useId } from "react";
+import { Section as SectionComponent, Heading, Div, type SectionProps as SectionComponentProps, type SectionRef as SectionComponentRef } from "@guyromellemagayano/components";
+import { logInfo } from "@guyromellemagayano/logger";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type SectionRef = SectionComponentRef;
+interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
+
 export const Section = React.forwardRef<SectionRef, SectionProps>(
   function Section({ title, children, _debugMode, ...props }, ref) {
     // Always call hooks at the top level
@@ -847,7 +1050,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     
     // Internal debug logging
     if (_debugMode && globalThis?.process?.env?.NODE_ENV === "development") {
-      console.log(`Section rendered with ID: ${generatedId}`);
+      logInfo(`Section rendered with ID: ${generatedId}`);
     }
 
     // Early return for performance - no unnecessary JSX processing
@@ -899,7 +1102,14 @@ if (_debugMode && process.env.NODE_ENV === "development") {
 
 ```typescript
 // ✅ Recommended: Hooks at top level
-export const Component = React.forwardRef<Ref, Props>(
+import React, { useId, useState } from "react";
+import { Div, type DivProps, type DivRef } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type ComponentRef = DivRef;
+interface ComponentProps extends DivProps, CommonWebAppComponentProps {}
+
+export const Component = React.forwardRef<ComponentRef, ComponentProps>(
   function Component(props, ref) {
     const generatedId = useId(); // Always called
     const [state, setState] = useState(); // Always called
@@ -907,7 +1117,7 @@ export const Component = React.forwardRef<Ref, Props>(
     // Early return after hooks
     if (!props.children) return null;
     
-    return <div>{props.children}</div>;
+    return <Div ref={ref}>{props.children}</Div>;
   }
 );
 
@@ -939,17 +1149,23 @@ export const Component = React.forwardRef<Ref, Props>(
 
 ```typescript
 // Export with inline types (internal only)
-interface ButtonProps {
-  variant?: 'primary' | 'secondary'
-  children: React.ReactNode
+import React from "react";
+import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type ButtonRef = ButtonComponentRef;
+interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   // Internal props hidden from consumers
   _internalState?: string
   _debugMode?: boolean
 }
 
-export const Button = function Button(props: ButtonProps) {
-  // Component implementation
-}
+export const Button = React.forwardRef<ButtonRef, ButtonProps>(
+  function Button(props, ref) {
+    // Component implementation
+    return <ButtonComponent ref={ref} {...props} />;
+  }
+);
 
 // Import (only component, no type access)
 import { Button } from '@/components/ui/atoms/button'
@@ -969,16 +1185,22 @@ type ButtonProps = React.ComponentProps<typeof Button>
 
 ```typescript
 // Export with inline types (internal only)
-interface ButtonProps {
-  variant?: 'primary' | 'secondary'
-  children: React.ReactNode
+import React from "react";
+import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type ButtonRef = ButtonComponentRef;
+interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   // Internal implementation details hidden
   _internalState?: string
 }
 
-const Button = function Button(props: ButtonProps) {
-  // Component implementation
-}
+const Button = React.forwardRef<ButtonRef, ButtonProps>(
+  function Button(props, ref) {
+    // Component implementation
+    return <ButtonComponent ref={ref} {...props} />;
+  }
+);
 export default Button
 
 // Import (only component, no type access)
@@ -1002,7 +1224,7 @@ export const Button = function Button() { /* ... */ }
 export const Card = function Card() { /* ... */ }
 ```
 
-## 🔒 Security Benefits of Type Organization
+## 🔒 Security & Type Safety
 
 ### 1. **Information Hiding**
 
@@ -1010,7 +1232,10 @@ export const Card = function Card() { /* ... */ }
 
 ```typescript
 // ❌ Exposing internal structure
-export interface ButtonProps {
+import { type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+export interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant?: 'primary' | 'secondary'
   size?: 'sm' | 'md' | 'lg'
   children: React.ReactNode
@@ -1033,7 +1258,10 @@ const props: ButtonProps = {
 
 ```typescript
 // ✅ Hiding internal structure (Inline approach)
-interface ButtonProps {
+import { type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant?: 'primary' | 'secondary'
   size?: 'sm' | 'md' | 'lg'
   children: React.ReactNode
@@ -1149,13 +1377,17 @@ export const Button = function Button(props: ButtonProps) { ... }
 
 ```typescript
 // ❌ Consumers depend on internal types
-export interface ButtonProps {
+import { type ButtonProps as ButtonComponentProps } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+export interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant: 'primary' | 'secondary'
   size: 'sm' | 'md' | 'lg'
 }
 
 // Consumer code breaks when you change implementation
 import type { ButtonProps } from '@/components/ui/atoms/button'
+import { Button } from '@/components/ui/atoms/button'
 const props: ButtonProps = {
   variant: 'primary',
   size: 'md'
@@ -1167,7 +1399,10 @@ const props: ButtonProps = {
 
 ```typescript
 // ✅ Consumers can't depend on internal types
-interface ButtonProps {
+import { type ButtonProps as ButtonComponentProps } from "@guyromellemagayano/components";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant: 'primary' | 'secondary'
   size: 'sm' | 'md' | 'lg'
 }
@@ -1191,7 +1426,13 @@ import { Button } from '@/components/ui/atoms/button'
 
 ```typescript
 // Secure component with hidden internals
-interface SecureButtonProps {
+import React from "react";
+import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import { logInfo } from "@guyromellemagayano/logger";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+type SecureButtonRef = ButtonComponentRef;
+interface SecureButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   children: React.ReactNode
   onClick?: () => void
   // Internal security features hidden
@@ -1200,27 +1441,118 @@ interface SecureButtonProps {
   _auditLogId?: string
 }
 
-export const SecureButton = function SecureButton(props: SecureButtonProps) {
-  // Internal security validation
-  const { _csrfToken, _rateLimitKey, _auditLogId, ...publicProps } = props
-  
-  // Security checks
-  if (!_csrfToken) throw new Error('CSRF token required')
-  if (!_rateLimitKey) throw new Error('Rate limit key required')
-  
-  return (
-    <button 
-      {...publicProps}
-      data-csrf={_csrfToken}
-      data-rate-limit={_rateLimitKey}
-    />
-  )
-}
+export const SecureButton = React.forwardRef<SecureButtonRef, SecureButtonProps>(
+  function SecureButton(props, ref) {
+    // Internal security validation
+    const { _csrfToken, _rateLimitKey, _auditLogId, ...publicProps } = props
+    
+    // Security checks
+    if (!_csrfToken) throw new Error('CSRF token required')
+    if (!_rateLimitKey) throw new Error('Rate limit key required')
+    
+    // Log security validation
+    logInfo(`SecureButton validated with CSRF token: ${_csrfToken?.substring(0, 8)}...`);
+    
+    return (
+      <ButtonComponent 
+        ref={ref}
+        {...publicProps}
+        data-csrf={_csrfToken}
+        data-rate-limit={_rateLimitKey}
+      />
+    )
+  }
+);
 
 // Consumers can't access security internals
 import { SecureButton } from '@/components/ui/atoms/secure-button'
 // No way to bypass security checks or manipulate internal state
 ```
+
+## ✅ Compliance Standards
+
+All components in this codebase must comply with the following standards:
+
+### **Type Organization Compliance**
+
+- ✅ **Inline types only** - No separate type files, no exceptions
+- ✅ **Import types directly** from external packages when needed
+- ✅ **Keep types internal** - Only export components, never types
+- ✅ **Use TypeScript imports** - `import type { ... }` for type-only imports
+
+### **Component Structure Compliance**
+
+- ✅ **Use React.forwardRef** for all components that need ref forwarding
+- ✅ **Always call hooks at the top level** - No conditional hook calls
+- ✅ **Use early return patterns** for performance optimization
+- ✅ **Use cross-environment safety** - `globalThis?.process?.env?.NODE_ENV`
+- ✅ **Set displayName** for all components
+
+### **File Organization Compliance**
+
+- ✅ **Feature-first organization** - Group by business features
+- ✅ **Consistent naming** - kebab-case for files, PascalCase for components
+- ✅ **Index files** - Export through index files for clean imports
+- ✅ **CSS modules** - Use CSS modules for all styling
+
+### **Security Compliance**
+
+- ✅ **Minimal API surface** - Only export what's necessary
+- ✅ **Hide internal implementation** - Don't expose internal types or props
+- ✅ **Type inference** - Use `typeof` and `React.ComponentProps` when needed
+- ✅ **Controlled exports** - Only export components, not implementation details
+
+## 🔍 Verification Checklist
+
+All components must pass the following verification checklist:
+
+### **Type Safety Verification**
+
+- [ ] **Inline types only** - No separate `@types` or `models` folders
+- [ ] **No exported types** - Only components are exported
+- [ ] **Type imports correct** - Using `import type` for external types
+- [ ] **Type inference working** - `typeof Component` works correctly
+- [ ] **No type conflicts** - All TypeScript errors resolved
+
+### **Component Structure Verification**
+
+- [ ] **React.forwardRef used** - For components that need ref forwarding
+- [ ] **Hooks at top level** - No conditional hook calls
+- [ ] **Early returns implemented** - Performance optimization in place
+- [ ] **Cross-environment safe** - Using `globalThis` for environment checks
+- [ ] **displayName set** - For debugging purposes
+
+### **File Organization Verification**
+
+- [ ] **Feature-first structure** - Components organized by business features
+- [ ] **Consistent naming** - Files use kebab-case, components use PascalCase
+- [ ] **Index files present** - Clean exports through index files
+- [ ] **CSS modules used** - All styling uses CSS modules
+- [ ] **No redundant files** - No separate type files or unnecessary folders
+
+### **Security Verification**
+
+- [ ] **Minimal API surface** - Only necessary exports
+- [ ] **Internal types hidden** - No exposed implementation details
+- [ ] **Type inference only** - No direct type imports by consumers
+- [ ] **Controlled exports** - Only components exported, not types
+- [ ] **No internal props exposed** - Internal props not in public interface
+
+### **Testing Verification**
+
+- [ ] **95%+ code coverage** - Comprehensive test coverage
+- [ ] **All tests passing** - No failing or flaky tests
+- [ ] **Fast execution** - Tests run quickly (< 50ms per file)
+- [ ] **Edge cases covered** - Error handling and boundary conditions tested
+- [ ] **Integration tests** - Component interactions tested
+
+### **Performance Verification**
+
+- [ ] **Bundle size optimized** - No unnecessary dependencies
+- [ ] **Tree shaking working** - Only used code included
+- [ ] **Lazy loading implemented** - Large components lazy loaded
+- [ ] **CSS modules optimized** - Scoped styles working correctly
+- [ ] **No memory leaks** - Proper cleanup in useEffect hooks
 
 ## ✅ Best Practices
 
