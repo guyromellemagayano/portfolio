@@ -7,24 +7,16 @@ A reusable section component for rendering visually distinct, accessible section
 
 ```bash
 section/
-├── Section.tsx          # Main component implementation
+├── Section.tsx          # Main component implementation with inline types
 ├── Section.module.css   # Scoped styles using CSS modules
 ├── index.ts            # Component exports
-├── @types/Section.ts   # Type definitions (complex component pattern)
-├── __tests__/          # Comprehensive test suite
+├── Section.test.tsx    # Comprehensive test suite using Vitest
 └── README.md           # This documentation
 ```
 
 ## 🏗️ Architecture
 
-This component follows the **"Separate type files for complex components with external dependencies"** pattern as outlined in our development standards.
-
-### Why Separate Type Files?
-
-- **External Dependencies**: Depends on `@guyromellemagayano/components`
-- **Shared Types**: Extends multiple base interfaces
-- **Complex Type Relationships**: Requires proper type composition
-- **Maintainability**: Easier to manage complex type hierarchies
+This component follows the **"inline types for all components"** pattern and uses **early return patterns** for performance optimization. For detailed information about these architectural patterns, see the [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns) section in the Development Optimization Guide.
 
 ## 🚀 Features
 
@@ -41,11 +33,12 @@ This component follows the **"Separate type files for complex components with ex
 
 ```typescript
 import { Section } from '@/components/section'
+import { Paragraph } from '@guyromellemagayano/components'
 
 function MyPage() {
   return (
     <Section title="About Us">
-      <p>This is the about section content.</p>
+      <Paragraph>This is the about section content.</Paragraph>
     </Section>
   )
 }
@@ -119,22 +112,7 @@ The component uses CSS modules with Tailwind CSS integration:
 
 ## 🔒 Security & Type Safety
 
-### Type Organization
-
-This component follows the **complex component pattern** with separate type files:
-
-- **External Dependencies**: Properly typed with `@guyromellemagayano/components`
-- **Shared Types**: Extends `CommonWebAppComponentProps` for internal props
-- **Controlled Exports**: Only necessary types are exported
-- **Internal Props**: Inherited from `CommonWebAppComponentProps` (not explicitly defined in interface)
-- **Type Inference**: Supports `typeof` and `React.ComponentProps` for prop types
-
-### Security Benefits
-
-- **API Surface Reduction**: Minimal exposed interfaces
-- **Information Hiding**: Internal implementation details protected
-- **Type Safety**: Compile-time error prevention
-- **Controlled Access**: Internal props available but not promoted
+This component follows security best practices by using inline types and hiding internal implementation details. For detailed information about security patterns and type safety, see the [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety) section in the Development Optimization Guide.
 
 ## 🔧 Implementation Details
 
@@ -178,19 +156,6 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 );
 ```
 
-### Type Definitions
-
-```typescript
-// @types/Section.ts - Type definitions
-import type { SectionProps as SectionComponentProps, SectionRef as SectionComponentRef } from '@guyromellemagayano/components';
-import type { CommonWebAppComponentProps } from '@web/@types/components';
-
-/** Section component reference type. */
-export type SectionRef = SectionComponentRef;
-
-/** Section component props interface. */
-export interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
-```
 
 ### CSS Module Structure
 
@@ -227,26 +192,9 @@ Comprehensive test coverage in `__tests__/Section.test.tsx` (570 lines):
 - **Edge Cases**: Complex children, React elements, multiple children
 - **Error Handling**: Various edge cases and error scenarios
 
-## 📋 Compliance
-
-This component is fully compliant with our development standards:
-
-- ✅ **React.forwardRef**: Proper ref forwarding implementation
-- ✅ **Early Return Pattern**: Performance optimization for conditional rendering
-- ✅ **Cross-Environment Safety**: `globalThis` usage for environment detection
-- ✅ **Hook Rules Compliance**: All hooks called at top level
-- ✅ **Type Organization**: Separate type files for complex components
-- ✅ **Security Principles**: Controlled type exports and internal prop hiding
-- ✅ **CSS Modules**: Scoped styling with Tailwind integration
-- ✅ **Comprehensive Testing**: High test coverage with various scenarios
-- ✅ **Documentation**: **JSDoc** comments and README documentation
-
-## 🔄 Migration Notes
-
-This component serves as a **reference implementation** for complex components with external dependencies. For simpler components, consider using the **inline types pattern** instead.
-
 ## 📚 Related Documentation
 
 - [Development Optimization Guide](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md)
-- [Component Standards](../../../../../docs/components/COMPONENT_STANDARDS.md)
-- [Testing Standards](../../../../../docs/components/TESTING.md)
+- [Component Architecture Patterns](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#️-component-architecture-patterns)
+- [Security & Type Safety](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-security--type-safety)
+- [Testing with Vitest](../../../../../docs/apps/DEVELOPMENT_OPTIMIZATION_GUIDE.md#-testing-with-vitest)
