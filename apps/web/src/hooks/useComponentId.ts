@@ -2,52 +2,12 @@ import { useId } from "react";
 
 import { logInfo } from "@guyromellemagayano/logger";
 
-interface UseComponentIdOptions {
-  internalId?: string;
-  debugMode?: boolean;
-}
-
-interface UseComponentIdReturn {
-  id: string;
-  isDebugMode: boolean;
-}
-
-/**
- * Shared hook for component ID generation and debug logging.
- * Automatically detects component name from calling context.
- */
-export function useComponentId({
-  internalId,
-  debugMode = false,
-}: UseComponentIdOptions = {}): UseComponentIdReturn {
-  // Always call hooks at the top level
-  const generatedId = useId();
-  const id = internalId || generatedId;
-
-  // Auto-detect component name from export const declaration
-  const detectedComponentName = getComponentNameFromStack();
-
-  // Cross-environment safety for debug logging
-  const isDebugMode =
-    debugMode && globalThis?.process?.env?.NODE_ENV === "development";
-
-  // Internal debug logging
-  if (isDebugMode) {
-    logInfo(`${detectedComponentName} rendered with ID: ${id}`);
-  }
-
-  return {
-    id,
-    isDebugMode,
-  };
-}
-
 /**
  * Attempts to extract component name from the call stack.
  * Looks for the actual exported component name, not displayName.
  * Falls back to "Component" if unable to detect.
  */
-function getComponentNameFromStack(): string {
+const getComponentNameFromStack = (): string => {
   try {
     // Get the call stack
     const stack = new Error().stack;
@@ -93,4 +53,43 @@ function getComponentNameFromStack(): string {
   }
 
   return "Component";
+};
+
+interface UseComponentIdOptions {
+  internalId?: string;
+  debugMode?: boolean;
 }
+interface UseComponentIdReturn {
+  id: string;
+  isDebugMode: boolean;
+}
+
+/**
+ * Shared hook for component ID generation and debug logging.
+ * Automatically detects component name from calling context.
+ */
+export const useComponentId = ({
+  internalId,
+  debugMode = false,
+}: UseComponentIdOptions = {}): UseComponentIdReturn => {
+  // Always call hooks at the top level
+  const generatedId = useId();
+  const id = internalId || generatedId;
+
+  // Auto-detect component name from export const declaration
+  const detectedComponentName = getComponentNameFromStack();
+
+  // Cross-environment safety for debug logging
+  const isDebugMode =
+    debugMode && globalThis?.process?.env?.NODE_ENV === "development";
+
+  // Internal debug logging
+  if (isDebugMode) {
+    logInfo(`${detectedComponentName} rendered with ID: ${id}`);
+  }
+
+  return {
+    id,
+    isDebugMode,
+  };
+};
