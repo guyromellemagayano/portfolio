@@ -3,13 +3,13 @@ import React from "react";
 import {
   Div,
   Heading,
-  Section as SectionComponent,
+  Section as GRMSectionComponent,
   type SectionProps as SectionComponentProps,
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
 
-import { CommonWebAppComponentProps } from "@web/@types/components";
-import { useComponentId } from "@web/hooks";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib";
 
 import styles from "./Section.module.css";
@@ -19,8 +19,12 @@ interface SectionProps
   extends SectionComponentProps,
     CommonWebAppComponentProps {}
 
-/** Section component for rendering a visually distinct, accessible section of content. */
-export const Section = React.forwardRef<SectionRef, SectionProps>(
+type SectionComponent = React.ForwardRefExoticComponent<
+  SectionProps & React.RefAttributes<SectionRef>
+>;
+
+/** A layout section component with optional title and content, styled for web app usage. */
+export const Section: SectionComponent = React.forwardRef(
   function Section(props, ref) {
     const { title, children, className, _internalId, _debugMode, ...rest } =
       props;
@@ -37,9 +41,9 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 
     // Render the section with the provided title and children
     const element = (
-      <SectionComponent
-        ref={ref}
+      <GRMSectionComponent
         {...rest}
+        ref={ref}
         aria-labelledby={id}
         className={cn(styles.section, className)}
         data-section-id={id}
@@ -54,7 +58,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 
           {children && <Div className={styles.sectionContent}>{children}</Div>}
         </Div>
-      </SectionComponent>
+      </GRMSectionComponent>
     );
 
     return element;
