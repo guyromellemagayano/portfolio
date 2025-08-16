@@ -1,19 +1,21 @@
 @reference "tailwindcss";
 
-/* Container outer wrapper - max-width 7xl */
+/* Container outer wrapper */
 .containerOuter {
   @apply sm:px-8;
 }
 
+/* Container outer content */
 .containerOuterContent {
   @apply mx-auto w-full max-w-7xl lg:px-8;
 }
 
-/* Container inner wrapper - max-width 2xl */
+/* Container inner wrapper */
 .containerInner {
   @apply relative px-4 sm:px-8 lg:px-12;
 }
 
+/* Container inner content */
 .containerInnerContent {
   @apply mx-auto max-w-2xl lg:max-w-5xl;
 }
