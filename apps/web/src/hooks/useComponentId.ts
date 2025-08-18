@@ -7,7 +7,7 @@ import { logInfo } from "@guyromellemagayano/logger";
  * Looks for the actual exported component name, not displayName.
  * Falls back to "Component" if unable to detect.
  */
-const getComponentNameFromStack = (): string => {
+function getComponentNameFromStack(): string {
   try {
     // Get the call stack
     const stack = new Error().stack;
@@ -53,7 +53,7 @@ const getComponentNameFromStack = (): string => {
   }
 
   return "Component";
-};
+}
 
 interface UseComponentIdOptions {
   internalId?: string;
@@ -68,10 +68,10 @@ interface UseComponentIdReturn {
  * Shared hook for component ID generation and debug logging.
  * Automatically detects component name from calling context.
  */
-export const useComponentId = ({
+export function useComponentId({
   internalId,
   debugMode = false,
-}: UseComponentIdOptions = {}): UseComponentIdReturn => {
+}: UseComponentIdOptions = {}): UseComponentIdReturn {
   // Always call hooks at the top level
   const generatedId = useId();
   const id = internalId || generatedId;
@@ -92,4 +92,4 @@ export const useComponentId = ({
     id,
     isDebugMode,
   };
-};
+}
