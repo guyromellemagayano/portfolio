@@ -518,17 +518,17 @@ interface HeaderProps extends HeaderComponentProps, CommonWebAppComponentProps {
   isMemoized?: boolean;
 }
 
-/** A base header component (client, minimal effects split out). */
-const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
-  function BaseHeader(props, ref) {
-    const { className, _internalId, _debugMode, ...rest } = props;
+interface InternalHeaderProps extends HeaderProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
 
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
+/** A base header component (client, minimal effects split out). */
+const BaseHeader = React.forwardRef<HeaderRef, InternalHeaderProps>(
+  function BaseHeader(props, ref) {
+    const { className, componentId, isDebugMode, ...rest } = props;
 
     const isHomePage = usePathname() === "/";
 
@@ -546,7 +546,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
             height: "var(--header-height)",
             marginBottom: "var(--header-mb)",
           }}
-          data-header-id={id}
+          data-header-id={componentId}
           data-debug-mode={isDebugMode ? "true" : undefined}
           data-testid="header-root"
         >
@@ -655,13 +655,22 @@ BaseHeader.displayName = "BaseHeader";
 
 /** A memoized header component. */
 const MemoizedHeader = React.memo(
-  React.forwardRef<HeaderRef, HeaderProps>(function MemoizedHeader(props, ref) {
-    const { ...rest } = props;
+  React.forwardRef<HeaderRef, InternalHeaderProps>(
+    function MemoizedHeader(props, ref) {
+      const { componentId, isDebugMode, ...rest } = props;
 
-    const element = <BaseHeader {...rest} ref={ref} />;
+      const element = (
+        <BaseHeader
+          {...rest}
+          ref={ref}
+          componentId={componentId}
+          isDebugMode={isDebugMode}
+        />
+      );
 
-    return element;
-  })
+      return element;
+    }
+  )
 );
 
 MemoizedHeader.displayName = "MemoizedHeader";
@@ -669,12 +678,29 @@ MemoizedHeader.displayName = "MemoizedHeader";
 /** Public header component. */
 export const Header = React.forwardRef<HeaderRef, HeaderProps>(
   function Header(props, ref) {
-    const { isMemoized = false, ...rest } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+    // Use shared hook for ID generation and debug logging
+    // Component name will be auto-detected from export const declaration
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
 
     const element = isMemoized ? (
-      <MemoizedHeader {...rest} ref={ref} />
+      <MemoizedHeader
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
     ) : (
-      <BaseHeader {...rest} ref={ref} />
+      <BaseHeader
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
     );
 
     return element;
