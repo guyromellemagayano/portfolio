@@ -1,7 +1,29 @@
-import type {
-  FooterComponentLabels,
-  FooterComponentNavLinks,
-} from "@web/components/footer";
+import type { Route } from "next";
+
+/** Internal href. */
+type InternalHref = Route | (string & {});
+
+/** Footer link. */
+export type FooterLink =
+  | { kind: "internal"; label: string; href: InternalHref }
+  | {
+      kind: "external";
+      label: string;
+      href: string;
+      newTab?: boolean;
+      rel?: string;
+    };
+
+/** For config labels shape. */
+export type FooterComponentLabels = Readonly<{
+  brandName: string;
+  legalText: string;
+}>;
+
+/** Convenience alias when you only need internal links. */
+export type FooterComponentNavLinks = ReadonlyArray<
+  Extract<FooterLink, { kind: "internal" }>
+>;
 
 /** Brand used by the footer (override via data layer later if needed). */
 export const BRAND_NAME = "Guy Romelle Magayano";
