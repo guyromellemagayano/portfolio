@@ -21,6 +21,10 @@ type IconsComponent = CommonIconComponent & {
   Instagram: CommonIconComponent;
   LinkedIn: CommonIconComponent;
   GitHub: CommonIconComponent;
+  Close: CommonIconComponent;
+  ChevronDown: CommonIconComponent;
+  Sun: CommonIconComponent;
+  Moon: CommonIconComponent;
 };
 
 /** Generic icon component for rendering SVG icons with shared props and features. */
@@ -40,7 +44,9 @@ export const Icon: IconsComponent = React.forwardRef(function Icon(props, ref) {
     debugMode: _debugMode,
   });
 
-  return (
+  if (!children) return null;
+
+  const element = (
     <Component
       {...rest}
       ref={ref}
@@ -50,6 +56,8 @@ export const Icon: IconsComponent = React.forwardRef(function Icon(props, ref) {
       {children}
     </Component>
   );
+
+  return element;
 }) as IconsComponent;
 
 Icon.displayName = "Icon";
@@ -58,11 +66,13 @@ Icon.displayName = "Icon";
 const XIcon: CommonIconComponent = React.forwardRef(function XIcon(props, ref) {
   const { ...rest } = props;
 
-  return (
-    <Svg {...rest} ref={ref}>
+  const element = (
+    <Svg {...rest} ref={ref} viewBox="0 0 24 24" aria-hidden="true">
       <path d="M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z" />
     </Svg>
   );
+
+  return element;
 });
 
 XIcon.displayName = "XIcon";
@@ -72,12 +82,14 @@ const InstagramIcon: CommonIconComponent = React.forwardRef(
   function InstagramIcon(props, ref) {
     const { ...rest } = props;
 
-    return (
-      <Svg {...rest} ref={ref}>
+    const element = (
+      <Svg {...rest} ref={ref} viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 3c-2.444 0-2.75.01-3.71.054-.959.044-1.613.196-2.185.418A4.412 4.412 0 0 0 4.51 4.511c-.5.5-.809 1.002-1.039 1.594-.222.572-.374 1.226-.418 2.184C3.01 9.25 3 9.556 3 12s.01 2.75.054 3.71c.044.959.196 1.613.418 2.185.23.592.538 1.094 1.039 1.595.5.5 1.002.808 1.594 1.038.572.222 1.226.374 2.184.418C9.25 20.99 9.556 21 12 21s2.75-.01 3.71-.054c.959-.044 1.613-.196 2.185-.419a4.412 4.412 0 0 0 1.595-1.038c.5-.5.808-1.002 1.038-1.594.222-.572.374-1.226.418-2.184.044-.96.054-1.267.054-3.711s-.01-2.75-.054-3.71c-.044-.959-.196-1.613-.419-2.185A4.412 4.412 0 0 0 19.49 4.51c-.5-.5-1.002-.809-1.594-1.039-.572-.222-1.226-.374-2.184-.418C14.75 3.01 14.444 3 12 3Zm0 1.622c2.403 0 2.688.009 3.637.052.877.04 1.354.187 1.67.31.421.163.72.358 1.036.673.315.315.51.615.673 1.035.123.317.27.794.31 1.671.043.95.052 1.234.052 3.637s-.009 2.688-.052 3.637c-.04.877-.187 1.354-.31 1.67-.163.421-.358.72-.673 1.036a2.79 2.79 0 0 1-1.035.673c-.317.123-.794.27-1.671.31-.95.043-1.234.052-3.637.052s-2.688-.009-3.637-.052c-.877-.04-1.354-.187-1.67-.31a2.789 2.789 0 0 1-1.036-.673 2.79 2.79 0 0 1-.673-1.035c-.123-.317-.27-.794-.31-1.671-.043-.95-.052-1.234-.052-3.637s.009-2.688.052-3.637c.04-.877.187-1.354.31-1.67.163-.421.358-.72.673-1.036.315-.315.615-.51 1.035-.673.317-.123.794-.27 1.671-.31.95-.043 1.234-.052 3.637-.052Z" />
         <path d="M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0-7.622a4.622 4.622 0 1 0 0 9.244 4.622 4.622 0 0 0 0-9.244Zm5.884-.182a1.08 1.08 0 1 1-2.16 0 1.08 1.08 0 0 1 2.16 0Z" />
       </Svg>
     );
+
+    return element;
   }
 );
 
@@ -88,11 +100,13 @@ const LinkedInIcon: CommonIconComponent = React.forwardRef(
   function LinkedInIcon(props, ref) {
     const { ...rest } = props;
 
-    return (
-      <Svg {...rest} ref={ref}>
+    const element = (
+      <Svg {...rest} ref={ref} viewBox="0 0 24 24" aria-hidden="true">
         <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z" />
       </Svg>
     );
+
+    return element;
   }
 );
 
@@ -103,8 +117,8 @@ const GitHubIcon: CommonIconComponent = React.forwardRef(
   function GitHubIcon(props, ref) {
     const { ...rest } = props;
 
-    return (
-      <Svg {...rest} ref={ref}>
+    const element = (
+      <Svg {...rest} ref={ref} viewBox="0 0 24 24" aria-hidden="true">
         <path
           fillRule="evenodd"
           clipRule="evenodd"
@@ -112,12 +126,142 @@ const GitHubIcon: CommonIconComponent = React.forwardRef(
         />
       </Svg>
     );
+
+    return element;
   }
 );
 
 GitHubIcon.displayName = "GitHubIcon";
 
+/** Close icon. */
+const CloseIcon: CommonIconComponent = React.forwardRef(
+  function CloseIcon(props, ref) {
+    const { ...rest } = props;
+
+    const element = (
+      <Svg {...rest} ref={ref} viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="m17.25 6.75-10.5 10.5m0-10.5 10.5 10.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    );
+
+    return element;
+  }
+);
+
+CloseIcon.displayName = "CloseIcon";
+
+/** Chevron down icon. */
+const ChevronDownIcon: CommonIconComponent = React.forwardRef(
+  function ChevronDownIcon(props, ref) {
+    const { ...rest } = props;
+
+    const element = (
+      <Svg
+        {...rest}
+        ref={ref}
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="m6 9 6 6 6-6"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    );
+
+    return element;
+  }
+);
+
+ChevronDownIcon.displayName = "ChevronDownIcon";
+
+/** Sun icon. */
+const SunIcon: CommonIconComponent = React.forwardRef(
+  function SunIcon(props, ref) {
+    const { ...rest } = props;
+
+    const element = (
+      <Svg
+        {...rest}
+        ref={ref}
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="3.25"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    );
+
+    return element;
+  }
+);
+
+SunIcon.displayName = "SunIcon";
+
+/** Moon icon. */
+const MoonIcon: CommonIconComponent = React.forwardRef(
+  function MoonIcon(props, ref) {
+    const { ...rest } = props;
+
+    const element = (
+      <Svg
+        {...rest}
+        ref={ref}
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    );
+
+    return element;
+  }
+);
+
+MoonIcon.displayName = "MoonIcon";
+
 Icon.X = XIcon;
 Icon.Instagram = InstagramIcon;
 Icon.LinkedIn = LinkedInIcon;
 Icon.GitHub = GitHubIcon;
+Icon.Close = CloseIcon;
+Icon.ChevronDown = ChevronDownIcon;
+Icon.Sun = SunIcon;
+Icon.Moon = MoonIcon;
