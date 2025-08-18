@@ -218,6 +218,7 @@ const HeaderThemeToggle: ThemeToggleComponent = React.forwardRef(
     const element = useMemo(
       () => (
         <Button
+          {...rest}
           ref={ref}
           data-testid="mock-button"
           aria-label={
@@ -228,7 +229,6 @@ const HeaderThemeToggle: ThemeToggleComponent = React.forwardRef(
           className={styles.headerThemeToggleButton}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
-          {...rest}
         >
           <Icon.Sun className={styles.headerThemeToggleSunIcon} />
           <Icon.Moon className={styles.headerThemeToggleMoonIcon} />
@@ -318,7 +318,7 @@ const DesktopHeaderNav: DesktopHeaderNavComponent = React.forwardRef(
     const { ...rest } = props;
 
     const element = (
-      <Nav ref={ref} {...rest}>
+      <Nav {...rest} ref={ref}>
         <Ul className={styles.desktopHeaderNavList}>
           {DESKTOP_HEADER_NAV_LINKS.map((link) => (
             <DesktopHeaderNavItem
@@ -367,7 +367,7 @@ const MobileHeaderNavItem: MobileHeaderNavItemComponent = React.forwardRef(
     if (!children && !href) return null;
 
     const element = (
-      <Li ref={ref} {...rest}>
+      <Li {...rest} ref={ref}>
         <Link
           href={href}
           target={target}
@@ -409,7 +409,7 @@ const DesktopHeaderNavItem: DesktopHeaderNavItemComponent = React.forwardRef(
     if (!children && !href) return null;
 
     const element = (
-      <Li ref={ref} {...rest}>
+      <Li {...rest} ref={ref}>
         <Link
           href={href}
           target={target}
@@ -449,9 +449,9 @@ const AvatarContainer: AvatarContainerComponent = React.forwardRef(
 
     const element = (
       <Div
+        {...rest}
         ref={ref}
         className={cn(styles.avatarContainer, className)}
-        {...rest}
       />
     );
 
@@ -539,6 +539,7 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
     const element = (
       <>
         <HeaderComponent
+          {...rest}
           ref={ref}
           className={cn(styles.headerComponent, className)}
           style={{
@@ -547,7 +548,6 @@ const BaseHeader = React.forwardRef<HeaderRef, HeaderProps>(
           }}
           data-header-id={id}
           data-debug-mode={isDebugMode ? "true" : undefined}
-          {...rest}
           data-testid="header-root"
         >
           {isHomePage && (
@@ -658,7 +658,7 @@ const MemoizedHeader = React.memo(
   React.forwardRef<HeaderRef, HeaderProps>(function MemoizedHeader(props, ref) {
     const { ...rest } = props;
 
-    const element = <BaseHeader ref={ref} {...rest} />;
+    const element = <BaseHeader {...rest} ref={ref} />;
 
     return element;
   })
@@ -672,9 +672,9 @@ export const Header = React.forwardRef<HeaderRef, HeaderProps>(
     const { isMemoized = false, ...rest } = props;
 
     const element = isMemoized ? (
-      <MemoizedHeader ref={ref} {...rest} />
+      <MemoizedHeader {...rest} ref={ref} />
     ) : (
-      <BaseHeader ref={ref} {...rest} />
+      <BaseHeader {...rest} ref={ref} />
     );
 
     return element;
