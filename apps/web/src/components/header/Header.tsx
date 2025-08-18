@@ -118,7 +118,7 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
       }
     }
 
-    function updateAvatarStyles() {
+    function updateAvatarStyles(): void {
       if (!isHomePage) return;
 
       const fromScale = 1;
@@ -147,7 +147,7 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
       setProperty("--avatar-border-opacity", scale === toScale ? "1" : "0");
     }
 
-    function updateStyles() {
+    function updateStyles(): void {
       // Recompute `downDelay` in case layout shifted after hydration
       downDelay = avatarEl.current?.offsetTop ?? 0;
       updateHeaderStyles();
@@ -157,7 +157,7 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
 
     // rAF throttle
     let raf = 0;
-    const onScrollResize = () => {
+    const onScrollResize = (): void => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         updateStyles();
