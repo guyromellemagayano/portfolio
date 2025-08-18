@@ -24,3 +24,13 @@
 .footerLegalText {
   @apply text-sm text-zinc-400 dark:text-zinc-500;
 }
+
+/* Footer navigation link base */
+.footerNavLink {
+  @apply transition hover:text-teal-500 dark:hover:text-teal-400;
+}
+
+/* Footer navigation link active state */
+.footerNavLinkActive {
+  @apply text-teal-600 dark:text-teal-300;
+}
