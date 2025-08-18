@@ -1,82 +1,128 @@
+"use client";
+
 import React from "react";
 
 import {
-  Div,
   Footer as FooterComponent,
-  Li,
-  Nav,
-  P,
-  Ul,
+  type FooterProps as FooterComponentProps,
+  type FooterRef as FooterComponentRef,
 } from "@guyromellemagayano/components";
 
-import { ContainerInner, ContainerOuter } from "@web/components/container";
+import type { CommonWebAppComponentProps } from "@web/@types/components";
 import {
-  FOOTER_COMPONENT_LABELS,
   FOOTER_COMPONENT_NAV_LINKS,
-  type FooterData,
   type FooterLink,
-  FooterNavLink,
-  type FooterProps,
-  type FooterRef,
-} from "@web/components/footer";
+} from "@web/components/footer/Footer.data";
+import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib";
 
 import styles from "./Footer.module.css";
 
-/** Server component: pure shell; tiny client leaf handles active state. */
-export const Footer = React.forwardRef<FooterRef, FooterProps>(
-  function Footer(props, ref) {
-    const { className, ...rest } = props;
+type FooterRef = FooterComponentRef;
 
-    // default static data; parent may pass dynamic `data` later if desired
-    const data: FooterData = {
-      brandName: FOOTER_COMPONENT_LABELS.brandName,
-      nav: FOOTER_COMPONENT_NAV_LINKS,
-      legalText: FOOTER_COMPONENT_LABELS.legalText,
-      year: new Date().getFullYear(),
-    };
+interface FooterProps extends FooterComponentProps, CommonWebAppComponentProps {
+  /** Optional custom brand name override */
+  brandName?: string;
+  /** Optional custom legal text override */
+  legalText?: string;
+  /** Optional navigation links override */
+  navLinks?: ReadonlyArray<FooterLink>;
+}
 
-    return (
+interface InternalFooterProps extends FooterProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
+
+/** Internal footer component with all props */
+const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
+  function InternalFooter(props, ref) {
+    const {
+      className,
+      componentId,
+      isDebugMode,
+      brandName = "Guy Romelle Magayano",
+      legalText = "All rights reserved.",
+      navLinks = FOOTER_COMPONENT_NAV_LINKS,
+      ...rest
+    } = props;
+
+    const element = (
       <FooterComponent
+        {...rest}
         ref={ref}
         className={cn(styles.footerComponent, className)}
-        {...rest}
+        data-footer-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="footer-root"
       >
-        <ContainerOuter>
-          <Div className={styles.footerContentWrapper}>
-            <ContainerInner>
-              <Div className={styles.footerLayout}>
-                <Nav aria-label="Footer">
-                  <Ul className={styles.footerNavigationList}>
-                    {data.nav.map((link: FooterLink) => (
-                      <Li key={`${link.label}:${link.href}`}>
-                        {/* Client leaf – applies aria-current and external safety */}
-                        {"kind" in link && link.kind === "external" ? (
-                          <FooterNavLink
-                            href={link.href}
-                            target={link.newTab ? "_blank" : undefined}
-                            rel={link.rel}
-                          >
-                            {link.label}
-                          </FooterNavLink>
-                        ) : (
-                          <FooterNavLink href={link.href}>
-                            {link.label}
-                          </FooterNavLink>
-                        )}
-                      </Li>
-                    ))}
-                  </Ul>
-                </Nav>
-                <P className={styles.footerLegalText}>
-                  © {data.year} {data.legalText}
-                </P>
-              </Div>
-            </ContainerInner>
-          </Div>
-        </ContainerOuter>
+        <div className={styles.footerContent}>
+          <div className={styles.footerBrand}>
+            <span className={styles.brandName}>{brandName}</span>
+            <span className={styles.legalText}>{legalText}</span>
+          </div>
+
+          {navLinks.length > 0 && (
+            <nav className={styles.footerNav}>
+              <ul className={styles.navList}>
+                {navLinks.map((link) => {
+                  const isExternal = link.kind === "external";
+                  const href = isExternal ? link.href : link.href.toString();
+
+                  return (
+                    <li key={href} className={styles.navItem}>
+                      <a
+                        href={href}
+                        target={isExternal && link.newTab ? "_blank" : "_self"}
+                        rel={
+                          isExternal && link.newTab
+                            ? "noopener noreferrer"
+                            : undefined
+                        }
+                        className={styles.navLink}
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
+          )}
+        </div>
       </FooterComponent>
     );
+
+    return element;
+  }
+);
+
+InternalFooter.displayName = "InternalFooter";
+
+/** Public footer component with useComponentId integration */
+export const Footer = React.forwardRef<FooterRef, FooterProps>(
+  function Footer(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    // Use shared hook for ID generation and debug logging
+    // Component name will be auto-detected from export const declaration
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <InternalFooter
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+
+    return element;
   }
 );
 
