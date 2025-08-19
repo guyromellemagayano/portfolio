@@ -1,0 +1,91 @@
+@reference "tailwindcss";
+
+/* Main card styles */
+.card {
+  /* Add any main card-specific styles here if needed */
+}
+
+/* ============================================================================
+   CARD TITLE STYLES
+   ============================================================================ */
+
+/* Card title text */
+.cardTitle {
+  @apply text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100;
+}
+
+/* ============================================================================
+   CARD LINK STYLES
+   ============================================================================ */
+
+/* Card link heading */
+.cardLinkHeading {
+  @apply mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100;
+}
+
+/* Card link background hover effect */
+.cardLinkBackground {
+  @apply absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50;
+}
+
+/* Card link clickable area */
+.cardLinkClickableArea {
+  @apply absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl;
+}
+
+/* Card link content wrapper */
+.cardLinkContent {
+  @apply relative z-10;
+}
+
+/* ============================================================================
+   CARD DESCRIPTION STYLES
+   ============================================================================ */
+
+/* Card description text */
+.cardDescription {
+  @apply relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400;
+}
+
+/* ============================================================================
+   CARD CTA STYLES
+   ============================================================================ */
+
+/* Main CTA container */
+.cardCtaContainer {
+  @apply relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500;
+}
+
+/* CTA link */
+.cardCtaLink {
+  @apply flex items-center transition hover:text-amber-600 dark:hover:text-amber-600;
+}
+
+/* CTA icon */
+.cardCtaIcon {
+  @apply ml-1 h-4 w-4 stroke-current;
+}
+
+/* ============================================================================
+   CARD EYEBROW STYLES
+   ============================================================================ */
+
+/* Card eyebrow container */
+.cardEyebrow {
+  @apply relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500;
+}
+
+/* Card eyebrow with decoration */
+.cardEyebrowDecorated {
+  @apply pl-3.5;
+}
+
+/* Decoration wrapper */
+.cardEyebrowDecoratorWrapper {
+  @apply absolute inset-y-0 left-0 flex items-center;
+}
+
+/* Decoration line */
+.cardEyebrowDecorator {
+  @apply h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500;
+}
