@@ -5,9 +5,9 @@ import {
   type SvgProps,
   type SvgRef,
 } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { useComponentId } from "@web/hooks/useComponentId";
 
 type IconRef = SvgRef;
 interface IconProps extends SvgProps, CommonWebAppComponentProps {}
@@ -62,6 +62,10 @@ export const Icon: IconsComponent = React.forwardRef(function Icon(props, ref) {
 
 Icon.displayName = "Icon";
 
+// ============================================================================
+// X (Twitter) ICON
+// ============================================================================
+
 /** X (Twitter) icon. */
 const XIcon: CommonIconComponent = React.forwardRef(function XIcon(props, ref) {
   const { ...rest } = props;
@@ -76,6 +80,10 @@ const XIcon: CommonIconComponent = React.forwardRef(function XIcon(props, ref) {
 });
 
 XIcon.displayName = "XIcon";
+
+// ============================================================================
+// INSTAGRAM ICON
+// ============================================================================
 
 /** Instagram icon. */
 const InstagramIcon: CommonIconComponent = React.forwardRef(
@@ -95,6 +103,10 @@ const InstagramIcon: CommonIconComponent = React.forwardRef(
 
 InstagramIcon.displayName = "InstagramIcon";
 
+// ============================================================================
+// LINKEDIN ICON
+// ============================================================================
+
 /** LinkedIn icon. */
 const LinkedInIcon: CommonIconComponent = React.forwardRef(
   function LinkedInIcon(props, ref) {
@@ -111,6 +123,10 @@ const LinkedInIcon: CommonIconComponent = React.forwardRef(
 );
 
 LinkedInIcon.displayName = "LinkedInIcon";
+
+// ============================================================================
+// GITHUB ICON
+// ============================================================================
 
 /** GitHub icon. */
 const GitHubIcon: CommonIconComponent = React.forwardRef(
@@ -132,6 +148,10 @@ const GitHubIcon: CommonIconComponent = React.forwardRef(
 );
 
 GitHubIcon.displayName = "GitHubIcon";
+
+// ============================================================================
+// CLOSE ICON
+// ============================================================================
 
 /** Close icon. */
 const CloseIcon: CommonIconComponent = React.forwardRef(
@@ -156,6 +176,10 @@ const CloseIcon: CommonIconComponent = React.forwardRef(
 );
 
 CloseIcon.displayName = "CloseIcon";
+
+// ============================================================================
+// CHEVRON DOWN ICON
+// ============================================================================
 
 /** Chevron down icon. */
 const ChevronDownIcon: CommonIconComponent = React.forwardRef(
@@ -186,6 +210,10 @@ const ChevronDownIcon: CommonIconComponent = React.forwardRef(
 );
 
 ChevronDownIcon.displayName = "ChevronDownIcon";
+
+// ============================================================================
+// SUN ICON
+// ============================================================================
 
 /** Sun icon. */
 const SunIcon: CommonIconComponent = React.forwardRef(
@@ -226,6 +254,10 @@ const SunIcon: CommonIconComponent = React.forwardRef(
 );
 
 SunIcon.displayName = "SunIcon";
+
+// ============================================================================
+// MOON ICON
+// ============================================================================
 
 /** Moon icon. */
 const MoonIcon: CommonIconComponent = React.forwardRef(
