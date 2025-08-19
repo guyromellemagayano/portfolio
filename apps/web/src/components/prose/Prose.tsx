@@ -5,9 +5,9 @@ import {
   type DivProps,
   type DivRef,
 } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib";
 
 import styles from "./Prose.module.css";
