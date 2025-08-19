@@ -15,9 +15,33 @@ A comprehensive guide for optimizing, standardizing, and streamlining the develo
   - [📋 Implementation Strategy](#-implementation-strategy)
     - [📚 Real-World Implementation: Section Component Evolution](#-real-world-implementation-section-component-evolution)
   - [📚 Component Overview](#-component-overview)
+    - [🏗️ Component Architecture Summary](#️-component-architecture-summary)
+    - [📋 Detailed Component Documentation](#-detailed-component-documentation)
+    - [📊 Component Statistics](#-component-statistics)
+    - [🎯 Component Selection Guide](#-component-selection-guide)
+    - [🔄 Component Evolution](#-component-evolution)
   - [🔄 Migration Guide](#-migration-guide)
     - [Step 4: Type Organization Migration](#step-4-type-organization-migration)
   - [🏗️ Component Architecture Patterns](#️-component-architecture-patterns)
+  - [🔧 Current Codebase Patterns & Conventions](#-current-codebase-patterns--conventions)
+    - [1. useComponentId Hook Integration](#1-usecomponentid-hook-integration)
+    - [2. setDisplayName Utility](#2-setdisplayname-utility)
+    - [3. Internal/External Component Pattern](#3-internalexternal-component-pattern)
+    - [4. Conditional Rendering Pattern](#4-conditional-rendering-pattern)
+    - [5. Data Attributes Pattern](#5-data-attributes-pattern)
+    - [6. CSS Module Integration](#6-css-module-integration)
+    - [7. Type Import Patterns](#7-type-import-patterns)
+    - [8. Section Comment Pattern](#8-section-comment-pattern)
+    - [9. Import Organization Pattern](#9-import-organization-pattern)
+    - [10. Component Documentation Pattern](#10-component-documentation-pattern)
+    - [11. Test Mock Pattern](#11-test-mock-pattern)
+    - [12. Error Handling Pattern](#12-error-handling-pattern)
+    - [13. Performance Optimization Patterns](#13-performance-optimization-patterns)
+    - [14. Accessibility Pattern](#14-accessibility-pattern)
+    - [15. Security Pattern](#15-security-pattern)
+    - [16. When NOT to Use Patterns](#16-when-not-to-use-patterns)
+    - [17. Pattern Decision Matrix](#17-pattern-decision-matrix)
+    - [18. Pattern Exceptions](#18-pattern-exceptions)
   - [🧪 Testing with Vitest](#-testing-with-vitest)
   - [🚀 React.FC Compatibility & Performance Patterns](#-reactfc-compatibility--performance-patterns)
   - [📚 Export/Import Patterns](#exportimport-patterns)
@@ -437,31 +461,7 @@ interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps
 
 export const Section = React.forwardRef<SectionRef, SectionProps>(
   function Section(props, ref) {
-    const { title, children, className, _internalId, _debugMode, ...rest } = props;
-    
-    // Hook usage at top level (compliance)
-    const generatedId = useId();
-    const id = _internalId || generatedId;
-    
-    // Cross-environment safety
-    if (_debugMode && globalThis?.process?.env?.NODE_ENV === "development") {
-      logInfo(`Section rendered with ID: ${id}`);
-    }
-    
-    // Early return pattern (performance)
-    if (!title && !children) return null;
-    
-    return (
-      <SectionComponent
-        ref={ref}
-        aria-labelledby={id}
-        data-section-id={id}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        {...rest}
-      >
-        {/* Component implementation */}
-      </SectionComponent>
-    );
+    // Component implementation
   }
 );
 ```
@@ -616,15 +616,523 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 
 ### 📚 **Component Overview**
 
-All components in `apps/web` follow consistent patterns and include comprehensive documentation:
+All components in `apps/web` follow consistent patterns and include comprehensive documentation. This section provides an overview of all components and their implementation details.
 
-- **Section Component** - Reference implementation with inline types and early return patterns
-- **Container Component** - Nested structure pattern with flexible layout system
-- **Icon Component** - Compound component pattern with social media icons
-- **Prose Component** - Simple wrapper with Tailwind Typography integration
-- **Header Component** - Client-server split pattern with navigation and effects
+### **🏗️ Component Architecture Summary**
 
-Each component includes complete README documentation with usage examples, implementation details, and comprehensive test coverage (95%+).
+| Component | Type | Pattern Used | Complexity | Purpose |
+|-----------|------|--------------|------------|---------|
+| **Section** | Simple | Direct Implementation | Low | Layout section with optional title |
+| **Container** | Complex | Internal/External | High | Nested layout container system |
+| **Icon** | Compound | Compound Components | Medium | Social media and utility icons |
+| **Prose** | Simple | Direct Implementation | Low | Typography wrapper with Tailwind |
+| **Header** | Complex | Internal/External + Client | High | Navigation with effects and theme toggle |
+| **Footer** | Complex | Internal/External | Medium | Site footer with navigation links |
+| **Card** | Compound | Compound Components | High | Content cards with sub-components |
+| **ArticleLayout** | Layout | Direct Implementation | Medium | Article page layout |
+| **BaseLayout** | Layout | Direct Implementation | Low | Base page layout |
+| **SimpleLayout** | Layout | Direct Implementation | Low | Simple page layout |
+
+### **📋 Detailed Component Documentation**
+
+#### **1. Section Component**
+
+**Location**: `apps/web/src/components/section/`
+
+**Purpose**: A layout section component with optional title and content, styled for web app usage.
+
+**Pattern Used**: Direct Implementation (Simple Component)
+
+**Key Features**:
+
+- ✅ **Inline types** with external dependencies
+- ✅ **useComponentId** integration
+- ✅ **Conditional rendering** for title and children
+- ✅ **Early return pattern** for performance
+- ✅ **Accessibility** with proper ARIA attributes
+- ✅ **CSS modules** for scoped styling
+
+**Implementation**:
+
+```typescript
+export const Section = React.forwardRef<SectionRef, SectionProps>(
+  function Section(props, ref) {
+    const { title, children, className, _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    if (!title && !children) return null;
+    
+    return (
+      <SectionComponent
+        ref={ref}
+        aria-labelledby={id}
+        data-section-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        {...rest}
+      >
+        {title && <Heading id={id}>{title}</Heading>}
+        {children && <Div>{children}</Div>}
+      </SectionComponent>
+    );
+  }
+);
+```
+
+**Test Coverage**: 100% (comprehensive test suite)
+
+---
+
+#### **2. Container Component**
+
+**Location**: `apps/web/src/components/container/`
+
+**Purpose**: Top-level layout container that provides consistent outer and inner structure for page content.
+
+**Pattern Used**: Internal/External Component Pattern (Complex Component)
+
+**Key Features**:
+
+- ✅ **Nested structure** with ContainerOuter and ContainerInner
+- ✅ **Flexible usage** - use main component or individual containers
+- ✅ **CSS module integration** with scoped styling
+- ✅ **useComponentId** integration for all sub-components
+- ✅ **Conditional rendering** for performance
+- ✅ **Compound component pattern** for related components
+
+**Sub-Components**:
+
+- **Container**: Main component that composes ContainerOuter and ContainerInner
+- **ContainerOuter**: Outer container with positioning and layout
+- **ContainerInner**: Inner container with content styling
+
+**Implementation**:
+
+```typescript
+// Internal components handle rendering logic
+const InternalContainerOuter = setDisplayName(
+  React.forwardRef(function InternalContainerOuter(props, ref) {
+    // Rendering logic with debug attributes
+  }),
+  "InternalContainerOuter"
+);
+
+// External components handle hook integration
+export const ContainerOuter = setDisplayName(
+  React.forwardRef(function ContainerOuter(props, ref) {
+    const { id, isDebugMode } = useComponentId({
+      internalId: props._internalId,
+      debugMode: props._debugMode,
+    });
+    
+    return (
+      <InternalContainerOuter
+        {...props}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+  }),
+  "ContainerOuter"
+);
+```
+
+**Test Coverage**: 100% (36 tests covering all scenarios)
+
+---
+
+#### **3. Icon Component**
+
+**Location**: `apps/web/src/components/icon/`
+
+**Purpose**: Compound component providing social media icons and utility icons with consistent styling.
+
+**Pattern Used**: Compound Component Pattern
+
+**Key Features**:
+
+- ✅ **Compound components** for different icon types
+- ✅ **Social media icons** (X, Instagram, LinkedIn, GitHub)
+- ✅ **Consistent styling** across all icons
+- ✅ **TypeScript support** with proper typing
+- ✅ **CSS modules** for icon-specific styles
+
+**Available Icons**:
+
+- **Icon.X**: X (Twitter) icon
+- **Icon.Instagram**: Instagram icon
+- **Icon.LinkedIn**: LinkedIn icon
+- **Icon.GitHub**: GitHub icon
+
+**Implementation**:
+
+```typescript
+export const Icon = React.forwardRef<IconRef, IconProps>(
+  function Icon(props, ref) {
+    // Main icon component implementation
+  }
+);
+
+// Compound sub-components
+Icon.X = XIcon;
+Icon.Instagram = InstagramIcon;
+Icon.LinkedIn = LinkedInIcon;
+Icon.GitHub = GitHubIcon;
+```
+
+**Usage**:
+
+```tsx
+<Icon.X className="w-6 h-6" />
+<Icon.Instagram className="w-6 h-6" />
+<Icon.LinkedIn className="w-6 h-6" />
+<Icon.GitHub className="w-6 h-6" />
+```
+
+---
+
+#### **4. Prose Component**
+
+**Location**: `apps/web/src/components/prose/`
+
+**Purpose**: Typography wrapper component that integrates Tailwind Typography for consistent text styling.
+
+**Pattern Used**: Direct Implementation (Simple Component)
+
+**Key Features**:
+
+- ✅ **Tailwind Typography** integration
+- ✅ **useComponentId** integration
+- ✅ **Conditional rendering** for content
+- ✅ **CSS modules** for additional styling
+- ✅ **Accessibility** with proper semantic markup
+
+**Implementation**:
+
+```typescript
+export const Prose = React.forwardRef<ProseRef, ProseProps>(
+  function Prose(props, ref) {
+    const { children, className, _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    if (!children) return null;
+    
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.prose, className)}
+        data-prose-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="prose-root"
+      >
+        {children}
+      </Div>
+    );
+  }
+);
+```
+
+---
+
+#### **5. Header Component**
+
+**Location**: `apps/web/src/components/header/`
+
+**Purpose**: Comprehensive header component with navigation, theme toggle, and dynamic scroll effects.
+
+**Pattern Used**: Internal/External Component Pattern + Client-Side Features
+
+**Key Features**:
+
+- ✅ **Client-side rendering** with "use client" directive
+- ✅ **Dynamic scroll effects** with HeaderEffects component
+- ✅ **Theme toggle** with next-themes integration
+- ✅ **Responsive navigation** (desktop and mobile)
+- ✅ **Avatar integration** with Next.js Image
+- ✅ **Active path detection** for navigation
+- ✅ **useComponentId** integration
+- ✅ **Conditional rendering** for home page vs other pages
+
+**Sub-Components**:
+
+- **HeaderEffects**: Side-effect-only component for scroll effects
+- **HeaderThemeToggle**: Theme switching component
+- **MobileHeaderNav**: Mobile navigation with Popover
+- **DesktopHeaderNav**: Desktop navigation
+- **Avatar**: User avatar component
+
+**Implementation**:
+
+```typescript
+// Side-effect-only component (no displayName needed)
+const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
+  const { headerEl, avatarEl, isHomePage } = props;
+  
+  useEffect(() => {
+    // Dynamic header positioning logic
+  }, [headerEl, avatarEl, isHomePage]);
+  
+  return null; // No rendering
+};
+
+// Main header with internal/external pattern
+export const Header = React.forwardRef<HeaderRef, HeaderProps>(
+  function Header(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    return (
+      <InternalHeader
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+  }
+);
+```
+
+**Test Coverage**: Comprehensive test suite with mocks for all external dependencies
+
+---
+
+#### **6. Footer Component**
+
+**Location**: `apps/web/src/components/footer/`
+
+**Purpose**: Site footer component with brand information, navigation links, and legal text.
+
+**Pattern Used**: Internal/External Component Pattern
+
+**Key Features**:
+
+- ✅ **Discriminated union** for link types (internal/external)
+- ✅ **useComponentId** integration
+- ✅ **Conditional rendering** for navigation links
+- ✅ **Secure external links** with proper attributes
+- ✅ **Customizable content** (brand name, legal text, links)
+- ✅ **CSS modules** for styling
+
+**Data Structure**:
+
+```typescript
+// Discriminated union for link types
+type FooterLink = 
+  | { kind: "internal"; href: string; label: string }
+  | { kind: "external"; href: string; label: string; newTab?: boolean };
+```
+
+**Implementation**:
+
+```typescript
+const InternalFooter = setDisplayName(
+  React.forwardRef<FooterRef, InternalFooterProps>(
+    function InternalFooter(props, ref) {
+      const { navLinks = FOOTER_COMPONENT_NAV_LINKS, ...rest } = props;
+      
+      return (
+        <GRMFooterComponent
+          {...rest}
+          ref={ref}
+          data-footer-id={componentId}
+          data-debug-mode={isDebugMode ? "true" : undefined}
+        >
+          {navLinks.map((link) => {
+            const isExternal = link.kind === "external";
+            return (
+              <A
+                key={link.href}
+                href={link.href}
+                target={isExternal && link.newTab ? "_blank" : "_self"}
+                rel={isExternal && link.newTab ? "noopener noreferrer" : undefined}
+              >
+                {link.label}
+              </A>
+            );
+          })}
+        </GRMFooterComponent>
+      );
+    }
+  ),
+  "InternalFooter"
+);
+```
+
+---
+
+#### **7. Card Component**
+
+**Location**: `apps/web/src/components/card/`
+
+**Purpose**: Compound component system for creating content cards with various sub-components.
+
+**Pattern Used**: Compound Component Pattern
+
+**Key Features**:
+
+- ✅ **Compound components** for card parts
+- ✅ **useComponentId** integration for all sub-components
+- ✅ **Conditional rendering** for optional parts
+- ✅ **Flexible content** with multiple sub-components
+- ✅ **CSS modules** with consolidated styling
+- ✅ **Type safety** with comprehensive TypeScript types
+
+**Sub-Components**:
+
+- **Card.Link**: Card wrapper with link functionality
+- **Card.Title**: Card title component
+- **Card.Description**: Card description component
+- **Card.Cta**: Call-to-action component
+- **Card.Eyebrow**: Eyebrow text component
+
+**Implementation**:
+
+```typescript
+// Main card component
+export const Card = setDisplayName(
+  React.forwardRef<CardRef, CardProps>(
+    function Card(props, ref) {
+      const { _internalId, _debugMode, ...rest } = props;
+      
+      const { id, isDebugMode } = useComponentId({
+        internalId: _internalId,
+        debugMode: _debugMode,
+      });
+      
+      return (
+        <InternalCard
+          {...rest}
+          ref={ref}
+          componentId={id}
+          isDebugMode={isDebugMode}
+        />
+      );
+    }
+  ),
+  "Card"
+) as CardComponent;
+
+// Compound sub-components
+Card.Link = CardLink;
+Card.Title = CardTitle;
+Card.Description = CardDescription;
+Card.Cta = CardCta;
+Card.Eyebrow = CardEyebrow;
+```
+
+**Usage**:
+
+```tsx
+<Card>
+  <Card.Eyebrow decorate>Article</Card.Eyebrow>
+  <Card.Title>Card Title</Card.Title>
+  <Card.Description>Card description text</Card.Description>
+  <Card.Cta>Read more</Card.Cta>
+</Card>
+```
+
+**Test Coverage**: 99.64% (comprehensive test suite)
+
+---
+
+#### **8. Layout Components**
+
+##### **ArticleLayout**
+
+**Location**: `apps/web/src/components/layouts/article/`
+
+**Purpose**: Layout component specifically designed for article pages with navigation and content structure.
+
+**Pattern Used**: Direct Implementation (Layout Component)
+
+**Key Features**:
+
+- ✅ **Article-specific layout** with navigation
+- ✅ **Client-side navigation** components
+- ✅ **Responsive design** for article content
+- ✅ **SEO optimization** with proper meta tags
+- ✅ **useComponentId** integration
+
+##### **BaseLayout**
+
+**Location**: `apps/web/src/components/layouts/base/`
+
+**Purpose**: Base layout component providing fundamental page structure.
+
+**Pattern Used**: Direct Implementation (Layout Component)
+
+**Key Features**:
+
+- ✅ **Fundamental page structure**
+- ✅ **Header and footer integration**
+- ✅ **Container system** integration
+- ✅ **Responsive design** foundation
+
+##### **SimpleLayout**
+
+**Location**: `apps/web/src/components/layouts/simple/`
+
+**Purpose**: Simple layout component for basic pages without complex navigation.
+
+**Pattern Used**: Direct Implementation (Layout Component)
+
+**Key Features**:
+
+- ✅ **Minimal layout** structure
+- ✅ **Clean design** for simple pages
+- ✅ **Container integration** for content
+- ✅ **Responsive design** support
+
+### **📊 Component Statistics**
+
+| Metric | Value |
+|--------|-------|
+| **Total Components** | 10 |
+| **Simple Components** | 4 (Section, Prose, BaseLayout, SimpleLayout) |
+| **Complex Components** | 4 (Container, Header, Footer, ArticleLayout) |
+| **Compound Components** | 2 (Icon, Card) |
+| **Average Test Coverage** | 95%+ |
+| **Patterns Used** | 3 (Direct, Internal/External, Compound) |
+
+### **🎯 Component Selection Guide**
+
+**Use this guide to choose the right component pattern:**
+
+| Component Type | Use Case | Pattern | Example |
+|----------------|----------|---------|---------|
+| **Simple Component** | Basic UI elements | Direct Implementation | Section, Prose |
+| **Complex Component** | Multi-part components | Internal/External | Header, Footer, Container |
+| **Compound Component** | Related sub-components | Compound Pattern | Icon, Card |
+| **Layout Component** | Page structure | Direct Implementation | ArticleLayout, BaseLayout |
+
+### **🔄 Component Evolution**
+
+All components follow the **established evolution pattern**:
+
+1. **Inline types** - No separate type files
+2. **useComponentId integration** - Consistent ID generation
+3. **setDisplayName utility** - Automatic displayName assignment
+4. **Conditional rendering** - Performance optimization
+5. **CSS modules** - Scoped styling
+6. **Comprehensive testing** - 95%+ coverage
+7. **Accessibility** - ARIA attributes and keyboard support
+8. **Security** - Data validation and sanitization
+
+This centralized documentation ensures **consistent patterns** across all components and provides a **single source of truth** for component development standards.
 
 ### Phase 2: Component Migration (Week 2-3)
 
@@ -922,6 +1430,833 @@ Icon.GitHub = GitHubIcon;
 <Icon>Custom SVG</Icon>                          // Main component
 <Icon.X className="w-6 h-6" />                   // Compound component
 <Icon.Instagram className="w-6 h-6" />           // Compound component
+```
+
+## 🔧 **Current Codebase Patterns & Conventions**
+
+This section documents the **established patterns and conventions** currently used across all components in the `apps/web` codebase. These patterns are **mandatory** and must be followed for all new components and updates.
+
+### **1. useComponentId Hook Integration**
+
+**Every component MUST integrate with the `useComponentId` hook for consistent ID generation and debug logging.**
+
+#### ✅ **Required Pattern**
+
+```typescript
+import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
+
+// Public component with useComponentId integration
+export const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    // Use shared hook for ID generation and debug logging
+    // Component name will be auto-detected from export const declaration
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <InternalComponent
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+
+    return element;
+  }),
+  "Component"
+) as ComponentType;
+```
+
+#### ✅ **Internal Component Pattern**
+
+```typescript
+interface InternalComponentProps extends ComponentProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
+
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    // Conditional rendering pattern
+    if (!children) return null;
+
+    const element = (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+
+    return element;
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+### **2. setDisplayName Utility**
+
+**Every component MUST use `setDisplayName` for automatic displayName assignment.**
+
+#### ✅ **Required Pattern**
+
+```typescript
+import { setDisplayName } from "@guyromellemagayano/hooks";
+
+// Wrap all components with setDisplayName
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    // Component implementation
+  }),
+  "Component"
+) as ComponentType;
+
+// For internal components
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    // Internal implementation
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+#### ❌ **Avoid Manual displayName Assignment**
+
+```typescript
+// ❌ DON'T DO THIS - Manual assignment
+const Component = React.forwardRef(function Component(props, ref) {
+  // Implementation
+});
+Component.displayName = "Component"; // Manual assignment
+
+// ✅ DO THIS - Use setDisplayName utility
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    // Implementation
+  }),
+  "Component"
+) as ComponentType;
+```
+
+### **3. Internal/External Component Pattern**
+
+**Complex components MUST use the internal/external pattern for separation of concerns.**
+
+#### ✅ **Required Structure**
+
+```typescript
+// ============================================================================
+// INTERNAL COMPONENT
+// ============================================================================
+
+interface InternalComponentProps extends ComponentProps {
+  componentId?: string;
+  isDebugMode?: boolean;
+}
+
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    if (!children) return null;
+
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+
+// ============================================================================
+// EXTERNAL COMPONENT
+// ============================================================================
+
+export const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    return (
+      <InternalComponent
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+  }),
+  "Component"
+) as ComponentType;
+```
+
+### **4. Conditional Rendering Pattern**
+
+**Every component MUST implement conditional rendering for performance optimization.**
+
+#### ✅ **Required Pattern**
+
+```typescript
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    const { children, ...rest } = props;
+
+    // Early return pattern for performance
+    if (!children) return null;
+
+    return (
+      <Div ref={ref} {...rest}>
+        {children}
+      </Div>
+    );
+  }),
+  "Component"
+) as ComponentType;
+```
+
+#### ✅ **Multiple Condition Checks**
+
+```typescript
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    const { title, children, ...rest } = props;
+
+    // Multiple condition checks
+    if (!title && !children) return null;
+
+    return (
+      <Div ref={ref} {...rest}>
+        {title && <Heading>{title}</Heading>}
+        {children && <Div>{children}</Div>}
+      </Div>
+    );
+  }),
+  "Component"
+) as ComponentType;
+```
+
+### **5. Data Attributes Pattern**
+
+**Every component MUST include consistent data attributes for testing and debugging.**
+
+#### ✅ **Required Data Attributes**
+
+```typescript
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    if (!children) return null;
+
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}           // ✅ Required
+        data-debug-mode={isDebugMode ? "true" : undefined}  // ✅ Required
+        data-testid="component-root"              // ✅ Required
+      >
+        {children}
+      </Div>
+    );
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+### **6. CSS Module Integration**
+
+**Every component MUST use CSS modules with consistent class naming.**
+
+#### ✅ **Required CSS Module Pattern**
+
+```typescript
+import styles from "./Component.module.css";
+
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    if (!children) return null;
+
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}  // ✅ CSS module + custom className
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        <Div className={styles.componentContent}>   // ✅ Nested CSS module classes
+          {children}
+        </Div>
+      </Div>
+    );
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+### **7. Type Import Patterns**
+
+**Every component MUST use consistent type import patterns from external packages.**
+
+#### ✅ **Required Type Import Pattern**
+
+```typescript
+import {
+  Div,
+  type DivProps,
+  type DivRef,
+  Heading,
+  type HeadingProps,
+  type HeadingRef,
+} from "@guyromellemagayano/components";
+
+// Inline type definitions
+type ComponentRef = DivRef;
+interface ComponentProps extends DivProps, CommonWebAppComponentProps {}
+
+interface InternalComponentProps extends ComponentProps {
+  componentId?: string;
+  isDebugMode?: boolean;
+}
+```
+
+### **8. Section Comment Pattern**
+
+**Every component file MUST use consistent section comments for organization.**
+
+#### ✅ **Required Section Comments**
+
+```typescript
+// ============================================================================
+// COMPONENT NAME
+// ============================================================================
+
+// Type definitions
+type ComponentRef = DivRef;
+interface ComponentProps extends DivProps, CommonWebAppComponentProps {}
+
+// ============================================================================
+// INTERNAL COMPONENT
+// ============================================================================
+
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    // Implementation
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+
+// ============================================================================
+// EXTERNAL COMPONENT
+// ============================================================================
+
+export const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    // Implementation
+  }),
+  "Component"
+) as ComponentType;
+```
+
+### **9. Import Organization Pattern**
+
+**Every component file MUST follow consistent import organization.**
+
+#### ✅ **Required Import Order**
+
+```typescript
+// 1. React imports
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+// 2. External library imports
+import { Popover, PopoverBackdrop, PopoverButton, PopoverPanel } from "@headlessui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
+
+// 3. Internal package imports
+import {
+  Button,
+  type ButtonProps,
+  type ButtonRef,
+  Div,
+  type DivProps,
+  type DivRef,
+} from "@guyromellemagayano/components";
+import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
+
+// 4. Local type imports
+import type { CommonWebAppComponentProps } from "@web/@types/components";
+
+// 5. Local component imports
+import { Container } from "@web/components/container";
+
+// 6. Local data imports
+import { COMPONENT_DATA } from "@web/components/component/Component.data";
+
+// 7. Local utility imports
+import { cn } from "@web/lib";
+
+// 8. Local asset imports
+import styles from "./Component.module.css";
+```
+
+### **10. Component Documentation Pattern**
+
+**Every component MUST include comprehensive JSDoc documentation.**
+
+#### ✅ **Required Documentation Pattern**
+
+```typescript
+/**
+ * A comprehensive component that provides [specific functionality].
+ * 
+ * @example
+ * ```tsx
+ * <Component variant="primary" size="md">
+ *   Component content
+ * </Component>
+ * ```
+ * 
+ * @param props - Component props
+ * @param props.variant - The visual variant of the component
+ * @param props.size - The size of the component
+ * @param props.children - The content to render inside the component
+ * @param props._internalId - Internal ID override (for testing/debugging)
+ * @param props._debugMode - Enable debug mode (for development)
+ */
+export const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    // Implementation
+  }),
+  "Component"
+) as ComponentType;
+```
+
+### **11. Test Mock Pattern**
+
+**Every component test MUST include consistent mocks for external dependencies.**
+
+#### ✅ **Required Test Mocks**
+
+```typescript
+// Mock external dependencies
+vi.mock("@guyromellemagayano/components", () => ({
+  Div: React.forwardRef<HTMLDivElement, any>(function MockDiv(props, ref) {
+    return <div ref={ref} data-testid="div" {...props} />;
+  }),
+  DivProps: {},
+  DivRef: {},
+}));
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+```
+
+### **12. Error Handling Pattern**
+
+**Every component MUST include proper error handling and edge cases.**
+
+#### ✅ **Required Error Handling**
+
+```typescript
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    // Conditional rendering
+    if (!children) return null;
+
+    // Error boundary for invalid props
+    if (typeof children === "boolean") {
+      console.warn("Component: Boolean children are not supported");
+      return null;
+    }
+
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+### **13. Performance Optimization Patterns**
+
+**Every component MUST implement performance optimizations.**
+
+#### ✅ **Required Performance Patterns**
+
+```typescript
+// 1. Early returns for performance
+if (!children) return null;
+
+// 2. Memoization for expensive computations
+const memoizedValue = useMemo(() => {
+  return expensiveComputation(props.data);
+}, [props.data]);
+
+// 3. Callback memoization for event handlers
+const handleClick = useCallback(() => {
+  // Event handler logic
+}, [dependencies]);
+
+// 4. Conditional rendering to avoid unnecessary JSX
+{shouldRender && <ExpensiveComponent />}
+```
+
+### **14. Accessibility Pattern**
+
+**Every component MUST include proper accessibility attributes.**
+
+#### ✅ **Required Accessibility Pattern**
+
+```typescript
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    if (!children) return null;
+
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+        role="region"                    // ✅ Accessibility role
+        aria-label="Component region"    // ✅ Accessibility label
+        tabIndex={0}                     // ✅ Keyboard navigation
+      >
+        {children}
+      </Div>
+    );
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+```
+
+### **15. Security Pattern**
+
+**Every component MUST implement security best practices.**
+
+#### ✅ **Required Security Pattern**
+
+```typescript
+// 1. Sanitize external data
+const sanitizedContent = useMemo(() => {
+  return sanitizeHtml(props.content);
+}, [props.content]);
+
+// 2. Validate props
+const validateProps = (props: ComponentProps) => {
+  if (props.href && !isValidUrl(props.href)) {
+    throw new Error("Invalid URL provided to Component");
+  }
+};
+
+// 3. Secure external links
+const isExternal = link.href.startsWith("http");
+const secureProps = isExternal ? {
+  target: "_blank",
+  rel: "noopener noreferrer"
+} : {};
+
+// 4. CSRF protection for forms
+const formProps = {
+  "data-csrf-token": csrfToken,
+  "data-rate-limit-key": rateLimitKey
+};
+```
+
+### **16. When NOT to Use Patterns**
+
+**There are specific cases where certain patterns should NOT be applied.**
+
+#### ❌ **When NOT to Use displayName**
+
+```typescript
+// ❌ DON'T add displayName to side-effect-only components
+const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
+  // Side-effect-only component that returns null
+  useEffect(() => {
+    // Effect logic
+  }, []);
+  
+  return null; // No rendering
+};
+
+// ❌ DON'T add displayName to utility components
+const UtilityComponent = function UtilityComponent(props) {
+  // Utility component that doesn't appear in component tree
+  return null;
+};
+
+// ✅ DO add displayName to rendering components
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    return <div ref={ref}>{props.children}</div>;
+  }),
+  "Component"
+) as ComponentType;
+```
+
+#### ❌ **When NOT to Use Internal/External Pattern**
+
+```typescript
+// ❌ DON'T use internal/external pattern for simple components
+// Simple components should be direct implementations
+
+// ✅ Simple component - direct implementation
+export const SimpleComponent = setDisplayName(
+  React.forwardRef(function SimpleComponent(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        data-component-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="simple-component-root"
+      >
+        {rest.children}
+      </Div>
+    );
+  }),
+  "SimpleComponent"
+) as SimpleComponentType;
+
+// ✅ Complex component - use internal/external pattern
+export const ComplexComponent = setDisplayName(
+  React.forwardRef(function ComplexComponent(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    return (
+      <InternalComplexComponent
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+  }),
+  "ComplexComponent"
+) as ComplexComponentType;
+```
+
+#### ❌ **When NOT to Use Conditional Rendering**
+
+```typescript
+// ❌ DON'T use conditional rendering for required content
+const RequiredContentComponent = setDisplayName(
+  React.forwardRef(function RequiredContentComponent(props, ref) {
+    const { children, ...rest } = props;
+    
+    // Don't conditionally render required content
+    // Instead, validate props or provide defaults
+    if (!children) {
+      console.warn("RequiredContentComponent: children is required");
+      return <Div ref={ref} {...rest}>Default content</Div>;
+    }
+    
+    return (
+      <Div ref={ref} {...rest}>
+        {children}
+      </Div>
+    );
+  }),
+  "RequiredContentComponent"
+) as RequiredContentComponentType;
+
+// ✅ Use conditional rendering for optional content
+const OptionalContentComponent = setDisplayName(
+  React.forwardRef(function OptionalContentComponent(props, ref) {
+    const { title, children, ...rest } = props;
+    
+    // Conditional rendering for optional content
+    if (!title && !children) return null;
+    
+    return (
+      <Div ref={ref} {...rest}>
+        {title && <Heading>{title}</Heading>}
+        {children && <Div>{children}</Div>}
+      </Div>
+    );
+  }),
+  "OptionalContentComponent"
+) as OptionalContentComponentType;
+```
+
+#### ❌ **When NOT to Use CSS Modules**
+
+```typescript
+// ❌ DON'T use CSS modules for global styles
+// Global styles should use regular CSS files
+
+// ✅ Use CSS modules for component-specific styles
+import styles from "./Component.module.css";
+
+const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    return (
+      <Div ref={ref} className={styles.component}>
+        {props.children}
+      </Div>
+    );
+  }),
+  "Component"
+) as ComponentType;
+
+// ✅ Use global CSS for global styles
+// globals.css
+.global-utility-class {
+  /* Global utility styles */
+}
+```
+
+### **17. Pattern Decision Matrix**
+
+**Use this matrix to determine which patterns to apply:**
+
+| Component Type | Internal/External | displayName | Conditional Rendering | CSS Modules |
+|----------------|-------------------|-------------|----------------------|-------------|
+| **Simple Component** | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Complex Component** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Side-Effect Component** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Utility Component** | ❌ No | ❌ No | ❌ No | ❌ No |
+| **Layout Component** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+| **Compound Component** | ✅ Yes | ✅ Yes | ✅ Yes | ✅ Yes |
+
+### **18. Pattern Exceptions**
+
+**Specific exceptions to the established patterns:**
+
+#### **Exception 1: Side-Effect-Only Components**
+
+```typescript
+// ✅ Exception: Side-effect-only components don't need displayName
+const EffectsComponent = function EffectsComponent(props) {
+  useEffect(() => {
+    // Side effects only
+  }, []);
+  
+  return null; // No rendering
+};
+
+// ✅ Exception: Utility components don't need displayName
+const UtilityComponent = function UtilityComponent(props) {
+  // Utility logic only
+  return null;
+};
+```
+
+#### **Exception 2: Simple Wrapper Components**
+
+```typescript
+// ✅ Exception: Simple wrappers can be direct implementations
+export const SimpleWrapper = setDisplayName(
+  React.forwardRef(function SimpleWrapper(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        data-component-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="simple-wrapper-root"
+      >
+        {rest.children}
+      </Div>
+    );
+  }),
+  "SimpleWrapper"
+) as SimpleWrapperType;
+```
+
+#### **Exception 3: Data-Only Components**
+
+```typescript
+// ✅ Exception: Data-only components don't need rendering patterns
+const DataComponent = function DataComponent(props) {
+  // Data processing only
+  const processedData = useMemo(() => {
+    return processData(props.data);
+  }, [props.data]);
+  
+  return processedData; // Return data, not JSX
+};
 ```
 
 ## 🧪 Testing with Vitest
