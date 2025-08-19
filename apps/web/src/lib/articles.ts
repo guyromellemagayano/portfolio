@@ -40,9 +40,7 @@ export const __setArticlesForTests = (articles: ArticleWithSlug[]): void => {
   __articlesStore = articles;
 };
 
-/**
- * Get all articles sorted by date
- */
+/** Get all articles sorted by date */
 export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
   try {
     // For now, return current articles store
@@ -56,9 +54,7 @@ export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
   }
 };
 
-/**
- * Get a single article by slug
- */
+/** Get a single article by slug */
 export const getArticleBySlug = async (
   slug: string
 ): Promise<ArticleWithSlug | null> => {
@@ -71,9 +67,7 @@ export const getArticleBySlug = async (
   }
 };
 
-/**
- * Get articles by tag
- */
+/** Get articles by tag */
 export const getArticlesByTag = async (
   tag: string
 ): Promise<ArticleWithSlug[]> => {
