@@ -17,7 +17,7 @@ vi.mock("next-themes", () => ({
 }));
 
 // Mock the useComponentId hook
-vi.mock("@web/hooks/useComponentId", () => ({
+vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options) => ({
     id: options?.internalId || "test-id",
     isDebugMode: options?.debugMode || false,

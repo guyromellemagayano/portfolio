@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@guyromellemagayano/components": "workspace:*",
+    "@guyromellemagayano/hooks": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
     "@guyromellemagayano/ui": "workspace:*",
     "@headlessui/react": "catalog:",
