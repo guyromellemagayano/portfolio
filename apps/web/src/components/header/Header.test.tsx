@@ -22,6 +22,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
     id: options?.internalId || "test-id",
     isDebugMode: options?.debugMode || false,
   })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
 }));
 
 // Mock the cn helper
