@@ -13,16 +13,20 @@ import {
   Span,
   Ul,
 } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 import {
   FOOTER_COMPONENT_NAV_LINKS,
   type FooterLink,
 } from "@web/components/footer/Footer.data";
-import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib";
 
 import styles from "./Footer.module.css";
+
+// ============================================================================
+// FOOTER COMPONENT
+// ============================================================================
 
 type FooterRef = FooterComponentRef;
 

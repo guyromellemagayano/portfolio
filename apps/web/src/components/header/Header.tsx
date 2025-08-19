@@ -39,6 +39,7 @@ import {
   Span,
   Ul,
 } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 import { Container } from "@web/components/container";
@@ -50,11 +51,14 @@ import {
   THEME_TOGGLE_LABELS,
 } from "@web/components/header/Header.data";
 import { Icon } from "@web/components/icon";
-import { useComponentId } from "@web/hooks/useComponentId";
 import avatarImage from "@web/images/avatar.jpg";
 import { clamp, cn, isActivePath } from "@web/lib";
 
 import styles from "./Header.module.css";
+
+// ============================================================================
+// HEADER EFFECTS COMPONENT
+// ============================================================================
 
 interface HeaderEffectsProps {
   /** Reference to the header element. */
@@ -181,6 +185,10 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
 
 HeaderEffects.displayName = "HeaderEffects";
 
+// ============================================================================
+// HEADER THEME TOGGLE COMPONENT
+// ============================================================================
+
 type ThemeToggleRef = ButtonRef;
 interface ThemeToggleProps extends ButtonProps {}
 
@@ -242,6 +250,10 @@ const HeaderThemeToggle: ThemeToggleComponent = React.forwardRef(
 );
 
 HeaderThemeToggle.displayName = "HeaderThemeToggle";
+
+// ============================================================================
+// MOBILE HEADER NAVIGATION COMPONENT
+// ============================================================================
 
 type CommonHeaderNavRef = NavRef;
 interface CommonHeaderNavProps extends NavProps {}
@@ -305,6 +317,10 @@ const MobileHeaderNav: MobileHeaderNavComponent = React.forwardRef(
 
 MobileHeaderNav.displayName = "MobileHeaderNav";
 
+// ============================================================================
+// DESKTOP HEADER NAVIGATION COMPONENT
+// ============================================================================
+
 type DesktopHeaderNavRef = CommonHeaderNavRef;
 interface DesktopHeaderNavProps extends CommonHeaderNavProps {}
 
@@ -337,6 +353,10 @@ const DesktopHeaderNav: DesktopHeaderNavComponent = React.forwardRef(
 );
 
 DesktopHeaderNav.displayName = "DesktopHeaderNav";
+
+// ============================================================================
+// MOBILE HEADER NAVIGATION ITEM COMPONENT
+// ============================================================================
 
 type CommonNavItemRef = LiRef;
 interface CommonNavItemProps
@@ -384,6 +404,10 @@ const MobileHeaderNavItem: MobileHeaderNavItemComponent = React.forwardRef(
 );
 
 MobileHeaderNavItem.displayName = "MobileHeaderNavItem";
+
+// ============================================================================
+// DESKTOP HEADER NAVIGATION ITEM COMPONENT
+// ============================================================================
 
 type DesktopHeaderNavItemRef = CommonNavItemRef;
 interface DesktopHeaderNavItemProps extends CommonNavItemProps {}
@@ -435,6 +459,10 @@ const DesktopHeaderNavItem: DesktopHeaderNavItemComponent = React.forwardRef(
 
 DesktopHeaderNavItem.displayName = "DesktopHeaderNavItem";
 
+// ============================================================================
+// AVATAR CONTAINER COMPONENT
+// ============================================================================
+
 type AvatarContainerRef = DivRef;
 interface AvatarContainerProps extends DivProps {}
 
@@ -460,6 +488,10 @@ const AvatarContainer: AvatarContainerComponent = React.forwardRef(
 );
 
 AvatarContainer.displayName = "AvatarContainer";
+
+// ============================================================================
+// AVATAR COMPONENT
+// ============================================================================
 
 type AvatarRef = React.ComponentRef<typeof Link>;
 interface AvatarProps extends React.ComponentPropsWithoutRef<typeof Link> {
@@ -511,6 +543,10 @@ const Avatar: AvatarComponent = React.forwardRef(function Avatar(props, ref) {
 });
 
 Avatar.displayName = "Avatar";
+
+// ============================================================================
+// HEADER COMPONENT
+// ============================================================================
 
 type HeaderRef = HeaderComponentRef;
 interface HeaderProps extends HeaderComponentProps, CommonWebAppComponentProps {

@@ -7,9 +7,9 @@ import {
   type SectionProps as SectionComponentProps,
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { useComponentId } from "@web/hooks/useComponentId";
 import { cn } from "@web/lib";
 
 import styles from "./Section.module.css";
@@ -48,6 +48,7 @@ export const Section: SectionComponent = React.forwardRef(
         className={cn(styles.section, className)}
         data-section-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="section-root"
       >
         <Div className={styles.sectionGrid}>
           {title && (
