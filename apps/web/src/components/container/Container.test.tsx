@@ -16,7 +16,18 @@ vi.mock("@guyromellemagayano/components", () => ({
   DivRef: {},
 }));
 
-vi.mock("@web/lib/helpers", () => ({
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -309,6 +320,110 @@ describe("Container", () => {
         "Main container"
       );
       expect(containerOuterRoot).toHaveAttribute("role", "main");
+    });
+  });
+
+  describe("useComponentId Integration", () => {
+    it("Container uses useComponentId with default values", () => {
+      render(
+        <Container>
+          <span>Content</span>
+        </Container>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "test-id");
+      expect(containerOuterRoot).not.toHaveAttribute("data-debug-mode");
+    });
+
+    it("Container uses useComponentId with custom internal ID", () => {
+      render(
+        <Container _internalId="custom-container-id">
+          <span>Content</span>
+        </Container>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "custom-container-id");
+    });
+
+    it("Container uses useComponentId with debug mode enabled", () => {
+      render(
+        <Container _debugMode={true}>
+          <span>Content</span>
+        </Container>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("ContainerOuter uses useComponentId with default values", () => {
+      render(
+        <ContainerOuter>
+          <span>Content</span>
+        </ContainerOuter>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "test-id");
+      expect(containerOuterRoot).not.toHaveAttribute("data-debug-mode");
+    });
+
+    it("ContainerOuter uses useComponentId with custom internal ID", () => {
+      render(
+        <ContainerOuter _internalId="custom-outer-id">
+          <span>Content</span>
+        </ContainerOuter>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "custom-outer-id");
+    });
+
+    it("ContainerOuter uses useComponentId with debug mode enabled", () => {
+      render(
+        <ContainerOuter _debugMode={true}>
+          <span>Content</span>
+        </ContainerOuter>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("ContainerInner uses useComponentId with default values", () => {
+      render(
+        <ContainerInner>
+          <span>Content</span>
+        </ContainerInner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute("data-container-inner-id", "test-id");
+      expect(containerInnerRoot).not.toHaveAttribute("data-debug-mode");
+    });
+
+    it("ContainerInner uses useComponentId with custom internal ID", () => {
+      render(
+        <ContainerInner _internalId="custom-inner-id">
+          <span>Content</span>
+        </ContainerInner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute("data-container-inner-id", "custom-inner-id");
+    });
+
+    it("ContainerInner uses useComponentId with debug mode enabled", () => {
+      render(
+        <ContainerInner _debugMode={true}>
+          <span>Content</span>
+        </ContainerInner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute("data-debug-mode", "true");
     });
   });
 });
