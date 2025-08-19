@@ -26,7 +26,7 @@ import {
   Div,
   type DivProps,
   type DivRef,
-  Header as HeaderComponent,
+  Header as GRMHeaderComponent,
   type HeaderProps as HeaderComponentProps,
   type HeaderRef as HeaderComponentRef,
   Heading,
@@ -39,7 +39,7 @@ import {
   Span,
   Ul,
 } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 import { Container } from "@web/components/container";
@@ -71,7 +71,9 @@ interface HeaderEffectsProps {
 
 type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
 
-/** Header effects component. */
+/**
+ * Handles dynamic header and avatar positioning and sizing based on scroll position and page context.
+ */
 const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
   const { headerEl, avatarEl, isHomePage } = props;
 
@@ -183,8 +185,6 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
   return null;
 };
 
-HeaderEffects.displayName = "HeaderEffects";
-
 // ============================================================================
 // HEADER THEME TOGGLE COMPONENT
 // ============================================================================
@@ -196,9 +196,11 @@ type ThemeToggleComponent = React.ForwardRefExoticComponent<
   ThemeToggleProps & React.RefAttributes<ThemeToggleRef>
 >;
 
-/** A theme toggle component. */
-const HeaderThemeToggle: ThemeToggleComponent = React.forwardRef(
-  function HeaderThemeToggle(props, ref) {
+/**
+ * A theme toggle component that allows users to switch between light and dark themes.
+ */
+const HeaderThemeToggle: ThemeToggleComponent = setDisplayName(
+  React.forwardRef(function HeaderThemeToggle(props, ref) {
     const { ...rest } = props;
 
     const { resolvedTheme, setTheme } = useTheme();
@@ -246,17 +248,28 @@ const HeaderThemeToggle: ThemeToggleComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-HeaderThemeToggle.displayName = "HeaderThemeToggle";
+  }),
+  "HeaderThemeToggle"
+) as ThemeToggleComponent;
 
 // ============================================================================
-// MOBILE HEADER NAVIGATION COMPONENT
+// COMMON TYPE DEFINITIONS
 // ============================================================================
 
 type CommonHeaderNavRef = NavRef;
 interface CommonHeaderNavProps extends NavProps {}
+
+type CommonNavItemRef = LiRef;
+interface CommonNavItemProps
+  extends LiProps,
+    Pick<
+      React.ComponentPropsWithoutRef<typeof Link>,
+      "target" | "title" | "href"
+    > {}
+
+// ============================================================================
+// MOBILE HEADER NAVIGATION COMPONENT
+// ============================================================================
 
 type MobileHeaderNavRef = CommonHeaderNavRef;
 interface MobileHeaderNavProps extends CommonHeaderNavProps {}
@@ -265,9 +278,11 @@ type MobileHeaderNavComponent = React.ForwardRefExoticComponent<
   MobileHeaderNavProps & React.RefAttributes<MobileHeaderNavRef>
 >;
 
-/** A mobile navigation component. */
-const MobileHeaderNav: MobileHeaderNavComponent = React.forwardRef(
-  function MobileHeaderNav(props, ref) {
+/**
+ * A mobile navigation component that displays a menu button and a list of links.
+ */
+const MobileHeaderNav: MobileHeaderNavComponent = setDisplayName(
+  React.forwardRef(function MobileHeaderNav(props, ref) {
     const { ...rest } = props;
 
     const element = (
@@ -312,10 +327,9 @@ const MobileHeaderNav: MobileHeaderNavComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-MobileHeaderNav.displayName = "MobileHeaderNav";
+  }),
+  "MobileHeaderNav"
+) as MobileHeaderNavComponent;
 
 // ============================================================================
 // DESKTOP HEADER NAVIGATION COMPONENT
@@ -329,8 +343,8 @@ type DesktopHeaderNavComponent = React.ForwardRefExoticComponent<
 >;
 
 /** A desktop navigation component. */
-const DesktopHeaderNav: DesktopHeaderNavComponent = React.forwardRef(
-  function DesktopHeaderNav(props, ref) {
+const DesktopHeaderNav: DesktopHeaderNavComponent = setDisplayName(
+  React.forwardRef(function DesktopHeaderNav(props, ref) {
     const { ...rest } = props;
 
     const element = (
@@ -349,22 +363,13 @@ const DesktopHeaderNav: DesktopHeaderNavComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-DesktopHeaderNav.displayName = "DesktopHeaderNav";
+  }),
+  "DesktopHeaderNav"
+) as DesktopHeaderNavComponent;
 
 // ============================================================================
 // MOBILE HEADER NAVIGATION ITEM COMPONENT
 // ============================================================================
-
-type CommonNavItemRef = LiRef;
-interface CommonNavItemProps
-  extends LiProps,
-    Pick<
-      React.ComponentPropsWithoutRef<typeof Link>,
-      "target" | "title" | "href"
-    > {}
 
 type MobileHeaderNavItemRef = CommonNavItemRef;
 interface MobileHeaderNavItemProps extends CommonNavItemProps {}
@@ -374,8 +379,8 @@ type MobileHeaderNavItemComponent = React.ForwardRefExoticComponent<
 >;
 
 /** A mobile navigation item component. */
-const MobileHeaderNavItem: MobileHeaderNavItemComponent = React.forwardRef(
-  function MobileHeaderNavItem(props, ref) {
+const MobileHeaderNavItem: MobileHeaderNavItemComponent = setDisplayName(
+  React.forwardRef(function MobileHeaderNavItem(props, ref) {
     const {
       children,
       href = "#",
@@ -400,10 +405,9 @@ const MobileHeaderNavItem: MobileHeaderNavItemComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-MobileHeaderNavItem.displayName = "MobileHeaderNavItem";
+  }),
+  "MobileHeaderNavItem"
+) as MobileHeaderNavItemComponent;
 
 // ============================================================================
 // DESKTOP HEADER NAVIGATION ITEM COMPONENT
@@ -417,8 +421,8 @@ type DesktopHeaderNavItemComponent = React.ForwardRefExoticComponent<
 >;
 
 /** A desktop navigation item component. */
-const DesktopHeaderNavItem: DesktopHeaderNavItemComponent = React.forwardRef(
-  function DesktopHeaderNavItem(props, ref) {
+const DesktopHeaderNavItem: DesktopHeaderNavItemComponent = setDisplayName(
+  React.forwardRef(function DesktopHeaderNavItem(props, ref) {
     const {
       children,
       href = "#",
@@ -454,10 +458,9 @@ const DesktopHeaderNavItem: DesktopHeaderNavItemComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-DesktopHeaderNavItem.displayName = "DesktopHeaderNavItem";
+  }),
+  "DesktopHeaderNavItem"
+) as DesktopHeaderNavItemComponent;
 
 // ============================================================================
 // AVATAR CONTAINER COMPONENT
@@ -471,8 +474,8 @@ type AvatarContainerComponent = React.ForwardRefExoticComponent<
 >;
 
 /** An avatar container component. */
-const AvatarContainer: AvatarContainerComponent = React.forwardRef(
-  function AvatarContainer(props, ref) {
+const AvatarContainer: AvatarContainerComponent = setDisplayName(
+  React.forwardRef(function AvatarContainer(props, ref) {
     const { className, ...rest } = props;
 
     const element = (
@@ -484,10 +487,9 @@ const AvatarContainer: AvatarContainerComponent = React.forwardRef(
     );
 
     return element;
-  }
-);
-
-AvatarContainer.displayName = "AvatarContainer";
+  }),
+  "AvatarContainer"
+) as AvatarContainerComponent;
 
 // ============================================================================
 // AVATAR COMPONENT
@@ -508,41 +510,42 @@ type AvatarComponent = React.ForwardRefExoticComponent<
 >;
 
 /** An avatar component. */
-const Avatar: AvatarComponent = React.forwardRef(function Avatar(props, ref) {
-  const {
-    className,
-    large = false,
-    href = AVATAR_COMPONENT_LABELS.link,
-    alt = "",
-    src = avatarImage,
-    ...rest
-  } = props;
+const Avatar: AvatarComponent = setDisplayName(
+  React.forwardRef(function Avatar(props, ref) {
+    const {
+      className,
+      large = false,
+      href = AVATAR_COMPONENT_LABELS.link,
+      alt = "",
+      src = avatarImage,
+      ...rest
+    } = props;
 
-  const element = (
-    <Link
-      {...rest}
-      ref={ref}
-      href={href}
-      aria-label={AVATAR_COMPONENT_LABELS.home}
-      className={cn(styles.avatarLink, className)}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        sizes={large ? "4rem" : "2.25rem"}
-        className={cn(
-          styles.avatarImage,
-          large ? styles.avatarImageLarge : styles.avatarImageDefault
-        )}
-        priority
-      />
-    </Link>
-  );
+    const element = (
+      <Link
+        {...rest}
+        ref={ref}
+        href={href}
+        aria-label={AVATAR_COMPONENT_LABELS.home}
+        className={cn(styles.avatarLink, className)}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          sizes={large ? "4rem" : "2.25rem"}
+          className={cn(
+            styles.avatarImage,
+            large ? styles.avatarImageLarge : styles.avatarImageDefault
+          )}
+          priority
+        />
+      </Link>
+    );
 
-  return element;
-});
-
-Avatar.displayName = "Avatar";
+    return element;
+  }),
+  "Avatar"
+) as AvatarComponent;
 
 // ============================================================================
 // HEADER COMPONENT
@@ -561,9 +564,13 @@ interface InternalHeaderProps extends HeaderProps {
   isDebugMode?: boolean;
 }
 
+type BaseHeaderComponent = React.ForwardRefExoticComponent<
+  InternalHeaderProps & React.RefAttributes<HeaderRef>
+>;
+
 /** A base header component (client, minimal effects split out). */
-const BaseHeader = React.forwardRef<HeaderRef, InternalHeaderProps>(
-  function BaseHeader(props, ref) {
+const BaseHeader: BaseHeaderComponent = setDisplayName(
+  React.forwardRef(function BaseHeader(props, ref) {
     const { className, componentId, isDebugMode, ...rest } = props;
 
     const isHomePage = usePathname() === "/";
@@ -574,7 +581,7 @@ const BaseHeader = React.forwardRef<HeaderRef, InternalHeaderProps>(
 
     const element = (
       <>
-        <HeaderComponent
+        <GRMHeaderComponent
           {...rest}
           ref={ref}
           className={cn(styles.headerComponent, className)}
@@ -665,7 +672,7 @@ const BaseHeader = React.forwardRef<HeaderRef, InternalHeaderProps>(
               </Div>
             </Container>
           </Div>
-        </HeaderComponent>
+        </GRMHeaderComponent>
 
         {isHomePage && (
           <Div
@@ -684,15 +691,18 @@ const BaseHeader = React.forwardRef<HeaderRef, InternalHeaderProps>(
     );
 
     return element;
-  }
-);
+  }),
+  "BaseHeader"
+) as BaseHeaderComponent;
 
-BaseHeader.displayName = "BaseHeader";
+type MemoizedHeaderComponent = React.ForwardRefExoticComponent<
+  InternalHeaderProps & React.RefAttributes<HeaderRef>
+>;
 
 /** A memoized header component. */
-const MemoizedHeader = React.memo(
-  React.forwardRef<HeaderRef, InternalHeaderProps>(
-    function MemoizedHeader(props, ref) {
+const MemoizedHeader: MemoizedHeaderComponent = setDisplayName(
+  React.memo(
+    React.forwardRef(function MemoizedHeader(props, ref) {
       const { componentId, isDebugMode, ...rest } = props;
 
       const element = (
@@ -705,15 +715,18 @@ const MemoizedHeader = React.memo(
       );
 
       return element;
-    }
-  )
-);
+    })
+  ),
+  "MemoizedHeader"
+) as MemoizedHeaderComponent;
 
-MemoizedHeader.displayName = "MemoizedHeader";
+type HeaderComponent = React.ForwardRefExoticComponent<
+  HeaderProps & React.RefAttributes<HeaderRef>
+>;
 
 /** Public header component. */
-export const Header = React.forwardRef<HeaderRef, HeaderProps>(
-  function Header(props, ref) {
+export const Header = setDisplayName(
+  React.forwardRef(function Header(props, ref) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     // Use shared hook for ID generation and debug logging
@@ -740,7 +753,6 @@ export const Header = React.forwardRef<HeaderRef, HeaderProps>(
     );
 
     return element;
-  }
-);
-
-Header.displayName = "Header";
+  }),
+  "Header"
+) as HeaderComponent;
