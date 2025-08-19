@@ -1,6 +1,21 @@
-import { useId } from "react";
+import React, { useId } from "react";
 
 import { logInfo } from "@guyromellemagayano/logger";
+
+/**
+ * Automatically sets the displayName for a component based on its function name.
+ * This eliminates the need to manually set displayName when it matches the function name.
+ */
+export function setDisplayName<T extends React.ComponentType<any>>(
+  component: T,
+  functionName: string
+): T {
+  // Only set displayName if it's not already set
+  if (!component.displayName) {
+    component.displayName = functionName;
+  }
+  return component;
+}
 
 /**
  * Attempts to extract component name from the call stack.
@@ -59,6 +74,7 @@ interface UseComponentIdOptions {
   internalId?: string;
   debugMode?: boolean;
 }
+
 interface UseComponentIdReturn {
   id: string;
   isDebugMode: boolean;

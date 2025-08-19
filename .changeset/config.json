@@ -17,7 +17,8 @@
     "storefront",
     "@guyromellemagayano/components",
     "@guyromellemagayano/logger",
-    "@guyromellemagayano/ui"
+    "@guyromellemagayano/ui",
+    "@guyromellemagayano/hooks"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
