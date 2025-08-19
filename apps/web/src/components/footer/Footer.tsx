@@ -5,7 +5,7 @@ import React from "react";
 import {
   A,
   Div,
-  Footer as FooterComponent,
+  Footer as GRMFooterComponent,
   type FooterProps as FooterComponentProps,
   type FooterRef as FooterComponentRef,
   Li,
@@ -13,7 +13,7 @@ import {
   Span,
   Ul,
 } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 import {
@@ -46,78 +46,89 @@ interface InternalFooterProps extends FooterProps {
   isDebugMode?: boolean;
 }
 
+type InternalFooterComponent = React.ForwardRefExoticComponent<
+  InternalFooterProps & React.RefAttributes<FooterRef>
+>;
+
 /** Internal footer component with all props */
-const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
-  function InternalFooter(props, ref) {
-    const {
-      className,
-      componentId,
-      isDebugMode,
-      brandName = "Guy Romelle Magayano",
-      legalText = "All rights reserved.",
-      navLinks = FOOTER_COMPONENT_NAV_LINKS,
-      ...rest
-    } = props;
+const InternalFooter = setDisplayName(
+  React.forwardRef<FooterRef, InternalFooterProps>(
+    function InternalFooter(props, ref) {
+      const {
+        className,
+        componentId,
+        isDebugMode,
+        brandName = "Guy Romelle Magayano",
+        legalText = "All rights reserved.",
+        navLinks = FOOTER_COMPONENT_NAV_LINKS,
+        ...rest
+      } = props;
 
-    const element = (
-      <FooterComponent
-        {...rest}
-        ref={ref}
-        className={cn(styles.footerComponent, className)}
-        data-footer-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="footer-root"
-      >
-        <Div className={styles.footerContent}>
-          <Div className={styles.footerBrand}>
-            <Span className={styles.brandName}>{brandName}</Span>
-            <Span className={styles.legalText}>{legalText}</Span>
+      const element = (
+        <GRMFooterComponent
+          {...rest}
+          ref={ref}
+          className={cn(styles.footerComponent, className)}
+          data-footer-id={componentId}
+          data-debug-mode={isDebugMode ? "true" : undefined}
+          data-testid="footer-root"
+        >
+          <Div className={styles.footerContent}>
+            <Div className={styles.footerBrand}>
+              <Span className={styles.brandName}>{brandName}</Span>
+              <Span className={styles.legalText}>{legalText}</Span>
+            </Div>
+
+            {navLinks.length > 0 && (
+              <Nav className={styles.footerNav}>
+                <Ul className={styles.navList}>
+                  {navLinks.map((link) => {
+                    const isExternal = link.kind === "external";
+                    const href = isExternal ? link.href : link.href.toString();
+
+                    if (!href) return null;
+
+                    const element = (
+                      <Li key={href} className={styles.navItem}>
+                        <A
+                          href={href}
+                          target={
+                            isExternal && link.newTab ? "_blank" : "_self"
+                          }
+                          rel={
+                            isExternal && link.newTab
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                          className={styles.navLink}
+                        >
+                          {link.label}
+                        </A>
+                      </Li>
+                    );
+
+                    return element;
+                  })}
+                </Ul>
+              </Nav>
+            )}
           </Div>
+        </GRMFooterComponent>
+      );
 
-          {navLinks.length > 0 && (
-            <Nav className={styles.footerNav}>
-              <Ul className={styles.navList}>
-                {navLinks.map((link) => {
-                  const isExternal = link.kind === "external";
-                  const href = isExternal ? link.href : link.href.toString();
+      return element;
+    }
+  ),
+  "InternalFooter"
+) as InternalFooterComponent;
 
-                  if (!href) return null;
-
-                  const element = (
-                    <Li key={href} className={styles.navItem}>
-                      <A
-                        href={href}
-                        target={isExternal && link.newTab ? "_blank" : "_self"}
-                        rel={
-                          isExternal && link.newTab
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        className={styles.navLink}
-                      >
-                        {link.label}
-                      </A>
-                    </Li>
-                  );
-
-                  return element;
-                })}
-              </Ul>
-            </Nav>
-          )}
-        </Div>
-      </FooterComponent>
-    );
-
-    return element;
-  }
-);
-
-InternalFooter.displayName = "InternalFooter";
+type FooterComponent = React.ForwardRefExoticComponent<
+  FooterProps & React.RefAttributes<FooterRef>
+>;
 
 /** Public footer component with `useComponentId` integration */
-export const Footer = React.forwardRef<FooterRef, FooterProps>(
-  function Footer(props, ref) {
+export const Footer: FooterComponent = setDisplayName(
+  React.forwardRef(function Footer(props, ref) {
     const { _internalId, _debugMode, ...rest } = props;
 
     // Use shared hook for ID generation and debug logging
@@ -137,7 +148,6 @@ export const Footer = React.forwardRef<FooterRef, FooterProps>(
     );
 
     return element;
-  }
-);
-
-Footer.displayName = "Footer";
+  }),
+  "Footer"
+) as FooterComponent;
