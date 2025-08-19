@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arrayToUrlSlug, cn, isActivePath } from "@web/lib/helpers";
+import { arrayToUrlSlug, clamp, cn, isActivePath } from "@web/lib/helpers";
 
 describe("arrayToUrlSlug", () => {
   it("converts array items to a slug with expected separators", () => {
@@ -371,6 +371,187 @@ describe("helpers", () => {
       expect(result).toBe(
         "class-with-dashes class_with_underscores class.with.dots"
       );
+    });
+  });
+
+  describe("clamp", () => {
+    describe("Basic Clamping", () => {
+      it("returns value when between min and max", () => {
+        expect(clamp(5, 0, 10)).toBe(5);
+        expect(clamp(0, 0, 10)).toBe(0);
+        expect(clamp(10, 0, 10)).toBe(10);
+      });
+
+      it("returns min when value is below minimum", () => {
+        expect(clamp(-5, 0, 10)).toBe(0);
+        expect(clamp(0, 5, 10)).toBe(5);
+        expect(clamp(-10, -5, 5)).toBe(-5);
+      });
+
+      it("returns max when value is above maximum", () => {
+        expect(clamp(15, 0, 10)).toBe(10);
+        expect(clamp(20, 0, 10)).toBe(10);
+        expect(clamp(10, 0, 5)).toBe(5);
+      });
+    });
+
+    describe("Edge Cases", () => {
+      it("returns min when value is NaN", () => {
+        expect(clamp(NaN, 0, 10)).toBe(0);
+        expect(clamp(NaN, -5, 5)).toBe(-5);
+        expect(clamp(NaN, 100, 200)).toBe(100);
+      });
+
+      it("handles when min equals max", () => {
+        expect(clamp(5, 10, 10)).toBe(10);
+        expect(clamp(10, 10, 10)).toBe(10);
+        expect(clamp(15, 10, 10)).toBe(10);
+        expect(clamp(NaN, 10, 10)).toBe(10);
+      });
+
+      it("handles negative ranges", () => {
+        expect(clamp(-5, -10, -1)).toBe(-5);
+        expect(clamp(-15, -10, -1)).toBe(-10);
+        expect(clamp(5, -10, -1)).toBe(-1);
+        expect(clamp(NaN, -10, -1)).toBe(-10);
+      });
+
+      it("handles zero values", () => {
+        expect(clamp(0, 0, 10)).toBe(0);
+        expect(clamp(5, 0, 0)).toBe(0);
+        expect(clamp(0, 0, 0)).toBe(0);
+        expect(clamp(-5, 0, 10)).toBe(0);
+        expect(clamp(15, 0, 10)).toBe(10);
+      });
+    });
+
+    describe("Boundary Conditions", () => {
+      it("handles exact boundary values", () => {
+        expect(clamp(0, 0, 10)).toBe(0); // At min boundary
+        expect(clamp(10, 0, 10)).toBe(10); // At max boundary
+        expect(clamp(5, 5, 10)).toBe(5); // At min boundary
+        expect(clamp(10, 5, 10)).toBe(10); // At max boundary
+      });
+
+      it("handles values just outside boundaries", () => {
+        expect(clamp(-0.1, 0, 10)).toBe(0); // Just below min
+        expect(clamp(10.1, 0, 10)).toBe(10); // Just above max
+        expect(clamp(4.9, 5, 10)).toBe(5); // Just below min
+        expect(clamp(10.1, 5, 10)).toBe(10); // Just above max
+      });
+
+      it("handles very large numbers", () => {
+        expect(clamp(1000000, 0, 100)).toBe(100);
+        expect(clamp(-1000000, -100, 0)).toBe(-100);
+        expect(clamp(1000000, 0, 1000000)).toBe(1000000);
+      });
+
+      it("handles very small numbers", () => {
+        expect(clamp(0.000001, 0, 1)).toBe(0.000001);
+        expect(clamp(-0.000001, 0, 1)).toBe(0);
+        expect(clamp(0.000001, 0.000001, 1)).toBe(0.000001);
+      });
+    });
+
+    describe("Floating Point Precision", () => {
+      it("handles floating point values correctly", () => {
+        expect(clamp(3.14, 0, 10)).toBe(3.14);
+        expect(clamp(3.14, 0, 3)).toBe(3);
+        expect(clamp(3.14, 4, 10)).toBe(4);
+        expect(clamp(3.14, 0, 3.14)).toBe(3.14);
+      });
+
+      it("handles floating point boundaries", () => {
+        expect(clamp(3.14159, 0, 3.14159)).toBe(3.14159);
+        expect(clamp(3.1416, 0, 3.14159)).toBe(3.14159);
+        expect(clamp(3.14158, 0, 3.14159)).toBe(3.14158);
+      });
+    });
+
+    describe("Type Safety", () => {
+      it("handles integer inputs", () => {
+        expect(clamp(5, 0, 10)).toBe(5);
+        expect(clamp(-5, -10, 10)).toBe(-5);
+        expect(clamp(100, 0, 50)).toBe(50);
+      });
+
+      it("handles mixed integer and float inputs", () => {
+        expect(clamp(5.5, 0, 10)).toBe(5.5);
+        expect(clamp(5, 0.5, 10.5)).toBe(5);
+        expect(clamp(5.5, 0.5, 10.5)).toBe(5.5);
+      });
+    });
+
+    describe("Real-world Scenarios", () => {
+      it("clamps percentage values", () => {
+        expect(clamp(50, 0, 100)).toBe(50);
+        expect(clamp(150, 0, 100)).toBe(100);
+        expect(clamp(-10, 0, 100)).toBe(0);
+      });
+
+      it("clamps RGB color values", () => {
+        expect(clamp(128, 0, 255)).toBe(128);
+        expect(clamp(300, 0, 255)).toBe(255);
+        expect(clamp(-50, 0, 255)).toBe(0);
+      });
+
+      it("clamps array indices", () => {
+        expect(clamp(5, 0, 9)).toBe(5);
+        expect(clamp(15, 0, 9)).toBe(9);
+        expect(clamp(-1, 0, 9)).toBe(0);
+      });
+
+      it("clamps viewport dimensions", () => {
+        expect(clamp(800, 320, 1920)).toBe(800);
+        expect(clamp(2000, 320, 1920)).toBe(1920);
+        expect(clamp(200, 320, 1920)).toBe(320);
+      });
+    });
+
+    describe("Performance", () => {
+      it("handles many clamp operations efficiently", () => {
+        const startTime = performance.now();
+        const iterations = 10000;
+
+        for (let i = 0; i < iterations; i++) {
+          clamp(i, 0, 100);
+        }
+
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+
+        // Should complete within reasonable time
+        expect(duration).toBeLessThan(100); // 100ms
+      });
+
+      it("maintains performance with repeated calls", () => {
+        const startTime = performance.now();
+        const iterations = 1000;
+
+        for (let i = 0; i < iterations; i++) {
+          clamp(50, 0, 100);
+        }
+
+        const endTime = performance.now();
+        const duration = endTime - startTime;
+
+        // Should be very fast for repeated calls
+        expect(duration).toBeLessThan(10); // 10ms
+      });
+    });
+
+    describe("Function Interface", () => {
+      it("returns a number", () => {
+        const result = clamp(5, 0, 10);
+        expect(typeof result).toBe("number");
+      });
+
+      it("returns the correct type for all scenarios", () => {
+        expect(typeof clamp(5, 0, 10)).toBe("number");
+        expect(typeof clamp(NaN, 0, 10)).toBe("number");
+        expect(typeof clamp(-5, 0, 10)).toBe("number");
+        expect(typeof clamp(15, 0, 10)).toBe("number");
+      });
     });
   });
 });
