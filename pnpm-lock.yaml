@@ -570,6 +570,9 @@ importers:
       '@guyromellemagayano/components':
         specifier: workspace:*
         version: link:../../packages/components
+      '@guyromellemagayano/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -891,6 +894,61 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
+
+  packages/hooks:
+    dependencies:
+      '@guyromellemagayano/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.2.0
+      bunchee:
+        specifier: 'catalog:'
+        version: 6.5.4(typescript@5.8.3)
+      eslint:
+        specifier: 'catalog:'
+        version: 9.33.0(jiti@2.4.2)
+      prettier:
+        specifier: 'catalog:'
+        version: 3.6.2
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.0.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@packages/vitest-presets':
+        specifier: workspace:*
+        version: link:../vitest-presets
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.1.8
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.1.6(@types/react@19.1.8)
+      jsdom:
+        specifier: 'catalog:'
+        version: 26.1.0
+      react:
+        specifier: 'catalog:'
+        version: 19.1.1
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.1.1(react@19.1.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.2.0)(@vitest/ui@3.2.4)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
 
   packages/logger:
     dependencies:
