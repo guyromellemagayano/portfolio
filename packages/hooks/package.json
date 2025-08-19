@@ -1,0 +1,83 @@
+{
+  "name": "@guyromellemagayano/hooks",
+  "version": "1.0.0",
+  "description": "A collection of reusable React hooks that provide common functionality across components.",
+  "keywords": [
+    "react",
+    "hooks",
+    "typescript",
+    "web-app",
+    "components"
+  ],
+  "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/hooks",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyromellemagayano/portfolio.git",
+    "directory": "packages/hooks"
+  },
+  "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:run": "vitest run",
+    "test:run:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@guyromellemagayano/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*",
+    "@packages/vitest-presets": "workspace:*",
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "jsdom": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
+  }
+}
