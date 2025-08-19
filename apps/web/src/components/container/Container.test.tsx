@@ -68,10 +68,9 @@ describe("Container", () => {
           <span>Props test</span>
         </Container>
       );
-      const divs = screen.getAllByTestId("div");
-      const outerDiv = divs[0]; // First div is the outer container
-      expect(outerDiv).toHaveClass("custom-class");
-      expect(outerDiv).toHaveAttribute("id", "test-id");
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveClass("custom-class");
+      expect(containerOuterRoot).toHaveAttribute("id", "test-id");
     });
 
     it("renders with proper structure", () => {
@@ -130,10 +129,9 @@ describe("Container", () => {
         </ContainerOuter>
       );
 
-      const divs = screen.getAllByTestId("div");
-      const outerDiv = divs[0]; // First div is the outer container
-      expect(outerDiv).toHaveClass("outer-class");
-      expect(outerDiv).toHaveAttribute("id", "outer-id");
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveClass("outer-class");
+      expect(containerOuterRoot).toHaveAttribute("id", "outer-id");
     });
 
     it("renders with proper structure", () => {
@@ -192,10 +190,9 @@ describe("Container", () => {
         </ContainerInner>
       );
 
-      const divs = screen.getAllByTestId("div");
-      const innerDiv = divs[0]; // First div is the inner container
-      expect(innerDiv).toHaveClass("inner-class");
-      expect(innerDiv).toHaveAttribute("id", "inner-id");
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveClass("inner-class");
+      expect(containerInnerRoot).toHaveAttribute("id", "inner-id");
     });
 
     it("renders with proper structure", () => {
@@ -306,10 +303,12 @@ describe("Container", () => {
         </Container>
       );
 
-      const divs = screen.getAllByTestId("div");
-      const outerDiv = divs[0]; // First div is the outer container
-      expect(outerDiv).toHaveAttribute("aria-label", "Main container");
-      expect(outerDiv).toHaveAttribute("role", "main");
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute(
+        "aria-label",
+        "Main container"
+      );
+      expect(containerOuterRoot).toHaveAttribute("role", "main");
     });
   });
 });

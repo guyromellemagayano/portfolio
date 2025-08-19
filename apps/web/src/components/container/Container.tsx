@@ -8,73 +8,179 @@ import {
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 import { useComponentId } from "@web/hooks/useComponentId";
-import { cn } from "@web/lib/helpers";
+import { cn } from "@web/lib";
 
 import styles from "./Container.module.css";
 
 type ContainerOuterRef = DivRef;
 interface ContainerOuterProps extends DivProps, CommonWebAppComponentProps {}
 
-type ContainerOuterComponent = React.ForwardRefExoticComponent<
-  ContainerOuterProps & React.RefAttributes<ContainerOuterRef>
->;
+interface InternalContainerOuterProps extends ContainerOuterProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
 
-/** Container outer component */
-export const ContainerOuter: ContainerOuterComponent = React.forwardRef(
-  function ContainerOuter(props, ref) {
-    const { children, className, ...rest } = props;
+/** Internal container outer component with all props */
+const InternalContainerOuter = React.forwardRef<
+  ContainerOuterRef,
+  InternalContainerOuterProps
+>(function InternalContainerOuter(props, ref) {
+  const { children, className, componentId, isDebugMode, ...rest } = props;
 
-    if (!children) return null;
+  if (!children) return null;
 
-    const element = (
-      <Div {...rest} className={cn(styles.containerOuter, className)} ref={ref}>
-        <Div className={styles.containerOuterContent}>{children}</Div>
-      </Div>
-    );
+  const element = (
+    <Div
+      {...rest}
+      ref={ref}
+      className={cn(styles.containerOuter, className)}
+      data-container-outer-id={componentId}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid="container-outer-root"
+    >
+      <Div className={styles.containerOuterContent}>{children}</Div>
+    </Div>
+  );
 
-    return element;
-  }
-);
+  return element;
+});
+
+InternalContainerOuter.displayName = "InternalContainerOuter";
+
+/** Public container outer component with useComponentId integration */
+export const ContainerOuter = React.forwardRef<
+  ContainerOuterRef,
+  ContainerOuterProps
+>(function ContainerOuter(props, ref) {
+  const { _internalId, _debugMode, ...rest } = props;
+
+  // Use shared hook for ID generation and debug logging
+  // Component name will be auto-detected from export const declaration
+  const { id, isDebugMode } = useComponentId({
+    internalId: _internalId,
+    debugMode: _debugMode,
+  });
+
+  const element = (
+    <InternalContainerOuter
+      {...rest}
+      ref={ref}
+      componentId={id}
+      isDebugMode={isDebugMode}
+    />
+  );
+
+  return element;
+});
 
 ContainerOuter.displayName = "ContainerOuter";
 
 type ContainerInnerRef = DivRef;
 interface ContainerInnerProps extends DivProps, CommonWebAppComponentProps {}
 
-type ContainerInnerComponent = React.ForwardRefExoticComponent<
-  ContainerInnerProps & React.RefAttributes<ContainerInnerRef>
->;
+interface InternalContainerInnerProps extends ContainerInnerProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
 
-/** Container inner component */
-export const ContainerInner: ContainerInnerComponent = React.forwardRef(
-  function ContainerInner(props, ref) {
-    const { children, className, ...rest } = props;
+/** Internal container inner component with all props */
+const InternalContainerInner = React.forwardRef<
+  ContainerInnerRef,
+  InternalContainerInnerProps
+>(function InternalContainerInner(props, ref) {
+  const { children, className, componentId, isDebugMode, ...rest } = props;
 
-    if (!children) return null;
+  if (!children) return null;
 
-    const element = (
-      <Div {...rest} className={cn(styles.containerInner, className)} ref={ref}>
-        <Div className={styles.containerInnerContent}>{children}</Div>
-      </Div>
-    );
+  const element = (
+    <Div
+      {...rest}
+      ref={ref}
+      className={cn(styles.containerInner, className)}
+      data-container-inner-id={componentId}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid="container-inner-root"
+    >
+      <Div className={styles.containerInnerContent}>{children}</Div>
+    </Div>
+  );
 
-    return element;
-  }
-);
+  return element;
+});
+
+InternalContainerInner.displayName = "InternalContainerInner";
+
+/** Public container inner component with useComponentId integration */
+export const ContainerInner = React.forwardRef<
+  ContainerInnerRef,
+  ContainerInnerProps
+>(function ContainerInner(props, ref) {
+  const { _internalId, _debugMode, ...rest } = props;
+
+  // Use shared hook for ID generation and debug logging
+  // Component name will be auto-detected from export const declaration
+  const { id, isDebugMode } = useComponentId({
+    internalId: _internalId,
+    debugMode: _debugMode,
+  });
+
+  const element = (
+    <InternalContainerInner
+      {...rest}
+      ref={ref}
+      componentId={id}
+      isDebugMode={isDebugMode}
+    />
+  );
+
+  return element;
+});
 
 ContainerInner.displayName = "ContainerInner";
 
 type ContainerRef = ContainerOuterRef;
 interface ContainerProps extends ContainerOuterProps {}
 
-type ContainerComponent = React.ForwardRefExoticComponent<
-  ContainerProps & React.RefAttributes<ContainerRef>
->;
+interface InternalContainerProps extends ContainerProps {
+  /** Internal component ID passed from parent */
+  componentId?: string;
+  /** Internal debug mode passed from parent */
+  isDebugMode?: boolean;
+}
+
+/** Internal container component with all props */
+const InternalContainer = React.forwardRef<
+  ContainerRef,
+  InternalContainerProps
+>(function InternalContainer(props, ref) {
+  const { children, componentId, isDebugMode, ...rest } = props;
+
+  if (!children) return null;
+
+  const element = (
+    <InternalContainerOuter
+      {...rest}
+      ref={ref}
+      componentId={componentId}
+      isDebugMode={isDebugMode}
+    >
+      <InternalContainerInner>{children}</InternalContainerInner>
+    </InternalContainerOuter>
+  );
+
+  return element;
+});
+
+InternalContainer.displayName = "InternalContainer";
 
 /** Top-level layout container that provides consistent outer and inner structure for page content. */
-export const Container: ContainerComponent = React.forwardRef(
+export const Container = React.forwardRef<ContainerRef, ContainerProps>(
   function Container(props, ref) {
-    const { children, _internalId, _debugMode, ...rest } = props;
+    const { _internalId, _debugMode, ...rest } = props;
 
     // Use shared hook for ID generation and debug logging
     // Component name will be auto-detected from export const declaration
@@ -83,17 +189,13 @@ export const Container: ContainerComponent = React.forwardRef(
       debugMode: _debugMode,
     });
 
-    if (!children) return null;
-
     const element = (
-      <ContainerOuter
+      <InternalContainer
         {...rest}
         ref={ref}
-        data-container-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-      >
-        <ContainerInner>{children}</ContainerInner>
-      </ContainerOuter>
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
     );
 
     return element;
