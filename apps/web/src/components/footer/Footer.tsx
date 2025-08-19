@@ -3,9 +3,15 @@
 import React from "react";
 
 import {
+  A,
+  Div,
   Footer as FooterComponent,
   type FooterProps as FooterComponentProps,
   type FooterRef as FooterComponentRef,
+  Li,
+  Nav,
+  Span,
+  Ul,
 } from "@guyromellemagayano/components";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
@@ -58,22 +64,24 @@ const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="footer-root"
       >
-        <div className={styles.footerContent}>
-          <div className={styles.footerBrand}>
-            <span className={styles.brandName}>{brandName}</span>
-            <span className={styles.legalText}>{legalText}</span>
-          </div>
+        <Div className={styles.footerContent}>
+          <Div className={styles.footerBrand}>
+            <Span className={styles.brandName}>{brandName}</Span>
+            <Span className={styles.legalText}>{legalText}</Span>
+          </Div>
 
           {navLinks.length > 0 && (
-            <nav className={styles.footerNav}>
-              <ul className={styles.navList}>
+            <Nav className={styles.footerNav}>
+              <Ul className={styles.navList}>
                 {navLinks.map((link) => {
                   const isExternal = link.kind === "external";
                   const href = isExternal ? link.href : link.href.toString();
 
-                  return (
-                    <li key={href} className={styles.navItem}>
-                      <a
+                  if (!href) return null;
+
+                  const element = (
+                    <Li key={href} className={styles.navItem}>
+                      <A
                         href={href}
                         target={isExternal && link.newTab ? "_blank" : "_self"}
                         rel={
@@ -84,14 +92,16 @@ const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
                         className={styles.navLink}
                       >
                         {link.label}
-                      </a>
-                    </li>
+                      </A>
+                    </Li>
                   );
+
+                  return element;
                 })}
-              </ul>
-            </nav>
+              </Ul>
+            </Nav>
           )}
-        </div>
+        </Div>
       </FooterComponent>
     );
 
@@ -101,7 +111,7 @@ const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
 
 InternalFooter.displayName = "InternalFooter";
 
-/** Public footer component with useComponentId integration */
+/** Public footer component with `useComponentId` integration */
 export const Footer = React.forwardRef<FooterRef, FooterProps>(
   function Footer(props, ref) {
     const { _internalId, _debugMode, ...rest } = props;

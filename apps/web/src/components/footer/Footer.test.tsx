@@ -18,10 +18,45 @@ vi.mock("@web/lib", () => ({
 
 // Mock the components
 vi.mock("@guyromellemagayano/components", () => ({
+  A: vi.fn(({ children, ...props }) => (
+    <a data-testid="grm-a" {...props}>
+      {children}
+    </a>
+  )),
+  Div: vi.fn(({ children, ...props }) => (
+    <div data-testid="div" {...props}>
+      {children}
+    </div>
+  )),
   Footer: vi.fn(({ children, ...props }) => (
     <footer data-testid="grm-footer" {...props}>
       {children}
     </footer>
+  )),
+  Li: vi.fn(({ children, ...props }) => (
+    <li data-testid="grm-li" {...props}>
+      {children}
+    </li>
+  )),
+  Main: vi.fn(({ children, ...props }) => (
+    <main data-testid="grm-main" {...props}>
+      {children}
+    </main>
+  )),
+  Nav: vi.fn(({ children, ...props }) => (
+    <nav data-testid="grm-nav" {...props}>
+      {children}
+    </nav>
+  )),
+  Span: vi.fn(({ children, ...props }) => (
+    <span data-testid="grm-span" {...props}>
+      {children}
+    </span>
+  )),
+  Ul: vi.fn(({ children, ...props }) => (
+    <ul data-testid="grm-ul" {...props}>
+      {children}
+    </ul>
   )),
 }));
 
