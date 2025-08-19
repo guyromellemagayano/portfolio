@@ -39,7 +39,7 @@ type ChevronRightIconComponent = React.FC<ChevronRightIconProps>;
 
 /** A component that renders a chevron right icon. */
 export const ChevronRightIcon = setDisplayName(function ChevronRightIcon(
-  props: ChevronRightIconProps
+  props
 ) {
   const { _internalId, _debugMode, ...rest } = props;
 
