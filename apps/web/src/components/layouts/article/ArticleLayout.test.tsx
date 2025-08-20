@@ -487,11 +487,11 @@ describe("ArticleLayout", () => {
 
   describe("Article Header Structure", () => {
     it("renders header with correct structure", () => {
-      render(<ArticleLayout article={mockArticle} />);
+      const { container } = render(<ArticleLayout article={mockArticle} />);
 
-      const header = screen.getByTestId("header");
-      const title = screen.getByTestId("heading");
-      const time = screen.getByTestId("time");
+      const header = container.querySelector('[data-testid="header"]');
+      const title = container.querySelector('[data-testid="heading"]');
+      const time = container.querySelector('[data-testid="time"]');
 
       expect(header).toBeInTheDocument();
       expect(header).toHaveClass("flex", "flex-col");
@@ -500,10 +500,11 @@ describe("ArticleLayout", () => {
     });
 
     it("renders title as h1", () => {
-      render(<ArticleLayout article={mockArticle} />);
+      const { container } = render(<ArticleLayout article={mockArticle} />);
 
-      const title = screen.getByTestId("heading");
-      expect(title.tagName).toBe("H1");
+      const title = container.querySelector('[data-testid="heading"]');
+      expect(title).toBeInTheDocument();
+      expect(title?.tagName).toBe("H1");
     });
 
     it("renders date separator", () => {
@@ -520,25 +521,29 @@ describe("ArticleLayout", () => {
     it("handles article without title", () => {
       const articleWithoutTitle = { ...mockArticle, title: "" };
 
-      render(<ArticleLayout article={articleWithoutTitle} />);
+      const { container } = render(
+        <ArticleLayout article={articleWithoutTitle} />
+      );
 
-      const title = screen.queryByTestId("heading");
+      const title = container.querySelector('[data-testid="heading"]');
       expect(title).not.toBeInTheDocument();
     });
 
     it("handles article without date", () => {
       const articleWithoutDate = { ...mockArticle, date: "" };
 
-      render(<ArticleLayout article={articleWithoutDate} />);
+      const { container } = render(
+        <ArticleLayout article={articleWithoutDate} />
+      );
 
-      const time = screen.queryByTestId("time");
+      const time = container.querySelector('[data-testid="time"]');
       expect(time).not.toBeInTheDocument();
     });
 
     it("handles empty children", () => {
-      render(<ArticleLayout>{null}</ArticleLayout>);
+      const { container } = render(<ArticleLayout>{null}</ArticleLayout>);
 
-      const prose = screen.queryByTestId("prose");
+      const prose = container.querySelector('[data-testid="prose"]');
       expect(prose).not.toBeInTheDocument();
     });
   });
