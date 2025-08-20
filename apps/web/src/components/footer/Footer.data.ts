@@ -1,9 +1,7 @@
 import type { Route } from "next";
 
-/** Internal href. */
 type InternalHref = Route | (string & {});
 
-/** Footer link. */
 export type FooterLink =
   | { kind: "internal"; label: string; href: InternalHref }
   | {
@@ -14,27 +12,22 @@ export type FooterLink =
       rel?: string;
     };
 
-/** For config labels shape. */
+export const BRAND_NAME = "Guy Romelle Magayano";
+
 export type FooterComponentLabels = Readonly<{
   brandName: string;
   legalText: string;
 }>;
 
-/** Convenience alias when you only need internal links. */
-export type FooterComponentNavLinks = ReadonlyArray<
-  Extract<FooterLink, { kind: "internal" }>
->;
-
-/** Brand used by the footer (override via data layer later if needed). */
-export const BRAND_NAME = "Guy Romelle Magayano";
-
-/** Default footer labels + legal text. */
 export const FOOTER_COMPONENT_LABELS = {
   brandName: BRAND_NAME,
   legalText: `${BRAND_NAME}. All rights reserved.`,
 } as const satisfies FooterComponentLabels;
 
-/** Default navigation (strongly typed; add external links as needed). */
+export type FooterComponentNavLinks = ReadonlyArray<
+  Extract<FooterLink, { kind: "internal" }>
+>;
+
 export const FOOTER_COMPONENT_NAV_LINKS = [
   { kind: "internal", label: "About", href: "/about" },
   { kind: "internal", label: "Articles", href: "/articles" },
