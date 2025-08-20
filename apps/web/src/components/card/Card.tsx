@@ -4,79 +4,25 @@ import Link from "next/link";
 
 import {
   Article,
-  type ArticleProps,
-  type ArticleRef,
   Div,
-  type DivProps,
-  type DivRef,
   Heading,
-  type HeadingProps,
-  type HeadingRef,
   P,
-  type PProps,
-  type PRef,
   Span,
-  Svg,
-  type SvgProps,
   Time,
-  type TimeProps,
-  type TimeRef,
 } from "@guyromellemagayano/components";
 import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
+import { Icon } from "@web/components/icon";
 import { cn } from "@web/lib";
 
 import styles from "./Card.module.css";
 
 // ============================================================================
-// CHEVRON RIGHT ICON COMPONENT
-// ============================================================================
-
-interface ChevronRightIconProps extends SvgProps, CommonWebAppComponentProps {}
-
-type ChevronRightIconComponent = React.FC<ChevronRightIconProps>;
-
-/** A component that renders a chevron right icon. */
-export const ChevronRightIcon = setDisplayName(function ChevronRightIcon(
-  props
-) {
-  const { _internalId, _debugMode, ...rest } = props;
-
-  // Use shared hook for ID generation and debug logging
-  // Component name will be auto-detected from export const declaration
-  const { id, isDebugMode } = useComponentId({
-    internalId: _internalId,
-    debugMode: _debugMode,
-  });
-
-  const element = (
-    <Svg
-      {...rest}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-      aria-labelledby={id}
-      data-chevron-right-icon-id={id}
-      data-debug-mode={isDebugMode ? "true" : undefined}
-    >
-      <path
-        d="M6.75 5.75 9.25 8l-2.5 2.25"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-
-  return element;
-}, "ChevronRightIcon") as ChevronRightIconComponent;
-
-// ============================================================================
 // CARD EYEBROW COMPONENT
 // ============================================================================
 
-type CardEyebrowRef = TimeRef;
+type CardEyebrowRef = React.ComponentRef<typeof Time>;
 
 interface InternalCardEyebrowProps extends CardEyebrowProps {
   /** Internal component ID passed from parent */
@@ -131,7 +77,9 @@ const InternalCardEyebrow = setDisplayName(
   "InternalCardEyebrow"
 ) as InternalCardEyebrowComponent;
 
-interface CardEyebrowProps extends TimeProps, CommonWebAppComponentProps {
+interface CardEyebrowProps
+  extends React.ComponentProps<typeof Time>,
+    CommonWebAppComponentProps {
   /** Whether to decorate the eyebrow with a line. */
   decorate?: boolean;
 }
@@ -228,7 +176,7 @@ const InternalCardLink = setDisplayName(
 ) as InternalCardLinkComponent;
 
 interface CardLinkProps
-  extends HeadingProps,
+  extends React.ComponentProps<typeof Heading>,
     Pick<React.ComponentPropsWithoutRef<typeof Link>, "target" | "title">,
     CommonWebAppComponentProps {
   /** The URL to link to when the card link is clicked. */
@@ -269,9 +217,9 @@ const CardLink = setDisplayName(
 // CARD TITLE COMPONENT
 // ============================================================================
 
-type CardTitleRef = HeadingRef;
+type CardTitleRef = React.ComponentRef<typeof Heading>;
 interface CardTitleProps
-  extends HeadingProps,
+  extends React.ComponentProps<typeof Heading>,
     Pick<CardLinkProps, "target" | "title">,
     CommonWebAppComponentProps {
   /** The URL to link to when the card title is clicked. */
@@ -364,8 +312,10 @@ const CardTitle = setDisplayName(
 // CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-type CardDescriptionRef = PRef;
-interface CardDescriptionProps extends PProps, CommonWebAppComponentProps {}
+type CardDescriptionRef = React.ComponentRef<typeof P>;
+interface CardDescriptionProps
+  extends React.ComponentProps<typeof P>,
+    CommonWebAppComponentProps {}
 
 interface InternalCardDescriptionProps extends CardDescriptionProps {
   /** Internal component ID passed from parent */
@@ -437,9 +387,9 @@ const CardDescription = setDisplayName(
 // CARD CTA COMPONENT
 // ============================================================================
 
-type CardCtaRef = DivRef;
+type CardCtaRef = React.ComponentRef<typeof Div>;
 interface CardCtaProps
-  extends DivProps,
+  extends React.ComponentProps<typeof Div>,
     Pick<CardLinkProps, "target" | "title">,
     CommonWebAppComponentProps {
   /** The URL to link to when the card CTA is clicked. */
@@ -490,7 +440,7 @@ const InternalCardCta = setDisplayName(
             className={styles.cardCtaLink}
           >
             {children}
-            <ChevronRightIcon className={styles.cardCtaIcon} />
+            <Icon.ChevronRight className={styles.cardCtaIcon} />
           </Link>
         ) : (
           children
@@ -537,8 +487,10 @@ const CardCta = setDisplayName(
 // MAIN CARD COMPONENT
 // ============================================================================
 
-type CardRef = ArticleRef;
-interface CardProps extends ArticleProps, CommonWebAppComponentProps {}
+type CardRef = React.ComponentRef<typeof Article>;
+interface CardProps
+  extends React.ComponentProps<typeof Article>,
+    CommonWebAppComponentProps {}
 
 type CardComponent = React.ForwardRefExoticComponent<
   CardProps & React.RefAttributes<CardRef>
