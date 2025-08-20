@@ -2,13 +2,14 @@
 import type { Metadata } from "next";
 
 import { log } from "@guyromellemagayano/logger";
-import { CounterButton, Link } from "@guyromellemagayano/ui";
+
+import { ClientCounterButton } from "../components/client-counter-button";
 
 export const metadata: Metadata = {
   title: "Store | Kitchen Sink",
 };
 
-const Store = () => {
+const Store = function () {
   log("Hey! This is the Store page.");
 
   return (
@@ -17,16 +18,20 @@ const Store = () => {
         Store <br />
         <span>Kitchen Sink</span>
       </h1>
-      <CounterButton />
+      <ClientCounterButton />
       <p className="description">
         Built With{" "}
-        <Link href="https://turbo.build/repo" newTab>
+        <a
+          href="https://turbo.build/repo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Turborepo
-        </Link>
+        </a>
         {" & "}
-        <Link href="https://nextjs.org/" newTab>
+        <a href="https://nextjs.org/" target="_blank" rel="noopener noreferrer">
           Next.js
-        </Link>
+        </a>
       </p>
     </div>
   );
