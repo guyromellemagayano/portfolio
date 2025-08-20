@@ -5,10 +5,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown --minify",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "tsup --watch --onSuccess \"node dist/index.cjs\"",
+    "dev": "tsdown --watch --onSuccess \"node dist/index.js\"",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint src/ --max-warnings 0",
