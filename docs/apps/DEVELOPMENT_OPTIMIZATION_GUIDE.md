@@ -359,7 +359,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Early return pattern for performance
     if (!children) return null;
 
-    return (
+    const element = (
       <button
         ref={ref}
         className={`button button--${variant} button--${size}`}
@@ -370,6 +370,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {children}
       </button>
     );
+
+    return element;
   }
 );
 
@@ -591,7 +593,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     // ✅ Early return pattern
     if (!title && !children) return null;
     
-    return (
+    const element = (
       <SectionComponent
         ref={ref}
         aria-labelledby={id}
@@ -602,6 +604,8 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
         {/* Component implementation */}
       </SectionComponent>
     );
+
+    return element;
   }
 );
 ```
@@ -666,7 +670,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     
     if (!title && !children) return null;
     
-    return (
+    const element = (
       <SectionComponent
         ref={ref}
         aria-labelledby={id}
@@ -678,6 +682,8 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
         {children && <Div>{children}</Div>}
       </SectionComponent>
     );
+
+    return element;
   }
 );
 ```
@@ -728,7 +734,7 @@ export const ContainerOuter = setDisplayName(
       debugMode: props._debugMode,
     });
     
-    return (
+    const element = (
       <InternalContainerOuter
         {...props}
         ref={ref}
@@ -736,6 +742,8 @@ export const ContainerOuter = setDisplayName(
         isDebugMode={isDebugMode}
       />
     );
+
+    return element;
   }),
   "ContainerOuter"
 );
@@ -825,7 +833,7 @@ export const Prose = React.forwardRef<ProseRef, ProseProps>(
     
     if (!children) return null;
     
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -837,6 +845,8 @@ export const Prose = React.forwardRef<ProseRef, ProseProps>(
         {children}
       </Div>
     );
+
+    return element;
   }
 );
 ```
@@ -894,7 +904,7 @@ export const Header = React.forwardRef<HeaderRef, HeaderProps>(
       debugMode: _debugMode,
     });
     
-    return (
+    const element = (
       <InternalHeader
         {...rest}
         ref={ref}
@@ -902,6 +912,8 @@ export const Header = React.forwardRef<HeaderRef, HeaderProps>(
         isDebugMode={isDebugMode}
       />
     );
+
+    return element;
   }
 );
 ```
@@ -944,7 +956,7 @@ const InternalFooter = setDisplayName(
     function InternalFooter(props, ref) {
       const { navLinks = FOOTER_COMPONENT_NAV_LINKS, ...rest } = props;
       
-      return (
+      const element = (
         <GRMFooterComponent
           {...rest}
           ref={ref}
@@ -966,6 +978,8 @@ const InternalFooter = setDisplayName(
           })}
         </GRMFooterComponent>
       );
+
+      return element;
     }
   ),
   "InternalFooter"
@@ -1013,7 +1027,7 @@ export const Card = setDisplayName(
         debugMode: _debugMode,
       });
       
-      return (
+      const element = (
         <InternalCard
           {...rest}
           ref={ref}
@@ -1021,6 +1035,8 @@ export const Card = setDisplayName(
           isDebugMode={isDebugMode}
         />
       );
+
+      return element;
     }
   ),
   "Card"
@@ -1196,14 +1212,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button = function Button({ variant = 'primary', size = 'md', children, ...props }: ButtonProps) {
-  return (
+  const element = (
     <button
       className={`${styles.button} ${styles[variant]} ${styles[size]}`}
       {...props}
     >
       {children}
     </button>
-  )
+  );
+
+  return element;
 }
 
 Button.displayName = 'Button'
@@ -1238,14 +1256,16 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = function Button({ variant = 'primary', size = 'md', children, ...props }: ButtonProps) {
-  return (
+  const element = (
     <button
       className={`${styles.button} ${styles[variant]} ${styles[size]}`}
       {...props}
     >
       {children}
     </button>
-  )
+  );
+
+  return element;
 }
 
 Button.displayName = 'Button'
@@ -1396,11 +1416,13 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(...)
 // components/container/Container.tsx
 export const Container = React.forwardRef<ContainerRef, ContainerProps>(
   function Container(props, ref) {
-    return (
+    const element = (
       <ContainerOuter {...props} ref={ref}>
         <ContainerInner>{props.children}</ContainerInner>
       </ContainerOuter>
     );
+
+    return element;
   }
 );
 
@@ -1574,7 +1596,7 @@ const InternalComponent = setDisplayName(
 
     if (!children) return null;
 
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -1586,6 +1608,8 @@ const InternalComponent = setDisplayName(
         {children}
       </Div>
     );
+
+    return element;
   }),
   "InternalComponent"
 ) as InternalComponentType;
@@ -1603,7 +1627,7 @@ export const Component = setDisplayName(
       debugMode: _debugMode,
     });
 
-    return (
+    const element = (
       <InternalComponent
         {...rest}
         ref={ref}
@@ -1611,6 +1635,8 @@ export const Component = setDisplayName(
         isDebugMode={isDebugMode}
       />
     );
+
+    return element;
   }),
   "Component"
 ) as ComponentType;
@@ -1630,11 +1656,13 @@ const Component = setDisplayName(
     // Early return pattern for performance
     if (!children) return null;
 
-    return (
+    const element = (
       <Div ref={ref} {...rest}>
         {children}
       </Div>
     );
+
+    return element;
   }),
   "Component"
 ) as ComponentType;
@@ -1650,12 +1678,14 @@ const Component = setDisplayName(
     // Multiple condition checks
     if (!title && !children) return null;
 
-    return (
+    const element = (
       <Div ref={ref} {...rest}>
         {title && <Heading>{title}</Heading>}
         {children && <Div>{children}</Div>}
       </Div>
     );
+
+    return element;
   }),
   "Component"
 ) as ComponentType;
@@ -1674,7 +1704,7 @@ const InternalComponent = setDisplayName(
 
     if (!children) return null;
 
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -1686,6 +1716,8 @@ const InternalComponent = setDisplayName(
         {children}
       </Div>
     );
+
+    return element;
   }),
   "InternalComponent"
 ) as InternalComponentType;
@@ -1706,7 +1738,7 @@ const InternalComponent = setDisplayName(
 
     if (!children) return null;
 
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -1720,6 +1752,8 @@ const InternalComponent = setDisplayName(
         </Div>
       </Div>
     );
+
+    return element;
   }),
   "InternalComponent"
 ) as InternalComponentType;
@@ -1734,20 +1768,67 @@ const InternalComponent = setDisplayName(
 ```typescript
 import {
   Div,
-  type DivProps,
-  type DivRef,
   Heading,
-  type HeadingProps,
-  type HeadingRef,
 } from "@guyromellemagayano/components";
 
-// Inline type definitions
-type ComponentRef = DivRef;
-interface ComponentProps extends DivProps, CommonWebAppComponentProps {}
+// Inline type definitions using React utility types
+type ComponentRef = React.ComponentRef<typeof Div>;
+interface ComponentProps extends React.ComponentProps<typeof Div>, CommonWebAppComponentProps {}
 
 interface InternalComponentProps extends ComponentProps {
   componentId?: string;
   isDebugMode?: boolean;
+}
+```
+
+#### 🎯 **Why Use React Utility Types**
+
+**Benefits of `React.ComponentRef` and `React.ComponentProps`:**
+
+- ✅ **Always Up-to-Date**: Automatically extracts current types from components
+- ✅ **No Manual Type Imports**: Don't need to import separate type definitions
+- ✅ **Type Safety**: Guaranteed to match the actual component interface
+- ✅ **Future-Proof**: Types update automatically when component APIs change
+- ✅ **Consistent Pattern**: Same approach works for all external components
+
+#### ❌ **Avoid Manual Type Imports**
+
+```typescript
+// ❌ DON'T DO THIS - Manual type imports
+import {
+  Div,
+  type DivProps,          // Manual type import
+  type DivRef,            // Manual type import
+  Heading,
+  type HeadingProps,      // Manual type import
+  type HeadingRef,        // Manual type import
+} from "@guyromellemagayano/components";
+
+// Problems with this approach:
+// - Extra imports to maintain
+// - Risk of type/component version mismatch
+// - Manual synchronization required
+```
+
+#### ✅ **Recommended Pattern for All External Components**
+
+```typescript
+// ✅ DO THIS - React utility types
+import { Button, Input, Modal } from "@guyromellemagayano/components";
+
+// Extract types using React utilities
+type ButtonRef = React.ComponentRef<typeof Button>;
+type ButtonProps = React.ComponentProps<typeof Button>;
+
+type InputRef = React.ComponentRef<typeof Input>;
+type InputProps = React.ComponentProps<typeof Input>;
+
+type ModalRef = React.ComponentRef<typeof Modal>;
+type ModalProps = React.ComponentProps<typeof Modal>;
+
+// Extend for your component
+interface MyComponentProps extends ButtonProps, CommonWebAppComponentProps {
+  variant?: 'custom' | 'special';
 }
 ```
 
@@ -1833,36 +1914,170 @@ import { cn } from "@web/lib";
 import styles from "./Component.module.css";
 ```
 
-### **10. Component Documentation Pattern**
+### **10. Self-Documenting Code Pattern**
 
-**Every component MUST include comprehensive JSDoc documentation.**
+**Components should be self-documenting through TypeScript types and clear naming. Use JSDoc sparingly only when necessary.**
 
-#### ✅ **Required Documentation Pattern**
+#### ✅ **Preferred: Self-Documenting Code**
 
 ```typescript
-/**
- * A comprehensive component that provides [specific functionality].
- * 
- * @example
- * ```tsx
- * <Component variant="primary" size="md">
- *   Component content
- * </Component>
- * ```
- * 
- * @param props - Component props
- * @param props.variant - The visual variant of the component
- * @param props.size - The size of the component
- * @param props.children - The content to render inside the component
- * @param props._internalId - Internal ID override (for testing/debugging)
- * @param props._debugMode - Enable debug mode (for development)
- */
+// TypeScript interface provides all necessary documentation
+interface ComponentProps extends React.ComponentProps<typeof Div>, CommonWebAppComponentProps {
+  /** Visual style variant */
+  variant?: 'primary' | 'secondary' | 'outline';
+  /** Size of the component */
+  size?: 'sm' | 'md' | 'lg';
+  /** Content to render inside the component */
+  children: React.ReactNode;
+}
+
+// Component name and implementation are self-explanatory
 export const Component = setDisplayName(
   React.forwardRef(function Component(props, ref) {
-    // Implementation
+    const { variant = 'primary', size = 'md', children, ...rest } = props;
+    
+    // Self-documenting code with clear variable names
+    if (!children) return null;
+    
+    const element = (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, styles[variant], styles[size])}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+
+    return element;
   }),
   "Component"
 ) as ComponentType;
+```
+
+#### ⚠️ **Use JSDoc Only When Necessary**
+
+**JSDoc should be used sparingly in these specific cases:**
+
+1. **Complex business logic that isn't obvious from code**
+2. **Non-obvious behavior or side effects**
+3. **Integration with external systems**
+4. **Performance considerations**
+
+```typescript
+interface AdvancedComponentProps {
+  /** 
+   * Custom validation function that runs on form submission.
+   * Should return error message string or null for valid input.
+   */
+  customValidator?: (value: string) => string | null;
+  
+  /**
+   * Enables performance monitoring. Only use in development.
+   * @internal
+   */
+  _enableProfiling?: boolean;
+}
+
+/**
+ * Handles complex form validation with debounced input.
+ * 
+ * Note: This component automatically debounces validation by 300ms
+ * to prevent excessive API calls during typing.
+ */
+export const AdvancedComponent = setDisplayName(
+  React.forwardRef(function AdvancedComponent(props, ref) {
+    // Implementation
+  }),
+  "AdvancedComponent"
+) as AdvancedComponentType;
+```
+
+#### ❌ **Avoid Over-Documentation**
+
+```typescript
+// ❌ DON'T DO THIS - Over-documented obvious code
+/**
+ * A button component that renders a clickable button element
+ * @param props - The props for the button
+ * @param props.children - The children to render inside the button
+ * @param props.onClick - The click handler for the button
+ * @param props.disabled - Whether the button is disabled
+ * @param props.className - Additional CSS classes
+ * @returns A React button element
+ */
+interface ButtonProps {
+  /** The children to render inside the button */
+  children: React.ReactNode;
+  /** The click handler for the button */
+  onClick?: () => void;
+  /** Whether the button is disabled */
+  disabled?: boolean;
+  /** Additional CSS classes */
+  className?: string;
+}
+
+// ✅ DO THIS - Let TypeScript and naming speak for themselves
+interface ButtonProps extends React.ComponentProps<'button'> {
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary';
+}
+```
+
+#### 🎯 **Self-Documentation Principles**
+
+1. **Descriptive naming** - Component, prop, and variable names should be clear
+2. **TypeScript types** - Interface definitions serve as documentation
+3. **Logical code structure** - Code flow should be easy to follow
+4. **Meaningful defaults** - Default values should be intuitive
+5. **Clear prop types** - Union types and enums document valid values
+
+```typescript
+// Self-documenting through clear naming and types
+interface TooltipProps {
+  trigger: React.ReactElement;
+  content: string | React.ReactNode;
+  placement?: 'top' | 'bottom' | 'left' | 'right';
+  showDelay?: number; // milliseconds
+  hideDelay?: number; // milliseconds
+  disabled?: boolean;
+}
+
+// Implementation is self-explanatory
+export const Tooltip = setDisplayName(
+  React.forwardRef(function Tooltip(props, ref) {
+    const { 
+      trigger, 
+      content, 
+      placement = 'top', 
+      showDelay = 200, 
+      hideDelay = 100,
+      disabled = false,
+      ...rest 
+    } = props;
+    
+    // Clear, self-documenting logic
+    if (disabled || !content) {
+      return trigger;
+    }
+    
+    const element = (
+      <TooltipProvider 
+        placement={placement}
+        showDelay={showDelay}
+        hideDelay={hideDelay}
+        {...rest}
+      >
+        {trigger}
+        <TooltipContent>{content}</TooltipContent>
+      </TooltipProvider>
+    );
+
+    return element;
+  }),
+  "Tooltip"
+) as TooltipType;
 ```
 
 ### **11. Test Mock Pattern**
@@ -1917,7 +2132,7 @@ const InternalComponent = setDisplayName(
       return null;
     }
 
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -1929,6 +2144,8 @@ const InternalComponent = setDisplayName(
         {children}
       </Div>
     );
+
+    return element;
   }),
   "InternalComponent"
 ) as InternalComponentType;
@@ -1971,7 +2188,7 @@ const InternalComponent = setDisplayName(
 
     if (!children) return null;
 
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -1986,6 +2203,8 @@ const InternalComponent = setDisplayName(
         {children}
       </Div>
     );
+
+    return element;
   }),
   "InternalComponent"
 ) as InternalComponentType;
@@ -2050,7 +2269,8 @@ const UtilityComponent = function UtilityComponent(props) {
 // ✅ DO add displayName to rendering components
 const Component = setDisplayName(
   React.forwardRef(function Component(props, ref) {
-    return <div ref={ref}>{props.children}</div>;
+    const element = <div ref={ref}>{props.children}</div>;
+    return element;
   }),
   "Component"
 ) as ComponentType;
@@ -2072,7 +2292,7 @@ export const SimpleComponent = setDisplayName(
       debugMode: _debugMode,
     });
     
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -2083,6 +2303,8 @@ export const SimpleComponent = setDisplayName(
         {rest.children}
       </Div>
     );
+
+    return element;
   }),
   "SimpleComponent"
 ) as SimpleComponentType;
@@ -2097,7 +2319,7 @@ export const ComplexComponent = setDisplayName(
       debugMode: _debugMode,
     });
     
-    return (
+    const element = (
       <InternalComplexComponent
         {...rest}
         ref={ref}
@@ -2105,6 +2327,8 @@ export const ComplexComponent = setDisplayName(
         isDebugMode={isDebugMode}
       />
     );
+
+    return element;
   }),
   "ComplexComponent"
 ) as ComplexComponentType;
@@ -2125,11 +2349,13 @@ const RequiredContentComponent = setDisplayName(
       return <Div ref={ref} {...rest}>Default content</Div>;
     }
     
-    return (
+    const element = (
       <Div ref={ref} {...rest}>
         {children}
       </Div>
     );
+
+    return element;
   }),
   "RequiredContentComponent"
 ) as RequiredContentComponentType;
@@ -2142,12 +2368,14 @@ const OptionalContentComponent = setDisplayName(
     // Conditional rendering for optional content
     if (!title && !children) return null;
     
-    return (
+    const element = (
       <Div ref={ref} {...rest}>
         {title && <Heading>{title}</Heading>}
         {children && <Div>{children}</Div>}
       </Div>
     );
+
+    return element;
   }),
   "OptionalContentComponent"
 ) as OptionalContentComponentType;
@@ -2164,11 +2392,13 @@ import styles from "./Component.module.css";
 
 const Component = setDisplayName(
   React.forwardRef(function Component(props, ref) {
-    return (
+    const element = (
       <Div ref={ref} className={styles.component}>
         {props.children}
       </Div>
     );
+
+    return element;
   }),
   "Component"
 ) as ComponentType;
@@ -2229,7 +2459,7 @@ export const SimpleWrapper = setDisplayName(
       debugMode: _debugMode,
     });
     
-    return (
+    const element = (
       <Div
         {...rest}
         ref={ref}
@@ -2240,6 +2470,8 @@ export const SimpleWrapper = setDisplayName(
         {rest.children}
       </Div>
     );
+
+    return element;
   }),
   "SimpleWrapper"
 ) as SimpleWrapperType;
@@ -2360,7 +2592,7 @@ export const Button = React.forwardRef<ButtonRef, ButtonProps>(
     // Early return pattern for performance
     if (!children) return null;
 
-    return (
+    const element = (
       <ButtonComponent
         ref={ref}
         variant={variant}
@@ -2371,11 +2603,285 @@ export const Button = React.forwardRef<ButtonRef, ButtonProps>(
         {children}
       </ButtonComponent>
     );
+
+    return element;
   }
 );
 
 Button.displayName = 'Button'
 ```
+
+### JSX Element Assignment Pattern
+
+**Best Practice: Always assign JSX to a const element before returning**
+
+All components MUST assign JSX to a `const element` variable before returning it. This pattern provides multiple benefits for debugging, performance, and code maintainability.
+
+#### ✅ **Required Pattern**
+
+```typescript
+export const Component = React.forwardRef<ComponentRef, ComponentProps>(
+  function Component(props, ref) {
+    const { children, className, _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    // Early return for performance
+    if (!children) return null;
+    
+    // ✅ REQUIRED: Assign JSX to const element
+    const element = (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+
+    // ✅ REQUIRED: Return the element variable
+    return element;
+  }
+);
+```
+
+#### ❌ **Wrong Pattern - Direct Return**
+
+```typescript
+export const Component = React.forwardRef<ComponentRef, ComponentProps>(
+  function Component(props, ref) {
+    const { children, className, _internalId, _debugMode, ...rest } = props;
+    
+    // Early return for performance
+    if (!children) return null;
+    
+    // ❌ DON'T DO THIS - Direct JSX return
+    return (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+  }
+);
+```
+
+#### 🎯 **Why This Pattern is Required**
+
+##### **1. Enhanced Debugging Capabilities**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Can inspect element before returning
+if (isDebugMode) {
+  console.log('Component element:', element);
+  console.log('Component props:', element.props);
+}
+
+return element;
+```
+
+##### **2. Conditional Element Modification**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Can modify element based on conditions
+if (isDebugMode) {
+  // Add debug attributes or wrap with debug providers
+  return React.cloneElement(element, {
+    'data-debug-render-time': Date.now(),
+    'data-debug-component-stack': getComponentStack()
+  });
+}
+
+return element;
+```
+
+##### **3. Performance Profiling Integration**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Can wrap with performance monitoring
+if (shouldProfile) {
+  return (
+    <PerformanceProfiler name="Component">
+      {element}
+    </PerformanceProfiler>
+  );
+}
+
+return element;
+```
+
+##### **4. Error Boundary Integration**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Can wrap with error boundaries conditionally
+if (isDevelopment) {
+  return (
+    <ErrorBoundary componentName="Component">
+      {element}
+    </ErrorBoundary>
+  );
+}
+
+return element;
+```
+
+##### **5. Testing and Development Tools**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Can add development-only features
+if (isDevelopment) {
+  // Add data attributes for testing tools
+  return React.cloneElement(element, {
+    'data-component-name': 'Component',
+    'data-render-count': renderCount.current++,
+    'data-props-hash': hashProps(props)
+  });
+}
+
+return element;
+```
+
+##### **6. Consistent Code Patterns**
+
+```typescript
+// ✅ Consistent pattern across all components
+const element = (/* JSX */);
+return element;
+
+// ✅ Easy to spot and understand
+// ✅ Enables code transformations and tooling
+// ✅ Supports advanced debugging scenarios
+// ✅ Allows conditional rendering enhancements
+```
+
+##### **7. Future-Proofing for React Features**
+
+```typescript
+const element = (
+  <Div className={styles.component}>
+    {children}
+  </Div>
+);
+
+// ✅ Ready for React Compiler optimizations
+// ✅ Compatible with future React features
+// ✅ Supports advanced profiling tools
+// ✅ Enables better development experiences
+
+return element;
+```
+
+#### 🔧 **Implementation in Internal/External Pattern**
+
+```typescript
+// ============================================================================
+// INTERNAL COMPONENT
+// ============================================================================
+
+const InternalComponent = setDisplayName(
+  React.forwardRef(function InternalComponent(props, ref) {
+    const { children, className, componentId, isDebugMode, ...rest } = props;
+
+    if (!children) return null;
+
+    const element = (
+      <Div
+        {...rest}
+        ref={ref}
+        className={cn(styles.component, className)}
+        data-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid="component-root"
+      >
+        {children}
+      </Div>
+    );
+
+    return element;
+  }),
+  "InternalComponent"
+) as InternalComponentType;
+
+// ============================================================================
+// EXTERNAL COMPONENT
+// ============================================================================
+
+export const Component = setDisplayName(
+  React.forwardRef(function Component(props, ref) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <InternalComponent
+        {...rest}
+        ref={ref}
+        componentId={id}
+        isDebugMode={isDebugMode}
+      />
+    );
+
+    return element;
+  }),
+  "Component"
+) as ComponentType;
+```
+
+#### 📋 **Compliance Checklist**
+
+All components MUST implement this pattern:
+
+- [ ] ✅ **JSX assigned to `const element`** - Never return JSX directly
+- [ ] ✅ **Return element variable** - Always `return element;`
+- [ ] ✅ **Consistent naming** - Always use `element` as variable name
+- [ ] ✅ **Applied to all components** - Both internal and external components
+- [ ] ✅ **Future-ready** - Pattern supports debugging and development tools
 
 ### Early Return Pattern for Performance
 
@@ -2404,7 +2910,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     // Early return for performance - no unnecessary JSX processing
     if (!title && !children) return null;
 
-    return (
+    const element = (
       <SectionComponent
         ref={ref}
         aria-labelledby={generatedId}
@@ -2416,6 +2922,8 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
         {children && <Div>{children}</Div>}
       </SectionComponent>
     );
+
+    return element;
   }
 );
 ```
@@ -2498,11 +3006,11 @@ export const Component = React.forwardRef<Ref, Props>(
 ```typescript
 // Export with inline types (internal only)
 import React from "react";
-import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
+import { Button as ButtonComponent } from "@guyromellemagayano/components";
 import type { CommonWebAppComponentProps } from "@web/@types/components";
 
-type ButtonRef = ButtonComponentRef;
-interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
+type ButtonRef = React.ComponentRef<typeof ButtonComponent>;
+interface ButtonProps extends React.ComponentProps<typeof ButtonComponent>, CommonWebAppComponentProps {
   // Internal props hidden from consumers
   _internalState?: string
   _debugMode?: boolean
@@ -2634,14 +3142,12 @@ import {
   Div,
   Heading,
   Section as SectionComponent,
-  type SectionProps as SectionComponentProps,  // Import types directly
-  type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
 import { CommonWebAppComponentProps } from "@web/@types/components";
 
-// Inline type definitions - ALWAYS
-type SectionRef = SectionComponentRef;
-interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
+// Inline type definitions - ALWAYS using React utility types
+type SectionRef = React.ComponentRef<typeof SectionComponent>;
+interface SectionProps extends React.ComponentProps<typeof SectionComponent>, CommonWebAppComponentProps {}
 
 export const Section = React.forwardRef<SectionRef, SectionProps>(
   function Section(props, ref) {
@@ -2660,7 +3166,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
     // Early return pattern
     if (!title && !children) return null;
     
-    return (
+    const element = (
       <SectionComponent
         ref={ref}
         aria-labelledby={id}
@@ -2671,6 +3177,8 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
         {/* Component implementation */}
       </SectionComponent>
     );
+
+    return element;
   }
 );
 
@@ -2801,14 +3309,16 @@ export const SecureButton = React.forwardRef<SecureButtonRef, SecureButtonProps>
     // Log security validation
     logInfo(`SecureButton validated with CSRF token: ${_csrfToken?.substring(0, 8)}...`);
     
-    return (
+    const element = (
       <ButtonComponent 
         ref={ref}
         {...publicProps}
         data-csrf={_csrfToken}
         data-rate-limit={_rateLimitKey}
       />
-    )
+    );
+
+    return element;
   }
 );
 
@@ -2869,6 +3379,8 @@ All components must pass the following verification checklist:
 - [ ] **Early returns implemented** - Performance optimization in place
 - [ ] **Cross-environment safe** - Using `globalThis` for environment checks
 - [ ] **displayName set** - For debugging purposes
+- [ ] **JSX element assignment** - All JSX assigned to `const element` before return
+- [ ] **Self-documenting code** - Clear naming and TypeScript types, minimal JSDoc
 
 ### **File Organization Verification**
 
@@ -2911,6 +3423,8 @@ All components must pass the following verification checklist:
 - **Props Interface**: Always define explicit prop types
 - **Display Name**: Always set displayName for debugging
 - **CSS Modules**: Use CSS modules for scoped styling
+- **JSX Element Assignment**: Always assign JSX to `const element` before returning
+- **Self-Documenting Code**: Use TypeScript types and clear naming over extensive JSDoc
 
 ### 2. Performance Guidelines
 
@@ -3072,6 +3586,7 @@ Remember: **Convention over configuration** - once the patterns are established,
 3. **Use early return patterns** for performance optimization
 4. **Use cross-environment safety** - `globalThis?.process?.env?.NODE_ENV`
 5. **Set displayName** for all components
+6. **Assign JSX to const element** - Never return JSX directly, always assign to `const element` first
 
 ### **File Organization Rules**
 
