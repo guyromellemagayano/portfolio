@@ -41,11 +41,11 @@ describe("Icon", () => {
 
     it("renders with children content", () => {
       render(
-        <Icon data-testid="icon">
+        <Icon>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
@@ -53,7 +53,7 @@ describe("Icon", () => {
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
       render(
-        <Icon ref={ref} data-testid="icon">
+        <Icon ref={ref}>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
@@ -63,21 +63,21 @@ describe("Icon", () => {
 
     it("applies custom className", () => {
       render(
-        <Icon className="custom-class" data-testid="icon">
+        <Icon className="custom-class">
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toHaveClass("custom-class");
     });
 
     it("passes through all SVG props", () => {
       render(
-        <Icon width="24" height="24" fill="currentColor" data-testid="icon">
+        <Icon width="24" height="24" fill="currentColor">
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
       expect(icon).toHaveAttribute("fill", "currentColor");
@@ -85,11 +85,11 @@ describe("Icon", () => {
 
     it("renders children content", () => {
       render(
-        <Icon data-testid="icon">
+        <Icon>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toContainHTML('<path d="M0 0h24v24H0z" />');
     });
 
@@ -100,194 +100,185 @@ describe("Icon", () => {
         }
       );
       render(
-        <Icon as={CustomSvg} data-testid="icon">
+        <Icon as={CustomSvg}>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toBeInTheDocument();
     });
 
     it("applies data attributes for debugging", () => {
       render(
-        <Icon _debugMode={true} data-testid="icon">
+        <Icon _debugMode={true}>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toHaveAttribute("data-icon-id", "test-id");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("handles internal props correctly", () => {
       render(
-        <Icon _internalId="custom-id" _debugMode={true} data-testid="icon">
+        <Icon _internalId="custom-id" _debugMode={true}>
           <path d="M0 0h24v24H0z" />
         </Icon>
       );
-      const icon = screen.getByTestId("icon");
+      const icon = screen.getByTestId("icon-root");
       expect(icon).toHaveAttribute("data-icon-id", "custom-id");
     });
   });
 
   describe("X Icon Component", () => {
     it("renders X icon correctly", () => {
-      render(<Icon.X data-testid="x-icon" />);
-      const icon = screen.getByTestId("x-icon");
+      render(<Icon.X />);
+      const icon = screen.getByTestId("icon-x-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
-      render(<Icon.X ref={ref} data-testid="x-icon" />);
+      render(<Icon.X ref={ref} />);
       expect(ref.current).toBeInTheDocument();
     });
 
     it("renders with proper SVG structure", () => {
-      render(<Icon.X data-testid="x-icon" />);
-      const icon = screen.getByTestId("x-icon");
+      render(<Icon.X />);
+      const icon = screen.getByTestId("icon-x-root");
       expect(icon.tagName).toBe("svg");
       expect(icon).toBeInTheDocument();
     });
 
     it("contains X icon path", () => {
-      render(<Icon.X data-testid="x-icon" />);
-      const icon = screen.getByTestId("x-icon");
+      render(<Icon.X />);
+      const icon = screen.getByTestId("icon-x-root");
       expect(icon.innerHTML).toContain("M13.3174 10.7749L19.1457 4H17.7646");
     });
 
     it("applies custom styling", () => {
-      render(<Icon.X className="text-blue-500" data-testid="x-icon" />);
-      const icon = screen.getByTestId("x-icon");
+      render(<Icon.X className="text-blue-500" />);
+      const icon = screen.getByTestId("icon-x-root");
       expect(icon).toHaveClass("text-blue-500");
     });
   });
 
   describe("Instagram Icon Component", () => {
     it("renders Instagram icon correctly", () => {
-      render(<Icon.Instagram data-testid="instagram-icon" />);
-      const icon = screen.getByTestId("instagram-icon");
+      render(<Icon.Instagram />);
+      const icon = screen.getByTestId("icon-instagram-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
-      render(<Icon.Instagram ref={ref} data-testid="instagram-icon" />);
+      render(<Icon.Instagram ref={ref} />);
       expect(ref.current).toBeInTheDocument();
     });
 
     it("renders with proper SVG structure", () => {
-      render(<Icon.Instagram data-testid="instagram-icon" />);
-      const icon = screen.getByTestId("instagram-icon");
+      render(<Icon.Instagram />);
+      const icon = screen.getByTestId("icon-instagram-root");
       expect(icon.tagName).toBe("svg");
       expect(icon).toBeInTheDocument();
     });
 
     it("contains Instagram icon paths", () => {
-      render(<Icon.Instagram data-testid="instagram-icon" />);
-      const icon = screen.getByTestId("instagram-icon");
+      render(<Icon.Instagram />);
+      const icon = screen.getByTestId("icon-instagram-root");
       expect(icon.innerHTML).toContain("M12 3c-2.444 0-2.75.01-3.71.054");
     });
 
     it("applies custom styling", () => {
-      render(
-        <Icon.Instagram
-          className="text-pink-500"
-          data-testid="instagram-icon"
-        />
-      );
-      const icon = screen.getByTestId("instagram-icon");
+      render(<Icon.Instagram className="text-pink-500" />);
+      const icon = screen.getByTestId("icon-instagram-root");
       expect(icon).toHaveClass("text-pink-500");
     });
   });
 
   describe("LinkedIn Icon Component", () => {
     it("renders LinkedIn icon correctly", () => {
-      render(<Icon.LinkedIn data-testid="linkedin-icon" />);
-      const icon = screen.getByTestId("linkedin-icon");
+      render(<Icon.LinkedIn />);
+      const icon = screen.getByTestId("icon-linkedin-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
-      render(<Icon.LinkedIn ref={ref} data-testid="linkedin-icon" />);
+      render(<Icon.LinkedIn ref={ref} />);
       expect(ref.current).toBeInTheDocument();
     });
 
     it("renders with proper SVG structure", () => {
-      render(<Icon.LinkedIn data-testid="linkedin-icon" />);
-      const icon = screen.getByTestId("linkedin-icon");
+      render(<Icon.LinkedIn />);
+      const icon = screen.getByTestId("icon-linkedin-root");
       expect(icon.tagName).toBe("svg");
       expect(icon).toBeInTheDocument();
     });
 
     it("contains LinkedIn icon path", () => {
-      render(<Icon.LinkedIn data-testid="linkedin-icon" />);
-      const icon = screen.getByTestId("linkedin-icon");
+      render(<Icon.LinkedIn />);
+      const icon = screen.getByTestId("icon-linkedin-root");
       expect(icon.innerHTML).toContain("M18.335 18.339H15.67v-4.177");
     });
 
     it("applies custom styling", () => {
-      render(
-        <Icon.LinkedIn className="text-blue-600" data-testid="linkedin-icon" />
-      );
-      const icon = screen.getByTestId("linkedin-icon");
+      render(<Icon.LinkedIn className="text-blue-600" />);
+      const icon = screen.getByTestId("icon-linkedin-root");
       expect(icon).toHaveClass("text-blue-600");
     });
   });
 
   describe("GitHub Icon Component", () => {
     it("renders GitHub icon correctly", () => {
-      render(<Icon.GitHub data-testid="github-icon" />);
-      const icon = screen.getByTestId("github-icon");
+      render(<Icon.GitHub />);
+      const icon = screen.getByTestId("icon-github-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
-      render(<Icon.GitHub ref={ref} data-testid="github-icon" />);
+      render(<Icon.GitHub ref={ref} />);
       expect(ref.current).toBeInTheDocument();
     });
 
     it("renders with proper SVG structure", () => {
-      render(<Icon.GitHub data-testid="github-icon" />);
-      const icon = screen.getByTestId("github-icon");
+      render(<Icon.GitHub />);
+      const icon = screen.getByTestId("icon-github-root");
       expect(icon.tagName).toBe("svg");
       expect(icon).toBeInTheDocument();
     });
 
     it("contains GitHub icon path", () => {
-      render(<Icon.GitHub data-testid="github-icon" />);
-      const icon = screen.getByTestId("github-icon");
+      render(<Icon.GitHub />);
+      const icon = screen.getByTestId("icon-github-root");
       expect(icon.innerHTML).toContain("M12 2C6.475 2 2 6.588");
     });
 
     it("applies custom styling", () => {
-      render(
-        <Icon.GitHub className="text-gray-900" data-testid="github-icon" />
-      );
-      const icon = screen.getByTestId("github-icon");
+      render(<Icon.GitHub className="text-gray-900" />);
+      const icon = screen.getByTestId("icon-github-root");
       expect(icon).toHaveClass("text-gray-900");
     });
   });
 
   describe("Accessibility", () => {
     it("renders all icons as SVG elements", () => {
-      const { rerender } = render(<Icon.X data-testid="icon" />);
-      expect(screen.getByTestId("icon").tagName).toBe("svg");
+      const { rerender } = render(<Icon.X />);
+      expect(screen.getByTestId("icon-x-root").tagName).toBe("svg");
 
-      rerender(<Icon.Instagram data-testid="icon" />);
-      expect(screen.getByTestId("icon").tagName).toBe("svg");
+      rerender(<Icon.Instagram />);
+      expect(screen.getByTestId("icon-instagram-root").tagName).toBe("svg");
 
-      rerender(<Icon.LinkedIn data-testid="icon" />);
-      expect(screen.getByTestId("icon").tagName).toBe("svg");
+      rerender(<Icon.LinkedIn />);
+      expect(screen.getByTestId("icon-linkedin-root").tagName).toBe("svg");
 
-      rerender(<Icon.GitHub data-testid="icon" />);
-      expect(screen.getByTestId("icon").tagName).toBe("svg");
+      rerender(<Icon.GitHub />);
+      expect(screen.getByTestId("icon-github-root").tagName).toBe("svg");
     });
   });
 
@@ -311,11 +302,11 @@ describe("Icon", () => {
     it("works with links for social media", () => {
       render(
         <a href="https://twitter.com/username" aria-label="Follow on X">
-          <Icon.X data-testid="x-icon" />
+          <Icon.X />
         </a>
       );
       const link = screen.getByRole("link");
-      const icon = screen.getByTestId("x-icon");
+      const icon = screen.getByTestId("icon-x-root");
 
       expect(link).toHaveAttribute("href", "https://twitter.com/username");
       expect(link).toHaveAttribute("aria-label", "Follow on X");
@@ -325,28 +316,25 @@ describe("Icon", () => {
     it("works with multiple icons in a container", () => {
       render(
         <div data-testid="container">
-          <Icon.X data-testid="x-icon" />
-          <Icon.Instagram data-testid="instagram-icon" />
-          <Icon.LinkedIn data-testid="linkedin-icon" />
-          <Icon.GitHub data-testid="github-icon" />
+          <Icon.X />
+          <Icon.Instagram />
+          <Icon.LinkedIn />
+          <Icon.GitHub />
         </div>
       );
 
       expect(screen.getByTestId("container")).toBeInTheDocument();
-      expect(screen.getByTestId("x-icon")).toBeInTheDocument();
-      expect(screen.getByTestId("instagram-icon")).toBeInTheDocument();
-      expect(screen.getByTestId("linkedin-icon")).toBeInTheDocument();
-      expect(screen.getByTestId("github-icon")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-x-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-instagram-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-linkedin-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-github-root")).toBeInTheDocument();
     });
 
     it("supports hover states with Tailwind CSS", () => {
       render(
-        <Icon.X
-          className="text-gray-600 transition-colors hover:text-blue-500"
-          data-testid="x-icon"
-        />
+        <Icon.X className="text-gray-600 transition-colors hover:text-blue-500" />
       );
-      const icon = screen.getByTestId("x-icon");
+      const icon = screen.getByTestId("icon-x-root");
       expect(icon).toHaveClass(
         "text-gray-600",
         "hover:text-blue-500",
@@ -356,22 +344,22 @@ describe("Icon", () => {
   });
 
   describe("Error Handling", () => {
-    it("handles missing props gracefully", () => {
-      render(<Icon />);
-      const icon = screen.getByTestId("svg");
-      expect(icon).toBeInTheDocument();
+    it("throws error when used without children", () => {
+      expect(() => {
+        render(<Icon />);
+      }).toThrow("Icon component requires SVG content");
     });
 
-    it("handles null children", () => {
-      render(<Icon>{null}</Icon>);
-      const icon = screen.getByTestId("svg");
-      expect(icon).toBeInTheDocument();
+    it("throws error when used with null children", () => {
+      expect(() => {
+        render(<Icon>{null}</Icon>);
+      }).toThrow("Icon component requires SVG content");
     });
 
-    it("handles undefined children", () => {
-      render(<Icon>{undefined}</Icon>);
-      const icon = screen.getByTestId("svg");
-      expect(icon).toBeInTheDocument();
+    it("throws error when used with undefined children", () => {
+      expect(() => {
+        render(<Icon>{undefined}</Icon>);
+      }).toThrow("Icon component requires SVG content");
     });
   });
 });
