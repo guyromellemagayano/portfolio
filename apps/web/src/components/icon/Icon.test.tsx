@@ -21,6 +21,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
     id: options?.internalId || "test-id",
     isDebugMode: options?.debugMode || false,
   })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
 }));
 
 describe("Icon", () => {
@@ -29,8 +33,18 @@ describe("Icon", () => {
   });
 
   describe("Main Icon Component", () => {
-    it("renders with default props", () => {
-      render(<Icon data-testid="icon" />);
+    it("throws error when used without children", () => {
+      expect(() => render(<Icon data-testid="icon" />)).toThrow(
+        "Icon component requires SVG content"
+      );
+    });
+
+    it("renders with children content", () => {
+      render(
+        <Icon data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
+      );
       const icon = screen.getByTestId("icon");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
@@ -38,20 +52,30 @@ describe("Icon", () => {
 
     it("forwards ref correctly", () => {
       const ref = React.createRef<SVGSVGElement>();
-      render(<Icon ref={ref} data-testid="icon" />);
+      render(
+        <Icon ref={ref} data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
+      );
       expect(ref.current).toBeInTheDocument();
       expect(ref.current?.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
-      render(<Icon className="custom-class" data-testid="icon" />);
+      render(
+        <Icon className="custom-class" data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
+      );
       const icon = screen.getByTestId("icon");
       expect(icon).toHaveClass("custom-class");
     });
 
     it("passes through all SVG props", () => {
       render(
-        <Icon width="24" height="24" fill="currentColor" data-testid="icon" />
+        <Icon width="24" height="24" fill="currentColor" data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
       );
       const icon = screen.getByTestId("icon");
       expect(icon).toHaveAttribute("width", "24");
@@ -75,13 +99,21 @@ describe("Icon", () => {
           return <svg ref={ref} data-testid="custom-svg" {...props} />;
         }
       );
-      render(<Icon as={CustomSvg} data-testid="icon" />);
+      render(
+        <Icon as={CustomSvg} data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
+      );
       const icon = screen.getByTestId("icon");
       expect(icon).toBeInTheDocument();
     });
 
     it("applies data attributes for debugging", () => {
-      render(<Icon _debugMode={true} data-testid="icon" />);
+      render(
+        <Icon _debugMode={true} data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
+      );
       const icon = screen.getByTestId("icon");
       expect(icon).toHaveAttribute("data-icon-id", "test-id");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
@@ -89,7 +121,9 @@ describe("Icon", () => {
 
     it("handles internal props correctly", () => {
       render(
-        <Icon _internalId="custom-id" _debugMode={true} data-testid="icon" />
+        <Icon _internalId="custom-id" _debugMode={true} data-testid="icon">
+          <path d="M0 0h24v24H0z" />
+        </Icon>
       );
       const icon = screen.getByTestId("icon");
       expect(icon).toHaveAttribute("data-icon-id", "custom-id");
