@@ -48,7 +48,7 @@ vi.mock("@guyromellemagayano/components", () => ({
     </time>
   )),
   Svg: vi.fn(({ children, ...props }) => (
-    <svg data-testid="svg" {...props}>
+    <svg data-testid="grm-svg" {...props}>
       {children}
     </svg>
   )),
@@ -61,6 +61,21 @@ vi.mock("next/link", () => ({
       {children}
     </a>
   )),
+}));
+
+// Mock Icon component
+vi.mock("@web/components/icon", () => ({
+  Icon: {
+    ChevronRight: vi.fn(({ className, ...props }) => (
+      <svg
+        data-testid="icon-chevron-right-root"
+        className={className}
+        {...props}
+      >
+        <path d="M6.75 5.75 9.25 8l-2.5 2.25" />
+      </svg>
+    )),
+  },
 }));
 
 // Mock consolidated CSS module
@@ -82,19 +97,6 @@ vi.mock("./Card.module.css", () => ({
     cardEyebrowDecorator: "card-eyebrow-decorator-class",
   },
 }));
-
-// Mock ChevronRightIcon
-vi.mock("@web/components/card", async () => {
-  const actual = await vi.importActual("@web/components/card");
-  return {
-    ...actual,
-    ChevronRightIcon: vi.fn(({ className, ...props }) => (
-      <svg data-testid="chevron-right-icon" className={className} {...props}>
-        <path d="M9 18l6-6-6-6" />
-      </svg>
-    )),
-  };
-});
 
 import { Card } from "@web/components/card";
 
@@ -329,7 +331,7 @@ describe("Card Component", () => {
 
       const cta = screen.getByTestId("card-cta-root");
       const link = screen.getByTestId("link");
-      const icon = screen.getByTestId("svg");
+      const icon = screen.getByTestId("icon-chevron-right-root");
 
       expect(cta).toBeInTheDocument();
       expect(link).toBeInTheDocument();
@@ -347,7 +349,9 @@ describe("Card Component", () => {
 
       // Should not have link or icon
       expect(screen.queryByTestId("link")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("svg")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("icon-chevron-right-root")
+      ).not.toBeInTheDocument();
     });
 
     it("applies className and other props", () => {
