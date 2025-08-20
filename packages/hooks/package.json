@@ -5,9 +5,7 @@
   "keywords": [
     "react",
     "hooks",
-    "typescript",
-    "web-app",
-    "components"
+    "typescript"
   ],
   "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/hooks",
   "bugs": {
@@ -35,7 +33,7 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "bunchee",
+    "build": "tsdown --minify",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
@@ -45,8 +43,10 @@
     "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",
-    "test:run:coverage": "vitest run --coverage"
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@guyromellemagayano/logger": "workspace:*"
