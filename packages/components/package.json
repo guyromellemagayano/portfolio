@@ -35,7 +35,7 @@
     "dist/**"
   ],
   "scripts": {
-    "build": "bunchee",
+    "build": "tsdown --minify",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
