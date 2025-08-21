@@ -1,10 +1,6 @@
 import React from "react";
 
-import {
-  Div,
-  type DivProps,
-  type DivRef,
-} from "@guyromellemagayano/components";
+import { Div } from "@guyromellemagayano/components";
 import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
 
 import type { CommonWebAppComponentProps } from "@web/@types/components";
@@ -16,8 +12,10 @@ import styles from "./Container.module.css";
 // CONTAINER OUTER COMPONENT
 // ============================================================================
 
-type ContainerOuterRef = DivRef;
-interface ContainerOuterProps extends DivProps, CommonWebAppComponentProps {}
+type ContainerOuterRef = React.ComponentRef<typeof Div>;
+interface ContainerOuterProps
+  extends React.ComponentPropsWithoutRef<typeof Div>,
+    CommonWebAppComponentProps {}
 
 interface InternalContainerOuterProps extends ContainerOuterProps {
   /** Internal component ID passed from parent */
@@ -60,7 +58,7 @@ type ContainerOuterComponent = React.ForwardRefExoticComponent<
 >;
 
 /** Public container outer component with useComponentId integration */
-export const ContainerOuter = setDisplayName(
+const ContainerOuter = setDisplayName(
   React.forwardRef(function ContainerOuter(props, ref) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -89,8 +87,10 @@ export const ContainerOuter = setDisplayName(
 // CONTAINER INNER COMPONENT
 // ============================================================================
 
-type ContainerInnerRef = DivRef;
-interface ContainerInnerProps extends DivProps, CommonWebAppComponentProps {}
+type ContainerInnerRef = React.ComponentRef<typeof Div>;
+interface ContainerInnerProps
+  extends React.ComponentPropsWithoutRef<typeof Div>,
+    CommonWebAppComponentProps {}
 
 interface InternalContainerInnerProps extends ContainerInnerProps {
   /** Internal component ID passed from parent */
@@ -133,7 +133,7 @@ type ContainerInnerComponent = React.ForwardRefExoticComponent<
 >;
 
 /** Public container inner component with useComponentId integration */
-export const ContainerInner = setDisplayName(
+const ContainerInner = setDisplayName(
   React.forwardRef(function ContainerInner(props, ref) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -196,7 +196,12 @@ const InternalContainer = setDisplayName(
 
 type ContainerComponent = React.ForwardRefExoticComponent<
   ContainerProps & React.RefAttributes<ContainerRef>
->;
+> & {
+  /** A container outer component that provides the outer wrapper structure. */
+  Outer: ContainerOuterComponent;
+  /** A container inner component that provides the inner wrapper structure. */
+  Inner: ContainerInnerComponent;
+};
 
 /** Top-level layout container that provides consistent outer and inner structure for page content. */
 export const Container = setDisplayName(
@@ -223,3 +228,10 @@ export const Container = setDisplayName(
   }),
   "Container"
 ) as ContainerComponent;
+
+// ============================================================================
+// COMPOUND COMPONENT EXPORTS
+// ============================================================================
+
+Container.Outer = ContainerOuter;
+Container.Inner = ContainerInner;
