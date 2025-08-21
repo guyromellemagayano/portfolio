@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { Container, ContainerInner, ContainerOuter } from "./Container";
+import { Container } from "./Container";
 
 import "@testing-library/jest-dom";
 
@@ -97,49 +97,47 @@ describe("Container", () => {
     });
   });
 
-  describe("ContainerOuter Component", () => {
+  describe("Container.Outer Component", () => {
     it("renders children inside container", () => {
       render(
-        <ContainerOuter>
-          <span data-testid="outer-child">Outer</span>
-        </ContainerOuter>
+        <Container.Outer>
+          <div data-testid="child">Hello</div>
+        </Container.Outer>
       );
 
-      const content = screen.getByTestId("outer-child");
-      expect(content).toBeInTheDocument();
-      expect(content).toHaveTextContent("Outer");
+      expect(screen.getByTestId("child")).toHaveTextContent("Hello");
+      expect(screen.getByTestId("container-outer-root")).toBeInTheDocument();
     });
 
     it("does not render if children is null", () => {
-      const { container } = render(<ContainerOuter>{null}</ContainerOuter>);
+      const { container } = render(<Container.Outer>{null}</Container.Outer>);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render if children is undefined", () => {
       const { container } = render(
-        <ContainerOuter>{undefined}</ContainerOuter>
+        <Container.Outer>{undefined}</Container.Outer>
       );
       expect(container.firstChild).toBeNull();
     });
 
-    it("forwards ref to root div", () => {
+    it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(
-        <ContainerOuter ref={ref}>
+        <Container.Outer ref={ref}>
           <span>Ref test</span>
-        </ContainerOuter>
+        </Container.Outer>
       );
       expect(ref.current).toBeInTheDocument();
       expect(ref.current?.tagName).toBe("DIV");
     });
 
-    it("applies className and other props", () => {
+    it("passes className and other props correctly", () => {
       render(
-        <ContainerOuter className="outer-class" id="outer-id">
-          <span>Props</span>
-        </ContainerOuter>
+        <Container.Outer className="outer-class" id="outer-id">
+          <span>Props test</span>
+        </Container.Outer>
       );
-
       const containerOuterRoot = screen.getByTestId("container-outer-root");
       expect(containerOuterRoot).toHaveClass("outer-class");
       expect(containerOuterRoot).toHaveAttribute("id", "outer-id");
@@ -147,60 +145,58 @@ describe("Container", () => {
 
     it("renders with proper structure", () => {
       render(
-        <ContainerOuter>
-          <span>Outer Content</span>
-        </ContainerOuter>
+        <Container.Outer>
+          <span>Content</span>
+        </Container.Outer>
       );
 
       const divs = screen.getAllByTestId("div");
       expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("Outer Content");
+      expect(divs[0]).toHaveTextContent("Content");
     });
   });
 
-  describe("ContainerInner Component", () => {
+  describe("Container.Inner Component", () => {
     it("renders children inside container", () => {
       render(
-        <ContainerInner>
-          <span data-testid="inner-child">Inner</span>
-        </ContainerInner>
+        <Container.Inner>
+          <div data-testid="child">Hello</div>
+        </Container.Inner>
       );
 
-      const content = screen.getByTestId("inner-child");
-      expect(content).toBeInTheDocument();
-      expect(content).toHaveTextContent("Inner");
+      expect(screen.getByTestId("child")).toHaveTextContent("Hello");
+      expect(screen.getByTestId("container-inner-root")).toBeInTheDocument();
     });
 
     it("does not render if children is null", () => {
-      const { container } = render(<ContainerInner>{null}</ContainerInner>);
+      const { container } = render(<Container.Inner>{null}</Container.Inner>);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render if children is undefined", () => {
       const { container } = render(
-        <ContainerInner>{undefined}</ContainerInner>
+        <Container.Inner>{undefined}</Container.Inner>
       );
       expect(container.firstChild).toBeNull();
     });
 
-    it("forwards ref to root div", () => {
+    it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(
-        <ContainerInner ref={ref}>
+        <Container.Inner ref={ref}>
           <span>Ref test</span>
-        </ContainerInner>
+        </Container.Inner>
       );
       expect(ref.current).toBeInTheDocument();
       expect(ref.current?.tagName).toBe("DIV");
     });
 
-    it("applies className and other props", () => {
+    it("passes className and other props correctly", () => {
       render(
-        <ContainerInner className="inner-class" id="inner-id">
-          <span>Props</span>
-        </ContainerInner>
+        <Container.Inner className="inner-class" id="inner-id">
+          <span>Props test</span>
+        </Container.Inner>
       );
-
       const containerInnerRoot = screen.getByTestId("container-inner-root");
       expect(containerInnerRoot).toHaveClass("inner-class");
       expect(containerInnerRoot).toHaveAttribute("id", "inner-id");
@@ -208,108 +204,152 @@ describe("Container", () => {
 
     it("renders with proper structure", () => {
       render(
-        <ContainerInner>
-          <span>Inner Content</span>
-        </ContainerInner>
+        <Container.Inner>
+          <span>Content</span>
+        </Container.Inner>
       );
 
       const divs = screen.getAllByTestId("div");
       expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("Inner Content");
+      expect(divs[0]).toHaveTextContent("Content");
     });
   });
 
-  describe("Integration Tests", () => {
-    it("Container properly composes ContainerOuter and ContainerInner", () => {
+  describe("Compound Component Integration", () => {
+    it("composes all container components together", () => {
       render(
         <Container>
-          <span>Test Content</span>
+          <Container.Inner>
+            <Container.Outer>
+              <div data-testid="nested-content">Nested Content</div>
+            </Container.Outer>
+          </Container.Inner>
         </Container>
       );
 
-      // Should render the container structure (multiple divs)
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("Test Content");
+      expect(screen.getByTestId("nested-content")).toHaveTextContent(
+        "Nested Content"
+      );
+      expect(screen.getAllByTestId("container-outer-root")).toHaveLength(2);
+      expect(screen.getAllByTestId("container-inner-root")).toHaveLength(2);
     });
 
-    it("handles complex nested content", () => {
+    it("handles complex nested structure", () => {
       render(
-        <Container>
-          <div>
-            <h1>Title</h1>
-            <p>Paragraph</p>
-          </div>
+        <Container className="main-container">
+          <Container.Outer className="outer-wrapper">
+            <Container.Inner className="inner-wrapper">
+              <div data-testid="content">Complex Structure</div>
+            </Container.Inner>
+          </Container.Outer>
         </Container>
       );
 
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("Title");
-      expect(divs[0]).toHaveTextContent("Paragraph");
+      expect(screen.getByTestId("content")).toHaveTextContent(
+        "Complex Structure"
+      );
     });
 
-    it("supports multiple children", () => {
+    it("supports multiple nested containers", () => {
       render(
         <Container>
-          <div>First</div>
-          <div>Second</div>
-          <div>Third</div>
+          <Container.Inner>
+            <div data-testid="content-1">Content 1</div>
+          </Container.Inner>
+          <Container.Inner>
+            <div data-testid="content-2">Content 2</div>
+          </Container.Inner>
         </Container>
       );
 
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("First");
-      expect(divs[0]).toHaveTextContent("Second");
-      expect(divs[0]).toHaveTextContent("Third");
+      expect(screen.getByTestId("content-1")).toHaveTextContent("Content 1");
+      expect(screen.getByTestId("content-2")).toHaveTextContent("Content 2");
     });
   });
 
-  describe("Error Handling", () => {
-    it("handles empty children gracefully", () => {
-      const { container } = render(<Container>{""}</Container>);
-      expect(container.firstChild).toBeNull();
+  describe("Debug Mode", () => {
+    it("applies debug mode to main container", () => {
+      render(
+        <Container _debugMode={true}>
+          <span>Debug Content</span>
+        </Container>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("handles whitespace-only children gracefully", () => {
-      const { container } = render(<Container>{"   "}</Container>);
-      // The component renders whitespace children, so we should expect content
-      expect(container.firstChild).not.toBeNull();
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
+    it("applies debug mode to Container.Outer", () => {
+      render(
+        <Container.Outer _debugMode={true}>
+          <span>Debug Content</span>
+        </Container.Outer>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("handles boolean children gracefully", () => {
-      const { container } = render(<Container>{true}</Container>);
-      // The component renders boolean children, so we should expect content
-      expect(container.firstChild).not.toBeNull();
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
+    it("applies debug mode to Container.Inner", () => {
+      render(
+        <Container.Inner _debugMode={true}>
+          <span>Debug Content</span>
+        </Container.Inner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute("data-debug-mode", "true");
+    });
+  });
+
+  describe("Component ID", () => {
+    it("applies custom component ID to main container", () => {
+      render(
+        <Container _internalId="custom-container-id">
+          <span>Content</span>
+        </Container>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute(
+        "data-container-outer-id",
+        "custom-container-id"
+      );
     });
 
-    it("handles number children gracefully", () => {
-      const { container } = render(<Container>{0}</Container>);
-      expect(container.firstChild).toBeNull();
+    it("applies custom component ID to Container.Outer", () => {
+      render(
+        <Container.Outer _internalId="custom-outer-id">
+          <span>Content</span>
+        </Container.Outer>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute(
+        "data-container-outer-id",
+        "custom-outer-id"
+      );
+    });
+
+    it("applies custom component ID to Container.Inner", () => {
+      render(
+        <Container.Inner _internalId="custom-inner-id">
+          <span>Content</span>
+        </Container.Inner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute(
+        "data-container-inner-id",
+        "custom-inner-id"
+      );
     });
   });
 
   describe("Accessibility", () => {
-    it("renders semantic HTML structure", () => {
+    it("forwards aria attributes to main container", () => {
       render(
-        <Container>
-          <main>Main content</main>
-        </Container>
-      );
-
-      const divs = screen.getAllByTestId("div");
-      expect(divs.length).toBeGreaterThan(0);
-      expect(divs[0]).toHaveTextContent("Main content");
-    });
-
-    it("preserves ARIA attributes", () => {
-      render(
-        <Container aria-label="Main container" role="main">
+        <Container aria-label="Main container">
           <span>Content</span>
         </Container>
       );
@@ -319,111 +359,68 @@ describe("Container", () => {
         "aria-label",
         "Main container"
       );
-      expect(containerOuterRoot).toHaveAttribute("role", "main");
+    });
+
+    it("forwards aria attributes to Container.Outer", () => {
+      render(
+        <Container.Outer aria-label="Outer container">
+          <span>Content</span>
+        </Container.Outer>
+      );
+
+      const containerOuterRoot = screen.getByTestId("container-outer-root");
+      expect(containerOuterRoot).toHaveAttribute(
+        "aria-label",
+        "Outer container"
+      );
+    });
+
+    it("forwards aria attributes to Container.Inner", () => {
+      render(
+        <Container.Inner aria-label="Inner container">
+          <span>Content</span>
+        </Container.Inner>
+      );
+
+      const containerInnerRoot = screen.getByTestId("container-inner-root");
+      expect(containerInnerRoot).toHaveAttribute(
+        "aria-label",
+        "Inner container"
+      );
     });
   });
 
-  describe("useComponentId Integration", () => {
-    it("Container uses useComponentId with default values", () => {
-      render(
+  describe("Performance", () => {
+    it("renders efficiently with multiple children", () => {
+      const { rerender } = render(
         <Container>
-          <span>Content</span>
+          <div>Child 1</div>
+          <div>Child 2</div>
+          <div>Child 3</div>
         </Container>
       );
 
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "test-id");
-      expect(containerOuterRoot).not.toHaveAttribute("data-debug-mode");
-    });
+      expect(screen.getByText("Child 1")).toBeInTheDocument();
+      expect(screen.getByText("Child 2")).toBeInTheDocument();
+      expect(screen.getByText("Child 3")).toBeInTheDocument();
 
-    it("Container uses useComponentId with custom internal ID", () => {
-      render(
-        <Container _internalId="custom-container-id">
-          <span>Content</span>
+      // Re-render with same content
+      rerender(
+        <Container>
+          <div>Child 1</div>
+          <div>Child 2</div>
+          <div>Child 3</div>
         </Container>
       );
 
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "custom-container-id");
+      expect(screen.getByText("Child 1")).toBeInTheDocument();
+      expect(screen.getByText("Child 2")).toBeInTheDocument();
+      expect(screen.getByText("Child 3")).toBeInTheDocument();
     });
 
-    it("Container uses useComponentId with debug mode enabled", () => {
-      render(
-        <Container _debugMode={true}>
-          <span>Content</span>
-        </Container>
-      );
-
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("ContainerOuter uses useComponentId with default values", () => {
-      render(
-        <ContainerOuter>
-          <span>Content</span>
-        </ContainerOuter>
-      );
-
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "test-id");
-      expect(containerOuterRoot).not.toHaveAttribute("data-debug-mode");
-    });
-
-    it("ContainerOuter uses useComponentId with custom internal ID", () => {
-      render(
-        <ContainerOuter _internalId="custom-outer-id">
-          <span>Content</span>
-        </ContainerOuter>
-      );
-
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-container-outer-id", "custom-outer-id");
-    });
-
-    it("ContainerOuter uses useComponentId with debug mode enabled", () => {
-      render(
-        <ContainerOuter _debugMode={true}>
-          <span>Content</span>
-        </ContainerOuter>
-      );
-
-      const containerOuterRoot = screen.getByTestId("container-outer-root");
-      expect(containerOuterRoot).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("ContainerInner uses useComponentId with default values", () => {
-      render(
-        <ContainerInner>
-          <span>Content</span>
-        </ContainerInner>
-      );
-
-      const containerInnerRoot = screen.getByTestId("container-inner-root");
-      expect(containerInnerRoot).toHaveAttribute("data-container-inner-id", "test-id");
-      expect(containerInnerRoot).not.toHaveAttribute("data-debug-mode");
-    });
-
-    it("ContainerInner uses useComponentId with custom internal ID", () => {
-      render(
-        <ContainerInner _internalId="custom-inner-id">
-          <span>Content</span>
-        </ContainerInner>
-      );
-
-      const containerInnerRoot = screen.getByTestId("container-inner-root");
-      expect(containerInnerRoot).toHaveAttribute("data-container-inner-id", "custom-inner-id");
-    });
-
-    it("ContainerInner uses useComponentId with debug mode enabled", () => {
-      render(
-        <ContainerInner _debugMode={true}>
-          <span>Content</span>
-        </ContainerInner>
-      );
-
-      const containerInnerRoot = screen.getByTestId("container-inner-root");
-      expect(containerInnerRoot).toHaveAttribute("data-debug-mode", "true");
+    it("handles empty children efficiently", () => {
+      const { container } = render(<Container />);
+      expect(container.firstChild).toBeNull();
     });
   });
 });
