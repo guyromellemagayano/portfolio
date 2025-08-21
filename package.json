@@ -62,6 +62,7 @@
     "@commitlint/types": "catalog:",
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
+    "@tailwindcss/typography": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "czg": "catalog:",
@@ -71,6 +72,7 @@
     "prettier-plugin-pkg": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
     "sort-package-json": "catalog:",
+    "tsdown": "0.14.1",
     "validate-branch-name": "catalog:"
   },
   "peerDependencies": {
