@@ -69,9 +69,9 @@ bun add @guyromellemagayano/logger
 
 ## 🚀 Module Support
 
-This package supports both **ESM (ES Modules)** and **CommonJS** formats:
+This package is **ESM-only** and designed for modern JavaScript environments:
 
-### ESM (Recommended)
+### ESM Import
 
 ```typescript
 // Modern ESM import
@@ -83,64 +83,42 @@ import { transports } from '@guyromellemagayano/logger/transports';
 import { utils } from '@guyromellemagayano/logger/utils';
 ```
 
-### CommonJS (Legacy Support)
-
-```javascript
-// CommonJS require
-const { logger, createLogger, LogLevel } = require('@guyromellemagayano/logger');
-
-// Individual exports
-const { formatters } = require('@guyromellemagayano/logger/formatters');
-const { transports } = require('@guyromellemagayano/logger/transports');
-const { utils } = require('@guyromellemagayano/logger/utils');
-```
 
 ### Build Output Structure
 
-Bunchee automatically generates dual module builds based on the `exports`
+`tsdown` automatically generates optimized builds based on the `exports`
 field in `package.json`:
 
 ```text
 dist/
-├── es/                    # ESM builds
-│   ├── index.mjs         # Main ESM bundle
-│   ├── index.d.mts       # ESM type definitions
-│   ├── formatters.mjs    # Formatters ESM bundle
-│   ├── formatters.d.mts  # Formatters ESM types
-│   └── ...
-└── cjs/                  # CommonJS builds
-    ├── index.cjs         # Main CommonJS bundle
-    ├── index.d.ts        # CommonJS type definitions
-    ├── formatters.cjs    # Formatters CommonJS bundle
-    ├── formatters.d.ts   # Formatters CommonJS types
-    └── ...
+├── index.js              # Main ESM bundle
+├── index.d.ts            # Type definitions
+└── ...
 ```
 
 ### Build Configuration
 
-The dual module setup is configured entirely through `package.json`:
+This package is **ESM-only** and configured entirely through `package.json`:
 
 ```json
 {
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/es/index.d.mts",
-        "default": "./dist/es/index.mjs"
-      },
-      "require": {
-        "types": "./dist/cjs/index.d.ts", 
-        "default": "./dist/cjs/index.cjs"
-      }
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./formatters": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
     // ... other exports
   }
 }
 ```
 
-No separate config file is needed - bunchee reads the exports field and
-automatically generates the appropriate builds.
+No separate config file is needed - `tsdown` reads the package configuration and
+automatically generates optimized ESM builds with tree-shaking and minification.
 
 ## 🚀 Quick Start
 
