@@ -1,16 +1,15 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { Metadata } from "next";
 
-import { log } from "@guyromellemagayano/logger";
-
-import { ClientCounterButton } from "../components/client-counter-button";
+import { logInfo } from "@guyromellemagayano/logger";
+import { CounterButton } from "@guyromellemagayano/ui";
 
 export const metadata: Metadata = {
   title: "Store | Kitchen Sink",
 };
 
 const Store = function () {
-  log("Hey! This is the Store page.");
+  logInfo("Hey! This is the Store page.");
 
   return (
     <div className="container">
@@ -18,7 +17,7 @@ const Store = function () {
         Store <br />
         <span>Kitchen Sink</span>
       </h1>
-      <ClientCounterButton />
+      <CounterButton />
       <p className="description">
         Built With{" "}
         <a
