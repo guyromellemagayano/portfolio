@@ -68,7 +68,6 @@
     "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
-    "bunchee": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
     "prettier": "catalog:",
