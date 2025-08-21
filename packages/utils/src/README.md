@@ -1,3 +1,4 @@
+<!-- markdownlint-disable line-length -->
 # Utils Package
 
 A collection of utility functions for React components and general development. This package provides pure utility functions that are RSC-compatible and don't force components to be client-side.

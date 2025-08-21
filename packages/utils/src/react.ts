@@ -1,17 +1,6 @@
 import React from "react";
 
-/**
- * Determines if children are renderable (avoiding boolean/empty-string quirks).
- *
- * @param children - React children to check
- * @returns true if children should be rendered, false otherwise
- *
- * @example
- * ```tsx
- * const shouldRender = isRenderableContent(children);
- * if (!shouldRender) return null;
- * ```
- */
+/** Determines if children are renderable (avoiding boolean/empty-string quirks). */
 export function isRenderableContent(children: React.ReactNode): boolean {
   // Explicitly false values that should not render
   if (children === null || children === undefined || children === false) {
@@ -27,20 +16,7 @@ export function isRenderableContent(children: React.ReactNode): boolean {
   return true;
 }
 
-/**
- * Safely trims whitespace from string content.
- *
- * @param content - String content to trim
- * @returns Trimmed string or original if not a string
- *
- * @example
- * ```tsx
- * const trimmed = trimStringContent(title);
- * if (trimmed) {
- *   return <h1>{title}</h1>;
- * }
- * ```
- */
+/** Safely trims whitespace from string content. */
 export function trimStringContent(content: unknown): string {
   if (typeof content === "string") {
     return content.trim();
@@ -48,20 +24,7 @@ export function trimStringContent(content: unknown): string {
   return String(content || "");
 }
 
-/**
- * Checks if string content has meaningful text (not just whitespace).
- *
- * @param content - String content to check
- * @returns true if content has meaningful text
- *
- * @example
- * ```tsx
- * const hasText = hasMeaningfulText(title);
- * if (hasText) {
- *   return <h1>{title}</h1>;
- * }
- * ```
- */
+/** Checks if string content has meaningful text (not just whitespace). */
 export function hasMeaningfulText(content: unknown): boolean {
   if (typeof content !== "string") {
     return false;
