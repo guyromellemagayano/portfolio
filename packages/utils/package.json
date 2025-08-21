@@ -32,16 +32,13 @@
   "files": [
     "dist/**"
   ],
-  "dependencies": {
-    "react": "catalog:"
-  },
   "scripts": {
     "build": "tsdown --minify",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "bunchee --watch",
-    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
-    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "dev": "tsdown --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "test": "vitest",
@@ -50,6 +47,9 @@
     "test:run": "vitest run",
     "test:run:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
+  },
+  "dependencies": {
+    "@guyromellemagayano/logger": "workspace:*"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
@@ -67,12 +67,12 @@
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "bunchee": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "rimraf": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
