@@ -3,7 +3,8 @@ import React from "react";
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { setDisplayName, useComponentId } from "../useComponentId";
+import { setDisplayName } from "../utils";
+import { useComponentId } from "./useComponentId";
 
 describe("useComponentId", () => {
   it("generates unique IDs when no options provided", () => {
@@ -50,7 +51,8 @@ describe("useComponentId", () => {
 
 describe("setDisplayName", () => {
   it("sets displayName when not already set", () => {
-    const TestComponent = () => React.createElement("div", null, "Test");
+    const TestComponent: React.ComponentType = () =>
+      React.createElement("div", null, "Test");
 
     const result = setDisplayName(TestComponent, "TestComponent");
 
@@ -58,7 +60,8 @@ describe("setDisplayName", () => {
   });
 
   it("preserves existing displayName", () => {
-    const TestComponent = () => React.createElement("div", null, "Test");
+    const TestComponent: React.ComponentType = () =>
+      React.createElement("div", null, "Test");
     TestComponent.displayName = "ExistingName";
 
     const result = setDisplayName(TestComponent, "NewName");
@@ -67,7 +70,8 @@ describe("setDisplayName", () => {
   });
 
   it("returns the same component reference", () => {
-    const TestComponent = () => React.createElement("div", null, "Test");
+    const TestComponent: React.ComponentType = () =>
+      React.createElement("div", null, "Test");
 
     const result = setDisplayName(TestComponent, "TestComponent");
 
@@ -75,7 +79,8 @@ describe("setDisplayName", () => {
   });
 
   it("handles components with no displayName", () => {
-    const TestComponent = () => React.createElement("div", null, "Test");
+    const TestComponent: React.ComponentType = () =>
+      React.createElement("div", null, "Test");
     delete (TestComponent as any).displayName;
 
     const result = setDisplayName(TestComponent, "TestComponent");
