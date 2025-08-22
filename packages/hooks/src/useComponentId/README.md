@@ -1,6 +1,7 @@
-# `@guyromellemagayano/hooks` Package
+<!-- markdownlint-disable MD051 -->
+# `useComponentId` Hook
 
-A collection of reusable React hooks that provide common functionality across components in the portfolio project. This package offers essential utilities for component development, debugging, and type safety.
+A React hook for automatic component ID generation and debug logging. This hook provides stable, unique IDs for React components and integrates with the project's logging system for development debugging.
 
 ## 📋 Table of Contents
 
@@ -14,21 +15,21 @@ A collection of reusable React hooks that provide common functionality across co
 - [🔗 Related Utilities](#related-utilities)
 - [🧪 Testing](#testing)
 - [📈 Migration Guide](#migration-guide)
+- [🚀 Future Enhancements](#future-enhancements)
 
-<a ID="overview"></a>
+<a id="overview"></a>
 
 ## 🎯 Overview
 
-The `@guyromellemagayano/hooks` package provides essential React hooks and utilities for modern component development:
+The `useComponentId` hook solves common problems in React component development:
 
 ### ✨ Key Features
 
-- **🆔 Component ID Generation**: Automatic, stable ID generation for React components
-- **🐛 Debug Logging**: Integrated debugging with the project's logging system
-- **🔍 Component Name Detection**: Intelligent component name detection from call stack
+- **🆔 Automatic ID Generation**: Provides stable, unique IDs for components
+- **🐛 Debug Logging**: Optional logging for development debugging
+- **🔍 Component Name Detection**: Automatically detects component names from call stack
 - **🛡️ Cross-Environment Safety**: Works safely in both development and production
 - **📝 TypeScript Support**: Full type safety with proper interfaces
-- **🔧 Utility Functions**: Helper functions for common component patterns
 
 ### 🎯 Use Cases
 
@@ -36,46 +37,22 @@ The `@guyromellemagayano/hooks` package provides essential React hooks and utili
 - **Modal Dialogs**: Create accessible modal components with proper ARIA attributes
 - **Data Tables**: Generate row and cell IDs for complex data structures
 - **Debug Components**: Add debug information to components during development
-- **Component Libraries**: Standardize component naming and identification
 
-### 📁 File Structure
-
-```bash
-packages/hooks/
-├── package.json              # Package configuration and dependencies
-├── src/
-│   ├── index.ts              # Main export file
-│   ├── useComponentId/       # Component ID generation hook
-│   │   ├── index.ts          # Hook exports
-│   │   ├── useComponentId.ts # Main hook implementation
-│   │   ├── useComponentId.test.ts # Hook tests
-│   │   └── README.md         # Hook-specific documentation
-│   ├── utils/                # Utility functions
-│   │   ├── index.ts          # Utility exports
-│   │   └── setDisplayName.ts # Display name utility
-│   └── README.md             # This documentation
-└── dist/                     # Built distribution files (generated)
-```
-
-<a ID="installation"></a>
+<a id="installation"></a>
 
 ## 📦 Installation
 
-The package is available as an npm package:
+The hook is part of the `@guyromellemagayano/hooks` package:
 
 ```bash
-# Install as a dependency
 npm install @guyromellemagayano/hooks
-
-# Or using pnpm (recommended)
-pnpm add @guyromellemagayano/hooks
 ```
 
-<a ID="quick-start"></a>
+<a id="quick-start"></a>
 
 ## 🚀 Quick Start
 
-### Basic Hook Usage
+### Basic Usage
 
 ```typescript
 import { useComponentId } from "@guyromellemagayano/hooks";
@@ -111,21 +88,22 @@ function MyComponent({ _debugMode, ...props }) {
 }
 ```
 
-### Utility Function Usage
+### Custom ID Override
 
 ```typescript
-import { setDisplayName } from "@guyromellemagayano/hooks";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { Div } from "@guyromellemagayano/components";
 
-const MyComponent = setDisplayName(
-  React.forwardRef(function MyComponent(props, ref) {
-    const { id } = useComponentId();
-    return <Div ref={ref} data-component-id={id}>Content</Div>;
-  })
-);
+function MyComponent({ _internalId, ...props }) {
+  const { id } = useComponentId({
+    internalId: _internalId,
+  });
+  
+  return <Div data-component-id={id}>{props.children}</Div>;
+}
 ```
 
-<a ID="api-reference"></a>
+<a id="api-reference"></a>
 
 ## 🔧 API Reference
 
@@ -143,21 +121,6 @@ const MyComponent = setDisplayName(
 |----------|------|-------------|
 | `id` | `string` | The component ID (custom or auto-generated) |
 | `isDebugMode` | `boolean` | Whether debug mode is active |
-
-### `setDisplayName(component, functionName?)`
-
-**Parameters:**
-
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `component` | `T` | ✅ | - | The React component to set displayName for |
-| `functionName` | `string` | ❌ | Auto-detected | The name to assign as displayName |
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `T` | The component with displayName set |
 
 ### Type Definitions
 
@@ -177,7 +140,7 @@ interface UseComponentIdReturn {
 }
 ```
 
-<a ID="examples"></a>
+<a id="examples"></a>
 
 ## 💡 Examples
 
@@ -211,10 +174,6 @@ function ContactForm({ _debugMode, ...props }) {
         <label htmlFor={`${id}-name`}>Name:</label>
         <input id={`${id}-name`} name="name" />
       </Div>
-      <Div>
-        <label htmlFor={`${id}-email`}>Email:</label>
-        <input id={`${id}-email`} name="email" type="email" />
-      </Div>
       <Button type="submit">Submit</Button>
     </Form>
   );
@@ -224,37 +183,34 @@ function ContactForm({ _debugMode, ...props }) {
 ### Modal Component with Accessibility
 
 ```typescript
-import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { Div, Heading, Button } from "@guyromellemagayano/components";
 
-const Modal = setDisplayName(
-  React.forwardRef(function Modal({ _internalId, title, children, onClose, ...props }, ref) {
-    const { id } = useComponentId({
-      internalId: _internalId,
-    });
-    
-    return (
-      <Div 
-        {...props}
-        ref={ref}
-        role="dialog"
-        aria-labelledby={`${id}-title`}
-        aria-describedby={`${id}-content`}
-        aria-modal="true"
-        data-component-id={id}
+function Modal({ _internalId, title, children, onClose, ...props }) {
+  const { id } = useComponentId({
+    internalId: _internalId,
+  });
+  
+  return (
+    <Div 
+      {...props}
+      role="dialog"
+      aria-labelledby={`${id}-title`}
+      aria-describedby={`${id}-content`}
+      aria-modal="true"
+      data-component-id={id}
+    >
+      <Heading as="h2" id={`${id}-title`}>{title}</Heading>
+      <Div id={`${id}-content`}>{children}</Div>
+      <Button 
+        onClick={onClose}
+        aria-label="Close modal"
       >
-        <Heading as="h2" id={`${id}-title`}>{title}</Heading>
-        <Div id={`${id}-content`}>{children}</Div>
-        <Button 
-          onClick={onClose}
-          aria-label="Close modal"
-        >
-          Close
-        </Button>
-      </Div>
-    );
-  })
-);
+        Close
+      </Button>
+    </Div>
+  );
+}
 ```
 
 ### Data Table with Row IDs
@@ -298,14 +254,14 @@ function TableRow({ data, rowId }) {
 }
 ```
 
-### Component Library Pattern
+### Combined with `setDisplayName`
 
 ```typescript
 import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
-import { Div, Button } from "@guyromellemagayano/components";
+import { Div } from "@guyromellemagayano/components";
 
-const Card = setDisplayName(
-  React.forwardRef(function Card({ _internalId, _debugMode, title, children, ...props }, ref) {
+const MyComponent = setDisplayName(
+  React.forwardRef(function MyComponent({ _internalId, _debugMode, ...props }, ref) {
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
@@ -318,35 +274,14 @@ const Card = setDisplayName(
         data-component-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
       >
-        <Div>
-          <Heading as="h3">{title}</Heading>
-        </Div>
-        <Div>{children}</Div>
+        {props.children}
       </Div>
-    );
-  })
-);
-
-const CardButton = setDisplayName(
-  React.forwardRef(function CardButton({ _internalId, children, ...props }, ref) {
-    const { id } = useComponentId({
-      internalId: _internalId,
-    });
-    
-    return (
-      <Button 
-        {...props}
-        ref={ref}
-        data-component-id={id}
-      >
-        {children}
-      </Button>
     );
   })
 );
 ```
 
-<a ID="best-practices"></a>
+<a id="best-practices"></a>
 
 ## ✅ Best Practices
 
@@ -407,27 +342,7 @@ const { id, isDebugMode } = useComponentId({
 });
 ```
 
-### 4. Component Naming
-
-Use proper component naming for better debugging:
-
-```typescript
-// ✅ Use named function components
-export const MyComponent = () => {
-  const { id } = useComponentId();
-  return <div data-component-id={id}>Content</div>;
-};
-
-// ✅ Or use setDisplayName utility
-export const MyComponent = setDisplayName(
-  React.forwardRef(function MyComponent(props, ref) {
-    const { id } = useComponentId();
-    return <div ref={ref} data-component-id={id}>Content</div>;
-  })
-);
-```
-
-### 5. ID Generation Strategy
+### 4. ID Generation Strategy
 
 Choose the right ID strategy for your use case:
 
@@ -446,7 +361,7 @@ const { id } = useComponentId({
 });
 ```
 
-<a ID="troubleshooting"></a>
+<a id="troubleshooting"></a>
 
 ## 🔍 Troubleshooting
 
@@ -511,25 +426,6 @@ export const MyComponent = setDisplayName(
 );
 ```
 
-#### TypeScript Errors
-
-**Problem:** TypeScript can't find type definitions.
-
-**Solution:**
-
-```typescript
-// ✅ Import types explicitly
-import type { UseComponentIdOptions, UseComponentIdReturn } from "@guyromellemagayano/hooks";
-
-// ✅ Use proper type annotations
-const options: UseComponentIdOptions = {
-  internalId: "custom-id",
-  debugMode: true,
-};
-
-const result: UseComponentIdReturn = useComponentId(options);
-```
-
 ### Performance Considerations
 
 - **Stable IDs**: The hook uses React's `useId()` for stable ID generation
@@ -537,42 +433,7 @@ const result: UseComponentIdReturn = useComponentId(options);
 - **Minimal Overhead**: The hook is lightweight and optimized
 - **Memoization**: Consider memoizing components that use the hook frequently
 
-### Edge Cases & Limitations
-
-#### Component Name Detection
-
-The `setDisplayName` function uses call stack analysis to auto-detect component names. This works best with:
-
-```typescript
-// ✅ Works well
-export const MyComponent = () => <div>Content</div>;
-
-// ✅ Works well
-export default function MyComponent() {
-  return <div>Content</div>;
-}
-
-// ⚠️ May not detect correctly
-const MyComponent = () => <div>Content</div>;
-export { MyComponent };
-
-// ❌ Won't detect correctly
-export default () => <div>Content</div>;
-```
-
-#### Debug Mode Limitations
-
-- Debug logging only works in development environment
-- Component name detection may fall back to "Component" in complex scenarios
-- Stack trace analysis has limitations in minified production builds
-
-#### ID Generation
-
-- React's `useId()` generates stable IDs that persist across re-renders
-- Custom `internalId` takes precedence over auto-generated IDs
-- IDs are unique within the React component tree
-
-<a ID="related-utilities"></a>
+<a id="related-utilities"></a>
 
 ## 🔗 Related Utilities
 
@@ -601,32 +462,16 @@ The hook integrates with `@guyromellemagayano/logger`:
 // Format: "ComponentName rendered with ID: component-id"
 ```
 
-### Custom Components
-
-The hooks work seamlessly with the project's custom components:
-
-```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Div, Form, Button, Heading, Table, Tbody } from "@guyromellemagayano/components";
-
-// All custom components support the hooks
-function MyComponent() {
-  const { id } = useComponentId();
-  return <Div data-component-id={id}>Content</Div>;
-}
-```
-
-<a ID="testing"></a>
+<a id="testing"></a>
 
 ## 🧪 Testing
 
-The package includes comprehensive tests covering:
+The hook includes comprehensive tests covering:
 
 - ID generation with and without custom IDs
 - Debug mode functionality
 - Component name detection
 - Edge cases and error handling
-- TypeScript type safety
 
 ```bash
 # Run tests
@@ -634,12 +479,9 @@ npm test
 
 # Run tests with coverage
 npm run test:coverage
-
-# Run tests in watch mode
-npm run test:watch
 ```
 
-<a ID="migration-guide"></a>
+<a id="migration-guide"></a>
 
 ## 📈 Migration Guide
 
@@ -685,27 +527,7 @@ function MyComponent({ _internalId, _debugMode, ...props }) {
 }
 ```
 
-### From Manual displayName Assignment
-
-**Before:**
-
-```typescript
-const MyComponent = React.forwardRef(function MyComponent(props, ref) {
-  // Implementation
-});
-MyComponent.displayName = "MyComponent";
-```
-
-**After:**
-
-```typescript
-const MyComponent = setDisplayName(
-  React.forwardRef(function MyComponent(props, ref) {
-    // Implementation
-  }),
-  "MyComponent"
-);
-```
+<a id="future-enhancements"></a>
 
 ## 🚀 Future Enhancements
 
@@ -716,19 +538,7 @@ Potential future improvements:
 - **Custom Logging**: Allow custom log formats
 - **ID Persistence**: Persist IDs across page reloads
 - **Analytics Integration**: Send usage analytics
-- **Additional Hooks**: `useLocalStorage`, `useDebounce`, `useIntersectionObserver`
-
-## 🔒 Security
-
-- **No sensitive data**: Hooks don't collect or expose sensitive information
-- **Environment-aware**: Debug features only active in development
-- **Safe defaults**: Graceful fallbacks for all edge cases
-
-## 📦 Dependencies
-
-- **React**: Core React hooks and types
-- **@guyromellemagayano/logger**: Consistent logging across the project
 
 ---
 
-For more information about specific hooks, see the [useComponentId documentation](./useComponentId/README.md).
+For more information, see the [main hooks package documentation](../README.md).
