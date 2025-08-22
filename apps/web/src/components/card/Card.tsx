@@ -11,8 +11,9 @@ import {
   Time,
 } from "@guyromellemagayano/components";
 import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
+import { isRenderableContent, isValidLink } from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 import { Icon } from "@web/components/icon";
 import { cn } from "@web/lib";
 
@@ -23,6 +24,12 @@ import styles from "./Card.module.css";
 // ============================================================================
 
 type CardEyebrowRef = React.ComponentRef<typeof Time>;
+interface CardEyebrowProps
+  extends React.ComponentPropsWithoutRef<typeof Time>,
+    CommonWebAppComponentProps {
+  /** Whether to decorate the eyebrow with a line. */
+  decorate?: boolean;
+}
 
 interface InternalCardEyebrowProps extends CardEyebrowProps {
   /** Internal component ID passed from parent */
@@ -47,7 +54,7 @@ const InternalCardEyebrow = setDisplayName(
       ...rest
     } = props;
 
-    if (!children) return null;
+    if (!isRenderableContent(children)) return null;
 
     const element = (
       <Time
@@ -76,13 +83,6 @@ const InternalCardEyebrow = setDisplayName(
   }),
   "InternalCardEyebrow"
 ) as InternalCardEyebrowComponent;
-
-interface CardEyebrowProps
-  extends React.ComponentProps<typeof Time>,
-    CommonWebAppComponentProps {
-  /** Whether to decorate the eyebrow with a line. */
-  decorate?: boolean;
-}
 
 type CardEyebrowComponent = React.ForwardRefExoticComponent<
   CardEyebrowProps & React.RefAttributes<CardEyebrowRef>
@@ -146,7 +146,7 @@ const InternalCardLink = setDisplayName(
       ...rest
     } = props;
 
-    if (!children) return null;
+    if (!isRenderableContent(children)) return null;
 
     const element = (
       <Heading
@@ -159,7 +159,7 @@ const InternalCardLink = setDisplayName(
       >
         <Div className={styles.cardLinkBackground} />
 
-        {href ? (
+        {isValidLink(href) ? (
           <Link ref={ref} href={href} target={target} title={title}>
             <Span className={styles.cardLinkClickableArea} />
             <Span className={styles.cardLinkContent}>{children}</Span>
@@ -248,22 +248,24 @@ const InternalCardTitle = setDisplayName(
       target = "_self",
       componentId,
       isDebugMode,
+      id: customId,
       ...rest
     } = props;
 
-    if (!children) return null;
+    if (!isRenderableContent(children)) return null;
 
     const element = (
       <Heading
         {...rest}
         ref={ref}
         as="h2"
+        id={customId || componentId}
         className={cn(styles.cardTitle, className)}
         data-card-title-id={componentId}
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="card-title-root"
       >
-        {href ? (
+        {isValidLink(href) ? (
           <InternalCardLink href={href} target={target} title={title}>
             {children}
           </InternalCardLink>
@@ -333,7 +335,7 @@ const InternalCardDescription = setDisplayName(
   React.forwardRef(function InternalCardDescription(props, ref) {
     const { children, className, componentId, isDebugMode, ...rest } = props;
 
-    if (!children) return null;
+    if (!isRenderableContent(children)) return null;
 
     const element = (
       <P
@@ -421,7 +423,7 @@ const InternalCardCta = setDisplayName(
       ...rest
     } = props;
 
-    if (!children) return null;
+    if (!isRenderableContent(children)) return null;
 
     const element = (
       <Div
@@ -432,10 +434,11 @@ const InternalCardCta = setDisplayName(
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="card-cta-root"
       >
-        {href && href !== "#" ? (
+        {isValidLink(href) ? (
           <Link
             href={href}
             target={target}
+            rel={target === "_blank" ? "noopener noreferrer" : undefined}
             title={title}
             className={styles.cardCtaLink}
           >
