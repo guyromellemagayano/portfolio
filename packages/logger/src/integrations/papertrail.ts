@@ -92,7 +92,7 @@ export class PapertrailIntegration extends BaseIntegration {
     const program = this.papertrailConfig.program;
 
     // Create structured message
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const messageData: any = {
       level: this.mapLogLevelToPapertrail(entry.level),
       message: entry.message,
