@@ -9,6 +9,31 @@ vi.mock("@guyromellemagayano/hooks", () => ({
     id: options?.internalId || "test-id",
     isDebugMode: options?.debugMode || false,
   })),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) {
+      component.displayName = displayName;
+    }
+    return component;
+  }),
+}));
+
+// Mock the utils
+vi.mock("@guyromellemagayano/utils", () => ({
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    if (href === "#" || href === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    const isExternal = href?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
 }));
 
 // Mock the cn helper

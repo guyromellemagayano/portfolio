@@ -6,31 +6,32 @@ import {
   A,
   Div,
   Footer as GRMFooterComponent,
-  type FooterProps as FooterComponentProps,
-  type FooterRef as FooterComponentRef,
   Li,
   Nav,
-  Span,
-  Ul,
+  P,
 } from "@guyromellemagayano/components";
 import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
+import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
-import {
-  FOOTER_COMPONENT_NAV_LINKS,
-  type FooterLink,
-} from "@web/components/footer/Footer.data";
+import type { CommonWebAppComponentProps } from "@web/@types";
+import { Container } from "@web/components/container";
 import { cn } from "@web/lib";
 
+import {
+  FOOTER_COMPONENT_LABELS,
+  FOOTER_COMPONENT_NAV_LINKS,
+  type FooterLink,
+} from "./Footer.data";
 import styles from "./Footer.module.css";
 
 // ============================================================================
 // FOOTER COMPONENT
 // ============================================================================
 
-type FooterRef = FooterComponentRef;
-
-interface FooterProps extends FooterComponentProps, CommonWebAppComponentProps {
+type FooterRef = React.ComponentRef<typeof GRMFooterComponent>;
+interface FooterProps
+  extends React.ComponentPropsWithoutRef<typeof GRMFooterComponent>,
+    CommonWebAppComponentProps {
   /** Optional custom brand name override */
   brandName?: string;
   /** Optional custom legal text override */
@@ -58,8 +59,6 @@ const InternalFooter = setDisplayName(
         className,
         componentId,
         isDebugMode,
-        brandName = "Guy Romelle Magayano",
-        legalText = "All rights reserved.",
         navLinks = FOOTER_COMPONENT_NAV_LINKS,
         ...rest
       } = props;
@@ -73,46 +72,52 @@ const InternalFooter = setDisplayName(
           data-debug-mode={isDebugMode ? "true" : undefined}
           data-testid="footer-root"
         >
-          <Div className={styles.footerContent}>
-            <Div className={styles.footerBrand}>
-              <Span className={styles.brandName}>{brandName}</Span>
-              <Span className={styles.legalText}>{legalText}</Span>
+          <Container.Outer>
+            <Div className={styles.footerContentWrapper}>
+              <Container.Inner>
+                {navLinks.length > 0 && (
+                  <Div className={styles.footerLayout}>
+                    <Nav className={styles.footerNavigationList}>
+                      {navLinks.map((link) => {
+                        const isExternal = link.kind === "external";
+                        const href = isExternal
+                          ? link.href
+                          : link.href.toString();
+
+                        if (!isValidLink(href)) return null;
+
+                        const linkTargetProps = getLinkTargetProps(
+                          href,
+                          isExternal && link.newTab ? "_blank" : "_self"
+                        );
+
+                        const element = (
+                          <Li key={href} className={styles.navItem}>
+                            <A
+                              href={href}
+                              target={linkTargetProps.target}
+                              rel={linkTargetProps.rel}
+                              className={styles.navLink}
+                            >
+                              {link.label}
+                            </A>
+                          </Li>
+                        );
+
+                        return element;
+                      })}
+                    </Nav>
+                    <P
+                      className={styles.footerLegalText}
+                      dangerouslySetInnerHTML={{
+                        __html: FOOTER_COMPONENT_LABELS.legalText,
+                      }}
+                    />
+                  </Div>
+                )}
+              </Container.Inner>
             </Div>
-
-            {navLinks.length > 0 && (
-              <Nav className={styles.footerNav}>
-                <Ul className={styles.navList}>
-                  {navLinks.map((link) => {
-                    const isExternal = link.kind === "external";
-                    const href = isExternal ? link.href : link.href.toString();
-
-                    if (!href) return null;
-
-                    const element = (
-                      <Li key={href} className={styles.navItem}>
-                        <A
-                          href={href}
-                          target={
-                            isExternal && link.newTab ? "_blank" : "_self"
-                          }
-                          rel={
-                            isExternal && link.newTab
-                              ? "noopener noreferrer"
-                              : undefined
-                          }
-                          className={styles.navLink}
-                        >
-                          {link.label}
-                        </A>
-                      </Li>
-                    );
-
-                    return element;
-                  })}
-                </Ul>
-              </Nav>
-            )}
-          </Div>
+          </Container.Outer>
         </GRMFooterComponent>
       );
 
