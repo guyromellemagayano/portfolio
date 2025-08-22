@@ -96,11 +96,10 @@ export class NewRelicIntegration extends BaseIntegration {
   }
 
   /** Format log entry for New Relic API */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForNewRelic(entry: LogEntry): any {
     const nrLevel = this.mapLogLevelToNewRelic(entry.level);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logEntry: any = {
       timestamp: entry.timestamp.getTime(),
       level: nrLevel,

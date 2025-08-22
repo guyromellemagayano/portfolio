@@ -313,7 +313,6 @@ describe("Logger System", () => {
 });
 
 describe("Formatters", () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let entry: any;
 
   beforeEach(() => {
@@ -366,7 +365,6 @@ describe("Utilities", () => {
     });
 
     it("throws on invalid levels", () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       expect(() => parseLogLevel("INVALID" as any)).toThrow();
     });
   });
@@ -399,7 +397,6 @@ describe("Utilities", () => {
         token: "token456",
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const sanitized = sanitizeData(data) as any;
 
       expect(sanitized.username).toBe("john");
@@ -409,7 +406,6 @@ describe("Utilities", () => {
     });
 
     it("handles circular references", () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const obj: any = { name: "test" };
       obj.self = obj;
 
@@ -427,7 +423,6 @@ describe("Utilities", () => {
 });
 
 describe("Legacy API", () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let consoleSpy: any;
 
   beforeEach(() => {

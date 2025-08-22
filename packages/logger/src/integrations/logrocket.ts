@@ -18,7 +18,7 @@ export interface LogRocketConfig extends IntegrationConfig {
   /** Include session URL in logs */
   includeSessionUrl?: boolean;
   /** Custom session properties */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   sessionProperties?: Record<string, any>;
 }
 
@@ -87,11 +87,10 @@ export class LogRocketIntegration extends BaseIntegration {
   }
 
   /** Format log entry for LogRocket API */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForLogRocket(entry: LogEntry): any {
     const lrLevel = this.mapLogLevelToLogRocket(entry.level);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logEntry: any = {
       timestamp: entry.timestamp.toISOString(),
       level: lrLevel,
