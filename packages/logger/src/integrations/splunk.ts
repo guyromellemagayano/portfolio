@@ -100,9 +100,8 @@ export class SplunkIntegration extends BaseIntegration {
   }
 
   /** Format log entry for Splunk HEC */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForSplunk(entry: LogEntry): any {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const splunkEvent: any = {
       time: entry.timestamp.getTime() / 1000, // Splunk expects epoch seconds
       host: "logger-host",

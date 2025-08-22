@@ -91,7 +91,6 @@ export class NextJsAdapter {
 
   /** Create middleware for Next.js API routes */
   middleware() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return async (req: any, res: any, next?: () => void) => {
       const start = Date.now();
 
@@ -114,7 +113,7 @@ export class NextJsAdapter {
 
       // Override res.end to log completion
       const originalEnd = res.end;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       res.end = function (chunk: any, encoding: any) {
         const duration = Date.now() - start;
         req.logger.http("Request completed", {

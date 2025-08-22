@@ -94,11 +94,10 @@ export class GoogleCloudIntegration extends BaseIntegration {
   }
 
   /** Format log entry for Google Cloud API */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForGoogleCloud(entry: LogEntry): any {
     const severity = this.mapLogLevelToGoogleCloud(entry.level);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const logEntry: any = {
       logName: `projects/${this.gcpConfig.projectId}/logs/${this.gcpConfig.logName}`,
       resource: {
@@ -191,7 +190,7 @@ export class GoogleCloudIntegration extends BaseIntegration {
   }
 
   /** Get access token using service account */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private async getAccessToken(serviceAccount: any): Promise<any> {
     const now = Math.floor(Date.now() / 1000);
     const payload = {
