@@ -13,7 +13,7 @@ describe("@packages/logger", () => {
     expect(console.info).toHaveBeenCalled();
 
     // Check that the call contains our message
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const calls = (console.info as any).mock.calls;
     expect(calls.length).toBeGreaterThan(0);
     expect(calls[0][0]).toContain("hello");

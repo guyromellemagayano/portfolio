@@ -129,9 +129,8 @@ export class ElasticsearchIntegration extends BaseIntegration {
   }
 
   /** Format log entry for Elasticsearch */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForElasticsearch(entry: LogEntry): any {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const esDoc: any = {
       "@timestamp": entry.timestamp.toISOString(),
       level: this.mapLogLevelToElasticsearch(entry.level),
@@ -204,7 +203,7 @@ export class ElasticsearchIntegration extends BaseIntegration {
   }
 
   /** Parse stack trace for structured format */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private parseStackTrace(stack?: string): any[] {
     if (!stack) return [];
 

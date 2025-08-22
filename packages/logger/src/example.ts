@@ -200,7 +200,7 @@ export function createAdaptiveLogger() {
 
   return createLogger({
     level: isDevelopment ? LogLevel.DEBUG : LogLevel.INFO,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     environment: (process.env.NODE_ENV as any) || "development",
     transports: loggerTransports,
   });

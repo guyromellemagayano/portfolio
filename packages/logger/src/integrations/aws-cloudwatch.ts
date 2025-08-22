@@ -290,21 +290,18 @@ export class CloudWatchIntegration extends BaseIntegration {
   }
 
   /** HMAC SHA256 function */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private async hmacSha256Hex(key: any, data: string): Promise<string> {
     const encoder = new TextEncoder();
     const dataBuffer = encoder.encode(data);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const signature = await crypto.subtle.sign("HMAC", key as any, dataBuffer);
     const signatureArray = Array.from(new Uint8Array(signature));
     return signatureArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
   /** Get AWS signature key */
-  private async getSignatureKey(
-    key: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ): Promise<any> {
+  private async getSignatureKey(key: string): Promise<any> {
     const kDate = await crypto.subtle.importKey(
       "raw",
       new TextEncoder().encode(`AWS4${key}`),
