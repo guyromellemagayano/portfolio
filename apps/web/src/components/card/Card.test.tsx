@@ -1,7 +1,7 @@
 import React from "react";
 
-import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -103,6 +103,10 @@ import { Card } from "@web/components/card";
 describe("Card Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("Main Card Component", () => {
