@@ -8,7 +8,9 @@
     "types": [
       "vitest/globals",
       "node"
-    ]
+    ],
+    "moduleResolution": "bundler",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts",
