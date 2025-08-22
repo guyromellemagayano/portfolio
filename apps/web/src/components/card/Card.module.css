@@ -2,21 +2,13 @@
 
 /* Main card styles */
 .card {
-  /* Add any main card-specific styles here if needed */
+  @apply group relative flex flex-col items-start;
 }
-
-/* ============================================================================
-   CARD TITLE STYLES
-   ============================================================================ */
 
 /* Card title text */
 .cardTitle {
   @apply text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100;
 }
-
-/* ============================================================================
-   CARD LINK STYLES
-   ============================================================================ */
 
 /* Card link heading */
 .cardLinkHeading {
@@ -38,18 +30,10 @@
   @apply relative z-10;
 }
 
-/* ============================================================================
-   CARD DESCRIPTION STYLES
-   ============================================================================ */
-
 /* Card description text */
 .cardDescription {
-  @apply relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400;
+  @apply relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400 text-wrap;
 }
-
-/* ============================================================================
-   CARD CTA STYLES
-   ============================================================================ */
 
 /* Main CTA container */
 .cardCtaContainer {
@@ -66,13 +50,9 @@
   @apply ml-1 h-4 w-4 stroke-current;
 }
 
-/* ============================================================================
-   CARD EYEBROW STYLES
-   ============================================================================ */
-
 /* Card eyebrow container */
 .cardEyebrow {
-  @apply relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500;
+  @apply relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 text-wrap;
 }
 
 /* Card eyebrow with decoration */
