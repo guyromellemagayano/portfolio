@@ -318,7 +318,6 @@ export class NullTransport extends BaseTransport {
     super("null");
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async write(_entry: LogEntry): Promise<void> {
     // Do nothing
   }

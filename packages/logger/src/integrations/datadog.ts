@@ -91,7 +91,7 @@ export class DatadogIntegration extends BaseIntegration {
   }
 
   /** Format log entry for Datadog API */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForDatadog(entry: LogEntry): any {
     const ddLevel = this.mapLogLevelToDatadog(entry.level);
 
