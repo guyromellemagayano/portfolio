@@ -74,8 +74,7 @@ export const Icon = setDisplayName(
     );
 
     return element;
-  }),
-  "Icon"
+  })
 ) as IconsComponent;
 
 // ============================================================================
@@ -107,8 +106,7 @@ const XIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "XIcon"
+  })
 ) as CommonIconComponent;
 
 /** Instagram icon. */
@@ -137,8 +135,7 @@ const InstagramIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "InstagramIcon"
+  })
 ) as CommonIconComponent;
 
 /** LinkedIn icon. */
@@ -166,8 +163,7 @@ const LinkedInIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "LinkedInIcon"
+  })
 ) as CommonIconComponent;
 
 /** GitHub icon. */
@@ -199,8 +195,7 @@ const GitHubIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "GitHubIcon"
+  })
 ) as CommonIconComponent;
 
 /** Close icon. */
@@ -235,8 +230,7 @@ const CloseIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "CloseIcon"
+  })
 ) as CommonIconComponent;
 
 /** Sun icon. */
@@ -271,8 +265,7 @@ const SunIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "SunIcon"
+  })
 ) as CommonIconComponent;
 
 /** Moon icon. */
@@ -305,8 +298,7 @@ const MoonIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "MoonIcon"
+  })
 ) as CommonIconComponent;
 
 // ============================================================================
@@ -344,8 +336,7 @@ const ChevronDownIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "ChevronDownIcon"
+  })
 ) as CommonIconComponent;
 
 /** Chevron right icon. */
@@ -379,8 +370,7 @@ const ChevronRightIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "ChevronRightIcon"
+  })
 ) as CommonIconComponent;
 
 /** Arrow left icon. */
@@ -414,8 +404,7 @@ const ArrowLeftIcon = setDisplayName(
     );
 
     return element;
-  }),
-  "ArrowLeftIcon"
+  })
 ) as CommonIconComponent;
 
 Icon.X = XIcon;
