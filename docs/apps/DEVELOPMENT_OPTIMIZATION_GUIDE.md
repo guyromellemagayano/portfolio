@@ -1,7 +1,7 @@
 <!-- markdownlint-disable line-length link-fragments no-emphasis-as-heading -->
-# 🚀 Development Optimization & Standardization Guide
+# 🚀 Monorepo Development Optimization & Standardization Guide
 
-A comprehensive guide for optimizing, standardizing, and streamlining the development process across all applications in the portfolio monorepo.
+A comprehensive guide for optimizing, standardizing, and streamlining the development process across **ALL applications** in the portfolio monorepo.
 
 ## 📋 Table of Contents
 
@@ -56,7 +56,7 @@ A comprehensive guide for optimizing, standardizing, and streamlining the develo
 
 ## 📖 Overview
 
-This guide outlines a comprehensive approach to restructuring the `apps/web` application (_and potentially other apps_) to achieve:
+This guide outlines a comprehensive approach to restructuring **ALL applications** in the monorepo to achieve:
 
 - **50-70% faster page loads** through intelligent code splitting
 - **40-60% smaller bundle sizes** via tree shaking optimization
@@ -69,43 +69,30 @@ This guide outlines a comprehensive approach to restructuring the `apps/web` app
 ### Existing Structure Issues
 
 ```bash
-apps/web/src/
-├── components/
-│   ├── header/
-│   │   ├── _internal/
-│   │   │   ├── client/
-│   │   │   └── server/
-│   │   ├── models/
-│   │   └── Header.tsx
-│   ├── card/
-│   │   ├── _internal/
-│   │   │   └── server/
-│   │   └── models/
-│   └── layouts/
-│       ├── article/
-│       ├── base/
-│       └── simple/
-├── app/
-│   ├── articles/
-│   └── (other routes)
-└── lib/
-    └── (utilities)
+# Example of inconsistent patterns across apps
+apps/web/src/components/header/Header.tsx
+apps/storefront/src/components/Header.tsx  
+apps/admin/src/components/Header.tsx
+
+# Different patterns, different structures, different conventions
+# This guide standardizes ALL apps to follow the same patterns
 ```
 
 ### 🚨 Identified Problems
 
-1. **Inconsistent component organization** - Mixed patterns across components
+1. **Inconsistent patterns across apps** - Each app follows different conventions
 2. **Poor code splitting** - All components load upfront
-3. **Difficult to find files** - No clear naming conventions
-4. **Limited reusability** - Components tightly coupled to specific features
+3. **Difficult to find files** - No clear naming conventions across apps
+4. **Limited reusability** - Components tightly coupled to specific apps
 5. **Performance bottlenecks** - Large bundle sizes, slow initial loads
+6. **Maintenance overhead** - Different patterns in each app increase complexity
 
 ## 🏗️ Proposed Architecture
 
-### Enhanced File Structure
+### Universal File Structure (Applies to ALL Apps)
 
 ```bash
-apps/web/src/
+apps/{app-name}/src/
 ├── app/                          # Next.js App Router
 │   ├── (routes)/                 # Route groups for better organization
 │   │   ├── (marketing)/          # Marketing pages
@@ -455,7 +442,7 @@ import {
   type SectionProps as SectionComponentProps,  // Import types directly
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
-import { CommonWebAppComponentProps } from "@web/@types/components";
+import { CommonWebAppComponentProps } from "@web/@types";
 
 // Define types inline - ALWAYS
 type SectionRef = SectionComponentRef;
@@ -570,7 +557,7 @@ import {
   type SectionProps as SectionComponentProps,  // ✅ Import types directly
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
-import { CommonWebAppComponentProps } from "@web/@types/components";
+import { CommonWebAppComponentProps } from "@web/@types";
 
 // ✅ Inline type definitions
 type SectionRef = SectionComponentRef;
@@ -620,30 +607,67 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 
 ### 📚 **Component Overview**
 
-All components in `apps/web` follow consistent patterns and include comprehensive documentation. This section provides an overview of all components and their implementation details.
+All components across **ALL apps** in the monorepo follow consistent patterns and include comprehensive documentation. This section provides an overview of the universal component patterns that every app should implement.
 
 ### **🏗️ Component Architecture Summary**
 
-| Component | Type | Pattern Used | Complexity | Purpose |
-|-----------|------|--------------|------------|---------|
-| **Section** | Simple | Direct Implementation | Low | Layout section with optional title |
-| **Container** | Complex | Internal/External | High | Nested layout container system |
-| **Icon** | Compound | Compound Components | Medium | Social media and utility icons |
-| **Prose** | Simple | Direct Implementation | Low | Typography wrapper with Tailwind |
-| **Header** | Complex | Internal/External + Client | High | Navigation with effects and theme toggle |
-| **Footer** | Complex | Internal/External | Medium | Site footer with navigation links |
-| **Card** | Compound | Compound Components | High | Content cards with sub-components |
-| **ArticleLayout** | Layout | Direct Implementation | Medium | Article page layout |
-| **BaseLayout** | Layout | Direct Implementation | Low | Base page layout |
-| **SimpleLayout** | Layout | Direct Implementation | Low | Simple page layout |
+| Component Type | Pattern Used | Complexity | Purpose | Implementation |
+|----------------|--------------|------------|---------|----------------|
+| **Simple Components** | Direct Implementation | Low | Basic UI elements | Section, Prose, Button, Input |
+| **Complex Components** | Internal/External | High | Multi-part components | Header, Footer, Container |
+| **Compound Components** | Compound Pattern | Medium | Related sub-components | Icon, Card, Navigation |
+| **Layout Components** | Direct Implementation | Medium | Page structure | BaseLayout, ArticleLayout, DashboardLayout |
+| **Feature Components** | Feature-specific | Variable | Business logic | ArticleCard, UserProfile, ProductGrid |
 
-### **📋 Detailed Component Documentation**
+### **📋 Universal Component Patterns**
 
-#### **1. Section Component**
+#### **1. Simple Component Pattern**
 
-**Location**: `apps/web/src/components/section/`
+**Purpose**: Basic UI elements that follow direct implementation patterns.
 
-**Purpose**: A layout section component with optional title and content, styled for web app usage.
+**Pattern Used**: Direct Implementation (Simple Component)
+
+**Key Features**:
+
+- ✅ **Inline types** with external dependencies
+- ✅ **useComponentId** integration
+- ✅ **Conditional rendering** for optional content
+- ✅ **Early return pattern** for performance
+- ✅ **Accessibility** with proper ARIA attributes
+- ✅ **CSS modules** for scoped styling
+
+**Implementation Template**:
+
+```typescript
+// Example: Section Component (applies to ALL apps)
+export const Section = React.forwardRef<SectionRef, SectionProps>(
+  function Section(props, ref) {
+    const { title, children, className, _internalId, _debugMode, ...rest } = props;
+    
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+    
+    if (!title && !children) return null;
+    
+    const element = (
+      <SectionComponent
+        ref={ref}
+        aria-labelledby={id}
+        data-section-id={id}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        {...rest}
+      >
+        {title && <Heading id={id}>{title}</Heading>}
+        {children && <Div>{children}</Div>}
+      </SectionComponent>
+    );
+
+    return element;
+  }
+);
+```
 
 **Pattern Used**: Direct Implementation (Simple Component)
 
@@ -1065,6 +1089,93 @@ Card.Eyebrow = CardEyebrow;
 
 ---
 
+#### **8. Container Component**
+
+**Location**: `apps/web/src/components/container/`
+
+**Purpose**: Compound component system for creating layout containers with outer and inner wrapper structures.
+
+**Pattern Used**: Compound Component Pattern
+
+**Key Features**:
+
+- ✅ **Compound components** for container parts
+- ✅ **useComponentId** integration for all sub-components
+- ✅ **Nested structure** with outer and inner wrappers
+- ✅ **Flexible layout** system
+- ✅ **CSS modules** with consolidated styling
+- ✅ **Type safety** with comprehensive TypeScript types
+
+**Sub-Components**:
+
+- **Container.Outer**: Outer wrapper component for layout structure
+- **Container.Inner**: Inner wrapper component for content structure
+
+**Implementation**:
+
+```typescript
+// Main container component
+export const Container = setDisplayName(
+  React.forwardRef<ContainerRef, ContainerProps>(
+    function Container(props, ref) {
+      const { _internalId, _debugMode, ...rest } = props;
+      
+      const { id, isDebugMode } = useComponentId({
+        internalId: _internalId,
+        debugMode: _debugMode,
+      });
+      
+      const element = (
+        <InternalContainer
+          {...rest}
+          ref={ref}
+          componentId={id}
+          isDebugMode={isDebugMode}
+        />
+      );
+
+      return element;
+    }
+  ),
+  "Container"
+) as ContainerComponent;
+
+// Compound sub-components
+Container.Outer = ContainerOuter;
+Container.Inner = ContainerInner;
+```
+
+**Usage**:
+
+```tsx
+// Simple usage
+<Container>
+  <div>Content</div>
+</Container>
+
+// Advanced usage with compound components
+<Container>
+  <Container.Outer>
+    <Container.Inner>
+      <div>Nested Content</div>
+    </Container.Inner>
+  </Container.Outer>
+</Container>
+
+// Individual usage
+<Container.Outer>
+  <div>Outer Content</div>
+</Container.Outer>
+
+<Container.Inner>
+  <div>Inner Content</div>
+</Container.Inner>
+```
+
+**Test Coverage**: 100% (32 tests, comprehensive test suite)
+
+---
+
 #### **8. Layout Components**
 
 ##### **ArticleLayout**
@@ -1118,9 +1229,9 @@ Card.Eyebrow = CardEyebrow;
 | Metric | Value |
 |--------|-------|
 | **Total Components** | 10 |
-| **Simple Components** | 4 (Section, Prose, BaseLayout, SimpleLayout) |
-| **Complex Components** | 4 (Container, Header, Footer, ArticleLayout) |
-| **Compound Components** | 2 (Icon, Card) |
+| **Simple Components** | 3 (Section, Prose, BaseLayout, SimpleLayout) |
+| **Complex Components** | 3 (Header, Footer, ArticleLayout) |
+| **Compound Components** | 4 (Icon, Card, Container) |
 | **Average Test Coverage** | 95%+ |
 | **Patterns Used** | 3 (Direct, Internal/External, Compound) |
 
@@ -1318,7 +1429,7 @@ import {
   type SectionProps as SectionComponentProps,  // Import types directly
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
-import { CommonWebAppComponentProps } from "@web/@types/components";
+import { CommonWebAppComponentProps } from "@web/@types";
 
 // Inline type definitions
 type SectionRef = SectionComponentRef;
@@ -1369,7 +1480,7 @@ import {
   type SectionProps as SectionComponentProps,  // Import types directly
   type SectionRef as SectionComponentRef,
 } from "@guyromellemagayano/components";
-import { CommonWebAppComponentProps } from "@web/@types/components";
+import { CommonWebAppComponentProps } from "@web/@types";
 
 // Define types inline - ALWAYS
 type SectionRef = SectionComponentRef;
@@ -1454,9 +1565,9 @@ Icon.GitHub = GitHubIcon;
 <Icon.Instagram className="w-6 h-6" />           // Compound component
 ```
 
-## 🔧 **Current Codebase Patterns & Conventions**
+## 🔧 **Universal Codebase Patterns & Conventions**
 
-This section documents the **established patterns and conventions** currently used across all components in the `apps/web` codebase. These patterns are **mandatory** and must be followed for all new components and updates.
+This section documents the **established patterns and conventions** that **ALL apps** in the monorepo must follow. These patterns are **mandatory** and must be implemented consistently across `apps/web`, `apps/storefront`, `apps/admin`, and any future apps.
 
 ### **1. useComponentId Hook Integration**
 
@@ -1899,7 +2010,7 @@ import {
 import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
 
 // 4. Local type imports
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 // 5. Local component imports
 import { Container } from "@web/components/container";
@@ -2574,7 +2685,7 @@ describe("ComponentName", () => {
 import React, { useId } from "react";
 import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
 import { logInfo } from "@guyromellemagayano/logger";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type ButtonRef = ButtonComponentRef;
 interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {}
@@ -2892,7 +3003,7 @@ All components MUST implement this pattern:
 import React, { useId } from "react";
 import { Section as SectionComponent, Heading, Div, type SectionProps as SectionComponentProps, type SectionRef as SectionComponentRef } from "@guyromellemagayano/components";
 import { logInfo } from "@guyromellemagayano/logger";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type SectionRef = SectionComponentRef;
 interface SectionProps extends SectionComponentProps, CommonWebAppComponentProps {}
@@ -2960,7 +3071,7 @@ if (_debugMode && process.env.NODE_ENV === "development") {
 // ✅ Recommended: Hooks at top level
 import React, { useId, useState } from "react";
 import { Div, type DivProps, type DivRef } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type ComponentRef = DivRef;
 interface ComponentProps extends DivProps, CommonWebAppComponentProps {}
@@ -3007,7 +3118,7 @@ export const Component = React.forwardRef<Ref, Props>(
 // Export with inline types (internal only)
 import React from "react";
 import { Button as ButtonComponent } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type ButtonRef = React.ComponentRef<typeof ButtonComponent>;
 interface ButtonProps extends React.ComponentProps<typeof ButtonComponent>, CommonWebAppComponentProps {
@@ -3043,7 +3154,7 @@ type ButtonProps = React.ComponentProps<typeof Button>
 // Export with inline types (internal only)
 import React from "react";
 import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type ButtonRef = ButtonComponentRef;
 interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
@@ -3089,7 +3200,7 @@ export const Card = function Card() { /* ... */ }
 ```typescript
 // ❌ Exposing internal structure
 import { type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 export interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant?: 'primary' | 'secondary'
@@ -3115,7 +3226,7 @@ const props: ButtonProps = {
 ```typescript
 // ✅ Hiding internal structure (Inline approach)
 import { type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant?: 'primary' | 'secondary'
@@ -3143,7 +3254,7 @@ import {
   Heading,
   Section as SectionComponent,
 } from "@guyromellemagayano/components";
-import { CommonWebAppComponentProps } from "@web/@types/components";
+import { CommonWebAppComponentProps } from "@web/@types";
 
 // Inline type definitions - ALWAYS using React utility types
 type SectionRef = React.ComponentRef<typeof SectionComponent>;
@@ -3234,7 +3345,7 @@ export const Button = function Button(props: ButtonProps) { ... }
 ```typescript
 // ❌ Consumers depend on internal types
 import { type ButtonProps as ButtonComponentProps } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 export interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant: 'primary' | 'secondary'
@@ -3256,7 +3367,7 @@ const props: ButtonProps = {
 ```typescript
 // ✅ Consumers can't depend on internal types
 import { type ButtonProps as ButtonComponentProps } from "@guyromellemagayano/components";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 interface ButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
   variant: 'primary' | 'secondary'
@@ -3285,7 +3396,7 @@ import { Button } from '@/components/ui/atoms/button'
 import React from "react";
 import { Button as ButtonComponent, type ButtonProps as ButtonComponentProps, type ButtonRef as ButtonComponentRef } from "@guyromellemagayano/components";
 import { logInfo } from "@guyromellemagayano/logger";
-import type { CommonWebAppComponentProps } from "@web/@types/components";
+import type { CommonWebAppComponentProps } from "@web/@types";
 
 type SecureButtonRef = ButtonComponentRef;
 interface SecureButtonProps extends ButtonComponentProps, CommonWebAppComponentProps {
@@ -3327,9 +3438,9 @@ import { SecureButton } from '@/components/ui/atoms/secure-button'
 // No way to bypass security checks or manipulate internal state
 ```
 
-## ✅ Compliance Standards
+## ✅ Universal Compliance Standards
 
-All components in this codebase must comply with the following standards:
+All components across **ALL apps** in the monorepo must comply with the following standards:
 
 ### **Type Organization Compliance**
 
@@ -3360,9 +3471,9 @@ All components in this codebase must comply with the following standards:
 - ✅ **Type inference** - Use `typeof` and `React.ComponentProps` when needed
 - ✅ **Controlled exports** - Only export components, not implementation details
 
-## 🔍 Verification Checklist
+## 🔍 Universal Verification Checklist
 
-All components must pass the following verification checklist:
+All components across **ALL apps** must pass the following verification checklist:
 
 ### **Type Safety Verification**
 
@@ -3414,9 +3525,9 @@ All components must pass the following verification checklist:
 - [ ] **CSS modules optimized** - Scoped styles working correctly
 - [ ] **No memory leaks** - Proper cleanup in useEffect hooks
 
-## ✅ Best Practices
+## ✅ Universal Best Practices
 
-### 1. Component Design Principles
+### 1. Component Design Principles (Applies to ALL Apps)
 
 - **Single Responsibility**: Each component has one clear purpose
 - **Composition over Inheritance**: Build complex components from simple ones
@@ -3425,6 +3536,7 @@ All components must pass the following verification checklist:
 - **CSS Modules**: Use CSS modules for scoped styling
 - **JSX Element Assignment**: Always assign JSX to `const element` before returning
 - **Self-Documenting Code**: Use TypeScript types and clear naming over extensive JSDoc
+- **Consistent Patterns**: Same patterns across all apps in the monorepo
 
 ### 2. Performance Guidelines
 
@@ -3440,7 +3552,7 @@ All components must pass the following verification checklist:
 - **E2E Tests**: Test user workflows
 - **Performance Tests**: Monitor bundle sizes and load times
 
-### 4. Code Organization
+### 4. Code Organization (Universal Across All Apps)
 
 - **Feature-First**: Organize by business features
 - **Consistent Naming**: Use _kebab-case_ for files, _PascalCase_ for components
@@ -3451,6 +3563,7 @@ All components must pass the following verification checklist:
 - **Type Inference**: Use `typeof` and `React.ComponentProps` for prop types
 - **🔒 Security**: Keep types internal, only export components
 - **🛡️ Minimal API**: Reduce attack surface by hiding internal implementation details
+- **Cross-App Consistency**: Same structure and patterns across all apps
 
 ## 🛠️ Troubleshooting
 
@@ -3558,28 +3671,29 @@ This guide aligns with industry-leading practices from:
 
 ## 🎯 Conclusion
 
-This restructuring will transform your development experience by:
+This universal standardization will transform your **entire monorepo** development experience by:
 
-1. **Making your app significantly faster** for users
-2. **Reducing development time** spent on organization
-3. **Improving code quality** through consistent patterns
-4. **Enabling better team collaboration** with clear standards
-5. **Future-proofing your codebase** for scalability
+1. **Making ALL apps significantly faster** for users
+2. **Reducing development time** spent on organization across the entire monorepo
+3. **Improving code quality** through consistent patterns across all apps
+4. **Enabling better team collaboration** with clear universal standards
+5. **Future-proofing your entire codebase** for scalability
+6. **Eliminating app-specific inconsistencies** and maintenance overhead
 
-The key is to **start small, see results, then scale**. Begin with one feature (_like articles_) to experience the immediate benefits, then gradually expand to the rest of your application.
+The key is to **start with one app, establish patterns, then apply to all apps**. Begin with `apps/web` to establish the universal patterns, then gradually expand to `apps/storefront`, `apps/admin`, and any future apps.
 
-Remember: **Convention over configuration** - once the patterns are established, you won't need to think about organization anymore. The structure will guide you naturally to the right place for every piece of code.
+Remember: **Convention over configuration** - once the universal patterns are established, you won't need to think about organization anymore. The structure will guide you naturally to the right place for every piece of code across ALL apps.
 
-## 🎯 **The Rules: What You MUST Follow**
+## 🎯 **The Universal Rules: What ALL Apps MUST Follow**
 
-### **Type Organization Rules**
+### **Type Organization Rules (Universal)**
 
 1. **ALWAYS use inline types** - No separate type files, no exceptions
 2. **Import types directly** from external packages when needed
 3. **Keep types internal** - Only export components, never types
 4. **Use TypeScript imports** - `import type { ... }` for type-only imports
 
-### **Component Structure Rules**
+### **Component Structure Rules (Universal)**
 
 1. **Use React.forwardRef** for all components that need ref forwarding
 2. **Always call hooks at the top level** - No conditional hook calls
@@ -3588,14 +3702,15 @@ Remember: **Convention over configuration** - once the patterns are established,
 5. **Set displayName** for all components
 6. **Assign JSX to const element** - Never return JSX directly, always assign to `const element` first
 
-### **File Organization Rules**
+### **File Organization Rules (Universal)**
 
 1. **Feature-first organization** - Group by business features
 2. **Consistent naming** - kebab-case for files, PascalCase for components
 3. **Index files** - Export through index files for clean imports
 4. **CSS modules** - Use CSS modules for all styling
+5. **Cross-app consistency** - Same structure across all apps in the monorepo
 
-### **Security Rules**
+### **Security Rules (Universal)**
 
 1. **Minimal API surface** - Only export what's necessary
 2. **Hide internal implementation** - Don't expose internal types or props
