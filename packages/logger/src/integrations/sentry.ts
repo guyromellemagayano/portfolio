@@ -95,11 +95,10 @@ export class SentryIntegration extends BaseIntegration {
   }
 
   /** Format log entry for Sentry API */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private formatForSentry(entry: LogEntry): any {
     const sentryLevel = this.mapLogLevelToSentry(entry.level);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const payload: any = {
       event_id: entry.id || this.generateEventId(),
       timestamp: entry.timestamp.toISOString(),
@@ -192,7 +191,7 @@ export class SentryIntegration extends BaseIntegration {
   }
 
   /** Parse stack trace for Sentry format */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   private parseStackTrace(stack?: string): any[] {
     if (!stack) return [];
 
