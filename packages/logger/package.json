@@ -47,13 +47,16 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "scripts"
   ],
   "scripts": {
-    "build": "tsdown --minify",
-    "build:production": "NODE_ENV=production tsdown --minify",
+    "build": "tsdown --minify && tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build:production": "NODE_ENV=production tsdown --minify && tsc --declaration --emitDeclarationOnly --outDir dist",
     "build:watch": "tsdown --watch",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
