@@ -83,7 +83,6 @@ import { transports } from '@guyromellemagayano/logger/transports';
 import { utils } from '@guyromellemagayano/logger/utils';
 ```
 
-
 ### Build Output Structure
 
 `tsdown` automatically generates optimized builds based on the `exports`
