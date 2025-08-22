@@ -180,7 +180,7 @@ describe("Card Component", () => {
       );
 
       const card = screen.getByTestId("card-root");
-      expect(card).toHaveClass("group relative flex flex-col items-start");
+      expect(card).toHaveClass("card-class");
     });
   });
 
@@ -385,6 +385,48 @@ describe("Card Component", () => {
     it("does not render when no children and no href", () => {
       const { container } = render(<Card.Cta />);
       expect(container.firstChild).toBeNull();
+    });
+
+    it("forwards ref to CTA component", () => {
+      const ref = React.createRef<HTMLDivElement | HTMLAnchorElement>();
+      render(
+        <Card.Cta ref={ref} href="/test-link">
+          CTA Content
+        </Card.Cta>
+      );
+
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("handles function ref correctly", () => {
+      const refFunction = vi.fn();
+      render(
+        <Card.Cta ref={refFunction} href="/test-link">
+          CTA Content
+        </Card.Cta>
+      );
+
+      expect(refFunction).toHaveBeenCalled();
+    });
+
+    it("handles target _blank with rel attributes", () => {
+      render(
+        <Card.Cta href="/external-link" target="_blank">
+          External Link
+        </Card.Cta>
+      );
+
+      const link = screen.getByTestId("link");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("handles empty href string", () => {
+      render(<Card.Cta href="">CTA Content</Card.Cta>);
+
+      const cta = screen.getByTestId("card-cta-root");
+      expect(cta).toBeInTheDocument();
+      expect(screen.queryByTestId("link")).not.toBeInTheDocument();
     });
   });
 
