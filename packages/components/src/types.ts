@@ -1,7 +1,5 @@
 import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
 
-/* global process */
-
 /**
  * Common props shared by all components in the library
  */
