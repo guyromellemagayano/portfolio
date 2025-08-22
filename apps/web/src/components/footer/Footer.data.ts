@@ -1,5 +1,7 @@
 import type { Route } from "next";
 
+import { formatDateSafely } from "@guyromellemagayano/utils";
+
 type InternalHref = Route | (string & {});
 
 export type FooterLink =
@@ -21,7 +23,7 @@ export type FooterComponentLabels = Readonly<{
 
 export const FOOTER_COMPONENT_LABELS = {
   brandName: BRAND_NAME,
-  legalText: `${BRAND_NAME}. All rights reserved.`,
+  legalText: `&copy; ${formatDateSafely(new Date(), { year: "numeric" })} ${BRAND_NAME}. All rights reserved.`,
 } as const satisfies FooterComponentLabels;
 
 export type FooterComponentNavLinks = ReadonlyArray<
