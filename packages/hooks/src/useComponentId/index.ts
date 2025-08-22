@@ -1,0 +1,1 @@
+export { useComponentId } from "./useComponentId";

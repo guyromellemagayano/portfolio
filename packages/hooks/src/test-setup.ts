@@ -1,4 +1,4 @@
-import { vi } from "vitest";
+import { beforeEach, vi } from "vitest";
 
 // Mock React for testing
 vi.mock("react", () => ({
