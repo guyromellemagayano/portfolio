@@ -266,6 +266,216 @@ describe("Icon", () => {
     });
   });
 
+  describe("Close Icon Component", () => {
+    it("renders Close icon correctly", () => {
+      render(<Icon.Close />);
+      const icon = screen.getByTestId("icon-close-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.Close ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.Close />);
+      const icon = screen.getByTestId("icon-close-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains Close icon path", () => {
+      render(<Icon.Close />);
+      const icon = screen.getByTestId("icon-close-root");
+      expect(icon.innerHTML).toContain(
+        "m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5"
+      );
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.Close className="text-red-500" />);
+      const icon = screen.getByTestId("icon-close-root");
+      expect(icon).toHaveClass("text-red-500");
+    });
+  });
+
+  describe("Sun Icon Component", () => {
+    it("renders Sun icon correctly", () => {
+      render(<Icon.Sun />);
+      const icon = screen.getByTestId("icon-sun-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.Sun ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.Sun />);
+      const icon = screen.getByTestId("icon-sun-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains Sun icon paths", () => {
+      render(<Icon.Sun />);
+      const icon = screen.getByTestId("icon-sun-root");
+      expect(icon.innerHTML).toContain("M8 12.25A4.25 4.25 0 0 1 12.25 8");
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.Sun className="text-yellow-500" />);
+      const icon = screen.getByTestId("icon-sun-root");
+      expect(icon).toHaveClass("text-yellow-500");
+    });
+  });
+
+  describe("Moon Icon Component", () => {
+    it("renders Moon icon correctly", () => {
+      render(<Icon.Moon />);
+      const icon = screen.getByTestId("icon-moon-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.Moon ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.Moon />);
+      const icon = screen.getByTestId("icon-moon-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains Moon icon path", () => {
+      render(<Icon.Moon />);
+      const icon = screen.getByTestId("icon-moon-root");
+      expect(icon.innerHTML).toContain(
+        "M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47"
+      );
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.Moon className="text-blue-900" />);
+      const icon = screen.getByTestId("icon-moon-root");
+      expect(icon).toHaveClass("text-blue-900");
+    });
+  });
+
+  describe("ChevronDown Icon Component", () => {
+    it("renders ChevronDown icon correctly", () => {
+      render(<Icon.ChevronDown />);
+      const icon = screen.getByTestId("icon-chevron-down-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.ChevronDown ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.ChevronDown />);
+      const icon = screen.getByTestId("icon-chevron-down-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains ChevronDown icon path", () => {
+      render(<Icon.ChevronDown />);
+      const icon = screen.getByTestId("icon-chevron-down-root");
+      expect(icon.innerHTML).toContain("M1.75 1.75 4 4.25l2.25-2.5");
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.ChevronDown className="text-gray-600" />);
+      const icon = screen.getByTestId("icon-chevron-down-root");
+      expect(icon).toHaveClass("text-gray-600");
+    });
+  });
+
+  describe("ChevronRight Icon Component", () => {
+    it("renders ChevronRight icon correctly", () => {
+      render(<Icon.ChevronRight />);
+      const icon = screen.getByTestId("icon-chevron-right-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.ChevronRight ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.ChevronRight />);
+      const icon = screen.getByTestId("icon-chevron-right-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains ChevronRight icon path", () => {
+      render(<Icon.ChevronRight />);
+      const icon = screen.getByTestId("icon-chevron-right-root");
+      expect(icon.innerHTML).toContain("M6.75 5.75 9.25 8l-2.5 2.25");
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.ChevronRight className="text-gray-600" />);
+      const icon = screen.getByTestId("icon-chevron-right-root");
+      expect(icon).toHaveClass("text-gray-600");
+    });
+  });
+
+  describe("ArrowLeft Icon Component", () => {
+    it("renders ArrowLeft icon correctly", () => {
+      render(<Icon.ArrowLeft />);
+      const icon = screen.getByTestId("icon-arrow-left-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon.tagName).toBe("svg");
+    });
+
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<SVGSVGElement>();
+      render(<Icon.ArrowLeft ref={ref} />);
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("renders with proper SVG structure", () => {
+      render(<Icon.ArrowLeft />);
+      const icon = screen.getByTestId("icon-arrow-left-root");
+      expect(icon.tagName).toBe("svg");
+      expect(icon).toBeInTheDocument();
+    });
+
+    it("contains ArrowLeft icon path", () => {
+      render(<Icon.ArrowLeft />);
+      const icon = screen.getByTestId("icon-arrow-left-root");
+      expect(icon.innerHTML).toContain(
+        "M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
+      );
+    });
+
+    it("applies custom styling", () => {
+      render(<Icon.ArrowLeft className="text-gray-600" />);
+      const icon = screen.getByTestId("icon-arrow-left-root");
+      expect(icon).toHaveClass("text-gray-600");
+    });
+  });
+
   describe("Accessibility", () => {
     it("renders all icons as SVG elements", () => {
       const { rerender } = render(<Icon.X />);
@@ -279,6 +489,24 @@ describe("Icon", () => {
 
       rerender(<Icon.GitHub />);
       expect(screen.getByTestId("icon-github-root").tagName).toBe("svg");
+
+      rerender(<Icon.Close />);
+      expect(screen.getByTestId("icon-close-root").tagName).toBe("svg");
+
+      rerender(<Icon.Sun />);
+      expect(screen.getByTestId("icon-sun-root").tagName).toBe("svg");
+
+      rerender(<Icon.Moon />);
+      expect(screen.getByTestId("icon-moon-root").tagName).toBe("svg");
+
+      rerender(<Icon.ChevronDown />);
+      expect(screen.getByTestId("icon-chevron-down-root").tagName).toBe("svg");
+
+      rerender(<Icon.ChevronRight />);
+      expect(screen.getByTestId("icon-chevron-right-root").tagName).toBe("svg");
+
+      rerender(<Icon.ArrowLeft />);
+      expect(screen.getByTestId("icon-arrow-left-root").tagName).toBe("svg");
     });
   });
 
@@ -288,6 +516,12 @@ describe("Icon", () => {
       expect(Icon.Instagram).toBeDefined();
       expect(Icon.LinkedIn).toBeDefined();
       expect(Icon.GitHub).toBeDefined();
+      expect(Icon.Close).toBeDefined();
+      expect(Icon.Sun).toBeDefined();
+      expect(Icon.Moon).toBeDefined();
+      expect(Icon.ChevronDown).toBeDefined();
+      expect(Icon.ChevronRight).toBeDefined();
+      expect(Icon.ArrowLeft).toBeDefined();
     });
 
     it("all icon variants are components", () => {
@@ -295,6 +529,12 @@ describe("Icon", () => {
       expect(Icon.Instagram).toBeDefined();
       expect(Icon.LinkedIn).toBeDefined();
       expect(Icon.GitHub).toBeDefined();
+      expect(Icon.Close).toBeDefined();
+      expect(Icon.Sun).toBeDefined();
+      expect(Icon.Moon).toBeDefined();
+      expect(Icon.ChevronDown).toBeDefined();
+      expect(Icon.ChevronRight).toBeDefined();
+      expect(Icon.ArrowLeft).toBeDefined();
     });
   });
 
@@ -320,6 +560,12 @@ describe("Icon", () => {
           <Icon.Instagram />
           <Icon.LinkedIn />
           <Icon.GitHub />
+          <Icon.Close />
+          <Icon.Sun />
+          <Icon.Moon />
+          <Icon.ChevronDown />
+          <Icon.ChevronRight />
+          <Icon.ArrowLeft />
         </div>
       );
 
@@ -328,6 +574,12 @@ describe("Icon", () => {
       expect(screen.getByTestId("icon-instagram-root")).toBeInTheDocument();
       expect(screen.getByTestId("icon-linkedin-root")).toBeInTheDocument();
       expect(screen.getByTestId("icon-github-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-close-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-sun-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-moon-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-down-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right-root")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-arrow-left-root")).toBeInTheDocument();
     });
 
     it("supports hover states with Tailwind CSS", () => {
