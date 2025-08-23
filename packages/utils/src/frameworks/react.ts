@@ -1,8 +1,3 @@
-/**
- * React-specific bundle monitoring utilities
- * Uses the framework-agnostic utilities from the bundle module
- */
-
 import { logInfo } from "@guyromellemagayano/logger";
 
 import {
@@ -11,9 +6,7 @@ import {
   verifyTreeShaking,
 } from "../bundle";
 
-/**
- * Log bundle size information for React components
- */
+/** Log bundle size information for React components */
 export function logBundleSize(componentName: string): void {
   const env = getEnvironmentInfo();
 
@@ -23,9 +16,7 @@ export function logBundleSize(componentName: string): void {
   }
 }
 
-/**
- * Log tree shaking verification results for React components
- */
+/** Log tree shaking verification results for React components */
 export function logTreeShakingVerification(componentName: string): void {
   const env = getEnvironmentInfo();
 
@@ -38,10 +29,7 @@ export function logTreeShakingVerification(componentName: string): void {
   }
 }
 
-/**
- * Check if React component is tree-shakeable
- * Includes React-specific patterns
- */
+/** Check if React component is tree-shakeable */
 export function isReactComponentTreeShakeable(componentName: string): boolean {
   const reactPatterns = [
     "React.memo",
