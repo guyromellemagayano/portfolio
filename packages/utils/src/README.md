@@ -1,5 +1,5 @@
-<!-- markdownlint-disable line-length -->
-# Utils Package
+<!-- markdownlint-disable MD013 -->
+# @guyromellemagayano/utils
 
 A collection of utility functions for React components and general development. This package provides pure utility functions that are RSC-compatible and don't force components to be client-side.
 
