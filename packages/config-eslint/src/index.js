@@ -114,6 +114,13 @@ export const baseEslintConfig = [
           argsIgnorePattern: "^_",
         },
       ],
+      "react/function-component-definition": [
+        "error",
+        {
+          namedComponents: "function-expression",
+          unnamedComponents: "arrow-function",
+        },
+      ],
     },
     ignores: ["dist", "**/*.mdx"],
   },

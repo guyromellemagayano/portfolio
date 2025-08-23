@@ -1,6 +1,7 @@
 {
   "name": "@guyromellemagayano/utils",
   "version": "1.0.0",
+<<<<<<< Updated upstream
   "description": "Utility functions for React components and general development",
   "keywords": [
     "react",
@@ -11,11 +12,16 @@
   "bugs": {
     "url": "https://github.com/guyromellemagayano/portfolio/issues"
   },
+=======
+  "type": "module",
+  "description": "Utility functions for the @guyromellemagayano organization",
+>>>>>>> Stashed changes
   "repository": {
     "type": "git",
     "url": "https://github.com/guyromellemagayano/portfolio.git",
     "directory": "packages/utils"
   },
+<<<<<<< Updated upstream
   "license": "MIT",
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
   "sideEffects": false,
@@ -42,19 +48,74 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
     "test": "vitest",
+=======
+  "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/utils",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portfolio/issues"
+  },
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "scripts"
+  ],
+  "keywords": [
+    "utils",
+    "utility",
+    "functions",
+    "typescript",
+    "node.js",
+    "browser"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "build:production": "NODE_ENV=production bunchee --minify",
+    "build:watch": "bunchee --watch",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
+    "lint": "eslint src/",
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "prepublishOnly": "npm run build:production && npm run test:run",
+    "test": "vitest",
+    "test:build": "node scripts/test-build.mjs",
+>>>>>>> Stashed changes
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",
     "test:run:coverage": "vitest run --coverage",
+<<<<<<< Updated upstream
     "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@guyromellemagayano/logger": "workspace:*"
+=======
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch"
+  },
+  "peerDependencies": {
+    "typescript": "catalog:"
+>>>>>>> Stashed changes
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@packages/vitest-presets": "workspace:*",
+<<<<<<< Updated upstream
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -74,10 +135,24 @@
     "rimraf": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:",
+=======
+    "@testing-library/jest-dom": "catalog:",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+>>>>>>> Stashed changes
     "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.pkg.github.com/"
+<<<<<<< Updated upstream
   }
+=======
+  },
+  "sideEffects": false
+>>>>>>> Stashed changes
 }
