@@ -2,11 +2,7 @@ import { useId } from "react";
 
 import { logInfo } from "@guyromellemagayano/logger";
 
-/**
- * Attempts to extract component name from the call stack.
- * Looks for the actual exported component name, not displayName.
- * Falls back to "Component" if unable to detect.
- */
+/** Extracts component name from call stack */
 function getComponentNameFromStack(): string {
   try {
     // Get the call stack
@@ -16,15 +12,14 @@ function getComponentNameFromStack(): string {
     // Split stack into lines and find the component call
     const lines = stack.split("\n");
 
-    // Look for the component function call (usually 3-4 levels up)
+    // Split stack into lines and find the component call
     for (let i = 3; i < Math.min(lines.length, 8); i++) {
       const line = lines[i];
 
       // Skip if line is undefined
       if (!line) continue;
 
-      // Look for the actual component function name (export const ComponentName).
-      // This will be the function name from the export const declaration.
+      // Look for the actual component function name (export const ComponentName). This will be the function name from the export const declaration.
       const reactComponentMatch = line.match(/at\s+(\w+)\s+\(/);
       if (reactComponentMatch && reactComponentMatch[1]) {
         const functionName = reactComponentMatch[1];
@@ -69,13 +64,7 @@ export interface UseComponentIdReturn {
   isDebugMode: boolean;
 }
 
-/**
- * Shared hook for component ID generation and debug logging.
- * Automatically detects component name from calling context and provides
- * stable, unique IDs for React components.
- *
- * @see {@link setDisplayName} for automatic displayName assignment
- */
+/** Generates component IDs and provides debug logging */
 export function useComponentId({
   internalId,
   debugMode = false,
