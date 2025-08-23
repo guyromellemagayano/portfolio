@@ -1,8 +1,3 @@
-/**
- * Framework-agnostic bundle size monitoring utilities
- * Works with any bundler (webpack, rollup, vite, etc.)
- */
-
 interface BundleSizeInfo {
   name: string;
   size: number;
@@ -18,27 +13,18 @@ interface TreeShakingReport {
   bundleImpact: "low" | "medium" | "high";
 }
 
-/**
- * Get bundle size information for a module
- * Framework-agnostic - works with any bundler
- */
+/** Get bundle size information for a module */
 export function getBundleSize(moduleName: string): BundleSizeInfo {
-  // This would integrate with bundler stats in production
-  // For now, it's a placeholder for bundle size monitoring
   return {
     name: moduleName,
-    size: 0, // Would be populated from bundler stats
-    gzipSize: 0, // Would be populated from bundler stats
-    isTreeShakeable: true, // Would be determined by analysis
+    size: 0,
+    gzipSize: 0,
+    isTreeShakeable: true,
   };
 }
 
-/**
- * Check if a component is tree-shakeable
- * Framework-agnostic - works with any bundler
- */
+/** Check if a component is tree-shakeable */
 export function isTreeShakeable(componentName: string): boolean {
-  // Check if component uses named exports and pure functions
   const treeShakeablePatterns = [
     "export const",
     "export function",
@@ -47,19 +33,13 @@ export function isTreeShakeable(componentName: string): boolean {
     "export interface",
   ];
 
-  // This is a simplified check - in practice, you'd analyze the actual code
   return treeShakeablePatterns.some((pattern) =>
     componentName.includes(pattern)
   );
 }
 
-/**
- * Verify if a component is properly tree-shakeable
- * Framework-agnostic - works with any bundler
- */
+/** Verify if a component is properly tree-shakeable */
 export function verifyTreeShaking(componentName: string): TreeShakingReport {
-  // This is a development utility to verify tree shaking
-  // In production, this would analyze the actual bundle
   const report: TreeShakingReport = {
     componentName,
     isTreeShakeable: true,
@@ -68,7 +48,6 @@ export function verifyTreeShaking(componentName: string): TreeShakingReport {
     bundleImpact: "low",
   };
 
-  // Check for common tree shaking anti-patterns
   const antiPatterns = [
     "export default",
     "export *",
@@ -78,7 +57,6 @@ export function verifyTreeShaking(componentName: string): TreeShakingReport {
     "document.",
   ];
 
-  // This is a simplified check - in practice, you'd analyze the actual code
   const hasAntiPatterns = antiPatterns.some((pattern) =>
     componentName.includes(pattern)
   );
@@ -91,7 +69,7 @@ export function verifyTreeShaking(componentName: string): TreeShakingReport {
   return report;
 }
 
-/** Check if imports are tree-shakeable.Framework-agnostic - works with any bundler */
+/** Check if imports are tree-shakeable */
 export function verifyImports(imports: string[]): boolean {
   const treeShakeablePatterns = [
     "import {",
@@ -99,8 +77,6 @@ export function verifyImports(imports: string[]): boolean {
     "export {",
     "export const",
     "export function",
-    "export type",
-    "export interface",
   ];
 
   return imports.every((importStatement) =>
@@ -108,24 +84,11 @@ export function verifyImports(imports: string[]): boolean {
   );
 }
 
-/**
- * Get environment info for bundle monitoring
- * Framework-agnostic - works in any JavaScript environment
- */
-export function getEnvironmentInfo(): {
-  isDevelopment: boolean;
-  isProduction: boolean;
-  isTest: boolean;
-  bundler?: string;
-} {
-  const env = globalThis?.process?.env || {};
-  const nodeEnv = env.NODE_ENV || "development";
-
+/** Get environment information for bundle monitoring */
+export function getEnvironmentInfo() {
   return {
-    isDevelopment: nodeEnv === "development",
-    isProduction: nodeEnv === "production",
-    isTest: nodeEnv === "test",
-    bundler:
-      env.BUNDLER || env.VITE_BUNDLER || env.WEBPACK_BUNDLER || undefined,
+    isDevelopment: process.env.NODE_ENV === "development",
+    isProduction: process.env.NODE_ENV === "production",
+    isTest: process.env.NODE_ENV === "test",
   };
 }
