@@ -1,0 +1,11 @@
+@reference "tailwindcss";
+
+/* Container outer wrapper */
+.containerOuter {
+  @apply sm:px-8;
+}
+
+/* Container outer content */
+.containerOuterContent {
+  @apply mx-auto w-full max-w-7xl lg:px-8;
+}
