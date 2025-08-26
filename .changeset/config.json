@@ -18,7 +18,8 @@
     "@guyromellemagayano/components",
     "@guyromellemagayano/logger",
     "@guyromellemagayano/ui",
-    "@guyromellemagayano/hooks"
+    "@guyromellemagayano/hooks",
+    "@guyromellemagayano/utils"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
