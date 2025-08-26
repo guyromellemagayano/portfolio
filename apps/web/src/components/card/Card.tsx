@@ -6,7 +6,6 @@ import {
   type ComponentProps,
   createCompoundComponent,
   isRenderableContent,
-  setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -22,42 +21,30 @@ import styles from "./Card.module.css";
 
 interface CardInternalProps
   extends React.ComponentProps<typeof Article>,
-    Pick<
-      ComponentProps,
-      "componentId" | "isDebugMode" | "isClient" | "isMemoized"
-    > {}
+    ComponentProps {}
 
 /** Internal card component with all props */
-const CardInternal: React.FC<CardInternalProps> = setDisplayName(
-  function InternalCard(props) {
-    const { children, className, componentId, isDebugMode, ...rest } = props;
+const CardInternal: React.FC<CardInternalProps> = function InternalCard(props) {
+  const { children, className, componentId, isDebugMode, ...rest } = props;
 
-    if (!isRenderableContent(children)) return null;
+  if (!isRenderableContent(children)) return null;
 
-    const element = (
-      <Article
-        {...rest}
-        className={cn(styles.card, className)}
-        data-card-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="card-root"
-      >
-        {children}
-      </Article>
-    );
+  const element = (
+    <Article
+      {...rest}
+      className={cn(styles.card, className)}
+      data-card-id={componentId}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid="card-root"
+    >
+      {children}
+    </Article>
+  );
 
-    return element;
-  }
-);
+  return element;
+};
 
-interface CardExternalProps
-  extends React.ComponentProps<typeof Article>,
-    Pick<
-      ComponentProps,
-      "internalId" | "debugMode" | "isClient" | "isMemoized"
-    > {}
-
-type CardCompoundComponent = React.ComponentType<CardExternalProps> & {
+type CardCompoundComponent = React.ComponentType<CardInternalProps> & {
   /** A card link component that provides interactive hover effects and accessibility features */
   Link: typeof CardLink;
   /** A card title component that can optionally be wrapped in a link for navigation */
