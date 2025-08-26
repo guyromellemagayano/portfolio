@@ -1,15 +1,5 @@
 @reference "tailwindcss";
 
-/* Container outer wrapper */
-.containerOuter {
-  @apply sm:px-8;
-}
-
-/* Container outer content */
-.containerOuterContent {
-  @apply mx-auto w-full max-w-7xl lg:px-8;
-}
-
 /* Container inner wrapper */
 .containerInner {
   @apply relative px-4 sm:px-8 lg:px-12;
