@@ -1,3 +1,5 @@
+import React from "react";
+
 // Mock IntersectionObserver before any imports
 global.IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
@@ -24,10 +26,8 @@ vi.mock("next/link", () => {
   return { default: MockLink };
 });
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
 
@@ -35,10 +35,16 @@ import { Card } from "../Card";
 vi.mock("@guyromellemagayano/components", async (importOriginal) => {
   const actual = await importOriginal();
   return {
-    ...actual,
-    Link: ({ children, href, ...props }: any) => {
-      return React.createElement("a", { href, ...props }, children);
-    },
+    ...(actual as any),
+    Link: React.forwardRef<HTMLAnchorElement, any>(
+      ({ children, href, ...props }, ref) => {
+        return React.createElement(
+          "a",
+          { ref, href, ...props, "data-testid": "mock-link" },
+          children
+        );
+      }
+    ),
   };
 });
 
