@@ -14,7 +14,7 @@ import styles from "./CardDescription.module.css";
 
 interface CardDescriptionProps
   extends React.ComponentProps<typeof P>,
-    Pick<ComponentProps, "internalId" | "debugMode" | "isClient" | "isMemoized"> {}
+    Pick<ComponentProps, "internalId" | "debugMode"> {}
 
 /** Public card description component with `useComponentId` integration */
 const CardDescription: React.FC<CardDescriptionProps> = setDisplayName(
