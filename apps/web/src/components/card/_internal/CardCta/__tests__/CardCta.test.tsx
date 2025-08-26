@@ -27,7 +27,7 @@ vi.mock("next/link", () => {
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardCta } from "../CardCta";
 
