@@ -1,7 +1,7 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardTitle } from "..";
 
@@ -9,7 +9,7 @@ import { CardTitle } from "..";
 vi.mock("@guyromellemagayano/components", async (importOriginal) => {
   const actual = await importOriginal();
   return {
-    ...actual,
+    ...(actual as any),
     Link: ({ children, href, ...props }: any) => {
       return React.createElement("a", { href, ...props }, children);
     },

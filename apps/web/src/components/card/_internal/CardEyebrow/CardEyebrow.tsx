@@ -14,7 +14,7 @@ import styles from "./CardEyebrow.module.css";
 
 interface CardEyebrowProps
   extends React.ComponentProps<typeof P>,
-    Pick<ComponentProps, "internalId" | "debugMode" | "isClient" | "isMemoized"> {
+    Pick<ComponentProps, "internalId" | "debugMode"> {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
