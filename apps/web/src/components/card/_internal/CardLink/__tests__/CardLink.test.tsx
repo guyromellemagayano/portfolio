@@ -1,7 +1,7 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 // Mock CSS modules with explicit class names
 vi.mock("../CardLink.module.css", () => {
