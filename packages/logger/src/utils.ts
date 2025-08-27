@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * Universal logger utilities for enhanced functionality
  * Provides ID generation, performance monitoring, and system detection
@@ -13,7 +14,15 @@ import {
 
 /** Generate unique IDs */
 export const generateId = (): string => {
-  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  // Use crypto.randomUUID if available for better uniqueness
+  if (
+    typeof globalThis !== "undefined" &&
+    typeof globalThis.crypto?.randomUUID === "function"
+  ) {
+    return globalThis.crypto.randomUUID();
+  }
+  // Fallback: use Date.now and Math.random
+  return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 };
 
 /** Generate correlation/request IDs */
@@ -29,10 +38,15 @@ export const generateSessionId = (): string => {
 /** Convert log level string to enum */
 export const parseLogLevel = (level: LogLevel | LogLevelString): LogLevel => {
   if (typeof level === "number") {
-    return level;
+    if (Object.values(LogLevelEnum).includes(level)) {
+      return level;
+    }
+    throw new Error(`Invalid log level: ${level}`);
   }
 
-  const levelUpper = level.toUpperCase() as keyof typeof LogLevelEnum;
+  const levelUpper = (
+    level as string
+  ).toUpperCase() as keyof typeof LogLevelEnum;
   const parsed = LogLevelEnum[levelUpper];
 
   if (parsed === undefined) {
@@ -44,7 +58,7 @@ export const parseLogLevel = (level: LogLevel | LogLevelString): LogLevel => {
 
 /** Get log level name */
 export const getLogLevelName = (level: LogLevel): string => {
-  const names = {
+  const names: Record<number, string> = {
     [LogLevelEnum.SILENT]: "SILENT",
     [LogLevelEnum.ERROR]: "ERROR",
     [LogLevelEnum.WARN]: "WARN",
@@ -63,14 +77,20 @@ export const shouldLog = (
   currentLevel: LogLevel,
   targetLevel: LogLevel
 ): boolean => {
-  return targetLevel <= currentLevel && currentLevel !== LogLevelEnum.SILENT;
+  // Fix: LogLevelEnum.SILENT should always suppress logs
+  if (currentLevel === LogLevelEnum.SILENT) return false;
+  return targetLevel <= currentLevel;
 };
 
 /** Environment detection */
 export const detectEnvironment = (): Environment => {
   // Node.js environment
-  if (typeof process !== "undefined" && process.env) {
-    const nodeEnv = process.env.NODE_ENV?.toLowerCase();
+  if (
+    typeof globalThis !== "undefined" &&
+    typeof (globalThis as any).process === "object" &&
+    (globalThis as any).process?.env
+  ) {
+    const nodeEnv = (globalThis as any).process?.env?.NODE_ENV?.toLowerCase();
     switch (nodeEnv) {
       case "production":
         return "production";
@@ -88,7 +108,7 @@ export const detectEnvironment = (): Environment => {
   // Browser environment detection (simplified)
   try {
     const hostname = (globalThis as any)?.location?.hostname;
-    if (hostname) {
+    if (typeof hostname === "string") {
       if (hostname.includes("localhost") || hostname.includes("127.0.0.1")) {
         return "development";
       }
@@ -98,6 +118,7 @@ export const detectEnvironment = (): Environment => {
       if (hostname.includes("test")) {
         return "test";
       }
+      return "production";
     }
     return "production"; // Default for browser
   } catch {
@@ -107,19 +128,26 @@ export const detectEnvironment = (): Environment => {
 
 /** Runtime detection */
 export const getRuntime = (): "node" | "browser" | "worker" | "unknown" => {
-  if (typeof process !== "undefined" && process.versions?.node) {
+  if (
+    typeof globalThis !== "undefined" &&
+    typeof (globalThis as any).process === "object" &&
+    (globalThis as any).process?.versions?.node
+  ) {
     return "node";
   }
 
   try {
-    if (typeof globalThis !== "undefined" && "window" in globalThis) {
+    if (
+      typeof globalThis !== "undefined" &&
+      typeof (globalThis as any).window === "object"
+    ) {
       return "browser";
     }
 
     if (
       typeof globalThis !== "undefined" &&
-      "self" in globalThis &&
-      "importScripts" in globalThis
+      typeof (globalThis as any).self === "object" &&
+      typeof (globalThis as any).importScripts === "function"
     ) {
       return "worker";
     }
@@ -132,20 +160,30 @@ export const getRuntime = (): "node" | "browser" | "worker" | "unknown" => {
 
 /** Memory usage (Node.js only) */
 export const getMemoryUsage = (): NodeJS.MemoryUsage | undefined => {
-  if (typeof process !== "undefined" && process.memoryUsage) {
-    return process.memoryUsage();
+  if (
+    typeof globalThis !== "undefined" &&
+    typeof (globalThis as any).process === "object" &&
+    typeof (globalThis as any).process.memoryUsage === "function"
+  ) {
+    return (globalThis as any).process.memoryUsage();
   }
   return undefined;
 };
 
 /** Performance timing utilities */
 export const createTimer = () => {
-  const start = performance.now();
+  // Use performance.now if available, else fallback to Date.now
+  const getNow =
+    typeof performance !== "undefined" && typeof performance.now === "function"
+      ? () => performance.now()
+      : () => Date.now();
+
+  const start = getNow();
   const startMemory = getMemoryUsage();
 
   return {
     end: () => {
-      const duration = performance.now() - start;
+      const duration = getNow() - start;
       const endMemory = getMemoryUsage();
 
       return {
@@ -159,7 +197,11 @@ export const createTimer = () => {
                 heapTotal: endMemory.heapTotal - startMemory.heapTotal,
                 heapUsed: endMemory.heapUsed - startMemory.heapUsed,
                 external: endMemory.external - startMemory.external,
-                arrayBuffers: endMemory.arrayBuffers - startMemory.arrayBuffers,
+                arrayBuffers:
+                  typeof endMemory.arrayBuffers === "number" &&
+                  typeof startMemory.arrayBuffers === "number"
+                    ? endMemory.arrayBuffers - startMemory.arrayBuffers
+                    : undefined,
               }
             : undefined,
       };
@@ -171,7 +213,8 @@ export const createTimer = () => {
 export const sanitizeData = (
   data: unknown,
   maxDepth = 3,
-  currentDepth = 0
+  currentDepth = 0,
+  seen: WeakSet<object> = new WeakSet()
 ): unknown => {
   if (currentDepth >= maxDepth) {
     return "[Max Depth Reached]";
@@ -202,10 +245,17 @@ export const sanitizeData = (
   }
 
   if (Array.isArray(data)) {
-    return data.map((item) => sanitizeData(item, maxDepth, currentDepth + 1));
+    return data.map((item) =>
+      sanitizeData(item, maxDepth, currentDepth + 1, seen)
+    );
   }
 
   if (typeof data === "object") {
+    if (seen.has(data as object)) {
+      return "[Circular]";
+    }
+    seen.add(data as object);
+
     const sanitized: Record<string, unknown> = {};
 
     for (const [key, value] of Object.entries(data)) {
@@ -219,7 +269,7 @@ export const sanitizeData = (
       ) {
         sanitized[key] = "[REDACTED]";
       } else {
-        sanitized[key] = sanitizeData(value, maxDepth, currentDepth + 1);
+        sanitized[key] = sanitizeData(value, maxDepth, currentDepth + 1, seen);
       }
     }
 
@@ -239,8 +289,20 @@ export const getStackTrace = (
     const stack = new Error().stack;
     if (!stack) return undefined;
 
-    const lines = stack.split("\n");
-    const targetLine = lines[skipFrames + 2]; // Skip Error constructor and this function
+    const lines = stack.split("\n").map((line) => line.trim());
+    // Find the first stack line that looks like a stack frame
+    let frameIndex = 0;
+    let foundFrames = 0;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i]?.startsWith("at ") || lines[i]?.includes("@")) {
+        if (foundFrames === skipFrames) {
+          frameIndex = i;
+          break;
+        }
+        foundFrames++;
+      }
+    }
+    const targetLine = lines[frameIndex];
 
     if (!targetLine) return undefined;
 
@@ -254,14 +316,14 @@ export const getStackTrace = (
 
     if (match.length === 5 && match[3] && match[4]) {
       return {
-        function: match[1],
-        file: match[2],
+        function: match[1] || undefined,
+        file: match[2] || undefined,
         line: parseInt(match[3], 10),
         column: parseInt(match[4], 10),
       };
     } else if (match.length === 4 && match[2] && match[3]) {
       return {
-        file: match[1],
+        file: match[1] || undefined,
         line: parseInt(match[2], 10),
         column: parseInt(match[3], 10),
       };
@@ -317,16 +379,21 @@ export const mergeContexts = (
   for (const context of contexts) {
     if (!context) continue;
 
-    Object.assign(merged, context);
-
     // Special handling for metadata - merge instead of replace
-    if (context.metadata && merged.metadata) {
-      merged.metadata = { ...merged.metadata, ...context.metadata };
+    if (context.metadata) {
+      merged.metadata = { ...(merged.metadata || {}), ...context.metadata };
     }
 
     // Special handling for timing - use the most recent
     if (context.timing) {
       merged.timing = context.timing;
+    }
+
+    // Merge other properties
+    for (const [key, value] of Object.entries(context)) {
+      if (key !== "metadata" && key !== "timing") {
+        (merged as any)[key] = value;
+      }
     }
   }
 
@@ -335,17 +402,19 @@ export const mergeContexts = (
 
 /** Format bytes to human readable */
 export const formatBytes = (bytes: number): string => {
+  if (!Number.isFinite(bytes) || bytes < 0) return "0 B";
   if (bytes === 0) return "0 B";
 
   const k = 1024;
   const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+  const size = sizes[i] || "B";
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${size}`;
 };
 
 /** Format duration to human readable */
 export const formatDuration = (ms: number): string => {
+  if (!Number.isFinite(ms) || ms < 0) return "0ms";
   if (ms < 1) return `${(ms * 1000).toFixed(0)}μs`;
   if (ms < 1000) return `${ms.toFixed(1)}ms`;
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
@@ -357,6 +426,7 @@ export const formatDuration = (ms: number): string => {
 export class AsyncQueue<T> {
   private queue: T[] = [];
   private processing = false;
+  private timer: ReturnType<typeof setInterval> | undefined;
 
   constructor(
     private readonly batchSize: number,
@@ -370,7 +440,9 @@ export class AsyncQueue<T> {
     this.queue.push(item);
 
     if (this.queue.length >= this.batchSize) {
-      this.flush();
+      this.flush().catch(() => {
+        // Ignore errors in add-triggered flush
+      });
     }
   }
 
@@ -392,7 +464,8 @@ export class AsyncQueue<T> {
   }
 
   private startFlushTimer(): void {
-    setInterval(() => {
+    if (this.timer) clearInterval(this.timer);
+    this.timer = setInterval(() => {
       this.flush().catch(() => {
         // Ignore errors in timer-triggered flush
       });
