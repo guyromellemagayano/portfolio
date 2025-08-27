@@ -3,6 +3,53 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+// Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  isRenderableContent: vi.fn((children) => {
+    if (children === null || children === undefined) {
+      return false;
+    }
+    return true;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => ({
+    target: target || "_self",
+    rel: target === "_blank" ? "noopener noreferrer" : undefined,
+  })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock @guyromellemagayano/components
+vi.mock("@guyromellemagayano/components", () => ({
+  Span: React.forwardRef<HTMLSpanElement, any>(function MockSpan(props, ref) {
+    const { children, ...rest } = props;
+    return (
+      <span ref={ref} {...rest}>
+        {children}
+      </span>
+    );
+  }),
+}));
+
 // Mock CSS modules with explicit class names
 vi.mock("../CardLink.module.css", () => {
   const mockStyles = {
@@ -135,12 +182,11 @@ describe("CardLink", () => {
     expect(link).toHaveAttribute("title", "Test title");
   });
 
-  it("renders empty element when no children", () => {
+  it("does not render when no children", () => {
     const { container } = render(
       <CardLink internalId="test-link" debugMode={false} />
     );
-    expect(container.firstChild).toBeInTheDocument();
-    expect(container.firstChild).toHaveClass("_cardLinkHeading_cfdd0d");
+    expect(container.firstChild).toBeNull();
   });
 
   it("forwards ref correctly", () => {

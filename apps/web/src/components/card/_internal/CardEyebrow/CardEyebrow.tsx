@@ -1,6 +1,5 @@
 import React from "react";
 
-import { P, Time } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
@@ -12,30 +11,26 @@ import { cn } from "@web/lib";
 
 import styles from "./CardEyebrow.module.css";
 
-interface CardEyebrowProps
-  extends React.ComponentProps<typeof P>,
-    Pick<ComponentProps, "internalId" | "debugMode"> {
+interface CardEyebrowProps extends React.ComponentProps<"p">, ComponentProps {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
   decorate?: boolean;
 }
 
-/** Public card eyebrow component with `useComponentId` integration */
+/** A card eyebrow component that can optionally be wrapped in a link for navigation */
 const CardEyebrow: React.FC<CardEyebrowProps> = setDisplayName(
   function CardEyebrow(props) {
     const {
-      internalId,
-      debugMode,
       children,
       className,
+      internalId,
+      debugMode,
       dateTime,
       decorate,
-      as: Component = P,
       ...rest
     } = props;
 
-    // Use shared hook for ID generation, component naming, and debug logging
     const { id, isDebugMode } = useComponentId({
       internalId,
       debugMode,
@@ -44,7 +39,7 @@ const CardEyebrow: React.FC<CardEyebrowProps> = setDisplayName(
     if (!isRenderableContent(children)) return null;
 
     const element = (
-      <Component
+      <p
         {...rest}
         className={cn(
           styles.cardEyebrow,
@@ -55,8 +50,8 @@ const CardEyebrow: React.FC<CardEyebrowProps> = setDisplayName(
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="card-eyebrow-root"
       >
-        {dateTime ? <Time dateTime={dateTime}>{children}</Time> : children}
-      </Component>
+        {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
+      </p>
     );
 
     return element;

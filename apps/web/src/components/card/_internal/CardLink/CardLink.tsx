@@ -2,42 +2,39 @@ import React from "react";
 
 import Link from "next/link";
 
-import { A, Div, Span } from "@guyromellemagayano/components";
+import { Span } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
+  getLinkTargetProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
-
 import styles from "./CardLink.module.css";
 
 interface CardLinkProps
-  extends React.ComponentProps<typeof Div>,
-    React.ComponentPropsWithoutRef<typeof A>,
-    ComponentProps {
-  href?: React.ComponentProps<typeof Link>["href"];
-}
+  extends React.ComponentProps<"div">,
+    Pick<
+      React.ComponentPropsWithoutRef<typeof Link>,
+      "href" | "target" | "title"
+    >,
+    ComponentProps {}
 
-/** Public card link component with `useComponentId` integration */
+/** A card link component that can optionally be wrapped in a link for navigation */
 const CardLink: React.FC<CardLinkProps> = setDisplayName(
   function CardLink(props) {
     const {
       children,
-      className,
+      href,
+      target = "_self",
+      title = "",
       internalId,
       debugMode,
-      href,
-      title = "",
-      target = "_self",
-      as: Component = Link,
       ...rest
     } = props;
 
-    // Use shared hook for ID generation, component naming, and debug logging
     const { id, isDebugMode } = useComponentId({
       internalId,
       debugMode,
@@ -45,32 +42,23 @@ const CardLink: React.FC<CardLinkProps> = setDisplayName(
 
     if (!isRenderableContent(children)) return null;
 
-    // Convert `href` to string for validation, handling all Next.js Link href types
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-
     const element = (
-      <Div
+      <div
         {...rest}
-        className={cn(styles.cardLinkHeading, className)}
         data-card-link-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="card-link-root"
       >
-        <Div className={styles.cardLinkBackground} />
-        {href && isValidLink(hrefString) ? (
-          <Component
-            href={href}
-            target={target}
-            rel={target === "_blank" ? "noopener noreferrer" : undefined}
-            title={title}
-          >
+        <div className={styles.cardLinkBackground} />
+        {href && isValidLink(href) ? (
+          <Link href={href} {...getLinkTargetProps(href, target)} title={title}>
             <Span className={styles.cardLinkClickableArea} />
             <Span className={styles.cardLinkContent}>{children}</Span>
-          </Component>
+          </Link>
         ) : (
           children
         )}
-      </Div>
+      </div>
     );
 
     return element;
