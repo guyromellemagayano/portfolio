@@ -1,11 +1,10 @@
 import React from "react";
 
-import { Div } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
-  createCompoundComponent,
   isRenderableContent,
+  setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -13,49 +12,39 @@ import { cn } from "@web/lib";
 import styles from "./ContainerInner.module.css";
 
 interface ContainerInnerProps
-  extends React.ComponentProps<typeof Div>,
+  extends React.ComponentProps<"div">,
     ComponentProps {}
 
-interface ContainerInnerInternalProps extends ContainerInnerProps {
-  /** Generated or custom component ID */
-  componentId: string;
-  /** Processed debug mode */
-  isDebugMode: boolean;
-}
+/** Provides the inner structure for the `Container` compound component. */
+const ContainerInner: React.FC<ContainerInnerProps> = setDisplayName(
+  function ContainerInner(props) {
+    const { children, className, internalId, debugMode, ...rest } = props;
 
-/** Internal container inner component with all props */
-const ContainerInnerInternal: React.FC<ContainerInnerInternalProps> =
-  function ContainerInnerInternal(props) {
-    const { children, className, componentId, isDebugMode, ...rest } = props;
+    const { id, isDebugMode } = useComponentId({
+      internalId,
+      debugMode,
+    });
 
     if (!isRenderableContent(children)) return null;
 
     const element = (
-      <Div
+      <div
         {...rest}
         className={cn(styles.containerInner, className)}
-        data-container-inner-id={componentId}
+        data-container-inner-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="container-inner-root"
       >
-        <Div className={styles.containerInnerContent}>{children}</Div>
-      </Div>
+        <div
+          className={styles.containerInnerContent}
+          data-testid="container-inner-content"
+        >
+          {children}
+        </div>
+      </div>
     );
 
     return element;
-  };
-
-/** Public container inner wrapper component for layout and styling */
-const ContainerInner = createCompoundComponent(
-  "ContainerInner",
-  ContainerInnerInternal,
-  useComponentId,
-  {},
-  {
-    memoized: true,
-    hookOptions: {
-      defaultDebugMode: false,
-    },
   }
 );
 
