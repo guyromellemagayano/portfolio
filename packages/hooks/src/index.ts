@@ -1,1 +1,1 @@
-export * from "./useComponentId";
+export { useComponentId } from "./useComponentId";
