@@ -1,9 +1,62 @@
 import React from "react";
 
+// Mock IntersectionObserver
+/* eslint-disable no-undef */
+global.IntersectionObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+// Mock Next.js Link
+vi.mock("next/link", () => ({
+  default: React.forwardRef<HTMLAnchorElement, any>(function MockLink(
+    { children, href, ...props },
+    ref
+  ) {
+    return React.createElement("a", { ref, href, ...props }, children);
+  }),
+}));
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardTitle } from "..";
+
+// Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  isRenderableContent: vi.fn((children) => {
+    if (children === null || children === undefined) {
+      return false;
+    }
+    return true;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => ({
+    target: target || "_self",
+    rel: target === "_blank" ? "noopener noreferrer" : undefined,
+  })),
+  setDisplayName: vi.fn((component, displayName) => {
+    component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
 
 // Mock Link component from @guyromellemagayano/components
 vi.mock("@guyromellemagayano/components", async (importOriginal) => {
@@ -72,10 +125,10 @@ describe("CardTitle", () => {
   });
 
   it("renders with custom internal ID", () => {
-    render(<CardTitle _internalId="custom-id">Card title</CardTitle>);
+    render(<CardTitle internalId="custom-id">Card title</CardTitle>);
 
     const titleElement = screen.getByTestId("card-title-root");
-    expect(titleElement).toHaveAttribute("data-card-title-id");
+    expect(titleElement).toHaveAttribute("data-card-title-id", "custom-id");
   });
 
   it("passes through link attributes", () => {
@@ -90,12 +143,9 @@ describe("CardTitle", () => {
     expect(link).toHaveAttribute("title", "Test title");
   });
 
-  it("renders empty element when no children", () => {
+  it("does not render when no children", () => {
     const { container } = render(<CardTitle />);
-    const element = container.firstChild as HTMLElement;
-    expect(element).toBeInTheDocument();
-    expect(element.tagName).toBe("H2");
-    expect(element.textContent).toBe("");
+    expect(container.firstChild).toBeNull();
   });
 
   it("forwards ref correctly", () => {
