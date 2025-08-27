@@ -2,6 +2,22 @@ import { useId } from "react";
 
 import { logInfo } from "@guyromellemagayano/logger";
 
+/** Options for the useComponentId hook */
+interface UseComponentIdOptions {
+  /** Custom component ID for tracking */
+  internalId?: string;
+  /** Enable debug mode */
+  debugMode?: boolean;
+}
+
+/** Return values from the useComponentId hook */
+interface UseComponentIdReturn {
+  /** Generated or custom component ID */
+  id: string;
+  /** Processed debug mode */
+  isDebugMode: boolean;
+}
+
 /** Extracts component name from call stack */
 function getComponentNameFromStack(): string {
   try {
@@ -19,7 +35,7 @@ function getComponentNameFromStack(): string {
       // Skip if line is undefined
       if (!line) continue;
 
-      // Look for the actual component function name (export const ComponentName). This will be the function name from the export const declaration.
+      // Look for the actual component function name (`export const ComponentName`). This will be the function name from the exported component.
       const reactComponentMatch = line.match(/at\s+(\w+)\s+\(/);
       if (reactComponentMatch && reactComponentMatch[1]) {
         const functionName = reactComponentMatch[1];
@@ -50,20 +66,6 @@ function getComponentNameFromStack(): string {
   return "Component";
 }
 
-export interface UseComponentIdOptions {
-  /** Override the auto-generated ID with a custom one */
-  internalId?: string;
-  /** Enable debug logging (only active in development) */
-  debugMode?: boolean;
-}
-
-export interface UseComponentIdReturn {
-  /** The component ID (custom or auto-generated) */
-  id: string;
-  /** Whether debug mode is active */
-  isDebugMode: boolean;
-}
-
 /** Generates component IDs and provides debug logging */
 export function useComponentId({
   internalId,
@@ -76,12 +78,11 @@ export function useComponentId({
   // Auto-detect component name from export const declaration
   const detectedComponentName = getComponentNameFromStack();
 
-  // Cross-environment safety for debug logging
-  const isDebugMode =
-    debugMode && globalThis?.process?.env?.NODE_ENV === "development";
+  // Debug mode should work in all environments when explicitly set
+  const isDebugMode = debugMode;
 
-  // Internal debug logging
-  if (isDebugMode) {
+  // Internal debug logging (only in development)
+  if (isDebugMode && globalThis?.process?.env?.NODE_ENV === "development") {
     logInfo(`${detectedComponentName} rendered with ID: ${id}`);
   }
 
