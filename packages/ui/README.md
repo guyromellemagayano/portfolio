@@ -1,11 +1,11 @@
-<!-- markdownlint-disable line-length proper-names -->
-# 📦 UI Components Library
+<!-- markdownlint-disable MD013 MD044 -->
+# @guyromellemagayano/ui
 
 High-quality React UI components engineered for optimal performance, accessibility, and developer experience. This library adheres to industry best practices, featuring tree-shakeable imports and comprehensive testing.
 
 ## 📋 Table of Contents
 
-- [📦 UI Components Library](#-ui-components-library)
+- [@guyromellemagayano/ui](#guyromellemagayanoui)
   - [📋 Table of Contents](#-table-of-contents)
   - [📖 Overview](#-overview)
     - [Design Philosophy](#design-philosophy)
