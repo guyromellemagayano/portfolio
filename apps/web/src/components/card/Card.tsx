@@ -1,11 +1,10 @@
 import React from "react";
 
-import { Article } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
-  createCompoundComponent,
   isRenderableContent,
+  setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -19,32 +18,13 @@ import {
 } from "./_internal";
 import styles from "./Card.module.css";
 
-interface CardInternalProps
-  extends React.ComponentProps<typeof Article>,
-    ComponentProps {}
+// ============================================================================
+// MAIN CARD COMPONENT
+// ============================================================================
 
-/** Internal card component with all props */
-const CardInternal: React.FC<CardInternalProps> = function InternalCard(props) {
-  const { children, className, componentId, isDebugMode, ...rest } = props;
+interface CardProps extends React.ComponentProps<"article">, ComponentProps {}
 
-  if (!isRenderableContent(children)) return null;
-
-  const element = (
-    <Article
-      {...rest}
-      className={cn(styles.card, className)}
-      data-card-id={componentId}
-      data-debug-mode={isDebugMode ? "true" : undefined}
-      data-testid="card-root"
-    >
-      {children}
-    </Article>
-  );
-
-  return element;
-};
-
-type CardCompoundComponent = React.ComponentType<CardInternalProps> & {
+type CardCompoundComponent = React.ComponentType<CardProps> & {
   /** A card link component that provides interactive hover effects and accessibility features */
   Link: typeof CardLink;
   /** A card title component that can optionally be wrapped in a link for navigation */
@@ -57,13 +37,40 @@ type CardCompoundComponent = React.ComponentType<CardInternalProps> & {
   Eyebrow: typeof CardEyebrow;
 };
 
-/** Main card component with compound sub-components */
-const Card = createCompoundComponent("Card", CardInternal, useComponentId, {
-  Eyebrow: CardEyebrow,
-  Link: CardLink,
-  Title: CardTitle,
-  Description: CardDescription,
-  Cta: CardCta,
-}) as CardCompoundComponent;
+/** A card component that can optionally be wrapped in a link for navigation */
+const Card = setDisplayName(function Card(props) {
+  const { children, className, internalId, debugMode, ...rest } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  if (!isRenderableContent(children)) return null;
+
+  const element = (
+    <article
+      {...rest}
+      className={cn(styles.card, className)}
+      data-card-id={id}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid="card-root"
+    >
+      {children}
+    </article>
+  );
+
+  return element;
+} as CardCompoundComponent);
+
+// ============================================================================
+// CARD COMPOUND COMPONENTS
+// ============================================================================
+
+Card.Link = CardLink;
+Card.Title = CardTitle;
+Card.Description = CardDescription;
+Card.Cta = CardCta;
+Card.Eyebrow = CardEyebrow;
 
 export { Card };
