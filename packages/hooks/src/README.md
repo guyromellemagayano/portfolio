@@ -41,7 +41,7 @@ The `@guyromellemagayano/hooks` package provides essential React hooks and utili
 ### 📁 File Structure
 
 ```bash
-packages/hooks/
+@guyromellemagayano/hooks/
 ├── package.json              # Package configuration and dependencies
 ├── src/
 │   ├── index.ts              # Main export file
