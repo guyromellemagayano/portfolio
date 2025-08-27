@@ -4,8 +4,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import js from "@eslint/js";
-import typescriptParser from "@typescript-eslint/parser";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
+import vitestPlugin from "@vitest/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import importPlugin from "eslint-plugin-import";
 import onlyWarn from "eslint-plugin-only-warn";
@@ -14,7 +15,6 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import vitestPlugin from "@vitest/eslint-plugin";
 
 const nodeRequire = createRequire(import.meta.url);
 const prettierConfig = nodeRequire("../../../prettier.config.cjs");
@@ -112,13 +112,6 @@ export const baseEslintConfig = [
           varsIgnorePattern: "^_",
           args: "after-used",
           argsIgnorePattern: "^_",
-        },
-      ],
-      "react/function-component-definition": [
-        "error",
-        {
-          namedComponents: "function-expression",
-          unnamedComponents: "arrow-function",
         },
       ],
     },
