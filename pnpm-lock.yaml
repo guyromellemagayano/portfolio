@@ -265,7 +265,7 @@ catalogs:
       specifier: ^3.3.1
       version: 3.3.1
     tailwindcss:
-      specifier: ^4.1.7
+      specifier: ^4.1.11
       version: 4.1.11
     tsconfig-paths:
       specifier: ^4.2.0
@@ -576,6 +576,9 @@ importers:
       '@guyromellemagayano/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@guyromellemagayano/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@headlessui/react':
         specifier: 'catalog:'
         version: 2.2.7(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -1053,6 +1056,12 @@ importers:
 
   packages/utils:
     dependencies:
+      '@guyromellemagayano/components':
+        specifier: workspace:*
+        version: link:../components
+      '@guyromellemagayano/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../logger
