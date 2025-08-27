@@ -4,6 +4,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { FooterNavigation } from "../FooterNavigation";
 
 // Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
