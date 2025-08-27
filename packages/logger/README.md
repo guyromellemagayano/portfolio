@@ -1,4 +1,5 @@
-# Universal Logger
+<!-- markdownlint-disable MD024 -->
+# @guyromellemagayano/logger
 
 A comprehensive, robust, scalable, and flexible logging system for Node.js
 and browser environments with structured logging, multiple transports,
