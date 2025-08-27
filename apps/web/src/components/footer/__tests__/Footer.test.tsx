@@ -4,6 +4,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { Footer } from "../Footer";
 
 // Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
@@ -136,7 +143,7 @@ describe("Footer", () => {
       render(<Footer />);
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).not.toHaveAttribute("data-footer-id");
+      expect(footer).toHaveAttribute("data-footer-id", "test-id");
     });
   });
 
