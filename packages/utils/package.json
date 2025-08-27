@@ -49,6 +49,8 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@guyromellemagayano/components": "workspace:*",
+    "@guyromellemagayano/hooks": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*"
   },
   "devDependencies": {
