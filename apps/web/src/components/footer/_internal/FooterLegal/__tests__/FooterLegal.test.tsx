@@ -4,8 +4,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { FooterLegal } from "../FooterLegal";
 
 // Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  })),
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((content) => {
+  hasMeaningfulText: vi.fn((content) => {
     if (content === null || content === undefined) return false;
     if (typeof content === "string") return content.trim().length > 0;
     return true;
@@ -205,10 +212,10 @@ describe("FooterLegal", () => {
       expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
     });
 
-    it("renders when legalText is whitespace-only", () => {
+    it("does not render when legalText is whitespace-only", () => {
       render(<FooterLegal legalText="   " />);
 
-      expect(screen.getByTestId("footer-legal-root")).toBeInTheDocument();
+      expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
     });
   });
 
