@@ -1,6 +1,5 @@
 import React from "react";
 
-import { P } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
@@ -13,22 +12,14 @@ import { cn } from "@web/lib";
 import styles from "./CardDescription.module.css";
 
 interface CardDescriptionProps
-  extends React.ComponentProps<typeof P>,
-    Pick<ComponentProps, "internalId" | "debugMode"> {}
+  extends React.ComponentProps<"p">,
+    ComponentProps {}
 
-/** Public card description component with `useComponentId` integration */
+/** A card description component that can optionally be wrapped in a link for navigation */
 const CardDescription: React.FC<CardDescriptionProps> = setDisplayName(
   function CardDescription(props) {
-    const {
-      children,
-      className,
-      internalId,
-      debugMode,
-      as: Component = P,
-      ...rest
-    } = props;
+    const { children, className, internalId, debugMode, ...rest } = props;
 
-    // Use shared hook for ID generation, component naming, and debug logging
     const { id, isDebugMode } = useComponentId({
       internalId,
       debugMode,
@@ -37,7 +28,7 @@ const CardDescription: React.FC<CardDescriptionProps> = setDisplayName(
     if (!isRenderableContent(children)) return null;
 
     const element = (
-      <Component
+      <p
         {...rest}
         className={cn(styles.cardDescription, className)}
         data-card-description-id={id}
@@ -45,7 +36,7 @@ const CardDescription: React.FC<CardDescriptionProps> = setDisplayName(
         data-testid="card-description-root"
       >
         {children}
-      </Component>
+      </p>
     );
 
     return element;
