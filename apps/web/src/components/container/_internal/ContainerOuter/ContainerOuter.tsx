@@ -1,11 +1,10 @@
 import React from "react";
 
-import { Div } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
-  createCompoundComponent,
   isRenderableContent,
+  setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -13,49 +12,39 @@ import { cn } from "@web/lib";
 import styles from "./ContainerOuter.module.css";
 
 interface ContainerOuterProps
-  extends React.ComponentProps<typeof Div>,
+  extends React.ComponentProps<"div">,
     ComponentProps {}
 
-interface ContainerOuterInternalProps extends ContainerOuterProps {
-  /** Generated or custom component ID */
-  componentId: string;
-  /** Processed debug mode */
-  isDebugMode: boolean;
-}
+/** Provides the outer structure for the `Container` compound component. */
+const ContainerOuter: React.FC<ContainerOuterProps> = setDisplayName(
+  function ContainerOuter(props) {
+    const { children, className, internalId, debugMode, ...rest } = props;
 
-/** Internal container outer component with all props */
-const ContainerOuterInternal: React.FC<ContainerOuterInternalProps> =
-  function ContainerOuterInternal(props) {
-    const { children, className, componentId, isDebugMode, ...rest } = props;
+    const { id, isDebugMode } = useComponentId({
+      internalId,
+      debugMode,
+    });
 
     if (!isRenderableContent(children)) return null;
 
     const element = (
-      <Div
+      <div
         {...rest}
         className={cn(styles.containerOuter, className)}
-        data-container-outer-id={componentId}
+        data-container-outer-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="container-outer-root"
       >
-        <Div className={styles.containerOuterContent}>{children}</Div>
-      </Div>
+        <div
+          className={styles.containerOuterContent}
+          data-testid="container-outer-content"
+        >
+          {children}
+        </div>
+      </div>
     );
 
     return element;
-  };
-
-/** Public container outer wrapper component for layout and styling */
-const ContainerOuter = createCompoundComponent(
-  "ContainerOuter",
-  ContainerOuterInternal,
-  useComponentId,
-  {},
-  {
-    memoized: true,
-    hookOptions: {
-      defaultDebugMode: false,
-    },
   }
 );
 
