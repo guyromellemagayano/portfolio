@@ -362,7 +362,7 @@ describe("ContainerOuter", () => {
       render(<ContainerOuter>Content</ContainerOuter>);
 
       const outerRoot = screen.getByTestId("container-outer-root");
-      const contentWrapper = screen.getByTestId("div");
+      const contentWrapper = screen.getByTestId("container-outer-content");
 
       expect(outerRoot).toContainElement(contentWrapper);
       expect(contentWrapper).toHaveClass("containerOuterContent");
