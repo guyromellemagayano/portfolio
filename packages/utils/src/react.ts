@@ -4,7 +4,7 @@ import React from "react";
 // COMPONENT UTILITIES
 // ============================================================================
 
-/** Sets displayName for React components */
+/** Sets `displayName` for React components with improved type safety */
 export function setDisplayName<T extends React.ComponentType<any>>(
   component: T,
   displayName?: string
@@ -26,115 +26,12 @@ export function setDisplayName<T extends React.ComponentType<any>>(
 // COMPONENT FACTORY UTILITIES
 // ============================================================================
 
-export interface CommonComponentProps {
-  _internalId?: string;
-  _debugMode?: boolean;
-  ref?: React.Ref<any>;
-}
-
-export interface InternalComponentProps extends CommonComponentProps {
-  componentId?: string;
-  isDebugMode?: boolean;
-}
-
-export interface UseComponentIdOptions {
+/** Input props that users provide to components */
+export interface ComponentProps {
+  /** Custom component ID for tracking */
   internalId?: string;
+  /** Enable debug mode */
   debugMode?: boolean;
-}
-
-export interface UseComponentIdReturn {
-  id: string;
-  isDebugMode: boolean;
-}
-
-export type UseComponentIdHook = (
-  options?: UseComponentIdOptions
-) => UseComponentIdReturn;
-
-// ============================================================================
-// WEB APP SPECIFIC TYPES
-// ============================================================================
-
-export interface CommonWebAppComponentProps
-  extends CommonComponentProps,
-    Pick<InternalComponentProps, "componentId" | "isDebugMode"> {}
-
-/** Creates Internal/External component pairs with useComponentId integration */
-export function createComponentPair<
-  TProps extends CommonComponentProps,
-  TRef = any,
->(
-  componentName: string,
-  internalComponent: React.ComponentType<
-    TProps & InternalComponentProps & { ref?: React.Ref<TRef> }
-  >,
-  useComponentIdHook: UseComponentIdHook,
-  options: {
-    memoized?: boolean;
-    hookOptions?: {
-      defaultDebugMode?: boolean;
-    };
-  } = {}
-): React.ComponentType<TProps & { ref?: React.Ref<TRef> }> {
-  const { memoized = true, hookOptions = {} } = options;
-
-  function Component(props: TProps & { ref?: React.Ref<TRef> }) {
-    const { _internalId, _debugMode, ref, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentIdHook({
-      internalId: _internalId,
-      debugMode: _debugMode ?? hookOptions.defaultDebugMode,
-    });
-
-    const element = React.createElement(internalComponent, {
-      ...rest,
-      ref,
-      componentId: id,
-      isDebugMode,
-    } as TProps & InternalComponentProps & { ref?: React.Ref<TRef> });
-
-    return element;
-  }
-
-  const WrappedComponent = memoized ? React.memo(Component) : Component;
-
-  return setDisplayName(WrappedComponent, componentName);
-}
-
-/** Creates compound components with subcomponents */
-export function createCompoundComponent<
-  TProps extends CommonComponentProps,
-  TRef = any,
-  TSubcomponents extends Record<string, React.ComponentType<any>> = {},
->(
-  componentName: string,
-  internalComponent: React.ComponentType<
-    TProps & InternalComponentProps & { ref?: React.Ref<TRef> }
-  >,
-  useComponentIdHook: UseComponentIdHook,
-  subcomponents: TSubcomponents,
-  options: {
-    memoized?: boolean;
-    hookOptions?: {
-      defaultDebugMode?: boolean;
-    };
-  } = {}
-): React.ComponentType<TProps & { ref?: React.Ref<TRef> }> & TSubcomponents {
-  const MainComponent = createComponentPair(
-    componentName,
-    internalComponent,
-    useComponentIdHook,
-    options
-  );
-
-  Object.entries(subcomponents).forEach(([key, SubComponent]) => {
-    (MainComponent as any)[key] = SubComponent;
-  });
-
-  return MainComponent as React.ComponentType<
-    TProps & { ref?: React.Ref<TRef> }
-  > &
-    TSubcomponents;
 }
 
 // ============================================================================
@@ -183,7 +80,11 @@ export function hasMeaningfulText(content: unknown): boolean {
 /** Checks if content should render based on component type and UX considerations */
 export function shouldRenderComponent(
   children: unknown,
-  componentType: "semantic" | "structural" | "interactive" | "decorative" = "semantic"
+  componentType:
+    | "semantic"
+    | "structural"
+    | "interactive"
+    | "decorative" = "semantic"
 ): boolean {
   // For interactive components (buttons, links), be more strict to prevent broken UX
   if (componentType === "interactive") {
@@ -209,15 +110,19 @@ export function shouldRenderComponent(
 // ============================================================================
 
 /** Validates if a URL is valid and not a placeholder */
-export function isValidLink(href?: string): boolean {
+export function isValidLink(href?: string | { toString(): string }): boolean {
   if (!href) return false;
-  if (href === "#" || href === "") return false;
+
+  // Convert to string for validation
+  const hrefString = typeof href === "string" ? href : href?.toString() || "";
+
+  if (hrefString === "#" || hrefString === "") return false;
   return true;
 }
 
 /** Gets safe link target attributes for external links */
 export function getLinkTargetProps(
-  href?: string,
+  href?: string | { toString(): string },
   target?: string
 ): {
   target: string;
@@ -227,7 +132,10 @@ export function getLinkTargetProps(
     return { target: "_self" };
   }
 
-  const isExternal = href?.startsWith("http");
+  // Convert to string for validation
+  const hrefString = typeof href === "string" ? href : href?.toString() || "";
+
+  const isExternal = hrefString?.startsWith("http");
   const shouldOpenNewTab =
     target === "_blank" || (isExternal && target !== "_self");
 
@@ -239,7 +147,7 @@ export function getLinkTargetProps(
 
 /** Validates and provides default values for common link props */
 export function getDefaultLinkProps(props: {
-  href?: string;
+  href?: string | { toString(): string };
   target?: string;
   title?: string;
 }): {
@@ -247,8 +155,11 @@ export function getDefaultLinkProps(props: {
   target: string;
   title: string;
 } {
+  const hrefString =
+    typeof props.href === "string" ? props.href : props.href?.toString() || "";
+
   return {
-    href: props.href || "#",
+    href: hrefString || "#",
     target: props.target || "_self",
     title: props.title || "",
   };
