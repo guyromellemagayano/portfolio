@@ -1,5 +1,6 @@
 import React from "react";
 
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components/container";
@@ -44,12 +45,17 @@ const Footer = setDisplayName(function Footer(props) {
     ...rest
   } = props;
 
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
   const element = (
     <footer
       {...rest}
       className={cn(styles.footerComponent, className)}
-      data-footer-id={internalId}
-      data-debug-mode={debugMode ? "true" : undefined}
+      data-footer-id={id}
+      data-debug-mode={isDebugMode ? "true" : undefined}
       data-testid="footer-root"
     >
       <Container.Outer>
