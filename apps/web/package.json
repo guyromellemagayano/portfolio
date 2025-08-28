@@ -26,6 +26,7 @@
     "@guyromellemagayano/hooks": "workspace:*",
     "@guyromellemagayano/logger": "workspace:*",
     "@guyromellemagayano/ui": "workspace:*",
+    "@guyromellemagayano/utils": "workspace:*",
     "@headlessui/react": "catalog:",
     "@mapbox/rehype-prism": "catalog:",
     "@mdx-js/loader": "catalog:",
@@ -52,6 +53,7 @@
     "postcss-preset-env": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-intersection-observer": "catalog:",
     "remark-gfm": "catalog:",
     "tailwind-merge": "catalog:",
     "tailwindcss": "catalog:"
