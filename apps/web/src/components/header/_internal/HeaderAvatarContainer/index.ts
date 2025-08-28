@@ -1,0 +1,1 @@
+export { HeaderAvatarContainer } from "./HeaderAvatarContainer";
