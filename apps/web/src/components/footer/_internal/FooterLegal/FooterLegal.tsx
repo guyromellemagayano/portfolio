@@ -16,9 +16,10 @@ interface FooterLegalProps
   extends Omit<React.ComponentProps<"p">, "children">,
     FooterComponentLabels,
     ComponentProps {}
+type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 /** Footer legal subcomponent for displaying the legal text. */
-const FooterLegal: React.FC<FooterLegalProps> = setDisplayName(
+const FooterLegal: FooterLegalComponent = setDisplayName(
   function FooterLegal(props) {
     const { className, internalId, debugMode, legalText, ...rest } = props;
 

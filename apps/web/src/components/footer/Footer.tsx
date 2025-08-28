@@ -9,33 +9,23 @@ import { cn } from "@web/lib";
 import {
   FOOTER_COMPONENT_LABELS,
   FOOTER_COMPONENT_NAV_LINKS,
-  FooterLink,
+  FooterComponentLabels,
 } from "./_data";
 import { FooterLegal, FooterNavigation } from "./_internal";
 import styles from "./Footer.module.css";
 
 // ============================================================================
-// MAIN FOOTER COMPONENT
+// BASE FOOTER COMPONENT
 // ============================================================================
 
 interface FooterProps
   extends Omit<React.ComponentProps<"footer">, "children">,
-    ComponentProps {
-  /** Optional custom legal text override */
-  legalText?: string;
-  /** Optional navigation links override */
-  navLinks?: ReadonlyArray<FooterLink>;
-}
+    FooterComponentLabels,
+    ComponentProps {}
+type FooterComponent = React.FC<FooterProps>;
 
-type FooterCompoundComponent = React.ComponentType<FooterProps> & {
-  /** A footer legal component that provides the legal text */
-  Legal: typeof FooterLegal;
-  /** A footer navigation component that provides navigation links */
-  Navigation: typeof FooterNavigation;
-};
-
-/** Footer component with all props */
-const Footer = setDisplayName(function Footer(props) {
+/** A base footer component (client, minimal effects split out). */
+const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
   const {
     className,
     internalId,
@@ -72,13 +62,50 @@ const Footer = setDisplayName(function Footer(props) {
   );
 
   return element;
-} as FooterCompoundComponent);
+});
 
 // ============================================================================
-// FOOTER COMPOUND COMPONENTS
+// MEMOIZED FOOTER COMPONENT
 // ============================================================================
 
-Footer.Navigation = FooterNavigation;
-Footer.Legal = FooterLegal;
+/** A memoized footer component. */
+const MemoizedFooter = React.memo(BaseFooter);
+
+// ============================================================================
+// MAIN FOOTER COMPONENT
+// ============================================================================
+
+/** A footer component. */
+const Footer: FooterComponent = setDisplayName(function Footer(props) {
+  const {
+    isMemoized = false,
+    internalId,
+    debugMode,
+    navLinks = FOOTER_COMPONENT_NAV_LINKS,
+    legalText = FOOTER_COMPONENT_LABELS.legalText,
+    ...rest
+  } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  const updatedProps = {
+    ...rest,
+    internalId: id,
+    debugMode: isDebugMode,
+    navLinks,
+    legalText,
+  };
+
+  const element = isMemoized ? (
+    <MemoizedFooter {...updatedProps} />
+  ) : (
+    <BaseFooter {...updatedProps} />
+  );
+
+  return element;
+});
 
 export { Footer };
