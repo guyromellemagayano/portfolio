@@ -4,7 +4,7 @@ import {
   HEADER_COMPONENT_LABELS,
   HEADER_COMPONENT_NAV_LINKS,
   type HeaderLink,
-} from "@web/components/header/Header.data";
+} from "@web/components/header/_data/Header.data";
 
 export const HEADER_TAG = "header";
 
