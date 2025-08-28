@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+/* Mobile navigation item link */
+.mobileHeaderNavItemLink {
+  @apply block py-2;
+}
