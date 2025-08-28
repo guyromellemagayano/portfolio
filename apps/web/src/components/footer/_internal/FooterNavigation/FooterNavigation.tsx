@@ -19,9 +19,10 @@ interface FooterNavigationProps
   /** Navigation links to display */
   navLinks?: ReadonlyArray<FooterLink>;
 }
+type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
 /** Footer navigation subcomponent for displaying navigation links. */
-const FooterNavigation: React.FC<FooterNavigationProps> = setDisplayName(
+const FooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const { className, internalId, debugMode, navLinks, ...rest } = props;
 
