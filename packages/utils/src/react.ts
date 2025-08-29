@@ -28,10 +28,14 @@ export function setDisplayName<T extends React.ComponentType<any>>(
 
 /** Input props that users provide to components */
 export interface ComponentProps {
-  /** Custom component ID for tracking */
-  internalId?: string;
   /** Enable debug mode */
   debugMode?: boolean;
+  /** Custom component ID for tracking */
+  internalId?: string;
+  /** Opt-in client-side rendering */
+  isClient?: boolean;
+  /** Opt-in memoization wrapper (for profiling) */
+  isMemoized?: boolean;
 }
 
 // ============================================================================
