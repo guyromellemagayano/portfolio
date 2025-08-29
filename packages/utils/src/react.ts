@@ -36,6 +36,8 @@ export interface ComponentProps {
   isClient?: boolean;
   /** Opt-in memoization wrapper (for profiling) */
   isMemoized?: boolean;
+  /** Additional props */
+  [key: string]: unknown;
 }
 
 // ============================================================================
