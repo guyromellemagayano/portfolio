@@ -40,6 +40,7 @@ const BaseContainer: ContainerComponent = setDisplayName(
 // MEMOIZED CONTAINER COMPONENT
 // ============================================================================
 
+/** A memoized container component. */
 const MemoizedContainer = React.memo(BaseContainer);
 
 // ============================================================================
