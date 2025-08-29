@@ -130,7 +130,8 @@ describe("ContainerOuter", () => {
       render(<ContainerOuter>Content</ContainerOuter>);
 
       const outerRoot = screen.getByTestId("container-outer-root");
-      expect(outerRoot).toHaveClass("containerOuter");
+      // CSS module classes are hashed, so we check that the class contains the expected pattern
+      expect(outerRoot.className).toMatch(/containerOuter/);
     });
 
     it("merges custom className with CSS module classes", () => {
@@ -138,7 +139,8 @@ describe("ContainerOuter", () => {
 
       const outerRoot = screen.getByTestId("container-outer-root");
       expect(outerRoot).toHaveClass("custom-class");
-      expect(outerRoot).toHaveClass("containerOuter");
+      // CSS module classes are hashed, so we check that the class contains the expected pattern
+      expect(outerRoot.className).toMatch(/containerOuter/);
     });
   });
 
@@ -365,7 +367,8 @@ describe("ContainerOuter", () => {
       const contentWrapper = screen.getByTestId("container-outer-content");
 
       expect(outerRoot).toContainElement(contentWrapper);
-      expect(contentWrapper).toHaveClass("containerOuterContent");
+      // CSS module classes are hashed, so we check that the class contains the expected pattern
+      expect(contentWrapper.className).toMatch(/containerOuterContent/);
     });
 
     it("handles complex layout structures", () => {
