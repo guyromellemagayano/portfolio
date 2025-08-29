@@ -130,7 +130,8 @@ describe("ContainerInner", () => {
       render(<ContainerInner>Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("container-inner-root");
-      expect(innerRoot).toHaveClass("containerInner");
+      // CSS module classes are hashed, so we check that the class contains the expected pattern
+      expect(innerRoot.className).toMatch(/containerInner/);
     });
 
     it("merges custom className with CSS module classes", () => {
@@ -138,7 +139,8 @@ describe("ContainerInner", () => {
 
       const innerRoot = screen.getByTestId("container-inner-root");
       expect(innerRoot).toHaveClass("custom-class");
-      expect(innerRoot).toHaveClass("containerInner");
+      // CSS module classes are hashed, so we check that the class contains the expected pattern
+      expect(innerRoot.className).toMatch(/containerInner/);
     });
   });
 
