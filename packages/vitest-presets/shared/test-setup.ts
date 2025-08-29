@@ -33,9 +33,9 @@ Object.defineProperty(window, "matchMedia", {
 
 // Mock IntersectionObserver
 (global as any).IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
+  observe: vi.fn(() => null),
+  unobserve: vi.fn(() => null),
+  disconnect: vi.fn(() => null),
 }));
 
 // Mock ResizeObserver
