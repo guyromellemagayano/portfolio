@@ -1,35 +1,41 @@
+"use client";
+
 import React from "react";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
+  type ComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
+  isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { isActivePath } from "@web/lib";
+
 import styles from "./HeaderMobileNavItem.module.css";
 
-interface HeaderMobileNavItemProps extends React.ComponentProps<"li"> {
+// ============================================================================
+// BASE HEADER MOBILE NAV ITEM COMPONENT
+// ============================================================================
+
+interface HeaderMobileNavItemProps
+  extends React.ComponentProps<"li">,
+    Pick<React.ComponentProps<typeof Link>, "target" | "title">,
+    ComponentProps {
   /** Link href */
   href?: React.ComponentProps<typeof Link>["href"];
-  /** Link target */
-  target?: string;
-  /** Link title */
-  title?: string;
-  /** Internal component ID (managed by parent) */
-  _internalId?: string;
-  /** Internal debug mode (managed by parent) */
-  _debugMode?: boolean;
 }
 type HeaderMobileNavItemComponent = React.FC<HeaderMobileNavItemProps>;
 
 /** A mobile navigation item component for the header. */
-const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
-  function HeaderMobileNavItem(props) {
+const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
+  function BaseHeaderMobileNavItem(props) {
     const {
       children,
-      href,
+      href = "#",
       target = "_self",
       title = "",
       _internalId,
@@ -37,23 +43,23 @@ const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
       ...rest
     } = props;
 
-    // Use internal props directly - no need for useComponentId in sub-components
-    const id = _internalId;
-    const isDebugMode = _debugMode;
+    const pathname = usePathname();
+    const isActive = isActivePath(pathname, href || "");
 
-    if (!hasMeaningfulText(children) && !hasMeaningfulText(href)) return null;
+    if ((!hasMeaningfulText(children) && !hasMeaningfulText(href)) || !isActive)
+      return null;
 
-    const linkTargetProps = getLinkTargetProps(href, target);
+    const linkTargetProps = getLinkTargetProps(href?.toString(), target);
 
     const element = (
       <li
         {...rest}
-        data-mobile-header-nav-item-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="mobile-header-nav-item-root"
+        data-header-mobile-nav-item-id={`${_internalId}-header-mobile-nav-item`}
+        data-debug-mode={_debugMode ? "true" : undefined}
+        data-testid="header-mobile-nav-item-root"
       >
         <Link
-          href={href || "#"}
+          href={href}
           target={linkTargetProps.target}
           rel={linkTargetProps.rel}
           title={title}
@@ -64,6 +70,38 @@ const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
       </li>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED HEADER MOBILE NAV ITEM COMPONENT
+// ============================================================================
+
+const MemoizedHeaderMobileNavItem = React.memo(BaseHeaderMobileNavItem);
+
+// ============================================================================
+// MAIN HEADER MOBILE NAV ITEM COMPONENT
+// ============================================================================
+
+const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
+  function HeaderMobileNavItem(props) {
+    const {
+      children,
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
+
+    if (!isRenderableContent(children)) return null;
+
+    const updatedProps = { ...rest, _internalId, _debugMode };
+
+    const Component = isMemoized
+      ? MemoizedHeaderMobileNavItem
+      : BaseHeaderMobileNavItem;
+    const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
 );

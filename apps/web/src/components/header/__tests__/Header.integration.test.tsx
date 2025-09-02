@@ -229,7 +229,7 @@ describe("Header Integration", () => {
 
       // Should render with correct props
       const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "test-header");
+      expect(header).toHaveAttribute("data-header-id", "test-header-header");
       expect(header).toHaveAttribute("data-debug-mode", "true");
     });
   });
@@ -257,7 +257,7 @@ describe("Header Integration", () => {
 
       // Verify that the header renders with the correct props
       const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "test-header");
+      expect(header).toHaveAttribute("data-header-id", "test-header-header");
       expect(header).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -309,7 +309,7 @@ describe("Header Integration", () => {
       expect(screen.getByTestId("header-root")).toBeInTheDocument();
       expect(screen.getByTestId("header-root")).toHaveAttribute(
         "data-header-id",
-        "test-header"
+        "test-header-header"
       );
       expect(screen.getByTestId("header-root")).toHaveAttribute(
         "data-debug-mode",
