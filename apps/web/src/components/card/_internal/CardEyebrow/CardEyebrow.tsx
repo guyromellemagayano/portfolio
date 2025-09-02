@@ -11,32 +11,30 @@ import { cn } from "@web/lib";
 
 import styles from "./CardEyebrow.module.css";
 
+// ============================================================================
+// BASE CARD EYEBROW COMPONENT
+// ============================================================================
+
 interface CardEyebrowProps extends React.ComponentProps<"p">, ComponentProps {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
   decorate?: boolean;
 }
+type CardEyebrowComponent = React.FC<CardEyebrowProps>;
 
 /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-const CardEyebrow: React.FC<CardEyebrowProps> = setDisplayName(
-  function CardEyebrow(props) {
+const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
+  function BaseCardEyebrow(props) {
     const {
       children,
       className,
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       dateTime,
       decorate,
       ...rest
     } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
-
-    if (!isRenderableContent(children)) return null;
 
     const element = (
       <p
@@ -46,14 +44,55 @@ const CardEyebrow: React.FC<CardEyebrowProps> = setDisplayName(
           decorate && styles.cardEyebrowDecorated,
           className
         )}
-        data-card-eyebrow-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="card-eyebrow-root"
+        data-card-eyebrow-id={`${_internalId}-card-eyebrow`}
+        data-debug-mode={_debugMode ? "true" : undefined}
+        data-testid={(rest as any)["data-testid"] || "card-eyebrow-root"}
       >
         {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
       </p>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED CARD EYEBROW COMPONENT
+// ============================================================================
+
+/** A memoized card eyebrow component. */
+const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
+
+// ============================================================================
+// MAIN CARD EYEBROW COMPONENT
+// ============================================================================
+
+/** A card eyebrow component that can optionally be wrapped in a link for navigation */
+const CardEyebrow: CardEyebrowComponent = setDisplayName(
+  function CardEyebrow(props) {
+    const {
+      children,
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    if (!isRenderableContent(children)) return null;
+
+    const updatedProps = {
+      ...rest,
+      _internalId: id,
+      _debugMode: isDebugMode,
+    };
+
+    const Component = isMemoized ? MemoizedCardEyebrow : BaseCardEyebrow;
+    const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
 );

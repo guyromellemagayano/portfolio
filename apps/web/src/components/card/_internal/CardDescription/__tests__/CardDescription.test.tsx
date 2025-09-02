@@ -5,114 +5,237 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardDescription } from "../CardDescription";
 
-// Mock CSS modules with explicit class names
-vi.mock("../CardDescription.module.css", () => {
-  const mockStyles = {
+// Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  isRenderableContent: vi.fn((children) => {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
+      return false;
+    }
+    return true;
+  }),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer" };
+    }
+    return {};
+  }),
+  formatDateSafely: vi.fn((date, options) => {
+    if (options?.year === "numeric") {
+      return new Date().getFullYear().toString();
+    }
+    return date.toISOString();
+  }),
+  createCompoundComponent: vi.fn((displayName, component) => {
+    component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock CSS modules
+vi.mock("../CardDescription.module.css", () => ({
+  default: {
     cardDescription: "cardDescription",
-  };
-  return { default: mockStyles };
-});
+  },
+}));
 
 describe("CardDescription", () => {
   afterEach(() => {
     cleanup();
   });
 
-  it("renders children correctly", () => {
-    render(
-      <CardDescription internalId="test-desc" debugMode={false}>
-        Card description
-      </CardDescription>
-    );
+  describe("Basic Rendering", () => {
+    it("renders children correctly", () => {
+      render(<CardDescription>Card description</CardDescription>);
 
-    expect(screen.getByText("Card description")).toBeInTheDocument();
+      expect(screen.getByText("Card description")).toBeInTheDocument();
+    });
+
+    it("applies custom className", () => {
+      render(
+        <CardDescription className="custom-class">
+          Card description
+        </CardDescription>
+      );
+
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveClass("custom-class");
+    });
+
+    it("passes through HTML attributes", () => {
+      render(
+        <CardDescription data-testid="custom-testid" aria-label="Description">
+          Card description
+        </CardDescription>
+      );
+
+      const descriptionElement = screen.getByTestId("custom-testid");
+      expect(descriptionElement).toHaveAttribute("aria-label", "Description");
+    });
   });
 
-  it("applies custom className", () => {
-    render(
-      <CardDescription
-        className="custom-class"
-        internalId="test-desc"
-        debugMode={false}
-      >
-        Card description
-      </CardDescription>
-    );
+  describe("Content Validation", () => {
+    it("does not render when no children", () => {
+      const { container } = render(<CardDescription />);
+      expect(container.firstChild).toBeNull();
+    });
 
-    const descriptionElement = screen.getByTestId("card-description-root");
-    expect(descriptionElement).toHaveClass("cardDescription");
-    expect(descriptionElement).toHaveClass("custom-class");
+    it("handles null/undefined children", () => {
+      const { container } = render(<CardDescription>{null}</CardDescription>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles empty string children", () => {
+      const { container } = render(<CardDescription>{""}</CardDescription>);
+      expect(container.firstChild).toBeNull();
+    });
   });
 
-  it("renders with debug mode enabled", () => {
-    render(
-      <CardDescription debugMode={true}>Card description</CardDescription>
-    );
+  describe("Debug Mode", () => {
+    it("applies data-debug-mode when enabled", () => {
+      render(
+        <CardDescription _debugMode={true}>Card description</CardDescription>
+      );
 
-    const descriptionElement = screen.getByTestId("card-description-root");
-    expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("does not apply when disabled/undefined", () => {
+      render(<CardDescription>Card description</CardDescription>);
+
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).not.toHaveAttribute("data-debug-mode");
+    });
   });
 
-  it("renders with custom internal ID", () => {
-    render(
-      <CardDescription internalId="custom-id">Card description</CardDescription>
-    );
+  describe("Component Structure", () => {
+    it("renders as p element", () => {
+      render(<CardDescription>Card description</CardDescription>);
 
-    const descriptionElement = screen.getByTestId("card-description-root");
-    expect(descriptionElement).toHaveAttribute("data-card-description-id");
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement.tagName).toBe("P");
+    });
+
+    it("applies correct CSS classes", () => {
+      render(<CardDescription>Card description</CardDescription>);
+
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveClass("cardDescription");
+    });
+
+    it("combines CSS module + custom classes", () => {
+      render(
+        <CardDescription className="custom-class">
+          Card description
+        </CardDescription>
+      );
+
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveClass("cardDescription", "custom-class");
+    });
   });
 
-  it("passes through HTML attributes", () => {
-    render(
-      <CardDescription id="test-id" data-test="test-data">
-        Card description
-      </CardDescription>
-    );
+  describe("Component ID", () => {
+    it("renders with custom internal ID", () => {
+      render(
+        <CardDescription _internalId="custom-id">
+          Card description
+        </CardDescription>
+      );
 
-    const descriptionElement = screen.getByTestId("card-description-root");
-    expect(descriptionElement).toHaveAttribute("id", "test-id");
-    expect(descriptionElement).toHaveAttribute("data-test", "test-data");
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveAttribute(
+        "data-card-description-id",
+        "custom-id-card-description"
+      );
+    });
+
+    it("uses provided internalId when available", () => {
+      render(
+        <CardDescription _internalId="test-id">
+          Card description
+        </CardDescription>
+      );
+
+      const descriptionElement = screen.getByTestId("card-description-root");
+      expect(descriptionElement).toHaveAttribute(
+        "data-card-description-id",
+        "test-id-card-description"
+      );
+    });
   });
 
-  it("does not render when no children", () => {
-    const { container } = render(<CardDescription />);
-    expect(container.firstChild).toBeInTheDocument();
+  describe("Ref Forwarding", () => {
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<HTMLParagraphElement>();
+      render(<CardDescription ref={ref}>Card description</CardDescription>);
+
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("ref points to correct element", () => {
+      const ref = React.createRef<HTMLParagraphElement>();
+      render(<CardDescription ref={ref}>Card description</CardDescription>);
+
+      expect(ref.current?.tagName).toBe("P");
+    });
   });
 
-  it("does not render when children is null", () => {
-    const { container } = render(<CardDescription>{null}</CardDescription>);
-    expect(container.firstChild).toBeInTheDocument();
-  });
+  describe("Edge Cases", () => {
+    it("handles complex children content", () => {
+      render(
+        <CardDescription>
+          <strong>Bold</strong> and <em>italic</em> text
+        </CardDescription>
+      );
 
-  it("does not render when children is undefined", () => {
-    const { container } = render(
-      <CardDescription>{undefined}</CardDescription>
-    );
-    expect(container.firstChild).toBeInTheDocument();
-  });
+      expect(screen.getByText("Bold")).toBeInTheDocument();
+      expect(screen.getByText("italic")).toBeInTheDocument();
+    });
 
-  it("forwards ref correctly", () => {
-    const ref = React.createRef<HTMLParagraphElement>();
-    render(<CardDescription ref={ref}>Card description</CardDescription>);
+    it("handles special characters", () => {
+      render(<CardDescription>Special chars: &lt;&gt;&amp;</CardDescription>);
 
-    expect(ref.current).toBeInTheDocument();
-  });
+      const elements = screen.getAllByText((content, element) => {
+        return element?.textContent?.includes("Special chars:") || false;
+      });
+      expect(elements[0]).toBeInTheDocument();
+    });
 
-  it("renders as p element", () => {
-    render(<CardDescription>Card description</CardDescription>);
+    it("handles boolean children", () => {
+      const { container } = render(<CardDescription>{true}</CardDescription>);
+      expect(container.firstChild).toBeNull();
+    });
 
-    const descriptionElement = screen.getByTestId("card-description-root");
-    expect(descriptionElement.tagName).toBe("P");
-  });
-
-  it("renders complex children", () => {
-    render(
-      <CardDescription>
-        <strong>Bold</strong> and <em>italic</em> text
-      </CardDescription>
-    );
-
-    expect(screen.getByText("Bold")).toBeInTheDocument();
-    expect(screen.getByText("italic")).toBeInTheDocument();
+    it("handles number children", () => {
+      const { container } = render(<CardDescription>{0}</CardDescription>);
+      expect(container.firstChild).toBeNull();
+    });
   });
 });
