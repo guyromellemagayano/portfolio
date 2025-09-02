@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useRef } from "react";
 
 import { usePathname } from "next/navigation";
@@ -53,7 +51,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
         }}
-        data-header-id={internalId}
+        data-header-id={`${internalId}-header`}
         data-debug-mode={debugMode ? "true" : undefined}
         data-testid="header-root"
       >
@@ -180,7 +178,7 @@ const MemoizedHeader = React.memo(BaseHeader);
 // MAIN HEADER COMPONENT
 // ============================================================================
 
-/** A header component. */
+/** The main header component for the application. */
 const Header: HeaderComponent = setDisplayName(function Header(props) {
   const {
     children,
