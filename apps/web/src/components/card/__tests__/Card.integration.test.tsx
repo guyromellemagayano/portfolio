@@ -1,35 +1,12 @@
 import React from "react";
 
-// Mock IntersectionObserver before any imports
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock next/link to avoid IntersectionObserver issues
-vi.mock("next/link", () => {
-  const MockLink = React.forwardRef<HTMLAnchorElement, any>((props, ref) => {
-    const { href, children, ...rest } = props;
-    return React.createElement(
-      "a",
-      {
-        ref,
-        href,
-        "data-testid": "mock-next-link",
-        ...rest,
-      },
-      children
-    );
-  });
-  MockLink.displayName = "MockNextLink";
-  return { default: MockLink };
-});
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
+
+// Import test setup
+import "./setup";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -41,12 +18,41 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined) {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
       return false;
     }
     return true;
   }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
   setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer" };
+    }
+    return {};
+  }),
+  formatDateSafely: vi.fn((date, options) => {
+    if (options?.year === "numeric") {
+      return new Date().getFullYear().toString();
+    }
+    return date.toISOString();
+  }),
+  createCompoundComponent: vi.fn((displayName, component) => {
     component.displayName = displayName;
     return component;
   }),
@@ -65,7 +71,7 @@ vi.mock("../_internal", () => ({
         <a
           ref={ref}
           data-testid="card-link-root"
-          data-card-link-id={internalId}
+          data-card-link-id={`${internalId}-card-link`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -81,7 +87,7 @@ vi.mock("../_internal", () => ({
         <h3
           ref={ref}
           data-testid="card-title-root"
-          data-card-title-id={internalId}
+          data-card-title-id={`${internalId}-card-title`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -107,7 +113,7 @@ vi.mock("../_internal", () => ({
         <p
           ref={ref}
           data-testid="card-description-root"
-          data-card-description-id={internalId}
+          data-card-description-id={`${internalId}-card-description`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -123,7 +129,7 @@ vi.mock("../_internal", () => ({
         <div
           ref={ref}
           data-testid="card-cta-root"
-          data-card-cta-id={internalId}
+          data-card-cta-id={`${internalId}-card-cta`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -149,7 +155,7 @@ vi.mock("../_internal", () => ({
         <p
           ref={ref}
           data-testid="card-eyebrow-root"
-          data-card-eyebrow-id={internalId}
+          data-card-eyebrow-id={`${internalId}-card-eyebrow`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -220,11 +226,11 @@ describe("Card Integration", () => {
 
   it("renders card with debug mode enabled", () => {
     render(
-      <Card internalId="debug-card" debugMode>
+      <Card internalId="debug-card" debugMode={true}>
         <Card.Eyebrow internalId="debug-eyebrow" debugMode={true}>
           Debug Eyebrow
         </Card.Eyebrow>
-        <Card.Title internalId="debug-title" debugMode={true}>
+        <Card.Title internalId="debug-title" debugMode={true} href="#">
           Debug Title
         </Card.Title>
         <Card.Description internalId="debug-description" debugMode={true}>
@@ -263,7 +269,9 @@ describe("Card Integration", () => {
     render(
       <Card internalId="custom-card" debugMode={false}>
         <Card.Eyebrow internalId="custom-eyebrow">Eyebrow</Card.Eyebrow>
-        <Card.Title internalId="custom-title">Title</Card.Title>
+        <Card.Title internalId="custom-title" href="#">
+          Title
+        </Card.Title>
         <Card.Description internalId="custom-description">
           Description
         </Card.Description>
@@ -290,7 +298,7 @@ describe("Card Integration", () => {
   it("renders card with complex nested content", () => {
     render(
       <Card internalId="test-card" debugMode={false}>
-        <Card.Title>
+        <Card.Title href="#">
           <span>Complex</span> <strong>Title</strong>
         </Card.Title>
         <Card.Description>
@@ -314,11 +322,11 @@ describe("Card Integration", () => {
     render(
       <div>
         <Card internalId="card-1" debugMode={false}>
-          <Card.Title>Card 1</Card.Title>
+          <Card.Title href="#">Card 1</Card.Title>
           <Card.Description>Description 1</Card.Description>
         </Card>
         <Card internalId="card-2" debugMode={false}>
-          <Card.Title>Card 2</Card.Title>
+          <Card.Title href="#">Card 2</Card.Title>
           <Card.Description>Description 2</Card.Description>
         </Card>
       </div>
@@ -337,7 +345,7 @@ describe("Card Integration", () => {
     render(
       <Card internalId="test-card" debugMode={false}>
         <Card.Eyebrow>{null}</Card.Eyebrow>
-        <Card.Title>{undefined}</Card.Title>
+        <Card.Title href="#">{undefined}</Card.Title>
         <Card.Description>{false}</Card.Description>
         <Card.Cta>{0}</Card.Cta>
       </Card>
@@ -350,7 +358,7 @@ describe("Card Integration", () => {
   it("renders server-side by default", () => {
     render(
       <Card internalId="server-card" debugMode={false}>
-        <Card.Title>Server Card</Card.Title>
+        <Card.Title href="#">Server Card</Card.Title>
         <Card.Description>This should render on the server</Card.Description>
       </Card>
     );
@@ -361,34 +369,29 @@ describe("Card Integration", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders client-side when isClient is true", () => {
+  it("renders with memoization when isMemoized is true", () => {
     render(
-      <Card internalId="client-card" debugMode={false} isClient={true}>
-        <Card.Title>Client Card</Card.Title>
-        <Card.Description>This should render on the client</Card.Description>
-      </Card>
-    );
-
-    expect(screen.getByText("Client Card")).toBeInTheDocument();
-    expect(
-      screen.getByText("This should render on the client")
-    ).toBeInTheDocument();
-  });
-
-  it("renders memoized client-side when both flags are true", () => {
-    render(
-      <Card
-        componentId="memoized-card"
-        isDebugMode={false}
-        isClient={true}
-        isMemoized={true}
-      >
-        <Card.Title>Memoized Client Card</Card.Title>
+      <Card internalId="memoized-card" debugMode={false} isMemoized={true}>
+        <Card.Title href="#">Memoized Card</Card.Title>
         <Card.Description>This should be memoized</Card.Description>
       </Card>
     );
 
-    expect(screen.getByText("Memoized Client Card")).toBeInTheDocument();
+    expect(screen.getByText("Memoized Card")).toBeInTheDocument();
     expect(screen.getByText("This should be memoized")).toBeInTheDocument();
+  });
+
+  it("renders with memoization and debug mode", () => {
+    render(
+      <Card internalId="memoized-debug-card" debugMode={true} isMemoized={true}>
+        <Card.Title href="#">Memoized Debug Card</Card.Title>
+        <Card.Description>This should be memoized with debug</Card.Description>
+      </Card>
+    );
+
+    expect(screen.getByText("Memoized Debug Card")).toBeInTheDocument();
+    expect(
+      screen.getByText("This should be memoized with debug")
+    ).toBeInTheDocument();
   });
 });
