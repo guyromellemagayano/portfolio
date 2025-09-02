@@ -89,7 +89,7 @@ describe("HeaderThemeToggle", () => {
 
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
-      render(<HeaderThemeToggle internalId="custom-id" />);
+      render(<HeaderThemeToggle _internalId="custom-id" />);
 
       const button = screen.getByTestId("header-theme-toggle-root");
       expect(button).toHaveAttribute(
@@ -98,15 +98,15 @@ describe("HeaderThemeToggle", () => {
       );
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderThemeToggle />);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderThemeToggle _internalId="test-id" />);
 
       const button = screen.getByTestId("header-theme-toggle-root");
       expect(button).toHaveAttribute("data-header-theme-toggle-id", "test-id");
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderThemeToggle debugMode={true} />);
+      render(<HeaderThemeToggle _debugMode={true} />);
 
       const button = screen.getByTestId("header-theme-toggle-root");
       expect(button).toHaveAttribute("data-debug-mode", "true");
@@ -246,8 +246,8 @@ describe("HeaderThemeToggle", () => {
       render(
         <HeaderThemeToggle
           className="custom-class"
-          internalId="test-id"
-          debugMode={true}
+          _internalId="test-id"
+          _debugMode={true}
           aria-label="Custom theme toggle"
         />
       );

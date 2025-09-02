@@ -106,7 +106,7 @@ describe("HeaderDesktopNavItem", () => {
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
       render(
-        <HeaderDesktopNavItem href="/about" internalId="custom-id">
+        <HeaderDesktopNavItem href="/about" _internalId="custom-id">
           About
         </HeaderDesktopNavItem>
       );
@@ -118,8 +118,8 @@ describe("HeaderDesktopNavItem", () => {
       );
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderDesktopNavItem href="/about" _internalId="test-id">About</HeaderDesktopNavItem>);
 
       const item = screen.getByTestId("header-desktop-nav-item-root");
       expect(item).toHaveAttribute(
@@ -130,7 +130,7 @@ describe("HeaderDesktopNavItem", () => {
 
     it("applies data-debug-mode when debugMode is true", () => {
       render(
-        <HeaderDesktopNavItem href="/about" debugMode={true}>
+        <HeaderDesktopNavItem href="/about" _debugMode={true}>
           About
         </HeaderDesktopNavItem>
       );
@@ -393,8 +393,8 @@ describe("HeaderDesktopNavItem", () => {
         <HeaderDesktopNavItem
           href="/about"
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           target="_blank"
           title="About page"
           aria-label="About page"

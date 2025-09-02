@@ -1,13 +1,5 @@
-// Import react-intersection-observer test utilities
-import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
-
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
-// Mock Next.js use-intersection hook
-vi.mock("next/src/client/use-intersection", () => ({
-  default: vi.fn(() => ({ ref: vi.fn(), inView: true, entry: null })),
-}));
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
@@ -35,7 +27,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock next/link
@@ -58,13 +49,6 @@ describe("HeaderMobileNavItem", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
-  });
-
-  beforeEach(() => {
-    cleanup();
-    vi.clearAllMocks();
-    // Setup IntersectionObserver mock using react-intersection-observer
-    mockAllIsIntersecting(true);
   });
 
   describe("Basic Rendering", () => {
@@ -95,7 +79,7 @@ describe("HeaderMobileNavItem", () => {
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
       render(
-        <HeaderMobileNavItem href="/about" internalId="custom-id">
+        <HeaderMobileNavItem href="/about" _internalId="custom-id">
           About
         </HeaderMobileNavItem>
       );
@@ -107,8 +91,8 @@ describe("HeaderMobileNavItem", () => {
       );
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderMobileNavItem href="/about" _internalId="test-id">About</HeaderMobileNavItem>);
 
       const item = screen.getByTestId("mobile-header-nav-item-root");
       expect(item).toHaveAttribute("data-mobile-header-nav-item-id", "test-id");
@@ -116,7 +100,7 @@ describe("HeaderMobileNavItem", () => {
 
     it("applies data-debug-mode when debugMode is true", () => {
       render(
-        <HeaderMobileNavItem href="/about" debugMode={true}>
+        <HeaderMobileNavItem href="/about" _debugMode={true}>
           About
         </HeaderMobileNavItem>
       );
@@ -381,8 +365,8 @@ describe("HeaderMobileNavItem", () => {
         <HeaderMobileNavItem
           href="/about"
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           target="_blank"
           title="About page"
           aria-label="About page"
