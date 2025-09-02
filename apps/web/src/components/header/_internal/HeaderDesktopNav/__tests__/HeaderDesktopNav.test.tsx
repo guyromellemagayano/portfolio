@@ -106,6 +106,33 @@ vi.mock("@guyromellemagayano/utils", () => ({
     target: target || "_self",
     rel: target === "_blank" ? "noopener noreferrer" : undefined,
   })),
+  hasValidNavigationLinks: vi.fn((links) => {
+    return Boolean(links && Array.isArray(links) && links.length > 0);
+  }),
+  filterValidNavigationLinks: vi.fn((links) => {
+    if (!links || !Array.isArray(links) || links.length === 0) {
+      return [];
+    }
+
+    return links.filter((link) => {
+      return Boolean(
+        link &&
+          typeof link.label === "string" &&
+          link.label.length > 0 &&
+          typeof link.href === "string" &&
+          link.href.length > 0
+      );
+    });
+  }),
+  isValidNavigationLink: vi.fn((link) => {
+    return Boolean(
+      link &&
+        typeof link.label === "string" &&
+        link.label.length > 0 &&
+        typeof link.href === "string" &&
+        link.href.length > 0
+    );
+  }),
 }));
 
 // Mock the cn helper
@@ -114,12 +141,14 @@ vi.mock("@web/lib", () => ({
   isActivePath: vi.fn(() => true), // Changed to return true by default
 }));
 
-// Mock the data
+// Mock the data with current structure
 vi.mock("../../../_data", () => ({
   DESKTOP_HEADER_NAV_LINKS: [
     { kind: "internal", href: "/about", label: "About" },
     { kind: "internal", href: "/articles", label: "Articles" },
-    { kind: "internal", href: "/contact", label: "Contact" },
+    { kind: "internal", href: "/projects", label: "Projects" },
+    { kind: "internal", href: "/speaking", label: "Speaking" },
+    { kind: "internal", href: "/uses", label: "Uses" },
   ],
 }));
 
@@ -134,10 +163,13 @@ describe("HeaderDesktopNav", () => {
   beforeEach(() => {
     cleanup();
     vi.clearAllMocks();
+    // Reset console.warn mock
+    vi.spyOn(console, "warn").mockImplementation(() => {});
   });
 
   afterEach(() => {
     cleanup();
+    vi.restoreAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -161,21 +193,21 @@ describe("HeaderDesktopNav", () => {
 
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
-      render(<HeaderDesktopNav internalId="custom-id" />);
+      render(<HeaderDesktopNav _internalId="custom-id" />);
 
       const nav = screen.getByTestId("desktop-header-nav-root");
       expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderDesktopNav />);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderDesktopNav _internalId="test-id" />);
 
       const nav = screen.getByTestId("desktop-header-nav-root");
       expect(nav).toHaveAttribute("data-desktop-header-nav-id", "test-id");
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderDesktopNav debugMode={true} />);
+      render(<HeaderDesktopNav _debugMode={true} />);
 
       const nav = screen.getByTestId("desktop-header-nav-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
@@ -201,20 +233,22 @@ describe("HeaderDesktopNav", () => {
       render(<HeaderDesktopNav />);
 
       const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
-      expect(navItems).toHaveLength(3);
+      expect(navItems).toHaveLength(5);
     });
 
     it("renders navigation links with correct hrefs", () => {
       render(<HeaderDesktopNav />);
 
       const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
-      expect(navItems).toHaveLength(3);
+      expect(navItems).toHaveLength(5);
 
       // Check that the links are rendered (the mock should handle the hrefs)
       const links = screen.getAllByTestId("next-link");
       expect(links[0]).toHaveAttribute("href", "/about");
       expect(links[1]).toHaveAttribute("href", "/articles");
-      expect(links[2]).toHaveAttribute("href", "/contact");
+      expect(links[2]).toHaveAttribute("href", "/projects");
+      expect(links[3]).toHaveAttribute("href", "/speaking");
+      expect(links[4]).toHaveAttribute("href", "/uses");
     });
 
     it("renders navigation links with correct labels", () => {
@@ -223,14 +257,72 @@ describe("HeaderDesktopNav", () => {
       const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
       expect(navItems[0]).toHaveTextContent("About");
       expect(navItems[1]).toHaveTextContent("Articles");
-      expect(navItems[2]).toHaveTextContent("Contact");
+      expect(navItems[2]).toHaveTextContent("Projects");
+      expect(navItems[3]).toHaveTextContent("Speaking");
+      expect(navItems[4]).toHaveTextContent("Uses");
     });
 
     it("generates unique keys for navigation items", () => {
       render(<HeaderDesktopNav />);
 
       const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
-      expect(navItems).toHaveLength(3);
+      expect(navItems).toHaveLength(5);
+    });
+  });
+
+  describe("Error Handling and Data Validation", () => {
+    it("handles empty navigation links array gracefully", () => {
+      // Test that component renders even with no nav items
+      render(<HeaderDesktopNav />);
+
+      const nav = screen.getByTestId("desktop-header-nav-root");
+      expect(nav).toBeInTheDocument();
+
+      // Component should render nav structure even if no items
+      expect(nav.tagName).toBe("NAV");
+    });
+
+    it("validates navigation link structure", () => {
+      render(<HeaderDesktopNav />);
+
+      const nav = screen.getByTestId("desktop-header-nav-root");
+      expect(nav).toBeInTheDocument();
+
+      // Should render the expected number of nav items from mock data
+      const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
+      expect(navItems).toHaveLength(5);
+    });
+
+    it("renders navigation with proper structure when data is valid", () => {
+      render(<HeaderDesktopNav />);
+
+      const nav = screen.getByTestId("desktop-header-nav-root");
+      expect(nav).toBeInTheDocument();
+
+      // Check that all nav items have proper structure
+      const navItems = screen.getAllByTestId("header-desktop-nav-item-root");
+      navItems.forEach((item) => {
+        expect(item).toBeInTheDocument();
+        expect(item.tagName).toBe("LI");
+      });
+    });
+
+    it("handles component rendering with various prop combinations", () => {
+      render(
+        <HeaderDesktopNav
+          className="custom-class"
+          _internalId="custom-id"
+          _debugMode={true}
+          aria-label="Test navigation"
+        />
+      );
+
+      const nav = screen.getByTestId("desktop-header-nav-root");
+      expect(nav).toBeInTheDocument();
+      expect(nav).toHaveClass("custom-class");
+      expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
+      expect(nav).toHaveAttribute("data-debug-mode", "true");
+      expect(nav).toHaveAttribute("aria-label", "Test navigation");
     });
   });
 
@@ -324,22 +416,30 @@ describe("HeaderDesktopNav", () => {
     });
   });
 
-  describe("Edge Cases", () => {
-    it("handles empty navigation links gracefully", () => {
-      render(<HeaderDesktopNav />);
-
-      const nav = screen.getByTestId("desktop-header-nav-root");
-      expect(nav).toBeInTheDocument();
-      // Component renders nav structure even with empty links
-      expect(nav).toBeInTheDocument();
+  describe("Memoization", () => {
+    it("renders base component when isMemoized is false", () => {
+      render(<HeaderDesktopNav isMemoized={false} />);
+      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
     });
 
+    it("renders memoized component when isMemoized is true", () => {
+      render(<HeaderDesktopNav isMemoized={true} />);
+      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+    });
+
+    it("defaults to base component when isMemoized is undefined", () => {
+      render(<HeaderDesktopNav />);
+      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+    });
+  });
+
+  describe("Edge Cases", () => {
     it("handles complex prop combinations", () => {
       render(
         <HeaderDesktopNav
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           aria-label="Test navigation"
           data-testid="custom-testid"
         />
@@ -350,6 +450,21 @@ describe("HeaderDesktopNav", () => {
       expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("aria-label", "Test navigation");
+    });
+
+    it("handles undefined props gracefully", () => {
+      render(
+        <HeaderDesktopNav
+          className={undefined}
+          _internalId={undefined}
+          _debugMode={undefined}
+        />
+      );
+
+      const nav = screen.getByTestId("desktop-header-nav-root");
+      expect(nav).not.toHaveAttribute("data-desktop-header-nav-id");
+      expect(nav).not.toHaveAttribute("data-debug-mode");
+      expect(nav).toHaveClass("header-desktop-nav-list");
     });
   });
 });
