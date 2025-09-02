@@ -3,7 +3,6 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   getLinkTargetProps,
   hasMeaningfulText,
@@ -12,10 +11,20 @@ import {
 
 import { cn, isActivePath } from "@web/lib";
 
-import { type CommonNavItemProps } from "../../_data";
 import styles from "./HeaderDesktopNavItem.module.css";
 
-interface HeaderDesktopNavItemProps extends CommonNavItemProps {}
+interface HeaderDesktopNavItemProps extends React.ComponentProps<"li"> {
+  /** Link href */
+  href?: React.ComponentProps<typeof Link>["href"];
+  /** Link target */
+  target?: string;
+  /** Link title */
+  title?: string;
+  /** Internal component ID (managed by parent) */
+  _internalId?: string;
+  /** Internal debug mode (managed by parent) */
+  _debugMode?: boolean;
+}
 type HeaderDesktopNavItemComponent = React.FC<HeaderDesktopNavItemProps>;
 
 /** A desktop navigation item component for the header. */
@@ -26,18 +35,17 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
       href,
       target = "_self",
       title = "",
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       ...rest
     } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+    // Use internal props directly - no need for useComponentId in sub-components
+    const id = _internalId;
+    const isDebugMode = _debugMode;
 
     const pathname = usePathname();
-    const isActive = isActivePath(pathname, href);
+    const isActive = isActivePath(pathname, href || "");
 
     if ((!hasMeaningfulText(children) && !hasMeaningfulText(href)) || !isActive)
       return null;
@@ -52,7 +60,7 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
         data-testid="header-desktop-nav-item-root"
       >
         <Link
-          href={href}
+          href={href || "#"}
           target={linkTargetProps.target}
           rel={linkTargetProps.rel}
           title={title}

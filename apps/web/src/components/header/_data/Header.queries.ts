@@ -4,9 +4,17 @@ import {
   HEADER_COMPONENT_LABELS,
   HEADER_COMPONENT_NAV_LINKS,
   type HeaderLink,
-} from "@web/components/header/_data/Header.data";
+} from "./Header.data";
+
+// ============================================================================
+// CONSTANTS
+// ============================================================================
 
 export const HEADER_TAG = "header";
+
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
 
 interface HeaderData {
   /** Brand name used by the header */
@@ -18,6 +26,10 @@ interface HeaderData {
   /** Optional avatar image URL override */
   avatarUrl?: string;
 }
+
+// ============================================================================
+// QUERIES
+// ============================================================================
 
 /** Replace this with your CMS call when ready. */
 async function fetchHeaderRaw(): Promise<HeaderData> {
