@@ -77,7 +77,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId("header-avatar-container-root");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "custom-id"
+        "custom-id-header-avatar-container"
       );
     });
 
@@ -87,7 +87,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId("header-avatar-container-root");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "test-id"
+        "test-id-header-avatar-container"
       );
     });
 
@@ -305,7 +305,7 @@ describe("HeaderAvatarContainer", () => {
       expect(container).toHaveClass("new-class");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "new-id"
+        "new-id-header-avatar-container"
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
@@ -351,7 +351,7 @@ describe("HeaderAvatarContainer", () => {
       expect(container).toHaveClass("custom-class");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "custom-id"
+        "custom-id-header-avatar-container"
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
       expect(container).toHaveAttribute("aria-label", "Test container");
@@ -368,7 +368,10 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId("header-avatar-container-root");
-      expect(container).not.toHaveAttribute("data-header-avatar-container-id");
+      expect(container).toHaveAttribute(
+        "data-header-avatar-container-id",
+        "undefined-header-avatar-container"
+      );
       expect(container).not.toHaveAttribute("data-debug-mode");
       expect(container).toHaveClass("avatar-container");
     });

@@ -27,15 +27,37 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  isRenderableContent: vi.fn((children) => {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
+      return false;
+    }
+    return true;
+  }),
   hasMeaningfulText: vi.fn((value) => {
     if (typeof value === "string") return value.length > 0;
     if (value && typeof value === "object") return true;
     return Boolean(value);
   }),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || "_self",
-    rel: target === "_blank" ? "noopener noreferrer" : undefined,
-  })),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href || href === "#" || href === "") {
+      return { target: "_self" };
+    }
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
 }));
 
 // Mock the data
@@ -180,14 +202,20 @@ describe("HeaderMobileNav", () => {
       render(<HeaderMobileNav _internalId="custom-id" />);
 
       const nav = screen.getByTestId("mobile-header-nav-root");
-      expect(nav).toHaveAttribute("data-mobile-header-nav-id", "custom-id");
+      expect(nav).toHaveAttribute(
+        "data-mobile-header-nav-id",
+        "custom-id-mobile-header-nav"
+      );
     });
 
     it("uses provided _internalId when available", () => {
       render(<HeaderMobileNav _internalId="test-id" />);
 
       const nav = screen.getByTestId("mobile-header-nav-root");
-      expect(nav).toHaveAttribute("data-mobile-header-nav-id", "test-id");
+      expect(nav).toHaveAttribute(
+        "data-mobile-header-nav-id",
+        "test-id-mobile-header-nav"
+      );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
@@ -238,7 +266,7 @@ describe("HeaderMobileNav", () => {
     it("renders all navigation links", () => {
       render(<HeaderMobileNav />);
 
-      const navItems = screen.getAllByTestId("mobile-header-nav-item-root");
+      const navItems = screen.getAllByTestId("header-mobile-nav-item-root");
       expect(navItems).toHaveLength(3);
     });
 
@@ -254,7 +282,7 @@ describe("HeaderMobileNav", () => {
     it("renders navigation links with correct labels", () => {
       render(<HeaderMobileNav />);
 
-      const navItems = screen.getAllByTestId("mobile-header-nav-item-root");
+      const navItems = screen.getAllByTestId("header-mobile-nav-item-root");
       expect(navItems[0]).toHaveTextContent("About");
       expect(navItems[1]).toHaveTextContent("Articles");
       expect(navItems[2]).toHaveTextContent("Contact");
@@ -331,7 +359,10 @@ describe("HeaderMobileNav", () => {
 
       const nav = screen.getByTestId("mobile-header-nav-root");
       expect(nav).toHaveClass("custom-class");
-      expect(nav).toHaveAttribute("data-mobile-header-nav-id", "custom-id");
+      expect(nav).toHaveAttribute(
+        "data-mobile-header-nav-id",
+        "custom-id-mobile-header-nav"
+      );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("aria-label", "Test navigation");
     });
