@@ -151,14 +151,14 @@ describe("Header", () => {
       render(<Header internalId="custom-id" />);
 
       const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "custom-id");
+      expect(header).toHaveAttribute("data-header-id", "custom-id-header");
     });
 
     it("generates ID when internalId is not provided", () => {
       render(<Header />);
 
       const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "test-id");
+      expect(header).toHaveAttribute("data-header-id", "test-id-header");
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
@@ -345,7 +345,7 @@ describe("Header", () => {
       const header = screen.getByTestId("header-root");
       expect(header).toBeInTheDocument();
       expect(header).toHaveClass("custom-class");
-      expect(header).toHaveAttribute("data-header-id", "custom-id");
+      expect(header).toHaveAttribute("data-header-id", "custom-id-header");
       expect(header).toHaveAttribute("data-debug-mode", "true");
       expect(header).toHaveAttribute("aria-label", "Test header");
     });

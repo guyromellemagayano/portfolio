@@ -85,7 +85,9 @@ vi.mock("next/link", () => {
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    id: options.internalId
+      ? `${options.internalId}-header-desktop-nav`
+      : "undefined-header-desktop-nav",
     isDebugMode: options.debugMode || false,
   })),
 }));
@@ -95,6 +97,19 @@ vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
+  }),
+  isRenderableContent: vi.fn((children) => {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
+      return false;
+    }
+    return true;
   }),
   hasMeaningfulText: vi.fn((value) => {
     // Return true for any non-empty string or valid content
@@ -175,55 +190,61 @@ describe("HeaderDesktopNav", () => {
   describe("Basic Rendering", () => {
     it("renders without crashing", () => {
       render(<HeaderDesktopNav />);
-      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+      expect(screen.getByTestId("header-desktop-nav-root")).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderDesktopNav />);
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
     });
 
     it("renders with custom className", () => {
       render(<HeaderDesktopNav className="custom-class" />);
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveClass("custom-class");
     });
   });
 
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
-      render(<HeaderDesktopNav _internalId="custom-id" />);
+      render(<HeaderDesktopNav internalId="custom-id" />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
-      expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
+      const nav = screen.getByTestId("header-desktop-nav-root");
+      expect(nav).toHaveAttribute(
+        "data-header-desktop-nav-id",
+        "custom-id-header-desktop-nav"
+      );
     });
 
     it("uses provided _internalId when available", () => {
-      render(<HeaderDesktopNav _internalId="test-id" />);
+      render(<HeaderDesktopNav internalId="test-id" />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
-      expect(nav).toHaveAttribute("data-desktop-header-nav-id", "test-id");
+      const nav = screen.getByTestId("header-desktop-nav-root");
+      expect(nav).toHaveAttribute(
+        "data-header-desktop-nav-id",
+        "test-id-header-desktop-nav"
+      );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderDesktopNav _debugMode={true} />);
+      render(<HeaderDesktopNav debugMode={true} />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<HeaderDesktopNav debugMode={false} />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -275,7 +296,7 @@ describe("HeaderDesktopNav", () => {
       // Test that component renders even with no nav items
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
 
       // Component should render nav structure even if no items
@@ -285,7 +306,7 @@ describe("HeaderDesktopNav", () => {
     it("validates navigation link structure", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
 
       // Should render the expected number of nav items from mock data
@@ -296,7 +317,7 @@ describe("HeaderDesktopNav", () => {
     it("renders navigation with proper structure when data is valid", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
 
       // Check that all nav items have proper structure
@@ -311,16 +332,19 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className="custom-class"
-          _internalId="custom-id"
-          _debugMode={true}
+          internalId="custom-id"
+          debugMode={true}
           aria-label="Test navigation"
         />
       );
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
       expect(nav).toHaveClass("custom-class");
-      expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
+      expect(nav).toHaveAttribute(
+        "data-header-desktop-nav-id",
+        "custom-id-header-desktop-nav"
+      );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("aria-label", "Test navigation");
     });
@@ -330,14 +354,14 @@ describe("HeaderDesktopNav", () => {
     it("renders correct HTML structure", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav.tagName).toBe("NAV");
     });
 
     it("renders with proper semantic structure", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
     });
   });
@@ -354,7 +378,7 @@ describe("HeaderDesktopNav", () => {
       const ref = vi.fn();
       render(<HeaderDesktopNav ref={ref} />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(ref).toHaveBeenCalledWith(nav);
     });
   });
@@ -363,7 +387,7 @@ describe("HeaderDesktopNav", () => {
     it("renders with proper accessibility attributes", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toBeInTheDocument();
     });
 
@@ -372,7 +396,7 @@ describe("HeaderDesktopNav", () => {
         <HeaderDesktopNav aria-label="Desktop navigation" role="navigation" />
       );
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute("aria-label", "Desktop navigation");
       expect(nav).toHaveAttribute("role", "navigation");
     });
@@ -382,14 +406,14 @@ describe("HeaderDesktopNav", () => {
     it("applies CSS module classes correctly", () => {
       render(<HeaderDesktopNav />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveClass("header-desktop-nav-list");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderDesktopNav className="custom-class" />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveClass("header-desktop-nav-list", "custom-class");
     });
   });
@@ -398,11 +422,11 @@ describe("HeaderDesktopNav", () => {
     it("renders without unnecessary re-renders", () => {
       const { rerender } = render(<HeaderDesktopNav />);
 
-      const initialNav = screen.getByTestId("desktop-header-nav-root");
+      const initialNav = screen.getByTestId("header-desktop-nav-root");
 
       rerender(<HeaderDesktopNav />);
 
-      const updatedNav = screen.getByTestId("desktop-header-nav-root");
+      const updatedNav = screen.getByTestId("header-desktop-nav-root");
       expect(updatedNav).toBe(initialNav);
     });
 
@@ -411,7 +435,7 @@ describe("HeaderDesktopNav", () => {
 
       rerender(<HeaderDesktopNav className="new-class" />);
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveClass("new-class");
     });
   });
@@ -419,17 +443,17 @@ describe("HeaderDesktopNav", () => {
   describe("Memoization", () => {
     it("renders base component when isMemoized is false", () => {
       render(<HeaderDesktopNav isMemoized={false} />);
-      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+      expect(screen.getByTestId("header-desktop-nav-root")).toBeInTheDocument();
     });
 
     it("renders memoized component when isMemoized is true", () => {
       render(<HeaderDesktopNav isMemoized={true} />);
-      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+      expect(screen.getByTestId("header-desktop-nav-root")).toBeInTheDocument();
     });
 
     it("defaults to base component when isMemoized is undefined", () => {
       render(<HeaderDesktopNav />);
-      expect(screen.getByTestId("desktop-header-nav-root")).toBeInTheDocument();
+      expect(screen.getByTestId("header-desktop-nav-root")).toBeInTheDocument();
     });
   });
 
@@ -438,16 +462,19 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className="custom-class"
-          _internalId="custom-id"
-          _debugMode={true}
+          internalId="custom-id"
+          debugMode={true}
           aria-label="Test navigation"
           data-testid="custom-testid"
         />
       );
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
+      const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveClass("custom-class");
-      expect(nav).toHaveAttribute("data-desktop-header-nav-id", "custom-id");
+      expect(nav).toHaveAttribute(
+        "data-header-desktop-nav-id",
+        "custom-id-header-desktop-nav"
+      );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("aria-label", "Test navigation");
     });
@@ -456,13 +483,16 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className={undefined}
-          _internalId={undefined}
-          _debugMode={undefined}
+          internalId={undefined}
+          debugMode={undefined}
         />
       );
 
-      const nav = screen.getByTestId("desktop-header-nav-root");
-      expect(nav).not.toHaveAttribute("data-desktop-header-nav-id");
+      const nav = screen.getByTestId("header-desktop-nav-root");
+      expect(nav).toHaveAttribute(
+        "data-header-desktop-nav-id",
+        "undefined-header-desktop-nav"
+      );
       expect(nav).not.toHaveAttribute("data-debug-mode");
       expect(nav).toHaveClass("header-desktop-nav-list");
     });
