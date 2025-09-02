@@ -1,8 +1,9 @@
-import { vi } from "vitest";
+// Import react-intersection-observer test utilities
+import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 
-// Mock IntersectionObserver globally
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
+import { beforeEach } from "vitest";
+
+// Setup IntersectionObserver mock using react-intersection-observer
+beforeEach(() => {
+  mockAllIsIntersecting(true);
+});

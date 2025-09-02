@@ -1,68 +1,112 @@
 import React from "react";
 
-import Link from "next/link";
-
-import { Span } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
-  getLinkTargetProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { cn } from "@web/lib";
+
 import styles from "./CardLink.module.css";
+import { CardLinkCustom } from "./CardLinkCustom";
+
+// ============================================================================
+// BASE CARD LINK COMPONENT
+// ============================================================================
 
 interface CardLinkProps
   extends React.ComponentProps<"div">,
     Pick<
-      React.ComponentPropsWithoutRef<typeof Link>,
+      React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
       "href" | "target" | "title"
     >,
     ComponentProps {}
+type CardLinkComponent = React.FC<CardLinkProps>;
 
-/** A card link component that can optionally be wrapped in a link for navigation */
-const CardLink: React.FC<CardLinkProps> = setDisplayName(
-  function CardLink(props) {
+/** A background and clickable wrapper for card links. */
+const BaseCardLink: CardLinkComponent = setDisplayName(
+  function BaseCardLink(props) {
     const {
       children,
-      href,
+      className,
+      href = "#",
       target = "_self",
       title = "",
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       ...rest
     } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
-
-    if (!isRenderableContent(children)) return null;
-
     const element = (
-      <div
-        {...rest}
-        data-card-link-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="card-link-root"
-      >
-        <div className={styles.cardLinkBackground} />
+      <>
+        <div
+          {...rest}
+          className={cn(styles.cardLinkBackground, className)}
+          data-card-link-id={`${_internalId}-card-link`}
+          data-debug-mode={_debugMode ? "true" : undefined}
+          data-testid={(rest as any)["data-testid"] || "card-link-root"}
+        />
         {href && isValidLink(href) ? (
-          <Link href={href} {...getLinkTargetProps(href, target)} title={title}>
-            <Span className={styles.cardLinkClickableArea} />
-            <Span className={styles.cardLinkContent}>{children}</Span>
-          </Link>
+          <CardLinkCustom
+            href={href}
+            target={target}
+            title={title}
+            _internalId={_internalId}
+            _debugMode={_debugMode}
+          >
+            <span className={styles.cardLinkClickableArea} />
+            <span className={styles.cardLinkContent}>{children}</span>
+          </CardLinkCustom>
         ) : (
           children
         )}
-      </div>
+      </>
     );
 
     return element;
   }
 );
+
+// ============================================================================
+// MEMOIZED CARD LINK COMPONENT
+// ============================================================================
+
+/** A memoized card link component. */
+const MemoizedCardLink = React.memo(BaseCardLink);
+
+// ============================================================================
+// MAIN CARD LINK COMPONENT
+// ============================================================================
+
+/** A card link component that can optionally be wrapped in a link for navigation */
+const CardLink: CardLinkComponent = setDisplayName(function CardLink(props) {
+  const {
+    children,
+    isMemoized = false,
+    _internalId,
+    _debugMode,
+    ...rest
+  } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId: _internalId,
+    debugMode: _debugMode,
+  });
+
+  if (!isRenderableContent(children)) return null;
+
+  const updatedProps = {
+    ...rest,
+    _internalId: id,
+    _debugMode: isDebugMode,
+  };
+
+  const Component = isMemoized ? MemoizedCardLink : BaseCardLink;
+  const element = <Component {...updatedProps}>{children}</Component>;
+  return element;
+});
 
 export { CardLink };
