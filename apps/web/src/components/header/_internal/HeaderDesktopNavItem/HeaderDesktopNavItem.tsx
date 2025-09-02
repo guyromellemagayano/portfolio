@@ -1,11 +1,15 @@
+"use client";
+
 import React from "react";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
+  type ComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
+  isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -13,36 +17,31 @@ import { cn, isActivePath } from "@web/lib";
 
 import styles from "./HeaderDesktopNavItem.module.css";
 
-interface HeaderDesktopNavItemProps extends React.ComponentProps<"li"> {
+// ============================================================================
+// BASE HEADER DESKTOP NAV ITEM COMPONENT
+// ============================================================================
+
+interface HeaderDesktopNavItemProps
+  extends React.ComponentProps<"li">,
+    Pick<React.ComponentProps<typeof Link>, "target" | "title">,
+    ComponentProps {
   /** Link href */
   href?: React.ComponentProps<typeof Link>["href"];
-  /** Link target */
-  target?: string;
-  /** Link title */
-  title?: string;
-  /** Internal component ID (managed by parent) */
-  _internalId?: string;
-  /** Internal debug mode (managed by parent) */
-  _debugMode?: boolean;
 }
 type HeaderDesktopNavItemComponent = React.FC<HeaderDesktopNavItemProps>;
 
 /** A desktop navigation item component for the header. */
-const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
-  function HeaderDesktopNavItem(props) {
+const BaseHeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
+  function BaseHeaderDesktopNavItem(props) {
     const {
       children,
-      href,
+      href = "#",
       target = "_self",
       title = "",
       _internalId,
       _debugMode,
       ...rest
     } = props;
-
-    // Use internal props directly - no need for useComponentId in sub-components
-    const id = _internalId;
-    const isDebugMode = _debugMode;
 
     const pathname = usePathname();
     const isActive = isActivePath(pathname, href || "");
@@ -55,12 +54,12 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
     const element = (
       <li
         {...rest}
-        data-header-desktop-nav-item-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-header-desktop-nav-item-id={`${_internalId}-header-desktop-nav-item`}
+        data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="header-desktop-nav-item-root"
       >
         <Link
-          href={href || "#"}
+          href={href}
           target={linkTargetProps.target}
           rel={linkTargetProps.rel}
           title={title}
@@ -79,6 +78,44 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
       </li>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED HEADER DESKTOP NAV ITEM COMPONENT
+// ============================================================================
+
+/** A memoized desktop navigation item component. */
+const MemoizedHeaderDesktopNavItem = React.memo(BaseHeaderDesktopNavItem);
+
+// ============================================================================
+// MAIN HEADER DESKTOP NAV ITEM COMPONENT
+// ============================================================================
+
+/** A desktop navigation item component for the header. */
+const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
+  function HeaderDesktopNavItem(props) {
+    const {
+      children,
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
+
+    if (!isRenderableContent(children)) return null;
+
+    const updatedProps = {
+      _internalId,
+      _debugMode,
+      ...rest,
+    };
+
+    const Component = isMemoized
+      ? MemoizedHeaderDesktopNavItem
+      : BaseHeaderDesktopNavItem;
+    const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
 );

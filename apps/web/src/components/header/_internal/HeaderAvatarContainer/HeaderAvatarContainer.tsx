@@ -1,6 +1,6 @@
 import React from "react";
 
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -10,14 +10,9 @@ import styles from "./HeaderAvatarContainer.module.css";
 // BASE HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-interface HeaderAvatarContainerProps extends React.ComponentProps<"div"> {
-  /** Whether the component is memoized */
-  isMemoized?: boolean;
-  /** Internal component ID (managed by parent) */
-  _internalId?: string;
-  /** Internal debug mode (managed by parent) */
-  _debugMode?: boolean;
-}
+interface HeaderAvatarContainerProps
+  extends React.ComponentProps<"div">,
+    ComponentProps {}
 type HeaderAvatarContainerComponent = React.FC<HeaderAvatarContainerProps>;
 
 /** A container `div` for the `header` avatar, providing styling and debug attributes. */
@@ -29,7 +24,7 @@ const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
       <div
         {...rest}
         className={cn(styles.avatarContainer, className)}
-        data-header-avatar-container-id={_internalId}
+        data-header-avatar-container-id={`${_internalId}-header-avatar-container`}
         data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="header-avatar-container-root"
       />
