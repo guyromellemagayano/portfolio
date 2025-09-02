@@ -19,6 +19,19 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href || href === "#" || href === "") {
+      return { target: "_self" };
+    }
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
 }));
 
 // Mock the cn helper
@@ -121,14 +134,20 @@ describe("HeaderAvatar", () => {
       render(<HeaderAvatar _internalId="custom-id" />);
 
       const avatar = screen.getByTestId("header-avatar-root");
-      expect(avatar).toHaveAttribute("data-header-avatar-id", "custom-id");
+      expect(avatar).toHaveAttribute(
+        "data-header-avatar-id",
+        "custom-id-header-avatar"
+      );
     });
 
     it("uses provided _internalId when available", () => {
       render(<HeaderAvatar _internalId="test-id" />);
 
       const avatar = screen.getByTestId("header-avatar-root");
-      expect(avatar).toHaveAttribute("data-header-avatar-id", "test-id");
+      expect(avatar).toHaveAttribute(
+        "data-header-avatar-id",
+        "test-id-header-avatar"
+      );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
@@ -210,7 +229,7 @@ describe("HeaderAvatar", () => {
 
       const link = screen.getByTestId("header-avatar-root");
       expect(link).toHaveAttribute("target", "_blank");
-      expect(link).toHaveAttribute("rel", "noopener");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
 
@@ -382,7 +401,10 @@ describe("HeaderAvatar", () => {
       const image = screen.getByTestId("next-image");
 
       expect(avatar).toHaveClass("custom-class");
-      expect(avatar).toHaveAttribute("data-header-avatar-id", "custom-id");
+      expect(avatar).toHaveAttribute(
+        "data-header-avatar-id",
+        "custom-id-header-avatar"
+      );
       expect(avatar).toHaveAttribute("data-debug-mode", "true");
       expect(avatar).toHaveAttribute("href", "/custom");
       expect(avatar).toHaveAttribute("target", "_blank");

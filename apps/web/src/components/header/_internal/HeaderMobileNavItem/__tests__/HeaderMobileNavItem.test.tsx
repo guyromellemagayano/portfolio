@@ -3,6 +3,26 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
+// Mock IntersectionObserver
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+});
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
@@ -13,20 +33,43 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 // Mock the utils
 vi.mock("@guyromellemagayano/utils", () => ({
+  isRenderableContent: vi.fn((children) => {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
+      return false;
+    }
+    return true;
+  }),
   hasMeaningfulText: vi.fn((value) => {
     // Return true for any non-empty string or valid content
     if (typeof value === "string") return value.length > 0;
     if (value && typeof value === "object") return true;
     return Boolean(value);
   }),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || "_self",
-    rel: target === "_blank" ? "noopener noreferrer" : undefined,
-  })),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href || href === "#" || href === "") {
+      return { target: "_self" };
+    }
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
   }),
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock next/link
@@ -36,6 +79,16 @@ vi.mock("next/link", () => ({
       {children}
     </a>
   )),
+}));
+
+// Mock next/navigation
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/about"),
+}));
+
+// Mock the lib
+vi.mock("@web/lib", () => ({
+  isActivePath: vi.fn(() => true), // Return true by default for tests
 }));
 
 // Mock the CSS module
@@ -55,13 +108,13 @@ describe("HeaderMobileNavItem", () => {
     it("renders without crashing", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
       expect(
-        screen.getByTestId("mobile-header-nav-item-root")
+        screen.getByTestId("header-mobile-nav-item-root")
       ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).toBeInTheDocument();
     });
 
@@ -71,7 +124,7 @@ describe("HeaderMobileNavItem", () => {
           About
         </HeaderMobileNavItem>
       );
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).toHaveClass("custom-class");
     });
   });
@@ -84,18 +137,25 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-mobile-header-nav-item-id",
-        "custom-id"
+        "data-header-mobile-nav-item-id",
+        "custom-id-header-mobile-nav-item"
       );
     });
 
     it("uses provided _internalId when available", () => {
-      render(<HeaderMobileNavItem href="/about" _internalId="test-id">About</HeaderMobileNavItem>);
+      render(
+        <HeaderMobileNavItem href="/about" _internalId="test-id">
+          About
+        </HeaderMobileNavItem>
+      );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
-      expect(item).toHaveAttribute("data-mobile-header-nav-item-id", "test-id");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
+      expect(item).toHaveAttribute(
+        "data-header-mobile-nav-item-id",
+        "test-id-header-mobile-nav-item"
+      );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
@@ -105,25 +165,25 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(
-        <HeaderMobileNavItem href="/about" debugMode={false}>
+        <HeaderMobileNavItem href="/about" _debugMode={false}>
           About
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -165,7 +225,7 @@ describe("HeaderMobileNavItem", () => {
 
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
       expect(
-        screen.getByTestId("mobile-header-nav-item-root")
+        screen.getByTestId("header-mobile-nav-item-root")
       ).toBeInTheDocument();
     });
 
@@ -175,10 +235,10 @@ describe("HeaderMobileNavItem", () => {
         .mockReturnValueOnce(false) // children
         .mockReturnValueOnce(true); // href
 
-      render(<HeaderMobileNavItem href="/about">{null}</HeaderMobileNavItem>);
-      expect(
-        screen.getByTestId("mobile-header-nav-item-root")
-      ).toBeInTheDocument();
+      const { container } = render(
+        <HeaderMobileNavItem href="/about">{null}</HeaderMobileNavItem>
+      );
+      expect(container.firstChild).toBeNull();
     });
   });
 
@@ -249,7 +309,7 @@ describe("HeaderMobileNavItem", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
       expect(
-        screen.getByTestId("mobile-header-nav-item-root")
+        screen.getByTestId("header-mobile-nav-item-root")
       ).toBeInTheDocument();
       expect(screen.getByTestId("next-link")).toBeInTheDocument();
     });
@@ -257,7 +317,7 @@ describe("HeaderMobileNavItem", () => {
     it("renders with proper semantic structure", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       const link = screen.getByTestId("next-link");
       expect(item.tagName).toBe("LI");
       expect(link.tagName).toBe("A");
@@ -284,7 +344,7 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(ref).toHaveBeenCalledWith(item);
     });
   });
@@ -335,11 +395,11 @@ describe("HeaderMobileNavItem", () => {
         <HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>
       );
 
-      const initialItem = screen.getByTestId("mobile-header-nav-item-root");
+      const initialItem = screen.getByTestId("header-mobile-nav-item-root");
 
       rerender(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const updatedItem = screen.getByTestId("mobile-header-nav-item-root");
+      const updatedItem = screen.getByTestId("header-mobile-nav-item-root");
       expect(updatedItem).toBe(initialItem);
     });
 
@@ -354,7 +414,7 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       expect(item).toHaveClass("new-class");
     });
   });
@@ -375,13 +435,13 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("mobile-header-nav-item-root");
+      const item = screen.getByTestId("header-mobile-nav-item-root");
       const link = screen.getByTestId("next-link");
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(
-        "data-mobile-header-nav-item-id",
-        "custom-id"
+        "data-header-mobile-nav-item-id",
+        "custom-id-header-mobile-nav-item"
       );
       expect(item).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveAttribute("href", "/about");

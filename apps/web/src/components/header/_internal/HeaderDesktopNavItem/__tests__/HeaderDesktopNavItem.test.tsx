@@ -25,16 +25,38 @@ vi.mock("@guyromellemagayano/utils", () => ({
     id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
   })),
+  isRenderableContent: vi.fn((children) => {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
+      return false;
+    }
+    return true;
+  }),
   hasMeaningfulText: vi.fn((value) => {
     // Return true for any non-empty string or valid content
     if (typeof value === "string") return value.length > 0;
     if (value && typeof value === "object") return true;
     return Boolean(value);
   }),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || "_self",
-    rel: target === "_blank" ? "noopener noreferrer" : undefined,
-  })),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href || href === "#" || href === "") {
+      return { target: "_self" };
+    }
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -114,17 +136,21 @@ describe("HeaderDesktopNavItem", () => {
       const item = screen.getByTestId("header-desktop-nav-item-root");
       expect(item).toHaveAttribute(
         "data-header-desktop-nav-item-id",
-        "custom-id"
+        "custom-id-header-desktop-nav-item"
       );
     });
 
     it("uses provided _internalId when available", () => {
-      render(<HeaderDesktopNavItem href="/about" _internalId="test-id">About</HeaderDesktopNavItem>);
+      render(
+        <HeaderDesktopNavItem href="/about" _internalId="test-id">
+          About
+        </HeaderDesktopNavItem>
+      );
 
       const item = screen.getByTestId("header-desktop-nav-item-root");
       expect(item).toHaveAttribute(
         "data-header-desktop-nav-item-id",
-        "test-id"
+        "test-id-header-desktop-nav-item"
       );
     });
 
@@ -175,10 +201,10 @@ describe("HeaderDesktopNavItem", () => {
         .mockReturnValueOnce(false) // children
         .mockReturnValueOnce(true); // href
 
-      render(<HeaderDesktopNavItem href="/about">{null}</HeaderDesktopNavItem>);
-      expect(
-        screen.getByTestId("header-desktop-nav-item-root")
-      ).toBeInTheDocument();
+      const { container } = render(
+        <HeaderDesktopNavItem href="/about">{null}</HeaderDesktopNavItem>
+      );
+      expect(container.firstChild).toBeNull();
     });
   });
 
@@ -409,7 +435,7 @@ describe("HeaderDesktopNavItem", () => {
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(
         "data-header-desktop-nav-item-id",
-        "custom-id"
+        "custom-id-header-desktop-nav-item"
       );
       expect(item).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveAttribute("href", "/about");

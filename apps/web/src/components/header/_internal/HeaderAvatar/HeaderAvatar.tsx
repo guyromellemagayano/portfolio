@@ -3,7 +3,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  type ComponentProps,
+  getLinkTargetProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -15,7 +19,9 @@ import styles from "./HeaderAvatar.module.css";
 // ============================================================================
 
 interface HeaderAvatarProps
-  extends Omit<React.ComponentProps<typeof Link>, "href"> {
+  extends Omit<React.ComponentProps<typeof Link>, "href">,
+    ComponentProps {
+  /** The href of the link. */
   href?: React.ComponentProps<typeof Link>["href"];
   /** The alt text. */
   alt?: React.ComponentProps<typeof Image>["alt"];
@@ -23,12 +29,6 @@ interface HeaderAvatarProps
   src?: React.ComponentProps<typeof Image>["src"];
   /** Whether the avatar is large. */
   large?: boolean;
-  /** Whether the component is memoized */
-  isMemoized?: boolean;
-  /** Internal component ID (managed by parent) */
-  _internalId?: string;
-  /** Internal debug mode (managed by parent) */
-  _debugMode?: boolean;
 }
 type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
 
@@ -41,6 +41,7 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       href = AVATAR_COMPONENT_LABELS.link,
       alt = AVATAR_COMPONENT_LABELS.alt,
       src = AVATAR_COMPONENT_LABELS.src,
+      target = "_self",
       _internalId,
       _debugMode,
       ...rest
@@ -52,13 +53,17 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       large ? styles.avatarImageLarge : styles.avatarImageDefault
     );
 
+    const linkTargetProps = getLinkTargetProps(href, target);
+
     const element = (
       <Link
         {...rest}
         href={href}
+        target={linkTargetProps.target}
+        rel={linkTargetProps.rel}
         aria-label={AVATAR_COMPONENT_LABELS.home}
         className={cn(styles.avatarLink, className)}
-        data-header-avatar-id={_internalId}
+        data-header-avatar-id={`${_internalId}-header-avatar`}
         data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="header-avatar-root"
       >
@@ -80,6 +85,7 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
 // MEMOIZED HEADER AVATAR COMPONENT
 // ============================================================================
 
+/** A memoized header avatar component. */
 const MemoizedHeaderAvatar = React.memo(BaseHeaderAvatar);
 
 // ============================================================================
