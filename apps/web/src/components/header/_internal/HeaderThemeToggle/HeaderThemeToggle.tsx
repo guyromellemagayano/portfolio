@@ -4,8 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "next-themes";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 import { cn } from "@web/lib";
@@ -13,15 +12,18 @@ import { cn } from "@web/lib";
 import { THEME_TOGGLE_LABELS } from "../../_data";
 import styles from "./HeaderThemeToggle.module.css";
 
-interface ThemeToggleProps
-  extends React.ComponentProps<"button">,
-    ComponentProps {}
+interface ThemeToggleProps extends React.ComponentProps<"button"> {
+  /** Internal component ID (managed by parent) */
+  _internalId?: string;
+  /** Internal debug mode (managed by parent) */
+  _debugMode?: boolean;
+}
 type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
 
 /** A theme toggle component that allows users to switch between light and dark themes. */
 const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
   function HeaderThemeToggle(props) {
-    const { className, internalId, debugMode, ...rest } = props;
+    const { className, _internalId, _debugMode, ...rest } = props;
 
     const { resolvedTheme, setTheme } = useTheme();
     const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -31,10 +33,9 @@ const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
       setMounted(true);
     }, []);
 
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+    // Use internal props directly - no need for useComponentId in sub-components
+    const id = _internalId;
+    const isDebugMode = _debugMode;
 
     const handleClick = useCallback(() => {
       setTheme(otherTheme);
