@@ -94,7 +94,7 @@ describe("HeaderThemeToggle", () => {
       const button = screen.getByTestId("header-theme-toggle-root");
       expect(button).toHaveAttribute(
         "data-header-theme-toggle-id",
-        "custom-id"
+        "custom-id-header-theme-toggle"
       );
     });
 
@@ -102,7 +102,10 @@ describe("HeaderThemeToggle", () => {
       render(<HeaderThemeToggle _internalId="test-id" />);
 
       const button = screen.getByTestId("header-theme-toggle-root");
-      expect(button).toHaveAttribute("data-header-theme-toggle-id", "test-id");
+      expect(button).toHaveAttribute(
+        "data-header-theme-toggle-id",
+        "test-id-header-theme-toggle"
+      );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
@@ -255,7 +258,10 @@ describe("HeaderThemeToggle", () => {
       const button = screen.getByTestId("header-theme-toggle-root");
       expect(button).toBeInTheDocument();
       expect(button).toHaveClass("custom-class");
-      expect(button).toHaveAttribute("data-header-theme-toggle-id", "test-id");
+      expect(button).toHaveAttribute(
+        "data-header-theme-toggle-id",
+        "test-id-header-theme-toggle"
+      );
       expect(button).toHaveAttribute("data-debug-mode", "true");
       // Component overrides aria-label with computed theme value
       expect(button).toHaveAttribute("aria-label", "Switch to dark theme");

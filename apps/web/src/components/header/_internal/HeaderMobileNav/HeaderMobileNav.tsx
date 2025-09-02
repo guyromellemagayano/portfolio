@@ -7,7 +7,7 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 
@@ -18,28 +18,25 @@ import {
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 import styles from "./HeaderMobileNav.module.css";
 
-interface HeaderMobileNavProps extends React.ComponentProps<"div"> {
-  /** Internal component ID (managed by parent) */
-  _internalId?: string;
-  /** Internal debug mode (managed by parent) */
-  _debugMode?: boolean;
-}
+// ============================================================================
+// BASE HEADER MOBILE NAV COMPONENT
+// ============================================================================
+
+interface HeaderMobileNavProps
+  extends React.ComponentProps<"div">,
+    ComponentProps {}
 type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 /** A mobile navigation component that displays a menu button and a list of links. */
-const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
-  function HeaderMobileNav(props) {
+const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
+  function BaseHeaderMobileNav(props) {
     const { _internalId, _debugMode, ...rest } = props;
-
-    // Use internal props directly - no need for useComponentId in sub-components
-    const id = _internalId;
-    const isDebugMode = _debugMode;
 
     const element = (
       <Popover
         {...rest}
-        data-mobile-header-nav-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-mobile-header-nav-id={`${_internalId}-mobile-header-nav`}
+        data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="mobile-header-nav-root"
       >
         <PopoverButton className={styles.HeaderMobileNavButton}>
@@ -69,6 +66,8 @@ const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                   <HeaderMobileNavItem
                     key={`${link.label}:${link.href}`}
                     href={link.href}
+                    _internalId={_internalId}
+                    _debugMode={_debugMode}
                   >
                     {link.label}
                   </HeaderMobileNavItem>
@@ -80,6 +79,30 @@ const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
       </Popover>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED HEADER MOBILE NAV COMPONENT
+// ============================================================================
+
+const MemoizedHeaderMobileNav = React.memo(BaseHeaderMobileNav);
+
+// ============================================================================
+// MAIN HEADER MOBILE NAV COMPONENT
+// ============================================================================
+
+const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
+  function HeaderMobileNav(props) {
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+    const updatedProps = { ...rest, _internalId, _debugMode };
+
+    const Component = isMemoized
+      ? MemoizedHeaderMobileNav
+      : BaseHeaderMobileNav;
+    const element = <Component {...updatedProps} />;
     return element;
   }
 );

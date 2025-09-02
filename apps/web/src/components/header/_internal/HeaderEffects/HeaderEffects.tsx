@@ -2,9 +2,17 @@
 
 import React, { useEffect } from "react";
 
+import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+
 import { clamp } from "@web/lib";
 
-interface HeaderEffectsProps {
+// ============================================================================
+// BASE HEADER EFFECTS COMPONENT
+// ============================================================================
+
+interface HeaderEffectsProps
+  extends React.ComponentProps<"div">,
+    ComponentProps {
   /** Reference to the header element. */
   headerEl: React.RefObject<React.ComponentRef<"div"> | null>;
   /** Reference to the avatar element. */
@@ -19,7 +27,9 @@ type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
 /**
  * Handles dynamic header and avatar positioning and sizing based on scroll position and page context.
  */
-const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
+const BaseHeaderEffects: HeaderEffectsComponent = function BaseHeaderEffects(
+  props
+) {
   const { headerEl, avatarEl, isHomePage, isInitialRender } = props;
 
   useEffect(() => {
@@ -139,5 +149,33 @@ const HeaderEffects: HeaderEffectsComponent = function HeaderEffects(props) {
 
   return null;
 };
+
+// ============================================================================
+// MEMOIZED HEADER EFFECTS COMPONENT
+// ============================================================================
+
+/** A memoized header effects component. */
+const MemoizedHeaderEffects = React.memo(BaseHeaderEffects);
+
+// ============================================================================
+// MAIN HEADER EFFECTS COMPONENT
+// ============================================================================
+
+/** Applies scroll and resize effects to the header for dynamic UI behavior. */
+const HeaderEffects: HeaderEffectsComponent = setDisplayName(
+  function HeaderEffects(props) {
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+    const updatedProps = {
+      ...rest,
+      _internalId,
+      _debugMode,
+    };
+
+    const Component = isMemoized ? MemoizedHeaderEffects : BaseHeaderEffects;
+    const element = <Component {...updatedProps} />;
+    return element;
+  }
+);
 
 export { HeaderEffects };
