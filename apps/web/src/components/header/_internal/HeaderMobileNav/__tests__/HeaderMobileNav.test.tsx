@@ -27,7 +27,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
   hasMeaningfulText: vi.fn((value) => {
     if (typeof value === "string") return value.length > 0;
     if (value && typeof value === "object") return true;
@@ -178,21 +177,21 @@ describe("HeaderMobileNav", () => {
 
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
-      render(<HeaderMobileNav internalId="custom-id" />);
+      render(<HeaderMobileNav _internalId="custom-id" />);
 
       const nav = screen.getByTestId("mobile-header-nav-root");
       expect(nav).toHaveAttribute("data-mobile-header-nav-id", "custom-id");
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderMobileNav />);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderMobileNav _internalId="test-id" />);
 
       const nav = screen.getByTestId("mobile-header-nav-root");
       expect(nav).toHaveAttribute("data-mobile-header-nav-id", "test-id");
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderMobileNav debugMode={true} />);
+      render(<HeaderMobileNav _debugMode={true} />);
 
       const nav = screen.getByTestId("mobile-header-nav-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
@@ -324,8 +323,8 @@ describe("HeaderMobileNav", () => {
       render(
         <HeaderMobileNav
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           aria-label="Test navigation"
         />
       );

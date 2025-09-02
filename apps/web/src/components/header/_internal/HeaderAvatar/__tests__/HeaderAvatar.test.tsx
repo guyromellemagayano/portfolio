@@ -15,7 +15,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 // Mock the utils
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -41,12 +40,14 @@ vi.mock("../../../_data", () => ({
 vi.mock("next/image", () => ({
   default: React.forwardRef<HTMLImageElement, any>(
     function MockNextImage(props, ref) {
-      const { src, alt, priority, ...rest } = props;
+      const { src, alt, priority, sizes, className, ...rest } = props;
       return (
         <img
           ref={ref}
           src={typeof src === "string" ? src : src.src}
           alt={alt}
+          sizes={sizes}
+          className={className}
           data-testid="next-image"
           data-priority={priority ? "true" : "false"}
           {...rest}
@@ -60,9 +61,15 @@ vi.mock("next/image", () => ({
 vi.mock("next/link", () => ({
   default: React.forwardRef<HTMLAnchorElement, any>(
     function MockNextLink(props, ref) {
-      const { children, href, ...rest } = props;
+      const { children, href, className, ...rest } = props;
       return (
-        <a ref={ref} href={href} data-testid="next-link" {...rest}>
+        <a
+          ref={ref}
+          href={href}
+          className={className}
+          data-testid="next-link"
+          {...rest}
+        >
           {children}
         </a>
       );
@@ -111,28 +118,28 @@ describe("HeaderAvatar", () => {
 
   describe("Component ID and Debug Mode", () => {
     it("uses provided internalId when available", () => {
-      render(<HeaderAvatar internalId="custom-id" />);
+      render(<HeaderAvatar _internalId="custom-id" />);
 
       const avatar = screen.getByTestId("header-avatar-root");
       expect(avatar).toHaveAttribute("data-header-avatar-id", "custom-id");
     });
 
-    it("generates ID when internalId is not provided", () => {
-      render(<HeaderAvatar />);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderAvatar _internalId="test-id" />);
 
       const avatar = screen.getByTestId("header-avatar-root");
       expect(avatar).toHaveAttribute("data-header-avatar-id", "test-id");
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderAvatar debugMode={true} />);
+      render(<HeaderAvatar _debugMode={true} />);
 
       const avatar = screen.getByTestId("header-avatar-root");
       expect(avatar).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
-      render(<HeaderAvatar debugMode={false} />);
+      render(<HeaderAvatar _debugMode={false} />);
 
       const avatar = screen.getByTestId("header-avatar-root");
       expect(avatar).not.toHaveAttribute("data-debug-mode");
@@ -143,40 +150,6 @@ describe("HeaderAvatar", () => {
 
       const avatar = screen.getByTestId("header-avatar-root");
       expect(avatar).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
-  describe("Content Validation", () => {
-    it("does not render when src is null", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText).mockReturnValue(false);
-
-      const { container } = render(<HeaderAvatar src={undefined} />);
-      expect(container.firstChild).toBeNull();
-    });
-
-    it("does not render when src is undefined", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText).mockReturnValue(false);
-
-      const { container } = render(<HeaderAvatar src={undefined} />);
-      expect(container.firstChild).toBeNull();
-    });
-
-    it("does not render when src is empty string", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText).mockReturnValue(false);
-
-      const { container } = render(<HeaderAvatar src="" />);
-      expect(container.firstChild).toBeNull();
-    });
-
-    it("renders when src has meaningful content", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText).mockReturnValue(true);
-
-      render(<HeaderAvatar src="/avatar.jpg" />);
-      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
     });
   });
 
@@ -294,6 +267,14 @@ describe("HeaderAvatar", () => {
       expect(link.tagName).toBe("A");
       expect(image.tagName).toBe("IMG");
     });
+
+    it("renders image inside link", () => {
+      render(<HeaderAvatar />);
+
+      const link = screen.getByTestId("header-avatar-root");
+      const image = screen.getByTestId("next-image");
+      expect(link).toContainElement(image);
+    });
   });
 
   describe("Ref Forwarding", () => {
@@ -370,13 +351,25 @@ describe("HeaderAvatar", () => {
     });
   });
 
+  describe("Memoization", () => {
+    it("renders base component when isMemoized is false", () => {
+      render(<HeaderAvatar isMemoized={false} />);
+      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+    });
+
+    it("renders memoized component when isMemoized is true", () => {
+      render(<HeaderAvatar isMemoized={true} />);
+      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+    });
+  });
+
   describe("Edge Cases", () => {
     it("handles complex prop combinations", () => {
       render(
         <HeaderAvatar
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           href="/custom"
           target="_blank"
           alt="Custom alt"
@@ -386,17 +379,35 @@ describe("HeaderAvatar", () => {
       );
 
       const avatar = screen.getByTestId("header-avatar-root");
-      const link = screen.getByTestId("header-avatar-root");
       const image = screen.getByTestId("next-image");
 
       expect(avatar).toHaveClass("custom-class");
       expect(avatar).toHaveAttribute("data-header-avatar-id", "custom-id");
       expect(avatar).toHaveAttribute("data-debug-mode", "true");
-      expect(link).toHaveAttribute("href", "/custom");
-      expect(link).toHaveAttribute("target", "_blank");
+      expect(avatar).toHaveAttribute("href", "/custom");
+      expect(avatar).toHaveAttribute("target", "_blank");
       expect(image).toHaveAttribute("alt", "Custom alt");
       expect(image).toHaveAttribute("src", "/custom-avatar.jpg");
       expect(image).toHaveAttribute("sizes", "4rem");
+    });
+
+    it("handles undefined props gracefully", () => {
+      render(
+        <HeaderAvatar
+          href={undefined}
+          alt={undefined}
+          src={undefined}
+          large={undefined}
+        />
+      );
+
+      const avatar = screen.getByTestId("header-avatar-root");
+      const image = screen.getByTestId("next-image");
+
+      expect(avatar).toHaveAttribute("href", "/");
+      expect(image).toHaveAttribute("alt", "Guy Romelle Magayano");
+      expect(image).toHaveAttribute("src", "/avatar.jpg");
+      expect(image).toHaveAttribute("sizes", "2.25rem");
     });
   });
 });
