@@ -7,31 +7,33 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 
 import {
-  CommonHeaderNavProps,
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
   MOBILE_HEADER_NAV_LINKS,
 } from "../../_data";
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 import styles from "./HeaderMobileNav.module.css";
 
-interface HeaderMobileNavProps extends CommonHeaderNavProps {}
+interface HeaderMobileNavProps extends React.ComponentProps<"div"> {
+  /** Internal component ID (managed by parent) */
+  _internalId?: string;
+  /** Internal debug mode (managed by parent) */
+  _debugMode?: boolean;
+}
 type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 /** A mobile navigation component that displays a menu button and a list of links. */
 const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function HeaderMobileNav(props) {
-    const { internalId, debugMode, ...rest } = props;
+    const { _internalId, _debugMode, ...rest } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+    // Use internal props directly - no need for useComponentId in sub-components
+    const id = _internalId;
+    const isDebugMode = _debugMode;
 
     const element = (
       <Popover

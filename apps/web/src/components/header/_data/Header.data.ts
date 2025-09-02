@@ -5,6 +5,10 @@ import avatarImage from "@web/images/avatar.jpg";
 
 type InternalHref = Route | (string & {});
 
+// ============================================================================
+// TYPE DEFINITIONS
+// ============================================================================
+
 export type HeaderLink =
   | {
       /** The kind of link. */
@@ -52,6 +56,10 @@ export type AvatarComponentLabels = Readonly<{
 }>;
 
 export type ThemeToggleLabels = Readonly<Record<string, string>>;
+
+// ============================================================================
+// DATA
+// ============================================================================
 
 export const HEADER_COMPONENT_LABELS = {
   brandName: "Guy Romelle Magayano",
