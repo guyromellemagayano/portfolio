@@ -1,39 +1,32 @@
 import React from "react";
 
-// Mock IntersectionObserver
-/* eslint-disable no-undef */
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Mock Next.js Link
-vi.mock("next/link", () => ({
-  default: React.forwardRef<HTMLAnchorElement, any>(function MockLink(
-    { children, href, ...props },
-    ref
-  ) {
-    return React.createElement("a", { ref, href, ...props }, children);
-  }),
-}));
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardTitle } from "..";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
     id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
-  })),
+  }))
+);
+
+// Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined) {
+    if (
+      children === null ||
+      children === undefined ||
+      children === "" ||
+      children === true ||
+      children === false ||
+      children === 0
+    ) {
       return false;
     }
     return true;
@@ -44,11 +37,30 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (hrefString === "#" || hrefString === "") return false;
     return true;
   }),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || "_self",
-    rel: target === "_blank" ? "noopener noreferrer" : undefined,
-  })),
   setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href || href === "#" || href === "") {
+      return { target: "_self" };
+    }
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
+  formatDateSafely: vi.fn((date, options) => {
+    if (options?.year === "numeric") {
+      return new Date().getFullYear().toString();
+    }
+    return date.toISOString();
+  }),
+  createCompoundComponent: vi.fn((displayName, component) => {
     component.displayName = displayName;
     return component;
   }),
@@ -58,24 +70,53 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock Link component from @guyromellemagayano/components
-vi.mock("@guyromellemagayano/components", async (importOriginal) => {
-  const actual = await importOriginal();
-  return {
-    ...(actual as any),
-    Link: ({ children, href, ...props }: any) => {
-      return React.createElement("a", { href, ...props }, children);
-    },
-  };
-});
+// Mock CardLinkCustom
+vi.mock("../CardLink/CardLinkCustom", () => ({
+  CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
+    function MockCardLinkCustom(props, ref) {
+      const { children, href, target, title, ...rest } = props;
+      return (
+        <a
+          ref={ref}
+          href={href}
+          target={target}
+          title={title}
+          data-testid="card-link-custom"
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    }
+  ),
+}));
 
 // Mock CSS modules
 vi.mock("../CardTitle.module.css", () => ({
   default: {
     cardTitleHeading: "cardTitleHeading",
-    cardTitleClickableArea: "cardTitleClickableArea",
-    cardTitleContent: "cardTitleContent",
   },
+}));
+
+// Mock Next.js Link component to avoid intersection observer issues
+vi.mock("next/link", () => ({
+  default: React.forwardRef<HTMLAnchorElement, any>(
+    function MockNextLink(props, ref) {
+      const { href, target, title, children, ...rest } = props;
+      return (
+        <a
+          ref={ref}
+          href={href}
+          target={target}
+          title={title}
+          data-testid="card-link-custom-root"
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    }
+  ),
 }));
 
 describe("CardTitle", () => {
@@ -83,82 +124,196 @@ describe("CardTitle", () => {
     cleanup();
   });
 
-  it("renders children correctly", () => {
-    render(<CardTitle>Card title</CardTitle>);
+  describe("Basic Rendering", () => {
+    it("renders children correctly", () => {
+      render(<CardTitle href="#">Card title</CardTitle>);
 
-    expect(screen.getByText("Card title")).toBeInTheDocument();
+      expect(screen.getByText("Card title")).toBeInTheDocument();
+    });
+
+    it("applies custom className", () => {
+      render(
+        <CardTitle className="custom-class" href="#">
+          Card title
+        </CardTitle>
+      );
+
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveClass("custom-class");
+    });
+
+    it("passes through HTML attributes", () => {
+      render(
+        <CardTitle href="#" data-testid="custom-testid" aria-label="Title">
+          Card title
+        </CardTitle>
+      );
+
+      const titleElement = screen.getByTestId("custom-testid");
+      expect(titleElement).toHaveAttribute("aria-label", "Title");
+    });
   });
 
-  it("renders with link when href is provided", () => {
-    render(<CardTitle href="/test-link">Card title</CardTitle>);
+  describe("Link Functionality", () => {
+    it("renders with link when href is provided and valid", () => {
+      render(<CardTitle href="/test-link">Card title</CardTitle>);
 
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("href", "/test-link");
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+    });
+
+    it("renders without link when href is not valid", () => {
+      render(<CardTitle href="#">Card title</CardTitle>);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      expect(screen.getByText("Card title")).toBeInTheDocument();
+    });
+
+    it("passes through link attributes", () => {
+      render(
+        <CardTitle href="/test" target="_blank" title="Test title">
+          Card title
+        </CardTitle>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("title", "Test title");
+    });
   });
 
-  it("renders without link when href is not provided", () => {
-    render(<CardTitle>Card title</CardTitle>);
+  describe("Content Validation", () => {
+    it("does not render when no children", () => {
+      const { container } = render(<CardTitle href="#" />);
+      expect(container.firstChild).toBeNull();
+    });
 
-    expect(screen.queryByRole("link")).not.toBeInTheDocument();
-    expect(screen.getByText("Card title")).toBeInTheDocument();
+    it("handles null/undefined children", () => {
+      const { container } = render(<CardTitle href="#">{null}</CardTitle>);
+      expect(container.firstChild).toBeNull();
+    });
   });
 
-  it("renders without link when href is default", () => {
-    render(<CardTitle href="#">Card title</CardTitle>);
+  describe("Debug Mode", () => {
+    it("applies data-debug-mode when enabled", () => {
+      render(
+        <CardTitle _debugMode={true} href="#">
+          Card title
+        </CardTitle>
+      );
 
-    expect(screen.queryByRole("link")).not.toBeInTheDocument();
-    expect(screen.getByText("Card title")).toBeInTheDocument();
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("does not apply when disabled/undefined", () => {
+      render(<CardTitle href="#">Card title</CardTitle>);
+
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).not.toHaveAttribute("data-debug-mode");
+    });
   });
 
-  it("applies custom className", () => {
-    render(<CardTitle className="custom-class">Card title</CardTitle>);
+  describe("Component Structure", () => {
+    it("renders as h2 element", () => {
+      render(<CardTitle href="#">Card title</CardTitle>);
 
-    const titleElement = screen.getByTestId("card-title-root");
-    expect(titleElement).toHaveClass("custom-class");
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement.tagName).toBe("H2");
+    });
+
+    it("applies correct CSS classes", () => {
+      render(<CardTitle href="#">Card title</CardTitle>);
+
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveClass("cardTitleHeading");
+    });
+
+    it("combines CSS module + custom classes", () => {
+      render(
+        <CardTitle className="custom-class" href="#">
+          Card title
+        </CardTitle>
+      );
+
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveClass("cardTitleHeading", "custom-class");
+    });
   });
 
-  it("renders with debug mode enabled", () => {
-    render(<CardTitle debugMode={true}>Card title</CardTitle>);
+  describe("Component ID", () => {
+    it("renders with custom internal ID", () => {
+      render(
+        <CardTitle _internalId="custom-id" href="#">
+          Card title
+        </CardTitle>
+      );
 
-    const titleElement = screen.getByTestId("card-title-root");
-    expect(titleElement).toHaveAttribute("data-debug-mode", "true");
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveAttribute(
+        "data-card-title-id",
+        "custom-id-card-title"
+      );
+    });
+
+    it("uses provided internalId when available", () => {
+      render(
+        <CardTitle _internalId="test-id" href="#">
+          Card title
+        </CardTitle>
+      );
+
+      const titleElement = screen.getByTestId("card-title-root");
+      expect(titleElement).toHaveAttribute(
+        "data-card-title-id",
+        "test-id-card-title"
+      );
+    });
   });
 
-  it("renders with custom internal ID", () => {
-    render(<CardTitle internalId="custom-id">Card title</CardTitle>);
+  describe("Ref Forwarding", () => {
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<HTMLHeadingElement>();
+      render(
+        <CardTitle ref={ref} href="#">
+          Card title
+        </CardTitle>
+      );
 
-    const titleElement = screen.getByTestId("card-title-root");
-    expect(titleElement).toHaveAttribute("data-card-title-id", "custom-id");
+      expect(ref.current).toBeInTheDocument();
+    });
+
+    it("ref points to correct element", () => {
+      const ref = React.createRef<HTMLHeadingElement>();
+      render(
+        <CardTitle ref={ref} href="#">
+          Card title
+        </CardTitle>
+      );
+
+      expect(ref.current?.tagName).toBe("H2");
+    });
   });
 
-  it("passes through link attributes", () => {
-    render(
-      <CardTitle href="/test" target="_blank" title="Test title">
-        Card title
-      </CardTitle>
-    );
+  describe("Edge Cases", () => {
+    it("handles complex children content", () => {
+      render(
+        <CardTitle href="#">
+          <span>Complex</span> <strong>title</strong>
+        </CardTitle>
+      );
 
-    const link = screen.getByRole("link");
-    expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("title", "Test title");
-  });
+      expect(screen.getByText("Complex")).toBeInTheDocument();
+      expect(screen.getByText("title")).toBeInTheDocument();
+    });
 
-  it("does not render when no children", () => {
-    const { container } = render(<CardTitle />);
-    expect(container.firstChild).toBeNull();
-  });
+    it("handles special characters", () => {
+      render(<CardTitle href="#">Special chars: &lt;&gt;&amp;</CardTitle>);
 
-  it("forwards ref correctly", () => {
-    const ref = React.createRef<HTMLHeadingElement>();
-    render(<CardTitle ref={ref}>Card title</CardTitle>);
-
-    expect(ref.current).toBeInTheDocument();
-  });
-
-  it("renders as h2 by default", () => {
-    render(<CardTitle>Card title</CardTitle>);
-
-    const titleElement = screen.getByTestId("card-title-root");
-    expect(titleElement.tagName).toBe("H2");
+      const elements = screen.getAllByText((content, element) => {
+        return element?.textContent?.includes("Special chars:") || false;
+      });
+      expect(elements[0]).toBeInTheDocument();
+    });
   });
 });

@@ -19,12 +19,43 @@ import {
 import styles from "./Card.module.css";
 
 // ============================================================================
-// MAIN CARD COMPONENT
+// BASE CARD COMPONENT
 // ============================================================================
 
 interface CardProps extends React.ComponentProps<"article">, ComponentProps {}
+type CardComponent = React.FC<CardProps>;
 
-type CardCompoundComponent = React.ComponentType<CardProps> & {
+/** A flexible card component for displaying grouped content with optional subcomponents */
+const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
+  const { children, className, internalId, debugMode, ...rest } = props;
+
+  const element = (
+    <article
+      {...rest}
+      className={cn(styles.card, className)}
+      data-card-id={`${internalId}-card`}
+      data-debug-mode={debugMode ? "true" : undefined}
+      data-testid={(rest as any)["data-testid"] || "card-root"}
+    >
+      {children}
+    </article>
+  );
+
+  return element;
+});
+
+// ============================================================================
+// MEMOIZED CARD COMPONENT
+// ============================================================================
+
+/** A memoized card component. */
+const MemoizedCard = React.memo(BaseCard);
+
+// ============================================================================
+// MAIN CARD COMPONENT
+// ============================================================================
+
+type CardCompoundComponent = CardComponent & {
   /** A card link component that provides interactive hover effects and accessibility features */
   Link: typeof CardLink;
   /** A card title component that can optionally be wrapped in a link for navigation */
@@ -39,7 +70,13 @@ type CardCompoundComponent = React.ComponentType<CardProps> & {
 
 /** A card component that can optionally be wrapped in a link for navigation */
 const Card = setDisplayName(function Card(props) {
-  const { children, className, internalId, debugMode, ...rest } = props;
+  const {
+    children,
+    isMemoized = false,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
 
   const { id, isDebugMode } = useComponentId({
     internalId,
@@ -48,18 +85,15 @@ const Card = setDisplayName(function Card(props) {
 
   if (!isRenderableContent(children)) return null;
 
-  const element = (
-    <article
-      {...rest}
-      className={cn(styles.card, className)}
-      data-card-id={id}
-      data-debug-mode={isDebugMode ? "true" : undefined}
-      data-testid="card-root"
-    >
-      {children}
-    </article>
-  );
+  const updatedProps = {
+    ...rest,
+    children,
+    internalId: id,
+    debugMode: isDebugMode,
+  };
 
+  const Component = isMemoized ? MemoizedCard : BaseCard;
+  const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 } as CardCompoundComponent);
 
