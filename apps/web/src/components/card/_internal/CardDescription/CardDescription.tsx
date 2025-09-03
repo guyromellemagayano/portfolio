@@ -17,12 +17,7 @@ import styles from "./CardDescription.module.css";
 
 interface CardDescriptionProps
   extends React.ComponentProps<"p">,
-    ComponentProps {
-  /** Analytics identifier for tracking */
-  analyticsId?: string;
-  /** Analytics event handler */
-  onAnalytics?: (event: React.SyntheticEvent) => void;
-}
+    ComponentProps {}
 type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 /** A card description component that can optionally be wrapped in a link for navigation */
