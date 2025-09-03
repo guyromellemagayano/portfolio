@@ -10,6 +10,7 @@ import {
 
 import { cn } from "@web/lib";
 
+import { type CardComponentsWithLinks } from "../../_data";
 import { CardLinkCustom } from "../CardLink/CardLinkCustom";
 import styles from "./CardTitle.module.css";
 
@@ -19,10 +20,7 @@ import styles from "./CardTitle.module.css";
 
 interface CardTitleProps
   extends React.ComponentProps<"h2">,
-    Pick<
-      React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
-      "href" | "target" | "title"
-    >,
+    CardComponentsWithLinks,
     ComponentProps {}
 type CardTitleComponent = React.FC<CardTitleProps>;
 
