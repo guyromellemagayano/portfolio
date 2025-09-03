@@ -1,27 +1,19 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
+import type { CommonContainerComponent } from "../../_data";
 import styles from "./ContainerOuter.module.css";
 
 // ============================================================================
 // BASE CONTAINER OUTER COMPONENT
 // ============================================================================
 
-interface ContainerOuterProps
-  extends React.ComponentProps<"div">,
-    ComponentProps {}
-type ContainerOuterComponent = React.FC<ContainerOuterProps>;
-
 /** Provides the outer structure for the `Container` compound component. */
-const BaseContainerOuter: ContainerOuterComponent = setDisplayName(
+const BaseContainerOuter: CommonContainerComponent = setDisplayName(
   function BaseContainerOuter(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
@@ -57,7 +49,7 @@ const MemoizedContainerOuter = React.memo(BaseContainerOuter);
 // ============================================================================
 
 /** A container outer component that provides consistent outer structure for page content. */
-const ContainerOuter: ContainerOuterComponent = setDisplayName(
+const ContainerOuter: CommonContainerComponent = setDisplayName(
   function ContainerOuter(props) {
     const {
       children,

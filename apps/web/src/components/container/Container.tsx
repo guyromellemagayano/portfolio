@@ -1,23 +1,17 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
+import type { CommonContainerComponent, CommonContainerProps } from "./_data";
 import { ContainerInner, ContainerOuter } from "./_internal";
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
 // ============================================================================
 
-interface ContainerProps extends React.ComponentProps<"div">, ComponentProps {}
-type ContainerComponent = React.FC<ContainerProps>;
-
 /** A flexible layout container component for consistent page structure. */
-const BaseContainer: ContainerComponent = setDisplayName(
+const BaseContainer: CommonContainerComponent = setDisplayName(
   function BaseContainer(props) {
     const { children, internalId, debugMode, ...rest } = props;
 
@@ -47,7 +41,7 @@ const MemoizedContainer = React.memo(BaseContainer);
 // MAIN CONTAINER COMPONENT
 // ============================================================================
 
-type ContainerCompoundComponent = React.FC<ContainerProps> & {
+type ContainerCompoundComponent = React.FC<CommonContainerProps> & {
   /** A container inner component that provides consistent inner structure for page content. */
   Inner: typeof ContainerInner;
   /** A container outer component that provides consistent outer structure for page content. */
