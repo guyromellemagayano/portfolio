@@ -1,13 +1,13 @@
+// Mock Next.js router FIRST
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/"),
+}));
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "../Header";
-
-// Mock Next.js router
-vi.mock("next/navigation", () => ({
-  usePathname: vi.fn(() => "/"),
-}));
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -23,6 +23,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createCompoundComponent: vi.fn(
+    (displayName, InternalComponent, subComponents = {}) => {
+      const CompoundComponent = Object.assign(InternalComponent, subComponents);
+      CompoundComponent.displayName = displayName;
+      return CompoundComponent;
+    }
+  ),
+  isRenderableContent: vi.fn((content) => content != null && content !== ""),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
 }));
 
 // Mock the cn helper
