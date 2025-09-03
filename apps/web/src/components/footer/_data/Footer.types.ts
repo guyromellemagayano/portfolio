@@ -52,8 +52,6 @@ type FooterComponentNavLinks = ReadonlyArray<
 
 /** Footer data structure for API responses */
 interface FooterData {
-  /** Brand name used by the footer */
-  brandName: string;
   /** Legal text displayed in the footer */
   legalText: string;
   /** Navigation links */
