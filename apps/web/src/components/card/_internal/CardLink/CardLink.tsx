@@ -10,6 +10,7 @@ import {
 
 import { cn } from "@web/lib";
 
+import { type CardComponentsWithLinks } from "../../_data";
 import styles from "./CardLink.module.css";
 import { CardLinkCustom } from "./CardLinkCustom";
 
@@ -19,10 +20,7 @@ import { CardLinkCustom } from "./CardLinkCustom";
 
 interface CardLinkProps
   extends React.ComponentProps<"div">,
-    Pick<
-      React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
-      "href" | "target" | "title"
-    >,
+    CardComponentsWithLinks,
     ComponentProps {}
 type CardLinkComponent = React.FC<CardLinkProps>;
 
