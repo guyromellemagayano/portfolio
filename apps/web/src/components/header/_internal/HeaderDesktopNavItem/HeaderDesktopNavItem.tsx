@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
-  type ComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
   isRenderableContent,
@@ -15,20 +14,14 @@ import {
 
 import { cn, isActivePath } from "@web/lib";
 
+import type { CommonNavItemProps } from "../../_data";
 import styles from "./HeaderDesktopNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV ITEM COMPONENT
 // ============================================================================
 
-interface HeaderDesktopNavItemProps
-  extends React.ComponentProps<"li">,
-    Pick<React.ComponentProps<typeof Link>, "target" | "title">,
-    ComponentProps {
-  /** Link href */
-  href?: React.ComponentProps<typeof Link>["href"];
-}
-type HeaderDesktopNavItemComponent = React.FC<HeaderDesktopNavItemProps>;
+type HeaderDesktopNavItemComponent = React.FC<CommonNavItemProps>;
 
 /** A desktop navigation item component for the header. */
 const BaseHeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(

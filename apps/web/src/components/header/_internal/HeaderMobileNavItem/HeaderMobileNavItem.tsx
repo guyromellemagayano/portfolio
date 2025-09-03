@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
-  type ComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
   isRenderableContent,
@@ -15,20 +14,14 @@ import {
 
 import { isActivePath } from "@web/lib";
 
+import type { CommonNavItemProps } from "../../_data";
 import styles from "./HeaderMobileNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-interface HeaderMobileNavItemProps
-  extends React.ComponentProps<"li">,
-    Pick<React.ComponentProps<typeof Link>, "target" | "title">,
-    ComponentProps {
-  /** Link href */
-  href?: React.ComponentProps<typeof Link>["href"];
-}
-type HeaderMobileNavItemComponent = React.FC<HeaderMobileNavItemProps>;
+type HeaderMobileNavItemComponent = React.FC<CommonNavItemProps>;
 
 /** A mobile navigation item component for the header. */
 const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
