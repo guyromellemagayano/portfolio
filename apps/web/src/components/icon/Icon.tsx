@@ -1,7 +1,11 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  hasMeaningfulText,
+  isRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { type CommonIconComponent } from "./_data";
 import {
@@ -98,7 +102,8 @@ const Icon = setDisplayName(function Icon(props) {
     debugMode,
   });
 
-  if (!isRenderableContent(children)) return null;
+  if (!isRenderableContent(children) || !hasMeaningfulText(children))
+    return null;
 
   const updatedProps = {
     ...rest,
