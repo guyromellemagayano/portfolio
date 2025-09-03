@@ -18,19 +18,19 @@ import styles from "./HeaderDesktopNav.module.css";
 // BASE HEADER DESKTOP NAV COMPONENT
 // ============================================================================
 
-interface HeaderDesktopNavProps
+interface CommonHeaderNavProps
   extends React.ComponentProps<"nav">,
     ComponentProps {}
-type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
+type HeaderDesktopNavComponent = React.FC<CommonHeaderNavProps>;
 
 /** Renders a desktop navigation component that displays a list of navigation links. */
 const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
-    const { className, internalId, debugMode, ...rest } = props;
+    const { className, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
+      internalId: _internalId,
+      debugMode: _debugMode,
     });
 
     // Use shared utility for robust navigation links validation
@@ -50,8 +50,8 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
           <HeaderDesktopNavItem
             key={`${label}:${href}`}
             href={href}
-            internalId={internalId}
-            debugMode={debugMode}
+            internalId={_internalId}
+            debugMode={_debugMode}
           >
             {label}
           </HeaderDesktopNavItem>
@@ -77,12 +77,12 @@ const MemoizedHeaderDesktopNav = React.memo(BaseHeaderDesktopNav);
 /** Renders the desktop navigation component that displays a list of navigation links. */
 const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function HeaderDesktopNav(props) {
-    const { isMemoized = false, internalId, debugMode, ...rest } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const updatedProps = {
       ...rest,
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
     };
 
     const Component = isMemoized

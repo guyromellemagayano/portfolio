@@ -8,14 +8,10 @@ import { type ComponentProps } from "@guyromellemagayano/utils";
 // COMMON TYPE DEFINITIONS
 // ============================================================================
 
-export interface CommonHeaderNavProps
-  extends React.ComponentProps<"nav">,
-    ComponentProps {}
-
 export interface CommonNavItemProps
   extends React.ComponentProps<"li">,
-    Pick<
-      React.ComponentPropsWithoutRef<typeof Link>,
-      "target" | "title" | "href"
-    >,
-    ComponentProps {}
+    Pick<React.ComponentPropsWithoutRef<typeof Link>, "target" | "title">,
+    ComponentProps {
+  /** Link href */
+  href?: React.ComponentProps<typeof Link>["href"];
+}
