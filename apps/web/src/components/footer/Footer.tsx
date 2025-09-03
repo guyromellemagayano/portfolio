@@ -35,17 +35,12 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
     ...rest
   } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
   const element = (
     <footer
       {...rest}
       className={cn(styles.footerComponent, className)}
-      data-footer-id={id}
-      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-footer-id={`${internalId}-footer`}
+      data-debug-mode={debugMode ? "true" : undefined}
       data-testid="footer-root"
     >
       <Container.Outer>
@@ -75,7 +70,7 @@ const MemoizedFooter = React.memo(BaseFooter);
 // MAIN FOOTER COMPONENT
 // ============================================================================
 
-/** A footer component. */
+/** The main footer component for the application. */
 const Footer: FooterComponent = setDisplayName(function Footer(props) {
   const {
     isMemoized = false,
@@ -99,12 +94,8 @@ const Footer: FooterComponent = setDisplayName(function Footer(props) {
     legalText,
   };
 
-  const element = isMemoized ? (
-    <MemoizedFooter {...updatedProps} />
-  ) : (
-    <BaseFooter {...updatedProps} />
-  );
-
+  const Component = isMemoized ? MemoizedFooter : BaseFooter;
+  const element = <Component {...updatedProps} />;
   return element;
 });
 
