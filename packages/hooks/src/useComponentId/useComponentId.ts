@@ -10,6 +10,14 @@ interface UseComponentIdOptions {
   debugMode?: boolean;
 }
 
+/** Internal options for the useComponentId hook */
+interface UseComponentIdInternalOptions {
+  /** Internal component ID for tracking */
+  _internalId?: string;
+  /** Internal debug mode for tracking */
+  _debugMode?: boolean;
+}
+
 /** Return values from the useComponentId hook */
 interface UseComponentIdReturn {
   /** Generated or custom component ID */
@@ -67,7 +75,7 @@ function getComponentNameFromStack(): string {
 }
 
 /** Generates component IDs and provides debug logging */
-export function useComponentId({
+function useComponentId({
   internalId,
   debugMode = false,
 }: UseComponentIdOptions = {}): UseComponentIdReturn {
@@ -91,3 +99,10 @@ export function useComponentId({
     isDebugMode,
   };
 }
+
+export {
+  useComponentId,
+  type UseComponentIdInternalOptions,
+  type UseComponentIdOptions,
+  type UseComponentIdReturn,
+};
