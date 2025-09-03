@@ -1,15 +1,24 @@
 import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
 
+import type {
+  UseComponentIdInternalOptions,
+  UseComponentIdOptions,
+} from "@guyromellemagayano/hooks";
+
 /**
  * Common props shared by all components in the library
  */
-export interface CommonComponentProps {
+export interface CommonComponentProps
+  extends UseComponentIdOptions,
+    UseComponentIdInternalOptions {
   /** Render component as a different element or custom component */
   as?: ElementType;
   /** Enable client-side rendering */
   isClient?: boolean;
   /** Use memoized version of client component */
   isMemoized?: boolean;
+  /** Additional props for extensibility */
+  [key: string]: unknown;
 }
 
 /**
@@ -845,4 +854,37 @@ export function elementSupportsFeature(
   return feature === "variants"
     ? (config.supportsVariants ?? true)
     : (config.supportsStates ?? true);
+}
+
+/**
+ * Analytics event type for tracking user interactions
+ */
+export type AnalyticsEventType =
+  | "click"
+  | "view"
+  | "submit"
+  | "focus"
+  | "blur"
+  | "scroll"
+  | "resize"
+  | "load"
+  | "error"
+  | "custom";
+
+/**
+ * Analytics event interface for tracking user interactions
+ */
+export interface AnalyticsEvent {
+  /** Type of analytics event */
+  type: AnalyticsEventType;
+  /** Name/identifier for the event */
+  name: string;
+  /** Additional properties for the event */
+  properties?: Record<string, unknown>;
+  /** Timestamp when the event occurred */
+  timestamp?: number;
+  /** User identifier if available */
+  userId?: string;
+  /** Session identifier if available */
+  sessionId?: string;
 }
