@@ -22,9 +22,8 @@ import styles from "./HeaderMobileNav.module.css";
 // BASE HEADER MOBILE NAV COMPONENT
 // ============================================================================
 
-interface HeaderMobileNavProps
-  extends React.ComponentProps<"div">,
-    ComponentProps {}
+type HeaderMobileNavProps = React.ComponentProps<typeof Popover> &
+  ComponentProps;
 type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 /** A mobile navigation component that displays a menu button and a list of links. */
@@ -66,8 +65,8 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                   <HeaderMobileNavItem
                     key={`${link.label}:${link.href}`}
                     href={link.href}
-                    _internalId={_internalId}
-                    _debugMode={_debugMode}
+                    internalId={_internalId}
+                    debugMode={_debugMode}
                   >
                     {link.label}
                   </HeaderMobileNavItem>
