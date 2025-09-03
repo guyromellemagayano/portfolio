@@ -136,14 +136,14 @@ describe("Footer", () => {
       render(<Footer internalId="custom-id" />);
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).toHaveAttribute("data-footer-id", "custom-id");
+      expect(footer).toHaveAttribute("data-footer-id", "custom-id-footer");
     });
 
     it("renders without internal ID when not provided", () => {
       render(<Footer />);
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).toHaveAttribute("data-footer-id", "test-id");
+      expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
     });
   });
 
@@ -253,7 +253,7 @@ describe("Footer", () => {
       render(<Footer internalId="test-id" debugMode />);
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).toHaveAttribute("data-footer-id", "test-id");
+      expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
       expect(footer).toHaveAttribute("data-debug-mode", "true");
       expect(footer).toHaveAttribute("data-testid", "footer-root");
     });

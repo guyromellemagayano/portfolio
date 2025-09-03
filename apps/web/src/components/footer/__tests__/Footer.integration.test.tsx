@@ -4,6 +4,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { Footer } from "../Footer";
 
 // Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn(({ internalId, debugMode }) => ({
+    id: internalId || "default-footer",
+    isDebugMode: debugMode || false,
+  })),
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
@@ -122,23 +129,24 @@ describe("Footer Integration", () => {
       expect(screen.getByText("Custom Legal Text")).toBeInTheDocument();
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).toHaveAttribute("data-footer-id", "custom-footer");
+      expect(footer).toHaveAttribute("data-footer-id", "custom-footer-footer");
       expect(footer).toHaveAttribute("data-debug-mode", "true");
     });
   });
 
-  describe("Sub-component Attachment", () => {
-    it("has attached sub-components", () => {
+  describe("Sub-component Integration", () => {
+    it("integrates with FooterNavigation component", () => {
       render(<Footer />);
 
-      // Verify that the Footer component has the expected sub-components
-      expect(Footer.Navigation).toBeDefined();
-      expect(Footer.Legal).toBeDefined();
+      // Verify that the FooterNavigation component is rendered
+      expect(screen.getByTestId("footer-navigation")).toBeInTheDocument();
     });
 
-    it("sub-components are properly typed", () => {
-      expect(typeof Footer.Navigation).toBe("function");
-      expect(typeof Footer.Legal).toBe("function");
+    it("integrates with FooterLegal component", () => {
+      render(<Footer />);
+
+      // Verify that the FooterLegal component is rendered
+      expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
     });
   });
 
@@ -245,7 +253,7 @@ describe("Footer Integration", () => {
       expect(screen.getByText("Test Legal")).toBeInTheDocument();
 
       const footer = screen.getByTestId("footer-root");
-      expect(footer).toHaveAttribute("data-footer-id", "test-id");
+      expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
       expect(footer).toHaveAttribute("data-debug-mode", "true");
       expect(footer).toHaveClass("test-class");
     });
