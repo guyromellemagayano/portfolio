@@ -1,6 +1,7 @@
 import React from "react";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
+import Link from "next/link";
+
 import {
   type ComponentProps,
   getLinkTargetProps,
@@ -13,6 +14,10 @@ import { cn } from "@web/lib";
 import { type FooterLink } from "../../_data";
 import styles from "./FooterNavigation.module.css";
 
+// ============================================================================
+// BASE FOOTER NAVIGATION COMPONENT
+// ============================================================================
+
 interface FooterNavigationProps
   extends Omit<React.ComponentProps<"nav">, "children">,
     ComponentProps {
@@ -21,15 +26,10 @@ interface FooterNavigationProps
 }
 type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
-/** Footer navigation subcomponent for displaying navigation links. */
-const FooterNavigation: FooterNavigationComponent = setDisplayName(
+/** A base footer navigation component (client, minimal effects split out). */
+const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
-    const { className, internalId, debugMode, navLinks, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+    const { className, navLinks, _internalId, _debugMode, ...rest } = props;
 
     if (!navLinks) return null;
 
@@ -37,8 +37,8 @@ const FooterNavigation: FooterNavigationComponent = setDisplayName(
       <nav
         {...rest}
         className={cn(styles.footerNavigationList, className)}
-        data-footer-navigation-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-footer-navigation-id={`${_internalId}-footer-navigation`}
+        data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="footer-navigation-root"
       >
         {navLinks.map(({ kind, label, href }) => {
@@ -60,19 +60,51 @@ const FooterNavigation: FooterNavigationComponent = setDisplayName(
 
           return (
             <li key={label} className={styles.footerNavigationItem}>
-              <a
+              <Link
                 {...targetProps}
                 href={hrefString}
                 className={styles.footerNavigationLink}
               >
                 {label}
-              </a>
+              </Link>
             </li>
           );
         })}
       </nav>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED FOOTER NAVIGATION COMPONENT
+// ============================================================================
+
+/** A memoized footer navigation component. */
+const MemoizedFooterNavigation = React.memo(BaseFooterNavigation);
+
+// ============================================================================
+// MAIN FOOTER NAVIGATION COMPONENT
+// ============================================================================
+
+/** The main footer navigation component for the application. */
+const FooterNavigation: FooterNavigationComponent = setDisplayName(
+  function FooterNavigation(props) {
+    const {
+      isMemoized = false,
+      navLinks,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
+
+    const updatedProps = { ...rest, _internalId, _debugMode, navLinks };
+
+    const Component = isMemoized
+      ? MemoizedFooterNavigation
+      : BaseFooterNavigation;
+    const element = <Component {...updatedProps} />;
     return element;
   }
 );

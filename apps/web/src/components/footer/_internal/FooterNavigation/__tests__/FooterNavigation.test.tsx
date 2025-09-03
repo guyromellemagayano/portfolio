@@ -1,3 +1,22 @@
+// Mock IntersectionObserver FIRST
+const mockIntersectionObserver = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
+Object.defineProperty(window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -6,7 +25,7 @@ import { FooterNavigation } from "../FooterNavigation";
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    id: options.internalId || "default-footer-navigation",
     isDebugMode: options.debugMode || false,
   })),
 }));
@@ -107,7 +126,7 @@ describe("FooterNavigation", () => {
         { kind: "internal" as const, label: "Home", href: "/" },
       ];
 
-      render(<FooterNavigation navLinks={navLinks} debugMode />);
+      render(<FooterNavigation navLinks={navLinks} _debugMode />);
 
       const nav = screen.getByTestId("footer-navigation-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
@@ -118,10 +137,13 @@ describe("FooterNavigation", () => {
         { kind: "internal" as const, label: "Home", href: "/" },
       ];
 
-      render(<FooterNavigation navLinks={navLinks} internalId="custom-nav" />);
+      render(<FooterNavigation navLinks={navLinks} _internalId="custom-nav" />);
 
       const nav = screen.getByTestId("footer-navigation-root");
-      expect(nav).toHaveAttribute("data-footer-navigation-id", "custom-nav");
+      expect(nav).toHaveAttribute(
+        "data-footer-navigation-id",
+        "custom-nav-footer-navigation"
+      );
     });
 
     it("passes through HTML attributes", () => {
@@ -175,7 +197,7 @@ describe("FooterNavigation", () => {
         { kind: "internal" as const, label: "Home", href: "/" },
       ];
 
-      render(<FooterNavigation navLinks={navLinks} debugMode={false} />);
+      render(<FooterNavigation navLinks={navLinks} _debugMode={false} />);
 
       const nav = screen.getByTestId("footer-navigation-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
@@ -317,11 +339,18 @@ describe("FooterNavigation", () => {
       ];
 
       render(
-        <FooterNavigation navLinks={navLinks} internalId="test-id" debugMode />
+        <FooterNavigation
+          navLinks={navLinks}
+          _internalId="test-id"
+          _debugMode
+        />
       );
 
       const nav = screen.getByTestId("footer-navigation-root");
-      expect(nav).toHaveAttribute("data-footer-navigation-id", "test-id");
+      expect(nav).toHaveAttribute(
+        "data-footer-navigation-id",
+        "test-id-footer-navigation"
+      );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("data-testid", "footer-navigation-root");
     });
