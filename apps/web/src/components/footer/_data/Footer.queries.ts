@@ -17,7 +17,6 @@ async function fetchFooterRaw(): Promise<FooterData> {
   if (!endpoint) {
     // Static fallback
     return {
-      brandName: FOOTER_COMPONENT_LABELS.brandName,
       legalText: FOOTER_COMPONENT_LABELS.legalText,
       nav: FOOTER_COMPONENT_NAV_LINKS,
     };
