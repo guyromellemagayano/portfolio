@@ -1,15 +1,19 @@
+// Mock next/navigation FIRST
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/about"),
+}));
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
 // Mock IntersectionObserver
-const mockIntersectionObserver = vi.fn();
-mockIntersectionObserver.mockReturnValue({
+const mockIntersectionObserver = vi.fn(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
-});
+}));
 
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
@@ -79,11 +83,6 @@ vi.mock("next/link", () => ({
       {children}
     </a>
   )),
-}));
-
-// Mock next/navigation
-vi.mock("next/navigation", () => ({
-  usePathname: vi.fn(() => "/about"),
 }));
 
 // Mock the lib

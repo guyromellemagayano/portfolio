@@ -87,7 +87,7 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
     id: options.internalId
       ? `${options.internalId}-header-desktop-nav`
-      : "undefined-header-desktop-nav",
+      : "default-header-desktop-nav",
     isDebugMode: options.debugMode || false,
   })),
 }));
@@ -207,8 +207,8 @@ describe("HeaderDesktopNav", () => {
   });
 
   describe("Component ID and Debug Mode", () => {
-    it("uses provided internalId when available", () => {
-      render(<HeaderDesktopNav internalId="custom-id" />);
+    it("uses provided _internalId when available", () => {
+      render(<HeaderDesktopNav _internalId="custom-id" />);
 
       const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute(
@@ -218,7 +218,7 @@ describe("HeaderDesktopNav", () => {
     });
 
     it("uses provided _internalId when available", () => {
-      render(<HeaderDesktopNav internalId="test-id" />);
+      render(<HeaderDesktopNav _internalId="test-id" />);
 
       const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute(
@@ -227,21 +227,21 @@ describe("HeaderDesktopNav", () => {
       );
     });
 
-    it("applies data-debug-mode when debugMode is true", () => {
-      render(<HeaderDesktopNav debugMode={true} />);
+    it("applies data-debug-mode when _debugMode is true", () => {
+      render(<HeaderDesktopNav _debugMode={true} />);
 
       const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("does not apply data-debug-mode when debugMode is false", () => {
-      render(<HeaderDesktopNav debugMode={false} />);
+    it("does not apply data-debug-mode when _debugMode is false", () => {
+      render(<HeaderDesktopNav _debugMode={false} />);
 
       const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
-    it("does not apply data-debug-mode when debugMode is undefined", () => {
+    it("does not apply data-debug-mode when _debugMode is undefined", () => {
       render(<HeaderDesktopNav />);
 
       const nav = screen.getByTestId("header-desktop-nav-root");
@@ -332,8 +332,8 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           aria-label="Test navigation"
         />
       );
@@ -462,8 +462,8 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
+          _internalId="custom-id"
+          _debugMode={true}
           aria-label="Test navigation"
           data-testid="custom-testid"
         />
@@ -483,15 +483,15 @@ describe("HeaderDesktopNav", () => {
       render(
         <HeaderDesktopNav
           className={undefined}
-          internalId={undefined}
-          debugMode={undefined}
+          _internalId={undefined}
+          _debugMode={undefined}
         />
       );
 
       const nav = screen.getByTestId("header-desktop-nav-root");
       expect(nav).toHaveAttribute(
         "data-header-desktop-nav-id",
-        "undefined-header-desktop-nav"
+        "default-header-desktop-nav"
       );
       expect(nav).not.toHaveAttribute("data-debug-mode");
       expect(nav).toHaveClass("header-desktop-nav-list");
