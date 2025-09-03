@@ -74,6 +74,18 @@ vi.mock("../../../_data", () => ({
   ],
 }));
 
+// Mock the Icon component
+vi.mock("@web/components/icon", () => ({
+  Icon: {
+    ChevronDown: vi.fn(({ className, ...props }) => (
+      <svg data-testid="chevron-down-icon" className={className} {...props} />
+    )),
+    Close: vi.fn(({ className, ...props }) => (
+      <svg data-testid="close-icon" className={className} {...props} />
+    )),
+  },
+}));
+
 // Mock the HeaderMobileNavItem component
 vi.mock("../HeaderMobileNavItem", () => ({
   HeaderMobileNavItem: React.forwardRef<HTMLLIElement, any>(

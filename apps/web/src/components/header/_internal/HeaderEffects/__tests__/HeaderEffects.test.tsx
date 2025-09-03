@@ -1,12 +1,12 @@
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderEffects } from "../HeaderEffects";
-
-// Mock the utils
+// Mock the utils FIRST
 vi.mock("@web/lib", () => ({
   clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
+
+import { HeaderEffects } from "../HeaderEffects";
 
 // Mock DOM APIs
 const mockRequestAnimationFrame = vi.fn((callback) => {
