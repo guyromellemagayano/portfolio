@@ -1,6 +1,8 @@
 // ==========================
 // SHARED TYPES AND UTILITIES
 // ==========================
+export * from "./analytics";
+export * from "./polymorphic-helpers";
 export * from "./types";
 
 // =================
