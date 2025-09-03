@@ -730,9 +730,15 @@ importers:
 
   packages/components:
     dependencies:
+      '@guyromellemagayano/hooks':
+        specifier: workspace:*
+        version: link:../hooks
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../logger
+      '@guyromellemagayano/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.6.3
@@ -955,6 +961,9 @@ importers:
 
   packages/logger:
     dependencies:
+      '@packages/vitest-presets':
+        specifier: workspace:*
+        version: link:../vitest-presets
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.6.3
@@ -989,9 +998,6 @@ importers:
       '@packages/typescript-config':
         specifier: workspace:*
         version: link:../config-typescript
-      '@packages/vitest-presets':
-        specifier: workspace:*
-        version: link:../vitest-presets
 
   packages/ui:
     dependencies:
