@@ -1,7 +1,5 @@
 import React from "react";
 
-import Link from "next/link";
-
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
@@ -13,6 +11,7 @@ import {
 import { Icon } from "@web/components";
 import { cn } from "@web/lib";
 
+import { type CardComponentsWithLinks } from "../../_data";
 import { CardLinkCustom } from "../CardLink";
 import styles from "./CardCta.module.css";
 
@@ -20,14 +19,10 @@ import styles from "./CardCta.module.css";
 // BASE CARD CTA COMPONENT
 // ============================================================================
 
-interface CardCtaProps extends React.ComponentProps<"div">, ComponentProps {
-  /** The href of the link. */
-  href?: React.ComponentProps<typeof Link>["href"];
-  /** The target of the link. */
-  target?: React.ComponentProps<typeof Link>["target"];
-  /** The title of the link. */
-  title?: React.ComponentProps<typeof Link>["title"];
-}
+interface CardCtaProps
+  extends React.ComponentProps<"div">,
+    CardComponentsWithLinks,
+    ComponentProps {}
 type CardCtaComponent = React.FC<CardCtaProps>;
 
 /** A call-to-action subcomponent for `Card`, optionally rendering as a link if href is provided. */
