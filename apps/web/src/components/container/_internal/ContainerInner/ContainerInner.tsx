@@ -1,27 +1,19 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
+import type { CommonContainerComponent } from "../../_data";
 import styles from "./ContainerInner.module.css";
 
 // ============================================================================
 // BASE CONTAINER INNER COMPONENT
 // ============================================================================
 
-interface ContainerInnerProps
-  extends React.ComponentProps<"div">,
-    ComponentProps {}
-type ContainerInnerComponent = React.FC<ContainerInnerProps>;
-
 /** Provides the inner structure for the `Container` compound component. */
-const BaseContainerInner: ContainerInnerComponent = setDisplayName(
+const BaseContainerInner: CommonContainerComponent = setDisplayName(
   function BaseContainerInner(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
@@ -57,7 +49,7 @@ const MemoizedContainerInner = React.memo(BaseContainerInner);
 // ============================================================================
 
 /** A container inner component that provides consistent inner structure for page content. */
-const ContainerInner: ContainerInnerComponent = setDisplayName(
+const ContainerInner: CommonContainerComponent = setDisplayName(
   function ContainerInner(props) {
     const {
       children,
