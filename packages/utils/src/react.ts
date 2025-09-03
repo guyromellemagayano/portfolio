@@ -1,10 +1,22 @@
 import React from "react";
 
+import type { CommonComponentProps } from "@guyromellemagayano/components";
+
 // ============================================================================
 // COMPONENT UTILITIES
 // ============================================================================
 
-/** Sets `displayName` for React components with improved type safety */
+/**
+ * Sets `displayName` for React components with improved type safety.
+ *
+ * This utility ensures React DevTools displays meaningful component names
+ * for debugging and development purposes. It preserves existing displayName
+ * values and provides fallback naming.
+ *
+ * @param component - The React component to set displayName for
+ * @param displayName - Optional custom display name (defaults to component name)
+ * @returns The component with displayName set
+ */
 export function setDisplayName<T extends React.ComponentType<any>>(
   component: T,
   displayName?: string
@@ -26,25 +38,32 @@ export function setDisplayName<T extends React.ComponentType<any>>(
 // COMPONENT FACTORY UTILITIES
 // ============================================================================
 
-/** Input props that users provide to components */
-export interface ComponentProps {
-  /** Enable debug mode */
-  debugMode?: boolean;
-  /** Custom component ID for tracking */
-  internalId?: string;
-  /** Opt-in client-side rendering */
-  isClient?: boolean;
-  /** Opt-in memoization wrapper (for profiling) */
-  isMemoized?: boolean;
-  /** Additional props */
-  [key: string]: unknown;
-}
+/** Standard props interface for all components in the design system */
+export interface ComponentProps
+  extends Pick<
+    CommonComponentProps,
+    | "isClient"
+    | "isMemoized"
+    | "internalId"
+    | "debugMode"
+    | "_internalId"
+    | "_debugMode"
+  > {}
 
 // ============================================================================
 // CONTENT UTILITIES
 // ============================================================================
 
-/** Checks if children are renderable */
+/**
+ * Checks if children are renderable in React components.
+ *
+ * Provides strict conditional rendering to prevent broken UI. Only filters
+ * out false values while allowing null, undefined, and empty strings to
+ * render normally.
+ *
+ * @param children - The children content to validate
+ * @returns `true` if children should render, `false` otherwise
+ */
 export function isRenderableContent(children: unknown): boolean {
   // Strict conditional rendering to prevent broken UI
   // Only filter out false values - allow null, undefined, and empty strings
@@ -56,7 +75,15 @@ export function isRenderableContent(children: unknown): boolean {
   return true;
 }
 
-/** Checks if any of the provided values are renderable content */
+/**
+ * Checks if any of the provided values are renderable content.
+ *
+ * Useful for components that accept multiple content sources and need
+ * to determine if any should be rendered.
+ *
+ * @param values - Array of React nodes to check
+ * @returns `true` if any value is renderable, `false` otherwise
+ */
 export function hasAnyRenderableContent(...values: React.ReactNode[]): boolean {
   return values.some((value) => {
     // Only filter out false values - allow null, undefined, and empty strings
@@ -67,7 +94,15 @@ export function hasAnyRenderableContent(...values: React.ReactNode[]): boolean {
   });
 }
 
-/** Safely trims whitespace from string content */
+/**
+ * Safely trims whitespace from string content.
+ *
+ * Handles various input types and provides consistent string output
+ * for content processing and validation.
+ *
+ * @param content - The content to trim
+ * @returns Trimmed string content
+ */
 export function trimStringContent(content: unknown): string {
   if (typeof content === "string") {
     return content.trim();
@@ -75,7 +110,15 @@ export function trimStringContent(content: unknown): string {
   return String(content || "");
 }
 
-/** Checks if string content has meaningful text */
+/**
+ * Checks if string content has meaningful text after trimming.
+ *
+ * Validates that string content contains non-whitespace characters,
+ * useful for determining if text-based components should render.
+ *
+ * @param content - The content to validate
+ * @returns `true` if content has meaningful text, `false` otherwise
+ */
 export function hasMeaningfulText(content: unknown): boolean {
   if (typeof content !== "string") {
     return false;
@@ -83,7 +126,17 @@ export function hasMeaningfulText(content: unknown): boolean {
   return content.trim().length > 0;
 }
 
-/** Checks if content should render based on component type and UX considerations */
+/**
+ * Checks if content should render based on component type and UX considerations.
+ *
+ * Provides intelligent rendering decisions based on component semantics.
+ * Different component types have different rendering rules to ensure
+ * optimal user experience.
+ *
+ * @param children - The children content to validate
+ * @param componentType - The type of component for rendering rules
+ * @returns `true` if component should render, `false` otherwise
+ */
 export function shouldRenderComponent(
   children: unknown,
   componentType:
@@ -115,7 +168,15 @@ export function shouldRenderComponent(
 // LINK UTILITIES
 // ============================================================================
 
-/** Validates if a URL is valid and not a placeholder */
+/**
+ * Validates if a URL is valid and not a placeholder.
+ *
+ * Checks that href is provided and not an empty string or placeholder value.
+ * Useful for preventing broken links and ensuring proper link behavior.
+ *
+ * @param href - The URL to validate
+ * @returns `true` if href is valid, `false` otherwise
+ */
 export function isValidLink(href?: string | { toString(): string }): boolean {
   if (!href) return false;
 
@@ -126,7 +187,17 @@ export function isValidLink(href?: string | { toString(): string }): boolean {
   return true;
 }
 
-/** Gets safe link target attributes for external links */
+/**
+ * Gets safe link target attributes for external links.
+ *
+ * Automatically determines appropriate target and rel attributes based on
+ * link type and user preferences. Ensures security best practices for
+ * external links.
+ *
+ * @param href - The URL to analyze
+ * @param target - Optional user-specified target
+ * @returns Object with target and rel attributes
+ */
 export function getLinkTargetProps(
   href?: string | { toString(): string },
   target?: string
@@ -151,7 +222,15 @@ export function getLinkTargetProps(
   };
 }
 
-/** Validates and provides default values for common link props */
+/**
+ * Validates and provides default values for common link props.
+ *
+ * Ensures link components have consistent, safe default values for
+ * href, target, and title attributes.
+ *
+ * @param props - The link props to validate
+ * @returns Object with validated link props
+ */
 export function getDefaultLinkProps(props: {
   href?: string | { toString(): string };
   target?: string;
@@ -175,7 +254,17 @@ export function getDefaultLinkProps(props: {
 // STYLING UTILITIES
 // ============================================================================
 
-/** Creates conditional CSS class names with proper fallbacks */
+/**
+ * Creates conditional CSS class names with proper fallbacks.
+ *
+ * Builds className strings by combining a base class with conditional
+ * classes based on boolean values. Filters out falsy values automatically.
+ *
+ * @param baseClass - The base CSS class to always include
+ * @param conditionalClasses - Object mapping class names to boolean conditions
+ * @param additionalClass - Optional additional class to append
+ * @returns Combined className string
+ */
 export function createConditionalClasses(
   baseClass: string,
   conditionalClasses: Record<string, boolean>,
@@ -196,7 +285,16 @@ export function createConditionalClasses(
   return classes.filter(Boolean).join(" ");
 }
 
-/** Safely formats a date string with fallback handling */
+/**
+ * Safely formats a date string with fallback handling.
+ *
+ * Converts various date inputs to localized date strings with error
+ * handling for invalid dates and edge cases.
+ *
+ * @param date - The date to format (string, Date object, or null/undefined)
+ * @param options - Optional Intl.DateTimeFormatOptions for customization
+ * @returns Formatted date string or empty string if invalid
+ */
 export function formatDateSafely(
   date: string | Date | null | undefined,
   options?: Intl.DateTimeFormatOptions
