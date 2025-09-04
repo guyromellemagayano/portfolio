@@ -1,7 +1,5 @@
 import React from "react";
 
-import type { CommonComponentProps } from "@guyromellemagayano/components";
-
 // ============================================================================
 // COMPONENT UTILITIES
 // ============================================================================
@@ -33,22 +31,6 @@ export function setDisplayName<T extends React.ComponentType<any>>(
 
   return component;
 }
-
-// ============================================================================
-// COMPONENT FACTORY UTILITIES
-// ============================================================================
-
-/** Standard props interface for all components in the design system */
-export interface ComponentProps
-  extends Pick<
-    CommonComponentProps,
-    | "isClient"
-    | "isMemoized"
-    | "internalId"
-    | "debugMode"
-    | "_internalId"
-    | "_debugMode"
-  > {}
 
 // ============================================================================
 // CONTENT UTILITIES

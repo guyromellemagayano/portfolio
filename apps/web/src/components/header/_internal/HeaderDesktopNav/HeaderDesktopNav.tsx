@@ -1,8 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
   filterValidNavigationLinks,
   hasValidNavigationLinks,
   setDisplayName,
@@ -20,7 +20,7 @@ import styles from "./HeaderDesktopNav.module.css";
 
 interface CommonHeaderNavProps
   extends React.ComponentProps<"nav">,
-    ComponentProps {}
+    CommonComponentProps {}
 type HeaderDesktopNavComponent = React.FC<CommonHeaderNavProps>;
 
 /** Renders a desktop navigation component that displays a list of navigation links. */

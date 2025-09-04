@@ -1,8 +1,9 @@
 import React from "react";
 
-import { type ComponentProps } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 
 export interface CommonIconProps
   extends React.ComponentProps<"svg">,
-    ComponentProps {}
+    CommonComponentProps {}
+
 export type CommonIconComponent = React.FC<CommonIconProps>;
