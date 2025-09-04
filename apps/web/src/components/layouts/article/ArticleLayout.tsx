@@ -1,230 +1,124 @@
-"use client";
+import React from "react";
 
-import React, { useContext } from "react";
-
-import { useRouter } from "next/navigation";
-
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  Article,
-  Button,
-  Div,
-  Header,
-  Heading,
-  Span,
-  Time,
-} from "@guyromellemagayano/components";
-import { setDisplayName, useComponentId } from "@guyromellemagayano/hooks";
+  hasAnyRenderableContent,
+  hasMeaningfulText,
+  isRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { AppContext } from "@web/app/context";
-import { Container } from "@web/components/container";
-import { Icon } from "@web/components/icon";
-import { Prose } from "@web/components/prose";
+import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, formatDate } from "@web/lib";
 
-import { ARTICLE_LAYOUT_COMPONENT_LABELS } from "./ArticleLayout.data";
+import { ArticleNavButton } from "./_internal/ArticleNavButton/ArticleNavButton";
 import styles from "./ArticleLayout.module.css";
 
 // ============================================================================
-// ARTICLE NAVIGATION BUTTON COMPONENT
+// BASE ARTICLE LAYOUT COMPONENT
 // ============================================================================
-
-type ArticleNavButtonRef = React.ComponentRef<typeof Button>;
-interface ArticleNavButtonProps
-  extends React.ComponentProps<typeof Button>,
-    CommonWebAppComponentProps {}
-
-interface InternalArticleNavButtonProps
-  extends React.ComponentProps<typeof Button>,
-    CommonWebAppComponentProps {
-  /** Internal component ID passed from parent */
-  componentId?: string;
-  /** Internal debug mode passed from parent */
-  isDebugMode?: boolean;
-}
-
-type InternalArticleNavButtonComponent = React.ForwardRefExoticComponent<
-  InternalArticleNavButtonProps & React.RefAttributes<ArticleNavButtonRef>
->;
-
-/** Internal button that navigates to the previous pathname. */
-const InternalArticleNavButton = setDisplayName(
-  React.forwardRef(function InternalArticleNavButton(props, ref) {
-    const { componentId, isDebugMode, ...rest } = props;
-
-    let router = useRouter();
-    let { previousPathname } = useContext(AppContext);
-
-    if (!previousPathname) return null;
-
-    const element = (
-      <Button
-        {...rest}
-        ref={ref}
-        type="button"
-        className={cn(styles.articleNavButton, rest.className)}
-        onClick={() => router.back()}
-        aria-label={
-          rest["aria-label"] || ARTICLE_LAYOUT_COMPONENT_LABELS.goBackToArticles
-        }
-        data-article-nav-button-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="article-nav-button"
-      >
-        <Icon.ArrowLeft className={styles.articleNavButtonIcon} />
-      </Button>
-    );
-
-    return element;
-  }),
-  "InternalArticleNavButton"
-) as InternalArticleNavButtonComponent;
-
-type ArticleNavButtonComponent = React.ForwardRefExoticComponent<
-  ArticleNavButtonProps & React.RefAttributes<ArticleNavButtonRef>
->;
-
-/** A button that navigates to the previous pathname. */
-export const ArticleNavButton = setDisplayName(
-  React.forwardRef(function ArticleNavButton(props, ref) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <InternalArticleNavButton
-        {...rest}
-        ref={ref}
-        componentId={id}
-        isDebugMode={isDebugMode}
-      />
-    );
-
-    return element;
-  }),
-  "ArticleNavButton"
-) as ArticleNavButtonComponent;
-
-// ============================================================================
-// ARTICLE LAYOUT COMPONENT
-// ============================================================================
-
-type ArticleLayoutRef = React.ComponentRef<typeof Container>;
-
-interface InternalArticleLayoutProps
-  extends React.ComponentProps<typeof Container> {
-  /** Internal component ID passed from parent */
-  componentId?: string;
-  /** Internal debug mode passed from parent */
-  isDebugMode?: boolean;
+interface ArticleLayoutProps
+  extends React.ComponentProps<typeof Container>,
+    CommonComponentProps {
   /** The article to display. */
   article?: ArticleWithSlug;
-  /** The content to render inside the layout. */
-  children?: React.ReactNode;
 }
-
-type InternalArticleLayoutComponent = React.ForwardRefExoticComponent<
-  InternalArticleLayoutProps & React.RefAttributes<ArticleLayoutRef>
->;
+type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 
 /** A layout component for an article. */
-const InternalArticleLayout = setDisplayName(
-  React.forwardRef(function InternalArticleLayout(props, ref) {
-    const { children, className, article, componentId, isDebugMode, ...rest } =
+const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
+  function BaseArticleLayout(props) {
+    const { children, className, article, internalId, debugMode, ...rest } =
       props;
-
-    if (!article && !children) return null;
 
     const element = (
       <Container
         {...rest}
-        ref={ref}
         className={cn(styles.articleLayoutContainer, className)}
-        data-article-layout-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="article-layout"
+        data-article-layout-id={`${internalId}-article-layout`}
+        data-debug-mode={debugMode ? "true" : undefined}
+        data-testid="article-layout-root"
       >
-        <Div className={styles.articleWrapper}>
-          <Div className={styles.articleContent}>
-            <ArticleNavButton />
-
+        <div className={styles.articleWrapper}>
+          <div className={styles.articleContent}>
+            <ArticleNavButton _debugMode={debugMode} _internalId={internalId} />
             {(article || children) && (
-              <Article>
-                <Header className="flex flex-col">
-                  {article?.title && (
-                    <Heading as="h1" className={styles.articleTitle}>
-                      {article.title}
-                    </Heading>
+              <article>
+                <header className="flex flex-col">
+                  {article?.title && hasMeaningfulText(article.title) && (
+                    <h1 className={styles.articleTitle}>{article.title}</h1>
                   )}
-
                   {article?.date && (
-                    <Time
+                    <time
                       dateTime={article.date}
                       className={styles.articleDate}
                     >
-                      <Span className={styles.dateSeparator} />
-                      <Span className={styles.dateText}>
+                      <span className={styles.dateSeparator} />
+                      <span className={styles.dateText}>
                         {formatDate(article.date)}
-                      </Span>
-                    </Time>
+                      </span>
+                    </time>
                   )}
-                </Header>
-
-                {children && (
+                </header>
+                {children && isRenderableContent(children) && (
                   <Prose className={styles.articleProse} data-mdx-content>
                     {children}
                   </Prose>
                 )}
-              </Article>
+              </article>
             )}
-          </Div>
-        </Div>
+          </div>
+        </div>
       </Container>
     );
 
     return element;
-  }),
-  "InternalArticleLayout"
-) as InternalArticleLayoutComponent;
+  }
+);
 
-interface ArticleLayoutProps extends React.ComponentProps<typeof Container> {
-  /** The article to display. */
-  article?: ArticleWithSlug;
-  /** The content to render inside the layout. */
-  children?: React.ReactNode;
-}
+// ============================================================================
+// MEMOIZED ARTICLE LAYOUT COMPONENT
+// ============================================================================
 
-type ArticleLayoutComponent = React.ForwardRefExoticComponent<
-  ArticleLayoutProps & React.RefAttributes<ArticleLayoutRef>
->;
+/** A memoized article layout component. */
+const MemoizedArticleLayout = React.memo(BaseArticleLayout);
+
+// ============================================================================
+// MAIN ARTICLE LAYOUT COMPONENT
+// ============================================================================
 
 /** A layout component for an article. */
-export const ArticleLayout = setDisplayName(
-  React.forwardRef(function ArticleLayout(props, ref) {
-    const { _internalId, _debugMode, ...rest } = props;
+const ArticleLayout: ArticleLayoutComponent = setDisplayName(
+  function ArticleLayout(props) {
+    const {
+      children,
+      article,
+      isMemoized = false,
+      internalId,
+      debugMode,
+      ...rest
+    } = props;
 
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
     const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
+      internalId,
+      debugMode,
     });
 
-    const element = (
-      <InternalArticleLayout
-        {...rest}
-        ref={ref}
-        componentId={id}
-        isDebugMode={isDebugMode}
-      />
-    );
+    if (!hasAnyRenderableContent(article?.title, article?.date, children))
+      return null;
 
+    const updatedProps = {
+      ...rest,
+      article,
+      internalId: id,
+      debugMode: isDebugMode,
+    };
+
+    const Component = isMemoized ? MemoizedArticleLayout : BaseArticleLayout;
+    const element = <Component {...updatedProps}>{children}</Component>;
     return element;
-  }),
-  "ArticleLayout"
-) as ArticleLayoutComponent;
+  }
+);
+
+export { ArticleLayout };
