@@ -1,6 +1,7 @@
 import React from "react";
 
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -12,7 +13,7 @@ import styles from "./HeaderAvatarContainer.module.css";
 
 interface HeaderAvatarContainerProps
   extends React.ComponentProps<"div">,
-    ComponentProps {}
+    CommonComponentProps {}
 type HeaderAvatarContainerComponent = React.FC<HeaderAvatarContainerProps>;
 
 /** A container `div` for the `header` avatar, providing styling and debug attributes. */

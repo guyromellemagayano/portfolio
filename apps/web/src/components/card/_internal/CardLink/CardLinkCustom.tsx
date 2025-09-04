@@ -2,8 +2,8 @@ import React from "react";
 
 import Link from "next/link";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import {
-  type ComponentProps,
   getLinkTargetProps,
   isRenderableContent,
   setDisplayName,
@@ -15,7 +15,7 @@ import {
 
 interface CardLinkCustomProps
   extends React.ComponentProps<typeof Link>,
-    ComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
 
 /** A custom Link component for Card components */

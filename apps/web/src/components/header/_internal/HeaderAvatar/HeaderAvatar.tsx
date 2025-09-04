@@ -3,11 +3,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import {
-  type ComponentProps,
-  getLinkTargetProps,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { getLinkTargetProps, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -20,7 +17,7 @@ import styles from "./HeaderAvatar.module.css";
 
 interface HeaderAvatarProps
   extends Omit<React.ComponentProps<typeof Link>, "href">,
-    ComponentProps {
+    Omit<CommonComponentProps, "as"> {
   /** The href of the link. */
   href?: React.ComponentProps<typeof Link>["href"];
   /** The alt text. */
@@ -97,7 +94,6 @@ const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function HeaderAvatar(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
-    // Pass internal props directly - no transformation needed
     const updatedProps = {
       ...rest,
       _internalId,
