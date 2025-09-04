@@ -1,2 +1,1 @@
-export * from "./Layout";
-export type * from "./models/Layout.types";
+export { BaseLayout } from "./BaseLayout";
