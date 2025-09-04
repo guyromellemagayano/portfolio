@@ -1,2 +1,2 @@
-export { FooterLegal } from "./FooterLegal";
-export { FooterNavigation } from "./FooterNavigation";
+export * from "./FooterLegal";
+export * from "./FooterNavigation";
