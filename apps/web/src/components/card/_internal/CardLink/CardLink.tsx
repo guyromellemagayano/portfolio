@@ -1,8 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
@@ -21,7 +21,7 @@ import { CardLinkCustom } from "./CardLinkCustom";
 interface CardLinkProps
   extends React.ComponentProps<"div">,
     CardComponentsWithLinks,
-    ComponentProps {}
+    CommonComponentProps {}
 type CardLinkComponent = React.FC<CardLinkProps>;
 
 /** A background and clickable wrapper for card links. */

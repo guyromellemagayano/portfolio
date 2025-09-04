@@ -1,9 +1,9 @@
 import React from "react";
 
-import { type ComponentProps } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 
 export interface CommonContainerProps
   extends React.ComponentProps<"div">,
-    ComponentProps {}
+    CommonComponentProps {}
 
 export type CommonContainerComponent = React.FC<CommonContainerProps>;

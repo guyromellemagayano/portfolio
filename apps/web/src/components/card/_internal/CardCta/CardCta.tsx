@@ -1,8 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
@@ -22,7 +22,7 @@ import styles from "./CardCta.module.css";
 interface CardCtaProps
   extends React.ComponentProps<"div">,
     CardComponentsWithLinks,
-    ComponentProps {}
+    CommonComponentProps {}
 type CardCtaComponent = React.FC<CardCtaProps>;
 
 /** A call-to-action subcomponent for `Card`, optionally rendering as a link if href is provided. */

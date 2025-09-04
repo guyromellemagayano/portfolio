@@ -1,10 +1,7 @@
 import React from "react";
 
-import {
-  type ComponentProps,
-  hasMeaningfulText,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { hasMeaningfulText, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -21,7 +18,7 @@ import styles from "./FooterLegal.module.css";
 interface FooterLegalProps
   extends Omit<React.ComponentProps<"p">, "children">,
     FooterComponentLabels,
-    ComponentProps {}
+    CommonComponentProps {}
 type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 /** A base footer legal component (client, minimal effects split out). */

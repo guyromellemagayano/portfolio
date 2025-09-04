@@ -1,11 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -17,7 +14,7 @@ import styles from "./CardDescription.module.css";
 
 interface CardDescriptionProps
   extends React.ComponentProps<"p">,
-    ComponentProps {}
+    CommonComponentProps {}
 type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 /** A card description component that can optionally be wrapped in a link for navigation */
