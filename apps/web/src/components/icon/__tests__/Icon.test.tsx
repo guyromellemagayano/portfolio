@@ -399,4 +399,203 @@ describe("Icon", () => {
       expect(icon).toBeInTheDocument();
     });
   });
+
+  describe("Integration Tests", () => {
+    describe("Compound Component Structure", () => {
+      it("has attached sub-components", () => {
+        // Verify that the Icon component has the expected sub-components
+        expect(Icon.X).toBeDefined();
+        expect(Icon.Instagram).toBeDefined();
+        expect(Icon.LinkedIn).toBeDefined();
+        expect(Icon.GitHub).toBeDefined();
+        expect(Icon.Close).toBeDefined();
+        expect(Icon.Sun).toBeDefined();
+        expect(Icon.Moon).toBeDefined();
+        expect(Icon.ChevronDown).toBeDefined();
+        expect(Icon.ChevronRight).toBeDefined();
+        expect(Icon.ArrowLeft).toBeDefined();
+      });
+
+      it("sub-components are properly typed", () => {
+        expect(typeof Icon.X).toBe("function");
+        expect(typeof Icon.Instagram).toBe("function");
+        expect(typeof Icon.LinkedIn).toBe("function");
+        expect(typeof Icon.GitHub).toBe("function");
+        expect(typeof Icon.Close).toBe("function");
+        expect(typeof Icon.Sun).toBe("function");
+        expect(typeof Icon.Moon).toBe("function");
+        expect(typeof Icon.ChevronDown).toBe("function");
+        expect(typeof Icon.ChevronRight).toBe("function");
+        expect(typeof Icon.ArrowLeft).toBe("function");
+      });
+    });
+
+    describe("Social Icon Integration", () => {
+      it("renders X (Twitter) icon correctly", () => {
+        render(<Icon.X />);
+        const icon = screen.getByTestId("icon-x-twitter");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders Instagram icon correctly", () => {
+        render(<Icon.Instagram />);
+        const icon = screen.getByTestId("icon-instagram");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders LinkedIn icon correctly", () => {
+        render(<Icon.LinkedIn />);
+        const icon = screen.getByTestId("icon-linkedin");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders GitHub icon correctly", () => {
+        render(<Icon.GitHub />);
+        const icon = screen.getByTestId("icon-github");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+    });
+
+    describe("UI Icon Integration", () => {
+      it("renders Close icon correctly", () => {
+        render(<Icon.Close />);
+        const icon = screen.getByTestId("icon-close");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders Sun icon correctly", () => {
+        render(<Icon.Sun />);
+        const icon = screen.getByTestId("icon-sun");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders Moon icon correctly", () => {
+        render(<Icon.Moon />);
+        const icon = screen.getByTestId("icon-moon");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders ChevronDown icon correctly", () => {
+        render(<Icon.ChevronDown />);
+        const icon = screen.getByTestId("icon-chevron-down");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders ChevronRight icon correctly", () => {
+        render(<Icon.ChevronRight />);
+        const icon = screen.getByTestId("icon-chevron-right");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+
+      it("renders ArrowLeft icon correctly", () => {
+        render(<Icon.ArrowLeft />);
+        const icon = screen.getByTestId("icon-arrow-left");
+        expect(icon).toBeInTheDocument();
+        expect(icon.tagName).toBe("svg");
+      });
+    });
+
+    describe("Icon with Custom Props", () => {
+      it("renders social icons with custom props", () => {
+        render(
+          <Icon.X
+            internalId="custom-x"
+            debugMode={true}
+            className="custom-x-class"
+            width="32"
+            height="32"
+          />
+        );
+        const icon = screen.getByTestId("icon-x-twitter");
+        expect(icon).toBeInTheDocument();
+        expect(icon).toHaveAttribute("data-icon-id", "custom-x-icon");
+        expect(icon).toHaveAttribute("data-debug-mode", "true");
+        expect(icon).toHaveClass("custom-x-class");
+        expect(icon).toHaveAttribute("width", "32");
+        expect(icon).toHaveAttribute("height", "32");
+      });
+
+      it("renders UI icons with custom props", () => {
+        render(
+          <Icon.Close
+            internalId="custom-close"
+            debugMode={true}
+            className="custom-close-class"
+            fill="red"
+            stroke="black"
+          />
+        );
+        const icon = screen.getByTestId("icon-close");
+        expect(icon).toBeInTheDocument();
+        expect(icon).toHaveAttribute("data-icon-id", "custom-close-icon");
+        expect(icon).toHaveAttribute("data-debug-mode", "true");
+        expect(icon).toHaveClass("custom-close-class");
+        expect(icon).toHaveAttribute("fill", "red");
+        expect(icon).toHaveAttribute("stroke", "black");
+      });
+    });
+
+    describe("Icon Accessibility", () => {
+      it("renders icons with proper accessibility attributes", () => {
+        render(
+          <Icon.X
+            role="img"
+            aria-label="X (Twitter) icon"
+            title="X (Twitter)"
+          />
+        );
+        const icon = screen.getByTestId("icon-x-twitter");
+        expect(icon).toHaveAttribute("role", "img");
+        expect(icon).toHaveAttribute("aria-label", "X (Twitter) icon");
+        expect(icon).toHaveAttribute("title", "X (Twitter)");
+      });
+
+      it("renders icons with proper focus handling", () => {
+        render(
+          <Icon.Close tabIndex={0} onFocus={() => {}} onBlur={() => {}} />
+        );
+        const icon = screen.getByTestId("icon-close");
+        expect(icon).toHaveAttribute("tabIndex", "0");
+      });
+    });
+
+    describe("Icon Performance", () => {
+      it("renders multiple icons efficiently", () => {
+        render(
+          <div>
+            <Icon.X />
+            <Icon.Instagram />
+            <Icon.LinkedIn />
+            <Icon.GitHub />
+            <Icon.Close />
+          </div>
+        );
+
+        expect(screen.getByTestId("icon-x-twitter")).toBeInTheDocument();
+        expect(screen.getByTestId("icon-instagram")).toBeInTheDocument();
+        expect(screen.getByTestId("icon-linkedin")).toBeInTheDocument();
+        expect(screen.getByTestId("icon-github")).toBeInTheDocument();
+        expect(screen.getByTestId("icon-close")).toBeInTheDocument();
+      });
+
+      it("handles icon updates efficiently", () => {
+        const { rerender } = render(<Icon.X />);
+        const icon = screen.getByTestId("icon-x-twitter");
+        expect(icon).toBeInTheDocument();
+
+        rerender(<Icon.X className="updated-class" />);
+        const updatedIcon = screen.getByTestId("icon-x-twitter");
+        expect(updatedIcon).toHaveClass("updated-class");
+      });
+    });
+  });
 });
