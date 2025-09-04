@@ -38,14 +38,14 @@ const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
 // MEMOIZED HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-/** A memoized container for the `header` avatar, used within the `Header` compound component. */
+/** A memoized container for the header avatar, used within the `Header` compound component. */
 const MemoizedHeaderAvatarContainer = React.memo(BaseHeaderAvatarContainer);
 
 // ============================================================================
 // MAIN HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-/** Renders the container `div` for the `Header` avatar with styling and debug attributes. */
+/** Renders the container div for the `Header` avatar with styling and debug attributes. */
 const HeaderAvatarContainer: HeaderAvatarContainerComponent = setDisplayName(
   function HeaderAvatarContainer(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
