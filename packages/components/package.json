@@ -54,27 +54,27 @@
     "test:scripts": "vitest run --config vitest.scripts.config.ts scripts/__tests__/",
     "test:ui": "vitest --ui"
   },
-  "dependencies": {
-    "@guyromellemagayano/logger": "workspace:*"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
     "@packages/typescript-config": "workspace:*",
     "@packages/vitest-presets": "workspace:*"
   },
   "peerDependencies": {
+    "@guyromellemagayano/hooks": "workspace:*",
+    "@guyromellemagayano/logger": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@types/node": "catalog:",
-    "@types/react-dom": "catalog:",
     "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "nodemon": "catalog:",
     "prettier": "catalog:",
-    "react-dom": "catalog:",
     "react": "catalog:",
+    "react-dom": "catalog:",
     "rimraf": "catalog:",
     "tsdown": "catalog:",
     "tsx": "catalog:",
