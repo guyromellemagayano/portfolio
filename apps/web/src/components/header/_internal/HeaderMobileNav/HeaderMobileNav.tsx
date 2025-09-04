@@ -7,7 +7,8 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 
@@ -23,7 +24,7 @@ import styles from "./HeaderMobileNav.module.css";
 // ============================================================================
 
 type HeaderMobileNavProps = React.ComponentProps<typeof Popover> &
-  ComponentProps;
+  CommonComponentProps;
 type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 /** A mobile navigation component that displays a menu button and a list of links. */

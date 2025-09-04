@@ -2,7 +2,8 @@
 
 import React, { useEffect } from "react";
 
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { clamp } from "@web/lib";
 
@@ -12,7 +13,7 @@ import { clamp } from "@web/lib";
 
 interface HeaderEffectsProps
   extends React.ComponentProps<"div">,
-    ComponentProps {
+    CommonComponentProps {
   /** Reference to the header element. */
   headerEl: React.RefObject<React.ComponentRef<"div"> | null>;
   /** Reference to the avatar element. */

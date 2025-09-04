@@ -1,7 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components/container";
 import { cn } from "@web/lib";
@@ -21,7 +22,7 @@ import styles from "./Footer.module.css";
 interface FooterProps
   extends Omit<React.ComponentProps<"footer">, "children">,
     FooterComponentLabels,
-    ComponentProps {}
+    CommonComponentProps {}
 type FooterComponent = React.FC<FooterProps>;
 
 /** A base footer component (client, minimal effects split out). */

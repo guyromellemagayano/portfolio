@@ -4,7 +4,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "next-themes";
 
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 import { cn } from "@web/lib";
@@ -14,7 +15,7 @@ import styles from "./HeaderThemeToggle.module.css";
 
 interface ThemeToggleProps
   extends React.ComponentProps<"button">,
-    ComponentProps {}
+    CommonComponentProps {}
 type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
 
 /** A theme toggle component that allows users to switch between light and dark themes. */
