@@ -42,7 +42,7 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
       <nav
         {...rest}
         className={cn(styles.HeaderDesktopNavList, className)}
-        data-header-desktop-nav-id={id}
+        data-header-desktop-nav-id={`${_internalId}-header-desktop-nav`}
         data-debug-mode={isDebugMode ? "true" : undefined}
         data-testid="header-desktop-nav-root"
       >
