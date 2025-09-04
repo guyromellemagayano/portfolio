@@ -1,11 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -22,7 +19,9 @@ import styles from "./Card.module.css";
 // BASE CARD COMPONENT
 // ============================================================================
 
-interface CardProps extends React.ComponentProps<"article">, ComponentProps {}
+interface CardProps
+  extends React.ComponentProps<"article">,
+    CommonComponentProps {}
 type CardComponent = React.FC<CardProps>;
 
 /** A flexible card component for displaying grouped content with optional subcomponents */
