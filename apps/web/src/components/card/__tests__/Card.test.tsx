@@ -55,6 +55,110 @@ vi.mock("../Card.module.css", () => ({
   },
 }));
 
+// Mock internal components
+vi.mock("../_internal", () => ({
+  CardLink: React.forwardRef<HTMLAnchorElement, any>(
+    function MockCardLink(props, ref) {
+      const { children, internalId, debugMode, ...rest } = props;
+      return (
+        <a
+          ref={ref}
+          data-testid="card-link-root"
+          data-card-link-id={`${internalId}-card-link`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    }
+  ),
+  CardTitle: React.forwardRef<HTMLHeadingElement, any>(
+    function MockCardTitle(props, ref) {
+      const { children, internalId, debugMode, href, ...rest } = props;
+      const content = (
+        <h3
+          ref={ref}
+          data-testid="card-title-root"
+          data-card-title-id={`${internalId}-card-title`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </h3>
+      );
+
+      if (href && href !== "#") {
+        return (
+          <a href={href} data-testid="mock-link">
+            {content}
+          </a>
+        );
+      }
+
+      return content;
+    }
+  ),
+  CardDescription: React.forwardRef<HTMLParagraphElement, any>(
+    function MockCardDescription(props, ref) {
+      const { children, internalId, debugMode, ...rest } = props;
+      return (
+        <p
+          ref={ref}
+          data-testid="card-description-root"
+          data-card-description-id={`${internalId}-card-description`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </p>
+      );
+    }
+  ),
+  CardCta: React.forwardRef<HTMLDivElement, any>(
+    function MockCardCta(props, ref) {
+      const { children, internalId, debugMode, href, target, ...rest } = props;
+      const content = (
+        <div
+          ref={ref}
+          data-testid="card-cta-root"
+          data-card-cta-id={`${internalId}-card-cta`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </div>
+      );
+
+      if (href && href !== "#") {
+        return (
+          <a href={href} target={target} data-testid="mock-link">
+            {content}
+          </a>
+        );
+      }
+
+      return content;
+    }
+  ),
+  CardEyebrow: React.forwardRef<HTMLParagraphElement, any>(
+    function MockCardEyebrow(props, ref) {
+      const { children, internalId, debugMode, ...rest } = props;
+      return (
+        <p
+          ref={ref}
+          data-testid="card-eyebrow-root"
+          data-card-eyebrow-id={`${internalId}-card-eyebrow`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </p>
+      );
+    }
+  ),
+}));
+
 describe("Card", () => {
   afterEach(() => {
     cleanup();
