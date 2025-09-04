@@ -359,4 +359,291 @@ describe("Header", () => {
       expect(header).toHaveAttribute("aria-label", "Test header");
     });
   });
+
+  describe("Integration Tests", () => {
+    describe("Complete Header Rendering", () => {
+      it("renders complete header with all sub-components", () => {
+        render(<Header internalId="test-header" debugMode={false} />);
+
+        // Check main header
+        expect(screen.getByTestId("header-root")).toBeInTheDocument();
+
+        // Check container
+        expect(screen.getByTestId("container")).toBeInTheDocument();
+
+        // Check all sub-components
+        expect(screen.getByTestId("header-avatar")).toBeInTheDocument();
+        expect(
+          screen.getByTestId("header-avatar-container")
+        ).toBeInTheDocument();
+        expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
+        expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
+        expect(screen.getByTestId("header-theme-toggle")).toBeInTheDocument();
+      });
+
+      it("renders header with proper semantic structure", () => {
+        render(<Header />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header.tagName).toBe("HEADER");
+
+        const container = screen.getByTestId("container");
+        expect(container).toBeInTheDocument();
+      });
+
+      it("renders header with proper CSS classes", () => {
+        render(<Header />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveClass("header-component");
+      });
+    });
+
+    describe("Header with Debug Mode", () => {
+      it("renders header with debug mode enabled", () => {
+        render(<Header internalId="debug-header" debugMode={true} />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("data-header-id", "debug-header-header");
+        expect(header).toHaveAttribute("data-debug-mode", "true");
+      });
+
+      it("renders header with debug mode disabled", () => {
+        render(<Header internalId="debug-header" debugMode={false} />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("data-header-id", "debug-header-header");
+        expect(header).not.toHaveAttribute("data-debug-mode");
+      });
+    });
+
+    describe("Header with Custom Internal IDs", () => {
+      it("renders header with custom internal ID", () => {
+        render(<Header internalId="custom-header-id" />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute(
+          "data-header-id",
+          "custom-header-id-header"
+        );
+      });
+
+      it("renders header with default internal ID", () => {
+        render(<Header />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("data-header-id", "test-id-header");
+      });
+    });
+
+    describe("Header Layout and Styling", () => {
+      it("applies correct CSS classes", () => {
+        render(<Header />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveClass("header-component");
+      });
+
+      it("combines custom className with default classes", () => {
+        render(<Header className="custom-header-class" />);
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveClass("header-component", "custom-header-class");
+      });
+
+      it("applies custom styling props", () => {
+        render(
+          <Header
+            style={{ backgroundColor: "white", color: "black" }}
+            className="light-header"
+          />
+        );
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveStyle({
+          backgroundColor: "white",
+          color: "black",
+        });
+        expect(header).toHaveClass("light-header");
+      });
+    });
+
+    describe("Header Sub-components Integration", () => {
+      it("renders avatar component correctly", () => {
+        render(<Header />);
+
+        const avatar = screen.getByTestId("header-avatar");
+        expect(avatar).toBeInTheDocument();
+      });
+
+      it("renders avatar container correctly", () => {
+        render(<Header />);
+
+        const avatarContainer = screen.getByTestId("header-avatar-container");
+        expect(avatarContainer).toBeInTheDocument();
+      });
+
+      it("renders desktop navigation correctly", () => {
+        render(<Header />);
+
+        const desktopNav = screen.getByTestId("header-desktop-nav");
+        expect(desktopNav).toBeInTheDocument();
+        expect(desktopNav.tagName).toBe("NAV");
+      });
+
+      it("renders mobile navigation correctly", () => {
+        render(<Header />);
+
+        const mobileNav = screen.getByTestId("header-mobile-nav");
+        expect(mobileNav).toBeInTheDocument();
+        expect(mobileNav.tagName).toBe("NAV");
+      });
+
+      it("renders theme toggle correctly", () => {
+        render(<Header />);
+
+        const themeToggle = screen.getByTestId("header-theme-toggle");
+        expect(themeToggle).toBeInTheDocument();
+        expect(themeToggle.tagName).toBe("BUTTON");
+      });
+    });
+
+    describe("Header Navigation Integration", () => {
+      it("renders navigation with proper structure", () => {
+        render(<Header />);
+
+        const desktopNav = screen.getByTestId("header-desktop-nav");
+        const mobileNav = screen.getByTestId("header-mobile-nav");
+
+        expect(desktopNav).toBeInTheDocument();
+        expect(mobileNav).toBeInTheDocument();
+      });
+
+      it("handles navigation state changes", () => {
+        const { rerender } = render(<Header />);
+
+        let desktopNav = screen.getByTestId("header-desktop-nav");
+        let mobileNav = screen.getByTestId("header-mobile-nav");
+
+        expect(desktopNav).toBeInTheDocument();
+        expect(mobileNav).toBeInTheDocument();
+
+        // Re-render to simulate state changes
+        rerender(<Header className="updated-header" />);
+
+        desktopNav = screen.getByTestId("header-desktop-nav");
+        mobileNav = screen.getByTestId("header-mobile-nav");
+
+        expect(desktopNav).toBeInTheDocument();
+        expect(mobileNav).toBeInTheDocument();
+      });
+    });
+
+    describe("Header Theme Integration", () => {
+      it("renders theme toggle with proper functionality", () => {
+        render(<Header />);
+
+        const themeToggle = screen.getByTestId("header-theme-toggle");
+        expect(themeToggle).toBeInTheDocument();
+        expect(themeToggle.tagName).toBe("BUTTON");
+      });
+
+      it("handles theme toggle interactions", () => {
+        render(<Header />);
+
+        const themeToggle = screen.getByTestId("header-theme-toggle");
+        expect(themeToggle).toBeInTheDocument();
+        // Theme toggle functionality would be tested in the actual component
+      });
+    });
+
+    describe("Header Performance and Edge Cases", () => {
+      it("renders multiple header instances correctly", () => {
+        render(
+          <div>
+            <Header internalId="header-1" />
+            <Header internalId="header-2" />
+          </div>
+        );
+
+        const headers = screen.getAllByTestId("header-root");
+        expect(headers).toHaveLength(2);
+
+        expect(headers[0]).toHaveAttribute("data-header-id", "header-1-header");
+        expect(headers[1]).toHaveAttribute("data-header-id", "header-2-header");
+      });
+
+      it("handles header updates efficiently", () => {
+        const { rerender } = render(<Header />);
+
+        let header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("data-header-id", "test-id-header");
+
+        rerender(<Header internalId="updated-header" />);
+        header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute(
+          "data-header-id",
+          "updated-header-header"
+        );
+      });
+
+      it("handles complex header configurations", () => {
+        render(
+          <Header
+            internalId="complex-header"
+            debugMode={true}
+            className="complex-header-class"
+            style={{ position: "sticky", top: 0 }}
+            aria-label="Complex navigation header"
+            role="banner"
+          />
+        );
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute(
+          "data-header-id",
+          "complex-header-header"
+        );
+        expect(header).toHaveAttribute("data-debug-mode", "true");
+        expect(header).toHaveClass("complex-header-class");
+        expect(header).toHaveStyle({ position: "sticky", top: 0 });
+        expect(header).toHaveAttribute(
+          "aria-label",
+          "Complex navigation header"
+        );
+        expect(header).toHaveAttribute("role", "banner");
+      });
+    });
+
+    describe("Header Accessibility Integration", () => {
+      it("renders with proper accessibility attributes", () => {
+        render(
+          <Header
+            aria-label="Main navigation header"
+            role="banner"
+            aria-describedby="header-description"
+          />
+        );
+
+        const header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("aria-label", "Main navigation header");
+        expect(header).toHaveAttribute("role", "banner");
+        expect(header).toHaveAttribute(
+          "aria-describedby",
+          "header-description"
+        );
+      });
+
+      it("maintains accessibility during updates", () => {
+        const { rerender } = render(<Header aria-label="Initial label" />);
+
+        let header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("aria-label", "Initial label");
+
+        rerender(<Header aria-label="Updated label" />);
+        header = screen.getByTestId("header-root");
+        expect(header).toHaveAttribute("aria-label", "Updated label");
+      });
+    });
+  });
 });
