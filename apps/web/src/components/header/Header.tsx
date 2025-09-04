@@ -4,8 +4,9 @@ import React, { useRef } from "react";
 
 import { usePathname } from "next/navigation";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components";
 import { cn } from "@web/lib";
@@ -26,18 +27,13 @@ import styles from "./Header.module.css";
 // ============================================================================
 
 interface HeaderProps
-  extends Omit<React.ComponentProps<"header">, "children">,
-    ComponentProps {}
+  extends React.ComponentProps<"header">,
+    CommonComponentProps {}
 type HeaderComponent = React.FC<HeaderProps>;
 
-/** A base header component (client, minimal effects split out). */
+/** A responsive site header with avatar, navigation, and theme toggle */
 const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
-  const { className, internalId, debugMode, ...rest } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
+  const { children, className, internalId, debugMode, ...rest } = props;
 
   const isHomePage: React.ComponentProps<typeof HeaderEffects>["isHomePage"] =
     usePathname() === AVATAR_COMPONENT_LABELS.link;
@@ -60,8 +56,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
         }}
-        data-header-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-header-id={`${internalId}-header`}
+        data-debug-mode={debugMode ? "true" : undefined}
         data-testid="header-root"
       >
         {isHomePage && (
@@ -83,6 +79,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               >
                 <div className={styles.avatarRelativeContainer}>
                   <HeaderAvatarContainer
+                    _internalId={`${internalId}-avatar-container`}
+                    _debugMode={debugMode}
                     className={styles.avatarBorderContainer}
                     style={{
                       opacity: "var(--avatar-border-opacity, 0)",
@@ -90,6 +88,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                     }}
                   />
                   <HeaderAvatar
+                    _internalId={`${internalId}-avatar`}
+                    _debugMode={debugMode}
                     large
                     className={styles.avatarImage}
                     style={{ transform: "var(--avatar-image-transform)" }}
@@ -118,23 +118,41 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
             <div className={styles.headerContent}>
               <div className={styles.headerLeftSection}>
                 {!isHomePage && (
-                  <HeaderAvatarContainer>
-                    <HeaderAvatar />
+                  <HeaderAvatarContainer
+                    _internalId={`${internalId}-avatar-container`}
+                    _debugMode={debugMode}
+                  >
+                    <HeaderAvatar
+                      _internalId={`${internalId}-avatar`}
+                      _debugMode={debugMode}
+                    />
                   </HeaderAvatarContainer>
                 )}
               </div>
               <div className={styles.headerCenterSection}>
-                <HeaderMobileNav className={styles.mobileNavigation} />
-                <HeaderDesktopNav className={styles.desktopNavigation} />
+                <HeaderMobileNav
+                  _internalId={`${internalId}-mobile-nav`}
+                  _debugMode={debugMode}
+                  className={styles.mobileNavigation}
+                />
+                <HeaderDesktopNav
+                  _internalId={`${internalId}-desktop-nav`}
+                  _debugMode={debugMode}
+                  className={styles.desktopNavigation}
+                />
               </div>
               <div className={styles.headerRightSection}>
                 <div className={styles.themeToggleWrapper}>
-                  <HeaderThemeToggle />
+                  <HeaderThemeToggle
+                    _internalId={`${internalId}-theme-toggle`}
+                    _debugMode={debugMode}
+                  />
                 </div>
               </div>
             </div>
           </Container>
         </div>
+        {children}
       </header>
       {isHomePage && (
         <div
@@ -142,7 +160,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           style={{ height: "var(--content-offset)" }}
         />
       )}
-      {/* Effects (throttled via rAF) */}
       <HeaderEffects
         headerEl={headerRef}
         avatarEl={avatarRef}
@@ -166,9 +183,15 @@ const MemoizedHeader = React.memo(BaseHeader);
 // MAIN HEADER COMPONENT
 // ============================================================================
 
-/** A header component. */
+/** The main header component for the application. */
 const Header: HeaderComponent = setDisplayName(function Header(props) {
-  const { isMemoized = false, internalId, debugMode, ...rest } = props;
+  const {
+    children,
+    isMemoized = false,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
 
   const { id, isDebugMode } = useComponentId({
     internalId,
@@ -177,16 +200,13 @@ const Header: HeaderComponent = setDisplayName(function Header(props) {
 
   const updatedProps = {
     ...rest,
+    children,
     internalId: id,
     debugMode: isDebugMode,
   };
 
-  const element = isMemoized ? (
-    <MemoizedHeader {...updatedProps} />
-  ) : (
-    <BaseHeader {...updatedProps} />
-  );
-
+  const Component = isMemoized ? MemoizedHeader : BaseHeader;
+  const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 });
 

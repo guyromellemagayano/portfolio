@@ -1,44 +1,94 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  filterValidNavigationLinks,
+  hasValidNavigationLinks,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
-import { CommonHeaderNavProps, DESKTOP_HEADER_NAV_LINKS } from "../../_data";
+import { DESKTOP_HEADER_NAV_LINKS } from "../../_data";
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 import styles from "./HeaderDesktopNav.module.css";
 
-interface HeaderDesktopNavProps extends CommonHeaderNavProps {}
-type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
+// ============================================================================
+// BASE HEADER DESKTOP NAV COMPONENT
+// ============================================================================
 
-/** A desktop navigation component that displays a list of navigation links. */
-const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
-  function HeaderDesktopNav(props) {
-    const { className, internalId, debugMode, ...rest } = props;
+interface CommonHeaderNavProps
+  extends React.ComponentProps<"nav">,
+    CommonComponentProps {}
+type HeaderDesktopNavComponent = React.FC<CommonHeaderNavProps>;
+
+/** Renders a desktop navigation component that displays a list of navigation links. */
+const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
+  function BaseHeaderDesktopNav(props) {
+    const { className, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
+      internalId: _internalId,
+      debugMode: _debugMode,
     });
+
+    // Use shared utility for robust navigation links validation
+    // Function now automatically handles readonly arrays
+    const validLinks = filterValidNavigationLinks(DESKTOP_HEADER_NAV_LINKS);
+    if (!hasValidNavigationLinks(validLinks)) return null;
 
     const element = (
       <nav
         {...rest}
         className={cn(styles.HeaderDesktopNavList, className)}
-        data-desktop-header-nav-id={id}
+        data-header-desktop-nav-id={id}
         data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="desktop-header-nav-root"
+        data-testid="header-desktop-nav-root"
       >
-        {DESKTOP_HEADER_NAV_LINKS &&
-          DESKTOP_HEADER_NAV_LINKS.map(({ label, href }) => (
-            <HeaderDesktopNavItem key={`${label}:${href}`} href={href}>
-              {label}
-            </HeaderDesktopNavItem>
-          ))}
+        {validLinks.map(({ label, href }) => (
+          <HeaderDesktopNavItem
+            key={`${label}:${href}`}
+            href={href}
+            internalId={_internalId}
+            debugMode={_debugMode}
+          >
+            {label}
+          </HeaderDesktopNavItem>
+        ))}
       </nav>
     );
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED HEADER DESKTOP NAV COMPONENT
+// ============================================================================
+
+/** A memoized desktop navigation component that displays a list of navigation links. */
+const MemoizedHeaderDesktopNav = React.memo(BaseHeaderDesktopNav);
+
+// ============================================================================
+// MAIN HEADER DESKTOP NAV COMPONENT
+// ============================================================================
+
+/** Renders the desktop navigation component that displays a list of navigation links. */
+const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
+  function HeaderDesktopNav(props) {
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+    const updatedProps = {
+      ...rest,
+      _internalId,
+      _debugMode,
+    };
+
+    const Component = isMemoized
+      ? MemoizedHeaderDesktopNav
+      : BaseHeaderDesktopNav;
+    const element = <Component {...updatedProps} />;
     return element;
   }
 );

@@ -1,143 +1,103 @@
-"use client";
-
 import React from "react";
 
-import {
-  A,
-  Div,
-  Footer as FooterComponent,
-  type FooterProps as FooterComponentProps,
-  type FooterRef as FooterComponentRef,
-  Li,
-  Nav,
-  Span,
-  Ul,
-} from "@guyromellemagayano/components";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
-import {
-  FOOTER_COMPONENT_NAV_LINKS,
-  type FooterLink,
-} from "@web/components/footer/Footer.data";
+import { Container } from "@web/components/container";
 import { cn } from "@web/lib";
 
+import {
+  FOOTER_COMPONENT_LABELS,
+  FOOTER_COMPONENT_NAV_LINKS,
+  FooterComponentLabels,
+} from "./_data";
+import { FooterLegal, FooterNavigation } from "./_internal";
 import styles from "./Footer.module.css";
 
 // ============================================================================
-// FOOTER COMPONENT
+// BASE FOOTER COMPONENT
 // ============================================================================
 
-type FooterRef = FooterComponentRef;
+interface FooterProps
+  extends Omit<React.ComponentProps<"footer">, "children">,
+    FooterComponentLabels,
+    CommonComponentProps {}
+type FooterComponent = React.FC<FooterProps>;
 
-interface FooterProps extends FooterComponentProps, CommonWebAppComponentProps {
-  /** Optional custom brand name override */
-  brandName?: string;
-  /** Optional custom legal text override */
-  legalText?: string;
-  /** Optional navigation links override */
-  navLinks?: ReadonlyArray<FooterLink>;
-}
+/** A base footer component (client, minimal effects split out). */
+const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
+  const {
+    className,
+    internalId,
+    debugMode,
+    navLinks = FOOTER_COMPONENT_NAV_LINKS,
+    legalText = FOOTER_COMPONENT_LABELS.legalText,
+    ...rest
+  } = props;
 
-interface InternalFooterProps extends FooterProps {
-  /** Internal component ID passed from parent */
-  componentId?: string;
-  /** Internal debug mode passed from parent */
-  isDebugMode?: boolean;
-}
+  const element = (
+    <footer
+      {...rest}
+      className={cn(styles.footerComponent, className)}
+      data-footer-id={`${internalId}-footer`}
+      data-debug-mode={debugMode ? "true" : undefined}
+      data-testid="footer-root"
+    >
+      <Container.Outer>
+        <div className={styles.footerContentWrapper}>
+          <Container.Inner>
+            <div className={styles.footerLayout}>
+              <FooterNavigation navLinks={navLinks} />
+              <FooterLegal legalText={legalText} />
+            </div>
+          </Container.Inner>
+        </div>
+      </Container.Outer>
+    </footer>
+  );
 
-/** Internal footer component with all props */
-const InternalFooter = React.forwardRef<FooterRef, InternalFooterProps>(
-  function InternalFooter(props, ref) {
-    const {
-      className,
-      componentId,
-      isDebugMode,
-      brandName = "Guy Romelle Magayano",
-      legalText = "All rights reserved.",
-      navLinks = FOOTER_COMPONENT_NAV_LINKS,
-      ...rest
-    } = props;
+  return element;
+});
 
-    const element = (
-      <FooterComponent
-        {...rest}
-        ref={ref}
-        className={cn(styles.footerComponent, className)}
-        data-footer-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="footer-root"
-      >
-        <Div className={styles.footerContent}>
-          <Div className={styles.footerBrand}>
-            <Span className={styles.brandName}>{brandName}</Span>
-            <Span className={styles.legalText}>{legalText}</Span>
-          </Div>
+// ============================================================================
+// MEMOIZED FOOTER COMPONENT
+// ============================================================================
 
-          {navLinks.length > 0 && (
-            <Nav className={styles.footerNav}>
-              <Ul className={styles.navList}>
-                {navLinks.map((link) => {
-                  const isExternal = link.kind === "external";
-                  const href = isExternal ? link.href : link.href.toString();
+/** A memoized footer component. */
+const MemoizedFooter = React.memo(BaseFooter);
 
-                  if (!href) return null;
+// ============================================================================
+// MAIN FOOTER COMPONENT
+// ============================================================================
 
-                  const element = (
-                    <Li key={href} className={styles.navItem}>
-                      <A
-                        href={href}
-                        target={isExternal && link.newTab ? "_blank" : "_self"}
-                        rel={
-                          isExternal && link.newTab
-                            ? "noopener noreferrer"
-                            : undefined
-                        }
-                        className={styles.navLink}
-                      >
-                        {link.label}
-                      </A>
-                    </Li>
-                  );
+/** The main footer component for the application. */
+const Footer: FooterComponent = setDisplayName(function Footer(props) {
+  const {
+    isMemoized = false,
+    internalId,
+    debugMode,
+    navLinks = FOOTER_COMPONENT_NAV_LINKS,
+    legalText = FOOTER_COMPONENT_LABELS.legalText,
+    ...rest
+  } = props;
 
-                  return element;
-                })}
-              </Ul>
-            </Nav>
-          )}
-        </Div>
-      </FooterComponent>
-    );
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
 
-    return element;
-  }
-);
+  const updatedProps = {
+    ...rest,
+    internalId: id,
+    debugMode: isDebugMode,
+    navLinks,
+    legalText,
+  };
 
-InternalFooter.displayName = "InternalFooter";
+  const Component = isMemoized ? MemoizedFooter : BaseFooter;
+  const element = <Component {...updatedProps} />;
+  return element;
+});
 
-/** Public footer component with `useComponentId` integration */
-export const Footer = React.forwardRef<FooterRef, FooterProps>(
-  function Footer(props, ref) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <InternalFooter
-        {...rest}
-        ref={ref}
-        componentId={id}
-        isDebugMode={isDebugMode}
-      />
-    );
-
-    return element;
-  }
-);
-
-Footer.displayName = "Footer";
+export { Footer };

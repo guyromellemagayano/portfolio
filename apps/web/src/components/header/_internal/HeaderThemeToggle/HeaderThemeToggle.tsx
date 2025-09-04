@@ -4,8 +4,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "next-themes";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon";
 import { cn } from "@web/lib";
@@ -15,13 +15,13 @@ import styles from "./HeaderThemeToggle.module.css";
 
 interface ThemeToggleProps
   extends React.ComponentProps<"button">,
-    ComponentProps {}
+    CommonComponentProps {}
 type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
 
 /** A theme toggle component that allows users to switch between light and dark themes. */
-const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
-  function HeaderThemeToggle(props) {
-    const { className, internalId, debugMode, ...rest } = props;
+const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
+  function BaseHeaderThemeToggle(props) {
+    const { className, _internalId, _debugMode, ...rest } = props;
 
     const { resolvedTheme, setTheme } = useTheme();
     const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -30,11 +30,6 @@ const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
     useEffect(() => {
       setMounted(true);
     }, []);
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
 
     const handleClick = useCallback(() => {
       setTheme(otherTheme);
@@ -62,8 +57,8 @@ const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
           className={cn(styles.headerThemeToggleButton, className)}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
-          data-header-theme-toggle-id={id}
-          data-debug-mode={isDebugMode ? "true" : undefined}
+          data-header-theme-toggle-id={`${_internalId}-header-theme-toggle`}
+          data-debug-mode={_debugMode ? "true" : undefined}
           data-testid="header-theme-toggle-root"
         >
           <Icon.Sun className={styles.headerThemeToggleSunIcon} />
@@ -79,10 +74,34 @@ const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
       handleKeyDown,
       className,
       rest,
-      id,
-      isDebugMode,
+      _internalId,
+      _debugMode,
     ]);
 
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED HEADER THEME TOGGLE COMPONENT
+// ============================================================================
+
+const MemoizedHeaderThemeToggle = React.memo(BaseHeaderThemeToggle);
+
+// ============================================================================
+// MAIN HEADER THEME TOGGLE COMPONENT
+// ============================================================================
+
+const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
+  function HeaderThemeToggle(props) {
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+    const updatedProps = { ...rest, _internalId, _debugMode };
+
+    const Component = isMemoized
+      ? MemoizedHeaderThemeToggle
+      : BaseHeaderThemeToggle;
+    const element = <Component {...updatedProps} />;
     return element;
   }
 );

@@ -1,42 +1,109 @@
 import React from "react";
 
-import { Article } from "@guyromellemagayano/components";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+
+import { cn } from "@web/lib";
 
 import {
-  type CardComponent,
   CardCta,
   CardDescription,
   CardEyebrow,
   CardLink,
-  type CardProps,
-  type CardRef,
   CardTitle,
-} from "@web/components/card";
-import { cn } from "@web/lib";
+} from "./_internal";
+import styles from "./Card.module.css";
 
-/** A card component that can be used to display content in a card-like format. */
-export const Card = React.forwardRef<CardRef, CardProps>(
-  function Card(props, ref) {
-    const { children, className, ...rest } = props;
+// ============================================================================
+// BASE CARD COMPONENT
+// ============================================================================
 
-    const element = (
-      <Article
-        ref={ref}
-        className={cn("group relative flex flex-col items-start", className)}
-        {...rest}
-      >
-        {children}
-      </Article>
-    );
+interface CardProps
+  extends React.ComponentProps<"article">,
+    CommonComponentProps {}
+type CardComponent = React.FC<CardProps>;
 
-    return element;
-  }
-) as CardComponent;
+/** A flexible card component for displaying grouped content with optional subcomponents */
+const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
+  const { children, className, internalId, debugMode, ...rest } = props;
 
-Card.displayName = "Card";
+  const element = (
+    <article
+      {...rest}
+      className={cn(styles.card, className)}
+      data-card-id={`${internalId}-card`}
+      data-debug-mode={debugMode ? "true" : undefined}
+      data-testid={(rest as any)["data-testid"] || "card-root"}
+    >
+      {children}
+    </article>
+  );
+
+  return element;
+});
+
+// ============================================================================
+// MEMOIZED CARD COMPONENT
+// ============================================================================
+
+/** A memoized card component. */
+const MemoizedCard = React.memo(BaseCard);
+
+// ============================================================================
+// MAIN CARD COMPONENT
+// ============================================================================
+
+type CardCompoundComponent = CardComponent & {
+  /** A card link component that provides interactive hover effects and accessibility features */
+  Link: typeof CardLink;
+  /** A card title component that can optionally be wrapped in a link for navigation */
+  Title: typeof CardTitle;
+  /** A card description component that can optionally be wrapped in a link for navigation */
+  Description: typeof CardDescription;
+  /** A card call to action component that can optionally be wrapped in a link for navigation */
+  Cta: typeof CardCta;
+  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
+  Eyebrow: typeof CardEyebrow;
+};
+
+/** A card component that can optionally be wrapped in a link for navigation */
+const Card = setDisplayName(function Card(props) {
+  const {
+    children,
+    isMemoized = false,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  if (!isRenderableContent(children)) return null;
+
+  const updatedProps = {
+    ...rest,
+    children,
+    internalId: id,
+    debugMode: isDebugMode,
+  };
+
+  const Component = isMemoized ? MemoizedCard : BaseCard;
+  const element = <Component {...updatedProps}>{children}</Component>;
+  return element;
+} as CardCompoundComponent);
+
+// ============================================================================
+// CARD COMPOUND COMPONENTS
+// ============================================================================
 
 Card.Link = CardLink;
 Card.Title = CardTitle;
 Card.Description = CardDescription;
 Card.Cta = CardCta;
 Card.Eyebrow = CardEyebrow;
+
+export { Card };
