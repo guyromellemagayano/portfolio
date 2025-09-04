@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useRef } from "react";
 
 import { usePathname } from "next/navigation";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { type ComponentProps, setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components";
 import { cn } from "@web/lib";
@@ -23,7 +26,9 @@ import styles from "./Header.module.css";
 // BASE HEADER COMPONENT
 // ============================================================================
 
-interface HeaderProps extends React.ComponentProps<"header">, ComponentProps {}
+interface HeaderProps
+  extends React.ComponentProps<"header">,
+    CommonComponentProps {}
 type HeaderComponent = React.FC<HeaderProps>;
 
 /** A responsive site header with avatar, navigation, and theme toggle */

@@ -1,8 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
@@ -19,9 +19,9 @@ import styles from "./CardTitle.module.css";
 // ============================================================================
 
 interface CardTitleProps
-  extends React.ComponentProps<"h2">,
+  extends Omit<React.ComponentProps<"h2">, "title">,
     CardComponentsWithLinks,
-    ComponentProps {}
+    CommonComponentProps {}
 type CardTitleComponent = React.FC<CardTitleProps>;
 
 /** Public card title component with `useComponentId` integration */
@@ -49,8 +49,8 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
         {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}
-            target={target}
-            title={title}
+            target={target as React.HTMLAttributeAnchorTarget | undefined}
+            title={title as string | undefined}
             _internalId={_internalId}
             _debugMode={_debugMode}
           >
