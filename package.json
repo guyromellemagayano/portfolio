@@ -67,11 +67,13 @@
     "@types/react-dom": "catalog:",
     "czg": "catalog:",
     "husky": "catalog:",
+    "inquirer": "^9.3.7",
     "lint-staged": "catalog:",
     "prettier-plugin-packagejson": "catalog:",
     "prettier-plugin-pkg": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
     "sort-package-json": "catalog:",
+    "tailwindcss": "4.1.11",
     "tsdown": "0.14.1",
     "validate-branch-name": "catalog:"
   },
