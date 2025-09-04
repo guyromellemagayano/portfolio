@@ -280,4 +280,277 @@ describe("Footer", () => {
       expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
     });
   });
+
+  describe("Integration Tests", () => {
+    describe("Complete Footer Rendering", () => {
+      it("renders complete footer with all sub-components", () => {
+        render(<Footer internalId="test-footer" debugMode={false} />);
+
+        // Check main footer
+        expect(screen.getByTestId("footer-root")).toBeInTheDocument();
+
+        // Check container structure
+        expect(screen.getByTestId("container-outer")).toBeInTheDocument();
+        expect(screen.getByTestId("container-inner")).toBeInTheDocument();
+
+        // Check all sub-components
+        expect(screen.getByTestId("footer-navigation")).toBeInTheDocument();
+        expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
+
+        // Check content
+        expect(screen.getByText("Default Legal Text")).toBeInTheDocument();
+        expect(screen.getByText("About")).toBeInTheDocument();
+        expect(screen.getByText("Contact")).toBeInTheDocument();
+      });
+
+      it("renders footer with custom navigation links", () => {
+        const customLinks = [
+          { kind: "internal", label: "Home", href: "/" },
+          { kind: "internal", label: "Services", href: "/services" },
+          { kind: "external", label: "Blog", href: "https://blog.example.com" },
+        ];
+
+        render(<Footer navLinks={customLinks} />);
+
+        expect(screen.getByText("Home")).toBeInTheDocument();
+        expect(screen.getByText("Services")).toBeInTheDocument();
+        expect(screen.getByText("Blog")).toBeInTheDocument();
+
+        const homeLink = screen.getByText("Home").closest("a");
+        const servicesLink = screen.getByText("Services").closest("a");
+        const blogLink = screen.getByText("Blog").closest("a");
+
+        expect(homeLink).toHaveAttribute("href", "/");
+        expect(servicesLink).toHaveAttribute("href", "/services");
+        expect(blogLink).toHaveAttribute("href", "https://blog.example.com");
+      });
+
+      it("renders footer with custom legal text", () => {
+        const customLegalText = "© 2024 My Company. All rights reserved.";
+        render(<Footer legalText={customLegalText} />);
+
+        expect(screen.getByText(customLegalText)).toBeInTheDocument();
+        expect(screen.getByTestId("footer-legal")).toHaveTextContent(
+          customLegalText
+        );
+      });
+    });
+
+    describe("Footer with Debug Mode", () => {
+      it("renders footer with debug mode enabled", () => {
+        render(<Footer internalId="debug-footer" debugMode={true} />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute("data-footer-id", "debug-footer-footer");
+        expect(footer).toHaveAttribute("data-debug-mode", "true");
+      });
+
+      it("renders footer with debug mode disabled", () => {
+        render(<Footer internalId="debug-footer" debugMode={false} />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute("data-footer-id", "debug-footer-footer");
+        expect(footer).not.toHaveAttribute("data-debug-mode");
+      });
+    });
+
+    describe("Footer with Custom Internal IDs", () => {
+      it("renders footer with custom internal ID", () => {
+        render(<Footer internalId="custom-footer-id" />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute(
+          "data-footer-id",
+          "custom-footer-id-footer"
+        );
+      });
+
+      it("renders footer with default internal ID", () => {
+        render(<Footer />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
+      });
+    });
+
+    describe("Footer Layout and Styling", () => {
+      it("applies correct CSS classes", () => {
+        render(<Footer />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveClass("footerComponent");
+
+        const contentWrapper = screen.getByTestId("container-outer");
+        expect(contentWrapper).toHaveClass("footerContentWrapper");
+      });
+
+      it("combines custom className with default classes", () => {
+        render(<Footer className="custom-footer-class" />);
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveClass("footerComponent", "custom-footer-class");
+      });
+
+      it("applies custom styling props", () => {
+        render(
+          <Footer
+            style={{ backgroundColor: "black", color: "white" }}
+            className="dark-footer"
+          />
+        );
+
+        const footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveStyle({
+          backgroundColor: "black",
+          color: "white",
+        });
+        expect(footer).toHaveClass("dark-footer");
+      });
+    });
+
+    describe("Footer Navigation Integration", () => {
+      it("renders navigation with proper link structure", () => {
+        const navLinks = [
+          { kind: "internal", label: "Home", href: "/" },
+          { kind: "internal", label: "About", href: "/about" },
+        ];
+
+        render(<Footer navLinks={navLinks} />);
+
+        const navigation = screen.getByTestId("footer-navigation");
+        expect(navigation).toBeInTheDocument();
+
+        const links = navigation.querySelectorAll("a");
+        expect(links).toHaveLength(2);
+
+        expect(links[0]).toHaveTextContent("Home");
+        expect(links[0]).toHaveAttribute("href", "/");
+        expect(links[1]).toHaveTextContent("About");
+        expect(links[1]).toHaveAttribute("href", "/about");
+      });
+
+      it("handles external navigation links", () => {
+        const navLinks = [
+          {
+            kind: "external",
+            label: "External Site",
+            href: "https://external.com",
+          },
+        ];
+
+        render(<Footer navLinks={navLinks} />);
+
+        const link = screen.getByText("External Site");
+        expect(link).toBeInTheDocument();
+        expect(link.closest("a")).toHaveAttribute(
+          "href",
+          "https://external.com"
+        );
+      });
+
+      it("handles mixed internal and external links", () => {
+        const navLinks = [
+          { kind: "internal", label: "Internal", href: "/internal" },
+          { kind: "external", label: "External", href: "https://external.com" },
+        ];
+
+        render(<Footer navLinks={navLinks} />);
+
+        expect(screen.getByText("Internal")).toBeInTheDocument();
+        expect(screen.getByText("External")).toBeInTheDocument();
+
+        const internalLink = screen.getByText("Internal").closest("a");
+        const externalLink = screen.getByText("External").closest("a");
+
+        expect(internalLink).toHaveAttribute("href", "/internal");
+        expect(externalLink).toHaveAttribute("href", "https://external.com");
+      });
+    });
+
+    describe("Footer Legal Integration", () => {
+      it("renders legal text with proper structure", () => {
+        const legalText = "© 2024 Company Name. All rights reserved.";
+        render(<Footer legalText={legalText} />);
+
+        const legalSection = screen.getByTestId("footer-legal");
+        expect(legalSection).toBeInTheDocument();
+        expect(legalSection).toHaveTextContent(legalText);
+      });
+
+      it("handles legal text with HTML content", () => {
+        const legalText =
+          "© 2024 <strong>Company Name</strong>. All rights reserved.";
+        render(<Footer legalText={legalText} />);
+
+        const legalSection = screen.getByTestId("footer-legal");
+        expect(legalSection).toBeInTheDocument();
+        expect(legalSection).toHaveTextContent(
+          "© 2024 Company Name. All rights reserved."
+        );
+      });
+
+      it("handles empty legal text gracefully", () => {
+        render(<Footer legalText="" />);
+
+        const legalSection = screen.getByTestId("footer-legal");
+        expect(legalSection).toBeInTheDocument();
+        expect(legalSection).toHaveTextContent("");
+      });
+    });
+
+    describe("Footer Performance and Edge Cases", () => {
+      it("renders multiple footer instances correctly", () => {
+        render(
+          <div>
+            <Footer internalId="footer-1" />
+            <Footer internalId="footer-2" />
+          </div>
+        );
+
+        const footers = screen.getAllByTestId("footer-root");
+        expect(footers).toHaveLength(2);
+
+        expect(footers[0]).toHaveAttribute("data-footer-id", "footer-1-footer");
+        expect(footers[1]).toHaveAttribute("data-footer-id", "footer-2-footer");
+      });
+
+      it("handles footer updates efficiently", () => {
+        const { rerender } = render(<Footer />);
+
+        let footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
+
+        rerender(<Footer internalId="updated-footer" />);
+        footer = screen.getByTestId("footer-root");
+        expect(footer).toHaveAttribute(
+          "data-footer-id",
+          "updated-footer-footer"
+        );
+      });
+
+      it("handles complex navigation link structures", () => {
+        const complexLinks = [
+          { kind: "internal", label: "Home", href: "/" },
+          { kind: "internal", label: "About", href: "/about" },
+          {
+            kind: "external",
+            label: "Documentation",
+            href: "https://docs.example.com",
+          },
+          { kind: "internal", label: "Contact", href: "/contact" },
+        ];
+
+        render(<Footer navLinks={complexLinks} />);
+
+        expect(screen.getByText("Home")).toBeInTheDocument();
+        expect(screen.getByText("About")).toBeInTheDocument();
+        expect(screen.getByText("Documentation")).toBeInTheDocument();
+        expect(screen.getByText("Contact")).toBeInTheDocument();
+
+        const navigation = screen.getByTestId("footer-navigation");
+        const links = navigation.querySelectorAll("a");
+        expect(links).toHaveLength(4);
+      });
+    });
+  });
 });
