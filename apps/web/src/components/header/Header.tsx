@@ -79,7 +79,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               >
                 <div className={styles.avatarRelativeContainer}>
                   <HeaderAvatarContainer
-                    _internalId={`${internalId}-avatar-container`}
+                    _internalId={internalId}
                     _debugMode={debugMode}
                     className={styles.avatarBorderContainer}
                     style={{
@@ -88,7 +88,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                     }}
                   />
                   <HeaderAvatar
-                    _internalId={`${internalId}-avatar`}
+                    _internalId={internalId}
                     _debugMode={debugMode}
                     large
                     className={styles.avatarImage}
@@ -119,11 +119,11 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               <div className={styles.headerLeftSection}>
                 {!isHomePage && (
                   <HeaderAvatarContainer
-                    _internalId={`${internalId}-avatar-container`}
+                    _internalId={internalId}
                     _debugMode={debugMode}
                   >
                     <HeaderAvatar
-                      _internalId={`${internalId}-avatar`}
+                      _internalId={internalId}
                       _debugMode={debugMode}
                     />
                   </HeaderAvatarContainer>
@@ -131,12 +131,12 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               </div>
               <div className={styles.headerCenterSection}>
                 <HeaderMobileNav
-                  _internalId={`${internalId}-mobile-nav`}
+                  _internalId={internalId}
                   _debugMode={debugMode}
                   className={styles.mobileNavigation}
                 />
                 <HeaderDesktopNav
-                  _internalId={`${internalId}-desktop-nav`}
+                  _internalId={internalId}
                   _debugMode={debugMode}
                   className={styles.desktopNavigation}
                 />
@@ -144,7 +144,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               <div className={styles.headerRightSection}>
                 <div className={styles.themeToggleWrapper}>
                   <HeaderThemeToggle
-                    _internalId={`${internalId}-theme-toggle`}
+                    _internalId={internalId}
                     _debugMode={debugMode}
                   />
                 </div>
