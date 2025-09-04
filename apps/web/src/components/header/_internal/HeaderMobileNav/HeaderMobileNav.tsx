@@ -66,8 +66,8 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                   <HeaderMobileNavItem
                     key={`${link.label}:${link.href}`}
                     href={link.href}
-                    internalId={_internalId}
-                    debugMode={_debugMode}
+                    _internalId={_internalId}
+                    _debugMode={_debugMode}
                   >
                     {link.label}
                   </HeaderMobileNavItem>
