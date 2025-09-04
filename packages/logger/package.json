@@ -77,8 +77,7 @@
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
-    "@packages/vitest-presets": "workspace:*"
+    "@packages/typescript-config": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/jest-dom": "catalog:",
