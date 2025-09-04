@@ -2,7 +2,7 @@ import React from "react";
 
 import Link from "next/link";
 
-import { type ComponentProps } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 
 // ============================================================================
 // COMMON TYPE DEFINITIONS
@@ -11,7 +11,7 @@ import { type ComponentProps } from "@guyromellemagayano/utils";
 export interface CommonNavItemProps
   extends React.ComponentProps<"li">,
     Pick<React.ComponentPropsWithoutRef<typeof Link>, "target" | "title">,
-    ComponentProps {
+    CommonComponentProps {
   /** Link href */
   href?: React.ComponentProps<typeof Link>["href"];
 }
