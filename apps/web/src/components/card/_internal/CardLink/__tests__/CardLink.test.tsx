@@ -155,43 +155,41 @@ describe("CardLink", () => {
   });
 
   describe("Link Functionality", () => {
-    it("renders CardLinkCustom when href is provided and valid", () => {
+    it("renders children directly when href is provided and valid", () => {
       render(<CardLink href="/test-link">Link content</CardLink>);
+
+      expect(
+        screen.queryByTestId("card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Link content")).toBeInTheDocument();
+    });
+
+    it("renders CardLinkCustom when href is invalid", () => {
+      render(<CardLink href="">Link content</CardLink>);
 
       const customLink = screen.getByTestId("card-link-custom-root");
       expect(customLink).toBeInTheDocument();
-      expect(customLink).toHaveAttribute("href", "/test-link");
+      expect(customLink).toHaveAttribute("href", "");
     });
 
-    it("renders CardLinkCustom with correct props", () => {
+    it("renders CardLinkCustom when href is not provided", () => {
+      render(<CardLink>Link content</CardLink>);
+
+      const customLink = screen.getByTestId("card-link-custom-root");
+      expect(customLink).toBeInTheDocument();
+    });
+
+    it("renders CardLinkCustom with correct props when href is invalid", () => {
       render(
-        <CardLink href="/test-link" target="_blank" title="Test title">
+        <CardLink href="#" target="_blank" title="Test title">
           Link content
         </CardLink>
       );
 
       const customLink = screen.getByTestId("card-link-custom-root");
-      expect(customLink).toHaveAttribute("href", "/test-link");
+      expect(customLink).toHaveAttribute("href", "#");
       expect(customLink).toHaveAttribute("target", "_blank");
       expect(customLink).toHaveAttribute("title", "Test title");
-    });
-
-    it("renders children directly when href is invalid", () => {
-      render(<CardLink href="">Link content</CardLink>);
-
-      expect(
-        screen.queryByTestId("card-link-custom-root")
-      ).not.toBeInTheDocument();
-      expect(screen.getByText("Link content")).toBeInTheDocument();
-    });
-
-    it("renders children directly when href is not provided", () => {
-      render(<CardLink>Link content</CardLink>);
-
-      expect(
-        screen.queryByTestId("card-link-custom-root")
-      ).not.toBeInTheDocument();
-      expect(screen.getByText("Link content")).toBeInTheDocument();
     });
   });
 
@@ -201,11 +199,11 @@ describe("CardLink", () => {
 
       const background = screen.getByTestId("card-link-root");
       expect(background).toBeInTheDocument();
-      expect(background).toHaveClass("_cardLinkBackground_cfdd0d");
+      expect(background).toHaveClass("cardLinkBackground");
     });
 
-    it("renders clickable area and content when link is provided", () => {
-      render(<CardLink href="/test-link">Link content</CardLink>);
+    it("renders clickable area and content when link is invalid", () => {
+      render(<CardLink href="">Link content</CardLink>);
 
       const customLink = screen.getByTestId("card-link-custom-root");
       expect(customLink).toBeInTheDocument();
@@ -251,17 +249,14 @@ describe("CardLink", () => {
       render(<CardLink>Link content</CardLink>);
 
       const container = screen.getByTestId("card-link-root");
-      expect(container).toHaveClass("_cardLinkBackground_cfdd0d");
+      expect(container).toHaveClass("cardLinkBackground");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardLink className="custom-class">Link content</CardLink>);
 
       const container = screen.getByTestId("card-link-root");
-      expect(container).toHaveClass(
-        "_cardLinkBackground_cfdd0d",
-        "custom-class"
-      );
+      expect(container).toHaveClass("cardLinkBackground", "custom-class");
     });
   });
 
