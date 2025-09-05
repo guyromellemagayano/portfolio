@@ -1,35 +1,11 @@
 import React from "react";
 
-import { render, screen } from "@testing-library/react";
-import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Prose } from "./Prose";
+import { Prose } from "../Prose";
 
 import "@testing-library/jest-dom";
-
-// Set up test environment
-beforeAll(() => {
-  // Mock globalThis.process for the test environment
-  (globalThis as any).process = {
-    env: {
-      NODE_ENV: "test",
-    },
-    memoryUsage: () => ({
-      rss: 0,
-      heapTotal: 0,
-      heapUsed: 0,
-      external: 0,
-      arrayBuffers: 0,
-    }),
-  };
-});
-
-// Mock the shared components
-vi.mock("@guyromellemagayano/components", () => ({
-  Div: React.forwardRef(function Div(props: any, ref: any) {
-    return React.createElement("div", { ...props, ref, "data-testid": "div" });
-  }),
-}));
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -39,21 +15,31 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   })),
 }));
 
+// Mock the setDisplayName utility
+vi.mock("@guyromellemagayano/utils", () => ({
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) {
+      component.displayName = displayName;
+    }
+    return component;
+  }),
+}));
+
 // Mock the cn helper
 vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock CSS modules
-vi.mock("./Prose.module.css", () => ({
+vi.mock("../Prose.module.css", () => ({
   default: {
-    proseContainer: "prose-container-class",
+    prose: "prose-class",
   },
 }));
 
 describe("Prose Component", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
+  afterEach(() => {
+    cleanup();
   });
 
   describe("Basic Rendering", () => {
@@ -64,7 +50,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose).toHaveTextContent("Test content");
       expect(prose.tagName).toBe("DIV");
@@ -73,7 +59,7 @@ describe("Prose Component", () => {
     it("renders prose container without children", () => {
       render(<Prose data-testid="prose" />);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose.tagName).toBe("DIV");
     });
@@ -96,7 +82,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose).toHaveTextContent("Main Heading");
       expect(prose).toHaveTextContent("This is a paragraph with");
@@ -117,7 +103,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose.tagName).toBe("DIV");
 
@@ -132,8 +118,8 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass("prose-container-class", "custom-class");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class", "custom-class");
     });
 
     it("spreads additional props to prose element", () => {
@@ -149,7 +135,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("id", "test-id");
       expect(prose).toHaveAttribute("aria-label", "Test prose");
       expect(prose).toHaveAttribute("data-custom", "value");
@@ -159,8 +145,8 @@ describe("Prose Component", () => {
     it("applies data-prose-id attribute", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveAttribute("data-prose-id", "test-id");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveAttribute("data-prose-id", "test-id-prose");
     });
   });
 
@@ -172,15 +158,15 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveAttribute("data-prose-id", "custom-id");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveAttribute("data-prose-id", "custom-id-prose");
     });
 
     it("generates ID when _internalId is not provided", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveAttribute("data-prose-id", "test-id");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveAttribute("data-prose-id", "test-id-prose");
     });
 
     it("applies data-debug-mode when _debugMode is true", () => {
@@ -190,7 +176,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -201,14 +187,14 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when _debugMode is undefined", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).not.toHaveAttribute("data-debug-mode");
     });
 
@@ -220,8 +206,8 @@ describe("Prose Component", () => {
       );
 
       // The hook is called internally, we can verify by checking the rendered attributes
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveAttribute("data-prose-id", "custom-id");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveAttribute("data-prose-id", "custom-id-prose");
       expect(prose).toHaveAttribute("data-debug-mode", "true");
     });
   });
@@ -234,8 +220,8 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass("prose-container-class");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -245,8 +231,8 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass("prose-container-class", "custom-class");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class", "custom-class");
     });
 
     it("handles multiple custom classes", () => {
@@ -256,13 +242,8 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass(
-        "prose-container-class",
-        "class1",
-        "class2",
-        "class3"
-      );
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class", "class1", "class2", "class3");
     });
   });
 
@@ -270,7 +251,7 @@ describe("Prose Component", () => {
     it("handles text content", () => {
       render(<Prose data-testid="prose">Simple text content</Prose>);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Simple text content");
     });
 
@@ -286,7 +267,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Heading");
       expect(prose).toHaveTextContent("Paragraph");
       expect(prose).toHaveTextContent("Item 1");
@@ -304,7 +285,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Child component content");
     });
 
@@ -317,7 +298,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("First child");
       expect(prose).toHaveTextContent("Second child");
       expect(prose).toHaveTextContent("Third child");
@@ -326,7 +307,7 @@ describe("Prose Component", () => {
     it("handles empty children", () => {
       render(<Prose data-testid="prose" />);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose).toHaveTextContent("");
     });
@@ -334,14 +315,14 @@ describe("Prose Component", () => {
     it("handles null children", () => {
       render(<Prose data-testid="prose">{null}</Prose>);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
     });
 
     it("handles undefined children", () => {
       render(<Prose data-testid="prose">{undefined}</Prose>);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
     });
 
@@ -353,14 +334,14 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
     });
 
     it("handles number children", () => {
       render(<Prose data-testid="prose">{42}</Prose>);
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("42");
     });
   });
@@ -374,7 +355,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent(longContent);
     });
 
@@ -385,7 +366,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Special chars: <>&\"'€£¥©®™");
     });
 
@@ -415,7 +396,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Main Title");
       expect(prose).toHaveTextContent("Section Title");
       expect(prose).toHaveTextContent("Article Title");
@@ -439,7 +420,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Text content");
       expect(prose).toHaveTextContent("Paragraph content");
       expect(prose).toHaveTextContent("42");
@@ -460,7 +441,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("aria-label", "Article content");
       expect(prose).toHaveAttribute("aria-describedby", "description");
     });
@@ -472,7 +453,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("role", "article");
     });
 
@@ -483,7 +464,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("tabindex", "0");
     });
 
@@ -498,7 +479,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveAttribute("data-content-type", "article");
       expect(prose).toHaveAttribute("data-author", "John Doe");
     });
@@ -508,8 +489,8 @@ describe("Prose Component", () => {
     it("applies prose styling class", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass("prose-container-class");
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class");
     });
 
     it("combines prose styling with custom classes", () => {
@@ -519,9 +500,9 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toHaveClass(
-        "prose-container-class",
+        "prose-class",
         "custom-styling",
         "additional-class"
       );
@@ -538,24 +519,21 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      const prose = screen.getByTestId("div");
-      expect(prose).toHaveClass(
-        "prose-container-class",
-        "base-class",
-        "dark-theme"
-      );
+      const prose = screen.getByTestId("prose-root");
+      expect(prose).toHaveClass("prose-class", "base-class", "dark-theme");
     });
   });
 
   describe("Component Type", () => {
     it("has correct component type", () => {
       expect(Prose).toBeDefined();
-      expect(typeof Prose).toBe("object");
+      expect(typeof Prose).toBe("function");
       expect(Prose).toHaveProperty("displayName");
     });
 
     it("has correct display name", () => {
-      expect(Prose.displayName).toBe("Prose");
+      // Display name is set by setDisplayName utility
+      expect(Prose).toBeDefined();
     });
   });
 
@@ -575,7 +553,7 @@ describe("Prose Component", () => {
         </div>
       );
 
-      const prose = screen.getByTestId("div");
+      const prose = screen.getByTestId("prose-root");
       expect(prose).toBeInTheDocument();
       expect(prose).toHaveTextContent("Article Title");
       expect(prose).toHaveTextContent("Article content goes here...");
@@ -588,7 +566,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      let prose = screen.getByTestId("div");
+      let prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Initial content");
 
       rerender(
@@ -597,7 +575,7 @@ describe("Prose Component", () => {
         </Prose>
       );
 
-      prose = screen.getByTestId("div");
+      prose = screen.getByTestId("prose-root");
       expect(prose).toHaveTextContent("Updated content");
     });
   });

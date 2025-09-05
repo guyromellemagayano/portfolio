@@ -1,44 +1,68 @@
 import React from "react";
 
-import {
-  Div,
-  type DivProps,
-  type DivRef,
-} from "@guyromellemagayano/components";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
 import { cn } from "@web/lib";
 
 import styles from "./Prose.module.css";
 
-type ProseRef = DivRef;
-interface ProseProps extends DivProps, CommonWebAppComponentProps {}
+// ============================================================================
+// BASE PROSE COMPONENT
+// ============================================================================
 
-type ProseComponent = React.ForwardRefExoticComponent<
-  ProseProps & React.RefAttributes<ProseRef>
->;
+interface ProseProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {}
+type ProseComponent = React.FC<ProseProps>;
 
-/** Renders rich text content with consistent prose styling. */
-export const Prose: ProseComponent = React.forwardRef(
-  function Prose(props, ref) {
-    const { className, _internalId, _debugMode, ...rest } = props;
+/** Renders a styled prose container for rich text content. */
+const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
+  const { className, _internalId, _debugMode, ...rest } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
+  const element = (
+    <div
+      {...rest}
+      className={cn(styles.prose, className)}
+      data-prose-id={`${_internalId}-prose`}
+      data-debug-mode={_debugMode ? "true" : undefined}
+      data-testid="prose-root"
+    />
+  );
 
-    return (
-      <Div
-        {...rest}
-        ref={ref}
-        className={cn(styles.proseContainer, className)}
-        data-prose-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-      />
-    );
-  }
-);
+  return element;
+});
 
-Prose.displayName = "Prose";
+// ============================================================================
+// MEMOIZED PROSE COMPONENT
+// ============================================================================
+
+/** A memoized prose component. */
+const MemoizedProse = React.memo(BaseProse);
+
+// ============================================================================
+// MAIN PROSE COMPONENT
+// ============================================================================
+
+/** Renders the main styled prose container component. */
+const Prose: ProseComponent = setDisplayName(function Prose(props) {
+  const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId: _internalId,
+    debugMode: _debugMode,
+  });
+
+  const updatedProps = {
+    ...rest,
+    _internalId: id,
+    _debugMode: isDebugMode,
+  };
+
+  const Component = isMemoized ? MemoizedProse : BaseProse;
+  const element = <Component {...updatedProps} />;
+  return element;
+});
+
+export { Prose };
