@@ -6,6 +6,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import {
   getLinkTargetProps,
   isRenderableContent,
+  isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -14,24 +15,24 @@ import {
 // ============================================================================
 
 interface CardLinkCustomProps
-  extends React.ComponentProps<typeof Link>,
-    Omit<CommonComponentProps, "as"> {}
+  extends React.ComponentPropsWithRef<typeof Link>,
+    Pick<
+      CommonComponentProps,
+      | "isClient"
+      | "isMemoized"
+      | "internalId"
+      | "_internalId"
+      | "debugMode"
+      | "_debugMode"
+    > {}
 type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
 
 /** A custom Link component for Card components */
 const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
   function BaseCardLinkCustom(props) {
-    const {
-      children,
-      href = "#",
-      target = "_self",
-      title = "",
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { children, href, target, title, _internalId, _debugMode, ...rest } =
+      props;
 
-    /** Gets the target and rel props for the link */
     const linkTargetProps = getLinkTargetProps(href, target);
 
     const element = (
@@ -41,9 +42,9 @@ const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         title={title}
-        data-card-link-id={`${_internalId}-link-custom`}
+        data-card-link-id={`${_internalId}-card-link-custom`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={(rest as any)["data-testid"] || "card-link-custom-root"}
+        data-testid="card-link-custom-root"
       >
         {children}
       </Link>
@@ -57,26 +58,30 @@ const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
 // MEMOIZED CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
+/** A memoized card link custom component. */
 const MemoizedCardLinkCustom = React.memo(BaseCardLinkCustom);
 
 // ============================================================================
 // MAIN CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
+/** A custom card link component that supports memoization and internal debug props. */
 const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
   function CardLinkCustom(props) {
     const {
       children,
+      href,
       isMemoized = false,
       _internalId,
       _debugMode,
       ...rest
     } = props;
 
-    if (!isRenderableContent(children)) return null;
+    if (!isValidLink(href) || !isRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
+      href,
       _internalId,
       _debugMode,
     };
