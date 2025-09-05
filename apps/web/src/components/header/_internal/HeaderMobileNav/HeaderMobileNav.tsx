@@ -41,7 +41,11 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
       >
         <PopoverButton className={styles.HeaderMobileNavButton}>
           {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.menu}
-          <Icon.ChevronDown className={styles.HeaderMobileNavChevron} />
+          <Icon.ChevronDown
+            className={styles.HeaderMobileNavChevron}
+            _internalId={_internalId}
+            _debugMode={_debugMode}
+          />
         </PopoverButton>
         <PopoverBackdrop
           transition
