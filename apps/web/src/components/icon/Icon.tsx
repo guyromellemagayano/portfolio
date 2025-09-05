@@ -7,7 +7,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "./_data";
+import { type CommonIconComponent, type CommonIconProps } from "./_data";
 import {
   ArrowLeftIcon,
   ChevronDownIcon,
@@ -19,7 +19,7 @@ import {
   MoonIcon,
   SunIcon,
   XIcon,
-} from "./_internal";
+} from "./_internal/Icons";
 
 // ============================================================================
 // BASE ICON COMPONENT
@@ -64,7 +64,7 @@ const MemoizedIcon = React.memo(BaseIcon);
 // MAIN ICON COMPONENT
 // ============================================================================
 
-type IconCompoundComponent = CommonIconComponent & {
+type IconCompoundComponent = React.FC<CommonIconProps> & {
   /** Social media icon for X/Twitter */
   X: typeof XIcon;
   /** Social media icon for Instagram */
@@ -88,7 +88,7 @@ type IconCompoundComponent = CommonIconComponent & {
 };
 
 /** A polymorphic SVG icon component with compound social and UI icons. */
-const Icon = setDisplayName(function Icon(props) {
+const IconComponent = function (props: CommonIconProps) {
   const {
     children,
     isMemoized = false,
@@ -115,7 +115,9 @@ const Icon = setDisplayName(function Icon(props) {
   const Component = isMemoized ? MemoizedIcon : BaseIcon;
   const element = <Component {...updatedProps} />;
   return element;
-} as IconCompoundComponent);
+};
+
+const Icon = setDisplayName(IconComponent) as IconCompoundComponent;
 
 // ============================================================================
 // ICON COMPOUND COMPONENTS
