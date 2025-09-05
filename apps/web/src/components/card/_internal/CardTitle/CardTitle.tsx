@@ -1,5 +1,7 @@
 import React from "react";
 
+import Link from "next/link";
+
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
@@ -10,7 +12,6 @@ import {
 
 import { cn } from "@web/lib";
 
-import { type CardComponentsWithLinks } from "../../_data";
 import { CardLinkCustom } from "../CardLink/CardLinkCustom";
 import styles from "./CardTitle.module.css";
 
@@ -19,8 +20,11 @@ import styles from "./CardTitle.module.css";
 // ============================================================================
 
 interface CardTitleProps
-  extends Omit<React.ComponentProps<"h2">, "title">,
-    CardComponentsWithLinks,
+  extends React.ComponentPropsWithRef<"h2">,
+    Pick<
+      React.ComponentPropsWithoutRef<typeof Link>,
+      "href" | "target" | "title"
+    >,
     CommonComponentProps {}
 type CardTitleComponent = React.FC<CardTitleProps>;
 
@@ -44,9 +48,9 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
         className={cn(styles.cardTitleHeading, className)}
         data-card-title-id={`${_internalId}-card-title`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={(rest as any)["data-testid"] || "card-title-root"}
+        data-testid="card-title-root"
       >
-        {href && isValidLink(href) ? (
+        {isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target as React.HTMLAttributeAnchorTarget | undefined}
