@@ -1,4 +1,4 @@
-@reference "@tailwindcss/typography";
+@reference "tailwindcss";
 
 /* Prose container */
 .proseContainer {
