@@ -1,11 +1,8 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -15,7 +12,9 @@ import styles from "./CardEyebrow.module.css";
 // BASE CARD EYEBROW COMPONENT
 // ============================================================================
 
-interface CardEyebrowProps extends React.ComponentProps<"p">, ComponentProps {
+interface CardEyebrowProps
+  extends React.ComponentPropsWithRef<"p">,
+    CommonComponentProps {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
@@ -46,7 +45,7 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
         )}
         data-card-eyebrow-id={`${_internalId}-card-eyebrow`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={(rest as any)["data-testid"] || "card-eyebrow-root"}
+        data-testid="card-eyebrow-root"
       >
         {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
       </p>

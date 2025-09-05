@@ -6,16 +6,16 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { CardEyebrow } from "../CardEyebrow";
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    id: options.internalId || "generated-id",
     isDebugMode: options.debugMode || false,
   }))
 );
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
@@ -35,22 +35,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  getLinkTargetProps: vi.fn((href, target) => {
-    if (target === "_blank" && href?.startsWith("http")) {
-      return { rel: "noopener noreferrer" };
-    }
-    return {};
-  }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date().getFullYear().toString();
-    }
-    return date.toISOString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    component.displayName = displayName;
-    return component;
-  }),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -68,6 +52,7 @@ vi.mock("../CardEyebrow.module.css", () => ({
 describe("CardEyebrow", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -85,13 +70,9 @@ describe("CardEyebrow", () => {
     });
 
     it("passes through HTML attributes", () => {
-      render(
-        <CardEyebrow data-testid="custom-testid" aria-label="Eyebrow">
-          Eyebrow text
-        </CardEyebrow>
-      );
+      render(<CardEyebrow aria-label="Eyebrow">Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("custom-testid");
+      const eyebrow = screen.getByTestId("card-eyebrow-root");
       expect(eyebrow).toHaveAttribute("aria-label", "Eyebrow");
     });
   });
@@ -111,21 +92,100 @@ describe("CardEyebrow", () => {
       const { container } = render(<CardEyebrow>{""}</CardEyebrow>);
       expect(container.firstChild).toBeNull();
     });
+
+    it("handles boolean children", () => {
+      const { container } = render(<CardEyebrow>{true}</CardEyebrow>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles number children", () => {
+      const { container } = render(<CardEyebrow>{0}</CardEyebrow>);
+      expect(container.firstChild).toBeNull();
+    });
+  });
+
+  describe("useComponentId Integration", () => {
+    it("calls useComponentId with correct parameters", () => {
+      render(
+        <CardEyebrow _internalId="custom-id" _debugMode={true}>
+          Eyebrow text
+        </CardEyebrow>
+      );
+
+      expect(mockUseComponentId).toHaveBeenCalledWith({
+        internalId: "custom-id",
+        debugMode: true,
+      });
+    });
+
+    it("calls useComponentId with undefined parameters", () => {
+      render(<CardEyebrow>Eyebrow text</CardEyebrow>);
+
+      expect(mockUseComponentId).toHaveBeenCalledWith({
+        internalId: undefined,
+        debugMode: undefined,
+      });
+    });
+
+    it("passes generated ID to base component", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "generated-id",
+        isDebugMode: false,
+      });
+
+      render(<CardEyebrow>Eyebrow text</CardEyebrow>);
+
+      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      expect(eyebrow).toHaveAttribute(
+        "data-card-eyebrow-id",
+        "generated-id-card-eyebrow"
+      );
+    });
   });
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "test-id",
+        isDebugMode: true,
+      });
+
       render(<CardEyebrow _debugMode={true}>Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("card-eyebrow-root");
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("does not apply when disabled/undefined", () => {
+    it("does not apply when disabled", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "test-id",
+        isDebugMode: false,
+      });
+
       render(<CardEyebrow>Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("card-eyebrow-root");
       expect(eyebrow).not.toHaveAttribute("data-debug-mode");
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders non-memoized component by default", () => {
+      render(<CardEyebrow>Eyebrow text</CardEyebrow>);
+
+      expect(screen.getByText("Eyebrow text")).toBeInTheDocument();
+    });
+
+    it("renders memoized component when isMemoized is true", () => {
+      render(<CardEyebrow isMemoized={true}>Eyebrow text</CardEyebrow>);
+
+      expect(screen.getByText("Eyebrow text")).toBeInTheDocument();
+    });
+
+    it("renders non-memoized component when isMemoized is false", () => {
+      render(<CardEyebrow isMemoized={false}>Eyebrow text</CardEyebrow>);
+
+      expect(screen.getByText("Eyebrow text")).toBeInTheDocument();
     });
   });
 
@@ -153,23 +213,33 @@ describe("CardEyebrow", () => {
   });
 
   describe("Component ID", () => {
+    it("renders with generated component ID", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "generated-id",
+        isDebugMode: false,
+      });
+
+      render(<CardEyebrow>Eyebrow text</CardEyebrow>);
+
+      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      expect(eyebrow).toHaveAttribute(
+        "data-card-eyebrow-id",
+        "generated-id-card-eyebrow"
+      );
+    });
+
     it("renders with custom internal ID", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "custom-id",
+        isDebugMode: false,
+      });
+
       render(<CardEyebrow _internalId="custom-id">Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
         "data-card-eyebrow-id",
         "custom-id-card-eyebrow"
-      );
-    });
-
-    it("uses provided internalId when available", () => {
-      render(<CardEyebrow _internalId="test-id">Eyebrow</CardEyebrow>);
-
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute(
-        "data-card-eyebrow-id",
-        "test-id-card-eyebrow"
       );
     });
   });
@@ -275,6 +345,45 @@ describe("CardEyebrow", () => {
         "cardEyebrowDecorated",
         "custom-class"
       );
+    });
+
+    it("handles multiple props together", () => {
+      mockUseComponentId.mockReturnValue({
+        id: "multi-prop-id",
+        isDebugMode: true,
+      });
+
+      render(
+        <CardEyebrow
+          _internalId="multi-prop-id"
+          _debugMode={true}
+          isMemoized={true}
+          decorate={true}
+          dateTime="2023-01-01"
+          className="multi-class"
+          aria-label="Multi prop test"
+        >
+          Multi prop test
+        </CardEyebrow>
+      );
+
+      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      expect(eyebrow).toHaveClass(
+        "multi-class",
+        "cardEyebrow",
+        "cardEyebrowDecorated"
+      );
+      expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
+      expect(eyebrow).toHaveAttribute(
+        "data-card-eyebrow-id",
+        "multi-prop-id-card-eyebrow"
+      );
+      expect(eyebrow).toHaveAttribute("aria-label", "Multi prop test");
+      expect(screen.getByText("Multi prop test")).toBeInTheDocument();
+
+      const timeElement = screen.getByText("Multi prop test");
+      expect(timeElement.tagName).toBe("TIME");
+      expect(timeElement).toHaveAttribute("datetime", "2023-01-01");
     });
   });
 });

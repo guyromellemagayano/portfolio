@@ -13,7 +13,7 @@ import styles from "./CardDescription.module.css";
 // ============================================================================
 
 interface CardDescriptionProps
-  extends React.ComponentProps<"p">,
+  extends React.ComponentPropsWithRef<"p">,
     CommonComponentProps {}
 type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
@@ -28,7 +28,7 @@ const BaseCardDescription: CardDescriptionComponent = setDisplayName(
         className={cn(styles.cardDescription, className)}
         data-card-description-id={`${_internalId}-card-description`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={(rest as any)["data-testid"] || "card-description-root"}
+        data-testid="card-description-root"
       >
         {children}
       </p>

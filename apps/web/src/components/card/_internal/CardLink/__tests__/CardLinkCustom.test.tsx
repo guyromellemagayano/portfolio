@@ -155,7 +155,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("custom-testid");
+      const linkElement = screen.getByTestId("card-link-custom-root");
       expect(linkElement).toHaveAttribute("aria-label", "Link");
     });
   });
@@ -308,7 +308,7 @@ describe("CardLinkCustom", () => {
       const linkElement = screen.getByTestId("card-link-custom-root");
       expect(linkElement).toHaveAttribute(
         "data-card-link-id",
-        "custom-id-link-custom"
+        "custom-id-card-link-custom"
       );
     });
 
@@ -326,7 +326,7 @@ describe("CardLinkCustom", () => {
       const linkElement = screen.getByTestId("card-link-custom-root");
       expect(linkElement).toHaveAttribute(
         "data-card-link-id",
-        "test-id-link-custom"
+        "test-id-card-link-custom"
       );
     });
 
@@ -340,7 +340,7 @@ describe("CardLinkCustom", () => {
       const linkElement = screen.getByTestId("card-link-custom-root");
       expect(linkElement).toHaveAttribute(
         "data-card-link-id",
-        "undefined-link-custom"
+        "test-id-card-link-custom"
       );
     });
   });
