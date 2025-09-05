@@ -1,6 +1,8 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
+import Link from "next/link";
+
+import { CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   isRenderableContent,
@@ -11,7 +13,6 @@ import {
 import { Icon } from "@web/components";
 import { cn } from "@web/lib";
 
-import { type CardComponentsWithLinks } from "../../_data";
 import { CardLinkCustom } from "../CardLink";
 import styles from "./CardCta.module.css";
 
@@ -20,8 +21,11 @@ import styles from "./CardCta.module.css";
 // ============================================================================
 
 interface CardCtaProps
-  extends React.ComponentProps<"div">,
-    CardComponentsWithLinks,
+  extends React.ComponentPropsWithRef<"div">,
+    Pick<
+      React.ComponentPropsWithoutRef<typeof Link>,
+      "href" | "target" | "title"
+    >,
     CommonComponentProps {}
 type CardCtaComponent = React.FC<CardCtaProps>;
 
@@ -31,9 +35,9 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
     const {
       children,
       className,
-      href = "#",
-      target = "_self",
-      title = "",
+      href,
+      target,
+      title,
       _internalId,
       _debugMode,
       ...rest
@@ -45,9 +49,9 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
         className={cn(styles.cardCtaContainer, className)}
         data-card-cta-id={`${_internalId}-card-cta`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={(rest as any)["data-testid"] || "card-cta-root"}
+        data-testid="card-cta-root"
       >
-        {href && isValidLink(href) ? (
+        {isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}
@@ -84,6 +88,7 @@ const MemoizedCardCta = React.memo(BaseCardCta);
 const CardCta: CardCtaComponent = setDisplayName(function CardCta(props) {
   const {
     children,
+    href,
     isMemoized = false,
     _internalId,
     _debugMode,
@@ -99,6 +104,7 @@ const CardCta: CardCtaComponent = setDisplayName(function CardCta(props) {
 
   const updatedProps = {
     ...rest,
+    href,
     _internalId: id,
     _debugMode: isDebugMode,
   };

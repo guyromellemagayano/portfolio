@@ -34,7 +34,7 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
       className={cn(styles.card, className)}
       data-card-id={`${internalId}-card`}
       data-debug-mode={debugMode ? "true" : undefined}
-      data-testid={(rest as any)["data-testid"] || "card-root"}
+      data-testid="card-root"
     >
       {children}
     </article>
