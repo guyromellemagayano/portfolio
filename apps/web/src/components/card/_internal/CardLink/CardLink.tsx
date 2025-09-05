@@ -1,6 +1,5 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   isRenderableContent,
@@ -10,7 +9,6 @@ import {
 
 import { cn } from "@web/lib";
 
-import { type CardComponentsWithLinks } from "../../_data";
 import styles from "./CardLink.module.css";
 import { CardLinkCustom } from "./CardLinkCustom";
 
@@ -19,9 +17,11 @@ import { CardLinkCustom } from "./CardLinkCustom";
 // ============================================================================
 
 interface CardLinkProps
-  extends React.ComponentProps<"div">,
-    CardComponentsWithLinks,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithRef<"div">,
+    Omit<
+      React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
+      keyof React.ComponentPropsWithRef<"div">
+    > {}
 type CardLinkComponent = React.FC<CardLinkProps>;
 
 /** A background and clickable wrapper for card links. */
@@ -30,9 +30,9 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
     const {
       children,
       className,
-      href = "#",
-      target = "_self",
-      title = "",
+      href,
+      target,
+      title,
       _internalId,
       _debugMode,
       ...rest
@@ -45,9 +45,9 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
           className={cn(styles.cardLinkBackground, className)}
           data-card-link-id={`${_internalId}-card-link`}
           data-debug-mode={_debugMode ? "true" : undefined}
-          data-testid={(rest as any)["data-testid"] || "card-link-root"}
+          data-testid="card-link-root"
         />
-        {href && isValidLink(href) ? (
+        {isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}
@@ -83,6 +83,7 @@ const MemoizedCardLink = React.memo(BaseCardLink);
 const CardLink: CardLinkComponent = setDisplayName(function CardLink(props) {
   const {
     children,
+    href,
     isMemoized = false,
     _internalId,
     _debugMode,
@@ -98,6 +99,7 @@ const CardLink: CardLinkComponent = setDisplayName(function CardLink(props) {
 
   const updatedProps = {
     ...rest,
+    href,
     _internalId: id,
     _debugMode: isDebugMode,
   };
