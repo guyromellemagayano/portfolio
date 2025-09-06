@@ -8,6 +8,7 @@ import {
 } from "@headlessui/react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/Icon";
@@ -35,9 +36,9 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
     const element = (
       <Popover
         {...rest}
-        data-mobile-header-nav-id={`${_internalId}-mobile-header-nav`}
+        data-mobile-header-nav-id={`header-${_internalId}-mobile-nav`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="mobile-header-nav-root"
+        data-testid={`header-${_internalId}-mobile-nav-root`}
       >
         <PopoverButton className={styles.HeaderMobileNavButton}>
           {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.menu}
@@ -101,7 +102,12 @@ const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function HeaderMobileNav(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
-    const updatedProps = { ...rest, _internalId, _debugMode };
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const updatedProps = { ...rest, _internalId: id, _debugMode: isDebugMode };
 
     const Component = isMemoized
       ? MemoizedHeaderMobileNav

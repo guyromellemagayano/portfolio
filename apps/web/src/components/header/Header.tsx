@@ -58,7 +58,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
         }}
         data-header-id={`${internalId}-header`}
         data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="header-root"
+        data-testid={`${internalId}-header-root`}
       >
         {isHomePage && (
           <>
@@ -90,9 +90,9 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                   <HeaderAvatar
                     _internalId={internalId}
                     _debugMode={debugMode}
-                    large
                     className={styles.avatarImage}
                     style={{ transform: "var(--avatar-image-transform)" }}
+                    large
                   />
                 </div>
               </div>
