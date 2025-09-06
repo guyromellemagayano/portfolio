@@ -1,1 +1,1 @@
-export * from "./ArticleNavButton";
+export { ArticleNavButton } from "./ArticleNavButton";
