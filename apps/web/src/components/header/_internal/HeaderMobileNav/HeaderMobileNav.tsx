@@ -10,7 +10,7 @@ import {
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
-import { Icon } from "@web/components/icon";
+import { Icon } from "@web/components/Icon";
 
 import {
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
