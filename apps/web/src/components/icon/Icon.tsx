@@ -19,7 +19,7 @@ import {
   MoonIcon,
   SunIcon,
   XIcon,
-} from "./_internal/Icons";
+} from "./_internal";
 
 // ============================================================================
 // BASE ICON COMPONENT

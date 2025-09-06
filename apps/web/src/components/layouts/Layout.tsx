@@ -12,8 +12,8 @@ import {
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/lib";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
-import styles from "./BaseLayout.module.css";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
+import styles from "./Layout.module.css";
 
 // ============================================================================
 // BASE LAYOUT COMPONENT
@@ -25,8 +25,8 @@ interface BaseLayoutProps
 type BaseLayoutComponent = React.FC<BaseLayoutProps>;
 
 /** A layout component that provides the base page structure with header, main content, and footer. */
-const BaseBaseLayout: BaseLayoutComponent = setDisplayName(
-  function BaseBaseLayout(props) {
+const BaseLayout: BaseLayoutComponent = setDisplayName(
+  function BaseLayout(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
     const element = (
@@ -77,44 +77,42 @@ const BaseBaseLayout: BaseLayoutComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED BASE LAYOUT COMPONENT
+// MEMOIZED LAYOUT COMPONENT
 // ============================================================================
 
 /** A memoized base layout component. */
-const MemoizedBaseLayout = React.memo(BaseBaseLayout);
+const MemoizedLayout = React.memo(BaseLayout);
 
 // ============================================================================
-// MAIN BASE LAYOUT COMPONENT
+// MAIN LAYOUT COMPONENT
 // ============================================================================
 
 /** A layout component that provides the base page structure with header, main, and footer sections. */
-const BaseLayout: BaseLayoutComponent = setDisplayName(
-  function BaseLayout(props) {
-    const {
-      children,
-      isMemoized = false,
-      internalId,
-      debugMode,
-      ...rest
-    } = props;
+const Layout: BaseLayoutComponent = setDisplayName(function Layout(props) {
+  const {
+    children,
+    isMemoized = false,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
 
-    if (!hasAnyRenderableContent(children)) return null;
+  if (!hasAnyRenderableContent(children)) return null;
 
-    const updatedProps = {
-      ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
-    };
+  const updatedProps = {
+    ...rest,
+    internalId: id,
+    debugMode: isDebugMode,
+  };
 
-    const Component = isMemoized ? MemoizedBaseLayout : BaseBaseLayout;
-    const element = <Component {...updatedProps}>{children}</Component>;
-    return element;
-  }
-);
+  const Component = isMemoized ? MemoizedLayout : Layout;
+  const element = <Component {...updatedProps}>{children}</Component>;
+  return element;
+});
 
-export { BaseLayout };
+export { Layout };

@@ -3,7 +3,10 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
-import type { CommonContainerComponent, CommonContainerProps } from "./_data";
+import {
+  type CommonContainerComponent,
+  type CommonContainerProps,
+} from "./_data";
 import { ContainerInner, ContainerOuter } from "./_internal";
 
 // ============================================================================
@@ -16,14 +19,13 @@ const BaseContainer: CommonContainerComponent = setDisplayName(
     const { children, internalId, debugMode, ...rest } = props;
 
     const element = (
-      <div
+      <ContainerOuter
         {...rest}
         data-container-id={internalId}
         data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="container-root"
       >
-        {children}
-      </div>
+        <ContainerInner>{children}</ContainerInner>
+      </ContainerOuter>
     );
 
     return element;
@@ -67,9 +69,9 @@ const Container = setDisplayName(function Container(props) {
 
   const updatedProps = {
     ...rest,
+    children,
     internalId: id,
     debugMode: isDebugMode,
-    children,
   };
 
   const Component = isMemoized ? MemoizedContainer : BaseContainer;

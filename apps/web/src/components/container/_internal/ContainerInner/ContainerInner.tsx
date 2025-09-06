@@ -25,12 +25,7 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
         data-debug-mode={debugMode ? "true" : undefined}
         data-testid="container-inner-root"
       >
-        <div
-          className={styles.containerInnerContent}
-          data-testid="container-inner-content"
-        >
-          {children}
-        </div>
+        <div className={styles.containerInnerContent}>{children}</div>
       </div>
     );
 
