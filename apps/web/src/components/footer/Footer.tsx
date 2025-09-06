@@ -4,7 +4,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components/container";
+import { Container } from "@web/components/Container";
 import { cn } from "@web/lib";
 
 import {
