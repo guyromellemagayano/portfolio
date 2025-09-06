@@ -1,3 +1,3 @@
-export * from "./article";
-export * from "./base";
-export * from "./simple";
+export { ArticleLayout } from "./article";
+export * from "./Layout";
+export { SimpleLayout } from "./simple";
