@@ -1,1 +1,1 @@
-export { HeaderThemeToggle } from "./HeaderThemeToggle";
+export * from "./HeaderThemeToggle";

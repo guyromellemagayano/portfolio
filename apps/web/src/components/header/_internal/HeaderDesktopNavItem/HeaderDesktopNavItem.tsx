@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   getLinkTargetProps,
   hasMeaningfulText,
@@ -47,9 +48,9 @@ const BaseHeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
     const element = (
       <li
         {...rest}
-        data-header-desktop-nav-item-id={`${_internalId}-header-desktop-nav-item`}
+        data-header-desktop-nav-item-li-id={`header-${_internalId}-desktop-nav-item`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="header-desktop-nav-item-root"
+        data-testid={`header-${_internalId}-desktop-nav-item-root`}
       >
         <Link
           href={href}
@@ -97,12 +98,17 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
       ...rest
     } = props;
 
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
     if (!isRenderableContent(children)) return null;
 
     const updatedProps = {
-      _internalId,
-      _debugMode,
       ...rest,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized

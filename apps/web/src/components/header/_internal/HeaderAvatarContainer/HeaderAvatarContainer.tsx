@@ -1,6 +1,7 @@
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -25,9 +26,9 @@ const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
       <div
         {...rest}
         className={cn(styles.avatarContainer, className)}
-        data-header-avatar-container-id={`${_internalId}-header-avatar-container`}
+        data-header-avatar-container-id={`header-${_internalId}-avatar-container`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="header-avatar-container-root"
+        data-testid={`header-${_internalId}-avatar-container-root`}
       />
     );
 
@@ -50,11 +51,15 @@ const HeaderAvatarContainer: HeaderAvatarContainerComponent = setDisplayName(
   function HeaderAvatarContainer(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
-    // Pass internal props directly - no transformation needed
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
     const updatedProps = {
       ...rest,
-      _internalId,
-      _debugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized
