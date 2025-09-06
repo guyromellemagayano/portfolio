@@ -1,1 +1,1 @@
-export { FooterNavigation } from "./FooterNavigation";
+export * from "./FooterNavigation";
