@@ -1,8 +1,8 @@
-export * from "./HeaderAvatar";
-export * from "./HeaderAvatarContainer";
-export * from "./HeaderDesktopNav";
-export * from "./HeaderDesktopNavItem";
-export * from "./HeaderEffects";
-export * from "./HeaderMobileNav";
-export * from "./HeaderMobileNavItem";
-export * from "./HeaderThemeToggle";
+export { HeaderAvatar } from "./HeaderAvatar";
+export { HeaderAvatarContainer } from "./HeaderAvatarContainer";
+export { HeaderDesktopNav } from "./HeaderDesktopNav";
+export { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
+export { HeaderEffects } from "./HeaderEffects";
+export { HeaderMobileNav } from "./HeaderMobileNav";
+export { HeaderMobileNavItem } from "./HeaderMobileNavItem";
+export { HeaderThemeToggle } from "./HeaderThemeToggle";

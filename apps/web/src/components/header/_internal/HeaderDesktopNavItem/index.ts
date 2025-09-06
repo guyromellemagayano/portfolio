@@ -1,1 +1,1 @@
-export { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
+export * from "./HeaderDesktopNavItem";
