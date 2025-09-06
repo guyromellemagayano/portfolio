@@ -1,1 +1,1 @@
-export { HeaderAvatarContainer } from "./HeaderAvatarContainer";
+export * from "./HeaderAvatarContainer";

@@ -165,16 +165,10 @@ const MemoizedHeaderEffects = React.memo(BaseHeaderEffects);
 /** Applies scroll and resize effects to the header for dynamic UI behavior. */
 const HeaderEffects: HeaderEffectsComponent = setDisplayName(
   function HeaderEffects(props) {
-    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
-
-    const updatedProps = {
-      ...rest,
-      _internalId,
-      _debugMode,
-    };
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedHeaderEffects : BaseHeaderEffects;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest} />;
     return element;
   }
 );

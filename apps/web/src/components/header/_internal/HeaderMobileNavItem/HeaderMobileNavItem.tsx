@@ -5,6 +5,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   getLinkTargetProps,
   hasMeaningfulText,
@@ -47,9 +48,9 @@ const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
     const element = (
       <li
         {...rest}
-        data-header-mobile-nav-item-id={`${_internalId}-header-mobile-nav-item`}
+        data-header-mobile-nav-item-li-id={`${_internalId}-header-mobile-nav-item-li`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="header-mobile-nav-item-root"
+        data-testid={`${_internalId}-header-mobile-nav-item-root`}
       >
         <Link
           href={href}
@@ -87,9 +88,14 @@ const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
       ...rest
     } = props;
 
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
     if (!isRenderableContent(children)) return null;
 
-    const updatedProps = { ...rest, _internalId, _debugMode };
+    const updatedProps = { ...rest, _internalId: id, _debugMode: isDebugMode };
 
     const Component = isMemoized
       ? MemoizedHeaderMobileNavItem
