@@ -1,2 +1,2 @@
-export { CardLink } from "./CardLink";
-export { CardLinkCustom } from "./CardLinkCustom";
+export * from "./CardLink";
+export * from "./CardLinkCustom";
