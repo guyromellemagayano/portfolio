@@ -1,1 +1,1 @@
-export { HeaderEffects } from "./HeaderEffects";
+export * from "./HeaderEffects";

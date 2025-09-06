@@ -1,1 +1,1 @@
-export { HeaderMobileNavItem } from "./HeaderMobileNavItem";
+export * from "./HeaderMobileNavItem";
