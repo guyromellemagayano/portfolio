@@ -1,1 +1,1 @@
-export { HeaderDesktopNav } from "./HeaderDesktopNav";
+export * from "./HeaderDesktopNav";
