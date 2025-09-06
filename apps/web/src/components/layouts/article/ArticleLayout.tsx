@@ -12,7 +12,7 @@ import {
 import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, formatDate } from "@web/lib";
 
-import { ArticleNavButton } from "./_internal/ArticleNavButton/ArticleNavButton";
+import { ArticleNavButton } from "./_internal";
 import styles from "./ArticleLayout.module.css";
 
 // ============================================================================

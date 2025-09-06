@@ -12,7 +12,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components/container";
+import { Container } from "@web/components/Container";
 import { cn } from "@web/lib";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";

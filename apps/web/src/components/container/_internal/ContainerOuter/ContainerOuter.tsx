@@ -15,22 +15,17 @@ import styles from "./ContainerOuter.module.css";
 /** Provides the outer structure for the `Container` compound component. */
 const BaseContainerOuter: CommonContainerComponent = setDisplayName(
   function BaseContainerOuter(props) {
-    const { children, className, internalId, debugMode, ...rest } = props;
+    const { children, className, _internalId, _debugMode, ...rest } = props;
 
     const element = (
       <div
         {...rest}
         className={cn(styles.containerOuter, className)}
-        data-container-outer-id={internalId}
-        data-debug-mode={debugMode ? "true" : undefined}
+        data-container-outer-id={`${_internalId}-container-outer`}
+        data-debug-mode={_debugMode ? "true" : undefined}
         data-testid="container-outer-root"
       >
-        <div
-          className={styles.containerOuterContent}
-          data-testid="container-outer-content"
-        >
-          {children}
-        </div>
+        <div className={styles.containerOuterContent}>{children}</div>
       </div>
     );
 
@@ -54,22 +49,22 @@ const ContainerOuter: CommonContainerComponent = setDisplayName(
     const {
       children,
       isMemoized = false,
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
+      internalId: _internalId,
+      debugMode: _debugMode,
     });
 
     if (!isRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
       children,
     };
 
