@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/Icon";
@@ -59,7 +60,7 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
           onKeyDown={handleKeyDown}
           data-header-theme-toggle-id={`${_internalId}-header-theme-toggle`}
           data-debug-mode={_debugMode ? "true" : undefined}
-          data-testid="header-theme-toggle-root"
+          data-testid={`${_internalId}-header-theme-toggle-root`}
         >
           <Icon.Sun className={styles.headerThemeToggleSunIcon} />
           <Icon.Moon className={styles.headerThemeToggleMoonIcon} />
@@ -96,7 +97,12 @@ const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
   function HeaderThemeToggle(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
-    const updatedProps = { ...rest, _internalId, _debugMode };
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const updatedProps = { ...rest, _internalId: id, _debugMode: isDebugMode };
 
     const Component = isMemoized
       ? MemoizedHeaderThemeToggle

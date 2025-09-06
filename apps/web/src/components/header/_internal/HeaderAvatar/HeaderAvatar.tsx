@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import { getLinkTargetProps, setDisplayName } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
@@ -60,9 +61,9 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
         rel={linkTargetProps.rel}
         className={cn(styles.avatarLink, className)}
         aria-label={AVATAR_COMPONENT_LABELS.home}
-        data-header-avatar-id={`${_internalId}-header-avatar`}
+        data-header-avatar-id={`header-${_internalId}-avatar`}
         data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="header-avatar-root"
+        data-testid={`header-${_internalId}-avatar-root`}
       >
         <Image
           src={src}
@@ -94,10 +95,15 @@ const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function HeaderAvatar(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
     const updatedProps = {
       ...rest,
-      _internalId,
-      _debugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized ? MemoizedHeaderAvatar : BaseHeaderAvatar;

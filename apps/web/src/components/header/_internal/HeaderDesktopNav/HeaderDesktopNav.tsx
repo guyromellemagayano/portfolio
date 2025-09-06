@@ -28,13 +28,6 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
     const { className, _internalId, _debugMode, ...rest } = props;
 
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    // Use shared utility for robust navigation links validation
-    // Function now automatically handles readonly arrays
     const validLinks = filterValidNavigationLinks(DESKTOP_HEADER_NAV_LINKS);
     if (!hasValidNavigationLinks(validLinks)) return null;
 
@@ -42,9 +35,9 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
       <nav
         {...rest}
         className={cn(styles.HeaderDesktopNavList, className)}
-        data-header-desktop-nav-id={`${_internalId}-header-desktop-nav`}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="header-desktop-nav-root"
+        data-header-desktop-nav-id={`header-${_internalId}-desktop-nav`}
+        data-debug-mode={_debugMode ? "true" : undefined}
+        data-testid={`header-${_internalId}-desktop-nav-root`}
       >
         {validLinks.map(({ label, href }) => (
           <HeaderDesktopNavItem
@@ -79,10 +72,15 @@ const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function HeaderDesktopNav(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
     const updatedProps = {
       ...rest,
-      _internalId,
-      _debugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized
