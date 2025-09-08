@@ -38,12 +38,12 @@ vi.mock("next/link", () => ({
 // Mock Header and Footer components
 vi.mock("@web/components", () => ({
   Header: vi.fn(({ children, ...props }) => (
-    <header data-testid="header" {...props}>
+    <header data-testid="header" role="banner" {...props}>
       {children}
     </header>
   )),
   Footer: vi.fn(({ children, ...props }) => (
-    <footer data-testid="footer" {...props}>
+    <footer data-testid="footer" role="contentinfo" {...props}>
       {children}
     </footer>
   )),
@@ -55,21 +55,21 @@ vi.mock("@web/lib", () => ({
 }));
 
 // Mock CSS module
-vi.mock("../BaseLayout.module.css", () => ({
+vi.mock("../Layout.module.css", () => ({
   default: {
-    layoutContainer: "layout-container-class",
-    layoutBackgroundWrapper: "layout-background-wrapper-class",
-    layoutBackgroundContent: "layout-background-content-class",
-    layoutBackground: "layout-background-class",
-    layoutContentWrapper: "layout-content-wrapper-class",
-    layoutMain: "layout-main-class",
-    skipLink: "skip-link-class",
+    layoutContainer: "_layoutContainer_f23019",
+    layoutBackgroundWrapper: "_layoutBackgroundWrapper_f23019",
+    layoutBackgroundContent: "_layoutBackgroundContent_f23019",
+    layoutBackground: "_layoutBackground_f23019",
+    layoutContentWrapper: "_layoutContentWrapper_f23019",
+    layoutMain: "_layoutMain_f23019",
+    skipLink: "_skipLink_f23019",
   },
 }));
 
 // Mock data
 vi.mock("../_data", () => ({
-  BASE_LAYOUT_COMPONENT_LABELS: {
+  COMMON_LAYOUT_COMPONENT_LABELS: {
     skipToMainContent: "Skip to main content",
   },
 }));
@@ -149,7 +149,7 @@ describe("BaseLayout", () => {
 
       const container = screen.getByTestId("base-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("layout-container-class");
+      expect(container).toHaveClass("_layoutContainer_f23019");
     });
 
     it("renders skip link with correct attributes", () => {
@@ -159,7 +159,7 @@ describe("BaseLayout", () => {
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("skip-link-class");
+      expect(skipLink).toHaveClass("_skipLink_f23019");
     });
 
     it("renders background wrapper with correct structure", () => {
@@ -167,7 +167,7 @@ describe("BaseLayout", () => {
 
       const backgroundWrapper = screen
         .getByTestId("base-layout-root")
-        .querySelector(".layout-background-wrapper-class");
+        .querySelector("._layoutBackgroundWrapper_f23019");
       expect(backgroundWrapper).toBeInTheDocument();
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
@@ -178,7 +178,7 @@ describe("BaseLayout", () => {
 
       const contentWrapper = screen
         .getByTestId("base-layout-root")
-        .querySelector(".layout-content-wrapper-class");
+        .querySelector("._layoutContentWrapper_f23019");
       expect(contentWrapper).toBeInTheDocument();
     });
 
@@ -189,7 +189,7 @@ describe("BaseLayout", () => {
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("layout-main-class");
+      expect(main).toHaveClass("_layoutMain_f23019");
     });
   });
 
@@ -368,9 +368,9 @@ describe("BaseLayout", () => {
     it("maintains proper semantic structure", () => {
       render(<BaseLayout>{mockChildren}</BaseLayout>);
 
-      const header = screen.getByTestId("header");
+      const header = screen.getByTestId("layout-header");
       const main = screen.getByTestId("layout-main");
-      const footer = screen.getByTestId("footer");
+      const footer = screen.getByTestId("layout-footer");
 
       expect(header).toBeInTheDocument();
       expect(main).toBeInTheDocument();
@@ -380,9 +380,9 @@ describe("BaseLayout", () => {
     it("provides proper ARIA landmarks", () => {
       render(<BaseLayout>{mockChildren}</BaseLayout>);
 
-      expect(screen.getAllByRole("banner")).toHaveLength(2);
+      expect(screen.getAllByRole("banner")).toHaveLength(1);
       expect(screen.getByRole("main")).toBeInTheDocument();
-      expect(screen.getAllByRole("contentinfo")).toHaveLength(2);
+      expect(screen.getAllByRole("contentinfo")).toHaveLength(1);
     });
 
     it("provides working skip link for accessibility", () => {
@@ -398,7 +398,7 @@ describe("BaseLayout", () => {
 
       const backgroundWrapper = screen
         .getByTestId("base-layout-root")
-        .querySelector(".layout-background-wrapper-class");
+        .querySelector("._layoutBackgroundWrapper_f23019");
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
     });
@@ -428,8 +428,8 @@ describe("BaseLayout", () => {
         expect(screen.getByTestId("base-layout-root")).toBeInTheDocument();
 
         // Check header and footer
-        expect(screen.getByTestId("header")).toBeInTheDocument();
-        expect(screen.getByTestId("footer")).toBeInTheDocument();
+        expect(screen.getByTestId("layout-header")).toBeInTheDocument();
+        expect(screen.getByTestId("layout-footer")).toBeInTheDocument();
 
         // Check main content
         expect(screen.getByTestId("layout-main")).toBeInTheDocument();
@@ -451,13 +451,13 @@ describe("BaseLayout", () => {
         const layout = screen.getByTestId("base-layout-root");
         expect(layout).toBeInTheDocument();
 
-        const header = screen.getByTestId("header");
+        const header = screen.getByTestId("layout-header");
         expect(header).toBeInTheDocument();
 
         const main = screen.getByTestId("layout-main");
         expect(main).toBeInTheDocument();
 
-        const footer = screen.getByTestId("footer");
+        const footer = screen.getByTestId("layout-footer");
         expect(footer).toBeInTheDocument();
       });
 
@@ -465,7 +465,7 @@ describe("BaseLayout", () => {
         render(<BaseLayout>{mockChildren}</BaseLayout>);
 
         const layout = screen.getByTestId("base-layout-root");
-        expect(layout).toHaveClass("layout-container-class");
+        expect(layout).toHaveClass("_layoutContainer_f23019");
       });
     });
 
@@ -546,7 +546,7 @@ describe("BaseLayout", () => {
 
         const layout = screen.getByTestId("base-layout-root");
         expect(layout).toHaveClass(
-          "layout-container-class",
+          "_layoutContainer_f23019",
           "custom-layout-class"
         );
       });
@@ -713,8 +713,8 @@ describe("BaseLayout", () => {
       it("renders header and footer correctly", () => {
         render(<BaseLayout>{mockChildren}</BaseLayout>);
 
-        const header = screen.getByTestId("header");
-        const footer = screen.getByTestId("footer");
+        const header = screen.getByTestId("layout-header");
+        const footer = screen.getByTestId("layout-footer");
 
         expect(header).toBeInTheDocument();
         expect(footer).toBeInTheDocument();
