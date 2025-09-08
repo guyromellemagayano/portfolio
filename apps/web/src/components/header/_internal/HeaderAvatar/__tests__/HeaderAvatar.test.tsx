@@ -113,18 +113,20 @@ describe("HeaderAvatar", () => {
   describe("Basic Rendering", () => {
     it("renders without crashing", () => {
       render(<HeaderAvatar />);
-      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-avatar-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderAvatar />);
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).toBeInTheDocument();
     });
 
     it("renders with custom className", () => {
       render(<HeaderAvatar className="custom-class" />);
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).toHaveClass("custom-class");
     });
   });
@@ -133,41 +135,41 @@ describe("HeaderAvatar", () => {
     it("uses provided internalId when available", () => {
       render(<HeaderAvatar _internalId="custom-id" />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-custom-id-avatar-root");
       expect(avatar).toHaveAttribute(
         "data-header-avatar-id",
-        "custom-id-header-avatar"
+        "header-custom-id-avatar"
       );
     });
 
     it("uses provided _internalId when available", () => {
       render(<HeaderAvatar _internalId="test-id" />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).toHaveAttribute(
         "data-header-avatar-id",
-        "test-id-header-avatar"
+        "header-test-id-avatar"
       );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
       render(<HeaderAvatar _debugMode={true} />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<HeaderAvatar _debugMode={false} />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderAvatar />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -206,28 +208,28 @@ describe("HeaderAvatar", () => {
     it("uses default href when not provided", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveAttribute("href", "/");
     });
 
     it("uses custom href when provided", () => {
       render(<HeaderAvatar href="/custom" />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveAttribute("href", "/custom");
     });
 
     it("applies aria-label for accessibility", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveAttribute("aria-label", "Home");
     });
 
     it("passes through other link props", () => {
       render(<HeaderAvatar target="_blank" rel="noopener" />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
@@ -274,14 +276,16 @@ describe("HeaderAvatar", () => {
     it("renders correct HTML structure", () => {
       render(<HeaderAvatar />);
 
-      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-avatar-root")
+      ).toBeInTheDocument();
       expect(screen.getByTestId("next-image")).toBeInTheDocument();
     });
 
     it("renders with proper semantic structure", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       const image = screen.getByTestId("next-image");
       expect(link.tagName).toBe("A");
       expect(image.tagName).toBe("IMG");
@@ -290,7 +294,7 @@ describe("HeaderAvatar", () => {
     it("renders image inside link", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       const image = screen.getByTestId("next-image");
       expect(link).toContainElement(image);
     });
@@ -308,7 +312,7 @@ describe("HeaderAvatar", () => {
       const ref = vi.fn();
       render(<HeaderAvatar ref={ref} />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(ref).toHaveBeenCalledWith(link);
     });
   });
@@ -317,7 +321,7 @@ describe("HeaderAvatar", () => {
     it("renders with proper accessibility attributes", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       const image = screen.getByTestId("next-image");
 
       expect(link).toHaveAttribute("aria-label", "Home");
@@ -327,7 +331,7 @@ describe("HeaderAvatar", () => {
     it("passes through aria attributes", () => {
       render(<HeaderAvatar aria-describedby="description" />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveAttribute("aria-describedby", "description");
     });
   });
@@ -336,14 +340,14 @@ describe("HeaderAvatar", () => {
     it("applies CSS module classes correctly", () => {
       render(<HeaderAvatar />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveClass("avatar-link");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderAvatar className="custom-class" />);
 
-      const link = screen.getByTestId("header-avatar-root");
+      const link = screen.getByTestId("header-test-id-avatar-root");
       expect(link).toHaveClass("avatar-link", "custom-class");
     });
   });
@@ -352,11 +356,11 @@ describe("HeaderAvatar", () => {
     it("renders without unnecessary re-renders", () => {
       const { rerender } = render(<HeaderAvatar />);
 
-      const initialAvatar = screen.getByTestId("header-avatar-root");
+      const initialAvatar = screen.getByTestId("header-test-id-avatar-root");
 
       rerender(<HeaderAvatar />);
 
-      const updatedAvatar = screen.getByTestId("header-avatar-root");
+      const updatedAvatar = screen.getByTestId("header-test-id-avatar-root");
       expect(updatedAvatar).toBe(initialAvatar);
     });
 
@@ -365,7 +369,7 @@ describe("HeaderAvatar", () => {
 
       rerender(<HeaderAvatar className="new-class" />);
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       expect(avatar).toHaveClass("new-class");
     });
   });
@@ -373,12 +377,16 @@ describe("HeaderAvatar", () => {
   describe("Memoization", () => {
     it("renders base component when isMemoized is false", () => {
       render(<HeaderAvatar isMemoized={false} />);
-      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-avatar-root")
+      ).toBeInTheDocument();
     });
 
     it("renders memoized component when isMemoized is true", () => {
       render(<HeaderAvatar isMemoized={true} />);
-      expect(screen.getByTestId("header-avatar-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-avatar-root")
+      ).toBeInTheDocument();
     });
   });
 
@@ -397,13 +405,13 @@ describe("HeaderAvatar", () => {
         />
       );
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-custom-id-avatar-root");
       const image = screen.getByTestId("next-image");
 
       expect(avatar).toHaveClass("custom-class");
       expect(avatar).toHaveAttribute(
         "data-header-avatar-id",
-        "custom-id-header-avatar"
+        "header-custom-id-avatar"
       );
       expect(avatar).toHaveAttribute("data-debug-mode", "true");
       expect(avatar).toHaveAttribute("href", "/custom");
@@ -423,7 +431,7 @@ describe("HeaderAvatar", () => {
         />
       );
 
-      const avatar = screen.getByTestId("header-avatar-root");
+      const avatar = screen.getByTestId("header-test-id-avatar-root");
       const image = screen.getByTestId("next-image");
 
       expect(avatar).toHaveAttribute("href", "/");
