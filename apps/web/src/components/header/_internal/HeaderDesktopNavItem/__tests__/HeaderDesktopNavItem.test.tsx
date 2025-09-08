@@ -1,15 +1,20 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// Import mocked functions
-import { isActivePath } from "@web/lib";
-
-import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
-
 // Mock Next.js router
 vi.mock("next/navigation", () => ({
   usePathname: vi.fn(() => "/about"),
 }));
+
+// Mock the lib FIRST
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  isActivePath: vi.fn(() => true), // Return true by default for tests
+}));
+
+import { isActivePath } from "@web/lib";
+
+import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -64,12 +69,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock the cn helper
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  isActivePath: vi.fn(() => true), // Changed to return true by default
-}));
-
 // Mock next/link
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, href, className, ...props }) => (
@@ -82,11 +81,11 @@ vi.mock("next/link", () => ({
 // Mock the CSS module
 vi.mock("../HeaderDesktopNavItem.module.css", () => ({
   default: {
-    desktopHeaderNavItemLink: "_desktopHeaderNavItemLink_8adac4",
-    desktopHeaderNavItemLinkActive: "_desktopHeaderNavItemLinkActive_8adac4",
-    desktopHeaderNavItemLinkHover: "_desktopHeaderNavItemLinkHover_8adac4",
+    desktopHeaderNavItemLink: "_desktopHeaderNavItemLink_c3edaf",
+    desktopHeaderNavItemLinkActive: "_desktopHeaderNavItemLinkActive_c3edaf",
+    desktopHeaderNavItemLinkHover: "_desktopHeaderNavItemLinkHover_c3edaf",
     desktopHeaderNavItemActiveIndicator:
-      "_desktopHeaderNavItemActiveIndicator_8adac4",
+      "_desktopHeaderNavItemActiveIndicator_c3edaf",
   },
 }));
 
@@ -104,13 +103,13 @@ describe("HeaderDesktopNavItem", () => {
     it("renders without crashing", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
       expect(
-        screen.getByTestId("header-desktop-nav-item-root")
+        screen.getByTestId("header-test-id-desktop-nav-item-root")
       ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toBeInTheDocument();
     });
 
@@ -120,7 +119,7 @@ describe("HeaderDesktopNavItem", () => {
           About
         </HeaderDesktopNavItem>
       );
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveClass("custom-class");
     });
   });
@@ -133,10 +132,10 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-custom-id-desktop-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-desktop-nav-item-id",
-        "custom-id-header-desktop-nav-item"
+        "data-header-desktop-nav-item-li-id",
+        "header-custom-id-desktop-nav-item"
       );
     });
 
@@ -147,10 +146,10 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-desktop-nav-item-id",
-        "test-id-header-desktop-nav-item"
+        "data-header-desktop-nav-item-li-id",
+        "header-test-id-desktop-nav-item"
       );
     });
 
@@ -161,7 +160,7 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -172,14 +171,14 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -191,7 +190,7 @@ describe("HeaderDesktopNavItem", () => {
 
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
       expect(
-        screen.getByTestId("header-desktop-nav-item-root")
+        screen.getByTestId("header-test-id-desktop-nav-item-root")
       ).toBeInTheDocument();
     });
 
@@ -209,15 +208,16 @@ describe("HeaderDesktopNavItem", () => {
   });
 
   describe("Active State", () => {
-    it("applies active styles when pathname matches href", () => {
+    it("applies active styles when pathname matches href", async () => {
+      const { isActivePath } = await import("@web/lib");
       vi.mocked(isActivePath).mockReturnValue(true);
 
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
       const link = screen.getByTestId("next-link");
       expect(link).toHaveClass(
-        "_desktopHeaderNavItemLink_8adac4",
-        "_desktopHeaderNavItemLinkActive_8adac4"
+        "_desktopHeaderNavItemLink_c3edaf",
+        "_desktopHeaderNavItemLinkActive_c3edaf"
       );
     });
 
@@ -301,7 +301,7 @@ describe("HeaderDesktopNavItem", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
       expect(
-        screen.getByTestId("header-desktop-nav-item-root")
+        screen.getByTestId("header-test-id-desktop-nav-item-root")
       ).toBeInTheDocument();
       expect(screen.getByTestId("next-link")).toBeInTheDocument();
     });
@@ -309,7 +309,7 @@ describe("HeaderDesktopNavItem", () => {
     it("renders with proper semantic structure", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       const link = screen.getByTestId("next-link");
       expect(item.tagName).toBe("LI");
       expect(link.tagName).toBe("A");
@@ -336,7 +336,7 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(ref).toHaveBeenCalledWith(item);
     });
   });
@@ -356,7 +356,7 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveAttribute("aria-label", "About page");
     });
   });
@@ -366,7 +366,7 @@ describe("HeaderDesktopNavItem", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
       const link = screen.getByTestId("next-link");
-      expect(link).toHaveClass("_desktopHeaderNavItemLink_8adac4");
+      expect(link).toHaveClass("_desktopHeaderNavItemLink_c3edaf");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -376,7 +376,7 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveClass("custom-class");
     });
   });
@@ -387,13 +387,17 @@ describe("HeaderDesktopNavItem", () => {
         <HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>
       );
 
-      const initialItem = screen.getByTestId("header-desktop-nav-item-root");
+      const initialItem = screen.getByTestId(
+        "header-test-id-desktop-nav-item-root"
+      );
 
       rerender(
         <HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>
       );
 
-      const updatedItem = screen.getByTestId("header-desktop-nav-item-root");
+      const updatedItem = screen.getByTestId(
+        "header-test-id-desktop-nav-item-root"
+      );
       expect(updatedItem).toBe(initialItem);
     });
 
@@ -408,7 +412,7 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-test-id-desktop-nav-item-root");
       expect(item).toHaveClass("new-class");
     });
   });
@@ -429,13 +433,13 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const item = screen.getByTestId("header-desktop-nav-item-root");
+      const item = screen.getByTestId("header-custom-id-desktop-nav-item-root");
       const link = screen.getByTestId("next-link");
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(
-        "data-header-desktop-nav-item-id",
-        "custom-id-header-desktop-nav-item"
+        "data-header-desktop-nav-item-li-id",
+        "header-custom-id-desktop-nav-item"
       );
       expect(item).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveAttribute("href", "/about");

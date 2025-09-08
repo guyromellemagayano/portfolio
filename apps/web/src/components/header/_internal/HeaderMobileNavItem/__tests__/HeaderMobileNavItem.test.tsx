@@ -107,13 +107,13 @@ describe("HeaderMobileNavItem", () => {
     it("renders without crashing", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
       expect(
-        screen.getByTestId("header-mobile-nav-item-root")
+        screen.getByTestId("test-id-header-mobile-nav-item-root")
       ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toBeInTheDocument();
     });
 
@@ -123,7 +123,7 @@ describe("HeaderMobileNavItem", () => {
           About
         </HeaderMobileNavItem>
       );
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toHaveClass("custom-class");
     });
   });
@@ -136,10 +136,10 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("custom-id-header-mobile-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-id",
-        "custom-id-header-mobile-nav-item"
+        "data-header-mobile-nav-item-li-id",
+        "custom-id-header-mobile-nav-item-li"
       );
     });
 
@@ -150,10 +150,10 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-id",
-        "test-id-header-mobile-nav-item"
+        "data-header-mobile-nav-item-li-id",
+        "test-id-header-mobile-nav-item-li"
       );
     });
 
@@ -164,7 +164,7 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -175,14 +175,14 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -224,7 +224,7 @@ describe("HeaderMobileNavItem", () => {
 
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
       expect(
-        screen.getByTestId("header-mobile-nav-item-root")
+        screen.getByTestId("test-id-header-mobile-nav-item-root")
       ).toBeInTheDocument();
     });
 
@@ -308,7 +308,7 @@ describe("HeaderMobileNavItem", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
       expect(
-        screen.getByTestId("header-mobile-nav-item-root")
+        screen.getByTestId("test-id-header-mobile-nav-item-root")
       ).toBeInTheDocument();
       expect(screen.getByTestId("next-link")).toBeInTheDocument();
     });
@@ -316,7 +316,7 @@ describe("HeaderMobileNavItem", () => {
     it("renders with proper semantic structure", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       const link = screen.getByTestId("next-link");
       expect(item.tagName).toBe("LI");
       expect(link.tagName).toBe("A");
@@ -343,7 +343,7 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(ref).toHaveBeenCalledWith(item);
     });
   });
@@ -394,11 +394,15 @@ describe("HeaderMobileNavItem", () => {
         <HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>
       );
 
-      const initialItem = screen.getByTestId("header-mobile-nav-item-root");
+      const initialItem = screen.getByTestId(
+        "test-id-header-mobile-nav-item-root"
+      );
 
       rerender(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
-      const updatedItem = screen.getByTestId("header-mobile-nav-item-root");
+      const updatedItem = screen.getByTestId(
+        "test-id-header-mobile-nav-item-root"
+      );
       expect(updatedItem).toBe(initialItem);
     });
 
@@ -413,7 +417,7 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toHaveClass("new-class");
     });
   });
@@ -434,13 +438,13 @@ describe("HeaderMobileNavItem", () => {
         </HeaderMobileNavItem>
       );
 
-      const item = screen.getByTestId("header-mobile-nav-item-root");
+      const item = screen.getByTestId("custom-id-header-mobile-nav-item-root");
       const link = screen.getByTestId("next-link");
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-id",
-        "custom-id-header-mobile-nav-item"
+        "data-header-mobile-nav-item-li-id",
+        "custom-id-header-mobile-nav-item-li"
       );
       expect(item).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveAttribute("href", "/about");
