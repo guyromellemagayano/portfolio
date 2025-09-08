@@ -116,14 +116,14 @@ vi.mock("@web/lib", () => ({
 // Mock CSS module
 vi.mock("./ArticleLayout.module.css", () => ({
   default: {
-    articleLayoutContainer: "article-layout-container-class",
-    articleWrapper: "article-wrapper-class",
-    articleContent: "article-content-class",
-    articleTitle: "article-title-class",
-    articleDate: "article-date-class",
-    articleProse: "article-prose-class",
-    dateSeparator: "date-separator-class",
-    dateText: "date-text-class",
+    articleLayoutContainer: "_articleLayoutContainer_fa3e38",
+    articleWrapper: "_articleWrapper_fa3e38",
+    articleContent: "_articleContent_fa3e38",
+    articleTitle: "_articleTitle_fa3e38",
+    articleDate: "_articleDate_fa3e38",
+    articleProse: "_articleProse_fa3e38",
+    dateSeparator: "_dateSeparator_fa3e38",
+    dateText: "_dateText_fa3e38",
   },
 }));
 
@@ -222,7 +222,7 @@ describe("ArticleLayout", () => {
 
       const container = screen.getByTestId("article-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_articleLayoutContainer_8ddd1e");
+      expect(container).toHaveClass("_articleLayoutContainer_fa3e38");
     });
 
     it("includes ArticleNavButton", () => {
@@ -251,7 +251,7 @@ describe("ArticleLayout", () => {
       const title = screen.getByText("Test Article Title");
       expect(title).toBeInTheDocument();
       expect(title.tagName).toBe("H1");
-      expect(title).toHaveClass("_articleTitle_8ddd1e");
+      expect(title).toHaveClass("_articleTitle_fa3e38");
     });
 
     it("renders article with date when provided", () => {
@@ -260,7 +260,7 @@ describe("ArticleLayout", () => {
       const time = screen.getByText("Formatted Date").closest("time");
       expect(time).toBeInTheDocument();
       expect(time).toHaveAttribute("dateTime", "2023-01-01");
-      expect(time).toHaveClass("_articleDate_8ddd1e");
+      expect(time).toHaveClass("_articleDate_fa3e38");
     });
 
     it("renders article with both title and date", () => {
@@ -286,7 +286,7 @@ describe("ArticleLayout", () => {
       expect(childContent).toBeInTheDocument();
       expect(childContent).toHaveTextContent("Child content");
       expect(prose).toBeInTheDocument();
-      expect(prose).toHaveClass("_articleProse_8ddd1e");
+      expect(prose).toHaveClass("_articleProse_fa3e38");
       expect(prose).toHaveAttribute("data-mdx-content");
     });
 
