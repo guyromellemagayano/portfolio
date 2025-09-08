@@ -29,11 +29,13 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
   function BaseLayout(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
+    if (!hasAnyRenderableContent(children)) return null;
+
     const element = (
       <div
         {...rest}
         className={cn(styles.layoutContainer, className)}
-        data-base-layout-id={`${internalId}-base-layout`}
+        data-base-layout-id={`${internalId || "test-id"}-base-layout`}
         data-debug-mode={debugMode ? "true" : undefined}
         data-testid="base-layout-root"
       >
@@ -54,9 +56,7 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
           </div>
         </div>
         <div className={styles.layoutContentWrapper}>
-          <Header role="banner" data-testid="layout-header">
-            <Header />
-          </Header>
+          <Header role="banner" data-testid="layout-header" />
           <main
             id="main-content"
             role="main"
@@ -65,9 +65,7 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
           >
             {children}
           </main>
-          <Footer role="contentinfo" data-testid="layout-footer">
-            <Footer />
-          </Footer>
+          <Footer role="contentinfo" data-testid="layout-footer" />
         </div>
       </div>
     );
@@ -110,9 +108,9 @@ const Layout: BaseLayoutComponent = setDisplayName(function Layout(props) {
     debugMode: isDebugMode,
   };
 
-  const Component = isMemoized ? MemoizedLayout : Layout;
+  const Component = isMemoized ? MemoizedLayout : BaseLayout;
   const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 });
 
-export { Layout };
+export { BaseLayout, Layout };
