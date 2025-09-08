@@ -60,6 +60,11 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
+// Mock the lib
+vi.mock("@web/lib", () => ({
+  isActivePath: vi.fn(() => true), // Return true by default for tests
+}));
+
 // Mock the data
 vi.mock("../../../_data", () => ({
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS: {
@@ -90,11 +95,13 @@ vi.mock("@web/components/icon", () => ({
 vi.mock("../HeaderMobileNavItem", () => ({
   HeaderMobileNavItem: React.forwardRef<HTMLLIElement, any>(
     function MockHeaderMobileNavItem(props, ref) {
-      const { href, children, ...rest } = props;
+      const { href, children, _internalId, _debugMode, ...rest } = props;
       return (
         <li
           ref={ref}
-          data-testid="mobile-header-nav-item-root"
+          data-testid={`${_internalId}-header-mobile-nav-item-root`}
+          data-header-mobile-nav-item-li-id={`${_internalId}-header-mobile-nav-item-li`}
+          data-debug-mode={_debugMode ? "true" : undefined}
           data-href={href}
           {...rest}
         >
@@ -113,7 +120,7 @@ vi.mock("@headlessui/react", () => ({
     function MockPopover(props, ref) {
       const { children, ...rest } = props;
       return (
-        <div ref={ref} data-testid="mobile-header-nav-root" {...rest}>
+        <div ref={ref} {...rest}>
           {children}
         </div>
       );
@@ -193,18 +200,20 @@ describe("HeaderMobileNav", () => {
   describe("Basic Rendering", () => {
     it("renders without crashing", () => {
       render(<HeaderMobileNav />);
-      expect(screen.getByTestId("mobile-header-nav-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-mobile-nav-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderMobileNav />);
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).toBeInTheDocument();
     });
 
     it("renders with custom className", () => {
       render(<HeaderMobileNav className="custom-class" />);
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).toHaveClass("custom-class");
     });
   });
@@ -213,34 +222,34 @@ describe("HeaderMobileNav", () => {
     it("uses provided internalId when available", () => {
       render(<HeaderMobileNav _internalId="custom-id" />);
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-custom-id-mobile-nav-root");
       expect(nav).toHaveAttribute(
         "data-mobile-header-nav-id",
-        "custom-id-mobile-header-nav"
+        "header-custom-id-mobile-nav"
       );
     });
 
     it("uses provided _internalId when available", () => {
       render(<HeaderMobileNav _internalId="test-id" />);
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).toHaveAttribute(
         "data-mobile-header-nav-id",
-        "test-id-mobile-header-nav"
+        "header-test-id-mobile-nav"
       );
     });
 
     it("applies data-debug-mode when debugMode is true", () => {
       render(<HeaderMobileNav _debugMode={true} />);
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<HeaderMobileNav debugMode={false} />);
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -278,7 +287,9 @@ describe("HeaderMobileNav", () => {
     it("renders all navigation links", () => {
       render(<HeaderMobileNav />);
 
-      const navItems = screen.getAllByTestId("header-mobile-nav-item-root");
+      const navItems = screen.getAllByTestId(
+        "test-id-header-mobile-nav-item-root"
+      );
       expect(navItems).toHaveLength(3);
     });
 
@@ -294,7 +305,9 @@ describe("HeaderMobileNav", () => {
     it("renders navigation links with correct labels", () => {
       render(<HeaderMobileNav />);
 
-      const navItems = screen.getAllByTestId("header-mobile-nav-item-root");
+      const navItems = screen.getAllByTestId(
+        "test-id-header-mobile-nav-item-root"
+      );
       expect(navItems[0]).toHaveTextContent("About");
       expect(navItems[1]).toHaveTextContent("Articles");
       expect(navItems[2]).toHaveTextContent("Contact");
@@ -305,7 +318,9 @@ describe("HeaderMobileNav", () => {
     it("renders correct HTML structure", () => {
       render(<HeaderMobileNav />);
 
-      expect(screen.getByTestId("mobile-header-nav-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("header-test-id-mobile-nav-root")
+      ).toBeInTheDocument();
       expect(screen.getAllByTestId("popover-button")).toHaveLength(2);
       expect(screen.getByTestId("popover-backdrop")).toBeInTheDocument();
       expect(screen.getByTestId("popover-panel")).toBeInTheDocument();
@@ -314,7 +329,7 @@ describe("HeaderMobileNav", () => {
     it("renders with proper semantic structure", () => {
       render(<HeaderMobileNav />);
 
-      const popover = screen.getByTestId("mobile-header-nav-root");
+      const popover = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(popover).toBeInTheDocument();
     });
   });
@@ -330,7 +345,7 @@ describe("HeaderMobileNav", () => {
     it("passes through aria attributes", () => {
       render(<HeaderMobileNav aria-label="Mobile navigation" />);
 
-      const popover = screen.getByTestId("mobile-header-nav-root");
+      const popover = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(popover).toHaveAttribute("aria-label", "Mobile navigation");
     });
   });
@@ -346,7 +361,7 @@ describe("HeaderMobileNav", () => {
     it("combines custom className with CSS module classes", () => {
       render(<HeaderMobileNav className="custom-class" />);
 
-      const popover = screen.getByTestId("mobile-header-nav-root");
+      const popover = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(popover).toHaveClass("custom-class");
     });
   });
@@ -355,7 +370,7 @@ describe("HeaderMobileNav", () => {
     it("handles empty navigation links gracefully", () => {
       render(<HeaderMobileNav />);
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-test-id-mobile-nav-root");
       expect(nav).toBeInTheDocument();
     });
 
@@ -369,11 +384,11 @@ describe("HeaderMobileNav", () => {
         />
       );
 
-      const nav = screen.getByTestId("mobile-header-nav-root");
+      const nav = screen.getByTestId("header-custom-id-mobile-nav-root");
       expect(nav).toHaveClass("custom-class");
       expect(nav).toHaveAttribute(
         "data-mobile-header-nav-id",
-        "custom-id-mobile-header-nav"
+        "header-custom-id-mobile-nav"
       );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
       expect(nav).toHaveAttribute("aria-label", "Test navigation");

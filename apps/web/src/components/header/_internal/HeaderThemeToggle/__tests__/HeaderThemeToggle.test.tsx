@@ -70,19 +70,19 @@ describe("HeaderThemeToggle", () => {
     it("renders without crashing", () => {
       render(<HeaderThemeToggle />);
       expect(
-        screen.getByTestId("header-theme-toggle-root")
+        screen.getByTestId("test-id-header-theme-toggle-root")
       ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderThemeToggle />);
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toBeInTheDocument();
     });
 
     it("renders with custom className", () => {
       render(<HeaderThemeToggle className="custom-class" />);
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveClass("custom-class");
     });
   });
@@ -91,7 +91,7 @@ describe("HeaderThemeToggle", () => {
     it("uses provided internalId when available", () => {
       render(<HeaderThemeToggle _internalId="custom-id" />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("custom-id-header-theme-toggle-root");
       expect(button).toHaveAttribute(
         "data-header-theme-toggle-id",
         "custom-id-header-theme-toggle"
@@ -101,7 +101,7 @@ describe("HeaderThemeToggle", () => {
     it("uses provided _internalId when available", () => {
       render(<HeaderThemeToggle _internalId="test-id" />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveAttribute(
         "data-header-theme-toggle-id",
         "test-id-header-theme-toggle"
@@ -111,21 +111,21 @@ describe("HeaderThemeToggle", () => {
     it("applies data-debug-mode when debugMode is true", () => {
       render(<HeaderThemeToggle _debugMode={true} />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<HeaderThemeToggle debugMode={false} />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<HeaderThemeToggle />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -159,7 +159,7 @@ describe("HeaderThemeToggle", () => {
       render(<HeaderThemeToggle />);
 
       expect(
-        screen.getByTestId("header-theme-toggle-root")
+        screen.getByTestId("test-id-header-theme-toggle-root")
       ).toBeInTheDocument();
       expect(screen.getByTestId("sun-icon")).toBeInTheDocument();
       expect(screen.getByTestId("moon-icon")).toBeInTheDocument();
@@ -168,7 +168,7 @@ describe("HeaderThemeToggle", () => {
     it("renders with proper semantic structure", () => {
       render(<HeaderThemeToggle />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button.tagName).toBe("BUTTON");
     });
   });
@@ -185,7 +185,7 @@ describe("HeaderThemeToggle", () => {
       const ref = vi.fn();
       render(<HeaderThemeToggle ref={ref} />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(ref).toHaveBeenCalledWith(button);
     });
   });
@@ -194,14 +194,14 @@ describe("HeaderThemeToggle", () => {
     it("renders with proper accessibility attributes", () => {
       render(<HeaderThemeToggle />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveAttribute("aria-label");
     });
 
     it("passes through aria attributes", () => {
       render(<HeaderThemeToggle aria-describedby="description" />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveAttribute("aria-describedby", "description");
     });
   });
@@ -210,14 +210,14 @@ describe("HeaderThemeToggle", () => {
     it("applies CSS module classes correctly", () => {
       render(<HeaderThemeToggle />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveClass("header-theme-toggle-button");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderThemeToggle className="custom-class" />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveClass("header-theme-toggle-button", "custom-class");
     });
   });
@@ -226,11 +226,15 @@ describe("HeaderThemeToggle", () => {
     it("renders without unnecessary re-renders", () => {
       const { rerender } = render(<HeaderThemeToggle />);
 
-      const initialButton = screen.getByTestId("header-theme-toggle-root");
+      const initialButton = screen.getByTestId(
+        "test-id-header-theme-toggle-root"
+      );
 
       rerender(<HeaderThemeToggle />);
 
-      const updatedButton = screen.getByTestId("header-theme-toggle-root");
+      const updatedButton = screen.getByTestId(
+        "test-id-header-theme-toggle-root"
+      );
       expect(updatedButton).toBe(initialButton);
     });
 
@@ -239,7 +243,7 @@ describe("HeaderThemeToggle", () => {
 
       rerender(<HeaderThemeToggle className="new-class" />);
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toHaveClass("new-class");
     });
   });
@@ -255,7 +259,7 @@ describe("HeaderThemeToggle", () => {
         />
       );
 
-      const button = screen.getByTestId("header-theme-toggle-root");
+      const button = screen.getByTestId("test-id-header-theme-toggle-root");
       expect(button).toBeInTheDocument();
       expect(button).toHaveClass("custom-class");
       expect(button).toHaveAttribute(
