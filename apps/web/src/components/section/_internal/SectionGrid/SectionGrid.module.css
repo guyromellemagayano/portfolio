@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+/* Section grid layout */
+.sectionGrid {
+  @apply grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4;
+}
