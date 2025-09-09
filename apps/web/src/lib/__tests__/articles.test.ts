@@ -7,7 +7,7 @@ import {
   getAllArticles,
   getArticleBySlug,
   getArticlesByTag,
-} from "@web/lib/articles";
+} from "../articles";
 
 describe("Articles Module", () => {
   const mockArticle: Article = {
