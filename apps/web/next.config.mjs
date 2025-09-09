@@ -6,6 +6,8 @@ const nextConfig = {
     "@guyromellemagayano/components",
     "@guyromellemagayano/logger",
     "@guyromellemagayano/ui",
+    "@guyromellemagayano/hooks",
+    "@guyromellemagayano/utils",
   ],
   logging: {
     fetches: {
