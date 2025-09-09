@@ -64,7 +64,6 @@ catalog:
   feed: 5.1.0
   globals: ^16.1.0
   husky: ^9.1.7
-  inquirer: ^12.9.0
   jsdom: ^26.1.0
   lint-staged: ^16.1.2
   morgan: ^1.10.0
