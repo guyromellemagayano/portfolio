@@ -36,12 +36,12 @@ const sampleArticles: ArticleWithSlug[] = [
 let __articlesStore: ArticleWithSlug[] = sampleArticles;
 
 /** Test-only hook to replace articles data at runtime. */
-export const __setArticlesForTests = (articles: ArticleWithSlug[]): void => {
+const __setArticlesForTests = (articles: ArticleWithSlug[]): void => {
   __articlesStore = articles;
 };
 
 /** Get all articles sorted by date */
-export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
+async function getAllArticles(): Promise<ArticleWithSlug[]> {
   try {
     // For now, return current articles store
     // In a real app, this would fetch from a CMS or database
@@ -52,12 +52,10 @@ export const getAllArticles = async (): Promise<ArticleWithSlug[]> => {
     logError("Failed to get articles:", error);
     return [];
   }
-};
+}
 
 /** Get a single article by slug */
-export const getArticleBySlug = async (
-  slug: string
-): Promise<ArticleWithSlug | null> => {
+async function getArticleBySlug(slug: string): Promise<ArticleWithSlug | null> {
   try {
     const articles = await getAllArticles();
     return articles.find((article) => article.slug === slug) || null;
@@ -65,12 +63,10 @@ export const getArticleBySlug = async (
     logError(`Failed to get article by slug: ${slug}`, error);
     return null;
   }
-};
+}
 
 /** Get articles by tag */
-export const getArticlesByTag = async (
-  tag: string
-): Promise<ArticleWithSlug[]> => {
+async function getArticlesByTag(tag: string): Promise<ArticleWithSlug[]> {
   try {
     const articles = await getAllArticles();
     return articles.filter((article) => article.tags.includes(tag));
@@ -78,4 +74,11 @@ export const getArticlesByTag = async (
     logError(`Failed to get articles by tag: ${tag}`, error);
     return [];
   }
+}
+
+export {
+  __setArticlesForTests,
+  getAllArticles,
+  getArticleBySlug,
+  getArticlesByTag,
 };
