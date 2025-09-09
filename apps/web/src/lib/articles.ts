@@ -36,12 +36,12 @@ const sampleArticles: ArticleWithSlug[] = [
 let __articlesStore: ArticleWithSlug[] = sampleArticles;
 
 /** Test-only hook to replace articles data at runtime. */
-const __setArticlesForTests = (articles: ArticleWithSlug[]): void => {
+export function __setArticlesForTests(articles: ArticleWithSlug[]): void {
   __articlesStore = articles;
-};
+}
 
 /** Get all articles sorted by date */
-async function getAllArticles(): Promise<ArticleWithSlug[]> {
+export async function getAllArticles(): Promise<ArticleWithSlug[]> {
   try {
     // For now, return current articles store
     // In a real app, this would fetch from a CMS or database
@@ -55,7 +55,9 @@ async function getAllArticles(): Promise<ArticleWithSlug[]> {
 }
 
 /** Get a single article by slug */
-async function getArticleBySlug(slug: string): Promise<ArticleWithSlug | null> {
+export async function getArticleBySlug(
+  slug: string
+): Promise<ArticleWithSlug | null> {
   try {
     const articles = await getAllArticles();
     return articles.find((article) => article.slug === slug) || null;
@@ -66,7 +68,9 @@ async function getArticleBySlug(slug: string): Promise<ArticleWithSlug | null> {
 }
 
 /** Get articles by tag */
-async function getArticlesByTag(tag: string): Promise<ArticleWithSlug[]> {
+export async function getArticlesByTag(
+  tag: string
+): Promise<ArticleWithSlug[]> {
   try {
     const articles = await getAllArticles();
     return articles.filter((article) => article.tags.includes(tag));
@@ -75,10 +79,3 @@ async function getArticlesByTag(tag: string): Promise<ArticleWithSlug[]> {
     return [];
   }
 }
-
-export {
-  __setArticlesForTests,
-  getAllArticles,
-  getArticleBySlug,
-  getArticlesByTag,
-};
