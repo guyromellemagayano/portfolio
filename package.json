@@ -55,34 +55,33 @@
     "turbo": "catalog:"
   },
   "devDependencies": {
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*"
+  },
+  "peerDependencies": {
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@commitlint/cz-commitlint": "catalog:",
     "@commitlint/types": "catalog:",
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
     "@tailwindcss/typography": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "czg": "catalog:",
+    "eslint": "catalog:",
     "husky": "catalog:",
-    "inquirer": "^9.3.7",
     "lint-staged": "catalog:",
+    "prettier": "catalog:",
     "prettier-plugin-packagejson": "catalog:",
     "prettier-plugin-pkg": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
     "sort-package-json": "catalog:",
-    "tailwindcss": "4.1.11",
-    "tsdown": "0.14.1",
+    "tailwindcss": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
     "validate-branch-name": "catalog:"
   },
-  "peerDependencies": {
-    "eslint": "catalog:",
-    "prettier": "catalog:",
-    "typescript": "catalog:"
-  },
-  "packageManager": "pnpm@10.14.0",
+  "packageManager": "pnpm@10.15.1",
   "engines": {
     "node": ">=20",
     "pnpm": ">=10"
