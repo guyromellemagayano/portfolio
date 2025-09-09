@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate } from "@web/lib/formatDate";
+import { formatDate } from "../date";
 
 describe("formatDate", () => {
   describe("Basic Date Formatting", () => {
