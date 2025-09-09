@@ -1,69 +1,100 @@
 import React from "react";
 
-import {
-  Div,
-  Heading,
-  Section as GRMSectionComponent,
-  type SectionProps as SectionComponentProps,
-  type SectionRef as SectionComponentRef,
-} from "@guyromellemagayano/components";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
+import { hasMeaningfulText, setDisplayName } from "@guyromellemagayano/utils";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
 import { cn } from "@web/lib";
 
+import { SectionContent, SectionGrid, SectionTitle } from "./_internal";
 import styles from "./Section.module.css";
 
-type SectionRef = SectionComponentRef;
-interface SectionProps
-  extends SectionComponentProps,
-    CommonWebAppComponentProps {}
+// ============================================================================
+// BASE SECTION COMPONENT
+// ============================================================================
 
-type SectionComponent = React.ForwardRefExoticComponent<
-  SectionProps & React.RefAttributes<SectionRef>
->;
+export interface SectionProps
+  extends React.ComponentProps<"section">,
+    CommonComponentProps {
+  /** Section title */
+  title: string;
+}
+export type SectionComponent = React.FC<SectionProps>;
 
 /** A layout section component with optional title and content, styled for web app usage. */
-export const Section: SectionComponent = React.forwardRef(
-  function Section(props, ref) {
-    const { title, children, className, _internalId, _debugMode, ...rest } =
+const BaseSection: SectionComponent = setDisplayName(
+  function BaseSection(props) {
+    const { title, children, className, internalId, debugMode, ...rest } =
       props;
 
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    // If there is no title or children, return null
-    if (!title && !children) return null;
-
-    // Render the section with the provided title and children
     const element = (
-      <GRMSectionComponent
+      <section
         {...rest}
-        ref={ref}
-        aria-labelledby={id}
         className={cn(styles.section, className)}
-        data-section-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="section-root"
+        aria-labelledby={
+          title && hasMeaningfulText(title) ? internalId : undefined
+        }
+        data-section-id={`${internalId}-section`}
+        data-debug-mode={debugMode ? "true" : undefined}
+        data-testid={`${internalId}-section-root`}
       >
-        <Div className={styles.sectionGrid}>
-          {title && (
-            <Heading as="h2" id={id} className={styles.sectionTitle}>
-              {title}
-            </Heading>
+        <SectionGrid _internalId={internalId} _debugMode={debugMode}>
+          <SectionTitle _internalId={internalId} _debugMode={debugMode}>
+            {title}
+          </SectionTitle>
+          {children && (
+            <SectionContent _internalId={internalId} _debugMode={debugMode}>
+              {children}
+            </SectionContent>
           )}
-
-          {children && <Div className={styles.sectionContent}>{children}</Div>}
-        </Div>
-      </GRMSectionComponent>
+        </SectionGrid>
+      </section>
     );
 
     return element;
   }
 );
 
-Section.displayName = "Section";
+// ============================================================================
+// MEMOIZED SECTION COMPONENT
+// ============================================================================
+
+/** A memoized section component. */
+const MemoizedSection = React.memo(BaseSection);
+
+// ============================================================================
+// MAIN SECTION COMPONENT
+// ============================================================================
+
+/** A layout section component with optional title and content, styled for web app usage. */
+const Section: SectionComponent = setDisplayName(function Section(props) {
+  const {
+    children,
+    isMemoized = false,
+    title,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { id, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  if (title && !hasMeaningfulText(title)) return null;
+
+  const updatedProps = {
+    ...rest,
+    children,
+    title,
+    internalId: id,
+    debugMode: isDebugMode,
+  };
+
+  const Component = isMemoized ? MemoizedSection : BaseSection;
+  const element = <Component {...updatedProps}>{children}</Component>;
+  return element;
+});
+
+export { Section };
