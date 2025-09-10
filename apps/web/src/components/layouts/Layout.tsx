@@ -5,12 +5,13 @@ import Link from "next/link";
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  hasAnyRenderableContent,
+  createComponentProps,
+  hasValidContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Footer, Header } from "@web/components";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
 import styles from "./Layout.module.css";
@@ -29,15 +30,13 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
   function BaseLayout(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
-    if (!hasAnyRenderableContent(children)) return null;
+    if (!hasValidContent(children)) return null;
 
     const element = (
       <div
         {...rest}
         className={cn(styles.layoutContainer, className)}
-        data-base-layout-id={`${internalId || "test-id"}-base-layout`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="base-layout-root"
+        {...createComponentProps(internalId, "layout", debugMode)}
       >
         <Link
           href="#main-content"
@@ -100,7 +99,7 @@ const Layout: BaseLayoutComponent = setDisplayName(function Layout(props) {
     debugMode,
   });
 
-  if (!hasAnyRenderableContent(children)) return null;
+  if (!hasValidContent(children)) return null;
 
   const updatedProps = {
     ...rest,
