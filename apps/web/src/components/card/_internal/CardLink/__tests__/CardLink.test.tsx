@@ -30,37 +30,26 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return true;
   }),
   isValidLink: vi.fn((href) => {
-    if (!href) return false;
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    if (hrefString === "#" || hrefString === "") return false;
-    return true;
+    return href && href !== "" && href !== "#";
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
   getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
     }
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
-    const shouldOpenNewTab =
-      target === "_blank" || (isExternal && target !== "_self");
-    return {
-      target: shouldOpenNewTab ? "_blank" : "_self",
-      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
-    };
-  }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date().getFullYear().toString();
-    }
-    return date.toISOString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    component.displayName = displayName;
-    return component;
+    return { target };
   }),
 }));
 
@@ -68,19 +57,68 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+// Mock Next.js Link
+vi.mock("next/link", () => ({
+  default: React.forwardRef<HTMLAnchorElement, any>(
+    function MockLink(props, ref) {
+      const { children, href, target, rel, title, ...rest } = props;
+      return (
+        <a
+          ref={ref}
+          href={href}
+          target={target}
+          rel={rel}
+          title={title}
+          {...rest}
+        >
+          {children}
+        </a>
+      );
+    }
+  ),
+}));
+
 // Mock CardLinkCustom component
 vi.mock("../CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
-      const { href, target, title, children, className, ...rest } = props;
+      const {
+        children,
+        href,
+        target,
+        title,
+        _internalId,
+        _debugMode,
+        ...rest
+      } = props;
+
+      // Mock the validation logic from the real component
+      const isValidLink = (href: any) => href && href !== "" && href !== "#";
+      const isRenderableContent = (children: any) => {
+        if (
+          children === null ||
+          children === undefined ||
+          children === "" ||
+          children === true ||
+          children === false ||
+          children === 0
+        ) {
+          return false;
+        }
+        return true;
+      };
+
+      if (!isValidLink(href) || !isRenderableContent(children)) return null;
+
       return (
         <a
           ref={ref}
           href={href}
           target={target}
           title={title}
-          className={className}
-          data-testid="card-link-custom-root"
+          data-card-link-custom-id={`${_internalId || "test-id"}-card-link-custom`}
+          data-debug-mode={_debugMode ? "true" : undefined}
+          data-testid={`${_internalId || "test-id"}-card-link-custom-root`}
           {...rest}
         >
           {children}
@@ -99,115 +137,102 @@ vi.mock("../CardLink.module.css", () => ({
   },
 }));
 
-// Mock Next.js Link component to avoid intersection observer issues
-vi.mock("next/link", () => ({
-  default: React.forwardRef<HTMLAnchorElement, any>(
-    function MockNextLink(props, ref) {
-      const { href, target, title, children, ...rest } = props;
-      return (
-        <a ref={ref} href={href} target={target} title={title} {...rest}>
-          {children}
-        </a>
-      );
-    }
-  ),
-}));
-
+// Import the component after mocking
 import { CardLink } from "../CardLink";
 
-describe("CardLink", () => {
-  afterEach(() => {
-    cleanup();
-  });
+afterEach(cleanup);
 
+describe("CardLink", () => {
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
       render(<CardLink>Link content</CardLink>);
-
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
-    it("renders as div element", () => {
+    it("renders background div element", () => {
       render(<CardLink>Link content</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container.tagName).toBe("DIV");
     });
 
-    it("applies custom className", () => {
+    it("applies custom className to background div", () => {
       render(<CardLink className="custom-class">Link content</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("custom-class");
     });
 
-    it("passes through HTML attributes", () => {
+    it("passes through HTML attributes to background div", () => {
       render(
         <CardLink id="test-id" data-test="test-data">
           Link content
         </CardLink>
       );
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute("id", "test-id");
       expect(container).toHaveAttribute("data-test", "test-data");
     });
   });
 
   describe("Link Functionality", () => {
-    it("renders children directly when href is provided and valid", () => {
+    it("renders CardLinkCustom when href is provided and valid", () => {
       render(<CardLink href="/test-link">Link content</CardLink>);
 
+      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      expect(customLink).toBeInTheDocument();
+      expect(customLink).toHaveAttribute("href", "/test-link");
+      expect(screen.getByText("Link content")).toBeInTheDocument();
+    });
+
+    it("renders children directly when href is invalid", () => {
+      render(<CardLink href="">Link content</CardLink>);
+
       expect(
-        screen.queryByTestId("card-link-custom-root")
+        screen.queryByTestId("test-id-card-link-custom-root")
       ).not.toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
-    it("renders CardLinkCustom when href is invalid", () => {
-      render(<CardLink href="">Link content</CardLink>);
-
-      const customLink = screen.getByTestId("card-link-custom-root");
-      expect(customLink).toBeInTheDocument();
-      expect(customLink).toHaveAttribute("href", "");
-    });
-
-    it("renders CardLinkCustom when href is not provided", () => {
+    it("renders children directly when href is not provided", () => {
       render(<CardLink>Link content</CardLink>);
 
-      const customLink = screen.getByTestId("card-link-custom-root");
-      expect(customLink).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
-    it("renders CardLinkCustom with correct props when href is invalid", () => {
+    it("renders CardLinkCustom with correct props when href is valid", () => {
       render(
-        <CardLink href="#" target="_blank" title="Test title">
+        <CardLink href="/valid-link" target="_blank" title="Test title">
           Link content
         </CardLink>
       );
 
-      const customLink = screen.getByTestId("card-link-custom-root");
-      expect(customLink).toHaveAttribute("href", "#");
+      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      expect(customLink).toHaveAttribute("href", "/valid-link");
       expect(customLink).toHaveAttribute("target", "_blank");
       expect(customLink).toHaveAttribute("title", "Test title");
     });
   });
 
   describe("Styling Structure", () => {
-    it("renders background element", () => {
+    it("renders background element with correct CSS class", () => {
       render(<CardLink>Link content</CardLink>);
 
-      const background = screen.getByTestId("card-link-root");
+      const background = screen.getByTestId("test-id-card-link-root");
       expect(background).toBeInTheDocument();
       expect(background).toHaveClass("cardLinkBackground");
     });
 
-    it("renders clickable area and content when link is invalid", () => {
-      render(<CardLink href="">Link content</CardLink>);
+    it("renders CardLinkCustom with clickable area and content when href is valid", () => {
+      render(<CardLink href="/test">Link content</CardLink>);
 
-      const customLink = screen.getByTestId("card-link-custom-root");
+      const customLink = screen.getByTestId("test-id-card-link-custom-root");
       expect(customLink).toBeInTheDocument();
-      expect(customLink).toHaveTextContent("Link content");
+      expect(screen.getByText("Link content")).toBeInTheDocument();
     });
   });
 
@@ -232,14 +257,14 @@ describe("CardLink", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<CardLink _debugMode={true}>Link text</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<CardLink>Link text</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -248,14 +273,14 @@ describe("CardLink", () => {
     it("applies correct CSS classes", () => {
       render(<CardLink>Link content</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("cardLinkBackground");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardLink className="custom-class">Link content</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("cardLinkBackground", "custom-class");
     });
   });
@@ -264,7 +289,7 @@ describe("CardLink", () => {
     it("renders with custom internal ID", () => {
       render(<CardLink _internalId="custom-id">Link text</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("custom-id-card-link-root");
       expect(container).toHaveAttribute(
         "data-card-link-id",
         "custom-id-card-link"
@@ -274,11 +299,33 @@ describe("CardLink", () => {
     it("uses provided internalId when available", () => {
       render(<CardLink _internalId="test-id">Link text</CardLink>);
 
-      const container = screen.getByTestId("card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute(
         "data-card-link-id",
         "test-id-card-link"
       );
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(
+        <CardLink isMemoized={true}>
+          <div>Memoized link</div>
+        </CardLink>
+      );
+
+      expect(screen.getByText("Memoized link")).toBeInTheDocument();
+    });
+
+    it("renders without memoization by default", () => {
+      render(
+        <CardLink>
+          <div>Default link</div>
+        </CardLink>
+      );
+
+      expect(screen.getByText("Default link")).toBeInTheDocument();
     });
   });
 
@@ -288,13 +335,17 @@ describe("CardLink", () => {
       render(<CardLink ref={ref}>Link content</CardLink>);
 
       expect(ref.current).toBeInTheDocument();
-      expect(ref.current).toHaveAttribute("data-testid", "card-link-root");
+      expect(ref.current).toHaveAttribute(
+        "data-testid",
+        "test-id-card-link-root"
+      );
     });
 
     it("ref points to correct element", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(<CardLink ref={ref}>Link content</CardLink>);
 
+      expect(ref.current).toBeInTheDocument();
       expect(ref.current?.tagName).toBe("DIV");
     });
   });
@@ -303,7 +354,7 @@ describe("CardLink", () => {
     it("handles complex children content", () => {
       render(
         <CardLink>
-          <span>Complex</span> <strong>content</strong>
+          <span>Complex</span> content
         </CardLink>
       );
 
@@ -312,12 +363,10 @@ describe("CardLink", () => {
     });
 
     it("handles special characters", () => {
-      render(<CardLink>Special chars: &lt;&gt;&amp;</CardLink>);
-
-      const elements = screen.getAllByText((content, element) => {
-        return element?.textContent?.includes("Special chars:") || false;
-      });
-      expect(elements[0]).toBeInTheDocument();
+      render(<CardLink>Link with special chars: @#$%</CardLink>);
+      expect(
+        screen.getByText("Link with special chars: @#$%")
+      ).toBeInTheDocument();
     });
 
     it("handles boolean children", () => {

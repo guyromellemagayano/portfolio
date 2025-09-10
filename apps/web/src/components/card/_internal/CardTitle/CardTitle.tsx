@@ -5,6 +5,7 @@ import Link from "next/link";
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
@@ -16,17 +17,21 @@ import { CardLinkCustom } from "../CardLink/CardLinkCustom";
 import styles from "./CardTitle.module.css";
 
 // ============================================================================
-// BASE CARD TITLE COMPONENT
+// CARD TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardTitleProps
+export interface CardTitleProps
   extends React.ComponentPropsWithRef<"h2">,
     Pick<
       React.ComponentPropsWithoutRef<typeof Link>,
       "href" | "target" | "title"
     >,
     CommonComponentProps {}
-type CardTitleComponent = React.FC<CardTitleProps>;
+export type CardTitleComponent = React.FC<CardTitleProps>;
+
+// ============================================================================
+// BASE CARD TITLE COMPONENT
+// ============================================================================
 
 /** Public card title component with `useComponentId` integration */
 const BaseCardTitle: CardTitleComponent = setDisplayName(
@@ -34,9 +39,9 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
     const {
       children,
       className,
-      href = "#",
-      target = "_self",
-      title = "",
+      href,
+      target,
+      title,
       _internalId,
       _debugMode,
       ...rest
@@ -46,15 +51,13 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
       <h2
         {...rest}
         className={cn(styles.cardTitleHeading, className)}
-        data-card-title-id={`${_internalId}-card-title`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="card-title-root"
+        {...createComponentProps(_internalId, "card-title", _debugMode)}
       >
         {isValidLink(href) ? (
           <CardLinkCustom
             href={href}
-            target={target as React.HTMLAttributeAnchorTarget | undefined}
-            title={title as string | undefined}
+            target={target}
+            title={title}
             _internalId={_internalId}
             _debugMode={_debugMode}
           >

@@ -8,7 +8,7 @@ import { CardDescription } from "../CardDescription";
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "generated-id",
+    id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -35,6 +35,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -68,7 +77,9 @@ describe("CardDescription", () => {
         </CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).toHaveClass("custom-class");
     });
 
@@ -79,7 +90,9 @@ describe("CardDescription", () => {
         </CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).toHaveAttribute("aria-label", "Description");
     });
   });
@@ -142,7 +155,9 @@ describe("CardDescription", () => {
 
       render(<CardDescription>Card description</CardDescription>);
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "generated-id-card-description-root"
+      );
       expect(descriptionElement).toHaveAttribute(
         "data-card-description-id",
         "generated-id-card-description"
@@ -161,7 +176,9 @@ describe("CardDescription", () => {
         <CardDescription _debugMode={true}>Card description</CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -173,7 +190,9 @@ describe("CardDescription", () => {
 
       render(<CardDescription>Card description</CardDescription>);
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -206,14 +225,18 @@ describe("CardDescription", () => {
     it("renders as p element", () => {
       render(<CardDescription>Card description</CardDescription>);
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement.tagName).toBe("P");
     });
 
     it("applies correct CSS classes", () => {
       render(<CardDescription>Card description</CardDescription>);
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).toHaveClass("cardDescription");
     });
 
@@ -224,7 +247,9 @@ describe("CardDescription", () => {
         </CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
       expect(descriptionElement).toHaveClass("cardDescription", "custom-class");
     });
   });
@@ -238,7 +263,9 @@ describe("CardDescription", () => {
 
       render(<CardDescription>Card description</CardDescription>);
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "generated-id-card-description-root"
+      );
       expect(descriptionElement).toHaveAttribute(
         "data-card-description-id",
         "generated-id-card-description"
@@ -257,7 +284,9 @@ describe("CardDescription", () => {
         </CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "custom-id-card-description-root"
+      );
       expect(descriptionElement).toHaveAttribute(
         "data-card-description-id",
         "custom-id-card-description"
@@ -320,7 +349,9 @@ describe("CardDescription", () => {
         </CardDescription>
       );
 
-      const descriptionElement = screen.getByTestId("card-description-root");
+      const descriptionElement = screen.getByTestId(
+        "multi-prop-id-card-description-root"
+      );
       expect(descriptionElement).toHaveClass("multi-class");
       expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
       expect(descriptionElement).toHaveAttribute(
