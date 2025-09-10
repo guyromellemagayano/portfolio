@@ -2,20 +2,28 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  isRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
 import styles from "./CardDescription.module.css";
 
 // ============================================================================
-// BASE CARD DESCRIPTION COMPONENT
+// CARD DESCRIPTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardDescriptionProps
+export interface CardDescriptionProps
   extends React.ComponentPropsWithRef<"p">,
     CommonComponentProps {}
-type CardDescriptionComponent = React.FC<CardDescriptionProps>;
+export type CardDescriptionComponent = React.FC<CardDescriptionProps>;
+
+// ============================================================================
+// BASE CARD DESCRIPTION COMPONENT
+// ============================================================================
 
 /** A card description component that can optionally be wrapped in a link for navigation */
 const BaseCardDescription: CardDescriptionComponent = setDisplayName(
@@ -26,9 +34,7 @@ const BaseCardDescription: CardDescriptionComponent = setDisplayName(
       <p
         {...rest}
         className={cn(styles.cardDescription, className)}
-        data-card-description-id={`${_internalId}-card-description`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="card-description-root"
+        {...createComponentProps(_internalId, "card-description", _debugMode)}
       >
         {children}
       </p>
@@ -50,7 +56,7 @@ const MemoizedCardDescription = React.memo(BaseCardDescription);
 // ============================================================================
 
 /** A card description component that can optionally be wrapped in a link for navigation */
-const CardDescription: CardDescriptionComponent = setDisplayName(
+export const CardDescription: CardDescriptionComponent = setDisplayName(
   function CardDescription(props) {
     const {
       children,
@@ -80,5 +86,3 @@ const CardDescription: CardDescriptionComponent = setDisplayName(
     return element;
   }
 );
-
-export { CardDescription };

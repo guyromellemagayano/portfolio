@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import {
+  createComponentProps,
   getLinkTargetProps,
   isRenderableContent,
   isValidLink,
@@ -11,10 +12,10 @@ import {
 } from "@guyromellemagayano/utils";
 
 // ============================================================================
-// BASE CARD LINK CUSTOM COMPONENT
+// CARD LINK CUSTOM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardLinkCustomProps
+export interface CardLinkCustomProps
   extends React.ComponentPropsWithRef<typeof Link>,
     Pick<
       CommonComponentProps,
@@ -25,7 +26,11 @@ interface CardLinkCustomProps
       | "debugMode"
       | "_debugMode"
     > {}
-type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
+export type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
+
+// ============================================================================
+// BASE CARD LINK CUSTOM COMPONENT
+// ============================================================================
 
 /** A custom Link component for Card components */
 const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
@@ -42,9 +47,7 @@ const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         title={title}
-        data-card-link-id={`${_internalId}-card-link-custom`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="card-link-custom-root"
+        {...createComponentProps(_internalId, "card-link-custom", _debugMode)}
       >
         {children}
       </Link>
@@ -66,7 +69,7 @@ const MemoizedCardLinkCustom = React.memo(BaseCardLinkCustom);
 // ============================================================================
 
 /** A custom card link component that supports memoization and internal debug props. */
-const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
+export const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
   function CardLinkCustom(props) {
     const {
       children,
@@ -91,5 +94,3 @@ const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
     return element;
   }
 );
-
-export { CardLinkCustom };

@@ -70,6 +70,31 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+// Mock component utilities
+vi.mock("@web/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, debugMode, componentType = "component", additionalProps = {}) => {
+      const dataAttributes = {
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid": `${id}-${componentType}-root`,
+      };
+
+      // Handle custom data-testid from additionalProps
+      const customTestId = additionalProps["data-testid"];
+
+      return {
+        ...dataAttributes,
+        ...additionalProps,
+        "data-testid":
+          typeof customTestId === "string"
+            ? customTestId
+            : dataAttributes["data-testid"],
+      };
+    }
+  ),
+}));
+
 // Mock CardLinkCustom
 vi.mock("../CardLink/CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
@@ -138,7 +163,7 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveClass("custom-class");
     });
 
@@ -202,14 +227,14 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<CardTitle href="#">Card title</CardTitle>);
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -218,14 +243,14 @@ describe("CardTitle", () => {
     it("renders as h2 element", () => {
       render(<CardTitle href="#">Card title</CardTitle>);
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement.tagName).toBe("H2");
     });
 
     it("applies correct CSS classes", () => {
       render(<CardTitle href="#">Card title</CardTitle>);
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveClass("cardTitleHeading");
     });
 
@@ -236,7 +261,7 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveClass("cardTitleHeading", "custom-class");
     });
   });
@@ -249,7 +274,7 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("custom-id-card-title-root");
       expect(titleElement).toHaveAttribute(
         "data-card-title-id",
         "custom-id-card-title"
@@ -263,7 +288,7 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("card-title-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveAttribute(
         "data-card-title-id",
         "test-id-card-title"
