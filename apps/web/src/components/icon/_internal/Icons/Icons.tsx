@@ -1,16 +1,19 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../../_data";
+import { type CommonIconComponent, type CommonIconProps } from "../../_data";
 
 // ============================================================================
 // NAVIGATION ICON COMPONENTS
 // ============================================================================
 
 /** Chevron down icon. */
-const ChevronDownIcon: CommonIconComponent = setDisplayName(
+export const ChevronDownIcon: CommonIconComponent = setDisplayName(
   React.memo(function ChevronDownIcon(props) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -22,13 +25,17 @@ const ChevronDownIcon: CommonIconComponent = setDisplayName(
     const element = (
       <svg
         {...rest}
-        viewBox="0 0 24 24"
+        viewBox="0 0 8 6"
         aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-chevron-down"
+        {...createComponentProps(id, "icon-chevron-down", isDebugMode)}
       >
-        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+        <path
+          d="M1.75 1.75 4 4.25l2.25-2.5"
+          fill="none"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     );
 
@@ -37,7 +44,7 @@ const ChevronDownIcon: CommonIconComponent = setDisplayName(
 );
 
 /** Chevron right icon. */
-const ChevronRightIcon: CommonIconComponent = setDisplayName(
+export const ChevronRightIcon: CommonIconComponent = setDisplayName(
   React.memo(function ChevronRightIcon(props) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -49,165 +56,26 @@ const ChevronRightIcon: CommonIconComponent = setDisplayName(
     const element = (
       <svg
         {...rest}
-        viewBox="0 0 24 24"
+        viewBox="0 0 16 16"
+        fill="none"
         aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-chevron-right"
+        {...createComponentProps(id, "icon-chevron-right", isDebugMode)}
       >
-        <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+        <path
+          d="M6.75 5.75 9.25 8l-2.5 2.25"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     );
 
     return element;
   })
 );
-
-/** Arrow left icon. */
-const ArrowLeftIcon: CommonIconComponent = setDisplayName(
-  React.memo(function ArrowLeftIcon(props) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <svg
-        {...rest}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-arrow-left"
-      >
-        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-      </svg>
-    );
-
-    return element;
-  })
-);
-
-// ============================================================================
-// SOCIAL ICON COMPONENTS
-// ============================================================================
-
-/** X (Twitter) icon. */
-const XIcon: CommonIconComponent = setDisplayName(
-  React.memo(function XIcon(props) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <svg
-        {...rest}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-x-twitter"
-      >
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-    );
-
-    return element;
-  })
-);
-
-/** Instagram icon. */
-const InstagramIcon: CommonIconComponent = setDisplayName(
-  React.memo(function InstagramIcon(props) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <svg
-        {...rest}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-instagram"
-      >
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-      </svg>
-    );
-
-    return element;
-  })
-);
-
-/** LinkedIn icon. */
-const LinkedInIcon: CommonIconComponent = setDisplayName(
-  React.memo(function LinkedInIcon(props) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <svg
-        {...rest}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-linkedin"
-      >
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-      </svg>
-    );
-
-    return element;
-  })
-);
-
-/** GitHub icon. */
-const GitHubIcon: CommonIconComponent = setDisplayName(
-  React.memo(function GitHubIcon(props) {
-    const { _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    const element = (
-      <svg
-        {...rest}
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-github"
-      >
-        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.59 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-      </svg>
-    );
-
-    return element;
-  })
-);
-
-// ============================================================================
-// UI ICON COMPONENTS
-// ============================================================================
 
 /** Close icon. */
-const CloseIcon: CommonIconComponent = setDisplayName(
+export const CloseIcon: CommonIconComponent = setDisplayName(
   React.memo(function CloseIcon(props) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -221,11 +89,16 @@ const CloseIcon: CommonIconComponent = setDisplayName(
         {...rest}
         viewBox="0 0 24 24"
         aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-close"
+        {...createComponentProps(id, "icon-close", isDebugMode)}
       >
-        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+        <path
+          d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     );
 
@@ -233,8 +106,183 @@ const CloseIcon: CommonIconComponent = setDisplayName(
   })
 );
 
+/** Arrow left icon. */
+export const ArrowLeftIcon: CommonIconComponent = setDisplayName(
+  React.memo(function ArrowLeftIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 16 16"
+        fill="none"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-arrow-left", isDebugMode)}
+      >
+        <path
+          d="M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+/** Arrow down icon. */
+export const ArrowDownIcon: CommonIconComponent = setDisplayName(
+  React.memo(function ArrowDownIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 16 16"
+        fill="none"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-arrow-down", isDebugMode)}
+      >
+        <path
+          d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+// ============================================================================
+// SOCIAL ICON COMPONENTS
+// ============================================================================
+
+/** X (Twitter) icon. */
+export const XIcon: CommonIconComponent = setDisplayName(
+  React.memo(function XIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-x-twitter", isDebugMode)}
+      >
+        <path d="M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z" />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+/** Instagram icon. */
+export const InstagramIcon: CommonIconComponent = setDisplayName(
+  React.memo(function InstagramIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-instagram", isDebugMode)}
+      >
+        <path d="M12 3c-2.444 0-2.75.01-3.71.054-.959.044-1.613.196-2.185.418A4.412 4.412 0 0 0 4.51 4.511c-.5.5-.809 1.002-1.039 1.594-.222.572-.374 1.226-.418 2.184C3.01 9.25 3 9.556 3 12s.01 2.75.054 3.71c.044.959.196 1.613.418 2.185.23.592.538 1.094 1.039 1.595.5.5 1.002.808 1.594 1.038.572.222 1.226.374 2.184.418C9.25 20.99 9.556 21 12 21s2.75-.01 3.71-.054c.959-.044 1.613-.196 2.185-.419a4.412 4.412 0 0 0 1.595-1.038c.5-.5.808-1.002 1.038-1.594.222-.572.374-1.226.418-2.184.044-.96.054-1.267.054-3.711s-.01-2.75-.054-3.71c-.044-.959-.196-1.613-.419-2.185A4.412 4.412 0 0 0 19.49 4.51c-.5-.5-1.002-.809-1.594-1.039-.572-.222-1.226-.374-2.184-.418C14.75 3.01 14.444 3 12 3Zm0 1.622c2.403 0 2.688.009 3.637.052.877.04 1.354.187 1.67.31.421.163.72.358 1.036.673.315.315.51.615.673 1.035.123.317.27.794.31 1.671.043.95.052 1.234.052 3.637s-.009 2.688-.052 3.637c-.04.877-.187 1.354-.31 1.67-.163.421-.358.72-.673 1.036a2.79 2.79 0 0 1-1.035.673c-.317.123-.794.27-1.671.31-.95.043-1.234.052-3.637.052s-2.688-.009-3.637-.052c-.877-.04-1.354-.187-1.67-.31a2.789 2.789 0 0 1-1.036-.673 2.79 2.79 0 0 1-.673-1.035c-.123-.317-.27-.794-.31-1.671-.043-.95-.052-1.234-.052-3.637s.009-2.688.052-3.637c.04-.877.187-1.354.31-1.67.163-.421.358-.72.673-1.036.315-.315.615-.51 1.035-.673.317-.123.794-.27 1.671-.31.95-.043 1.234-.052 3.637-.052Z" />
+        <path d="M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0-7.622a4.622 4.622 0 1 0 0 9.244 4.622 4.622 0 0 0 0-9.244Zm5.884-.182a1.08 1.08 0 1 1-2.16 0 1.08 1.08 0 0 1 2.16 0Z" />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+/** LinkedIn icon. */
+export const LinkedInIcon: CommonIconComponent = setDisplayName(
+  React.memo(function LinkedInIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-linkedin", isDebugMode)}
+      >
+        <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z" />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+/** GitHub icon. */
+export const GitHubIcon: CommonIconComponent = setDisplayName(
+  React.memo(function GitHubIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-github", isDebugMode)}
+      >
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M12 2C6.475 2 2 6.588 2 12.253c0 4.537 2.862 8.369 6.838 9.727.5.09.687-.218.687-.487 0-.243-.013-1.05-.013-1.91C7 20.059 6.35 18.957 6.15 18.38c-.113-.295-.6-1.205-1.025-1.448-.35-.192-.85-.667-.013-.68.788-.012 1.35.744 1.538 1.051.9 1.551 2.338 1.116 2.912.846.088-.666.35-1.115.638-1.371-2.225-.256-4.55-1.14-4.55-5.062 0-1.115.387-2.038 1.025-2.756-.1-.256-.45-1.307.1-2.717 0 0 .837-.269 2.75 1.051.8-.23 1.65-.346 2.5-.346.85 0 1.7.115 2.5.346 1.912-1.333 2.75-1.05 2.75-1.05.55 1.409.2 2.46.1 2.716.637.718 1.025 1.628 1.025 2.756 0 3.934-2.337 4.806-4.562 5.062.362.32.675.936.675 1.897 0 1.371-.013 2.473-.013 2.82 0 .268.188.589.688.486a10.039 10.039 0 0 0 4.932-3.74A10.447 10.447 0 0 0 22 12.253C22 6.588 17.525 2 12 2Z"
+        />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+// ============================================================================
+// UI ICON COMPONENTS
+// ============================================================================
+
 /** Sun icon. */
-const SunIcon: CommonIconComponent = setDisplayName(
+export const SunIcon: CommonIconComponent = setDisplayName(
   React.memo(function SunIcon(props) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -248,11 +296,16 @@ const SunIcon: CommonIconComponent = setDisplayName(
         {...rest}
         viewBox="0 0 24 24"
         aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-sun"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...createComponentProps(id, "icon-sun", isDebugMode)}
       >
-        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z" />
+        <path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
+        <path
+          d="M12.25 3v1.5M21.5 12.25H20M18.791 18.791l-1.06-1.06M18.791 5.709l-1.06 1.06M12.25 20v1.5M4.5 12.25H3M6.77 6.77 5.709 5.709M6.77 17.73l-1.061 1.061"
+          fill="none"
+        />
       </svg>
     );
 
@@ -261,7 +314,7 @@ const SunIcon: CommonIconComponent = setDisplayName(
 );
 
 /** Moon icon. */
-const MoonIcon: CommonIconComponent = setDisplayName(
+export const MoonIcon: CommonIconComponent = setDisplayName(
   React.memo(function MoonIcon(props) {
     const { _internalId, _debugMode, ...rest } = props;
 
@@ -275,11 +328,14 @@ const MoonIcon: CommonIconComponent = setDisplayName(
         {...rest}
         viewBox="0 0 24 24"
         aria-hidden="true"
-        data-icon-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="icon-moon"
+        {...createComponentProps(id, "icon-moon", isDebugMode)}
       >
-        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z" />
+        <path
+          d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </svg>
     );
 
@@ -287,15 +343,116 @@ const MoonIcon: CommonIconComponent = setDisplayName(
   })
 );
 
-export {
-  ArrowLeftIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  CloseIcon,
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  MoonIcon,
-  SunIcon,
-  XIcon,
-};
+export type MailIconProps = React.FC<
+  CommonIconProps & {
+    page: "about" | "home";
+  }
+>;
+
+/** Mail icon. */
+export const MailIcon: MailIconProps = setDisplayName(
+  React.memo(function MailIcon(props) {
+    const { page = "home", _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element =
+      page === "about" ? (
+        <svg viewBox="0 0 24 24" aria-hidden="true" {...rest}>
+          <path
+            fillRule="evenodd"
+            d="M6 5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H6Zm.245 2.187a.75.75 0 0 0-.99 1.126l6.25 5.5a.75.75 0 0 0 .99 0l6.25-5.5a.75.75 0 0 0-.99-1.126L12 12.251 6.245 7.187Z"
+          />
+        </svg>
+      ) : (
+        <svg
+          {...rest}
+          viewBox="0 0 24 24"
+          fill="none"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          {...createComponentProps(id, "icon-mail", isDebugMode)}
+        >
+          <path
+            d="M2.75 7.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
+            className="fill-zinc-100 stroke-zinc-400 dark:fill-zinc-100/10 dark:stroke-zinc-500"
+          />
+          <path
+            d="m4 6 6.024 5.479a2.915 2.915 0 0 0 3.952 0L20 6"
+            className="stroke-zinc-400 dark:stroke-zinc-500"
+          />
+        </svg>
+      );
+
+    return element;
+  })
+);
+
+/** Briefcase icon. */
+export const BriefcaseIcon: CommonIconComponent = setDisplayName(
+  React.memo(function BriefcaseIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        fill="none"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-briefcase", isDebugMode)}
+      >
+        <path
+          d="M2.75 9.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
+          className="fill-zinc-100 stroke-zinc-400 dark:fill-zinc-100/10 dark:stroke-zinc-500"
+        />
+        <path
+          d="M3 14.25h6.249c.484 0 .952-.002 1.316.319l.777.682a.996.996 0 0 0 1.316 0l.777-.682c.364-.32.832-.319 1.316-.319H21M8.75 6.5V4.75a2 2 0 0 1 2-2h2.5a2 2 0 0 1 2 2V6.5"
+          className="stroke-zinc-400 dark:stroke-zinc-500"
+        />
+      </svg>
+    );
+
+    return element;
+  })
+);
+
+/** Link icon. */
+export const LinkIcon: CommonIconComponent = setDisplayName(
+  React.memo(function LinkIcon(props) {
+    const { _internalId, _debugMode, ...rest } = props;
+
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    const element = (
+      <svg
+        {...rest}
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+        {...createComponentProps(id, "icon-link", isDebugMode)}
+      >
+        <path
+          d="M15.712 11.823a.75.75 0 1 0 1.06 1.06l-1.06-1.06Zm-4.95 1.768a.75.75 0 0 0 1.06-1.06l-1.06 1.06Zm-2.475-1.414a.75.75 0 1 0-1.06-1.06l1.06 1.06Zm4.95-1.768a.75.75 0 1 0-1.06 1.06l1.06-1.06Zm3.359.53-.884.884 1.06 1.06.885-.883-1.061-1.06Zm-4.95-2.12 1.414-1.415L12 6.344l-1.415 1.413 1.061 1.061Zm0 3.535a2.5 2.5 0 0 1 0-3.536l-1.06-1.06a4 4 0 0 0 0 5.656l1.06-1.06Zm4.95-4.95a2.5 2.5 0 0 1 0 3.535L17.656 12a4 4 0 0 0 0-5.657l-1.06 1.06Zm1.06-1.06a4 4 0 0 0-5.656 0l1.06 1.06a2.5 2.5 0 0 1 3.536 0l1.06-1.06Zm-7.07 7.07.176.177 1.06-1.06-.176-.177-1.06 1.06Zm-3.183-.353.884-.884-1.06-1.06-.884.883 1.06 1.06Zm4.95 2.121-1.414 1.414 1.06 1.06 1.415-1.413-1.06-1.061Zm0-3.536a2.5 2.5 0 0 1 0 3.536l1.06 1.06a4 4 0 0 0 0-5.656l-1.06 1.06Zm-4.95 4.95a2.5 2.5 0 0 1 0-3.535L6.344 12a4 4 0 0 0 0 5.656l1.06-1.06Zm-1.06 1.06a4 4 0 0 0 5.657 0l-1.061-1.06a2.5 2.5 0 0 1-3.535 0l-1.061 1.06Zm7.07-7.07-.176-.177-1.06 1.06.176.178 1.06-1.061Z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+
+    return element;
+  })
+);
