@@ -8,7 +8,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { DESKTOP_HEADER_NAV_LINKS } from "../../_data";
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";

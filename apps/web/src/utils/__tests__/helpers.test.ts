@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { arrayToUrlSlug, clamp, cn, isActivePath } from "@web/lib/helpers";
+import { arrayToUrlSlug, clamp, cn, isActivePath } from "@web/utils/helpers";
 
 describe("arrayToUrlSlug", () => {
   it("converts array items to a slug with expected separators", () => {

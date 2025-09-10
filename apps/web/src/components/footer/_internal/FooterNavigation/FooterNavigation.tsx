@@ -9,7 +9,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { type FooterLink } from "../../_data";
 import styles from "./FooterNavigation.module.css";

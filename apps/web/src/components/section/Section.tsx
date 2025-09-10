@@ -2,9 +2,13 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { hasMeaningfulText, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasValidContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { SectionContent, SectionGrid, SectionTitle } from "./_internal";
 import styles from "./Section.module.css";
@@ -31,12 +35,7 @@ const BaseSection: SectionComponent = setDisplayName(
       <section
         {...rest}
         className={cn(styles.section, className)}
-        aria-labelledby={
-          title && hasMeaningfulText(title) ? internalId : undefined
-        }
-        data-section-id={`${internalId}-section`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid={`${internalId}-section-root`}
+        {...createComponentProps(internalId, "section", debugMode)}
       >
         <SectionGrid _internalId={internalId} _debugMode={debugMode}>
           <SectionTitle _internalId={internalId} _debugMode={debugMode}>
@@ -82,7 +81,7 @@ const Section: SectionComponent = setDisplayName(function Section(props) {
     debugMode,
   });
 
-  if (title && !hasMeaningfulText(title)) return null;
+  if (!hasValidContent(children)) return null;
 
   const updatedProps = {
     ...rest,
