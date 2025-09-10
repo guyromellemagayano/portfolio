@@ -2,9 +2,12 @@ import React from "react";
 
 import Link from "next/link";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
+  createComponentProps,
   getLinkTargetProps,
+  hasValidContent,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
@@ -15,33 +18,33 @@ import { type FooterLink } from "../../_data";
 import styles from "./FooterNavigation.module.css";
 
 // ============================================================================
-// BASE FOOTER NAVIGATION COMPONENT
+// FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface FooterNavigationProps
+export interface FooterNavigationProps
   extends Omit<React.ComponentProps<"nav">, "children">,
-    ComponentProps {
+    CommonComponentProps {
   /** Navigation links to display */
   navLinks?: ReadonlyArray<FooterLink>;
 }
-type FooterNavigationComponent = React.FC<FooterNavigationProps>;
+export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
+
+// ============================================================================
+// BASE FOOTER NAVIGATION COMPONENT
+// ============================================================================
 
 /** A base footer navigation component (client, minimal effects split out). */
 const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const { className, navLinks, _internalId, _debugMode, ...rest } = props;
 
-    if (!navLinks) return null;
-
     const element = (
       <nav
         {...rest}
         className={cn(styles.footerNavigationList, className)}
-        data-footer-navigation-id={`${_internalId}-footer-navigation`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="footer-navigation-root"
+        {...createComponentProps(_internalId, "footer-navigation", _debugMode)}
       >
-        {navLinks.map(({ kind, label, href }) => {
+        {navLinks?.map(({ kind, label, href }) => {
           const isExternal = kind === "external";
           const hrefString = isExternal ? href : href?.toString() || "";
 
@@ -89,7 +92,7 @@ const MemoizedFooterNavigation = React.memo(BaseFooterNavigation);
 // ============================================================================
 
 /** The main footer navigation component for the application. */
-const FooterNavigation: FooterNavigationComponent = setDisplayName(
+export const FooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const {
       isMemoized = false,
@@ -99,7 +102,19 @@ const FooterNavigation: FooterNavigationComponent = setDisplayName(
       ...rest
     } = props;
 
-    const updatedProps = { ...rest, _internalId, _debugMode, navLinks };
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    if (!hasValidContent(navLinks)) return null;
+
+    const updatedProps = {
+      ...rest,
+      internalId: id,
+      debugMode: isDebugMode,
+      navLinks,
+    };
 
     const Component = isMemoized
       ? MemoizedFooterNavigation
@@ -108,5 +123,3 @@ const FooterNavigation: FooterNavigationComponent = setDisplayName(
     return element;
   }
 );
-
-export { FooterNavigation };
