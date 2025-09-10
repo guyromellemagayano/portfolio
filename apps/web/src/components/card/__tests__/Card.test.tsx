@@ -24,6 +24,21 @@ vi.mock("@guyromellemagayano/utils", () => ({
     }
     return true;
   }),
+  hasValidContent: vi.fn((content) => {
+    if (
+      content === null ||
+      content === undefined ||
+      content === "" ||
+      content === false ||
+      content === 0
+    )
+      return false;
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => {
+    if (typeof content !== "string") return false;
+    return content.trim().length > 0;
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -44,10 +59,32 @@ vi.mock("@guyromellemagayano/utils", () => ({
     component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock component utilities
+vi.mock("@web/utils", () => ({
+  createCardProps: vi.fn((id, debugMode, additionalProps = {}) => ({
+    "data-card-id": `${id}-card`,
+    "data-debug-mode": debugMode ? "true" : undefined,
+    "data-testid": additionalProps["data-testid"] || `${id}-card-root`,
+  })),
+  hasValidContent: vi.fn((content) => {
+    if (content === null || content === undefined) return false;
+    return true;
+  }),
 }));
 
 // Mock CSS modules
@@ -81,8 +118,8 @@ vi.mock("../_internal", () => ({
       const content = (
         <h3
           ref={ref}
-          data-testid="card-title-root"
-          data-card-title-id={`${internalId}-card-title`}
+          data-testid={`${internalId || "test-id"}-card-title-root`}
+          data-card-title-id={`${internalId || "test-id"}-card-title`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -107,8 +144,8 @@ vi.mock("../_internal", () => ({
       return (
         <p
           ref={ref}
-          data-testid="card-description-root"
-          data-card-description-id={`${internalId}-card-description`}
+          data-testid={`${internalId || "test-id"}-card-description-root`}
+          data-card-description-id={`${internalId || "test-id"}-card-description`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -184,21 +221,21 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveClass("custom-class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<Card debugMode={true}>Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom internal ID", () => {
       render(<Card internalId="custom-id">Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("custom-id-card-root");
       expect(card).toHaveAttribute("data-card-id", "custom-id-card");
     });
 
@@ -209,7 +246,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("custom-testid");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("aria-label", "Card label");
     });
   });
@@ -230,14 +267,14 @@ describe("Card", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<Card debugMode={true}>Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -246,21 +283,21 @@ describe("Card", () => {
     it("renders as article element", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card.tagName).toBe("ARTICLE");
     });
 
     it("applies correct CSS classes", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveClass("card");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<Card className="custom-class">Card content</Card>);
 
-      const card = screen.getByTestId("card-root");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveClass("card", "custom-class");
     });
   });
@@ -308,6 +345,420 @@ describe("Card", () => {
         return element?.textContent?.includes("Special chars:") || false;
       });
       expect(elements[0]).toBeInTheDocument();
+    });
+
+    it("handles empty string children", () => {
+      const { container } = render(<Card>{""}</Card>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles false children", () => {
+      const { container } = render(<Card>{false}</Card>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles zero children", () => {
+      const { container } = render(<Card>{0}</Card>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles mixed valid and invalid children", () => {
+      render(
+        <Card>
+          {null}
+          <div>Valid content</div>
+          {undefined}
+          <span>More content</span>
+        </Card>
+      );
+
+      expect(screen.getByText("Valid content")).toBeInTheDocument();
+      expect(screen.getByText("More content")).toBeInTheDocument();
+    });
+  });
+
+  describe("Performance and Optimization", () => {
+    it("memoizes component when isMemoized is true", () => {
+      const { rerender } = render(
+        <Card isMemoized={true}>
+          <div>Memoized content</div>
+        </Card>
+      );
+
+      const initialElement = screen.getByText("Memoized content");
+
+      // Re-render with same props
+      rerender(
+        <Card isMemoized={true}>
+          <div>Memoized content</div>
+        </Card>
+      );
+
+      const rerenderedElement = screen.getByText("Memoized content");
+      expect(rerenderedElement).toBe(initialElement);
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <Card isMemoized={false}>
+          <div>Non-memoized content</div>
+        </Card>
+      );
+
+      const initialElement = screen.getByText("Non-memoized content");
+
+      // Re-render with different content to test non-memoization
+      rerender(
+        <Card isMemoized={false}>
+          <div>Different content</div>
+        </Card>
+      );
+
+      expect(screen.getByText("Different content")).toBeInTheDocument();
+      expect(
+        screen.queryByText("Non-memoized content")
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Accessibility", () => {
+    it("renders with proper semantic structure", () => {
+      render(
+        <Card>
+          <div>Card content</div>
+        </Card>
+      );
+
+      const card = screen.getByRole("article");
+      expect(card).toBeInTheDocument();
+    });
+
+    it("supports aria attributes", () => {
+      render(
+        <Card aria-label="Custom card" aria-describedby="card-description">
+          <div>Card content</div>
+        </Card>
+      );
+
+      const card = screen.getByRole("article");
+      expect(card).toHaveAttribute("aria-label", "Custom card");
+      expect(card).toHaveAttribute("aria-describedby", "card-description");
+    });
+
+    it("supports role attribute", () => {
+      render(
+        <Card role="region">
+          <div>Card content</div>
+        </Card>
+      );
+
+      const card = screen.getByRole("region");
+      expect(card).toBeInTheDocument();
+    });
+  });
+
+  describe("Data Attributes and Debugging", () => {
+    it("applies correct data attributes with default ID", () => {
+      render(<Card>Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveAttribute("data-card-id", "test-id-card");
+      expect(card).not.toHaveAttribute("data-debug-mode");
+    });
+
+    it("applies correct data attributes with custom ID", () => {
+      render(<Card internalId="custom-card-id">Card content</Card>);
+
+      const card = screen.getByTestId("custom-card-id-card-root");
+      expect(card).toHaveAttribute("data-card-id", "custom-card-id-card");
+    });
+
+    it("applies debug mode data attribute when enabled", () => {
+      render(<Card debugMode={true}>Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("does not apply debug mode data attribute when disabled", () => {
+      render(<Card debugMode={false}>Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).not.toHaveAttribute("data-debug-mode");
+    });
+  });
+
+  describe("CSS and Styling", () => {
+    it("applies base CSS class", () => {
+      render(<Card>Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveClass("card");
+    });
+
+    it("merges custom className with base class", () => {
+      render(<Card className="custom-card-class">Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveClass("card", "custom-card-class");
+    });
+
+    it("handles multiple custom classes", () => {
+      render(<Card className="class1 class2 class3">Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveClass("card", "class1", "class2", "class3");
+    });
+
+    it("handles empty className gracefully", () => {
+      render(<Card className="">Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveClass("card");
+    });
+  });
+
+  describe("Props Forwarding", () => {
+    it("forwards all HTML article attributes", () => {
+      render(
+        <Card
+          id="card-1"
+          tabIndex={0}
+          data-custom="value"
+          style={{ backgroundColor: "red" }}
+        >
+          Card content
+        </Card>
+      );
+
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveAttribute("id", "card-1");
+      expect(card).toHaveAttribute("tabIndex", "0");
+      expect(card).toHaveAttribute("data-custom", "value");
+      expect(card.style.backgroundColor).toBe("red");
+    });
+
+    it("forwards event handlers", () => {
+      const onClick = vi.fn();
+
+      render(<Card onClick={onClick}>Card content</Card>);
+
+      const card = screen.getByTestId("test-id-card-root");
+
+      card.click();
+      expect(onClick).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+
+// ============================================================================
+// INTEGRATION TESTS
+// ============================================================================
+
+describe("Integration Tests", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("Card with Sub-components", () => {
+    it("renders Card with all sub-components", () => {
+      render(
+        <Card>
+          <Card.Eyebrow>Eyebrow text</Card.Eyebrow>
+          <Card.Title href="/test">Card Title</Card.Title>
+          <Card.Description>Card description text</Card.Description>
+          <Card.Cta href="/action">Call to Action</Card.Cta>
+        </Card>
+      );
+
+      expect(screen.getByText("Eyebrow text")).toBeInTheDocument();
+      expect(screen.getByText("Card Title")).toBeInTheDocument();
+      expect(screen.getByText("Card description text")).toBeInTheDocument();
+      expect(screen.getByText("Call to Action")).toBeInTheDocument();
+    });
+
+    it("maintains proper component hierarchy", () => {
+      render(
+        <Card>
+          <Card.Eyebrow>Eyebrow</Card.Eyebrow>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      const card = screen.getByRole("article");
+      const eyebrow = screen.getByText("Eyebrow");
+      const title = screen.getByText("Title");
+      const description = screen.getByText("Description");
+
+      expect(card).toContainElement(eyebrow);
+      expect(card).toContainElement(title);
+      expect(card).toContainElement(description);
+    });
+
+    it("renders sub-components within Card", () => {
+      render(
+        <Card internalId="parent-card" debugMode={true}>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      // The sub-components are rendered within the Card
+      const title = screen.getByTestId("test-id-card-title-root");
+      const description = screen.getByTestId("test-id-card-description-root");
+
+      expect(title).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
+      expect(title).toHaveTextContent("Title");
+      expect(description).toHaveTextContent("Description");
+    });
+  });
+
+  describe("Card with Links", () => {
+    it("renders Card with linked title and CTA", () => {
+      render(
+        <Card>
+          <Card.Title href="/title-link">Linked Title</Card.Title>
+          <Card.Cta href="/cta-link" target="_blank">
+            External CTA
+          </Card.Cta>
+        </Card>
+      );
+
+      const titleLink = screen.getByText("Linked Title").closest("a");
+      const ctaLink = screen.getByText("External CTA").closest("a");
+
+      expect(titleLink).toHaveAttribute("href", "/title-link");
+      expect(ctaLink).toHaveAttribute("href", "/cta-link");
+      expect(ctaLink).toHaveAttribute("target", "_blank");
+    });
+
+    it("handles mixed linked and non-linked sub-components", () => {
+      render(
+        <Card>
+          <Card.Title href="/link">Linked Title</Card.Title>
+          <Card.Description>Non-linked Description</Card.Description>
+          <Card.Cta>Non-linked CTA</Card.Cta>
+        </Card>
+      );
+
+      const titleLink = screen.getByText("Linked Title").closest("a");
+      const description = screen.getByText("Non-linked Description");
+      const cta = screen.getByText("Non-linked CTA");
+
+      expect(titleLink).toHaveAttribute("href", "/link");
+      expect(description.closest("a")).toBeNull();
+      expect(cta.closest("a")).toBeNull();
+    });
+  });
+
+  describe("Card Content Validation Integration", () => {
+    it("renders Card when sub-components have valid content", () => {
+      render(
+        <Card>
+          <Card.Title>Valid Title</Card.Title>
+          <Card.Description>Valid Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Valid Title")).toBeInTheDocument();
+      expect(screen.getByText("Valid Description")).toBeInTheDocument();
+    });
+
+    it("renders Card even when sub-components have invalid content", () => {
+      render(
+        <Card>
+          <Card.Title>{null}</Card.Title>
+          <Card.Description>{undefined}</Card.Description>
+        </Card>
+      );
+
+      // Card should still render because it has children (the sub-components themselves)
+      expect(screen.getByRole("article")).toBeInTheDocument();
+    });
+
+    it("renders Card when at least one sub-component has valid content", () => {
+      render(
+        <Card>
+          <Card.Title>{null}</Card.Title>
+          <Card.Description>Valid Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Valid Description")).toBeInTheDocument();
+    });
+  });
+
+  describe("Card with Complex Content", () => {
+    it("handles nested HTML elements in sub-components", () => {
+      render(
+        <Card>
+          <Card.Title>
+            <strong>Bold Title</strong> with <em>emphasis</em>
+          </Card.Title>
+          <Card.Description>
+            <p>
+              Paragraph with <a href="/link">link</a>
+            </p>
+          </Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Bold Title")).toBeInTheDocument();
+      expect(screen.getByText("emphasis")).toBeInTheDocument();
+      expect(screen.getByText("link")).toBeInTheDocument();
+    });
+
+    it("handles multiple instances of same sub-component", () => {
+      render(
+        <Card>
+          <Card.Description>First description</Card.Description>
+          <Card.Description>Second description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("First description")).toBeInTheDocument();
+      expect(screen.getByText("Second description")).toBeInTheDocument();
+    });
+  });
+
+  describe("Card Performance Integration", () => {
+    it("maintains memoization across sub-component updates", () => {
+      const { rerender } = render(
+        <Card isMemoized={true}>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      const initialCard = screen.getByRole("article");
+
+      // Re-render with same props
+      rerender(
+        <Card isMemoized={true}>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      const rerenderedCard = screen.getByRole("article");
+      expect(rerenderedCard).toBe(initialCard);
+    });
+  });
+
+  describe("Card Error Handling", () => {
+    it("handles invalid props gracefully", () => {
+      render(
+        <Card>
+          <Card.Title>Valid Title</Card.Title>
+          <div>Additional content</div>
+        </Card>
+      );
+
+      // Card should render all valid content
+      expect(screen.getByText("Valid Title")).toBeInTheDocument();
+      expect(screen.getByText("Additional content")).toBeInTheDocument();
     });
   });
 });

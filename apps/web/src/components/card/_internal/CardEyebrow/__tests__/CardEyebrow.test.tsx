@@ -8,7 +8,7 @@ import { CardEyebrow } from "../CardEyebrow";
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "generated-id",
+    id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -35,6 +35,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -65,14 +74,14 @@ describe("CardEyebrow", () => {
     it("applies custom className", () => {
       render(<CardEyebrow className="custom-class">Eyebrow</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
       render(<CardEyebrow aria-label="Eyebrow">Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute("aria-label", "Eyebrow");
     });
   });
@@ -135,7 +144,7 @@ describe("CardEyebrow", () => {
 
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
         "data-card-eyebrow-id",
         "generated-id-card-eyebrow"
@@ -152,7 +161,7 @@ describe("CardEyebrow", () => {
 
       render(<CardEyebrow _debugMode={true}>Eyebrow</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -164,7 +173,7 @@ describe("CardEyebrow", () => {
 
       render(<CardEyebrow>Eyebrow</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -193,21 +202,21 @@ describe("CardEyebrow", () => {
     it("renders as p element", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow.tagName).toBe("P");
     });
 
     it("applies correct CSS classes", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass("cardEyebrow");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardEyebrow className="custom-class">Eyebrow</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass("cardEyebrow", "custom-class");
     });
   });
@@ -221,7 +230,7 @@ describe("CardEyebrow", () => {
 
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
         "data-card-eyebrow-id",
         "generated-id-card-eyebrow"
@@ -236,7 +245,7 @@ describe("CardEyebrow", () => {
 
       render(<CardEyebrow _internalId="custom-id">Eyebrow</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("custom-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
         "data-card-eyebrow-id",
         "custom-id-card-eyebrow"
@@ -248,21 +257,21 @@ describe("CardEyebrow", () => {
     it("renders with decoration when decorate is true", () => {
       render(<CardEyebrow decorate>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass("cardEyebrowDecorated");
     });
 
     it("does not apply decoration when decorate is false", () => {
       render(<CardEyebrow decorate={false}>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).not.toHaveClass("cardEyebrowDecorated");
     });
 
     it("does not apply decoration when decorate is undefined", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).not.toHaveClass("cardEyebrowDecorated");
     });
   });
@@ -279,7 +288,7 @@ describe("CardEyebrow", () => {
     it("renders without time element when dateTime is not provided", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow.tagName).toBe("P");
       expect(eyebrow).toHaveTextContent("Eyebrow text");
     });
@@ -339,7 +348,7 @@ describe("CardEyebrow", () => {
         </CardEyebrow>
       );
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
         "cardEyebrow",
         "cardEyebrowDecorated",
@@ -367,7 +376,7 @@ describe("CardEyebrow", () => {
         </CardEyebrow>
       );
 
-      const eyebrow = screen.getByTestId("card-eyebrow-root");
+      const eyebrow = screen.getByTestId("multi-prop-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
         "multi-class",
         "cardEyebrow",

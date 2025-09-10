@@ -2,7 +2,11 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasValidContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
@@ -16,13 +20,17 @@ import {
 import styles from "./Card.module.css";
 
 // ============================================================================
-// BASE CARD COMPONENT
+// CARD COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardProps
+export interface CardProps
   extends React.ComponentProps<"article">,
     CommonComponentProps {}
-type CardComponent = React.FC<CardProps>;
+export type CardComponent = React.FC<CardProps>;
+
+// ============================================================================
+// BASE CARD COMPONENT
+// ============================================================================
 
 /** A flexible card component for displaying grouped content with optional subcomponents */
 const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
@@ -32,9 +40,7 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
     <article
       {...rest}
       className={cn(styles.card, className)}
-      data-card-id={`${internalId}-card`}
-      data-debug-mode={debugMode ? "true" : undefined}
-      data-testid="card-root"
+      {...createComponentProps(internalId, "card", debugMode)}
     >
       {children}
     </article>
@@ -54,21 +60,8 @@ const MemoizedCard = React.memo(BaseCard);
 // MAIN CARD COMPONENT
 // ============================================================================
 
-type CardCompoundComponent = CardComponent & {
-  /** A card link component that provides interactive hover effects and accessibility features */
-  Link: typeof CardLink;
-  /** A card title component that can optionally be wrapped in a link for navigation */
-  Title: typeof CardTitle;
-  /** A card description component that can optionally be wrapped in a link for navigation */
-  Description: typeof CardDescription;
-  /** A card call to action component that can optionally be wrapped in a link for navigation */
-  Cta: typeof CardCta;
-  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-  Eyebrow: typeof CardEyebrow;
-};
-
 /** A card component that can optionally be wrapped in a link for navigation */
-const Card = setDisplayName(function Card(props) {
+export const Card = setDisplayName(function Card(props) {
   const {
     children,
     isMemoized = false,
@@ -82,7 +75,7 @@ const Card = setDisplayName(function Card(props) {
     debugMode,
   });
 
-  if (!isRenderableContent(children)) return null;
+  if (!hasValidContent(children)) return null;
 
   const updatedProps = {
     ...rest,
@@ -100,10 +93,21 @@ const Card = setDisplayName(function Card(props) {
 // CARD COMPOUND COMPONENTS
 // ============================================================================
 
+type CardCompoundComponent = CardComponent & {
+  /** A card link component that provides interactive hover effects and accessibility features */
+  Link: typeof CardLink;
+  /** A card title component that can optionally be wrapped in a link for navigation */
+  Title: typeof CardTitle;
+  /** A card description component that can optionally be wrapped in a link for navigation */
+  Description: typeof CardDescription;
+  /** A card call to action component that can optionally be wrapped in a link for navigation */
+  Cta: typeof CardCta;
+  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
+  Eyebrow: typeof CardEyebrow;
+};
+
 Card.Link = CardLink;
 Card.Title = CardTitle;
 Card.Description = CardDescription;
 Card.Cta = CardCta;
 Card.Eyebrow = CardEyebrow;
-
-export { Card };
