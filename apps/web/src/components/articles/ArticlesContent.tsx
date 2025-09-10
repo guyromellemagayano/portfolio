@@ -3,7 +3,7 @@
 import { Article, Div } from "@guyromellemagayano/components";
 
 import { Card, SimpleLayout } from "@web/components";
-import { type ArticleWithSlug, formatDate } from "@web/lib";
+import { type ArticleWithSlug, formatDate } from "@web/utils";
 
 const articleStrings = {
   read: "Read article",

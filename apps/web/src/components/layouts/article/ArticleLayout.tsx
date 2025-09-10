@@ -10,7 +10,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container, Prose } from "@web/components";
-import { type ArticleWithSlug, cn, formatDate } from "@web/lib";
+import { type ArticleWithSlug, cn, formatDate } from "@web/utils";
 
 import { ArticleNavButton } from "./_internal";
 import styles from "./ArticleLayout.module.css";

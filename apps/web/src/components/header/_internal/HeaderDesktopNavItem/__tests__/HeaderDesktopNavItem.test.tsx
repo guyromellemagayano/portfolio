@@ -12,7 +12,7 @@ vi.mock("@web/lib", () => ({
   isActivePath: vi.fn(() => true), // Return true by default for tests
 }));
 
-import { isActivePath } from "@web/lib";
+import { isActivePath } from "@web/utils";
 
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 
@@ -209,7 +209,7 @@ describe("HeaderDesktopNavItem", () => {
 
   describe("Active State", () => {
     it("applies active styles when pathname matches href", async () => {
-      const { isActivePath } = await import("@web/lib");
+      const { isActivePath } = await import("@web/utils");
       vi.mocked(isActivePath).mockReturnValue(true);
 
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
