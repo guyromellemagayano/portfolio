@@ -2,20 +2,24 @@ import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  hasMeaningfulText,
+  createComponentProps,
   isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { type CommonIconComponent, type CommonIconProps } from "./_data";
 import {
+  ArrowDownIcon,
   ArrowLeftIcon,
+  BriefcaseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
   CloseIcon,
   GitHubIcon,
   InstagramIcon,
   LinkedInIcon,
+  LinkIcon,
+  MailIcon,
   MoonIcon,
   SunIcon,
   XIcon,
@@ -29,22 +33,11 @@ import {
 const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
   const { children, internalId, debugMode, ...rest } = props;
 
-  // Prevent empty usage - require either children or use compound components
-  if (!children) {
-    throw new Error(
-      "Icon component requires SVG content. Either:\n" +
-        "1. Use predefined icons: <Icon.X />, <Icon.ChevronRight />, etc.\n" +
-        '2. Add custom SVG content: <Icon><path d="..." /></Icon>'
-    );
-  }
-
   const element = (
     <svg
       {...rest}
       aria-hidden="true"
-      data-icon-id={`${internalId}-icon`}
-      data-debug-mode={debugMode ? "true" : undefined}
-      data-testid="icon-root"
+      {...createComponentProps(internalId || "fallback-id", "icon", debugMode)}
     >
       {children}
     </svg>
@@ -64,31 +57,8 @@ const MemoizedIcon = React.memo(BaseIcon);
 // MAIN ICON COMPONENT
 // ============================================================================
 
-type IconCompoundComponent = React.FC<CommonIconProps> & {
-  /** Social media icon for X/Twitter */
-  X: typeof XIcon;
-  /** Social media icon for Instagram */
-  Instagram: typeof InstagramIcon;
-  /** Social media icon for LinkedIn */
-  LinkedIn: typeof LinkedInIcon;
-  /** Social media icon for GitHub */
-  GitHub: typeof GitHubIcon;
-  /** UI icon for close/exit */
-  Close: typeof CloseIcon;
-  /** UI icon for sun/light mode */
-  Sun: typeof SunIcon;
-  /** UI icon for moon/dark mode */
-  Moon: typeof MoonIcon;
-  /** Navigation icon for chevron down */
-  ChevronDown: typeof ChevronDownIcon;
-  /** Navigation icon for chevron right */
-  ChevronRight: typeof ChevronRightIcon;
-  /** Navigation icon for arrow left */
-  ArrowLeft: typeof ArrowLeftIcon;
-};
-
 /** A polymorphic SVG icon component with compound social and UI icons. */
-const IconComponent = function (props: CommonIconProps) {
+export const Icon = setDisplayName(function Icon(props: CommonIconProps) {
   const {
     children,
     isMemoized = false,
@@ -102,8 +72,7 @@ const IconComponent = function (props: CommonIconProps) {
     debugMode,
   });
 
-  if (!isRenderableContent(children) || !hasMeaningfulText(children))
-    return null;
+  if (!isRenderableContent(children)) return null;
 
   const updatedProps = {
     ...rest,
@@ -115,23 +84,54 @@ const IconComponent = function (props: CommonIconProps) {
   const Component = isMemoized ? MemoizedIcon : BaseIcon;
   const element = <Component {...updatedProps} />;
   return element;
-};
-
-const Icon = setDisplayName(IconComponent) as IconCompoundComponent;
+} as IconCompoundComponent);
 
 // ============================================================================
 // ICON COMPOUND COMPONENTS
 // ============================================================================
 
+type IconCompoundComponent = React.FC<CommonIconProps> & {
+  /** Social media icon for X/Twitter */
+  X: typeof XIcon;
+  /** Social media icon for Instagram */
+  Instagram: typeof InstagramIcon;
+  /** Social media icon for LinkedIn */
+  LinkedIn: typeof LinkedInIcon;
+  /** Social media icon for GitHub */
+  GitHub: typeof GitHubIcon;
+  /** UI icon for link */
+  Link: typeof LinkIcon;
+  /** UI icon for close/exit */
+  Close: typeof CloseIcon;
+  /** UI icon for sun/light mode */
+  Sun: typeof SunIcon;
+  /** UI icon for moon/dark mode */
+  Moon: typeof MoonIcon;
+  /** Navigation icon for chevron down */
+  ChevronDown: typeof ChevronDownIcon;
+  /** Navigation icon for chevron right */
+  ChevronRight: typeof ChevronRightIcon;
+  /** Navigation icon for arrow left */
+  ArrowLeft: typeof ArrowLeftIcon;
+  /** UI icon for mail */
+  Mail: typeof MailIcon;
+  /** UI icon for briefcase */
+  Briefcase: typeof BriefcaseIcon;
+  /** Navigation icon for arrow down */
+  ArrowDown: typeof ArrowDownIcon;
+};
+
 Icon.X = XIcon;
 Icon.Instagram = InstagramIcon;
 Icon.LinkedIn = LinkedInIcon;
 Icon.GitHub = GitHubIcon;
+Icon.Link = LinkIcon;
 Icon.Close = CloseIcon;
 Icon.Sun = SunIcon;
 Icon.Moon = MoonIcon;
 Icon.ChevronDown = ChevronDownIcon;
 Icon.ChevronRight = ChevronRightIcon;
 Icon.ArrowLeft = ArrowLeftIcon;
-
-export { Icon };
+Icon.Mail = MailIcon;
+Icon.Briefcase = BriefcaseIcon;
+Icon.ArrowDown = ArrowDownIcon;
