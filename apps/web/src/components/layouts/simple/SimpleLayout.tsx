@@ -13,7 +13,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components/Container";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
 import styles from "./SimpleLayout.module.css";

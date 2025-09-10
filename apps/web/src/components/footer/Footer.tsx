@@ -5,7 +5,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components/Container";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import {
   FOOTER_COMPONENT_LABELS,

@@ -7,7 +7,8 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { getLinkTargetProps, setDisplayName } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
+import { createComponentProps } from "@web/utils/component";
 
 import { AVATAR_COMPONENT_LABELS } from "../../_data";
 import styles from "./HeaderAvatar.module.css";
@@ -61,9 +62,11 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
         rel={linkTargetProps.rel}
         className={cn(styles.avatarLink, className)}
         aria-label={AVATAR_COMPONENT_LABELS.home}
-        data-header-avatar-id={`header-${_internalId}-avatar`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`header-${_internalId}-avatar-root`}
+        {...createComponentProps(
+          _internalId || "fallback-id",
+          _debugMode,
+          "header-avatar"
+        )}
       >
         <Image
           src={src}
