@@ -9,7 +9,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/Icon";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { THEME_TOGGLE_LABELS } from "../../_data";
 import styles from "./HeaderThemeToggle.module.css";

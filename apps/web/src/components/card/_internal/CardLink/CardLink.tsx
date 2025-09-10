@@ -8,7 +8,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import styles from "./CardLink.module.css";
 import { CardLinkCustom } from "./CardLinkCustom";

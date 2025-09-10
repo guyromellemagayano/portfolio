@@ -13,7 +13,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { isActivePath } from "@web/lib";
+import { isActivePath } from "@web/utils";
 
 import type { CommonNavItemProps } from "../../_data";
 import styles from "./HeaderMobileNavItem.module.css";

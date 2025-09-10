@@ -11,7 +11,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { CardLinkCustom } from "../CardLink/CardLinkCustom";
 import styles from "./CardTitle.module.css";
