@@ -23,6 +23,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     }
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
   formatDateSafely: vi.fn((date, options) => {
     if (options?.year === "numeric") {
       return new Date(date).getFullYear().toString();
@@ -58,21 +67,21 @@ describe("FooterLegal", () => {
     it("applies custom className", () => {
       render(<FooterLegal legalText="Legal text" className="custom-legal" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("custom-legal");
     });
 
     it("renders with debug mode enabled", () => {
       render(<FooterLegal legalText="Legal text" _debugMode />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom internal ID", () => {
       render(<FooterLegal legalText="Legal text" _internalId="custom-legal" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("custom-legal-footer-legal-root");
       expect(legalElement).toHaveAttribute(
         "data-footer-legal-id",
         "custom-legal-footer-legal"
@@ -88,7 +97,7 @@ describe("FooterLegal", () => {
         />
       );
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveAttribute("aria-label", "Legal information");
       expect(legalElement).toHaveAttribute("role", "contentinfo");
     });
@@ -98,7 +107,9 @@ describe("FooterLegal", () => {
     it("renders with default legalText when no legalText provided", () => {
       render(<FooterLegal />);
 
-      expect(screen.getByTestId("footer-legal-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
       expect(
         screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
       ).toBeInTheDocument();
@@ -107,13 +118,17 @@ describe("FooterLegal", () => {
     it("does not render when legalText is null", () => {
       render(<FooterLegal legalText={null as any} />);
 
-      expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-footer-legal-root")
+      ).not.toBeInTheDocument();
     });
 
     it("renders with default legalText when legalText is undefined", () => {
       render(<FooterLegal legalText={undefined as any} />);
 
-      expect(screen.getByTestId("footer-legal-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
       expect(
         screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
       ).toBeInTheDocument();
@@ -122,13 +137,17 @@ describe("FooterLegal", () => {
     it("does not render when legalText is empty string", () => {
       render(<FooterLegal legalText="" />);
 
-      expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-footer-legal-root")
+      ).not.toBeInTheDocument();
     });
 
     it("renders when legalText is provided", () => {
       render(<FooterLegal legalText="Legal text" />);
 
-      expect(screen.getByTestId("footer-legal-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
       expect(screen.getByText("Legal text")).toBeInTheDocument();
     });
   });
@@ -137,14 +156,14 @@ describe("FooterLegal", () => {
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<FooterLegal legalText="Legal text" _debugMode={false} />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<FooterLegal legalText="Legal text" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -153,21 +172,21 @@ describe("FooterLegal", () => {
     it("renders as p element by default", () => {
       render(<FooterLegal legalText="Legal text" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement.tagName).toBe("P");
     });
 
     it("renders with correct CSS classes", () => {
       render(<FooterLegal legalText="Legal text" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("_footerLegal_e53dc9");
     });
 
     it("combines CSS module classes with custom className", () => {
       render(<FooterLegal legalText="Legal text" className="custom-legal" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("_footerLegal_e53dc9 custom-legal");
     });
   });
@@ -177,7 +196,7 @@ describe("FooterLegal", () => {
       const ref = { current: null };
       render(<FooterLegal legalText="Legal text" ref={ref} />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(ref.current).toBe(legalElement);
     });
 
@@ -193,7 +212,7 @@ describe("FooterLegal", () => {
     it("renders with proper semantic structure", () => {
       render(<FooterLegal legalText="Legal text" />);
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement.tagName).toBe("P");
     });
 
@@ -202,13 +221,16 @@ describe("FooterLegal", () => {
         <FooterLegal legalText="Legal text" _internalId="test-id" _debugMode />
       );
 
-      const legalElement = screen.getByTestId("footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveAttribute(
         "data-footer-legal-id",
         "test-id-footer-legal"
       );
       expect(legalElement).toHaveAttribute("data-debug-mode", "true");
-      expect(legalElement).toHaveAttribute("data-testid", "footer-legal-root");
+      expect(legalElement).toHaveAttribute(
+        "data-testid",
+        "test-id-footer-legal-root"
+      );
     });
   });
 
@@ -224,13 +246,17 @@ describe("FooterLegal", () => {
     it("handles empty legalText string", () => {
       render(<FooterLegal legalText="" />);
 
-      expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-footer-legal-root")
+      ).not.toBeInTheDocument();
     });
 
     it("does not render when legalText is whitespace-only", () => {
       render(<FooterLegal legalText="   " />);
 
-      expect(screen.queryByTestId("footer-legal-root")).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-footer-legal-root")
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -244,7 +270,9 @@ describe("FooterLegal", () => {
     it("uses default legalText when legalText not provided", () => {
       render(<FooterLegal />);
 
-      expect(screen.getByTestId("footer-legal-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
       expect(
         screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
       ).toBeInTheDocument();
