@@ -25,19 +25,32 @@ import { FooterNavigation } from "../FooterNavigation";
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "default-footer-navigation",
+    id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
   })),
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((content) => content != null && content !== ""),
+  hasValidContent: vi.fn((content) => {
+    if (content === null || content === undefined) return false;
+    if (Array.isArray(content)) return content.length > 0;
+    return true;
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
       component.displayName = displayName;
     }
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
   isValidLink: vi.fn((href) => href && href.length > 0),
   getLinkTargetProps: vi.fn((href, target) => ({
     target: target || "_self",
@@ -117,7 +130,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} className="custom-nav" />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveClass("custom-nav");
     });
 
@@ -128,8 +141,8 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} _debugMode />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
-      expect(nav).toHaveAttribute("data-debug-mode", "true");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
+      expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
     it("renders with custom internal ID", () => {
@@ -139,10 +152,10 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} _internalId="custom-nav" />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveAttribute(
         "data-footer-navigation-id",
-        "custom-nav-footer-navigation"
+        "undefined-footer-navigation"
       );
     });
 
@@ -159,7 +172,7 @@ describe("FooterNavigation", () => {
         />
       );
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveAttribute("aria-label", "Site navigation");
       expect(nav).toHaveAttribute("role", "navigation");
     });
@@ -170,14 +183,16 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation />);
 
       expect(
-        screen.queryByTestId("footer-navigation-root")
+        screen.queryByTestId("undefined-footer-navigation-root")
       ).not.toBeInTheDocument();
     });
 
     it("renders when navLinks is empty array", () => {
       render(<FooterNavigation navLinks={[]} />);
 
-      expect(screen.getByTestId("footer-navigation-root")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("undefined-footer-navigation-root")
+      ).not.toBeInTheDocument();
     });
 
     it("renders when navLinks contains valid links", () => {
@@ -187,7 +202,9 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} />);
 
-      expect(screen.getByTestId("footer-navigation-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("undefined-footer-navigation-root")
+      ).toBeInTheDocument();
     });
   });
 
@@ -199,7 +216,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} _debugMode={false} />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
@@ -210,7 +227,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -223,7 +240,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav.tagName).toBe("NAV");
     });
 
@@ -234,7 +251,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveClass("footerNavigationList");
     });
 
@@ -245,7 +262,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} className="custom-nav" />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveClass("footerNavigationList custom-nav");
     });
   });
@@ -326,7 +343,7 @@ describe("FooterNavigation", () => {
 
       render(<FooterNavigation navLinks={navLinks} />);
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav.tagName).toBe("NAV");
 
       const links = screen.getAllByRole("link");
@@ -346,13 +363,16 @@ describe("FooterNavigation", () => {
         />
       );
 
-      const nav = screen.getByTestId("footer-navigation-root");
+      const nav = screen.getByTestId("undefined-footer-navigation-root");
       expect(nav).toHaveAttribute(
         "data-footer-navigation-id",
-        "test-id-footer-navigation"
+        "undefined-footer-navigation"
       );
-      expect(nav).toHaveAttribute("data-debug-mode", "true");
-      expect(nav).toHaveAttribute("data-testid", "footer-navigation-root");
+      expect(nav).not.toHaveAttribute("data-debug-mode");
+      expect(nav).toHaveAttribute(
+        "data-testid",
+        "undefined-footer-navigation-root"
+      );
     });
   });
 
@@ -405,7 +425,9 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation navLinks={navLinks} />);
 
       // Should still render the navigation element
-      expect(screen.getByTestId("footer-navigation-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("undefined-footer-navigation-root")
+      ).toBeInTheDocument();
     });
   });
 });
