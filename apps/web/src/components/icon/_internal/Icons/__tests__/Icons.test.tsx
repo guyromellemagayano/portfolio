@@ -29,6 +29,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 describe("Icon Components", () => {
@@ -44,32 +53,35 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders chevron down icon correctly", () => {
         render(<ChevronDownIcon />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<ChevronDownIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<ChevronDownIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<ChevronDownIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-chevron-down");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-chevron-down-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-chevron-down-id",
+          "custom-id-icon-chevron-down"
+        );
       });
 
       it("passes through HTML attributes", () => {
         render(<ChevronDownIcon data-test="test-value" />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toHaveAttribute("data-test", "test-value");
       });
     });
@@ -77,44 +89,41 @@ describe("Icon Components", () => {
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<ChevronDownIcon />);
-        const icon = screen.getByTestId("icon-chevron-down");
-        expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+        expect(icon).toHaveAttribute("viewBox", "0 0 8 6");
       });
 
       it("has aria-hidden attribute", () => {
         render(<ChevronDownIcon />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<ChevronDownIcon />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
-        expect(path).toHaveAttribute(
-          "d",
-          "M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"
-        );
+        expect(path).toHaveAttribute("d", "M1.75 1.75 4 4.25l2.25-2.5");
       });
     });
 
     describe("Debug Mode", () => {
       it("applies data-debug-mode when enabled", () => {
         render(<ChevronDownIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("does not apply data-debug-mode when disabled", () => {
         render(<ChevronDownIcon _debugMode={false} />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).not.toHaveAttribute("data-debug-mode");
       });
 
       it("does not apply data-debug-mode when undefined", () => {
         render(<ChevronDownIcon />);
-        const icon = screen.getByTestId("icon-chevron-down");
+        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
         expect(icon).not.toHaveAttribute("data-debug-mode");
       });
     });
@@ -124,52 +133,52 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders chevron right icon correctly", () => {
         render(<ChevronRightIcon />);
-        const icon = screen.getByTestId("icon-chevron-right");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<ChevronRightIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-chevron-right");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<ChevronRightIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-chevron-right");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<ChevronRightIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-chevron-right");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-chevron-right-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-chevron-right-id",
+          "custom-id-icon-chevron-right"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<ChevronRightIcon />);
-        const icon = screen.getByTestId("icon-chevron-right");
-        expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+        expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       });
 
       it("has aria-hidden attribute", () => {
         render(<ChevronRightIcon />);
-        const icon = screen.getByTestId("icon-chevron-right");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<ChevronRightIcon />);
-        const icon = screen.getByTestId("icon-chevron-right");
+        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
-        expect(path).toHaveAttribute(
-          "d",
-          "M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
-        );
+        expect(path).toHaveAttribute("d", "M6.75 5.75 9.25 8l-2.5 2.25");
       });
     });
   });
@@ -178,51 +187,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders arrow left icon correctly", () => {
         render(<ArrowLeftIcon />);
-        const icon = screen.getByTestId("icon-arrow-left");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<ArrowLeftIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-arrow-left");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<ArrowLeftIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-arrow-left");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<ArrowLeftIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-arrow-left");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-arrow-left-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-arrow-left-id",
+          "custom-id-icon-arrow-left"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<ArrowLeftIcon />);
-        const icon = screen.getByTestId("icon-arrow-left");
-        expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+        expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       });
 
       it("has aria-hidden attribute", () => {
         render(<ArrowLeftIcon />);
-        const icon = screen.getByTestId("icon-arrow-left");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<ArrowLeftIcon />);
-        const icon = screen.getByTestId("icon-arrow-left");
+        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          "M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
         );
       });
     });
@@ -236,51 +248,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders X (Twitter) icon correctly", () => {
         render(<XIcon />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<XIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<XIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<XIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-x-twitter");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-x-twitter-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-x-twitter-id",
+          "custom-id-icon-x-twitter"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<XIcon />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<XIcon />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<XIcon />);
-        const icon = screen.getByTestId("icon-x-twitter");
+        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+          "M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z"
         );
       });
     });
@@ -290,51 +305,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders Instagram icon correctly", () => {
         render(<InstagramIcon />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<InstagramIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<InstagramIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<InstagramIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-instagram");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-instagram-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-instagram-id",
+          "custom-id-icon-instagram"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<InstagramIcon />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<InstagramIcon />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<InstagramIcon />);
-        const icon = screen.getByTestId("icon-instagram");
+        const icon = screen.getByTestId("test-id-icon-instagram-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+          "M12 3c-2.444 0-2.75.01-3.71.054-.959.044-1.613.196-2.185.418A4.412 4.412 0 0 0 4.51 4.511c-.5.5-.809 1.002-1.039 1.594-.222.572-.374 1.226-.418 2.184C3.01 9.25 3 9.556 3 12s.01 2.75.054 3.71c.044.959.196 1.613.418 2.185.23.592.538 1.094 1.039 1.595.5.5 1.002.808 1.594 1.038.572.222 1.226.374 2.184.418C9.25 20.99 9.556 21 12 21s2.75-.01 3.71-.054c.959-.044 1.613-.196 2.185-.419a4.412 4.412 0 0 0 1.595-1.038c.5-.5.808-1.002 1.038-1.594.222-.572.374-1.226.418-2.184.044-.96.054-1.267.054-3.711s-.01-2.75-.054-3.71c-.044-.959-.196-1.613-.419-2.185A4.412 4.412 0 0 0 19.49 4.51c-.5-.5-1.002-.809-1.594-1.039-.572-.222-1.226-.374-2.184-.418C14.75 3.01 14.444 3 12 3Zm0 1.622c2.403 0 2.688.009 3.637.052.877.04 1.354.187 1.67.31.421.163.72.358 1.036.673.315.315.51.615.673 1.035.123.317.27.794.31 1.671.043.95.052 1.234.052 3.637s-.009 2.688-.052 3.637c-.04.877-.187 1.354-.31 1.67-.163.421-.358.72-.673 1.036a2.79 2.79 0 0 1-1.035.673c-.317.123-.794.27-1.671.31-.95.043-1.234.052-3.637.052s-2.688-.009-3.637-.052c-.877-.04-1.354-.187-1.67-.31a2.789 2.789 0 0 1-1.036-.673 2.79 2.79 0 0 1-.673-1.035c-.123-.317-.27-.794-.31-1.671-.043-.95-.052-1.234-.052-3.637s.009-2.688.052-3.637c.04-.877.187-1.354.31-1.67.163-.421.358-.72.673-1.036.315-.315.615-.51 1.035-.673.317-.123.794-.27 1.671-.31.95-.043 1.234-.052 3.637-.052Z"
         );
       });
     });
@@ -344,51 +362,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders LinkedIn icon correctly", () => {
         render(<LinkedInIcon />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<LinkedInIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<LinkedInIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<LinkedInIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-linkedin");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-linkedin-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-linkedin-id",
+          "custom-id-icon-linkedin"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<LinkedInIcon />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<LinkedInIcon />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<LinkedInIcon />);
-        const icon = screen.getByTestId("icon-linkedin");
+        const icon = screen.getByTestId("test-id-icon-linkedin-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+          "M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z"
         );
       });
     });
@@ -398,51 +419,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders GitHub icon correctly", () => {
         render(<GitHubIcon />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<GitHubIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<GitHubIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<GitHubIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-github");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-github-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-github-id",
+          "custom-id-icon-github"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<GitHubIcon />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<GitHubIcon />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<GitHubIcon />);
-        const icon = screen.getByTestId("icon-github");
+        const icon = screen.getByTestId("test-id-icon-github-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.59 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+          "M12 2C6.475 2 2 6.588 2 12.253c0 4.537 2.862 8.369 6.838 9.727.5.09.687-.218.687-.487 0-.243-.013-1.05-.013-1.91C7 20.059 6.35 18.957 6.15 18.38c-.113-.295-.6-1.205-1.025-1.448-.35-.192-.85-.667-.013-.68.788-.012 1.35.744 1.538 1.051.9 1.551 2.338 1.116 2.912.846.088-.666.35-1.115.638-1.371-2.225-.256-4.55-1.14-4.55-5.062 0-1.115.387-2.038 1.025-2.756-.1-.256-.45-1.307.1-2.717 0 0 .837-.269 2.75 1.051.8-.23 1.65-.346 2.5-.346.85 0 1.7.115 2.5.346 1.912-1.333 2.75-1.05 2.75-1.05.55 1.409.2 2.46.1 2.716.637.718 1.025 1.628 1.025 2.756 0 3.934-2.337 4.806-4.562 5.062.362.32.675.936.675 1.897 0 1.371-.013 2.473-.013 2.82 0 .268.188.589.688.486a10.039 10.039 0 0 0 4.932-3.74A10.447 10.447 0 0 0 22 12.253C22 6.588 17.525 2 12 2Z"
         );
       });
     });
@@ -456,51 +480,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders close icon correctly", () => {
         render(<CloseIcon />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<CloseIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<CloseIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<CloseIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-close");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-close-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-close-id",
+          "custom-id-icon-close"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<CloseIcon />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<CloseIcon />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<CloseIcon />);
-        const icon = screen.getByTestId("icon-close");
+        const icon = screen.getByTestId("test-id-icon-close-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+          "m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5"
         );
       });
     });
@@ -510,51 +537,51 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders sun icon correctly", () => {
         render(<SunIcon />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<SunIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<SunIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<SunIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-sun");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-sun-root");
+        expect(icon).toHaveAttribute("data-icon-sun-id", "custom-id-icon-sun");
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<SunIcon />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<SunIcon />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<SunIcon />);
-        const icon = screen.getByTestId("icon-sun");
+        const icon = screen.getByTestId("test-id-icon-sun-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"
+          "M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z"
         );
       });
     });
@@ -564,51 +591,54 @@ describe("Icon Components", () => {
     describe("Basic Rendering", () => {
       it("renders moon icon correctly", () => {
         render(<MoonIcon />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         expect(icon).toBeInTheDocument();
         expect(icon.tagName).toBe("svg");
       });
 
       it("applies custom className", () => {
         render(<MoonIcon className="custom-class" />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         expect(icon).toHaveClass("custom-class");
       });
 
       it("renders with debug mode enabled", () => {
         render(<MoonIcon _debugMode={true} />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("renders with custom component ID", () => {
         render(<MoonIcon _internalId="custom-id" />);
-        const icon = screen.getByTestId("icon-moon");
-        expect(icon).toHaveAttribute("data-icon-id", "custom-id");
+        const icon = screen.getByTestId("custom-id-icon-moon-root");
+        expect(icon).toHaveAttribute(
+          "data-icon-moon-id",
+          "custom-id-icon-moon"
+        );
       });
     });
 
     describe("SVG Structure", () => {
       it("has correct viewBox", () => {
         render(<MoonIcon />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("has aria-hidden attribute", () => {
         render(<MoonIcon />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("contains path element", () => {
         render(<MoonIcon />);
-        const icon = screen.getByTestId("icon-moon");
+        const icon = screen.getByTestId("test-id-icon-moon-root");
         const path = icon.querySelector("path");
         expect(path).toBeInTheDocument();
         expect(path).toHaveAttribute(
           "d",
-          "M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-3.03 0-5.5-2.47-5.5-5.5 0-1.82.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"
+          "M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z"
         );
       });
     });
@@ -644,26 +674,38 @@ describe("Icon Components", () => {
       const icons = [
         {
           component: <ChevronDownIcon key="chevron-down" />,
-          testId: "icon-chevron-down",
+          testId: "test-id-icon-chevron-down-root",
         },
         {
           component: <ChevronRightIcon key="chevron-right" />,
-          testId: "icon-chevron-right",
+          testId: "test-id-icon-chevron-right-root",
         },
         {
           component: <ArrowLeftIcon key="arrow-left" />,
-          testId: "icon-arrow-left",
+          testId: "test-id-icon-arrow-left-root",
         },
-        { component: <XIcon key="x" />, testId: "icon-x-twitter" },
+        { component: <XIcon key="x" />, testId: "test-id-icon-x-twitter-root" },
         {
           component: <InstagramIcon key="instagram" />,
-          testId: "icon-instagram",
+          testId: "test-id-icon-instagram-root",
         },
-        { component: <LinkedInIcon key="linkedin" />, testId: "icon-linkedin" },
-        { component: <GitHubIcon key="github" />, testId: "icon-github" },
-        { component: <CloseIcon key="close" />, testId: "icon-close" },
-        { component: <SunIcon key="sun" />, testId: "icon-sun" },
-        { component: <MoonIcon key="moon" />, testId: "icon-moon" },
+        {
+          component: <LinkedInIcon key="linkedin" />,
+          testId: "test-id-icon-linkedin-root",
+        },
+        {
+          component: <GitHubIcon key="github" />,
+          testId: "test-id-icon-github-root",
+        },
+        {
+          component: <CloseIcon key="close" />,
+          testId: "test-id-icon-close-root",
+        },
+        { component: <SunIcon key="sun" />, testId: "test-id-icon-sun-root" },
+        {
+          component: <MoonIcon key="moon" />,
+          testId: "test-id-icon-moon-root",
+        },
       ];
 
       icons.forEach(({ component, testId }) => {
@@ -688,7 +730,7 @@ describe("Icon Components", () => {
           style={{ color: "red" }}
         />
       );
-      const icon = screen.getByTestId("icon-chevron-down");
+      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");
@@ -699,7 +741,7 @@ describe("Icon Components", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<ChevronDownIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("icon-chevron-down");
+      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -708,7 +750,10 @@ describe("Icon Components", () => {
       const ref = React.createRef<SVGSVGElement>();
       render(<ChevronDownIcon ref={ref} />);
       expect(ref.current).toBeInstanceOf(SVGSVGElement);
-      expect(ref.current).toHaveAttribute("data-testid", "icon-chevron-down");
+      expect(ref.current).toHaveAttribute(
+        "data-testid",
+        "test-id-icon-chevron-down-root"
+      );
     });
   });
 });
