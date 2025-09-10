@@ -1,13 +1,20 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasValidContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
+
+import { cn } from "@web/utils";
 
 import {
   type CommonContainerComponent,
   type CommonContainerProps,
 } from "./_data";
 import { ContainerInner, ContainerOuter } from "./_internal";
+import styles from "./Container.module.css";
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
@@ -16,16 +23,18 @@ import { ContainerInner, ContainerOuter } from "./_internal";
 /** A flexible layout container component for consistent page structure. */
 const BaseContainer: CommonContainerComponent = setDisplayName(
   function BaseContainer(props) {
-    const { children, internalId, debugMode, ...rest } = props;
+    const { children, className, internalId, debugMode, ...rest } = props;
 
     const element = (
-      <ContainerOuter
+      <div
         {...rest}
-        data-container-id={internalId}
-        data-debug-mode={debugMode ? "true" : undefined}
+        className={cn(styles.container, className)}
+        {...createComponentProps(internalId, "container", debugMode)}
       >
-        <ContainerInner>{children}</ContainerInner>
-      </ContainerOuter>
+        <ContainerOuter internalId={internalId} debugMode={debugMode}>
+          <ContainerInner>{children}</ContainerInner>
+        </ContainerOuter>
+      </div>
     );
 
     return element;
@@ -43,15 +52,8 @@ const MemoizedContainer = React.memo(BaseContainer);
 // MAIN CONTAINER COMPONENT
 // ============================================================================
 
-type ContainerCompoundComponent = React.FC<CommonContainerProps> & {
-  /** A container inner component that provides consistent inner structure for page content. */
-  Inner: typeof ContainerInner;
-  /** A container outer component that provides consistent outer structure for page content. */
-  Outer: typeof ContainerOuter;
-};
-
 /** Top-level layout container that provides consistent outer and inner structure for page content. */
-const Container = setDisplayName(function Container(props) {
+export const Container = setDisplayName(function Container(props) {
   const {
     children,
     isMemoized = false,
@@ -65,7 +67,7 @@ const Container = setDisplayName(function Container(props) {
     debugMode,
   });
 
-  if (!isRenderableContent(children)) return null;
+  if (!hasValidContent(children)) return null;
 
   const updatedProps = {
     ...rest,
@@ -83,7 +85,12 @@ const Container = setDisplayName(function Container(props) {
 // CONTAINER COMPOUND COMPONENTS
 // ============================================================================
 
+type ContainerCompoundComponent = React.FC<CommonContainerProps> & {
+  /** A container inner component that provides consistent inner structure for page content. */
+  Inner: typeof ContainerInner;
+  /** A container outer component that provides consistent outer structure for page content. */
+  Outer: typeof ContainerOuter;
+};
+
 Container.Outer = ContainerOuter;
 Container.Inner = ContainerInner;
-
-export { Container };
