@@ -9,7 +9,8 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
+import { createHeaderProps } from "@web/utils/component";
 
 import { AVATAR_COMPONENT_LABELS } from "./_data";
 import {
@@ -23,13 +24,17 @@ import {
 import styles from "./Header.module.css";
 
 // ============================================================================
-// BASE HEADER COMPONENT
+// HEADER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface HeaderProps
+export interface HeaderProps
   extends React.ComponentProps<"header">,
     CommonComponentProps {}
-type HeaderComponent = React.FC<HeaderProps>;
+export type HeaderComponent = React.FC<HeaderProps>;
+
+// ============================================================================
+// BASE HEADER COMPONENT
+// ============================================================================
 
 /** A responsive site header with avatar, navigation, and theme toggle */
 const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
@@ -56,9 +61,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
         }}
-        data-header-id={`${internalId}-header`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid={`${internalId}-header-root`}
+        {...createHeaderProps(internalId || "fallback-id", debugMode)}
       >
         {isHomePage && (
           <>

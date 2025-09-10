@@ -4,7 +4,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import styles from "./SectionContent.module.css";
 
