@@ -37,7 +37,7 @@ const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
     <svg
       {...rest}
       aria-hidden="true"
-      {...createComponentProps(internalId || "fallback-id", "icon", debugMode)}
+      {...createComponentProps(internalId, "icon", debugMode)}
     >
       {children}
     </svg>
