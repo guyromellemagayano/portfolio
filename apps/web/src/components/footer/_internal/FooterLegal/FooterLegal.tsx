@@ -3,7 +3,7 @@ import React from "react";
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { hasMeaningfulText, setDisplayName } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import {
   FOOTER_COMPONENT_LABELS,

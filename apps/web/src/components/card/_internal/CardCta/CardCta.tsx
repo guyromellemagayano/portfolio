@@ -12,7 +12,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
 import { CardLinkCustom } from "../CardLink";
 import styles from "./CardCta.module.css";
