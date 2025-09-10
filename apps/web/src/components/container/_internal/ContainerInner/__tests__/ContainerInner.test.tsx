@@ -28,10 +28,25 @@ vi.mock("@guyromellemagayano/utils", () => ({
     }
     return true;
   }),
+  hasValidContent: vi.fn((children) => {
+    if (children === null || children === undefined || children === "") {
+      return false;
+    }
+    return true;
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -57,7 +72,9 @@ describe("ContainerInner", () => {
       render(<ContainerInner>Inner content</ContainerInner>);
 
       expect(screen.getByText("Inner content")).toBeInTheDocument();
-      expect(screen.getByTestId("container-inner-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-inner-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with proper structure", () => {
@@ -67,7 +84,7 @@ describe("ContainerInner", () => {
         </ContainerInner>
       );
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       const child = screen.getByTestId("child");
 
       expect(innerRoot).toBeInTheDocument();
@@ -92,9 +109,9 @@ describe("ContainerInner", () => {
       expect(container.firstChild).toBeInTheDocument();
     });
 
-    it("renders with empty string children", () => {
+    it("does not render with empty string children", () => {
       const { container } = render(<ContainerInner>{""}</ContainerInner>);
-      expect(container.firstChild).toBeInTheDocument();
+      expect(container.firstChild).toBeNull();
     });
   });
 
@@ -110,7 +127,7 @@ describe("ContainerInner", () => {
     it("passes className correctly", () => {
       render(<ContainerInner className="custom-class">Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveClass("custom-class");
     });
 
@@ -121,7 +138,7 @@ describe("ContainerInner", () => {
         </ContainerInner>
       );
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveAttribute("id", "test-id");
       expect(innerRoot).toHaveAttribute("data-test", "test-data");
     });
@@ -129,7 +146,7 @@ describe("ContainerInner", () => {
     it("applies CSS module classes", () => {
       render(<ContainerInner>Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       // CSS module classes are hashed, so we check that the class contains the expected pattern
       expect(innerRoot.className).toMatch(/containerInner/);
     });
@@ -137,7 +154,7 @@ describe("ContainerInner", () => {
     it("merges custom className with CSS module classes", () => {
       render(<ContainerInner className="custom-class">Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveClass("custom-class");
       // CSS module classes are hashed, so we check that the class contains the expected pattern
       expect(innerRoot.className).toMatch(/containerInner/);
@@ -148,21 +165,21 @@ describe("ContainerInner", () => {
     it("applies debug mode when enabled", () => {
       render(<ContainerInner debugMode={true}>Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply debug mode when disabled", () => {
       render(<ContainerInner debugMode={false}>Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply debug mode when undefined", () => {
       render(<ContainerInner>Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -171,15 +188,21 @@ describe("ContainerInner", () => {
     it("applies custom component ID", () => {
       render(<ContainerInner internalId="custom-id">Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
-      expect(innerRoot).toHaveAttribute("data-container-inner-id", "custom-id");
+      const innerRoot = screen.getByTestId("custom-id-container-inner-root");
+      expect(innerRoot).toHaveAttribute(
+        "data-container-inner-id",
+        "custom-id-container-inner"
+      );
     });
 
     it("generates default component ID when not provided", () => {
       render(<ContainerInner>Content</ContainerInner>);
 
-      const innerRoot = screen.getByTestId("container-inner-root");
-      expect(innerRoot).toHaveAttribute("data-container-inner-id", "test-id");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveAttribute(
+        "data-container-inner-id",
+        "test-id-container-inner"
+      );
     });
   });
 
@@ -191,7 +214,7 @@ describe("ContainerInner", () => {
         </ContainerInner>
       );
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveAttribute("aria-label", "Inner container");
       expect(innerRoot).toHaveAttribute("aria-describedby", "desc");
     });
@@ -208,7 +231,7 @@ describe("ContainerInner", () => {
         </ContainerInner>
       );
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveAttribute("aria-label", "Container");
       expect(innerRoot).toHaveAttribute("aria-describedby", "desc");
       expect(innerRoot).toHaveAttribute("aria-labelledby", "label");
@@ -229,7 +252,9 @@ describe("ContainerInner", () => {
 
     it("handles boolean children", () => {
       render(<ContainerInner>{true}</ContainerInner>);
-      expect(screen.getByTestId("container-inner-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-inner-root")
+      ).toBeInTheDocument();
     });
 
     it("handles React elements", () => {
@@ -338,7 +363,7 @@ describe("ContainerInner", () => {
         </ContainerInner>
       );
 
-      const innerRoot = screen.getByTestId("container-inner-root");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
       const content = screen.getByTestId("content");
 
       expect(innerRoot).toContainElement(content);
