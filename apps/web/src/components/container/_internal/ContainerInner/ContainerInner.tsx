@@ -1,11 +1,15 @@
 import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasValidContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
-import { cn } from "@web/lib";
+import { cn } from "@web/utils";
 
-import type { CommonContainerComponent } from "../../_data";
+import { type CommonContainerComponent } from "../../_data";
 import styles from "./ContainerInner.module.css";
 
 // ============================================================================
@@ -21,9 +25,7 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
       <div
         {...rest}
         className={cn(styles.containerInner, className)}
-        data-container-inner-id={internalId}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="container-inner-root"
+        {...createComponentProps(internalId, "container-inner", debugMode)}
       >
         <div className={styles.containerInnerContent}>{children}</div>
       </div>
@@ -44,7 +46,7 @@ const MemoizedContainerInner = React.memo(BaseContainerInner);
 // ============================================================================
 
 /** A container inner component that provides consistent inner structure for page content. */
-const ContainerInner: CommonContainerComponent = setDisplayName(
+export const ContainerInner: CommonContainerComponent = setDisplayName(
   function ContainerInner(props) {
     const {
       children,
@@ -59,7 +61,7 @@ const ContainerInner: CommonContainerComponent = setDisplayName(
       debugMode,
     });
 
-    if (!isRenderableContent(children)) return null;
+    if (!hasValidContent(children)) return null;
 
     const updatedProps = {
       ...rest,
@@ -73,5 +75,3 @@ const ContainerInner: CommonContainerComponent = setDisplayName(
     return element;
   }
 );
-
-export { ContainerInner };
