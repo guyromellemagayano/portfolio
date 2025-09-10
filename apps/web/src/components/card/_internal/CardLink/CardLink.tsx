@@ -2,6 +2,7 @@ import React from "react";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   isRenderableContent,
   isValidLink,
   setDisplayName,
@@ -13,16 +14,20 @@ import styles from "./CardLink.module.css";
 import { CardLinkCustom } from "./CardLinkCustom";
 
 // ============================================================================
-// BASE CARD LINK COMPONENT
+// CARD LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardLinkProps
+export interface CardLinkProps
   extends React.ComponentPropsWithRef<"div">,
     Omit<
       React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
       keyof React.ComponentPropsWithRef<"div">
     > {}
-type CardLinkComponent = React.FC<CardLinkProps>;
+export type CardLinkComponent = React.FC<CardLinkProps>;
+
+// ============================================================================
+// BASE CARD LINK COMPONENT
+// ============================================================================
 
 /** A background and clickable wrapper for card links. */
 const BaseCardLink: CardLinkComponent = setDisplayName(
@@ -43,9 +48,7 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
         <div
           {...rest}
           className={cn(styles.cardLinkBackground, className)}
-          data-card-link-id={`${_internalId}-card-link`}
-          data-debug-mode={_debugMode ? "true" : undefined}
-          data-testid="card-link-root"
+          {...createComponentProps(_internalId, "card-link", _debugMode)}
         />
         {isValidLink(href) ? (
           <CardLinkCustom
@@ -80,33 +83,31 @@ const MemoizedCardLink = React.memo(BaseCardLink);
 // ============================================================================
 
 /** A card link component that can optionally be wrapped in a link for navigation */
-const CardLink: CardLinkComponent = setDisplayName(function CardLink(props) {
-  const {
-    children,
-    href,
-    isMemoized = false,
-    _internalId,
-    _debugMode,
-    ...rest
-  } = props;
+export const CardLink: CardLinkComponent = setDisplayName(
+  function CardLink(props) {
+    const {
+      children,
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId: _internalId,
-    debugMode: _debugMode,
-  });
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
 
-  if (!isRenderableContent(children)) return null;
+    if (!isRenderableContent(children)) return null;
 
-  const updatedProps = {
-    ...rest,
-    href,
-    _internalId: id,
-    _debugMode: isDebugMode,
-  };
+    const updatedProps = {
+      ...rest,
+      _internalId: id,
+      _debugMode: isDebugMode,
+    };
 
-  const Component = isMemoized ? MemoizedCardLink : BaseCardLink;
-  const element = <Component {...updatedProps}>{children}</Component>;
-  return element;
-});
-
-export { CardLink };
+    const Component = isMemoized ? MemoizedCardLink : BaseCardLink;
+    const element = <Component {...updatedProps}>{children}</Component>;
+    return element;
+  }
+);
