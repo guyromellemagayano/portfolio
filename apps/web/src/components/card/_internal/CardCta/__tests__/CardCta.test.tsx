@@ -32,38 +32,26 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return true;
   }),
   isValidLink: vi.fn((href) => {
-    // Allow undefined/null href for non-link cases
-    if (!href) return true;
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    if (hrefString === "#" || hrefString === "") return false;
-    return true;
+    return href && href !== "" && href !== "#";
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
   getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
     }
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
-    const shouldOpenNewTab =
-      target === "_blank" || (isExternal && target !== "_self");
-    return {
-      target: shouldOpenNewTab ? "_blank" : "_self",
-      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
-    };
-  }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date().getFullYear().toString();
-    }
-    return date.toISOString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    component.displayName = displayName;
-    return component;
+    return { target };
   }),
 }));
 
@@ -82,7 +70,16 @@ vi.mock("@web/components", () => ({
 vi.mock("../CardLink", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
-      const { children, href, target, title, className, ...rest } = props;
+      const {
+        children,
+        href,
+        target,
+        title,
+        className,
+        _internalId,
+        _debugMode,
+        ...rest
+      } = props;
       return (
         <a
           ref={ref}
@@ -90,7 +87,9 @@ vi.mock("../CardLink", () => ({
           target={target}
           title={title}
           className={className}
-          data-testid="card-link-custom"
+          data-card-link-custom-id={`${_internalId || "test-id"}-card-link-custom`}
+          data-debug-mode={_debugMode ? "true" : undefined}
+          data-testid={`${_internalId || "test-id"}-card-link-custom-root`}
           {...rest}
         >
           {children}
@@ -144,7 +143,7 @@ describe("CardCta", () => {
     it("applies custom className", () => {
       render(<CardCta className="custom-class">Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveClass("custom-class");
     });
 
@@ -155,7 +154,7 @@ describe("CardCta", () => {
         </CardCta>
       );
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       // Note: The component doesn't pass through aria-label to the root div
       // but it does render the component correctly
       expect(ctaElement).toBeInTheDocument();
@@ -163,53 +162,52 @@ describe("CardCta", () => {
   });
 
   describe("Link Functionality", () => {
-    it("renders without link when href is provided and valid", () => {
+    it("renders CardLinkCustom when href is provided and valid", () => {
       render(<CardCta href="/test-link">Call to action</CardCta>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByTestId("test-id-card-link-custom-root");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/test-link");
       expect(screen.getByText("Call to action")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
-    it("renders container only when href is not valid", () => {
-      const { container } = render(<CardCta href="#">Call to action</CardCta>);
+    it("renders children directly when href is invalid", () => {
+      render(<CardCta href="#">Call to action</CardCta>);
 
-      // The component renders the container but not the content when href is invalid
-      const ctaElement = screen.getByTestId("card-cta-root");
-      expect(ctaElement).toBeInTheDocument();
-
-      // No link or content is rendered due to current component behavior
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
-      expect(container.innerHTML).toContain('data-testid="card-cta-root"');
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Call to action")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("icon-chevron-right")
+      ).not.toBeInTheDocument();
     });
 
-    it("renders container only when href is invalid with attributes", () => {
+    it("renders children directly when href is not provided", () => {
+      render(<CardCta>Call to action</CardCta>);
+
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Call to action")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("icon-chevron-right")
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders CardLinkCustom with correct props when href is valid", () => {
       render(
-        <CardCta href="#" target="_blank" title="Test title">
+        <CardCta href="/valid-link" target="_blank" title="Test title">
           Call to action
         </CardCta>
       );
 
-      // The component renders the container but not the link when href is invalid
-      const ctaElement = screen.getByTestId("card-cta-root");
-      expect(ctaElement).toBeInTheDocument();
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
-    });
-
-    it("does not render chevron icon when href is invalid", () => {
-      render(<CardCta href="#">Call to action</CardCta>);
-
-      // No icon is rendered when href is invalid due to current component behavior
-      expect(
-        screen.queryByTestId("icon-chevron-right")
-      ).not.toBeInTheDocument();
-    });
-
-    it("does not render chevron icon when no link", () => {
-      render(<CardCta>Call to action</CardCta>);
-
-      expect(
-        screen.queryByTestId("icon-chevron-right")
-      ).not.toBeInTheDocument();
+      const link = screen.getByTestId("test-id-card-link-custom-root");
+      expect(link).toHaveAttribute("href", "/valid-link");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("title", "Test title");
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
   });
 
@@ -234,14 +232,14 @@ describe("CardCta", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<CardCta _debugMode={true}>Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<CardCta>Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -250,21 +248,21 @@ describe("CardCta", () => {
     it("renders as div element", () => {
       render(<CardCta>Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
       render(<CardCta>Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveClass("cardCtaContainer");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardCta className="custom-class">Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveClass("cardCtaContainer", "custom-class");
     });
   });
@@ -273,7 +271,7 @@ describe("CardCta", () => {
     it("renders with custom internal ID", () => {
       render(<CardCta _internalId="custom-id">Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("custom-id-card-cta-root");
       expect(ctaElement).toHaveAttribute(
         "data-card-cta-id",
         "custom-id-card-cta"
@@ -283,11 +281,33 @@ describe("CardCta", () => {
     it("uses provided internalId when available", () => {
       render(<CardCta _internalId="test-id">Call to action</CardCta>);
 
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveAttribute(
         "data-card-cta-id",
         "test-id-card-cta"
       );
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(
+        <CardCta isMemoized={true}>
+          <div>Memoized CTA</div>
+        </CardCta>
+      );
+
+      expect(screen.getByText("Memoized CTA")).toBeInTheDocument();
+    });
+
+    it("renders without memoization by default", () => {
+      render(
+        <CardCta>
+          <div>Default CTA</div>
+        </CardCta>
+      );
+
+      expect(screen.getByText("Default CTA")).toBeInTheDocument();
     });
   });
 
@@ -298,7 +318,7 @@ describe("CardCta", () => {
 
       // Note: In test environment, ref.current might be null due to mocked components
       // The important thing is that the component renders correctly
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toBeInTheDocument();
     });
 
@@ -308,7 +328,7 @@ describe("CardCta", () => {
 
       // Note: In test environment, ref.current might be null due to mocked components
       // The important thing is that the component renders correctly
-      const ctaElement = screen.getByTestId("card-cta-root");
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement.tagName).toBe("DIV");
     });
   });

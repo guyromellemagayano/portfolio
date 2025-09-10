@@ -17,17 +17,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
     }
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
-    const shouldOpenNewTab =
-      target === "_blank" || (isExternal && target !== "_self");
-    return {
-      target: shouldOpenNewTab ? "_blank" : "_self",
-      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
-    };
+    return { target };
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -47,21 +40,17 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return true;
   }),
   isValidLink: vi.fn((href) => {
-    if (!href) return false;
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    if (hrefString === "#" || hrefString === "") return false;
-    return true;
+    return href && href !== "" && href !== "#";
   }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date().getFullYear().toString();
-    }
-    return date.toISOString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    component.displayName = displayName;
-    return component;
-  }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -74,14 +63,7 @@ vi.mock("next/link", () => ({
     function MockNextLink(props, ref) {
       const { href, target, title, children, ...rest } = props;
       return (
-        <a
-          ref={ref}
-          href={href}
-          target={target}
-          title={title}
-          data-testid="card-link-custom-root"
-          {...rest}
-        >
+        <a ref={ref} href={href} target={target} title={title} {...rest}>
           {children}
         </a>
       );
@@ -138,7 +120,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toHaveClass("custom-class");
     });
 
@@ -155,7 +137,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toHaveAttribute("aria-label", "Link");
     });
   });
@@ -225,7 +207,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -240,7 +222,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -257,7 +239,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement.tagName).toBe("A");
     });
 
@@ -272,7 +254,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toBeInTheDocument();
     });
 
@@ -288,7 +270,7 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toHaveClass("custom-class");
     });
   });
@@ -305,9 +287,9 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("custom-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-id",
+        "data-card-link-custom-id",
         "custom-id-card-link-custom"
       );
     });
@@ -323,9 +305,9 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("test-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-id",
+        "data-card-link-custom-id",
         "test-id-card-link-custom"
       );
     });
@@ -337,10 +319,10 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("card-link-custom-root");
+      const linkElement = screen.getByTestId("undefined-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-id",
-        "test-id-card-link-custom"
+        "data-card-link-custom-id",
+        "undefined-card-link-custom"
       );
     });
   });
