@@ -1,1 +1,1 @@
-export * from "./Container.types";
+export type * from "./Container.types";
