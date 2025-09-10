@@ -2,17 +2,21 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  isRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/lib";
 
 import styles from "./CardEyebrow.module.css";
 
 // ============================================================================
-// BASE CARD EYEBROW COMPONENT
+// CARD EYEBROW COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardEyebrowProps
+export interface CardEyebrowProps
   extends React.ComponentPropsWithRef<"p">,
     CommonComponentProps {
   /** ISO date string for the eyebrow content */
@@ -20,7 +24,11 @@ interface CardEyebrowProps
   /** Enable decorative styling */
   decorate?: boolean;
 }
-type CardEyebrowComponent = React.FC<CardEyebrowProps>;
+export type CardEyebrowComponent = React.FC<CardEyebrowProps>;
+
+// ============================================================================
+// BASE CARD EYEBROW COMPONENT
+// ============================================================================
 
 /** A card eyebrow component that can optionally be wrapped in a link for navigation */
 const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
@@ -43,9 +51,7 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
           decorate && styles.cardEyebrowDecorated,
           className
         )}
-        data-card-eyebrow-id={`${_internalId}-card-eyebrow`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid="card-eyebrow-root"
+        {...createComponentProps(_internalId, "card-eyebrow", _debugMode)}
       >
         {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
       </p>
