@@ -17,8 +17,6 @@ export interface CommonComponentProps
   isClient?: boolean;
   /** Use memoized version of client component */
   isMemoized?: boolean;
-  /** Additional props for extensibility */
-  [key: string]: unknown;
 }
 
 /**
