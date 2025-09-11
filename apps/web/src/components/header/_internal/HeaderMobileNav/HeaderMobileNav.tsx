@@ -7,16 +7,18 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
+  filterValidNavigationLinks,
+  hasValidNavigationLinks,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/Icon";
 
 import {
+  CommonHeaderNavProps,
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
   MOBILE_HEADER_NAV_LINKS,
 } from "../../_data";
@@ -27,8 +29,9 @@ import styles from "./HeaderMobileNav.module.css";
 // HEADER MOBILE NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export type HeaderMobileNavProps = React.ComponentProps<typeof Popover> &
-  CommonComponentProps;
+export interface HeaderMobileNavProps
+  extends React.ComponentProps<typeof Popover>,
+    CommonHeaderNavProps {}
 export type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 // ============================================================================
@@ -38,7 +41,7 @@ export type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 /** A mobile navigation component that displays a menu button and a list of links. */
 const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function BaseHeaderMobileNav(props) {
-    const { _internalId, _debugMode, ...rest } = props;
+    const { links, _internalId, _debugMode, ...rest } = props;
 
     const element = (
       <Popover
@@ -46,7 +49,7 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
         {...createComponentProps(_internalId, "header-mobile-nav", _debugMode)}
       >
         <PopoverButton className={styles.HeaderMobileNavButton}>
-          {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.menu}
+          {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.menu ?? null}
           <Icon.ChevronDown
             className={styles.HeaderMobileNavChevron}
             _internalId={_internalId}
@@ -60,19 +63,23 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
         <PopoverPanel focus transition className={styles.HeaderMobileNavPanel}>
           <div className={styles.HeaderMobileNavHeader}>
             <PopoverButton
-              aria-label={HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.closeMenu}
+              aria-label={
+                HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.closeMenu ?? ""
+              }
               className={styles.HeaderMobileNavCloseButton}
             >
               <Icon.Close className={styles.HeaderMobileNavCloseIcon} />
             </PopoverButton>
-            <h2 className={styles.HeaderMobileNavTitle}>
-              {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.navigation}
-            </h2>
+            {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.navigation ? (
+              <h2 className={styles.HeaderMobileNavTitle}>
+                {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.navigation}
+              </h2>
+            ) : null}
           </div>
-          {MOBILE_HEADER_NAV_LINKS && (
+          {links ? (
             <nav className={styles.HeaderMobileNavContent}>
               <ul className={styles.HeaderMobileNavList}>
-                {MOBILE_HEADER_NAV_LINKS.map((link) => (
+                {links.map((link) => (
                   <HeaderMobileNavItem
                     key={`${link.label}:${link.href}`}
                     href={link.href}
@@ -84,7 +91,7 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                 ))}
               </ul>
             </nav>
-          )}
+          ) : null}
         </PopoverPanel>
       </Popover>
     );
@@ -107,14 +114,28 @@ const MemoizedHeaderMobileNav = React.memo(BaseHeaderMobileNav);
 /** A header mobile nav component that supports memoization and internal debug props. */
 export const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function HeaderMobileNav(props) {
-    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+    const {
+      isMemoized = false,
+      links = MOBILE_HEADER_NAV_LINKS,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
-    const updatedProps = { ...rest, _internalId: id, _debugMode: isDebugMode };
+    const validLinks = filterValidNavigationLinks(links);
+    if (!hasValidNavigationLinks(validLinks)) return null;
+
+    const updatedProps = {
+      ...rest,
+      links: validLinks,
+      _internalId: id,
+      _debugMode: isDebugMode,
+    };
 
     const Component = isMemoized
       ? MemoizedHeaderMobileNav

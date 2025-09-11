@@ -1,6 +1,5 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -11,10 +10,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import {
-  DESKTOP_HEADER_NAV_LINKS,
-  type HeaderComponentNavLinks,
-} from "../../_data";
+import { CommonHeaderNavProps, DESKTOP_HEADER_NAV_LINKS } from "../../_data";
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 import styles from "./HeaderDesktopNav.module.css";
 
@@ -22,12 +18,10 @@ import styles from "./HeaderDesktopNav.module.css";
 // HEADER DESKTOP NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CommonHeaderNavProps
+export interface HeaderDesktopNavProps
   extends React.ComponentProps<"nav">,
-    CommonComponentProps {
-  links?: HeaderComponentNavLinks;
-}
-export type HeaderDesktopNavComponent = React.FC<CommonHeaderNavProps>;
+    CommonHeaderNavProps {}
+export type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV COMPONENT
@@ -36,15 +30,15 @@ export type HeaderDesktopNavComponent = React.FC<CommonHeaderNavProps>;
 /** Renders a desktop navigation component that displays a list of navigation links. */
 const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
-    const { className, _internalId, _debugMode, links, ...rest } = props;
+    const { className, links, _internalId, _debugMode, ...rest } = props;
 
-    const element = (
+    const element = links ? (
       <nav
         {...rest}
         className={cn(styles.HeaderDesktopNavList, className)}
         {...createComponentProps(_internalId, "header-desktop-nav", _debugMode)}
       >
-        {links?.map(({ label, href }) => (
+        {links.map(({ label, href }) => (
           <HeaderDesktopNavItem
             key={`${label}:${href}`}
             href={href}
@@ -55,7 +49,7 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
           </HeaderDesktopNavItem>
         ))}
       </nav>
-    );
+    ) : null;
 
     return element;
   }
@@ -76,8 +70,8 @@ const MemoizedHeaderDesktopNav = React.memo(BaseHeaderDesktopNav);
 export const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function HeaderDesktopNav(props) {
     const {
-      links = DESKTOP_HEADER_NAV_LINKS,
       isMemoized = false,
+      links = DESKTOP_HEADER_NAV_LINKS,
       _internalId,
       _debugMode,
       ...rest
@@ -93,7 +87,7 @@ export const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
 
     const updatedProps = {
       ...rest,
-      links,
+      links: validLinks,
       _internalId: id,
       _debugMode: isDebugMode,
     };
