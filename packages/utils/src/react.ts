@@ -163,9 +163,14 @@ export function createComponentProps(
  */
 export function isRenderableContent(children: unknown): boolean {
   // Strict conditional rendering to prevent broken UI
-  // Only filter out false values - allow null, undefined, and empty strings
+  // Filter out falsy values that shouldn't render: null, undefined, false, empty strings
   // This prevents components from rendering when they have no meaningful content
-  if (children === false) {
+  if (children === false || children === null || children === undefined) {
+    return false;
+  }
+
+  // Empty strings should not render
+  if (typeof children === "string" && children === "") {
     return false;
   }
 
