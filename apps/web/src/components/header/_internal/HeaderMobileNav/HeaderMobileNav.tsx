@@ -9,7 +9,10 @@ import {
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/Icon";
 
@@ -21,12 +24,16 @@ import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 import styles from "./HeaderMobileNav.module.css";
 
 // ============================================================================
-// BASE HEADER MOBILE NAV COMPONENT
+// HEADER MOBILE NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-type HeaderMobileNavProps = React.ComponentProps<typeof Popover> &
+export type HeaderMobileNavProps = React.ComponentProps<typeof Popover> &
   CommonComponentProps;
-type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
+export type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
+
+// ============================================================================
+// BASE HEADER MOBILE NAV COMPONENT
+// ============================================================================
 
 /** A mobile navigation component that displays a menu button and a list of links. */
 const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
@@ -36,9 +43,7 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
     const element = (
       <Popover
         {...rest}
-        data-mobile-header-nav-id={`header-${_internalId}-mobile-nav`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`header-${_internalId}-mobile-nav-root`}
+        {...createComponentProps(_internalId, "header-mobile-nav", _debugMode)}
       >
         <PopoverButton className={styles.HeaderMobileNavButton}>
           {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.menu}
@@ -92,13 +97,15 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
 // MEMOIZED HEADER MOBILE NAV COMPONENT
 // ============================================================================
 
+/** A memoized header mobile nav component. */
 const MemoizedHeaderMobileNav = React.memo(BaseHeaderMobileNav);
 
 // ============================================================================
 // MAIN HEADER MOBILE NAV COMPONENT
 // ============================================================================
 
-const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
+/** A header mobile nav component that supports memoization and internal debug props. */
+export const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function HeaderMobileNav(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
@@ -116,5 +123,3 @@ const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
     return element;
   }
 );
-
-export { HeaderMobileNav };

@@ -8,10 +8,10 @@ import { setDisplayName } from "@guyromellemagayano/utils";
 import { clamp } from "@web/utils";
 
 // ============================================================================
-// BASE HEADER EFFECTS COMPONENT
+// HEADER EFFECTS COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface HeaderEffectsProps
+export interface HeaderEffectsProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {
   /** Reference to the header element. */
@@ -23,11 +23,13 @@ interface HeaderEffectsProps
   /** Whether the initial render is complete. */
   isInitialRender: React.RefObject<boolean>;
 }
-type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
+export type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
 
-/**
- * Handles dynamic header and avatar positioning and sizing based on scroll position and page context.
- */
+// ============================================================================
+// BASE HEADER EFFECTS COMPONENT
+// ============================================================================
+
+/** Handles dynamic header and avatar positioning and sizing based on scroll position and page context. */
 const BaseHeaderEffects: HeaderEffectsComponent = function BaseHeaderEffects(
   props
 ) {
@@ -163,7 +165,7 @@ const MemoizedHeaderEffects = React.memo(BaseHeaderEffects);
 // ============================================================================
 
 /** Applies scroll and resize effects to the header for dynamic UI behavior. */
-const HeaderEffects: HeaderEffectsComponent = setDisplayName(
+export const HeaderEffects: HeaderEffectsComponent = setDisplayName(
   function HeaderEffects(props) {
     const { isMemoized = false, ...rest } = props;
 
@@ -172,5 +174,3 @@ const HeaderEffects: HeaderEffectsComponent = setDisplayName(
     return element;
   }
 );
-
-export { HeaderEffects };

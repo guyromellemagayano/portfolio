@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
   isRenderableContent,
@@ -15,27 +16,18 @@ import {
 
 import { isActivePath } from "@web/utils";
 
-import type { CommonNavItemProps } from "../../_data";
+import type { HeaderNavItemComponent } from "../../_data";
 import styles from "./HeaderMobileNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-type HeaderMobileNavItemComponent = React.FC<CommonNavItemProps>;
-
 /** A mobile navigation item component for the header. */
-const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
+const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderMobileNavItem(props) {
-    const {
-      children,
-      href = "#",
-      target = "_self",
-      title = "",
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { children, href, target, title, _internalId, _debugMode, ...rest } =
+      props;
 
     const pathname = usePathname();
     const isActive = isActivePath(pathname, href || "");
@@ -48,9 +40,11 @@ const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
     const element = (
       <li
         {...rest}
-        data-header-mobile-nav-item-li-id={`${_internalId}-header-mobile-nav-item-li`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`${_internalId}-header-mobile-nav-item-root`}
+        {...createComponentProps(
+          _internalId,
+          "header-mobile-nav-item",
+          _debugMode
+        )}
       >
         <Link
           href={href}
@@ -72,13 +66,15 @@ const BaseHeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
 // MEMOIZED HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
+/** A memoized header mobile nav item component. */
 const MemoizedHeaderMobileNavItem = React.memo(BaseHeaderMobileNavItem);
 
 // ============================================================================
 // MAIN HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
+/** A header mobile nav item component that supports memoization and internal debug props. */
+export const HeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderMobileNavItem(props) {
     const {
       children,
@@ -104,5 +100,3 @@ const HeaderMobileNavItem: HeaderMobileNavItemComponent = setDisplayName(
     return element;
   }
 );
-
-export { HeaderMobileNavItem };
