@@ -4,7 +4,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -25,7 +25,7 @@ import styles from "./Card.module.css";
 
 export interface CardProps
   extends React.ComponentProps<"article">,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
@@ -75,7 +75,7 @@ export const Card = setDisplayName(function Card(props) {
     debugMode,
   });
 
-  if (!hasValidContent(children)) return null;
+  if (!hasAnyRenderableContent(children)) return null;
 
   const updatedProps = {
     ...rest,

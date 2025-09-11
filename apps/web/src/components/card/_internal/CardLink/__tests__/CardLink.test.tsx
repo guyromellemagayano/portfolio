@@ -17,14 +17,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (
-      children === null ||
-      children === undefined ||
-      children === "" ||
-      children === true ||
-      children === false ||
-      children === 0
-    ) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
@@ -370,13 +366,14 @@ describe("CardLink", () => {
     });
 
     it("handles boolean children", () => {
-      const { container } = render(<CardLink>{true}</CardLink>);
-      expect(container.firstChild).toBeNull();
+      render(<CardLink>{true}</CardLink>);
+      // Boolean true is not rendered as text content in React
+      expect(screen.getByTestId("test-id-card-link-root")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
-      const { container } = render(<CardLink>{0}</CardLink>);
-      expect(container.firstChild).toBeNull();
+      render(<CardLink>{0}</CardLink>);
+      expect(screen.getByText("0")).toBeInTheDocument();
     });
   });
 });

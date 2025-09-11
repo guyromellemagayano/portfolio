@@ -18,7 +18,7 @@ import styles from "./CardDescription.module.css";
 
 export interface CardDescriptionProps
   extends React.ComponentPropsWithRef<"p">,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
