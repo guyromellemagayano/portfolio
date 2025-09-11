@@ -62,18 +62,16 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       styles.avatarImage,
       large ? styles.avatarImageLarge : styles.avatarImageDefault
     );
-    // Return null if either src or href is invalid
-    if (!isValidImageSrc(src) || !isValidLink(href)) {
-      return null;
-    }
 
-    const linkHref = href || AVATAR_COMPONENT_LABELS.link;
+    const linkHref =
+      href && isValidLink(href) ? href : AVATAR_COMPONENT_LABELS.link;
     const linkTitle =
       title && hasValidContent(title) ? title : AVATAR_COMPONENT_LABELS.home;
-    const imageSrc = src || AVATAR_COMPONENT_LABELS.src;
+    const imageSrc =
+      src && isValidImageSrc(src) ? src : AVATAR_COMPONENT_LABELS.src;
     const imageAlt =
       alt && hasValidContent(alt) ? alt : AVATAR_COMPONENT_LABELS.alt;
-    const linkTargetProps = getLinkTargetProps(href, target);
+    const linkTargetProps = getLinkTargetProps(linkHref, target);
 
     const element = (
       <Link
