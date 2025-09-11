@@ -2,20 +2,28 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasAnyRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
 import styles from "./SectionContent.module.css";
 
 // ============================================================================
-// BASE SECTION CONTENT COMPONENT
+// SECTION CONTENT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SectionContentProps
+export interface SectionContentProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type SectionContentComponent = React.FC<SectionContentProps>;
+export type SectionContentComponent = React.FC<SectionContentProps>;
+
+// ============================================================================
+// BASE SECTION CONTENT COMPONENT
+// ============================================================================
 
 /** A section content component that wraps section content with proper styling. */
 const BaseSectionContent: SectionContentComponent = setDisplayName(
@@ -26,9 +34,7 @@ const BaseSectionContent: SectionContentComponent = setDisplayName(
       <div
         {...rest}
         className={cn(styles.sectionContent, className)}
-        data-section-content-id={`${_internalId}-section-content`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`${_internalId}-section-content`}
+        {...createComponentProps(_internalId, "section-content", _debugMode)}
       >
         {children}
       </div>
@@ -50,7 +56,7 @@ const MemoizedSectionContent = React.memo(BaseSectionContent);
 // ============================================================================
 
 /** A section content component that wraps section content with proper styling. */
-const SectionContent: SectionContentComponent = setDisplayName(
+export const SectionContent: SectionContentComponent = setDisplayName(
   function SectionContent(props) {
     const {
       children,
@@ -65,7 +71,7 @@ const SectionContent: SectionContentComponent = setDisplayName(
       debugMode: _debugMode,
     });
 
-    if (!isRenderableContent(children)) return null;
+    if (!hasAnyRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
@@ -78,5 +84,3 @@ const SectionContent: SectionContentComponent = setDisplayName(
     return element;
   }
 );
-
-export { SectionContent };
