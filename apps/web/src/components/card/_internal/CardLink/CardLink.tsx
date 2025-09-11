@@ -1,5 +1,6 @@
 import React from "react";
 
+import { CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -22,7 +23,8 @@ export interface CardLinkProps
     Omit<
       React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
       keyof React.ComponentPropsWithRef<"div">
-    > {}
+    >,
+    Omit<CommonComponentProps, "as"> {}
 export type CardLinkComponent = React.FC<CardLinkProps>;
 
 // ============================================================================
@@ -50,7 +52,7 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
           className={cn(styles.cardLinkBackground, className)}
           {...createComponentProps(_internalId, "card-link", _debugMode)}
         />
-        {isValidLink(href) ? (
+        {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}

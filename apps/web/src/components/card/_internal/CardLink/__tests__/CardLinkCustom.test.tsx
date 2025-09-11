@@ -27,14 +27,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return component;
   }),
   isRenderableContent: vi.fn((children) => {
-    if (
-      children === null ||
-      children === undefined ||
-      children === "" ||
-      children === true ||
-      children === false ||
-      children === 0
-    ) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
@@ -319,10 +315,10 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      const linkElement = screen.getByTestId("undefined-card-link-custom-root");
+      const linkElement = screen.getByTestId("test-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
         "data-card-link-custom-id",
-        "undefined-card-link-custom"
+        "test-id-card-link-custom"
       );
     });
   });
@@ -395,7 +391,7 @@ describe("CardLinkCustom", () => {
     });
 
     it("handles empty children", () => {
-      const { container } = render(
+      render(
         <CardLinkCustom
           href="/test-link"
           _internalId="test-link"
@@ -405,7 +401,9 @@ describe("CardLinkCustom", () => {
         </CardLinkCustom>
       );
 
-      expect(container.firstChild).toBeNull();
+      // Should render because href is valid, even with empty children
+      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      expect(linkElement).toBeInTheDocument();
     });
   });
 });

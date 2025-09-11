@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
@@ -17,15 +18,7 @@ import {
 
 export interface CardLinkCustomProps
   extends React.ComponentPropsWithRef<typeof Link>,
-    Pick<
-      CommonComponentProps,
-      | "isClient"
-      | "isMemoized"
-      | "internalId"
-      | "_internalId"
-      | "debugMode"
-      | "_debugMode"
-    > {}
+    Omit<CommonComponentProps, "as"> {}
 export type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
 
 // ============================================================================
@@ -38,12 +31,13 @@ const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
     const { children, href, target, title, _internalId, _debugMode, ...rest } =
       props;
 
-    const linkTargetProps = getLinkTargetProps(href, target);
+    const linkHref = href && isValidLink(href) ? href : "";
+    const linkTargetProps = getLinkTargetProps(linkHref, target);
 
     const element = (
       <Link
         {...rest}
-        href={href}
+        href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         title={title}
@@ -80,13 +74,18 @@ export const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
       ...rest
     } = props;
 
-    if (!isValidLink(href) || !isRenderableContent(children)) return null;
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
+
+    if (!isValidLink(href) && !isRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
       href,
-      _internalId,
-      _debugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized ? MemoizedCardLinkCustom : BaseCardLinkCustom;
