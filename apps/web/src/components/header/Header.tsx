@@ -45,7 +45,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
   const isHomePage: React.ComponentProps<typeof HeaderEffects>["isHomePage"] =
     usePathname() === AVATAR_COMPONENT_LABELS.link;
 
-  // Refs used by the effects component
   let headerRef: React.ComponentProps<typeof HeaderEffects>["headerEl"] =
     useRef(null);
   let avatarRef: React.ComponentProps<typeof HeaderEffects>["avatarEl"] =
@@ -67,7 +66,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
       >
         {isHomePage && (
           <>
-            <div ref={avatarRef} className={styles.avatarSection} data-avatar />
+            <div ref={avatarRef} className={styles.avatarSection} />
             <Container
               className={styles.avatarContainer}
               style={{
@@ -205,7 +204,8 @@ export const Header: HeaderComponent = setDisplayName(function Header(props) {
     debugMode,
   });
 
-  // Header doesn't require children to render - it has its own content
+  // Header component renders its own internal structure regardless of children
+  // Children are optional and used for additional content inside the header
 
   const updatedProps = {
     ...rest,
