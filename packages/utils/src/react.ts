@@ -154,9 +154,8 @@ export function createComponentProps(
 /**
  * Checks if children are renderable in React components.
  *
- * Provides strict conditional rendering to prevent broken UI. Only filters
- * out false values while allowing `null`, `undefined`, and empty strings to
- * render normally.
+ * Provides strict conditional rendering to prevent broken UI. Filters out
+ * false, null, undefined, and empty strings as non-renderable content.
  *
  * @param children - The children content to validate
  * @returns `true` if children should render, `false` otherwise
@@ -170,7 +169,7 @@ export function isRenderableContent(children: unknown): boolean {
   }
 
   // Empty strings should not render
-  if (typeof children === "string" && children === "") {
+  if (typeof children === "string" && children.length === 0) {
     return false;
   }
 
@@ -181,17 +180,24 @@ export function isRenderableContent(children: unknown): boolean {
  * Checks if any of the provided values are renderable content.
  *
  * Useful for components that accept multiple content sources and need
- * to determine if any should be rendered.
+ * to determine if any should be rendered. Filters out false, null, undefined,
+ * and empty strings as non-renderable content.
  *
  * @param values - Array of React nodes to check
  * @returns `true` if any value is renderable, `false` otherwise
  */
 export function hasAnyRenderableContent(...values: React.ReactNode[]): boolean {
   return values.some((value) => {
-    // Only filter out false values - allow null, undefined, and empty strings
-    if (value === false) {
+    // Filter out false, null, undefined, and empty strings as non-renderable
+    if (value === false || value === null || value === undefined) {
       return false;
     }
+
+    // Empty strings should not render
+    if (typeof value === "string" && value.length === 0) {
+      return false;
+    }
+
     return true;
   });
 }
