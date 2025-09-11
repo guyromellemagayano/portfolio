@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  hasAnyRenderableContent,
   hasMeaningfulText,
   isRenderableContent,
   trimStringContent,
@@ -49,6 +50,35 @@ describe("isRenderableContent", () => {
   it("returns true for objects", () => {
     expect(isRenderableContent({})).toBe(true);
     expect(isRenderableContent({ key: "value" })).toBe(true);
+  });
+});
+
+describe("hasAnyRenderableContent", () => {
+  it("returns false when all values are non-renderable", () => {
+    expect(hasAnyRenderableContent(null, undefined, false, "")).toBe(false);
+  });
+
+  it("returns true when any value is renderable", () => {
+    expect(hasAnyRenderableContent(null, "hello", false)).toBe(true);
+    expect(hasAnyRenderableContent(undefined, 42, "")).toBe(true);
+    expect(hasAnyRenderableContent(false, true, null)).toBe(true);
+  });
+
+  it("returns false for empty array", () => {
+    expect(hasAnyRenderableContent()).toBe(false);
+  });
+
+  it("returns true for single renderable value", () => {
+    expect(hasAnyRenderableContent("hello")).toBe(true);
+    expect(hasAnyRenderableContent(42)).toBe(true);
+    expect(hasAnyRenderableContent(true)).toBe(true);
+  });
+
+  it("returns false for single non-renderable value", () => {
+    expect(hasAnyRenderableContent(null)).toBe(false);
+    expect(hasAnyRenderableContent(undefined)).toBe(false);
+    expect(hasAnyRenderableContent(false)).toBe(false);
+    expect(hasAnyRenderableContent("")).toBe(false);
   });
 });
 
