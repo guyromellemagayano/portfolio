@@ -9,9 +9,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
-  hasMeaningfulText,
   isRenderableContent,
-  isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -31,14 +29,7 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
       props;
 
     const pathname = usePathname();
-
-    // Only check isActive when href is a non-empty string
-    const isActive =
-      href && typeof href === "string" && href.length > 0
-        ? isActivePath(pathname, href)
-        : false;
-
-    if (!hasMeaningfulText(children) || !isValidLink(href)) return null;
+    const isActive = isActivePath(pathname, href);
 
     const linkTargetProps = getLinkTargetProps(href?.toString(), target);
 
@@ -56,6 +47,7 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
           target={linkTargetProps.target}
           rel={linkTargetProps.rel}
           title={title}
+          aria-label={title}
           className={cn(
             styles.desktopHeaderNavItemLink,
             isActive
@@ -91,6 +83,7 @@ export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderDesktopNavItem(props) {
     const {
       children,
+      href,
       isMemoized = false,
       _internalId,
       _debugMode,
@@ -106,6 +99,7 @@ export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
 
     const updatedProps = {
       ...rest,
+      href,
       _internalId: id,
       _debugMode: isDebugMode,
     };

@@ -37,6 +37,7 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
 
     const { resolvedTheme, setTheme } = useTheme();
     const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
+
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
