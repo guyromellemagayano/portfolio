@@ -5,25 +5,121 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderAvatarContainer } from "../HeaderAvatarContainer";
 
+// Individual mocks for this test file
+
+// Mock IntersectionObserver
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+});
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
+// Mock Next.js router
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/about"),
+}));
+
+// Mock the web utils
+vi.mock("@web/utils", () => ({
+  isActivePath: vi.fn(() => true), // Always return true for testing
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
 // Mock the useComponentId hook
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
     id: options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
-  })),
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
 }));
 
 // Mock the utils
+const mockCreateComponentProps = vi.hoisted(() =>
+  vi.fn((id, suffix, debugMode, additionalProps = {}) => {
+    const attributes: Record<string, string> = {};
+    if (id && suffix) {
+      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
+      attributes["data-testid"] = `${id}-${suffix}-root`;
+    }
+    if (debugMode === true) {
+      attributes["data-debug-mode"] = "true";
+    }
+    return { ...attributes, ...additionalProps };
+  })
+);
+
 vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: mockCreateComponentProps,
+  isRenderableContent: vi.fn((children) => {
+    if (children == null) return false;
+    if (typeof children === "string") return children.trim() !== "";
+    if (Array.isArray(children))
+      return children.some((child) => child != null && child !== "");
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  hasValidContent: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href) return { target: "_self" };
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
 }));
 
-// Mock the cn helper
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+// Mock Next.js Link component
+vi.mock("next/link", () => ({
+  __esModule: true,
+  default: vi.fn(({ children, href, className, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "a",
+      {
+        "data-testid": "next-link",
+        href,
+        className,
+        ...props,
+      },
+      children
+    );
+  }),
 }));
 
 // Mock the CSS module
@@ -47,14 +143,14 @@ describe("HeaderAvatarContainer", () => {
     it("renders without crashing", () => {
       render(<HeaderAvatarContainer />);
       expect(
-        screen.getByTestId("header-test-id-avatar-container-root")
+        screen.getByTestId("test-id-header-avatar-container-root")
       ).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<HeaderAvatarContainer />);
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toBeInTheDocument();
     });
@@ -62,7 +158,7 @@ describe("HeaderAvatarContainer", () => {
     it("renders with custom className", () => {
       render(<HeaderAvatarContainer className="custom-class" />);
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("custom-class");
     });
@@ -70,7 +166,7 @@ describe("HeaderAvatarContainer", () => {
     it("renders as a div element", () => {
       render(<HeaderAvatarContainer />);
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container.tagName).toBe("DIV");
     });
@@ -81,11 +177,11 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer _internalId="custom-id" />);
 
       const container = screen.getByTestId(
-        "header-custom-id-avatar-container-root"
+        "custom-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "header-custom-id-avatar-container"
+        "custom-id-header-avatar-container"
       );
     });
 
@@ -93,11 +189,11 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer _internalId="test-id" />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "header-test-id-avatar-container"
+        "test-id-header-avatar-container"
       );
     });
 
@@ -105,7 +201,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer _debugMode={true} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
@@ -114,7 +210,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer debugMode={false} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
@@ -123,7 +219,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
@@ -140,7 +236,7 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute("id", "test-id");
       expect(container).toHaveAttribute("data-test", "test-data");
@@ -157,7 +253,7 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute("aria-label", "Avatar container");
       expect(container).toHaveAttribute("aria-describedby", "description");
@@ -170,7 +266,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container.tagName).toBe("DIV");
     });
@@ -179,7 +275,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toBeInTheDocument();
     });
@@ -188,7 +284,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container.children.length).toBe(0);
     });
@@ -207,7 +303,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer ref={ref} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(ref).toHaveBeenCalledWith(container);
     });
@@ -217,7 +313,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer ref={ref} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(ref).toHaveBeenCalledWith(container);
     });
@@ -227,7 +323,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer ref={ref} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(ref.current).toBe(container);
     });
@@ -238,7 +334,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toBeInTheDocument();
     });
@@ -249,7 +345,7 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute("aria-label", "Avatar container");
       expect(container).toHaveAttribute("role", "img");
@@ -267,7 +363,7 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute("aria-label", "Container");
       expect(container).toHaveAttribute("aria-describedby", "desc");
@@ -282,7 +378,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("avatar-container");
     });
@@ -291,7 +387,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer className="custom-class" />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("avatar-container", "custom-class");
     });
@@ -300,7 +396,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer className="custom-class another-class" />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass(
         "avatar-container",
@@ -314,13 +410,13 @@ describe("HeaderAvatarContainer", () => {
       const { rerender } = render(<HeaderAvatarContainer />);
 
       const initialContainer = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
 
       rerender(<HeaderAvatarContainer />);
 
       const updatedContainer = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(updatedContainer).toBe(initialContainer);
     });
@@ -331,7 +427,7 @@ describe("HeaderAvatarContainer", () => {
       rerender(<HeaderAvatarContainer className="new-class" />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("new-class");
     });
@@ -348,12 +444,12 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-new-id-avatar-container-root"
+        "new-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("new-class");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "header-new-id-avatar-container"
+        "new-id-header-avatar-container"
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
@@ -363,21 +459,21 @@ describe("HeaderAvatarContainer", () => {
     it("renders base component when isMemoized is false", () => {
       render(<HeaderAvatarContainer isMemoized={false} />);
       expect(
-        screen.getByTestId("header-test-id-avatar-container-root")
+        screen.getByTestId("test-id-header-avatar-container-root")
       ).toBeInTheDocument();
     });
 
     it("renders memoized component when isMemoized is true", () => {
       render(<HeaderAvatarContainer isMemoized={true} />);
       expect(
-        screen.getByTestId("header-test-id-avatar-container-root")
+        screen.getByTestId("test-id-header-avatar-container-root")
       ).toBeInTheDocument();
     });
 
     it("defaults to base component when isMemoized is undefined", () => {
       render(<HeaderAvatarContainer />);
       expect(
-        screen.getByTestId("header-test-id-avatar-container-root")
+        screen.getByTestId("test-id-header-avatar-container-root")
       ).toBeInTheDocument();
     });
   });
@@ -396,12 +492,12 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-custom-id-avatar-container-root"
+        "custom-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("custom-class");
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "header-custom-id-avatar-container"
+        "custom-id-header-avatar-container"
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
       expect(container).toHaveAttribute("aria-label", "Test container");
@@ -418,11 +514,11 @@ describe("HeaderAvatarContainer", () => {
       );
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveAttribute(
         "data-header-avatar-container-id",
-        "header-test-id-avatar-container"
+        "test-id-header-avatar-container"
       );
       expect(container).not.toHaveAttribute("data-debug-mode");
       expect(container).toHaveClass("avatar-container");
@@ -432,7 +528,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer className="" />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("avatar-container", "");
     });
@@ -441,7 +537,7 @@ describe("HeaderAvatarContainer", () => {
       render(<HeaderAvatarContainer className={null as any} />);
 
       const container = screen.getByTestId(
-        "header-test-id-avatar-container-root"
+        "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass("avatar-container");
     });

@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components";
 import { cn } from "@web/utils";
-import { createHeaderProps } from "@web/utils/component";
 
 import { AVATAR_COMPONENT_LABELS } from "./_data";
 import {
@@ -61,7 +63,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
         }}
-        {...createHeaderProps(internalId || "fallback-id", debugMode)}
+        {...createComponentProps(internalId, "header", debugMode)}
       >
         {isHomePage && (
           <>
@@ -72,6 +74,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                 position:
                   "var(--header-position)" as React.CSSProperties["position"],
               }}
+              internalId={internalId}
+              debugMode={debugMode}
             >
               <div
                 className={styles.avatarPositioningWrapper}
@@ -187,7 +191,7 @@ const MemoizedHeader = React.memo(BaseHeader);
 // ============================================================================
 
 /** The main header component for the application. */
-const Header: HeaderComponent = setDisplayName(function Header(props) {
+export const Header: HeaderComponent = setDisplayName(function Header(props) {
   const {
     children,
     isMemoized = false,
@@ -201,6 +205,8 @@ const Header: HeaderComponent = setDisplayName(function Header(props) {
     debugMode,
   });
 
+  // Header doesn't require children to render - it has its own content
+
   const updatedProps = {
     ...rest,
     children,
@@ -212,5 +218,3 @@ const Header: HeaderComponent = setDisplayName(function Header(props) {
   const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 });
-
-export { Header };
