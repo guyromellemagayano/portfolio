@@ -8,6 +8,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
+  hasValidContent,
   isValidImageSrc,
   isValidLink,
   setDisplayName,
@@ -46,10 +47,11 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
     const {
       className,
       large = false,
-      href = AVATAR_COMPONENT_LABELS.link,
-      alt = AVATAR_COMPONENT_LABELS.alt,
-      src = AVATAR_COMPONENT_LABELS.src,
-      target = "_self",
+      href,
+      alt,
+      src,
+      title,
+      target,
       _internalId,
       _debugMode,
       ...rest
@@ -60,22 +62,32 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       styles.avatarImage,
       large ? styles.avatarImageLarge : styles.avatarImageDefault
     );
+    // Return null if either src or href is invalid
+    if (!isValidImageSrc(src) || !isValidLink(href)) {
+      return null;
+    }
 
+    const linkHref = href || AVATAR_COMPONENT_LABELS.link;
+    const linkTitle =
+      title && hasValidContent(title) ? title : AVATAR_COMPONENT_LABELS.home;
+    const imageSrc = src || AVATAR_COMPONENT_LABELS.src;
+    const imageAlt =
+      alt && hasValidContent(alt) ? alt : AVATAR_COMPONENT_LABELS.alt;
     const linkTargetProps = getLinkTargetProps(href, target);
 
     const element = (
       <Link
         {...rest}
-        href={href}
+        href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         className={cn(styles.avatarLink, className)}
-        aria-label={AVATAR_COMPONENT_LABELS.home}
+        aria-label={linkTitle}
         {...createComponentProps(_internalId, "header-avatar", _debugMode)}
       >
         <Image
-          src={src}
-          alt={alt}
+          src={imageSrc}
+          alt={imageAlt}
           sizes={imageSizes}
           className={imageClassName}
           priority
@@ -115,9 +127,7 @@ export const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
       debugMode: _debugMode,
     });
 
-    if (!isValidImageSrc(src) || !isValidLink(href)) {
-      return null;
-    }
+    if (!isValidImageSrc(src) && !isValidLink(href)) return null;
 
     const updatedProps = {
       ...rest,
