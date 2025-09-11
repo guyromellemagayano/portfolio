@@ -18,7 +18,7 @@ import styles from "./CardEyebrow.module.css";
 
 export interface CardEyebrowProps
   extends React.ComponentPropsWithRef<"p">,
-    CommonComponentProps {
+    Omit<CommonComponentProps, "as"> {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
@@ -73,7 +73,7 @@ const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
 // ============================================================================
 
 /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-const CardEyebrow: CardEyebrowComponent = setDisplayName(
+export const CardEyebrow: CardEyebrowComponent = setDisplayName(
   function CardEyebrow(props) {
     const {
       children,
@@ -101,5 +101,3 @@ const CardEyebrow: CardEyebrowComponent = setDisplayName(
     return element;
   }
 );
-
-export { CardEyebrow };
