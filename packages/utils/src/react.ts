@@ -8,12 +8,12 @@ import React from "react";
  * Sets `displayName` for React components with improved type safety.
  *
  * This utility ensures React DevTools displays meaningful component names
- * for debugging and development purposes. It preserves existing displayName
+ * for debugging and development purposes. It preserves existing `displayName`
  * values and provides fallback naming.
  *
- * @param component - The React component to set displayName for
+ * @param component - The React component to set `displayName` for
  * @param displayName - Optional custom display name (defaults to component name)
- * @returns The component with displayName set
+ * @returns The component with `displayName` set
  */
 export function setDisplayName<T extends React.ComponentType<any>>(
   component: T,
@@ -32,6 +32,121 @@ export function setDisplayName<T extends React.ComponentType<any>>(
   return component;
 }
 
+/**
+ * Checks if string content has meaningful text after trimming.
+ *
+ * Validates that string content contains non-whitespace characters,
+ * useful for determining if text-based components should render.
+ *
+ * @param content - The content to validate
+ * @returns `true` if content has meaningful text, `false` otherwise
+ */
+export function hasMeaningfulText(content: unknown): boolean {
+  if (typeof content !== "string") {
+    return false;
+  }
+  return content.trim().length > 0;
+}
+
+/**
+ * Creates consistent data attributes for components
+ *
+ * @param id - The component ID
+ * @param debugMode - Whether debug mode is enabled
+ * @param suffix - Optional suffix for the component type (e.g., 'section', 'card')
+ * @returns Object with data attributes
+ */
+export function createComponentDataAttributes(
+  id?: string,
+  suffix?: string,
+  debugMode?: boolean
+) {
+  /* eslint-disable no-undef */
+  const attributes: Record<string, string> = {};
+
+  // Validate and sanitize inputs
+  const sanitizedId = id ? trimStringContent(id) : "";
+  const sanitizedSuffix = suffix ? trimStringContent(suffix) : "";
+
+  // Safe pattern: alphanumeric, hyphen, underscore only
+  const safePattern = /^[a-zA-Z0-9_-]+$/;
+
+  const isValidId = sanitizedId.length > 0 && safePattern.test(sanitizedId);
+  const isValidSuffix =
+    sanitizedSuffix.length > 0 && safePattern.test(sanitizedSuffix);
+
+  // Only add data attributes when both id and suffix are valid
+  if (isValidId && isValidSuffix) {
+    attributes[`data-${sanitizedSuffix}-id`] =
+      `${sanitizedId}-${sanitizedSuffix}`;
+    attributes["data-testid"] = `${sanitizedId}-${sanitizedSuffix}-root`;
+  } else {
+    // Emit debug warning for invalid inputs (non-throwing for backward compatibility)
+    if (
+      typeof process !== "undefined" &&
+      process.env.NODE_ENV === "development"
+    ) {
+      const issues = [];
+      if (!isValidId) {
+        issues.push(`invalid id: "${id}" (sanitized: "${sanitizedId}")`);
+      }
+      if (!isValidSuffix) {
+        issues.push(
+          `invalid suffix: "${suffix}" (sanitized: "${sanitizedSuffix}")`
+        );
+      }
+      // Use console.warn as fallback for development debugging
+      console.warn(
+        `createComponentDataAttributes: Skipping data attributes due to ${issues.join(", ")}`
+      );
+    }
+  }
+
+  // Only include data-debug-mode when debugMode is strictly true
+  if (debugMode === true) {
+    attributes["data-debug-mode"] = "true";
+  }
+
+  return attributes;
+  /* eslint-enable no-undef */
+}
+
+/**
+ * Creates `aria-labelledby` attribute based on title and ID
+ *
+ * @param title - The title text
+ * @param id - The component ID
+ * @returns `aria-labelledby` value or undefined
+ */
+export function createAriaLabelledBy(
+  title?: string,
+  id?: string
+): string | undefined {
+  return title && hasMeaningfulText(title) && id ? id : undefined;
+}
+
+/**
+ * Creates consistent component props with data attributes
+ *
+ * @param id - The component ID
+ * @param suffix - Optional suffix for the component type
+ * @param debugMode - Whether debug mode is enabled
+ * @param additionalProps - Additional props to merge
+ * @returns Combined props object
+ */
+export function createComponentProps(
+  id?: string,
+  suffix?: string,
+  debugMode?: boolean,
+  additionalProps?: Record<string, unknown>
+) {
+  const dataAttributes = createComponentDataAttributes(id, suffix, debugMode);
+  return {
+    ...dataAttributes,
+    ...additionalProps,
+  };
+}
+
 // ============================================================================
 // CONTENT UTILITIES
 // ============================================================================
@@ -40,7 +155,7 @@ export function setDisplayName<T extends React.ComponentType<any>>(
  * Checks if children are renderable in React components.
  *
  * Provides strict conditional rendering to prevent broken UI. Only filters
- * out false values while allowing null, undefined, and empty strings to
+ * out false values while allowing `null`, `undefined`, and empty strings to
  * render normally.
  *
  * @param children - The children content to validate
@@ -93,22 +208,6 @@ export function trimStringContent(content: unknown): string {
 }
 
 /**
- * Checks if string content has meaningful text after trimming.
- *
- * Validates that string content contains non-whitespace characters,
- * useful for determining if text-based components should render.
- *
- * @param content - The content to validate
- * @returns `true` if content has meaningful text, `false` otherwise
- */
-export function hasMeaningfulText(content: unknown): boolean {
-  if (typeof content !== "string") {
-    return false;
-  }
-  return content.trim().length > 0;
-}
-
-/**
  * Checks if content should render based on component type and UX considerations.
  *
  * Provides intelligent rendering decisions based on component semantics.
@@ -146,6 +245,121 @@ export function shouldRenderComponent(
   return isRenderableContent(children);
 }
 
+/**
+ * Enhanced content validation that checks multiple content types
+ *
+ * @param content - Variable number of content items to validate
+ * @returns true if any content is valid and meaningful
+ */
+export function hasValidContent(...content: unknown[]): boolean {
+  return content.some((item) => {
+    if (item == null || item === false) return false;
+    if (typeof item === "string") return hasMeaningfulText(item);
+    if (React.isValidElement(item)) return true;
+    if (Array.isArray(item)) return item.length > 0;
+    return isRenderableContent(item);
+  });
+}
+
+/**
+ * Creates conditional rendering with fallback support
+ *
+ * @param condition - The condition to check
+ * @param component - The component to render if condition is `true`
+ * @param fallback - Optional fallback component to render if condition is `false`
+ * @returns The appropriate component or null
+ */
+export function renderConditionally<T extends React.ReactElement>(
+  condition: boolean,
+  component: T,
+  fallback?: React.ReactElement
+): T | React.ReactElement | null {
+  return condition ? component : fallback || null;
+}
+
+/**
+ * Validates if component should render based on content
+ *
+ * @param title - Optional title content
+ * @param children - Optional children content
+ * @returns true if component should render
+ */
+export function shouldRenderComponentContent(
+  title?: string,
+  children?: React.ReactNode
+): boolean {
+  return hasValidContent(title, children);
+}
+
+// ============================================================================
+// IMAGE UTILITIES
+// ============================================================================
+
+/**
+ * Validates if an image source is valid and usable.
+ *
+ * Handles both string URLs and StaticImageData objects (imported images).
+ * Useful for preventing broken images and ensuring proper image rendering.
+ *
+ * @param src - The image source to validate
+ * @returns `true` if src is valid, `false` otherwise
+ */
+export function isValidImageSrc(
+  src?: string | { src: string } | { default: { src: string } }
+): boolean {
+  if (!src) return false;
+
+  // Handle StaticImageData (imported images) with src property
+  if (typeof src === "object" && "src" in src) {
+    const srcValue = src.src;
+    if (typeof srcValue !== "string") return false;
+    const trimmedSrc = srcValue.trim();
+    return trimmedSrc.length > 0;
+  }
+
+  // Handle StaticImageData with default property (Next.js style)
+  if (
+    typeof src === "object" &&
+    "default" in src &&
+    src.default &&
+    "src" in src.default
+  ) {
+    const srcValue = src.default.src;
+    if (typeof srcValue !== "string") return false;
+    const trimmedSrc = srcValue.trim();
+    return trimmedSrc.length > 0;
+  }
+
+  // Handle string URLs
+  if (typeof src === "string") {
+    const trimmedSrc = src.trim();
+
+    // Reject empty strings, "#", or only-fragment values
+    if (
+      trimmedSrc.length === 0 ||
+      trimmedSrc === "#" ||
+      trimmedSrc.startsWith("#")
+    ) {
+      return false;
+    }
+
+    // Allow data URLs
+    if (trimmedSrc.startsWith("data:")) {
+      return true;
+    }
+
+    // Validate as well-formed URL
+    try {
+      new URL(trimmedSrc);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  return false;
+}
+
 // ============================================================================
 // LINK UTILITIES
 // ============================================================================
@@ -172,13 +386,13 @@ export function isValidLink(href?: string | { toString(): string }): boolean {
 /**
  * Gets safe link target attributes for external links.
  *
- * Automatically determines appropriate target and rel attributes based on
+ * Automatically determines appropriate `target` and `rel` attributes based on
  * link type and user preferences. Ensures security best practices for
  * external links.
  *
  * @param href - The URL to analyze
  * @param target - Optional user-specified target
- * @returns Object with target and rel attributes
+ * @returns Object with `target` and `rel` attributes
  */
 export function getLinkTargetProps(
   href?: string | { toString(): string },
@@ -208,7 +422,7 @@ export function getLinkTargetProps(
  * Validates and provides default values for common link props.
  *
  * Ensures link components have consistent, safe default values for
- * href, target, and title attributes.
+ * `href`, `target`, and `title` attributes.
  *
  * @param props - The link props to validate
  * @returns Object with validated link props
@@ -273,8 +487,8 @@ export function createConditionalClasses(
  * Converts various date inputs to localized date strings with error
  * handling for invalid dates and edge cases.
  *
- * @param date - The date to format (string, Date object, or null/undefined)
- * @param options - Optional Intl.DateTimeFormatOptions for customization
+ * @param date - The date to format (`string`, `Date` object, or `null`/`undefined`)
+ * @param options - Optional `Intl.DateTimeFormatOptions` for customization
  * @returns Formatted date string or empty string if invalid
  */
 export function formatDateSafely(
