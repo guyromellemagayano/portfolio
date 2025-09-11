@@ -54,10 +54,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
     };
   }),
   isRenderableContent: vi.fn((children) => {
-    if (children == null) return false;
-    if (typeof children === "string") return children.trim() !== "";
-    if (Array.isArray(children))
-      return children.some((child) => child != null && child !== "");
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
     return true;
   }),
   hasMeaningfulText: vi.fn((content) => {
@@ -94,6 +96,38 @@ vi.mock("@guyromellemagayano/utils", () => ({
       target: shouldOpenNewTab ? "_blank" : "_self",
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
+  }),
+  hasAnyRenderableContent: vi.fn((...values) => {
+    return values.some((value) => {
+      if (value === false || value === null || value === undefined) {
+        return false;
+      }
+      if (typeof value === "string" && value.length === 0) {
+        return false;
+      }
+      return true;
+    });
+  }),
+  filterValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return [];
+    return links.filter((link) => {
+      if (!link || typeof link !== "object") return false;
+      if (!link.label || typeof link.label !== "string") return false;
+      if (!link.href || typeof link.href !== "string") return false;
+      if (link.href === "" || link.href === "#") return false;
+      return true;
+    });
+  }),
+  hasValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return false;
+    return links.length > 0;
+  }),
+  isValidNavigationLink: vi.fn((link) => {
+    if (!link || typeof link !== "object") return false;
+    if (!link.label || typeof link.label !== "string") return false;
+    if (!link.href || typeof link.href !== "string") return false;
+    if (link.href === "" || link.href === "#") return false;
+    return true;
   }),
 }));
 
