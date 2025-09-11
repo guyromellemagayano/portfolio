@@ -4,7 +4,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -71,7 +71,7 @@ export const SectionTitle: SectionTitleComponent = setDisplayName(
       debugMode: _debugMode,
     });
 
-    if (!hasValidContent(children)) return null;
+    if (!hasAnyRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
