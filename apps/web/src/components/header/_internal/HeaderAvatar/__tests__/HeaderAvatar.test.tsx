@@ -5,6 +5,32 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderAvatar } from "../HeaderAvatar";
 
+// Individual mocks for this test file
+
+// Mock IntersectionObserver
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+});
+Object.defineProperty(global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
+// Mock Next.js router
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/about"),
+}));
+
+// Mock the web utils
+vi.mock("@web/utils", () => ({
+  isActivePath: vi.fn(() => true), // Always return true for testing
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
@@ -19,12 +45,48 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
+  createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
+    const attributes: Record<string, string> = {};
+    if (id && suffix) {
+      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
+      attributes["data-testid"] = `${id}-${suffix}-root`;
     }
+    if (debugMode === true) {
+      attributes["data-debug-mode"] = "true";
+    }
+    return { ...attributes, ...additionalProps };
+  }),
+  isRenderableContent: vi.fn((children) => {
+    if (children == null) return false;
+    if (typeof children === "string") return children.trim() !== "";
+    if (Array.isArray(children))
+      return children.some((child) => child != null && child !== "");
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  hasValidContent: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
     const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href) return { target: "_self" };
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString.startsWith("http");
     const shouldOpenNewTab =
       target === "_blank" || (isExternal && target !== "_self");
     return {
@@ -32,11 +94,43 @@ vi.mock("@guyromellemagayano/utils", () => ({
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
   }),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src === "string") {
+      const trimmed = src.trim();
+      if (trimmed === "" || trimmed === "#") return false;
+      if (trimmed.startsWith("data:")) return true;
+      if (trimmed.startsWith("/")) return true; // Allow relative paths
+      try {
+        new URL(trimmed);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+    if (typeof src === "object" && src.src) {
+      return typeof src.src === "string" && src.src.trim() !== "";
+    }
+    return false;
+  }),
 }));
 
-// Mock the cn helper
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+// Mock Next.js Link component
+vi.mock("next/link", () => ({
+  __esModule: true,
+  default: vi.fn(({ children, href, className, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "a",
+      {
+        "data-testid": "next-link",
+        href,
+        className,
+        ...props,
+      },
+      children
+    );
+  }),
 }));
 
 // Mock the Header data
@@ -438,6 +532,87 @@ describe("HeaderAvatar", () => {
       expect(image).toHaveAttribute("alt", "Guy Romelle Magayano");
       expect(image).toHaveAttribute("src", "/avatar.jpg");
       expect(image).toHaveAttribute("sizes", "2.25rem");
+    });
+  });
+
+  describe("Validation Logic", () => {
+    it("returns null when src is invalid", () => {
+      render(<HeaderAvatar src="" />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    });
+
+    it("returns null when src is null", () => {
+      render(<HeaderAvatar src={null as any} />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    });
+
+    it("renders with default src when src is undefined", () => {
+      render(<HeaderAvatar src={undefined} />);
+
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      // Should use default src from AVATAR_COMPONENT_LABELS
+    });
+
+    it("returns null when href is invalid", () => {
+      render(<HeaderAvatar href="" />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    });
+
+    it("returns null when href is null", () => {
+      render(<HeaderAvatar href={null as any} />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    });
+
+    it("renders with default href when href is undefined", () => {
+      render(<HeaderAvatar href={undefined} />);
+
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      // Should use default href from AVATAR_COMPONENT_LABELS
+    });
+
+    it("returns null when href is a placeholder", () => {
+      render(<HeaderAvatar href="#" />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    });
+
+    it("renders when both src and href are valid", () => {
+      render(<HeaderAvatar src="/valid-avatar.jpg" href="/valid-link" />);
+
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/valid-link");
+    });
+
+    it("renders with StaticImageData object", () => {
+      const mockStaticImageData = {
+        src: "/avatar.jpg",
+        height: 100,
+        width: 100,
+      };
+
+      render(<HeaderAvatar src={mockStaticImageData as any} href="/" />);
+
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("returns null when StaticImageData has invalid src", () => {
+      const mockStaticImageData = {
+        src: "",
+        height: 100,
+        width: 100,
+      };
+
+      render(<HeaderAvatar src={mockStaticImageData as any} href="/" />);
+
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
     });
   });
 });
