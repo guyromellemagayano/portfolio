@@ -19,10 +19,24 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
+  }),
+  hasAnyRenderableContent: vi.fn((...values) => {
+    return values.some((value) => {
+      if (value === false || value === null || value === undefined) {
+        return false;
+      }
+      if (typeof value === "string" && value.length === 0) {
+        return false;
+      }
+      return true;
+    });
   }),
   hasValidContent: vi.fn((content) => {
     if (
@@ -76,6 +90,7 @@ vi.mock("@web/lib", () => ({
 
 // Mock component utilities
 vi.mock("@web/utils", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
   createCardProps: vi.fn((id, debugMode, additionalProps = {}) => ({
     "data-card-id": `${id}-card`,
     "data-debug-mode": debugMode ? "true" : undefined,
@@ -358,8 +373,8 @@ describe("Card", () => {
     });
 
     it("handles zero children", () => {
-      const { container } = render(<Card>{0}</Card>);
-      expect(container.firstChild).toBeNull();
+      render(<Card>{0}</Card>);
+      expect(screen.getByText("0")).toBeInTheDocument();
     });
 
     it("handles mixed valid and invalid children", () => {
