@@ -26,7 +26,7 @@ export interface CardTitleProps
       React.ComponentPropsWithoutRef<typeof Link>,
       "href" | "target" | "title"
     >,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type CardTitleComponent = React.FC<CardTitleProps>;
 
 // ============================================================================
@@ -53,7 +53,7 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
         className={cn(styles.cardTitleHeading, className)}
         {...createComponentProps(_internalId, "card-title", _debugMode)}
       >
-        {isValidLink(href) ? (
+        {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}
@@ -85,31 +85,33 @@ const MemoizedCardTitle = React.memo(BaseCardTitle);
 // ============================================================================
 
 /** A card title component that can optionally be wrapped in a link for navigation */
-const CardTitle: CardTitleComponent = setDisplayName(function CardTitle(props) {
-  const {
-    children,
-    isMemoized = false,
-    _internalId,
-    _debugMode,
-    ...rest
-  } = props;
+export const CardTitle: CardTitleComponent = setDisplayName(
+  function CardTitle(props) {
+    const {
+      children,
+      href,
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId: _internalId,
-    debugMode: _debugMode,
-  });
+    const { id, isDebugMode } = useComponentId({
+      internalId: _internalId,
+      debugMode: _debugMode,
+    });
 
-  if (!isRenderableContent(children)) return null;
+    if (!isRenderableContent(children)) return null;
 
-  const updatedProps = {
-    ...rest,
-    _internalId: id,
-    _debugMode: isDebugMode,
-  };
+    const updatedProps = {
+      ...rest,
+      href,
+      _internalId: id,
+      _debugMode: isDebugMode,
+    };
 
-  const Component = isMemoized ? MemoizedCardTitle : BaseCardTitle;
-  const element = <Component {...updatedProps}>{children}</Component>;
-  return element;
-});
-
-export { CardTitle };
+    const Component = isMemoized ? MemoizedCardTitle : BaseCardTitle;
+    const element = <Component {...updatedProps}>{children}</Component>;
+    return element;
+  }
+);

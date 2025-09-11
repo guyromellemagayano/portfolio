@@ -19,14 +19,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (
-      children === null ||
-      children === undefined ||
-      children === "" ||
-      children === true ||
-      children === false ||
-      children === 0
-    ) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
@@ -64,6 +60,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 vi.mock("@web/lib", () => ({
@@ -72,27 +77,14 @@ vi.mock("@web/lib", () => ({
 
 // Mock component utilities
 vi.mock("@web/utils", () => ({
-  createComponentProps: vi.fn(
-    (id, debugMode, componentType = "component", additionalProps = {}) => {
-      const dataAttributes = {
-        [`data-${componentType}-id`]: `${id}-${componentType}`,
-        "data-debug-mode": debugMode ? "true" : undefined,
-        "data-testid": `${id}-${componentType}-root`,
-      };
-
-      // Handle custom data-testid from additionalProps
-      const customTestId = additionalProps["data-testid"];
-
-      return {
-        ...dataAttributes,
-        ...additionalProps,
-        "data-testid":
-          typeof customTestId === "string"
-            ? customTestId
-            : dataAttributes["data-testid"],
-      };
-    }
-  ),
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  createComponentProps: vi.fn((id, componentType, debugMode) => {
+    return {
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": `${id}-${componentType}-root`,
+    };
+  }),
 }));
 
 // Mock CardLinkCustom
@@ -174,7 +166,7 @@ describe("CardTitle", () => {
         </CardTitle>
       );
 
-      const titleElement = screen.getByTestId("custom-testid");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveAttribute("aria-label", "Title");
     });
   });
@@ -209,13 +201,24 @@ describe("CardTitle", () => {
 
   describe("Content Validation", () => {
     it("does not render when no children", () => {
-      const { container } = render(<CardTitle href="#" />);
+      const { container } = render(<CardTitle />);
       expect(container.firstChild).toBeNull();
     });
 
     it("handles null/undefined children", () => {
-      const { container } = render(<CardTitle href="#">{null}</CardTitle>);
+      const { container } = render(<CardTitle>{null}</CardTitle>);
       expect(container.firstChild).toBeNull();
+    });
+
+    it("does not render when only href is provided without children", () => {
+      const { container } = render(<CardTitle href="/test" />);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("renders children without link when href is invalid", () => {
+      render(<CardTitle href="#">Valid children</CardTitle>);
+      expect(screen.getByText("Valid children")).toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
     });
   });
 

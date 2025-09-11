@@ -27,7 +27,7 @@ export interface CardCtaProps
       React.ComponentPropsWithoutRef<typeof Link>,
       "href" | "target" | "title"
     >,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type CardCtaComponent = React.FC<CardCtaProps>;
 
 // ============================================================================
@@ -54,7 +54,7 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
         className={cn(styles.cardCtaContainer, className)}
         {...createComponentProps(_internalId, "card-cta", _debugMode)}
       >
-        {isValidLink(href) ? (
+        {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}
@@ -92,6 +92,7 @@ export const CardCta: CardCtaComponent = setDisplayName(
   function CardCta(props) {
     const {
       children,
+      href,
       isMemoized = false,
       _internalId,
       _debugMode,
@@ -107,6 +108,7 @@ export const CardCta: CardCtaComponent = setDisplayName(
 
     const updatedProps = {
       ...rest,
+      href,
       _internalId: id,
       _debugMode: isDebugMode,
     };
