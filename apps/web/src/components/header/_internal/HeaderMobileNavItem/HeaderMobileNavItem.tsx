@@ -1,20 +1,14 @@
-"use client";
-
 import React from "react";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
-  hasMeaningfulText,
   isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
-
-import { isActivePath } from "@web/utils";
 
 import type { HeaderNavItemComponent } from "../../_data";
 import styles from "./HeaderMobileNavItem.module.css";
@@ -28,12 +22,6 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderMobileNavItem(props) {
     const { children, href, target, title, _internalId, _debugMode, ...rest } =
       props;
-
-    const pathname = usePathname();
-    const isActive = isActivePath(pathname, href || "");
-
-    if ((!hasMeaningfulText(children) && !hasMeaningfulText(href)) || !isActive)
-      return null;
 
     const linkTargetProps = getLinkTargetProps(href?.toString(), target);
 
@@ -51,6 +39,7 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
           target={linkTargetProps.target}
           rel={linkTargetProps.rel}
           title={title}
+          aria-label={title}
           className={styles.mobileHeaderNavItemLink}
         >
           {children}
@@ -78,6 +67,7 @@ export const HeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderMobileNavItem(props) {
     const {
       children,
+      href,
       isMemoized = false,
       _internalId,
       _debugMode,
@@ -91,7 +81,12 @@ export const HeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
 
     if (!isRenderableContent(children)) return null;
 
-    const updatedProps = { ...rest, _internalId: id, _debugMode: isDebugMode };
+    const updatedProps = {
+      ...rest,
+      href,
+      _internalId: id,
+      _debugMode: isDebugMode,
+    };
 
     const Component = isMemoized
       ? MemoizedHeaderMobileNavItem

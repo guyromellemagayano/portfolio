@@ -70,7 +70,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return true;
   }),
   hasValidContent: vi.fn((content) => {
-    if (content == null) return false;
+    if (content == null) return true;
     if (typeof content === "string") return content.trim() !== "";
     if (Array.isArray(content))
       return content.some((item) => item != null && item !== "");
@@ -130,6 +130,13 @@ vi.mock("@guyromellemagayano/utils", () => ({
       return typeof src.src === "string" && src.src.trim() !== "";
     }
     return false;
+  }),
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children == null) return false;
+    if (typeof children === "string") return children.trim() !== "";
+    if (Array.isArray(children))
+      return children.some((child) => child != null && child !== "");
+    return true;
   }),
 }));
 

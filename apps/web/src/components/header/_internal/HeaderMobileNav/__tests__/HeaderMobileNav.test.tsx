@@ -94,6 +94,27 @@ vi.mock("@guyromellemagayano/utils", () => ({
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
   }),
+  filterValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return [];
+    return links.filter((link) => {
+      if (!link || typeof link !== "object") return false;
+      if (!link.label || typeof link.label !== "string") return false;
+      if (!link.href || typeof link.href !== "string") return false;
+      if (link.href === "" || link.href === "#") return false;
+      return true;
+    });
+  }),
+  hasValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return false;
+    return links.length > 0;
+  }),
+  isValidNavigationLink: vi.fn((link) => {
+    if (!link || typeof link !== "object") return false;
+    if (!link.label || typeof link.label !== "string") return false;
+    if (!link.href || typeof link.href !== "string") return false;
+    if (link.href === "" || link.href === "#") return false;
+    return true;
+  }),
 }));
 
 // Mock Next.js Link component
