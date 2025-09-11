@@ -2,20 +2,28 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasAnyRenderableContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
 import styles from "./SectionGrid.module.css";
 
 // ============================================================================
-// BASE SECTION GRID COMPONENT
+// SECTION GRID COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 interface SectionGridProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
 type SectionGridComponent = React.FC<SectionGridProps>;
+
+// ============================================================================
+// BASE SECTION GRID COMPONENT
+// ============================================================================
 
 /** A section grid component that arranges section content in a grid layout. */
 const BaseSectionGrid: SectionGridComponent = setDisplayName(
@@ -26,9 +34,7 @@ const BaseSectionGrid: SectionGridComponent = setDisplayName(
       <div
         {...rest}
         className={cn(styles.sectionGrid, className)}
-        data-section-grid-id={`${_internalId}-section-grid`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`${_internalId}-section-grid`}
+        {...createComponentProps(_internalId, "section-grid", _debugMode)}
       >
         {children}
       </div>
@@ -50,7 +56,7 @@ const MemoizedSectionGrid = React.memo(BaseSectionGrid);
 // ============================================================================
 
 /** A section grid component that arranges section content in a grid layout. */
-const SectionGrid: SectionGridComponent = setDisplayName(
+export const SectionGrid: SectionGridComponent = setDisplayName(
   function SectionGrid(props) {
     const {
       children,
@@ -65,7 +71,7 @@ const SectionGrid: SectionGridComponent = setDisplayName(
       debugMode: _debugMode,
     });
 
-    if (!isRenderableContent(children)) return null;
+    if (!hasAnyRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
@@ -78,5 +84,3 @@ const SectionGrid: SectionGridComponent = setDisplayName(
     return element;
   }
 );
-
-export { SectionGrid };

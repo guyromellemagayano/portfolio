@@ -16,17 +16,28 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined || children === false) {
-      return false;
-    }
-    if (children === "") {
-      return false;
-    }
-    if (Array.isArray(children) && children.length === 0) {
-      return false;
-    }
+  hasValidContent: vi.fn((content) => {
+    if (content == null) return false;
+    if (content === false) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
     return true;
+  }),
+  createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
+    const attributes: Record<string, string> = {};
+    if (id && suffix) {
+      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
+      attributes["data-testid"] = `${id}-${suffix}`;
+      // Add id attribute for SectionTitle
+      if (suffix === "section-title") {
+        attributes["id"] = id;
+      }
+    }
+    if (debugMode === true) {
+      attributes["data-debug-mode"] = "true";
+    }
+    return { ...attributes, ...additionalProps };
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
@@ -36,7 +47,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
