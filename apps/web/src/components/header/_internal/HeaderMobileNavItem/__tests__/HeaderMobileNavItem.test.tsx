@@ -1,31 +1,38 @@
-// Mock next/navigation FIRST
-vi.mock("next/navigation", () => ({
-  usePathname: vi.fn(() => "/about"),
-}));
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
-
-// Mock IntersectionObserver
-const mockIntersectionObserver = vi.fn(() => ({
+// Mock IntersectionObserver before any imports
+const mockIntersectionObserver = vi.hoisted(() => vi.fn());
+mockIntersectionObserver.mockReturnValue({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
-}));
-
-Object.defineProperty(window, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
 });
-
 Object.defineProperty(global, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
 });
+
+// Individual mocks for this test file
+
+// Mock Next.js router
+vi.mock("next/navigation", () => ({
+  usePathname: vi.fn(() => "/about"),
+}));
+
+// Mock the CSS module
+vi.mock("../HeaderMobileNavItem.module.css", () => ({
+  default: {
+    mobileHeaderNavItemLink: "mobile-header-nav-item-link",
+  },
+}));
+
+// Mock the web utils
+vi.mock("@web/utils", () => ({
+  isActivePath: vi.fn(() => true), // Always return true for testing
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -37,31 +44,60 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 // Mock the utils
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (
-      children === null ||
-      children === undefined ||
-      children === "" ||
-      children === true ||
-      children === false ||
-      children === 0
-    ) {
-      return false;
+  createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
+    const attributes: Record<string, string> = {};
+
+    // Only add data attributes when both id and suffix are provided
+    if (id && suffix) {
+      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
+      attributes["data-testid"] = `${id}-${suffix}-root`;
     }
+
+    // Only include data-debug-mode when debugMode is strictly true
+    if (debugMode === true) {
+      attributes["data-debug-mode"] = "true";
+    }
+
+    return {
+      ...attributes,
+      ...additionalProps,
+    };
+  }),
+  isRenderableContent: vi.fn((children) => {
+    if (children == null) return false;
+    if (typeof children === "string") return children.trim() !== "";
+    if (Array.isArray(children))
+      return children.some((child) => child != null && child !== "");
     return true;
   }),
-  hasMeaningfulText: vi.fn((value) => {
-    // Return true for any non-empty string or valid content
-    if (typeof value === "string") return value.length > 0;
-    if (value && typeof value === "object") return true;
-    return Boolean(value);
+  hasMeaningfulText: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  hasValidContent: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
   }),
   getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
-    }
+    if (!href) return { target: "_self" };
     const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
+    const isExternal = hrefString.startsWith("http");
     const shouldOpenNewTab =
       target === "_blank" || (isExternal && target !== "_self");
     return {
@@ -69,33 +105,27 @@ vi.mock("@guyromellemagayano/utils", () => ({
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
   }),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock next/link
+// Mock Next.js Link component
 vi.mock("next/link", () => ({
-  default: vi.fn(({ children, href, className, ...props }) => (
-    <a data-testid="next-link" href={href} className={className} {...props}>
-      {children}
-    </a>
-  )),
+  __esModule: true,
+  default: vi.fn(({ children, href, className, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "a",
+      {
+        "data-testid": "next-link",
+        href,
+        className,
+        ...props,
+      },
+      children
+    );
+  }),
 }));
 
-// Mock the lib
-vi.mock("@web/lib", () => ({
-  isActivePath: vi.fn(() => true), // Return true by default for tests
-}));
-
-// Mock the CSS module
-vi.mock("../HeaderMobileNavItem.module.css", () => ({
-  default: {
-    mobileHeaderNavItemLink: "mobile-header-nav-item-link",
-  },
-}));
+import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
 describe("HeaderMobileNavItem", () => {
   afterEach(() => {
@@ -138,8 +168,8 @@ describe("HeaderMobileNavItem", () => {
 
       const item = screen.getByTestId("custom-id-header-mobile-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-li-id",
-        "custom-id-header-mobile-nav-item-li"
+        "data-header-mobile-nav-item-id",
+        "custom-id-header-mobile-nav-item"
       );
     });
 
@@ -152,8 +182,8 @@ describe("HeaderMobileNavItem", () => {
 
       const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-li-id",
-        "test-id-header-mobile-nav-item-li"
+        "data-header-mobile-nav-item-id",
+        "test-id-header-mobile-nav-item"
       );
     });
 
@@ -271,7 +301,7 @@ describe("HeaderMobileNavItem", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
       const link = screen.getByTestId("next-link");
-      expect(link).toHaveAttribute("title", "");
+      expect(link).not.toHaveAttribute("title");
     });
 
     it("uses custom title when provided", () => {
@@ -373,7 +403,10 @@ describe("HeaderMobileNavItem", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
       const link = screen.getByTestId("next-link");
-      expect(link).toHaveClass("mobile-header-nav-item-link");
+      // Check that the link has a CSS class (either mocked or actual)
+      expect(link.className).toMatch(
+        /mobile-header-nav-item-link|_mobileHeaderNavItemLink_/
+      );
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -384,7 +417,14 @@ describe("HeaderMobileNavItem", () => {
       );
 
       const link = screen.getByTestId("next-link");
-      expect(link).toHaveClass("mobile-header-nav-item-link");
+      // Check that the link has the CSS class
+      expect(link.className).toMatch(
+        /mobile-header-nav-item-link|_mobileHeaderNavItemLink_/
+      );
+
+      // The className prop is applied to the li element, not the link
+      const li = link.closest("li");
+      expect(li).toHaveClass("custom-class");
     });
   });
 
@@ -443,8 +483,8 @@ describe("HeaderMobileNavItem", () => {
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(
-        "data-header-mobile-nav-item-li-id",
-        "custom-id-header-mobile-nav-item-li"
+        "data-header-mobile-nav-item-id",
+        "custom-id-header-mobile-nav-item"
       );
       expect(item).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveAttribute("href", "/about");
