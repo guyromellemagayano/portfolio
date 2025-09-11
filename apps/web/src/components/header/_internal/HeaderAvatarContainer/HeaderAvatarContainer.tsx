@@ -2,20 +2,28 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
 import styles from "./HeaderAvatarContainer.module.css";
 
 // ============================================================================
-// BASE HEADER AVATAR CONTAINER COMPONENT
+// HEADER AVATAR CONTAINER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface HeaderAvatarContainerProps
+export interface HeaderAvatarContainerProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type HeaderAvatarContainerComponent = React.FC<HeaderAvatarContainerProps>;
+export type HeaderAvatarContainerComponent =
+  React.FC<HeaderAvatarContainerProps>;
+
+// ============================================================================
+// BASE HEADER AVATAR CONTAINER COMPONENT
+// ============================================================================
 
 /** A container `div` for the `header` avatar, providing styling and debug attributes. */
 const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
@@ -26,9 +34,11 @@ const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
       <div
         {...rest}
         className={cn(styles.avatarContainer, className)}
-        data-header-avatar-container-id={`header-${_internalId}-avatar-container`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`header-${_internalId}-avatar-container-root`}
+        {...createComponentProps(
+          _internalId,
+          "header-avatar-container",
+          _debugMode
+        )}
       />
     );
 
@@ -47,8 +57,8 @@ const MemoizedHeaderAvatarContainer = React.memo(BaseHeaderAvatarContainer);
 // ============================================================================
 
 /** Renders the container div for the `Header` avatar with styling and debug attributes. */
-const HeaderAvatarContainer: HeaderAvatarContainerComponent = setDisplayName(
-  function HeaderAvatarContainer(props) {
+export const HeaderAvatarContainer: HeaderAvatarContainerComponent =
+  setDisplayName(function HeaderAvatarContainer(props) {
     const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
@@ -67,7 +77,4 @@ const HeaderAvatarContainer: HeaderAvatarContainerComponent = setDisplayName(
       : BaseHeaderAvatarContainer;
     const element = <Component {...updatedProps} />;
     return element;
-  }
-);
-
-export { HeaderAvatarContainer };
+  });
