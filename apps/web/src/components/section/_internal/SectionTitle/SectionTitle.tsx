@@ -2,20 +2,28 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { isRenderableContent, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  hasValidContent,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
 import styles from "./SectionTitle.module.css";
 
 // ============================================================================
-// BASE SECTION TITLE COMPONENT
+// SECTION TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 interface SectionTitleProps
   extends React.ComponentProps<"h2">,
     CommonComponentProps {}
 type SectionTitleComponent = React.FC<SectionTitleProps>;
+
+// ============================================================================
+// BASE SECTION TITLE COMPONENT
+// ============================================================================
 
 /** A section title component that renders a heading with proper styling and accessibility. */
 const BaseSectionTitle: SectionTitleComponent = setDisplayName(
@@ -25,11 +33,8 @@ const BaseSectionTitle: SectionTitleComponent = setDisplayName(
     const element = (
       <h2
         {...rest}
-        id={_internalId}
         className={cn(styles.sectionTitle, className)}
-        data-section-title-id={`${_internalId}-section-title`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`${_internalId}-section-title`}
+        {...createComponentProps(_internalId, "section-title", _debugMode)}
       >
         {children}
       </h2>
@@ -49,7 +54,7 @@ const MemoizedSectionTitle = React.memo(BaseSectionTitle);
 // MAIN SECTION TITLE COMPONENT
 // ============================================================================
 
-const SectionTitle: SectionTitleComponent = setDisplayName(
+export const SectionTitle: SectionTitleComponent = setDisplayName(
   function SectionTitle(props) {
     const {
       children,
@@ -64,7 +69,7 @@ const SectionTitle: SectionTitleComponent = setDisplayName(
       debugMode: _debugMode,
     });
 
-    if (!isRenderableContent(children)) return null;
+    if (!hasValidContent(children)) return null;
 
     const updatedProps = {
       ...rest,
@@ -77,5 +82,3 @@ const SectionTitle: SectionTitleComponent = setDisplayName(
     return element;
   }
 );
-
-export { SectionTitle };
