@@ -7,50 +7,49 @@ import { usePathname } from "next/navigation";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   getLinkTargetProps,
   hasMeaningfulText,
   isRenderableContent,
+  isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn, isActivePath } from "@web/utils";
 
-import type { CommonNavItemProps } from "../../_data";
+import { type HeaderNavItemComponent } from "../../_data";
 import styles from "./HeaderDesktopNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV ITEM COMPONENT
 // ============================================================================
 
-type HeaderDesktopNavItemComponent = React.FC<CommonNavItemProps>;
-
 /** A desktop navigation item component for the header. */
-const BaseHeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
+const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderDesktopNavItem(props) {
-    const {
-      children,
-      href = "#",
-      target = "_self",
-      title = "",
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { children, href, target, title, _internalId, _debugMode, ...rest } =
+      props;
 
     const pathname = usePathname();
-    const isActive = isActivePath(pathname, href || "");
 
-    if ((!hasMeaningfulText(children) && !hasMeaningfulText(href)) || !isActive)
-      return null;
+    // Only check isActive when href is a non-empty string
+    const isActive =
+      href && typeof href === "string" && href.length > 0
+        ? isActivePath(pathname, href)
+        : false;
+
+    if (!hasMeaningfulText(children) || !isValidLink(href)) return null;
 
     const linkTargetProps = getLinkTargetProps(href?.toString(), target);
 
     const element = (
       <li
         {...rest}
-        data-header-desktop-nav-item-li-id={`header-${_internalId}-desktop-nav-item`}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-testid={`header-${_internalId}-desktop-nav-item-root`}
+        {...createComponentProps(
+          _internalId,
+          "header-desktop-nav-item",
+          _debugMode
+        )}
       >
         <Link
           href={href}
@@ -88,7 +87,7 @@ const MemoizedHeaderDesktopNavItem = React.memo(BaseHeaderDesktopNavItem);
 // ============================================================================
 
 /** A desktop navigation item component for the header. */
-const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
+export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderDesktopNavItem(props) {
     const {
       children,
@@ -118,5 +117,3 @@ const HeaderDesktopNavItem: HeaderDesktopNavItemComponent = setDisplayName(
     return element;
   }
 );
-
-export { HeaderDesktopNavItem };
