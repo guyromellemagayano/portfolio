@@ -48,12 +48,14 @@ const BaseSectionTitle: SectionTitleComponent = setDisplayName(
 // MEMOIZED SECTION TITLE COMPONENT
 // ============================================================================
 
+/** A memoized section title component. */
 const MemoizedSectionTitle = React.memo(BaseSectionTitle);
 
 // ============================================================================
 // MAIN SECTION TITLE COMPONENT
 // ============================================================================
 
+/** A section title component that renders a heading with proper styling and accessibility. */
 export const SectionTitle: SectionTitleComponent = setDisplayName(
   function SectionTitle(props) {
     const {
