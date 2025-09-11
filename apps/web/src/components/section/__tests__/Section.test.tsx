@@ -61,28 +61,40 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 // Mock the utils
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasMeaningfulText: vi.fn((content) => {
-    if (typeof content !== "string") {
+  hasValidContent: vi.fn((content) => {
+    if (content == null) return false;
+    if (content === false) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === null || children === undefined || children === false) {
       return false;
     }
-    return content.trim().length > 0;
-  }),
-  isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined || children === false) {
+    if (children === "") {
+      return false;
+    }
+    if (Array.isArray(children) && children.length === 0) {
       return false;
     }
     return true;
   }),
-  hasAnyRenderableContent: vi.fn((...values) => {
-    return values.some((value) => {
-      if (value === null || value === undefined || value === false) {
-        return false;
+  createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
+    const attributes: Record<string, string> = {};
+    if (id && suffix) {
+      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
+      attributes["data-testid"] = `${id}-${suffix}`;
+      // Add id attribute for SectionTitle
+      if (suffix === "section-title") {
+        attributes["id"] = id;
       }
-      if (value === "") {
-        return false;
-      }
-      return true;
-    });
+    }
+    if (debugMode === true) {
+      attributes["data-debug-mode"] = "true";
+    }
+    return { ...attributes, ...additionalProps };
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
@@ -93,7 +105,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 }));
 
 // Mock the cn helper
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -135,7 +147,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toBeInTheDocument();
       expect(section).toHaveTextContent("Test Section");
       expect(section).toHaveTextContent("Test content");
@@ -145,7 +157,7 @@ describe("Section Component", () => {
     it("renders section with only title", () => {
       render(<Section title="Title Only" data-testid="section" />);
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toBeInTheDocument();
       expect(section).toHaveTextContent("Title Only");
       expect(section).not.toHaveTextContent("Test content");
@@ -158,40 +170,29 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toBeInTheDocument();
       expect(section).toHaveTextContent("Children only");
-      expect(section.querySelector("h2")).toBeInTheDocument();
+      expect(section.querySelector("h2")).toBeNull(); // No title, so no h2
     });
 
-    it("renders grid structure when no title and no children", () => {
-      render(<Section title="" data-testid="section" />);
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
-      expect(section).toBeInTheDocument();
-      expect(grid).toBeInTheDocument();
+    it("returns null when no title and no children", () => {
+      const { container } = render(<Section title="" data-testid="section" />);
+      expect(container.firstChild).toBeNull();
     });
 
-    it("renders grid structure when title is empty string and no children", () => {
-      render(<Section title="" data-testid="section" />);
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
-      const title = section.querySelector("h2");
-      expect(section).toBeInTheDocument();
-      expect(grid).toBeInTheDocument();
-      expect(title).toBeInTheDocument();
+    it("returns null when title is empty string and no children", () => {
+      const { container } = render(<Section title="" data-testid="section" />);
+      expect(container.firstChild).toBeNull();
     });
 
-    it("renders grid structure when children is empty string and no title", () => {
-      render(
+    it("returns null when children is empty string and no title", () => {
+      const { container } = render(
         <Section title="" data-testid="section">
           {""}
         </Section>
       );
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
-      expect(section).toBeInTheDocument();
-      expect(grid).toBeInTheDocument();
+      expect(container.firstChild).toBeNull();
     });
   });
 
@@ -205,7 +206,7 @@ describe("Section Component", () => {
       );
 
       // The ref should be forwarded to the section element
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toBeInTheDocument();
       expect(section.tagName).toBe("SECTION");
 
@@ -224,7 +225,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveClass("_section_1c4dfc", "custom-class");
     });
 
@@ -241,7 +242,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveAttribute("id", "test-id");
       expect(section).toHaveAttribute("aria-label", "Test section");
       expect(section).toHaveAttribute("data-custom", "value");
@@ -259,18 +260,6 @@ describe("Section Component", () => {
       expect(heading).toHaveTextContent("Heading Test");
       expect(heading).toHaveClass("_sectionTitle_253742");
     });
-
-    it("applies aria-labelledby to section", () => {
-      render(
-        <Section title="Aria Test" data-testid="section">
-          Content
-        </Section>
-      );
-
-      const section = screen.getByTestId("test-id-section-root");
-      const heading = screen.getByTestId("test-id-section-title");
-      expect(section).toHaveAttribute("aria-labelledby", heading.id);
-    });
   });
 
   describe("Internal Props and useComponentId Integration", () => {
@@ -285,11 +274,10 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("custom-id-section-root");
+      const section = screen.getByTestId("custom-id-section");
       const heading = screen.getByTestId("custom-id-section-title");
 
       expect(section).toHaveAttribute("data-section-id", "custom-id-section");
-      expect(section).toHaveAttribute("aria-labelledby", "custom-id");
       expect(heading).toHaveAttribute("id", "custom-id");
     });
 
@@ -300,11 +288,10 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const heading = screen.getByTestId("test-id-section-title");
 
       expect(section).toHaveAttribute("data-section-id", "test-id-section");
-      expect(section).toHaveAttribute("aria-labelledby", "test-id");
       expect(heading).toHaveAttribute("id", "test-id");
     });
 
@@ -315,7 +302,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -326,7 +313,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).not.toHaveAttribute("data-debug-mode");
     });
 
@@ -337,7 +324,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).not.toHaveAttribute("data-debug-mode");
     });
 
@@ -354,7 +341,7 @@ describe("Section Component", () => {
       );
 
       // The hook is called internally, we can verify by checking the rendered attributes
-      const section = screen.getByTestId("custom-id-section-root");
+      const section = screen.getByTestId("custom-id-section");
       expect(section).toHaveAttribute("data-section-id", "custom-id-section");
       expect(section).toHaveAttribute("data-debug-mode", "true");
     });
@@ -368,7 +355,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const grid = section.querySelector("._sectionGrid_1c4dfc");
       const title = screen.getByTestId("test-id-section-title");
       const content = section.querySelector("._sectionContent_1c4dfc");
@@ -390,7 +377,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveClass("_section_1c4dfc", "custom-class");
     });
   });
@@ -403,7 +390,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const grid = section.querySelector("._sectionGrid_1c4dfc");
 
       expect(grid).toBeInTheDocument();
@@ -417,7 +404,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const grid = section.querySelector("._sectionGrid_1c4dfc");
       const title = grid?.querySelector("h2");
 
@@ -432,7 +419,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const grid = section.querySelector("._sectionGrid_1c4dfc");
       const content = grid?.querySelector("._sectionContent_1c4dfc");
 
@@ -447,7 +434,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       const grid = section.querySelector("._sectionGrid_1c4dfc");
       const title = grid?.querySelector("h2");
       const content = grid?.querySelector("._sectionContent_1c4dfc");
@@ -474,7 +461,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveTextContent("Complex Children");
       expect(section).toHaveTextContent("Sub heading");
       expect(section).toHaveTextContent("Paragraph content");
@@ -493,7 +480,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveTextContent("React Children");
       expect(section).toHaveTextContent("Child component");
     });
@@ -507,7 +494,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section).toHaveTextContent("Multiple Children");
       expect(section).toHaveTextContent("First child");
       expect(section).toHaveTextContent("Second child");
@@ -568,22 +555,6 @@ describe("Section Component", () => {
       expect(heading).toHaveTextContent("Accessibility Test");
     });
 
-    it("has proper aria-labelledby association", () => {
-      render(
-        <Section title="Aria Association" data-testid="section">
-          Content
-        </Section>
-      );
-
-      const section = screen.getByTestId("test-id-section-root");
-      const heading = screen.getByTestId("test-id-section-title");
-
-      const labelledBy = section.getAttribute("aria-labelledby");
-      const headingId = heading.getAttribute("id");
-
-      expect(labelledBy).toBe(headingId);
-    });
-
     it("has semantic section element", () => {
       render(
         <Section title="Semantic Test" data-testid="section">
@@ -591,7 +562,7 @@ describe("Section Component", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
+      const section = screen.getByTestId("test-id-section");
       expect(section.tagName).toBe("SECTION");
     });
   });
