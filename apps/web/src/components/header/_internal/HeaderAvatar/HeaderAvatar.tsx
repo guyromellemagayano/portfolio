@@ -5,19 +5,24 @@ import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { getLinkTargetProps, setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  getLinkTargetProps,
+  isValidImageSrc,
+  isValidLink,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
-import { createComponentProps } from "@web/utils/component";
 
 import { AVATAR_COMPONENT_LABELS } from "../../_data";
 import styles from "./HeaderAvatar.module.css";
 
 // ============================================================================
-// BASE HEADER AVATAR COMPONENT
+// HEADER AVATAR COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface HeaderAvatarProps
+export interface HeaderAvatarProps
   extends Omit<React.ComponentProps<typeof Link>, "href">,
     Omit<CommonComponentProps, "as"> {
   /** The href of the link. */
@@ -29,7 +34,11 @@ interface HeaderAvatarProps
   /** Whether the avatar is large. */
   large?: boolean;
 }
-type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
+export type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
+
+// ============================================================================
+// BASE HEADER AVATAR COMPONENT
+// ============================================================================
 
 /** Renders a linked avatar image for the header. */
 const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
@@ -62,11 +71,7 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
         rel={linkTargetProps.rel}
         className={cn(styles.avatarLink, className)}
         aria-label={AVATAR_COMPONENT_LABELS.home}
-        {...createComponentProps(
-          _internalId || "fallback-id",
-          _debugMode,
-          "header-avatar"
-        )}
+        {...createComponentProps(_internalId, "header-avatar", _debugMode)}
       >
         <Image
           src={src}
@@ -94,17 +99,30 @@ const MemoizedHeaderAvatar = React.memo(BaseHeaderAvatar);
 // ============================================================================
 
 /** Renders the avatar link for the `Header` compound component. */
-const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
+export const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function HeaderAvatar(props) {
-    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
+    const {
+      isMemoized = false,
+      _internalId,
+      _debugMode,
+      href = AVATAR_COMPONENT_LABELS.link,
+      src = AVATAR_COMPONENT_LABELS.src,
+      ...rest
+    } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
+    if (!isValidImageSrc(src) || !isValidLink(href)) {
+      return null;
+    }
+
     const updatedProps = {
       ...rest,
+      href,
+      src,
       _internalId: id,
       _debugMode: isDebugMode,
     };
@@ -114,5 +132,3 @@ const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
     return element;
   }
 );
-
-export { HeaderAvatar };
