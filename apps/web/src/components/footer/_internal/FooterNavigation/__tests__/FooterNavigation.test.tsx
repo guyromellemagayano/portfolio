@@ -77,7 +77,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (options?.year === "numeric") {
       return new Date(date).getFullYear().toString();
     }
-    return date.toISOString();
+    return new Date(date).toISOString();
   }),
 }));
 
