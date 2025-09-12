@@ -3,7 +3,7 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  isRenderableContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -72,17 +72,16 @@ export const Icon = setDisplayName(function Icon(props: CommonIconProps) {
     debugMode,
   });
 
-  if (!isRenderableContent(children)) return null;
+  if (!hasAnyRenderableContent(children)) return null;
 
   const updatedProps = {
     ...rest,
     internalId: id,
     debugMode: isDebugMode,
-    children,
   };
 
   const Component = isMemoized ? MemoizedIcon : BaseIcon;
-  const element = <Component {...updatedProps} />;
+  const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 } as IconCompoundComponent);
 
