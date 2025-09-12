@@ -6,15 +6,15 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
+  filterValidNavigationLinks,
   getLinkTargetProps,
-  hasValidContent,
-  isValidLink,
+  hasValidNavigationLinks,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import { type FooterLink } from "../../_data";
+import { FOOTER_COMPONENT_NAV_LINKS, FooterLink } from "../../_data";
 import styles from "./FooterNavigation.module.css";
 
 // ============================================================================
@@ -23,9 +23,8 @@ import styles from "./FooterNavigation.module.css";
 
 export interface FooterNavigationProps
   extends Omit<React.ComponentProps<"nav">, "children">,
-    CommonComponentProps {
-  /** Navigation links to display */
-  navLinks?: ReadonlyArray<FooterLink>;
+    Omit<CommonComponentProps, "as"> {
+  links?: ReadonlyArray<FooterLink>;
 }
 export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
@@ -36,25 +35,17 @@ export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 /** A base footer navigation component (client, minimal effects split out). */
 const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
-    const { className, navLinks, _internalId, _debugMode, ...rest } = props;
+    const { className, links, _internalId, _debugMode, ...rest } = props;
 
-    const element = (
+    const element = links ? (
       <nav
         {...rest}
         className={cn(styles.footerNavigationList, className)}
         {...createComponentProps(_internalId, "footer-navigation", _debugMode)}
       >
-        {navLinks?.map(({ kind, label, href }) => {
+        {links.map(({ kind, label, href }) => {
           const isExternal = kind === "external";
           const hrefString = isExternal ? href : href?.toString() || "";
-
-          if (!isValidLink(hrefString)) {
-            return (
-              <li key={label} className={styles.footerNavigationItem}>
-                {label}
-              </li>
-            );
-          }
 
           const targetProps = getLinkTargetProps(
             hrefString,
@@ -74,7 +65,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
           );
         })}
       </nav>
-    );
+    ) : null;
 
     return element;
   }
@@ -94,26 +85,22 @@ const MemoizedFooterNavigation = React.memo(BaseFooterNavigation);
 /** The main footer navigation component for the application. */
 export const FooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
-    const {
-      isMemoized = false,
-      navLinks,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
-    if (!hasValidContent(navLinks)) return null;
+    const navLinks: ReadonlyArray<FooterLink> = FOOTER_COMPONENT_NAV_LINKS;
+    const validNavLinks = filterValidNavigationLinks(navLinks);
+    if (!hasValidNavigationLinks(validNavLinks)) return null;
 
     const updatedProps = {
       ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
-      navLinks,
+      links: validNavLinks,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized

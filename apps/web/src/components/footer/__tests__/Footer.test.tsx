@@ -27,6 +27,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
+  formatDateSafely: vi.fn((date, options) => {
+    if (options?.year === "numeric") {
+      return new Date(date).getFullYear().toString();
+    }
+    return date.toISOString();
+  }),
 }));
 
 vi.mock("@web/components/container", () => ({
@@ -45,34 +51,54 @@ vi.mock("@web/components/container", () => ({
 }));
 
 vi.mock("../_internal", () => ({
-  FooterNavigation: vi.fn(({ navLinks, ...props }) => (
-    <nav data-testid="footer-navigation" {...props}>
-      {navLinks?.map((link) => (
-        <a
-          key={link.label}
-          href={
-            typeof link.href === "string" ? link.href : link.href.toString()
-          }
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
-  )),
-  FooterLegal: vi.fn(({ legalText, ...props }) => (
-    <div data-testid="footer-legal" {...props}>
-      {legalText}
-    </div>
-  )),
+  FooterNavigation: vi.fn(({ links, ...props }) => {
+    // Use the mocked data from the _data mock
+    const mockLinks = [
+      { kind: "internal", label: "About", href: "/about" },
+      { kind: "internal", label: "Articles", href: "/articles" },
+      { kind: "internal", label: "Projects", href: "/projects" },
+      { kind: "internal", label: "Speaking", href: "/speaking" },
+      { kind: "internal", label: "Uses", href: "/uses" },
+    ];
+
+    return (
+      <nav data-testid="footer-navigation" {...props}>
+        {mockLinks.map((link) => (
+          <a
+            key={link.label}
+            href={
+              typeof link.href === "string" ? link.href : link.href.toString()
+            }
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+    );
+  }),
+  FooterLegal: vi.fn(({ legalText, ...props }) => {
+    // Use the mocked data from the _data mock
+    const mockLegalText =
+      "&copy; 2024 Guy Romelle Magayano. All rights reserved.";
+
+    return (
+      <div data-testid="footer-legal" {...props}>
+        {mockLegalText}
+      </div>
+    );
+  }),
 }));
 
 vi.mock("../_data", () => ({
   FOOTER_COMPONENT_LABELS: {
-    legalText: "Default Legal Text",
+    legalText: "&copy; 2024 Guy Romelle Magayano. All rights reserved.",
   },
   FOOTER_COMPONENT_NAV_LINKS: [
     { kind: "internal", label: "About", href: "/about" },
-    { kind: "internal", label: "Contact", href: "/contact" },
+    { kind: "internal", label: "Articles", href: "/articles" },
+    { kind: "internal", label: "Projects", href: "/projects" },
+    { kind: "internal", label: "Speaking", href: "/speaking" },
+    { kind: "internal", label: "Uses", href: "/uses" },
   ],
 }));
 
@@ -102,25 +128,31 @@ describe("Footer", () => {
       expect(screen.getByTestId("container-inner")).toBeInTheDocument();
       expect(screen.getByTestId("footer-navigation")).toBeInTheDocument();
       expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
-      expect(screen.getByText("Default Legal Text")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
-    it("renders with custom legal text", () => {
-      render(<Footer legalText="Custom Legal Text" />);
+    it("renders with default legal text from internal data", () => {
+      render(<Footer />);
 
-      expect(screen.getByText("Custom Legal Text")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
-    it("renders with custom navigation links", () => {
-      const customLinks = [
-        { kind: "internal", label: "Home", href: "/" },
-        { kind: "internal", label: "Blog", href: "/blog" },
-      ];
+    it("renders with default navigation links from internal data", () => {
+      render(<Footer />);
 
-      render(<Footer navLinks={customLinks} />);
-
-      expect(screen.getByText("Home")).toBeInTheDocument();
-      expect(screen.getByText("Blog")).toBeInTheDocument();
+      expect(screen.getByText("About")).toBeInTheDocument();
+      expect(screen.getByText("Articles")).toBeInTheDocument();
+      expect(screen.getByText("Projects")).toBeInTheDocument();
+      expect(screen.getByText("Speaking")).toBeInTheDocument();
+      expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });
 
@@ -223,30 +255,41 @@ describe("Footer", () => {
   });
 
   describe("Sub-component Integration", () => {
-    it("passes navLinks to FooterNavigation", () => {
-      const customLinks = [
-        { kind: "internal", label: "Home", href: "/" },
-        { kind: "internal", label: "About", href: "/about" },
-      ];
-
-      render(<Footer navLinks={customLinks} />);
-
-      expect(screen.getByText("Home")).toBeInTheDocument();
-      expect(screen.getByText("About")).toBeInTheDocument();
-    });
-
-    it("passes legalText to FooterLegal", () => {
-      render(<Footer legalText="Custom Legal Text" />);
-
-      expect(screen.getByText("Custom Legal Text")).toBeInTheDocument();
-    });
-
-    it("uses default values when props not provided", () => {
+    it("renders FooterNavigation with internal data", () => {
       render(<Footer />);
 
-      expect(screen.getByText("Default Legal Text")).toBeInTheDocument();
+      expect(screen.getByTestId("footer-navigation")).toBeInTheDocument();
       expect(screen.getByText("About")).toBeInTheDocument();
-      expect(screen.getByText("Contact")).toBeInTheDocument();
+      expect(screen.getByText("Articles")).toBeInTheDocument();
+      expect(screen.getByText("Projects")).toBeInTheDocument();
+      expect(screen.getByText("Speaking")).toBeInTheDocument();
+      expect(screen.getByText("Uses")).toBeInTheDocument();
+    });
+
+    it("renders FooterLegal with internal data", () => {
+      render(<Footer />);
+
+      expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
+    });
+
+    it("uses internal data for all sub-components", () => {
+      render(<Footer />);
+
+      expect(
+        screen.getByText(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
+      expect(screen.getByText("About")).toBeInTheDocument();
+      expect(screen.getByText("Articles")).toBeInTheDocument();
+      expect(screen.getByText("Projects")).toBeInTheDocument();
+      expect(screen.getByText("Speaking")).toBeInTheDocument();
+      expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });
 
@@ -275,18 +318,24 @@ describe("Footer", () => {
       expect(screen.getByTestId("test-id-footer-root")).toBeInTheDocument();
     });
 
-    it("renders with empty navLinks array", () => {
-      render(<Footer navLinks={[]} />);
+    it("renders with default navigation links", () => {
+      render(<Footer />);
 
       expect(screen.getByTestId("test-id-footer-root")).toBeInTheDocument();
       expect(screen.getByTestId("footer-navigation")).toBeInTheDocument();
+      expect(screen.getByText("About")).toBeInTheDocument();
     });
 
-    it("renders with empty legalText", () => {
-      render(<Footer legalText="" />);
+    it("renders with default legal text", () => {
+      render(<Footer />);
 
       expect(screen.getByTestId("test-id-footer-root")).toBeInTheDocument();
       expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
   });
 
@@ -309,40 +358,44 @@ describe("Footer", () => {
         expect(screen.getByTestId("footer-legal")).toBeInTheDocument();
 
         // Check content
-        expect(screen.getByText("Default Legal Text")).toBeInTheDocument();
+        expect(
+          screen.getByText(
+            "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          )
+        ).toBeInTheDocument();
         expect(screen.getByText("About")).toBeInTheDocument();
-        expect(screen.getByText("Contact")).toBeInTheDocument();
+        expect(screen.getByText("Articles")).toBeInTheDocument();
+        expect(screen.getByText("Projects")).toBeInTheDocument();
+        expect(screen.getByText("Speaking")).toBeInTheDocument();
+        expect(screen.getByText("Uses")).toBeInTheDocument();
       });
 
-      it("renders footer with custom navigation links", () => {
-        const customLinks = [
-          { kind: "internal", label: "Home", href: "/" },
-          { kind: "internal", label: "Services", href: "/services" },
-          { kind: "external", label: "Blog", href: "https://blog.example.com" },
-        ];
+      it("renders footer with default navigation links", () => {
+        render(<Footer />);
 
-        render(<Footer navLinks={customLinks} />);
+        expect(screen.getByText("About")).toBeInTheDocument();
+        expect(screen.getByText("Articles")).toBeInTheDocument();
+        expect(screen.getByText("Projects")).toBeInTheDocument();
+        expect(screen.getByText("Speaking")).toBeInTheDocument();
+        expect(screen.getByText("Uses")).toBeInTheDocument();
 
-        expect(screen.getByText("Home")).toBeInTheDocument();
-        expect(screen.getByText("Services")).toBeInTheDocument();
-        expect(screen.getByText("Blog")).toBeInTheDocument();
+        const aboutLink = screen.getByText("About").closest("a");
+        const articlesLink = screen.getByText("Articles").closest("a");
+        const projectsLink = screen.getByText("Projects").closest("a");
 
-        const homeLink = screen.getByText("Home").closest("a");
-        const servicesLink = screen.getByText("Services").closest("a");
-        const blogLink = screen.getByText("Blog").closest("a");
-
-        expect(homeLink).toHaveAttribute("href", "/");
-        expect(servicesLink).toHaveAttribute("href", "/services");
-        expect(blogLink).toHaveAttribute("href", "https://blog.example.com");
+        expect(aboutLink).toHaveAttribute("href", "/about");
+        expect(articlesLink).toHaveAttribute("href", "/articles");
+        expect(projectsLink).toHaveAttribute("href", "/projects");
       });
 
-      it("renders footer with custom legal text", () => {
-        const customLegalText = "© 2024 My Company. All rights reserved.";
-        render(<Footer legalText={customLegalText} />);
+      it("renders footer with default legal text", () => {
+        render(<Footer />);
 
-        expect(screen.getByText(customLegalText)).toBeInTheDocument();
+        const defaultLegalText =
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved.";
+        expect(screen.getByText(defaultLegalText)).toBeInTheDocument();
         expect(screen.getByTestId("footer-legal")).toHaveTextContent(
-          customLegalText
+          defaultLegalText
         );
       });
     });
@@ -422,94 +475,46 @@ describe("Footer", () => {
 
     describe("Footer Navigation Integration", () => {
       it("renders navigation with proper link structure", () => {
-        const navLinks = [
-          { kind: "internal", label: "Home", href: "/" },
-          { kind: "internal", label: "About", href: "/about" },
-        ];
-
-        render(<Footer navLinks={navLinks} />);
+        render(<Footer />);
 
         const navigation = screen.getByTestId("footer-navigation");
         expect(navigation).toBeInTheDocument();
 
         const links = navigation.querySelectorAll("a");
-        expect(links).toHaveLength(2);
+        expect(links).toHaveLength(5);
 
-        expect(links[0]).toHaveTextContent("Home");
-        expect(links[0]).toHaveAttribute("href", "/");
-        expect(links[1]).toHaveTextContent("About");
-        expect(links[1]).toHaveAttribute("href", "/about");
-      });
-
-      it("handles external navigation links", () => {
-        const navLinks = [
-          {
-            kind: "external",
-            label: "External Site",
-            href: "https://external.com",
-          },
-        ];
-
-        render(<Footer navLinks={navLinks} />);
-
-        const link = screen.getByText("External Site");
-        expect(link).toBeInTheDocument();
-        expect(link.closest("a")).toHaveAttribute(
-          "href",
-          "https://external.com"
-        );
-      });
-
-      it("handles mixed internal and external links", () => {
-        const navLinks = [
-          { kind: "internal", label: "Internal", href: "/internal" },
-          { kind: "external", label: "External", href: "https://external.com" },
-        ];
-
-        render(<Footer navLinks={navLinks} />);
-
-        expect(screen.getByText("Internal")).toBeInTheDocument();
-        expect(screen.getByText("External")).toBeInTheDocument();
-
-        const internalLink = screen.getByText("Internal").closest("a");
-        const externalLink = screen.getByText("External").closest("a");
-
-        expect(internalLink).toHaveAttribute("href", "/internal");
-        expect(externalLink).toHaveAttribute("href", "https://external.com");
+        expect(links[0]).toHaveTextContent("About");
+        expect(links[0]).toHaveAttribute("href", "/about");
+        expect(links[1]).toHaveTextContent("Articles");
+        expect(links[1]).toHaveAttribute("href", "/articles");
+        expect(links[2]).toHaveTextContent("Projects");
+        expect(links[2]).toHaveAttribute("href", "/projects");
+        expect(links[3]).toHaveTextContent("Speaking");
+        expect(links[3]).toHaveAttribute("href", "/speaking");
+        expect(links[4]).toHaveTextContent("Uses");
+        expect(links[4]).toHaveAttribute("href", "/uses");
       });
     });
 
     describe("Footer Legal Integration", () => {
       it("renders legal text with proper structure", () => {
-        const legalText = "© 2024 Company Name. All rights reserved.";
-        render(<Footer legalText={legalText} />);
+        render(<Footer />);
 
         const legalSection = screen.getByTestId("footer-legal");
         expect(legalSection).toBeInTheDocument();
-        expect(legalSection).toHaveTextContent(legalText);
-      });
-
-      it("handles legal text with HTML content", () => {
-        const legalText =
-          "© 2024 <strong>Company Name</strong>. All rights reserved.";
-        render(<Footer legalText={legalText} />);
-
-        const legalSection = screen.getByTestId("footer-legal");
-        expect(legalSection).toBeInTheDocument();
-        // Check that the HTML content is rendered correctly (HTML is escaped)
-        expect(legalSection.innerHTML).toContain(
-          "&lt;strong&gt;Company Name&lt;/strong&gt;"
+        expect(legalSection).toHaveTextContent(
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         );
-        expect(legalSection.innerHTML).toContain("© 2024");
-        expect(legalSection.innerHTML).toContain("All rights reserved.");
       });
 
-      it("handles empty legal text gracefully", () => {
-        render(<Footer legalText="" />);
+      it("renders legal text with HTML entities", () => {
+        render(<Footer />);
 
         const legalSection = screen.getByTestId("footer-legal");
         expect(legalSection).toBeInTheDocument();
-        expect(legalSection).toHaveTextContent("");
+        expect(legalSection.innerHTML).toContain("&amp;copy;");
+        expect(legalSection.innerHTML).toContain("Guy Romelle Magayano");
+        expect(legalSection.innerHTML).toContain("All rights reserved.");
       });
     });
 
@@ -543,28 +548,18 @@ describe("Footer", () => {
         );
       });
 
-      it("handles complex navigation link structures", () => {
-        const complexLinks = [
-          { kind: "internal", label: "Home", href: "/" },
-          { kind: "internal", label: "About", href: "/about" },
-          {
-            kind: "external",
-            label: "Documentation",
-            href: "https://docs.example.com",
-          },
-          { kind: "internal", label: "Contact", href: "/contact" },
-        ];
+      it("handles default navigation link structures", () => {
+        render(<Footer />);
 
-        render(<Footer navLinks={complexLinks} />);
-
-        expect(screen.getByText("Home")).toBeInTheDocument();
         expect(screen.getByText("About")).toBeInTheDocument();
-        expect(screen.getByText("Documentation")).toBeInTheDocument();
-        expect(screen.getByText("Contact")).toBeInTheDocument();
+        expect(screen.getByText("Articles")).toBeInTheDocument();
+        expect(screen.getByText("Projects")).toBeInTheDocument();
+        expect(screen.getByText("Speaking")).toBeInTheDocument();
+        expect(screen.getByText("Uses")).toBeInTheDocument();
 
         const navigation = screen.getByTestId("footer-navigation");
         const links = navigation.querySelectorAll("a");
-        expect(links).toHaveLength(4);
+        expect(links).toHaveLength(5);
       });
     });
   });
