@@ -10,11 +10,7 @@ import {
 import { Container } from "@web/components/Container";
 import { cn } from "@web/utils";
 
-import {
-  FOOTER_COMPONENT_LABELS,
-  FOOTER_COMPONENT_NAV_LINKS,
-  FooterComponentLabels,
-} from "./_data";
+import { FooterComponentLabels } from "./_data";
 import { FooterLegal, FooterNavigation } from "./_internal";
 import styles from "./Footer.module.css";
 
@@ -25,7 +21,7 @@ import styles from "./Footer.module.css";
 export interface FooterProps
   extends Omit<React.ComponentProps<"footer">, "children">,
     FooterComponentLabels,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type FooterComponent = React.FC<FooterProps>;
 
 // ============================================================================
@@ -34,14 +30,7 @@ export type FooterComponent = React.FC<FooterProps>;
 
 /** A base footer component (client, minimal effects split out). */
 const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
-  const {
-    className,
-    internalId,
-    debugMode,
-    navLinks = FOOTER_COMPONENT_NAV_LINKS,
-    legalText = FOOTER_COMPONENT_LABELS.legalText,
-    ...rest
-  } = props;
+  const { className, internalId, debugMode, ...rest } = props;
 
   const element = (
     <footer
@@ -54,15 +43,10 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
           <Container.Inner _internalId={internalId} _debugMode={debugMode}>
             <div className={styles.footerLayout}>
               <FooterNavigation
-                navLinks={navLinks}
                 _internalId={internalId}
                 _debugMode={debugMode}
               />
-              <FooterLegal
-                legalText={legalText}
-                _internalId={internalId}
-                _debugMode={debugMode}
-              />
+              <FooterLegal _internalId={internalId} _debugMode={debugMode} />
             </div>
           </Container.Inner>
         </div>
@@ -86,14 +70,7 @@ const MemoizedFooter = React.memo(BaseFooter);
 
 /** The main footer component for the application. */
 export const Footer: FooterComponent = setDisplayName(function Footer(props) {
-  const {
-    isMemoized = false,
-    internalId,
-    debugMode,
-    navLinks = FOOTER_COMPONENT_NAV_LINKS,
-    legalText = FOOTER_COMPONENT_LABELS.legalText,
-    ...rest
-  } = props;
+  const { isMemoized = false, internalId, debugMode, ...rest } = props;
 
   const { id, isDebugMode } = useComponentId({
     internalId,
@@ -104,8 +81,6 @@ export const Footer: FooterComponent = setDisplayName(function Footer(props) {
     ...rest,
     internalId: id,
     debugMode: isDebugMode,
-    navLinks,
-    legalText,
   };
 
   const Component = isMemoized ? MemoizedFooter : BaseFooter;

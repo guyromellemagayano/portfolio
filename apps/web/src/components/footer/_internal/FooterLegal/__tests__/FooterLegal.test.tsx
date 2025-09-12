@@ -57,10 +57,12 @@ describe("FooterLegal", () => {
 
   describe("Basic Rendering", () => {
     it("renders legal text correctly", () => {
-      render(<FooterLegal legalText="© 2024 All rights reserved." />);
+      render(<FooterLegal />);
 
       expect(
-        screen.getByText("© 2024 All rights reserved.")
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
       ).toBeInTheDocument();
     });
 
@@ -115,12 +117,17 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("does not render when legalText is null", () => {
+    it("renders with default legalText when legalText prop is null", () => {
       render(<FooterLegal legalText={null as any} />);
 
       expect(
-        screen.queryByTestId("test-id-footer-legal-root")
-      ).not.toBeInTheDocument();
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
     it("renders with default legalText when legalText is undefined", () => {
@@ -134,21 +141,30 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("does not render when legalText is empty string", () => {
+    it("renders with default legalText when legalText prop is empty string", () => {
       render(<FooterLegal legalText="" />);
 
       expect(
-        screen.queryByTestId("test-id-footer-legal-root")
-      ).not.toBeInTheDocument();
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
-    it("renders when legalText is provided", () => {
+    it("renders with default legalText when legalText prop is provided", () => {
       render(<FooterLegal legalText="Legal text" />);
 
       expect(
         screen.getByTestId("test-id-footer-legal-root")
       ).toBeInTheDocument();
-      expect(screen.getByText("Legal text")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
   });
 
@@ -235,36 +251,52 @@ describe("FooterLegal", () => {
   });
 
   describe("Edge Cases", () => {
-    it("handles legalText with special characters", () => {
-      render(<FooterLegal legalText="© 2024 & All rights reserved." />);
+    it("handles default legalText with special characters", () => {
+      render(<FooterLegal />);
 
       expect(
-        screen.getByText("© 2024 & All rights reserved.")
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
       ).toBeInTheDocument();
     });
 
-    it("handles empty legalText string", () => {
+    it("renders with default legalText when legalText prop is empty string", () => {
       render(<FooterLegal legalText="" />);
 
       expect(
-        screen.queryByTestId("test-id-footer-legal-root")
-      ).not.toBeInTheDocument();
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
-    it("does not render when legalText is whitespace-only", () => {
+    it("renders with default legalText when legalText prop is whitespace-only", () => {
       render(<FooterLegal legalText="   " />);
 
       expect(
-        screen.queryByTestId("test-id-footer-legal-root")
-      ).not.toBeInTheDocument();
+        screen.getByTestId("test-id-footer-legal-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
   });
 
   describe("Content Priority", () => {
-    it("uses legalText when provided", () => {
+    it("uses default legalText regardless of prop", () => {
       render(<FooterLegal legalText="Default text" />);
 
-      expect(screen.getByText("Default text")).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
     });
 
     it("uses default legalText when legalText not provided", () => {
