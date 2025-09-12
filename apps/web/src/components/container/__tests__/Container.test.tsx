@@ -17,10 +17,24 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
+  }),
+  hasAnyRenderableContent: vi.fn((...values) => {
+    return values.some((value) => {
+      if (value === false || value === null || value === undefined) {
+        return false;
+      }
+      if (typeof value === "string" && value.length === 0) {
+        return false;
+      }
+      return true;
+    });
   }),
   hasValidContent: vi.fn((children) => {
     if (children === null || children === undefined || children === "") {
@@ -45,6 +59,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
 }));
 
 vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
