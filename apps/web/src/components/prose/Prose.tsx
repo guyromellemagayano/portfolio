@@ -2,20 +2,27 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
 import styles from "./Prose.module.css";
 
 // ============================================================================
-// BASE PROSE COMPONENT
+// PROSE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface ProseProps
+export interface ProseProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type ProseComponent = React.FC<ProseProps>;
+export type ProseComponent = React.FC<ProseProps>;
+
+// ============================================================================
+// BASE PROSE COMPONENT
+// ============================================================================
 
 /** Renders a styled prose container for rich text content. */
 const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
@@ -25,9 +32,7 @@ const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
     <div
       {...rest}
       className={cn(styles.prose, className)}
-      data-prose-id={`${_internalId}-prose`}
-      data-debug-mode={_debugMode ? "true" : undefined}
-      data-testid="prose-root"
+      {...createComponentProps(_internalId, "prose", _debugMode)}
     />
   );
 
@@ -46,7 +51,7 @@ const MemoizedProse = React.memo(BaseProse);
 // ============================================================================
 
 /** Renders the main styled prose container component. */
-const Prose: ProseComponent = setDisplayName(function Prose(props) {
+export const Prose: ProseComponent = setDisplayName(function Prose(props) {
   const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
   const { id, isDebugMode } = useComponentId({
@@ -64,5 +69,3 @@ const Prose: ProseComponent = setDisplayName(function Prose(props) {
   const element = <Component {...updatedProps} />;
   return element;
 });
-
-export { Prose };
