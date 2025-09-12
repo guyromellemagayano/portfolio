@@ -23,10 +23,24 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   isRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined) {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
       return false;
     }
     return true;
+  }),
+  hasAnyRenderableContent: vi.fn((...values) => {
+    return values.some((value) => {
+      if (value === false || value === null || value === undefined) {
+        return false;
+      }
+      if (typeof value === "string" && value.length === 0) {
+        return false;
+      }
+      return true;
+    });
   }),
   hasValidContent: vi.fn((children) => {
     if (children === null || children === undefined || children === "") {
@@ -38,18 +52,18 @@ vi.mock("@guyromellemagayano/utils", () => ({
     component.displayName = displayName;
     return component;
   }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
+  createComponentProps: vi.fn((id, componentType, debugMode) => ({
+    [`data-${componentType}-id`]: `${id}-${componentType}`,
+    "data-debug-mode": debugMode ? "true" : undefined,
+    "data-testid": `${id}-${componentType}-root`,
+  })),
 }));
 
 vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -104,9 +118,9 @@ describe("ContainerInner", () => {
       expect(container.firstChild).toBeNull();
     });
 
-    it("renders even if children is false", () => {
+    it("does not render if children is false", () => {
       const { container } = render(<ContainerInner>{false}</ContainerInner>);
-      expect(container.firstChild).toBeInTheDocument();
+      expect(container.firstChild).toBeNull();
     });
 
     it("does not render with empty string children", () => {
@@ -163,14 +177,14 @@ describe("ContainerInner", () => {
 
   describe("Debug Mode", () => {
     it("applies debug mode when enabled", () => {
-      render(<ContainerInner debugMode={true}>Content</ContainerInner>);
+      render(<ContainerInner _debugMode={true}>Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply debug mode when disabled", () => {
-      render(<ContainerInner debugMode={false}>Content</ContainerInner>);
+      render(<ContainerInner _debugMode={false}>Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).not.toHaveAttribute("data-debug-mode");
@@ -186,7 +200,7 @@ describe("ContainerInner", () => {
 
   describe("Component ID", () => {
     it("applies custom component ID", () => {
-      render(<ContainerInner internalId="custom-id">Content</ContainerInner>);
+      render(<ContainerInner _internalId="custom-id">Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("custom-id-container-inner-root");
       expect(innerRoot).toHaveAttribute(

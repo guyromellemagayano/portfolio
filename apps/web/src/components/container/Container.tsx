@@ -3,7 +3,7 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -31,8 +31,10 @@ const BaseContainer: CommonContainerComponent = setDisplayName(
         className={cn(styles.container, className)}
         {...createComponentProps(internalId, "container", debugMode)}
       >
-        <ContainerOuter internalId={internalId} debugMode={debugMode}>
-          <ContainerInner>{children}</ContainerInner>
+        <ContainerOuter _internalId={internalId} _debugMode={debugMode}>
+          <ContainerInner _internalId={internalId} _debugMode={debugMode}>
+            {children}
+          </ContainerInner>
         </ContainerOuter>
       </div>
     );
@@ -67,7 +69,7 @@ export const Container = setDisplayName(function Container(props) {
     debugMode,
   });
 
-  if (!hasValidContent(children)) return null;
+  if (!hasAnyRenderableContent(children)) return null;
 
   const updatedProps = {
     ...rest,
