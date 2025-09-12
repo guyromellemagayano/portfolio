@@ -3,7 +3,7 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -19,13 +19,13 @@ import styles from "./ContainerInner.module.css";
 /** Provides the inner structure for the `Container` compound component. */
 const BaseContainerInner: CommonContainerComponent = setDisplayName(
   function BaseContainerInner(props) {
-    const { children, className, internalId, debugMode, ...rest } = props;
+    const { children, className, _internalId, _debugMode, ...rest } = props;
 
     const element = (
       <div
         {...rest}
         className={cn(styles.containerInner, className)}
-        {...createComponentProps(internalId, "container-inner", debugMode)}
+        {...createComponentProps(_internalId, "container-inner", _debugMode)}
       >
         <div className={styles.containerInnerContent}>{children}</div>
       </div>
@@ -39,6 +39,7 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
 // MEMOIZED CONTAINER INNER COMPONENT
 // ============================================================================
 
+/** A memoized container inner component. */
 const MemoizedContainerInner = React.memo(BaseContainerInner);
 
 // ============================================================================
@@ -51,22 +52,22 @@ export const ContainerInner: CommonContainerComponent = setDisplayName(
     const {
       children,
       isMemoized = false,
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
+      internalId: _internalId,
+      debugMode: _debugMode,
     });
 
-    if (!hasValidContent(children)) return null;
+    if (!hasAnyRenderableContent(children)) return null;
 
     const updatedProps = {
       ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
       children,
     };
 
