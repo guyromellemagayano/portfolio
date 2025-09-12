@@ -23,7 +23,7 @@ import styles from "./FooterLegal.module.css";
 export interface FooterLegalProps
   extends Omit<React.ComponentProps<"p">, "children">,
     FooterComponentLabels,
-    CommonComponentProps {}
+    Omit<CommonComponentProps, "as"> {}
 export type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 // ============================================================================
@@ -63,26 +63,22 @@ const MemoizedFooterLegal = React.memo(BaseFooterLegal);
 /** The main footer legal component for the application. */
 export const FooterLegal: FooterLegalComponent = setDisplayName(
   function FooterLegal(props) {
-    const {
-      isMemoized = false,
-      legalText = FOOTER_COMPONENT_LABELS.legalText,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
+    const legalText: FooterComponentLabels["legalText"] =
+      FOOTER_COMPONENT_LABELS.legalText;
     if (!hasMeaningfulText(legalText)) return null;
 
     const updatedProps = {
       ...rest,
+      legalText,
       _internalId: id,
       _debugMode: isDebugMode,
-      legalText,
     };
 
     const Component = isMemoized ? MemoizedFooterLegal : BaseFooterLegal;
