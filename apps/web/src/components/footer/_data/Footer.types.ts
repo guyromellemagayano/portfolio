@@ -38,8 +38,6 @@ type FooterLink =
 type FooterComponentLabels = Readonly<{
   /** Legal text */
   legalText?: string;
-  /** Optional navigation links override */
-  navLinks?: ReadonlyArray<FooterLink>;
 }>;
 
 type FooterComponentNavLinks = ReadonlyArray<
