@@ -20,6 +20,7 @@ import { Icon } from "@web/components/Icon";
 import {
   CommonHeaderNavProps,
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
+  HeaderComponentNavLinks,
   MOBILE_HEADER_NAV_LINKS,
 } from "../../_data";
 import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
@@ -77,20 +78,20 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
             ) : null}
           </div>
           {links ? (
-            <nav className={styles.HeaderMobileNavContent}>
-              <ul className={styles.HeaderMobileNavList}>
-                {links.map((link) => (
+            <div className={styles.HeaderMobileNavContent}>
+              <nav className={styles.HeaderMobileNavList}>
+                {links.map(({ label, href }) => (
                   <HeaderMobileNavItem
-                    key={`${link.label}:${link.href}`}
-                    href={link.href}
+                    key={`${label}:${href}`}
+                    href={href}
                     _internalId={_internalId}
                     _debugMode={_debugMode}
                   >
-                    {link.label}
+                    {label}
                   </HeaderMobileNavItem>
                 ))}
-              </ul>
-            </nav>
+              </nav>
+            </div>
           ) : null}
         </PopoverPanel>
       </Popover>
@@ -114,20 +115,15 @@ const MemoizedHeaderMobileNav = React.memo(BaseHeaderMobileNav);
 /** A header mobile nav component that supports memoization and internal debug props. */
 export const HeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function HeaderMobileNav(props) {
-    const {
-      isMemoized = false,
-      links = MOBILE_HEADER_NAV_LINKS,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
-    const validLinks = filterValidNavigationLinks(links);
+    const navLinks: HeaderComponentNavLinks = MOBILE_HEADER_NAV_LINKS;
+    const validLinks = filterValidNavigationLinks(navLinks);
     if (!hasValidNavigationLinks(validLinks)) return null;
 
     const updatedProps = {
