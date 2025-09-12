@@ -10,7 +10,11 @@ import {
 
 import { cn } from "@web/utils";
 
-import { CommonHeaderNavProps, DESKTOP_HEADER_NAV_LINKS } from "../../_data";
+import {
+  CommonHeaderNavProps,
+  DESKTOP_HEADER_NAV_LINKS,
+  HeaderComponentNavLinks,
+} from "../../_data";
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 import styles from "./HeaderDesktopNav.module.css";
 
@@ -69,20 +73,15 @@ const MemoizedHeaderDesktopNav = React.memo(BaseHeaderDesktopNav);
 /** Renders the desktop navigation component that displays a list of navigation links. */
 export const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function HeaderDesktopNav(props) {
-    const {
-      isMemoized = false,
-      links = DESKTOP_HEADER_NAV_LINKS,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
+    const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
 
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
 
-    const validLinks = filterValidNavigationLinks(links);
+    const navLinks: HeaderComponentNavLinks = DESKTOP_HEADER_NAV_LINKS;
+    const validLinks = filterValidNavigationLinks(navLinks);
     if (!hasValidNavigationLinks(validLinks)) return null;
 
     const updatedProps = {
