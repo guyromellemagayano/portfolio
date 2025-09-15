@@ -6,9 +6,9 @@ import {
 } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   hasAnyRenderableContent,
   hasMeaningfulText,
-  isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -19,7 +19,7 @@ import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
 import styles from "./SimpleLayout.module.css";
 
 // ============================================================================
-// BASE SIMPLE LAYOUT COMPONENT
+// SIMPLE LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 interface SimpleLayoutProps
@@ -31,6 +31,10 @@ interface SimpleLayoutProps
   intro: string;
 }
 type SimpleLayoutComponent = React.FC<SimpleLayoutProps>;
+
+// ============================================================================
+// BASE SIMPLE LAYOUT COMPONENT
+// ============================================================================
 
 /** A base simple layout component. */
 const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
@@ -49,10 +53,7 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
       <Container
         {...rest}
         className={cn(styles.simpleLayoutContainer, className)}
-        aria-labelledby={`${internalId}-simple-layout`}
-        data-simple-layout-id={`${internalId}-simple-layout`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="simple-layout-root"
+        {...createComponentProps(internalId, "simple-layout", debugMode)}
       >
         <Link
           href="#main-content"
@@ -79,12 +80,11 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
             </p>
           )}
         </header>
-        {children && isRenderableContent(children) && (
+        {hasAnyRenderableContent(children) && (
           <main
-            id="main-content"
+            id={`${internalId}-simple-layout-main-content`}
             role="main"
             className={styles.simpleLayoutContent}
-            data-testid="simple-layout-main"
           >
             {children}
           </main>
@@ -108,7 +108,7 @@ const MemoizedSimpleLayout = React.memo(BaseSimpleLayout);
 // ============================================================================
 
 /** A simple layout component that provides a consistent layout for page content. */
-const SimpleLayout: SimpleLayoutComponent = setDisplayName(
+export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
   function SimpleLayout(props) {
     const {
       children,
@@ -125,7 +125,12 @@ const SimpleLayout: SimpleLayoutComponent = setDisplayName(
       debugMode,
     });
 
-    if (!hasAnyRenderableContent(title, intro, children)) return null;
+    if (
+      !hasAnyRenderableContent(children) &&
+      !hasMeaningfulText(title) &&
+      !hasMeaningfulText(intro)
+    )
+      return null;
 
     const updatedProps = {
       ...rest,
@@ -140,5 +145,3 @@ const SimpleLayout: SimpleLayoutComponent = setDisplayName(
     return element;
   }
 );
-
-export { SimpleLayout };
