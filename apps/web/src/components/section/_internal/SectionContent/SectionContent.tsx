@@ -16,10 +16,10 @@ import styles from "./SectionContent.module.css";
 // SECTION CONTENT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface SectionContentProps
+interface SectionContentProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-export type SectionContentComponent = React.FC<SectionContentProps>;
+type SectionContentComponent = React.FC<SectionContentProps>;
 
 // ============================================================================
 // BASE SECTION CONTENT COMPONENT
