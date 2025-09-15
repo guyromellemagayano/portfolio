@@ -1,1 +1,1 @@
-export * from "./SectionGrid";
+export { SectionGrid } from "./SectionGrid";
