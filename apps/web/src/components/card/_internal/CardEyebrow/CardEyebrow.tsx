@@ -16,15 +16,15 @@ import styles from "./CardEyebrow.module.css";
 // CARD EYEBROW COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardEyebrowProps
+interface CardEyebrowProps
   extends React.ComponentPropsWithRef<"p">,
-    Omit<CommonComponentProps, "as"> {
+    CommonComponentProps {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
   decorate?: boolean;
 }
-export type CardEyebrowComponent = React.FC<CardEyebrowProps>;
+type CardEyebrowComponent = React.FC<CardEyebrowProps>;
 
 // ============================================================================
 // BASE CARD EYEBROW COMPONENT

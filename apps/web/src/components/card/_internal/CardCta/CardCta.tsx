@@ -14,21 +14,21 @@ import {
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { CardLinkCustom } from "../CardLink";
+import { CardLinkCustom } from "../CardLink/CardLinkCustom";
 import styles from "./CardCta.module.css";
 
 // ============================================================================
 // CARD CTA COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardCtaProps
+interface CardCtaProps
   extends React.ComponentPropsWithRef<"div">,
-    Pick<
-      React.ComponentPropsWithoutRef<typeof Link>,
-      "href" | "target" | "title"
-    >,
-    Omit<CommonComponentProps, "as"> {}
-export type CardCtaComponent = React.FC<CardCtaProps>;
+    Omit<CommonComponentProps, "as"> {
+  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+  target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
+  title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
+}
+type CardCtaComponent = React.FC<CardCtaProps>;
 
 // ============================================================================
 // BASE CARD CTA COMPONENT

@@ -16,10 +16,10 @@ import styles from "./CardDescription.module.css";
 // CARD DESCRIPTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardDescriptionProps
+interface CardDescriptionProps
   extends React.ComponentPropsWithRef<"p">,
     Omit<CommonComponentProps, "as"> {}
-export type CardDescriptionComponent = React.FC<CardDescriptionProps>;
+type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
 // BASE CARD DESCRIPTION COMPONENT

@@ -1,1 +1,1 @@
-export * from "./CardCta";
+export { CardCta } from "./CardCta";

@@ -20,14 +20,14 @@ import styles from "./CardTitle.module.css";
 // CARD TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardTitleProps
+interface CardTitleProps
   extends React.ComponentPropsWithRef<"h2">,
     Pick<
       React.ComponentPropsWithoutRef<typeof Link>,
       "href" | "target" | "title"
     >,
     Omit<CommonComponentProps, "as"> {}
-export type CardTitleComponent = React.FC<CardTitleProps>;
+type CardTitleComponent = React.FC<CardTitleProps>;
 
 // ============================================================================
 // BASE CARD TITLE COMPONENT
