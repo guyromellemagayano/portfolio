@@ -1,5 +1,5 @@
-export { CardCta } from "./CardCta";
-export { CardDescription } from "./CardDescription";
-export { CardEyebrow } from "./CardEyebrow";
-export { CardLink } from "./CardLink";
-export { CardTitle } from "./CardTitle";
+export * from "./CardCta";
+export * from "./CardDescription";
+export * from "./CardEyebrow";
+export * from "./CardLink";
+export * from "./CardTitle";

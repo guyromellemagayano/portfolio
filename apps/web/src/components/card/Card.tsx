@@ -23,10 +23,10 @@ import styles from "./Card.module.css";
 // CARD COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardProps
+interface CardProps
   extends React.ComponentProps<"article">,
-    Omit<CommonComponentProps, "as"> {}
-export type CardComponent = React.FC<CardProps>;
+    CommonComponentProps {}
+type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
 // BASE CARD COMPONENT
