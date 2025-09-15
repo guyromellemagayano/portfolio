@@ -1,1 +1,1 @@
-export * from "./CardEyebrow";
+export { CardEyebrow } from "./CardEyebrow";
