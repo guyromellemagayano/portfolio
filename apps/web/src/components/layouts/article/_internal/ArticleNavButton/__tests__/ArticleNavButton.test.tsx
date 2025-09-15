@@ -18,6 +18,13 @@ vi.mock("@guyromellemagayano/components", () => ({
   },
 }));
 
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
+    id: internalId || "test-id",
+    isDebugMode: debugMode,
+  })),
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -33,6 +40,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 // Mock AppContext
@@ -89,6 +105,16 @@ vi.mock("next/navigation", () => ({
   }),
 }));
 
+// Mock AppContext
+vi.mock("@web/contexts/AppContext", () => ({
+  AppContext: {
+    Provider: ({ children }: { children: React.ReactNode }) => children,
+  },
+  useAppContext: vi.fn(() => ({
+    previousPathname: "/articles",
+  })),
+}));
+
 // Mock React useContext to return our mock context
 vi.mock("react", async () => {
   const actual = await vi.importActual("react");
@@ -113,7 +139,10 @@ describe("ArticleNavButton", () => {
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
-      expect(button).toHaveAttribute("data-testid", "article-nav-button");
+      expect(button).toHaveAttribute(
+        "data-testid",
+        "test-id-article-nav-button-root"
+      );
     });
 
     it("applies custom className", () => {
@@ -246,7 +275,10 @@ describe("ArticleNavButton", () => {
         "test-id-article-nav-button"
       );
       expect(button).toHaveAttribute("data-debug-mode", "true");
-      expect(button).toHaveAttribute("data-testid", "article-nav-button");
+      expect(button).toHaveAttribute(
+        "data-testid",
+        "test-id-article-nav-button-root"
+      );
     });
   });
 
