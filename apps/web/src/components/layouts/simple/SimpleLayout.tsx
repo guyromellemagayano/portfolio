@@ -63,24 +63,24 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
           {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
         </Link>
         <header className={styles.simpleLayoutHeader}>
-          {title && hasMeaningfulText(title) && (
+          {title && hasMeaningfulText(title) ? (
             <h1
               id={`${internalId}-simple-layout-title`}
               className={styles.simpleLayoutTitle}
             >
               {title}
             </h1>
-          )}
-          {intro && hasMeaningfulText(intro) && (
+          ) : null}
+          {intro && hasMeaningfulText(intro) ? (
             <p
               id={`${internalId}-simple-layout-intro`}
               className={styles.simpleLayoutIntro}
             >
               {intro}
             </p>
-          )}
+          ) : null}
         </header>
-        {hasAnyRenderableContent(children) && (
+        {hasAnyRenderableContent(children) ? (
           <main
             id={`${internalId}-simple-layout-main-content`}
             role="main"
@@ -88,7 +88,7 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
           >
             {children}
           </main>
-        )}
+        ) : null}
       </Container>
     );
 
