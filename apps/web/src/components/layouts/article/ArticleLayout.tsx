@@ -3,6 +3,7 @@ import React from "react";
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
+  createComponentProps,
   hasAnyRenderableContent,
   hasMeaningfulText,
   isRenderableContent,
@@ -16,15 +17,20 @@ import { ArticleNavButton } from "./_internal";
 import styles from "./ArticleLayout.module.css";
 
 // ============================================================================
-// BASE ARTICLE LAYOUT COMPONENT
+// ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
+
 interface ArticleLayoutProps
   extends React.ComponentProps<typeof Container>,
-    CommonComponentProps {
+    Omit<CommonComponentProps, "as"> {
   /** The article to display. */
   article?: ArticleWithSlug;
 }
 type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
+
+// ============================================================================
+// BASE ARTICLE LAYOUT COMPONENT
+// ============================================================================
 
 /** A layout component for an article. */
 const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
@@ -36,20 +42,19 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
       <Container
         {...rest}
         className={cn(styles.articleLayoutContainer, className)}
-        data-article-layout-id={`${internalId}-article-layout`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="article-layout-root"
+        {...createComponentProps(internalId, "article-layout", debugMode)}
       >
         <div className={styles.articleWrapper}>
           <div className={styles.articleContent}>
             <ArticleNavButton _debugMode={debugMode} _internalId={internalId} />
-            {(article || children) && (
+            {(isRenderableContent(article) ||
+              hasAnyRenderableContent(children)) && (
               <article>
                 <header className="flex flex-col">
-                  {article?.title && hasMeaningfulText(article.title) && (
-                    <h1 className={styles.articleTitle}>{article.title}</h1>
+                  {article?.title && hasMeaningfulText(article?.title) && (
+                    <h1 className={styles.articleTitle}>{article?.title}</h1>
                   )}
-                  {article?.date && (
+                  {article?.date && hasMeaningfulText(article?.date) && (
                     <time
                       dateTime={article.date}
                       className={styles.articleDate}
@@ -61,7 +66,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                     </time>
                   )}
                 </header>
-                {children && isRenderableContent(children) && (
+                {hasAnyRenderableContent(children) && (
                   <Prose className={styles.articleProse} data-mdx-content>
                     {children}
                   </Prose>
@@ -89,7 +94,7 @@ const MemoizedArticleLayout = React.memo(BaseArticleLayout);
 // ============================================================================
 
 /** A layout component for an article. */
-const ArticleLayout: ArticleLayoutComponent = setDisplayName(
+export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
   function ArticleLayout(props) {
     const {
       children,
@@ -105,7 +110,8 @@ const ArticleLayout: ArticleLayoutComponent = setDisplayName(
       debugMode,
     });
 
-    if (!hasAnyRenderableContent(article?.title, article?.date, children))
+    // Return null if both children and article are missing
+    if (!hasAnyRenderableContent(children) && !isRenderableContent(article))
       return null;
 
     const updatedProps = {
@@ -120,5 +126,3 @@ const ArticleLayout: ArticleLayoutComponent = setDisplayName(
     return element;
   }
 );
-
-export { ArticleLayout };
