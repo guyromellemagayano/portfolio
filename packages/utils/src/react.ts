@@ -1,5 +1,7 @@
 import React from "react";
 
+import logger from "@guyromellemagayano/logger";
+
 // ============================================================================
 // COMPONENT UTILITIES
 // ============================================================================
@@ -95,8 +97,8 @@ export function createComponentDataAttributes(
           `invalid suffix: "${suffix}" (sanitized: "${sanitizedSuffix}")`
         );
       }
-      // Use console.warn as fallback for development debugging
-      console.warn(
+
+      logger.warn(
         `createComponentDataAttributes: Skipping data attributes due to ${issues.join(", ")}`
       );
     }
