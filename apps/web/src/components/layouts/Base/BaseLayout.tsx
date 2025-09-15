@@ -6,18 +6,18 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
+  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
-import styles from "./Layout.module.css";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
+import styles from "./BaseLayout.module.css";
 
 // ============================================================================
-// BASE LAYOUT COMPONENT
+// LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 interface BaseLayoutProps
@@ -25,17 +25,19 @@ interface BaseLayoutProps
     CommonComponentProps {}
 type BaseLayoutComponent = React.FC<BaseLayoutProps>;
 
-/** A layout component that provides the base page structure with header, main content, and footer. */
-const BaseLayout: BaseLayoutComponent = setDisplayName(
-  function BaseLayout(props) {
-    const { children, className, internalId, debugMode, ...rest } = props;
+// ============================================================================
+// BASE LAYOUT COMPONENT
+// ============================================================================
 
-    if (!hasValidContent(children)) return null;
+/** A layout component that provides the base page structure with header, main content, and footer. */
+const MainBaseLayout: BaseLayoutComponent = setDisplayName(
+  function MainBaseLayout(props) {
+    const { children, className, internalId, debugMode, ...rest } = props;
 
     const element = (
       <div
         {...rest}
-        className={cn(styles.layoutContainer, className)}
+        className={cn(styles.baseLayoutContainer, className)}
         {...createComponentProps(internalId, "layout", debugMode)}
       >
         <Link
@@ -46,25 +48,24 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
           {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
         </Link>
         <div
-          className={styles.layoutBackgroundWrapper}
+          className={styles.baseLayoutBackgroundWrapper}
           aria-hidden="true"
           inert
         >
-          <div className={styles.layoutBackgroundContent}>
-            <div className={styles.layoutBackground} />
+          <div className={styles.baseLayoutBackgroundContent}>
+            <div className={styles.baseLayoutBackground} />
           </div>
         </div>
-        <div className={styles.layoutContentWrapper}>
-          <Header role="banner" data-testid="layout-header" />
-          <main
-            id="main-content"
-            role="main"
-            className={styles.layoutMain}
-            data-testid="layout-main"
-          >
+        <div className={styles.baseLayoutContentWrapper}>
+          <Header role="banner" internalId={internalId} debugMode={debugMode} />
+          <main id="main-content" role="main" className={styles.baseLayoutMain}>
             {children}
           </main>
-          <Footer role="contentinfo" data-testid="layout-footer" />
+          <Footer
+            role="contentinfo"
+            internalId={internalId}
+            debugMode={debugMode}
+          />
         </div>
       </div>
     );
@@ -78,38 +79,38 @@ const BaseLayout: BaseLayoutComponent = setDisplayName(
 // ============================================================================
 
 /** A memoized base layout component. */
-const MemoizedLayout = React.memo(BaseLayout);
+const MemoizedBaseLayout = React.memo(MainBaseLayout);
 
 // ============================================================================
 // MAIN LAYOUT COMPONENT
 // ============================================================================
 
 /** A layout component that provides the base page structure with header, main, and footer sections. */
-const Layout: BaseLayoutComponent = setDisplayName(function Layout(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
+export const BaseLayout: BaseLayoutComponent = setDisplayName(
+  function BaseLayout(props) {
+    const {
+      children,
+      isMemoized = false,
+      internalId,
+      debugMode,
+      ...rest
+    } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
+    const { id, isDebugMode } = useComponentId({
+      internalId,
+      debugMode,
+    });
 
-  if (!hasValidContent(children)) return null;
+    if (!hasAnyRenderableContent(children)) return null;
 
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+    const updatedProps = {
+      ...rest,
+      internalId: id,
+      debugMode: isDebugMode,
+    };
 
-  const Component = isMemoized ? MemoizedLayout : BaseLayout;
-  const element = <Component {...updatedProps}>{children}</Component>;
-  return element;
-});
-
-export { BaseLayout, Layout };
+    const Component = isMemoized ? MemoizedBaseLayout : MainBaseLayout;
+    const element = <Component {...updatedProps}>{children}</Component>;
+    return element;
+  }
+);

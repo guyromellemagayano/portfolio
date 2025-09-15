@@ -1,1 +1,1 @@
-export { ArticleLayout } from "./ArticleLayout";
+export * from "./ArticleLayout";

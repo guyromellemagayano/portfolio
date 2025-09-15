@@ -57,6 +57,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
 }));
 
 // Mock Next.js navigation
@@ -113,17 +122,23 @@ vi.mock("@web/lib", () => ({
   formatDate: vi.fn((_date) => "Formatted Date"),
 }));
 
+// Mock @web/utils
+vi.mock("@web/utils", () => ({
+  formatDate: vi.fn((_date) => "Formatted Date"),
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
 // Mock CSS module
 vi.mock("./ArticleLayout.module.css", () => ({
   default: {
-    articleLayoutContainer: "_articleLayoutContainer_fa3e38",
-    articleWrapper: "_articleWrapper_fa3e38",
-    articleContent: "_articleContent_fa3e38",
-    articleTitle: "_articleTitle_fa3e38",
-    articleDate: "_articleDate_fa3e38",
-    articleProse: "_articleProse_fa3e38",
-    dateSeparator: "_dateSeparator_fa3e38",
-    dateText: "_dateText_fa3e38",
+    articleLayoutContainer: "_articleLayoutContainer_6298af",
+    articleWrapper: "_articleWrapper_6298af",
+    articleContent: "_articleContent_6298af",
+    articleTitle: "_articleTitle_6298af",
+    articleDate: "_articleDate_6298af",
+    articleProse: "_articleProse_6298af",
+    dateSeparator: "_dateSeparator_6298af",
+    dateText: "_dateText_6298af",
   },
 }));
 
@@ -166,7 +181,7 @@ describe("ArticleLayout", () => {
     it("renders with default props when article is provided", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toBeInTheDocument();
       expect(layout.tagName).toBe("DIV");
     });
@@ -174,7 +189,7 @@ describe("ArticleLayout", () => {
     it("applies custom className", () => {
       render(<ArticleLayout className="custom-class" article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toHaveClass("custom-class");
     });
 
@@ -183,7 +198,7 @@ describe("ArticleLayout", () => {
         <ArticleLayout article={mockArticle} id="custom-id" role="main" />
       );
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toHaveAttribute("id", "custom-id");
       expect(layout).toHaveAttribute("role", "main");
     });
@@ -191,7 +206,7 @@ describe("ArticleLayout", () => {
     it("uses useComponentId hook correctly", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toHaveAttribute(
         "data-article-layout-id",
         "test-id-article-layout"
@@ -201,7 +216,7 @@ describe("ArticleLayout", () => {
     it("uses custom internal ID when provided", () => {
       render(<ArticleLayout internalId="custom-id" article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("custom-id-article-layout-root");
       expect(layout).toHaveAttribute(
         "data-article-layout-id",
         "custom-id-article-layout"
@@ -211,7 +226,7 @@ describe("ArticleLayout", () => {
     it("enables debug mode when provided", () => {
       render(<ArticleLayout debugMode={true} article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toHaveAttribute("data-debug-mode", "true");
     });
   });
@@ -220,27 +235,30 @@ describe("ArticleLayout", () => {
     it("renders layout with correct structure", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const container = screen.getByTestId("article-layout-root");
+      const container = screen.getByTestId("test-id-article-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_articleLayoutContainer_fa3e38");
+      expect(container).toHaveClass("_articleLayoutContainer_6298af");
     });
 
     it("includes ArticleNavButton", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const navButton = screen.getByTestId("article-nav-button");
+      const navButton = screen.getByTestId("test-id-article-nav-button-root");
       expect(navButton).toBeInTheDocument();
     });
 
     it("applies correct data attributes", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const container = screen.getByTestId("article-layout-root");
+      const container = screen.getByTestId("test-id-article-layout-root");
       expect(container).toHaveAttribute(
         "data-article-layout-id",
         "test-id-article-layout"
       );
-      expect(container).toHaveAttribute("data-testid", "article-layout-root");
+      expect(container).toHaveAttribute(
+        "data-testid",
+        "test-id-article-layout-root"
+      );
     });
   });
 
@@ -251,7 +269,7 @@ describe("ArticleLayout", () => {
       const title = screen.getByText("Test Article Title");
       expect(title).toBeInTheDocument();
       expect(title.tagName).toBe("H1");
-      expect(title).toHaveClass("_articleTitle_fa3e38");
+      expect(title).toHaveClass("_articleTitle_6298af");
     });
 
     it("renders article with date when provided", () => {
@@ -260,7 +278,7 @@ describe("ArticleLayout", () => {
       const time = screen.getByText("Formatted Date").closest("time");
       expect(time).toBeInTheDocument();
       expect(time).toHaveAttribute("dateTime", "2023-01-01");
-      expect(time).toHaveClass("_articleDate_fa3e38");
+      expect(time).toHaveClass("_articleDate_6298af");
     });
 
     it("renders article with both title and date", () => {
@@ -286,7 +304,7 @@ describe("ArticleLayout", () => {
       expect(childContent).toBeInTheDocument();
       expect(childContent).toHaveTextContent("Child content");
       expect(prose).toBeInTheDocument();
-      expect(prose).toHaveClass("_articleProse_fa3e38");
+      expect(prose).toHaveClass("_articleProse_6298af");
       expect(prose).toHaveAttribute("data-mdx-content");
     });
 
@@ -381,21 +399,21 @@ describe("ArticleLayout", () => {
     it("uses memoized component when isMemoized is true", () => {
       render(<ArticleLayout isMemoized={true} article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is false", () => {
       render(<ArticleLayout isMemoized={false} article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is undefined", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toBeInTheDocument();
     });
   });
@@ -446,7 +464,7 @@ describe("ArticleLayout", () => {
       rerender(<ArticleLayout _debugMode={true} article={mockArticle} />);
       rerender(<ArticleLayout isMemoized={true} article={mockArticle} />);
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toBeInTheDocument();
     });
   });
@@ -466,7 +484,7 @@ describe("ArticleLayout", () => {
         />
       );
 
-      const layout = screen.getByTestId("article-layout-root");
+      const layout = screen.getByTestId("test-id-article-layout-root");
       expect(layout).toHaveAttribute("data-custom", "test");
       expect(layout).toHaveAttribute("aria-label", "Article Layout");
     });
@@ -486,7 +504,9 @@ describe("ArticleLayout", () => {
         );
 
         // Check main layout
-        expect(screen.getByTestId("article-layout-root")).toBeInTheDocument();
+        expect(
+          screen.getByTestId("test-layout-article-layout-root")
+        ).toBeInTheDocument();
 
         // Check article structure using semantic elements
         expect(screen.getByRole("article")).toBeInTheDocument();
@@ -505,7 +525,7 @@ describe("ArticleLayout", () => {
       it("renders article layout with proper semantic structure", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toBeInTheDocument();
 
         const article = screen.getByRole("article");
@@ -518,7 +538,7 @@ describe("ArticleLayout", () => {
       it("renders article layout with proper CSS classes", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toBeInTheDocument();
       });
     });
@@ -533,7 +553,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("debug-layout-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "debug-layout-article-layout"
@@ -550,7 +570,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("debug-layout-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "debug-layout-article-layout"
@@ -565,7 +585,9 @@ describe("ArticleLayout", () => {
           <ArticleLayout article={mockArticle} internalId="custom-layout-id" />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId(
+          "custom-layout-id-article-layout-root"
+        );
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "custom-layout-id-article-layout"
@@ -575,7 +597,7 @@ describe("ArticleLayout", () => {
       it("renders article layout with default internal ID", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "test-id-article-layout"
@@ -592,7 +614,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveClass("custom-layout-class");
       });
 
@@ -604,7 +626,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveClass("custom-layout-class");
       });
 
@@ -617,7 +639,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         // Note: toHaveStyle() may not work reliably in JSDOM environment
         // but the style prop should be applied to the DOM element
         expect(layout).toHaveAttribute("style");
@@ -687,14 +709,14 @@ describe("ArticleLayout", () => {
       it("renders navigation button correctly", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const navButton = screen.getByTestId("article-nav-button");
+        const navButton = screen.getByTestId("test-id-article-nav-button-root");
         expect(navButton).toBeInTheDocument();
       });
 
       it("handles navigation button interactions", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const navButton = screen.getByTestId("article-nav-button");
+        const navButton = screen.getByTestId("test-id-article-nav-button-root");
         expect(navButton).toBeInTheDocument();
         // Navigation functionality would be tested in the actual component
       });
@@ -709,7 +731,7 @@ describe("ArticleLayout", () => {
           </div>
         );
 
-        const layouts = screen.getAllByTestId("article-layout-root");
+        const layouts = screen.getAllByTestId(/article-layout-root$/);
         expect(layouts).toHaveLength(2);
 
         expect(layouts[0]).toHaveAttribute(
@@ -727,7 +749,7 @@ describe("ArticleLayout", () => {
           <ArticleLayout article={mockArticle} internalId="initial-layout" />
         );
 
-        let layout = screen.getByTestId("article-layout-root");
+        let layout = screen.getByTestId("initial-layout-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "initial-layout-article-layout"
@@ -736,7 +758,7 @@ describe("ArticleLayout", () => {
         rerender(
           <ArticleLayout article={mockArticle} internalId="updated-layout" />
         );
-        layout = screen.getByTestId("article-layout-root");
+        layout = screen.getByTestId("updated-layout-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "updated-layout-article-layout"
@@ -757,7 +779,7 @@ describe("ArticleLayout", () => {
           </ArticleLayout>
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("complex-layout-article-layout-root");
         expect(layout).toHaveAttribute(
           "data-article-layout-id",
           "complex-layout-article-layout"
@@ -782,7 +804,7 @@ describe("ArticleLayout", () => {
           />
         );
 
-        const layout = screen.getByTestId("article-layout-root");
+        const layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Article layout");
         expect(layout).toHaveAttribute("role", "main");
         expect(layout).toHaveAttribute(
@@ -796,13 +818,13 @@ describe("ArticleLayout", () => {
           <ArticleLayout article={mockArticle} aria-label="Initial label" />
         );
 
-        let layout = screen.getByTestId("article-layout-root");
+        let layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Initial label");
 
         rerender(
           <ArticleLayout article={mockArticle} aria-label="Updated label" />
         );
-        layout = screen.getByTestId("article-layout-root");
+        layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Updated label");
       });
     });
