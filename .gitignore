@@ -45,3 +45,6 @@ dist/
 
 # Versioning
 v2/
+
+# Editor Workspaces
+*.code-workspace
