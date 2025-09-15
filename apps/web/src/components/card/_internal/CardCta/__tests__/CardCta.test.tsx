@@ -63,7 +63,7 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock CardLinkCustom
-vi.mock("../CardLink", () => ({
+vi.mock("../CardLink/CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const {
