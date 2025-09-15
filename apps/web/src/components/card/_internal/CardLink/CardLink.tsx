@@ -18,14 +18,14 @@ import { CardLinkCustom } from "./CardLinkCustom";
 // CARD LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardLinkProps
+interface CardLinkProps
   extends React.ComponentPropsWithRef<"div">,
     Omit<
       React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
       keyof React.ComponentPropsWithRef<"div">
     >,
     Omit<CommonComponentProps, "as"> {}
-export type CardLinkComponent = React.FC<CardLinkProps>;
+type CardLinkComponent = React.FC<CardLinkProps>;
 
 // ============================================================================
 // BASE CARD LINK COMPONENT
