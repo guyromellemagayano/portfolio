@@ -15,10 +15,10 @@ import styles from "./Prose.module.css";
 // PROSE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface ProseProps
+interface ProseProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-export type ProseComponent = React.FC<ProseProps>;
+type ProseComponent = React.FC<ProseProps>;
 
 // ============================================================================
 // BASE PROSE COMPONENT
