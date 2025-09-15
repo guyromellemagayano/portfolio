@@ -1,7 +1,5 @@
 type CommonLayoutComponentLabels = Readonly<Record<string, string>>;
 
-const COMMON_LAYOUT_COMPONENT_LABELS = {
+export const COMMON_LAYOUT_COMPONENT_LABELS = {
   skipToMainContent: "Skip to main content",
 } as const satisfies CommonLayoutComponentLabels;
-
-export { COMMON_LAYOUT_COMPONENT_LABELS };
