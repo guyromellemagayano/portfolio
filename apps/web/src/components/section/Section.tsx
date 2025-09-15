@@ -18,13 +18,13 @@ import styles from "./Section.module.css";
 // SECTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface SectionProps
+interface SectionProps
   extends React.ComponentProps<"section">,
     CommonComponentProps {
   /** Section title */
   title?: string;
 }
-export type SectionComponent = React.FC<SectionProps>;
+type SectionComponent = React.FC<SectionProps>;
 
 // ============================================================================
 // BASE SECTION COMPONENT
