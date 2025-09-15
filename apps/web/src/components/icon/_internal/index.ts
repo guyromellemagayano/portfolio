@@ -1,16 +1,1 @@
-export {
-  ArrowDownIcon,
-  ArrowLeftIcon,
-  BriefcaseIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  CloseIcon,
-  GitHubIcon,
-  InstagramIcon,
-  LinkedInIcon,
-  LinkIcon,
-  MailIcon,
-  MoonIcon,
-  SunIcon,
-  XIcon,
-} from "./Icons";
+export * from "./Icons";
