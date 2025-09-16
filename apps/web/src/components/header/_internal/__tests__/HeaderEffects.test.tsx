@@ -2,7 +2,7 @@ import { cleanup, render } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock the utils FIRST
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils", () => ({
   clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
