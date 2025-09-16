@@ -109,9 +109,9 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../CardTitle.module.css", () => ({
+vi.mock("../styles/CardTitle.module.css", () => ({
   default: {
-    cardTitleHeading: "cardTitleHeading",
+    cardTitleHeading: "_cardTitleHeading_9c3d2e",
   },
 }));
 
@@ -254,7 +254,7 @@ describe("CardTitle", () => {
       render(<CardTitle href="#">Card title</CardTitle>);
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveClass("cardTitleHeading");
+      expect(titleElement).toHaveClass("_cardTitleHeading_9c3d2e");
     });
 
     it("combines CSS module + custom classes", () => {
@@ -265,7 +265,10 @@ describe("CardTitle", () => {
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveClass("cardTitleHeading", "custom-class");
+      expect(titleElement).toHaveClass(
+        "_cardTitleHeading_9c3d2e",
+        "custom-class"
+      );
     });
   });
 

@@ -1,6 +1,6 @@
 @reference "tailwindcss";
 
 /* Card title text */
-.cardTitle {
+.cardTitleHeading {
   @apply text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100;
 }
