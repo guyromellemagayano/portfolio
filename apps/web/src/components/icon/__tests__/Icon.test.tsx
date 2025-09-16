@@ -14,6 +14,9 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
+  hasAnyRenderableContent: vi.fn(
+    (content) => content != null && content !== ""
+  ),
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   isRenderableContent: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
