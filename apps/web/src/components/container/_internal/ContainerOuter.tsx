@@ -9,25 +9,25 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonContainerComponent } from "../../_data";
-import styles from "./ContainerInner.module.css";
+import type { CommonContainerComponent } from "../_data";
+import styles from "./styles/ContainerOuter.module.css";
 
 // ============================================================================
-// BASE CONTAINER INNER COMPONENT
+// BASE CONTAINER OUTER COMPONENT
 // ============================================================================
 
-/** Provides the inner structure for the `Container` compound component. */
-const BaseContainerInner: CommonContainerComponent = setDisplayName(
-  function BaseContainerInner(props) {
+/** Provides the outer structure for the `Container` compound component. */
+const BaseContainerOuter: CommonContainerComponent = setDisplayName(
+  function BaseContainerOuter(props) {
     const { children, className, _internalId, _debugMode, ...rest } = props;
 
     const element = (
       <div
         {...rest}
-        className={cn(styles.containerInner, className)}
-        {...createComponentProps(_internalId, "container-inner", _debugMode)}
+        className={cn(styles.containerOuter, className)}
+        {...createComponentProps(_internalId, "container-outer", _debugMode)}
       >
-        <div className={styles.containerInnerContent}>{children}</div>
+        <div className={styles.containerOuterContent}>{children}</div>
       </div>
     );
 
@@ -36,19 +36,19 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED CONTAINER INNER COMPONENT
+// MEMOIZED CONTAINER OUTER COMPONENT
 // ============================================================================
 
-/** A memoized container inner component. */
-const MemoizedContainerInner = React.memo(BaseContainerInner);
+/** A memoized container outer component. */
+const MemoizedContainerOuter = React.memo(BaseContainerOuter);
 
 // ============================================================================
-// MAIN CONTAINER INNER COMPONENT
+// MAIN CONTAINER OUTER COMPONENT
 // ============================================================================
 
-/** A container inner component that provides consistent inner structure for page content. */
-export const ContainerInner: CommonContainerComponent = setDisplayName(
-  function ContainerInner(props) {
+/** A container outer component that provides consistent outer structure for page content. */
+export const ContainerOuter: CommonContainerComponent = setDisplayName(
+  function ContainerOuter(props) {
     const {
       children,
       isMemoized = false,
@@ -71,7 +71,7 @@ export const ContainerInner: CommonContainerComponent = setDisplayName(
       children,
     };
 
-    const Component = isMemoized ? MemoizedContainerInner : BaseContainerInner;
+    const Component = isMemoized ? MemoizedContainerOuter : BaseContainerOuter;
     const element = <Component {...updatedProps} />;
     return element;
   }
