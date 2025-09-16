@@ -67,11 +67,11 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       href && isValidLink(href) ? href : AVATAR_COMPONENT_LABELS.link;
     const linkTitle =
       title && hasValidContent(title) ? title : AVATAR_COMPONENT_LABELS.home;
+    const linkTargetProps = getLinkTargetProps(linkHref, target);
     const imageSrc =
       src && isValidImageSrc(src) ? src : AVATAR_COMPONENT_LABELS.src;
     const imageAlt =
       alt && hasValidContent(alt) ? alt : AVATAR_COMPONENT_LABELS.alt;
-    const linkTargetProps = getLinkTargetProps(linkHref, target);
 
     const element = (
       <Link
@@ -79,8 +79,9 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
-        className={cn(styles.avatarLink, className)}
+        title={linkTitle}
         aria-label={linkTitle}
+        className={cn(styles.avatarLink, className)}
         {...createComponentProps(_internalId, "header-avatar", _debugMode)}
       >
         <Image
