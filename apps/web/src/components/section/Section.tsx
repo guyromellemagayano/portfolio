@@ -12,7 +12,7 @@ import {
 import { cn } from "@web/utils";
 
 import { SectionContent, SectionGrid, SectionTitle } from "./_internal";
-import styles from "./Section.module.css";
+import styles from "./styles/Section.module.css";
 
 // ============================================================================
 // SECTION COMPONENT TYPES & INTERFACES
