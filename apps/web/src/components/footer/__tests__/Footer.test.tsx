@@ -102,11 +102,11 @@ vi.mock("../_data", () => ({
   ],
 }));
 
-vi.mock("../Footer.module.css", () => ({
+vi.mock("../styles/Footer.module.css", () => ({
   default: {
-    footerComponent: "footerComponent",
-    footerContentWrapper: "footerContentWrapper",
-    footerLayout: "footerLayout",
+    footerComponent: "_footerComponent_eedc07",
+    footerContentWrapper: "_footerContentWrapper_eedc07",
+    footerLayout: "_footerLayout_eedc07",
   },
 }));
 
@@ -200,7 +200,7 @@ describe("Footer", () => {
       render(<Footer className="custom-footer" />);
 
       const footer = screen.getByTestId("test-id-footer-root");
-      expect(footer).toHaveClass("footerComponent custom-footer");
+      expect(footer).toHaveClass("_footerComponent_eedc07 custom-footer");
     });
   });
 
@@ -249,7 +249,7 @@ describe("Footer", () => {
       render(<Footer />);
 
       const contentWrapper = screen.getByTestId("container-outer");
-      const layout = contentWrapper.querySelector(".footerLayout");
+      const layout = contentWrapper.querySelector("._footerLayout_eedc07");
       expect(layout).toBeInTheDocument();
     });
   });
@@ -442,19 +442,22 @@ describe("Footer", () => {
         render(<Footer />);
 
         const footer = screen.getByTestId("test-id-footer-root");
-        expect(footer).toHaveClass("footerComponent");
+        expect(footer).toHaveClass("_footerComponent_eedc07");
 
         const contentWrapper = screen
           .getByTestId("container-outer")
           .querySelector("div");
-        expect(contentWrapper).toHaveClass("footerContentWrapper");
+        expect(contentWrapper).toHaveClass("_footerContentWrapper_eedc07");
       });
 
       it("combines custom className with default classes", () => {
         render(<Footer className="custom-footer-class" />);
 
         const footer = screen.getByTestId("test-id-footer-root");
-        expect(footer).toHaveClass("footerComponent", "custom-footer-class");
+        expect(footer).toHaveClass(
+          "_footerComponent_eedc07",
+          "custom-footer-class"
+        );
       });
 
       it("applies custom styling props", () => {
