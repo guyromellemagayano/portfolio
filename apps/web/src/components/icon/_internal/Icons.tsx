@@ -6,7 +6,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent, type CommonIconProps } from "../../_data";
+import { type CommonIconComponent, type CommonIconProps } from "../_data";
 
 // ============================================================================
 // NAVIGATION ICON COMPONENTS
