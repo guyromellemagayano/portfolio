@@ -44,9 +44,9 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../FooterLegal.module.css", () => ({
+vi.mock("../styles/FooterLegal.module.css", () => ({
   default: {
-    footerLegal: "_footerLegal_e53dc9",
+    footerLegal: "_footerLegal_3e1167",
   },
 }));
 
@@ -196,14 +196,14 @@ describe("FooterLegal", () => {
       render(<FooterLegal legalText="Legal text" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveClass("_footerLegal_e53dc9");
+      expect(legalElement).toHaveClass("_footerLegal_3e1167");
     });
 
     it("combines CSS module classes with custom className", () => {
       render(<FooterLegal legalText="Legal text" className="custom-legal" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveClass("_footerLegal_e53dc9 custom-legal");
+      expect(legalElement).toHaveClass("_footerLegal_3e1167 custom-legal");
     });
   });
 

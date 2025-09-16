@@ -85,11 +85,11 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../FooterNavigation.module.css", () => ({
+vi.mock("../styles/FooterNavigation.module.css", () => ({
   default: {
-    footerNavigationList: "footerNavigationList",
-    footerNavigationItem: "footerNavigationItem",
-    footerNavigationLink: "footerNavigationLink",
+    footerNavigationList: "_footerNavigationList_765b12",
+    footerNavigationItem: "_footerNavigationItem_765b12",
+    footerNavigationLink: "_footerNavigationLink_765b12",
   },
 }));
 
@@ -221,14 +221,14 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("footerNavigationList");
+      expect(nav).toHaveClass("_footerNavigationList_765b12");
     });
 
     it("combines CSS module classes with custom className", () => {
       render(<FooterNavigation className="custom-nav" />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("footerNavigationList custom-nav");
+      expect(nav).toHaveClass("_footerNavigationList_765b12 custom-nav");
     });
   });
 
