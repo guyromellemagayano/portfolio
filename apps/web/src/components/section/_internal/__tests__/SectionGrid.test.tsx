@@ -51,9 +51,9 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../SectionGrid.module.css", () => ({
+vi.mock("../styles/SectionGrid.module.css", () => ({
   default: {
-    sectionGrid: "_sectionGrid_1c4dfc",
+    sectionGrid: "_sectionGrid_5c0975",
   },
 }));
 
@@ -84,7 +84,7 @@ describe("SectionGrid", () => {
       );
 
       const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_1c4dfc", "custom-class");
+      expect(grid).toHaveClass("_sectionGrid_5c0975", "custom-class");
     });
 
     it("renders with debug mode enabled", () => {
@@ -221,7 +221,7 @@ describe("SectionGrid", () => {
       render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
 
       const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_1c4dfc");
+      expect(grid).toHaveClass("_sectionGrid_5c0975");
     });
 
     it("combines CSS module + custom classes", () => {
@@ -232,7 +232,7 @@ describe("SectionGrid", () => {
       );
 
       const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_1c4dfc", "custom-class");
+      expect(grid).toHaveClass("_sectionGrid_5c0975", "custom-class");
     });
   });
 

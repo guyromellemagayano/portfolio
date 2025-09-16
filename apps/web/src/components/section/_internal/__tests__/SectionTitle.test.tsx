@@ -24,12 +24,24 @@ vi.mock("@guyromellemagayano/utils", () => ({
       return content.some((item) => item != null && item !== "");
     return true;
   }),
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === null || children === undefined || children === false) {
+      return false;
+    }
+    if (children === "") {
+      return false;
+    }
+    if (Array.isArray(children) && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
   createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
     const attributes: Record<string, string> = {};
     if (id && suffix) {
       attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
       attributes["data-testid"] = `${id}-${suffix}`;
-      // Add id attribute for SectionTitle
+      // Add id attribute for `SectionTitle`
       if (suffix === "section-title") {
         attributes["id"] = id;
       }
@@ -51,7 +63,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../SectionTitle.module.css", () => ({
+vi.mock("../styles/SectionTitle.module.css", () => ({
   default: {
     sectionTitle: "_sectionTitle_253742",
   },
