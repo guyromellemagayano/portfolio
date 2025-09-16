@@ -22,14 +22,24 @@ vi.mock("next/navigation", () => ({
 vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
   isActivePath: vi.fn(() => true), // Return true by default for tests
+  AVATAR_COMPONENT_LABELS: {
+    link: "/",
+    src: "/src/images/avatar.jpg",
+    home: "Home",
+  },
+  THEME_TOGGLE_LABELS: {
+    toggleTheme: "Toggle theme",
+  },
 }));
 
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
-    isDebugMode: options.debugMode || false,
-  })),
+  useComponentId: vi.fn((options = {}) => {
+    return {
+      id: options.internalId || "test-id",
+      isDebugMode: options.debugMode || false,
+    };
+  }),
 }));
 
 // Mock the utils
@@ -37,11 +47,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
     const attributes: Record<string, string> = {};
 
-    // Only add data attributes when both id and suffix are provided
-    if (id && suffix) {
-      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
-      attributes["data-testid"] = `${id}-${suffix}-root`;
-    }
+    // Always add data attributes - use fallback values if needed
+    const actualId = id || "test-id";
+    const actualSuffix = suffix || "component";
+
+    attributes[`data-${actualSuffix}-id`] = `${actualId}-${actualSuffix}`;
+    attributes["data-testid"] = `${actualId}-${actualSuffix}-root`;
 
     // Only include data-debug-mode when debugMode is strictly true
     if (debugMode === true) {
@@ -115,6 +126,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
       if (!link.label || typeof link.label !== "string") return false;
       if (!link.href || typeof link.href !== "string") return false;
       if (link.href === "" || link.href === "#") return false;
+      // Check for kind property if it exists
+      if (link.kind && link.kind !== "internal") return false;
       return true;
     });
   }),
@@ -127,6 +140,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (!link.label || typeof link.label !== "string") return false;
     if (!link.href || typeof link.href !== "string") return false;
     if (link.href === "" || link.href === "#") return false;
+    // Check for kind property if it exists
+    if (link.kind && link.kind !== "internal") return false;
     return true;
   }),
 }));
@@ -152,4 +167,22 @@ vi.mock("next/link", () => ({
       children
     );
   }),
+}));
+
+// Mock Header data
+vi.mock("../_internal/_data", () => ({
+  DESKTOP_HEADER_NAV_LINKS: [
+    { kind: "internal", href: "/about", label: "About" },
+    { kind: "internal", href: "/articles", label: "Articles" },
+    { kind: "internal", href: "/projects", label: "Projects" },
+    { kind: "internal", href: "/speaking", label: "Speaking" },
+    { kind: "internal", href: "/uses", label: "Uses" },
+  ],
+  MOBILE_HEADER_NAV_LINKS: [
+    { kind: "internal", href: "/about", label: "About" },
+    { kind: "internal", href: "/articles", label: "Articles" },
+    { kind: "internal", href: "/projects", label: "Projects" },
+    { kind: "internal", href: "/speaking", label: "Speaking" },
+    { kind: "internal", href: "/uses", label: "Uses" },
+  ],
 }));
