@@ -23,7 +23,7 @@ import {
   HeaderMobileNav,
   HeaderThemeToggle,
 } from "./_internal";
-import styles from "./Header.module.css";
+import styles from "./styles/Header.module.css";
 
 // ============================================================================
 // HEADER COMPONENT TYPES & INTERFACES
