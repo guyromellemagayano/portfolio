@@ -42,7 +42,7 @@ vi.mock("@web/utils", () => ({
 // Mock CSS modules
 vi.mock("../styles/Prose.module.css", () => ({
   default: {
-    prose: "prose-class",
+    proseContainer: "prose-container-class",
   },
 }));
 
@@ -128,7 +128,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class", "custom-class");
+      expect(prose).toHaveClass("prose-container-class", "custom-class");
     });
 
     it("spreads additional props to prose element", () => {
@@ -230,7 +230,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class");
+      expect(prose).toHaveClass("prose-container-class");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -241,7 +241,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class", "custom-class");
+      expect(prose).toHaveClass("prose-container-class", "custom-class");
     });
 
     it("handles multiple custom classes", () => {
@@ -252,7 +252,12 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class", "class1", "class2", "class3");
+      expect(prose).toHaveClass(
+        "prose-container-class",
+        "class1",
+        "class2",
+        "class3"
+      );
     });
   });
 
@@ -499,7 +504,7 @@ describe("Prose Component", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class");
+      expect(prose).toHaveClass("prose-container-class");
     });
 
     it("combines prose styling with custom classes", () => {
@@ -511,7 +516,7 @@ describe("Prose Component", () => {
 
       const prose = screen.getByTestId("test-id-prose-root");
       expect(prose).toHaveClass(
-        "prose-class",
+        "prose-container-class",
         "custom-styling",
         "additional-class"
       );
@@ -529,7 +534,11 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-class", "base-class", "dark-theme");
+      expect(prose).toHaveClass(
+        "prose-container-class",
+        "base-class",
+        "dark-theme"
+      );
     });
   });
 
