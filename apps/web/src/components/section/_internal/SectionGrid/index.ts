@@ -1,1 +1,0 @@
-export { SectionGrid } from "./SectionGrid";

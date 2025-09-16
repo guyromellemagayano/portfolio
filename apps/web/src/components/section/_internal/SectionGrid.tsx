@@ -10,7 +10,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./SectionGrid.module.css";
+import styles from "./styles/SectionGrid.module.css";
 
 // ============================================================================
 // SECTION GRID COMPONENT TYPES & INTERFACES

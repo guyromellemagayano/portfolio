@@ -10,34 +10,34 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./SectionTitle.module.css";
+import styles from "./styles/SectionContent.module.css";
 
 // ============================================================================
-// SECTION TITLE COMPONENT TYPES & INTERFACES
+// SECTION CONTENT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SectionTitleProps
-  extends React.ComponentProps<"h2">,
+interface SectionContentProps
+  extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type SectionTitleComponent = React.FC<SectionTitleProps>;
+type SectionContentComponent = React.FC<SectionContentProps>;
 
 // ============================================================================
-// BASE SECTION TITLE COMPONENT
+// BASE SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A section title component that renders a heading with proper styling and accessibility. */
-const BaseSectionTitle: SectionTitleComponent = setDisplayName(
-  function BaseSectionTitle(props) {
+/** A section content component that wraps section content with proper styling. */
+const BaseSectionContent: SectionContentComponent = setDisplayName(
+  function BaseSectionContent(props) {
     const { children, className, _internalId, _debugMode, ...rest } = props;
 
     const element = (
-      <h2
+      <div
         {...rest}
-        className={cn(styles.sectionTitle, className)}
-        {...createComponentProps(_internalId, "section-title", _debugMode)}
+        className={cn(styles.sectionContent, className)}
+        {...createComponentProps(_internalId, "section-content", _debugMode)}
       >
         {children}
-      </h2>
+      </div>
     );
 
     return element;
@@ -45,19 +45,19 @@ const BaseSectionTitle: SectionTitleComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED SECTION TITLE COMPONENT
+// MEMOIZED SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A memoized section title component. */
-const MemoizedSectionTitle = React.memo(BaseSectionTitle);
+/** A memoized section content component. */
+const MemoizedSectionContent = React.memo(BaseSectionContent);
 
 // ============================================================================
-// MAIN SECTION TITLE COMPONENT
+// MAIN SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A section title component that renders a heading with proper styling and accessibility. */
-export const SectionTitle: SectionTitleComponent = setDisplayName(
-  function SectionTitle(props) {
+/** A section content component that wraps section content with proper styling. */
+export const SectionContent: SectionContentComponent = setDisplayName(
+  function SectionContent(props) {
     const {
       children,
       isMemoized = false,
@@ -79,7 +79,7 @@ export const SectionTitle: SectionTitleComponent = setDisplayName(
       _debugMode: isDebugMode,
     };
 
-    const Component = isMemoized ? MemoizedSectionTitle : BaseSectionTitle;
+    const Component = isMemoized ? MemoizedSectionContent : BaseSectionContent;
     const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
