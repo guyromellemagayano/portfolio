@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { BaseLayout } from "../BaseLayout";
+import { Layout } from "../Layout";
 
 // ============================================================================
 // MOCKS
@@ -37,12 +37,20 @@ vi.mock("@guyromellemagayano/utils", () => ({
 
 // Mock component utilities
 vi.mock("@web/utils/component-utils", () => ({
-  createBaseLayoutProps: vi.fn((id, debugMode) => ({
+  createLayoutProps: vi.fn((id, debugMode) => ({
     "data-layout-id": `${id}-layout`,
     "data-debug-mode": debugMode ? "true" : undefined,
     "data-testid": `${id}-layout-root`,
   })),
   hasValidContent: vi.fn((children) => children != null && children !== ""),
+}));
+
+// Mock logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  logWarn: vi.fn(),
+  logDebug: vi.fn(),
 }));
 
 // Mock Next.js Link
@@ -74,15 +82,15 @@ vi.mock("@web/lib", () => ({
 }));
 
 // Mock CSS module
-vi.mock("../BaseLayout.module.css", () => ({
+vi.mock("../styles/Layout.module.css", () => ({
   default: {
-    baseLayoutContainer: "_baseLayoutContainer_f23019",
-    baseLayoutBackgroundWrapper: "_baseLayoutBackgroundWrapper_f23019",
-    baseLayoutBackgroundContent: "_baseLayoutBackgroundContent_f23019",
-    baseLayoutBackground: "_baseLayoutBackground_f23019",
-    baseLayoutContentWrapper: "_baseLayoutContentWrapper_f23019",
-    baseLayoutMain: "_baseLayoutMain_f23019",
-    skipLink: "_skipLink_f23019",
+    layoutContainer: "_layoutContainer_5c0975",
+    layoutBackgroundWrapper: "_layoutBackgroundWrapper_5c0975",
+    layoutBackgroundContent: "_layoutBackgroundContent_5c0975",
+    layoutBackground: "_layoutBackground_5c0975",
+    layoutContentWrapper: "_layoutContentWrapper_5c0975",
+    layoutMain: "_layoutMain_5c0975",
+    skipLink: "_skipLink_5c0975",
   },
 }));
 
@@ -103,7 +111,7 @@ const mockChildren = <div data-testid="test-children">Test Content</div>;
 // TESTS
 // ============================================================================
 
-describe("BaseLayout", () => {
+describe("Layout", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -111,7 +119,7 @@ describe("BaseLayout", () => {
 
   describe("Basic Rendering", () => {
     it("renders with default props when children are provided", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const layout = screen.getByTestId("test-id-layout-root");
       expect(layout).toBeInTheDocument();
@@ -119,7 +127,7 @@ describe("BaseLayout", () => {
     });
 
     it("applies custom className", () => {
-      render(<BaseLayout className="custom-class">{mockChildren}</BaseLayout>);
+      render(<Layout className="custom-class">{mockChildren}</Layout>);
 
       const layout = screen.getByTestId("test-id-layout-root");
       expect(layout).toHaveClass("custom-class");
@@ -127,9 +135,9 @@ describe("BaseLayout", () => {
 
     it("passes through additional props", () => {
       render(
-        <BaseLayout data-test="custom-data" aria-label="Test layout">
+        <Layout data-test="custom-data" aria-label="Test layout">
           {mockChildren}
-        </BaseLayout>
+        </Layout>
       );
 
       const layout = screen.getByTestId("test-id-layout-root");
@@ -138,21 +146,21 @@ describe("BaseLayout", () => {
     });
 
     it("uses useComponentId hook correctly", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       // The hook is already mocked at the top of the file
       expect(true).toBe(true);
     });
 
     it("uses custom internal ID when provided", () => {
-      render(<BaseLayout internalId="custom-id">{mockChildren}</BaseLayout>);
+      render(<Layout internalId="custom-id">{mockChildren}</Layout>);
 
       const layout = screen.getByTestId("custom-id-layout-root");
       expect(layout).toHaveAttribute("data-layout-id", "custom-id-layout");
     });
 
     it("enables debug mode when provided", () => {
-      render(<BaseLayout debugMode={true}>{mockChildren}</BaseLayout>);
+      render(<Layout debugMode={true}>{mockChildren}</Layout>);
 
       const layout = screen.getByTestId("test-id-layout-root");
       expect(layout).toHaveAttribute("data-debug-mode", "true");
@@ -161,57 +169,57 @@ describe("BaseLayout", () => {
 
   describe("Component Structure", () => {
     it("renders layout with correct structure", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const container = screen.getByTestId("test-id-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_baseLayoutContainer_f23019");
+      expect(container).toHaveClass("_layoutContainer_5c0975");
     });
 
     it("renders skip link with correct attributes", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const skipLink = screen.getByTestId("skip-link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("_skipLink_f23019");
+      expect(skipLink).toHaveClass("_skipLink_5c0975");
     });
 
     it("renders background wrapper with correct structure", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const backgroundWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._baseLayoutBackgroundWrapper_f23019");
+        .querySelector("._layoutBackgroundWrapper_5c0975");
       expect(backgroundWrapper).toBeInTheDocument();
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
     });
 
     it("renders content wrapper with correct structure", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const contentWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._baseLayoutContentWrapper_f23019");
+        .querySelector("._layoutContentWrapper_5c0975");
       expect(contentWrapper).toBeInTheDocument();
     });
 
     it("renders main content area with correct attributes", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const main = screen.getByRole("main");
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("_baseLayoutMain_f23019");
+      expect(main).toHaveClass("_layoutMain_5c0975");
     });
   });
 
   describe("Header and Footer Integration", () => {
     it("renders Header component with correct attributes", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const header = screen.getByTestId("header");
       expect(header).toBeInTheDocument();
@@ -220,7 +228,7 @@ describe("BaseLayout", () => {
     });
 
     it("renders Footer component with correct attributes", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const footer = screen.getByTestId("footer");
       expect(footer).toBeInTheDocument();
@@ -229,7 +237,7 @@ describe("BaseLayout", () => {
     });
 
     it("renders children content in main area", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const main = screen.getByRole("main");
       const children = screen.getByTestId("test-children");
@@ -239,44 +247,44 @@ describe("BaseLayout", () => {
 
   describe("Conditional Rendering", () => {
     it("returns null when no children are provided", () => {
-      const { container } = render(<BaseLayout />);
+      const { container } = render(<Layout />);
 
       expect(container.firstChild).toBeNull();
     });
 
     it("returns null when children are empty string", () => {
-      const { container } = render(<BaseLayout>{""}</BaseLayout>);
+      const { container } = render(<Layout>{""}</Layout>);
 
       expect(container.firstChild).toBeNull();
     });
 
     it("returns null when children are null", () => {
-      const { container } = render(<BaseLayout>{null}</BaseLayout>);
+      const { container } = render(<Layout>{null}</Layout>);
 
       expect(container.firstChild).toBeNull();
     });
 
     it("returns null when children are undefined", () => {
-      const { container } = render(<BaseLayout>{undefined}</BaseLayout>);
+      const { container } = render(<Layout>{undefined}</Layout>);
 
       expect(container.firstChild).toBeNull();
     });
 
     it("renders when children are provided", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
       expect(screen.getByTestId("test-children")).toBeInTheDocument();
     });
 
     it("renders when children are boolean true", () => {
-      render(<BaseLayout>{true}</BaseLayout>);
+      render(<Layout>{true}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
     });
 
     it("renders when children are number", () => {
-      render(<BaseLayout>{42}</BaseLayout>);
+      render(<Layout>{42}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
       expect(screen.getByText("42")).toBeInTheDocument();
@@ -285,19 +293,19 @@ describe("BaseLayout", () => {
 
   describe("Memoization", () => {
     it("uses memoized component when isMemoized is true", () => {
-      render(<BaseLayout isMemoized={true}>{mockChildren}</BaseLayout>);
+      render(<Layout isMemoized={true}>{mockChildren}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is false", () => {
-      render(<BaseLayout isMemoized={false}>{mockChildren}</BaseLayout>);
+      render(<Layout isMemoized={false}>{mockChildren}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is undefined", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       expect(screen.getByTestId("test-id-layout-root")).toBeInTheDocument();
     });
@@ -316,7 +324,7 @@ describe("BaseLayout", () => {
         </div>
       );
 
-      render(<BaseLayout>{complexChildren}</BaseLayout>);
+      render(<Layout>{complexChildren}</Layout>);
 
       expect(screen.getByText("Page Title")).toBeInTheDocument();
       expect(screen.getByText("Page content")).toBeInTheDocument();
@@ -332,7 +340,7 @@ describe("BaseLayout", () => {
         </form>
       );
 
-      render(<BaseLayout>{formChildren}</BaseLayout>);
+      render(<Layout>{formChildren}</Layout>);
 
       expect(screen.getByPlaceholderText("Enter text")).toBeInTheDocument();
       expect(screen.getByRole("button")).toBeInTheDocument();
@@ -341,14 +349,14 @@ describe("BaseLayout", () => {
 
   describe("Performance Tests", () => {
     it("renders efficiently with different props", () => {
-      const { rerender } = render(<BaseLayout>{mockChildren}</BaseLayout>);
+      const { rerender } = render(<Layout>{mockChildren}</Layout>);
 
-      rerender(<BaseLayout className="new-class">{mockChildren}</BaseLayout>);
+      rerender(<Layout className="new-class">{mockChildren}</Layout>);
       expect(screen.getByTestId("test-id-layout-root")).toHaveClass(
         "new-class"
       );
 
-      rerender(<BaseLayout debugMode={true}>{mockChildren}</BaseLayout>);
+      rerender(<Layout debugMode={true}>{mockChildren}</Layout>);
       expect(screen.getByTestId("test-id-layout-root")).toHaveAttribute(
         "data-debug-mode",
         "true"
@@ -358,21 +366,21 @@ describe("BaseLayout", () => {
 
   describe("Component Interface", () => {
     it("returns a React element", () => {
-      const { container } = render(<BaseLayout>{mockChildren}</BaseLayout>);
+      const { container } = render(<Layout>{mockChildren}</Layout>);
 
       expect(container.firstChild).toBeInstanceOf(HTMLElement);
     });
 
     it("accepts all div HTML attributes", () => {
       render(
-        <BaseLayout
+        <Layout
           id="test-id"
           className="test-class"
           data-test="test-data"
           aria-label="Test label"
         >
           {mockChildren}
-        </BaseLayout>
+        </Layout>
       );
 
       const layout = screen.getByTestId("test-id-layout-root");
@@ -384,7 +392,7 @@ describe("BaseLayout", () => {
 
   describe("Accessibility", () => {
     it("maintains proper semantic structure", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const header = screen.getByTestId("header");
       const main = screen.getByRole("main");
@@ -396,7 +404,7 @@ describe("BaseLayout", () => {
     });
 
     it("provides proper ARIA landmarks", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       expect(screen.getAllByRole("banner")).toHaveLength(1);
       expect(screen.getByRole("main")).toBeInTheDocument();
@@ -404,7 +412,7 @@ describe("BaseLayout", () => {
     });
 
     it("provides working skip link for accessibility", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const skipLink = screen.getByTestId("skip-link");
       expect(skipLink).toHaveAttribute("href", "#main-content");
@@ -412,18 +420,18 @@ describe("BaseLayout", () => {
     });
 
     it("hides decorative background from accessibility tree", () => {
-      render(<BaseLayout>{mockChildren}</BaseLayout>);
+      render(<Layout>{mockChildren}</Layout>);
 
       const backgroundWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._baseLayoutBackgroundWrapper_f23019");
+        .querySelector("._layoutBackgroundWrapper_5c0975");
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
     });
   });
 
   describe("Integration Tests", () => {
-    describe("Complete Page BaseLayout Rendering", () => {
+    describe("Complete Page Layout Rendering", () => {
       it("renders complete page layout with all components", () => {
         const mockPageContent = (
           <div>
@@ -437,9 +445,9 @@ describe("BaseLayout", () => {
         );
 
         render(
-          <BaseLayout internalId="test-layout" debugMode={false}>
+          <Layout internalId="test-layout" debugMode={false}>
             {mockPageContent}
-          </BaseLayout>
+          </Layout>
         );
 
         // Check main layout
@@ -466,7 +474,7 @@ describe("BaseLayout", () => {
       });
 
       it("renders page layout with proper semantic structure", () => {
-        render(<BaseLayout>{mockChildren}</BaseLayout>);
+        render(<Layout>{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toBeInTheDocument();
@@ -482,19 +490,19 @@ describe("BaseLayout", () => {
       });
 
       it("renders page layout with proper CSS classes", () => {
-        render(<BaseLayout>{mockChildren}</BaseLayout>);
+        render(<Layout>{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
-        expect(layout).toHaveClass("_baseLayoutContainer_f23019");
+        expect(layout).toHaveClass("_layoutContainer_5c0975");
       });
     });
 
-    describe("Page BaseLayout with Debug Mode", () => {
+    describe("Page Layout with Debug Mode", () => {
       it("renders page layout with debug mode enabled", () => {
         render(
-          <BaseLayout internalId="debug-layout" debugMode={true}>
+          <Layout internalId="debug-layout" debugMode={true}>
             {mockChildren}
-          </BaseLayout>
+          </Layout>
         );
 
         const layout = screen.getByTestId("debug-layout-layout-root");
@@ -504,9 +512,9 @@ describe("BaseLayout", () => {
 
       it("renders page layout with debug mode disabled", () => {
         render(
-          <BaseLayout internalId="debug-layout" debugMode={false}>
+          <Layout internalId="debug-layout" debugMode={false}>
             {mockChildren}
-          </BaseLayout>
+          </Layout>
         );
 
         const layout = screen.getByTestId("debug-layout-layout-root");
@@ -515,11 +523,9 @@ describe("BaseLayout", () => {
       });
     });
 
-    describe("Page BaseLayout with Custom Internal IDs", () => {
+    describe("Page Layout with Custom Internal IDs", () => {
       it("renders page layout with custom internal ID", () => {
-        render(
-          <BaseLayout internalId="custom-layout-id">{mockChildren}</BaseLayout>
-        );
+        render(<Layout internalId="custom-layout-id">{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("custom-layout-id-layout-root");
         expect(layout).toHaveAttribute(
@@ -529,47 +535,39 @@ describe("BaseLayout", () => {
       });
 
       it("renders page layout with default internal ID", () => {
-        render(<BaseLayout>{mockChildren}</BaseLayout>);
+        render(<Layout>{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveAttribute("data-layout-id", "test-id-layout");
       });
     });
 
-    describe("Page BaseLayout and Styling", () => {
+    describe("Page Layout and Styling", () => {
       it("applies custom className", () => {
-        render(
-          <BaseLayout className="custom-layout-class">
-            {mockChildren}
-          </BaseLayout>
-        );
+        render(<Layout className="custom-layout-class">{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveClass("custom-layout-class");
       });
 
       it("combines custom className with default classes", () => {
-        render(
-          <BaseLayout className="custom-layout-class">
-            {mockChildren}
-          </BaseLayout>
-        );
+        render(<Layout className="custom-layout-class">{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveClass(
-          "_baseLayoutContainer_f23019",
+          "_layoutContainer_5c0975",
           "custom-layout-class"
         );
       });
 
       it("applies custom styling props", () => {
         render(
-          <BaseLayout
+          <Layout
             style={{ backgroundColor: "white", color: "black" }}
             className="light-layout"
           >
             {mockChildren}
-          </BaseLayout>
+          </Layout>
         );
 
         const layout = screen.getByTestId("test-id-layout-root");
@@ -617,7 +615,7 @@ describe("BaseLayout", () => {
           </div>
         );
 
-        render(<BaseLayout>{complexContent}</BaseLayout>);
+        render(<Layout>{complexContent}</Layout>);
 
         expect(screen.getByText("Page Title")).toBeInTheDocument();
         expect(screen.getByText("Home")).toBeInTheDocument();
@@ -661,7 +659,7 @@ describe("BaseLayout", () => {
           </div>
         );
 
-        render(<BaseLayout>{formContent}</BaseLayout>);
+        render(<Layout>{formContent}</Layout>);
 
         expect(screen.getByText("Contact Form")).toBeInTheDocument();
         expect(screen.getByLabelText("Name:")).toBeInTheDocument();
@@ -695,7 +693,7 @@ describe("BaseLayout", () => {
           </div>
         );
 
-        render(<BaseLayout>{interactiveContent}</BaseLayout>);
+        render(<Layout>{interactiveContent}</Layout>);
 
         expect(screen.getByText("Interactive Page")).toBeInTheDocument();
         expect(
@@ -713,7 +711,7 @@ describe("BaseLayout", () => {
 
     describe("Page Navigation Integration", () => {
       it("renders skip link correctly", () => {
-        render(<BaseLayout>{mockChildren}</BaseLayout>);
+        render(<Layout>{mockChildren}</Layout>);
 
         const skipLink = screen.getByTestId("skip-link");
         expect(skipLink).toBeInTheDocument();
@@ -722,7 +720,7 @@ describe("BaseLayout", () => {
       });
 
       it("renders header and footer correctly", () => {
-        render(<BaseLayout>{mockChildren}</BaseLayout>);
+        render(<Layout>{mockChildren}</Layout>);
 
         const header = screen.getByTestId("header");
         const footer = screen.getByTestId("footer");
@@ -732,12 +730,12 @@ describe("BaseLayout", () => {
       });
     });
 
-    describe("Page BaseLayout Performance and Edge Cases", () => {
+    describe("Page Layout Performance and Edge Cases", () => {
       it("renders multiple page layouts correctly", () => {
         render(
           <div>
-            <BaseLayout internalId="layout-1">{mockChildren}</BaseLayout>
-            <BaseLayout internalId="layout-2">{mockChildren}</BaseLayout>
+            <Layout internalId="layout-1">{mockChildren}</Layout>
+            <Layout internalId="layout-2">{mockChildren}</Layout>
           </div>
         );
 
@@ -750,7 +748,7 @@ describe("BaseLayout", () => {
 
       it("handles page layout updates efficiently", () => {
         const { rerender } = render(
-          <BaseLayout internalId="initial-layout">{mockChildren}</BaseLayout>
+          <Layout internalId="initial-layout">{mockChildren}</Layout>
         );
 
         let layout = screen.getByTestId("initial-layout-layout-root");
@@ -759,9 +757,7 @@ describe("BaseLayout", () => {
           "initial-layout-layout"
         );
 
-        rerender(
-          <BaseLayout internalId="updated-layout">{mockChildren}</BaseLayout>
-        );
+        rerender(<Layout internalId="updated-layout">{mockChildren}</Layout>);
         layout = screen.getByTestId("updated-layout-layout-root");
         expect(layout).toHaveAttribute(
           "data-layout-id",
@@ -771,7 +767,7 @@ describe("BaseLayout", () => {
 
       it("handles complex page configurations", () => {
         render(
-          <BaseLayout
+          <Layout
             internalId="complex-layout"
             debugMode={true}
             className="complex-layout-class"
@@ -779,7 +775,7 @@ describe("BaseLayout", () => {
             data-test="complex-test"
           >
             {mockChildren}
-          </BaseLayout>
+          </Layout>
         );
 
         const layout = screen.getByTestId("complex-layout-layout-root");
@@ -796,16 +792,16 @@ describe("BaseLayout", () => {
       });
     });
 
-    describe("Page BaseLayout Accessibility Integration", () => {
+    describe("Page Layout Accessibility Integration", () => {
       it("renders with proper accessibility attributes", () => {
         render(
-          <BaseLayout
+          <Layout
             aria-label="Main page layout"
             role="main"
             aria-describedby="page-description"
           >
             {mockChildren}
-          </BaseLayout>
+          </Layout>
         );
 
         const layout = screen.getByTestId("test-id-layout-root");
@@ -816,15 +812,13 @@ describe("BaseLayout", () => {
 
       it("maintains accessibility during updates", () => {
         const { rerender } = render(
-          <BaseLayout aria-label="Initial label">{mockChildren}</BaseLayout>
+          <Layout aria-label="Initial label">{mockChildren}</Layout>
         );
 
         let layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Initial label");
 
-        rerender(
-          <BaseLayout aria-label="Updated label">{mockChildren}</BaseLayout>
-        );
+        rerender(<Layout aria-label="Updated label">{mockChildren}</Layout>);
         layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Updated label");
       });

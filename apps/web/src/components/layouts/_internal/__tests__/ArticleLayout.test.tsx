@@ -128,22 +128,30 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+// Mock logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  logWarn: vi.fn(),
+  logDebug: vi.fn(),
+}));
+
 // Mock CSS module
-vi.mock("./ArticleLayout.module.css", () => ({
+vi.mock("../styles/ArticleLayout.module.css", () => ({
   default: {
-    articleLayoutContainer: "_articleLayoutContainer_6298af",
-    articleWrapper: "_articleWrapper_6298af",
-    articleContent: "_articleContent_6298af",
-    articleTitle: "_articleTitle_6298af",
-    articleDate: "_articleDate_6298af",
-    articleProse: "_articleProse_6298af",
-    dateSeparator: "_dateSeparator_6298af",
-    dateText: "_dateText_6298af",
+    articleLayoutContainer: "_articleLayoutContainer_258868",
+    articleWrapper: "_articleWrapper_258868",
+    articleContent: "_articleContent_258868",
+    articleTitle: "_articleTitle_258868",
+    articleDate: "_articleDate_258868",
+    articleProse: "_articleProse_258868",
+    dateSeparator: "_dateSeparator_258868",
+    dateText: "_dateText_258868",
   },
 }));
 
 // Mock ArticleNavButton component
-vi.mock("./_internal/ArticleNavButton/ArticleNavButton", () => ({
+vi.mock("../ArticleNavButton", () => ({
   ArticleNavButton: vi.fn(({ children, ...props }) => (
     <button data-testid="article-nav-button" {...props}>
       {children}
@@ -237,13 +245,13 @@ describe("ArticleLayout", () => {
 
       const container = screen.getByTestId("test-id-article-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_articleLayoutContainer_6298af");
+      expect(container).toHaveClass("_articleLayoutContainer_258868");
     });
 
     it("includes ArticleNavButton", () => {
       render(<ArticleLayout article={mockArticle} />);
 
-      const navButton = screen.getByTestId("test-id-article-nav-button-root");
+      const navButton = screen.getByTestId("article-nav-button");
       expect(navButton).toBeInTheDocument();
     });
 
@@ -269,7 +277,7 @@ describe("ArticleLayout", () => {
       const title = screen.getByText("Test Article Title");
       expect(title).toBeInTheDocument();
       expect(title.tagName).toBe("H1");
-      expect(title).toHaveClass("_articleTitle_6298af");
+      expect(title).toHaveClass("_articleTitle_258868");
     });
 
     it("renders article with date when provided", () => {
@@ -278,7 +286,7 @@ describe("ArticleLayout", () => {
       const time = screen.getByText("Formatted Date").closest("time");
       expect(time).toBeInTheDocument();
       expect(time).toHaveAttribute("dateTime", "2023-01-01");
-      expect(time).toHaveClass("_articleDate_6298af");
+      expect(time).toHaveClass("_articleDate_258868");
     });
 
     it("renders article with both title and date", () => {
@@ -304,7 +312,7 @@ describe("ArticleLayout", () => {
       expect(childContent).toBeInTheDocument();
       expect(childContent).toHaveTextContent("Child content");
       expect(prose).toBeInTheDocument();
-      expect(prose).toHaveClass("_articleProse_6298af");
+      expect(prose).toHaveClass("_articleProse_258868");
       expect(prose).toHaveAttribute("data-mdx-content");
     });
 
@@ -709,14 +717,14 @@ describe("ArticleLayout", () => {
       it("renders navigation button correctly", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const navButton = screen.getByTestId("test-id-article-nav-button-root");
+        const navButton = screen.getByTestId("article-nav-button");
         expect(navButton).toBeInTheDocument();
       });
 
       it("handles navigation button interactions", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const navButton = screen.getByTestId("test-id-article-nav-button-root");
+        const navButton = screen.getByTestId("article-nav-button");
         expect(navButton).toBeInTheDocument();
         // Navigation functionality would be tested in the actual component
       });
