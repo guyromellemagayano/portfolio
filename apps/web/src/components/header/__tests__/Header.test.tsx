@@ -223,25 +223,25 @@ vi.mock("../_internal/HeaderEffects", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../Header.module.css", () => ({
+vi.mock("../styles/Header.module.css", () => ({
   default: {
-    headerComponent: "header-component",
-    headerSection: "header-section",
-    headerContainer: "header-container",
-    headerContent: "header-content",
-    headerLeftSection: "header-left-section",
-    headerCenterSection: "header-center-section",
-    headerRightSection: "header-right-section",
-    mobileNavigation: "mobile-navigation",
-    desktopNavigation: "desktop-navigation",
-    themeToggleWrapper: "theme-toggle-wrapper",
-    contentOffset: "content-offset",
-    avatarSection: "avatar-section",
-    avatarContainer: "avatar-container",
-    avatarPositioningWrapper: "avatar-positioning-wrapper",
-    avatarRelativeContainer: "avatar-relative-container",
-    avatarBorderContainer: "avatar-border-container",
-    avatarImage: "avatar-image",
+    headerComponent: "_headerComponent_43a792",
+    headerSection: "_headerSection_43a792",
+    headerContainer: "_headerContainer_43a792",
+    headerContent: "_headerContent_43a792",
+    headerLeftSection: "_headerLeftSection_43a792",
+    headerCenterSection: "_headerCenterSection_43a792",
+    headerRightSection: "_headerRightSection_43a792",
+    mobileNavigation: "_mobileNavigation_43a792",
+    desktopNavigation: "_desktopNavigation_43a792",
+    themeToggleWrapper: "_themeToggleWrapper_43a792",
+    contentOffset: "_contentOffset_43a792",
+    avatarSection: "_avatarSection_43a792",
+    avatarContainer: "_avatarContainer_43a792",
+    avatarPositioningWrapper: "_avatarPositioningWrapper_43a792",
+    avatarRelativeContainer: "_avatarRelativeContainer_43a792",
+    avatarBorderContainer: "_avatarBorderContainer_43a792",
+    avatarImage: "_avatarImage_43a792",
   },
 }));
 
@@ -404,14 +404,14 @@ describe("Header", () => {
       render(<Header />);
 
       const header = screen.getByTestId("test-id-header-root");
-      expect(header).toHaveClass("header-component");
+      expect(header).toHaveClass("_headerComponent_43a792");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<Header className="custom-class" />);
 
       const header = screen.getByTestId("test-id-header-root");
-      expect(header).toHaveClass("header-component", "custom-class");
+      expect(header).toHaveClass("_headerComponent_43a792", "custom-class");
     });
   });
 
@@ -517,7 +517,7 @@ describe("Header", () => {
         render(<Header />);
 
         const header = screen.getByTestId("test-id-header-root");
-        expect(header).toHaveClass("header-component");
+        expect(header).toHaveClass("_headerComponent_43a792");
       });
     });
 
@@ -563,14 +563,17 @@ describe("Header", () => {
         render(<Header />);
 
         const header = screen.getByTestId("test-id-header-root");
-        expect(header).toHaveClass("header-component");
+        expect(header).toHaveClass("_headerComponent_43a792");
       });
 
       it("combines custom className with default classes", () => {
         render(<Header className="custom-header-class" />);
 
         const header = screen.getByTestId("test-id-header-root");
-        expect(header).toHaveClass("header-component", "custom-header-class");
+        expect(header).toHaveClass(
+          "_headerComponent_43a792",
+          "custom-header-class"
+        );
       });
 
       it("applies custom styling props", () => {

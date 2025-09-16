@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./HeaderAvatarContainer.module.css";
+import styles from "./styles/HeaderAvatarContainer.module.css";
 
 // ============================================================================
 // HEADER AVATAR CONTAINER COMPONENT TYPES & INTERFACES

@@ -3,6 +3,8 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+const React = require("react");
+
 // Individual mocks for this test file
 
 // Mock IntersectionObserver
@@ -117,8 +119,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 vi.mock("next/link", () => ({
   __esModule: true,
   default: vi.fn(({ children, href, className, ...props }) => {
-    const React = require("react");
-    return React.createElement(
+    return vi.createElement(
       "a",
       {
         "data-testid": "next-link",
@@ -132,32 +133,19 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock the HeaderDesktopNavItem component FIRST
-vi.mock("../HeaderDesktopNavItem", () => {
-  const MockHeaderDesktopNavItem = React.forwardRef<HTMLLIElement, any>(
-    function MockHeaderDesktopNavItem(props, ref) {
-      const { href, children, ...rest } = props;
-      return React.createElement(
-        "li",
-        {
-          ref,
-          "data-testid": "header-test-id-desktop-nav-item-root",
-          "data-href": href,
-          ...rest,
-        },
-        React.createElement(
-          "a",
-          {
-            href,
-            "data-testid": "next-link",
-          },
-          children
-        )
-      );
-    }
-  );
-  MockHeaderDesktopNavItem.displayName = "MockHeaderDesktopNavItem";
-  return { HeaderDesktopNavItem: MockHeaderDesktopNavItem };
-});
+vi.mock("../HeaderDesktopNavItem", () => ({
+  HeaderDesktopNavItem: ({ href, children, ...props }: any) => (
+    <li
+      data-testid="header-test-id-desktop-nav-item-root"
+      data-href={href}
+      {...props}
+    >
+      <a href={href} data-testid="next-link">
+        {children}
+      </a>
+    </li>
+  ),
+}));
 
 // Import mocked data
 import { HeaderDesktopNav } from "../HeaderDesktopNav";
@@ -173,9 +161,9 @@ vi.mock("next/src/client/use-intersection", () => ({
 
 // Mock Next.js Link component more thoroughly
 vi.mock("next/link", () => {
-  const MockLink = React.forwardRef<HTMLAnchorElement, any>((props, ref) => {
+  const MockLink = vi.forwardRef<HTMLAnchorElement, any>((props, ref) => {
     const { href, children, ...rest } = props;
-    return React.createElement(
+    return vi.createElement(
       "a",
       {
         ref,
@@ -193,7 +181,7 @@ vi.mock("next/link", () => {
 // Mock the useComponentId hook
 
 // Mock the data with current structure
-vi.mock("../../../_data", () => ({
+vi.mock("../_data", () => ({
   DESKTOP_HEADER_NAV_LINKS: [
     { kind: "internal", href: "/about", label: "About" },
     { kind: "internal", href: "/articles", label: "Articles" },
@@ -204,9 +192,9 @@ vi.mock("../../../_data", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../HeaderDesktopNav.module.css", () => ({
+vi.mock("../styles/HeaderDesktopNav.module.css", () => ({
   default: {
-    HeaderDesktopNavList: "header-desktop-nav-list",
+    HeaderDesktopNavList: "_HeaderDesktopNavList_5a8b3c",
   },
 }));
 
@@ -426,14 +414,14 @@ describe("HeaderDesktopNav", () => {
       render(<HeaderDesktopNav />);
 
       const nav = screen.getByTestId("test-id-header-desktop-nav-root");
-      expect(nav).toHaveClass("header-desktop-nav-list");
+      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderDesktopNav className="custom-class" />);
 
       const nav = screen.getByTestId("test-id-header-desktop-nav-root");
-      expect(nav).toHaveClass("header-desktop-nav-list", "custom-class");
+      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c", "custom-class");
     });
   });
 
@@ -519,7 +507,7 @@ describe("HeaderDesktopNav", () => {
         "test-id-header-desktop-nav"
       );
       expect(nav).not.toHaveAttribute("data-debug-mode");
-      expect(nav).toHaveClass("header-desktop-nav-list");
+      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c");
     });
   });
 });
