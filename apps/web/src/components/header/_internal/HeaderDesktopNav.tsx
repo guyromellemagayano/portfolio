@@ -36,13 +36,13 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
     const { className, links, _internalId, _debugMode, ...rest } = props;
 
-    const element = links ? (
+    const element = (
       <nav
         {...rest}
         className={cn(styles.HeaderDesktopNavList, className)}
         {...createComponentProps(_internalId, "header-desktop-nav", _debugMode)}
       >
-        {links.map(({ label, href }) => (
+        {links?.map(({ label, href }) => (
           <HeaderDesktopNavItem
             key={`${label}:${href}`}
             href={href}
@@ -53,7 +53,7 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
           </HeaderDesktopNavItem>
         ))}
       </nav>
-    ) : null;
+    );
 
     return element;
   }
