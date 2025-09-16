@@ -125,11 +125,11 @@ vi.mock("../CardLinkCustom", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../CardLink.module.css", () => ({
+vi.mock("../styles/CardLink.module.css", () => ({
   default: {
-    cardLinkBackground: "cardLinkBackground",
-    cardLinkClickableArea: "cardLinkClickableArea",
-    cardLinkContent: "cardLinkContent",
+    cardLinkBackground: "_cardLinkBackground_a29b80",
+    cardLinkClickableArea: "_cardLinkClickableArea_a29b80",
+    cardLinkContent: "_cardLinkContent_a29b80",
   },
 }));
 
@@ -220,7 +220,7 @@ describe("CardLink", () => {
 
       const background = screen.getByTestId("test-id-card-link-root");
       expect(background).toBeInTheDocument();
-      expect(background).toHaveClass("cardLinkBackground");
+      expect(background).toHaveClass("_cardLinkBackground_a29b80");
     });
 
     it("renders CardLinkCustom with clickable area and content when href is valid", () => {
@@ -270,14 +270,17 @@ describe("CardLink", () => {
       render(<CardLink>Link content</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveClass("cardLinkBackground");
+      expect(container).toHaveClass("_cardLinkBackground_a29b80");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardLink className="custom-class">Link content</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveClass("cardLinkBackground", "custom-class");
+      expect(container).toHaveClass(
+        "_cardLinkBackground_a29b80",
+        "custom-class"
+      );
     });
   });
 

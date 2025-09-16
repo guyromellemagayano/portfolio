@@ -13,8 +13,8 @@ import {
 
 import { cn } from "@web/utils";
 
-import { CardLinkCustom } from "../CardLink/CardLinkCustom";
-import styles from "./CardTitle.module.css";
+import { CardLinkCustom } from "./CardLinkCustom";
+import styles from "./styles/CardTitle.module.css";
 
 // ============================================================================
 // CARD TITLE COMPONENT TYPES & INTERFACES

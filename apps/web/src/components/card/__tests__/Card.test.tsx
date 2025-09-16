@@ -103,7 +103,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../Card.module.css", () => ({
+vi.mock("../styles/Card.module.css", () => ({
   default: {
     card: "card",
   },
