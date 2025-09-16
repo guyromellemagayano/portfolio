@@ -14,7 +14,7 @@ import {
   type CommonContainerProps,
 } from "./_data";
 import { ContainerInner, ContainerOuter } from "./_internal";
-import styles from "./Container.module.css";
+import styles from "./styles/Container.module.css";
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
