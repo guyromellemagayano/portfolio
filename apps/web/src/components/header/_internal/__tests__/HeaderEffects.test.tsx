@@ -22,11 +22,11 @@ const mockRemoveEventListener = vi.fn();
 const mockSetProperty = vi.fn();
 const mockRemoveProperty = vi.fn();
 
-// Setup global mocks
-global.requestAnimationFrame = mockRequestAnimationFrame;
-global.cancelAnimationFrame = mockCancelAnimationFrame;
-global.addEventListener = mockAddEventListener;
-global.removeEventListener = mockRemoveEventListener;
+// Setup window mocks
+window.requestAnimationFrame = mockRequestAnimationFrame;
+window.cancelAnimationFrame = mockCancelAnimationFrame;
+window.addEventListener = mockAddEventListener;
+window.removeEventListener = mockRemoveEventListener;
 
 // Mock document.documentElement.style
 Object.defineProperty(document.documentElement, "style", {
@@ -121,16 +121,16 @@ describe("HeaderEffects", () => {
     });
 
     // Mock requestAnimationFrame
-    global.requestAnimationFrame = vi.fn((callback) => {
+    window.requestAnimationFrame = vi.fn((callback) => {
       setTimeout(callback, 0);
       return 1;
     });
 
-    global.cancelAnimationFrame = vi.fn();
+    window.cancelAnimationFrame = vi.fn();
 
     // Mock addEventListener and removeEventListener
-    global.addEventListener = vi.fn();
-    global.removeEventListener = vi.fn();
+    window.addEventListener = vi.fn();
+    window.removeEventListener = vi.fn();
 
     // Mock document.documentElement.style
     Object.defineProperty(document.documentElement, "style", {
@@ -152,14 +152,16 @@ describe("HeaderEffects", () => {
       const avatarRef = { current: document.createElement("div") };
       const isInitialRender = { current: true };
 
-      render(
-        <HeaderEffects
-          headerEl={headerRef}
-          avatarEl={avatarRef}
-          isHomePage={true}
-          isInitialRender={isInitialRender}
-        />
-      );
+      expect(() => {
+        render(
+          <HeaderEffects
+            headerEl={headerRef}
+            avatarEl={avatarRef}
+            isHomePage={true}
+            isInitialRender={isInitialRender}
+          />
+        );
+      }).not.toThrow();
     });
 
     it("returns null", () => {
@@ -195,12 +197,12 @@ describe("HeaderEffects", () => {
         />
       );
 
-      expect(global.addEventListener).toHaveBeenCalledWith(
+      expect(window.addEventListener).toHaveBeenCalledWith(
         "scroll",
         expect.any(Function),
         { passive: true }
       );
-      expect(global.addEventListener).toHaveBeenCalledWith(
+      expect(window.addEventListener).toHaveBeenCalledWith(
         "resize",
         expect.any(Function)
       );
@@ -224,11 +226,11 @@ describe("HeaderEffects", () => {
 
       unmount();
 
-      expect(global.removeEventListener).toHaveBeenCalledWith(
+      expect(window.removeEventListener).toHaveBeenCalledWith(
         "scroll",
         expect.any(Function)
       );
-      expect(global.removeEventListener).toHaveBeenCalledWith(
+      expect(window.removeEventListener).toHaveBeenCalledWith(
         "resize",
         expect.any(Function)
       );
@@ -440,7 +442,7 @@ describe("HeaderEffects", () => {
       );
 
       // Should not throw and should still set up event listeners
-      expect(global.addEventListener).toHaveBeenCalled();
+      expect(window.addEventListener).toHaveBeenCalled();
     });
 
     it("handles extreme scroll values", () => {
