@@ -13,8 +13,8 @@ import {
 import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, formatDate } from "@web/utils";
 
-import { ArticleNavButton } from "./_internal";
-import styles from "./ArticleLayout.module.css";
+import { ArticleNavButton } from "./ArticleNavButton";
+import styles from "./styles/ArticleLayout.module.css";
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
@@ -35,18 +35,21 @@ type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 /** A layout component for an article. */
 const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
   function BaseArticleLayout(props) {
-    const { children, className, article, internalId, debugMode, ...rest } =
+    const { children, className, article, _internalId, _debugMode, ...rest } =
       props;
 
     const element = (
       <Container
         {...rest}
         className={cn(styles.articleLayoutContainer, className)}
-        {...createComponentProps(internalId, "article-layout", debugMode)}
+        {...createComponentProps(_internalId, "article-layout", _debugMode)}
       >
         <div className={styles.articleWrapper}>
           <div className={styles.articleContent}>
-            <ArticleNavButton _debugMode={debugMode} _internalId={internalId} />
+            <ArticleNavButton
+              _debugMode={_debugMode}
+              _internalId={_internalId}
+            />
             {(isRenderableContent(article) ||
               hasAnyRenderableContent(children)) && (
               <article>
@@ -67,7 +70,12 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                   )}
                 </header>
                 {hasAnyRenderableContent(children) && (
-                  <Prose className={styles.articleProse} data-mdx-content>
+                  <Prose
+                    className={styles.articleProse}
+                    debugMode={_debugMode}
+                    internalId={_internalId}
+                    data-mdx-content
+                  >
                     {children}
                   </Prose>
                 )}
@@ -100,14 +108,14 @@ export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
       children,
       article,
       isMemoized = false,
-      internalId,
-      debugMode,
+      _internalId,
+      _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
+      internalId: _internalId,
+      debugMode: _debugMode,
     });
 
     // Return null if both children and article are missing
@@ -117,8 +125,8 @@ export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
     const updatedProps = {
       ...rest,
       article,
-      internalId: id,
-      debugMode: isDebugMode,
+      _internalId: id,
+      _debugMode: isDebugMode,
     };
 
     const Component = isMemoized ? MemoizedArticleLayout : BaseArticleLayout;
