@@ -185,12 +185,21 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../HeaderAvatar.module.css", () => ({
+vi.mock("../styles/HeaderAvatar.module.css", () => ({
   default: {
-    avatarLink: "avatar-link",
-    avatarImage: "avatar-image",
-    avatarImageDefault: "avatar-image-default",
-    avatarImageLarge: "avatar-image-large",
+    avatarLink: "_avatarLink_2f8a1b",
+    avatarImage: "_avatarImage_2f8a1b",
+    avatarImageDefault: "_avatarImageDefault_2f8a1b",
+    avatarImageLarge: "_avatarImageLarge_2f8a1b",
+  },
+}));
+
+// Mock component labels
+vi.mock("@web/lib", () => ({
+  AVATAR_COMPONENT_LABELS: {
+    link: "/",
+    src: "/src/images/avatar.jpg",
+    home: "Home",
   },
 }));
 
@@ -287,14 +296,20 @@ describe("HeaderAvatar", () => {
       render(<HeaderAvatar large={false} />);
 
       const image = screen.getByTestId("next-image");
-      expect(image).toHaveClass("avatar-image", "avatar-image-default");
+      expect(image).toHaveClass(
+        "_avatarImage_2f8a1b",
+        "_avatarImageDefault_2f8a1b"
+      );
     });
 
     it("applies correct CSS classes for large size", () => {
       render(<HeaderAvatar large={true} />);
 
       const image = screen.getByTestId("next-image");
-      expect(image).toHaveClass("avatar-image", "avatar-image-large");
+      expect(image).toHaveClass(
+        "_avatarImage_2f8a1b",
+        "_avatarImageLarge_2f8a1b"
+      );
     });
   });
 
@@ -334,7 +349,7 @@ describe("HeaderAvatar", () => {
       render(<HeaderAvatar />);
 
       const image = screen.getByTestId("next-image");
-      expect(image).toHaveAttribute("src", "/avatar.jpg");
+      expect(image).toHaveAttribute("src", "/src/images/avatar.jpg");
     });
 
     it("uses custom src when provided", () => {
@@ -435,14 +450,14 @@ describe("HeaderAvatar", () => {
       render(<HeaderAvatar />);
 
       const link = screen.getByTestId("test-id-header-avatar-root");
-      expect(link).toHaveClass("avatar-link");
+      expect(link).toHaveClass("_avatarLink_2f8a1b");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderAvatar className="custom-class" />);
 
       const link = screen.getByTestId("test-id-header-avatar-root");
-      expect(link).toHaveClass("avatar-link", "custom-class");
+      expect(link).toHaveClass("_avatarLink_2f8a1b", "custom-class");
     });
   });
 
@@ -530,22 +545,28 @@ describe("HeaderAvatar", () => {
 
       expect(avatar).toHaveAttribute("href", "/");
       expect(image).toHaveAttribute("alt", "Guy Romelle Magayano");
-      expect(image).toHaveAttribute("src", "/avatar.jpg");
+      expect(image).toHaveAttribute("src", "/src/images/avatar.jpg");
       expect(image).toHaveAttribute("sizes", "2.25rem");
     });
   });
 
   describe("Validation Logic", () => {
-    it("returns null when src is invalid", () => {
+    it("uses default src when src is invalid", () => {
       render(<HeaderAvatar src="" />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      const image = screen.getByTestId("next-image");
+      expect(link).toBeInTheDocument();
+      expect(image).toHaveAttribute("src", "/src/images/avatar.jpg");
     });
 
-    it("returns null when src is null", () => {
+    it("uses default src when src is null", () => {
       render(<HeaderAvatar src={null as any} />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      const image = screen.getByTestId("next-image");
+      expect(link).toBeInTheDocument();
+      expect(image).toHaveAttribute("src", "/src/images/avatar.jpg");
     });
 
     it("renders with default src when src is undefined", () => {
@@ -556,16 +577,20 @@ describe("HeaderAvatar", () => {
       // Should use default src from AVATAR_COMPONENT_LABELS
     });
 
-    it("returns null when href is invalid", () => {
+    it("uses default href when href is invalid", () => {
       render(<HeaderAvatar href="" />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/");
     });
 
-    it("returns null when href is null", () => {
+    it("uses default href when href is null", () => {
       render(<HeaderAvatar href={null as any} />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/");
     });
 
     it("renders with default href when href is undefined", () => {
@@ -576,10 +601,12 @@ describe("HeaderAvatar", () => {
       // Should use default href from AVATAR_COMPONENT_LABELS
     });
 
-    it("returns null when href is a placeholder", () => {
+    it("uses default href when href is a placeholder", () => {
       render(<HeaderAvatar href="#" />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/");
     });
 
     it("renders when both src and href are valid", () => {
@@ -603,7 +630,7 @@ describe("HeaderAvatar", () => {
       expect(link).toBeInTheDocument();
     });
 
-    it("returns null when StaticImageData has invalid src", () => {
+    it("uses default src when StaticImageData has invalid src", () => {
       const mockStaticImageData = {
         src: "",
         height: 100,
@@ -612,7 +639,10 @@ describe("HeaderAvatar", () => {
 
       render(<HeaderAvatar src={mockStaticImageData as any} href="/" />);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      const image = screen.getByTestId("next-image");
+      expect(link).toBeInTheDocument();
+      expect(image).toHaveAttribute("src", "/src/images/avatar.jpg");
     });
   });
 });

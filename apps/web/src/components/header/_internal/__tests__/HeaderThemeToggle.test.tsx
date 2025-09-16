@@ -140,11 +140,18 @@ vi.mock("../../../_data", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../HeaderThemeToggle.module.css", () => ({
+vi.mock("../styles/HeaderThemeToggle.module.css", () => ({
   default: {
-    headerThemeToggleButton: "header-theme-toggle-button",
-    headerThemeToggleSunIcon: "header-theme-toggle-sun-icon",
-    headerThemeToggleMoonIcon: "header-theme-toggle-moon-icon",
+    headerThemeToggleButton: "_headerThemeToggleButton_7f3a8b",
+    headerThemeToggleSunIcon: "_headerThemeToggleSunIcon_7f3a8b",
+    headerThemeToggleMoonIcon: "_headerThemeToggleMoonIcon_7f3a8b",
+  },
+}));
+
+// Mock component labels
+vi.mock("@web/lib", () => ({
+  THEME_TOGGLE_LABELS: {
+    toggleTheme: "Toggle theme",
   },
 }));
 
@@ -241,8 +248,8 @@ describe("HeaderThemeToggle", () => {
       const sunIcon = screen.getByTestId("sun-icon");
       const moonIcon = screen.getByTestId("moon-icon");
 
-      expect(sunIcon).toHaveClass("header-theme-toggle-sun-icon");
-      expect(moonIcon).toHaveClass("header-theme-toggle-moon-icon");
+      expect(sunIcon).toHaveClass("_headerThemeToggleSunIcon_7f3a8b");
+      expect(moonIcon).toHaveClass("_headerThemeToggleMoonIcon_7f3a8b");
     });
   });
 
@@ -303,14 +310,17 @@ describe("HeaderThemeToggle", () => {
       render(<HeaderThemeToggle />);
 
       const button = screen.getByTestId("test-id-header-theme-toggle-root");
-      expect(button).toHaveClass("header-theme-toggle-button");
+      expect(button).toHaveClass("_headerThemeToggleButton_7f3a8b");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderThemeToggle className="custom-class" />);
 
       const button = screen.getByTestId("test-id-header-theme-toggle-root");
-      expect(button).toHaveClass("header-theme-toggle-button", "custom-class");
+      expect(button).toHaveClass(
+        "_headerThemeToggleButton_7f3a8b",
+        "custom-class"
+      );
     });
   });
 

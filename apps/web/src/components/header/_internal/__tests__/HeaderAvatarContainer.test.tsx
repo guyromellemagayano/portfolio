@@ -123,9 +123,9 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../HeaderAvatarContainer.module.css", () => ({
+vi.mock("../styles/HeaderAvatarContainer.module.css", () => ({
   default: {
-    avatarContainer: "avatar-container",
+    avatarContainer: "_avatarContainer_4d7e2a",
   },
 }));
 
@@ -380,7 +380,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("avatar-container");
+      expect(container).toHaveClass("_avatarContainer_4d7e2a");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -389,7 +389,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("avatar-container", "custom-class");
+      expect(container).toHaveClass("_avatarContainer_4d7e2a", "custom-class");
     });
 
     it("handles multiple custom classes", () => {
@@ -399,7 +399,7 @@ describe("HeaderAvatarContainer", () => {
         "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass(
-        "avatar-container",
+        "_avatarContainer_4d7e2a",
         "custom-class another-class"
       );
     });
@@ -521,7 +521,7 @@ describe("HeaderAvatarContainer", () => {
         "test-id-header-avatar-container"
       );
       expect(container).not.toHaveAttribute("data-debug-mode");
-      expect(container).toHaveClass("avatar-container");
+      expect(container).toHaveClass("_avatarContainer_4d7e2a");
     });
 
     it("handles empty string className", () => {
@@ -530,7 +530,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("avatar-container", "");
+      expect(container).toHaveClass("_avatarContainer_4d7e2a", "");
     });
 
     it("handles null className", () => {
@@ -539,7 +539,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("avatar-container");
+      expect(container).toHaveClass("_avatarContainer_4d7e2a");
     });
   });
 });

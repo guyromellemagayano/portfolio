@@ -22,9 +22,9 @@ import {
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
   HeaderComponentNavLinks,
   MOBILE_HEADER_NAV_LINKS,
-} from "../../_data";
-import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
-import styles from "./HeaderMobileNav.module.css";
+} from "../_data";
+import { HeaderMobileNavItem } from "./HeaderMobileNavItem";
+import styles from "./styles/HeaderMobileNav.module.css";
 
 // ============================================================================
 // HEADER MOBILE NAV COMPONENT TYPES & INTERFACES
