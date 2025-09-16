@@ -141,19 +141,23 @@ afterEach(cleanup);
 describe("CardLink", () => {
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
-      render(<CardLink>Link content</CardLink>);
+      render(<CardLink href="/test">Link content</CardLink>);
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders background div element", () => {
-      render(<CardLink>Link content</CardLink>);
+      render(<CardLink href="/test">Link content</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container.tagName).toBe("DIV");
     });
 
     it("applies custom className to background div", () => {
-      render(<CardLink className="custom-class">Link content</CardLink>);
+      render(
+        <CardLink href="/test" className="custom-class">
+          Link content
+        </CardLink>
+      );
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("custom-class");
@@ -161,7 +165,7 @@ describe("CardLink", () => {
 
     it("passes through HTML attributes to background div", () => {
       render(
-        <CardLink id="test-id" data-test="test-data">
+        <CardLink href="/test" id="test-id" data-test="test-data">
           Link content
         </CardLink>
       );
@@ -191,8 +195,8 @@ describe("CardLink", () => {
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
-    it("renders children directly when href is not provided", () => {
-      render(<CardLink>Link content</CardLink>);
+    it("renders children directly when href is invalid", () => {
+      render(<CardLink href="">Link content</CardLink>);
 
       expect(
         screen.queryByTestId("test-id-card-link-custom-root")
@@ -216,7 +220,7 @@ describe("CardLink", () => {
 
   describe("Styling Structure", () => {
     it("renders background element with correct CSS class", () => {
-      render(<CardLink>Link content</CardLink>);
+      render(<CardLink href="/test">Link content</CardLink>);
 
       const background = screen.getByTestId("test-id-card-link-root");
       expect(background).toBeInTheDocument();
@@ -234,31 +238,35 @@ describe("CardLink", () => {
 
   describe("Content Validation", () => {
     it("does not render when no children", () => {
-      const { container } = render(<CardLink />);
+      const { container } = render(<CardLink href="/test" />);
       expect(container.firstChild).toBeNull();
     });
 
     it("handles null/undefined children", () => {
-      const { container } = render(<CardLink>{null}</CardLink>);
+      const { container } = render(<CardLink href="/test">{null}</CardLink>);
       expect(container.firstChild).toBeNull();
     });
 
     it("handles empty string children", () => {
-      const { container } = render(<CardLink>{""}</CardLink>);
+      const { container } = render(<CardLink href="/test">{""}</CardLink>);
       expect(container.firstChild).toBeNull();
     });
   });
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
-      render(<CardLink _debugMode={true}>Link text</CardLink>);
+      render(
+        <CardLink href="/test" _debugMode={true}>
+          Link text
+        </CardLink>
+      );
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
-      render(<CardLink>Link text</CardLink>);
+      render(<CardLink href="/test">Link text</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).not.toHaveAttribute("data-debug-mode");
@@ -267,14 +275,18 @@ describe("CardLink", () => {
 
   describe("Component Structure", () => {
     it("applies correct CSS classes", () => {
-      render(<CardLink>Link content</CardLink>);
+      render(<CardLink href="/test">Link content</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("_cardLinkBackground_a29b80");
     });
 
     it("combines CSS module + custom classes", () => {
-      render(<CardLink className="custom-class">Link content</CardLink>);
+      render(
+        <CardLink href="/test" className="custom-class">
+          Link content
+        </CardLink>
+      );
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass(
@@ -286,7 +298,11 @@ describe("CardLink", () => {
 
   describe("Component ID", () => {
     it("renders with custom internal ID", () => {
-      render(<CardLink _internalId="custom-id">Link text</CardLink>);
+      render(
+        <CardLink href="/test" _internalId="custom-id">
+          Link text
+        </CardLink>
+      );
 
       const container = screen.getByTestId("custom-id-card-link-root");
       expect(container).toHaveAttribute(
@@ -296,7 +312,11 @@ describe("CardLink", () => {
     });
 
     it("uses provided internalId when available", () => {
-      render(<CardLink _internalId="test-id">Link text</CardLink>);
+      render(
+        <CardLink href="/test" _internalId="test-id">
+          Link text
+        </CardLink>
+      );
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute(
@@ -309,7 +329,7 @@ describe("CardLink", () => {
   describe("Memoization", () => {
     it("renders with memoization when isMemoized is true", () => {
       render(
-        <CardLink isMemoized={true}>
+        <CardLink href="/test" isMemoized={true}>
           <div>Memoized link</div>
         </CardLink>
       );
@@ -319,7 +339,7 @@ describe("CardLink", () => {
 
     it("renders without memoization by default", () => {
       render(
-        <CardLink>
+        <CardLink href="/test">
           <div>Default link</div>
         </CardLink>
       );
@@ -331,7 +351,11 @@ describe("CardLink", () => {
   describe("Ref Forwarding", () => {
     it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLDivElement>();
-      render(<CardLink ref={ref}>Link content</CardLink>);
+      render(
+        <CardLink href="/test" ref={ref}>
+          Link content
+        </CardLink>
+      );
 
       expect(ref.current).toBeInTheDocument();
       expect(ref.current).toHaveAttribute(
@@ -342,7 +366,11 @@ describe("CardLink", () => {
 
     it("ref points to correct element", () => {
       const ref = React.createRef<HTMLDivElement>();
-      render(<CardLink ref={ref}>Link content</CardLink>);
+      render(
+        <CardLink href="/test" ref={ref}>
+          Link content
+        </CardLink>
+      );
 
       expect(ref.current).toBeInTheDocument();
       expect(ref.current?.tagName).toBe("DIV");
@@ -352,7 +380,7 @@ describe("CardLink", () => {
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
       render(
-        <CardLink>
+        <CardLink href="/test">
           <span>Complex</span> content
         </CardLink>
       );
@@ -362,20 +390,20 @@ describe("CardLink", () => {
     });
 
     it("handles special characters", () => {
-      render(<CardLink>Link with special chars: @#$%</CardLink>);
+      render(<CardLink href="/test">Link with special chars: @#$%</CardLink>);
       expect(
         screen.getByText("Link with special chars: @#$%")
       ).toBeInTheDocument();
     });
 
     it("handles boolean children", () => {
-      render(<CardLink>{true}</CardLink>);
+      render(<CardLink href="/test">{true}</CardLink>);
       // Boolean true is not rendered as text content in React
       expect(screen.getByTestId("test-id-card-link-root")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
-      render(<CardLink>{0}</CardLink>);
+      render(<CardLink href="/test">{0}</CardLink>);
       expect(screen.getByText("0")).toBeInTheDocument();
     });
   });
