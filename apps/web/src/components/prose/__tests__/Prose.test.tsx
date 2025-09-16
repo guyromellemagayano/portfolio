@@ -40,7 +40,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../Prose.module.css", () => ({
+vi.mock("../styles/Prose.module.css", () => ({
   default: {
     prose: "prose-class",
   },
