@@ -16,10 +16,10 @@ import {
 // CARD LINK CUSTOM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardLinkCustomProps
+interface CardLinkCustomProps
   extends React.ComponentPropsWithRef<typeof Link>,
     Omit<CommonComponentProps, "as"> {}
-export type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
+type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
 
 // ============================================================================
 // BASE CARD LINK CUSTOM COMPONENT
