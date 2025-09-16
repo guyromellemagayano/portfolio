@@ -62,14 +62,22 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../ArticleNavButton.module.css", () => ({
+// Mock logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  logWarn: vi.fn(),
+  logDebug: vi.fn(),
+}));
+
+vi.mock("../styles/ArticleNavButton.module.css", () => ({
   default: {
-    articleNavButton: "articleNavButton",
-    articleNavButtonIcon: "articleNavButtonIcon",
+    articleNavButton: "_articleNavButton_5c0975",
+    articleNavButtonIcon: "_articleNavButtonIcon_5c0975",
   },
 }));
 
-vi.mock("../../_data", () => ({
+vi.mock("../_data", () => ({
   ARTICLE_LAYOUT_COMPONENT_LABELS: {
     goBackToArticles: "Go back to articles",
   },
