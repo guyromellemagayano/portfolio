@@ -10,50 +10,33 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./CardEyebrow.module.css";
+import styles from "./styles/CardDescription.module.css";
 
 // ============================================================================
-// CARD EYEBROW COMPONENT TYPES & INTERFACES
+// CARD DESCRIPTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardEyebrowProps
+interface CardDescriptionProps
   extends React.ComponentPropsWithRef<"p">,
-    CommonComponentProps {
-  /** ISO date string for the eyebrow content */
-  dateTime?: string;
-  /** Enable decorative styling */
-  decorate?: boolean;
-}
-type CardEyebrowComponent = React.FC<CardEyebrowProps>;
+    Omit<CommonComponentProps, "as"> {}
+type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
-// BASE CARD EYEBROW COMPONENT
+// BASE CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A card eyebrow component that can optionally be wrapped in a link for navigation */
-const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
-  function BaseCardEyebrow(props) {
-    const {
-      children,
-      className,
-      _internalId,
-      _debugMode,
-      dateTime,
-      decorate,
-      ...rest
-    } = props;
+/** A card description component that can optionally be wrapped in a link for navigation */
+const BaseCardDescription: CardDescriptionComponent = setDisplayName(
+  function BaseCardDescription(props) {
+    const { children, className, _internalId, _debugMode, ...rest } = props;
 
     const element = (
       <p
         {...rest}
-        className={cn(
-          styles.cardEyebrow,
-          decorate && styles.cardEyebrowDecorated,
-          className
-        )}
-        {...createComponentProps(_internalId, "card-eyebrow", _debugMode)}
+        className={cn(styles.cardDescription, className)}
+        {...createComponentProps(_internalId, "card-description", _debugMode)}
       >
-        {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
+        {children}
       </p>
     );
 
@@ -62,19 +45,19 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED CARD EYEBROW COMPONENT
+// MEMOIZED CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A memoized card eyebrow component. */
-const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
+/** A memoized card description component. */
+const MemoizedCardDescription = React.memo(BaseCardDescription);
 
 // ============================================================================
-// MAIN CARD EYEBROW COMPONENT
+// MAIN CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A card eyebrow component that can optionally be wrapped in a link for navigation */
-export const CardEyebrow: CardEyebrowComponent = setDisplayName(
-  function CardEyebrow(props) {
+/** A card description component that can optionally be wrapped in a link for navigation */
+export const CardDescription: CardDescriptionComponent = setDisplayName(
+  function CardDescription(props) {
     const {
       children,
       isMemoized = false,
@@ -96,7 +79,9 @@ export const CardEyebrow: CardEyebrowComponent = setDisplayName(
       _debugMode: isDebugMode,
     };
 
-    const Component = isMemoized ? MemoizedCardEyebrow : BaseCardEyebrow;
+    const Component = isMemoized
+      ? MemoizedCardDescription
+      : BaseCardDescription;
     const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
