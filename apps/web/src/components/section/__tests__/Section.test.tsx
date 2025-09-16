@@ -110,27 +110,27 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../Section.module.css", () => ({
+vi.mock("../styles/Section.module.css", () => ({
   default: {
-    section: "_section_1c4dfc",
+    section: "_section_5c0975",
   },
 }));
 
-vi.mock("../_internal/SectionGrid/SectionGrid.module.css", () => ({
+vi.mock("../_internal/styles/SectionGrid.module.css", () => ({
   default: {
-    sectionGrid: "_sectionGrid_1c4dfc",
+    sectionGrid: "_sectionGrid_5c0975",
   },
 }));
 
-vi.mock("../_internal/SectionTitle/SectionTitle.module.css", () => ({
+vi.mock("../_internal/styles/SectionTitle.module.css", () => ({
   default: {
     sectionTitle: "_sectionTitle_253742",
   },
 }));
 
-vi.mock("../_internal/SectionContent/SectionContent.module.css", () => ({
+vi.mock("../_internal/styles/SectionContent.module.css", () => ({
   default: {
-    sectionContent: "_sectionContent_1c4dfc",
+    sectionContent: "_sectionContent_5c0975",
   },
 }));
 
@@ -226,7 +226,7 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      expect(section).toHaveClass("_section_1c4dfc", "custom-class");
+      expect(section).toHaveClass("_section_5c0975", "custom-class");
     });
 
     it("spreads additional props to section element", () => {
@@ -356,11 +356,11 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
+      const grid = section.querySelector("._sectionGrid_5c0975");
       const title = screen.getByTestId("test-id-section-title");
-      const content = section.querySelector("._sectionContent_1c4dfc");
+      const content = section.querySelector("._sectionContent_5c0975");
 
-      expect(section).toHaveClass("_section_1c4dfc");
+      expect(section).toHaveClass("_section_5c0975");
       expect(grid).toBeInTheDocument();
       expect(title).toHaveClass("_sectionTitle_253742");
       expect(content).toBeInTheDocument();
@@ -378,7 +378,7 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      expect(section).toHaveClass("_section_1c4dfc", "custom-class");
+      expect(section).toHaveClass("_section_5c0975", "custom-class");
     });
   });
 
@@ -391,7 +391,7 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
+      const grid = section.querySelector("._sectionGrid_5c0975");
 
       expect(grid).toBeInTheDocument();
       expect(grid?.tagName).toBe("DIV");
@@ -405,7 +405,7 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
+      const grid = section.querySelector("._sectionGrid_5c0975");
       const title = grid?.querySelector("h2");
 
       expect(title).toBeInTheDocument();
@@ -420,8 +420,8 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
-      const content = grid?.querySelector("._sectionContent_1c4dfc");
+      const grid = section.querySelector("._sectionGrid_5c0975");
+      const content = grid?.querySelector("._sectionContent_5c0975");
 
       expect(content).toBeInTheDocument();
       expect(content).toHaveTextContent("Grid content");
@@ -435,9 +435,9 @@ describe("Section Component", () => {
       );
 
       const section = screen.getByTestId("test-id-section");
-      const grid = section.querySelector("._sectionGrid_1c4dfc");
+      const grid = section.querySelector("._sectionGrid_5c0975");
       const title = grid?.querySelector("h2");
-      const content = grid?.querySelector("._sectionContent_1c4dfc");
+      const content = grid?.querySelector("._sectionContent_5c0975");
 
       expect(title).toBeInTheDocument();
       expect(title).toHaveTextContent("Both Test");
