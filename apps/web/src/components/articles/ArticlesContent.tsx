@@ -24,21 +24,20 @@ const ArticleSingle = function (props: ArticleSingleProps) {
   const element = (
     <Article className="md:grid md:grid-cols-4 md:items-baseline">
       <Card className="md:col-span-3">
-        {article.title && article.slug && (
+        {article.title && article.slug ? (
           <Card.Title href={articleLink}>{article.title}</Card.Title>
-        )}
-
+        ) : null}
         {article.date && (
           <Card.Eyebrow dateTime={article.date} className="md:hidden" decorate>
             {formatDate(article.date)}
           </Card.Eyebrow>
         )}
-
-        {article.description && (
+        {article.description ? (
           <Card.Description>{article.description}</Card.Description>
-        )}
-
-        {article.slug && <Card.Cta>{articleStrings.read}</Card.Cta>}
+        ) : null}
+        {article.slug ? (
+          <Card.Cta href={articleLink}>{articleStrings.read}</Card.Cta>
+        ) : null}
       </Card>
 
       {article.date && (
