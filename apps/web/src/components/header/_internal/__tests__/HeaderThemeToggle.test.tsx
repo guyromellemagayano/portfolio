@@ -3,6 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderThemeToggle } from "../HeaderThemeToggle";
 
+// Import shared mocks
+import "../../__tests__/__mocks__";
+
 // Individual mocks for this test file
 
 // Mock IntersectionObserver
@@ -145,13 +148,6 @@ vi.mock("../styles/HeaderThemeToggle.module.css", () => ({
     headerThemeToggleButton: "_headerThemeToggleButton_7f3a8b",
     headerThemeToggleSunIcon: "_headerThemeToggleSunIcon_7f3a8b",
     headerThemeToggleMoonIcon: "_headerThemeToggleMoonIcon_7f3a8b",
-  },
-}));
-
-// Mock component labels
-vi.mock("@web/lib", () => ({
-  THEME_TOGGLE_LABELS: {
-    toggleTheme: "Toggle theme",
   },
 }));
 

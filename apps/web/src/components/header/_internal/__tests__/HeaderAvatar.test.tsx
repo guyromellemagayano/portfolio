@@ -5,6 +5,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { HeaderAvatar } from "../HeaderAvatar";
 
+// Import shared mocks
+import "../../__tests__/__mocks__";
+
 // Individual mocks for this test file
 
 // Mock IntersectionObserver
@@ -191,15 +194,6 @@ vi.mock("../styles/HeaderAvatar.module.css", () => ({
     avatarImage: "_avatarImage_2f8a1b",
     avatarImageDefault: "_avatarImageDefault_2f8a1b",
     avatarImageLarge: "_avatarImageLarge_2f8a1b",
-  },
-}));
-
-// Mock component labels
-vi.mock("@web/lib", () => ({
-  AVATAR_COMPONENT_LABELS: {
-    link: "/",
-    src: "/src/images/avatar.jpg",
-    home: "Home",
   },
 }));
 
