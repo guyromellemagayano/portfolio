@@ -53,9 +53,9 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../SectionContent.module.css", () => ({
+vi.mock("../styles/SectionContent.module.css", () => ({
   default: {
-    sectionContent: "_sectionContent_1c4dfc",
+    sectionContent: "_sectionContent_5c0975",
   },
 }));
 
@@ -86,7 +86,7 @@ describe("SectionContent", () => {
       );
 
       const content = screen.getByTestId("test-id-section-content");
-      expect(content).toHaveClass("_sectionContent_1c4dfc", "custom-class");
+      expect(content).toHaveClass("_sectionContent_5c0975", "custom-class");
     });
 
     it("renders with debug mode enabled", () => {
@@ -233,7 +233,7 @@ describe("SectionContent", () => {
       );
 
       const content = screen.getByTestId("test-id-section-content");
-      expect(content).toHaveClass("_sectionContent_1c4dfc");
+      expect(content).toHaveClass("_sectionContent_5c0975");
     });
 
     it("combines CSS module + custom classes", () => {
@@ -244,7 +244,7 @@ describe("SectionContent", () => {
       );
 
       const content = screen.getByTestId("test-id-section-content");
-      expect(content).toHaveClass("_sectionContent_1c4dfc", "custom-class");
+      expect(content).toHaveClass("_sectionContent_5c0975", "custom-class");
     });
   });
 

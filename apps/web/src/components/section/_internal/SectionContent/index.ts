@@ -1,1 +1,0 @@
-export { SectionContent } from "./SectionContent";
