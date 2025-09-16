@@ -60,20 +60,28 @@ vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+// Mock logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  logWarn: vi.fn(),
+  logDebug: vi.fn(),
+}));
+
 // Mock CSS module
-vi.mock("../SimpleLayout.module.css", () => ({
+vi.mock("../styles/SimpleLayout.module.css", () => ({
   default: {
-    simpleLayoutContainer: "simple-layout-container-class",
-    simpleLayoutHeader: "simple-layout-header-class",
-    simpleLayoutTitle: "simple-layout-title-class",
-    simpleLayoutIntro: "simple-layout-intro-class",
-    simpleLayoutContent: "simple-layout-content-class",
-    skipLink: "skip-link-class",
+    simpleLayoutContainer: "_simpleLayoutContainer_5c0975",
+    simpleLayoutHeader: "_simpleLayoutHeader_5c0975",
+    simpleLayoutTitle: "_simpleLayoutTitle_5c0975",
+    simpleLayoutIntro: "_simpleLayoutIntro_5c0975",
+    simpleLayoutContent: "_simpleLayoutContent_5c0975",
+    skipLink: "_skipLink_5c0975",
   },
 }));
 
 // Mock data
-vi.mock("../../_data", () => ({
+vi.mock("../_data", () => ({
   COMMON_LAYOUT_COMPONENT_LABELS: {
     skipToMainContent: "Skip to main content",
   },
@@ -173,7 +181,7 @@ describe("SimpleLayout", () => {
 
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("simple-layout-container-class");
+      expect(layout).toHaveClass("_simpleLayoutContainer_5c0975");
     });
 
     it("renders skip link with correct attributes", () => {
@@ -183,7 +191,7 @@ describe("SimpleLayout", () => {
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("skip-link-class");
+      expect(skipLink).toHaveClass("_skipLink_5c0975");
     });
 
     it("renders header with correct structure", () => {
@@ -192,7 +200,7 @@ describe("SimpleLayout", () => {
       const layout = screen.getByTestId("test-id-simple-layout-root");
       const header = layout.querySelector("header");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("simple-layout-header-class");
+      expect(header).toHaveClass("_simpleLayoutHeader_5c0975");
     });
 
     it("renders title with correct attributes", () => {
@@ -201,7 +209,7 @@ describe("SimpleLayout", () => {
       const title = screen.getByRole("heading", { level: 1 });
       expect(title).toBeInTheDocument();
       expect(title).toHaveAttribute("id", "test-id-simple-layout-title");
-      expect(title).toHaveClass("simple-layout-title-class");
+      expect(title).toHaveClass("_simpleLayoutTitle_5c0975");
       expect(title).toHaveTextContent(mockTitle);
     });
 
@@ -211,7 +219,7 @@ describe("SimpleLayout", () => {
       const intro = screen.getByText(mockIntro);
       expect(intro).toBeInTheDocument();
       expect(intro).toHaveAttribute("id", "test-id-simple-layout-intro");
-      expect(intro).toHaveClass("simple-layout-intro-class");
+      expect(intro).toHaveClass("_simpleLayoutIntro_5c0975");
     });
 
     it("renders main content area with correct attributes when children provided", () => {
@@ -225,7 +233,7 @@ describe("SimpleLayout", () => {
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "test-id-simple-layout-main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("simple-layout-content-class");
+      expect(main).toHaveClass("_simpleLayoutContent_5c0975");
     });
   });
 
@@ -624,7 +632,7 @@ describe("SimpleLayout", () => {
       // Test layout structure
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("simple-layout-container-class");
+      expect(layout).toHaveClass("_simpleLayoutContainer_5c0975");
 
       // Test skip link
       const skipLink = screen.getByTestId("skip-link");
