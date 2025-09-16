@@ -16,8 +16,8 @@ import {
 
 import { cn } from "@web/utils";
 
-import { AVATAR_COMPONENT_LABELS } from "../../_data";
-import styles from "./HeaderAvatar.module.css";
+import { AVATAR_COMPONENT_LABELS } from "../_data";
+import styles from "./styles/HeaderAvatar.module.css";
 
 // ============================================================================
 // HEADER AVATAR COMPONENT TYPES & INTERFACES

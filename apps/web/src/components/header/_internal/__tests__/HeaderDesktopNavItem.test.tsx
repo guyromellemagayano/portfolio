@@ -113,10 +113,10 @@ vi.mock("next/link", () => ({
 import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 
 // Mock the CSS module
-vi.mock("../HeaderDesktopNavItem.module.css", () => ({
+vi.mock("../styles/HeaderDesktopNavItem.module.css", () => ({
   default: {
-    desktopHeaderNavItemLink: "_desktopHeaderNavItemLink_c3edaf",
-    desktopHeaderNavItemLinkActive: "_desktopHeaderNavItemLinkActive_c3edaf",
+    desktopHeaderNavItemLink: "_desktopHeaderNavItemLink_1686e3",
+    desktopHeaderNavItemLinkActive: "_desktopHeaderNavItemLinkActive_1686e3",
     desktopHeaderNavItemLinkHover: "_desktopHeaderNavItemLinkHover_c3edaf",
     desktopHeaderNavItemActiveIndicator:
       "_desktopHeaderNavItemActiveIndicator_c3edaf",
@@ -248,8 +248,8 @@ describe("HeaderDesktopNavItem", () => {
 
       const link = screen.getByTestId("next-link");
       expect(link).toHaveClass(
-        "_desktopHeaderNavItemLink_c3edaf",
-        "_desktopHeaderNavItemLinkActive_c3edaf"
+        "_desktopHeaderNavItemLink_1686e3",
+        "_desktopHeaderNavItemLinkActive_1686e3"
       );
     });
 
@@ -397,7 +397,7 @@ describe("HeaderDesktopNavItem", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
       const link = screen.getByTestId("next-link");
-      expect(link).toHaveClass("_desktopHeaderNavItemLink_c3edaf");
+      expect(link).toHaveClass("_desktopHeaderNavItemLink_1686e3");
     });
 
     it("combines custom className with CSS module classes", () => {
