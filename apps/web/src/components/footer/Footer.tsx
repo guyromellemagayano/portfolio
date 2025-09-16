@@ -12,7 +12,7 @@ import { cn } from "@web/utils";
 
 import { FooterComponentLabels } from "./_data";
 import { FooterLegal, FooterNavigation } from "./_internal";
-import styles from "./Footer.module.css";
+import styles from "./styles/Footer.module.css";
 
 // ============================================================================
 // FOOTER COMPONENT TYPES & INTERFACES
