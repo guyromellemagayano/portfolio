@@ -14,9 +14,9 @@ import {
   CommonHeaderNavProps,
   DESKTOP_HEADER_NAV_LINKS,
   HeaderComponentNavLinks,
-} from "../../_data";
-import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
-import styles from "./HeaderDesktopNav.module.css";
+} from "../_data";
+import { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
+import styles from "./styles/HeaderDesktopNav.module.css";
 
 // ============================================================================
 // HEADER DESKTOP NAV COMPONENT TYPES & INTERFACES
