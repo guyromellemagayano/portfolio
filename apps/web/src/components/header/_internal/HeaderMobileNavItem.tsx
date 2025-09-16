@@ -1,9 +1,6 @@
-"use client";
-
 import React from "react";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
@@ -13,23 +10,18 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn, isActivePath } from "@web/utils";
-
-import { type HeaderNavItemComponent } from "../../_data";
-import styles from "./HeaderDesktopNavItem.module.css";
+import type { HeaderNavItemComponent } from "../_data";
+import styles from "./styles/HeaderMobileNavItem.module.css";
 
 // ============================================================================
-// BASE HEADER DESKTOP NAV ITEM COMPONENT
+// BASE HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A desktop navigation item component for the header. */
-const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
-  function BaseHeaderDesktopNavItem(props) {
+/** A mobile navigation item component for the header. */
+const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
+  function BaseHeaderMobileNavItem(props) {
     const { children, href, target, title, _internalId, _debugMode, ...rest } =
       props;
-
-    const pathname = usePathname();
-    const isActive = isActivePath(pathname, href);
 
     const linkTargetProps = getLinkTargetProps(href?.toString(), target);
 
@@ -38,7 +30,7 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
         {...rest}
         {...createComponentProps(
           _internalId,
-          "header-desktop-nav-item",
+          "header-mobile-nav-item",
           _debugMode
         )}
       >
@@ -48,17 +40,9 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
           rel={linkTargetProps.rel}
           title={title}
           aria-label={title}
-          className={cn(
-            styles.desktopHeaderNavItemLink,
-            isActive
-              ? styles.desktopHeaderNavItemLinkActive
-              : styles.desktopHeaderNavItemLinkHover
-          )}
+          className={styles.mobileHeaderNavItemLink}
         >
           {children}
-          {isActive && (
-            <span className={styles.desktopHeaderNavItemActiveIndicator} />
-          )}
         </Link>
       </li>
     );
@@ -68,19 +52,19 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED HEADER DESKTOP NAV ITEM COMPONENT
+// MEMOIZED HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A memoized desktop navigation item component. */
-const MemoizedHeaderDesktopNavItem = React.memo(BaseHeaderDesktopNavItem);
+/** A memoized header mobile nav item component. */
+const MemoizedHeaderMobileNavItem = React.memo(BaseHeaderMobileNavItem);
 
 // ============================================================================
-// MAIN HEADER DESKTOP NAV ITEM COMPONENT
+// MAIN HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A desktop navigation item component for the header. */
-export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
-  function HeaderDesktopNavItem(props) {
+/** A header mobile nav item component that supports memoization and internal debug props. */
+export const HeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
+  function HeaderMobileNavItem(props) {
     const {
       children,
       href,
@@ -105,8 +89,8 @@ export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
     };
 
     const Component = isMemoized
-      ? MemoizedHeaderDesktopNavItem
-      : BaseHeaderDesktopNavItem;
+      ? MemoizedHeaderMobileNavItem
+      : BaseHeaderMobileNavItem;
     const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }
