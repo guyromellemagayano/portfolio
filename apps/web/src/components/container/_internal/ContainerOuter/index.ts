@@ -1,1 +1,1 @@
-export * from "./ContainerOuter";
+export { ContainerOuter } from "./ContainerOuter";
