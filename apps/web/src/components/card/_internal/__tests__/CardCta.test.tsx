@@ -96,10 +96,10 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../CardCta.module.css", () => ({
+vi.mock("../styles/CardCta.module.css", () => ({
   default: {
-    cardCtaContainer: "cardCtaContainer",
-    cardCtaLink: "cardCtaLink",
+    cardCtaContainer: "_cardCtaContainer_c4ef04",
+    cardCtaLink: "_cardCtaLink_c4ef04",
   },
 }));
 
@@ -252,14 +252,17 @@ describe("CardCta", () => {
       render(<CardCta>Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveClass("cardCtaContainer");
+      expect(ctaElement).toHaveClass("_cardCtaContainer_c4ef04");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardCta className="custom-class">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveClass("cardCtaContainer", "custom-class");
+      expect(ctaElement).toHaveClass(
+        "_cardCtaContainer_c4ef04",
+        "custom-class"
+      );
     });
   });
 
