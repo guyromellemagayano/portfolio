@@ -1,6 +1,8 @@
 import React from "react";
 
-import { CommonComponentProps } from "@guyromellemagayano/components";
+import Link from "next/link";
+
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -9,31 +11,32 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import styles from "./CardLink.module.css";
 import { CardLinkCustom } from "./CardLinkCustom";
+import styles from "./styles/CardCta.module.css";
 
 // ============================================================================
-// CARD LINK COMPONENT TYPES & INTERFACES
+// CARD CTA COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface CardLinkProps
+interface CardCtaProps
   extends React.ComponentPropsWithRef<"div">,
-    Omit<
-      React.ComponentPropsWithoutRef<typeof CardLinkCustom>,
-      keyof React.ComponentPropsWithRef<"div">
-    >,
-    Omit<CommonComponentProps, "as"> {}
-type CardLinkComponent = React.FC<CardLinkProps>;
+    Omit<CommonComponentProps, "as"> {
+  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+  target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
+  title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
+}
+type CardCtaComponent = React.FC<CardCtaProps>;
 
 // ============================================================================
-// BASE CARD LINK COMPONENT
+// BASE CARD CTA COMPONENT
 // ============================================================================
 
-/** A background and clickable wrapper for card links. */
-const BaseCardLink: CardLinkComponent = setDisplayName(
-  function BaseCardLink(props) {
+/** A call-to-action subcomponent for `Card`, optionally rendering as a link if href is provided. */
+const BaseCardCta: CardCtaComponent = setDisplayName(
+  function BaseCardCta(props) {
     const {
       children,
       className,
@@ -46,27 +49,27 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
     } = props;
 
     const element = (
-      <>
-        <div
-          {...rest}
-          className={cn(styles.cardLinkBackground, className)}
-          {...createComponentProps(_internalId, "card-link", _debugMode)}
-        />
+      <div
+        {...rest}
+        className={cn(styles.cardCtaContainer, className)}
+        {...createComponentProps(_internalId, "card-cta", _debugMode)}
+      >
         {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}
             target={target}
             title={title}
+            className={styles.cardCtaLink}
             _internalId={_internalId}
             _debugMode={_debugMode}
           >
-            <span className={styles.cardLinkClickableArea} />
-            <span className={styles.cardLinkContent}>{children}</span>
+            {children}
+            <Icon.ChevronRight />
           </CardLinkCustom>
         ) : (
           children
         )}
-      </>
+      </div>
     );
 
     return element;
@@ -74,21 +77,22 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED CARD LINK COMPONENT
+// MEMOIZED CARD CTA COMPONENT
 // ============================================================================
 
-/** A memoized card link component. */
-const MemoizedCardLink = React.memo(BaseCardLink);
+/** A memoized card call to action component. */
+const MemoizedCardCta = React.memo(BaseCardCta);
 
 // ============================================================================
-// MAIN CARD LINK COMPONENT
+// MAIN CARD CTA COMPONENT
 // ============================================================================
 
-/** A card link component that can optionally be wrapped in a link for navigation */
-export const CardLink: CardLinkComponent = setDisplayName(
-  function CardLink(props) {
+/** A card call to action component that can optionally be wrapped in a link for navigation */
+export const CardCta: CardCtaComponent = setDisplayName(
+  function CardCta(props) {
     const {
       children,
+      href,
       isMemoized = false,
       _internalId,
       _debugMode,
@@ -104,11 +108,12 @@ export const CardLink: CardLinkComponent = setDisplayName(
 
     const updatedProps = {
       ...rest,
+      href,
       _internalId: id,
       _debugMode: isDebugMode,
     };
 
-    const Component = isMemoized ? MemoizedCardLink : BaseCardLink;
+    const Component = isMemoized ? MemoizedCardCta : BaseCardCta;
     const element = <Component {...updatedProps}>{children}</Component>;
     return element;
   }

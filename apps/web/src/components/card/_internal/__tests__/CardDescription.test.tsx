@@ -47,9 +47,9 @@ vi.mock("@web/lib", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../CardDescription.module.css", () => ({
+vi.mock("../styles/CardDescription.module.css", () => ({
   default: {
-    cardDescription: "cardDescription",
+    cardDescription: "_cardDescription_7e74bb",
   },
 }));
 
@@ -236,7 +236,7 @@ describe("CardDescription", () => {
       const descriptionElement = screen.getByTestId(
         "test-id-card-description-root"
       );
-      expect(descriptionElement).toHaveClass("cardDescription");
+      expect(descriptionElement).toHaveClass("_cardDescription_7e74bb");
     });
 
     it("combines CSS module + custom classes", () => {
@@ -249,7 +249,10 @@ describe("CardDescription", () => {
       const descriptionElement = screen.getByTestId(
         "test-id-card-description-root"
       );
-      expect(descriptionElement).toHaveClass("cardDescription", "custom-class");
+      expect(descriptionElement).toHaveClass(
+        "_cardDescription_7e74bb",
+        "custom-class"
+      );
     });
   });
 
