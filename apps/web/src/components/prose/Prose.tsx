@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./Prose.module.css";
+import styles from "./styles/Prose.module.css";
 
 // ============================================================================
 // PROSE COMPONENT TYPES & INTERFACES
@@ -31,7 +31,7 @@ const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
   const element = (
     <div
       {...rest}
-      className={cn(styles.prose, className)}
+      className={cn(styles.proseContainer, className)}
       {...createComponentProps(_internalId, "prose", _debugMode)}
     />
   );
