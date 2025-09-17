@@ -15,7 +15,7 @@ import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
 import { ArticleLayout, SimpleLayout } from "./_internal";
-import styles from "./styles/Layout.module.css";
+import styles from "./Layout.module.css";
 
 // ============================================================================
 // LAYOUT COMPONENT TYPES & INTERFACES
