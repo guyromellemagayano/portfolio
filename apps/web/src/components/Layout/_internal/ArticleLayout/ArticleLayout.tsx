@@ -13,8 +13,8 @@ import {
 import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, formatDate } from "@web/utils";
 
-import { ArticleNavButton } from "./ArticleNavButton";
-import styles from "./styles/ArticleLayout.module.css";
+import { ArticleNavButton } from "./_internal";
+import styles from "./ArticleLayout.module.css";
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
@@ -108,14 +108,16 @@ export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
       children,
       article,
       isMemoized = false,
+      internalId,
+      debugMode,
       _internalId,
       _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
+      internalId: internalId || _internalId,
+      debugMode: debugMode || _debugMode,
     });
 
     // Return null if both children and article are missing

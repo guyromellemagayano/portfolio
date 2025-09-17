@@ -15,8 +15,8 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { ARTICLE_LAYOUT_COMPONENT_LABELS } from "./_data";
-import styles from "./styles/ArticleNavButton.module.css";
+import { ARTICLE_LAYOUT_COMPONENT_LABELS } from "../../_data";
+import styles from "./ArticleNavButton.module.css";
 
 // ============================================================================
 // ARTICLE NAVIGATION BUTTON COMPONENT TYPES & INTERFACES

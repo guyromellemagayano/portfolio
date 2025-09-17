@@ -1,23 +1,13 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/components", () => ({
-  Icon: {
-    ArrowLeft: vi.fn(({ className, _debugMode, _internalId, isMemoized }) => (
-      <div
-        data-testid="mock-icon-arrow-left"
-        className={className}
-        data-debug-mode={_debugMode ? "true" : undefined}
-        data-internal-id={_internalId}
-        data-is-memoized={isMemoized ? "true" : undefined}
-      >
-        Arrow Left Icon
-      </div>
-    )),
-  },
-}));
+import "@testing-library/jest-dom";
 
+// ============================================================================
+// MOCKS
+// ============================================================================
+
+// Mock useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
     id: internalId || "test-id",
@@ -25,50 +15,46 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   })),
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date(date).getFullYear().toString();
-    }
-    return date.toLocaleDateString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
+// Mock utils functions
+vi.mock("@guyromellemagayano/utils", async () => {
+  const actual = await vi.importActual("@guyromellemagayano/utils");
+  return {
+    ...actual,
+    createComponentProps: vi.fn(
+      (id, componentType, debugMode, additionalProps = {}) => ({
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid":
+          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        ...additionalProps,
+      })
+    ),
+    hasAnyRenderableContent: vi.fn((...args) =>
+      args.some((arg) => arg != null && arg !== "")
+    ),
+    setDisplayName: vi.fn((component, displayName) => {
+      if (component) component.displayName = displayName;
+      return component;
+    }),
+  };
+});
 
-// Mock AppContext
-vi.mock("@web/app/context", () => ({
-  AppContext: {
+// Mock dependencies
+
+// Mock AppContext with createContext to create a proper context object
+vi.mock("@web/app/context", () => {
+  const React = require("react");
+  const mockContext = React.createContext({
     previousPathname: "/articles",
-  },
-}));
+  });
+  return {
+    AppContext: mockContext,
+  };
+});
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
+// @web/lib is globally mocked in test setup
 
-// Mock logger
-vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
-  logWarn: vi.fn(),
-  logDebug: vi.fn(),
-}));
+// Logger is automatically mocked via __mocks__ directory
 
 vi.mock("../styles/ArticleNavButton.module.css", () => ({
   default: {
@@ -93,7 +79,7 @@ const mockIcon = vi.hoisted(() => ({
   Icon: {
     ArrowLeft: ({ className, _debugMode, _internalId, ...props }: any) => (
       <svg
-        data-testid="icon-arrow-left"
+        data-testid={`${_internalId || "test-id"}-icon-arrow-left-root`}
         className={className}
         data-debug-mode={_debugMode ? "true" : undefined}
         data-internal-id={_internalId}
@@ -101,9 +87,14 @@ const mockIcon = vi.hoisted(() => ({
       />
     ),
   },
+  Link: vi.fn(({ children, ...props }) => (
+    <a data-testid="link" {...props}>
+      {children}
+    </a>
+  )),
 }));
 
-vi.mock("@web/components", () => mockIcon);
+vi.mock("@guyromellemagayano/components", () => mockIcon);
 
 // Mock Next.js router with proper hoisting
 const mockBack = vi.hoisted(() => vi.fn());
@@ -111,26 +102,8 @@ vi.mock("next/navigation", () => ({
   useRouter: () => ({
     back: mockBack,
   }),
+  usePathname: vi.fn(() => "/"),
 }));
-
-// Mock AppContext
-vi.mock("@web/contexts/AppContext", () => ({
-  AppContext: {
-    Provider: ({ children }: { children: React.ReactNode }) => children,
-  },
-  useAppContext: vi.fn(() => ({
-    previousPathname: "/articles",
-  })),
-}));
-
-// Mock React useContext to return our mock context
-vi.mock("react", async () => {
-  const actual = await vi.importActual("react");
-  return {
-    ...actual,
-    useContext: vi.fn(() => ({ previousPathname: "/articles" })),
-  };
-});
 
 // Import the component after all mocks are set up
 import { ArticleNavButton } from "../ArticleNavButton";
@@ -245,14 +218,14 @@ describe("ArticleNavButton", () => {
     it("renders the ArrowLeft icon", () => {
       render(<ArticleNavButton />);
 
-      const icon = screen.getByTestId("icon-arrow-left");
+      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
       expect(icon).toBeInTheDocument();
     });
 
     it("passes correct props to the icon", () => {
       render(<ArticleNavButton _internalId="test-id" _debugMode={true} />);
 
-      const icon = screen.getByTestId("icon-arrow-left");
+      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
       // Note: CSS module classes may not be available in test environment
       // but the icon should have debug mode applied
       expect(icon).toHaveAttribute("data-debug-mode", "true");
@@ -394,7 +367,7 @@ describe("ArticleNavButton", () => {
     it("integrates with Icon component correctly", () => {
       render(<ArticleNavButton />);
 
-      const icon = screen.getByTestId("icon-arrow-left");
+      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
       expect(icon).toBeInTheDocument();
     });
   });
