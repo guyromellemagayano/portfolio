@@ -13,7 +13,7 @@ import Link from "next/link";
  * - Route types: Next.js Route type
  * - Objects with toString(): { toString: () => "/path" }
  */
-type FooterLink =
+export type FooterLink =
   | {
       /** Internal link */
       kind: "internal";
@@ -35,12 +35,12 @@ type FooterLink =
       rel?: string;
     };
 
-type FooterComponentLabels = Readonly<{
+export type FooterComponentLabels = Readonly<{
   /** Legal text */
   legalText?: string;
 }>;
 
-type FooterComponentNavLinks = ReadonlyArray<
+export type FooterComponentNavLinks = ReadonlyArray<
   Extract<FooterLink, { kind: "internal" }>
 >;
 
@@ -49,7 +49,7 @@ type FooterComponentNavLinks = ReadonlyArray<
 // ============================================================================
 
 /** Footer data structure for API responses */
-interface FooterData {
+export interface FooterData {
   /** Legal text displayed in the footer */
   legalText: string;
   /** Navigation links */
@@ -57,10 +57,3 @@ interface FooterData {
   /** Optional year override (default: current year) */
   year?: number;
 }
-
-export type {
-  FooterComponentLabels,
-  FooterComponentNavLinks,
-  FooterData,
-  FooterLink,
-};
