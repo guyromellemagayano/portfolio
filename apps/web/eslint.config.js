@@ -19,7 +19,7 @@ export default [
   // Restrict imports of component internals outside their folders (allow inside component folders/tests)
   {
     files: ["src/**/*.{ts,tsx}"],
-    ignores: ["src/components/**"],
+    ignores: ["src/components/**/__tests__/**", "src/components/**/test/**"],
     rules: {
       "no-restricted-imports": [
         "error",
@@ -63,6 +63,8 @@ export default [
                 "@web/components/**/*.client.*",
                 "@web/components/**/*.internal",
                 "@web/components/**/*.internal.*",
+                "@web/components/**/_types/**",
+                "@web/components/**/_data/**",
                 "../components/**/*.types",
                 "../components/**/*.types.*",
                 "../components/**/*.module.css",
@@ -70,6 +72,8 @@ export default [
                 "../components/**/*.client.*",
                 "../components/**/*.internal",
                 "../components/**/*.internal.*",
+                "../components/**/_types/**",
+                "../components/**/_data/**",
                 "../../components/**/*.types",
                 "../../components/**/*.types.*",
                 "../../components/**/*.module.css",
@@ -77,6 +81,8 @@ export default [
                 "../../components/**/*.client.*",
                 "../../components/**/*.internal",
                 "../../components/**/*.internal.*",
+                "../../components/**/_types/**",
+                "../../components/**/_data/**",
                 "../../../components/**/*.types",
                 "../../../components/**/*.types.*",
                 "../../../components/**/*.module.css",
@@ -84,9 +90,23 @@ export default [
                 "../../../components/**/*.client.*",
                 "../../../components/**/*.internal",
                 "../../../components/**/*.internal.*",
+                "../../../components/**/_types/**",
+                "../../../components/**/_data/**",
               ],
               message:
                 "🚫 PRIVATE FILE VIOLATION: Component internals are private. Import only the public component from @web/components.",
+            },
+
+            // Disallow importing from _types folders across components
+            {
+              group: [
+                "@web/components/**/_types/**",
+                "../components/**/_types/**",
+                "../../components/**/_types/**",
+                "../../../components/**/_types/**",
+              ],
+              message:
+                "🚫 PRIVATE TYPES VIOLATION: Component types are private. Use React.ComponentProps<typeof Component> for external type access.",
             },
 
             // Disallow importing from specific component sub-folders
@@ -189,6 +209,23 @@ export default [
                 "🚫 CROSS-COMPONENT DATA ACCESS: Components cannot access other components' private data. Use the public component API instead.",
             },
 
+            // Prevent importing from other component's _types folders
+            {
+              group: [
+                "@web/components/card/_types/**",
+                "@web/components/container/_types/**",
+                "@web/components/header/_types/**",
+                "@web/components/footer/_types/**",
+                "@web/components/prose/_types/**",
+                "@web/components/section/_types/**",
+                "@web/components/icon/_types/**",
+                "@web/components/articles/_types/**",
+                "@web/components/layouts/_types/**",
+              ],
+              message:
+                "🚫 CROSS-COMPONENT TYPES ACCESS: Components cannot access other components' private types. Use React.ComponentProps<typeof Component> for external type access.",
+            },
+
             // Prevent importing from other component's client folders
             {
               group: [
@@ -244,6 +281,18 @@ export default [
               ],
               message:
                 "🚫 INDEX DATA EXPORT VIOLATION: Index files should not re-export _data components. Keep data exports separate from component exports.",
+            },
+
+            // Prevent index files from re-exporting _types components
+            {
+              group: [
+                "./_types/**",
+                "../_types/**",
+                "../../_types/**",
+                "../../../_types/**",
+              ],
+              message:
+                "🚫 INDEX TYPES EXPORT VIOLATION: Index files should not re-export _types components. Keep type exports separate from component exports.",
             },
           ],
         },
