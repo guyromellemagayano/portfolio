@@ -1,0 +1,21 @@
+@reference "tailwindcss";
+
+/* Card eyebrow container */
+.cardEyebrow {
+  @apply relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 text-wrap;
+}
+
+/* Card eyebrow with decoration */
+.cardEyebrowDecorated {
+  @apply pl-3.5;
+}
+
+/* Decoration wrapper */
+.cardEyebrowDecoratorWrapper {
+  @apply absolute inset-y-0 left-0 flex items-center;
+}
+
+/* Decoration line */
+.cardEyebrowDecorator {
+  @apply h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500;
+}
