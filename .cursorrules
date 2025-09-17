@@ -43,9 +43,15 @@
 - **Compound Components**: Manually attach sub-components as properties to main component
 - **Type Organization**: Co-locate types with their components, use inline types for component-specific interfaces, separate files only for shared types
 - **File Structure**: Follow established patterns with `_internal/`, `_data/`, `__tests__/` folders
+- **Main Types**: Use `_types/` for types shared between main component and internal sub-components
+- **Internal Types**: Use `_internal/_types/` for types shared only between internal sub-components
 - **Export Patterns**: Use `export { ComponentInternal as Component }` for internal components
+- **Internal Components**: Only export from `_internal/index.ts` for internal use, never from main `index.ts`
 - **CSS Modules**: Use `cn()` helper for className composition, co-locate with components
 - **Test Structure**: Vitest + RTL, mock dependencies, use `afterEach` cleanup, import globals explicitly
+- **Process Mocking**: Mock `process` object for logger compatibility in browser tests
+- **Component Mocking**: Mock `@web/components`, `@web/utils`, and internal components in tests
+- **ESLint Protection**: Rules prevent cross-component access to `_internal/`, `_types/`, `_data/` folders
 
 ## File Structure Standards
 
@@ -57,8 +63,14 @@ components/component/
 ├── __tests__/                 # Main tests
 │   ├── Component.test.tsx
 │   └── Component.integration.test.tsx
+├── _types/                    # Main component types (shared between main + internal)
+│   ├── index.ts
+│   └── Component.types.ts     # Main component interfaces
 ├── _internal/                 # Sub-components
 │   ├── index.ts
+│   ├── _types/                # Private internal types (for sub-components only)
+│   │   ├── index.ts
+│   │   └── Internal.types.ts  # Internal component interfaces
 │   ├── ComponentSub/          # Each sub-component
 │   │   ├── ComponentSub.tsx
 │   │   ├── ComponentSub.module.css
@@ -93,6 +105,9 @@ components/component/
 - **Interface Naming**: `ComponentProps`, `ComponentCompoundComponent`
 - **Export Types**: Re-export types from index files only when shared across multiple components
 - **Inline Types**: Use inline types for component-specific interfaces in component files
+- **Main Types**: Use `_types/` folder for types shared between main and internal components
+- **Private Types**: Use `_internal/_types/` folder for component-specific types used internally only
+- **Public Types**: Only export types from main `index.ts` that external components should use
 - **Separate Types Files**: Only create `.types.ts` files when types are shared across multiple components
 - **Compound Component Types**: Define compound component types inline in main component file
 - **Data Types**: Keep `_data/` types simple - only constants, labels, and shared interfaces
@@ -105,6 +120,27 @@ components/component/
 - **Inline Types**: Keep component-specific interfaces inline in component files
 - **No Complex Data**: Don't put API types, data fetching logic, or complex data structures in `_data/`
 - **Export Pattern**: Re-export from `_data/index.ts` for clean imports
+
+## Type Organization Standards
+
+- **`_types/` Purpose**: Main component types shared between main and internal components
+- **`_internal/_types/` Purpose**: Private internal types shared only between sub-components
+- **Main Types**: Component interfaces used by main component and accessible to internal components
+- **Internal Types**: Component-specific interfaces used only within the component's internal structure
+- **Encapsulation**: Prevents external components from importing internal type definitions
+- **Loose Coupling**: External components should use `React.ComponentProps<typeof Component>` instead
+- **Main Usage**: Types used by main component and shared with internal sub-components
+- **Internal Usage**: Types used by sub-components within the same component family only
+- **Export Pattern**: Re-export from both `_types/index.ts` and `_internal/_types/index.ts` for clean imports
+
+## Internal Component Standards
+
+- **`_internal/` Purpose**: Sub-components used only within their parent component
+- **No Public Exports**: Never export internal components from main `index.ts`
+- **Internal-Only Access**: Only import from `_internal/` within the same component tree
+- **Compound Pattern**: External consumers use `Component.SubComponent` pattern
+- **Encapsulation**: Prevents external components from importing internal sub-components directly
+- **Type Safety**: Internal components can use private types from `_types/` folder
 
 ## Testing Standards
 
@@ -120,6 +156,11 @@ components/component/
 ### Main Component Pattern
 
 ```typescript
+// Import main types from _types folder (if needed)
+// import { type CommonComponentProps, type CommonComponentComponent } from "./_types";
+// Import internal types from _internal/_types folder (if needed)
+// import { type InternalComponentProps } from "./_internal/_types";
+
 interface ComponentProps extends React.ComponentProps<"elementType">, Omit<CommonComponentProps, "as"> {}
 type ComponentCompoundComponent = React.FC<ComponentProps> & {
   SubComponent: typeof SubComponent;
@@ -142,6 +183,11 @@ Component.SubComponent = SubComponent;
 ### Sub-Component Pattern
 
 ```typescript
+// Import main types from parent _types folder
+import { type CommonComponentProps } from "../../_types";
+// Import internal types from sibling _types folder
+import { type InternalComponentProps } from "../_types";
+
 interface SubComponentProps extends React.ComponentProps<typeof ElementType>, Omit<CommonComponentProps, "as"> {
   customProp: string;
 }
