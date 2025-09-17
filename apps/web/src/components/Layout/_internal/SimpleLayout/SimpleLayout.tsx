@@ -15,8 +15,8 @@ import {
 import { Container } from "@web/components/Container";
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
-import styles from "./styles/SimpleLayout.module.css";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "../../_data";
+import styles from "./SimpleLayout.module.css";
 
 // ============================================================================
 // SIMPLE LAYOUT COMPONENT TYPES & INTERFACES
@@ -115,14 +115,16 @@ export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
       title,
       intro,
       isMemoized = false,
+      internalId,
+      debugMode,
       _internalId,
       _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
+      internalId: internalId || _internalId,
+      debugMode: debugMode || _debugMode,
     });
 
     if (

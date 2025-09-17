@@ -3,50 +3,64 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { SimpleLayout } from "../SimpleLayout";
 
+import "@testing-library/jest-dom";
+
 // ============================================================================
 // MOCKS
 // ============================================================================
 
 // Mock useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode }) => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
     id: internalId || "test-id",
-    isDebugMode: debugMode || false,
+    isDebugMode: debugMode,
   })),
 }));
 
-// Mock utility functions
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((...args) =>
-    args.some((arg) => arg != null && arg !== "")
-  ),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  isRenderableContent: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
+// Mock utils functions
+vi.mock("@guyromellemagayano/utils", async () => {
+  const actual = await vi.importActual("@guyromellemagayano/utils");
+  return {
+    ...actual,
+    createComponentProps: vi.fn(
+      (id, componentType, debugMode, additionalProps = {}) => ({
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid":
+          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        ...additionalProps,
+      })
+    ),
+    hasAnyRenderableContent: vi.fn((...args) =>
+      args.some((arg) => arg != null && arg !== "")
+    ),
+    hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+    setDisplayName: vi.fn((component, displayName) => {
+      if (component) component.displayName = displayName;
+      return component;
+    }),
+  };
+});
 
-// Mock Link component
+// Mock @guyromellemagayano/components to fix Link issue
 vi.mock("@guyromellemagayano/components", () => ({
   Link: vi.fn(({ children, ...props }) => (
-    <a data-testid="skip-link" {...props}>
+    <a data-testid="link" {...props}>
       {children}
     </a>
   )),
+  Heading: vi.fn(({ children, ...props }) => (
+    <h1 data-testid="heading" {...props}>
+      {children}
+    </h1>
+  )),
+  P: vi.fn(({ children, ...props }) => (
+    <p data-testid="paragraph" {...props}>
+      {children}
+    </p>
+  )),
 }));
 
-// Mock Container component
 vi.mock("@web/components/Container", () => ({
   Container: vi.fn(({ children, ...props }) => (
     <div data-testid="container" {...props}>
@@ -55,28 +69,19 @@ vi.mock("@web/components/Container", () => ({
   )),
 }));
 
-// Mock lib functions
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
+// @web/lib is globally mocked in test setup
 
-// Mock logger
-vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
-  logWarn: vi.fn(),
-  logDebug: vi.fn(),
-}));
+// Logger is automatically mocked via __mocks__ directory
 
 // Mock CSS module
-vi.mock("../styles/SimpleLayout.module.css", () => ({
+vi.mock("../SimpleLayout.module.css", () => ({
   default: {
-    simpleLayoutContainer: "_simpleLayoutContainer_5c0975",
-    simpleLayoutHeader: "_simpleLayoutHeader_5c0975",
-    simpleLayoutTitle: "_simpleLayoutTitle_5c0975",
-    simpleLayoutIntro: "_simpleLayoutIntro_5c0975",
-    simpleLayoutContent: "_simpleLayoutContent_5c0975",
-    skipLink: "_skipLink_5c0975",
+    simpleLayoutContainer: "_simpleLayoutContainer_f465e6",
+    simpleLayoutHeader: "_simpleLayoutHeader_f465e6",
+    simpleLayoutTitle: "_simpleLayoutTitle_f465e6",
+    simpleLayoutIntro: "_simpleLayoutIntro_f465e6",
+    simpleLayoutContent: "_simpleLayoutContent_f465e6",
+    skipLink: "_skipLink_f465e6",
   },
 }));
 
@@ -181,17 +186,17 @@ describe("SimpleLayout", () => {
 
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_simpleLayoutContainer_5c0975");
+      expect(layout).toHaveClass("_simpleLayoutContainer_f465e6");
     });
 
     it("renders skip link with correct attributes", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const skipLink = screen.getByTestId("skip-link");
+      const skipLink = screen.getByTestId("link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("_skipLink_5c0975");
+      expect(skipLink).toHaveClass("_skipLink_f465e6");
     });
 
     it("renders header with correct structure", () => {
@@ -200,7 +205,7 @@ describe("SimpleLayout", () => {
       const layout = screen.getByTestId("test-id-simple-layout-root");
       const header = layout.querySelector("header");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("_simpleLayoutHeader_5c0975");
+      expect(header).toHaveClass("_simpleLayoutHeader_f465e6");
     });
 
     it("renders title with correct attributes", () => {
@@ -209,7 +214,7 @@ describe("SimpleLayout", () => {
       const title = screen.getByRole("heading", { level: 1 });
       expect(title).toBeInTheDocument();
       expect(title).toHaveAttribute("id", "test-id-simple-layout-title");
-      expect(title).toHaveClass("_simpleLayoutTitle_5c0975");
+      expect(title).toHaveClass("_simpleLayoutTitle_f465e6");
       expect(title).toHaveTextContent(mockTitle);
     });
 
@@ -219,7 +224,7 @@ describe("SimpleLayout", () => {
       const intro = screen.getByText(mockIntro);
       expect(intro).toBeInTheDocument();
       expect(intro).toHaveAttribute("id", "test-id-simple-layout-intro");
-      expect(intro).toHaveClass("_simpleLayoutIntro_5c0975");
+      expect(intro).toHaveClass("_simpleLayoutIntro_f465e6");
     });
 
     it("renders main content area with correct attributes when children provided", () => {
@@ -233,7 +238,7 @@ describe("SimpleLayout", () => {
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "test-id-simple-layout-main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("_simpleLayoutContent_5c0975");
+      expect(main).toHaveClass("_simpleLayoutContent_f465e6");
     });
   });
 
@@ -582,7 +587,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const skipLink = screen.getByTestId("skip-link");
+      const skipLink = screen.getByTestId("link");
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
     });
@@ -632,10 +637,10 @@ describe("SimpleLayout", () => {
       // Test layout structure
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_simpleLayoutContainer_5c0975");
+      expect(layout).toHaveClass("_simpleLayoutContainer_f465e6");
 
       // Test skip link
-      const skipLink = screen.getByTestId("skip-link");
+      const skipLink = screen.getByTestId("link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
 
