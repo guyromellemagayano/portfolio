@@ -17,7 +17,7 @@ import {
   CardLink,
   CardTitle,
 } from "./_internal";
-import styles from "./styles/Card.module.css";
+import styles from "./Card.module.css";
 
 // ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
