@@ -19,6 +19,9 @@ export default defineConfig({
   test: {
     ...reactPreset.test,
     setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
+    globals: true,
+    mockReset: true,
+    mockPath: "src/__mocks__",
 
     // Memory optimization settings
     pool: "threads",
