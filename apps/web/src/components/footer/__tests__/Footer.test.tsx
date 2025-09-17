@@ -102,7 +102,7 @@ vi.mock("../_data", () => ({
   ],
 }));
 
-vi.mock("../styles/Footer.module.css", () => ({
+vi.mock("../Footer.module.css", () => ({
   default: {
     footerComponent: "_footerComponent_eedc07",
     footerContentWrapper: "_footerContentWrapper_eedc07",
