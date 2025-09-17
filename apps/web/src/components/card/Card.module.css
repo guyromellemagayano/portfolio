@@ -1,0 +1,6 @@
+@reference "tailwindcss";
+
+/* Main card styles */
+.card {
+  @apply group relative flex flex-col items-start;
+}
