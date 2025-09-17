@@ -202,6 +202,7 @@ vi.mock("@guyromellemagayano/components", () => {
     Li: createMockComponent("li", "mock-li"),
     Ul: createMockComponent("ul", "mock-ul"),
     Container: createMockComponent("div", "mock-container"),
+    Link: createMockComponent("a", "mock-link"),
   };
 
   return mockComponents;
@@ -221,16 +222,79 @@ vi.mock("@web/lib", () => ({
   },
 }));
 
+// Global mock for @web/utils
+vi.mock("@web/utils", () => ({
+  cn: (...classes: (string | undefined | null | false)[]) =>
+    classes.filter(Boolean).join(" "),
+  formatDate: vi.fn((_date) => "Formatted Date"),
+}));
+
+// Global mock for @guyromellemagayano/utils
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasAnyRenderableContent: vi.fn((...args) =>
+    args.some((arg) => arg != null && arg !== "")
+  ),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  isRenderableContent: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+  isValidLink: vi.fn((href) => href != null && href !== ""),
+  getLinkTargetProps: vi.fn((href, target) => ({
+    target: target || (href?.startsWith("http") ? "_blank" : undefined),
+    rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
+  })),
+}));
+
+// Global mock for @guyromellemagayano/hooks
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
+    id: internalId || "test-id",
+    isDebugMode: debugMode,
+  })),
+}));
+
 // Global mock for @guyromellemagayano/logger
-vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
-  logWarn: vi.fn(),
-  logDebug: vi.fn(),
-  createLogger: vi.fn(() => ({
+vi.mock("@guyromellemagayano/logger", () => {
+  const mockLogger = {
     error: vi.fn(),
     info: vi.fn(),
     warn: vi.fn(),
     debug: vi.fn(),
-  })),
-}));
+    silly: vi.fn(),
+    child: vi.fn(() => mockLogger),
+    time: vi.fn(),
+    timeEnd: vi.fn(),
+    performance: vi.fn(),
+    metric: vi.fn(),
+    flush: vi.fn(),
+    close: vi.fn(),
+  };
+
+  return {
+    // Main logger instance
+    logger: mockLogger,
+    createLogger: vi.fn(() => mockLogger),
+
+    // Legacy function exports
+    logError: vi.fn(),
+    logInfo: vi.fn(),
+    logWarn: vi.fn(),
+    logDebug: vi.fn(),
+    logTrace: vi.fn(),
+    log: vi.fn(),
+
+    // Default export
+    default: mockLogger,
+  };
+});
