@@ -34,25 +34,25 @@
 11) **FOLLOW MY CODE STANDARDIZATION PATTERNS EXACTLY** - Don't deviate from established patterns without explicit permission.
 12) **RESPECT COMPONENT ARCHITECTURE DECISIONS** - If I revert changes, follow the pattern I establish, not what I initially suggested.
 
-## Component Standardization Patterns (ESTABLISHED)
+## Component Standardization Patterns
 
-- **Compound Components**: Use `createCompoundComponent` for main components with sub-components (Card, Container, Footer)
-- **Sub-components**: Use `useComponentId` hook with `internalId`/`debugMode` props, `setDisplayName`, `isRenderableContent`
-- **Internal Components**: Use `componentId`/`isDebugMode` props (from `createCompoundComponent` transformation)
-- **Type Organization**: Co-locate types with their components, use dedicated type files when needed
+- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props
+- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
+- **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
+- **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `ComponentProps`
+- **Compound Components**: Manually attach sub-components as properties to main component
+- **Type Organization**: Co-locate types with their components, use inline types for component-specific interfaces, separate files only for shared types
 - **File Structure**: Follow established patterns with `_internal/`, `_data/`, `__tests__/` folders
 - **Export Patterns**: Use `export { ComponentInternal as Component }` for internal components
-- **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
 - **CSS Modules**: Use `cn()` helper for className composition, co-locate with components
 - **Test Structure**: Vitest + RTL, mock dependencies, use `afterEach` cleanup, import globals explicitly
 
-## File Structure Standards (CONFIRMED)
+## File Structure Standards
 
 ```bash
 components/component/
 ├── Component.tsx              # Main compound component
 ├── Component.module.css       # Main styles
-├── Component.types.ts         # Main types
 ├── index.ts                   # Public exports
 ├── __tests__/                 # Main tests
 │   ├── Component.test.tsx
@@ -62,35 +62,51 @@ components/component/
 │   ├── ComponentSub/          # Each sub-component
 │   │   ├── ComponentSub.tsx
 │   │   ├── ComponentSub.module.css
-│   │   ├── ComponentSub.types.ts
 │   │   ├── index.ts
 │   │   └── __tests__/
-└── _data/                     # Data and queries
-    ├── index.ts
-    ├── Component.data.ts
-    ├── Component.queries.ts
-    └── Component.types.ts
+│   └── styles/                # Sub-component styles
+│       ├── ComponentSub.module.css
+│       └── AnotherSub.module.css
+├── _data/                     # Simple constants and labels only
+│   ├── index.ts
+│   ├── Component.data.ts      # Constants, labels, defaults
+│   └── Component.types.ts     # ONLY shared types (when used by multiple components)
+└── styles/                    # Main component styles
+    └── Component.module.css
 ```
 
-## Utility Function Standards (CONFIRMED)
+## Utility Function Standards
 
 - **`useComponentId`**: For ID generation and debug mode in sub-components
-- **`createCompoundComponent`**: For main components with sub-components
-- **`setDisplayName`**: For component naming
-- **`isRenderableContent`**: For content validation
+- **`setDisplayName`**: For component naming in all components
+- **`hasAnyRenderableContent`**: For content validation in main components
+- **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
 - **`getLinkTargetProps`**: For link target/rel attributes
-- **`cn`**: For className composition
+- **`cn`**: For className composition from `@web/utils`
 
-## TypeScript Standards (CONFIRMED)
+## TypeScript Standards
 
 - **Strict mode**: Always use strict TypeScript
 - **Component Props**: Extend base component props + utility props
-- **Type Co-location**: Keep types close to their usage
-- **Interface Naming**: `ComponentProps`, `ComponentInternalProps`
-- **Export Types**: Re-export types from index files
+- **Type Co-location**: Keep types close to their usage - use inline types for component-specific interfaces
+- **Interface Naming**: `ComponentProps`, `ComponentCompoundComponent`
+- **Export Types**: Re-export types from index files only when shared across multiple components
+- **Inline Types**: Use inline types for component-specific interfaces in component files
+- **Separate Types Files**: Only create `.types.ts` files when types are shared across multiple components
+- **Compound Component Types**: Define compound component types inline in main component file
+- **Data Types**: Keep `_data/` types simple - only constants, labels, and shared interfaces
 
-## Testing Standards (CONFIRMED)
+## Data Organization Standards
+
+- **`_data/` Purpose**: Simple constants, labels, and shared types only
+- **Constants**: Use `Component.data.ts` for labels, defaults, and static configuration
+- **Shared Types**: Use `Component.types.ts` ONLY when types are shared across multiple components
+- **Inline Types**: Keep component-specific interfaces inline in component files
+- **No Complex Data**: Don't put API types, data fetching logic, or complex data structures in `_data/`
+- **Export Pattern**: Re-export from `_data/index.ts` for clean imports
+
+## Testing Standards
 
 - **Vitest**: Use Vitest for all testing
 - **RTL**: Use React Testing Library for component tests
@@ -98,6 +114,55 @@ components/component/
 - **Globals**: Import `describe`, `it`, `expect`, `afterEach`, `vi` explicitly
 - **Test Structure**: Arrange/Act/Assert pattern
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
+
+## Component Composition Patterns
+
+### Main Component Pattern
+
+```typescript
+interface ComponentProps extends React.ComponentProps<"elementType">, Omit<CommonComponentProps, "as"> {}
+type ComponentCompoundComponent = React.FC<ComponentProps> & {
+  SubComponent: typeof SubComponent;
+};
+
+export const Component = setDisplayName(function Component(props) {
+  const { children, isMemoized = false, internalId, debugMode, ...rest } = props;
+  const { id, isDebugMode } = useComponentId({ internalId, debugMode });
+
+  if (!hasAnyRenderableContent(children)) return null;
+
+  const updatedProps = { ...rest, internalId: id, debugMode: isDebugMode };
+  const Component = isMemoized ? MemoizedBaseComponent : BaseComponent;
+  return <Component {...updatedProps}>{children}</Component>;
+} as ComponentCompoundComponent);
+
+Component.SubComponent = SubComponent;
+```
+
+### Sub-Component Pattern
+
+```typescript
+interface SubComponentProps extends React.ComponentProps<typeof ElementType>, Omit<CommonComponentProps, "as"> {
+  customProp: string;
+}
+
+export const SubComponent: React.FC<SubComponentProps> = setDisplayName(function SubComponent(props) {
+  const { children, className, internalId, debugMode, customProp, ...rest } = props;
+  const { id, isDebugMode } = useComponentId({ internalId, debugMode });
+
+  if (!hasMeaningfulText(customProp)) return null;
+
+  return (
+    <ElementType
+      {...rest}
+      className={cn(styles.subComponent, className)}
+      {...createComponentProps(id, "sub-component", isDebugMode)}
+    >
+      {children}
+    </ElementType>
+  );
+});
+```
 
 ## Output Style
 
