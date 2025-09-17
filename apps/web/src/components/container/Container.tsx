@@ -73,13 +73,12 @@ export const Container = setDisplayName(function Container(props) {
 
   const updatedProps = {
     ...rest,
-    children,
     internalId: id,
     debugMode: isDebugMode,
   };
 
   const Component = isMemoized ? MemoizedContainer : BaseContainer;
-  const element = <Component {...updatedProps} />;
+  const element = <Component {...updatedProps}>{children}</Component>;
   return element;
 } as ContainerCompoundComponent);
 
