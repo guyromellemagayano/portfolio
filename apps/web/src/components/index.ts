@@ -4,6 +4,6 @@ export * from "./Footer";
 export * from "./Header";
 export * from "./Icon";
 export * from "./Layout";
-export * from "./Links";
+export * from "./Link";
 export * from "./Prose";
 export * from "./Section";
