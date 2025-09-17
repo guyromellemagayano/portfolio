@@ -1,4 +1,4 @@
-import { logError } from "@guyromellemagayano/logger";
+import { logger } from "@guyromellemagayano/logger";
 
 export interface Article {
   title: string;
@@ -49,7 +49,7 @@ export async function getAllArticles(): Promise<ArticleWithSlug[]> {
       .slice()
       .sort((a, b) => +new Date(b.date) - +new Date(a.date));
   } catch (error) {
-    logError("Failed to get articles:", error);
+    logger.error("Failed to get articles:", error);
     return [];
   }
 }
@@ -62,7 +62,7 @@ export async function getArticleBySlug(
     const articles = await getAllArticles();
     return articles.find((article) => article.slug === slug) || null;
   } catch (error) {
-    logError(`Failed to get article by slug: ${slug}`, error);
+    logger.error(`Failed to get article by slug: ${slug}`, error);
     return null;
   }
 }
@@ -75,7 +75,7 @@ export async function getArticlesByTag(
     const articles = await getAllArticles();
     return articles.filter((article) => article.tags.includes(tag));
   } catch (error) {
-    logError(`Failed to get articles by tag: ${tag}`, error);
+    logger.error(`Failed to get articles by tag: ${tag}`, error);
     return [];
   }
 }
