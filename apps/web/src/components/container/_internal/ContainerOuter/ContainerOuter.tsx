@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import type { CommonContainerComponent } from "../../types";
+import type { CommonInternalContainerComponent } from "../_types";
 import styles from "./ContainerOuter.module.css";
 
 // ============================================================================
@@ -17,7 +17,7 @@ import styles from "./ContainerOuter.module.css";
 // ============================================================================
 
 /** Provides the outer structure for the `Container` compound component. */
-const BaseContainerOuter: CommonContainerComponent = setDisplayName(
+const BaseContainerOuter: CommonInternalContainerComponent = setDisplayName(
   function BaseContainerOuter(props) {
     const { children, className, _internalId, _debugMode, ...rest } = props;
 
@@ -47,7 +47,7 @@ const MemoizedContainerOuter = React.memo(BaseContainerOuter);
 // ============================================================================
 
 /** A container outer component that provides consistent outer structure for page content. */
-export const ContainerOuter: CommonContainerComponent = setDisplayName(
+export const ContainerOuter: CommonInternalContainerComponent = setDisplayName(
   function ContainerOuter(props) {
     const {
       children,
