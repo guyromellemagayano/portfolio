@@ -2,7 +2,6 @@ import React from "react";
 
 import Link from "next/link";
 
-import { CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -14,15 +13,14 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./styles/SocialLink.module.css";
+import { type CommonLinkProps } from "../../_data";
+import styles from "./SocialLink.module.css";
 
 // ============================================================================
 // SOCIAL LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SocialLinkProps
-  extends React.ComponentPropsWithRef<typeof Link>,
-    Omit<CommonComponentProps, "as"> {
+interface SocialLinkProps extends CommonLinkProps {
   icon: React.ComponentType<{ className?: string }>;
 }
 type SocialLinkComponent = React.FC<SocialLinkProps>;
@@ -31,6 +29,7 @@ type SocialLinkComponent = React.FC<SocialLinkProps>;
 // BASE SOCIAL LINK COMPONENT
 // ============================================================================
 
+/** A base social media link component. */
 const BaseSocialLink: SocialLinkComponent = setDisplayName(
   function BaseSocialLink(props) {
     const {
