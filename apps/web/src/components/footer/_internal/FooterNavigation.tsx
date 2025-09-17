@@ -14,8 +14,9 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_NAV_LINKS, FooterLink } from "../_data";
-import styles from "./styles/FooterNavigation.module.css";
+import { FOOTER_COMPONENT_NAV_LINKS } from "../_data";
+import { type FooterLink } from "../_types";
+import styles from "./FooterNavigation.module.css";
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
