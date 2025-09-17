@@ -73,7 +73,7 @@ vi.mock("next/link", () => ({
   ),
 }));
 
-vi.mock("../styles/SocialLink.module.css", () => ({
+vi.mock("../SocialLink.module.css", () => ({
   default: {
     socialLink: "_socialLink_a1b2c3",
     socialLinkIcon: "_socialLinkIcon_a1b2c3",
@@ -267,6 +267,27 @@ describe("SocialLink", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
       const link = screen.getByTestId("test-id-social-link-root");
       expect(link).toBeInTheDocument();
+    });
+  });
+
+  describe("Ref Forwarding", () => {
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<HTMLAnchorElement>();
+      render(
+        <SocialLink href="https://example.com" icon={MockIcon} ref={ref} />
+      );
+
+      expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
+    });
+
+    it("ref points to correct element", () => {
+      const ref = React.createRef<HTMLAnchorElement>();
+      render(
+        <SocialLink href="https://example.com" icon={MockIcon} ref={ref} />
+      );
+
+      const link = screen.getByTestId("test-id-social-link-root");
+      expect(ref.current).toBe(link);
     });
   });
 
