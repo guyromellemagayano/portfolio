@@ -25,7 +25,7 @@ interface CardTitleProps
     Pick<React.ComponentPropsWithoutRef<typeof Link>, "target" | "title">,
     Omit<CommonComponentProps, "as"> {
   /** Optional href for linking the title */
-  href?: string;
+  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
 }
 type CardTitleComponent = React.FC<CardTitleProps>;
 
