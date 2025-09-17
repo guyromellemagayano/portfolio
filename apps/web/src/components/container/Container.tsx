@@ -1,5 +1,6 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -11,17 +12,22 @@ import { cn } from "@web/utils";
 
 import { ContainerInner, ContainerOuter } from "./_internal";
 import styles from "./Container.module.css";
-import {
-  type CommonContainerComponent,
-  type CommonContainerProps,
-} from "./types";
+
+// ============================================================================
+// CONTAINER COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+interface ContainerProps
+  extends React.ComponentProps<"div">,
+    Omit<CommonComponentProps, "as"> {}
+type ContainerComponent = React.FC<ContainerProps>;
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
 // ============================================================================
 
 /** A flexible layout container component for consistent page structure. */
-const BaseContainer: CommonContainerComponent = setDisplayName(
+const BaseContainer: ContainerComponent = setDisplayName(
   function BaseContainer(props) {
     const { children, className, internalId, debugMode, ...rest } = props;
 
@@ -86,7 +92,7 @@ export const Container = setDisplayName(function Container(props) {
 // CONTAINER COMPOUND COMPONENTS
 // ============================================================================
 
-type ContainerCompoundComponent = React.FC<CommonContainerProps> & {
+type ContainerCompoundComponent = React.FC<ContainerProps> & {
   /** A container inner component that provides consistent inner structure for page content. */
   Inner: typeof ContainerInner;
   /** A container outer component that provides consistent outer structure for page content. */
