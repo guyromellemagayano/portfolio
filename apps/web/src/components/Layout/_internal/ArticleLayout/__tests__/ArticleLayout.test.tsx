@@ -1,5 +1,85 @@
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+
+import "@testing-library/jest-dom";
+
+// Mock process for logger compatibility
+Object.defineProperty(global, "process", {
+  value: {
+    on: vi.fn(),
+    off: vi.fn(),
+    once: vi.fn(),
+    removeListener: vi.fn(),
+    memoryUsage: vi.fn(() => ({
+      rss: 0,
+      heapTotal: 0,
+      heapUsed: 0,
+      external: 0,
+      arrayBuffers: 0,
+    })),
+    env: {},
+    platform: "test",
+    version: "v18.0.0",
+  },
+  writable: true,
+});
+
+// ============================================================================
+// MOCKS
+// ============================================================================
+
+// Mock useComponentId hook
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
+    id: internalId || "test-id",
+    isDebugMode: debugMode,
+  })),
+}));
+
+// Mock utils functions
+vi.mock("@guyromellemagayano/utils", async () => {
+  const actual = await vi.importActual("@guyromellemagayano/utils");
+  return {
+    ...actual,
+    createComponentProps: vi.fn(
+      (id, componentType, debugMode, additionalProps = {}) => ({
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid":
+          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        ...additionalProps,
+      })
+    ),
+    hasAnyRenderableContent: vi.fn((...args) =>
+      args.some((arg) => {
+        if (arg == null || arg === "") return false;
+        if (typeof arg === "string") return arg.trim().length > 0;
+        if (React.isValidElement(arg)) return true;
+        if (Array.isArray(arg))
+          return arg.some((item) => item != null && item !== "");
+        return true;
+      })
+    ),
+    hasMeaningfulText: vi.fn((content) => {
+      if (content == null || content === "") return false;
+      if (typeof content === "string") return content.trim().length > 0;
+      return true;
+    }),
+    isRenderableContent: vi.fn((content) => {
+      if (content == null) return false;
+      if (typeof content === "string") return content.trim().length > 0;
+      if (typeof content === "object" && Object.keys(content).length > 0)
+        return true;
+      return false;
+    }),
+    setDisplayName: vi.fn((component, displayName) => {
+      if (component) component.displayName = displayName;
+      return component;
+    }),
+  };
+});
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/components", () => ({
@@ -28,6 +108,11 @@ vi.mock("@guyromellemagayano/components", () => ({
       {children}
     </h1>
   )),
+  Link: vi.fn(({ children, ...props }) => (
+    <a data-testid="link" {...props}>
+      {children}
+    </a>
+  )),
   Span: vi.fn(({ children, ...props }) => (
     <span data-testid="span" {...props}>
       {children}
@@ -40,60 +125,36 @@ vi.mock("@guyromellemagayano/components", () => ({
   )),
 }));
 
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode }) => ({
-    id: internalId || "test-id",
-    isDebugMode: debugMode || false,
-  })),
-}));
-
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((...args) =>
-    args.some((arg) => arg != null && arg !== "")
-  ),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  isRenderableContent: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
-
-// Mock Next.js navigation
+// @guyromellemagayano/hooks and @guyromellemagayano/utils are globally mocked in test setup
 vi.mock("next/navigation", () => ({
   useRouter: vi.fn(() => ({
     back: vi.fn(),
   })),
+  usePathname: vi.fn(() => "/"),
 }));
 
-// Mock AppContext
 vi.mock("@web/app/context", () => ({
   AppContext: {
-    previousPathname: "/articles",
+    Provider: ({ children }: { children: React.ReactNode }) => children,
   },
 }));
 
-// Mock React useContext
 vi.mock("react", async () => {
   const actual = await vi.importActual("react");
   return {
     ...actual,
-    useContext: vi.fn(() => ({
-      previousPathname: "/articles",
-    })),
+    useContext: vi.fn((context) => {
+      if (context === AppContext) {
+        return {
+          previousPathname: "/articles",
+        };
+      }
+      return {};
+    }),
   };
 });
 
-// Mock Container component
+// Mock @web/components
 vi.mock("@web/components", () => ({
   Container: vi.fn(({ children, ...props }) => (
     <div data-testid="container" {...props}>
@@ -105,61 +166,47 @@ vi.mock("@web/components", () => ({
       {children}
     </div>
   )),
-  Icon: {
-    ArrowLeft: vi.fn(
-      ({ className, _debugMode, _internalId, isMemoized, ...props }) => (
-        <span data-testid="icon-arrow-left" className={className} {...props}>
-          ArrowLeft
-        </span>
-      )
-    ),
-  },
-}));
-
-// Mock lib functions
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  formatDate: vi.fn((_date) => "Formatted Date"),
 }));
 
 // Mock @web/utils
 vi.mock("@web/utils", () => ({
-  formatDate: vi.fn((_date) => "Formatted Date"),
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  formatDate: vi.fn((date) => "Formatted Date"),
 }));
 
-// Mock logger
-vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
-  logWarn: vi.fn(),
-  logDebug: vi.fn(),
-}));
+// Logger is automatically mocked via __mocks__ directory
 
 // Mock CSS module
-vi.mock("../styles/ArticleLayout.module.css", () => ({
+vi.mock("../ArticleLayout.module.css", () => ({
   default: {
-    articleLayoutContainer: "_articleLayoutContainer_258868",
-    articleWrapper: "_articleWrapper_258868",
-    articleContent: "_articleContent_258868",
-    articleTitle: "_articleTitle_258868",
-    articleDate: "_articleDate_258868",
-    articleProse: "_articleProse_258868",
-    dateSeparator: "_dateSeparator_258868",
-    dateText: "_dateText_258868",
+    articleLayoutContainer: "_articleLayoutContainer_fd8288",
+    articleWrapper: "_articleWrapper_fd8288",
+    articleContent: "_articleContent_fd8288",
+    articleTitle: "_articleTitle_fd8288",
+    articleDate: "_articleDate_fd8288",
+    articleProse: "_articleProse_fd8288",
+    dateSeparator: "_dateSeparator_fd8288",
+    dateText: "_dateText_fd8288",
   },
 }));
 
 // Mock ArticleNavButton component
-vi.mock("../ArticleNavButton", () => ({
-  ArticleNavButton: vi.fn(({ children, ...props }) => (
-    <button data-testid="article-nav-button" {...props}>
+vi.mock("../_internal", () => ({
+  ArticleNavButton: vi.fn(({ children, _debugMode, _internalId, ...props }) => (
+    <button
+      data-testid="article-nav-button"
+      data-debug-mode={_debugMode ? "true" : undefined}
+      data-internal-id={_internalId}
+      {...props}
+    >
       {children}
     </button>
   )),
 }));
 
 // Import the component after all mocks are set up
+import { AppContext } from "@web/app/context";
+
 import { ArticleLayout } from "../ArticleLayout";
 
 // ============================================================================
@@ -245,7 +292,7 @@ describe("ArticleLayout", () => {
 
       const container = screen.getByTestId("test-id-article-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_articleLayoutContainer_258868");
+      expect(container).toHaveClass("_articleLayoutContainer_fd8288");
     });
 
     it("includes ArticleNavButton", () => {
@@ -277,7 +324,7 @@ describe("ArticleLayout", () => {
       const title = screen.getByText("Test Article Title");
       expect(title).toBeInTheDocument();
       expect(title.tagName).toBe("H1");
-      expect(title).toHaveClass("_articleTitle_258868");
+      expect(title).toHaveClass("_articleTitle_fd8288");
     });
 
     it("renders article with date when provided", () => {
@@ -286,7 +333,7 @@ describe("ArticleLayout", () => {
       const time = screen.getByText("Formatted Date").closest("time");
       expect(time).toBeInTheDocument();
       expect(time).toHaveAttribute("dateTime", "2023-01-01");
-      expect(time).toHaveClass("_articleDate_258868");
+      expect(time).toHaveClass("_articleDate_fd8288");
     });
 
     it("renders article with both title and date", () => {
@@ -312,7 +359,7 @@ describe("ArticleLayout", () => {
       expect(childContent).toBeInTheDocument();
       expect(childContent).toHaveTextContent("Child content");
       expect(prose).toBeInTheDocument();
-      expect(prose).toHaveClass("_articleProse_258868");
+      expect(prose).toHaveClass("_articleProse_fd8288");
       expect(prose).toHaveAttribute("data-mdx-content");
     });
 
@@ -469,7 +516,7 @@ describe("ArticleLayout", () => {
       const { rerender } = render(<ArticleLayout article={mockArticle} />);
 
       rerender(<ArticleLayout className="new-class" article={mockArticle} />);
-      rerender(<ArticleLayout _debugMode={true} article={mockArticle} />);
+      rerender(<ArticleLayout debugMode={true} article={mockArticle} />);
       rerender(<ArticleLayout isMemoized={true} article={mockArticle} />);
 
       const layout = screen.getByTestId("test-id-article-layout-root");
@@ -518,9 +565,11 @@ describe("ArticleLayout", () => {
 
         // Check article structure using semantic elements
         expect(screen.getByRole("article")).toBeInTheDocument();
-        expect(screen.getByRole("banner")).toBeInTheDocument();
         expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
-        expect(screen.getByRole("time")).toBeInTheDocument();
+
+        // Check for time element directly since it may not have role="time"
+        const timeElement = screen.getByText("Formatted Date").closest("time");
+        expect(timeElement).toBeInTheDocument();
 
         // Check content
         expect(screen.getByText("Test Article Title")).toBeInTheDocument();
@@ -539,7 +588,8 @@ describe("ArticleLayout", () => {
         const article = screen.getByRole("article");
         expect(article).toBeInTheDocument();
 
-        const header = screen.getByRole("banner");
+        // The header is not assigned role="banner" in the current implementation
+        const header = article.querySelector("header");
         expect(header).toBeInTheDocument();
       });
 
@@ -667,7 +717,7 @@ describe("ArticleLayout", () => {
       it("renders article date correctly", () => {
         render(<ArticleLayout article={mockArticle} />);
 
-        const date = screen.getByRole("time");
+        const date = screen.getByText("Formatted Date").closest("time");
         expect(date).toBeInTheDocument();
         expect(date).toHaveTextContent("Formatted Date");
       });
