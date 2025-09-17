@@ -6,7 +6,8 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 // COMMON CONTAINER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CommonContainerProps
+export interface CommonInternalContainerProps
   extends React.ComponentProps<"div">,
     Omit<CommonComponentProps, "as"> {}
-export type CommonContainerComponent = React.FC<CommonContainerProps>;
+export type CommonInternalContainerComponent =
+  React.FC<CommonInternalContainerProps>;
