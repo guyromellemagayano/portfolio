@@ -17,10 +17,11 @@ Object.defineProperty(global, "IntersectionObserver", {
   value: mockIntersectionObserver,
 });
 
+import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterNavigation } from "../FooterNavigation";
+import { FooterNavigation } from "../../FooterNavigation";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -81,15 +82,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../styles/FooterNavigation.module.css", () => ({
+vi.mock("../FooterNavigation.module.css", () => ({
   default: {
-    footerNavigationList: "_footerNavigationList_765b12",
-    footerNavigationItem: "_footerNavigationItem_765b12",
-    footerNavigationLink: "_footerNavigationLink_765b12",
+    footerNavigationList: "_footerNavigationList_0f93b2",
+    footerNavigationItem: "_footerNavigationItem_0f93b2",
+    footerNavigationLink: "_footerNavigationLink_0f93b2",
   },
 }));
 
@@ -221,14 +222,14 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("_footerNavigationList_765b12");
+      expect(nav).toHaveClass("_footerNavigationList_0f93b2");
     });
 
     it("combines CSS module classes with custom className", () => {
       render(<FooterNavigation className="custom-nav" />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("_footerNavigationList_765b12 custom-nav");
+      expect(nav).toHaveClass("_footerNavigationList_0f93b2 custom-nav");
     });
   });
 
