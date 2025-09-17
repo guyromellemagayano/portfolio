@@ -18,11 +18,11 @@ import styles from "./Footer.module.css";
 // FOOTER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface FooterProps
+interface FooterProps
   extends Omit<React.ComponentProps<"footer">, "children">,
     FooterComponentLabels,
     Omit<CommonComponentProps, "as"> {}
-export type FooterComponent = React.FC<FooterProps>;
+type FooterComponent = React.FC<FooterProps>;
 
 // ============================================================================
 // BASE FOOTER COMPONENT
