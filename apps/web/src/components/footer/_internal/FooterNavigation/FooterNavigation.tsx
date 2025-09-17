@@ -14,20 +14,20 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_NAV_LINKS } from "../_data";
-import { type FooterLink } from "../_types";
+import { FOOTER_COMPONENT_NAV_LINKS } from "../../_data";
+import { type FooterLink } from "../../_types";
 import styles from "./FooterNavigation.module.css";
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface FooterNavigationProps
+interface FooterNavigationProps
   extends Omit<React.ComponentProps<"nav">, "children">,
     Omit<CommonComponentProps, "as"> {
   links?: ReadonlyArray<FooterLink>;
 }
-export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
+type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
 // ============================================================================
 // BASE FOOTER NAVIGATION COMPONENT
