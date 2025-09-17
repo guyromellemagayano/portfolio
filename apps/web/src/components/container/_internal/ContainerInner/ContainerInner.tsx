@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonContainerComponent } from "../../types";
+import { type CommonInternalContainerComponent } from "../_types";
 import styles from "./ContainerInner.module.css";
 
 // ============================================================================
@@ -17,7 +17,7 @@ import styles from "./ContainerInner.module.css";
 // ============================================================================
 
 /** Provides the inner structure for the `Container` compound component. */
-const BaseContainerInner: CommonContainerComponent = setDisplayName(
+const BaseContainerInner: CommonInternalContainerComponent = setDisplayName(
   function BaseContainerInner(props) {
     const { children, className, _internalId, _debugMode, ...rest } = props;
 
@@ -47,7 +47,7 @@ const MemoizedContainerInner = React.memo(BaseContainerInner);
 // ============================================================================
 
 /** A container inner component that provides consistent inner structure for page content. */
-export const ContainerInner: CommonContainerComponent = setDisplayName(
+export const ContainerInner: CommonInternalContainerComponent = setDisplayName(
   function ContainerInner(props) {
     const {
       children,
