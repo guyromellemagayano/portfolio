@@ -24,8 +24,8 @@ import styles from "./Card.module.css";
 // ============================================================================
 
 interface CardProps
-  extends React.ComponentProps<"article">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithRef<"article">,
+    Omit<CommonComponentProps, "as"> {}
 type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
