@@ -3,16 +3,9 @@ import React from "react";
 import Link from "next/link";
 
 // ============================================================================
-// FOOTER DATA TYPES
+// FOOTER LINK TYPES
 // ============================================================================
 
-/**
- * FooterLink type that supports all Next.js Link href types including:
- * - string: "/about", "https://example.com"
- * - URL objects: new URL("https://example.com")
- * - Route types: Next.js Route type
- * - Objects with toString(): { toString: () => "/path" }
- */
 export type FooterLink =
   | {
       /** Internal link */
@@ -35,20 +28,18 @@ export type FooterLink =
       rel?: string;
     };
 
-export type FooterComponentLabels = Readonly<{
-  /** Legal text */
-  legalText?: string;
-}>;
+// ============================================================================
+// FOOTER COMPONENT NAV LINKS
+// ============================================================================
 
 export type FooterComponentNavLinks = ReadonlyArray<
   Extract<FooterLink, { kind: "internal" }>
 >;
 
 // ============================================================================
-// API DATA TYPES
+// FOOTER DATA TYPES
 // ============================================================================
 
-/** Footer data structure for API responses */
 export interface FooterData {
   /** Legal text displayed in the footer */
   legalText: string;
@@ -57,3 +48,12 @@ export interface FooterData {
   /** Optional year override (default: current year) */
   year?: number;
 }
+
+// ============================================================================
+// FOOTER COMPONENT LABELS
+// ============================================================================
+
+export type FooterComponentLabels = Readonly<{
+  /** Legal text */
+  legalText?: string;
+}>;
