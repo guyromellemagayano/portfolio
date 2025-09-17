@@ -11,8 +11,8 @@ import {
 import { Card } from "@web/components";
 import { ArticleWithSlug, cn, formatDate } from "@web/utils";
 
-import { ARTICLE_LAYOUT_COMPONENT_LABELS } from "./_data";
-import styles from "./ArticleItem.module.css";
+import { ARTICLE_ITEM_COMPONENT_LABELS } from "./_data";
+import styles from "./styles/ArticleItem.module.css";
 
 // ============================================================================
 // ARTICLE ITEM COMPONENT TYPES & INTERFACES
@@ -50,7 +50,7 @@ const BaseArticleItem: ArticleItemComponent = setDisplayName(
           {formatDate(article.date)}
         </Card.Eyebrow>
         <Card.Description>{article.description}</Card.Description>
-        <Card.Cta>{ARTICLE_LAYOUT_COMPONENT_LABELS.cta}</Card.Cta>
+        <Card.Cta>{ARTICLE_ITEM_COMPONENT_LABELS.cta}</Card.Cta>
       </Card>
     );
 
