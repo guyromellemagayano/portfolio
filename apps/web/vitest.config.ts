@@ -21,7 +21,6 @@ export default defineConfig({
     setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
     globals: true,
     mockReset: true,
-    mockPath: "src/__mocks__",
 
     // Memory optimization settings
     pool: "threads",
@@ -78,7 +77,6 @@ export default defineConfig({
         "**/mocks/**",
         "**/fixtures/**",
         "**/types/**",
-        "**/__mocks__/**",
         "**/vite.config.*",
         "**/vitest.config.*",
         "**/jest.config.*",
