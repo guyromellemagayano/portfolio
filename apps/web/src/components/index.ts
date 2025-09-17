@@ -5,5 +5,7 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./Layout";
 export * from "./Link";
+export * from "./List";
+export * from "./List/Item";
 export * from "./Prose";
 export * from "./Section";
