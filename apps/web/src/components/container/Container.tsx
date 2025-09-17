@@ -9,12 +9,12 @@ import {
 
 import { cn } from "@web/utils";
 
+import { ContainerInner, ContainerOuter } from "./_internal";
+import styles from "./Container.module.css";
 import {
   type CommonContainerComponent,
   type CommonContainerProps,
-} from "./_data";
-import { ContainerInner, ContainerOuter } from "./_internal";
-import styles from "./styles/Container.module.css";
+} from "./types";
 
 // ============================================================================
 // BASE CONTAINER COMPONENT

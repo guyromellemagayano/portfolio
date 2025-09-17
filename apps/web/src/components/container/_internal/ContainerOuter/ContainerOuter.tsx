@@ -9,8 +9,8 @@ import {
 
 import { cn } from "@web/utils";
 
-import type { CommonContainerComponent } from "../_data";
-import styles from "./styles/ContainerOuter.module.css";
+import type { CommonContainerComponent } from "../../types";
+import styles from "./ContainerOuter.module.css";
 
 // ============================================================================
 // BASE CONTAINER OUTER COMPONENT
