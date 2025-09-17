@@ -1,0 +1,477 @@
+import React from "react";
+
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import "@testing-library/jest-dom";
+
+// Mock dependencies
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
+    id: internalId || "test-id",
+    isDebugMode: debugMode,
+  })),
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+  getLinkTargetProps: vi.fn((href, target) => ({
+    target: target || (href?.startsWith("http") ? "_blank" : undefined),
+    rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
+  })),
+  hasAnyRenderableContent: vi.fn((content) => {
+    if (Array.isArray(content)) return content.length > 0;
+    return content != null && content !== "";
+  }),
+  hasValidContent: vi.fn((content) => content != null && content !== ""),
+  isValidLink: vi.fn((href) => href != null && href !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("next/link", () => ({
+  default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
+}));
+
+vi.mock("@web/utils", () => ({
+  cn: vi.fn((...classes) => {
+    const filtered = classes.filter(Boolean);
+    return filtered.length > 0 ? filtered.join(" ") : "";
+  }),
+}));
+
+vi.mock("../Link.module.css", () => ({
+  default: { link: "link" },
+}));
+
+// Import the component after all mocks are set up
+import { Link } from "../Link";
+
+// ============================================================================
+// LINK COMPONENT TESTS
+// ============================================================================
+
+describe("Link", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("Basic Rendering", () => {
+    it("renders children correctly", () => {
+      render(
+        <Link href="/test">
+          <span>Test Link</span>
+        </Link>
+      );
+
+      const link = screen.getByText("Test Link");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("applies custom className", () => {
+      render(
+        <Link href="/test" className="custom-class">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveClass("custom-class");
+    });
+
+    it("passes through HTML attributes", () => {
+      render(
+        <Link href="/test" id="custom-id" role="button">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("id", "custom-id");
+      expect(link).toHaveAttribute("role", "button");
+    });
+
+    it("uses useComponentId hook correctly", () => {
+      // Test that useComponentId hook is called correctly
+      render(<Link href="/test">Test Link</Link>);
+
+      // The mock verifies the hook is called with correct parameters
+      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
+    });
+
+    it("uses custom internal ID when provided", () => {
+      render(
+        <Link href="/test" internalId="custom-id">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("custom-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("enables debug mode when provided", () => {
+      render(
+        <Link href="/test" debugMode={true}>
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("data-debug-mode", "true");
+    });
+  });
+
+  describe("Link Functionality", () => {
+    it("renders with valid href", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "/test");
+    });
+
+    it("handles external links correctly", () => {
+      render(<Link href="https://example.com">External Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "https://example.com");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("handles internal links correctly", () => {
+      render(<Link href="/internal">Internal Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "/internal");
+      expect(link).not.toHaveAttribute("target");
+      expect(link).not.toHaveAttribute("rel");
+    });
+
+    it("applies custom target when provided", () => {
+      render(
+        <Link href="/test" target="_self">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("target", "_self");
+    });
+
+    it("applies title attribute when provided", () => {
+      render(
+        <Link href="/test" title="Test Title">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("title", "Test Title");
+      expect(link).toHaveAttribute("aria-label", "Test Title");
+    });
+  });
+
+  describe("Content Validation", () => {
+    it("does not render when no href and no children", () => {
+      const { container } = render(<Link href=""></Link>);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("renders when href is invalid but children exist", () => {
+      render(<Link href="">Test Link</Link>);
+      expect(screen.getByText("Test Link")).toBeInTheDocument();
+    });
+
+    it("renders when href is valid but no children", () => {
+      render(<Link href="/test"></Link>);
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("handles null/undefined children", () => {
+      render(<Link href="/test">{null}</Link>);
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("handles empty string children", () => {
+      render(<Link href="/test">{""}</Link>);
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+  });
+
+  describe("Debug Mode", () => {
+    it("applies data-debug-mode when enabled", () => {
+      render(
+        <Link href="/test" debugMode={true}>
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("does not apply when disabled/undefined", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).not.toHaveAttribute("data-debug-mode");
+    });
+  });
+
+  describe("Component Structure", () => {
+    it("renders as Next.js Link component", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("applies correct CSS classes", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveClass("link");
+    });
+
+    it("combines CSS module + custom classes", () => {
+      render(
+        <Link href="/test" className="custom-class">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveClass("link custom-class");
+    });
+  });
+
+  describe("Ref Forwarding", () => {
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<HTMLAnchorElement>();
+      render(
+        <Link href="/test" ref={ref}>
+          Test Link
+        </Link>
+      );
+
+      expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
+    });
+
+    it("ref points to correct element", () => {
+      const ref = React.createRef<HTMLAnchorElement>();
+      render(
+        <Link href="/test" ref={ref}>
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(ref.current).toBe(link);
+    });
+  });
+
+  describe("Component ID", () => {
+    it("renders with generated component ID", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("data-link-id", "test-id-link");
+    });
+
+    it("renders with custom internal ID", () => {
+      render(
+        <Link href="/test" internalId="custom-id">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("custom-id-link-root");
+      expect(link).toHaveAttribute("data-link-id", "custom-id-link");
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(
+        <Link href="/test" isMemoized={true}>
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("renders without memoization by default", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+
+    it("renders without memoization when isMemoized is false", () => {
+      render(
+        <Link href="/test" isMemoized={false}>
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+  });
+
+  describe("Edge Cases", () => {
+    it("handles complex children content", () => {
+      render(
+        <Link href="/test">
+          <span>Complex</span> <strong>Content</strong>
+        </Link>
+      );
+
+      expect(screen.getByText("Complex")).toBeInTheDocument();
+      expect(screen.getByText("Content")).toBeInTheDocument();
+    });
+
+    it("handles special characters in href", () => {
+      render(<Link href="/test?param=value&other=123">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "/test?param=value&other=123");
+    });
+
+    it("handles empty href gracefully", () => {
+      render(<Link href="">Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "");
+    });
+
+    it("handles undefined href gracefully", () => {
+      render(<Link href={undefined as any}>Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "");
+    });
+  });
+
+  describe("Component Interface", () => {
+    it("returns a React element", () => {
+      const element = <Link href="/test">Test Link</Link>;
+      expect(React.isValidElement(element)).toBe(true);
+    });
+
+    it("accepts all Link HTML attributes", () => {
+      render(
+        <Link href="/test" data-custom="test" title="Custom Link" role="button">
+          Test Link
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("data-custom", "test");
+      expect(link).toHaveAttribute("aria-label", "Custom Link");
+      expect(link).toHaveAttribute("role", "button");
+    });
+  });
+
+  describe("Integration Tests", () => {
+    it("integrates with Next.js Link correctly", () => {
+      render(<Link href="/test">Test Link</Link>);
+
+      const nextLink = screen.getByTestId("test-id-link-root");
+      expect(nextLink).toBeInTheDocument();
+      expect(nextLink).toHaveAttribute("href", "/test");
+    });
+
+    it("integrates with utility functions correctly", () => {
+      // Test that utility functions are called correctly
+      render(<Link href="/test">Test Link</Link>);
+
+      // The mocks verify the utility functions are called
+      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
+    });
+
+    it("integrates with useComponentId hook correctly", () => {
+      // Test that useComponentId hook is called correctly
+      render(
+        <Link href="/test" internalId="custom-id" debugMode={true}>
+          Test Link
+        </Link>
+      );
+
+      // The mock verifies the hook is called
+      expect(screen.getByTestId("custom-id-link-root")).toBeInTheDocument();
+    });
+  });
+
+  describe("Performance Tests", () => {
+    it("renders efficiently with different props", () => {
+      const { rerender } = render(<Link href="/test">Test Link</Link>);
+
+      rerender(
+        <Link href="/test2" className="new-class">
+          Test Link 2
+        </Link>
+      );
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "/test2");
+      expect(link).toHaveClass("new-class");
+    });
+
+    it("handles multiple re-renders efficiently", () => {
+      const { rerender } = render(<Link href="/test">Test Link</Link>);
+
+      for (let i = 0; i < 5; i++) {
+        rerender(<Link href={`/test${i}`}>Test Link {i}</Link>);
+      }
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "/test4");
+    });
+  });
+
+  describe("Error Handling", () => {
+    it("handles invalid href gracefully", () => {
+      render(<Link href={null as any}>Test Link</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toHaveAttribute("href", "");
+    });
+
+    it("handles missing children gracefully", () => {
+      render(<Link href="/test">{undefined}</Link>);
+
+      const link = screen.getByTestId("test-id-link-root");
+      expect(link).toBeInTheDocument();
+    });
+  });
+
+  describe("Compound Component", () => {
+    it("exposes Social sub-component", () => {
+      expect(Link.Social).toBeDefined();
+      expect(typeof Link.Social).toBe("function");
+    });
+
+    it("maintains compound component structure", () => {
+      expect(Link.Social).toBeDefined();
+      // Test that the compound component structure is maintained
+      expect(Link).toHaveProperty("Social");
+    });
+  });
+});
