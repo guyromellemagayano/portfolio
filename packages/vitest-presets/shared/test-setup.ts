@@ -220,3 +220,17 @@ vi.mock("@web/lib", () => ({
     return true;
   },
 }));
+
+// Global mock for @guyromellemagayano/logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  logError: vi.fn(),
+  logInfo: vi.fn(),
+  logWarn: vi.fn(),
+  logDebug: vi.fn(),
+  createLogger: vi.fn(() => ({
+    error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  })),
+}));
