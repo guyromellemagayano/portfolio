@@ -9,54 +9,43 @@ import { Layout } from "../Layout";
 
 // Mock useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode }) => ({
+  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
     id: internalId || "test-id",
-    isDebugMode: debugMode || false,
+    isDebugMode: debugMode,
   })),
 }));
 
-// Mock utility functions
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((...args) =>
-    args.some((arg) => arg != null && arg !== "")
-  ),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
+// The Layout component's createComponentProps is not working with global mocks
+// Use a specific mock for this test file
+vi.mock("@guyromellemagayano/utils", async () => {
+  const actual = await vi.importActual("@guyromellemagayano/utils");
+  return {
+    ...actual,
+    createComponentProps: vi.fn(
+      (id, componentType, debugMode, additionalProps = {}) => ({
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid":
+          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        ...additionalProps,
+      })
+    ),
+    hasAnyRenderableContent: vi.fn((...args) =>
+      args.some((arg) => arg != null && arg !== "")
+    ),
+    setDisplayName: vi.fn((component, displayName) => {
+      if (component) component.displayName = displayName;
+      return component;
+    }),
+  };
+});
 
-// Mock component utilities
-vi.mock("@web/utils/component-utils", () => ({
-  createLayoutProps: vi.fn((id, debugMode) => ({
-    "data-layout-id": `${id}-layout`,
-    "data-debug-mode": debugMode ? "true" : undefined,
-    "data-testid": `${id}-layout-root`,
-  })),
-  hasValidContent: vi.fn((children) => children != null && children !== ""),
-}));
-
-// Mock logger
-vi.mock("@guyromellemagayano/logger", () => ({
-  logError: vi.fn(),
-  logInfo: vi.fn(),
-  logWarn: vi.fn(),
-  logDebug: vi.fn(),
-}));
+// Logger is automatically mocked via __mocks__ directory
 
 // Mock Next.js Link
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, ...props }) => (
-    <a data-testid="skip-link" {...props}>
+    <a data-testid="next-link" {...props}>
       {children}
     </a>
   )),
@@ -76,21 +65,26 @@ vi.mock("@web/components", () => ({
   )),
 }));
 
-// Mock lib functions
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+// Mock Next.js navigation
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(() => ({
+    back: vi.fn(),
+  })),
+  usePathname: vi.fn(() => "/"),
 }));
 
+// @web/lib is globally mocked in test setup
+
 // Mock CSS module
-vi.mock("../styles/Layout.module.css", () => ({
+vi.mock("../Layout.module.css", () => ({
   default: {
-    layoutContainer: "_layoutContainer_5c0975",
-    layoutBackgroundWrapper: "_layoutBackgroundWrapper_5c0975",
-    layoutBackgroundContent: "_layoutBackgroundContent_5c0975",
-    layoutBackground: "_layoutBackground_5c0975",
-    layoutContentWrapper: "_layoutContentWrapper_5c0975",
-    layoutMain: "_layoutMain_5c0975",
-    skipLink: "_skipLink_5c0975",
+    layoutContainer: "_layoutContainer_4402d3",
+    layoutBackgroundWrapper: "_layoutBackgroundWrapper_4402d3",
+    layoutBackgroundContent: "_layoutBackgroundContent_4402d3",
+    layoutBackground: "_layoutBackground_4402d3",
+    layoutContentWrapper: "_layoutContentWrapper_4402d3",
+    layoutMain: "_layoutMain_4402d3",
+    skipLink: "_skipLink_4402d3",
   },
 }));
 
@@ -145,11 +139,17 @@ describe("Layout", () => {
       expect(layout).toHaveAttribute("aria-label", "Test layout");
     });
 
-    it("uses useComponentId hook correctly", () => {
+    it("uses useComponentId hook correctly", async () => {
+      const { useComponentId } = vi.mocked(
+        await import("@guyromellemagayano/hooks")
+      );
+
       render(<Layout>{mockChildren}</Layout>);
 
-      // The hook is already mocked at the top of the file
-      expect(true).toBe(true);
+      expect(useComponentId).toHaveBeenCalledWith({
+        internalId: undefined,
+        debugMode: undefined,
+      });
     });
 
     it("uses custom internal ID when provided", () => {
@@ -173,17 +173,17 @@ describe("Layout", () => {
 
       const container = screen.getByTestId("test-id-layout-root");
       expect(container).toBeInTheDocument();
-      expect(container).toHaveClass("_layoutContainer_5c0975");
+      expect(container).toHaveClass("_layoutContainer_4402d3");
     });
 
     it("renders skip link with correct attributes", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const skipLink = screen.getByTestId("skip-link");
+      const skipLink = screen.getByTestId("next-link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("_skipLink_5c0975");
+      expect(skipLink).toHaveClass("_skipLink_4402d3");
     });
 
     it("renders background wrapper with correct structure", () => {
@@ -191,7 +191,7 @@ describe("Layout", () => {
 
       const backgroundWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._layoutBackgroundWrapper_5c0975");
+        .querySelector("._layoutBackgroundWrapper_4402d3");
       expect(backgroundWrapper).toBeInTheDocument();
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
@@ -202,7 +202,7 @@ describe("Layout", () => {
 
       const contentWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._layoutContentWrapper_5c0975");
+        .querySelector("._layoutContentWrapper_4402d3");
       expect(contentWrapper).toBeInTheDocument();
     });
 
@@ -213,7 +213,7 @@ describe("Layout", () => {
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("_layoutMain_5c0975");
+      expect(main).toHaveClass("_layoutMain_4402d3");
     });
   });
 
@@ -414,7 +414,7 @@ describe("Layout", () => {
     it("provides working skip link for accessibility", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const skipLink = screen.getByTestId("skip-link");
+      const skipLink = screen.getByTestId("next-link");
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
     });
@@ -424,7 +424,7 @@ describe("Layout", () => {
 
       const backgroundWrapper = screen
         .getByTestId("test-id-layout-root")
-        .querySelector("._layoutBackgroundWrapper_5c0975");
+        .querySelector("._layoutBackgroundWrapper_4402d3");
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
     });
@@ -493,7 +493,7 @@ describe("Layout", () => {
         render(<Layout>{mockChildren}</Layout>);
 
         const layout = screen.getByTestId("test-id-layout-root");
-        expect(layout).toHaveClass("_layoutContainer_5c0975");
+        expect(layout).toHaveClass("_layoutContainer_4402d3");
       });
     });
 
@@ -555,7 +555,7 @@ describe("Layout", () => {
 
         const layout = screen.getByTestId("test-id-layout-root");
         expect(layout).toHaveClass(
-          "_layoutContainer_5c0975",
+          "_layoutContainer_4402d3",
           "custom-layout-class"
         );
       });
@@ -713,7 +713,7 @@ describe("Layout", () => {
       it("renders skip link correctly", () => {
         render(<Layout>{mockChildren}</Layout>);
 
-        const skipLink = screen.getByTestId("skip-link");
+        const skipLink = screen.getByTestId("next-link");
         expect(skipLink).toBeInTheDocument();
         expect(skipLink).toHaveAttribute("href", "#main-content");
         expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
