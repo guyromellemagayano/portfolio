@@ -10,19 +10,19 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_LABELS } from "../_data";
-import { type FooterComponentLabels } from "../_types";
+import { FOOTER_COMPONENT_LABELS } from "../../_data";
+import { type FooterComponentLabels } from "../../_types";
 import styles from "./FooterLegal.module.css";
 
 // ============================================================================
 // FOOTER LEGAL COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface FooterLegalProps
+interface FooterLegalProps
   extends Omit<React.ComponentProps<"p">, "children">,
     FooterComponentLabels,
     Omit<CommonComponentProps, "as"> {}
-export type FooterLegalComponent = React.FC<FooterLegalProps>;
+type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 // ============================================================================
 // BASE FOOTER LEGAL COMPONENT
