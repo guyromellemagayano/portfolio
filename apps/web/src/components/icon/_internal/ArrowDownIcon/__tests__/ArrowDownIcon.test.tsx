@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import ArrowDownIcon from "../ArrowDownIcon";
@@ -32,6 +32,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 
 describe("ArrowDownIcon", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 
@@ -147,6 +148,7 @@ describe("ArrowDownIcon", () => {
 
 describe("ArrowDownIcon Specific Tests", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import ChevronDownIcon from "../ChevronDownIcon";
@@ -32,6 +32,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 
 describe("ChevronDownIcon", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 
@@ -146,6 +147,7 @@ describe("ChevronDownIcon", () => {
 
 describe("ChevronDownIcon Specific Tests", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 
