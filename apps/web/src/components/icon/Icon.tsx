@@ -7,7 +7,6 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent, type CommonIconProps } from "./_data";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -17,13 +16,14 @@ import {
   CloseIcon,
   GitHubIcon,
   InstagramIcon,
-  LinkedInIcon,
+  LinkedinIcon,
   LinkIcon,
   MailIcon,
   MoonIcon,
   SunIcon,
   XIcon,
 } from "./_internal";
+import { type CommonIconComponent } from "./_types";
 
 // ============================================================================
 // BASE ICON COMPONENT
@@ -58,7 +58,7 @@ const MemoizedIcon = React.memo(BaseIcon);
 // ============================================================================
 
 /** A polymorphic SVG icon component with compound social and UI icons. */
-export const Icon = setDisplayName(function Icon(props: CommonIconProps) {
+export const Icon = setDisplayName(function Icon(props) {
   const {
     children,
     isMemoized = false,
@@ -89,15 +89,37 @@ export const Icon = setDisplayName(function Icon(props: CommonIconProps) {
 // ICON COMPOUND COMPONENTS
 // ============================================================================
 
-type IconCompoundComponent = React.FC<CommonIconProps> & {
+type IconCompoundComponent = CommonIconComponent & {
+  // ============================================================================
+  // NAVIGATION
+  // ============================================================================
+
+  /** Navigation icon for arrow down */
+  ArrowDown: typeof ArrowDownIcon;
+  /** Navigation icon for arrow left */
+  ArrowLeft: typeof ArrowLeftIcon;
+  /** Navigation icon for chevron down */
+  ChevronDown: typeof ChevronDownIcon;
+  /** Navigation icon for chevron right */
+  ChevronRight: typeof ChevronRightIcon;
+
+  // ============================================================================
+  // SOCIAL
+  // ============================================================================
+
   /** Social media icon for X/Twitter */
   X: typeof XIcon;
   /** Social media icon for Instagram */
   Instagram: typeof InstagramIcon;
   /** Social media icon for LinkedIn */
-  LinkedIn: typeof LinkedInIcon;
+  LinkedIn: typeof LinkedinIcon;
   /** Social media icon for GitHub */
   GitHub: typeof GitHubIcon;
+
+  // ============================================================================
+  // UI
+  // ============================================================================
+
   /** UI icon for link */
   Link: typeof LinkIcon;
   /** UI icon for close/exit */
@@ -106,23 +128,15 @@ type IconCompoundComponent = React.FC<CommonIconProps> & {
   Sun: typeof SunIcon;
   /** UI icon for moon/dark mode */
   Moon: typeof MoonIcon;
-  /** Navigation icon for chevron down */
-  ChevronDown: typeof ChevronDownIcon;
-  /** Navigation icon for chevron right */
-  ChevronRight: typeof ChevronRightIcon;
-  /** Navigation icon for arrow left */
-  ArrowLeft: typeof ArrowLeftIcon;
   /** UI icon for mail */
   Mail: typeof MailIcon;
   /** UI icon for briefcase */
   Briefcase: typeof BriefcaseIcon;
-  /** Navigation icon for arrow down */
-  ArrowDown: typeof ArrowDownIcon;
 };
 
 Icon.X = XIcon;
 Icon.Instagram = InstagramIcon;
-Icon.LinkedIn = LinkedInIcon;
+Icon.LinkedIn = LinkedinIcon;
 Icon.GitHub = GitHubIcon;
 Icon.Link = LinkIcon;
 Icon.Close = CloseIcon;
