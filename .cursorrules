@@ -111,6 +111,7 @@ components/component/
 - **Separate Types Files**: Only create `.types.ts` files when types are shared across multiple components
 - **Compound Component Types**: Define compound component types inline in main component file
 - **Data Types**: Keep `_data/` types simple - only constants, labels, and shared interfaces
+- **Type Documentation**: Document all exported types with JSDoc comments, document type properties with `/** */` comments
 
 ## Data Organization Standards
 
@@ -132,6 +133,43 @@ components/component/
 - **Main Usage**: Types used by main component and shared with internal sub-components
 - **Internal Usage**: Types used by sub-components within the same component family only
 - **Export Pattern**: Re-export from both `_types/index.ts` and `_internal/_types/index.ts` for clean imports
+
+## Type Documentation Standards
+
+- **Exported Types**: Always document exported types with JSDoc comments
+- **Type Properties**: Document all type properties with `/** */` comments
+- **Union Types**: Document each union variant with descriptive comments
+- **Interface Properties**: Document each interface property with purpose and constraints
+- **Type Aliases**: Document type aliases with their intended usage
+- **Generic Types**: Document generic type parameters and constraints
+- **One-liner Comments**: Use single-line `/** */` format instead of multiline for concise documentation
+- **JSDoc Titles**: Use uppercase for JSDoc comment titles only when they serve as section headers (e.g., `/** FOOTER LINK CONFIGURATION */`), otherwise use proper English casing (e.g., `/** Internal link */`)
+- **Example Pattern**:
+
+  ```typescript
+  /** FOOTER LINK CONFIGURATION FOR NAVIGATION AND EXTERNAL LINKS */
+  export type FooterLink =
+    | {
+        /** Internal link */
+        kind: "internal";
+        /** Link label */
+        label: string;
+        /** Link href */
+        href: React.ComponentProps<typeof Link>["href"];
+      }
+    | {
+        /** External link */
+        kind: "external";
+        /** Link label */
+        label: string;
+        /** Link href */
+        href: string;
+        /** Open link in new tab */
+        newTab?: boolean;
+        /** Link rel */
+        rel?: string;
+      };
+  ```
 
 ## Internal Component Standards
 
