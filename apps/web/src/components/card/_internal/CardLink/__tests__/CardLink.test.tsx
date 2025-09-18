@@ -47,10 +47,21 @@ vi.mock("@guyromellemagayano/utils", () => ({
     }
     return { target };
   }),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src !== "string") return false;
+    return src.trim() !== "";
+  }),
 }));
 
 vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("@web/utils", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
+  isActivePath: vi.fn(() => true),
 }));
 
 // Mock Next.js Link
@@ -127,9 +138,9 @@ vi.mock("../CardLinkCustom", () => ({
 // Mock CSS modules
 vi.mock("../CardLink.module.css", () => ({
   default: {
-    cardLinkBackground: "_cardLinkBackground_a29b80",
-    cardLinkClickableArea: "_cardLinkClickableArea_a29b80",
-    cardLinkContent: "_cardLinkContent_a29b80",
+    cardLinkBackground: "_cardLinkBackground_1e42ad",
+    cardLinkClickableArea: "_cardLinkClickableArea_1e42ad",
+    cardLinkContent: "_cardLinkContent_1e42ad",
   },
 }));
 
@@ -215,7 +226,7 @@ describe("CardLink", () => {
 
       const background = screen.getByTestId("test-id-card-link-root");
       expect(background).toBeInTheDocument();
-      expect(background).toHaveClass("_cardLinkBackground_a29b80");
+      expect(background).toHaveClass("_cardLinkBackground_1e42ad");
     });
 
     it("renders CardLinkCustom with clickable area and content when href is valid", () => {
@@ -269,7 +280,7 @@ describe("CardLink", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
       const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveClass("_cardLinkBackground_a29b80");
+      expect(container).toHaveClass("_cardLinkBackground_1e42ad");
     });
 
     it("combines CSS module + custom classes", () => {
@@ -281,7 +292,7 @@ describe("CardLink", () => {
 
       const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass(
-        "_cardLinkBackground_a29b80",
+        "_cardLinkBackground_1e42ad",
         "custom-class"
       );
     });
