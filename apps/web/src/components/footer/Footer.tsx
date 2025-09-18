@@ -7,7 +7,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components/Container";
+import { Container } from "@web/components";
 import { cn } from "@web/utils";
 
 import { FooterLegal, FooterNavigation } from "./_internal";
