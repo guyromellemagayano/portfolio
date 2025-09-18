@@ -143,6 +143,7 @@ describe("Container", () => {
   });
 
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 

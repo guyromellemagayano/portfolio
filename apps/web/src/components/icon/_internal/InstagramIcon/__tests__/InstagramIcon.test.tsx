@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import InstagramIcon from "../InstagramIcon";
@@ -32,6 +32,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 
 describe("InstagramIcon", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 
@@ -131,8 +132,12 @@ describe("InstagramIcon", () => {
     });
 
     it("handles all SVG attributes correctly", () => {
-      render(<InstagramIcon width="32" height="32" fill="currentColor" />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const { container } = render(
+        <InstagramIcon width="32" height="32" fill="currentColor" />
+      );
+      const icon = container.querySelector(
+        '[data-testid="test-id-icon-instagram-root"]'
+      );
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");
@@ -146,6 +151,7 @@ describe("InstagramIcon", () => {
 
 describe("InstagramIcon Specific Tests", () => {
   afterEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 

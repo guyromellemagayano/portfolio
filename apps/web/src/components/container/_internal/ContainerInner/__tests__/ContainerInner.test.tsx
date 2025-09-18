@@ -1,7 +1,7 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ContainerInner } from "../ContainerInner";
 
@@ -76,7 +76,7 @@ vi.mock("../ContainerInner.module.css", () => ({
 }));
 
 describe("ContainerInner", () => {
-  beforeEach(() => {
+  afterEach(() => {
     cleanup();
     vi.clearAllMocks();
   });
