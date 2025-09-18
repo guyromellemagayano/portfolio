@@ -4,6 +4,26 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Mock the utils FIRST
 vi.mock("@web/utils", () => ({
   clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
+  isActivePath: vi.fn(() => true),
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock the guyromellemagayano utils
+vi.mock("@guyromellemagayano/utils", () => ({
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  createComponentProps: vi.fn((id, componentName, debugMode) => ({
+    [`data-${componentName}-id`]: `${id}-${componentName}`,
+    "data-testid": `${id}-${componentName}-root`,
+    ...(debugMode && { "data-debug-mode": "true" }),
+  })),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src !== "string") return false;
+    return src.trim() !== "";
+  }),
 }));
 
 import { HeaderEffects } from "../HeaderEffects";
