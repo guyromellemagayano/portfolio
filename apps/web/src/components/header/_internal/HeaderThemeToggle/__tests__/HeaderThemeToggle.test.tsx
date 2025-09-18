@@ -1,10 +1,10 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderThemeToggle } from "../HeaderThemeToggle";
+import { HeaderThemeToggle } from "..";
 
 // Import shared mocks
-import "../../__tests__/__mocks__";
+import "../../../__tests__/__mocks__";
 
 // Individual mocks for this test file
 
@@ -30,6 +30,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@web/utils", () => ({
   isActivePath: vi.fn(() => true), // Always return true for testing
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
 // Mock the useComponentId hook
@@ -95,6 +96,11 @@ vi.mock("@guyromellemagayano/utils", () => ({
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
   }),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src !== "string") return false;
+    return src.trim() !== "";
+  }),
 }));
 
 // Mock Next.js Link component
@@ -143,7 +149,7 @@ vi.mock("../../../_data", () => ({
 }));
 
 // Mock CSS modules
-vi.mock("../styles/HeaderThemeToggle.module.css", () => ({
+vi.mock("../HeaderThemeToggle.module.css", () => ({
   default: {
     headerThemeToggleButton: "_headerThemeToggleButton_7f3a8b",
     headerThemeToggleSunIcon: "_headerThemeToggleSunIcon_7f3a8b",

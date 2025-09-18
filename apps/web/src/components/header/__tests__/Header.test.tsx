@@ -28,6 +28,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@web/utils", () => ({
   isActivePath: vi.fn(() => true), // Always return true for testing
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
 // Mock the useComponentId hook
@@ -223,7 +224,7 @@ vi.mock("../_internal/HeaderEffects", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../styles/Header.module.css", () => ({
+vi.mock("../Header.module.css", () => ({
   default: {
     headerComponent: "_headerComponent_43a792",
     headerSection: "_headerSection_43a792",

@@ -14,17 +14,17 @@ import {
 import { Icon } from "@web/components/Icon";
 import { cn } from "@web/utils";
 
-import { THEME_TOGGLE_LABELS } from "../_data";
-import styles from "./styles/HeaderThemeToggle.module.css";
+import { THEME_TOGGLE_LABELS } from "../../_data";
+import styles from "./HeaderThemeToggle.module.css";
 
 // ============================================================================
 // HEADER THEME TOGGLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface ThemeToggleProps
-  extends React.ComponentProps<"button">,
-    CommonComponentProps {}
-export type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
+interface ThemeToggleProps
+  extends React.ComponentPropsWithRef<"button">,
+    Omit<CommonComponentProps, "as"> {}
+type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
 
 // ============================================================================
 // BASE HEADER THEME TOGGLE COMPONENT
