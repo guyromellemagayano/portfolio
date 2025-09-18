@@ -11,21 +11,21 @@ import {
 import { cn } from "@web/utils";
 
 import {
-  CommonHeaderNavProps,
   DESKTOP_HEADER_NAV_LINKS,
-  HeaderComponentNavLinks,
-} from "../_data";
-import { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
-import styles from "./styles/HeaderDesktopNav.module.css";
+  type HeaderComponentNavLinks,
+} from "../../_data";
+import { HeaderDesktopNavItem } from "../../_internal";
+import { type CommonHeaderNavProps } from "../_types";
+import styles from "./HeaderDesktopNav.module.css";
 
 // ============================================================================
 // HEADER DESKTOP NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HeaderDesktopNavProps
-  extends React.ComponentProps<"nav">,
+interface HeaderDesktopNavProps
+  extends React.ComponentPropsWithRef<"nav">,
     CommonHeaderNavProps {}
-export type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
+type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV COMPONENT
@@ -36,13 +36,13 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
     const { className, links, _internalId, _debugMode, ...rest } = props;
 
-    const element = (
+    const element = hasValidNavigationLinks(links) ? (
       <nav
         {...rest}
-        className={cn(styles.HeaderDesktopNavList, className)}
+        className={cn(styles.headerDesktopNavList, className)}
         {...createComponentProps(_internalId, "header-desktop-nav", _debugMode)}
       >
-        {links?.map(({ label, href }) => (
+        {links.map(({ label, href }) => (
           <HeaderDesktopNavItem
             key={`${label}:${href}`}
             href={href}
@@ -53,7 +53,7 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
           </HeaderDesktopNavItem>
         ))}
       </nav>
-    );
+    ) : null;
 
     return element;
   }

@@ -29,6 +29,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@web/utils", () => ({
   isActivePath: vi.fn(() => true), // Always return true for testing
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
 // Mock the useComponentId hook
@@ -102,6 +103,11 @@ vi.mock("@guyromellemagayano/utils", () => ({
       rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
     };
   }),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src === "string") return src.trim() !== "";
+    return true;
+  }),
 }));
 
 // Mock Next.js Link component
@@ -123,9 +129,9 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock the CSS module
-vi.mock("../styles/HeaderAvatarContainer.module.css", () => ({
+vi.mock("../HeaderAvatarContainer.module.css", () => ({
   default: {
-    avatarContainer: "_avatarContainer_4d7e2a",
+    avatarContainer: "_avatarContainer_edd057",
   },
 }));
 
@@ -380,7 +386,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("_avatarContainer_4d7e2a");
+      expect(container).toHaveClass("_avatarContainer_edd057");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -389,7 +395,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("_avatarContainer_4d7e2a", "custom-class");
+      expect(container).toHaveClass("_avatarContainer_edd057", "custom-class");
     });
 
     it("handles multiple custom classes", () => {
@@ -399,7 +405,7 @@ describe("HeaderAvatarContainer", () => {
         "test-id-header-avatar-container-root"
       );
       expect(container).toHaveClass(
-        "_avatarContainer_4d7e2a",
+        "_avatarContainer_edd057",
         "custom-class another-class"
       );
     });
@@ -521,7 +527,7 @@ describe("HeaderAvatarContainer", () => {
         "test-id-header-avatar-container"
       );
       expect(container).not.toHaveAttribute("data-debug-mode");
-      expect(container).toHaveClass("_avatarContainer_4d7e2a");
+      expect(container).toHaveClass("_avatarContainer_edd057");
     });
 
     it("handles empty string className", () => {
@@ -530,7 +536,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("_avatarContainer_4d7e2a", "");
+      expect(container).toHaveClass("_avatarContainer_edd057", "");
     });
 
     it("handles null className", () => {
@@ -539,7 +545,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveClass("_avatarContainer_4d7e2a");
+      expect(container).toHaveClass("_avatarContainer_edd057");
     });
   });
 });
