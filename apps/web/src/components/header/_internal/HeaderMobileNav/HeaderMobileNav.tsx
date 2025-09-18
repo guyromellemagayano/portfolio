@@ -11,6 +11,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   filterValidNavigationLinks,
+  hasMeaningfulText,
   hasValidNavigationLinks,
   setDisplayName,
 } from "@guyromellemagayano/utils";
@@ -18,22 +19,22 @@ import {
 import { Icon } from "@web/components/Icon";
 
 import {
-  CommonHeaderNavProps,
   HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS,
-  HeaderComponentNavLinks,
+  type HeaderComponentNavLinks,
   MOBILE_HEADER_NAV_LINKS,
-} from "../_data";
-import { HeaderMobileNavItem } from "./HeaderMobileNavItem";
-import styles from "./styles/HeaderMobileNav.module.css";
+} from "../../_data";
+import { HeaderMobileNavItem } from "../../_internal";
+import { type CommonHeaderNavProps } from "../_types";
+import styles from "./HeaderMobileNav.module.css";
 
 // ============================================================================
 // HEADER MOBILE NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HeaderMobileNavProps
-  extends React.ComponentProps<typeof Popover>,
+interface HeaderMobileNavProps
+  extends React.ComponentPropsWithRef<typeof Popover>,
     CommonHeaderNavProps {}
-export type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
+type HeaderMobileNavComponent = React.FC<HeaderMobileNavProps>;
 
 // ============================================================================
 // BASE HEADER MOBILE NAV COMPONENT
@@ -49,37 +50,43 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
         {...rest}
         {...createComponentProps(_internalId, "header-mobile-nav", _debugMode)}
       >
-        <PopoverButton className={styles.HeaderMobileNavButton}>
+        <PopoverButton className={styles.mobileHeaderNavButton}>
           {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.menu ?? null}
           <Icon.ChevronDown
-            className={styles.HeaderMobileNavChevron}
+            className={styles.mobileHeaderNavChevron}
             _internalId={_internalId}
             _debugMode={_debugMode}
           />
         </PopoverButton>
         <PopoverBackdrop
           transition
-          className={styles.HeaderMobileNavBackdrop}
+          className={styles.mobileHeaderNavBackdrop}
         />
-        <PopoverPanel focus transition className={styles.HeaderMobileNavPanel}>
-          <div className={styles.HeaderMobileNavHeader}>
+        <PopoverPanel focus transition className={styles.mobileHeaderNavPanel}>
+          <div className={styles.mobileHeaderNavHeader}>
             <PopoverButton
               aria-label={
-                HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.closeMenu ?? ""
+                hasMeaningfulText(
+                  HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.closeMenu
+                )
+                  ? HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.closeMenu
+                  : undefined
               }
-              className={styles.HeaderMobileNavCloseButton}
+              className={styles.mobileHeaderNavCloseButton}
             >
-              <Icon.Close className={styles.HeaderMobileNavCloseIcon} />
+              <Icon.Close className={styles.mobileHeaderNavCloseIcon} />
             </PopoverButton>
-            {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.navigation ? (
-              <h2 className={styles.HeaderMobileNavTitle}>
+            {hasMeaningfulText(
+              HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS?.navigation
+            ) ? (
+              <h2 className={styles.mobileHeaderNavTitle}>
                 {HEADER_MOBILE_NAVIGATION_COMPONENT_LABELS.navigation}
               </h2>
             ) : null}
           </div>
-          {links ? (
-            <div className={styles.HeaderMobileNavContent}>
-              <nav className={styles.HeaderMobileNavList}>
+          {hasValidNavigationLinks(links) ? (
+            <nav className={styles.mobileHeaderNavContent}>
+              <ul className={styles.mobileHeaderNavList}>
                 {links.map(({ label, href }) => (
                   <HeaderMobileNavItem
                     key={`${label}:${href}`}
@@ -90,8 +97,8 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                     {label}
                   </HeaderMobileNavItem>
                 ))}
-              </nav>
-            </div>
+              </ul>
+            </nav>
           ) : null}
         </PopoverPanel>
       </Popover>
