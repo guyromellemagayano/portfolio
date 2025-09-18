@@ -4,22 +4,25 @@ import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 
-import { type HeaderComponentNavLinks } from "../_data";
+import { type HeaderComponentNavLinks } from "../../_data";
 
 // ============================================================================
-// COMMON TYPE DEFINITIONS
+// COMMON HEADER NAV PROPS
 // ============================================================================
 
-export interface CommonHeaderNavProps extends CommonComponentProps {
+export interface CommonHeaderNavProps extends Omit<CommonComponentProps, "as"> {
   links?: HeaderComponentNavLinks;
 }
 
+// ============================================================================
+// COMMON HEADER NAV ITEM PROPS
+// ============================================================================
+
 export interface CommonHeaderNavItemProps
-  extends React.ComponentProps<"li">,
+  extends React.ComponentPropsWithRef<"li">,
     Pick<
       React.ComponentPropsWithoutRef<typeof Link>,
       "href" | "target" | "title"
     >,
-    CommonComponentProps {}
-
+    Omit<CommonComponentProps, "as"> {}
 export type HeaderNavItemComponent = React.FC<CommonHeaderNavItemProps>;

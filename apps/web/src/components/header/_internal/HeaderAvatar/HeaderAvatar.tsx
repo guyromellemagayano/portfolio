@@ -16,15 +16,15 @@ import {
 
 import { cn } from "@web/utils";
 
-import { AVATAR_COMPONENT_LABELS } from "../_data";
-import styles from "./styles/HeaderAvatar.module.css";
+import { AVATAR_COMPONENT_LABELS } from "../../_data";
+import styles from "./HeaderAvatar.module.css";
 
 // ============================================================================
 // HEADER AVATAR COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HeaderAvatarProps
-  extends Omit<React.ComponentProps<typeof Link>, "href">,
+interface HeaderAvatarProps
+  extends Omit<React.ComponentPropsWithRef<typeof Link>, "href">,
     Omit<CommonComponentProps, "as"> {
   /** The href of the link. */
   href?: React.ComponentProps<typeof Link>["href"];
@@ -35,7 +35,7 @@ export interface HeaderAvatarProps
   /** Whether the avatar is large. */
   large?: boolean;
 }
-export type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
+type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
 
 // ============================================================================
 // BASE HEADER AVATAR COMPONENT

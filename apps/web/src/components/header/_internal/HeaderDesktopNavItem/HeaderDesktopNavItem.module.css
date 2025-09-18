@@ -1,5 +1,9 @@
 @reference "tailwindcss";
 
+/* Desktop navigation item */
+.desktopHeaderNavItem {
+}
+
 /* Desktop navigation item link */
 .desktopHeaderNavItemLink {
   @apply relative block px-3 py-2 transition;

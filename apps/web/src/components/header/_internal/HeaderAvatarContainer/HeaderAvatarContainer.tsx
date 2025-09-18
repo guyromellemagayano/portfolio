@@ -9,17 +9,16 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./styles/HeaderAvatarContainer.module.css";
+import styles from "./HeaderAvatarContainer.module.css";
 
 // ============================================================================
 // HEADER AVATAR CONTAINER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HeaderAvatarContainerProps
-  extends React.ComponentProps<"div">,
-    CommonComponentProps {}
-export type HeaderAvatarContainerComponent =
-  React.FC<HeaderAvatarContainerProps>;
+interface HeaderAvatarContainerProps
+  extends React.ComponentPropsWithRef<"div">,
+    Omit<CommonComponentProps, "as"> {}
+type HeaderAvatarContainerComponent = React.FC<HeaderAvatarContainerProps>;
 
 // ============================================================================
 // BASE HEADER AVATAR CONTAINER COMPONENT
