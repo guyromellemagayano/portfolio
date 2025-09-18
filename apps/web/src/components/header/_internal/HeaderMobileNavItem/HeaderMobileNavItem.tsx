@@ -10,8 +10,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import type { HeaderNavItemComponent } from "../_data";
-import styles from "./styles/HeaderMobileNavItem.module.css";
+import { type HeaderNavItemComponent } from "../_types";
+import styles from "./HeaderMobileNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER MOBILE NAV ITEM COMPONENT

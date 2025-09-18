@@ -3,10 +3,10 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderDesktopNav } from "../HeaderDesktopNav";
+import { HeaderDesktopNav } from "../../HeaderDesktopNav";
 
 // Import shared mocks
-import "../../__tests__/__mocks__";
+import "../../../__tests__/__mocks__";
 
 // Individual mocks for this test file
 
@@ -28,7 +28,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock the HeaderDesktopNavItem component FIRST
-vi.mock("../HeaderDesktopNavItem", () => ({
+vi.mock("HeaderDesktopNavItem", () => ({
   HeaderDesktopNavItem: ({
     href,
     children,
@@ -85,10 +85,63 @@ vi.mock("next/link", () => {
 
 // Mock the useComponentId hook
 
+// Mock the web utils
+vi.mock("@web/utils", () => ({
+  isActivePath: vi.fn(() => true), // Always return true for testing
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
+}));
+
+// Mock the guyromellemagayano utils
+vi.mock("@guyromellemagayano/utils", () => ({
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  createComponentProps: vi.fn((id, componentName, debugMode) => ({
+    [`data-${componentName}-id`]: `${id}-${componentName}`,
+    "data-testid": `${id}-${componentName}-root`,
+    ...(debugMode && { "data-debug-mode": "true" }),
+  })),
+  isRenderableContent: vi.fn((children) => {
+    if (children == null) return false;
+    if (typeof children === "string") return children.trim() !== "";
+    if (Array.isArray(children))
+      return children.some((child) => child != null && child !== "");
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => {
+    if (content == null) return false;
+    if (typeof content === "string") return content.trim() !== "";
+    if (Array.isArray(content))
+      return content.some((item) => item != null && item !== "");
+    return true;
+  }),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src !== "string") return false;
+    return src.trim() !== "";
+  }),
+  filterValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return [];
+    return links.filter((link) => link && link.href && link.href !== "#");
+  }),
+  hasValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return false;
+    return links.length > 0;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
+    }
+    return { target };
+  }),
+}));
+
 // Mock the CSS module
-vi.mock("../styles/HeaderDesktopNav.module.css", () => ({
+vi.mock("../HeaderDesktopNav.module.css", () => ({
   default: {
-    HeaderDesktopNavList: "_HeaderDesktopNavList_5a8b3c",
+    headerDesktopNavList: "_headerDesktopNavList_8c9b70",
   },
 }));
 
@@ -306,14 +359,14 @@ describe("HeaderDesktopNav", () => {
       render(<HeaderDesktopNav />);
 
       const nav = screen.getByRole("navigation");
-      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c");
+      expect(nav).toHaveClass("_headerDesktopNavList_8c9b70");
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<HeaderDesktopNav className="custom-class" />);
 
       const nav = screen.getByRole("navigation");
-      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c", "custom-class");
+      expect(nav).toHaveClass("_headerDesktopNavList_8c9b70", "custom-class");
     });
   });
 
@@ -389,7 +442,7 @@ describe("HeaderDesktopNav", () => {
 
       const nav = screen.getByRole("navigation");
       expect(nav).toBeInTheDocument();
-      expect(nav).toHaveClass("_HeaderDesktopNavList_5a8b3c");
+      expect(nav).toHaveClass("_headerDesktopNavList_8c9b70");
     });
   });
 });

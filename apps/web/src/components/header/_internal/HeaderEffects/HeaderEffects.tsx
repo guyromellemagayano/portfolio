@@ -1,4 +1,4 @@
-"use effect";
+"use client";
 
 import React, { useEffect } from "react";
 
@@ -11,9 +11,9 @@ import { clamp } from "@web/utils";
 // HEADER EFFECTS COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HeaderEffectsProps
-  extends React.ComponentProps<"div">,
-    CommonComponentProps {
+interface HeaderEffectsProps
+  extends React.ComponentPropsWithRef<"div">,
+    Omit<CommonComponentProps, "as"> {
   /** Reference to the header element. */
   headerEl: React.RefObject<React.ComponentRef<"div"> | null>;
   /** Reference to the avatar element. */
@@ -23,7 +23,7 @@ export interface HeaderEffectsProps
   /** Whether the initial render is complete. */
   isInitialRender: React.RefObject<boolean>;
 }
-export type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
+type HeaderEffectsComponent = React.FC<HeaderEffectsProps>;
 
 // ============================================================================
 // BASE HEADER EFFECTS COMPONENT

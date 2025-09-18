@@ -1,12 +1,14 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
+import Image from "next/image";
+import Link from "next/link";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderAvatar } from "../HeaderAvatar";
+import { HeaderAvatar } from "..";
 
 // Import shared mocks
-import "../../__tests__/__mocks__";
+import "../../../__tests__/__mocks__";
 
 // Individual mocks for this test file
 
@@ -32,6 +34,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("@web/utils", () => ({
   isActivePath: vi.fn(() => true), // Always return true for testing
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
 // Mock the useComponentId hook
@@ -118,24 +121,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-// Mock Next.js Link component
-vi.mock("next/link", () => ({
-  __esModule: true,
-  default: vi.fn(({ children, href, className, ...props }) => {
-    const React = require("react");
-    return React.createElement(
-      "a",
-      {
-        "data-testid": "next-link",
-        href,
-        className,
-        ...props,
-      },
-      children
-    );
-  }),
-}));
-
 // Mock the Header data
 vi.mock("../../../_data", () => ({
   AVATAR_COMPONENT_LABELS: {
@@ -152,7 +137,7 @@ vi.mock("next/image", () => ({
     function MockNextImage(props, ref) {
       const { src, alt, priority, sizes, className, ...rest } = props;
       return (
-        <img
+        <Image
           ref={ref}
           src={typeof src === "string" ? src : src.src}
           alt={alt}
@@ -173,7 +158,7 @@ vi.mock("next/link", () => ({
     function MockNextLink(props, ref) {
       const { children, href, className, ...rest } = props;
       return (
-        <a
+        <Link
           ref={ref}
           href={href}
           className={className}
@@ -181,14 +166,14 @@ vi.mock("next/link", () => ({
           {...rest}
         >
           {children}
-        </a>
+        </Link>
       );
     }
   ),
 }));
 
 // Mock the CSS module
-vi.mock("../styles/HeaderAvatar.module.css", () => ({
+vi.mock("../HeaderAvatar.module.css", () => ({
   default: {
     avatarLink: "_avatarLink_2f8a1b",
     avatarImage: "_avatarImage_2f8a1b",

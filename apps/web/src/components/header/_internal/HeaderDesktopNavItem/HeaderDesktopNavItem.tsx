@@ -15,8 +15,8 @@ import {
 
 import { cn, isActivePath } from "@web/utils";
 
-import { type HeaderNavItemComponent } from "../_data";
-import styles from "./styles/HeaderDesktopNavItem.module.css";
+import { type HeaderNavItemComponent } from "../_types";
+import styles from "./HeaderDesktopNavItem.module.css";
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV ITEM COMPONENT
@@ -25,8 +25,16 @@ import styles from "./styles/HeaderDesktopNavItem.module.css";
 /** A desktop navigation item component for the header. */
 const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderDesktopNavItem(props) {
-    const { children, href, target, title, _internalId, _debugMode, ...rest } =
-      props;
+    const {
+      children,
+      href,
+      target,
+      title,
+      className,
+      _internalId,
+      _debugMode,
+      ...rest
+    } = props;
 
     const pathname = usePathname();
     const isActive = isActivePath(pathname, href);
@@ -36,6 +44,7 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
     const element = (
       <li
         {...rest}
+        className={cn(styles.desktopHeaderNavItem, className)}
         {...createComponentProps(
           _internalId,
           "header-desktop-nav-item",
@@ -57,7 +66,7 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
         >
           {children}
           {isActive && (
-            <span className={styles.desktopHeaderNavItemActiveIndicator} />
+            <span className={styles.desktopHeaderNavActiveIndicator} />
           )}
         </Link>
       </li>
