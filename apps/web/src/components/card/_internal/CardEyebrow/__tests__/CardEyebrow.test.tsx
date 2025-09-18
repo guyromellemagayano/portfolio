@@ -40,17 +40,28 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
+  isValidImageSrc: vi.fn((src) => {
+    if (!src) return false;
+    if (typeof src !== "string") return false;
+    return src.trim() !== "";
+  }),
 }));
 
 vi.mock("@web/lib", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+vi.mock("@web/utils", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
+  isActivePath: vi.fn(() => true),
+}));
+
 // Mock CSS modules
 vi.mock("../CardEyebrow.module.css", () => ({
   default: {
-    cardEyebrow: "_cardEyebrow_8f2a1c",
-    cardEyebrowDecorated: "_cardEyebrowDecorated_8f2a1c",
+    cardEyebrow: "_cardEyebrow_578332",
+    cardEyebrowDecorated: "_cardEyebrowDecorated_578332",
   },
 }));
 
@@ -209,14 +220,14 @@ describe("CardEyebrow", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrow_8f2a1c");
+      expect(eyebrow).toHaveClass("_cardEyebrow_578332");
     });
 
     it("combines CSS module + custom classes", () => {
       render(<CardEyebrow className="custom-class">Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrow_8f2a1c", "custom-class");
+      expect(eyebrow).toHaveClass("_cardEyebrow_578332", "custom-class");
     });
   });
 
@@ -257,7 +268,7 @@ describe("CardEyebrow", () => {
       render(<CardEyebrow decorate>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrowDecorated_8f2a1c");
+      expect(eyebrow).toHaveClass("_cardEyebrowDecorated_578332");
     });
 
     it("does not apply decoration when decorate is false", () => {
@@ -352,8 +363,8 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
-        "_cardEyebrow_8f2a1c",
-        "_cardEyebrowDecorated_8f2a1c",
+        "_cardEyebrow_578332",
+        "_cardEyebrowDecorated_578332",
         "custom-class"
       );
     });
@@ -381,8 +392,8 @@ describe("CardEyebrow", () => {
       const eyebrow = screen.getByTestId("multi-prop-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
         "multi-class",
-        "_cardEyebrow_8f2a1c",
-        "_cardEyebrowDecorated_8f2a1c"
+        "_cardEyebrow_578332",
+        "_cardEyebrowDecorated_578332"
       );
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
       expect(eyebrow).toHaveAttribute(
