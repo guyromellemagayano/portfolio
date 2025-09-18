@@ -37,6 +37,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
 describe("Icon", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   // ============================================================================
@@ -443,81 +444,101 @@ describe("Icon", () => {
 
     describe("Social Icon Integration", () => {
       it("renders X (Twitter) icon correctly", () => {
-        render(<Icon.X />);
-        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+        const { container } = render(<Icon.X />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-x-twitter-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Instagram icon correctly", () => {
-        render(<Icon.Instagram />);
-        const icon = screen.getByTestId("test-id-icon-instagram-root");
+        const { container } = render(<Icon.Instagram />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-instagram-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders LinkedIn icon correctly", () => {
-        render(<Icon.LinkedIn />);
-        const icon = screen.getByTestId("test-id-icon-linkedin-root");
+        const { container } = render(<Icon.LinkedIn />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-linkedin-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders GitHub icon correctly", () => {
-        render(<Icon.GitHub />);
-        const icon = screen.getByTestId("test-id-icon-github-root");
+        const { container } = render(<Icon.GitHub />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-github-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
     });
 
     describe("UI Icon Integration", () => {
       it("renders Close icon correctly", () => {
-        render(<Icon.Close />);
-        const icon = screen.getByTestId("test-id-icon-close-root");
+        const { container } = render(<Icon.Close />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-close-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Sun icon correctly", () => {
-        render(<Icon.Sun />);
-        const icon = screen.getByTestId("test-id-icon-sun-root");
+        const { container } = render(<Icon.Sun />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-sun-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Moon icon correctly", () => {
-        render(<Icon.Moon />);
-        const icon = screen.getByTestId("test-id-icon-moon-root");
+        const { container } = render(<Icon.Moon />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-moon-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ChevronDown icon correctly", () => {
-        render(<Icon.ChevronDown />);
-        const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+        const { container } = render(<Icon.ChevronDown />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-chevron-down-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ChevronRight icon correctly", () => {
-        render(<Icon.ChevronRight />);
-        const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+        const { container } = render(<Icon.ChevronRight />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-chevron-right-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ArrowLeft icon correctly", () => {
-        render(<Icon.ArrowLeft />);
-        const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+        const { container } = render(<Icon.ArrowLeft />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-arrow-left-root"]'
+        );
         expect(icon).toBeInTheDocument();
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
     });
 
     describe("Icon with Custom Props", () => {
       it("renders social icons with custom props", () => {
-        render(
+        const { container } = render(
           <Icon.X
             _internalId="custom-x"
             _debugMode={true}
@@ -526,7 +547,9 @@ describe("Icon", () => {
             height="32"
           />
         );
-        const icon = screen.getByTestId("custom-x-icon-x-twitter-root");
+        const icon = container.querySelector(
+          '[data-testid="custom-x-icon-x-twitter-root"]'
+        );
         expect(icon).toBeInTheDocument();
         expect(icon).toHaveAttribute(
           "data-icon-x-twitter-id",
@@ -539,7 +562,7 @@ describe("Icon", () => {
       });
 
       it("renders UI icons with custom props", () => {
-        render(
+        const { container } = render(
           <Icon.Close
             _internalId="custom-close"
             _debugMode={true}
@@ -548,7 +571,9 @@ describe("Icon", () => {
             stroke="black"
           />
         );
-        const icon = screen.getByTestId("custom-close-icon-close-root");
+        const icon = container.querySelector(
+          '[data-testid="custom-close-icon-close-root"]'
+        );
         expect(icon).toBeInTheDocument();
         expect(icon).toHaveAttribute(
           "data-icon-close-id",
@@ -563,24 +588,28 @@ describe("Icon", () => {
 
     describe("Icon Accessibility", () => {
       it("renders icons with proper accessibility attributes", () => {
-        render(
+        const { container } = render(
           <Icon.X
             role="img"
             aria-label="X (Twitter) icon"
             title="X (Twitter)"
           />
         );
-        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-x-twitter-root"]'
+        );
         expect(icon).toHaveAttribute("role", "img");
         expect(icon).toHaveAttribute("aria-label", "X (Twitter) icon");
         expect(icon).toHaveAttribute("title", "X (Twitter)");
       });
 
       it("renders icons with proper focus handling", () => {
-        render(
+        const { container } = render(
           <Icon.Close tabIndex={0} onFocus={() => {}} onBlur={() => {}} />
         );
-        const icon = screen.getByTestId("test-id-icon-close-root");
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-close-root"]'
+        );
         // Note: tabIndex may not be applied in test environment
         // but the icon should render correctly
         expect(icon).toBeInTheDocument();
@@ -589,7 +618,7 @@ describe("Icon", () => {
 
     describe("Icon Performance", () => {
       it("renders multiple icons efficiently", () => {
-        render(
+        const { container } = render(
           <div>
             <Icon.X />
             <Icon.Instagram />
@@ -600,29 +629,33 @@ describe("Icon", () => {
         );
 
         expect(
-          screen.getByTestId("test-id-icon-x-twitter-root")
+          container.querySelector('[data-testid="test-id-icon-x-twitter-root"]')
         ).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-id-icon-instagram-root")
+          container.querySelector('[data-testid="test-id-icon-instagram-root"]')
         ).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-id-icon-linkedin-root")
+          container.querySelector('[data-testid="test-id-icon-linkedin-root"]')
         ).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-id-icon-github-root")
+          container.querySelector('[data-testid="test-id-icon-github-root"]')
         ).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-id-icon-close-root")
+          container.querySelector('[data-testid="test-id-icon-close-root"]')
         ).toBeInTheDocument();
       });
 
       it("handles icon updates efficiently", () => {
-        const { rerender } = render(<Icon.X />);
-        const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+        const { rerender, container } = render(<Icon.X />);
+        const icon = container.querySelector(
+          '[data-testid="test-id-icon-x-twitter-root"]'
+        );
         expect(icon).toBeInTheDocument();
 
         rerender(<Icon.X className="updated-class" />);
-        const updatedIcon = screen.getByTestId("test-id-icon-x-twitter-root");
+        const updatedIcon = container.querySelector(
+          '[data-testid="test-id-icon-x-twitter-root"]'
+        );
         expect(updatedIcon).toHaveClass("updated-class");
       });
     });
