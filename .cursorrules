@@ -189,6 +189,305 @@ components/component/
 - **Test Structure**: Arrange/Act/Assert pattern
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
 
+### Test Cleanup Implementation
+
+- **Import Pattern**: Always import `cleanup` from `@testing-library/react` and `afterEach` from `vitest`
+- **Cleanup Hook**: Implement `afterEach(() => { cleanup(); vi.clearAllMocks(); })` in all test files
+- **Test Isolation**: Ensures DOM is reset between tests, preventing "Found multiple elements" errors
+- **Mock Reset**: Clears mock state between tests for consistent behavior
+- **Required Pattern**:
+
+```typescript
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+describe("ComponentName", () => {
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  // Test cases...
+});
+```
+
+- **Why**: Prevents test interference, ensures reliable test results, maintains clean DOM state
+- **When**: Required in ALL test files - main component tests and internal sub-component tests
+- **Exception**: None - this pattern is mandatory for all component tests
+
+### Standard Test Categories
+
+Every component should include these test categories:
+
+#### **1. Basic Rendering Tests**
+
+- ✅ Renders children correctly
+- ✅ Applies custom className
+- ✅ Renders with debug mode enabled
+- ✅ Renders with custom component ID
+- ✅ Passes through HTML attributes
+
+#### **2. Content Validation Tests**
+
+- ✅ Does not render when no content
+- ✅ Handles null/undefined/empty children
+- ✅ Validates content with `hasAnyRenderableContent`
+
+#### **3. Debug Mode Tests**
+
+- ✅ Applies data-debug-mode when enabled
+- ✅ Does not apply when disabled/undefined
+
+#### **4. Component Structure Tests**
+
+- ✅ Renders as correct element type
+- ✅ Applies correct CSS classes
+- ✅ Combines CSS module + custom classes
+
+#### **5. Ref Forwarding Tests**
+
+- ✅ Forwards ref correctly
+- ✅ Ref points to correct element
+
+#### **6. Accessibility Tests**
+
+- ✅ Proper semantic structure
+- ✅ Correct data attributes for debugging
+
+#### **7. Edge Cases Tests**
+
+- ✅ Complex children content
+- ✅ Special characters
+- ✅ Empty strings
+
+#### **8. Component-Specific Tests**
+
+- ✅ Test unique component features (e.g., `brandName` for FooterBrand, `href` for CardCta)
+- ✅ Test component-specific logic and behavior
+
+### Test File Structure
+
+```typescript
+import React from "react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { ComponentName } from "../ComponentName";
+
+// Mock dependencies
+vi.mock("@guyromellemagayano/components", () => ({
+  Div: vi.fn(({ children, ...props }) => (
+    <div data-testid="grm-div" {...props}>
+      {children}
+    </div>
+  )),
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+}));
+
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("../ComponentName.module.css", () => ({
+  default: { componentName: "componentName" },
+}));
+
+describe("ComponentName", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("Basic Rendering", () => {
+    // Test cases...
+  });
+
+  describe("Content Validation", () => {
+    // Test cases...
+  });
+
+  // Additional test categories...
+});
+```
+
+### Mocking Standards
+
+#### **Required Mocks for All Components**
+
+```typescript
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+// Mock utility functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+}));
+
+// Mock CSS modules
+vi.mock("../ComponentName.module.css", () => ({
+  default: { componentName: "componentName" },
+}));
+```
+
+#### **Component-Specific Mocks**
+
+- **Next.js Components**: Mock `next/link`, `next/image`, `next/navigation`
+- **External Libraries**: Mock `@headlessui/react`, `react-intersection-observer`
+- **Internal Components**: Mock sibling components and sub-components
+- **CSS Modules**: Always mock with consistent naming pattern
+
+### Test Query Standards
+
+#### **Preferred Query Methods (in order)**
+
+1. **`getByRole`** - Most accessible, user-focused
+2. **`getByLabelText`** - For form elements
+3. **`getByPlaceholderText`** - For inputs
+4. **`getByText`** - For text content
+5. **`getByDisplayValue`** - For form values
+6. **`getByTestId`** - Last resort, use with `data-testid`
+
+#### **Avoid These Queries**
+
+- ❌ `getByClassName` - Brittle, implementation detail
+- ❌ `getById` - Not user-focused
+- ❌ `querySelector` - Too generic, bypasses RTL benefits
+
+### Test Data Attributes
+
+#### **Standard Test IDs**
+
+```typescript
+// Component root elements
+data-testid="${id}-${componentType}-root"
+
+// Examples:
+data-testid="test-id-card-root"
+data-testid="test-id-header-root"
+data-testid="test-id-footer-root"
+```
+
+#### **Debug Attributes**
+
+```typescript
+// Debug mode
+data-debug-mode="true" // when enabled
+// No attribute when disabled
+
+// Component IDs
+data-${componentType}-id="${id}-${componentType}"
+// Examples:
+data-card-id="test-id-card"
+data-header-id="test-id-header"
+```
+
+### Integration Test Standards
+
+#### **Compound Component Testing**
+
+```typescript
+describe("Integration Tests", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("Component with Sub-components", () => {
+    it("renders Component with all sub-components", () => {
+      render(
+        <Component>
+          <Component.SubComponent>Sub content</Component.SubComponent>
+          <Component.AnotherSub>Another content</Component.AnotherSub>
+        </Component>
+      );
+
+      expect(screen.getByText("Sub content")).toBeInTheDocument();
+      expect(screen.getByText("Another content")).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### Performance Testing
+
+#### **Memoization Tests**
+
+```typescript
+describe("Memoization", () => {
+  it("renders with memoization when isMemoized is true", () => {
+    render(<Component isMemoized={true}>Content</Component>);
+    expect(screen.getByText("Content")).toBeInTheDocument();
+  });
+
+  it("does not memoize when isMemoized is false", () => {
+    const { rerender } = render(<Component isMemoized={false}>Content</Component>);
+
+    rerender(<Component isMemoized={false}>Different content</Component>);
+    expect(screen.getByText("Different content")).toBeInTheDocument();
+  });
+});
+```
+
+### Error Handling Tests
+
+#### **Edge Cases**
+
+```typescript
+describe("Edge Cases", () => {
+  it("handles complex children content", () => {
+    render(
+      <Component>
+        <span>Complex</span> <strong>content</strong>
+      </Component>
+    );
+
+    expect(screen.getByText("Complex")).toBeInTheDocument();
+    expect(screen.getByText("content")).toBeInTheDocument();
+  });
+
+  it("handles special characters", () => {
+    render(<Component>Special chars: &lt;&gt;&amp;</Component>);
+    expect(screen.getByText(/Special chars:/)).toBeInTheDocument();
+  });
+});
+```
+
 ## Component Composition Patterns
 
 ### Main Component Pattern
