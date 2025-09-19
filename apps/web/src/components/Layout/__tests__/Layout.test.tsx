@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Layout } from "../Layout";
+import Layout from "../Layout";
 
 // ============================================================================
 // MOCKS
@@ -53,12 +53,12 @@ vi.mock("next/link", () => ({
 
 // Mock Header and Footer components
 vi.mock("@web/components", () => ({
-  Header: vi.fn(({ children, ...props }) => (
+  Header: vi.fn(({ children, internalId, debugMode, ...props }) => (
     <header data-testid="header" role="banner" {...props}>
       {children}
     </header>
   )),
-  Footer: vi.fn(({ children, ...props }) => (
+  Footer: vi.fn(({ children, internalId, debugMode, ...props }) => (
     <footer data-testid="footer" role="contentinfo" {...props}>
       {children}
     </footer>
@@ -86,6 +86,15 @@ vi.mock("../Layout.module.css", () => ({
     layoutMain: "_layoutMain_4402d3",
     skipLink: "_skipLink_4402d3",
   },
+}));
+
+// Mock internal components
+vi.mock("../_internal", () => ({
+  SimpleLayout: vi.fn(({ children, ...props }) => (
+    <div data-testid="simple-layout" {...props}>
+      {children}
+    </div>
+  )),
 }));
 
 // Mock data
@@ -179,9 +188,9 @@ describe("Layout", () => {
     it("renders skip link with correct attributes", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const skipLink = screen.getByTestId("next-link");
+      const skipLink = screen.getByTestId("test-id-link-root");
       expect(skipLink).toBeInTheDocument();
-      expect(skipLink).toHaveAttribute("href", "#main-content");
+      expect(skipLink).toHaveAttribute("href", "#test-id-layout-main");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
       expect(skipLink).toHaveClass("_skipLink_4402d3");
     });
@@ -211,7 +220,7 @@ describe("Layout", () => {
 
       const main = screen.getByRole("main");
       expect(main).toBeInTheDocument();
-      expect(main).toHaveAttribute("id", "main-content");
+      expect(main).toHaveAttribute("id", "test-id-layout-main");
       expect(main).toHaveAttribute("role", "main");
       expect(main).toHaveClass("_layoutMain_4402d3");
     });
@@ -374,7 +383,6 @@ describe("Layout", () => {
     it("accepts all div HTML attributes", () => {
       render(
         <Layout
-          id="test-id"
           className="test-class"
           data-test="test-data"
           aria-label="Test label"
@@ -384,7 +392,7 @@ describe("Layout", () => {
       );
 
       const layout = screen.getByTestId("test-id-layout-root");
-      expect(layout).toHaveAttribute("id", "test-id");
+      expect(layout).toHaveAttribute("id", "test-id-layout-root");
       expect(layout).toHaveAttribute("data-test", "test-data");
       expect(layout).toHaveAttribute("aria-label", "Test label");
     });
@@ -414,8 +422,8 @@ describe("Layout", () => {
     it("provides working skip link for accessibility", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const skipLink = screen.getByTestId("next-link");
-      expect(skipLink).toHaveAttribute("href", "#main-content");
+      const skipLink = screen.getByTestId("test-id-link-root");
+      expect(skipLink).toHaveAttribute("href", "#test-id-layout-main");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
     });
 
@@ -427,6 +435,23 @@ describe("Layout", () => {
         .querySelector("._layoutBackgroundWrapper_4402d3");
       expect(backgroundWrapper).toHaveAttribute("aria-hidden", "true");
       expect(backgroundWrapper).toHaveAttribute("inert");
+    });
+  });
+
+  describe("Compound Components", () => {
+    it("renders Layout.Simple component", () => {
+      render(
+        <Layout.Simple title="Test Title" intro="Test intro">
+          {mockChildren}
+        </Layout.Simple>
+      );
+
+      const simpleLayout = screen.getByTestId("simple-layout");
+      expect(simpleLayout).toBeInTheDocument();
+    });
+
+    it("compound components are properly attached to Layout", () => {
+      expect(Layout.Simple).toBeDefined();
     });
   });
 
@@ -713,9 +738,9 @@ describe("Layout", () => {
       it("renders skip link correctly", () => {
         render(<Layout>{mockChildren}</Layout>);
 
-        const skipLink = screen.getByTestId("next-link");
+        const skipLink = screen.getByTestId("test-id-link-root");
         expect(skipLink).toBeInTheDocument();
-        expect(skipLink).toHaveAttribute("href", "#main-content");
+        expect(skipLink).toHaveAttribute("href", "#test-id-layout-main");
         expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
       });
 

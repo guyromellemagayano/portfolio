@@ -12,7 +12,6 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components/Container";
 import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "../../_data";
@@ -23,8 +22,8 @@ import styles from "./SimpleLayout.module.css";
 // ============================================================================
 
 interface SimpleLayoutProps
-  extends React.ComponentProps<typeof Container>,
-    Omit<CommonComponentProps, "as"> {
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {
   /** Page title */
   title: string;
   /** Page introduction */
@@ -50,15 +49,22 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
     } = props;
 
     const element = (
-      <Container
+      <div
         {...rest}
+        id={`${_internalId}-simple-layout-root`}
         className={cn(styles.simpleLayoutContainer, className)}
         {...createComponentProps(_internalId, "simple-layout", _debugMode)}
       >
         <Link
           href="#main-content"
+          id={`${_internalId}-simple-layout-link`}
           className={styles.skipLink}
           aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+          {...createComponentProps(
+            _internalId,
+            "simple-layout-link",
+            _debugMode
+          )}
         >
           {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
         </Link>
@@ -67,6 +73,11 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
             <h1
               id={`${_internalId}-simple-layout-title`}
               className={styles.simpleLayoutTitle}
+              {...createComponentProps(
+                _internalId,
+                "simple-layout-title",
+                _debugMode
+              )}
             >
               {title}
             </h1>
@@ -75,6 +86,11 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
             <p
               id={`${_internalId}-simple-layout-intro`}
               className={styles.simpleLayoutIntro}
+              {...createComponentProps(
+                _internalId,
+                "simple-layout-intro",
+                _debugMode
+              )}
             >
               {intro}
             </p>
@@ -85,11 +101,16 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
             id={`${_internalId}-simple-layout-main-content`}
             role="main"
             className={styles.simpleLayoutContent}
+            {...createComponentProps(
+              _internalId,
+              "simple-layout-content",
+              _debugMode
+            )}
           >
             {children}
           </main>
         ) : null}
-      </Container>
+      </div>
     );
 
     return element;
@@ -108,7 +129,7 @@ const MemoizedSimpleLayout = React.memo(BaseSimpleLayout);
 // ============================================================================
 
 /** A simple layout component that provides a consistent layout for page content. */
-export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
+const SimpleLayout: SimpleLayoutComponent = setDisplayName(
   function SimpleLayout(props) {
     const {
       children,
@@ -117,14 +138,12 @@ export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
       isMemoized = false,
       internalId,
       debugMode,
-      _internalId,
-      _debugMode,
       ...rest
     } = props;
 
     const { id, isDebugMode } = useComponentId({
-      internalId: internalId || _internalId,
-      debugMode: debugMode || _debugMode,
+      internalId,
+      debugMode,
     });
 
     if (
@@ -147,3 +166,5 @@ export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
     return element;
   }
 );
+
+export default SimpleLayout;
