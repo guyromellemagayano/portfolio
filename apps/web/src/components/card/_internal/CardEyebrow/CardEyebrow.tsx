@@ -18,7 +18,7 @@ import styles from "./CardEyebrow.module.css";
 
 interface CardEyebrowProps
   extends React.ComponentPropsWithRef<"p">,
-    Omit<CommonComponentProps, "as"> {
+    CommonComponentProps {
   /** ISO date string for the eyebrow content */
   dateTime?: string;
   /** Enable decorative styling */
@@ -34,6 +34,7 @@ type CardEyebrowComponent = React.FC<CardEyebrowProps>;
 const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
   function BaseCardEyebrow(props) {
     const {
+      as: Component = "p",
       children,
       className,
       _internalId,
@@ -44,7 +45,7 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
     } = props;
 
     const element = (
-      <p
+      <Component
         {...rest}
         className={cn(
           styles.cardEyebrow,
@@ -54,7 +55,7 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
         {...createComponentProps(_internalId, "card-eyebrow", _debugMode)}
       >
         {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
-      </p>
+      </Component>
     );
 
     return element;
