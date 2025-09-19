@@ -8,10 +8,7 @@ export default [
       "import/resolver": {
         typescript: {
           project: ["./tsconfig.json"],
-        },
-        alias: {
-          map: [["@web", "./src/"]],
-          extensions: [".ts", ".tsx"],
+          alwaysTryTypes: true,
         },
       },
     },
