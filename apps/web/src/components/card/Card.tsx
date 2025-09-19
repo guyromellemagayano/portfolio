@@ -25,7 +25,7 @@ import styles from "./Card.module.css";
 
 interface CardProps
   extends React.ComponentPropsWithRef<"article">,
-    Omit<CommonComponentProps, "as"> {}
+    CommonComponentProps {}
 type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
@@ -34,16 +34,23 @@ type CardComponent = React.FC<CardProps>;
 
 /** A flexible card component for displaying grouped content with optional subcomponents */
 const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
-  const { children, className, internalId, debugMode, ...rest } = props;
+  const {
+    as: Component = "article",
+    children,
+    className,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
 
   const element = (
-    <article
+    <Component
       {...rest}
       className={cn(styles.card, className)}
       {...createComponentProps(internalId, "card", debugMode)}
     >
       {children}
-    </article>
+    </Component>
   );
 
   return element;
