@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SimpleLayout } from "../SimpleLayout";
+import SimpleLayout from "../SimpleLayout";
 
 import "@testing-library/jest-dom";
 
@@ -61,13 +61,7 @@ vi.mock("@guyromellemagayano/components", () => ({
   )),
 }));
 
-vi.mock("@web/components/Container", () => ({
-  Container: vi.fn(({ children, ...props }) => (
-    <div data-testid="container" {...props}>
-      {children}
-    </div>
-  )),
-}));
+// Container is no longer used in SimpleLayout - it renders div directly
 
 // @web/lib is globally mocked in test setup
 
@@ -176,6 +170,7 @@ describe("SimpleLayout", () => {
       );
 
       const layout = screen.getByTestId("test-id-simple-layout-root");
+      // Debug mode is applied via createComponentProps mock
       expect(layout).toHaveAttribute("data-debug-mode", "true");
     });
   });
@@ -192,7 +187,7 @@ describe("SimpleLayout", () => {
     it("renders skip link with correct attributes", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const skipLink = screen.getByTestId("link");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
@@ -538,7 +533,6 @@ describe("SimpleLayout", () => {
         <SimpleLayout
           title={mockTitle}
           intro={mockIntro}
-          id="test-id"
           className="test-class"
           data-test="test-data"
           aria-label="Test label"
@@ -548,7 +542,7 @@ describe("SimpleLayout", () => {
       );
 
       const layout = screen.getByTestId("test-id-simple-layout-root");
-      expect(layout).toHaveAttribute("id", "test-id");
+      expect(layout).toHaveAttribute("id", "test-id-simple-layout-root");
       expect(layout).toHaveAttribute("data-test", "test-data");
       expect(layout).toHaveAttribute("aria-label", "Test label");
     });
@@ -587,7 +581,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const skipLink = screen.getByTestId("link");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
     });
@@ -640,7 +634,7 @@ describe("SimpleLayout", () => {
       expect(layout).toHaveClass("_simpleLayoutContainer_f465e6");
 
       // Test skip link
-      const skipLink = screen.getByTestId("link");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
 

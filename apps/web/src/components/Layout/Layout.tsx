@@ -14,7 +14,7 @@ import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
-import { ArticleLayout, SimpleLayout } from "./_internal";
+import { SimpleLayout } from "./_internal";
 import styles from "./Layout.module.css";
 
 // ============================================================================
@@ -23,7 +23,7 @@ import styles from "./Layout.module.css";
 
 interface LayoutProps
   extends React.ComponentProps<"div">,
-    Omit<CommonComponentProps, "as"> {}
+    CommonComponentProps {}
 type LayoutComponent = React.FC<LayoutProps>;
 
 // ============================================================================
@@ -37,24 +37,66 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
   const element = (
     <div
       {...rest}
+      id={`${internalId}-layout-root`}
       className={cn(styles.layoutContainer, className)}
       {...createComponentProps(internalId, "layout", debugMode)}
     >
       <Link
-        href="#main-content"
+        href={`#${internalId}-layout-main`}
+        id={`${internalId}-layout-link`}
         className={styles.skipLink}
         aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+        {...createComponentProps(internalId, "link", debugMode)}
       >
         {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
       </Link>
-      <div className={styles.layoutBackgroundWrapper} aria-hidden="true" inert>
-        <div className={styles.layoutBackgroundContent}>
-          <div className={styles.layoutBackground} />
+      <div
+        id={`${internalId}-layout-background-wrapper`}
+        className={styles.layoutBackgroundWrapper}
+        aria-hidden="true"
+        inert
+        {...createComponentProps(
+          internalId,
+          "layout-background-wrapper",
+          debugMode
+        )}
+      >
+        <div
+          id={`${internalId}-layout-background-content`}
+          className={styles.layoutBackgroundContent}
+          {...createComponentProps(
+            internalId,
+            "layout-background-content",
+            debugMode
+          )}
+        >
+          <div
+            id={`${internalId}-layout-background`}
+            className={styles.layoutBackground}
+            {...createComponentProps(
+              internalId,
+              "layout-background",
+              debugMode
+            )}
+          />
         </div>
       </div>
-      <div className={styles.layoutContentWrapper}>
+      <div
+        id={`${internalId}-layout-content-wrapper`}
+        className={styles.layoutContentWrapper}
+        {...createComponentProps(
+          internalId,
+          "layout-content-wrapper",
+          debugMode
+        )}
+      >
         <Header role="banner" internalId={internalId} debugMode={debugMode} />
-        <main id="main-content" role="main" className={styles.layoutMain}>
+        <main
+          role="main"
+          id={`${internalId}-layout-main`}
+          className={styles.layoutMain}
+          {...createComponentProps(internalId, "layout-main", debugMode)}
+        >
           {children}
         </main>
         <Footer
@@ -81,7 +123,7 @@ const MemoizedBaseLayout = React.memo(BaseLayout);
 // ============================================================================
 
 /** A layout component that provides the base page structure with header, main, and footer sections. */
-export const Layout = setDisplayName(function Layout(props) {
+const Layout = setDisplayName(function Layout(props) {
   const {
     children,
     isMemoized = false,
@@ -115,9 +157,8 @@ export const Layout = setDisplayName(function Layout(props) {
 type LayoutCompoundComponent = React.FC<LayoutProps> & {
   /** A simple layout component that provides a consistent layout for page content. */
   Simple: typeof SimpleLayout;
-  /** An article layout component that provides a consistent layout for an article. */
-  Article: typeof ArticleLayout;
 };
 
 Layout.Simple = SimpleLayout;
-Layout.Article = ArticleLayout;
+
+export default Layout;
