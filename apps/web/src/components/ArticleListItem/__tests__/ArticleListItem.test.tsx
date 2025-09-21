@@ -95,7 +95,9 @@ vi.mock("@web/components", () => ({
           return (
             <p ref={ref} data-testid="mock-card-eyebrow" {...rest}>
               {dateTime ? (
-                <time dateTime={dateTime}>{children}</time>
+                <time dateTime={dateTime} {...rest}>
+                  {children}
+                </time>
               ) : (
                 children
               )}
@@ -135,10 +137,18 @@ vi.mock("../ArticleListItem.module.css", () => ({
   },
 }));
 
-// Mock data
-vi.mock("../_data", () => ({
-  ARTICLE_LIST_ITEM_COMPONENT_LABELS: {
+// Mock shared data
+vi.mock("../../_shared", () => ({
+  ARTICLE_COMPONENT_LABELS: {
     cta: "Read article",
+    goBackToArticles: "Go back to articles",
+    articleContent: "Article content",
+    articleLayout: "Article layout",
+    articleHeader: "Article header",
+    articleTitle: "Article title",
+    articleDate: "Published on",
+    articleList: "Article list",
+    articles: "Articles",
   },
 }));
 
@@ -720,10 +730,11 @@ describe("ArticleListItem", () => {
       );
 
       const articleElement = screen.getByTestId("mock-card");
+      // Component now has its own aria-labelledby and aria-describedby
       expect(articleElement).toHaveAttribute("aria-label", "Article item");
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "article-description"
+        "test-id-article-card-description"
       );
     });
 
@@ -731,7 +742,273 @@ describe("ArticleListItem", () => {
       render(<ArticleListItem article={mockArticle} role="listitem" />);
 
       const articleElement = screen.getByTestId("mock-card");
-      expect(articleElement).toHaveAttribute("role", "listitem");
+      // Component now has its own role="article"
+      expect(articleElement).toHaveAttribute("role", "article");
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to main elements", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      // Test article role
+      const articleElements = screen.getAllByRole("article");
+      expect(articleElements).toHaveLength(2); // wrapper + card
+
+      // Test heading role
+      const headingElement = screen.getByRole("heading", { level: 1 });
+      expect(headingElement).toBeInTheDocument();
+
+      // Test button role
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      const articleElement = screen.getByTestId("mock-card");
+
+      // Article should be labelled by the title
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+
+      // Article should be described by the description
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-article-card-description"
+      );
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      // Title should have unique ID
+      const titleElement = screen.getByRole("heading", { level: 1 });
+      expect(titleElement).toHaveAttribute(
+        "id",
+        "aria-test-article-card-title"
+      );
+
+      // Description should have unique ID
+      const descriptionElement = screen.getByTestId("mock-card-description");
+      expect(descriptionElement).toHaveAttribute(
+        "id",
+        "aria-test-article-card-description"
+      );
+
+      // Date should have unique ID
+      const dateElement = screen.getByTestId("mock-card-eyebrow");
+      expect(dateElement).toHaveAttribute("id", "aria-test-article-card-date");
+
+      // CTA should have unique ID
+      const ctaElement = screen.getByTestId("mock-card-cta");
+      expect(ctaElement).toHaveAttribute("id", "aria-test-article-card-cta");
+    });
+
+    it("applies correct ARIA labels to content elements", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      // Date element should have descriptive label
+      const dateElement = screen.getByTestId("mock-card-eyebrow");
+      expect(dateElement).toHaveAttribute(
+        "aria-label",
+        "Published on 1/1/2023"
+      );
+
+      // CTA button should have descriptive label
+      const ctaElement = screen.getByTestId("mock-card-cta");
+      expect(ctaElement).toHaveAttribute(
+        "aria-label",
+        "Read article: Test Article Title"
+      );
+    });
+
+    it("applies correct heading level ARIA attribute", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      const titleElement = screen.getByRole("heading", { level: 1 });
+      expect(titleElement).toHaveAttribute("aria-level", "1");
+    });
+
+    it("applies ARIA attributes with different internal IDs", () => {
+      render(
+        <ArticleListItem article={mockArticle} internalId="custom-aria-id" />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      const titleElement = screen.getByRole("heading", { level: 1 });
+      const descriptionElement = screen.getByTestId("mock-card-description");
+
+      // Should use custom internal ID in ARIA relationships
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "custom-aria-id-article-card-title"
+      );
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "custom-aria-id-article-card-description"
+      );
+      expect(titleElement).toHaveAttribute(
+        "id",
+        "custom-aria-id-article-card-title"
+      );
+      expect(descriptionElement).toHaveAttribute(
+        "id",
+        "custom-aria-id-article-card-description"
+      );
+    });
+
+    it("maintains ARIA attributes during component updates", () => {
+      const { rerender } = render(
+        <ArticleListItem article={mockArticle} internalId="aria-test" />
+      );
+
+      // Initial render
+      let articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+
+      // Update with different article
+      const updatedArticle = {
+        ...mockArticle,
+        title: "Updated Article Title",
+        description: "Updated description",
+      };
+
+      rerender(
+        <ArticleListItem article={updatedArticle} internalId="aria-test" />
+      );
+
+      // ARIA attributes should be maintained
+      articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+    });
+
+    it("ensures proper ARIA landmark structure", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      // Should have article landmarks
+      const articleElements = screen.getAllByRole("article");
+      expect(articleElements).toHaveLength(2);
+
+      // Should have heading landmark
+      const headingElement = screen.getByRole("heading", { level: 1 });
+      expect(headingElement).toBeInTheDocument();
+
+      // Should have button landmark
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies conditional ARIA attributes correctly", () => {
+      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+
+      const articleElement = screen.getByTestId("mock-card");
+
+      // Should have aria-labelledby for the title
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+
+      // Should have aria-describedby for the description
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-article-card-description"
+      );
+    });
+
+    it("handles ARIA attributes when content is missing", () => {
+      const articleWithoutTitle = { ...mockArticle, title: "" };
+      render(
+        <ArticleListItem article={articleWithoutTitle} internalId="aria-test" />
+      );
+
+      // Component should not render when title is missing
+      const { container } = render(
+        <ArticleListItem article={articleWithoutTitle} internalId="aria-test" />
+      );
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("maintains ARIA attributes with additional HTML attributes", () => {
+      render(
+        <ArticleListItem
+          article={mockArticle}
+          internalId="aria-test"
+          aria-expanded="true"
+          aria-controls="article-content"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+
+      // Should maintain both component ARIA attributes and custom ones
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+      expect(articleElement).toHaveAttribute("aria-expanded", "true");
+      expect(articleElement).toHaveAttribute(
+        "aria-controls",
+        "article-content"
+      );
+    });
+
+    it("applies ARIA attributes for front page rendering", () => {
+      render(
+        <ArticleListItem
+          article={mockArticle}
+          internalId="aria-test"
+          isFrontPage={true}
+        />
+      );
+
+      // Should still have proper ARIA attributes even when on front page
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-article-card-description"
+      );
+    });
+
+    it("applies ARIA attributes for non-front page rendering", () => {
+      render(
+        <ArticleListItem
+          article={mockArticle}
+          internalId="aria-test"
+          isFrontPage={false}
+        />
+      );
+
+      // Should have proper ARIA attributes with wrapper article
+      const articleElements = screen.getAllByRole("article");
+      expect(articleElements).toHaveLength(2);
+
+      // Both articles should have proper ARIA relationships
+      const wrapperArticle = articleElements[0];
+      const cardArticle = articleElements[1];
+
+      expect(wrapperArticle).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
+      expect(cardArticle).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-card-title"
+      );
     });
   });
 

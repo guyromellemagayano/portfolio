@@ -15,7 +15,7 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { ARTICLE_LAYOUT_COMPONENT_LABELS } from "../ArticleLayout/_data";
+import { ARTICLE_COMPONENT_LABELS } from "../_shared";
 import styles from "./ArticleNavButton.module.css";
 
 // ============================================================================
@@ -36,19 +36,34 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function BaseArticleNavButton(props) {
     const { className, internalId, debugMode, ...rest } = props;
 
+    let router = useRouter();
+    let { previousPathname } = useContext(AppContext);
+
+    if (!previousPathname) return null;
+
     const element = (
       <button
         {...rest}
-        id={`${internalId}-article-nav-button`}
+        role="button"
         className={cn(styles.articleNavButton, className)}
-        aria-label={ARTICLE_LAYOUT_COMPONENT_LABELS.goBackToArticles}
+        aria-label={ARTICLE_COMPONENT_LABELS.goBackToArticles}
+        aria-describedby={`${internalId}-nav-button-description`}
+        onClick={() => router.back()}
         {...createComponentProps(internalId, "article-nav-button", debugMode)}
       >
         <Icon.ArrowLeft
           className={styles.articleNavButtonIcon}
+          aria-hidden="true"
           debugMode={debugMode}
           internalId={internalId}
         />
+        <span
+          id={`${internalId}-nav-button-description`}
+          className="sr-only"
+          aria-hidden="true"
+        >
+          {ARTICLE_COMPONENT_LABELS.goBackToArticles}
+        </span>
       </button>
     );
 
@@ -77,16 +92,10 @@ const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
       debugMode,
     });
 
-    let router = useRouter();
-    let { previousPathname } = useContext(AppContext);
-
-    if (!previousPathname) return null;
-
     const updatedProps = {
       ...rest,
       internalId: id,
       debugMode: isDebugMode,
-      onClick: () => router.back(),
     };
 
     const Component = isMemoized
