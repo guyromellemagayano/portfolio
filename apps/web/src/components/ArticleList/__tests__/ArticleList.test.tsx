@@ -88,14 +88,15 @@ describe("ArticleList", () => {
 
     it("passes through HTML attributes", () => {
       render(
-        <ArticleList aria-label="Article list" role="main">
+        <ArticleList aria-label="Custom article list" role="main">
           <div>Article content</div>
         </ArticleList>
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
+      // Component now has its own role="region" and aria-label
       expect(container).toHaveAttribute("aria-label", "Article list");
-      expect(container).toHaveAttribute("role", "main");
+      expect(container).toHaveAttribute("role", "region");
     });
   });
 
@@ -352,7 +353,7 @@ describe("ArticleList", () => {
       render(
         <ArticleList
           role="main"
-          aria-label="Article list"
+          aria-label="Custom article list"
           aria-describedby="article-description"
         >
           <div>Article content</div>
@@ -360,12 +361,242 @@ describe("ArticleList", () => {
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
-      expect(container).toHaveAttribute("role", "main");
+      // Component now has its own role="region" and aria-label
+      expect(container).toHaveAttribute("role", "region");
       expect(container).toHaveAttribute("aria-label", "Article list");
       expect(container).toHaveAttribute(
         "aria-describedby",
         "article-description"
       );
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to main elements", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      // Test region role
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+      expect(regionElement).toBeInTheDocument();
+
+      // Test list role
+      const listElement = screen.getByRole("list", { name: "Articles" });
+      expect(listElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+
+      // Region should be labelled by the heading
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-list-heading"
+      );
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      // Heading should have unique ID (using getByText since it's hidden)
+      const headingElement = screen.getByText("Article list");
+      expect(headingElement).toHaveAttribute(
+        "id",
+        "aria-test-article-list-heading"
+      );
+
+      // List should have unique ID
+      const listElement = screen.getByRole("list", { name: "Articles" });
+      expect(listElement).toHaveAttribute(
+        "id",
+        "aria-test-article-list-children"
+      );
+    });
+
+    it("applies correct ARIA labels to content elements", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      // Region should have descriptive label
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
+
+      // List should have descriptive label
+      const listElement = screen.getByRole("list", { name: "Articles" });
+      expect(listElement).toHaveAttribute("aria-label", "Articles");
+    });
+
+    it("hides decorative elements from screen readers", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      // Heading should be hidden from screen readers
+      const headingElement = screen.getByText("Article list");
+      expect(headingElement).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("applies correct heading level ARIA attribute", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      const headingElement = screen.getByText("Article list");
+      expect(headingElement).toBeInTheDocument();
+    });
+
+    it("applies ARIA attributes with different internal IDs", () => {
+      render(
+        <ArticleList internalId="custom-aria-id">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+      const headingElement = screen.getByText("Article list");
+      const listElement = screen.getByRole("list", { name: "Articles" });
+
+      // Should use custom internal ID in ARIA relationships
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "custom-aria-id-article-list-heading"
+      );
+      expect(headingElement).toHaveAttribute(
+        "id",
+        "custom-aria-id-article-list-heading"
+      );
+      expect(listElement).toHaveAttribute(
+        "id",
+        "custom-aria-id-article-list-children"
+      );
+    });
+
+    it("maintains ARIA attributes during component updates", () => {
+      const { rerender } = render(
+        <ArticleList internalId="aria-test">
+          <div>Original content</div>
+        </ArticleList>
+      );
+
+      // Initial render
+      let regionElement = screen.getByRole("region", { name: "Article list" });
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-list-heading"
+      );
+
+      // Update with different content
+      rerender(
+        <ArticleList internalId="aria-test">
+          <div>Updated content</div>
+        </ArticleList>
+      );
+
+      // ARIA attributes should be maintained
+      regionElement = screen.getByRole("region", { name: "Article list" });
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-list-heading"
+      );
+    });
+
+    it("ensures proper ARIA landmark structure", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      // Should have region landmark
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+      expect(regionElement).toBeInTheDocument();
+
+      // Should have heading landmark
+      const headingElement = screen.getByText("Article list");
+      expect(headingElement).toBeInTheDocument();
+
+      // Should have list landmark
+      const listElement = screen.getByRole("list", { name: "Articles" });
+      expect(listElement).toBeInTheDocument();
+    });
+
+    it("applies conditional ARIA attributes correctly", () => {
+      render(
+        <ArticleList internalId="aria-test">
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+
+      // Should have aria-labelledby for the heading
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-list-heading"
+      );
+    });
+
+    it("handles ARIA attributes when no children are provided", () => {
+      const { container } = render(<ArticleList internalId="aria-test" />);
+
+      // Component should not render when no children
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("maintains ARIA attributes with additional HTML attributes", () => {
+      render(
+        <ArticleList
+          internalId="aria-test"
+          aria-expanded="true"
+          aria-controls="article-content"
+        >
+          <div>Article content</div>
+        </ArticleList>
+      );
+
+      const regionElement = screen.getByRole("region", {
+        name: "Article list",
+      });
+
+      // Should maintain both component ARIA attributes and custom ones
+      expect(regionElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-article-list-heading"
+      );
+      expect(regionElement).toHaveAttribute("aria-expanded", "true");
+      expect(regionElement).toHaveAttribute("aria-controls", "article-content");
     });
   });
 
@@ -468,7 +699,7 @@ describe("ArticleList", () => {
 
       const container = screen.getByTestId("test-id-article-list-root");
       expect(container).toHaveAttribute("id", "test-id-article-list");
-      expect(container).toHaveAttribute("role", "main");
+      expect(container).toHaveAttribute("role", "region");
       expect(container).toHaveAttribute("tabIndex", "0");
     });
   });
@@ -496,7 +727,7 @@ describe("ArticleList", () => {
 
       const container = screen.getByTestId("test-id-article-list-root");
       expect(container).toHaveAttribute("data-custom", "test");
-      expect(container).toHaveAttribute("aria-label", "Article List");
+      expect(container).toHaveAttribute("aria-label", "Article list");
       expect(container).toHaveAttribute("style");
     });
   });
