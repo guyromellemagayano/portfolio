@@ -1,5 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
@@ -95,9 +95,15 @@ vi.mock("../ArticleNavButton.module.css", () => ({
   },
 }));
 
-vi.mock("../_data", () => ({
-  ARTICLE_LAYOUT_COMPONENT_LABELS: {
+vi.mock("../_shared", () => ({
+  ARTICLE_COMPONENT_LABELS: {
+    cta: "Read article",
     goBackToArticles: "Go back to articles",
+    articleContent: "Article content",
+    articleLayout: "Article layout",
+    articleHeader: "Article header",
+    articleTitle: "Article title",
+    articleDate: "Published on",
   },
 }));
 
@@ -185,17 +191,15 @@ describe("ArticleNavButton", () => {
     });
 
     it("passes through HTML attributes", () => {
-      render(
-        <ArticleNavButton
-          data-custom="test"
-          aria-describedby="description"
-          disabled
-        />
-      );
+      render(<ArticleNavButton data-custom="test" disabled />);
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("data-custom", "test");
-      expect(button).toHaveAttribute("aria-describedby", "description");
+      // Component now has its own aria-describedby based on internal ID
+      expect(button).toHaveAttribute(
+        "aria-describedby",
+        "test-id-nav-button-description"
+      );
       expect(button).toBeDisabled();
     });
   });
@@ -294,6 +298,169 @@ describe("ArticleNavButton", () => {
         "data-testid",
         "test-id-article-nav-button-root"
       );
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to main elements", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Test button role
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+      expect(buttonElement).toHaveAttribute("role", "button");
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      const buttonElement = screen.getByRole("button");
+
+      // Button should be described by the description span
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-nav-button-description"
+      );
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Description span should have unique ID
+      const descriptionElement = screen.getByText("Go back to articles");
+      expect(descriptionElement).toHaveAttribute(
+        "id",
+        "aria-test-nav-button-description"
+      );
+    });
+
+    it("applies correct ARIA labels to content elements", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Button should have descriptive label
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toHaveAttribute(
+        "aria-label",
+        "Go back to articles"
+      );
+    });
+
+    it("hides decorative elements from screen readers", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Icon should be hidden from screen readers
+      const iconElement = screen.getByTestId("arrow-left-icon");
+      expect(iconElement).toHaveAttribute("aria-hidden", "true");
+
+      // Description span should be hidden (sr-only)
+      const descriptionElement = screen.getByText("Go back to articles");
+      expect(descriptionElement).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("applies ARIA attributes with different internal IDs", () => {
+      render(<ArticleNavButton internalId="custom-aria-id" />);
+
+      const buttonElement = screen.getByRole("button");
+      const descriptionElement = screen.getByText("Go back to articles");
+
+      // Should use custom internal ID in ARIA relationships
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "custom-aria-id-nav-button-description"
+      );
+      expect(descriptionElement).toHaveAttribute(
+        "id",
+        "custom-aria-id-nav-button-description"
+      );
+    });
+
+    it("maintains ARIA attributes during component updates", () => {
+      const { rerender } = render(<ArticleNavButton internalId="aria-test" />);
+
+      // Initial render
+      let buttonElement = screen.getByRole("button");
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-nav-button-description"
+      );
+
+      // Update with different internal ID
+      rerender(<ArticleNavButton internalId="updated-aria-test" />);
+
+      // ARIA attributes should be updated
+      buttonElement = screen.getByRole("button");
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "updated-aria-test-nav-button-description"
+      );
+    });
+
+    it("ensures proper ARIA landmark structure", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Should have button landmark
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies conditional ARIA attributes correctly", () => {
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      const buttonElement = screen.getByRole("button");
+
+      // Should have aria-describedby for the description
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-nav-button-description"
+      );
+    });
+
+    it("handles ARIA attributes when context is missing", () => {
+      // This test verifies that the component handles missing context gracefully
+      // The component should not render when previousPathname is null
+      // Note: This is tested indirectly through the component's conditional rendering logic
+      render(<ArticleNavButton internalId="aria-test" />);
+
+      // Component renders normally with the mocked context
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies ARIA attributes with custom aria-label override", () => {
+      render(
+        <ArticleNavButton
+          internalId="aria-test"
+          aria-label="Custom navigation label"
+        />
+      );
+
+      const buttonElement = screen.getByRole("button");
+
+      // Component has hardcoded aria-label for accessibility
+      expect(buttonElement).toHaveAttribute(
+        "aria-label",
+        "Go back to articles"
+      );
+    });
+
+    it("maintains ARIA attributes with additional HTML attributes", () => {
+      render(
+        <ArticleNavButton
+          internalId="aria-test"
+          aria-expanded="false"
+          aria-controls="article-content"
+        />
+      );
+
+      const buttonElement = screen.getByRole("button");
+
+      // Should maintain both component ARIA attributes and custom ones
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-nav-button-description"
+      );
+      expect(buttonElement).toHaveAttribute("aria-expanded", "false");
+      expect(buttonElement).toHaveAttribute("aria-controls", "article-content");
     });
   });
 

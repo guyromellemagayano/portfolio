@@ -158,13 +158,21 @@ vi.mock("react", async () => {
 
 // Mock @web/components
 vi.mock("@web/components", () => ({
-  Container: vi.fn(({ children, ...props }) => (
-    <div data-testid="container" {...props}>
-      {children}
-    </div>
-  )),
+  Container: vi.fn(({ children, internalId, debugMode, ...props }) => {
+    // Create component props manually to match the mocked function behavior
+    const componentProps = {
+      [`data-article-layout-id`]: `${internalId}-article-layout`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": `${internalId}-article-layout-root`,
+    };
+    return (
+      <div {...componentProps} {...props}>
+        {children}
+      </div>
+    );
+  }),
   Prose: vi.fn(({ children, ...props }) => (
-    <div data-testid="prose" {...props}>
+    <div data-testid="prose" data-mdx-content {...props}>
       {children}
     </div>
   )),
@@ -200,14 +208,13 @@ vi.mock("../ArticleLayout.module.css", () => ({
 }));
 
 // Mock ArticleNavButton component
-vi.mock("../_internal", () => ({
-  ArticleNavButton: vi.fn(({ children, debugMode, internalId, ...props }) => (
+vi.mock("../ArticleNavButton", () => ({
+  ArticleNavButton: vi.fn(({ debugMode, internalId, ...props }) => (
     <button
       data-testid="test-id-article-nav-button-root"
       data-debug-mode={debugMode ? "true" : undefined}
       data-article-nav-button-id={`${internalId}-article-nav-button`}
       id={`${internalId}-article-nav-button`}
-      internalid={internalId}
       {...props}
     >
       <svg data-testid="arrow-left-icon" />
@@ -895,6 +902,230 @@ describe("ArticleLayout", () => {
         );
         layout = screen.getByTestId("test-id-article-layout-root");
         expect(layout).toHaveAttribute("aria-label", "Updated label");
+      });
+    });
+
+    describe("ARIA Attributes Testing", () => {
+      it("applies correct ARIA roles to main layout elements", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        // Test main content area
+        const mainElement = screen.getByRole("main");
+        expect(mainElement).toHaveAttribute("aria-label", "Article content");
+
+        // Test article region
+        const regionElement = screen.getByRole("region", {
+          name: "Article layout",
+        });
+        expect(regionElement).toBeInTheDocument();
+
+        // Test article element
+        const articleElement = screen.getByRole("article");
+        expect(articleElement).toBeInTheDocument();
+
+        // Test header banner
+        const bannerElement = screen.getByRole("banner");
+        expect(bannerElement).toHaveAttribute("aria-label", "Article header");
+      });
+
+      it("applies correct ARIA relationships between elements", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        const articleElement = screen.getByRole("article");
+
+        // Article should be labelled by the title
+        expect(articleElement).toHaveAttribute(
+          "aria-labelledby",
+          "aria-test-article-title"
+        );
+
+        // Article should be described by the date
+        expect(articleElement).toHaveAttribute(
+          "aria-describedby",
+          "aria-test-article-date"
+        );
+      });
+
+      it("applies unique IDs for ARIA relationships", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        // Title should have unique ID
+        const titleElement = screen.getByRole("heading", { level: 1 });
+        expect(titleElement).toHaveAttribute("id", "aria-test-article-title");
+
+        // Date should have unique ID
+        const dateElement = screen.getByText("Formatted Date").closest("time");
+        expect(dateElement).toHaveAttribute("id", "aria-test-article-date");
+      });
+
+      it("applies correct ARIA labels to content elements", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        // Date element should have descriptive label
+        const dateElement = screen.getByText("Formatted Date").closest("time");
+        expect(dateElement).toHaveAttribute(
+          "aria-label",
+          "Published on Formatted Date"
+        );
+
+        // Date text span should have label
+        const dateTextElement = dateElement?.querySelector("span:last-child");
+        expect(dateTextElement).toHaveAttribute(
+          "aria-label",
+          "Publication date"
+        );
+      });
+
+      it("hides decorative elements from screen readers", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        const dateElement = screen.getByText("Formatted Date").closest("time");
+        const separatorElement = dateElement?.querySelector("span:first-child");
+
+        // Date separator should be hidden from screen readers
+        expect(separatorElement).toHaveAttribute("aria-hidden", "true");
+      });
+
+      it("applies correct heading level ARIA attribute", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        const titleElement = screen.getByRole("heading", { level: 1 });
+        expect(titleElement).toHaveAttribute("aria-level", "1");
+      });
+
+      it("applies ARIA attributes to prose content region", () => {
+        render(
+          <ArticleLayout article={mockArticle} internalId="aria-test">
+            <p>Test content</p>
+          </ArticleLayout>
+        );
+
+        const proseElement = screen.getByTestId("prose");
+        expect(proseElement).toHaveAttribute("role", "region");
+        expect(proseElement).toHaveAttribute("aria-label", "Article content");
+        expect(proseElement).toHaveAttribute(
+          "aria-labelledby",
+          "aria-test-article-title"
+        );
+      });
+
+      it("handles ARIA attributes when title is missing", () => {
+        const articleWithoutTitle = { ...mockArticle, title: "" };
+        render(
+          <ArticleLayout article={articleWithoutTitle} internalId="aria-test" />
+        );
+
+        const articleElement = screen.getByRole("article");
+
+        // Should not have aria-labelledby when title is missing
+        expect(articleElement).not.toHaveAttribute("aria-labelledby");
+      });
+
+      it("handles ARIA attributes when date is missing", () => {
+        const articleWithoutDate = { ...mockArticle, date: "" };
+        render(
+          <ArticleLayout article={articleWithoutDate} internalId="aria-test" />
+        );
+
+        const articleElement = screen.getByRole("article");
+
+        // Should not have aria-describedby when date is missing
+        expect(articleElement).not.toHaveAttribute("aria-describedby");
+      });
+
+      it("handles ARIA attributes when both title and date are missing", () => {
+        const articleWithoutTitleAndDate = {
+          ...mockArticle,
+          title: "",
+          date: "",
+        };
+        render(
+          <ArticleLayout
+            article={articleWithoutTitleAndDate}
+            internalId="aria-test"
+          />
+        );
+
+        const articleElement = screen.getByRole("article");
+
+        // Should not have aria-labelledby or aria-describedby
+        expect(articleElement).not.toHaveAttribute("aria-labelledby");
+        expect(articleElement).not.toHaveAttribute("aria-describedby");
+      });
+
+      it("applies ARIA attributes with different internal IDs", () => {
+        render(
+          <ArticleLayout article={mockArticle} internalId="custom-aria-id" />
+        );
+
+        const titleElement = screen.getByRole("heading", { level: 1 });
+        const dateElement = screen.getByText("Formatted Date").closest("time");
+        const articleElement = screen.getByRole("article");
+
+        // Should use custom internal ID in ARIA relationships
+        expect(titleElement).toHaveAttribute(
+          "id",
+          "custom-aria-id-article-title"
+        );
+        expect(dateElement).toHaveAttribute(
+          "id",
+          "custom-aria-id-article-date"
+        );
+        expect(articleElement).toHaveAttribute(
+          "aria-labelledby",
+          "custom-aria-id-article-title"
+        );
+        expect(articleElement).toHaveAttribute(
+          "aria-describedby",
+          "custom-aria-id-article-date"
+        );
+      });
+
+      it("maintains ARIA attributes during component updates", () => {
+        const { rerender } = render(
+          <ArticleLayout article={mockArticle} internalId="aria-test" />
+        );
+
+        // Initial render
+        let articleElement = screen.getByRole("article");
+        expect(articleElement).toHaveAttribute(
+          "aria-labelledby",
+          "aria-test-article-title"
+        );
+
+        // Update with different article
+        const updatedArticle = { ...mockArticle, title: "Updated Title" };
+        rerender(
+          <ArticleLayout article={updatedArticle} internalId="aria-test" />
+        );
+
+        // ARIA attributes should be maintained
+        articleElement = screen.getByRole("article");
+        expect(articleElement).toHaveAttribute(
+          "aria-labelledby",
+          "aria-test-article-title"
+        );
+        expect(screen.getByText("Updated Title")).toBeInTheDocument();
+      });
+
+      it("ensures proper ARIA landmark structure", () => {
+        render(<ArticleLayout article={mockArticle} internalId="aria-test" />);
+
+        // Should have main landmark
+        const mainElement = screen.getByRole("main");
+        expect(mainElement).toBeInTheDocument();
+
+        // Should have region landmarks (article-content and article-layout regions)
+        const regionElements = screen.getAllByRole("region");
+        expect(regionElements.length).toBeGreaterThanOrEqual(1);
+
+        // Should have article landmark
+        const articleElement = screen.getByRole("article");
+        expect(articleElement).toBeInTheDocument();
+
+        // Should have banner landmark
+        const bannerElement = screen.getByRole("banner");
+        expect(bannerElement).toBeInTheDocument();
       });
     });
   });
