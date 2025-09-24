@@ -25,7 +25,7 @@ vi.mock("next/navigation", () => ({
   useRouter: mockUseRouter,
 }));
 
-// Mock useComponentId hook
+// Mock useComponentId hook (not used by this component)
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
     id: internalId || "test-id",
@@ -61,7 +61,7 @@ vi.mock("@guyromellemagayano/utils", async () => {
 
 // Mock AppContext with createContext to create a proper context object
 vi.mock("@web/app/context", () => {
-  const React = require("react");
+  const React = require("react"); // eslint-disable-line no-undef
   const mockContext = React.createContext({
     previousPathname: "/articles",
   });
@@ -75,7 +75,7 @@ vi.mock("react", async () => {
   const actual = await vi.importActual("react");
   return {
     ...actual,
-    useContext: vi.fn((context) => {
+    useContext: vi.fn((_context) => {
       // Always return the mock context value for AppContext
       return {
         previousPathname: "/articles",
@@ -115,7 +115,12 @@ vi.mock("*.module.css", () => ({
 // Mock Icon component with proper hoisting
 const mockIcon = vi.hoisted(() => ({
   Icon: {
-    ArrowLeft: ({ className, debugMode, internalId, ...props }: any) => (
+    ArrowLeft: ({
+      className,
+      debugMode,
+      internalId: _internalId,
+      ...props
+    }: any) => (
       <svg
         data-testid="arrow-left-icon"
         className={className}
@@ -156,7 +161,7 @@ describe("ArticleNavButton", () => {
 
   describe("Basic Rendering", () => {
     it("renders the button correctly", () => {
-      render(<ArticleNavButton />);
+      render(<ArticleNavButton debugId="test-id" />);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
@@ -181,7 +186,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("renders with custom component ID", () => {
-      render(<ArticleNavButton internalId="custom-id" />);
+      render(<ArticleNavButton debugId="custom-id" />);
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute(
@@ -191,11 +196,13 @@ describe("ArticleNavButton", () => {
     });
 
     it("passes through HTML attributes", () => {
-      render(<ArticleNavButton data-custom="test" disabled />);
+      render(
+        <ArticleNavButton debugId="test-id" data-custom="test" disabled />
+      );
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("data-custom", "test");
-      // Component now has its own aria-describedby based on internal ID
+      // Component now has its own aria-describedby based on debugId
       expect(button).toHaveAttribute(
         "aria-describedby",
         "test-id-nav-button-description"
@@ -286,7 +293,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("has correct data attributes for debugging", () => {
-      render(<ArticleNavButton internalId="test-id" debugMode={true} />);
+      render(<ArticleNavButton debugId="test-id" debugMode={true} />);
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute(
@@ -303,7 +310,7 @@ describe("ArticleNavButton", () => {
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Test button role
       const buttonElement = screen.getByRole("button");
@@ -312,7 +319,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("applies correct ARIA relationships between elements", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       const buttonElement = screen.getByRole("button");
 
@@ -324,7 +331,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("applies unique IDs for ARIA relationships", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Description span should have unique ID
       const descriptionElement = screen.getByText("Go back to articles");
@@ -335,7 +342,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("applies correct ARIA labels to content elements", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Button should have descriptive label
       const buttonElement = screen.getByRole("button");
@@ -346,7 +353,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("hides decorative elements from screen readers", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Icon should be hidden from screen readers
       const iconElement = screen.getByTestId("arrow-left-icon");
@@ -358,12 +365,12 @@ describe("ArticleNavButton", () => {
     });
 
     it("applies ARIA attributes with different internal IDs", () => {
-      render(<ArticleNavButton internalId="custom-aria-id" />);
+      render(<ArticleNavButton debugId="custom-aria-id" />);
 
       const buttonElement = screen.getByRole("button");
       const descriptionElement = screen.getByText("Go back to articles");
 
-      // Should use custom internal ID in ARIA relationships
+      // Should use custom debugId in ARIA relationships
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
         "custom-aria-id-nav-button-description"
@@ -375,7 +382,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("maintains ARIA attributes during component updates", () => {
-      const { rerender } = render(<ArticleNavButton internalId="aria-test" />);
+      const { rerender } = render(<ArticleNavButton debugId="aria-test" />);
 
       // Initial render
       let buttonElement = screen.getByRole("button");
@@ -384,8 +391,8 @@ describe("ArticleNavButton", () => {
         "aria-test-nav-button-description"
       );
 
-      // Update with different internal ID
-      rerender(<ArticleNavButton internalId="updated-aria-test" />);
+      // Update with different debugId
+      rerender(<ArticleNavButton debugId="updated-aria-test" />);
 
       // ARIA attributes should be updated
       buttonElement = screen.getByRole("button");
@@ -396,7 +403,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("ensures proper ARIA landmark structure", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Should have button landmark
       const buttonElement = screen.getByRole("button");
@@ -404,7 +411,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("applies conditional ARIA attributes correctly", () => {
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       const buttonElement = screen.getByRole("button");
 
@@ -419,7 +426,7 @@ describe("ArticleNavButton", () => {
       // This test verifies that the component handles missing context gracefully
       // The component should not render when previousPathname is null
       // Note: This is tested indirectly through the component's conditional rendering logic
-      render(<ArticleNavButton internalId="aria-test" />);
+      render(<ArticleNavButton debugId="aria-test" />);
 
       // Component renders normally with the mocked context
       const buttonElement = screen.getByRole("button");
@@ -429,7 +436,7 @@ describe("ArticleNavButton", () => {
     it("applies ARIA attributes with custom aria-label override", () => {
       render(
         <ArticleNavButton
-          internalId="aria-test"
+          debugId="aria-test"
           aria-label="Custom navigation label"
         />
       );
@@ -446,7 +453,7 @@ describe("ArticleNavButton", () => {
     it("maintains ARIA attributes with additional HTML attributes", () => {
       render(
         <ArticleNavButton
-          internalId="aria-test"
+          debugId="aria-test"
           aria-expanded="false"
           aria-controls="article-content"
         />
@@ -532,7 +539,7 @@ describe("ArticleNavButton", () => {
     it("passes internal props correctly to base component", () => {
       render(
         <ArticleNavButton
-          internalId="test-id"
+          debugId="test-id"
           debugMode={true}
           className="custom-class"
         />

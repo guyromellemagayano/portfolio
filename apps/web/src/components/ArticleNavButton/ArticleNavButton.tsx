@@ -4,8 +4,6 @@ import React, { useContext } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
@@ -15,17 +13,11 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "../_shared";
+import {
+  ARTICLE_COMPONENT_LABELS,
+  type ArticleNavButtonComponent,
+} from "../_shared";
 import styles from "./ArticleNavButton.module.css";
-
-// ============================================================================
-// ARTICLE NAVIGATION BUTTON COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface ArticleNavButtonProps
-  extends React.ComponentProps<"button">,
-    CommonComponentProps {}
-type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 
 // ============================================================================
 // BASE ARTICLE NAVIGATION BUTTON COMPONENT
@@ -34,7 +26,7 @@ type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 /** A navigation button that returns to the previous articles list. */
 const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function BaseArticleNavButton(props) {
-    const { className, internalId, debugMode, ...rest } = props;
+    const { className, debugId, debugMode, ...rest } = props;
 
     let router = useRouter();
     let { previousPathname } = useContext(AppContext);
@@ -47,18 +39,18 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
         role="button"
         className={cn(styles.articleNavButton, className)}
         aria-label={ARTICLE_COMPONENT_LABELS.goBackToArticles}
-        aria-describedby={`${internalId}-nav-button-description`}
+        aria-describedby={`${debugId}-nav-button-description`}
         onClick={() => router.back()}
-        {...createComponentProps(internalId, "article-nav-button", debugMode)}
+        {...createComponentProps(debugId, "article-nav-button", debugMode)}
       >
         <Icon.ArrowLeft
           className={styles.articleNavButtonIcon}
           aria-hidden="true"
           debugMode={debugMode}
-          internalId={internalId}
+          debugId={debugId}
         />
         <span
-          id={`${internalId}-nav-button-description`}
+          id={`${debugId}-nav-button-description`}
           className="sr-only"
           aria-hidden="true"
         >
@@ -85,23 +77,12 @@ const MemoizedArticleNavButton = React.memo(BaseArticleNavButton);
 /** Renders a navigation button to go back to the articles list. */
 const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function ArticleNavButton(props) {
-    const { isMemoized = false, internalId, debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
-
-    const updatedProps = {
-      ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
-    };
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized
       ? MemoizedArticleNavButton
       : BaseArticleNavButton;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest} />;
     return element;
   }
 );
