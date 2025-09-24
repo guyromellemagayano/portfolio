@@ -6,17 +6,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import ArticleList from "../ArticleList";
 
 // Mock dependencies
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
-    isDebugMode: debugMode,
-  })),
+  useComponentId: mockUseComponentId,
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((...args) =>
-    args.some((arg) => arg != null && arg !== "")
-  ),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -34,6 +35,22 @@ vi.mock("@guyromellemagayano/utils", () => ({
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock shared labels
+vi.mock("../_shared", () => ({
+  ARTICLE_COMPONENT_LABELS: {
+    cta: "Read article",
+    goBackToArticles: "Go back to articles",
+    articleContent: "Article content",
+    articleLayout: "Article layout",
+    articleHeader: "Article header",
+    articleTitle: "Article title",
+    articleDate: "Published on",
+    articlePublished: "Publication date",
+    articleList: "Article list",
+    articles: "Articles",
+  },
 }));
 
 // Mock CSS module
@@ -238,32 +255,40 @@ describe("ArticleList", () => {
   });
 
   describe("Component ID", () => {
-    it("renders with generated component ID", () => {
+    it("uses useComponentId hook correctly", () => {
       render(
         <ArticleList>
           <div>Article content</div>
         </ArticleList>
       );
-
-      const container = screen.getByTestId("test-id-article-list-root");
-      expect(container).toHaveAttribute(
-        "data-article-list-id",
-        "test-id-article-list"
-      );
+      expect(mockUseComponentId).toHaveBeenCalledWith({
+        debugId: undefined,
+        debugMode: undefined,
+      });
     });
 
-    it("renders with custom internal ID when provided", () => {
+    it("uses custom debug ID when provided", () => {
       render(
-        <ArticleList internalId="custom-id">
+        <ArticleList debugId="custom-id">
           <div>Article content</div>
         </ArticleList>
       );
+      expect(mockUseComponentId).toHaveBeenCalledWith({
+        debugId: "custom-id",
+        debugMode: undefined,
+      });
+    });
 
-      const container = screen.getByTestId("custom-id-article-list-root");
-      expect(container).toHaveAttribute(
-        "data-article-list-id",
-        "custom-id-article-list"
+    it("enables debug mode when provided", () => {
+      render(
+        <ArticleList debugMode={true}>
+          <div>Article content</div>
+        </ArticleList>
       );
+      expect(mockUseComponentId).toHaveBeenCalledWith({
+        debugId: undefined,
+        debugMode: true,
+      });
     });
   });
 
@@ -374,7 +399,7 @@ describe("ArticleList", () => {
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -392,7 +417,7 @@ describe("ArticleList", () => {
 
     it("applies correct ARIA relationships between elements", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -410,7 +435,7 @@ describe("ArticleList", () => {
 
     it("applies unique IDs for ARIA relationships", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -432,7 +457,7 @@ describe("ArticleList", () => {
 
     it("applies correct ARIA labels to content elements", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -450,7 +475,7 @@ describe("ArticleList", () => {
 
     it("hides decorative elements from screen readers", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -462,7 +487,7 @@ describe("ArticleList", () => {
 
     it("applies correct heading level ARIA attribute", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -471,9 +496,9 @@ describe("ArticleList", () => {
       expect(headingElement).toBeInTheDocument();
     });
 
-    it("applies ARIA attributes with different internal IDs", () => {
+    it("applies ARIA attributes with different debug IDs", () => {
       render(
-        <ArticleList internalId="custom-aria-id">
+        <ArticleList debugId="custom-aria-id">
           <div>Article content</div>
         </ArticleList>
       );
@@ -484,7 +509,7 @@ describe("ArticleList", () => {
       const headingElement = screen.getByText("Article list");
       const listElement = screen.getByRole("list", { name: "Articles" });
 
-      // Should use custom internal ID in ARIA relationships
+      // Should use custom debug ID in ARIA relationships
       expect(regionElement).toHaveAttribute(
         "aria-labelledby",
         "custom-aria-id-article-list-heading"
@@ -501,7 +526,7 @@ describe("ArticleList", () => {
 
     it("maintains ARIA attributes during component updates", () => {
       const { rerender } = render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Original content</div>
         </ArticleList>
       );
@@ -515,7 +540,7 @@ describe("ArticleList", () => {
 
       // Update with different content
       rerender(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Updated content</div>
         </ArticleList>
       );
@@ -530,7 +555,7 @@ describe("ArticleList", () => {
 
     it("ensures proper ARIA landmark structure", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -552,7 +577,7 @@ describe("ArticleList", () => {
 
     it("applies conditional ARIA attributes correctly", () => {
       render(
-        <ArticleList internalId="aria-test">
+        <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
@@ -569,7 +594,7 @@ describe("ArticleList", () => {
     });
 
     it("handles ARIA attributes when no children are provided", () => {
-      const { container } = render(<ArticleList internalId="aria-test" />);
+      const { container } = render(<ArticleList debugId="aria-test" />);
 
       // Component should not render when no children
       expect(container.firstChild).toBeNull();
@@ -578,7 +603,7 @@ describe("ArticleList", () => {
     it("maintains ARIA attributes with additional HTML attributes", () => {
       render(
         <ArticleList
-          internalId="aria-test"
+          debugId="aria-test"
           aria-expanded="true"
           aria-controls="article-content"
         >
@@ -646,7 +671,7 @@ describe("ArticleList", () => {
       render(
         <ArticleList
           className="test"
-          internalId="perf-test"
+          debugId="perf-test"
           debugMode={true}
           isMemoized={true}
           aria-label="Performance test"
