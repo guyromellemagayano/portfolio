@@ -1,25 +1,17 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
+import logger from "@guyromellemagayano/logger";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import { type ArticleWithSlug, cn, formatDate } from "@web/utils";
+import { cn, formatDate, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "../_shared";
+import {
+  ARTICLE_COMPONENT_LABELS,
+  type ArticleBaseComponent,
+} from "../_shared";
 import styles from "./ArticleBase.module.css";
-
-// ============================================================================
-// ARTICLE BASE COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface ArticleBaseProps
-  extends React.ComponentPropsWithRef<typeof Card>,
-    CommonComponentProps {
-  article: ArticleWithSlug;
-}
-type ArticleBaseComponent = React.FC<ArticleBaseProps>;
 
 // ============================================================================
 // BASE ARTICLE BASE COMPONENT
@@ -31,73 +23,95 @@ type ArticleBaseComponent = React.FC<ArticleBaseProps>;
  */
 const BaseArticleBase: ArticleBaseComponent = setDisplayName(
   function BaseArticleBase(props) {
-    const { article, className, internalId, debugMode, ...rest } = props;
+    const { className, article, debugId, debugMode, ...rest } = props;
 
-    if (!article || typeof article !== "object") return null;
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
 
-    let trimmedTitle = article.title?.trim() ?? "";
-    let trimmedSlug = article.slug?.trim() ?? "";
-    let trimmedDate = article.date?.trim() ?? "";
-    let trimmedDescription = article.description?.trim() ?? "";
+    if (!article) return null;
 
-    const articleSlug = encodeURIComponent(`/articles/${trimmedSlug}`);
+    const isValidArticleData = validateArticle(article);
+    if (!isValidArticleData) {
+      logger.warn(
+        `${(ArticleBase as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+        {
+          article,
+        }
+      );
+
+      return null;
+    }
+
+    const articleData = {
+      title: article.title.trim(),
+      slug: encodeURIComponent(`/articles/${article.slug.trim()}`),
+      date: article.date.trim(),
+      description: article.description.trim(),
+    };
 
     const element = (
       <Card
         {...rest}
-        className={cn(styles.articleBaseContainer, className)}
-        internalId={internalId}
-        debugMode={debugMode}
         role="article"
+        className={cn(styles.articleBaseContainer, className)}
+        debugId={componentId}
+        debugMode={isDebugMode}
         aria-labelledby={
-          trimmedTitle.length > 0 ? `${internalId}-article-title` : undefined
+          articleData.title.length > 0
+            ? `${componentId}-base-article-card-title`
+            : undefined
         }
         aria-describedby={
-          trimmedDescription.length > 0
-            ? `${internalId}-article-description`
+          articleData.description.length > 0
+            ? `${componentId}-base-article-card-description`
             : undefined
         }
       >
-        {trimmedTitle.length > 0 ? (
+        {articleData.title.length > 0 ? (
           <Card.Title
-            href={articleSlug}
-            internalId={internalId}
-            debugMode={debugMode}
-            id={`${internalId}-article-title`}
+            id={`${componentId}-base-article-card-title`}
+            href={articleData.slug}
+            debugId={componentId}
+            debugMode={isDebugMode}
             aria-level={1}
           >
-            {trimmedTitle}
+            {articleData.title}
           </Card.Title>
         ) : null}
 
-        {trimmedDate.length > 0 && !isNaN(new Date(trimmedDate).getTime()) ? (
+        {articleData.date.length > 0 &&
+        !isNaN(new Date(articleData.date).getTime()) ? (
           <Card.Eyebrow
             as="time"
-            dateTime={trimmedDate}
-            internalId={internalId}
-            debugMode={debugMode}
+            id={`${componentId}-base-article-card-date`}
+            dateTime={articleData.date}
+            debugId={componentId}
+            debugMode={isDebugMode}
+            aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(articleData.date)}`}
             decorate
-            aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(trimmedDate)}`}
           >
-            {formatDate(trimmedDate)}
+            {formatDate(articleData.date)}
           </Card.Eyebrow>
         ) : null}
 
-        {trimmedDescription.length > 0 ? (
+        {articleData.description.length > 0 ? (
           <Card.Description
-            internalId={internalId}
-            debugMode={debugMode}
-            id={`${internalId}-article-description`}
+            id={`${componentId}-base-article-card-description`}
+            debugId={componentId}
+            debugMode={isDebugMode}
           >
-            {trimmedDescription}
+            {articleData.description}
           </Card.Description>
         ) : null}
 
         <Card.Cta
-          internalId={internalId}
-          debugMode={debugMode}
           role="button"
-          aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${trimmedTitle || "Article"}`}
+          id={`${componentId}-base-article-card-cta`}
+          debugId={componentId}
+          debugMode={isDebugMode}
+          aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${articleData.title || "Article"}`}
         >
           {ARTICLE_COMPONENT_LABELS.cta}
         </Card.Cta>
@@ -122,21 +136,10 @@ const MemoizedArticleBase = React.memo(BaseArticleBase);
 /** Main article base component that renders an article card component, optionally memoized. */
 const ArticleBase: ArticleBaseComponent = setDisplayName(
   function ArticleBase(props) {
-    const { isMemoized = false, internalId, debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
-
-    const updatedProps = {
-      ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
-    };
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedArticleBase : BaseArticleBase;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest} />;
     return element;
   }
 );
