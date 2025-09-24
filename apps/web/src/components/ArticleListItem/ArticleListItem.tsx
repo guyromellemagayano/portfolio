@@ -1,31 +1,21 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
+import logger from "@guyromellemagayano/logger";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import { ArticleWithSlug, cn, formatDate } from "@web/utils";
+import { cn, formatDate, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "../_shared";
+import {
+  ARTICLE_COMPONENT_LABELS,
+  type ArticleListItemComponent,
+  type ArticleListItemProps,
+} from "../_shared";
 import styles from "./ArticleListItem.module.css";
-
-// ============================================================================
-// ARTICLE LIST ITEM COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface ArticleListItemProps
-  extends React.ComponentProps<"article">,
-    CommonComponentProps {
-  /** The article to display. */
-  article: ArticleWithSlug;
-  /** Whether the article is on the front page. */
-  isFrontPage?: boolean;
-}
-type ArticleListItemComponent = React.FC<ArticleListItemProps>;
 
 // ============================================================================
 // BASE ARTICLE LIST ITEM COMPONENT
@@ -38,99 +28,107 @@ const BaseArticleListItem: ArticleListItemComponent = setDisplayName(
       className,
       article,
       isFrontPage = false,
-      internalId,
+      debugId,
       debugMode,
       ...rest
     } = props;
 
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
     if (!article) return null;
 
-    let trimmedTitle = article.title?.trim() ?? "";
-    let trimmedSlug = article.slug?.trim() ?? "";
-    let trimmedDate = article.date?.trim() ?? "";
-    let trimmedDescription = article.description?.trim() ?? "";
+    const isValidArticleData = validateArticle(article);
+    if (!isValidArticleData) {
+      logger.warn(
+        `${(ArticleListItem as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+        {
+          article,
+        }
+      );
 
-    // Validate that required fields have content
-    if (
-      trimmedTitle.length === 0 ||
-      trimmedSlug.length === 0 ||
-      trimmedDate.length === 0 ||
-      trimmedDescription.length === 0
-    ) {
       return null;
     }
 
-    const articleSlug = encodeURIComponent(`/articles/${trimmedSlug}`);
+    const articleData = {
+      title: article.title.trim(),
+      slug: encodeURIComponent(`/articles/${article.slug.trim()}`),
+      date: article.date.trim(),
+      description: article.description.trim(),
+    };
 
+    /** Renders the article as a `Card` compound component. */
     const ArticleCard: React.FC<Omit<ArticleListItemProps, "article">> =
       function ArticleCard(props) {
-        const { className, internalId, debugMode, ...rest } = props;
+        const { className, ...rest } = props;
 
         const element = (
           <Card
             {...rest}
+            role="article"
             className={
               !isFrontPage
                 ? cn(styles.articleListItemCard, className)
                 : className
             }
-            internalId={internalId}
-            debugMode={debugMode}
-            role="article"
+            debugId={componentId}
+            debugMode={isDebugMode}
             aria-labelledby={
-              trimmedTitle.length > 0
-                ? `${internalId}-article-card-title`
+              articleData.title.length > 0
+                ? `${componentId}-article-list-item-card-title`
                 : undefined
             }
             aria-describedby={
-              trimmedDescription.length > 0
-                ? `${internalId}-article-card-description`
+              articleData.description.length > 0
+                ? `${componentId}-article-list-item-card-description`
                 : undefined
             }
           >
-            {trimmedTitle.length > 0 ? (
+            {articleData.title.length > 0 ? (
               <Card.Title
-                href={articleSlug}
-                internalId={internalId}
-                debugMode={debugMode}
-                id={`${internalId}-article-card-title`}
+                id={`${componentId}-article-list-item-card-title`}
+                href={articleData.slug}
+                debugId={componentId}
+                debugMode={isDebugMode}
                 aria-level={1}
               >
-                {trimmedTitle}
+                {articleData.title}
               </Card.Title>
             ) : null}
 
-            {trimmedDate.length > 0 &&
-            !isNaN(new Date(trimmedDate).getTime()) ? (
+            {articleData.date.length > 0 &&
+            !isNaN(new Date(articleData.date).getTime()) ? (
               <Card.Eyebrow
                 as="time"
-                dateTime={trimmedDate}
+                dateTime={articleData.date}
+                id={`${componentId}-article-list-item-card-date`}
+                debugId={componentId}
+                debugMode={isDebugMode}
+                aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(articleData.date)}`}
                 decorate
-                internalId={internalId}
-                debugMode={debugMode}
-                id={`${internalId}-article-card-date`}
-                aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(trimmedDate)}`}
               >
-                {formatDate(trimmedDate)}
+                {formatDate(articleData.date)}
               </Card.Eyebrow>
             ) : null}
 
-            {trimmedDescription.length > 0 ? (
+            {articleData.description.length > 0 ? (
               <Card.Description
-                internalId={internalId}
-                debugMode={debugMode}
-                id={`${internalId}-article-card-description`}
+                id={`${componentId}-article-list-item-card-description`}
+                debugId={componentId}
+                debugMode={isDebugMode}
               >
-                {trimmedDescription}
+                {articleData.description}
               </Card.Description>
             ) : null}
 
             <Card.Cta
-              internalId={internalId}
-              debugMode={debugMode}
-              id={`${internalId}-article-card-cta`}
               role="button"
-              aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${trimmedTitle || "Article"}`}
+              id={`${componentId}-article-list-item-card-cta`}
+              debugId={componentId}
+              debugMode={isDebugMode}
+              aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${articleData.title || ARTICLE_COMPONENT_LABELS.articleItem}`}
             >
               {ARTICLE_COMPONENT_LABELS.cta}
             </Card.Cta>
@@ -143,35 +141,25 @@ const BaseArticleListItem: ArticleListItemComponent = setDisplayName(
     const element = !isFrontPage ? (
       <article
         {...rest}
-        id={`${internalId}-article-item`}
-        className={cn(styles.articleListItem, className)}
         role="article"
+        id={`${componentId}-article-item`}
+        className={cn(styles.articleListItem, className)}
         aria-labelledby={
-          trimmedTitle.length > 0
-            ? `${internalId}-article-card-title`
+          articleData.title.length > 0
+            ? `${componentId}-article-list-item-card-title`
             : undefined
         }
         aria-describedby={
-          trimmedDescription.length > 0
-            ? `${internalId}-article-card-description`
+          articleData.description.length > 0
+            ? `${componentId}-article-list-item-card-description`
             : undefined
         }
-        {...createComponentProps(internalId, "article-item", debugMode)}
+        {...createComponentProps(componentId, "article-item", debugMode)}
       >
-        <ArticleCard
-          internalId={internalId}
-          debugMode={debugMode}
-          className={className}
-          {...rest}
-        />
+        <ArticleCard {...rest} />
       </article>
     ) : (
-      <ArticleCard
-        internalId={internalId}
-        debugMode={debugMode}
-        className={className}
-        {...rest}
-      />
+      <ArticleCard {...rest} />
     );
 
     return element;
@@ -192,23 +180,12 @@ const MemoizedArticleListItem = React.memo(BaseArticleListItem);
 /** Renders a flexible article list item component using the Card compound component. */
 const ArticleListItem: ArticleListItemComponent = setDisplayName(
   function ArticleListItem(props) {
-    const { isMemoized = false, internalId, debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
-
-    const updatedProps = {
-      ...rest,
-      internalId: id,
-      debugMode: isDebugMode,
-    };
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized
       ? MemoizedArticleListItem
       : BaseArticleListItem;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest} />;
     return element;
   }
 );
