@@ -7,7 +7,7 @@ import ArticleListItem from "../ArticleListItem";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -18,15 +18,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasMeaningfulText: vi.fn((content) => {
-    if (content === null || content === undefined || content === "") {
-      return false;
-    }
-    if (typeof content === "string" && content.trim().length === 0) {
-      return false;
-    }
-    return true;
-  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -50,6 +41,27 @@ vi.mock("@web/utils", () => ({
     }
     return date.toLocaleDateString();
   }),
+  validateArticle: vi.fn((article) => {
+    return (
+      article &&
+      typeof article.title === "string" &&
+      article.title.trim().length > 0 &&
+      typeof article.slug === "string" &&
+      article.slug.trim().length > 0 &&
+      typeof article.date === "string" &&
+      article.date.trim().length > 0 &&
+      !isNaN(new Date(article.date.trim()).getTime()) &&
+      typeof article.description === "string" &&
+      article.description.trim().length > 0
+    );
+  }),
+}));
+
+// Mock logger
+vi.mock("@guyromellemagayano/logger", () => ({
+  default: {
+    warn: vi.fn(),
+  },
 }));
 
 // Mock Card component
@@ -60,8 +72,8 @@ vi.mock("@web/components", () => ({
         children,
         className,
         as = "article",
-        internalId,
-        debugMode,
+        debugId: _debugId,
+        debugMode: _debugMode,
         ...rest
       } = props;
       const Element = as as React.ElementType;
@@ -72,7 +84,7 @@ vi.mock("@web/components", () => ({
           ref,
           className,
           "data-testid": "mock-card",
-          "data-debug-mode": debugMode ? "true" : undefined,
+          "data-debug-mode": _debugMode ? "true" : undefined,
           ...rest,
         },
         children
@@ -81,7 +93,13 @@ vi.mock("@web/components", () => ({
     {
       Title: React.forwardRef<HTMLHeadingElement, any>(
         function MockCardTitle(props, ref) {
-          const { children, href, ...rest } = props;
+          const {
+            children,
+            href,
+            debugId: _debugId,
+            debugMode: _debugMode,
+            ...rest
+          } = props;
           return (
             <h2 ref={ref} data-testid="mock-card-title" {...rest}>
               {href ? <a href={href}>{children}</a> : children}
@@ -91,7 +109,13 @@ vi.mock("@web/components", () => ({
       ),
       Eyebrow: React.forwardRef<HTMLParagraphElement, any>(
         function MockCardEyebrow(props, ref) {
-          const { children, dateTime, ...rest } = props;
+          const {
+            children,
+            dateTime,
+            debugId: _debugId,
+            debugMode: _debugMode,
+            ...rest
+          } = props;
           return (
             <p ref={ref} data-testid="mock-card-eyebrow" {...rest}>
               {dateTime ? (
@@ -107,7 +131,12 @@ vi.mock("@web/components", () => ({
       ),
       Description: React.forwardRef<HTMLParagraphElement, any>(
         function MockCardDescription(props, ref) {
-          const { children, ...rest } = props;
+          const {
+            children,
+            debugId: _debugId,
+            debugMode: _debugMode,
+            ...rest
+          } = props;
           return (
             <p ref={ref} data-testid="mock-card-description" {...rest}>
               {children}
@@ -117,7 +146,12 @@ vi.mock("@web/components", () => ({
       ),
       Cta: React.forwardRef<HTMLDivElement, any>(
         function MockCardCta(props, ref) {
-          const { children, ...rest } = props;
+          const {
+            children,
+            debugId: _debugId,
+            debugMode: _debugMode,
+            ...rest
+          } = props;
           return (
             <div ref={ref} data-testid="mock-card-cta" {...rest}>
               {children}
@@ -152,6 +186,14 @@ vi.mock("../../_shared", () => ({
   },
 }));
 
+// Mock component-specific data
+vi.mock("../_data", () => ({
+  ARTICLE_LIST_ITEM_COMPONENT_LABELS: {
+    invalidArticleData: "Invalid article data",
+    articleItem: "Article item",
+  },
+}));
+
 // Mock Next.js intersection observer
 vi.mock("next/navigation", () => ({
   useRouter: vi.fn(() => ({
@@ -163,7 +205,7 @@ vi.mock("next/navigation", () => ({
 }));
 
 // Mock IntersectionObserver
-global.IntersectionObserver = vi.fn().mockImplementation(() => ({
+(globalThis as any).IntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
@@ -208,8 +250,9 @@ describe("ArticleListItem", () => {
         <ArticleListItem article={mockArticle} className="custom-class" />
       );
 
-      const articleElement = screen.getByTestId("mock-card");
-      expect(articleElement).toHaveClass("custom-class");
+      // The custom className is applied to the wrapper article element, not the Card
+      const wrapperArticle = screen.getByTestId("test-id-article-item-root");
+      expect(wrapperArticle).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
@@ -363,13 +406,13 @@ describe("ArticleListItem", () => {
       render(
         <ArticleListItem
           article={mockArticle}
-          internalId="custom-id"
+          debugId="custom-id"
           debugMode={true}
         />
       );
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: "custom-id",
+        debugId: "custom-id",
         debugMode: true,
       });
     });
@@ -378,14 +421,14 @@ describe("ArticleListItem", () => {
       render(<ArticleListItem article={mockArticle} />);
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: undefined,
+        debugId: undefined,
         debugMode: undefined,
       });
     });
 
     it("passes generated ID to base component", () => {
       mockUseComponentId.mockReturnValue({
-        id: "generated-id",
+        componentId: "generated-id",
         isDebugMode: false,
       });
 
@@ -399,7 +442,7 @@ describe("ArticleListItem", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       mockUseComponentId.mockReturnValue({
-        id: "test-id",
+        componentId: "test-id",
         isDebugMode: true,
       });
 
@@ -411,7 +454,7 @@ describe("ArticleListItem", () => {
 
     it("does not apply when disabled", () => {
       mockUseComponentId.mockReturnValue({
-        id: "test-id",
+        componentId: "test-id",
         isDebugMode: false,
       });
 
@@ -505,15 +548,16 @@ describe("ArticleListItem", () => {
         <ArticleListItem article={mockArticle} className="custom-class" />
       );
 
-      const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveClass("articleListItemCard", "custom-class");
+      // The custom className is applied to the wrapper article element
+      const wrapperArticle = screen.getByTestId("test-id-article-item-root");
+      expect(wrapperArticle).toHaveClass("articleListItem", "custom-class");
     });
   });
 
   describe("Component ID", () => {
     it("renders with generated component ID", () => {
       mockUseComponentId.mockReturnValue({
-        id: "generated-id",
+        componentId: "generated-id",
         isDebugMode: false,
       });
 
@@ -523,13 +567,13 @@ describe("ArticleListItem", () => {
       expect(articleElement).toBeInTheDocument();
     });
 
-    it("renders with custom internal ID", () => {
+    it("renders with custom debug ID", () => {
       mockUseComponentId.mockReturnValue({
-        id: "custom-id",
+        componentId: "custom-id",
         isDebugMode: false,
       });
 
-      render(<ArticleListItem article={mockArticle} internalId="custom-id" />);
+      render(<ArticleListItem article={mockArticle} debugId="custom-id" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toBeInTheDocument();
@@ -668,7 +712,7 @@ describe("ArticleListItem", () => {
         <ArticleListItem
           article={complexArticle}
           className="performance-test"
-          internalId="perf-test"
+          debugId="perf-test"
           debugMode={true}
           isMemoized={true}
           isFrontPage={false}
@@ -733,8 +777,12 @@ describe("ArticleListItem", () => {
       // Component now has its own aria-labelledby and aria-describedby
       expect(articleElement).toHaveAttribute("aria-label", "Article item");
       expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "test-id-article-list-item-card-title"
+      );
+      expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "test-id-article-card-description"
+        "test-id-article-list-item-card-description"
       );
     });
 
@@ -749,7 +797,7 @@ describe("ArticleListItem", () => {
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       // Test article role
       const articleElements = screen.getAllByRole("article");
@@ -765,51 +813,57 @@ describe("ArticleListItem", () => {
     });
 
     it("applies correct ARIA relationships between elements", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       const articleElement = screen.getByTestId("mock-card");
 
       // Article should be labelled by the title
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
 
       // Article should be described by the description
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-article-card-description"
+        "aria-test-article-list-item-card-description"
       );
     });
 
     it("applies unique IDs for ARIA relationships", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       // Title should have unique ID
       const titleElement = screen.getByRole("heading", { level: 1 });
       expect(titleElement).toHaveAttribute(
         "id",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
 
       // Description should have unique ID
       const descriptionElement = screen.getByTestId("mock-card-description");
       expect(descriptionElement).toHaveAttribute(
         "id",
-        "aria-test-article-card-description"
+        "aria-test-article-list-item-card-description"
       );
 
       // Date should have unique ID
       const dateElement = screen.getByTestId("mock-card-eyebrow");
-      expect(dateElement).toHaveAttribute("id", "aria-test-article-card-date");
+      expect(dateElement).toHaveAttribute(
+        "id",
+        "aria-test-article-list-item-card-date"
+      );
 
       // CTA should have unique ID
       const ctaElement = screen.getByTestId("mock-card-cta");
-      expect(ctaElement).toHaveAttribute("id", "aria-test-article-card-cta");
+      expect(ctaElement).toHaveAttribute(
+        "id",
+        "aria-test-article-list-item-card-cta"
+      );
     });
 
     it("applies correct ARIA labels to content elements", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       // Date element should have descriptive label
       const dateElement = screen.getByTestId("mock-card-eyebrow");
@@ -827,7 +881,7 @@ describe("ArticleListItem", () => {
     });
 
     it("applies correct heading level ARIA attribute", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       const titleElement = screen.getByRole("heading", { level: 1 });
       expect(titleElement).toHaveAttribute("aria-level", "1");
@@ -835,7 +889,7 @@ describe("ArticleListItem", () => {
 
     it("applies ARIA attributes with different internal IDs", () => {
       render(
-        <ArticleListItem article={mockArticle} internalId="custom-aria-id" />
+        <ArticleListItem article={mockArticle} debugId="custom-aria-id" />
       );
 
       const articleElement = screen.getByTestId("mock-card");
@@ -845,32 +899,32 @@ describe("ArticleListItem", () => {
       // Should use custom internal ID in ARIA relationships
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "custom-aria-id-article-card-title"
+        "custom-aria-id-article-list-item-card-title"
       );
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "custom-aria-id-article-card-description"
+        "custom-aria-id-article-list-item-card-description"
       );
       expect(titleElement).toHaveAttribute(
         "id",
-        "custom-aria-id-article-card-title"
+        "custom-aria-id-article-list-item-card-title"
       );
       expect(descriptionElement).toHaveAttribute(
         "id",
-        "custom-aria-id-article-card-description"
+        "custom-aria-id-article-list-item-card-description"
       );
     });
 
     it("maintains ARIA attributes during component updates", () => {
       const { rerender } = render(
-        <ArticleListItem article={mockArticle} internalId="aria-test" />
+        <ArticleListItem article={mockArticle} debugId="aria-test" />
       );
 
       // Initial render
       let articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
 
       // Update with different article
@@ -881,19 +935,19 @@ describe("ArticleListItem", () => {
       };
 
       rerender(
-        <ArticleListItem article={updatedArticle} internalId="aria-test" />
+        <ArticleListItem article={updatedArticle} debugId="aria-test" />
       );
 
       // ARIA attributes should be maintained
       articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
     });
 
     it("ensures proper ARIA landmark structure", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       // Should have article landmarks
       const articleElements = screen.getAllByRole("article");
@@ -909,32 +963,32 @@ describe("ArticleListItem", () => {
     });
 
     it("applies conditional ARIA attributes correctly", () => {
-      render(<ArticleListItem article={mockArticle} internalId="aria-test" />);
+      render(<ArticleListItem article={mockArticle} debugId="aria-test" />);
 
       const articleElement = screen.getByTestId("mock-card");
 
       // Should have aria-labelledby for the title
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
 
       // Should have aria-describedby for the description
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-article-card-description"
+        "aria-test-article-list-item-card-description"
       );
     });
 
     it("handles ARIA attributes when content is missing", () => {
       const articleWithoutTitle = { ...mockArticle, title: "" };
       render(
-        <ArticleListItem article={articleWithoutTitle} internalId="aria-test" />
+        <ArticleListItem article={articleWithoutTitle} debugId="aria-test" />
       );
 
       // Component should not render when title is missing
       const { container } = render(
-        <ArticleListItem article={articleWithoutTitle} internalId="aria-test" />
+        <ArticleListItem article={articleWithoutTitle} debugId="aria-test" />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -943,7 +997,7 @@ describe("ArticleListItem", () => {
       render(
         <ArticleListItem
           article={mockArticle}
-          internalId="aria-test"
+          debugId="aria-test"
           aria-expanded="true"
           aria-controls="article-content"
         />
@@ -954,7 +1008,7 @@ describe("ArticleListItem", () => {
       // Should maintain both component ARIA attributes and custom ones
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
       expect(articleElement).toHaveAttribute("aria-expanded", "true");
       expect(articleElement).toHaveAttribute(
@@ -967,7 +1021,7 @@ describe("ArticleListItem", () => {
       render(
         <ArticleListItem
           article={mockArticle}
-          internalId="aria-test"
+          debugId="aria-test"
           isFrontPage={true}
         />
       );
@@ -976,11 +1030,11 @@ describe("ArticleListItem", () => {
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-article-card-description"
+        "aria-test-article-list-item-card-description"
       );
     });
 
@@ -988,7 +1042,7 @@ describe("ArticleListItem", () => {
       render(
         <ArticleListItem
           article={mockArticle}
-          internalId="aria-test"
+          debugId="aria-test"
           isFrontPage={false}
         />
       );
@@ -1003,11 +1057,11 @@ describe("ArticleListItem", () => {
 
       expect(wrapperArticle).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
       expect(cardArticle).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-card-title"
+        "aria-test-article-list-item-card-title"
       );
     });
   });
