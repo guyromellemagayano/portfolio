@@ -172,7 +172,7 @@ vi.mock("../ArticleListItem.module.css", () => ({
 }));
 
 // Mock shared data
-vi.mock("../../_shared", () => ({
+vi.mock("../@web/components/_shared", () => ({
   ARTICLE_COMPONENT_LABELS: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

@@ -7,9 +7,9 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CardLinkComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CardLinkComponent } from "../../../_shared";
 import styles from "./CardLink.module.css";
 import CardLinkCustom from "./CardLinkCustom";
 

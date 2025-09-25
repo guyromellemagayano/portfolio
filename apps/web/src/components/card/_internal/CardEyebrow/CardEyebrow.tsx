@@ -6,9 +6,9 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CardEyebrowComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CardEyebrowComponent } from "../../../_shared";
 import styles from "./CardEyebrow.module.css";
 
 // ============================================================================

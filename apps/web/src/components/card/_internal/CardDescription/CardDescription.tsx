@@ -6,9 +6,9 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CardDescriptionComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CardDescriptionComponent } from "../../../_shared";
 import styles from "./CardDescription.module.css";
 
 // ============================================================================
