@@ -1,27 +1,19 @@
 import { useId } from "react";
 
-import { logInfo } from "@guyromellemagayano/logger";
+import logger from "@guyromellemagayano/logger";
 
 /** Options for the useComponentId hook */
-interface UseComponentIdOptions {
-  /** Custom component ID for tracking */
-  internalId?: string;
+export interface UseComponentIdOptions {
+  /** Custom component debug ID for tracking */
+  debugId?: string;
   /** Enable debug mode */
   debugMode?: boolean;
 }
 
-/** Internal options for the useComponentId hook */
-interface UseComponentIdInternalOptions {
-  /** Internal component ID for tracking */
-  _internalId?: string;
-  /** Internal debug mode for tracking */
-  _debugMode?: boolean;
-}
-
 /** Return values from the useComponentId hook */
-interface UseComponentIdReturn {
-  /** Generated or custom component ID */
-  id: string;
+export interface UseComponentIdReturn {
+  /** Generated or custom component debug ID */
+  componentId: string;
   /** Processed debug mode */
   isDebugMode: boolean;
 }
@@ -75,13 +67,13 @@ function getComponentNameFromStack(): string {
 }
 
 /** Generates component IDs and provides debug logging */
-function useComponentId({
-  internalId,
+export function useComponentId({
+  debugId,
   debugMode = false,
 }: UseComponentIdOptions = {}): UseComponentIdReturn {
   // Always call hooks at the top level
   const generatedId = useId();
-  const id = internalId || generatedId;
+  const componentId = debugId || generatedId;
 
   // Auto-detect component name from export const declaration
   const detectedComponentName = getComponentNameFromStack();
@@ -91,18 +83,11 @@ function useComponentId({
 
   // Internal debug logging (only in development)
   if (isDebugMode && globalThis?.process?.env?.NODE_ENV === "development") {
-    logInfo(`${detectedComponentName} rendered with ID: ${id}`);
+    logger.info(`${detectedComponentName} rendered with ID: ${componentId}`);
   }
 
   return {
-    id,
+    componentId,
     isDebugMode,
   };
 }
-
-export {
-  useComponentId,
-  type UseComponentIdInternalOptions,
-  type UseComponentIdOptions,
-  type UseComponentIdReturn,
-};
