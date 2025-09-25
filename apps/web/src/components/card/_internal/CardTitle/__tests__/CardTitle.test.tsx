@@ -3,11 +3,11 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardTitle } from "../..";
+import CardTitle from "../CardTitle";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -139,6 +139,7 @@ vi.mock("next/link", () => ({
 describe("CardTitle", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -225,7 +226,7 @@ describe("CardTitle", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(
-        <CardTitle _debugMode={true} href="#">
+        <CardTitle debugMode={true} href="#">
           Card title
         </CardTitle>
       );
@@ -275,7 +276,7 @@ describe("CardTitle", () => {
   describe("Component ID", () => {
     it("renders with custom internal ID", () => {
       render(
-        <CardTitle _internalId="custom-id" href="#">
+        <CardTitle debugId="custom-id" href="#">
           Card title
         </CardTitle>
       );
@@ -289,7 +290,7 @@ describe("CardTitle", () => {
 
     it("uses provided internalId when available", () => {
       render(
-        <CardTitle _internalId="test-id" href="#">
+        <CardTitle debugId="test-id" href="#">
           Card title
         </CardTitle>
       );

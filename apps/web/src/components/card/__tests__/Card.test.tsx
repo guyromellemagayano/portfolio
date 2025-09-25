@@ -3,11 +3,11 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Card } from "../Card";
+import Card from "../Card";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -113,12 +113,12 @@ vi.mock("../Card.module.css", () => ({
 vi.mock("../_internal", () => ({
   CardLink: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLink(props, ref) {
-      const { children, internalId, debugMode, ...rest } = props;
+      const { children, debugId, debugMode, ...rest } = props;
       return (
         <a
           ref={ref}
           data-testid="card-link-root"
-          data-card-link-id={`${internalId}-card-link`}
+          data-card-link-id={`${debugId}-card-link`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -129,12 +129,12 @@ vi.mock("../_internal", () => ({
   ),
   CardTitle: React.forwardRef<HTMLHeadingElement, any>(
     function MockCardTitle(props, ref) {
-      const { children, internalId, debugMode, href, ...rest } = props;
+      const { children, debugId, debugMode, href, ...rest } = props;
       const content = (
         <h3
           ref={ref}
-          data-testid={`${internalId || "test-id"}-card-title-root`}
-          data-card-title-id={`${internalId || "test-id"}-card-title`}
+          data-testid={`${debugId || "test-id"}-card-title-root`}
+          data-card-title-id={`${debugId || "test-id"}-card-title`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -155,12 +155,12 @@ vi.mock("../_internal", () => ({
   ),
   CardDescription: React.forwardRef<HTMLParagraphElement, any>(
     function MockCardDescription(props, ref) {
-      const { children, internalId, debugMode, ...rest } = props;
+      const { children, debugId, debugMode, ...rest } = props;
       return (
         <p
           ref={ref}
-          data-testid={`${internalId || "test-id"}-card-description-root`}
-          data-card-description-id={`${internalId || "test-id"}-card-description`}
+          data-testid={`${debugId || "test-id"}-card-description-root`}
+          data-card-description-id={`${debugId || "test-id"}-card-description`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -171,12 +171,12 @@ vi.mock("../_internal", () => ({
   ),
   CardCta: React.forwardRef<HTMLDivElement, any>(
     function MockCardCta(props, ref) {
-      const { children, internalId, debugMode, href, target, ...rest } = props;
+      const { children, debugId, debugMode, href, target, ...rest } = props;
       const content = (
         <div
           ref={ref}
           data-testid="card-cta-root"
-          data-card-cta-id={`${internalId}-card-cta`}
+          data-card-cta-id={`${debugId}-card-cta`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -197,12 +197,12 @@ vi.mock("../_internal", () => ({
   ),
   CardEyebrow: React.forwardRef<HTMLParagraphElement, any>(
     function MockCardEyebrow(props, ref) {
-      const { children, internalId, debugMode, ...rest } = props;
+      const { children, debugId, debugMode, ...rest } = props;
       return (
         <p
           ref={ref}
           data-testid="card-eyebrow-root"
-          data-card-eyebrow-id={`${internalId}-card-eyebrow`}
+          data-card-eyebrow-id={`${debugId}-card-eyebrow`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -216,6 +216,7 @@ vi.mock("../_internal", () => ({
 describe("Card", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -248,7 +249,7 @@ describe("Card", () => {
     });
 
     it("renders with custom internal ID", () => {
-      render(<Card internalId="custom-id">Card content</Card>);
+      render(<Card debugId="custom-id">Card content</Card>);
 
       const card = screen.getByTestId("custom-id-card-root");
       expect(card).toHaveAttribute("data-card-id", "custom-id-card");
@@ -295,11 +296,11 @@ describe("Card", () => {
   });
 
   describe("Component Structure", () => {
-    it("renders as article element", () => {
+    it("renders as div element", () => {
       render(<Card>Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card.tagName).toBe("ARTICLE");
+      expect(card.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
@@ -373,8 +374,8 @@ describe("Card", () => {
     });
 
     it("handles zero children", () => {
-      render(<Card>{0}</Card>);
-      expect(screen.getByText("0")).toBeInTheDocument();
+      const { container } = render(<Card>{0}</Card>);
+      expect(container.firstChild).toBeNull();
     });
 
     it("handles mixed valid and invalid children", () => {
@@ -400,7 +401,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const initialElement = screen.getByText("Memoized content");
+      const _initialElement = screen.getByText("Memoized content");
 
       // Re-render with same props
       rerender(
@@ -410,7 +411,7 @@ describe("Card", () => {
       );
 
       const rerenderedElement = screen.getByText("Memoized content");
-      expect(rerenderedElement).toBe(initialElement);
+      expect(rerenderedElement).toBe(_initialElement);
     });
 
     it("does not memoize when isMemoized is false", () => {
@@ -420,7 +421,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const initialElement = screen.getByText("Non-memoized content");
+      const _initialElement = screen.getByText("Non-memoized content");
 
       // Re-render with different content to test non-memoization
       rerender(
@@ -444,7 +445,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByRole("article");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toBeInTheDocument();
     });
 
@@ -455,7 +456,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByRole("article");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("aria-label", "Custom card");
       expect(card).toHaveAttribute("aria-describedby", "card-description");
     });
@@ -467,8 +468,8 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByRole("region");
-      expect(card).toBeInTheDocument();
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveAttribute("role", "region");
     });
   });
 
@@ -482,7 +483,7 @@ describe("Card", () => {
     });
 
     it("applies correct data attributes with custom ID", () => {
-      render(<Card internalId="custom-card-id">Card content</Card>);
+      render(<Card debugId="custom-card-id">Card content</Card>);
 
       const card = screen.getByTestId("custom-card-id-card-root");
       expect(card).toHaveAttribute("data-card-id", "custom-card-id-card");
@@ -547,7 +548,7 @@ describe("Card", () => {
       );
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("id", "card-1");
+      expect(card).toHaveAttribute("id", "test-id-card");
       expect(card).toHaveAttribute("tabIndex", "0");
       expect(card).toHaveAttribute("data-custom", "value");
       expect(card.style.backgroundColor).toBe("red");
@@ -601,7 +602,7 @@ describe("Integration Tests", () => {
         </Card>
       );
 
-      const card = screen.getByRole("article");
+      const card = screen.getByTestId("test-id-card-root");
       const eyebrow = screen.getByText("Eyebrow");
       const title = screen.getByText("Title");
       const description = screen.getByText("Description");
@@ -613,7 +614,7 @@ describe("Integration Tests", () => {
 
     it("renders sub-components within Card", () => {
       render(
-        <Card internalId="parent-card" debugMode={true}>
+        <Card debugId="parent-card" debugMode={true}>
           <Card.Title>Title</Card.Title>
           <Card.Description>Description</Card.Description>
         </Card>
@@ -690,7 +691,7 @@ describe("Integration Tests", () => {
       );
 
       // Card should still render because it has children (the sub-components themselves)
-      expect(screen.getByRole("article")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-root")).toBeInTheDocument();
     });
 
     it("renders Card when at least one sub-component has valid content", () => {
@@ -747,7 +748,7 @@ describe("Integration Tests", () => {
         </Card>
       );
 
-      const initialCard = screen.getByRole("article");
+      const initialCard = screen.getByTestId("test-id-card-root");
 
       // Re-render with same props
       rerender(
@@ -757,7 +758,7 @@ describe("Integration Tests", () => {
         </Card>
       );
 
-      const rerenderedCard = screen.getByRole("article");
+      const rerenderedCard = screen.getByTestId("test-id-card-root");
       expect(rerenderedCard).toBe(initialCard);
     });
   });

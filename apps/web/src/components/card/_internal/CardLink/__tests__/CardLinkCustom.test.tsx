@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -67,21 +67,18 @@ vi.mock("next/link", () => ({
   ),
 }));
 
-import { CardLinkCustom } from "../CardLinkCustom";
+import CardLinkCustom from "../CardLinkCustom";
 
 describe("CardLinkCustom", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Link content
         </CardLinkCustom>
       );
@@ -91,11 +88,7 @@ describe("CardLinkCustom", () => {
 
     it("renders with correct href", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Link content
         </CardLinkCustom>
       );
@@ -108,8 +101,8 @@ describe("CardLinkCustom", () => {
       render(
         <CardLinkCustom
           href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
           className="custom-class"
         >
           Link content
@@ -124,10 +117,10 @@ describe("CardLinkCustom", () => {
       render(
         <CardLinkCustom
           href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
           data-testid="custom-testid"
-          aria-label="Link"
+          title="Link"
         >
           Link content
         </CardLinkCustom>
@@ -135,6 +128,35 @@ describe("CardLinkCustom", () => {
 
       const linkElement = screen.getByTestId("test-link-card-link-custom-root");
       expect(linkElement).toHaveAttribute("aria-label", "Link");
+    });
+
+    it("sets aria-label from title prop", () => {
+      render(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          title="Custom title"
+        >
+          Link content
+        </CardLinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("aria-label", "Custom title");
+      expect(link).toHaveAttribute("title", "Custom title");
+    });
+
+    it("does not set aria-label when title is not provided", () => {
+      render(
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+          Link content
+        </CardLinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("aria-label");
+      expect(link).not.toHaveAttribute("title");
     });
   });
 
@@ -145,8 +167,8 @@ describe("CardLinkCustom", () => {
           href="/test"
           target="_blank"
           title="Test title"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
         >
           Link text
         </CardLinkCustom>
@@ -163,8 +185,8 @@ describe("CardLinkCustom", () => {
         <CardLinkCustom
           href="https://example.com"
           target="_blank"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
         >
           Link text
         </CardLinkCustom>
@@ -179,8 +201,8 @@ describe("CardLinkCustom", () => {
         <CardLinkCustom
           href="/internal-link"
           target="_self"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
         >
           Link text
         </CardLinkCustom>
@@ -189,16 +211,53 @@ describe("CardLinkCustom", () => {
       const link = screen.getByRole("link");
       expect(link).not.toHaveAttribute("rel");
     });
+
+    it("handles invalid href by setting empty href", () => {
+      render(
+        <CardLinkCustom href="" debugId="test-link" debugMode={false}>
+          Link text
+        </CardLinkCustom>
+      );
+
+      const link = screen.getByTestId("test-link-card-link-custom-root");
+      expect(link).toHaveAttribute("href", "");
+    });
+
+    it("handles null href by setting empty href", () => {
+      render(
+        <CardLinkCustom
+          href={null as any}
+          debugId="test-link"
+          debugMode={false}
+        >
+          Link text
+        </CardLinkCustom>
+      );
+
+      const link = screen.getByTestId("test-link-card-link-custom-root");
+      expect(link).toHaveAttribute("href", "");
+    });
+
+    it("handles undefined href by setting empty href", () => {
+      render(
+        <CardLinkCustom
+          href={undefined as any}
+          debugId="test-link"
+          debugMode={false}
+        >
+          Link text
+        </CardLinkCustom>
+      );
+
+      const link = screen.getByTestId("test-link-card-link-custom-root");
+      expect(link).toHaveAttribute("href", "");
+    });
   });
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={true}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={true}>
           Link text
         </CardLinkCustom>
       );
@@ -209,11 +268,7 @@ describe("CardLinkCustom", () => {
 
     it("does not apply when disabled/undefined", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Link text
         </CardLinkCustom>
       );
@@ -226,11 +281,7 @@ describe("CardLinkCustom", () => {
   describe("Component Structure", () => {
     it("renders as anchor element", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Link content
         </CardLinkCustom>
       );
@@ -241,11 +292,7 @@ describe("CardLinkCustom", () => {
 
     it("applies correct CSS classes", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Link content
         </CardLinkCustom>
       );
@@ -258,8 +305,8 @@ describe("CardLinkCustom", () => {
       render(
         <CardLinkCustom
           href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
           className="custom-class"
         >
           Link content
@@ -274,11 +321,7 @@ describe("CardLinkCustom", () => {
   describe("Component ID", () => {
     it("renders with custom internal ID", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="custom-id"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="custom-id" debugMode={false}>
           Link text
         </CardLinkCustom>
       );
@@ -292,11 +335,7 @@ describe("CardLinkCustom", () => {
 
     it("uses provided internalId when available", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-id"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-id" debugMode={false}>
           Link text
         </CardLinkCustom>
       );
@@ -310,7 +349,7 @@ describe("CardLinkCustom", () => {
 
     it("renders with generated internal ID when not provided", () => {
       render(
-        <CardLinkCustom href="/test-link" _debugMode={false}>
+        <CardLinkCustom href="/test-link" debugMode={false}>
           Link text
         </CardLinkCustom>
       );
@@ -323,14 +362,103 @@ describe("CardLinkCustom", () => {
     });
   });
 
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          isMemoized={true}
+        >
+          Memoized content
+        </CardLinkCustom>
+      );
+
+      expect(screen.getByText("Memoized content")).toBeInTheDocument();
+    });
+
+    it("renders without memoization by default", () => {
+      render(
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+          Default content
+        </CardLinkCustom>
+      );
+
+      expect(screen.getByText("Default content")).toBeInTheDocument();
+    });
+
+    it("maintains memoization across re-renders when isMemoized is true", () => {
+      const { rerender } = render(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          isMemoized={true}
+        >
+          Memoized content
+        </CardLinkCustom>
+      );
+
+      const initialElement = screen.getByText("Memoized content");
+
+      // Re-render with same props
+      rerender(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          isMemoized={true}
+        >
+          Memoized content
+        </CardLinkCustom>
+      );
+
+      const rerenderedElement = screen.getByText("Memoized content");
+      expect(rerenderedElement).toBe(initialElement);
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          isMemoized={false}
+        >
+          Non-memoized content
+        </CardLinkCustom>
+      );
+
+      const _initialElement = screen.getByText("Non-memoized content");
+
+      // Re-render with different content to test non-memoization
+      rerender(
+        <CardLinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+          isMemoized={false}
+        >
+          Different content
+        </CardLinkCustom>
+      );
+
+      expect(screen.getByText("Different content")).toBeInTheDocument();
+      expect(
+        screen.queryByText("Non-memoized content")
+      ).not.toBeInTheDocument();
+    });
+  });
+
   describe("Ref Forwarding", () => {
     it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLAnchorElement>();
       render(
         <CardLinkCustom
           href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
           ref={ref}
         >
           Link content
@@ -345,8 +473,8 @@ describe("CardLinkCustom", () => {
       render(
         <CardLinkCustom
           href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
+          debugId="test-link"
+          debugMode={false}
           ref={ref}
         >
           Link content
@@ -360,11 +488,7 @@ describe("CardLinkCustom", () => {
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           <span>Complex</span> <strong>content</strong>
         </CardLinkCustom>
       );
@@ -375,11 +499,7 @@ describe("CardLinkCustom", () => {
 
     it("handles special characters", () => {
       render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           Special chars: &lt;&gt;&amp;
         </CardLinkCustom>
       );
@@ -390,20 +510,35 @@ describe("CardLinkCustom", () => {
       expect(elements[0]).toBeInTheDocument();
     });
 
-    it("handles empty children", () => {
-      render(
-        <CardLinkCustom
-          href="/test-link"
-          _internalId="test-link"
-          _debugMode={false}
-        >
+    it("does not render when children are empty", () => {
+      const { container } = render(
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
           {""}
         </CardLinkCustom>
       );
 
-      // Should render because href is valid, even with empty children
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
-      expect(linkElement).toBeInTheDocument();
+      // Should not render because component returns null for empty children
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("does not render when children are null", () => {
+      const { container } = render(
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+          {null}
+        </CardLinkCustom>
+      );
+
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("does not render when children are undefined", () => {
+      const { container } = render(
+        <CardLinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+          {undefined}
+        </CardLinkCustom>
+      );
+
+      expect(container.firstChild).toBeNull();
     });
   });
 });
