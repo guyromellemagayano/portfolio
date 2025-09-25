@@ -1,3 +1,7 @@
+// ============================================================================
+// SHARED FOOTER COMPONENT DATA TYPES
+// ============================================================================
+
 import React from "react";
 
 import Link from "next/link";
@@ -6,6 +10,7 @@ import Link from "next/link";
 // FOOTER LINK TYPES
 // ============================================================================
 
+/** `Footer` component link types. */
 export type FooterLink =
   | {
       /** Internal link */
@@ -29,31 +34,15 @@ export type FooterLink =
     };
 
 // ============================================================================
-// FOOTER COMPONENT NAV LINKS
-// ============================================================================
-
-export type FooterComponentNavLinks = ReadonlyArray<
-  Extract<FooterLink, { kind: "internal" }>
->;
-
-// ============================================================================
 // FOOTER DATA TYPES
 // ============================================================================
 
+/** `Footer` component data. */
 export interface FooterData {
-  /** Legal text displayed in the footer */
+  /** Legal text */
   legalText: string;
   /** Navigation links */
   nav: ReadonlyArray<FooterLink>;
   /** Optional year override (default: current year) */
   year?: number;
 }
-
-// ============================================================================
-// FOOTER COMPONENT LABELS
-// ============================================================================
-
-export type FooterComponentLabels = Readonly<{
-  /** Legal text */
-  legalText?: string;
-}>;
