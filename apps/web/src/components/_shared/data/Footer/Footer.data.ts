@@ -1,12 +1,16 @@
+// ============================================================================
+// SHARED FOOTER COMPONENT DATA
+// ============================================================================
+
 import { formatDateSafely } from "@guyromellemagayano/utils";
 
-import type {
-  FooterComponentLabels,
-  FooterComponentNavLinks,
-} from "../_types/Footer.types";
+import {
+  type FooterComponentLabels,
+  type FooterComponentNavLinks,
+} from "@web/components/_shared";
 
 // ============================================================================
-// FOOTER DATA
+// FOOTER COMPONENT LABELS
 // ============================================================================
 
 const BRAND_NAME = "Guy Romelle Magayano" as const;

@@ -1,1 +1,1 @@
-export * from "./FooterLegal";
+export { FooterLegal } from "./FooterLegal";
