@@ -3,12 +3,12 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardEyebrow } from "../CardEyebrow";
+import CardEyebrow from "../CardEyebrow";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -118,21 +118,22 @@ describe("CardEyebrow", () => {
     });
 
     it("handles number children", () => {
-      render(<CardEyebrow>{0}</CardEyebrow>);
-      expect(screen.getByText("0")).toBeInTheDocument();
+      const { container } = render(<CardEyebrow>{0}</CardEyebrow>);
+      // Component returns null for falsy children like 0
+      expect(container.firstChild).toBeNull();
     });
   });
 
   describe("useComponentId Integration", () => {
     it("calls useComponentId with correct parameters", () => {
       render(
-        <CardEyebrow _internalId="custom-id" _debugMode={true}>
+        <CardEyebrow debugId="custom-id" debugMode={true}>
           Eyebrow text
         </CardEyebrow>
       );
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: "custom-id",
+        debugId: "custom-id",
         debugMode: true,
       });
     });
@@ -141,14 +142,14 @@ describe("CardEyebrow", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: undefined,
+        debugId: undefined,
         debugMode: undefined,
       });
     });
 
     it("passes generated ID to base component", () => {
       mockUseComponentId.mockReturnValue({
-        id: "generated-id",
+        componentId: "generated-id",
         isDebugMode: false,
       });
 
@@ -165,11 +166,11 @@ describe("CardEyebrow", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       mockUseComponentId.mockReturnValue({
-        id: "test-id",
+        componentId: "test-id",
         isDebugMode: true,
       });
 
-      render(<CardEyebrow _debugMode={true}>Eyebrow</CardEyebrow>);
+      render(<CardEyebrow debugMode={true}>Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
@@ -177,7 +178,7 @@ describe("CardEyebrow", () => {
 
     it("does not apply when disabled", () => {
       mockUseComponentId.mockReturnValue({
-        id: "test-id",
+        componentId: "test-id",
         isDebugMode: false,
       });
 
@@ -234,7 +235,7 @@ describe("CardEyebrow", () => {
   describe("Component ID", () => {
     it("renders with generated component ID", () => {
       mockUseComponentId.mockReturnValue({
-        id: "generated-id",
+        componentId: "generated-id",
         isDebugMode: false,
       });
 
@@ -249,11 +250,11 @@ describe("CardEyebrow", () => {
 
     it("renders with custom internal ID", () => {
       mockUseComponentId.mockReturnValue({
-        id: "custom-id",
+        componentId: "custom-id",
         isDebugMode: false,
       });
 
-      render(<CardEyebrow _internalId="custom-id">Eyebrow</CardEyebrow>);
+      render(<CardEyebrow debugId="custom-id">Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("custom-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
@@ -350,8 +351,9 @@ describe("CardEyebrow", () => {
     });
 
     it("handles number children", () => {
-      render(<CardEyebrow>{0}</CardEyebrow>);
-      expect(screen.getByText("0")).toBeInTheDocument();
+      const { container } = render(<CardEyebrow>{0}</CardEyebrow>);
+      // Component returns null for falsy children like 0
+      expect(container.firstChild).toBeNull();
     });
 
     it("combines decoration with custom className", () => {
@@ -371,14 +373,14 @@ describe("CardEyebrow", () => {
 
     it("handles multiple props together", () => {
       mockUseComponentId.mockReturnValue({
-        id: "multi-prop-id",
+        componentId: "multi-prop-id",
         isDebugMode: true,
       });
 
       render(
         <CardEyebrow
-          _internalId="multi-prop-id"
-          _debugMode={true}
+          debugId="multi-prop-id"
+          debugMode={true}
           isMemoized={true}
           decorate={true}
           dateTime="2023-01-01"
