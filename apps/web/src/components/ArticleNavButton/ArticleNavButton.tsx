@@ -11,12 +11,12 @@ import {
 
 import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
-import { cn } from "@web/utils";
-
 import {
   ARTICLE_COMPONENT_LABELS,
   type ArticleNavButtonComponent,
-} from "../_shared";
+} from "@web/components/_shared";
+import { cn } from "@web/utils";
+
 import styles from "./ArticleNavButton.module.css";
 
 // ============================================================================

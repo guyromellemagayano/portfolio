@@ -8,9 +8,9 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components";
+import { type CardCtaComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CardCtaComponent } from "../../../_shared";
 import CardLinkCustom from "../CardLink/CardLinkCustom";
 import styles from "./CardCta.module.css";
 

@@ -8,13 +8,13 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import { cn, formatDate, validateArticle } from "@web/utils";
-
 import {
   ARTICLE_COMPONENT_LABELS,
   type ArticleListItemComponent,
   type ArticleListItemProps,
-} from "../_shared";
+} from "@web/components/_shared";
+import { cn, formatDate, validateArticle } from "@web/utils";
+
 import styles from "./ArticleListItem.module.css";
 
 // ============================================================================
