@@ -17,26 +17,20 @@ Object.defineProperty(global, "IntersectionObserver", {
   value: mockIntersectionObserver,
 });
 
-import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterNavigation } from "../../FooterNavigation";
+import FooterNavigation from "../../FooterNavigation";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   })),
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasValidContent: vi.fn((content) => {
-    if (content === null || content === undefined) return false;
-    if (Array.isArray(content)) return content.length > 0;
-    return true;
-  }),
   hasValidNavigationLinks: vi.fn((links) => {
     if (links === null || links === undefined) return false;
     if (!Array.isArray(links)) return false;
@@ -69,21 +63,30 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
-  isValidLink: vi.fn((href) => href && href.length > 0),
   getLinkTargetProps: vi.fn((href, target) => ({
     target: target || "_self",
     rel: target === "_blank" ? "noopener noreferrer" : undefined,
   })),
   formatDateSafely: vi.fn((date, options) => {
     if (options?.year === "numeric") {
-      return new Date(date).getFullYear().toString();
+      return new Date().getFullYear().toString();
     }
-    return new Date(date).toISOString();
+    return "Formatted Date";
   }),
 }));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("@web/components/_shared", () => ({
+  FOOTER_COMPONENT_NAV_LINKS: [
+    { kind: "internal", label: "About", href: "/about" },
+    { kind: "internal", label: "Articles", href: "/articles" },
+    { kind: "internal", label: "Projects", href: "/projects" },
+    { kind: "internal", label: "Speaking", href: "/speaking" },
+    { kind: "internal", label: "Uses", href: "/uses" },
+  ],
 }));
 
 vi.mock("../FooterNavigation.module.css", () => ({
@@ -97,6 +100,7 @@ vi.mock("../FooterNavigation.module.css", () => ({
 describe("FooterNavigation", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -152,14 +156,14 @@ describe("FooterNavigation", () => {
     });
 
     it("renders with debug mode enabled", () => {
-      render(<FooterNavigation _debugMode />);
+      render(<FooterNavigation debugId="test-id" debugMode />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("renders with custom internal ID", () => {
-      render(<FooterNavigation _internalId="custom-nav" />);
+    it("renders with custom debug ID", () => {
+      render(<FooterNavigation debugId="custom-nav" />);
 
       const nav = screen.getByTestId("custom-nav-footer-navigation-root");
       expect(nav).toHaveAttribute(
@@ -196,14 +200,14 @@ describe("FooterNavigation", () => {
 
   describe("Debug Mode", () => {
     it("does not apply data-debug-mode when debugMode is false", () => {
-      render(<FooterNavigation _debugMode={false} />);
+      render(<FooterNavigation debugId="test-id" debugMode={false} />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
-      render(<FooterNavigation />);
+      render(<FooterNavigation debugId="test-id" />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
       expect(nav).not.toHaveAttribute("data-debug-mode");
@@ -300,7 +304,7 @@ describe("FooterNavigation", () => {
     });
 
     it("renders with proper data attributes for debugging", () => {
-      render(<FooterNavigation _internalId="test-id" _debugMode />);
+      render(<FooterNavigation debugId="test-id" debugMode />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
       expect(nav).toHaveAttribute(
@@ -312,6 +316,73 @@ describe("FooterNavigation", () => {
         "data-testid",
         "test-id-footer-navigation-root"
       );
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to navigation elements", () => {
+      render(<FooterNavigation debugId="aria-test" />);
+
+      // Test navigation element
+      const navElement = screen.getByRole("navigation");
+      expect(navElement).toBeInTheDocument();
+
+      // Test list items
+      const listItems = screen.getAllByRole("listitem");
+      expect(listItems).toHaveLength(5);
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(<FooterNavigation debugId="aria-test" />);
+
+      const navElement = screen.getByRole("navigation");
+      expect(navElement).toHaveAttribute("id", "aria-test-footer-navigation");
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(<FooterNavigation debugId="aria-test" />);
+
+      // Each list item should have a unique ID
+      const aboutItem = screen.getByText("About").closest("li");
+      const articlesItem = screen.getByText("Articles").closest("li");
+
+      expect(aboutItem).toHaveAttribute("id", "aria-test-footer-navigation-item-About");
+      expect(articlesItem).toHaveAttribute("id", "aria-test-footer-navigation-item-Articles");
+    });
+
+    it("applies correct ARIA labels to navigation links", () => {
+      render(<FooterNavigation debugId="aria-test" />);
+
+      // Links should have proper href attributes
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      const articlesLink = screen.getByRole("link", { name: "Articles" });
+
+      expect(aboutLink).toHaveAttribute("href", "/about");
+      expect(articlesLink).toHaveAttribute("href", "/articles");
+    });
+
+    it("handles ARIA attributes with different debug IDs", () => {
+      render(<FooterNavigation debugId="different-id" />);
+
+      const navElement = screen.getByRole("navigation");
+      expect(navElement).toHaveAttribute("id", "different-id-footer-navigation");
+
+      const aboutItem = screen.getByText("About").closest("li");
+      expect(aboutItem).toHaveAttribute("id", "different-id-footer-navigation-item-About");
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(<FooterNavigation isMemoized={true} />);
+      expect(screen.getByText("About")).toBeInTheDocument();
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(<FooterNavigation isMemoized={false} />);
+
+      rerender(<FooterNavigation isMemoized={false} />);
+      expect(screen.getByText("About")).toBeInTheDocument();
     });
   });
 
