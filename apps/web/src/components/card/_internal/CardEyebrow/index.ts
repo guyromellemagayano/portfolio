@@ -1,1 +1,1 @@
-export { CardEyebrow } from "./CardEyebrow";
+export { default as CardEyebrow } from "./CardEyebrow";

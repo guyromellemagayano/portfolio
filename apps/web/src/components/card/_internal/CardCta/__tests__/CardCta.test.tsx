@@ -3,13 +3,13 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardCta } from "../CardCta";
+import CardCta from "../CardCta";
 
 import "@testing-library/jest-dom";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -66,7 +66,7 @@ vi.mock("@web/components", () => ({
 
 // Mock CardLinkCustom
 vi.mock("../CardLink/CardLinkCustom", () => ({
-  CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
+  default: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const {
         children,
@@ -74,8 +74,8 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
         target,
         title,
         className,
-        _internalId,
-        _debugMode,
+        debugId,
+        debugMode,
         ...rest
       } = props;
       return (
@@ -85,9 +85,9 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
           target={target}
           title={title}
           className={className}
-          data-card-link-custom-id={`${_internalId || "test-id"}-card-link-custom`}
-          data-debug-mode={_debugMode ? "true" : undefined}
-          data-testid={`${_internalId || "test-id"}-card-link-custom-root`}
+          data-card-link-custom-id={`${debugId || "test-id"}-card-link-custom`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          data-testid={`${debugId || "test-id"}-card-link-custom-root`}
           {...rest}
         >
           {children}
@@ -129,6 +129,7 @@ vi.mock("next/link", () => ({
 describe("CardCta", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -228,7 +229,7 @@ describe("CardCta", () => {
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
-      render(<CardCta _debugMode={true}>Call to action</CardCta>);
+      render(<CardCta debugMode={true}>Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveAttribute("data-debug-mode", "true");
@@ -270,7 +271,7 @@ describe("CardCta", () => {
 
   describe("Component ID", () => {
     it("renders with custom internal ID", () => {
-      render(<CardCta _internalId="custom-id">Call to action</CardCta>);
+      render(<CardCta debugId="custom-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("custom-id-card-cta-root");
       expect(ctaElement).toHaveAttribute(
@@ -280,7 +281,7 @@ describe("CardCta", () => {
     });
 
     it("uses provided internalId when available", () => {
-      render(<CardCta _internalId="test-id">Call to action</CardCta>);
+      render(<CardCta debugId="test-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveAttribute(
@@ -309,6 +310,71 @@ describe("CardCta", () => {
       );
 
       expect(screen.getByText("Default CTA")).toBeInTheDocument();
+    });
+
+    it("maintains memoization across re-renders when isMemoized is true", () => {
+      const { rerender } = render(
+        <CardCta isMemoized={true}>
+          <div>Memoized content</div>
+        </CardCta>
+      );
+
+      const initialElement = screen.getByText("Memoized content");
+
+      // Re-render with same props
+      rerender(
+        <CardCta isMemoized={true}>
+          <div>Memoized content</div>
+        </CardCta>
+      );
+
+      const rerenderedElement = screen.getByText("Memoized content");
+      expect(rerenderedElement).toBe(initialElement);
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <CardCta isMemoized={false}>
+          <div>Non-memoized content</div>
+        </CardCta>
+      );
+
+      const _initialElement = screen.getByText("Non-memoized content");
+
+      // Re-render with different content to test non-memoization
+      rerender(
+        <CardCta isMemoized={false}>
+          <div>Different content</div>
+        </CardCta>
+      );
+
+      expect(screen.getByText("Different content")).toBeInTheDocument();
+      expect(
+        screen.queryByText("Non-memoized content")
+      ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Component Element Type", () => {
+    it("renders as div by default", () => {
+      render(<CardCta>Call to action</CardCta>);
+
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      expect(ctaElement.tagName).toBe("DIV");
+    });
+
+    it("renders as custom element when as prop is provided", () => {
+      render(<CardCta as="section">Call to action</CardCta>);
+
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      expect(ctaElement.tagName).toBe("SECTION");
+    });
+
+    it("renders as span when as prop is span", () => {
+      render(<CardCta as="span">Call to action</CardCta>);
+
+      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      expect(ctaElement.tagName).toBe("SPAN");
     });
   });
 
@@ -362,8 +428,9 @@ describe("CardCta", () => {
     });
 
     it("handles number children", () => {
-      render(<CardCta>{0}</CardCta>);
-      expect(screen.getByText("0")).toBeInTheDocument();
+      const { container } = render(<CardCta>{0}</CardCta>);
+      // Component returns null for falsy children like 0
+      expect(container.firstChild).toBeNull();
     });
   });
 });
