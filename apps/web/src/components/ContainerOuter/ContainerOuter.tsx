@@ -3,13 +3,12 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CommonContainerComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import type { CommonInternalContainerComponent } from "../_types";
 import styles from "./ContainerOuter.module.css";
 
 // ============================================================================
@@ -17,18 +16,43 @@ import styles from "./ContainerOuter.module.css";
 // ============================================================================
 
 /** Provides the outer structure for the `Container` compound component. */
-const BaseContainerOuter: CommonInternalContainerComponent = setDisplayName(
+const BaseContainerOuter: CommonContainerComponent = setDisplayName(
   function BaseContainerOuter(props) {
-    const { children, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      as: Component = "div",
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
+    if (!children) return null;
 
     const element = (
-      <div
+      <Component
         {...rest}
+        id={`${componentId}-container-outer`}
         className={cn(styles.containerOuter, className)}
-        {...createComponentProps(_internalId, "container-outer", _debugMode)}
+        {...createComponentProps(componentId, "container-outer", isDebugMode)}
       >
-        <div className={styles.containerOuterContent}>{children}</div>
-      </div>
+        <div
+          id={`${componentId}-container-outer-content`}
+          className={styles.containerOuterContent}
+          {...createComponentProps(
+            componentId,
+            "container-outer-content",
+            isDebugMode
+          )}
+        >
+          {children}
+        </div>
+      </Component>
     );
 
     return element;
@@ -47,32 +71,12 @@ const MemoizedContainerOuter = React.memo(BaseContainerOuter);
 // ============================================================================
 
 /** A container outer component that provides consistent outer structure for page content. */
-export const ContainerOuter: CommonInternalContainerComponent = setDisplayName(
+export const ContainerOuter: CommonContainerComponent = setDisplayName(
   function ContainerOuter(props) {
-    const {
-      children,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!hasAnyRenderableContent(children)) return null;
-
-    const updatedProps = {
-      ...rest,
-      _internalId: id,
-      _debugMode: isDebugMode,
-      children,
-    };
+    const { children, isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedContainerOuter : BaseContainerOuter;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest}>{children}</Component>;
     return element;
   }
 );

@@ -15,7 +15,7 @@ import {
   CardLink,
   CardLinkCustom,
   CardTitle,
-} from "../../Card/_internal";
+} from "@web/components/Card/_internal";
 
 // ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
