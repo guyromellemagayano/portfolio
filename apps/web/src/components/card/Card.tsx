@@ -1,15 +1,14 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
+import { type CardComponent, type CardCompoundComponent } from "../_shared";
 import {
   CardCta,
   CardDescription,
@@ -20,34 +19,33 @@ import {
 import styles from "./Card.module.css";
 
 // ============================================================================
-// CARD COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface CardProps
-  extends React.ComponentPropsWithRef<"article">,
-    CommonComponentProps {}
-type CardComponent = React.FC<CardProps>;
-
-// ============================================================================
 // BASE CARD COMPONENT
 // ============================================================================
 
 /** A flexible card component for displaying grouped content with optional subcomponents */
 const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
   const {
-    as: Component = "article",
+    as: Component = "div",
     children,
     className,
-    internalId,
+    debugId,
     debugMode,
     ...rest
   } = props;
 
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
   const element = (
     <Component
       {...rest}
+      id={`${componentId}-card`}
       className={cn(styles.card, className)}
-      {...createComponentProps(internalId, "card", debugMode)}
+      {...createComponentProps(componentId, "card", isDebugMode)}
     >
       {children}
     </Component>
@@ -68,53 +66,18 @@ const MemoizedCard = React.memo(BaseCard);
 // ============================================================================
 
 /** A card component that can optionally be wrapped in a link for navigation */
-export const Card = setDisplayName(function Card(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  if (!hasAnyRenderableContent(children)) return null;
-
-  const updatedProps = {
-    ...rest,
-    children,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+const Card = setDisplayName(function Card(props) {
+  const { children, isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedCard : BaseCard;
-  const element = <Component {...updatedProps}>{children}</Component>;
+  const element = <Component {...rest}>{children}</Component>;
   return element;
 } as CardCompoundComponent);
-
-// ============================================================================
-// CARD COMPOUND COMPONENTS
-// ============================================================================
-
-type CardCompoundComponent = CardComponent & {
-  /** A card link component that provides interactive hover effects and accessibility features */
-  Link: typeof CardLink;
-  /** A card title component that can optionally be wrapped in a link for navigation */
-  Title: typeof CardTitle;
-  /** A card description component that can optionally be wrapped in a link for navigation */
-  Description: typeof CardDescription;
-  /** A card call to action component that can optionally be wrapped in a link for navigation */
-  Cta: typeof CardCta;
-  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-  Eyebrow: typeof CardEyebrow;
-};
 
 Card.Link = CardLink;
 Card.Title = CardTitle;
 Card.Description = CardDescription;
 Card.Cta = CardCta;
 Card.Eyebrow = CardEyebrow;
+
+export default Card;
