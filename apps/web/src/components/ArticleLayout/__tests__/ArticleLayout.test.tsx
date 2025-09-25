@@ -207,7 +207,7 @@ vi.mock("@web/utils", () => ({
 // Logger is automatically mocked via __mocks__ directory
 
 // Mock shared data
-vi.mock("../_shared", () => ({
+vi.mock("@web/components/_shared", () => ({
   ARTICLE_COMPONENT_LABELS: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

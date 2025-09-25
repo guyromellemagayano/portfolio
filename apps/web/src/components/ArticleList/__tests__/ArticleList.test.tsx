@@ -38,7 +38,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock shared labels
-vi.mock("../_shared", () => ({
+vi.mock("@web/components/_shared", () => ({
   ARTICLE_COMPONENT_LABELS: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

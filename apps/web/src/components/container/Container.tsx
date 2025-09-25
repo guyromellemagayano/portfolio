@@ -1,26 +1,13 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  createComponentProps,
-  hasAnyRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
+import { ContainerInner, ContainerOuter } from "@web/components";
+import { type ContainerComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { ContainerInner, ContainerOuter } from "./_internal";
 import styles from "./Container.module.css";
-
-// ============================================================================
-// CONTAINER COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface ContainerProps
-  extends React.ComponentProps<"div">,
-    Omit<CommonComponentProps, "as"> {}
-type ContainerComponent = React.FC<ContainerProps>;
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
@@ -29,20 +16,33 @@ type ContainerComponent = React.FC<ContainerProps>;
 /** A flexible layout container component for consistent page structure. */
 const BaseContainer: ContainerComponent = setDisplayName(
   function BaseContainer(props) {
-    const { children, className, internalId, debugMode, ...rest } = props;
+    const {
+      as: Component = ContainerOuter,
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
+    if (!children) return null;
 
     const element = (
-      <div
+      <Component
         {...rest}
         className={cn(styles.container, className)}
-        {...createComponentProps(internalId, "container", debugMode)}
+        debugId={componentId}
+        debugMode={isDebugMode}
       >
-        <ContainerOuter _internalId={internalId} _debugMode={debugMode}>
-          <ContainerInner _internalId={internalId} _debugMode={debugMode}>
-            {children}
-          </ContainerInner>
-        </ContainerOuter>
-      </div>
+        <ContainerInner debugId={componentId} debugMode={isDebugMode}>
+          {children}
+        </ContainerInner>
+      </Component>
     );
 
     return element;
@@ -61,43 +61,14 @@ const MemoizedContainer = React.memo(BaseContainer);
 // ============================================================================
 
 /** Top-level layout container that provides consistent outer and inner structure for page content. */
-export const Container = setDisplayName(function Container(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
+export const Container: ContainerComponent = setDisplayName(
+  function Container(props) {
+    const { children, isMemoized = false, ...rest } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
+    const Component = isMemoized ? MemoizedContainer : BaseContainer;
+    const element = <Component {...rest}>{children}</Component>;
+    return element;
+  }
+);
 
-  if (!hasAnyRenderableContent(children)) return null;
-
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
-
-  const Component = isMemoized ? MemoizedContainer : BaseContainer;
-  const element = <Component {...updatedProps}>{children}</Component>;
-  return element;
-} as ContainerCompoundComponent);
-
-// ============================================================================
-// CONTAINER COMPOUND COMPONENTS
-// ============================================================================
-
-type ContainerCompoundComponent = React.FC<ContainerProps> & {
-  /** A container inner component that provides consistent inner structure for page content. */
-  Inner: typeof ContainerInner;
-  /** A container outer component that provides consistent outer structure for page content. */
-  Outer: typeof ContainerOuter;
-};
-
-Container.Outer = ContainerOuter;
-Container.Inner = ContainerInner;
+export default Container;

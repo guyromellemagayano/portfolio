@@ -5,12 +5,12 @@ import logger from "@guyromellemagayano/logger";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import { cn, formatDate, validateArticle } from "@web/utils";
-
 import {
   ARTICLE_COMPONENT_LABELS,
   type ArticleBaseComponent,
-} from "../_shared";
+} from "@web/components/_shared";
+import { cn, formatDate, validateArticle } from "@web/utils";
+
 import styles from "./ArticleBase.module.css";
 
 // ============================================================================

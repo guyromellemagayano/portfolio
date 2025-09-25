@@ -8,12 +8,12 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container, Prose } from "@web/components";
-import { cn, formatDate, validateArticle } from "@web/utils";
-
 import {
   ARTICLE_COMPONENT_LABELS,
   type ArticleLayoutComponent,
-} from "../_shared";
+} from "@web/components/_shared";
+import { cn, formatDate, validateArticle } from "@web/utils";
+
 import { ArticleNavButton } from "../ArticleNavButton";
 import styles from "./ArticleLayout.module.css";
 

@@ -10,7 +10,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CardLinkCustomComponent } from "../../../_shared";
+import { type CardLinkCustomComponent } from "@web/components/_shared";
 
 // ============================================================================
 // BASE CARD LINK CUSTOM COMPONENT
