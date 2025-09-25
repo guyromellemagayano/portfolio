@@ -1,25 +1,15 @@
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  isRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
+import { type CardDescriptionComponent } from "../../../_shared";
 import styles from "./CardDescription.module.css";
-
-// ============================================================================
-// CARD DESCRIPTION COMPONENT TYPES & INTERFACES
-// ============================================================================
-
-interface CardDescriptionProps
-  extends React.ComponentPropsWithRef<"p">,
-    Omit<CommonComponentProps, "as"> {}
-type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
 // BASE CARD DESCRIPTION COMPONENT
@@ -28,16 +18,31 @@ type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 /** A card description component that can optionally be wrapped in a link for navigation */
 const BaseCardDescription: CardDescriptionComponent = setDisplayName(
   function BaseCardDescription(props) {
-    const { children, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      as: Component = "p",
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
+    if (!children) return null;
 
     const element = (
-      <p
+      <Component
         {...rest}
+        id={`${componentId}-card-description`}
         className={cn(styles.cardDescription, className)}
-        {...createComponentProps(_internalId, "card-description", _debugMode)}
+        {...createComponentProps(componentId, "card-description", isDebugMode)}
       >
         {children}
-      </p>
+      </Component>
     );
 
     return element;
@@ -56,33 +61,16 @@ const MemoizedCardDescription = React.memo(BaseCardDescription);
 // ============================================================================
 
 /** A card description component that can optionally be wrapped in a link for navigation */
-export const CardDescription: CardDescriptionComponent = setDisplayName(
+const CardDescription: CardDescriptionComponent = setDisplayName(
   function CardDescription(props) {
-    const {
-      children,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!isRenderableContent(children)) return null;
-
-    const updatedProps = {
-      ...rest,
-      _internalId: id,
-      _debugMode: isDebugMode,
-    };
+    const { children, isMemoized = false, ...rest } = props;
 
     const Component = isMemoized
       ? MemoizedCardDescription
       : BaseCardDescription;
-    const element = <Component {...updatedProps}>{children}</Component>;
+    const element = <Component {...rest}>{children}</Component>;
     return element;
   }
 );
+
+export default CardDescription;
