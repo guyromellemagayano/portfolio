@@ -6,12 +6,12 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/utils";
-
 import {
   ARTICLE_COMPONENT_LABELS,
   type ArticleListComponent,
-} from "../_shared";
+} from "@web/components/_shared";
+import { cn } from "@web/utils";
+
 import styles from "./ArticleList.module.css";
 
 // ============================================================================
