@@ -1,4 +1,3 @@
-import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -7,17 +6,12 @@ import { FooterLegal } from "../../FooterLegal";
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   })),
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasMeaningfulText: vi.fn((content) => {
-    if (content === null || content === undefined) return false;
-    if (typeof content === "string") return content.trim().length > 0;
-    return true;
-  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) {
       component.displayName = displayName;
@@ -45,6 +39,20 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
+vi.mock("@guyromellemagayano/logger", () => ({
+  default: {
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+  },
+}));
+
+vi.mock("@web/components/_shared", () => ({
+  FOOTER_COMPONENT_LABELS: {
+    legalText: "&copy; 2025 Guy Romelle Magayano. All rights reserved.",
+  },
+}));
+
 vi.mock("../FooterLegal.module.css", () => ({
   default: {
     footerLegal: "_footerLegal_65621a",
@@ -54,11 +62,12 @@ vi.mock("../FooterLegal.module.css", () => ({
 describe("FooterLegal", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
     it("renders legal text correctly", () => {
-      render(<FooterLegal />);
+      render(<FooterLegal debugId="test-id" />);
 
       expect(
         screen.getByText(
@@ -68,21 +77,21 @@ describe("FooterLegal", () => {
     });
 
     it("applies custom className", () => {
-      render(<FooterLegal legalText="Legal text" className="custom-legal" />);
+      render(<FooterLegal debugId="test-id" className="custom-legal" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("custom-legal");
     });
 
     it("renders with debug mode enabled", () => {
-      render(<FooterLegal legalText="Legal text" _debugMode />);
+      render(<FooterLegal debugId="test-id" debugMode />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("renders with custom internal ID", () => {
-      render(<FooterLegal legalText="Legal text" _internalId="custom-legal" />);
+    it("renders with custom debug ID", () => {
+      render(<FooterLegal debugId="custom-legal" />);
 
       const legalElement = screen.getByTestId("custom-legal-footer-legal-root");
       expect(legalElement).toHaveAttribute(
@@ -94,7 +103,7 @@ describe("FooterLegal", () => {
     it("passes through HTML attributes", () => {
       render(
         <FooterLegal
-          legalText="Legal text"
+          debugId="test-id"
           aria-label="Legal information"
           role="contentinfo"
         />
@@ -107,8 +116,8 @@ describe("FooterLegal", () => {
   });
 
   describe("Content Validation", () => {
-    it("renders with default legalText when no legalText provided", () => {
-      render(<FooterLegal />);
+    it("renders with hardcoded legal text from labels", () => {
+      render(<FooterLegal debugId="test-id" />);
 
       expect(
         screen.getByTestId("test-id-footer-legal-root")
@@ -118,8 +127,8 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders with default legalText when legalText prop is null", () => {
-      render(<FooterLegal legalText={null as any} />);
+    it("ignores legalText prop and uses hardcoded text", () => {
+      render(<FooterLegal debugId="test-id" legalText="Custom legal text" />);
 
       expect(
         screen.getByTestId("test-id-footer-legal-root")
@@ -129,38 +138,12 @@ describe("FooterLegal", () => {
           "&copy; 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
+      expect(screen.queryByText("Custom legal text")).not.toBeInTheDocument();
     });
 
-    it("renders with default legalText when legalText is undefined", () => {
-      render(<FooterLegal legalText={undefined as any} />);
+    it("always renders with hardcoded legal text", () => {
+      render(<FooterLegal debugId="test-id" />);
 
-      expect(
-        screen.getByTestId("test-id-footer-legal-root")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
-      ).toBeInTheDocument();
-    });
-
-    it("renders with default legalText when legalText prop is empty string", () => {
-      render(<FooterLegal legalText="" />);
-
-      expect(
-        screen.getByTestId("test-id-footer-legal-root")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
-        )
-      ).toBeInTheDocument();
-    });
-
-    it("renders with default legalText when legalText prop is provided", () => {
-      render(<FooterLegal legalText="Legal text" />);
-
-      expect(
-        screen.getByTestId("test-id-footer-legal-root")
-      ).toBeInTheDocument();
       expect(
         screen.getByText(
           "&copy; 2025 Guy Romelle Magayano. All rights reserved."
@@ -171,14 +154,14 @@ describe("FooterLegal", () => {
 
   describe("Debug Mode", () => {
     it("does not apply data-debug-mode when debugMode is false", () => {
-      render(<FooterLegal legalText="Legal text" _debugMode={false} />);
+      render(<FooterLegal debugId="test-id" debugMode={false} />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
-      render(<FooterLegal legalText="Legal text" />);
+      render(<FooterLegal debugId="test-id" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
@@ -187,21 +170,28 @@ describe("FooterLegal", () => {
 
   describe("Component Structure", () => {
     it("renders as p element by default", () => {
-      render(<FooterLegal legalText="Legal text" />);
+      render(<FooterLegal debugId="test-id" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement.tagName).toBe("P");
     });
 
+    it("renders with custom element when as prop is provided", () => {
+      render(<FooterLegal debugId="test-id" as="div" />);
+
+      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      expect(legalElement.tagName).toBe("DIV");
+    });
+
     it("renders with correct CSS classes", () => {
-      render(<FooterLegal legalText="Legal text" />);
+      render(<FooterLegal debugId="test-id" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("_footerLegal_65621a");
     });
 
     it("combines CSS module classes with custom className", () => {
-      render(<FooterLegal legalText="Legal text" className="custom-legal" />);
+      render(<FooterLegal debugId="test-id" className="custom-legal" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveClass("_footerLegal_65621a custom-legal");
@@ -211,7 +201,7 @@ describe("FooterLegal", () => {
   describe("Ref Forwarding", () => {
     it("forwards ref to the legal component", () => {
       const ref = { current: null };
-      render(<FooterLegal legalText="Legal text" ref={ref} />);
+      render(<FooterLegal debugId="test-id" ref={ref} />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(ref.current).toBe(legalElement);
@@ -219,7 +209,7 @@ describe("FooterLegal", () => {
 
     it("forwards ref with correct element", () => {
       const ref = { current: null };
-      render(<FooterLegal legalText="Legal text" ref={ref} />);
+      render(<FooterLegal debugId="test-id" ref={ref} />);
 
       expect(ref.current).toBeInstanceOf(HTMLParagraphElement);
     });
@@ -227,16 +217,14 @@ describe("FooterLegal", () => {
 
   describe("Accessibility", () => {
     it("renders with proper semantic structure", () => {
-      render(<FooterLegal legalText="Legal text" />);
+      render(<FooterLegal debugId="test-id" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement.tagName).toBe("P");
     });
 
     it("renders with proper data attributes for debugging", () => {
-      render(
-        <FooterLegal legalText="Legal text" _internalId="test-id" _debugMode />
-      );
+      render(<FooterLegal debugId="test-id" debugMode />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
       expect(legalElement).toHaveAttribute(
@@ -252,8 +240,8 @@ describe("FooterLegal", () => {
   });
 
   describe("Edge Cases", () => {
-    it("handles default legalText with special characters", () => {
-      render(<FooterLegal />);
+    it("handles hardcoded legalText with special characters", () => {
+      render(<FooterLegal debugId="test-id" />);
 
       expect(
         screen.getByText(
@@ -262,8 +250,8 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders with default legalText when legalText prop is empty string", () => {
-      render(<FooterLegal legalText="" />);
+    it("renders with hardcoded legalText when legalText prop is empty string", () => {
+      render(<FooterLegal debugId="test-id" legalText="" />);
 
       expect(
         screen.getByTestId("test-id-footer-legal-root")
@@ -275,8 +263,8 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("renders with default legalText when legalText prop is whitespace-only", () => {
-      render(<FooterLegal legalText="   " />);
+    it("renders with hardcoded legalText when legalText prop is whitespace-only", () => {
+      render(<FooterLegal debugId="test-id" legalText="   " />);
 
       expect(
         screen.getByTestId("test-id-footer-legal-root")
@@ -289,9 +277,9 @@ describe("FooterLegal", () => {
     });
   });
 
-  describe("Content Priority", () => {
-    it("uses default legalText regardless of prop", () => {
-      render(<FooterLegal legalText="Default text" />);
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(<FooterLegal debugId="test-id" isMemoized />);
 
       expect(
         screen.getByText(
@@ -300,14 +288,32 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
     });
 
-    it("uses default legalText when legalText not provided", () => {
-      render(<FooterLegal />);
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <FooterLegal debugId="test-id" isMemoized={false} />
+      );
 
       expect(
-        screen.getByTestId("test-id-footer-legal-root")
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
       ).toBeInTheDocument();
+
+      rerender(<FooterLegal debugId="test-id" isMemoized={false} />);
       expect(
-        screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
+      ).toBeInTheDocument();
+    });
+
+    it("defaults to non-memoized when isMemoized is undefined", () => {
+      render(<FooterLegal debugId="test-id" />);
+
+      expect(
+        screen.getByText(
+          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+        )
       ).toBeInTheDocument();
     });
   });
