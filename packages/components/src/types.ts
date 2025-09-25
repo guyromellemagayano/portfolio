@@ -1,16 +1,11 @@
 import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
 
-import type {
-  UseComponentIdInternalOptions,
-  UseComponentIdOptions,
-} from "@guyromellemagayano/hooks";
+import type { UseComponentIdOptions } from "@guyromellemagayano/hooks";
 
 /**
  * Common props shared by all components in the library
  */
-export interface CommonComponentProps
-  extends UseComponentIdOptions,
-    UseComponentIdInternalOptions {
+export interface CommonComponentProps extends UseComponentIdOptions {
   /** Render component as a different element or custom component */
   as?: ElementType;
   /** Enable client-side rendering */
