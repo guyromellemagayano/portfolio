@@ -3,13 +3,12 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CommonContainerComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CommonInternalContainerComponent } from "../_types";
 import styles from "./ContainerInner.module.css";
 
 // ============================================================================
@@ -17,18 +16,43 @@ import styles from "./ContainerInner.module.css";
 // ============================================================================
 
 /** Provides the inner structure for the `Container` compound component. */
-const BaseContainerInner: CommonInternalContainerComponent = setDisplayName(
+const BaseContainerInner: CommonContainerComponent = setDisplayName(
   function BaseContainerInner(props) {
-    const { children, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      as: Component = "div",
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
+    if (!children) return null;
 
     const element = (
-      <div
+      <Component
         {...rest}
+        id={`${componentId}-container-inner`}
         className={cn(styles.containerInner, className)}
-        {...createComponentProps(_internalId, "container-inner", _debugMode)}
+        {...createComponentProps(componentId, "container-inner", isDebugMode)}
       >
-        <div className={styles.containerInnerContent}>{children}</div>
-      </div>
+        <div
+          id={`${componentId}-container-inner-content`}
+          className={styles.containerInnerContent}
+          {...createComponentProps(
+            componentId,
+            "container-inner-content",
+            isDebugMode
+          )}
+        >
+          {children}
+        </div>
+      </Component>
     );
 
     return element;
@@ -47,32 +71,12 @@ const MemoizedContainerInner = React.memo(BaseContainerInner);
 // ============================================================================
 
 /** A container inner component that provides consistent inner structure for page content. */
-export const ContainerInner: CommonInternalContainerComponent = setDisplayName(
+export const ContainerInner: CommonContainerComponent = setDisplayName(
   function ContainerInner(props) {
-    const {
-      children,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!hasAnyRenderableContent(children)) return null;
-
-    const updatedProps = {
-      ...rest,
-      _internalId: id,
-      _debugMode: isDebugMode,
-      children,
-    };
+    const { children, isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedContainerInner : BaseContainerInner;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest}>{children}</Component>;
     return element;
   }
 );

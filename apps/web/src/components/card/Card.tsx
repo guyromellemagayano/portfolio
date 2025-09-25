@@ -6,9 +6,12 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import {
+  type CardComponent,
+  type CardCompoundComponent,
+} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { type CardComponent, type CardCompoundComponent } from "../_shared";
 import {
   CardCta,
   CardDescription,
