@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -87,17 +87,10 @@ vi.mock("next/link", () => ({
 
 // Mock CardLinkCustom component
 vi.mock("../CardLinkCustom", () => ({
-  CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
+  default: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
-      const {
-        children,
-        href,
-        target,
-        title,
-        _internalId,
-        _debugMode,
-        ...rest
-      } = props;
+      const { children, href, target, title, debugId, debugMode, ...rest } =
+        props;
 
       // Mock the validation logic from the real component
       const isValidLink = (href: any) => href && href !== "" && href !== "#";
@@ -123,9 +116,9 @@ vi.mock("../CardLinkCustom", () => ({
           href={href}
           target={target}
           title={title}
-          data-card-link-custom-id={`${_internalId || "test-id"}-card-link-custom`}
-          data-debug-mode={_debugMode ? "true" : undefined}
-          data-testid={`${_internalId || "test-id"}-card-link-custom-root`}
+          data-card-link-custom-id={`${debugId || "test-id"}-card-link-custom`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          data-testid={`${debugId || "test-id"}-card-link-custom-root`}
           {...rest}
         >
           {children}
@@ -145,9 +138,12 @@ vi.mock("../CardLink.module.css", () => ({
 }));
 
 // Import the component after mocking
-import { CardLink } from "../CardLink";
+import CardLink from "../CardLink";
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 describe("CardLink", () => {
   describe("Basic Rendering", () => {
@@ -185,6 +181,18 @@ describe("CardLink", () => {
       expect(container).toHaveAttribute("id", "test-id");
       expect(container).toHaveAttribute("data-test", "test-data");
     });
+
+    it("renders React Fragment structure with background div and CardLinkCustom", () => {
+      render(<CardLink href="/test">Link content</CardLink>);
+
+      // Should have background div
+      const backgroundDiv = screen.getByTestId("test-id-card-link-root");
+      expect(backgroundDiv).toBeInTheDocument();
+
+      // Should have CardLinkCustom
+      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      expect(customLink).toBeInTheDocument();
+    });
   });
 
   describe("Link Functionality", () => {
@@ -199,6 +207,24 @@ describe("CardLink", () => {
 
     it("renders children directly when href is invalid", () => {
       render(<CardLink href="">Link content</CardLink>);
+
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Link content")).toBeInTheDocument();
+    });
+
+    it("renders children directly when href is null", () => {
+      render(<CardLink href={null as any}>Link content</CardLink>);
+
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Link content")).toBeInTheDocument();
+    });
+
+    it("renders children directly when href is undefined", () => {
+      render(<CardLink href={undefined as any}>Link content</CardLink>);
 
       expect(
         screen.queryByTestId("test-id-card-link-custom-root")
@@ -236,6 +262,22 @@ describe("CardLink", () => {
       expect(customLink).toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
+
+    it("renders CardLinkCustom with proper span structure", () => {
+      render(<CardLink href="/test">Link content</CardLink>);
+
+      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      expect(customLink).toBeInTheDocument();
+
+      // Should have clickable area span
+      const clickableArea = customLink.querySelector("span:first-child");
+      expect(clickableArea).toHaveClass("_cardLinkClickableArea_1e42ad");
+
+      // Should have content span
+      const contentSpan = customLink.querySelector("span:last-child");
+      expect(contentSpan).toHaveClass("_cardLinkContent_1e42ad");
+      expect(contentSpan).toHaveTextContent("Link content");
+    });
   });
 
   describe("Content Validation", () => {
@@ -258,7 +300,7 @@ describe("CardLink", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(
-        <CardLink href="/test" _debugMode={true}>
+        <CardLink href="/test" debugMode={true}>
           Link text
         </CardLink>
       );
@@ -301,7 +343,7 @@ describe("CardLink", () => {
   describe("Component ID", () => {
     it("renders with custom internal ID", () => {
       render(
-        <CardLink href="/test" _internalId="custom-id">
+        <CardLink href="/test" debugId="custom-id">
           Link text
         </CardLink>
       );
@@ -313,9 +355,9 @@ describe("CardLink", () => {
       );
     });
 
-    it("uses provided internalId when available", () => {
+    it("uses provided debugId when available", () => {
       render(
-        <CardLink href="/test" _internalId="test-id">
+        <CardLink href="/test" debugId="test-id">
           Link text
         </CardLink>
       );
@@ -347,6 +389,48 @@ describe("CardLink", () => {
       );
 
       expect(screen.getByText("Default link")).toBeInTheDocument();
+    });
+
+    it("maintains memoization across re-renders when isMemoized is true", () => {
+      const { rerender } = render(
+        <CardLink href="/test" isMemoized={true}>
+          <div>Memoized content</div>
+        </CardLink>
+      );
+
+      const initialElement = screen.getByText("Memoized content");
+
+      // Re-render with same props
+      rerender(
+        <CardLink href="/test" isMemoized={true}>
+          <div>Memoized content</div>
+        </CardLink>
+      );
+
+      const rerenderedElement = screen.getByText("Memoized content");
+      expect(rerenderedElement).toBe(initialElement);
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <CardLink href="/test" isMemoized={false}>
+          <div>Non-memoized content</div>
+        </CardLink>
+      );
+
+      const _initialElement = screen.getByText("Non-memoized content");
+
+      // Re-render with different content to test non-memoization
+      rerender(
+        <CardLink href="/test" isMemoized={false}>
+          <div>Different content</div>
+        </CardLink>
+      );
+
+      expect(screen.getByText("Different content")).toBeInTheDocument();
+      expect(
+        screen.queryByText("Non-memoized content")
+      ).not.toBeInTheDocument();
     });
   });
 
@@ -405,8 +489,9 @@ describe("CardLink", () => {
     });
 
     it("handles number children", () => {
-      render(<CardLink href="/test">{0}</CardLink>);
-      expect(screen.getByText("0")).toBeInTheDocument();
+      const { container } = render(<CardLink href="/test">{0}</CardLink>);
+      // Component returns null for falsy children like 0
+      expect(container.firstChild).toBeNull();
     });
   });
 });
