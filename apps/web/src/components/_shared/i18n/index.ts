@@ -1,8 +1,8 @@
 // ============================================================================
-// SHARED COMPONENTS DATA EXPORTS
+// SHARED COMPONENTS I18N EXPORTS
 // ============================================================================
 
-export * from "./Article";
-export * from "./Card";
-export * from "./Container";
-export * from "./Footer";
+export * from "./Article.i18n";
+export * from "./Card.i18n";
+export * from "./Container.i18n";
+export * from "./Footer.i18n";
