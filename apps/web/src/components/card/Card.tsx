@@ -7,18 +7,18 @@ import {
 } from "@guyromellemagayano/utils";
 
 import {
-  type CardComponent,
-  type CardCompoundComponent,
-} from "@web/components/_shared";
-import { cn } from "@web/utils";
-
-import {
   CardCta,
   CardDescription,
   CardEyebrow,
   CardLink,
   CardTitle,
-} from "./_internal";
+} from "@web/components";
+import {
+  type CardComponent,
+  type CardCompoundComponent,
+} from "@web/components/_shared";
+import { cn } from "@web/utils";
+
 import styles from "./Card.module.css";
 
 // ============================================================================
@@ -46,7 +46,7 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
   const element = (
     <Component
       {...rest}
-      id={`${componentId}-card`}
+      id={rest.id || `${componentId}-card`}
       className={cn(styles.card, className)}
       {...createComponentProps(componentId, "card", isDebugMode)}
     >
