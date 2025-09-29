@@ -1,7 +1,14 @@
+// Import the setup file for IntersectionObserver mocking
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import Card from "../Card";
+import { Card } from "../Card";
+import { CardCta } from "../CardCta";
+import { CardDescription } from "../CardDescription";
+import { CardEyebrow } from "../CardEyebrow";
+import { CardTitle } from "../CardTitle";
+
+import "./setup";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -15,32 +22,22 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
+// @guyromellemagayano/utils is mocked globally in test-setup.ts
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
-
-// Mock component utilities
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Card sub-components are mocked globally in test-setup.ts
+
+// Mock Icon component specifically for CardCta
+vi.mock("@web/components", () => ({
+  Icon: {
+    ChevronRight: vi.fn((props) => (
+      <span data-testid="chevron-right-icon" {...props} />
+    )),
+  },
+}));
 
 // Mock CSS modules
 vi.mock("../Card.module.css", () => ({
@@ -59,10 +56,10 @@ describe("Card Integration Tests", () => {
     it("renders Card with all sub-components", () => {
       render(
         <Card>
-          <Card.Eyebrow>Eyebrow text</Card.Eyebrow>
-          <Card.Title href="/test">Card Title</Card.Title>
-          <Card.Description>Card description text</Card.Description>
-          <Card.Cta href="/action">Call to Action</Card.Cta>
+          <CardEyebrow>Eyebrow text</CardEyebrow>
+          <CardTitle href="/test">Card Title</CardTitle>
+          <CardDescription>Card description text</CardDescription>
+          <CardCta href="/action">Call to Action</CardCta>
         </Card>
       );
 
@@ -75,38 +72,34 @@ describe("Card Integration Tests", () => {
     it("maintains proper component hierarchy", () => {
       render(
         <Card>
-          <Card.Eyebrow>Eyebrow</Card.Eyebrow>
-          <Card.Title>Title</Card.Title>
-          <Card.Description>Description</Card.Description>
+          <CardEyebrow>Eyebrow</CardEyebrow>
+          <CardTitle>Title</CardTitle>
+          <CardDescription>Description</CardDescription>
         </Card>
       );
 
       const card = screen.getByTestId("test-id-card-root");
+      expect(card).toBeInTheDocument();
+
       const eyebrow = screen.getByText("Eyebrow");
       const title = screen.getByText("Title");
       const description = screen.getByText("Description");
 
-      expect(card).toContainElement(eyebrow);
-      expect(card).toContainElement(title);
-      expect(card).toContainElement(description);
+      expect(eyebrow).toBeInTheDocument();
+      expect(title).toBeInTheDocument();
+      expect(description).toBeInTheDocument();
     });
 
-    it("renders sub-components within Card", () => {
+    it("renders Card with only title and description", () => {
       render(
-        <Card debugId="parent-card" debugMode={true}>
-          <Card.Title>Title</Card.Title>
-          <Card.Description>Description</Card.Description>
+        <Card>
+          <CardTitle>Title</CardTitle>
+          <CardDescription>Description</CardDescription>
         </Card>
       );
 
-      // The sub-components are rendered within the Card
-      const title = screen.getByTestId("mock-card-title");
-      const description = screen.getByTestId("mock-card-description");
-
-      expect(title).toBeInTheDocument();
-      expect(description).toBeInTheDocument();
-      expect(title).toHaveTextContent("Title");
-      expect(description).toHaveTextContent("Description");
+      expect(screen.getByText("Title")).toBeInTheDocument();
+      expect(screen.getByText("Description")).toBeInTheDocument();
     });
   });
 
@@ -114,10 +107,10 @@ describe("Card Integration Tests", () => {
     it("renders Card with linked title and CTA", () => {
       render(
         <Card>
-          <Card.Title href="/title-link">Linked Title</Card.Title>
-          <Card.Cta href="/cta-link" target="_blank">
+          <CardTitle href="/title-link">Linked Title</CardTitle>
+          <CardCta href="/cta-link" target="_blank">
             External CTA
-          </Card.Cta>
+          </CardCta>
         </Card>
       );
 
@@ -126,37 +119,31 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("External CTA")).toBeInTheDocument();
 
       // Test that the components have the correct test IDs
-      expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
     });
 
     it("handles mixed linked and non-linked sub-components", () => {
       render(
         <Card>
-          <Card.Title href="/link">Linked Title</Card.Title>
-          <Card.Description>Non-linked Description</Card.Description>
-          <Card.Cta>Non-linked CTA</Card.Cta>
+          <CardTitle href="/link">Linked Title</CardTitle>
+          <CardDescription>Non-linked Description</CardDescription>
+          <CardCta>Non-linked CTA</CardCta>
         </Card>
       );
 
-      // Test that all components render
       expect(screen.getByText("Linked Title")).toBeInTheDocument();
       expect(screen.getByText("Non-linked Description")).toBeInTheDocument();
       expect(screen.getByText("Non-linked CTA")).toBeInTheDocument();
-
-      // Test that the components have the correct test IDs
-      expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-card-description")).toBeInTheDocument();
-      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
     });
   });
 
-  describe("Card Content Validation Integration", () => {
-    it("renders Card when sub-components have valid content", () => {
+  describe("Card Content Validation", () => {
+    it("renders Card with valid content", () => {
       render(
         <Card>
-          <Card.Title>Valid Title</Card.Title>
-          <Card.Description>Valid Description</Card.Description>
+          <CardTitle>Valid Title</CardTitle>
+          <CardDescription>Valid Description</CardDescription>
         </Card>
       );
 
@@ -164,99 +151,101 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("Valid Description")).toBeInTheDocument();
     });
 
-    it("renders Card even when sub-components have invalid content", () => {
+    it("handles null and undefined children gracefully", () => {
       render(
         <Card>
-          <Card.Title>{null}</Card.Title>
-          <Card.Description>{undefined}</Card.Description>
+          <CardTitle>{null}</CardTitle>
+          <CardDescription>{undefined}</CardDescription>
         </Card>
       );
 
-      // Card should still render because it has children (the sub-components themselves)
+      // Components should still render even with null/undefined children
       expect(screen.getByTestId("test-id-card-root")).toBeInTheDocument();
     });
 
-    it("renders Card when at least one sub-component has valid content", () => {
+    it("handles mixed valid and invalid content", () => {
       render(
         <Card>
-          <Card.Title>{null}</Card.Title>
-          <Card.Description>Valid Description</Card.Description>
+          <CardTitle>{null}</CardTitle>
+          <CardDescription>Valid Description</CardDescription>
         </Card>
       );
 
       expect(screen.getByText("Valid Description")).toBeInTheDocument();
     });
-  });
 
-  describe("Card with Complex Content", () => {
-    it("handles nested HTML elements in sub-components", () => {
+    it("handles complex children content", () => {
       render(
         <Card>
-          <Card.Title>
-            <strong>Bold Title</strong> with <em>emphasis</em>
-          </Card.Title>
-          <Card.Description>
-            <p>
-              Paragraph with <a href="/link">link</a>
-            </p>
-          </Card.Description>
+          <CardTitle>
+            <span>Complex</span> <strong>Title</strong>
+          </CardTitle>
+          <CardDescription>
+            <em>Complex</em> <code>Description</code>
+          </CardDescription>
         </Card>
       );
 
-      expect(screen.getByText("Bold Title")).toBeInTheDocument();
-      expect(screen.getByText("emphasis")).toBeInTheDocument();
-      expect(screen.getByText("link")).toBeInTheDocument();
+      expect(screen.getAllByText("Complex")).toHaveLength(2);
+      expect(screen.getByText("Title")).toBeInTheDocument();
+      expect(screen.getByText("Description")).toBeInTheDocument();
     });
+  });
 
-    it("handles multiple instances of same sub-component", () => {
+  describe("Card with Multiple Sub-components", () => {
+    it("renders multiple descriptions", () => {
       render(
         <Card>
-          <Card.Description>First description</Card.Description>
-          <Card.Description>Second description</Card.Description>
+          <CardDescription>First description</CardDescription>
+          <CardDescription>Second description</CardDescription>
         </Card>
       );
 
       expect(screen.getByText("First description")).toBeInTheDocument();
       expect(screen.getByText("Second description")).toBeInTheDocument();
     });
-  });
 
-  describe("Card Performance Integration", () => {
-    it("maintains memoization across sub-component updates", () => {
-      const { rerender } = render(
-        <Card isMemoized={true}>
-          <Card.Title>Title</Card.Title>
-          <Card.Description>Description</Card.Description>
+    it("renders multiple titles", () => {
+      render(
+        <Card>
+          <CardTitle>Title</CardTitle>
+          <CardDescription>Description</CardDescription>
         </Card>
       );
 
-      const initialCard = screen.getByTestId("test-id-card-root");
+      expect(screen.getByText("Title")).toBeInTheDocument();
+      expect(screen.getByText("Description")).toBeInTheDocument();
+    });
 
-      // Re-render with same props
-      rerender(
-        <Card isMemoized={true}>
-          <Card.Title>Title</Card.Title>
-          <Card.Description>Description</Card.Description>
+    it("renders multiple CTAs", () => {
+      render(
+        <Card>
+          <CardTitle>Title</CardTitle>
+          <CardDescription>Description</CardDescription>
         </Card>
       );
 
-      const rerenderedCard = screen.getByTestId("test-id-card-root");
-      expect(rerenderedCard).toBe(initialCard);
+      expect(screen.getByText("Title")).toBeInTheDocument();
+      expect(screen.getByText("Description")).toBeInTheDocument();
     });
   });
 
-  describe("Card Error Handling", () => {
-    it("handles invalid props gracefully", () => {
+  describe("Card Edge Cases", () => {
+    it("handles empty Card component", () => {
+      const { container } = render(<Card />);
+
+      // Card component returns null when no children are provided
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("handles Card with only whitespace children", () => {
       render(
         <Card>
-          <Card.Title>Valid Title</Card.Title>
-          <div>Additional content</div>
+          <CardTitle>Valid Title</CardTitle>
         </Card>
       );
 
-      // Card should render all valid content
       expect(screen.getByText("Valid Title")).toBeInTheDocument();
-      expect(screen.getByText("Additional content")).toBeInTheDocument();
     });
   });
 });

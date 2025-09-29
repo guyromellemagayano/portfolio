@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import CardCta from "../CardCta";
+import { CardCta } from "../CardCta";
 
 import "@testing-library/jest-dom";
 
@@ -20,15 +20,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -97,13 +88,7 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
   ),
 }));
 
-// Mock CSS modules
-vi.mock("../CardCta.module.css", () => ({
-  default: {
-    cardCtaContainer: "_cardCtaContainer_c4ef04",
-    cardCtaLink: "_cardCtaLink_c4ef04",
-  },
-}));
+// Component uses Tailwind classes, no CSS modules to mock
 
 // Mock Next.js Link component to avoid intersection observer issues
 vi.mock("next/link", () => ({
@@ -225,6 +210,11 @@ describe("CardCta", () => {
       const { container } = render(<CardCta>{""}</CardCta>);
       expect(container.firstChild).toBeNull();
     });
+
+    it("renders with valid children", () => {
+      render(<CardCta>Valid content</CardCta>);
+      expect(screen.getByText("Valid content")).toBeInTheDocument();
+    });
   });
 
   describe("Debug Mode", () => {
@@ -255,15 +245,31 @@ describe("CardCta", () => {
       render(<CardCta>Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveClass("_cardCtaContainer_c4ef04");
+      expect(ctaElement).toHaveClass(
+        "relative",
+        "z-10",
+        "mt-2",
+        "flex",
+        "items-start",
+        "text-sm",
+        "font-medium",
+        "text-amber-500"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind + custom classes", () => {
       render(<CardCta className="custom-class">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
       expect(ctaElement).toHaveClass(
-        "_cardCtaContainer_c4ef04",
+        "relative",
+        "z-10",
+        "mt-2",
+        "flex",
+        "items-start",
+        "text-sm",
+        "font-medium",
+        "text-amber-500",
         "custom-class"
       );
     });
@@ -274,20 +280,14 @@ describe("CardCta", () => {
       render(<CardCta debugId="custom-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("custom-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute(
-        "data-card-cta-id",
-        "custom-id-card-cta"
-      );
+      expect(ctaElement).toHaveAttribute("id", "custom-id-card-cta");
     });
 
     it("uses provided internalId when available", () => {
       render(<CardCta debugId="test-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute(
-        "data-card-cta-id",
-        "test-id-card-cta"
-      );
+      expect(ctaElement).toHaveAttribute("id", "test-id-card-cta");
     });
   });
 
@@ -423,13 +423,13 @@ describe("CardCta", () => {
 
     it("handles boolean children", () => {
       render(<CardCta>{true}</CardCta>);
-      // Boolean true is not rendered as text content in React
+      // Boolean true is truthy, so component renders
       expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
       const { container } = render(<CardCta>{0}</CardCta>);
-      // Component returns null for falsy children like 0
+      // Component uses !children check, so 0 is falsy
       expect(container.firstChild).toBeNull();
     });
   });
