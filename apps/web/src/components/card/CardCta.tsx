@@ -1,5 +1,8 @@
 import React from "react";
 
+import Link from "next/link";
+
+import { CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -8,11 +11,25 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components";
-import { type CardCtaComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import CardLinkCustom from "../CardLink/CardLinkCustom";
-import styles from "./CardCta.module.css";
+import { CardLinkCustom } from "./CardLinkCustom";
+
+// ============================================================================
+// CARD CTA COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `CardCta` component props. */
+export interface CardCtaProps
+  extends React.ComponentPropsWithRef<"div">,
+    CommonComponentProps {
+  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+  target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
+  title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
+}
+
+/** `CardCta` component type. */
+export type CardCtaComponent = React.FC<CardCtaProps>;
 
 // ============================================================================
 // BASE CARD CTA COMPONENT
@@ -44,7 +61,10 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-card-cta`}
-        className={cn(styles.cardCtaContainer, className)}
+        className={cn(
+          "relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500",
+          className
+        )}
         {...createComponentProps(componentId, "card-cta", isDebugMode)}
       >
         {href && isValidLink(href) ? (
@@ -52,7 +72,10 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
             href={href}
             target={target}
             title={title}
-            className={styles.cardCtaLink}
+            className={cn(
+              "flex items-center transition hover:text-amber-600 dark:hover:text-amber-600",
+              className
+            )}
             debugId={componentId}
             debugMode={isDebugMode}
           >
@@ -81,12 +104,12 @@ const MemoizedCardCta = React.memo(BaseCardCta);
 // ============================================================================
 
 /** A card call to action component that can optionally be wrapped in a link for navigation */
-const CardCta: CardCtaComponent = setDisplayName(function CardCta(props) {
-  const { children, isMemoized = false, ...rest } = props;
+export const CardCta: CardCtaComponent = setDisplayName(
+  function CardCta(props) {
+    const { children, isMemoized = false, ...rest } = props;
 
-  const Component = isMemoized ? MemoizedCardCta : BaseCardCta;
-  const element = <Component {...rest}>{children}</Component>;
-  return element;
-});
-
-export default CardCta;
+    const Component = isMemoized ? MemoizedCardCta : BaseCardCta;
+    const element = <Component {...rest}>{children}</Component>;
+    return element;
+  }
+);
