@@ -16,15 +16,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -41,27 +32,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
-  getLinkTargetProps: vi.fn((href, target) => {
-    if (target === "_blank" && href?.startsWith("http")) {
-      return { rel: "noopener noreferrer", target };
-    }
-    return { target };
-  }),
-  isValidImageSrc: vi.fn((src) => {
-    if (!src) return false;
-    if (typeof src !== "string") return false;
-    return src.trim() !== "";
-  }),
-}));
-
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
-  isActivePath: vi.fn(() => true),
 }));
 
 // Mock Next.js Link
@@ -87,7 +61,7 @@ vi.mock("next/link", () => ({
 
 // Mock CardLinkCustom component
 vi.mock("../CardLinkCustom", () => ({
-  default: React.forwardRef<HTMLAnchorElement, any>(
+  CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const { children, href, target, title, debugId, debugMode, ...rest } =
         props;
@@ -121,24 +95,26 @@ vi.mock("../CardLinkCustom", () => ({
           data-testid={`${debugId || "test-id"}-card-link-custom-root`}
           {...rest}
         >
-          {children}
+          <span
+            data-testid={`${debugId || "test-id"}-card-link-custom-span`}
+            className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl"
+          />
+          <span
+            data-testid={`${debugId || "test-id"}-card-link-custom-span-content`}
+            className="relative z-10"
+          >
+            {children}
+          </span>
         </a>
       );
     }
   ),
 }));
 
-// Mock CSS modules
-vi.mock("../CardLink.module.css", () => ({
-  default: {
-    cardLinkBackground: "_cardLinkBackground_1e42ad",
-    cardLinkClickableArea: "_cardLinkClickableArea_1e42ad",
-    cardLinkContent: "_cardLinkContent_1e42ad",
-  },
-}));
+// Component uses Tailwind classes, no CSS modules to mock
 
 // Import the component after mocking
-import CardLink from "../CardLink";
+import { CardLink } from "../CardLink";
 
 afterEach(() => {
   cleanup();
@@ -155,7 +131,7 @@ describe("CardLink", () => {
     it("renders background div element", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container.tagName).toBe("DIV");
     });
 
@@ -166,7 +142,7 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container).toHaveClass("custom-class");
     });
 
@@ -177,8 +153,9 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveAttribute("id", "test-id");
+      const container = screen.getByTestId("test-id-card-link-root-root");
+      // The component overrides the id with its internal ID
+      expect(container).toHaveAttribute("id", "test-id-card-link-root");
       expect(container).toHaveAttribute("data-test", "test-data");
     });
 
@@ -186,12 +163,22 @@ describe("CardLink", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
       // Should have background div
-      const backgroundDiv = screen.getByTestId("test-id-card-link-root");
+      const backgroundDiv = screen.getByTestId("test-id-card-link-root-root");
       expect(backgroundDiv).toBeInTheDocument();
 
-      // Should have CardLinkCustom
+      // Should have CardLinkCustom with proper structure
       const customLink = screen.getByTestId("test-id-card-link-custom-root");
       expect(customLink).toBeInTheDocument();
+
+      // Should have the clickable area span
+      const clickableArea = screen.getByTestId("test-id-card-link-custom-span");
+      expect(clickableArea).toBeInTheDocument();
+
+      // Should have the content span
+      const contentSpan = screen.getByTestId(
+        "test-id-card-link-custom-span-content"
+      );
+      expect(contentSpan).toBeInTheDocument();
     });
   });
 
@@ -247,12 +234,26 @@ describe("CardLink", () => {
   });
 
   describe("Styling Structure", () => {
-    it("renders background element with correct CSS class", () => {
+    it("renders background element with correct Tailwind classes", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const background = screen.getByTestId("test-id-card-link-root");
+      const background = screen.getByTestId("test-id-card-link-root-root");
       expect(background).toBeInTheDocument();
-      expect(background).toHaveClass("_cardLinkBackground_1e42ad");
+      expect(background).toHaveClass(
+        "absolute",
+        "-inset-x-4",
+        "-inset-y-6",
+        "z-0",
+        "scale-95",
+        "bg-zinc-50",
+        "opacity-0",
+        "transition",
+        "group-hover:scale-100",
+        "group-hover:opacity-100",
+        "sm:-inset-x-6",
+        "sm:rounded-2xl",
+        "dark:bg-zinc-800/50"
+      );
     });
 
     it("renders CardLinkCustom with clickable area and content when href is valid", () => {
@@ -270,12 +271,21 @@ describe("CardLink", () => {
       expect(customLink).toBeInTheDocument();
 
       // Should have clickable area span
-      const clickableArea = customLink.querySelector("span:first-child");
-      expect(clickableArea).toHaveClass("_cardLinkClickableArea_1e42ad");
+      const clickableArea = screen.getByTestId("test-id-card-link-custom-span");
+      expect(clickableArea).toHaveClass(
+        "absolute",
+        "-inset-x-4",
+        "-inset-y-6",
+        "z-20",
+        "sm:-inset-x-6",
+        "sm:rounded-2xl"
+      );
 
       // Should have content span
-      const contentSpan = customLink.querySelector("span:last-child");
-      expect(contentSpan).toHaveClass("_cardLinkContent_1e42ad");
+      const contentSpan = screen.getByTestId(
+        "test-id-card-link-custom-span-content"
+      );
+      expect(contentSpan).toHaveClass("relative", "z-10");
       expect(contentSpan).toHaveTextContent("Link content");
     });
   });
@@ -305,36 +315,62 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<CardLink href="/test">Link text</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
   });
 
   describe("Component Structure", () => {
-    it("applies correct CSS classes", () => {
+    it("applies correct Tailwind classes", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveClass("_cardLinkBackground_1e42ad");
+      const container = screen.getByTestId("test-id-card-link-root-root");
+      expect(container).toHaveClass(
+        "absolute",
+        "-inset-x-4",
+        "-inset-y-6",
+        "z-0",
+        "scale-95",
+        "bg-zinc-50",
+        "opacity-0",
+        "transition",
+        "group-hover:scale-100",
+        "group-hover:opacity-100",
+        "sm:-inset-x-6",
+        "sm:rounded-2xl",
+        "dark:bg-zinc-800/50"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind + custom classes", () => {
       render(
         <CardLink href="/test" className="custom-class">
           Link content
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container).toHaveClass(
-        "_cardLinkBackground_1e42ad",
+        "absolute",
+        "-inset-x-4",
+        "-inset-y-6",
+        "z-0",
+        "scale-95",
+        "bg-zinc-50",
+        "opacity-0",
+        "transition",
+        "group-hover:scale-100",
+        "group-hover:opacity-100",
+        "sm:-inset-x-6",
+        "sm:rounded-2xl",
+        "dark:bg-zinc-800/50",
         "custom-class"
       );
     });
@@ -348,10 +384,10 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("custom-id-card-link-root");
+      const container = screen.getByTestId("custom-id-card-link-root-root");
       expect(container).toHaveAttribute(
-        "data-card-link-id",
-        "custom-id-card-link"
+        "data-card-link-root-id",
+        "custom-id-card-link-root"
       );
     });
 
@@ -362,10 +398,10 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
+      const container = screen.getByTestId("test-id-card-link-root-root");
       expect(container).toHaveAttribute(
-        "data-card-link-id",
-        "test-id-card-link"
+        "data-card-link-root-id",
+        "test-id-card-link-root"
       );
     });
   });
@@ -446,7 +482,7 @@ describe("CardLink", () => {
       expect(ref.current).toBeInTheDocument();
       expect(ref.current).toHaveAttribute(
         "data-testid",
-        "test-id-card-link-root"
+        "test-id-card-link-root-root"
       );
     });
 
@@ -485,7 +521,9 @@ describe("CardLink", () => {
     it("handles boolean children", () => {
       render(<CardLink href="/test">{true}</CardLink>);
       // Boolean true is not rendered as text content in React
-      expect(screen.getByTestId("test-id-card-link-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-card-link-root-root")
+      ).toBeInTheDocument();
     });
 
     it("handles number children", () => {

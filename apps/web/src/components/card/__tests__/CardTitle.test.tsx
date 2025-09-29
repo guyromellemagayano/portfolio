@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import CardTitle from "../CardTitle";
+import { CardTitle } from "../CardTitle";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -18,46 +18,11 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   isValidLink: vi.fn((href) => {
-    if (!href) return false;
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    if (hrefString === "#" || hrefString === "") return false;
-    return true;
+    return href && href !== "" && href !== "#";
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
-    return component;
-  }),
-  getLinkTargetProps: vi.fn((href, target) => {
-    if (!href || href === "#" || href === "") {
-      return { target: "_self" };
-    }
-    const hrefString = typeof href === "string" ? href : href?.toString() || "";
-    const isExternal = hrefString?.startsWith("http");
-    const shouldOpenNewTab =
-      target === "_blank" || (isExternal && target !== "_self");
-    return {
-      target: shouldOpenNewTab ? "_blank" : "_self",
-      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
-    };
-  }),
-  formatDateSafely: vi.fn((date, options) => {
-    if (options?.year === "numeric") {
-      return new Date().getFullYear().toString();
-    }
-    return date.toISOString();
-  }),
-  createCompoundComponent: vi.fn((displayName, component) => {
-    component.displayName = displayName;
     return component;
   }),
   createComponentProps: vi.fn(
@@ -71,24 +36,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
-
-// Mock component utilities
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  createComponentProps: vi.fn((id, componentType, debugMode) => {
-    return {
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
-    };
-  }),
 }));
 
 // Mock CardLinkCustom
-vi.mock("../CardLink/CardLinkCustom", () => ({
+vi.mock("../CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const { children, href, target, title, ...rest } = props;
@@ -106,13 +59,6 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
       );
     }
   ),
-}));
-
-// Mock CSS modules
-vi.mock("../CardTitle.module.css", () => ({
-  default: {
-    cardTitleHeading: "_cardTitleHeading_9c3d2e",
-  },
 }));
 
 // Mock Next.js Link component to avoid intersection observer issues
@@ -255,10 +201,16 @@ describe("CardTitle", () => {
       render(<CardTitle href="#">Card title</CardTitle>);
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveClass("_cardTitleHeading_9c3d2e");
+      expect(titleElement).toHaveClass(
+        "text-base",
+        "font-semibold",
+        "tracking-tight",
+        "text-zinc-800",
+        "dark:text-zinc-100"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind + custom classes", () => {
       render(
         <CardTitle className="custom-class" href="#">
           Card title
@@ -267,7 +219,11 @@ describe("CardTitle", () => {
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveClass(
-        "_cardTitleHeading_9c3d2e",
+        "text-base",
+        "font-semibold",
+        "tracking-tight",
+        "text-zinc-800",
+        "dark:text-zinc-100",
         "custom-class"
       );
     });

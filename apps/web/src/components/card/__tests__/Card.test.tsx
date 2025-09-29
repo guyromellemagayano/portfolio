@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import Card from "../Card";
+import { Card } from "../Card";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -31,23 +31,11 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
-
-// Mock component utilities
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Card sub-components are mocked globally in test-setup.ts
-
-// Mock CSS modules
-vi.mock("../Card.module.css", () => ({
-  default: {
-    card: "card",
-  },
-}));
 
 describe("Card", () => {
   afterEach(() => {
@@ -143,14 +131,27 @@ describe("Card", () => {
       render(<Card>Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind classes + custom classes", () => {
       render(<Card className="custom-class">Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card", "custom-class");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start",
+        "custom-class"
+      );
     });
   });
 
@@ -341,37 +342,65 @@ describe("Card", () => {
   });
 
   describe("CSS and Styling", () => {
-    it("applies base CSS class", () => {
+    it("applies base Tailwind CSS classes", () => {
       render(<Card>Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start"
+      );
     });
 
-    it("merges custom className with base class", () => {
+    it("merges custom className with base classes", () => {
       render(<Card className="custom-card-class">Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card", "custom-card-class");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start",
+        "custom-card-class"
+      );
     });
 
     it("handles multiple custom classes", () => {
       render(<Card className="class1 class2 class3">Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card", "class1", "class2", "class3");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start",
+        "class1",
+        "class2",
+        "class3"
+      );
     });
 
     it("handles empty className gracefully", () => {
       render(<Card className="">Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveClass("card");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start"
+      );
     });
   });
 
   describe("Props Forwarding", () => {
-    it("forwards all HTML article attributes", () => {
+    it("forwards all HTML div attributes", () => {
       render(
         <Card
           id="card-1"
