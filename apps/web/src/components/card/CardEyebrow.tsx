@@ -1,15 +1,30 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CardEyebrowComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./CardEyebrow.module.css";
+// ============================================================================
+// CARD EYEBROW COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `CardEyebrow` component props. */
+export interface CardEyebrowProps
+  extends React.ComponentPropsWithRef<"p">,
+    CommonComponentProps {
+  /** ISO date string for the eyebrow content */
+  dateTime?: string;
+  /** Enable decorative styling */
+  decorate?: boolean;
+}
+
+/** `CardEyebrow` component type. */
+export type CardEyebrowComponent = React.FC<CardEyebrowProps>;
 
 // ============================================================================
 // BASE CARD EYEBROW COMPONENT
@@ -40,8 +55,8 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
       <Component
         {...rest}
         className={cn(
-          styles.cardEyebrow,
-          decorate && styles.cardEyebrowDecorated,
+          "relative z-10 order-first mb-3 flex items-center text-sm text-wrap text-zinc-400 dark:text-zinc-500",
+          decorate && "pl-3.5",
           className
         )}
         {...createComponentProps(componentId, "card-eyebrow", isDebugMode)}
@@ -66,7 +81,7 @@ const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
 // ============================================================================
 
 /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-const CardEyebrow: CardEyebrowComponent = setDisplayName(
+export const CardEyebrow: CardEyebrowComponent = setDisplayName(
   function CardEyebrow(props) {
     const { children, isMemoized = false, ...rest } = props;
 
@@ -75,5 +90,3 @@ const CardEyebrow: CardEyebrowComponent = setDisplayName(
     return element;
   }
 );
-
-export default CardEyebrow;

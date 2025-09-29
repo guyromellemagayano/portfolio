@@ -1,25 +1,31 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import {
-  CardCta,
-  CardDescription,
-  CardEyebrow,
-  CardLink,
-  CardTitle,
-} from "@web/components";
-import {
-  type CardComponent,
-  type CardCompoundComponent,
-} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./Card.module.css";
+import { CardCta } from "./CardCta";
+import { CardDescription } from "./CardDescription";
+import { CardEyebrow } from "./CardEyebrow";
+import { CardLink } from "./CardLink";
+import { CardTitle } from "./CardTitle";
+
+// ============================================================================
+// CARD COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `Card` component props. */
+export interface CardProps
+  extends React.ComponentPropsWithRef<"div">,
+    CommonComponentProps {}
+
+/** `Card` component type. */
+export type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
 // BASE CARD COMPONENT
@@ -47,7 +53,7 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
     <Component
       {...rest}
       id={rest.id || `${componentId}-card`}
-      className={cn(styles.card, className)}
+      className={cn("group relative flex flex-col items-start", className)}
       {...createComponentProps(componentId, "card", isDebugMode)}
     >
       {children}
@@ -68,8 +74,22 @@ const MemoizedCard = React.memo(BaseCard);
 // MAIN CARD COMPONENT
 // ============================================================================
 
+/** `Card` compound component type. */
+export type CardCompoundComponent = CardComponent & {
+  /** A card link component that provides interactive hover effects and accessibility features */
+  Link: typeof CardLink;
+  /** A card title component that can optionally be wrapped in a link for navigation */
+  Title: typeof CardTitle;
+  /** A card description component that can optionally be wrapped in a link for navigation */
+  Description: typeof CardDescription;
+  /** A card call to action component that can optionally be wrapped in a link for navigation */
+  Cta: typeof CardCta;
+  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
+  Eyebrow: typeof CardEyebrow;
+};
+
 /** A card component that can optionally be wrapped in a link for navigation */
-const Card = setDisplayName(function Card(props) {
+export const Card = setDisplayName(function Card(props) {
   const { children, isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedCard : BaseCard;
@@ -77,10 +97,8 @@ const Card = setDisplayName(function Card(props) {
   return element;
 } as CardCompoundComponent);
 
-Card.Link = CardLink;
+Card.Cta = CardCta;
 Card.Title = CardTitle;
 Card.Description = CardDescription;
-Card.Cta = CardCta;
+Card.Link = CardLink;
 Card.Eyebrow = CardEyebrow;
-
-export default Card;
