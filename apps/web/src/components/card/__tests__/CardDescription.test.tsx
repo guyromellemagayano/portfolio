@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import CardDescription from "../CardDescription";
+import { CardDescription } from "../CardDescription";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
@@ -18,15 +18,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -46,12 +37,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS modules
-vi.mock("../CardDescription.module.css", () => ({
-  default: {
-    cardDescription: "_cardDescription_7e74bb",
-  },
-}));
+// Component uses Tailwind classes, no CSS modules to mock
 
 describe("CardDescription", () => {
   afterEach(() => {
@@ -111,7 +97,7 @@ describe("CardDescription", () => {
 
     it("handles boolean children", () => {
       render(<CardDescription>{true}</CardDescription>);
-      // Boolean true is not rendered as text content in React
+      // Boolean true is truthy, so component renders
       expect(
         screen.getByTestId("test-id-card-description-root")
       ).toBeInTheDocument();
@@ -119,8 +105,13 @@ describe("CardDescription", () => {
 
     it("handles number children", () => {
       const { container } = render(<CardDescription>{0}</CardDescription>);
-      // Component returns null for falsy children like 0
+      // Component uses !children check, so 0 is falsy
       expect(container.firstChild).toBeNull();
+    });
+
+    it("renders with valid children", () => {
+      render(<CardDescription>Valid content</CardDescription>);
+      expect(screen.getByText("Valid content")).toBeInTheDocument();
     });
   });
 
@@ -222,7 +213,7 @@ describe("CardDescription", () => {
   });
 
   describe("Component Structure", () => {
-    it("renders as p element", () => {
+    it("renders as p element by default", () => {
       render(<CardDescription>Card description</CardDescription>);
 
       const descriptionElement = screen.getByTestId(
@@ -231,16 +222,41 @@ describe("CardDescription", () => {
       expect(descriptionElement.tagName).toBe("P");
     });
 
+    it("renders as custom element when as prop is provided", () => {
+      render(<CardDescription as="div">Card description</CardDescription>);
+
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
+      expect(descriptionElement.tagName).toBe("DIV");
+    });
+
+    it("renders as span element when as prop is span", () => {
+      render(<CardDescription as="span">Card description</CardDescription>);
+
+      const descriptionElement = screen.getByTestId(
+        "test-id-card-description-root"
+      );
+      expect(descriptionElement.tagName).toBe("SPAN");
+    });
+
     it("applies correct CSS classes", () => {
       render(<CardDescription>Card description</CardDescription>);
 
       const descriptionElement = screen.getByTestId(
         "test-id-card-description-root"
       );
-      expect(descriptionElement).toHaveClass("_cardDescription_7e74bb");
+      expect(descriptionElement).toHaveClass(
+        "relative",
+        "z-10",
+        "mt-2",
+        "text-sm",
+        "text-zinc-600",
+        "dark:text-zinc-400"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind + custom classes", () => {
       render(
         <CardDescription className="custom-class">
           Card description
@@ -251,7 +267,12 @@ describe("CardDescription", () => {
         "test-id-card-description-root"
       );
       expect(descriptionElement).toHaveClass(
-        "_cardDescription_7e74bb",
+        "relative",
+        "z-10",
+        "mt-2",
+        "text-sm",
+        "text-zinc-600",
+        "dark:text-zinc-400",
         "custom-class"
       );
     });
@@ -270,7 +291,7 @@ describe("CardDescription", () => {
         "generated-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
+        "id",
         "generated-id-card-description"
       );
     });
@@ -289,7 +310,7 @@ describe("CardDescription", () => {
         "custom-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
+        "id",
         "custom-id-card-description"
       );
     });
