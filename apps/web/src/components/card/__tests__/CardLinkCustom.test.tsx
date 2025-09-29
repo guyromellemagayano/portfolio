@@ -3,6 +3,8 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { CardLinkCustom } from "../CardLinkCustom";
+
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
     componentId: options.debugId || "test-id",
@@ -26,15 +28,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -49,7 +42,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -66,8 +59,6 @@ vi.mock("next/link", () => ({
     }
   ),
 }));
-
-import CardLinkCustom from "../CardLinkCustom";
 
 describe("CardLinkCustom", () => {
   afterEach(() => {

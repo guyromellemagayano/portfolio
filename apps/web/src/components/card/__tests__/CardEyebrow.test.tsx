@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import CardEyebrow from "../CardEyebrow";
+import { CardEyebrow } from "../CardEyebrow";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
@@ -18,15 +18,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -40,30 +31,13 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
-  isValidImageSrc: vi.fn((src) => {
-    if (!src) return false;
-    if (typeof src !== "string") return false;
-    return src.trim() !== "";
-  }),
-}));
-
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
-  isActivePath: vi.fn(() => true),
 }));
 
-// Mock CSS modules
-vi.mock("../CardEyebrow.module.css", () => ({
-  default: {
-    cardEyebrow: "_cardEyebrow_578332",
-    cardEyebrowDecorated: "_cardEyebrowDecorated_578332",
-  },
-}));
+// Component uses Tailwind classes, no CSS modules to mock
 
 describe("CardEyebrow", () => {
   afterEach(() => {
@@ -221,14 +195,37 @@ describe("CardEyebrow", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrow_578332");
+      expect(eyebrow).toHaveClass(
+        "relative",
+        "z-10",
+        "order-first",
+        "mb-3",
+        "flex",
+        "items-center",
+        "text-sm",
+        "text-wrap",
+        "text-zinc-400",
+        "dark:text-zinc-500"
+      );
     });
 
-    it("combines CSS module + custom classes", () => {
+    it("combines Tailwind + custom classes", () => {
       render(<CardEyebrow className="custom-class">Eyebrow</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrow_578332", "custom-class");
+      expect(eyebrow).toHaveClass(
+        "relative",
+        "z-10",
+        "order-first",
+        "mb-3",
+        "flex",
+        "items-center",
+        "text-sm",
+        "text-wrap",
+        "text-zinc-400",
+        "dark:text-zinc-500",
+        "custom-class"
+      );
     });
   });
 
@@ -269,21 +266,21 @@ describe("CardEyebrow", () => {
       render(<CardEyebrow decorate>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass("_cardEyebrowDecorated_578332");
+      expect(eyebrow).toHaveClass("pl-3.5");
     });
 
     it("does not apply decoration when decorate is false", () => {
       render(<CardEyebrow decorate={false}>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).not.toHaveClass("_cardEyebrowDecorated_8f2a1c");
+      expect(eyebrow).not.toHaveClass("pl-3.5");
     });
 
     it("does not apply decoration when decorate is undefined", () => {
       render(<CardEyebrow>Eyebrow text</CardEyebrow>);
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).not.toHaveClass("_cardEyebrowDecorated_8f2a1c");
+      expect(eyebrow).not.toHaveClass("pl-3.5");
     });
   });
 
@@ -365,8 +362,17 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
-        "_cardEyebrow_578332",
-        "_cardEyebrowDecorated_578332",
+        "relative",
+        "z-10",
+        "order-first",
+        "mb-3",
+        "flex",
+        "items-center",
+        "text-sm",
+        "text-wrap",
+        "text-zinc-400",
+        "dark:text-zinc-500",
+        "pl-3.5",
         "custom-class"
       );
     });
@@ -393,9 +399,18 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("multi-prop-id-card-eyebrow-root");
       expect(eyebrow).toHaveClass(
-        "multi-class",
-        "_cardEyebrow_578332",
-        "_cardEyebrowDecorated_578332"
+        "relative",
+        "z-10",
+        "order-first",
+        "mb-3",
+        "flex",
+        "items-center",
+        "text-sm",
+        "text-wrap",
+        "text-zinc-400",
+        "dark:text-zinc-500",
+        "pl-3.5",
+        "multi-class"
       );
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
       expect(eyebrow).toHaveAttribute(

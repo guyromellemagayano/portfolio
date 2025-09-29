@@ -1,15 +1,25 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CardDescriptionComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./CardDescription.module.css";
+// ============================================================================
+// CARD DESCRIPTION COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `CardDescription` component props. */
+export interface CardDescriptionProps
+  extends React.ComponentPropsWithRef<"p">,
+    CommonComponentProps {}
+
+/** `CardDescription` component type. */
+export type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
 // BASE CARD DESCRIPTION COMPONENT
@@ -38,7 +48,10 @@ const BaseCardDescription: CardDescriptionComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-card-description`}
-        className={cn(styles.cardDescription, className)}
+        className={cn(
+          "relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400",
+          className
+        )}
         {...createComponentProps(componentId, "card-description", isDebugMode)}
       >
         {children}
@@ -61,7 +74,7 @@ const MemoizedCardDescription = React.memo(BaseCardDescription);
 // ============================================================================
 
 /** A card description component that can optionally be wrapped in a link for navigation */
-const CardDescription: CardDescriptionComponent = setDisplayName(
+export const CardDescription: CardDescriptionComponent = setDisplayName(
   function CardDescription(props) {
     const { children, isMemoized = false, ...rest } = props;
 
@@ -72,5 +85,3 @@ const CardDescription: CardDescriptionComponent = setDisplayName(
     return element;
   }
 );
-
-export default CardDescription;
