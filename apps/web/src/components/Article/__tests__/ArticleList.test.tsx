@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import ArticleList from "../ArticleList";
+import { ArticleList } from "../ArticleList";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
@@ -225,7 +225,12 @@ describe("ArticleList", () => {
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
-      expect(container).toHaveClass("_articleList_3da0c0");
+      expect(container).toHaveClass(
+        "md:border-l",
+        "md:border-zinc-100",
+        "md:pl-6",
+        "md:dark:border-zinc-700/40"
+      );
     });
 
     it("combines CSS module + custom classes", () => {
@@ -236,21 +241,25 @@ describe("ArticleList", () => {
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
-      expect(container).toHaveClass("_articleList_3da0c0", "custom-class");
+      expect(container).toHaveClass(
+        "md:border-l",
+        "md:border-zinc-100",
+        "md:pl-6",
+        "md:dark:border-zinc-700/40",
+        "custom-class"
+      );
     });
 
-    it("renders children wrapper with correct class", () => {
+    it("renders children directly without wrapper", () => {
       render(
         <ArticleList>
           <div>Article content</div>
         </ArticleList>
       );
 
-      const childrenWrapper = screen
-        .getByTestId("test-id-article-list-root")
-        .querySelector("._articleListChildren_3da0c0") as HTMLElement;
-      expect(childrenWrapper).toBeInTheDocument();
-      expect(childrenWrapper).toHaveClass("_articleListChildren_3da0c0");
+      const content = screen.getByText("Article content");
+      expect(content).toBeInTheDocument();
+      expect(content.tagName).toBe("DIV");
     });
   });
 
@@ -654,13 +663,10 @@ describe("ArticleList", () => {
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
-      const childrenWrapper = container.querySelector(
-        "._articleListChildren_3da0c0"
-      ) as HTMLElement;
       const content = screen.getByText("Article content");
 
-      expect(container).toContainElement(childrenWrapper);
-      expect(childrenWrapper).toContainElement(content);
+      expect(container).toContainElement(content);
+      expect(content).toBeInTheDocument();
     });
   });
 

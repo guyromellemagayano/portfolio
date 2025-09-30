@@ -2,7 +2,5 @@
 // SHARED COMPONENTS DATA EXPORTS
 // ============================================================================
 
-export * from "./Article";
-export * from "./Card";
 export * from "./Container";
 export * from "./Footer";

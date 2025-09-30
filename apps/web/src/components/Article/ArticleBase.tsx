@@ -1,17 +1,29 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import logger from "@guyromellemagayano/logger";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import {
-  ARTICLE_COMPONENT_LABELS,
-  type ArticleBaseComponent,
-} from "@web/components/_shared";
-import { cn, formatDate, validateArticle } from "@web/utils";
+import { type ArticleWithSlug, validateArticle } from "@web/utils";
 
-import styles from "./ArticleBase.module.css";
+import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+
+// ============================================================================
+// ARTICLE BASE COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `ArticleBase` component props. */
+export interface ArticleBaseProps
+  extends React.ComponentPropsWithRef<typeof Card>,
+    CommonComponentProps {
+  /** The article to display. */
+  article: ArticleWithSlug;
+}
+
+/** `ArticleBase` component type. */
+export type ArticleBaseComponent = React.FC<ArticleBaseProps>;
 
 // ============================================================================
 // BASE ARTICLE BASE COMPONENT
@@ -23,7 +35,7 @@ import styles from "./ArticleBase.module.css";
  */
 const BaseArticleBase: ArticleBaseComponent = setDisplayName(
   function BaseArticleBase(props) {
-    const { className, article, debugId, debugMode, ...rest } = props;
+    const { article, debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -55,7 +67,6 @@ const BaseArticleBase: ArticleBaseComponent = setDisplayName(
       <Card
         {...rest}
         role="article"
-        className={cn(styles.articleBaseContainer, className)}
         debugId={componentId}
         debugMode={isDebugMode}
         aria-labelledby={
@@ -89,10 +100,10 @@ const BaseArticleBase: ArticleBaseComponent = setDisplayName(
             dateTime={articleData.date}
             debugId={componentId}
             debugMode={isDebugMode}
-            aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(articleData.date)}`}
+            aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDateSafely(articleData.date)}`}
             decorate
           >
-            {formatDate(articleData.date)}
+            {formatDateSafely(articleData.date)}
           </Card.Eyebrow>
         ) : null}
 
@@ -134,7 +145,7 @@ const MemoizedArticleBase = React.memo(BaseArticleBase);
 // ============================================================================
 
 /** Main article base component that renders an article card component, optionally memoized. */
-const ArticleBase: ArticleBaseComponent = setDisplayName(
+export const ArticleBase: ArticleBaseComponent = setDisplayName(
   function ArticleBase(props) {
     const { isMemoized = false, ...rest } = props;
 
@@ -143,5 +154,3 @@ const ArticleBase: ArticleBaseComponent = setDisplayName(
     return element;
   }
 );
-
-export default ArticleBase;
