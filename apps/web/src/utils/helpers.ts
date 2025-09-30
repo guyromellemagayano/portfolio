@@ -35,3 +35,8 @@ export function clamp(value: number, min: number, max: number): number {
   if (value > max) return max;
   return value;
 }
+
+/** Checks if a value is a valid string. */
+export function isValidString(value: unknown): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
