@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import ArticleListItem from "../ArticleListItem";
+import { ArticleListItem } from "../ArticleListItem";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -31,6 +31,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
+  formatDateSafely: vi.fn((date) => {
+    if (typeof date === "string") {
+      return new Date(date).toLocaleDateString();
+    }
+    return date.toLocaleDateString();
+  }),
 }));
 
 vi.mock("@web/utils", () => ({
@@ -471,7 +477,7 @@ describe("ArticleListItem", () => {
 
       // The Card should have the CSS class when not on front page
       const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveClass("articleListItemCard");
+      expect(cardElement).toHaveClass("md:col-span-3");
       expect(cardElement.tagName).toBe("ARTICLE");
     });
 
@@ -490,7 +496,7 @@ describe("ArticleListItem", () => {
       render(<ArticleListItem article={mockArticle} isFrontPage={false} />);
 
       const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveClass("articleListItemCard");
+      expect(cardElement).toHaveClass("md:col-span-3");
     });
 
     it("does not apply card styles when isFrontPage is true", () => {
@@ -504,7 +510,7 @@ describe("ArticleListItem", () => {
       render(<ArticleListItem article={mockArticle} />);
 
       const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveClass("articleListItemCard");
+      expect(cardElement).toHaveClass("md:col-span-3");
     });
   });
 
@@ -533,7 +539,7 @@ describe("ArticleListItem", () => {
       render(<ArticleListItem article={mockArticle} isFrontPage={false} />);
 
       const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveClass("articleListItemCard");
+      expect(cardElement).toHaveClass("md:col-span-3");
     });
 
     it("applies correct CSS classes when on front page", () => {
@@ -550,7 +556,12 @@ describe("ArticleListItem", () => {
 
       // The custom className is applied to the wrapper article element
       const wrapperArticle = screen.getByTestId("test-id-article-item-root");
-      expect(wrapperArticle).toHaveClass("articleListItem", "custom-class");
+      expect(wrapperArticle).toHaveClass(
+        "md:grid",
+        "md:grid-cols-4",
+        "md:items-baseline",
+        "custom-class"
+      );
     });
   });
 

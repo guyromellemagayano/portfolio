@@ -2,7 +2,7 @@
 // SHARED ARTICLE COMPONENT I18N LABELS
 // ============================================================================
 
-type ArticleComponentLabels = Readonly<Record<string, string>>;
+export type ArticleComponentLabels = Readonly<Record<string, string>>;
 export const ARTICLE_COMPONENT_LABELS = {
   cta: "Read article",
   goBackToArticles: "Go back to articles",
