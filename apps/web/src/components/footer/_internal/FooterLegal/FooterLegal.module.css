@@ -1,6 +1,0 @@
-@reference "tailwindcss";
-
-/* Footer legal text */
-.footerLegal {
-  @apply text-sm text-zinc-400 dark:text-zinc-500
-}

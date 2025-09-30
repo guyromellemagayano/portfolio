@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterLegal } from "../../FooterLegal";
+import { FooterLegal } from "../internal/FooterLegal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -47,17 +47,13 @@ vi.mock("@guyromellemagayano/logger", () => ({
   },
 }));
 
-vi.mock("@web/components/_shared", () => ({
+vi.mock("../data", () => ({
   FOOTER_COMPONENT_LABELS: {
-    legalText: "&copy; 2025 Guy Romelle Magayano. All rights reserved.",
+    legalText: "&copy; 2024 Guy Romelle Magayano. All rights reserved.",
   },
 }));
 
-vi.mock("../FooterLegal.module.css", () => ({
-  default: {
-    footerLegal: "_footerLegal_65621a",
-  },
-}));
+// FooterLegal component uses Tailwind CSS, no CSS modules needed
 
 describe("FooterLegal", () => {
   afterEach(() => {
@@ -71,7 +67,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -135,7 +131,7 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
       expect(screen.queryByText("Custom legal text")).not.toBeInTheDocument();
@@ -146,7 +142,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -187,14 +183,18 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveClass("_footerLegal_65621a");
+      expect(legalElement).toHaveClass(
+        "text-sm text-zinc-400 dark:text-zinc-500"
+      );
     });
 
-    it("combines CSS module classes with custom className", () => {
+    it("combines Tailwind classes with custom className", () => {
       render(<FooterLegal debugId="test-id" className="custom-legal" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveClass("_footerLegal_65621a custom-legal");
+      expect(legalElement).toHaveClass(
+        "text-sm text-zinc-400 dark:text-zinc-500 custom-legal"
+      );
     });
   });
 
@@ -245,7 +245,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -258,7 +258,7 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -271,7 +271,7 @@ describe("FooterLegal", () => {
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -283,7 +283,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -295,14 +295,14 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
 
       rerender(<FooterLegal debugId="test-id" isMemoized={false} />);
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -312,7 +312,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2025 Guy Romelle Magayano. All rights reserved."
+          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });

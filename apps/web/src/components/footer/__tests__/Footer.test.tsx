@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import Footer from "../Footer";
+import { Footer } from "../Footer";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -48,7 +48,7 @@ vi.mock("@web/components", () => ({
   )),
 }));
 
-vi.mock("../_internal", () => ({
+vi.mock("../internal", () => ({
   FooterNavigation: vi.fn(({ ...props }) => {
     // Use the mocked data from the _data mock
     const mockLinks = [
@@ -82,7 +82,7 @@ vi.mock("../_internal", () => ({
   }),
 }));
 
-vi.mock("@web/components/_shared", () => ({
+vi.mock("../data", () => ({
   FOOTER_COMPONENT_LABELS: {
     legalText: "&copy; 2024 Guy Romelle Magayano. All rights reserved.",
   },
@@ -95,13 +95,7 @@ vi.mock("@web/components/_shared", () => ({
   ],
 }));
 
-vi.mock("../Footer.module.css", () => ({
-  default: {
-    footerComponent: "_footerComponent_eedc07",
-    footerContentWrapper: "_footerContentWrapper_eedc07",
-    footerLayout: "_footerLayout_eedc07",
-  },
-}));
+// Footer component uses Tailwind CSS, no CSS modules needed
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
@@ -190,11 +184,11 @@ describe("Footer", () => {
       expect(footer).toHaveClass("custom-footer");
     });
 
-    it("combines CSS module classes with custom className", () => {
+    it("combines Tailwind classes with custom className", () => {
       render(<Footer className="custom-footer" />);
 
       const footer = screen.getByTestId("test-id-footer-root");
-      expect(footer).toHaveClass("_footerComponent_eedc07 custom-footer");
+      expect(footer).toHaveClass("mt-32 flex-none custom-footer");
     });
   });
 
@@ -243,8 +237,17 @@ describe("Footer", () => {
       render(<Footer />);
 
       const contentWrapper = screen.getByTestId("container-outer");
-      const layout = contentWrapper.querySelector("._footerLayout_eedc07");
-      expect(layout).toBeInTheDocument();
+      const firstDiv = contentWrapper.querySelector("div");
+      expect(firstDiv).toHaveClass(
+        "border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40"
+      );
+
+      // Check for the inner layout div (ContainerInner > div)
+      const containerInner = screen.getByTestId("container-inner");
+      const layoutDiv = containerInner.querySelector("div");
+      expect(layoutDiv).toHaveClass(
+        "flex flex-col items-center justify-between gap-6 md:flex-row"
+      );
     });
   });
 
