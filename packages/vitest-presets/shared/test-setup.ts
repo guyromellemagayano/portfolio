@@ -2,7 +2,7 @@
 /// <reference types="@testing-library/jest-dom" />
 import React from "react";
 
-import { afterAll, beforeAll, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
@@ -17,7 +17,7 @@ declare global {
 }
 
 // Mock window.matchMedia
-Object.defineProperty(window, "matchMedia", {
+Object.defineProperty(globalThis?.window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
@@ -32,21 +32,45 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 // Mock IntersectionObserver
-(global as any).IntersectionObserver = vi.fn().mockImplementation(() => ({
+const mockIntersectionObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
+
+Object.defineProperty(globalThis?.window, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
+Object.defineProperty(globalThis?.global, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
 
 // Mock ResizeObserver
-(global as any).ResizeObserver = vi.fn().mockImplementation(() => ({
+const mockResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 }));
 
+Object.defineProperty(globalThis?.window, "ResizeObserver", {
+  writable: true,
+  configurable: true,
+  value: mockResizeObserver,
+});
+
+Object.defineProperty(globalThis?.global, "ResizeObserver", {
+  writable: true,
+  configurable: true,
+  value: mockResizeObserver,
+});
+
 // Mock requestAnimationFrame
-(global as any).requestAnimationFrame = vi.fn(
+(globalThis?.global as any).requestAnimationFrame = vi.fn(
   (callback: (time: number) => void) => {
     callback(0);
     return 1;
@@ -54,10 +78,10 @@ Object.defineProperty(window, "matchMedia", {
 );
 
 // Mock cancelAnimationFrame
-(global as any).cancelAnimationFrame = vi.fn();
+(globalThis?.global as any).cancelAnimationFrame = vi.fn();
 
 // Mock getComputedStyle
-Object.defineProperty(window, "getComputedStyle", {
+Object.defineProperty(globalThis?.window, "getComputedStyle", {
   value: vi.fn(() => ({
     getPropertyValue: vi.fn(),
   })),
@@ -73,6 +97,13 @@ beforeAll(() => {
 afterAll(() => {
   console.warn = originalConsole.warn;
   console.error = originalConsole.error;
+});
+
+// Reset modules and mocks between tests
+afterEach(() => {
+  vi.resetModules(); // Clear module cache
+  vi.clearAllMocks(); // Clear mock call history
+  vi.resetAllMocks(); // Reset mocks to original implementations
 });
 
 // Global mock for next/navigation
@@ -148,25 +179,20 @@ vi.mock("next/use-intersection", () => ({
   })),
 }));
 
-// More robust IntersectionObserver mock
-const mockIntersectionObserver = vi.fn();
-mockIntersectionObserver.mockReturnValue({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-});
+// Global mock for react-intersection-observer
+vi.mock("react-intersection-observer", () => ({
+  useInView: vi.fn(() => ({
+    ref: vi.fn(),
+    inView: true,
+    entry: null,
+  })),
+  InView: ({ children }: { children: React.ReactNode }) => children,
+}));
 
-Object.defineProperty(window, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-});
-
-Object.defineProperty(global, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-});
+// Global mock for react-intersection-observer/test-utils
+vi.mock("react-intersection-observer/test-utils", () => ({
+  mockAllIsIntersecting: vi.fn(),
+}));
 
 // Global fallback mock for @guyromellemagayano/components
 vi.mock("@guyromellemagayano/components", () => {
@@ -208,6 +234,94 @@ vi.mock("@guyromellemagayano/components", () => {
   return mockComponents;
 });
 
+// Global mock for @web/components
+vi.mock("@web/components", () => {
+  // Create mock components with data-testid for testing
+  const createMockComponent = (tag: string, testId: string) => {
+    return React.forwardRef<any, any>((props, ref) => {
+      const { children, ...rest } = props;
+      return React.createElement(
+        tag,
+        {
+          ref,
+          "data-testid": testId,
+          ...rest,
+        },
+        children
+      );
+    });
+  };
+
+  const mockComponents = {
+    // Layout components
+    ArticleBase: createMockComponent("article", "mock-article-base"),
+    ArticleLayout: createMockComponent("div", "mock-article-layout"),
+    ArticleList: createMockComponent("div", "mock-article-list"),
+    ArticleListItem: createMockComponent("article", "mock-article-list-item"),
+    ArticleNavButton: createMockComponent("button", "mock-article-nav-button"),
+    Container: createMockComponent("div", "mock-container"),
+    ContainerInner: createMockComponent("div", "mock-container-inner"),
+    ContainerOuter: createMockComponent("div", "mock-container-outer"),
+    Footer: createMockComponent("footer", "mock-footer"),
+    Link: createMockComponent("a", "mock-link"),
+    PhotoGallery: createMockComponent("div", "mock-photo-gallery"),
+    Prose: createMockComponent("div", "mock-prose"),
+    Section: createMockComponent("section", "mock-section"),
+
+    // Card components
+    Card: createMockComponent("div", "mock-card"),
+    CardLink: createMockComponent("div", "mock-card-link"),
+    CardLinkCustom: createMockComponent("div", "mock-card-link-custom"),
+    CardTitle: createMockComponent("h3", "mock-card-title"),
+    CardDescription: createMockComponent("p", "mock-card-description"),
+    CardCta: createMockComponent("div", "mock-card-cta"),
+    CardEyebrow: createMockComponent("p", "mock-card-eyebrow"),
+
+    // Header components
+    Header: createMockComponent("header", "mock-header"),
+    HeaderAvatar: createMockComponent("div", "mock-header-avatar"),
+    HeaderAvatarContainer: createMockComponent(
+      "div",
+      "mock-header-avatar-container"
+    ),
+    HeaderDesktopNav: createMockComponent("nav", "mock-header-desktop-nav"),
+    HeaderDesktopNavItem: createMockComponent(
+      "div",
+      "mock-header-desktop-nav-item"
+    ),
+    HeaderEffects: createMockComponent("div", "mock-header-effects"),
+    HeaderMobileNav: createMockComponent("nav", "mock-header-mobile-nav"),
+    HeaderMobileNavItem: createMockComponent(
+      "div",
+      "mock-header-mobile-nav-item"
+    ),
+
+    // Layout components
+    Layout: createMockComponent("div", "mock-layout"),
+    SimpleLayout: createMockComponent("div", "mock-simple-layout"),
+
+    // Icon component with all available icons
+    Icon: {
+      ArrowDownIcon: createMockComponent("svg", "arrow-down-icon"),
+      ArrowLeftIcon: createMockComponent("svg", "arrow-left-icon"),
+      BriefcaseIcon: createMockComponent("svg", "briefcase-icon"),
+      ChevronDownIcon: createMockComponent("svg", "chevron-down-icon"),
+      ChevronRightIcon: createMockComponent("svg", "chevron-right-icon"),
+      CloseIcon: createMockComponent("svg", "close-icon"),
+      GitHubIcon: createMockComponent("svg", "github-icon"),
+      InstagramIcon: createMockComponent("svg", "instagram-icon"),
+      LinkedinIcon: createMockComponent("svg", "linkedin-icon"),
+      LinkIcon: createMockComponent("svg", "link-icon"),
+      MailIcon: createMockComponent("svg", "mail-icon"),
+      MoonIcon: createMockComponent("svg", "moon-icon"),
+      SunIcon: createMockComponent("svg", "sun-icon"),
+      XIcon: createMockComponent("svg", "x-icon"),
+    },
+  };
+
+  return mockComponents;
+});
+
 // Global mock for @web/lib
 vi.mock("@web/lib", () => ({
   cn: (...classes: (string | undefined | null | false)[]) =>
@@ -235,6 +349,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     args.some((arg) => arg != null && arg !== "")
   ),
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  hasValidContent: vi.fn((content) => content != null && content !== ""),
   isRenderableContent: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -254,12 +369,14 @@ vi.mock("@guyromellemagayano/utils", () => ({
     target: target || (href?.startsWith("http") ? "_blank" : undefined),
     rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
   })),
+  formatDateSafely: vi.fn((date) => "Formatted Date"),
 }));
 
 // Global mock for @guyromellemagayano/hooks
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
+  useComponentId: vi.fn(({ internalId, debugId, debugMode = false } = {}) => ({
+    componentId: internalId || debugId || "test-id",
+    id: internalId || debugId || "test-id", // Support both naming conventions
     isDebugMode: debugMode,
   })),
 }));
@@ -298,3 +415,47 @@ vi.mock("@guyromellemagayano/logger", () => {
     default: mockLogger,
   };
 });
+
+// Global mock for Sanity client
+vi.mock("@sanity/client", () => ({
+  createClient: vi.fn(() => ({
+    fetch: vi.fn(),
+    listen: vi.fn(),
+    getDocument: vi.fn(),
+    getDocuments: vi.fn(),
+    create: vi.fn(),
+    createOrReplace: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    mutate: vi.fn(),
+    transaction: vi.fn(),
+  })),
+}));
+
+// Global mock for next-sanity
+vi.mock("next-sanity", () => ({
+  createClient: vi.fn(() => ({
+    fetch: vi.fn(),
+    listen: vi.fn(),
+    getDocument: vi.fn(),
+    getDocuments: vi.fn(),
+    create: vi.fn(),
+    createOrReplace: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    mutate: vi.fn(),
+    transaction: vi.fn(),
+  })),
+  sanityClient: vi.fn(() => ({
+    fetch: vi.fn(),
+    listen: vi.fn(),
+    getDocument: vi.fn(),
+    getDocuments: vi.fn(),
+    create: vi.fn(),
+    createOrReplace: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    mutate: vi.fn(),
+    transaction: vi.fn(),
+  })),
+}));
