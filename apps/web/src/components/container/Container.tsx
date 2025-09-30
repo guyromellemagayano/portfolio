@@ -1,13 +1,23 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 
-import { ContainerInner, ContainerOuter } from "@web/components";
-import { type ContainerComponent } from "@web/components/_shared";
-import { cn } from "@web/utils";
+import { ContainerInner } from "./ContainerInner";
+import { ContainerOuter } from "./ContainerOuter";
 
-import styles from "./Container.module.css";
+// ============================================================================
+// CONTAINER COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `Container` component props. */
+export interface ContainerProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {}
+
+/** `Container` component type. */
+export type ContainerComponent = React.FC<ContainerProps>;
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
@@ -19,7 +29,6 @@ const BaseContainer: ContainerComponent = setDisplayName(
     const {
       as: Component = ContainerOuter,
       children,
-      className,
       debugId,
       debugMode,
       ...rest
@@ -33,12 +42,7 @@ const BaseContainer: ContainerComponent = setDisplayName(
     if (!children) return null;
 
     const element = (
-      <Component
-        {...rest}
-        className={cn(styles.container, className)}
-        debugId={componentId}
-        debugMode={isDebugMode}
-      >
+      <Component {...rest} debugId={componentId} debugMode={isDebugMode}>
         <ContainerInner debugId={componentId} debugMode={isDebugMode}>
           {children}
         </ContainerInner>
@@ -70,5 +74,3 @@ export const Container: ContainerComponent = setDisplayName(
     return element;
   }
 );
-
-export default Container;

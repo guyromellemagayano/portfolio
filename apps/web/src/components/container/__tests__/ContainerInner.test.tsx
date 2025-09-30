@@ -71,13 +71,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS modules
-vi.mock("../ContainerInner.module.css", () => ({
-  default: {
-    containerInner: "containerInner",
-    containerInnerContent: "containerInnerContent",
-  },
-}));
+// No CSS modules needed - using Tailwind CSS
 
 describe("ContainerInner", () => {
   afterEach(() => {
@@ -162,21 +156,19 @@ describe("ContainerInner", () => {
       expect(innerRoot).toHaveAttribute("data-test", "test-data");
     });
 
-    it("applies CSS module classes", () => {
+    it("applies Tailwind CSS classes", () => {
       render(<ContainerInner>Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
-      // CSS module classes are hashed, so we check that the class contains the expected pattern
-      expect(innerRoot.className).toMatch(/containerInner/);
+      expect(innerRoot).toHaveClass("relative", "px-4", "sm:px-8", "lg:px-12");
     });
 
-    it("merges custom className with CSS module classes", () => {
+    it("merges custom className with Tailwind CSS classes", () => {
       render(<ContainerInner className="custom-class">Content</ContainerInner>);
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
       expect(innerRoot).toHaveClass("custom-class");
-      // CSS module classes are hashed, so we check that the class contains the expected pattern
-      expect(innerRoot.className).toMatch(/containerInner/);
+      expect(innerRoot).toHaveClass("relative", "px-4", "sm:px-8", "lg:px-12");
     });
   });
 

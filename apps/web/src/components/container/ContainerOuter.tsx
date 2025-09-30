@@ -6,10 +6,9 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonContainerComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./ContainerOuter.module.css";
+import { type CommonContainerComponent } from "./data";
 
 // ============================================================================
 // BASE CONTAINER OUTER COMPONENT
@@ -38,12 +37,12 @@ const BaseContainerOuter: CommonContainerComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-container-outer`}
-        className={cn(styles.containerOuter, className)}
+        className={cn("sm:px-8", className)}
         {...createComponentProps(componentId, "container-outer", isDebugMode)}
       >
         <div
           id={`${componentId}-container-outer-content`}
-          className={styles.containerOuterContent}
+          className="mx-auto w-full max-w-7xl lg:px-8"
           {...createComponentProps(
             componentId,
             "container-outer-content",
