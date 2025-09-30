@@ -2,5 +2,4 @@
 // SHARED COMPONENTS I18N EXPORTS
 // ============================================================================
 
-export * from "./Container.i18n";
 export * from "./Footer.i18n";
