@@ -19,6 +19,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
+    }
+    return { target };
+  }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
@@ -114,7 +120,7 @@ vi.mock("../CardLinkCustom", () => ({
 // Component uses Tailwind classes, no CSS modules to mock
 
 // Import the component after mocking
-import { CardLink } from "../CardLink";
+import { CardLink } from "../internal";
 
 afterEach(() => {
   cleanup();
@@ -171,12 +177,14 @@ describe("CardLink", () => {
       expect(customLink).toBeInTheDocument();
 
       // Should have the clickable area span
-      const clickableArea = screen.getByTestId("test-id-card-link-custom-span");
+      const clickableArea = screen.getByTestId(
+        "test-id-card-link-custom-span-root"
+      );
       expect(clickableArea).toBeInTheDocument();
 
       // Should have the content span
       const contentSpan = screen.getByTestId(
-        "test-id-card-link-custom-span-content"
+        "test-id-card-link-custom-span-content-root"
       );
       expect(contentSpan).toBeInTheDocument();
     });
@@ -271,7 +279,9 @@ describe("CardLink", () => {
       expect(customLink).toBeInTheDocument();
 
       // Should have clickable area span
-      const clickableArea = screen.getByTestId("test-id-card-link-custom-span");
+      const clickableArea = screen.getByTestId(
+        "test-id-card-link-custom-span-root"
+      );
       expect(clickableArea).toHaveClass(
         "absolute",
         "-inset-x-4",
@@ -283,7 +293,7 @@ describe("CardLink", () => {
 
       // Should have content span
       const contentSpan = screen.getByTestId(
-        "test-id-card-link-custom-span-content"
+        "test-id-card-link-custom-span-content-root"
       );
       expect(contentSpan).toHaveClass("relative", "z-10");
       expect(contentSpan).toHaveTextContent("Link content");
