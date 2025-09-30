@@ -2,6 +2,7 @@ import React from "react";
 
 import Link from "next/link";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -11,14 +12,24 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import {
-  FOOTER_COMPONENT_NAV_LINKS,
-  FooterLink,
-  type FooterNavigationComponent,
-} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./FooterNavigation.module.css";
+import { FOOTER_COMPONENT_NAV_LINKS, type FooterLink } from "../data";
+
+// ============================================================================
+// FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `FooterNavigation` component props. */
+export interface FooterNavigationProps
+  extends React.ComponentProps<"nav">,
+    CommonComponentProps {
+  /** Navigation links */
+  links?: ReadonlyArray<FooterLink>;
+}
+
+/** `FooterNavigation` component type. */
+export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
 // ============================================================================
 // BASE FOOTER NAVIGATION COMPONENT
@@ -49,7 +60,10 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-footer-navigation`}
-        className={cn(styles.footerNavigationList, className)}
+        className={cn(
+          "flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
+          className
+        )}
         {...createComponentProps(componentId, "footer-navigation", isDebugMode)}
       >
         {validNavLinks.map(({ kind, label, href }) => {
@@ -71,7 +85,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
             <li
               key={`${componentId}-footer-navigation-item-${label}`}
               id={`${componentId}-footer-navigation-item-${label}`}
-              className={styles.footerNavigationItem}
+              className="transition hover:text-neutral-950 dark:hover:text-neutral-200"
               {...createComponentProps(
                 componentId,
                 "footer-navigation-item",
@@ -81,7 +95,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
               <Link
                 {...targetProps}
                 href={hrefString}
-                className={styles.footerNavigationLink}
+                className="transition hover:text-teal-500 dark:hover:text-teal-400"
                 {...createComponentProps(
                   componentId,
                   "footer-navigation-link",
@@ -114,7 +128,7 @@ const MemoizedFooterNavigation = React.memo(BaseFooterNavigation);
 // ============================================================================
 
 /** The main footer navigation component for the application. */
-const FooterNavigation: FooterNavigationComponent = setDisplayName(
+export const FooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const { isMemoized = false, ...rest } = props;
 
@@ -125,5 +139,3 @@ const FooterNavigation: FooterNavigationComponent = setDisplayName(
     return element;
   }
 );
-
-export default FooterNavigation;

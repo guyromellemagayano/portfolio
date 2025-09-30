@@ -20,7 +20,7 @@ Object.defineProperty(global, "IntersectionObserver", {
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import FooterNavigation from "../../FooterNavigation";
+import { FooterNavigation } from "../internal/FooterNavigation";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -79,7 +79,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("@web/components/_shared", () => ({
+vi.mock("../data", () => ({
   FOOTER_COMPONENT_NAV_LINKS: [
     { kind: "internal", label: "About", href: "/about" },
     { kind: "internal", label: "Articles", href: "/articles" },
@@ -89,13 +89,7 @@ vi.mock("@web/components/_shared", () => ({
   ],
 }));
 
-vi.mock("../FooterNavigation.module.css", () => ({
-  default: {
-    footerNavigationList: "_footerNavigationList_0f93b2",
-    footerNavigationItem: "_footerNavigationItem_0f93b2",
-    footerNavigationLink: "_footerNavigationLink_0f93b2",
-  },
-}));
+// FooterNavigation component uses Tailwind CSS, no CSS modules needed
 
 describe("FooterNavigation", () => {
   afterEach(() => {
@@ -226,14 +220,18 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("_footerNavigationList_0f93b2");
+      expect(nav).toHaveClass(
+        "flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200"
+      );
     });
 
-    it("combines CSS module classes with custom className", () => {
+    it("combines Tailwind classes with custom className", () => {
       render(<FooterNavigation className="custom-nav" />);
 
       const nav = screen.getByTestId("test-id-footer-navigation-root");
-      expect(nav).toHaveClass("_footerNavigationList_0f93b2 custom-nav");
+      expect(nav).toHaveClass(
+        "flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200 custom-nav"
+      );
     });
   });
 
@@ -346,8 +344,14 @@ describe("FooterNavigation", () => {
       const aboutItem = screen.getByText("About").closest("li");
       const articlesItem = screen.getByText("Articles").closest("li");
 
-      expect(aboutItem).toHaveAttribute("id", "aria-test-footer-navigation-item-About");
-      expect(articlesItem).toHaveAttribute("id", "aria-test-footer-navigation-item-Articles");
+      expect(aboutItem).toHaveAttribute(
+        "id",
+        "aria-test-footer-navigation-item-About"
+      );
+      expect(articlesItem).toHaveAttribute(
+        "id",
+        "aria-test-footer-navigation-item-Articles"
+      );
     });
 
     it("applies correct ARIA labels to navigation links", () => {
@@ -365,10 +369,16 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation debugId="different-id" />);
 
       const navElement = screen.getByRole("navigation");
-      expect(navElement).toHaveAttribute("id", "different-id-footer-navigation");
+      expect(navElement).toHaveAttribute(
+        "id",
+        "different-id-footer-navigation"
+      );
 
       const aboutItem = screen.getByText("About").closest("li");
-      expect(aboutItem).toHaveAttribute("id", "different-id-footer-navigation-item-About");
+      expect(aboutItem).toHaveAttribute(
+        "id",
+        "different-id-footer-navigation-item-About"
+      );
     });
   });
 
