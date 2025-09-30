@@ -79,6 +79,7 @@ catalog:
   prettier-plugin-packagejson: ^2.5.19
   prettier-plugin-pkg: ^0.21.2
   prettier-plugin-tailwindcss: 0.6.14
+  rantail: 0.0.6
   react: 19.1.1
   react-dom: 19.1.1
   react-hook-form: 7.58.1
@@ -102,3 +103,5 @@ catalog:
   vite: ^7.0.0
   vite-plugin-devtools-json: ^0.4.1
   vitest: ^3.2.4
+
+catalogMode: strict
