@@ -1,19 +1,28 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import {
-  FOOTER_COMPONENT_LABELS,
-  FooterComponentLabels,
-  type FooterLegalComponent,
-} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./FooterLegal.module.css";
+import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../data";
+
+// ============================================================================
+// FOOTER LEGAL COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `FooterLegal` component props. */
+export interface FooterLegalProps
+  extends React.ComponentProps<"p">,
+    FooterComponentLabels,
+    CommonComponentProps {}
+
+/** `FooterLegal` component type. */
+export type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 // ============================================================================
 // BASE FOOTER LEGAL COMPONENT
@@ -43,7 +52,7 @@ const BaseFooterLegal: FooterLegalComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-footer-legal`}
-        className={cn(styles.footerLegal, className)}
+        className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
         {...createComponentProps(componentId, "footer-legal", isDebugMode)}
       >
         {legalText}
