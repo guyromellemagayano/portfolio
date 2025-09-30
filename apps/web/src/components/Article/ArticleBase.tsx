@@ -8,7 +8,7 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+import { ARTICLE_COMPONENT_LABELS } from "./data";
 
 // ============================================================================
 // ARTICLE BASE COMPONENT TYPES & INTERFACES
