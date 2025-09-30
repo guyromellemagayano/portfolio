@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "prebuild": "rantail",
     "build": "next build",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo .next coverage",
@@ -69,6 +70,7 @@
     "postcss-nesting": "catalog:",
     "postcss-preset-env": "catalog:",
     "prettier": "catalog:",
+    "rantail": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
