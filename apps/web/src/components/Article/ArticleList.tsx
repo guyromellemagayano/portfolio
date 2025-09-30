@@ -1,18 +1,27 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import {
-  ARTICLE_COMPONENT_LABELS,
-  type ArticleListComponent,
-} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./ArticleList.module.css";
+import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+
+// ============================================================================
+// ARTICLE LIST COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `ArticleList` component props. */
+export interface ArticleListProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {}
+
+/** `ArticleList` component type. */
+export type ArticleListComponent = React.FC<ArticleListProps>;
 
 // ============================================================================
 // BASE LIST COMPONENT
@@ -35,7 +44,10 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         {...rest}
         role="region"
         id={`${componentId}-article-list`}
-        className={cn(styles.articleList, className)}
+        className={cn(
+          "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
+          className
+        )}
         aria-label={ARTICLE_COMPONENT_LABELS.articleList}
         aria-labelledby={`${componentId}-article-list-heading`}
         {...createComponentProps(componentId, "article-list", isDebugMode)}
@@ -55,7 +67,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         <div
           role="list"
           id={`${componentId}-article-list-children`}
-          className={styles.articleListChildren}
+          className="flex w-full max-w-3xl flex-col space-y-16"
           aria-label={ARTICLE_COMPONENT_LABELS.articles}
           {...createComponentProps(
             componentId,
@@ -84,7 +96,7 @@ const MemoizedArticleList = React.memo(BaseArticleList);
 // ============================================================================
 
 /** Renders a top-level container for a list of articles. */
-const ArticleList: ArticleListComponent = setDisplayName(
+export const ArticleList: ArticleListComponent = setDisplayName(
   function ArticleList(props) {
     const { children, isMemoized = false, ...rest } = props;
 
@@ -93,5 +105,3 @@ const ArticleList: ArticleListComponent = setDisplayName(
     return element;
   }
 );
-
-export default ArticleList;

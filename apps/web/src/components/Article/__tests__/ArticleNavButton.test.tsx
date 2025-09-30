@@ -145,7 +145,7 @@ vi.mock("@web/components", () => mockIcon);
 // Use hoisted router mock
 
 // Import the component after all mocks are set up
-import ArticleNavButton from "../ArticleNavButton";
+import { ArticleNavButton } from "../ArticleNavButton";
 
 describe("ArticleNavButton", () => {
   beforeEach(() => {
