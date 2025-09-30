@@ -12,7 +12,7 @@ import {
 import { Card } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+import { ARTICLE_COMPONENT_LABELS } from "./data";
 
 // ============================================================================
 // ARTICLE LIST ITEM COMPONENT TYPES & INTERFACES

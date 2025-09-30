@@ -13,7 +13,7 @@ import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
 import { ArticleNavButton } from "./ArticleNavButton";
-import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+import { ARTICLE_COMPONENT_LABELS } from "./data";
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
