@@ -1,21 +1,34 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { logger } from "@guyromellemagayano/logger";
 import {
   createComponentProps,
+  formatDateSafely,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Container, Prose } from "@web/components";
-import {
-  ARTICLE_COMPONENT_LABELS,
-  type ArticleLayoutComponent,
-} from "@web/components/_shared";
-import { cn, formatDate, validateArticle } from "@web/utils";
+import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
-import { ArticleNavButton } from "../ArticleNavButton";
-import styles from "./ArticleLayout.module.css";
+import { ArticleNavButton } from "./ArticleNavButton";
+import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+
+// ============================================================================
+// ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `ArticleLayout` component props. */
+export interface ArticleLayoutProps
+  extends React.ComponentProps<typeof Container>,
+    CommonComponentProps {
+  /** The article to display. */
+  article?: ArticleWithSlug;
+}
+
+/** `ArticleLayout` component type. */
+export type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 
 // ============================================================================
 // BASE ARTICLE LAYOUT COMPONENT
@@ -52,7 +65,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
       <Container
         {...rest}
         role="main"
-        className={cn(styles.articleLayoutContainer, className)}
+        className={cn("mt-16 lg:mt-32", className)}
         debugId={debugId}
         debugMode={debugMode}
         aria-label={ARTICLE_COMPONENT_LABELS.articleLayout}
@@ -60,13 +73,13 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
       >
         <div
           role="region"
-          className={styles.articleWrapper}
+          className="xl:relative"
           aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
           {...createComponentProps(componentId, "article-wrapper", isDebugMode)}
         >
           <div
             role="region"
-            className={styles.articleContent}
+            className="mx-auto max-w-2xl"
             aria-label={ARTICLE_COMPONENT_LABELS.articleLayout}
             {...createComponentProps(
               componentId,
@@ -95,7 +108,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                 <header
                   role="banner"
                   id={`${componentId}-article-header`}
-                  className={styles.articleHeader}
+                  className="flex flex-col"
                   aria-label={ARTICLE_COMPONENT_LABELS.articleHeader}
                   {...createComponentProps(
                     componentId,
@@ -106,7 +119,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                   {articleData.title.length > 0 ? (
                     <h1
                       id={`${componentId}-article-title`}
-                      className={styles.articleTitle}
+                      className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
                       aria-level={1}
                       {...createComponentProps(
                         componentId,
@@ -121,9 +134,9 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                   {articleData.date.length > 0 ? (
                     <time
                       id={`${componentId}-article-date`}
-                      className={styles.articleDate}
+                      className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                       dateTime={articleData.date}
-                      aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDate(articleData.date)}`}
+                      aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDateSafely(articleData.date)}`}
                       {...createComponentProps(
                         componentId,
                         "article-date",
@@ -131,7 +144,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                       )}
                     >
                       <span
-                        className={styles.dateSeparator}
+                        className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                         aria-hidden="true"
                         {...createComponentProps(
                           componentId,
@@ -140,7 +153,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                         )}
                       />
                       <span
-                        className={styles.dateText}
+                        className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                         aria-label={ARTICLE_COMPONENT_LABELS.articlePublished}
                         {...createComponentProps(
                           componentId,
@@ -148,7 +161,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                           isDebugMode
                         )}
                       >
-                        {formatDate(articleData.date)}
+                        {formatDateSafely(articleData.date)}
                       </span>
                     </time>
                   ) : null}
@@ -158,7 +171,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                   <Prose
                     role="region"
                     id={`${componentId}-article-prose`}
-                    className={styles.articleProse}
+                    className="mx-auto max-w-2xl"
                     aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
                     aria-labelledby={
                       articleData.title.length > 0
@@ -176,7 +189,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
               <Prose
                 role="region"
                 id={`${componentId}-article-prose`}
-                className={styles.articleProse}
+                className="mx-auto max-w-2xl"
                 aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
                 debugId={componentId}
                 debugMode={debugMode}
@@ -205,7 +218,7 @@ const MemoizedArticleLayout = React.memo(BaseArticleLayout);
 // ============================================================================
 
 /** A component that provides a consistent layout for an article. */
-const ArticleLayout: ArticleLayoutComponent = setDisplayName(
+export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
   function ArticleLayout(props) {
     const { children, isMemoized = false, ...rest } = props;
 
@@ -214,5 +227,3 @@ const ArticleLayout: ArticleLayoutComponent = setDisplayName(
     return element;
   }
 );
-
-export default ArticleLayout;
