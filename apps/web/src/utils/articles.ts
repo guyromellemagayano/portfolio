@@ -1,5 +1,7 @@
 import { logger } from "@guyromellemagayano/logger";
 
+import { isValidString } from "@web/utils";
+
 export interface Article {
   title: string;
   date: string;
@@ -78,4 +80,9 @@ export async function getArticlesByTag(
     logger.error(`Failed to get articles by tag: ${tag}`, error);
     return [];
   }
+}
+
+/** Validates an article. */
+export function validateArticle(article: ArticleWithSlug): boolean {
+  return Object.values(article).every((value) => isValidString(value));
 }
