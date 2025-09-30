@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardDescription } from "../CardDescription";
+import { CardDescription } from "../internal";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>

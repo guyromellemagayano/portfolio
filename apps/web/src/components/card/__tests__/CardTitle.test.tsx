@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardTitle } from "../CardTitle";
+import { CardTitle } from "../internal";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -20,6 +20,12 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 vi.mock("@guyromellemagayano/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
+    }
+    return { target };
   }),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;

@@ -3,10 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
-import { CardCta } from "../CardCta";
-import { CardDescription } from "../CardDescription";
-import { CardEyebrow } from "../CardEyebrow";
-import { CardTitle } from "../CardTitle";
+import { CardCta, CardDescription, CardEyebrow, CardTitle } from "../internal";
 
 import "./setup";
 
