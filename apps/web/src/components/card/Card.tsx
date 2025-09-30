@@ -9,11 +9,13 @@ import {
 
 import { cn } from "@web/utils";
 
-import { CardCta } from "./CardCta";
-import { CardDescription } from "./CardDescription";
-import { CardEyebrow } from "./CardEyebrow";
-import { CardLink } from "./CardLink";
-import { CardTitle } from "./CardTitle";
+import {
+  CardCta,
+  CardDescription,
+  CardEyebrow,
+  CardLink,
+  CardTitle,
+} from "./internal";
 
 // ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
