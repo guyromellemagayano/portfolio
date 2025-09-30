@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import {
   createComponentProps,
   setDisplayName,
@@ -11,13 +12,21 @@ import {
 
 import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
-import {
-  ARTICLE_COMPONENT_LABELS,
-  type ArticleNavButtonComponent,
-} from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./ArticleNavButton.module.css";
+import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+
+// ============================================================================
+// ARTICLE NAVIGATION BUTTON COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `ArticleNavButton` component props. */
+export interface ArticleNavButtonProps
+  extends React.ComponentProps<"button">,
+    CommonComponentProps {}
+
+/** `ArticleNavButton` component type. */
+export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 
 // ============================================================================
 // BASE ARTICLE NAVIGATION BUTTON COMPONENT
@@ -37,14 +46,17 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
       <button
         {...rest}
         role="button"
-        className={cn(styles.articleNavButton, className)}
+        className={cn(
+          "group articleNavButtondark:hover:ring-white/20 mb-8 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md ring-1 shadow-zinc-800/5 ring-zinc-900/5 transition lg:absolute lg:-left-5 lg:-mt-2 lg:mb-0 xl:-top-1.5 xl:left-0 xl:mt-0 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 dark:ring-white/10 dark:hover:border-zinc-700",
+          className
+        )}
         aria-label={ARTICLE_COMPONENT_LABELS.goBackToArticles}
         aria-describedby={`${debugId}-nav-button-description`}
         onClick={() => router.back()}
         {...createComponentProps(debugId, "article-nav-button", debugMode)}
       >
         <Icon.ArrowLeft
-          className={styles.articleNavButtonIcon}
+          className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400"
           aria-hidden="true"
           debugMode={debugMode}
           debugId={debugId}
@@ -75,7 +87,7 @@ const MemoizedArticleNavButton = React.memo(BaseArticleNavButton);
 // ============================================================================
 
 /** Renders a navigation button to go back to the articles list. */
-const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
+export const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function ArticleNavButton(props) {
     const { isMemoized = false, ...rest } = props;
 
@@ -86,5 +98,3 @@ const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
     return element;
   }
 );
-
-export default ArticleNavButton;

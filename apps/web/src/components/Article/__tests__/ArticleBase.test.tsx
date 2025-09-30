@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import ArticleBase from "../ArticleBase";
+import { ArticleBase } from "../ArticleBase";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -21,6 +21,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
+  }),
+  formatDateSafely: vi.fn((date) => {
+    if (typeof date === "string") {
+      return new Date(date).toLocaleDateString();
+    }
+    return date.toLocaleDateString();
   }),
 }));
 
