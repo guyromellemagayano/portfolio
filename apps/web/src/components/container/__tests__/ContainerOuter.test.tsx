@@ -67,13 +67,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS modules
-vi.mock("../ContainerOuter.module.css", () => ({
-  default: {
-    containerOuter: "containerOuter",
-    containerOuterContent: "containerOuterContent",
-  },
-}));
+// No CSS modules needed - using Tailwind CSS
 
 describe("ContainerOuter", () => {
   afterEach(() => {
@@ -157,21 +151,19 @@ describe("ContainerOuter", () => {
       expect(outerRoot).toHaveAttribute("data-test", "test-data");
     });
 
-    it("applies CSS module classes", () => {
+    it("applies Tailwind CSS classes", () => {
       render(<ContainerOuter>Content</ContainerOuter>);
 
       const outerRoot = screen.getByTestId("test-id-container-outer-root");
-      // CSS module classes are hashed, so we check that the class contains the expected pattern
-      expect(outerRoot.className).toMatch(/containerOuter/);
+      expect(outerRoot).toHaveClass("sm:px-8");
     });
 
-    it("merges custom className with CSS module classes", () => {
+    it("merges custom className with Tailwind CSS classes", () => {
       render(<ContainerOuter className="custom-class">Content</ContainerOuter>);
 
       const outerRoot = screen.getByTestId("test-id-container-outer-root");
       expect(outerRoot).toHaveClass("custom-class");
-      // CSS module classes are hashed, so we check that the class contains the expected pattern
-      expect(outerRoot.className).toMatch(/containerOuter/);
+      expect(outerRoot).toHaveClass("sm:px-8");
     });
   });
 
@@ -406,8 +398,12 @@ describe("ContainerOuter", () => {
       const contentWrapper = outerRoot.querySelector("div");
 
       expect(outerRoot).toContainElement(contentWrapper);
-      // CSS module classes are hashed, so we check that the class contains the expected pattern
-      expect(contentWrapper?.className).toMatch(/containerOuterContent/);
+      expect(contentWrapper).toHaveClass(
+        "mx-auto",
+        "w-full",
+        "max-w-7xl",
+        "lg:px-8"
+      );
     });
 
     it("handles complex layout structures", () => {

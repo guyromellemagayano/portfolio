@@ -6,10 +6,9 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonContainerComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import styles from "./ContainerInner.module.css";
+import { type CommonContainerComponent } from "./data";
 
 // ============================================================================
 // BASE CONTAINER INNER COMPONENT
@@ -38,12 +37,12 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-container-inner`}
-        className={cn(styles.containerInner, className)}
+        className={cn("relative px-4 sm:px-8 lg:px-12", className)}
         {...createComponentProps(componentId, "container-inner", isDebugMode)}
       >
         <div
           id={`${componentId}-container-inner-content`}
-          className={styles.containerInnerContent}
+          className="mx-auto max-w-2xl lg:max-w-5xl"
           {...createComponentProps(
             componentId,
             "container-inner-content",
