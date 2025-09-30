@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./i18n/Article.i18n";
+import { ARTICLE_COMPONENT_LABELS } from "./data";
 
 // ============================================================================
 // ARTICLE LIST COMPONENT TYPES & INTERFACES
@@ -23,7 +23,7 @@ export interface ArticleListProps
 /** `ArticleList` component type. */
 export type ArticleListComponent = React.FC<ArticleListProps>;
 
-// ============================================================================
+//  ============================================================================
 // BASE LIST COMPONENT
 // ============================================================================
 
