@@ -1,5 +1,6 @@
 import React from "react";
 
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
@@ -7,11 +8,23 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { ContainerInner, ContainerOuter } from "@web/components";
-import { type FooterComponent } from "@web/components/_shared";
 import { cn } from "@web/utils";
 
-import { FooterLegal, FooterNavigation } from "./_internal";
-import styles from "./Footer.module.css";
+import { FooterComponentLabels } from "./data";
+import { FooterLegal, FooterNavigation } from "./internal";
+
+// ============================================================================
+// FOOTER COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `Footer` component props. */
+export interface FooterProps
+  extends React.ComponentProps<"footer">,
+    FooterComponentLabels,
+    CommonComponentProps {}
+
+/** `Footer` component type. */
+export type FooterComponent = React.FC<FooterProps>;
 
 // ============================================================================
 // BASE FOOTER COMPONENT
@@ -36,13 +49,13 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
     <Component
       {...rest}
       id={rest.id || `${componentId}-footer`}
-      className={cn(styles.footerComponent, className)}
+      className={cn("mt-32 flex-none", className)}
       {...createComponentProps(componentId, "footer", isDebugMode)}
     >
       <ContainerOuter debugId={componentId} debugMode={isDebugMode}>
         <div
           id={`${componentId}-footer-content-wrapper`}
-          className={styles.footerContentWrapper}
+          className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40"
           {...createComponentProps(
             componentId,
             "footer-content-wrapper",
@@ -52,7 +65,7 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
           <ContainerInner debugId={componentId} debugMode={isDebugMode}>
             <div
               id={`${componentId}-footer-layout`}
-              className={styles.footerLayout}
+              className="flex flex-col items-center justify-between gap-6 md:flex-row"
               {...createComponentProps(
                 componentId,
                 "footer-layout",
@@ -83,12 +96,10 @@ const MemoizedFooter = React.memo(BaseFooter);
 // ============================================================================
 
 /** The main footer component for the application. */
-const Footer: FooterComponent = setDisplayName(function Footer(props) {
+export const Footer: FooterComponent = setDisplayName(function Footer(props) {
   const { isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedFooter : BaseFooter;
   const element = <Component {...rest} />;
   return element;
 });
-
-export default Footer;
