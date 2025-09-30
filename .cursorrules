@@ -33,13 +33,15 @@
 10) Don't mention being an AI or any knowledge cutoff. Don't apologize unless you broke a rule.
 11) **FOLLOW MY CODE STANDARDIZATION PATTERNS EXACTLY** - Don't deviate from established patterns without explicit permission.
 12) **RESPECT COMPONENT ARCHITECTURE DECISIONS** - If I revert changes, follow the pattern I establish, not what I initially suggested.
+13) **IMPLEMENT COMPREHENSIVE ARIA ATTRIBUTES** - All interactive components must have proper ARIA roles, relationships, and labels.
+14) **TEST ARIA ATTRIBUTES THOROUGHLY** - Use `getByRole` queries and test all ARIA relationships, IDs, and conditional behavior.
 
 ## Component Standardization Patterns
 
-- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props
+- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props
 - **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
-- **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
-- **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `ComponentProps`
+- **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
+- **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
 - **Type Organization**: Co-locate types with their components, use inline types for component-specific interfaces, separate files only for shared types
 - **File Structure**: Follow established patterns with `_internal/`, `_data/`, `__tests__/` folders
@@ -52,39 +54,187 @@
 - **Process Mocking**: Mock `process` object for logger compatibility in browser tests
 - **Component Mocking**: Mock `@web/components`, `@web/utils`, and internal components in tests
 - **ESLint Protection**: Rules prevent cross-component access to `_internal/`, `_types/`, `_data/` folders
+- **ARIA Implementation**: Comprehensive accessibility attributes required for all interactive components
+
+## ARIA Implementation Standards
+
+### **Required ARIA Attributes for All Components**
+
+- **Semantic Roles**: Apply appropriate ARIA roles (`main`, `region`, `article`, `banner`, `navigation`, `button`, etc.)
+- **Element Relationships**: Use `aria-labelledby` and `aria-describedby` to connect related elements
+- **Unique IDs**: Generate unique IDs for elements referenced by ARIA relationships
+- **Descriptive Labels**: Provide `aria-label` attributes for context and clarity
+- **Decorative Elements**: Use `aria-hidden="true"` for purely decorative elements
+- **Heading Structure**: Apply `aria-level` attributes for proper heading hierarchy
+- **State Management**: Use `aria-expanded`, `aria-selected`, `aria-checked` for dynamic states
+- **Live Regions**: Use `aria-live` for dynamic content updates
+
+### **ARIA Implementation Patterns**
+
+#### **1. Landmark Roles**
+
+```typescript
+// Main content area
+<div role="main" aria-label="Article content">
+
+// Navigation areas
+<nav role="navigation" aria-label="Main navigation">
+
+// Content regions
+<section role="region" aria-label="Article layout">
+
+// Article content
+<article role="article" aria-labelledby="article-title">
+```
+
+#### **2. Element Relationships**
+
+```typescript
+// Article with title and date relationships
+<article
+  role="article"
+  aria-labelledby="article-title"
+  aria-describedby="article-date"
+>
+  <h1 id="article-title">Article Title</h1>
+  <time id="article-date" aria-label="Published on January 1, 2023">
+    January 1, 2023
+  </time>
+</article>
+```
+
+#### **3. Interactive Elements**
+
+```typescript
+// Button with descriptive label
+<button
+  role="button"
+  aria-label="Go back to articles"
+  aria-describedby="back-button-help"
+>
+  <Icon.ArrowLeft aria-hidden="true" />
+  Back
+</button>
+
+// Form elements with proper labeling
+<input
+  type="text"
+  aria-label="Search articles"
+  aria-describedby="search-help"
+  aria-required="true"
+/>
+```
+
+#### **4. Conditional ARIA Attributes**
+
+```typescript
+// Only apply ARIA attributes when content exists
+<article
+  role="article"
+  aria-labelledby={title ? "article-title" : undefined}
+  aria-describedby={date ? "article-date" : undefined}
+>
+  {title && <h1 id="article-title">{title}</h1>}
+  {date && <time id="article-date">{date}</time>}
+</article>
+```
+
+### **ARIA Testing Requirements**
+
+#### **1. Role Testing**
+
+```typescript
+// Test ARIA roles are correctly applied
+const mainElement = screen.getByRole("main");
+const articleElement = screen.getByRole("article");
+const buttonElement = screen.getByRole("button", { name: /go back/i });
+```
+
+#### **2. Relationship Testing**
+
+```typescript
+// Test ARIA relationships
+const articleElement = screen.getByRole("article");
+expect(articleElement).toHaveAttribute("aria-labelledby", "article-title");
+expect(articleElement).toHaveAttribute("aria-describedby", "article-date");
+```
+
+#### **3. ID Testing**
+
+```typescript
+// Test unique IDs for ARIA relationships
+const titleElement = screen.getByRole("heading", { level: 1 });
+expect(titleElement).toHaveAttribute("id", "article-title");
+```
+
+#### **4. Label Testing**
+
+```typescript
+// Test descriptive labels
+const dateElement = screen.getByText("January 1, 2023").closest("time");
+expect(dateElement).toHaveAttribute("aria-label", "Published on January 1, 2023");
+```
+
+#### **5. Decorative Element Testing**
+
+```typescript
+// Test decorative elements are hidden
+const separatorElement = screen.getByTestId("date-separator");
+expect(separatorElement).toHaveAttribute("aria-hidden", "true");
+```
+
+#### **6. Conditional ARIA Testing**
+
+```typescript
+// Test ARIA attributes when content is missing
+const articleWithoutTitle = { ...mockArticle, title: "" };
+render(<ArticleLayout article={articleWithoutTitle} />);
+
+const articleElement = screen.getByRole("article");
+expect(articleElement).not.toHaveAttribute("aria-labelledby");
+```
+
+### **ARIA Best Practices**
+
+- **Semantic HTML First**: Use native HTML elements with built-in accessibility
+- **Progressive Enhancement**: Add ARIA attributes to enhance, not replace, semantic HTML
+- **User-Centric Testing**: Test with screen readers and assistive technologies
+- **Consistent Patterns**: Apply ARIA attributes consistently across similar components
+- **Documentation**: Document ARIA implementation decisions and patterns
+- **Validation**: Use accessibility testing tools to validate ARIA implementation
 
 ## File Structure Standards
 
 ```bash
-components/component/
-├── Component.tsx              # Main compound component
-├── Component.module.css       # Main styles
-├── index.ts                   # Public exports
-├── __tests__/                 # Main tests
-│   ├── Component.test.tsx
-│   └── Component.integration.test.tsx
-├── _types/                    # Main component types (shared between main + internal)
+components/ComponentName/
+├── ComponentName.tsx              # Main component
+├── ComponentName.module.css       # CSS modules
+├── index.ts                       # Public exports
+├── __tests__/                     # Main tests
+│   ├── ComponentName.test.tsx
+│   └── ComponentName.integration.test.tsx
+├── _types/                        # Main component types (shared between main + internal)
 │   ├── index.ts
-│   └── Component.types.ts     # Main component interfaces
-├── _internal/                 # Sub-components
+│   └── ComponentName.types.ts     # Main component interfaces
+├── _internal/                     # Sub-components
 │   ├── index.ts
-│   ├── _types/                # Private internal types (for sub-components only)
+│   ├── _types/                    # Private internal types (for sub-components only)
 │   │   ├── index.ts
-│   │   └── Internal.types.ts  # Internal component interfaces
-│   ├── ComponentSub/          # Each sub-component
+│   │   └── Internal.types.ts      # Internal component interfaces
+│   ├── ComponentSub/              # Each sub-component
 │   │   ├── ComponentSub.tsx
 │   │   ├── ComponentSub.module.css
 │   │   ├── index.ts
 │   │   └── __tests__/
-│   └── styles/                # Sub-component styles
+│   └── styles/                    # Sub-component styles
 │       ├── ComponentSub.module.css
 │       └── AnotherSub.module.css
-├── _data/                     # Simple constants and labels only
+├── _data/                         # Simple constants and labels only
 │   ├── index.ts
-│   ├── Component.data.ts      # Constants, labels, defaults
-│   └── Component.types.ts     # ONLY shared types (when used by multiple components)
-└── styles/                    # Main component styles
-    └── Component.module.css
+│   ├── ComponentName.data.ts      # Constants, labels, defaults
+│   └── ComponentName.types.ts     # ONLY shared types (when used by multiple components)
+└── styles/                        # Main component styles
+    └── ComponentName.module.css
 ```
 
 ## Utility Function Standards
@@ -95,6 +245,7 @@ components/component/
 - **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
 - **`getLinkTargetProps`**: For link target/rel attributes
+- **`createComponentProps`**: For component data attributes
 - **`cn`**: For className composition from `@web/utils`
 
 ## TypeScript Standards
@@ -188,6 +339,7 @@ components/component/
 - **Globals**: Import `describe`, `it`, `expect`, `afterEach`, `vi` explicitly
 - **Test Structure**: Arrange/Act/Assert pattern
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
+- **Accessibility Testing**: Comprehensive ARIA attribute testing required for all components
 
 ### Test Cleanup Implementation
 
@@ -265,6 +417,19 @@ Every component should include these test categories:
 - ✅ Test unique component features (e.g., `brandName` for FooterBrand, `href` for CardCta)
 - ✅ Test component-specific logic and behavior
 
+#### **9. ARIA Attributes Testing (Required)**
+
+- ✅ Test ARIA roles are correctly applied (`role="main"`, `role="region"`, `role="article"`, etc.)
+- ✅ Test ARIA relationships (`aria-labelledby`, `aria-describedby`)
+- ✅ Test unique IDs for ARIA relationships
+- ✅ Test descriptive labels (`aria-label` attributes)
+- ✅ Test decorative element handling (`aria-hidden="true"`)
+- ✅ Test heading structure (`aria-level` attributes)
+- ✅ Test conditional ARIA attributes (when content is missing)
+- ✅ Test ARIA landmark structure for navigation
+- ✅ Test ARIA attributes with different internal IDs
+- ✅ Test ARIA attributes during component updates
+
 ### Test File Structure
 
 ```typescript
@@ -310,6 +475,85 @@ describe("ComponentName", () => {
 
   describe("Content Validation", () => {
     // Test cases...
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to main layout elements", () => {
+      render(<ComponentName internalId="aria-test" />);
+
+      // Test main content area
+      const mainElement = screen.getByRole("main");
+      expect(mainElement).toHaveAttribute("aria-label", "Component content");
+
+      // Test article region
+      const regionElement = screen.getByRole("region", { name: "Component layout" });
+      expect(regionElement).toBeInTheDocument();
+
+      // Test article element
+      const articleElement = screen.getByRole("article");
+      expect(articleElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(<ComponentName internalId="aria-test" />);
+
+      const articleElement = screen.getByRole("article");
+
+      // Article should be labelled by the title
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "aria-test-component-title"
+      );
+
+      // Article should be described by the date
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "aria-test-component-date"
+      );
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(<ComponentName internalId="aria-test" />);
+
+      // Title should have unique ID
+      const titleElement = screen.getByRole("heading", { level: 1 });
+      expect(titleElement).toHaveAttribute("id", "aria-test-component-title");
+
+      // Date should have unique ID
+      const dateElement = screen.getByText("Formatted Date").closest("time");
+      expect(dateElement).toHaveAttribute("id", "aria-test-component-date");
+    });
+
+    it("applies correct ARIA labels to content elements", () => {
+      render(<ComponentName internalId="aria-test" />);
+
+      // Date element should have descriptive label
+      const dateElement = screen.getByText("Formatted Date").closest("time");
+      expect(dateElement).toHaveAttribute(
+        "aria-label",
+        "Published on Formatted Date"
+      );
+    });
+
+    it("hides decorative elements from screen readers", () => {
+      render(<ComponentName internalId="aria-test" />);
+
+      const dateElement = screen.getByText("Formatted Date").closest("time");
+      const separatorElement = dateElement?.querySelector("span:first-child");
+
+      // Date separator should be hidden from screen readers
+      expect(separatorElement).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("handles ARIA attributes when content is missing", () => {
+      const componentWithoutTitle = { ...mockData, title: "" };
+      render(<ComponentName data={componentWithoutTitle} internalId="aria-test" />);
+
+      const articleElement = screen.getByRole("article");
+
+      // Should not have aria-labelledby when title is missing
+      expect(articleElement).not.toHaveAttribute("aria-labelledby");
+    });
   });
 
   // Additional test categories...
@@ -377,18 +621,40 @@ vi.mock("../ComponentName.module.css", () => ({
 
 #### **Preferred Query Methods (in order)**
 
-1. **`getByRole`** - Most accessible, user-focused
+1. **`getByRole`** - Most accessible, user-focused, **REQUIRED for ARIA testing**
 2. **`getByLabelText`** - For form elements
 3. **`getByPlaceholderText`** - For inputs
 4. **`getByText`** - For text content
 5. **`getByDisplayValue`** - For form values
 6. **`getByTestId`** - Last resort, use with `data-testid`
 
+#### **ARIA-Specific Query Patterns**
+
+```typescript
+// Test ARIA roles
+const mainElement = screen.getByRole("main");
+const articleElement = screen.getByRole("article");
+const buttonElement = screen.getByRole("button", { name: /go back/i });
+
+// Test ARIA landmarks
+const regionElement = screen.getByRole("region", { name: "Article layout" });
+const bannerElement = screen.getByRole("banner");
+
+// Test ARIA relationships
+const articleElement = screen.getByRole("article");
+expect(articleElement).toHaveAttribute("aria-labelledby", "article-title");
+
+// Test ARIA states
+const expandedElement = screen.getByRole("button", { expanded: true });
+const selectedElement = screen.getByRole("option", { selected: true });
+```
+
 #### **Avoid These Queries**
 
 - ❌ `getByClassName` - Brittle, implementation detail
-- ❌ `getById` - Not user-focused
+- ❌ `getById` - Not user-focused (except for ARIA relationship testing)
 - ❌ `querySelector` - Too generic, bypasses RTL benefits
+- ❌ `getByTestId` for ARIA testing - Use `getByRole` instead
 
 ### Test Data Attributes
 
@@ -493,58 +759,153 @@ describe("Edge Cases", () => {
 ### Main Component Pattern
 
 ```typescript
-// Import main types from _types folder (if needed)
-// import { type CommonComponentProps, type CommonComponentComponent } from "./_types";
-// Import internal types from _internal/_types folder (if needed)
-// import { type InternalComponentProps } from "./_internal/_types";
+import React from "react";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName } from "@guyromellemagayano/utils";
+import { cn } from "@web/utils";
+import styles from "./ComponentName.module.css";
 
-interface ComponentProps extends React.ComponentProps<"elementType">, Omit<CommonComponentProps, "as"> {}
-type ComponentCompoundComponent = React.FC<ComponentProps> & {
-  SubComponent: typeof SubComponent;
-};
+// ============================================================================
+// COMPONENT TYPES & INTERFACES
+// ============================================================================
 
-export const Component = setDisplayName(function Component(props) {
-  const { children, isMemoized = false, internalId, debugMode, ...rest } = props;
-  const { id, isDebugMode } = useComponentId({ internalId, debugMode });
+/** `ComponentName` component props. */
+export interface ComponentNameProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {}
 
-  if (!hasAnyRenderableContent(children)) return null;
+/** `ComponentName` component type. */
+export type ComponentNameComponent = React.FC<ComponentNameProps>;
 
-  const updatedProps = { ...rest, internalId: id, debugMode: isDebugMode };
-  const Component = isMemoized ? MemoizedBaseComponent : BaseComponent;
-  return <Component {...updatedProps}>{children}</Component>;
-} as ComponentCompoundComponent);
+// ============================================================================
+// BASE COMPONENT
+// ============================================================================
 
-Component.SubComponent = SubComponent;
+/** A flexible component for [purpose]. */
+const BaseComponentName: ComponentNameComponent = setDisplayName(
+  function BaseComponentName(props) {
+    const {
+      as: Component = "div",
+      children,
+      className,
+      internalId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      internalId,
+      debugMode,
+    });
+
+    if (!children) return null;
+
+    const element = (
+      <Component
+        {...rest}
+        id={`${componentId}-component-name`}
+        className={cn(styles.componentName, className)}
+        data-component-name-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid={`${componentId}-component-name-root`}
+      >
+        {children}
+      </Component>
+    );
+
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED COMPONENT
+// ============================================================================
+
+/** A memoized component. */
+const MemoizedComponentName = React.memo(BaseComponentName);
+
+// ============================================================================
+// MAIN COMPONENT
+// ============================================================================
+
+/** [Component description]. */
+export const ComponentName: ComponentNameComponent = setDisplayName(
+  function ComponentName(props) {
+    const { children, isMemoized = false, ...rest } = props;
+
+    const Component = isMemoized ? MemoizedComponentName : BaseComponentName;
+    const element = <Component {...rest}>{children}</Component>;
+    return element;
+  }
+);
 ```
 
 ### Sub-Component Pattern
 
 ```typescript
-// Import main types from parent _types folder
-import { type CommonComponentProps } from "../../_types";
-// Import internal types from sibling _types folder
-import { type InternalComponentProps } from "../_types";
+import React from "react";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import { setDisplayName, hasMeaningfulText } from "@guyromellemagayano/utils";
+import { cn } from "@web/utils";
+import styles from "./SubComponent.module.css";
 
-interface SubComponentProps extends React.ComponentProps<typeof ElementType>, Omit<CommonComponentProps, "as"> {
-  customProp: string;
+// ============================================================================
+// SUB-COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `SubComponent` component props. */
+export interface SubComponentProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {
+  /** Sub-component specific prop */
+  customProp?: string;
 }
 
-export const SubComponent: React.FC<SubComponentProps> = setDisplayName(function SubComponent(props) {
-  const { children, className, internalId, debugMode, customProp, ...rest } = props;
-  const { id, isDebugMode } = useComponentId({ internalId, debugMode });
+/** `SubComponent` component type. */
+export type SubComponentComponent = React.FC<SubComponentProps>;
 
-  if (!hasMeaningfulText(customProp)) return null;
+// ============================================================================
+// SUB-COMPONENT
+// ============================================================================
 
-  return (
-    <ElementType
-      {...rest}
-      className={cn(styles.subComponent, className)}
-      {...createComponentProps(id, "sub-component", isDebugMode)}
-    >
-      {children}
-    </ElementType>
-  );
-});
+/** A sub-component for specific functionality. */
+export const SubComponent: SubComponentComponent = setDisplayName(
+  function SubComponent(props) {
+    const {
+      as: Component = "div",
+      children,
+      className,
+      internalId,
+      debugMode,
+      customProp,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      internalId,
+      debugMode,
+    });
+
+    if (!hasMeaningfulText(customProp)) return null;
+
+    const element = (
+      <Component
+        {...rest}
+        id={`${componentId}-sub-component`}
+        className={cn(styles.subComponent, className)}
+        data-sub-component-id={componentId}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        data-testid={`${componentId}-sub-component-root`}
+      >
+        {children}
+      </Component>
+    );
+
+    return element;
+  }
+);
 ```
 
 ## Output Style
