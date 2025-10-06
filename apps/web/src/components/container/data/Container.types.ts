@@ -1,3 +1,7 @@
+// ============================================================================
+// SHARED CONTAINER COMPONENT TYPES
+// ============================================================================
+
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
