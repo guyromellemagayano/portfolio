@@ -34,7 +34,8 @@ vi.mock("@web/utils", () => ({
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
+    componentId: options.debugId || options.internalId || "test-id",
+    id: options.debugId || options.internalId || "test-id",
     isDebugMode: options.debugMode || false,
   })),
 }));
@@ -45,17 +46,15 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (component) component.displayName = displayName;
     return component;
   }),
-  createComponentProps: vi.fn((id, suffix, debugMode, additionalProps = {}) => {
-    const attributes: Record<string, string> = {};
-    if (id && suffix) {
-      attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
-      attributes["data-testid"] = `${id}-${suffix}-root`;
-    }
-    if (debugMode === true) {
-      attributes["data-debug-mode"] = "true";
-    }
-    return { ...attributes, ...additionalProps };
-  }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
   isRenderableContent: vi.fn((children) => {
     if (children == null) return false;
     if (typeof children === "string") return children.trim() !== "";
@@ -169,7 +168,7 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock the Header data
-vi.mock("../_data", () => ({
+vi.mock("../data", () => ({
   AVATAR_COMPONENT_LABELS: {
     home: "Home",
     link: "/",
@@ -179,23 +178,23 @@ vi.mock("../_data", () => ({
 }));
 
 // Mock internal components
-vi.mock("../_internal/HeaderAvatar", () => ({
+vi.mock("../internal/HeaderAvatar", () => ({
   HeaderAvatar: vi.fn(({ children, ...props }) => (
-    <div data-testid="header-avatar" {...props}>
+    <div data-testid="test-id-header-avatar-image-root" {...props}>
       {children}
     </div>
   )),
 }));
 
-vi.mock("../_internal/HeaderAvatarContainer", () => ({
+vi.mock("../internal/HeaderAvatarContainer", () => ({
   HeaderAvatarContainer: vi.fn(({ children, ...props }) => (
-    <div data-testid="header-avatar-container" {...props}>
+    <div data-testid="test-id-header-avatar-container-root" {...props}>
       {children}
     </div>
   )),
 }));
 
-vi.mock("../_internal/HeaderDesktopNav", () => ({
+vi.mock("../internal/HeaderDesktopNav", () => ({
   HeaderDesktopNav: vi.fn(({ children, ...props }) => (
     <nav data-testid="header-desktop-nav" {...props}>
       {children}
@@ -203,7 +202,7 @@ vi.mock("../_internal/HeaderDesktopNav", () => ({
   )),
 }));
 
-vi.mock("../_internal/HeaderMobileNav", () => ({
+vi.mock("../internal/HeaderMobileNav", () => ({
   HeaderMobileNav: vi.fn(({ children, ...props }) => (
     <nav data-testid="header-mobile-nav" {...props}>
       {children}
@@ -211,7 +210,7 @@ vi.mock("../_internal/HeaderMobileNav", () => ({
   )),
 }));
 
-vi.mock("../_internal/HeaderThemeToggle", () => ({
+vi.mock("../internal/HeaderThemeToggle", () => ({
   HeaderThemeToggle: vi.fn(({ children, ...props }) => (
     <button data-testid="header-theme-toggle" {...props}>
       {children}
@@ -219,14 +218,29 @@ vi.mock("../_internal/HeaderThemeToggle", () => ({
   )),
 }));
 
-vi.mock("../_internal/HeaderEffects", () => ({
+vi.mock("../internal/HeaderEffects", () => ({
   HeaderEffects: vi.fn(() => null),
+}));
+
+// Mock Next.js Image component with proper width/height
+vi.mock("next/image", () => ({
+  default: vi.fn(({ src, alt, width, height, ...props }) => (
+    <img
+      src={src}
+      alt={alt}
+      width={width || 64}
+      height={height || 64}
+      data-testid="next-image"
+      {...props}
+    />
+  )),
 }));
 
 // Mock the CSS module
 vi.mock("../Header.module.css", () => ({
   default: {
-    headerComponent: "_headerComponent_43a792",
+    headerComponent:
+      "pointer-events-none relative z-50 flex flex-none flex-col",
     headerSection: "_headerSection_43a792",
     headerContainer: "_headerContainer_43a792",
     headerContent: "_headerContent_43a792",
@@ -276,8 +290,8 @@ describe("Header", () => {
   });
 
   describe("Component ID and Debug Mode", () => {
-    it("uses provided internalId when available", () => {
-      render(<Header internalId="custom-id" />);
+    it("uses provided debugId when available", () => {
+      render(<Header debugId="custom-id" />);
 
       const header = screen.getByTestId("custom-id-header-root");
       expect(header).toHaveAttribute("data-header-id", "custom-id-header");
@@ -317,7 +331,7 @@ describe("Header", () => {
       render(<Header />);
 
       expect(screen.getByTestId("test-id-header-root")).toBeInTheDocument();
-      expect(screen.getAllByTestId("container")).toHaveLength(2);
+      expect(screen.getAllByTestId("container")).toHaveLength(1);
       expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
       expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
       expect(screen.getByTestId("header-theme-toggle")).toBeInTheDocument();
@@ -335,8 +349,12 @@ describe("Header", () => {
     it("renders avatar section on homepage", () => {
       render(<Header />);
 
-      expect(screen.getByTestId("header-avatar")).toBeInTheDocument();
-      expect(screen.getByTestId("header-avatar-container")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-avatar-image-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-avatar-container-root")
+      ).toBeInTheDocument();
     });
 
     it("renders content offset on homepage", () => {
@@ -355,13 +373,15 @@ describe("Header", () => {
     it("renders avatar in left section on non-homepage", () => {
       render(<Header />);
 
-      expect(screen.getByTestId("header-avatar-container")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-avatar-container-root")
+      ).toBeInTheDocument();
     });
 
     it("does not render large avatar on non-homepage", () => {
       render(<Header />);
 
-      const avatar = screen.getByTestId("header-avatar");
+      const avatar = screen.getByTestId("test-id-header-avatar-image-root");
       expect(avatar).toBeInTheDocument();
     });
   });
@@ -405,14 +425,19 @@ describe("Header", () => {
       render(<Header />);
 
       const header = screen.getByTestId("test-id-header-root");
-      expect(header).toHaveClass("_headerComponent_43a792");
+      expect(header).toHaveClass(
+        "pointer-events-none relative z-50 flex flex-none flex-col"
+      );
     });
 
     it("combines custom className with CSS module classes", () => {
       render(<Header className="custom-class" />);
 
       const header = screen.getByTestId("test-id-header-root");
-      expect(header).toHaveClass("_headerComponent_43a792", "custom-class");
+      expect(header).toHaveClass(
+        "pointer-events-none relative z-50 flex flex-none flex-col",
+        "custom-class"
+      );
     });
   });
 
@@ -466,7 +491,7 @@ describe("Header", () => {
       render(
         <Header
           className="custom-class"
-          internalId="custom-id"
+          debugId="custom-id"
           debugMode={true}
           aria-label="Test header"
         />
@@ -483,7 +508,7 @@ describe("Header", () => {
   describe("Integration Tests", () => {
     describe("Complete Header Rendering", () => {
       it("renders complete header with all sub-components", () => {
-        render(<Header internalId="test-header" debugMode={false} />);
+        render(<Header debugId="test-header" debugMode={false} />);
 
         // Check main header
         expect(
@@ -492,12 +517,14 @@ describe("Header", () => {
 
         // Check containers (there are multiple)
         const containers = screen.getAllByTestId("container");
-        expect(containers).toHaveLength(2);
+        expect(containers).toHaveLength(1);
 
         // Check all sub-components
-        expect(screen.getByTestId("header-avatar")).toBeInTheDocument();
         expect(
-          screen.getByTestId("header-avatar-container")
+          screen.getByTestId("test-header-header-avatar-image-root")
+        ).toBeInTheDocument();
+        expect(
+          screen.getByTestId("test-header-header-avatar-container-root")
         ).toBeInTheDocument();
         expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
         expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
@@ -511,20 +538,22 @@ describe("Header", () => {
         expect(header.tagName).toBe("HEADER");
 
         const containers = screen.getAllByTestId("container");
-        expect(containers).toHaveLength(2);
+        expect(containers).toHaveLength(1);
       });
 
       it("renders header with proper CSS classes", () => {
         render(<Header />);
 
         const header = screen.getByTestId("test-id-header-root");
-        expect(header).toHaveClass("_headerComponent_43a792");
+        expect(header).toHaveClass(
+          "pointer-events-none relative z-50 flex flex-none flex-col"
+        );
       });
     });
 
     describe("Header with Debug Mode", () => {
       it("renders header with debug mode enabled", () => {
-        render(<Header internalId="debug-header" debugMode={true} />);
+        render(<Header debugId="debug-header" debugMode={true} />);
 
         const header = screen.getByTestId("debug-header-header-root");
         expect(header).toHaveAttribute("data-header-id", "debug-header-header");
@@ -532,7 +561,7 @@ describe("Header", () => {
       });
 
       it("renders header with debug mode disabled", () => {
-        render(<Header internalId="debug-header" debugMode={false} />);
+        render(<Header debugId="debug-header" debugMode={false} />);
 
         const header = screen.getByTestId("debug-header-header-root");
         expect(header).toHaveAttribute("data-header-id", "debug-header-header");
@@ -542,7 +571,7 @@ describe("Header", () => {
 
     describe("Header with Custom Internal IDs", () => {
       it("renders header with custom internal ID", () => {
-        render(<Header internalId="custom-header-id" />);
+        render(<Header debugId="custom-header-id" />);
 
         const header = screen.getByTestId("custom-header-id-header-root");
         expect(header).toHaveAttribute(
@@ -564,7 +593,9 @@ describe("Header", () => {
         render(<Header />);
 
         const header = screen.getByTestId("test-id-header-root");
-        expect(header).toHaveClass("_headerComponent_43a792");
+        expect(header).toHaveClass(
+          "pointer-events-none relative z-50 flex flex-none flex-col"
+        );
       });
 
       it("combines custom className with default classes", () => {
@@ -572,7 +603,7 @@ describe("Header", () => {
 
         const header = screen.getByTestId("test-id-header-root");
         expect(header).toHaveClass(
-          "_headerComponent_43a792",
+          "pointer-events-none relative z-50 flex flex-none flex-col",
           "custom-header-class"
         );
       });
@@ -596,14 +627,16 @@ describe("Header", () => {
       it("renders avatar component correctly", () => {
         render(<Header />);
 
-        const avatar = screen.getByTestId("header-avatar");
+        const avatar = screen.getByTestId("test-id-header-avatar-image-root");
         expect(avatar).toBeInTheDocument();
       });
 
       it("renders avatar container correctly", () => {
         render(<Header />);
 
-        const avatarContainer = screen.getByTestId("header-avatar-container");
+        const avatarContainer = screen.getByTestId(
+          "test-id-header-avatar-container-root"
+        );
         expect(avatarContainer).toBeInTheDocument();
       });
 
@@ -685,8 +718,8 @@ describe("Header", () => {
       it("renders multiple header instances correctly", () => {
         render(
           <div>
-            <Header internalId="header-1" />
-            <Header internalId="header-2" />
+            <Header debugId="header-1" />
+            <Header debugId="header-2" />
           </div>
         );
 
@@ -709,7 +742,7 @@ describe("Header", () => {
         let header = screen.getByTestId("test-id-header-root");
         expect(header).toHaveAttribute("data-header-id", "test-id-header");
 
-        rerender(<Header internalId="updated-header" />);
+        rerender(<Header debugId="updated-header" />);
         header = screen.getByTestId("updated-header-header-root");
         expect(header).toHaveAttribute(
           "data-header-id",
@@ -720,7 +753,7 @@ describe("Header", () => {
       it("handles complex header configurations", () => {
         render(
           <Header
-            internalId="complex-header"
+            debugId="complex-header"
             debugMode={true}
             className="complex-header-class"
             style={{ position: "sticky", top: 0 }}
