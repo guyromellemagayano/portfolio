@@ -38,8 +38,16 @@ export type SimpleLayoutComponent = React.FC<SimpleLayoutProps>;
 /** A base simple layout component. */
 const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
   function BaseSimpleLayout(props) {
-    const { children, className, title, intro, debugId, debugMode, ...rest } =
-      props;
+    const {
+      as: Component = "div",
+      children,
+      className,
+      title,
+      intro,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -47,7 +55,7 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
     });
 
     const element = (
-      <div
+      <Component
         {...rest}
         id={`${componentId}-simple-layout-root`}
         className={cn("mt-16 sm:mt-32", className)}
@@ -117,7 +125,7 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
             {children}
           </main>
         ) : null}
-      </div>
+      </Component>
     );
 
     return element;
