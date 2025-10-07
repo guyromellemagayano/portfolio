@@ -6,25 +6,26 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
-import { SimpleLayout } from "./_internal";
-import styles from "./Layout.module.css";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "./data";
+import { SimpleLayout } from "./internal";
 
 // ============================================================================
 // LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface LayoutProps
+/** `Layout` component props. */
+export interface LayoutProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type LayoutComponent = React.FC<LayoutProps>;
+
+/** `Layout` component type. */
+export type LayoutComponent = React.FC<LayoutProps>;
 
 // ============================================================================
 // BASE LAYOUT COMPONENT
@@ -32,80 +33,75 @@ type LayoutComponent = React.FC<LayoutProps>;
 
 /** A layout component that provides the base page structure with header, main content, and footer. */
 const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
-  const { children, className, internalId, debugMode, ...rest } = props;
+  const { children, className, debugId, debugMode, ...rest } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
 
   const element = (
-    <div
-      {...rest}
-      id={`${internalId}-layout-root`}
-      className={cn(styles.layoutContainer, className)}
-      {...createComponentProps(internalId, "layout", debugMode)}
-    >
-      <Link
-        href={`#${internalId}-layout-main`}
-        id={`${internalId}-layout-link`}
-        className={styles.skipLink}
-        aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
-        {...createComponentProps(internalId, "link", debugMode)}
-      >
-        {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
-      </Link>
+    <>
       <div
-        id={`${internalId}-layout-background-wrapper`}
-        className={styles.layoutBackgroundWrapper}
-        aria-hidden="true"
-        inert
-        {...createComponentProps(
-          internalId,
-          "layout-background-wrapper",
-          debugMode
-        )}
+        {...rest}
+        id={`${componentId}-layout-root`}
+        className={cn("fixed inset-0 flex justify-center sm:px-8", className)}
+        {...createComponentProps(componentId, "layout", isDebugMode)}
       >
+        <Link
+          href={`#${componentId}-layout-main`}
+          id={`${componentId}-layout-link`}
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900"
+          aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+          {...createComponentProps(componentId, "link", isDebugMode)}
+        >
+          {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+        </Link>
         <div
-          id={`${internalId}-layout-background-content`}
-          className={styles.layoutBackgroundContent}
+          id={`${componentId}-layout-background-wrapper`}
+          className="flex w-full max-w-7xl lg:px-8"
           {...createComponentProps(
-            internalId,
-            "layout-background-content",
-            debugMode
+            componentId,
+            "layout-background-wrapper",
+            isDebugMode
           )}
         >
           <div
-            id={`${internalId}-layout-background`}
-            className={styles.layoutBackground}
+            id={`${componentId}-layout-background-content`}
+            className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20"
             {...createComponentProps(
-              internalId,
-              "layout-background",
-              debugMode
+              componentId,
+              "layout-background-content",
+              isDebugMode
             )}
           />
         </div>
       </div>
       <div
-        id={`${internalId}-layout-content-wrapper`}
-        className={styles.layoutContentWrapper}
+        id={`${componentId}-layout-content-wrapper`}
+        className="relative flex w-full flex-col"
         {...createComponentProps(
-          internalId,
+          componentId,
           "layout-content-wrapper",
-          debugMode
+          isDebugMode
         )}
       >
-        <Header role="banner" internalId={internalId} debugMode={debugMode} />
+        <Header role="banner" debugId={componentId} debugMode={isDebugMode} />
         <main
           role="main"
-          id={`${internalId}-layout-main`}
-          className={styles.layoutMain}
-          {...createComponentProps(internalId, "layout-main", debugMode)}
+          id={`${componentId}-layout-main`}
+          className="flex-auto"
+          {...createComponentProps(componentId, "layout-main", isDebugMode)}
         >
           {children}
         </main>
         <Footer
           role="contentinfo"
-          internalId={internalId}
-          debugMode={debugMode}
+          debugId={componentId}
+          debugMode={isDebugMode}
         />
       </div>
-    </div>
+    </>
   );
 
   return element;
@@ -123,30 +119,11 @@ const MemoizedBaseLayout = React.memo(BaseLayout);
 // ============================================================================
 
 /** A layout component that provides the base page structure with header, main, and footer sections. */
-const Layout = setDisplayName(function Layout(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  if (!hasAnyRenderableContent(children)) return null;
-
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+export const Layout = setDisplayName(function Layout(props) {
+  const { children, isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedBaseLayout : BaseLayout;
-  const element = <Component {...updatedProps}>{children}</Component>;
+  const element = <Component {...rest}>{children}</Component>;
   return element;
 } as LayoutCompoundComponent);
 
@@ -160,5 +137,3 @@ type LayoutCompoundComponent = React.FC<LayoutProps> & {
 };
 
 Layout.Simple = SimpleLayout;
-
-export default Layout;
