@@ -6,24 +6,25 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
-  hasValidContent,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import { type CommonLinkProps } from "../../_data";
-import styles from "./SocialLink.module.css";
+import { type CommonLinkProps } from "../data";
 
 // ============================================================================
 // SOCIAL LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SocialLinkProps extends CommonLinkProps {
+/** `SocialLinkProps` component props. */
+export interface SocialLinkProps extends CommonLinkProps {
   icon: React.ComponentType<{ className?: string }>;
 }
-type SocialLinkComponent = React.FC<SocialLinkProps>;
+
+/** `SocialLinkComponent` component type. */
+export type SocialLinkComponent = React.FC<SocialLinkProps>;
 
 // ============================================================================
 // BASE SOCIAL LINK COMPONENT
@@ -37,14 +38,18 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
       icon: Icon,
       target,
       title,
-      internalId,
+      debugId,
       debugMode,
       className,
       ...rest
     } = props;
 
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
     const linkHref = href && isValidLink(href) ? href : "";
-    const linkTitle = title && hasValidContent(title) ? title : "";
     const linkTargetProps = getLinkTargetProps(linkHref, target);
 
     const element = (
@@ -53,12 +58,12 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
-        title={linkTitle}
-        aria-label={linkTitle}
-        className={cn(styles.socialLink, className)}
-        {...createComponentProps(internalId, "social-link", debugMode)}
+        title={title}
+        aria-label={title}
+        className={cn("group -m-1 p-1", className)}
+        {...createComponentProps(componentId, "social-link", isDebugMode)}
       >
-        <Icon className={styles.socialLinkIcon} />
+        <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
       </Link>
     );
 
@@ -79,23 +84,9 @@ const MemoizedSocialLink = React.memo(BaseSocialLink);
 
 /** A social media link component with icon support. */
 export const SocialLink = setDisplayName(function SocialLink(props) {
-  const { href, isMemoized = false, internalId, debugMode, ...rest } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  if (!isValidLink(href)) return null;
-
-  const updatedProps = {
-    ...rest,
-    href,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+  const { isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedSocialLink : BaseSocialLink;
-  const element = <Component {...updatedProps} />;
+  const element = <Component {...rest} />;
   return element;
 });

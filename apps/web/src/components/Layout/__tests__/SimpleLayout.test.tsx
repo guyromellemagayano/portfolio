@@ -49,36 +49,11 @@ vi.mock("@guyromellemagayano/components", () => ({
       {children}
     </a>
   )),
-  Heading: vi.fn(({ children, ...props }) => (
-    <h1 data-testid="heading" {...props}>
-      {children}
-    </h1>
-  )),
-  P: vi.fn(({ children, ...props }) => (
-    <p data-testid="paragraph" {...props}>
-      {children}
-    </p>
-  )),
 }));
 
-// Container is no longer used in SimpleLayout - it renders div directly
-
-// @web/lib is globally mocked in test setup
-
-// Logger is automatically mocked via __mocks__ directory
-
-// Mock CSS module
-vi.mock("../SimpleLayout.module.css", () => ({
-  default: {
-    simpleLayoutContainer: "mt-16 sm:mt-32",
-    simpleLayoutHeader: "max-w-2xl",
-    simpleLayoutTitle:
-      "text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100",
-    simpleLayoutIntro: "mt-6 text-base text-zinc-600 dark:text-zinc-400",
-    simpleLayoutContent: "mt-16 sm:mt-20",
-    skipLink:
-      "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900",
-  },
+// Mock @web/utils
+vi.mock("@web/utils", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock data
