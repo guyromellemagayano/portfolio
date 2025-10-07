@@ -1,11 +1,12 @@
 /**
  * React environment Vitest preset for React component testing
  * Use this preset for testing React components with full DOM and testing library support
+ * Includes centralized mocks and logger integration
  */
 export default {
   test: {
     environment: "jsdom",
-    setupFiles: ["./src/test-setup.ts"],
+    setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"],
     globals: true,
     css: true,
     coverage: {

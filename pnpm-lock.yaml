@@ -1129,6 +1129,9 @@ importers:
 
   packages/vitest-presets:
     dependencies:
+      '@guyromellemagayano/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.6.3
