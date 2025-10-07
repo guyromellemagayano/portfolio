@@ -6,6 +6,12 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
+// Simple test setup logger (avoids conflicts with mocked logger)
+// const testLogger = {
+//   info: (message: string) => console.log(`🧪 [TEST-SETUP] ${message}`),
+//   debug: (message: string) => console.log(`🔍 [TEST-SETUP] ${message}`),
+// };
+
 // Extend global interface to avoid TypeScript errors
 declare global {
   interface Global {
@@ -17,7 +23,7 @@ declare global {
 }
 
 // Mock window.matchMedia
-Object.defineProperty(globalThis?.window, "matchMedia", {
+Object.defineProperty(globalThis.window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
     matches: false,
@@ -38,13 +44,13 @@ const mockIntersectionObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }));
 
-Object.defineProperty(globalThis?.window, "IntersectionObserver", {
+Object.defineProperty(globalThis.window, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
 });
 
-Object.defineProperty(globalThis?.global, "IntersectionObserver", {
+Object.defineProperty(globalThis.global, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
@@ -57,20 +63,20 @@ const mockResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }));
 
-Object.defineProperty(globalThis?.window, "ResizeObserver", {
+Object.defineProperty(globalThis.window, "ResizeObserver", {
   writable: true,
   configurable: true,
   value: mockResizeObserver,
 });
 
-Object.defineProperty(globalThis?.global, "ResizeObserver", {
+Object.defineProperty(globalThis.global, "ResizeObserver", {
   writable: true,
   configurable: true,
   value: mockResizeObserver,
 });
 
 // Mock requestAnimationFrame
-(globalThis?.global as any).requestAnimationFrame = vi.fn(
+globalThis.global.requestAnimationFrame = vi.fn(
   (callback: (time: number) => void) => {
     callback(0);
     return 1;
@@ -78,10 +84,10 @@ Object.defineProperty(globalThis?.global, "ResizeObserver", {
 );
 
 // Mock cancelAnimationFrame
-(globalThis?.global as any).cancelAnimationFrame = vi.fn();
+globalThis.global.cancelAnimationFrame = vi.fn();
 
 // Mock getComputedStyle
-Object.defineProperty(globalThis?.window, "getComputedStyle", {
+Object.defineProperty(globalThis.window, "getComputedStyle", {
   value: vi.fn(() => ({
     getPropertyValue: vi.fn(),
   })),
@@ -90,13 +96,17 @@ Object.defineProperty(globalThis?.window, "getComputedStyle", {
 // Mock console methods to reduce noise in tests
 const originalConsole = { ...console };
 beforeAll(() => {
-  console.warn = vi.fn();
-  console.error = vi.fn();
+  // testLogger.info("Initializing test environment");
+  globalThis.global.console.warn = vi.fn();
+  globalThis.global.console.error = vi.fn();
+  // testLogger.debug("Console methods mocked");
 });
 
 afterAll(() => {
-  console.warn = originalConsole.warn;
-  console.error = originalConsole.error;
+  // testLogger.info("Cleaning up test environment");
+  globalThis.global.console.warn = originalConsole.warn;
+  globalThis.global.console.error = originalConsole.error;
+  // testLogger.debug("Console methods restored");
 });
 
 // Reset modules and mocks between tests
@@ -104,6 +114,7 @@ afterEach(() => {
   vi.resetModules(); // Clear module cache
   vi.clearAllMocks(); // Clear mock call history
   vi.resetAllMocks(); // Reset mocks to original implementations
+  // testLogger.debug("Modules and mocks reset");
 });
 
 // Global mock for next/navigation
@@ -234,93 +245,9 @@ vi.mock("@guyromellemagayano/components", () => {
   return mockComponents;
 });
 
-// Global mock for @web/components
-vi.mock("@web/components", () => {
-  // Create mock components with data-testid for testing
-  const createMockComponent = (tag: string, testId: string) => {
-    return React.forwardRef<any, any>((props, ref) => {
-      const { children, ...rest } = props;
-      return React.createElement(
-        tag,
-        {
-          ref,
-          "data-testid": testId,
-          ...rest,
-        },
-        children
-      );
-    });
-  };
-
-  const mockComponents = {
-    // Layout components
-    ArticleBase: createMockComponent("article", "mock-article-base"),
-    ArticleLayout: createMockComponent("div", "mock-article-layout"),
-    ArticleList: createMockComponent("div", "mock-article-list"),
-    ArticleListItem: createMockComponent("article", "mock-article-list-item"),
-    ArticleNavButton: createMockComponent("button", "mock-article-nav-button"),
-    Container: createMockComponent("div", "mock-container"),
-    ContainerInner: createMockComponent("div", "mock-container-inner"),
-    ContainerOuter: createMockComponent("div", "mock-container-outer"),
-    Footer: createMockComponent("footer", "mock-footer"),
-    Link: createMockComponent("a", "mock-link"),
-    PhotoGallery: createMockComponent("div", "mock-photo-gallery"),
-    Prose: createMockComponent("div", "mock-prose"),
-    Section: createMockComponent("section", "mock-section"),
-
-    // Card components
-    Card: createMockComponent("div", "mock-card"),
-    CardLink: createMockComponent("div", "mock-card-link"),
-    CardLinkCustom: createMockComponent("div", "mock-card-link-custom"),
-    CardTitle: createMockComponent("h3", "mock-card-title"),
-    CardDescription: createMockComponent("p", "mock-card-description"),
-    CardCta: createMockComponent("div", "mock-card-cta"),
-    CardEyebrow: createMockComponent("p", "mock-card-eyebrow"),
-
-    // Header components
-    Header: createMockComponent("header", "mock-header"),
-    HeaderAvatar: createMockComponent("div", "mock-header-avatar"),
-    HeaderAvatarContainer: createMockComponent(
-      "div",
-      "mock-header-avatar-container"
-    ),
-    HeaderDesktopNav: createMockComponent("nav", "mock-header-desktop-nav"),
-    HeaderDesktopNavItem: createMockComponent(
-      "div",
-      "mock-header-desktop-nav-item"
-    ),
-    HeaderEffects: createMockComponent("div", "mock-header-effects"),
-    HeaderMobileNav: createMockComponent("nav", "mock-header-mobile-nav"),
-    HeaderMobileNavItem: createMockComponent(
-      "div",
-      "mock-header-mobile-nav-item"
-    ),
-
-    // Layout components
-    Layout: createMockComponent("div", "mock-layout"),
-    SimpleLayout: createMockComponent("div", "mock-simple-layout"),
-
-    // Icon component with all available icons
-    Icon: {
-      ArrowDownIcon: createMockComponent("svg", "arrow-down-icon"),
-      ArrowLeftIcon: createMockComponent("svg", "arrow-left-icon"),
-      BriefcaseIcon: createMockComponent("svg", "briefcase-icon"),
-      ChevronDownIcon: createMockComponent("svg", "chevron-down-icon"),
-      ChevronRightIcon: createMockComponent("svg", "chevron-right-icon"),
-      CloseIcon: createMockComponent("svg", "close-icon"),
-      GitHubIcon: createMockComponent("svg", "github-icon"),
-      InstagramIcon: createMockComponent("svg", "instagram-icon"),
-      LinkedinIcon: createMockComponent("svg", "linkedin-icon"),
-      LinkIcon: createMockComponent("svg", "link-icon"),
-      MailIcon: createMockComponent("svg", "mail-icon"),
-      MoonIcon: createMockComponent("svg", "moon-icon"),
-      SunIcon: createMockComponent("svg", "sun-icon"),
-      XIcon: createMockComponent("svg", "x-icon"),
-    },
-  };
-
-  return mockComponents;
-});
+// Use centralized mocks for @web/components
+vi.mock("@web/components", () => import("../__mocks__/@web/components"));
+// testLogger.debug("@web/components mocked via centralized mocks");
 
 // Global mock for @web/lib
 vi.mock("@web/lib", () => ({
@@ -343,78 +270,26 @@ vi.mock("@web/utils", () => ({
   formatDate: vi.fn((_date) => "Formatted Date"),
 }));
 
-// Global mock for @guyromellemagayano/utils
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((...args) =>
-    args.some((arg) => arg != null && arg !== "")
-  ),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  hasValidContent: vi.fn((content) => content != null && content !== ""),
-  isRenderableContent: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-  isValidLink: vi.fn((href) => href != null && href !== ""),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || (href?.startsWith("http") ? "_blank" : undefined),
-    rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
-  })),
-  formatDateSafely: vi.fn((date) => "Formatted Date"),
-}));
+// Use centralized mocks for @guyromellemagayano/utils
+vi.mock(
+  "@guyromellemagayano/utils",
+  () => import("../__mocks__/@guyromellemagayano/utils")
+);
+// testLogger.debug("@guyromellemagayano/utils mocked via centralized mocks");
 
-// Global mock for @guyromellemagayano/hooks
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugId, debugMode = false } = {}) => ({
-    componentId: internalId || debugId || "test-id",
-    id: internalId || debugId || "test-id", // Support both naming conventions
-    isDebugMode: debugMode,
-  })),
-}));
+// Use centralized mocks for @guyromellemagayano/hooks
+vi.mock(
+  "@guyromellemagayano/hooks",
+  () => import("../__mocks__/@guyromellemagayano/hooks")
+);
+// testLogger.debug("@guyromellemagayano/hooks mocked via centralized mocks");
 
-// Global mock for @guyromellemagayano/logger
-vi.mock("@guyromellemagayano/logger", () => {
-  const mockLogger = {
-    error: vi.fn(),
-    info: vi.fn(),
-    warn: vi.fn(),
-    debug: vi.fn(),
-    silly: vi.fn(),
-    child: vi.fn(() => mockLogger),
-    time: vi.fn(),
-    timeEnd: vi.fn(),
-    performance: vi.fn(),
-    metric: vi.fn(),
-    flush: vi.fn(),
-    close: vi.fn(),
-  };
-
-  return {
-    // Main logger instance
-    logger: mockLogger,
-    createLogger: vi.fn(() => mockLogger),
-
-    // Legacy function exports
-    logError: vi.fn(),
-    logInfo: vi.fn(),
-    logWarn: vi.fn(),
-    logDebug: vi.fn(),
-    logTrace: vi.fn(),
-    log: vi.fn(),
-
-    // Default export
-    default: mockLogger,
-  };
-});
+// Use centralized mocks for @guyromellemagayano/logger
+vi.mock(
+  "@guyromellemagayano/logger",
+  () => import("../__mocks__/@guyromellemagayano/logger")
+);
+// testLogger.debug("@guyromellemagayano/logger mocked via centralized mocks");
 
 // Global mock for Sanity client
 vi.mock("@sanity/client", () => ({
@@ -459,3 +334,6 @@ vi.mock("next-sanity", () => ({
     transaction: vi.fn(),
   })),
 }));
+
+// Final setup completion log
+// testLogger.info("All mocks and configurations initialized successfully");
