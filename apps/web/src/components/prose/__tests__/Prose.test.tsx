@@ -10,7 +10,7 @@ import "@testing-library/jest-dom";
 // Mock the useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options) => ({
-    id: options?.internalId || "test-id",
+    componentId: options?.debugId || "test-id",
     isDebugMode: options?.debugMode || false,
   })),
 }));
@@ -39,7 +39,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS modules
+// Mock CSS modules (not used by Prose component)
 vi.mock("../styles/Prose.module.css", () => ({
   default: {
     proseContainer: "prose-container-class",
@@ -49,6 +49,7 @@ vi.mock("../styles/Prose.module.css", () => ({
 describe("Prose Component", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -128,7 +129,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-container-class", "custom-class");
+      expect(prose).toHaveClass("prose", "dark:prose-invert", "custom-class");
     });
 
     it("spreads additional props to prose element", () => {
@@ -145,7 +146,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveAttribute("id", "test-id");
+      expect(prose).toHaveAttribute("id", "test-id-prose-root");
       expect(prose).toHaveAttribute("aria-label", "Test prose");
       expect(prose).toHaveAttribute("data-custom", "value");
       expect(prose).toHaveAttribute("role", "article");
@@ -160,9 +161,9 @@ describe("Prose Component", () => {
   });
 
   describe("Internal Props and useComponentId Integration", () => {
-    it("uses provided _internalId when available", () => {
+    it("uses provided debugId when available", () => {
       render(
-        <Prose _internalId="custom-id" data-testid="prose">
+        <Prose debugId="custom-id" data-testid="prose">
           Content
         </Prose>
       );
@@ -171,16 +172,16 @@ describe("Prose Component", () => {
       expect(prose).toHaveAttribute("data-prose-id", "custom-id-prose");
     });
 
-    it("generates ID when _internalId is not provided", () => {
+    it("generates ID when debugId is not provided", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
       const prose = screen.getByTestId("test-id-prose-root");
       expect(prose).toHaveAttribute("data-prose-id", "test-id-prose");
     });
 
-    it("applies data-debug-mode when _debugMode is true", () => {
+    it("applies data-debug-mode when debugMode is true", () => {
       render(
-        <Prose _debugMode={true} data-testid="prose">
+        <Prose debugMode={true} data-testid="prose">
           Content
         </Prose>
       );
@@ -189,9 +190,9 @@ describe("Prose Component", () => {
       expect(prose).toHaveAttribute("data-debug-mode", "true");
     });
 
-    it("does not apply data-debug-mode when _debugMode is false", () => {
+    it("does not apply data-debug-mode when debugMode is false", () => {
       render(
-        <Prose _debugMode={false} data-testid="prose">
+        <Prose debugMode={false} data-testid="prose">
           Content
         </Prose>
       );
@@ -200,7 +201,7 @@ describe("Prose Component", () => {
       expect(prose).not.toHaveAttribute("data-debug-mode");
     });
 
-    it("does not apply data-debug-mode when _debugMode is undefined", () => {
+    it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
       const prose = screen.getByTestId("test-id-prose-root");
@@ -209,7 +210,7 @@ describe("Prose Component", () => {
 
     it("calls useComponentId with correct parameters", () => {
       render(
-        <Prose _internalId="custom-id" _debugMode={true} data-testid="prose">
+        <Prose debugId="custom-id" debugMode={true} data-testid="prose">
           Content
         </Prose>
       );
@@ -230,7 +231,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-container-class");
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
 
     it("combines custom className with CSS module classes", () => {
@@ -241,7 +242,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-container-class", "custom-class");
+      expect(prose).toHaveClass("prose", "dark:prose-invert", "custom-class");
     });
 
     it("handles multiple custom classes", () => {
@@ -253,7 +254,8 @@ describe("Prose Component", () => {
 
       const prose = screen.getByTestId("test-id-prose-root");
       expect(prose).toHaveClass(
-        "prose-container-class",
+        "prose",
+        "dark:prose-invert",
         "class1",
         "class2",
         "class3"
@@ -504,7 +506,7 @@ describe("Prose Component", () => {
       render(<Prose data-testid="prose">Content</Prose>);
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveClass("prose-container-class");
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
 
     it("combines prose styling with custom classes", () => {
@@ -516,7 +518,8 @@ describe("Prose Component", () => {
 
       const prose = screen.getByTestId("test-id-prose-root");
       expect(prose).toHaveClass(
-        "prose-container-class",
+        "prose",
+        "dark:prose-invert",
         "custom-styling",
         "additional-class"
       );
@@ -535,7 +538,8 @@ describe("Prose Component", () => {
 
       const prose = screen.getByTestId("test-id-prose-root");
       expect(prose).toHaveClass(
-        "prose-container-class",
+        "prose",
+        "dark:prose-invert",
         "base-class",
         "dark-theme"
       );
