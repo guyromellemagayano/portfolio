@@ -6,26 +6,27 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasValidContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./_data";
-import styles from "./PhotoGallery.module.css";
+import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./data";
 
 // ============================================================================
 // PHOTO GALLERY COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface PhotoGalleryProps
+/** The props for the photo gallery component. */
+export interface PhotoGalleryProps
   extends React.ComponentProps<"div">,
     Omit<CommonComponentProps, "as"> {
   /** Photo gallery photos */
   photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
 }
-type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
+
+/** The type for the photo gallery component. */
+export type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
 
 // ============================================================================
 // BASE PHOTO GALLERY COMPONENT
@@ -34,7 +35,15 @@ type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
 /** The base photo gallery component. */
 const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
   function BasePhotoGallery(props) {
-    const { photos, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
     let rotations = [
       "rotate-2",
@@ -44,51 +53,55 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
       "-rotate-2",
     ];
 
-    const element = hasValidContent(photos) ? (
-      <div
-        {...rest}
-        className={cn(styles.photoGallery, className)}
-        {...createComponentProps(_internalId, "photo-gallery", _debugMode)}
-      >
+    const element =
+      photos && photos.length > 0 ? (
         <div
-          className={styles.photoGalleryGrid}
-          {...createComponentProps(
-            _internalId,
-            "photo-gallery-grid",
-            _debugMode
-          )}
+          {...rest}
+          id={`${componentId}-photo-gallery`}
+          className={cn("mt-16 sm:mt-20", className)}
+          {...createComponentProps(componentId, "photo-gallery", isDebugMode)}
         >
-          {photos?.map((image, index) => (
-            <div
-              key={image.src}
-              className={cn(
-                styles.photoGalleryItem,
-                rotations[index % rotations.length]
-              )}
-              {...createComponentProps(
-                _internalId,
-                `photo-gallery-item-${index}`,
-                _debugMode
-              )}
-            >
-              <Image
-                src={image}
-                alt=""
-                sizes="(min-width: 640px) 18rem, 11rem"
-                className={styles.photoGalleryImage}
-                fill
-                priority
-                {...createComponentProps(
-                  _internalId,
-                  `photo-gallery-image-${index}`,
-                  _debugMode
+          <div
+            id={`${componentId}-photo-gallery-grid`}
+            className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8"
+            {...createComponentProps(
+              componentId,
+              "photo-gallery-grid",
+              isDebugMode
+            )}
+          >
+            {photos?.map((image, index) => (
+              <div
+                key={image.src}
+                className={cn(
+                  `relative aspect-9/10 w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 sm:w-72 sm:rounded-2xl dark:bg-zinc-800 ${rotations[index % rotations.length]}`,
+                  rotations[index % rotations.length]
                 )}
-              />
-            </div>
-          ))}
+                {...createComponentProps(
+                  componentId,
+                  `photo-gallery-item-${index}`,
+                  isDebugMode
+                )}
+              >
+                <Image
+                  src={image}
+                  alt=""
+                  sizes="(min-width: 640px) 18rem, 11rem"
+                  id={`${componentId}-photo-gallery-image-${index}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  fill
+                  priority
+                  {...createComponentProps(
+                    componentId,
+                    `photo-gallery-image-${index}`,
+                    isDebugMode
+                  )}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    ) : null;
+      ) : null;
 
     return element;
   }
@@ -106,34 +119,12 @@ const MemoizedPhotoGallery = React.memo(BasePhotoGallery);
 // ============================================================================
 
 /** A photo gallery component that displays a grid of photos with optional rotation effects. */
-const PhotoGallery: PhotoGalleryComponent = setDisplayName(
+export const PhotoGallery: PhotoGalleryComponent = setDisplayName(
   function PhotoGallery(props) {
-    const {
-      photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!hasValidContent(photos)) return null;
-
-    const updatedProps = {
-      ...rest,
-      photos,
-      _internalId: id,
-      _debugMode: isDebugMode,
-    };
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedPhotoGallery : BasePhotoGallery;
-    const element = <Component {...updatedProps} />;
+    const element = <Component {...rest} />;
     return element;
   }
 );
-
-export default PhotoGallery;
