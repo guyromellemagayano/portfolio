@@ -11,7 +11,7 @@ import { type CommonIconComponent } from "../data";
 /** Chevron right icon. */
 export const ChevronRightIcon: CommonIconComponent = setDisplayName(
   React.memo(function ChevronRightIcon(props) {
-    const { debugId, debugMode, ...rest } = props;
+    const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -19,7 +19,7 @@ export const ChevronRightIcon: CommonIconComponent = setDisplayName(
     });
 
     const element = (
-      <svg
+      <Component
         {...rest}
         viewBox="0 0 16 16"
         fill="none"
@@ -36,7 +36,7 @@ export const ChevronRightIcon: CommonIconComponent = setDisplayName(
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      </svg>
+      </Component>
     );
 
     return element;

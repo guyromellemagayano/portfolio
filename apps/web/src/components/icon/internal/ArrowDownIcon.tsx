@@ -11,7 +11,7 @@ import { type CommonIconComponent } from "../data";
 /** Arrow down icon. */
 export const ArrowDownIcon: CommonIconComponent = setDisplayName(
   React.memo(function ArrowDownIcon(props) {
-    const { debugId, debugMode, ...rest } = props;
+    const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -19,7 +19,7 @@ export const ArrowDownIcon: CommonIconComponent = setDisplayName(
     });
 
     const element = (
-      <svg
+      <Component
         {...rest}
         viewBox="0 0 16 16"
         fill="none"
@@ -32,7 +32,7 @@ export const ArrowDownIcon: CommonIconComponent = setDisplayName(
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      </svg>
+      </Component>
     );
 
     return element;
