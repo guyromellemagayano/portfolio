@@ -1,10 +1,12 @@
 /**
  * Node environment Vitest preset for server-side testing
  * Use this preset for testing Node.js APIs, utilities, and server-side code
+ * Includes centralized mocks and logger integration
  */
 export default {
   test: {
     environment: "node",
+    setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"],
     globals: true,
     coverage: {
       provider: "v8",
