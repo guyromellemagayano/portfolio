@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ArrowLeftIcon } from "../ArrowLeftIcon";
+import { ArrowDownIcon } from "../internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -27,10 +27,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
 }));
 
 // ============================================================================
-// ARROW LEFT ICON TESTS
+// ARROW DOWN ICON TESTS
 // ============================================================================
 
-describe("ArrowLeftIcon", () => {
+describe("ArrowDownIcon", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -38,27 +38,27 @@ describe("ArrowLeftIcon", () => {
 
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
-      render(<ArrowLeftIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon className="custom-class" />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveClass("custom-class");
     });
 
     it("renders with debug mode enabled", () => {
-      render(<ArrowLeftIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon debugMode={true} />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
-      render(<ArrowLeftIcon data-test="test-value" width="24" height="24" />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon data-test="test-value" width="24" height="24" />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
@@ -67,57 +67,57 @@ describe("ArrowLeftIcon", () => {
 
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
     });
 
     it("has correct component type in data attributes", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute(
-        "data-icon-arrow-left-id",
-        "test-id-icon-arrow-left"
+        "data-icon-arrow-down-id",
+        "test-id-icon-arrow-down"
       );
     });
   });
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
-      render(<ArrowLeftIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon debugMode={true} />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
-      render(<ArrowLeftIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon debugMode={false} />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
 
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
-      render(<ArrowLeftIcon />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -125,15 +125,15 @@ describe("ArrowLeftIcon", () => {
   describe("Edge Cases", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
-      render(<ArrowLeftIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon onClick={handleClick} />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("handles all SVG attributes correctly", () => {
-      render(<ArrowLeftIcon width="32" height="32" stroke="none" />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left-root");
+      render(<ArrowDownIcon width="32" height="32" stroke="none" />);
+      const icon = screen.getByTestId("test-id-icon-arrow-down-root");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "none");
@@ -143,28 +143,28 @@ describe("ArrowLeftIcon", () => {
 });
 
 // ============================================================================
-// ARROW LEFT ICON SPECIFIC TESTS
+// ARROW DOWN ICON SPECIFIC TESTS
 // ============================================================================
 
-describe("ArrowLeftIcon Specific Tests", () => {
+describe("ArrowDownIcon Specific Tests", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
   });
 
   describe("SVG Content", () => {
-    it("renders correct arrow left path", () => {
-      const { container } = render(<ArrowLeftIcon />);
+    it("renders correct arrow down path", () => {
+      const { container } = render(<ArrowDownIcon />);
       const path = container.querySelector("path");
       expect(path).toBeInTheDocument();
       expect(path).toHaveAttribute(
         "d",
-        "M7.25 11.25 3.75 8m0 0 3.5-3.25M3.75 8h8.5"
+        "M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
       );
     });
 
     it("has correct stroke properties", () => {
-      const { container } = render(<ArrowLeftIcon />);
+      const { container } = render(<ArrowDownIcon />);
       const path = container.querySelector("path");
       expect(path).toHaveAttribute("stroke-width", "1.5");
       expect(path).toHaveAttribute("stroke-linecap", "round");
@@ -174,26 +174,26 @@ describe("ArrowLeftIcon Specific Tests", () => {
 
   describe("Visual Properties", () => {
     it("renders with default styling", () => {
-      const { container } = render(<ArrowLeftIcon />);
+      const { container } = render(<ArrowDownIcon />);
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("viewBox", "0 0 16 16");
       expect(svg).toHaveAttribute("fill", "none");
     });
 
     it("has hardcoded fill none", () => {
-      const { container } = render(<ArrowLeftIcon fill="black" />);
+      const { container } = render(<ArrowDownIcon fill="black" />);
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("fill", "none");
     });
 
     it("accepts custom stroke color", () => {
-      const { container } = render(<ArrowLeftIcon stroke="red" />);
+      const { container } = render(<ArrowDownIcon stroke="red" />);
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("stroke", "red");
     });
 
     it("accepts custom width and height", () => {
-      const { container } = render(<ArrowLeftIcon width="24" height="24" />);
+      const { container } = render(<ArrowDownIcon width="24" height="24" />);
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("width", "24");
       expect(svg).toHaveAttribute("height", "24");
@@ -202,18 +202,18 @@ describe("ArrowLeftIcon Specific Tests", () => {
 
   describe("Accessibility", () => {
     it("has proper ARIA attributes", () => {
-      const { container } = render(<ArrowLeftIcon />);
+      const { container } = render(<ArrowDownIcon />);
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("aria-hidden", "true");
     });
 
     it("can accept custom ARIA attributes", () => {
       const { container } = render(
-        <ArrowLeftIcon role="img" aria-label="Arrow left" />
+        <ArrowDownIcon role="img" aria-label="Arrow down" />
       );
       const svg = container.querySelector("svg");
       expect(svg).toHaveAttribute("role", "img");
-      expect(svg).toHaveAttribute("aria-label", "Arrow left");
+      expect(svg).toHaveAttribute("aria-label", "Arrow down");
     });
   });
 });

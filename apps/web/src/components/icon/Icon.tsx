@@ -30,7 +30,13 @@ import {
 
 /** Internal icon component with all props */
 const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
-  const { children, debugId, debugMode, ...rest } = props;
+  const {
+    as: Component = "svg",
+    children,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
 
   const { componentId, isDebugMode } = useComponentId({
     debugId,
@@ -40,7 +46,7 @@ const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
   if (!children) return null;
 
   const element = (
-    <svg
+    <Component
       {...rest}
       id={`${componentId}-icon-root`}
       role="img"
@@ -49,7 +55,7 @@ const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
       {...createComponentProps(componentId, "icon", isDebugMode)}
     >
       {children}
-    </svg>
+    </Component>
   );
 
   return element;

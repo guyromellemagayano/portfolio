@@ -11,7 +11,7 @@ import { type CommonIconComponent } from "../data";
 /** Close icon. */
 export const CloseIcon: CommonIconComponent = setDisplayName(
   React.memo(function CloseIcon(props) {
-    const { debugId, debugMode, ...rest } = props;
+    const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -19,7 +19,7 @@ export const CloseIcon: CommonIconComponent = setDisplayName(
     });
 
     const element = (
-      <svg
+      <Component
         {...rest}
         viewBox="0 0 24 24"
         aria-hidden="true"
@@ -33,7 +33,7 @@ export const CloseIcon: CommonIconComponent = setDisplayName(
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      </svg>
+      </Component>
     );
 
     return element;

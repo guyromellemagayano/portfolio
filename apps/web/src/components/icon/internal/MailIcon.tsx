@@ -18,7 +18,13 @@ export type MailIconComponent = React.FC<
 /** Mail icon. */
 export const MailIcon: MailIconComponent = setDisplayName(
   React.memo(function MailIcon(props) {
-    const { page = "home", debugId, debugMode, ...rest } = props;
+    const {
+      as: Component = "svg",
+      page = "home",
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -27,19 +33,19 @@ export const MailIcon: MailIconComponent = setDisplayName(
 
     const element =
       page === "about" ? (
-        <svg
+        <Component
+          {...rest}
           viewBox="0 0 24 24"
           aria-hidden="true"
-          {...rest}
           {...createComponentProps(componentId, "icon-mail", isDebugMode)}
         >
           <path
             fillRule="evenodd"
             d="M6 5a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H6Zm.245 2.187a.75.75 0 0 0-.99 1.126l6.25 5.5a.75.75 0 0 0 .99 0l6.25-5.5a.75.75 0 0 0-.99-1.126L12 12.251 6.245 7.187Z"
           />
-        </svg>
+        </Component>
       ) : (
-        <svg
+        <Component
           {...rest}
           viewBox="0 0 24 24"
           fill="none"
@@ -57,7 +63,7 @@ export const MailIcon: MailIconComponent = setDisplayName(
             d="m4 6 6.024 5.479a2.915 2.915 0 0 0 3.952 0L20 6"
             className="stroke-zinc-400 dark:stroke-zinc-500"
           />
-        </svg>
+        </Component>
       );
 
     return element;
