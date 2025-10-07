@@ -1,0 +1,147 @@
+import React from "react";
+
+import {
+  type CommonComponentProps,
+  Link,
+} from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import {
+  createComponentProps,
+  setDisplayName,
+} from "@guyromellemagayano/utils";
+
+import { cn } from "@web/utils";
+
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "../data";
+
+// ============================================================================
+// SIMPLE LAYOUT COMPONENT TYPES & INTERFACES
+// ============================================================================
+
+/** `SimpleLayout` component props. */
+export interface SimpleLayoutProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {
+  /** Page title */
+  title: string;
+  /** Page introduction */
+  intro: string;
+}
+
+/** `SimpleLayout` component type. */
+export type SimpleLayoutComponent = React.FC<SimpleLayoutProps>;
+
+// ============================================================================
+// BASE SIMPLE LAYOUT COMPONENT
+// ============================================================================
+
+/** A base simple layout component. */
+const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
+  function BaseSimpleLayout(props) {
+    const { children, className, title, intro, debugId, debugMode, ...rest } =
+      props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
+    const element = (
+      <div
+        {...rest}
+        id={`${componentId}-simple-layout-root`}
+        className={cn("mt-16 sm:mt-32", className)}
+        {...createComponentProps(
+          componentId,
+          "simple-layout-root",
+          isDebugMode
+        )}
+      >
+        <Link
+          href="#main-content"
+          id={`${componentId}-simple-layout-link`}
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900"
+          aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+          {...createComponentProps(
+            componentId,
+            "simple-layout-link",
+            isDebugMode
+          )}
+        >
+          {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
+        </Link>
+
+        {(title && title.trim() !== "") || (intro && intro.trim() !== "") ? (
+          <header className="max-w-2xl">
+            {title ? (
+              <h1
+                id={`${componentId}-simple-layout-title`}
+                className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+                {...createComponentProps(
+                  componentId,
+                  "simple-layout-title",
+                  isDebugMode
+                )}
+              >
+                {title}
+              </h1>
+            ) : null}
+
+            {intro ? (
+              <p
+                id={`${componentId}-simple-layout-intro`}
+                className="mt-6 text-base text-zinc-600 dark:text-zinc-400"
+                {...createComponentProps(
+                  componentId,
+                  "simple-layout-intro",
+                  isDebugMode
+                )}
+              >
+                {intro}
+              </p>
+            ) : null}
+          </header>
+        ) : null}
+
+        {children ? (
+          <main
+            id={`${componentId}-simple-layout-main-content`}
+            role="main"
+            className="mt-16 sm:mt-20"
+            {...createComponentProps(
+              componentId,
+              "simple-layout-content",
+              isDebugMode
+            )}
+          >
+            {children}
+          </main>
+        ) : null}
+      </div>
+    );
+
+    return element;
+  }
+);
+
+// ============================================================================
+// MEMOIZED BASE SIMPLE LAYOUT COMPONENT
+// ============================================================================
+
+/** A memoized simple layout component. */
+const MemoizedSimpleLayout = React.memo(BaseSimpleLayout);
+
+// ============================================================================
+// MAIN SIMPLE LAYOUT COMPONENT
+// ============================================================================
+
+/** A simple layout component that provides a consistent layout for page content. */
+export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
+  function SimpleLayout(props) {
+    const { children, isMemoized = false, ...rest } = props;
+
+    const Component = isMemoized ? MemoizedSimpleLayout : BaseSimpleLayout;
+    const element = <Component {...rest}>{children}</Component>;
+    return element;
+  }
+);
