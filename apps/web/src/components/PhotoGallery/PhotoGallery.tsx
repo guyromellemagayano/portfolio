@@ -17,7 +17,7 @@ import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./data";
 // PHOTO GALLERY COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** The props for the photo gallery component. */
+/** `PhotoGalleryProps` component props. */
 export interface PhotoGalleryProps
   extends React.ComponentProps<"div">,
     Omit<CommonComponentProps, "as"> {
@@ -25,14 +25,14 @@ export interface PhotoGalleryProps
   photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
 }
 
-/** The type for the photo gallery component. */
+/** `PhotoGalleryComponent` component type. */
 export type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
 
 // ============================================================================
 // BASE PHOTO GALLERY COMPONENT
 // ============================================================================
 
-/** The base photo gallery component. */
+/** A base photo gallery component. */
 const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
   function BasePhotoGallery(props) {
     const {
