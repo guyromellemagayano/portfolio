@@ -7,8 +7,8 @@ import "@testing-library/jest-dom";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
+  useComponentId: vi.fn(({ debugId, debugMode = false } = {}) => ({
+    componentId: debugId || "test-id",
     isDebugMode: debugMode,
   })),
 }));
@@ -27,11 +27,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
     target: target || (href?.startsWith("http") ? "_blank" : undefined),
     rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
   })),
-  hasAnyRenderableContent: vi.fn((content) => {
-    if (Array.isArray(content)) return content.length > 0;
-    return content != null && content !== "";
-  }),
-  hasValidContent: vi.fn((content) => content != null && content !== ""),
   isValidLink: vi.fn((href) => href != null && href !== ""),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -43,15 +38,12 @@ vi.mock("next/link", () => ({
   default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
 }));
 
-vi.mock("@web/utils", () => ({
-  cn: vi.fn((...classes) => {
-    const filtered = classes.filter(Boolean);
-    return filtered.length > 0 ? filtered.join(" ") : "";
-  }),
-}));
-
-vi.mock("../Link.module.css", () => ({
-  default: { link: "link" },
+vi.mock("../internal", () => ({
+  SocialLink: vi.fn(({ children, ...props }) => (
+    <a data-testid="social-link" {...props}>
+      {children}
+    </a>
+  )),
 }));
 
 // Import the component after all mocks are set up
@@ -64,6 +56,7 @@ import { Link } from "../Link";
 describe("Link", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -111,7 +104,7 @@ describe("Link", () => {
 
     it("uses custom internal ID when provided", () => {
       render(
-        <Link href="/test" internalId="custom-id">
+        <Link href="/test" debugId="custom-id">
           Test Link
         </Link>
       );
@@ -183,11 +176,6 @@ describe("Link", () => {
   });
 
   describe("Content Validation", () => {
-    it("does not render when no href and no children", () => {
-      const { container } = render(<Link href=""></Link>);
-      expect(container.firstChild).toBeNull();
-    });
-
     it("renders when href is invalid but children exist", () => {
       render(<Link href="">Test Link</Link>);
       expect(screen.getByText("Test Link")).toBeInTheDocument();
@@ -240,14 +228,7 @@ describe("Link", () => {
       expect(link).toBeInTheDocument();
     });
 
-    it("applies correct CSS classes", () => {
-      render(<Link href="/test">Test Link</Link>);
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveClass("link");
-    });
-
-    it("combines CSS module + custom classes", () => {
+    it("applies custom className", () => {
       render(
         <Link href="/test" className="custom-class">
           Test Link
@@ -255,7 +236,7 @@ describe("Link", () => {
       );
 
       const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveClass("link custom-class");
+      expect(link).toHaveClass("custom-class");
     });
   });
 
@@ -294,7 +275,7 @@ describe("Link", () => {
 
     it("renders with custom internal ID", () => {
       render(
-        <Link href="/test" internalId="custom-id">
+        <Link href="/test" debugId="custom-id">
           Test Link
         </Link>
       );
@@ -409,7 +390,7 @@ describe("Link", () => {
     it("integrates with useComponentId hook correctly", () => {
       // Test that useComponentId hook is called correctly
       render(
-        <Link href="/test" internalId="custom-id" debugMode={true}>
+        <Link href="/test" debugId="custom-id" debugMode={true}>
           Test Link
         </Link>
       );
