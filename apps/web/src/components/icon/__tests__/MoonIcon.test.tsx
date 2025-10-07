@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { MoonIcon } from "../MoonIcon";
+import { MoonIcon } from "../internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
