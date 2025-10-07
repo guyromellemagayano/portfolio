@@ -9,7 +9,8 @@
     "browser/vitest-preset.js",
     "node/vitest-preset.js",
     "react/vitest-preset.js",
-    "shared/test-setup.ts"
+    "shared/test-setup.ts",
+    "__mocks__/**/*"
   ],
   "scripts": {
     "check-types": "tsc --noEmit",
@@ -17,7 +18,7 @@
     "test:run": "vitest run"
   },
   "dependencies": {
-    "jsdom": "catalog:"
+    "@guyromellemagayano/logger": "workspace:*"
   },
   "peerDependencies": {
     "@testing-library/jest-dom": "catalog:",
@@ -26,6 +27,7 @@
     "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
+    "jsdom": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "vitest": "catalog:"

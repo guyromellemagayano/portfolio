@@ -8,7 +8,9 @@ Shared Vitest configuration presets for the monorepo with integrated V8 coverage
 - 🚀 **Multiple Environment Presets**: Browser (JSDOM), Node.js, and React-specific configurations
 - 📊 **V8 Coverage Integration**: Comprehensive coverage reporting with `@vitest/coverage-v8`
 - 🎯 **Smart Coverage Thresholds**: Environment-specific coverage targets
-- 🔧 **Shared Test Setup**: Browser API mocks, Jest DOM matchers, and utilities
+- 🔧 **Centralized Test Setup**: Shared test setup with centralized mocks and logger integration
+- 🎭 **Centralized Mocking**: Pre-configured mocks for `@web/components`, `@guyromellemagayano/*` packages
+- 📝 **Logger Integration**: Built-in test setup logging with `@guyromellemagayano/logger`
 - 📈 **Multiple Report Formats**: Text, JSON, HTML, LCOV, and Clover formats
 - ⚡ **Performance Optimized**: Fast test execution with proper environment isolation
 
@@ -32,6 +34,13 @@ import browserPreset from "@packages/vitest-presets/browser/vitest-preset.js";
 export default defineConfig(browserPreset);
 ```
 
+**Features:**
+
+- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Logger integration with test setup logging
+- Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
+- Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
+
 ### Node Preset (`node/vitest-preset.js`)
 
 For server-side testing with Node.js environment.
@@ -50,6 +59,12 @@ import nodePreset from "@packages/vitest-presets/node/vitest-preset.js";
 export default defineConfig(nodePreset);
 ```
 
+**Features:**
+
+- Centralized mocks for `@guyromellemagayano/*` packages
+- Logger integration with test setup logging
+- Node.js environment optimizations
+
 ### React Preset (`react/vitest-preset.js`)
 
 For React component testing with full Testing Library support.
@@ -66,6 +81,63 @@ import { defineConfig } from "vitest/config";
 import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
 
 export default defineConfig(reactPreset);
+```
+
+**Features:**
+
+- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Logger integration with test setup logging
+- React Testing Library support
+- Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
+- Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
+
+## Centralized Mocking System
+
+The vitest-presets package includes a comprehensive centralized mocking system that provides consistent mocks across all test environments.
+
+### Available Mocks
+
+#### **@web/components Mocks**
+
+- `Card`, `Card.Title`, `Card.Description`, `Card.Cta`, `Card.Eyebrow`, `Card.Link`
+- `Container`, `ContainerInner`, `ContainerOuter`
+- `Footer`, `FooterLegal`, `FooterNavigation`
+- `ArticleBase`, `ArticleLayout`, `ArticleList`, `ArticleListItem`, `ArticleNavButton`
+- `Prose`, `Icon.ArrowLeft`, `Icon.ArrowRight`
+- `Div`, `Span`
+
+#### **@guyromellemagayano/utils Mocks**
+
+- `useComponentId`, `setDisplayName`, `createComponentProps`
+- `hasAnyRenderableContent`, `hasMeaningfulText`, `hasValidContent`
+- `formatDateSafely`, `isValidLink`, `getLinkTargetProps`
+- `hasValidNavigationLinks`, `filterValidNavigationLinks`
+- `isValidImageSrc`, `cn`, `validateArticle`, `formatDate`
+
+#### **@guyromellemagayano/hooks Mocks**
+
+- `useComponentId`, `useRouter`, `usePathname`, `useSearchParams`
+- `useIntersection`, `useInView`
+
+#### **@guyromellemagayano/logger Mocks**
+
+- `logger`, `logInfo`, `logWarn`, `logError`, `logDebug`
+
+### Logger Integration
+
+The test setup includes built-in logging that provides visibility into:
+
+- Test environment initialization and cleanup
+- Mock setup confirmation
+- Module reset tracking
+- Setup completion status
+
+**Example Output:**
+
+```bash
+🔍 [TEST-SETUP] @web/components mocked via centralized mocks
+🔍 [TEST-SETUP] @guyromellemagayano/utils mocked via centralized mocks
+🧪 [TEST-SETUP] All mocks and configurations initialized successfully
 ```
 
 ## Coverage Features
@@ -162,10 +234,13 @@ Add to `package.json` peer dependencies:
   "peerDependencies": {
     "@packages/vitest-presets": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
+    "@guyromellemagayano/logger": "workspace:*",
     "vitest": "catalog:"
   }
 }
 ```
+
+**Note:** The `@guyromellemagayano/logger` dependency is included for test setup logging functionality.
 
 ## Setup
 
@@ -175,52 +250,36 @@ Create `vitest.config.ts` in your package:
 
 ```typescript
 import { defineConfig } from "vitest/config";
+import browserPreset from "@packages/vitest-presets/browser/vitest-preset.js";
 
-export default defineConfig({
-  test: {
-    environment: "jsdom", // or "node"
-    setupFiles: ["./src/test-setup.ts"],
-    globals: true,
-    css: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html", "lcov", "clover"],
-      reportOnFailure: true,
-      thresholds: {
-        statements: 80,
-        branches: 75,
-        functions: 80,
-        lines: 80,
-      },
-      // ... additional configuration
-    },
-  },
-});
+export default defineConfig(browserPreset);
 ```
 
-### 2. Test Setup File
+**Available Presets:**
 
-Create `src/test-setup.ts`:
+- `@packages/vitest-presets/browser/vitest-preset.js` - For DOM testing
+- `@packages/vitest-presets/react/vitest-preset.js` - For React component testing  
+- `@packages/vitest-presets/node/vitest-preset.js` - For server-side testing
+
+All presets include:
+
+- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Logger integration with test setup logging
+- V8 coverage provider with environment-specific thresholds
+- Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
+- Next.js component mocks
+
+### 2. Test Setup File (Optional)
+
+**For most cases, no additional setup is needed!** The presets include comprehensive centralized mocks and test setup.
+
+If you need additional setup, create `src/test-setup.ts`:
 
 ```typescript
 import "@testing-library/jest-dom";
 
-// Browser API mocks
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
-
-// Additional setup...
+// Additional custom setup if needed
+// Note: Centralized mocks are already included in the presets
 ```
 
 ### 3. Add Scripts

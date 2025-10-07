@@ -1,11 +1,12 @@
 /**
  * Browser environment Vitest preset for DOM testing
  * Use this preset for testing components that need a browser environment
+ * Includes centralized mocks and logger integration
  */
 export default {
   test: {
     environment: "jsdom",
-    setupFiles: ["./src/test-setup.ts"],
+    setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"],
     globals: true,
     css: true,
     coverage: {
