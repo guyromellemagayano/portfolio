@@ -7,6 +7,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { type CommonIconComponent } from "./data";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -22,8 +23,7 @@ import {
   MoonIcon,
   SunIcon,
   XIcon,
-} from "./_internal";
-import { type CommonIconComponent } from "./_types";
+} from "./internal";
 
 // ============================================================================
 // BASE ICON COMPONENT
