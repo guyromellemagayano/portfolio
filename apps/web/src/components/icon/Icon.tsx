@@ -3,7 +3,6 @@ import React from "react";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
@@ -31,13 +30,23 @@ import {
 
 /** Internal icon component with all props */
 const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
-  const { children, internalId, debugMode, ...rest } = props;
+  const { children, debugId, debugMode, ...rest } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
 
   const element = (
     <svg
       {...rest}
+      id={`${componentId}-icon-root`}
+      role="img"
+      focusable="false"
       aria-hidden="true"
-      {...createComponentProps(internalId, "icon", debugMode)}
+      {...createComponentProps(componentId, "icon", isDebugMode)}
     >
       {children}
     </svg>
@@ -59,29 +68,10 @@ const MemoizedIcon = React.memo(BaseIcon);
 
 /** A polymorphic SVG icon component with compound social and UI icons. */
 export const Icon = setDisplayName(function Icon(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  if (!hasAnyRenderableContent(children)) return null;
-
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+  const { children, isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedIcon : BaseIcon;
-  const element = <Component {...updatedProps}>{children}</Component>;
+  const element = <Component {...rest}>{children}</Component>;
   return element;
 } as IconCompoundComponent);
 
