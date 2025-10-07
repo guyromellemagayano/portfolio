@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import SimpleLayout from "../SimpleLayout";
+import { SimpleLayout } from "../internal";
 
 import "@testing-library/jest-dom";
 
@@ -11,8 +11,8 @@ import "@testing-library/jest-dom";
 
 // Mock useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
+  useComponentId: vi.fn(({ debugId, debugMode = false } = {}) => ({
+    componentId: debugId || "test-id",
     isDebugMode: debugMode,
   })),
 }));
@@ -27,7 +27,7 @@ vi.mock("@guyromellemagayano/utils", async () => {
         [`data-${componentType}-id`]: `${id}-${componentType}`,
         "data-debug-mode": debugMode ? "true" : undefined,
         "data-testid":
-          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+          additionalProps["data-testid"] || `${id}-${componentType}`,
         ...additionalProps,
       })
     ),
@@ -70,12 +70,14 @@ vi.mock("@guyromellemagayano/components", () => ({
 // Mock CSS module
 vi.mock("../SimpleLayout.module.css", () => ({
   default: {
-    simpleLayoutContainer: "_simpleLayoutContainer_f465e6",
-    simpleLayoutHeader: "_simpleLayoutHeader_f465e6",
-    simpleLayoutTitle: "_simpleLayoutTitle_f465e6",
-    simpleLayoutIntro: "_simpleLayoutIntro_f465e6",
-    simpleLayoutContent: "_simpleLayoutContent_f465e6",
-    skipLink: "_skipLink_f465e6",
+    simpleLayoutContainer: "mt-16 sm:mt-32",
+    simpleLayoutHeader: "max-w-2xl",
+    simpleLayoutTitle:
+      "text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100",
+    simpleLayoutIntro: "mt-6 text-base text-zinc-600 dark:text-zinc-400",
+    simpleLayoutContent: "mt-16 sm:mt-20",
+    skipLink:
+      "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900",
   },
 }));
 
@@ -150,17 +152,13 @@ describe("SimpleLayout", () => {
 
     it("uses custom internal ID when provided", () => {
       render(
-        <SimpleLayout
-          title={mockTitle}
-          intro={mockIntro}
-          internalId="custom-id"
-        />
+        <SimpleLayout title={mockTitle} intro={mockIntro} debugId="custom-id" />
       );
 
       const layout = screen.getByTestId("custom-id-simple-layout-root");
       expect(layout).toHaveAttribute(
-        "data-simple-layout-id",
-        "custom-id-simple-layout"
+        "data-simple-layout-root-id",
+        "custom-id-simple-layout-root"
       );
     });
 
@@ -181,17 +179,19 @@ describe("SimpleLayout", () => {
 
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_simpleLayoutContainer_f465e6");
+      expect(layout).toHaveClass("mt-16 sm:mt-32");
     });
 
     it("renders skip link with correct attributes", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
-      expect(skipLink).toHaveClass("_skipLink_f465e6");
+      expect(skipLink).toHaveClass(
+        "sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900"
+      );
     });
 
     it("renders header with correct structure", () => {
@@ -200,7 +200,7 @@ describe("SimpleLayout", () => {
       const layout = screen.getByTestId("test-id-simple-layout-root");
       const header = layout.querySelector("header");
       expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("_simpleLayoutHeader_f465e6");
+      expect(header).toHaveClass("max-w-2xl");
     });
 
     it("renders title with correct attributes", () => {
@@ -209,7 +209,9 @@ describe("SimpleLayout", () => {
       const title = screen.getByRole("heading", { level: 1 });
       expect(title).toBeInTheDocument();
       expect(title).toHaveAttribute("id", "test-id-simple-layout-title");
-      expect(title).toHaveClass("_simpleLayoutTitle_f465e6");
+      expect(title).toHaveClass(
+        "text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+      );
       expect(title).toHaveTextContent(mockTitle);
     });
 
@@ -219,7 +221,9 @@ describe("SimpleLayout", () => {
       const intro = screen.getByText(mockIntro);
       expect(intro).toBeInTheDocument();
       expect(intro).toHaveAttribute("id", "test-id-simple-layout-intro");
-      expect(intro).toHaveClass("_simpleLayoutIntro_f465e6");
+      expect(intro).toHaveClass(
+        "mt-6 text-base text-zinc-600 dark:text-zinc-400"
+      );
     });
 
     it("renders main content area with correct attributes when children provided", () => {
@@ -233,7 +237,7 @@ describe("SimpleLayout", () => {
       expect(main).toBeInTheDocument();
       expect(main).toHaveAttribute("id", "test-id-simple-layout-main-content");
       expect(main).toHaveAttribute("role", "main");
-      expect(main).toHaveClass("_simpleLayoutContent_f465e6");
+      expect(main).toHaveClass("mt-16 sm:mt-20");
     });
   });
 
@@ -281,10 +285,12 @@ describe("SimpleLayout", () => {
   });
 
   describe("Conditional Rendering", () => {
-    it("returns null when no content is provided", () => {
+    it("renders skip link when no content is provided", () => {
       const { container } = render(<SimpleLayout title="" intro="" />);
 
-      expect(container.firstChild).toBeNull();
+      // Component always renders the skip link, even when no content
+      expect(container.firstChild).not.toBeNull();
+      expect(screen.getByText("Skip to main content")).toBeInTheDocument();
     });
 
     it("returns null when only whitespace is provided", () => {
@@ -581,7 +587,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link");
       expect(skipLink).toHaveAttribute("href", "#main-content");
       expect(skipLink).toHaveAttribute("aria-label", "Skip to main content");
     });
@@ -631,10 +637,10 @@ describe("SimpleLayout", () => {
       // Test layout structure
       const layout = screen.getByTestId("test-id-simple-layout-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_simpleLayoutContainer_f465e6");
+      expect(layout).toHaveClass("mt-16 sm:mt-32");
 
       // Test skip link
-      const skipLink = screen.getByTestId("test-id-simple-layout-link-root");
+      const skipLink = screen.getByTestId("test-id-simple-layout-link");
       expect(skipLink).toBeInTheDocument();
       expect(skipLink).toHaveAttribute("href", "#main-content");
 
@@ -700,7 +706,7 @@ describe("SimpleLayout", () => {
           <div>
             <p>This is the introduction to my amazing blog post...</p>
             <h2>First Section</h2>
-            <p>Here's the first section of content...</p>
+            <p>Here&apos;s the first section of content...</p>
             <h2>Conclusion</h2>
             <p>In conclusion, this was an amazing blog post.</p>
           </div>
