@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import PhotoGallery from "../PhotoGallery";
+import { PhotoGallery } from "../PhotoGallery";
 
 import "@testing-library/jest-dom";
 
@@ -11,8 +11,8 @@ import "@testing-library/jest-dom";
 
 // Mock useComponentId hook
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
+  useComponentId: vi.fn(({ debugId, debugMode = false } = {}) => ({
+    componentId: debugId || "test-id",
     isDebugMode: debugMode,
   })),
 }));
@@ -68,7 +68,7 @@ vi.mock("../PhotoGallery.module.css", () => ({
 }));
 
 // Mock data
-vi.mock("../_data", () => ({
+vi.mock("../data", () => ({
   PHOTO_GALLERY_COMPONENT_PHOTOS: [
     { src: "/images/photos/image-1.jpg", width: 400, height: 300 },
     { src: "/images/photos/image-2.jpg", width: 400, height: 300 },
@@ -113,7 +113,7 @@ describe("PhotoGallery", () => {
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_photoGallery_f465e6");
+      expect(layout).toHaveClass("mt-16", "sm:mt-20");
     });
 
     it("applies custom className", () => {
@@ -145,7 +145,7 @@ describe("PhotoGallery", () => {
     });
 
     it("uses custom internal ID when provided", () => {
-      render(<PhotoGallery photos={mockPhotos} _internalId="custom-id" />);
+      render(<PhotoGallery photos={mockPhotos} debugId="custom-id" />);
 
       const layout = screen.getByTestId("custom-id-photo-gallery-root");
       expect(layout).toHaveAttribute(
@@ -155,7 +155,7 @@ describe("PhotoGallery", () => {
     });
 
     it("enables debug mode when provided", () => {
-      render(<PhotoGallery photos={mockPhotos} _debugMode={true} />);
+      render(<PhotoGallery photos={mockPhotos} debugMode={true} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
       expect(layout).toHaveAttribute("data-debug-mode", "true");
@@ -168,7 +168,7 @@ describe("PhotoGallery", () => {
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_photoGallery_f465e6");
+      expect(layout).toHaveClass("mt-16", "sm:mt-20");
     });
 
     it("renders photo grid with correct attributes", () => {
@@ -176,7 +176,15 @@ describe("PhotoGallery", () => {
 
       const grid = screen.getByTestId("test-id-photo-gallery-grid-root");
       expect(grid).toBeInTheDocument();
-      expect(grid).toHaveClass("_photoGalleryGrid_f465e6");
+      expect(grid).toHaveClass(
+        "-my-4",
+        "flex",
+        "justify-center",
+        "gap-5",
+        "overflow-hidden",
+        "py-4",
+        "sm:gap-8"
+      );
     });
 
     it("renders correct number of photo items", () => {
@@ -193,7 +201,18 @@ describe("PhotoGallery", () => {
 
       const firstItem = screen.getByTestId("test-id-photo-gallery-item-0-root");
       expect(firstItem).toBeInTheDocument();
-      expect(firstItem).toHaveClass("_photoGalleryItem_f465e6");
+      expect(firstItem).toHaveClass(
+        "relative",
+        "aspect-9/10",
+        "w-44",
+        "flex-none",
+        "overflow-hidden",
+        "rounded-xl",
+        "bg-zinc-100",
+        "sm:w-72",
+        "sm:rounded-2xl",
+        "dark:bg-zinc-800"
+      );
     });
 
     it("renders images with correct attributes", () => {
@@ -207,7 +226,13 @@ describe("PhotoGallery", () => {
       images.forEach((image, index) => {
         expect(image).toHaveAttribute("src", mockPhotos[index]?.src);
         expect(image).toHaveAttribute("alt", "");
-        expect(image).toHaveClass("_photoGalleryImage_f465e6");
+        expect(image).toHaveClass(
+          "absolute",
+          "inset-0",
+          "h-full",
+          "w-full",
+          "object-cover"
+        );
       });
     });
   });
@@ -246,9 +271,20 @@ describe("PhotoGallery", () => {
 
       // Check that rotation classes are applied
       photoItems.forEach((item) => {
-        expect(item).toHaveClass("_photoGalleryItem_f465e6");
+        expect(item).toHaveClass(
+          "relative",
+          "aspect-9/10",
+          "w-44",
+          "flex-none",
+          "overflow-hidden",
+          "rounded-xl",
+          "bg-zinc-100",
+          "sm:w-72",
+          "sm:rounded-2xl",
+          "dark:bg-zinc-800"
+        );
         // The component applies rotation classes based on index
-        expect(item.className).toContain("_photoGalleryItem_f465e6");
+        expect(item.className).toContain("rotate-2");
       });
     });
 
@@ -395,7 +431,7 @@ describe("PhotoGallery", () => {
         "new-class"
       );
 
-      rerender(<PhotoGallery photos={mockPhotos} _debugMode={true} />);
+      rerender(<PhotoGallery photos={mockPhotos} debugMode={true} />);
       expect(screen.getByTestId("test-id-photo-gallery-root")).toHaveAttribute(
         "data-debug-mode",
         "true"
@@ -437,7 +473,7 @@ describe("PhotoGallery", () => {
       );
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
-      expect(layout).toHaveAttribute("id", "test-id");
+      expect(layout).toHaveAttribute("id", "test-id-photo-gallery");
       expect(layout).toHaveAttribute("data-test", "test-data");
       expect(layout).toHaveAttribute("aria-label", "Test label");
     });
@@ -455,7 +491,7 @@ describe("PhotoGallery", () => {
     });
 
     it("provides proper data attributes for debugging", () => {
-      render(<PhotoGallery photos={mockPhotos} _debugMode={true} />);
+      render(<PhotoGallery photos={mockPhotos} debugMode={true} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
       const grid = screen.getByTestId("test-id-photo-gallery-grid-root");
@@ -499,12 +535,20 @@ describe("PhotoGallery", () => {
       // Test layout structure
       const layout = screen.getByTestId("test-id-photo-gallery-root");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveClass("_photoGallery_f465e6");
+      expect(layout).toHaveClass("mt-16", "sm:mt-20");
 
       // Test grid structure
       const grid = screen.getByTestId("test-id-photo-gallery-grid-root");
       expect(grid).toBeInTheDocument();
-      expect(grid).toHaveClass("_photoGalleryGrid_f465e6");
+      expect(grid).toHaveClass(
+        "-my-4",
+        "flex",
+        "justify-center",
+        "gap-5",
+        "overflow-hidden",
+        "py-4",
+        "sm:gap-8"
+      );
 
       // Test photo items
       const photoItems = screen.getAllByTestId(
@@ -520,7 +564,13 @@ describe("PhotoGallery", () => {
 
       mockPhotos.forEach((photo, index) => {
         expect(images[index]).toHaveAttribute("src", photo.src);
-        expect(images[index]).toHaveClass("_photoGalleryImage_f465e6");
+        expect(images[index]).toHaveClass(
+          "absolute",
+          "inset-0",
+          "h-full",
+          "w-full",
+          "object-cover"
+        );
       });
     });
 

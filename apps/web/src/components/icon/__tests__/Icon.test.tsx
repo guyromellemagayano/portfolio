@@ -7,8 +7,8 @@ import { Icon } from "../Icon";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode }) => ({
-    id: internalId || "test-id",
+  useComponentId: vi.fn(({ debugId, debugMode }) => ({
+    componentId: debugId || "test-id",
     isDebugMode: debugMode || false,
   })),
 }));
@@ -78,7 +78,7 @@ describe("Icon", () => {
 
     it("renders with custom component ID", () => {
       render(
-        <Icon internalId="custom-id">
+        <Icon debugId="custom-id">
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
@@ -293,7 +293,7 @@ describe("Icon", () => {
 
     it("has correct data attributes for debugging", () => {
       render(
-        <Icon internalId="test-id" debugMode={true}>
+        <Icon debugId="test-id" debugMode={true}>
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
@@ -370,7 +370,7 @@ describe("Icon", () => {
     it("handles complex prop combinations", () => {
       render(
         <Icon
-          internalId="complex-id"
+          debugId="complex-id"
           debugMode={true}
           isMemoized={true}
           className="custom-class"
@@ -404,7 +404,7 @@ describe("Icon", () => {
 
     it("handles undefined props gracefully", () => {
       render(
-        <Icon internalId={undefined} debugMode={undefined}>
+        <Icon debugId={undefined} debugMode={undefined}>
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
@@ -528,7 +528,7 @@ describe("Icon", () => {
       it("renders social icons with custom props", () => {
         const { container } = render(
           <Icon.X
-            internalId="custom-x"
+            debugId="custom-x"
             debugMode={true}
             className="custom-x-class"
             width="32"
@@ -545,7 +545,7 @@ describe("Icon", () => {
       it("renders UI icons with custom props", () => {
         const { container } = render(
           <Icon.Close
-            internalId="custom-close"
+            debugId="custom-close"
             debugMode={true}
             className="custom-close-class"
             fill="red"
