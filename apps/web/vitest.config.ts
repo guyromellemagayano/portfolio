@@ -14,13 +14,14 @@ export default defineConfig({
   resolve: {
     alias: {
       "@web": path.resolve(__dirname, "./src"),
+      // Centralized mocks
+      "@mocks": path.resolve(__dirname, "../../__mocks__"),
     },
   },
   test: {
     ...reactPreset.test,
     setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
     globals: true,
-    mockReset: true,
 
     // Memory optimization settings
     pool: "threads",
