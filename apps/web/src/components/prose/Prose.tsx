@@ -9,16 +9,17 @@ import {
 
 import { cn } from "@web/utils";
 
-import styles from "./styles/Prose.module.css";
-
 // ============================================================================
 // PROSE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface ProseProps
+/** `ProseProps` component props. */
+export interface ProseProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type ProseComponent = React.FC<ProseProps>;
+
+/** `ProseComponent` component type. */
+export type ProseComponent = React.FC<ProseProps>;
 
 // ============================================================================
 // BASE PROSE COMPONENT
@@ -26,13 +27,22 @@ type ProseComponent = React.FC<ProseProps>;
 
 /** Renders a styled prose container for rich text content. */
 const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
-  const { className, _internalId, _debugMode, ...rest } = props;
+  const {
+    as: Component = "div",
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
   const element = (
-    <div
+    <Component
       {...rest}
-      className={cn(styles.proseContainer, className)}
-      {...createComponentProps(_internalId, "prose", _debugMode)}
+      id={`${componentId}-prose-root`}
+      className={cn("prose dark:prose-invert", className)}
+      {...createComponentProps(componentId, "prose", isDebugMode)}
     />
   );
 
@@ -52,20 +62,9 @@ const MemoizedProse = React.memo(BaseProse);
 
 /** Renders the main styled prose container component. */
 export const Prose: ProseComponent = setDisplayName(function Prose(props) {
-  const { isMemoized = false, _internalId, _debugMode, ...rest } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId: _internalId,
-    debugMode: _debugMode,
-  });
-
-  const updatedProps = {
-    ...rest,
-    _internalId: id,
-    _debugMode: isDebugMode,
-  };
+  const { isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedProse : BaseProse;
-  const element = <Component {...updatedProps} />;
+  const element = <Component {...rest} />;
   return element;
 });
