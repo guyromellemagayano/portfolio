@@ -6,24 +6,22 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   getLinkTargetProps,
-  hasAnyRenderableContent,
-  hasValidContent,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/utils";
-
-import { type CommonLinkProps } from "./_data";
-import { SocialLink } from "./_internal";
-import styles from "./Link.module.css";
+import { type CommonLinkProps } from "./data";
+import { SocialLink } from "./internal";
 
 // ============================================================================
 // LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface LinkProps extends CommonLinkProps {}
-type LinkComponent = React.FC<LinkProps>;
+/** `LinkProps` component props. */
+export interface LinkProps extends CommonLinkProps {}
+
+/** `LinkComponent` component type. */
+export type LinkComponent = React.FC<LinkProps>;
 
 // ============================================================================
 // BASE LINK COMPONENT
@@ -31,19 +29,14 @@ type LinkComponent = React.FC<LinkProps>;
 
 /** Base link component. */
 const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
-  const {
-    children,
-    className,
-    href,
-    target,
-    title,
-    internalId,
+  const { children, href, target, title, debugId, debugMode, ...rest } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
     debugMode,
-    ...rest
-  } = props;
+  });
 
   const linkHref = href && isValidLink(href) ? href : "";
-  const linkTitle = title && hasValidContent(title) ? title : "";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
   const element = (
@@ -52,10 +45,9 @@ const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
       href={linkHref}
       target={linkTargetProps.target}
       rel={linkTargetProps.rel}
-      title={linkTitle}
-      className={cn(styles.link, className)}
-      aria-label={linkTitle}
-      {...createComponentProps(internalId, "link", debugMode)}
+      title={title}
+      aria-label={title}
+      {...createComponentProps(componentId, "link", isDebugMode)}
     >
       {children}
     </NextLink>
@@ -77,31 +69,10 @@ const MemoizedLink = React.memo(BaseLink);
 
 /** A default link component. */
 export const Link = setDisplayName(function Link(props) {
-  const {
-    href,
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  if (!isValidLink(href) && !hasAnyRenderableContent(children)) return null;
-
-  const updatedProps = {
-    ...rest,
-    href,
-    internalId: id,
-    debugMode: isDebugMode,
-  };
+  const { children, isMemoized = false, ...rest } = props;
 
   const Component = isMemoized ? MemoizedLink : BaseLink;
-  const element = <Component {...updatedProps}>{children}</Component>;
+  const element = <Component {...rest}>{children}</Component>;
   return element;
 } as LinkCompoundComponent);
 
