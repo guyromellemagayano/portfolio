@@ -11,7 +11,7 @@ import { type CommonIconComponent } from "../data";
 /** Moon icon. */
 export const MoonIcon: CommonIconComponent = setDisplayName(
   React.memo(function MoonIcon(props) {
-    const { debugId, debugMode, ...rest } = props;
+    const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -19,7 +19,7 @@ export const MoonIcon: CommonIconComponent = setDisplayName(
     });
 
     const element = (
-      <svg
+      <Component
         {...rest}
         viewBox="0 0 24 24"
         aria-hidden="true"
@@ -31,7 +31,7 @@ export const MoonIcon: CommonIconComponent = setDisplayName(
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-      </svg>
+      </Component>
     );
 
     return element;

@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Icon } from "../Icon";
+import { Icon } from "..";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -563,16 +563,12 @@ describe("Icon", () => {
     describe("Icon Accessibility", () => {
       it("renders icons with proper accessibility attributes", () => {
         const { container } = render(
-          <Icon.X
-            role="img"
-            aria-label="X (Twitter) icon"
-            title="X (Twitter)"
-          />
+          <Icon.X role="img" aria-label="X (Twitter) icon" aria-hidden="true" />
         );
         const icon = container.querySelector("svg");
         expect(icon).toHaveAttribute("role", "img");
         expect(icon).toHaveAttribute("aria-label", "X (Twitter) icon");
-        expect(icon).toHaveAttribute("title", "X (Twitter)");
+        expect(icon).toHaveAttribute("aria-hidden", "true");
       });
 
       it("renders icons with proper focus handling", () => {
