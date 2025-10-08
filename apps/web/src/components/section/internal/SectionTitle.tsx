@@ -4,22 +4,22 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import styles from "./styles/SectionTitle.module.css";
-
 // ============================================================================
 // SECTION TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SectionTitleProps
+/** `SectionTitle` component props. */
+export interface SectionTitleProps
   extends React.ComponentProps<"h2">,
     CommonComponentProps {}
-type SectionTitleComponent = React.FC<SectionTitleProps>;
+
+/** `SectionTitle` component type. */
+export type SectionTitleComponent = React.FC<SectionTitleProps>;
 
 // ============================================================================
 // BASE SECTION TITLE COMPONENT
@@ -28,16 +28,29 @@ type SectionTitleComponent = React.FC<SectionTitleProps>;
 /** A section title component that renders a heading with proper styling and accessibility. */
 const BaseSectionTitle: SectionTitleComponent = setDisplayName(
   function BaseSectionTitle(props) {
-    const { children, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      as: Component = "h2",
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
     const element = (
-      <h2
+      <Component
         {...rest}
-        className={cn(styles.sectionTitle, className)}
-        {...createComponentProps(_internalId, "section-title", _debugMode)}
+        id={`${componentId}-section-title-root`}
+        className={cn(
+          "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
+          className
+        )}
+        {...createComponentProps(componentId, "section-title", isDebugMode)}
       >
         {children}
-      </h2>
+      </Component>
     );
 
     return element;
@@ -58,29 +71,10 @@ const MemoizedSectionTitle = React.memo(BaseSectionTitle);
 /** A section title component that renders a heading with proper styling and accessibility. */
 export const SectionTitle: SectionTitleComponent = setDisplayName(
   function SectionTitle(props) {
-    const {
-      children,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!hasAnyRenderableContent(children)) return null;
-
-    const updatedProps = {
-      ...rest,
-      _internalId: id,
-      _debugMode: isDebugMode,
-    };
+    const { children, isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedSectionTitle : BaseSectionTitle;
-    const element = <Component {...updatedProps}>{children}</Component>;
+    const element = <Component {...rest}>{children}</Component>;
     return element;
   }
 );
