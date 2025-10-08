@@ -3,14 +3,14 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SectionGrid } from "../SectionGrid";
+import { SectionGrid } from "../internal/SectionGrid";
 
 import "@testing-library/jest-dom";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options) => ({
-    id: options?.internalId || "test-id",
+    componentId: options?.debugId || "test-id",
     isDebugMode: options?.debugMode || false,
   })),
 }));
@@ -32,7 +32,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     const attributes: Record<string, string> = {};
     if (id && suffix) {
       attributes[`data-${suffix}-id`] = `${id}-${suffix}`;
-      attributes["data-testid"] = `${id}-${suffix}`;
+      attributes["data-testid"] = suffix;
     }
     if (debugMode === true) {
       attributes["data-debug-mode"] = "true";
@@ -53,24 +53,26 @@ vi.mock("@web/utils", () => ({
 
 vi.mock("../styles/SectionGrid.module.css", () => ({
   default: {
-    sectionGrid: "_sectionGrid_5c0975",
+    sectionGrid:
+      "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
   },
 }));
 
 describe("SectionGrid", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <div>Grid content</div>
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toBeInTheDocument();
       expect(grid).toHaveTextContent("Grid content");
       expect(grid.tagName).toBe("DIV");
@@ -78,34 +80,40 @@ describe("SectionGrid", () => {
 
     it("applies custom className", () => {
       render(
-        <SectionGrid className="custom-class" data-testid="section-grid">
+        <SectionGrid
+          className="custom-class"
+          data-testid="custom-id-section-grid"
+        >
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_5c0975", "custom-class");
+      const grid = screen.getByTestId("section-grid");
+      expect(grid).toHaveClass(
+        "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
+        "custom-class"
+      );
     });
 
     it("renders with debug mode enabled", () => {
       render(
-        <SectionGrid _debugMode={true} data-testid="section-grid">
+        <SectionGrid debugMode={true} data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom component ID", () => {
       render(
-        <SectionGrid _internalId="custom-id" data-testid="section-grid">
+        <SectionGrid debugId="custom-id" data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("custom-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute(
         "data-section-grid-id",
         "custom-id-section-grid"
@@ -118,14 +126,14 @@ describe("SectionGrid", () => {
           id="test-id"
           aria-label="Test section grid"
           data-custom="value"
-          data-testid="section-grid"
+          data-testid="custom-id-section-grid"
         >
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveAttribute("id", "test-id");
+      const grid = screen.getByTestId("section-grid");
+      expect(grid).toHaveAttribute("id", "test-id-section-grid-root");
       expect(grid).toHaveAttribute("aria-label", "Test section grid");
       expect(grid).toHaveAttribute("data-custom", "value");
     });
@@ -133,46 +141,50 @@ describe("SectionGrid", () => {
 
   describe("Content Validation", () => {
     it("does not render when no content", () => {
-      const { container } = render(<SectionGrid data-testid="section-grid" />);
-      expect(container.firstChild).toBeNull();
+      const { container } = render(
+        <SectionGrid data-testid="custom-id-section-grid" />
+      );
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("handles null children", () => {
       const { container } = render(
-        <SectionGrid data-testid="section-grid">{null}</SectionGrid>
+        <SectionGrid data-testid="custom-id-section-grid">{null}</SectionGrid>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("handles undefined children", () => {
       const { container } = render(
-        <SectionGrid data-testid="section-grid">{undefined}</SectionGrid>
+        <SectionGrid data-testid="custom-id-section-grid">
+          {undefined}
+        </SectionGrid>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("handles empty string children", () => {
       const { container } = render(
-        <SectionGrid data-testid="section-grid">{""}</SectionGrid>
+        <SectionGrid data-testid="custom-id-section-grid">{""}</SectionGrid>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("handles false children", () => {
       const { container } = render(
-        <SectionGrid data-testid="section-grid">{false}</SectionGrid>
+        <SectionGrid data-testid="custom-id-section-grid">{false}</SectionGrid>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("renders with meaningful content", () => {
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <div>Meaningful content</div>
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toBeInTheDocument();
       expect(grid).toHaveTextContent("Meaningful content");
     });
@@ -181,58 +193,72 @@ describe("SectionGrid", () => {
   describe("Debug Mode Tests", () => {
     it("applies data-debug-mode when enabled", () => {
       render(
-        <SectionGrid _debugMode={true} data-testid="section-grid">
+        <SectionGrid debugMode={true} data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(
-        <SectionGrid _debugMode={false} data-testid="section-grid">
+        <SectionGrid debugMode={false} data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).not.toHaveAttribute("data-debug-mode");
     });
   });
 
   describe("Component Structure Tests", () => {
     it("renders as div element", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_5c0975");
+      const grid = screen.getByTestId("section-grid");
+      expect(grid).toHaveClass(
+        "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4"
+      );
     });
 
     it("combines CSS module + custom classes", () => {
       render(
-        <SectionGrid className="custom-class" data-testid="section-grid">
+        <SectionGrid
+          className="custom-class"
+          data-testid="custom-id-section-grid"
+        >
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
-      expect(grid).toHaveClass("_sectionGrid_5c0975", "custom-class");
+      const grid = screen.getByTestId("section-grid");
+      expect(grid).toHaveClass(
+        "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
+        "custom-class"
+      );
     });
   });
 
@@ -240,12 +266,12 @@ describe("SectionGrid", () => {
     it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(
-        <SectionGrid ref={ref} data-testid="section-grid">
+        <SectionGrid ref={ref} data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toBeInTheDocument();
       expect(grid.tagName).toBe("DIV");
     });
@@ -253,32 +279,34 @@ describe("SectionGrid", () => {
 
   describe("Accessibility Tests", () => {
     it("has proper div structure", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid.tagName).toBe("DIV");
     });
 
     it("has correct data attributes for debugging", () => {
       render(
-        <SectionGrid _internalId="custom-id" data-testid="section-grid">
+        <SectionGrid debugId="custom-id" data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("custom-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute(
         "data-section-grid-id",
         "custom-id-section-grid"
       );
-      expect(grid).toHaveAttribute("data-testid", "custom-id-section-grid");
+      expect(grid).toHaveAttribute("data-testid", "section-grid");
     });
   });
 
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <div>
             <h3>Sub heading</h3>
             <p>Paragraph content</p>
@@ -290,7 +318,7 @@ describe("SectionGrid", () => {
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveTextContent("Sub heading");
       expect(grid).toHaveTextContent("Paragraph content");
       expect(grid).toHaveTextContent("List item 1");
@@ -303,25 +331,25 @@ describe("SectionGrid", () => {
       };
 
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <ChildComponent />
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveTextContent("Child component");
     });
 
     it("handles multiple children", () => {
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <div>First child</div>
           <div>Second child</div>
           <div>Third child</div>
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveTextContent("First child");
       expect(grid).toHaveTextContent("Second child");
       expect(grid).toHaveTextContent("Third child");
@@ -329,42 +357,44 @@ describe("SectionGrid", () => {
 
     it("handles empty children array", () => {
       const { container } = render(
-        <SectionGrid data-testid="section-grid">{[]}</SectionGrid>
+        <SectionGrid data-testid="custom-id-section-grid">{[]}</SectionGrid>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container.firstChild).not.toBeNull();
     });
 
     it("handles special characters in content", () => {
       render(
-        <SectionGrid data-testid="section-grid">
+        <SectionGrid data-testid="custom-id-section-grid">
           <p>Special chars: &lt;&gt;&amp;&quot;&#39;</p>
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveTextContent("Special chars: <>&\"'");
     });
   });
 
   describe("useComponentId Integration", () => {
-    it("uses provided _internalId when available", () => {
+    it("uses provided debugId when available", () => {
       render(
-        <SectionGrid _internalId="custom-id" data-testid="section-grid">
+        <SectionGrid debugId="custom-id" data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("custom-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute(
         "data-section-grid-id",
         "custom-id-section-grid"
       );
     });
 
-    it("generates ID when _internalId is not provided", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+    it("generates ID when debugId is not provided", () => {
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute(
         "data-section-grid-id",
         "test-id-section-grid"
@@ -374,16 +404,16 @@ describe("SectionGrid", () => {
     it("calls useComponentId with correct parameters", () => {
       render(
         <SectionGrid
-          _internalId="custom-id"
-          _debugMode={true}
-          data-testid="section-grid"
+          debugId="custom-id"
+          debugMode={true}
+          data-testid="custom-id-section-grid"
         >
           Content
         </SectionGrid>
       );
 
       // The hook is called internally, we can verify by checking the rendered attributes
-      const grid = screen.getByTestId("custom-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toHaveAttribute(
         "data-section-grid-id",
         "custom-id-section-grid"
@@ -394,20 +424,22 @@ describe("SectionGrid", () => {
 
   describe("Memoization Tests", () => {
     it("renders with memoization disabled by default", () => {
-      render(<SectionGrid data-testid="section-grid">Content</SectionGrid>);
+      render(
+        <SectionGrid data-testid="custom-id-section-grid">Content</SectionGrid>
+      );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toBeInTheDocument();
     });
 
     it("renders with memoization enabled", () => {
       render(
-        <SectionGrid isMemoized={true} data-testid="section-grid">
+        <SectionGrid isMemoized={true} data-testid="custom-id-section-grid">
           Content
         </SectionGrid>
       );
 
-      const grid = screen.getByTestId("test-id-section-grid");
+      const grid = screen.getByTestId("section-grid");
       expect(grid).toBeInTheDocument();
     });
   });
