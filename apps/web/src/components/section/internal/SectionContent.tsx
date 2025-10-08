@@ -4,22 +4,22 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
-  hasAnyRenderableContent,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import styles from "./styles/SectionContent.module.css";
-
 // ============================================================================
 // SECTION CONTENT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-interface SectionContentProps
+/** `SectionContent` component props. */
+export interface SectionContentProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-type SectionContentComponent = React.FC<SectionContentProps>;
+
+/** `SectionContent` component type. */
+export type SectionContentComponent = React.FC<SectionContentProps>;
 
 // ============================================================================
 // BASE SECTION CONTENT COMPONENT
@@ -28,16 +28,26 @@ type SectionContentComponent = React.FC<SectionContentProps>;
 /** A section content component that wraps section content with proper styling. */
 const BaseSectionContent: SectionContentComponent = setDisplayName(
   function BaseSectionContent(props) {
-    const { children, className, _internalId, _debugMode, ...rest } = props;
+    const {
+      as: Component = "div",
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
+
+    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
     const element = (
-      <div
+      <Component
         {...rest}
-        className={cn(styles.sectionContent, className)}
-        {...createComponentProps(_internalId, "section-content", _debugMode)}
+        id={`${componentId}-section-content-root`}
+        className={cn("md:col-span-3", className)}
+        {...createComponentProps(componentId, "section-content", isDebugMode)}
       >
         {children}
-      </div>
+      </Component>
     );
 
     return element;
@@ -58,29 +68,10 @@ const MemoizedSectionContent = React.memo(BaseSectionContent);
 /** A section content component that wraps section content with proper styling. */
 export const SectionContent: SectionContentComponent = setDisplayName(
   function SectionContent(props) {
-    const {
-      children,
-      isMemoized = false,
-      _internalId,
-      _debugMode,
-      ...rest
-    } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    if (!hasAnyRenderableContent(children)) return null;
-
-    const updatedProps = {
-      ...rest,
-      _internalId: id,
-      _debugMode: isDebugMode,
-    };
+    const { children, isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedSectionContent : BaseSectionContent;
-    const element = <Component {...updatedProps}>{children}</Component>;
+    const element = <Component {...rest}>{children}</Component>;
     return element;
   }
 );
