@@ -1,6 +1,0 @@
-@reference "tailwindcss";
-
-/* Section content */
-.sectionContent {
-  @apply md:col-span-3;
-}
