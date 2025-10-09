@@ -47,7 +47,6 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-header-mobile-nav-item`}
         {...createComponentProps(
           componentId,
           "header-mobile-nav-item",
@@ -68,9 +67,6 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
           )}
         >
           {children}
-          {isActive ? (
-            <span className="absolute inset-x-1 -bottom-px h-px bg-linear-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0" />
-          ) : null}
         </Link>
       </Component>
     );
