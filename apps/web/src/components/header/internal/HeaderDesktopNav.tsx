@@ -9,8 +9,6 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/utils";
-
 import {
   DESKTOP_HEADER_NAV_LINKS,
   type HeaderComponentNavLinks,
@@ -36,13 +34,7 @@ export type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
 /** Renders a desktop navigation component that displays a list of navigation links. */
 const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
-    const {
-      as: Component = "nav",
-      className,
-      debugId,
-      debugMode,
-      ...rest
-    } = props;
+    const { as: Component = "nav", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -57,26 +49,24 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
       <Component
         {...rest}
         id={`${componentId}-header-desktop-nav`}
-        className={cn(
-          "flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10",
-          className
-        )}
         {...createComponentProps(
           componentId,
           "header-desktop-nav",
           isDebugMode
         )}
       >
-        {navLinks.map(({ label, href }) => (
-          <HeaderDesktopNavItem
-            key={`${label}:${href}`}
-            href={href}
-            debugId={componentId}
-            debugMode={isDebugMode}
-          >
-            {label}
-          </HeaderDesktopNavItem>
-        ))}
+        <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
+          {navLinks.map(({ label, href }) => (
+            <HeaderDesktopNavItem
+              key={`${label}:${href}`}
+              href={href}
+              debugId={componentId}
+              debugMode={isDebugMode}
+            >
+              {label}
+            </HeaderDesktopNavItem>
+          ))}
+        </ul>
       </Component>
     ) : null;
 

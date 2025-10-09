@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { usePathname } from "next/navigation";
 
@@ -12,14 +12,13 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components";
-import { cn } from "@web/utils";
+import { clamp, cn } from "@web/utils";
 
 import { AVATAR_COMPONENT_LABELS } from "./data";
 import {
   HeaderAvatar,
   HeaderAvatarContainer,
   HeaderDesktopNav,
-  HeaderEffects,
   HeaderMobileNav,
   HeaderThemeToggle,
 } from "./internal";
@@ -49,22 +48,115 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
     debugMode,
   });
 
-  const isHomePage: React.ComponentProps<typeof HeaderEffects>["isHomePage"] =
-    usePathname() === AVATAR_COMPONENT_LABELS.link;
+  const isHomePage: boolean = usePathname() === AVATAR_COMPONENT_LABELS.link;
 
-  let headerRef: React.ComponentProps<typeof HeaderEffects>["headerEl"] =
-    useRef(null);
-  let avatarRef: React.ComponentProps<typeof HeaderEffects>["avatarEl"] =
-    useRef(null);
-  let isInitialRender: React.ComponentProps<
-    typeof HeaderEffects
-  >["isInitialRender"] = useRef(true);
+  let headerRef = useRef<React.ComponentRef<"div"> | null>(null);
+  let avatarRef = useRef<React.ComponentRef<"div"> | null>(null);
+  let isInitial = useRef(true);
+
+  useEffect(() => {
+    let downDelay = avatarRef.current?.offsetTop ?? 0;
+    let upDelay = 64;
+
+    /** Sets a property on the document element. */
+    function setProperty(prop: string, value: string): void {
+      document.documentElement.style.setProperty(prop, value);
+    }
+
+    /** Removes a property from the document element. */
+    function removeProperty(prop: string): void {
+      document.documentElement.style.removeProperty(prop);
+    }
+
+    /** Handles scroll-based header and avatar style updates for the header component. */
+    function updateHeaderStyles(): void {
+      if (!headerRef.current) return;
+
+      let { top, height } = headerRef.current.getBoundingClientRect();
+      let scrollY = clamp(
+        window.scrollY,
+        0,
+        document.body.scrollHeight - window.innerHeight
+      );
+
+      if (isInitial.current) setProperty("--header-position", "sticky");
+      setProperty("--content-offset", `${downDelay}px`);
+
+      if (isInitial.current || scrollY < downDelay) {
+        setProperty("--header-height", `${downDelay + height}px`);
+        setProperty("--header-mb", `${-downDelay}px`);
+      } else if (top + height < -upDelay) {
+        let offset = Math.max(height, scrollY - upDelay);
+        setProperty("--header-height", `${offset}px`);
+        setProperty("--header-mb", `${height - offset}px`);
+      } else if (top === 0) {
+        setProperty("--header-height", `${scrollY + height}px`);
+        setProperty("--header-mb", `${-scrollY}px`);
+      }
+
+      /** Handles header inner position updates for the header component. */
+      if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
+        setProperty("--header-inner-position", "fixed");
+        removeProperty("--header-top");
+        removeProperty("--avatar-top");
+      } else {
+        removeProperty("--header-inner-position");
+        setProperty("--header-top", "0px");
+        setProperty("--avatar-top", "0px");
+      }
+    }
+
+    /** Handles avatar style updates for the header component. */
+    function updateAvatarStyles(): void {
+      if (!isHomePage) return;
+
+      let fromScale = 1;
+      let toScale = 36 / 64;
+      let fromX = 0;
+      let toX = 2 / 16;
+
+      let scrollY = downDelay - window.scrollY;
+
+      let scale = (scrollY * (fromScale - toScale)) / downDelay + toScale;
+      scale = clamp(scale, fromScale, toScale);
+
+      let x = (scrollY * (fromX - toX)) / downDelay + toX;
+      x = clamp(x, fromX, toX);
+
+      setProperty(
+        "--avatar-image-transform",
+        `translate3d(${x}rem, 0, 0) scale(${scale})`
+      );
+
+      let borderScale = 1 / (toScale / scale);
+      let borderX = (-toX + x) * borderScale;
+      let borderTransform = `translate3d(${borderX}rem, 0, 0) scale(${borderScale})`;
+
+      setProperty("--avatar-border-transform", borderTransform);
+      setProperty("--avatar-border-opacity", scale === toScale ? "1" : "0");
+    }
+
+    /** Handles style updates for the header component. */
+    function updateStyles(): void {
+      updateHeaderStyles();
+      updateAvatarStyles();
+      isInitial.current = false;
+    }
+
+    updateStyles();
+    window.addEventListener("scroll", updateStyles, { passive: true });
+    window.addEventListener("resize", updateStyles);
+
+    return () => {
+      window.removeEventListener("scroll", updateStyles);
+      window.removeEventListener("resize", updateStyles);
+    };
+  }, [isHomePage]);
 
   const element = (
     <>
       <header
         {...rest}
-        id={`${componentId}-header-root`}
         className={cn(
           "pointer-events-none relative z-50 flex flex-none flex-col",
           className
@@ -80,80 +172,59 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
             <div
               ref={avatarRef}
               className="order-last mt-[calc(--spacing(16)-(--spacing(3)))]"
+              {...createComponentProps(
+                componentId,
+                "header-avatar-div",
+                debugMode
+              )}
             />
             <Container
-              id={`${componentId}-header-avatar-container`}
-              className="top-0 order-last -mb-3 pt-3"
               style={{
                 position:
                   "var(--header-position)" as React.CSSProperties["position"],
               }}
-              debugId={debugId}
-              debugMode={debugMode}
-              {...createComponentProps(
-                componentId,
-                "header-avatar-container",
-                debugMode
-              )}
+              className="top-0 order-last -mb-3 pt-3"
             >
               <div
-                id={`${componentId}-header-avatar-positioning-wrapper`}
-                className="top-(--avatar-top,--spacing(3)) w-full"
                 style={{
                   position:
                     "var(--header-inner-position)" as React.CSSProperties["position"],
                 }}
+                className="top-(--avatar-top,--spacing(3)) w-full"
                 {...createComponentProps(
                   componentId,
-                  "header-avatar-positioning-wrapper",
+                  "header-avatar-positioning-div",
                   debugMode
                 )}
               >
                 <div
-                  id={`${componentId}-header-avatar-relative-container`}
                   className="relative"
                   {...createComponentProps(
                     componentId,
-                    "header-avatar-relative-container",
+                    "header-avatar-relative-div",
                     debugMode
                   )}
                 >
                   <HeaderAvatarContainer
-                    debugId={debugId}
-                    debugMode={debugMode}
-                    id={`${componentId}-header-avatar-border-container`}
-                    className="absolute top-3 left-0 origin-left transition-opacity"
                     style={{
                       opacity: "var(--avatar-border-opacity, 0)",
                       transform: "var(--avatar-border-transform)",
                     }}
-                    {...createComponentProps(
-                      componentId,
-                      "header-avatar-border-container",
-                      debugMode
-                    )}
+                    className="absolute left-0 top-3 origin-left transition-opacity"
                   />
                   <HeaderAvatar
-                    debugId={debugId}
-                    debugMode={debugMode}
-                    id={`${componentId}-header-avatar-image`}
-                    className="block h-16 w-16 origin-left"
-                    style={{ transform: "var(--avatar-image-transform)" }}
                     large
-                    {...createComponentProps(
-                      componentId,
-                      "header-avatar-image",
-                      debugMode
-                    )}
+                    style={{ transform: "var(--avatar-image-transform)" }}
+                    className="block h-16 w-16 origin-left"
                   />
                 </div>
               </div>
             </Container>
           </>
         ) : null}
+
         <div
           ref={headerRef}
-          id={`${componentId}-header-section`}
           className="top-0 z-10 h-16 pt-6"
           style={{
             position:
@@ -162,7 +233,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           {...createComponentProps(componentId, "header-section", debugMode)}
         >
           <Container
-            id={`${componentId}-header-container`}
             className="top-(--header-top,--spacing(6)) w-full"
             style={{
               position:
@@ -170,7 +240,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
             }}
           >
             <div
-              id={`${componentId}-header-content`}
               className="relative flex gap-4"
               {...createComponentProps(
                 componentId,
@@ -179,7 +248,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               )}
             >
               <div
-                id={`${componentId}-header-left-section`}
                 className="flex flex-1"
                 {...createComponentProps(
                   componentId,
@@ -188,16 +256,12 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                 )}
               >
                 {!isHomePage ? (
-                  <HeaderAvatarContainer
-                    debugId={debugId}
-                    debugMode={debugMode}
-                  >
-                    <HeaderAvatar debugId={debugId} debugMode={debugMode} />
+                  <HeaderAvatarContainer>
+                    <HeaderAvatar />
                   </HeaderAvatarContainer>
                 ) : null}
               </div>
               <div
-                id={`${componentId}-header-center-section`}
                 className="flex flex-1 justify-end md:justify-center"
                 {...createComponentProps(
                   componentId,
@@ -205,19 +269,10 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                   debugMode
                 )}
               >
-                <HeaderMobileNav
-                  debugId={debugId}
-                  debugMode={debugMode}
-                  className="pointer-events-auto md:hidden"
-                />
-                <HeaderDesktopNav
-                  debugId={debugId}
-                  debugMode={debugMode}
-                  className="pointer-events-auto hidden md:block"
-                />
+                <HeaderMobileNav className="pointer-events-auto md:hidden" />
+                <HeaderDesktopNav className="pointer-events-auto hidden md:block" />
               </div>
               <div
-                id={`${componentId}-header-right-section`}
                 className="flex justify-end md:flex-1"
                 {...createComponentProps(
                   componentId,
@@ -226,7 +281,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                 )}
               >
                 <div
-                  id={`${componentId}-header-theme-toggle-wrapper`}
                   className="pointer-events-auto"
                   {...createComponentProps(
                     componentId,
@@ -234,7 +288,7 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                     debugMode
                   )}
                 >
-                  <HeaderThemeToggle debugId={debugId} debugMode={debugMode} />
+                  <HeaderThemeToggle />
                 </div>
               </div>
             </div>
@@ -242,9 +296,9 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
         </div>
         {children}
       </header>
+
       {isHomePage ? (
         <div
-          id={`${componentId}-header-content-offset`}
           className="flex-none"
           style={{ height: "var(--content-offset)" }}
           {...createComponentProps(
@@ -254,12 +308,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
           )}
         />
       ) : null}
-      <HeaderEffects
-        headerEl={headerRef}
-        avatarEl={avatarRef}
-        isHomePage={isHomePage}
-        isInitialRender={isInitialRender}
-      />
     </>
   );
 
