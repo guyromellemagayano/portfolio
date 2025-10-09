@@ -7,6 +7,7 @@ import {
   PopoverPanel,
 } from "@headlessui/react";
 
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   filterValidNavigationLinks,
@@ -45,6 +46,11 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
   function BaseHeaderMobileNav(props) {
     const { links, debugId, debugMode, ...rest } = props;
 
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
+
     const navLinks: HeaderComponentNavLinks = MOBILE_HEADER_NAV_LINKS;
     const validLinks = filterValidNavigationLinks(navLinks);
     if (!hasValidNavigationLinks(validLinks)) return null;
@@ -52,15 +58,11 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
     const element = (
       <Popover
         {...rest}
-        {...createComponentProps(debugId, "header-mobile-nav", debugMode)}
+        {...createComponentProps(componentId, "header-mobile-nav", isDebugMode)}
       >
         <PopoverButton className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20">
           {MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS?.menu ?? null}
-          <Icon.ChevronDown
-            className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400"
-            debugId={debugId}
-            debugMode={debugMode}
-          />
+          <Icon.ChevronDown className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400" />
         </PopoverButton>
         <PopoverBackdrop
           transition
@@ -87,22 +89,15 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
               </h2>
             ) : null}
           </div>
-          {hasValidNavigationLinks(links) ? (
-            <nav className="mt-6">
-              <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                {links.map(({ label, href }) => (
-                  <HeaderMobileNavItem
-                    key={`${label}:${href}`}
-                    href={href}
-                    debugId={debugId}
-                    debugMode={debugMode}
-                  >
-                    {label}
-                  </HeaderMobileNavItem>
-                ))}
-              </ul>
-            </nav>
-          ) : null}
+          <nav className="mt-6">
+            <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
+              {validLinks.map(({ label, href }) => (
+                <HeaderMobileNavItem key={`${label}:${href}`} href={href}>
+                  {label}
+                </HeaderMobileNavItem>
+              ))}
+            </ul>
+          </nav>
         </PopoverPanel>
       </Popover>
     );

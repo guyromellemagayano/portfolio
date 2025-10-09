@@ -63,12 +63,6 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       debugMode,
     });
 
-    const imageSizes = large ? "4rem" : "2.25rem";
-    const imageClassName = cn(
-      "rounded-full bg-zinc-100 object-cover dark:bg-zinc-800",
-      large ? "h-16 w-16" : "h-9 w-9"
-    );
-
     const linkHref =
       href && isValidLink(href) ? href : AVATAR_COMPONENT_LABELS.link;
     const linkTitle =
@@ -82,26 +76,31 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
       <Link
         {...rest}
         href={linkHref}
-        id={`${componentId}-header-avatar-link`}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         title={linkTitle}
         aria-label={linkTitle}
         className={cn("pointer-events-auto", className)}
-        {...createComponentProps(componentId, "header-avatar", isDebugMode)}
+        {...createComponentProps(
+          componentId,
+          "header-avatar-link",
+          isDebugMode
+        )}
       >
         <Image
           src={imageSrc}
-          id={`${componentId}-header-avatar-image`}
-          className={imageClassName}
           alt={imageAlt}
-          sizes={imageSizes}
-          priority
+          sizes={large ? "4rem" : "2.25rem"}
+          className={cn(
+            "rounded-full bg-zinc-100 object-cover dark:bg-zinc-800",
+            large ? "h-16 w-16" : "h-9 w-9"
+          )}
           {...createComponentProps(
             componentId,
-            "header-avatar-image",
+            "header-avatar-img",
             isDebugMode
           )}
+          priority
         />
       </Link>
     );
@@ -124,12 +123,7 @@ const MemoizedHeaderAvatar = React.memo(BaseHeaderAvatar);
 /** Renders the avatar link for the `Header` compound component. */
 export const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function HeaderAvatar(props) {
-    const {
-      isMemoized = false,
-      // href = AVATAR_COMPONENT_LABELS.link,
-      // src = AVATAR_COMPONENT_LABELS.src,
-      ...rest
-    } = props;
+    const { isMemoized = false, ...rest } = props;
 
     const Component = isMemoized ? MemoizedHeaderAvatar : BaseHeaderAvatar;
     const element = <Component {...rest} />;
