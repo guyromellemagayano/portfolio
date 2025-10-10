@@ -1,4 +1,4 @@
-export { ArticleBase } from "./ArticleBase";
+export { Article } from "./Article";
 export { ArticleLayout } from "./ArticleLayout";
 export { ArticleList } from "./ArticleList";
 export { ArticleListItem } from "./ArticleListItem";

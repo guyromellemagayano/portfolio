@@ -11,30 +11,30 @@ import { type ArticleWithSlug, validateArticle } from "@web/utils";
 import { ARTICLE_COMPONENT_LABELS } from "./data";
 
 // ============================================================================
-// ARTICLE BASE COMPONENT TYPES & INTERFACES
+// ARTICLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `ArticleBase` component props. */
-export interface ArticleBaseProps
+/** `Article` component props. */
+export interface ArticleProps
   extends React.ComponentPropsWithRef<typeof Card>,
     CommonComponentProps {
   /** The article to display. */
   article: ArticleWithSlug;
 }
 
-/** `ArticleBase` component type. */
-export type ArticleBaseComponent = React.FC<ArticleBaseProps>;
+/** `Article` component type. */
+export type ArticleComponent = React.FC<ArticleProps>;
 
 // ============================================================================
-// BASE ARTICLE BASE COMPONENT
+// BASE ARTICLE COMPONENT
 // ============================================================================
 
 /**
  * A presentational component that displays an article's title, date, description, and a
  * call-to-action inside a `Card` component.
  */
-const BaseArticleBase: ArticleBaseComponent = setDisplayName(
-  function BaseArticleBase(props) {
+const BaseArticle: ArticleComponent = setDisplayName(
+  function BaseArticle(props) {
     const { article, debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
@@ -47,7 +47,7 @@ const BaseArticleBase: ArticleBaseComponent = setDisplayName(
     const isValidArticleData = validateArticle(article);
     if (!isValidArticleData) {
       logger.warn(
-        `${(ArticleBase as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+        `${(BaseArticle as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
         {
           article,
         }
@@ -134,22 +134,22 @@ const BaseArticleBase: ArticleBaseComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED ARTICLE BASE COMPONENT
+// MEMOIZED ARTICLE COMPONENT
 // ============================================================================
 
 /** A memoized article component. */
-const MemoizedArticleBase = React.memo(BaseArticleBase);
+const MemoizedArticle = React.memo(BaseArticle);
 
 // ============================================================================
-// MAIN ARTICLE BASE COMPONENT
+// MAIN ARTICLE COMPONENT
 // ============================================================================
 
-/** Main article base component that renders an article card component, optionally memoized. */
-export const ArticleBase: ArticleBaseComponent = setDisplayName(
-  function ArticleBase(props) {
+/** Main article component that renders an article card component, optionally memoized. */
+export const Article: ArticleComponent = setDisplayName(
+  function Article(props) {
     const { isMemoized = false, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedArticleBase : BaseArticleBase;
+    const Component = isMemoized ? MemoizedArticle : BaseArticle;
     const element = <Component {...rest} />;
     return element;
   }
