@@ -9,7 +9,15 @@ import {
 
 import { cn } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./data";
+import { ARTICLE_I18N } from "./constants/Article.i18n";
+
+// ============================================================================
+// COMPONENT CLASSIFICATION: Presentational Component
+// - Type: Presentational (pure display, no sub-components)
+// - Testing: Unit tests only
+// - Structure: Single file + tests
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// ============================================================================
 
 // ============================================================================
 // ARTICLE LIST COMPONENT TYPES & INTERFACES
@@ -48,7 +56,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
           "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
           className
         )}
-        aria-label={ARTICLE_COMPONENT_LABELS.articleList}
+        aria-label={ARTICLE_I18N.articleList}
         aria-labelledby={`${componentId}-article-list-heading`}
         {...createComponentProps(componentId, "article-list", isDebugMode)}
       >
@@ -62,13 +70,13 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
             isDebugMode
           )}
         >
-          {ARTICLE_COMPONENT_LABELS.articleList}
+          {ARTICLE_I18N.articleList}
         </h2>
         <div
           role="list"
           id={`${componentId}-article-list-children`}
           className="flex w-full max-w-3xl flex-col space-y-16"
-          aria-label={ARTICLE_COMPONENT_LABELS.articles}
+          aria-label={ARTICLE_I18N.articles}
           {...createComponentProps(
             componentId,
             "article-list-children",

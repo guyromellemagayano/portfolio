@@ -5,6 +5,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Article } from "../Article";
 
+// ============================================================================
+// TEST CLASSIFICATION: Tier 3 - Presentational Component
+// - Coverage Target: 60%+ (happy path + basic validation)
+// - Focus: Rendering, prop handling, Card integration
+// - Skip: Complex edge cases, comprehensive ARIA (tested in Card)
+// ============================================================================
+
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
     componentId: options.debugId || "test-id",
@@ -138,8 +145,8 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock shared data
-vi.mock("@web/components/_shared", () => ({
-  ARTICLE_COMPONENT_LABELS: {
+vi.mock("../constants/Article.i18n", () => ({
+  ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
     articleContent: "Article content",
@@ -152,7 +159,6 @@ vi.mock("@web/components/_shared", () => ({
     articles: "Articles",
     invalidArticleData: "Invalid article data",
   },
-  ArticleComponent: vi.fn(),
 }));
 
 describe("Article", () => {
