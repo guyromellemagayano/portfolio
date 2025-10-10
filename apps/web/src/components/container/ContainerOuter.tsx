@@ -36,12 +36,10 @@ const BaseContainerOuter: CommonContainerComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-container-outer`}
         className={cn("sm:px-8", className)}
         {...createComponentProps(componentId, "container-outer", isDebugMode)}
       >
         <div
-          id={`${componentId}-container-outer-content`}
           className="mx-auto w-full max-w-7xl lg:px-8"
           {...createComponentProps(
             componentId,
