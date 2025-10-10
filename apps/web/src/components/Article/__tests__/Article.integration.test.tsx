@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ArticleBase } from "../ArticleBase";
+import { Article } from "../Article";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -152,15 +152,10 @@ vi.mock("@web/components/_shared", () => ({
     articles: "Articles",
     invalidArticleData: "Invalid article data",
   },
-  ArticleBaseComponent: vi.fn(),
+  ArticleComponent: vi.fn(),
 }));
 
-// Mock CSS module
-vi.mock("../ArticleBase.module.css", () => ({
-  default: { articleBaseContainer: "articleBaseContainer" },
-}));
-
-describe("ArticleBase Integration Tests", () => {
+describe("Article Integration Tests", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -180,8 +175,8 @@ describe("ArticleBase Integration Tests", () => {
     it("works with other components in complex layouts", () => {
       render(
         <div>
-          <ArticleBase article={mockArticle} />
-          <ArticleBase
+          <Article article={mockArticle} />
+          <Article
             article={{
               ...mockArticle,
               slug: "second-article",
@@ -196,7 +191,7 @@ describe("ArticleBase Integration Tests", () => {
     });
 
     it("maintains proper DOM structure", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const cardElement = screen.getByTestId("mock-card");
       const title = screen.getByText("Test Article Title");
@@ -211,25 +206,18 @@ describe("ArticleBase Integration Tests", () => {
 
   describe("Component Behavior", () => {
     it("is a pure rendering component without compound components", () => {
-      expect((ArticleBase as any).Layout).toBeUndefined();
-      expect((ArticleBase as any).List).toBeUndefined();
-      expect((ArticleBase as any).ListItem).toBeUndefined();
-      expect((ArticleBase as any).NavButton).toBeUndefined();
+      expect((Article as any).Layout).toBeUndefined();
+      expect((Article as any).List).toBeUndefined();
+      expect((Article as any).ListItem).toBeUndefined();
+      expect((Article as any).NavButton).toBeUndefined();
     });
 
     it("focuses on rendering article content with simple conditional logic", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
       expect(
         screen.getByText("This is a test article description")
       ).toBeInTheDocument();
-    });
-
-    it("applies CSS module classes correctly", () => {
-      render(<ArticleBase article={mockArticle} className="custom-class" />);
-      const articleElement = screen.getByTestId("mock-card");
-      // The mocked Card component only applies the custom class
-      expect(articleElement).toHaveClass("custom-class");
     });
 
     it("handles edge cases with robust validation", () => {
@@ -243,7 +231,7 @@ describe("ArticleBase Integration Tests", () => {
         tags: ["test"],
       };
       const { container } = render(
-        <ArticleBase article={edgeCaseArticle as any} />
+        <Article article={edgeCaseArticle as any} />
       );
 
       // Should not render at all since validation fails
@@ -253,7 +241,7 @@ describe("ArticleBase Integration Tests", () => {
     it("validates date with isNaN check", () => {
       const articleWithInvalidDate = { ...mockArticle, date: "not-a-date" };
       const { container } = render(
-        <ArticleBase article={articleWithInvalidDate} />
+        <Article article={articleWithInvalidDate} />
       );
 
       // Should not render at all since validation fails
@@ -270,7 +258,7 @@ describe("ArticleBase Integration Tests", () => {
 
       validDateFormats.forEach((dateFormat) => {
         const { unmount } = render(
-          <ArticleBase article={{ ...mockArticle, date: dateFormat }} />
+          <Article article={{ ...mockArticle, date: dateFormat }} />
         );
 
         // Should render the date element for valid dates
@@ -279,20 +267,12 @@ describe("ArticleBase Integration Tests", () => {
       });
     });
 
-    it("applies CSS module classes with cn utility", () => {
-      render(<ArticleBase article={mockArticle} className="custom-class" />);
-      const articleElement = screen.getByTestId("mock-card");
-
-      // The mocked Card component only applies the custom class
-      expect(articleElement).toHaveClass("custom-class");
-    });
-
     it("handles complex slug encoding scenarios", () => {
       const complexSlugArticle = {
         ...mockArticle,
         slug: "test & article with spaces & symbols!",
       };
-      render(<ArticleBase article={complexSlugArticle} />);
+      render(<Article article={complexSlugArticle} />);
 
       const titleLink = screen.getByRole("link");
       expect(titleLink).toHaveAttribute(
