@@ -178,8 +178,8 @@ vi.mock("../ArticleListItem.module.css", () => ({
 }));
 
 // Mock shared data
-vi.mock("../@web/components/_shared", () => ({
-  ARTICLE_COMPONENT_LABELS: {
+vi.mock("../constants/Article.i18n", () => ({
+  ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
     articleContent: "Article content",
@@ -187,16 +187,10 @@ vi.mock("../@web/components/_shared", () => ({
     articleHeader: "Article header",
     articleTitle: "Article title",
     articleDate: "Published on",
+    articlePublished: "Publication date",
     articleList: "Article list",
     articles: "Articles",
-  },
-}));
-
-// Mock component-specific data
-vi.mock("../_data", () => ({
-  ARTICLE_LIST_ITEM_COMPONENT_LABELS: {
     invalidArticleData: "Invalid article data",
-    articleItem: "Article item",
   },
 }));
 
