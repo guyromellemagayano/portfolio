@@ -5,6 +5,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
+// ============================================================================
+// TEST CLASSIFICATION: Tier 2 - Orchestrator Component
+// - Coverage Target: 80%+ (key paths + edges)
+// - Focus: Component coordination, layout structure, user paths
+// - Include: Common edge cases, main user flows
+// ============================================================================
+
 // Mock process for logger compatibility
 Object.defineProperty(globalThis, "process", {
   value: {
@@ -210,8 +217,8 @@ vi.mock("@web/utils", () => ({
 // Logger is automatically mocked via __mocks__ directory
 
 // Mock shared data
-vi.mock("@web/components/_shared", () => ({
-  ARTICLE_COMPONENT_LABELS: {
+vi.mock("../constants/Article.i18n", () => ({
+  ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
     articleContent: "Article content",
@@ -225,9 +232,6 @@ vi.mock("@web/components/_shared", () => ({
     invalidArticleData: "Invalid article data",
   },
 }));
-
-// Mock component-specific data (empty since component uses shared labels)
-vi.mock("../_data", () => ({}));
 
 // Mock CSS module
 vi.mock("../ArticleLayout.module.css", () => ({
@@ -253,12 +257,7 @@ vi.mock("../ArticleNavButton", () => ({
       "data-testid": `${debugId || "test-id"}-article-nav-button-root`,
     };
     return (
-      <button
-        data-testid="mock-article-nav-button"
-        data-debug-mode={debugMode ? "true" : undefined}
-        {...componentProps}
-        {...props}
-      >
+      <button {...componentProps} {...props}>
         <svg data-testid="arrow-left-icon" />
       </button>
     );
