@@ -1,12 +1,12 @@
 // ============================================================================
-// SHARED ARTICLE COMPONENT I18N LABELS
+// ARTICLE COMPONENT INTERNATIONALIZATION
 // ============================================================================
 
-/** `ArticleComponentLabels` type. */
-export type ArticleComponentLabels = Readonly<Record<string, string>>;
+/** `ArticleI18n` type. */
+export type ArticleI18n = Readonly<Record<string, string>>;
 
-/** `ARTICLE_COMPONENT_LABELS` object. */
-export const ARTICLE_COMPONENT_LABELS = {
+/** `ARTICLE_I18N` object. */
+export const ARTICLE_I18N = {
   cta: "Read article",
   goBackToArticles: "Go back to articles",
   invalidArticleData: "Invalid article data",
@@ -19,4 +19,5 @@ export const ARTICLE_COMPONENT_LABELS = {
   articlePublished: "Publication date",
   articleList: "Article list",
   articles: "Articles",
-} as const satisfies ArticleComponentLabels;
+  // Note: Error handling is managed by Next.js App Router
+} as const satisfies ArticleI18n;

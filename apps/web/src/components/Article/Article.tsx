@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useMemo } from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
@@ -8,7 +10,16 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./data";
+import { ARTICLE_I18N } from "./constants/Article.i18n";
+
+// ============================================================================
+// COMPONENT CLASSIFICATION: Presentational Component
+// - Type: Orchestrator (uses Card compound component)
+// - Testing: Unit tests only (integration tested at Card level)
+// - Structure: Flat (no internal sub-components)
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Uses ArticleWithSlug type (Sanity integration planned for later)
+// ============================================================================
 
 // ============================================================================
 // ARTICLE COMPONENT TYPES & INTERFACES
@@ -42,12 +53,33 @@ const BaseArticle: ArticleComponent = setDisplayName(
       debugMode,
     });
 
+    // Optimized data processing with useMemo (must be before early returns)
+    const articleData = useMemo(() => {
+      if (
+        !article ||
+        !article.title ||
+        !article.slug ||
+        !article.date ||
+        !article.description
+      ) {
+        return null;
+      }
+
+      return {
+        title: article.title.trim(),
+        slug: encodeURIComponent(`/articles/${article.slug.trim()}`),
+        date: article.date.trim(),
+        description: article.description.trim(),
+        formattedDate: formatDateSafely(article.date.trim()),
+      };
+    }, [article?.title, article?.slug, article?.date, article?.description]);
+
     if (!article) return null;
 
     const isValidArticleData = validateArticle(article);
     if (!isValidArticleData) {
       logger.warn(
-        `${(BaseArticle as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+        `${(BaseArticle as unknown as { displayName: string }).displayName}: ${ARTICLE_I18N.invalidArticleData}`,
         {
           article,
         }
@@ -56,13 +88,6 @@ const BaseArticle: ArticleComponent = setDisplayName(
       return null;
     }
 
-    const articleData = {
-      title: article.title.trim(),
-      slug: encodeURIComponent(`/articles/${article.slug.trim()}`),
-      date: article.date.trim(),
-      description: article.description.trim(),
-    };
-
     const element = (
       <Card
         {...rest}
@@ -70,17 +95,17 @@ const BaseArticle: ArticleComponent = setDisplayName(
         debugId={componentId}
         debugMode={isDebugMode}
         aria-labelledby={
-          articleData.title.length > 0
+          articleData?.title && articleData.title.length > 0
             ? `${componentId}-base-article-card-title`
             : undefined
         }
         aria-describedby={
-          articleData.description.length > 0
+          articleData?.description && articleData.description.length > 0
             ? `${componentId}-base-article-card-description`
             : undefined
         }
       >
-        {articleData.title.length > 0 ? (
+        {articleData?.title && articleData.title.length > 0 ? (
           <Card.Title
             id={`${componentId}-base-article-card-title`}
             href={articleData.slug}
@@ -92,7 +117,8 @@ const BaseArticle: ArticleComponent = setDisplayName(
           </Card.Title>
         ) : null}
 
-        {articleData.date.length > 0 &&
+        {articleData?.date &&
+        articleData.date.length > 0 &&
         !isNaN(new Date(articleData.date).getTime()) ? (
           <Card.Eyebrow
             as="time"
@@ -100,14 +126,14 @@ const BaseArticle: ArticleComponent = setDisplayName(
             dateTime={articleData.date}
             debugId={componentId}
             debugMode={isDebugMode}
-            aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDateSafely(articleData.date)}`}
+            aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
             decorate
           >
-            {formatDateSafely(articleData.date)}
+            {articleData.formattedDate}
           </Card.Eyebrow>
         ) : null}
 
-        {articleData.description.length > 0 ? (
+        {articleData?.description && articleData.description.length > 0 ? (
           <Card.Description
             id={`${componentId}-base-article-card-description`}
             debugId={componentId}
@@ -122,9 +148,9 @@ const BaseArticle: ArticleComponent = setDisplayName(
           id={`${componentId}-base-article-card-cta`}
           debugId={componentId}
           debugMode={isDebugMode}
-          aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${articleData.title || "Article"}`}
+          aria-label={`${ARTICLE_I18N.cta}: ${articleData?.title || "Article"}`}
         >
-          {ARTICLE_COMPONENT_LABELS.cta}
+          {ARTICLE_I18N.cta}
         </Card.Cta>
       </Card>
     );
@@ -137,8 +163,17 @@ const BaseArticle: ArticleComponent = setDisplayName(
 // MEMOIZED ARTICLE COMPONENT
 // ============================================================================
 
-/** A memoized article component. */
-const MemoizedArticle = React.memo(BaseArticle);
+/** A memoized article component with custom comparison. */
+const MemoizedArticle = React.memo(BaseArticle, (prevProps, nextProps) => {
+  // Only re-render if article data actually changes
+  return (
+    prevProps.article === nextProps.article ||
+    (prevProps.article?.title === nextProps.article?.title &&
+      prevProps.article?.slug === nextProps.article?.slug &&
+      prevProps.article?.date === nextProps.article?.date &&
+      prevProps.article?.description === nextProps.article?.description)
+  );
+});
 
 // ============================================================================
 // MAIN ARTICLE COMPONENT
