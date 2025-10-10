@@ -95,8 +95,8 @@ vi.mock("../ArticleNavButton.module.css", () => ({
   },
 }));
 
-vi.mock("@web/components/_shared", () => ({
-  ARTICLE_COMPONENT_LABELS: {
+vi.mock("../constants/Article.i18n", () => ({
+  ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
     articleContent: "Article content",
@@ -104,6 +104,10 @@ vi.mock("@web/components/_shared", () => ({
     articleHeader: "Article header",
     articleTitle: "Article title",
     articleDate: "Published on",
+    articlePublished: "Publication date",
+    articleList: "Article list",
+    articles: "Articles",
+    invalidArticleData: "Invalid article data",
   },
 }));
 

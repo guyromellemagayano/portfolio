@@ -38,8 +38,8 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock shared labels
-vi.mock("@web/components/_shared", () => ({
-  ARTICLE_COMPONENT_LABELS: {
+vi.mock("../constants/Article.i18n", () => ({
+  ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
     articleContent: "Article content",
@@ -50,6 +50,7 @@ vi.mock("@web/components/_shared", () => ({
     articlePublished: "Publication date",
     articleList: "Article list",
     articles: "Articles",
+    invalidArticleData: "Invalid article data",
   },
 }));
 
