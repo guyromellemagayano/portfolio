@@ -14,7 +14,15 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./data";
+import { ARTICLE_I18N } from "./constants/Article.i18n";
+
+// ============================================================================
+// COMPONENT CLASSIFICATION: Presentational Component
+// - Type: Presentational (pure display, no sub-components)
+// - Testing: Unit tests only
+// - Structure: Single file + tests
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// ============================================================================
 
 // ============================================================================
 // ARTICLE NAVIGATION BUTTON COMPONENT TYPES & INTERFACES
@@ -50,7 +58,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
           "group articleNavButtondark:hover:ring-white/20 mb-8 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-md ring-1 shadow-zinc-800/5 ring-zinc-900/5 transition lg:absolute lg:-left-5 lg:-mt-2 lg:mb-0 xl:-top-1.5 xl:left-0 xl:mt-0 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0 dark:ring-white/10 dark:hover:border-zinc-700",
           className
         )}
-        aria-label={ARTICLE_COMPONENT_LABELS.goBackToArticles}
+        aria-label={ARTICLE_I18N.goBackToArticles}
         aria-describedby={`${debugId}-nav-button-description`}
         onClick={() => router.back()}
         {...createComponentProps(debugId, "article-nav-button", debugMode)}
@@ -66,7 +74,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
           className="sr-only"
           aria-hidden="true"
         >
-          {ARTICLE_COMPONENT_LABELS.goBackToArticles}
+          {ARTICLE_I18N.goBackToArticles}
         </span>
       </button>
     );
