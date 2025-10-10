@@ -12,7 +12,15 @@ import {
 import { Card } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
-import { ARTICLE_COMPONENT_LABELS } from "./data";
+import { ARTICLE_I18N } from "./constants/Article.i18n";
+
+// ============================================================================
+// COMPONENT CLASSIFICATION: Presentational Component
+// - Type: Orchestrator (uses Card compound component)
+// - Testing: Unit tests only (integration tested at Card level)
+// - Structure: Flat (no internal sub-components)
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// ============================================================================
 
 // ============================================================================
 // ARTICLE LIST ITEM COMPONENT TYPES & INTERFACES
@@ -60,7 +68,7 @@ const BaseArticleListItem = setDisplayName(
       const isValidArticleData = validateArticle(article);
       if (!isValidArticleData) {
         logger.warn(
-          `${(ArticleListItem as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+          `${(ArticleListItem as unknown as { displayName: string }).displayName}: ${ARTICLE_I18N.invalidArticleData}`,
           {
             article,
           }
@@ -121,7 +129,7 @@ const BaseArticleListItem = setDisplayName(
                   id={`${componentId}-article-list-item-card-date`}
                   debugId={componentId}
                   debugMode={isDebugMode}
-                  aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDateSafely(articleData.date)}`}
+                  aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
                   decorate
                 >
                   {formatDateSafely(articleData.date)}
@@ -143,9 +151,9 @@ const BaseArticleListItem = setDisplayName(
                 id={`${componentId}-article-list-item-card-cta`}
                 debugId={componentId}
                 debugMode={isDebugMode}
-                aria-label={`${ARTICLE_COMPONENT_LABELS.cta}: ${articleData.title || ARTICLE_COMPONENT_LABELS.articleItem}`}
+                aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || ARTICLE_I18N.articleItem}`}
               >
-                {ARTICLE_COMPONENT_LABELS.cta}
+                {ARTICLE_I18N.cta}
               </Card.Cta>
             </Card>
           );

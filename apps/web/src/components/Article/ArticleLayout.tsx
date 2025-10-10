@@ -13,7 +13,16 @@ import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
 import { ArticleNavButton } from "./ArticleNavButton";
-import { ARTICLE_COMPONENT_LABELS } from "./data";
+import { ARTICLE_I18N } from "./constants/Article.i18n";
+
+// ============================================================================
+// COMPONENT CLASSIFICATION: Orchestrator Component
+// - Type: Orchestrator (coordinates multiple independent components)
+// - Testing: Unit tests only (integration happens at parent level)
+// - Structure: Flat (imports other components)
+// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
+// - Data Source: Uses ArticleWithSlug type (Sanity integration planned for later)
+// ============================================================================
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
@@ -49,7 +58,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
     const isValidArticleData = validateArticle(article);
     if (!isValidArticleData) {
       logger.warn(
-        `${(BaseArticleLayout as unknown as { displayName: string }).displayName}: ${ARTICLE_COMPONENT_LABELS.invalidArticleData}`,
+        `${(BaseArticleLayout as unknown as { displayName: string }).displayName}: ${ARTICLE_I18N.invalidArticleData}`,
         {
           article,
         }
@@ -68,19 +77,19 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
         className={cn("mt-16 lg:mt-32", className)}
         debugId={debugId}
         debugMode={debugMode}
-        aria-label={ARTICLE_COMPONENT_LABELS.articleLayout}
+        aria-label={ARTICLE_I18N.articleLayout}
         aria-labelledby={`${componentId}-article-layout-heading`}
       >
         <div
           role="region"
           className="xl:relative"
-          aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
+          aria-label={ARTICLE_I18N.articleContent}
           {...createComponentProps(componentId, "article-wrapper", isDebugMode)}
         >
           <div
             role="region"
             className="mx-auto max-w-2xl"
-            aria-label={ARTICLE_COMPONENT_LABELS.articleLayout}
+            aria-label={ARTICLE_I18N.articleLayout}
             {...createComponentProps(
               componentId,
               "article-content",
@@ -109,7 +118,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                   role="banner"
                   id={`${componentId}-article-header`}
                   className="flex flex-col"
-                  aria-label={ARTICLE_COMPONENT_LABELS.articleHeader}
+                  aria-label={ARTICLE_I18N.articleHeader}
                   {...createComponentProps(
                     componentId,
                     "article-header",
@@ -136,7 +145,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                       id={`${componentId}-article-date`}
                       className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                       dateTime={articleData.date}
-                      aria-label={`${ARTICLE_COMPONENT_LABELS.articleDate} ${formatDateSafely(articleData.date)}`}
+                      aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
                       {...createComponentProps(
                         componentId,
                         "article-date",
@@ -154,7 +163,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                       />
                       <span
                         className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
-                        aria-label={ARTICLE_COMPONENT_LABELS.articlePublished}
+                        aria-label={ARTICLE_I18N.articlePublished}
                         {...createComponentProps(
                           componentId,
                           "date-text",
@@ -172,7 +181,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                     role="region"
                     id={`${componentId}-article-prose`}
                     className="mx-auto max-w-2xl"
-                    aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
+                    aria-label={ARTICLE_I18N.articleContent}
                     aria-labelledby={
                       articleData.title.length > 0
                         ? `${componentId}-article-title`
@@ -190,7 +199,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                 role="region"
                 id={`${componentId}-article-prose`}
                 className="mx-auto max-w-2xl"
-                aria-label={ARTICLE_COMPONENT_LABELS.articleContent}
+                aria-label={ARTICLE_I18N.articleContent}
                 debugId={componentId}
                 debugMode={debugMode}
               >
