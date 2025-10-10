@@ -36,12 +36,10 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-container-inner`}
         className={cn("relative px-4 sm:px-8 lg:px-12", className)}
         {...createComponentProps(componentId, "container-inner", isDebugMode)}
       >
         <div
-          id={`${componentId}-container-inner-content`}
           className="mx-auto max-w-2xl lg:max-w-5xl"
           {...createComponentProps(
             componentId,
