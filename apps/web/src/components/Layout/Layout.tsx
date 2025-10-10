@@ -41,16 +41,17 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
   });
 
   const element = (
-    <>
+    <div
+      {...rest}
+      className={cn("flex w-full", className)}
+      {...createComponentProps(componentId, "layout-root", isDebugMode)}
+    >
       <div
-        {...rest}
-        id={`${componentId}-layout-root`}
-        className={cn("fixed inset-0 flex justify-center sm:px-8", className)}
+        className="fixed inset-0 flex justify-center sm:px-8"
         {...createComponentProps(componentId, "layout", isDebugMode)}
       >
         <Link
           href={`#${componentId}-layout-main`}
-          id={`${componentId}-layout-link`}
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900"
           aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
           {...createComponentProps(componentId, "link", isDebugMode)}
@@ -58,7 +59,6 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
         </Link>
         <div
-          id={`${componentId}-layout-background-wrapper`}
           className="flex w-full max-w-7xl lg:px-8"
           {...createComponentProps(
             componentId,
@@ -67,7 +67,6 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           )}
         >
           <div
-            id={`${componentId}-layout-background-content`}
             className="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20"
             {...createComponentProps(
               componentId,
@@ -78,7 +77,6 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
         </div>
       </div>
       <div
-        id={`${componentId}-layout-content-wrapper`}
         className="relative flex w-full flex-col"
         {...createComponentProps(
           componentId,
@@ -86,7 +84,7 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           isDebugMode
         )}
       >
-        <Header role="banner" debugId={componentId} debugMode={isDebugMode} />
+        <Header role="banner" />
         <main
           role="main"
           id={`${componentId}-layout-main`}
@@ -95,13 +93,9 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
         >
           {children}
         </main>
-        <Footer
-          role="contentinfo"
-          debugId={componentId}
-          debugMode={isDebugMode}
-        />
+        <Footer role="contentinfo" />
       </div>
-    </>
+    </div>
   );
 
   return element;
