@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ArticleBase } from "../ArticleBase";
+import { Article } from "../Article";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -152,15 +152,10 @@ vi.mock("@web/components/_shared", () => ({
     articles: "Articles",
     invalidArticleData: "Invalid article data",
   },
-  ArticleBaseComponent: vi.fn(),
+  ArticleComponent: vi.fn(),
 }));
 
-// Mock CSS module
-vi.mock("../ArticleBase.module.css", () => ({
-  default: { articleBaseContainer: "articleBaseContainer" },
-}));
-
-describe("ArticleBase", () => {
+describe("Article", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -178,7 +173,7 @@ describe("ArticleBase", () => {
 
   describe("Basic Rendering", () => {
     it("renders article correctly", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
       expect(
@@ -188,21 +183,21 @@ describe("ArticleBase", () => {
     });
 
     it("renders as article element", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement.tagName).toBe("ARTICLE");
     });
 
     it("applies custom className", () => {
-      render(<ArticleBase article={mockArticle} className="custom-class" />);
+      render(<Article article={mockArticle} className="custom-class" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
-      render(<ArticleBase article={mockArticle} aria-label="Article" />);
+      render(<Article article={mockArticle} aria-label="Article" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("aria-label", "Article");
@@ -211,7 +206,7 @@ describe("ArticleBase", () => {
 
   describe("Article Content", () => {
     it("renders article title as Card.Title with correct href", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const titleElement = screen.getByTestId("mock-card-title");
       expect(titleElement).toBeInTheDocument();
@@ -219,7 +214,7 @@ describe("ArticleBase", () => {
     });
 
     it("renders article description as Card.Description", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(
         screen.getByText("This is a test article description")
@@ -227,7 +222,7 @@ describe("ArticleBase", () => {
     });
 
     it("renders formatted date as Card.Eyebrow with time element", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrowElement).toBeInTheDocument();
@@ -235,7 +230,7 @@ describe("ArticleBase", () => {
     });
 
     it("renders CTA button with correct text", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByText("Read article")).toBeInTheDocument();
     });
@@ -243,35 +238,33 @@ describe("ArticleBase", () => {
 
   describe("Content Rendering", () => {
     it("does not render with null article", () => {
-      const { container } = render(<ArticleBase article={null as any} />);
+      const { container } = render(<Article article={null as any} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render with undefined article", () => {
-      const { container } = render(<ArticleBase article={undefined as any} />);
+      const { container } = render(<Article article={undefined as any} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render with empty object (validation fails)", () => {
-      const { container } = render(<ArticleBase article={{} as any} />);
+      const { container } = render(<Article article={{} as any} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("conditionally renders title when present", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
     });
 
     it("does not render when title is empty (validation fails)", () => {
       const articleWithoutTitle = { ...mockArticle, title: "" };
-      const { container } = render(
-        <ArticleBase article={articleWithoutTitle} />
-      );
+      const { container } = render(<Article article={articleWithoutTitle} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("conditionally renders description when present", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
       expect(
         screen.getByText("This is a test article description")
       ).toBeInTheDocument();
@@ -280,50 +273,44 @@ describe("ArticleBase", () => {
     it("does not render when description is empty (validation fails)", () => {
       const articleWithoutDescription = { ...mockArticle, description: "" };
       const { container } = render(
-        <ArticleBase article={articleWithoutDescription} />
+        <Article article={articleWithoutDescription} />
       );
       expect(container.firstChild).toBeNull();
     });
 
     it("conditionally renders date when present", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
       expect(screen.getByText("1/1/2023")).toBeInTheDocument();
     });
 
     it("does not render when date is empty (validation fails)", () => {
       const articleWithoutDate = { ...mockArticle, date: "" };
-      const { container } = render(
-        <ArticleBase article={articleWithoutDate} />
-      );
+      const { container } = render(<Article article={articleWithoutDate} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("conditionally renders title link when slug is present", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
       const titleLink = screen.getByRole("link");
       expect(titleLink).toHaveAttribute("href", "%2Farticles%2Ftest-article");
     });
 
     it("does not render when slug is empty (validation fails)", () => {
       const articleWithoutSlug = { ...mockArticle, slug: "" };
-      const { container } = render(
-        <ArticleBase article={articleWithoutSlug} />
-      );
+      const { container } = render(<Article article={articleWithoutSlug} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render with minimal article (validation fails)", () => {
       const minimalArticle = { title: "", description: "", date: "", slug: "" };
-      const { container } = render(
-        <ArticleBase article={minimalArticle as any} />
-      );
+      const { container } = render(<Article article={minimalArticle as any} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render when title is only whitespace (validation fails)", () => {
       const articleWithWhitespaceTitle = { ...mockArticle, title: "   \n\t  " };
       const { container } = render(
-        <ArticleBase article={articleWithWhitespaceTitle} />
+        <Article article={articleWithWhitespaceTitle} />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -334,7 +321,7 @@ describe("ArticleBase", () => {
         description: "   \n\t  ",
       };
       const { container } = render(
-        <ArticleBase article={articleWithWhitespaceDescription} />
+        <Article article={articleWithWhitespaceDescription} />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -342,7 +329,7 @@ describe("ArticleBase", () => {
     it("does not render when date is only whitespace (validation fails)", () => {
       const articleWithWhitespaceDate = { ...mockArticle, date: "   \n\t  " };
       const { container } = render(
-        <ArticleBase article={articleWithWhitespaceDate} />
+        <Article article={articleWithWhitespaceDate} />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -350,7 +337,7 @@ describe("ArticleBase", () => {
     it("does not render when slug is only whitespace (validation fails)", () => {
       const articleWithWhitespaceSlug = { ...mockArticle, slug: "   \n\t  " };
       const { container } = render(
-        <ArticleBase article={articleWithWhitespaceSlug} />
+        <Article article={articleWithWhitespaceSlug} />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -361,7 +348,7 @@ describe("ArticleBase", () => {
         title: null,
         slug: null,
       } as any;
-      const { container } = render(<ArticleBase article={articleWithNulls} />);
+      const { container } = render(<Article article={articleWithNulls} />);
       expect(container.firstChild).toBeNull();
     });
 
@@ -371,15 +358,13 @@ describe("ArticleBase", () => {
         title: undefined,
         slug: undefined,
       } as any;
-      const { container } = render(
-        <ArticleBase article={articleWithUndefineds} />
-      );
+      const { container } = render(<Article article={articleWithUndefineds} />);
       expect(container.firstChild).toBeNull();
     });
 
     it("does not render with non-object article", () => {
       const { container } = render(
-        <ArticleBase article={"not-an-object" as any} />
+        <Article article={"not-an-object" as any} />
       );
       expect(container.firstChild).toBeNull();
     });
@@ -387,14 +372,14 @@ describe("ArticleBase", () => {
     it("does not render when date is invalid (validation fails)", () => {
       const articleWithInvalidDate = { ...mockArticle, date: "invalid-date" };
       const { container } = render(
-        <ArticleBase article={articleWithInvalidDate} />
+        <Article article={articleWithInvalidDate} />
       );
       expect(container.firstChild).toBeNull();
     });
 
     it("encodes special characters in slug URLs", () => {
       const articleWithSpecialSlug = { ...mockArticle, slug: "test & article" };
-      render(<ArticleBase article={articleWithSpecialSlug} />);
+      render(<Article article={articleWithSpecialSlug} />);
       const titleLink = screen.getByRole("link");
       expect(titleLink).toHaveAttribute(
         "href",
@@ -410,7 +395,7 @@ describe("ArticleBase", () => {
         slug: "  valid-slug  ",
         date: "  2023-01-01  ",
       };
-      render(<ArticleBase article={articleWithMixedWhitespace} />);
+      render(<Article article={articleWithMixedWhitespace} />);
 
       // Component trims whitespace, so expect the trimmed versions
       expect(screen.getByText("Valid Title")).toBeInTheDocument();
@@ -430,7 +415,7 @@ describe("ArticleBase", () => {
         date: undefined as any,
       };
       const { container } = render(
-        <ArticleBase article={articleWithDifferentTypes} />
+        <Article article={articleWithDifferentTypes} />
       );
 
       // Should not render at all since validation fails
@@ -440,7 +425,7 @@ describe("ArticleBase", () => {
 
   describe("useComponentId Integration", () => {
     it("calls useComponentId with correct parameters", () => {
-      render(<ArticleBase article={mockArticle} debugMode={true} />);
+      render(<Article article={mockArticle} debugMode={true} />);
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
         debugMode: true,
@@ -448,7 +433,7 @@ describe("ArticleBase", () => {
     });
 
     it("calls useComponentId with debugId parameter", () => {
-      render(<ArticleBase article={mockArticle} debugId="custom-id" />);
+      render(<Article article={mockArticle} debugId="custom-id" />);
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
         debugId: "custom-id",
@@ -457,7 +442,7 @@ describe("ArticleBase", () => {
     });
 
     it("calls useComponentId with undefined parameters", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
         debugMode: undefined,
@@ -470,7 +455,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
     });
@@ -483,7 +468,7 @@ describe("ArticleBase", () => {
         isDebugMode: true,
       });
 
-      render(<ArticleBase article={mockArticle} debugMode={true} />);
+      render(<Article article={mockArticle} debugMode={true} />);
 
       // Test that the component renders correctly with debug mode
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
@@ -498,7 +483,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       // Test that the component renders correctly without debug mode
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
@@ -510,19 +495,19 @@ describe("ArticleBase", () => {
 
   describe("Memoization", () => {
     it("renders non-memoized component by default", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
     });
 
     it("renders memoized component when isMemoized is true", () => {
-      render(<ArticleBase article={mockArticle} isMemoized={true} />);
+      render(<Article article={mockArticle} isMemoized={true} />);
 
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
     });
 
     it("renders non-memoized component when isMemoized is false", () => {
-      render(<ArticleBase article={mockArticle} isMemoized={false} />);
+      render(<Article article={mockArticle} isMemoized={false} />);
 
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
     });
@@ -530,20 +515,13 @@ describe("ArticleBase", () => {
 
   describe("Component Structure", () => {
     it("renders with correct Card structure", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-eyebrow")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-description")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
-    });
-
-    it("applies correct CSS classes", () => {
-      render(<ArticleBase article={mockArticle} className="custom-class" />);
-
-      const articleElement = screen.getByTestId("mock-card");
-      expect(articleElement).toHaveClass("custom-class");
     });
   });
 
@@ -554,7 +532,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
     });
@@ -565,7 +543,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="custom-id" />);
+      render(<Article article={mockArticle} debugId="custom-id" />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
     });
@@ -574,14 +552,14 @@ describe("ArticleBase", () => {
   describe("Ref Forwarding", () => {
     it("forwards ref correctly", () => {
       const ref = React.createRef<HTMLElement>();
-      render(<ArticleBase article={mockArticle} ref={ref} />);
+      render(<Article article={mockArticle} ref={ref} />);
 
       expect(ref.current).toBeInTheDocument();
     });
 
     it("ref points to correct element", () => {
       const ref = React.createRef<HTMLElement>();
-      render(<ArticleBase article={mockArticle} ref={ref} />);
+      render(<Article article={mockArticle} ref={ref} />);
 
       expect(ref.current?.tagName).toBe("ARTICLE");
     });
@@ -594,7 +572,7 @@ describe("ArticleBase", () => {
         title: "Special chars: &lt;&gt;&amp;",
       };
 
-      render(<ArticleBase article={specialArticle} />);
+      render(<Article article={specialArticle} />);
 
       expect(
         screen.getByText("Special chars: &lt;&gt;&amp;")
@@ -607,7 +585,7 @@ describe("ArticleBase", () => {
         description: "Description with &lt;&gt;&amp;",
       };
 
-      render(<ArticleBase article={specialArticle} />);
+      render(<Article article={specialArticle} />);
 
       expect(
         screen.getByText("Description with &lt;&gt;&amp;")
@@ -620,7 +598,7 @@ describe("ArticleBase", () => {
         title: "A".repeat(200),
       };
 
-      render(<ArticleBase article={longTitleArticle} />);
+      render(<Article article={longTitleArticle} />);
 
       expect(screen.getByText("A".repeat(200))).toBeInTheDocument();
     });
@@ -631,7 +609,7 @@ describe("ArticleBase", () => {
         description: "B".repeat(500),
       };
 
-      render(<ArticleBase article={longDescArticle} />);
+      render(<Article article={longDescArticle} />);
 
       expect(screen.getByText("B".repeat(500))).toBeInTheDocument();
     });
@@ -639,7 +617,7 @@ describe("ArticleBase", () => {
 
   describe("Date Formatting", () => {
     it("renders formatted date", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       expect(screen.getByText("1/1/2023")).toBeInTheDocument();
     });
@@ -650,7 +628,7 @@ describe("ArticleBase", () => {
         date: "2023-12-25",
       };
 
-      render(<ArticleBase article={differentDateArticle} />);
+      render(<Article article={differentDateArticle} />);
 
       expect(screen.getByText("12/25/2023")).toBeInTheDocument();
     });
@@ -658,7 +636,7 @@ describe("ArticleBase", () => {
 
   describe("Article Slug Integration", () => {
     it("uses article slug for title link", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const titleLink = screen.getByRole("link");
       expect(titleLink).toHaveAttribute("href", "%2Farticles%2Ftest-article");
@@ -670,7 +648,7 @@ describe("ArticleBase", () => {
         slug: "different-article-slug",
       };
 
-      render(<ArticleBase article={differentSlugArticle} />);
+      render(<Article article={differentSlugArticle} />);
 
       const titleLink = screen.getByRole("link");
       expect(titleLink).toHaveAttribute(
@@ -689,7 +667,7 @@ describe("ArticleBase", () => {
       };
 
       render(
-        <ArticleBase
+        <Article
           article={complexArticle}
           className="performance-test"
           debugId="perf-test"
@@ -705,7 +683,7 @@ describe("ArticleBase", () => {
     });
 
     it("handles dynamic article updates efficiently", () => {
-      const { rerender } = render(<ArticleBase article={mockArticle} />);
+      const { rerender } = render(<Article article={mockArticle} />);
 
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
 
@@ -715,7 +693,7 @@ describe("ArticleBase", () => {
         description: "Updated description",
       };
 
-      rerender(<ArticleBase article={updatedArticle} />);
+      rerender(<Article article={updatedArticle} />);
 
       expect(screen.getByText("Updated Article Title")).toBeInTheDocument();
       expect(screen.getByText("Updated description")).toBeInTheDocument();
@@ -723,12 +701,12 @@ describe("ArticleBase", () => {
 
     it("handles isMemoized prop changes efficiently", () => {
       const { rerender } = render(
-        <ArticleBase article={mockArticle} isMemoized={false} />
+        <Article article={mockArticle} isMemoized={false} />
       );
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
 
-      rerender(<ArticleBase article={mockArticle} isMemoized={true} />);
+      rerender(<Article article={mockArticle} isMemoized={true} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
     });
@@ -736,14 +714,14 @@ describe("ArticleBase", () => {
 
   describe("Accessibility", () => {
     it("renders with proper semantic structure", () => {
-      render(<ArticleBase article={mockArticle} />);
+      render(<Article article={mockArticle} />);
 
       const articleElements = screen.getAllByRole("article");
       expect(articleElements).toHaveLength(1); // just the card
     });
 
     it("supports aria attributes", () => {
-      render(<ArticleBase article={mockArticle} aria-label="Custom Article" />);
+      render(<Article article={mockArticle} aria-label="Custom Article" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("aria-label", "Custom Article");
@@ -755,7 +733,7 @@ describe("ArticleBase", () => {
     });
 
     it("supports role attribute", () => {
-      render(<ArticleBase article={mockArticle} role="listitem" />);
+      render(<Article article={mockArticle} role="listitem" />);
 
       const articleElement = screen.getByTestId("mock-card");
       // Component now has hardcoded role="article" for accessibility
@@ -770,7 +748,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Test article role
       const articleElement = screen.getByRole("article");
@@ -787,7 +765,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       const articleElement = screen.getByRole("article");
 
@@ -810,7 +788,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Title should have unique ID
       const titleElement = screen.getByRole("heading", { level: 1 });
@@ -835,7 +813,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Date element should have descriptive label
       const dateElement = screen.getByText("1/1/2023").closest("time");
@@ -858,7 +836,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       const titleElement = screen.getByRole("heading", { level: 1 });
       expect(titleElement).toHaveAttribute("aria-level", "1");
@@ -872,7 +850,7 @@ describe("ArticleBase", () => {
 
       const articleWithoutTitle = { ...mockArticle, title: "" };
       const { container } = render(
-        <ArticleBase article={articleWithoutTitle} debugId="aria-test" />
+        <Article article={articleWithoutTitle} debugId="aria-test" />
       );
 
       // Should not render at all since validation fails
@@ -887,7 +865,7 @@ describe("ArticleBase", () => {
 
       const articleWithoutDescription = { ...mockArticle, description: "" };
       const { container } = render(
-        <ArticleBase article={articleWithoutDescription} debugId="aria-test" />
+        <Article article={articleWithoutDescription} debugId="aria-test" />
       );
 
       // Should not render at all since validation fails
@@ -906,7 +884,7 @@ describe("ArticleBase", () => {
         description: "",
       };
       const { container } = render(
-        <ArticleBase
+        <Article
           article={articleWithoutTitleAndDescription}
           debugId="aria-test"
         />
@@ -922,7 +900,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="custom-aria-id" />);
+      render(<Article article={mockArticle} debugId="custom-aria-id" />);
 
       const titleElement = screen.getByRole("heading", { level: 1 });
       const descriptionElement = screen.getByText(
@@ -956,7 +934,7 @@ describe("ArticleBase", () => {
       });
 
       const { rerender } = render(
-        <ArticleBase article={mockArticle} debugId="aria-test" />
+        <Article article={mockArticle} debugId="aria-test" />
       );
 
       // Initial render
@@ -968,7 +946,7 @@ describe("ArticleBase", () => {
 
       // Update with different article
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
-      rerender(<ArticleBase article={updatedArticle} debugId="aria-test" />);
+      rerender(<Article article={updatedArticle} debugId="aria-test" />);
 
       // ARIA attributes should be maintained
       articleElement = screen.getByRole("article");
@@ -985,7 +963,7 @@ describe("ArticleBase", () => {
         isDebugMode: false,
       });
 
-      render(<ArticleBase article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Should have article landmark
       const articleElement = screen.getByRole("article");
@@ -1013,7 +991,7 @@ describe("ArticleBase", () => {
         date: "",
       };
       const { container } = render(
-        <ArticleBase article={articleWithPartialContent} debugId="aria-test" />
+        <Article article={articleWithPartialContent} debugId="aria-test" />
       );
 
       // Should not render at all since validation fails
