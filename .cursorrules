@@ -203,6 +203,108 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 - **Documentation**: Document ARIA implementation decisions and patterns
 - **Validation**: Use accessibility testing tools to validate ARIA implementation
 
+## Enterprise Component Architecture Standards
+
+### Component Classification
+
+1. **Compound Components**: Main component with orchestrated sub-components
+   - Structure: `_internal/` folder with sub-components
+   - Tests: Both unit AND integration tests
+   - Example: Card, Tabs, Accordion
+
+2. **Orchestrator Components**: Coordinates multiple independent components
+   - Structure: Flat, imports other components
+   - Tests: Unit tests only (integration happens at parent level)
+   - Example: ArticleLayout, DashboardView
+
+3. **Presentational Components**: Pure display, no sub-components
+   - Structure: Single file + tests + `constants/Component.i18n.ts`
+   - Tests: Unit tests only
+   - Example: Article, Button, Badge
+   - **i18n**: Always include `constants/Component.i18n.ts` for labels
+
+4. **Utility Components**: Wrappers around primitives
+   - Structure: Single file
+   - Tests: Basic unit tests (60% coverage acceptable)
+   - Example: Container, Section, Grid
+
+### Scalable Folder Structure
+
+#### For Compound Components (with sub-components)
+
+```bash
+components/Component/
+├── Component.tsx              # Main component
+├── index.ts                   # Public exports
+├── __tests__/
+│   ├── Component.test.tsx
+│   └── Component.integration.test.tsx
+├── _types/                    # Shared types (main + internal)
+│   ├── index.ts
+│   └── Component.types.ts
+├── _internal/                 # Sub-components
+│   ├── index.ts
+│   ├── SubComponent/
+│   │   ├── SubComponent.tsx
+│   │   ├── SubComponent.module.css
+│   │   └── __tests__/
+│   └── _types/               # Internal-only types
+│       ├── index.ts
+│       └── Internal.types.ts
+├── _data/                    # Constants, labels, defaults
+│   ├── index.ts
+│   ├── Component.data.ts
+│   └── Component.i18n.ts
+└── _queries/                 # GraphQL/API (if needed)
+    ├── index.ts
+    ├── Component.queries.ts
+    └── Component.mutations.ts
+```
+
+#### For Orchestrator/Presentational Components (no sub-components)
+
+```bash
+components/Component/
+├── Component.tsx              # Main component
+├── Component.module.css
+├── index.ts
+├── __tests__/
+│   └── Component.test.tsx    # Unit tests only
+├── constants/
+│   └── Component.i18n.ts     # Internationalization labels
+└── _data/                    # Optional: if shared data/types
+    ├── index.ts
+    ├── Component.data.ts
+    └── Component.types.ts
+```
+
+### Type Organization Rules
+
+- **Inline types**: Component-specific interfaces in component file (default)
+- **`_types/`**: Only when types shared between main + internal sub-components
+- **`_data/Component.types.ts`**: Only when types shared across multiple components
+- **Never**: Separate `.types.ts` for single-component types
+
+### Data Organization Rules
+
+- **`_data/Component.data.ts`**: Constants, defaults, configuration
+- **`_data/Component.i18n.ts`**: Internationalization labels (use dot notation: `Component.i18n.ts`) (use dot notation: `Component.i18n.ts`)
+- **`_data/Component.types.ts`**: Types shared across multiple components
+- **`_queries/`**: GraphQL queries/mutations (separate from data)
+- **Never**: Business logic, API calls, or complex transformations in `_data/`
+
+### Web App Specific Data Organization (Sanity CMS)
+
+For `@web/` components using Sanity CMS:
+
+- **`_queries/Component.queries.ts`**: GROQ queries for Sanity data fetching
+- **`_queries/Component.fragments.ts`**: Reusable GROQ fragments
+- **`_queries/Component.mutations.ts`**: Sanity mutations (if needed)
+- **`_types/Component.types.ts`**: Sanity document types and component interfaces
+- **`_data/Component.data.ts`**: Static constants, labels, defaults
+- **`_data/Component.i18n.ts`**: Internationalization labels (use dot notation: `Component.i18n.ts`)
+- **Never**: GROQ queries in component files - always in `_queries/`
+
 ## File Structure Standards
 
 ```bash
@@ -322,6 +424,79 @@ components/ComponentName/
       };
   ```
 
+## Internationalization (i18n) Standards
+
+### File Naming Conventions
+
+- **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
+- **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
+- **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
+- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+
+### i18n File Structure
+
+```typescript
+// ============================================================================
+// COMPONENT INTERNATIONALIZATION
+// ============================================================================
+
+/** `ComponentI18n` type. */
+export type ComponentI18n = Readonly<Record<string, string>>;
+
+/** `COMPONENT_I18N` object. */
+export const COMPONENT_I18N = {
+  // Action labels
+  cta: "Call to action",
+  submit: "Submit",
+  cancel: "Cancel",
+
+  // Content labels
+  title: "Title",
+  description: "Description",
+
+  // Navigation labels
+  goBack: "Go back",
+  nextPage: "Next page",
+
+  // Error messages
+  invalidData: "Invalid data provided",
+  requiredField: "This field is required",
+
+  // Accessibility labels
+  ariaLabel: "Accessible label",
+  ariaDescription: "Accessible description",
+} as const satisfies ComponentI18n;
+```
+
+### i18n Integration Patterns
+
+- **Import pattern**: `import { COMPONENT_I18N } from "./constants/Component.i18n";`
+- **Usage pattern**: `{COMPONENT_I18N.cta}` or `aria-label={COMPONENT_I18N.ariaLabel}`
+- **Type safety**: Use `satisfies ComponentI18n` for compile-time validation
+- **Const assertion**: Use `as const` for literal type inference
+- **Readonly**: Use `Readonly<Record<string, string>>` for immutability
+
+### i18n Testing Standards
+
+```typescript
+// Mock i18n constants in tests
+vi.mock("../constants/Component.i18n", () => ({
+  COMPONENT_I18N: {
+    cta: "Read article",
+    goBack: "Go back to articles",
+    invalidData: "Invalid article data",
+    // ... other labels
+  },
+}));
+```
+
+### Future Sanity + i18n Integration
+
+- **Sanity integration**: Labels can be fetched from Sanity CMS for dynamic content
+- **Third-party i18n**: Compatible with libraries like `react-i18next`, `next-intl`
+- **Fallback strategy**: Static labels as fallback when dynamic content unavailable
+- **Type generation**: Generate TypeScript types from Sanity i18n schemas
+
 ## Internal Component Standards
 
 - **`_internal/` Purpose**: Sub-components used only within their parent component
@@ -340,6 +515,41 @@ components/ComponentName/
 - **Test Structure**: Arrange/Act/Assert pattern
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
 - **Accessibility Testing**: Comprehensive ARIA attribute testing required for all components
+
+## Enterprise Testing Strategy
+
+### Testing Philosophy
+
+- **Risk-Based + Practical Approach**: Test critical paths heavily, simple presentational components lightly
+- **Test Pyramid**: 70% unit, 20% integration, 10% e2e
+- **Integration Tests ONLY for**: Compound components with orchestrated sub-components (e.g., Card with Card.Title/Description/Cta)
+- **Skip Integration Tests for**: Simple components that delegate to other components without orchestration
+
+### When to Write Integration Tests
+
+- ✅ Compound components with 3+ sub-components
+- ✅ Components with complex state management across sub-components
+- ✅ Components with prop drilling to multiple internal components
+- ❌ Simple presentational components (Article, ArticleList, etc.)
+- ❌ Components that just wrap other components
+- ❌ Pure data display components
+
+### Test Coverage Requirements
+
+- **Critical Components** (auth, payments, data mutations): 90%+ coverage, comprehensive edge cases
+- **Core Components** (layout, navigation, forms): 80%+ coverage, key paths + edges
+- **Presentational Components**: 60%+ coverage, happy path + basic validation
+- **Utility Functions**: 100% coverage for shared utils, 80% for component-specific
+
+### Test Organization
+
+```bash
+components/Component/
+├── __tests__/
+│   ├── Component.test.tsx           # Unit tests (always required)
+│   ├── Component.integration.test.tsx  # Only if compound component
+│   └── Component.e2e.test.tsx       # Only for critical user flows
+```
 
 ### Test Cleanup Implementation
 
@@ -367,9 +577,37 @@ describe("ComponentName", () => {
 - **When**: Required in ALL test files - main component tests and internal sub-component tests
 - **Exception**: None - this pattern is mandatory for all component tests
 
-### Standard Test Categories
+### Test Categories by Risk Level
 
-Every component should include these test categories:
+#### Tier 1: Critical Components (Auth, Payments, Data Mutations)
+
+- ✅ All basic rendering tests
+- ✅ All content validation tests
+- ✅ All ARIA attributes (comprehensive)
+- ✅ Error boundaries and fallbacks
+- ✅ Loading and error states
+- ✅ Edge cases (null, undefined, malformed data)
+- ✅ Security implications (XSS, injection)
+- ✅ Performance under load
+
+#### Tier 2: Core Components (Layouts, Navigation, Forms)
+
+- ✅ Basic rendering tests
+- ✅ Content validation tests
+- ✅ Key ARIA attributes
+- ✅ Main user paths
+- ✅ Common edge cases
+- ⚠️ Complex edge cases (if time permits)
+
+#### Tier 3: Presentational Components (Cards, Lists, Text)
+
+- ✅ Basic rendering tests
+- ✅ Content validation (null/undefined)
+- ✅ Basic ARIA roles
+- ⚠️ Full ARIA relationships (only if accessibility-critical)
+- ⚠️ Edge cases (only if found in production)
+
+### Standard Test Categories (All Tiers)
 
 #### **1. Basic Rendering Tests**
 
@@ -406,18 +644,7 @@ Every component should include these test categories:
 - ✅ Proper semantic structure
 - ✅ Correct data attributes for debugging
 
-#### **7. Edge Cases Tests**
-
-- ✅ Complex children content
-- ✅ Special characters
-- ✅ Empty strings
-
-#### **8. Component-Specific Tests**
-
-- ✅ Test unique component features (e.g., `brandName` for FooterBrand, `href` for CardCta)
-- ✅ Test component-specific logic and behavior
-
-#### **9. ARIA Attributes Testing (Required)**
+#### **7. ARIA Attributes Testing (Required)**
 
 - ✅ Test ARIA roles are correctly applied (`role="main"`, `role="region"`, `role="article"`, etc.)
 - ✅ Test ARIA relationships (`aria-labelledby`, `aria-describedby`)
@@ -754,6 +981,461 @@ describe("Edge Cases", () => {
 });
 ```
 
+## Web App Specific Patterns (Sanity CMS)
+
+### Sanity CMS Integration Standards
+
+- **GROQ Queries**: Always use GROQ for data fetching, never GraphQL
+- **Query Organization**: Place all GROQ queries in `_queries/` folder
+- **Type Safety**: Generate TypeScript types from Sanity schemas
+- **Data Fetching**: Use `next-sanity` client for server-side rendering
+- **Client-Side**: Use `@sanity/client` for client-side data fetching
+- **Image Optimization**: Use `next-sanity/image` for optimized images
+- **Preview Mode**: Implement draft content preview for editors
+
+### Sanity Component Structure
+
+For components that fetch Sanity data:
+
+```bash
+components/Component/
+├── Component.tsx              # Main component
+├── index.ts                   # Public exports
+├── __tests__/
+│   ├── Component.test.tsx
+│   └── Component.integration.test.tsx
+├── _types/                    # Sanity types + component interfaces
+│   ├── index.ts
+│   ├── Component.types.ts     # Component props + Sanity document types
+│   └── Sanity.types.ts        # Generated Sanity schema types
+├── _queries/                  # GROQ queries
+│   ├── index.ts
+│   ├── Component.queries.ts   # Main GROQ queries
+│   ├── Component.fragments.ts # Reusable GROQ fragments
+│   └── Component.mutations.ts # Sanity mutations (if needed)
+├── _data/                     # Static data
+│   ├── index.ts
+│   ├── Component.data.ts      # Constants, defaults
+│   └── Component.i18n.ts      # Labels
+└── _internal/                 # Sub-components (if compound)
+    ├── index.ts
+    └── SubComponent/
+```
+
+### GROQ Query Patterns
+
+```typescript
+// _queries/Article.queries.ts
+export const ARTICLE_QUERY = `*[_type == "article" && slug.current == $slug][0] {
+  _id,
+  title,
+  slug,
+  publishedAt,
+  content,
+  author->{
+    name,
+    image
+  },
+  mainImage {
+    asset->{
+      url,
+      metadata
+    }
+  }
+}`;
+
+export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(publishedAt desc) {
+  _id,
+  title,
+  slug,
+  publishedAt,
+  excerpt,
+  mainImage {
+    asset->{
+      url
+    }
+  }
+}`;
+```
+
+### Sanity Type Generation
+
+```typescript
+// _types/Sanity.types.ts
+export interface SanityArticle {
+  _id: string;
+  _type: "article";
+  title: string;
+  slug: { current: string };
+  publishedAt: string;
+  content: any[]; // Portable Text
+  author: SanityAuthor;
+  mainImage: SanityImage;
+}
+
+export interface SanityAuthor {
+  _id: string;
+  name: string;
+  image: SanityImage;
+}
+```
+
+### Data Fetching Patterns
+
+```typescript
+// Component.tsx
+import { sanityClient } from "@web/lib/sanity";
+import { ARTICLE_QUERY } from "./_queries/Article.queries";
+
+export async function getArticle(slug: string) {
+  return await sanityClient.fetch(ARTICLE_QUERY, { slug });
+}
+
+// For client-side fetching with React Query
+import { useQuery } from "@tanstack/react-query";
+
+export function useArticle(slug: string, preview: boolean = false) {
+  return useQuery({
+    queryKey: ["article", slug, preview],
+    queryFn: () => getArticle(slug, preview),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    enabled: !!slug,
+  });
+}
+
+// For real-time updates with Sanity
+import { useDocument } from "@sanity/react-hooks";
+
+export function useArticleRealtime(slug: string) {
+  return useDocument({
+    query: ARTICLE_QUERY,
+    params: { slug },
+    options: { enabled: !!slug },
+  });
+}
+```
+
+### Performance Optimization Patterns
+
+```typescript
+// Memoized components with proper dependencies
+const MemoizedArticle = React.memo(Article, (prevProps, nextProps) => {
+  return (
+    prevProps.article._id === nextProps.article._id &&
+    prevProps.article.updatedAt === nextProps.article.updatedAt
+  );
+});
+
+// Optimized data processing
+const processedArticle = useMemo(() => {
+  return {
+    ...article,
+    formattedDate: formatDateSafely(article.publishedAt),
+    slug: article.slug.current,
+  };
+}, [article.publishedAt, article.slug.current]);
+
+// Optimized event handlers
+const handleClick = useCallback((event: React.MouseEvent) => {
+  // Handle click
+}, [article.slug]);
+```
+
+### Error Handling Patterns
+
+```typescript
+// Error boundary for article components
+export class ArticleErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    logger.error("Article component error:", { error, errorInfo });
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <ArticleErrorFallback error={this.state.error} />;
+    }
+    return this.props.children;
+  }
+}
+
+// Loading and error states
+export function useArticleWithStates(slug: string) {
+  const { data: article, isLoading, error } = useArticle(slug);
+
+  if (isLoading) return { article: null, loading: true, error: null };
+  if (error) return { article: null, loading: false, error };
+  return { article, loading: false, error: null };
+}
+```
+
+### SEO and Meta Management
+
+```typescript
+// SEO optimization for articles
+export function useArticleSEO(article: SanityArticle) {
+  useEffect(() => {
+    if (!article) return;
+
+    // Update document title
+    document.title = `${article.title} | Your Site`;
+
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription && article.excerpt) {
+      metaDescription.setAttribute('content', article.excerpt);
+    }
+
+    // Update Open Graph tags
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', article.title);
+
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription && article.excerpt) {
+      ogDescription.setAttribute('content', article.excerpt);
+    }
+
+    // Update canonical URL
+    const canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('href', `${window.location.origin}/articles/${article.slug.current}`);
+    }
+  }, [article]);
+}
+```
+
+## Advanced Component Architecture Patterns
+
+### Component Composition Best Practices
+
+```typescript
+// Compound component pattern with proper typing
+export interface ArticleCompoundComponent extends React.FC<ArticleProps> {
+  Title: typeof ArticleTitle;
+  Content: typeof ArticleContent;
+  Meta: typeof ArticleMeta;
+  Actions: typeof ArticleActions;
+}
+
+// Higher-order component for common functionality
+export function withArticleData<P extends object>(
+  Component: React.ComponentType<P & { article: SanityArticle }>
+) {
+  return function WrappedComponent(props: P & { slug: string }) {
+    const { data: article, isLoading, error } = useArticle(props.slug);
+
+    if (isLoading) return <ArticleSkeleton />;
+    if (error) return <ArticleError error={error} />;
+    if (!article) return <ArticleNotFound />;
+
+    return <Component {...props} article={article} />;
+  };
+}
+
+// Render prop pattern for flexible data handling
+export function ArticleDataProvider({
+  slug,
+  children
+}: {
+  slug: string;
+  children: (data: ArticleDataState) => React.ReactNode;
+}) {
+  const { data: article, isLoading, error } = useArticle(slug);
+
+  return children({ article, isLoading, error });
+}
+```
+
+### State Management Patterns
+
+```typescript
+// Custom hook for article state management
+export function useArticleState(initialArticle?: SanityArticle) {
+  const [article, setArticle] = useState<SanityArticle | null>(initialArticle || null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isPreview, setIsPreview] = useState(false);
+
+  const updateArticle = useCallback((updates: Partial<SanityArticle>) => {
+    setArticle(prev => prev ? { ...prev, ...updates } : null);
+  }, []);
+
+  const resetArticle = useCallback(() => {
+    setArticle(initialArticle || null);
+    setIsEditing(false);
+  }, [initialArticle]);
+
+  return {
+    article,
+    isEditing,
+    isPreview,
+    setArticle,
+    setIsEditing,
+    setIsPreview,
+    updateArticle,
+    resetArticle,
+  };
+}
+
+// Context for article data sharing
+export const ArticleContext = createContext<ArticleContextValue | null>(null);
+
+export function ArticleProvider({
+  children,
+  article
+}: {
+  children: React.ReactNode;
+  article: SanityArticle;
+}) {
+  const value = useArticleState(article);
+
+  return (
+    <ArticleContext.Provider value={value}>
+      {children}
+    </ArticleContext.Provider>
+  );
+}
+```
+
+### Advanced TypeScript Patterns
+
+```typescript
+// Discriminated unions for different article states
+export type ArticleState =
+  | { status: 'loading' }
+  | { status: 'error'; error: Error }
+  | { status: 'success'; data: SanityArticle }
+  | { status: 'not-found' };
+
+// Generic component props with constraints
+export interface ArticleComponentProps<T extends SanityArticle = SanityArticle> {
+  article: T;
+  variant?: 'default' | 'compact' | 'featured';
+  onAction?: (action: ArticleAction, data: T) => void;
+}
+
+// Utility types for component composition
+export type ArticleComponentRef = React.RefObject<HTMLElement>;
+export type ArticleEventHandler<T = void> = (data: T) => void;
+export type ArticleAsyncHandler<T = void> = (data: T) => Promise<void>;
+
+// Conditional types for dynamic props
+export type ArticlePropsWithActions<T extends boolean = false> =
+  T extends true
+    ? ArticleComponentProps & { actions: ArticleAction[] }
+    : ArticleComponentProps;
+```
+
+### Performance Optimization Standards
+
+```typescript
+// Virtual scrolling for large article lists
+export function VirtualizedArticleList({
+  articles
+}: {
+  articles: SanityArticleListItem[];
+}) {
+  const [containerRef, { width, height }] = useResizeObserver();
+
+  const virtualizer = useVirtualizer({
+    count: articles.length,
+    getScrollElement: () => containerRef.current,
+    estimateSize: () => 200,
+    overscan: 5,
+  });
+
+  return (
+    <div ref={containerRef} style={{ height, overflow: 'auto' }}>
+      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
+        {virtualizer.getVirtualItems().map(virtualItem => (
+          <div
+            key={virtualItem.key}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: virtualItem.size,
+              transform: `translateY(${virtualItem.start}px)`,
+            }}
+          >
+            <ArticleListItem article={articles[virtualItem.index]} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Intersection observer for lazy loading
+export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return isVisible;
+}
+```
+
+## Enterprise Development Patterns
+
+### Modularity and Reusability
+
+- Design components to be self-contained with clear interfaces
+- Extract reusable logic to shared utilities (`@guyromellemagayano/utils`)
+- Avoid tight coupling between components
+- Use dependency injection for external dependencies
+
+### Security Best Practices
+
+- Sanitize all user inputs
+- Use parameterized queries (GraphQL variables, not string interpolation)
+- Implement Content Security Policy headers
+- Validate data on both client and server
+- Use secure defaults (e.g., `rel="noopener noreferrer"` for external links)
+
+### Performance Optimization
+
+- Lazy load non-critical components
+- Memoize expensive computations
+- Use React.memo for pure components in lists
+- Implement virtual scrolling for large lists (>100 items)
+- Optimize images (next/image with proper sizing)
+- Code-split by route
+
+### Accessibility Requirements
+
+- All interactive elements: keyboard accessible
+- All images: alt text
+- All forms: labels and validation messages
+- Color contrast: WCAG AA minimum
+- Focus indicators: visible and consistent
+- Screen reader testing for critical flows
+
+### Documentation Standards
+
+- **JSDoc**: All exported functions, types, and components
+- **README**: Each package in monorepo
+- **Inline comments**: Complex logic only (not obvious code)
+- **Storybook**: All reusable UI components
+- **ADRs**: Architectural decisions in `docs/adr/`
+
 ## Component Composition Patterns
 
 ### Main Component Pattern
@@ -765,6 +1447,7 @@ import { useComponentId } from "@guyromellemagayano/hooks";
 import { setDisplayName } from "@guyromellemagayano/utils";
 import { cn } from "@web/utils";
 import styles from "./ComponentName.module.css";
+import { COMPONENT_I18N } from "./constants/Component.i18n";
 
 // ============================================================================
 // COMPONENT TYPES & INTERFACES
