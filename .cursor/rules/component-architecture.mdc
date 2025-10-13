@@ -1,0 +1,208 @@
+# Component Architecture Standards
+
+## Component Classification
+
+### Component Types
+
+1. **Compound Components**: Main component with orchestrated sub-components
+   - Structure: `_internal/` folder with sub-components
+   - Tests: Both unit AND integration tests
+   - Example: Card, Tabs, Accordion
+
+2. **Orchestrator Components**: Coordinates multiple independent components
+   - Structure: Flat, imports other components
+   - Tests: Unit tests only (integration happens at parent level)
+   - Example: ArticleLayout, DashboardView
+
+3. **Presentational Components**: Pure display, no sub-components
+   - Structure: Single file + tests + `constants/Component.i18n.ts`
+   - Tests: Unit tests only
+   - Example: Article, Button, Badge
+
+4. **Utility Components**: Wrappers around primitives
+   - Structure: Single file
+   - Tests: Basic unit tests (60% coverage acceptable)
+   - Example: Container, Section, Grid
+
+## Required Component Classification Comments
+
+All component files must include:
+
+```typescript
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Compound/Orchestrator/Presentational/Utility
+// - Testing: Unit + Integration tests (both required) / Unit tests only / Basic unit tests
+// - Structure: _internal/ folder with sub-components / Flat, imports other components / Single file + tests + constants/Component.i18n.ts / Single file
+// - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases) / Tier 2 (80%+ coverage, key paths + edges) / Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching) / Sanity CMS (GROQ queries) / External API / GraphQL
+// ============================================================================
+```
+
+## Scalable Folder Structure
+
+### For Compound Components (with sub-components)
+
+```bash
+components/Component/
+├── Component.tsx              # Main component
+├── index.ts                   # Public exports
+├── __tests__/
+│   ├── Component.test.tsx
+│   └── Component.integration.test.tsx
+├── _types/                    # Shared types (main + internal)
+│   ├── index.ts
+│   └── Component.types.ts
+├── _internal/                 # Sub-components
+│   ├── index.ts
+│   ├── SubComponent/
+│   │   ├── SubComponent.tsx
+│   │   ├── SubComponent.module.css
+│   │   └── __tests__/
+│   └── _types/               # Internal-only types
+│       ├── index.ts
+│       └── Internal.types.ts
+├── _data/                    # Constants, labels, defaults
+│   ├── index.ts
+│   ├── Component.data.ts
+│   └── Component.i18n.ts
+└── _queries/                 # GraphQL/API (if needed)
+    ├── index.ts
+    ├── Component.queries.ts
+    └── Component.mutations.ts
+```
+
+### For Orchestrator/Presentational Components (no sub-components)
+
+```bash
+components/Component/
+├── Component.tsx              # Main component
+├── Component.module.css
+├── index.ts
+├── __tests__/
+│   └── Component.test.tsx    # Unit tests only
+├── constants/
+│   └── Component.i18n.ts     # Internationalization labels
+└── _data/                    # Optional: if shared data/types
+    ├── index.ts
+    ├── Component.data.ts
+    └── Component.types.ts
+```
+
+## Type Organization Rules
+
+- **Inline types**: Component-specific interfaces in component file (default)
+- **`_types/`**: Only when types shared between main + internal sub-components
+- **`_data/Component.types.ts`**: Only when types shared across multiple components
+- **Never**: Separate `.types.ts` for single-component types
+
+## Data Organization Rules
+
+- **`_data/Component.data.ts`**: Constants, defaults, configuration
+- **`_data/Component.i18n.ts`**: Internationalization labels (use dot notation: `Component.i18n.ts`)
+- **`_data/Component.types.ts`**: Types shared across multiple components
+- **`_queries/`**: GraphQL queries/mutations (separate from data)
+- **Never**: Business logic, API calls, or complex transformations in `_data/`
+
+## Internal Component Standards
+
+- **`_internal/` Purpose**: Sub-components used only within their parent component
+- **No Public Exports**: Never export internal components from main `index.ts`
+- **Internal-Only Access**: Only import from `_internal/` within the same component tree
+- **Compound Pattern**: External consumers use `Component.SubComponent` pattern
+- **Encapsulation**: Prevents external components from importing internal sub-components directly
+- **Type Safety**: Internal components can use private types from `_types/` folder
+
+## Component Props Standards
+
+- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props
+- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
+- **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
+- **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
+- **Compound Components**: Manually attach sub-components as properties to main component
+
+## Type Organization Standards
+
+- **`_types/` Purpose**: Main component types shared between main and internal components
+- **`_internal/_types/` Purpose**: Private internal types shared only between sub-components
+- **Main Types**: Component interfaces used by main component and accessible to internal components
+- **Internal Types**: Component-specific interfaces used only within the component's internal structure
+- **Encapsulation**: Prevents external components from importing internal type definitions
+- **Loose Coupling**: External components should use `React.ComponentProps<typeof Component>` instead
+- **Main Usage**: Types used by main component and shared with internal sub-components
+- **Internal Usage**: Types used by sub-components within the same component family only
+- **Export Pattern**: Re-export from both `_types/index.ts` and `_internal/_types/index.ts` for clean imports
+
+## Type Documentation Standards
+
+- **Exported Types**: Always document exported types with JSDoc comments
+- **Type Properties**: Document all type properties with `/** */` comments
+- **Union Types**: Document each union variant with descriptive comments
+- **Interface Properties**: Document each interface property with purpose and constraints
+- **Type Aliases**: Document type aliases with their intended usage
+- **Generic Types**: Document generic type parameters and constraints
+- **One-liner Comments**: Use single-line `/** */` format instead of multiline for concise documentation
+- **JSDoc Titles**: Use uppercase for JSDoc comment titles only when they serve as section headers (e.g., `/** FOOTER LINK CONFIGURATION */`), otherwise use proper English casing (e.g., `/** Internal link */`)
+
+## Internationalization (i18n) Standards
+
+### File Naming Conventions
+
+- **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
+- **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
+- **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
+- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+
+### i18n File Structure
+
+```typescript
+// ============================================================================
+// COMPONENT INTERNATIONALIZATION
+// ============================================================================
+
+/** `ComponentI18n` type. */
+export type ComponentI18n = Readonly<Record<string, string>>;
+
+/** `COMPONENT_I18N` object. */
+export const COMPONENT_I18N = {
+  // Action labels
+  cta: "Call to action",
+  submit: "Submit",
+  cancel: "Cancel",
+
+  // Content labels
+  title: "Title",
+  description: "Description",
+
+  // Navigation labels
+  goBack: "Go back",
+  nextPage: "Next page",
+
+  // Error messages
+  invalidData: "Invalid data provided",
+  requiredField: "This field is required",
+
+  // Accessibility labels
+  ariaLabel: "Accessible label",
+  ariaDescription: "Accessible description",
+} as const satisfies ComponentI18n;
+```
+
+### i18n Integration Patterns
+
+- **Import pattern**: `import { COMPONENT_I18N } from "./constants/Component.i18n";`
+- **Usage pattern**: `{COMPONENT_I18N.cta}` or `aria-label={COMPONENT_I18N.ariaLabel}`
+- **Type safety**: Use `satisfies ComponentI18n` for compile-time validation
+- **Const assertion**: Use `as const` for literal type inference
+- **Readonly**: Use `Readonly<Record<string, string>>` for immutability
+
+## Utility Function Standards
+
+- **`useComponentId`**: For ID generation and debug mode in sub-components
+- **`setDisplayName`**: For component naming in all components
+- **`hasAnyRenderableContent`**: For content validation in main components
+- **`hasMeaningfulText`**: For content validation in sub-components
+- **`isValidLink`**: For link validation
+- **`getLinkTargetProps`**: For link target/rel attributes
+- **`createComponentProps`**: For component data attributes
+- **`cn`**: For className composition from `@web/utils`
