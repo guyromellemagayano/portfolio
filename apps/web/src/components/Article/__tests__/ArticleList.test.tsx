@@ -38,7 +38,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock shared labels
-vi.mock("../constants/Article.i18n", () => ({
+vi.mock("../constants", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

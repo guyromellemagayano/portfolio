@@ -145,7 +145,7 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock shared data
-vi.mock("../constants/Article.i18n", () => ({
+vi.mock("../constants", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
