@@ -12,15 +12,7 @@ import {
 import { Card } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants/Article.i18n";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION: Presentational Component
-// - Type: Orchestrator (uses Card compound component)
-// - Testing: Unit tests only (integration tested at Card level)
-// - Structure: Flat (no internal sub-components)
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// ============================================================================
+import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE LIST ITEM COMPONENT TYPES & INTERFACES
@@ -111,7 +103,6 @@ const BaseArticleListItem = setDisplayName(
             >
               {articleData.title.length > 0 ? (
                 <Card.Title
-                  id={`${componentId}-article-list-item-card-title`}
                   href={articleData.slug}
                   debugId={componentId}
                   debugMode={isDebugMode}
@@ -126,7 +117,6 @@ const BaseArticleListItem = setDisplayName(
                 <Card.Eyebrow
                   as="time"
                   dateTime={articleData.date}
-                  id={`${componentId}-article-list-item-card-date`}
                   debugId={componentId}
                   debugMode={isDebugMode}
                   aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
@@ -138,7 +128,6 @@ const BaseArticleListItem = setDisplayName(
 
               {articleData.description.length > 0 ? (
                 <Card.Description
-                  id={`${componentId}-article-list-item-card-description`}
                   debugId={componentId}
                   debugMode={isDebugMode}
                 >
@@ -148,7 +137,6 @@ const BaseArticleListItem = setDisplayName(
 
               <Card.Cta
                 role="button"
-                id={`${componentId}-article-list-item-card-cta`}
                 debugId={componentId}
                 debugMode={isDebugMode}
                 aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || ARTICLE_I18N.articleItem}`}
@@ -166,16 +154,15 @@ const BaseArticleListItem = setDisplayName(
           ref={ref}
           {...rest}
           role="article"
-          id={`${componentId}-article-item`}
           className={cn("md:grid md:grid-cols-4 md:items-baseline", className)}
           aria-labelledby={
             articleData.title.length > 0
-              ? `${componentId}-article-list-item-card-title`
+              ? `${componentId}-article-item-card-title`
               : undefined
           }
           aria-describedby={
             articleData.description.length > 0
-              ? `${componentId}-article-list-item-card-description`
+              ? `${componentId}-article-item-card-description`
               : undefined
           }
           {...createComponentProps(componentId, "article-item", debugMode)}
@@ -203,7 +190,7 @@ const MemoizedArticleListItem = React.memo(BaseArticleListItem);
 // ============================================================================
 
 /** Renders a flexible article list item component using the Card compound component. */
-export const ArticleListItem = setDisplayName(
+export const ArticleListItem: ArticleListItemComponent = setDisplayName(
   React.forwardRef<HTMLElement, ArticleListItemProps>(
     function ArticleListItem(props, ref) {
       const { isMemoized = false, ...rest } = props;
@@ -215,4 +202,4 @@ export const ArticleListItem = setDisplayName(
       return element;
     }
   )
-) as ArticleListItemComponent;
+);
