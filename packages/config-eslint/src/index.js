@@ -1,8 +1,4 @@
 /* eslint-disable simple-import-sort/imports */
-import { createRequire } from "node:module";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
@@ -15,9 +11,19 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const nodeRequire = createRequire(import.meta.url);
-const prettierConfig = nodeRequire("../../../prettier.config.cjs");
+import requireAriaAttributes from "./rules/require-aria-attributes.js";
+import requireComponentClassification from "./rules/require-component-classification.js";
+import requireComponentDisplayName from "./rules/require-component-display-name.js";
+import requireDataFolderStructure from "./rules/require-data-folder-structure.js";
+import requireI18nConstants from "./rules/require-i18n-constants.js";
+import requireImportOrder from "./rules/require-import-order.js";
+import requireMemoizationProp from "./rules/require-memoization-prop.js";
+import requireTestClassification from "./rules/require-test-classification.js";
+import requireTestCleanup from "./rules/require-test-cleanup.js";
+import requireTypeOrganization from "./rules/require-type-organization.js";
 
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
@@ -51,6 +57,20 @@ export const baseEslintConfig = [
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
+      "enterprise": {
+        rules: {
+          "require-aria-attributes": requireAriaAttributes,
+          "require-component-classification": requireComponentClassification,
+          "require-component-display-name": requireComponentDisplayName,
+          "require-data-folder-structure": requireDataFolderStructure,
+          "require-i18n-constants": requireI18nConstants,
+          "require-import-order": requireImportOrder,
+          "require-memoization-prop": requireMemoizationProp,
+          "require-test-classification": requireTestClassification,
+          "require-test-cleanup": requireTestCleanup,
+          "require-type-organization": requireTypeOrganization,
+        },
+      },
     },
     settings: {
       "import/resolver": {
@@ -69,14 +89,6 @@ export const baseEslintConfig = [
       "import/no-unresolved": "error",
       "no-duplicate-imports": ["error", { includeExports: true }],
       "no-unused-vars": "off",
-      "prettier/prettier": [
-        "warn",
-        {
-          resolveConfigFile: prettierConfig,
-          singleQuote: false,
-          quoteProps: "as-needed",
-        },
-      ],
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
@@ -114,6 +126,16 @@ export const baseEslintConfig = [
           argsIgnorePattern: "^_",
         },
       ],
+      "enterprise/require-aria-attributes": "error",
+      "enterprise/require-component-classification": "error",
+      "enterprise/require-component-display-name": "error",
+      "enterprise/require-data-folder-structure": "error",
+      "enterprise/require-i18n-constants": "error",
+      "enterprise/require-import-order": "error",
+      "enterprise/require-memoization-prop": "error",
+      "enterprise/require-test-classification": "error",
+      "enterprise/require-test-cleanup": "error",
+      "enterprise/require-type-organization": "error",
     },
     ignores: ["dist", "**/*.mdx"],
   },
