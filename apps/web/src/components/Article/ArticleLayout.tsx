@@ -13,16 +13,7 @@ import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
 import { ArticleNavButton } from "./ArticleNavButton";
-import { ARTICLE_I18N } from "./constants/Article.i18n";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION: Orchestrator Component
-// - Type: Orchestrator (coordinates multiple independent components)
-// - Testing: Unit tests only (integration happens at parent level)
-// - Structure: Flat (imports other components)
-// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
-// - Data Source: Uses ArticleWithSlug type (Sanity integration planned for later)
-// ============================================================================
+import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
@@ -101,7 +92,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
             {article ? (
               <article
                 role="article"
-                id={`${componentId}-article`}
                 aria-labelledby={
                   articleData.title.length > 0
                     ? `${componentId}-article-title`
@@ -116,7 +106,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
               >
                 <header
                   role="banner"
-                  id={`${componentId}-article-header`}
                   className="flex flex-col"
                   aria-label={ARTICLE_I18N.articleHeader}
                   {...createComponentProps(
@@ -127,7 +116,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                 >
                   {articleData.title.length > 0 ? (
                     <h1
-                      id={`${componentId}-article-title`}
                       className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
                       aria-level={1}
                       {...createComponentProps(
@@ -142,7 +130,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
 
                   {articleData.date.length > 0 ? (
                     <time
-                      id={`${componentId}-article-date`}
                       className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                       dateTime={articleData.date}
                       aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
@@ -179,12 +166,11 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                 {children ? (
                   <Prose
                     role="region"
-                    id={`${componentId}-article-prose`}
                     className="mx-auto max-w-2xl"
                     aria-label={ARTICLE_I18N.articleContent}
                     aria-labelledby={
                       articleData.title.length > 0
-                        ? `${componentId}-article-title`
+                        ? `${componentId}-article-prose-title`
                         : undefined
                     }
                     debugId={componentId}
@@ -197,7 +183,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
             ) : children ? (
               <Prose
                 role="region"
-                id={`${componentId}-article-prose`}
                 className="mx-auto max-w-2xl"
                 aria-label={ARTICLE_I18N.articleContent}
                 debugId={componentId}
