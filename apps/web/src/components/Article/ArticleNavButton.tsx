@@ -14,15 +14,7 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants/Article.i18n";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION: Presentational Component
-// - Type: Presentational (pure display, no sub-components)
-// - Testing: Unit tests only
-// - Structure: Single file + tests
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// ============================================================================
+import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE NAVIGATION BUTTON COMPONENT TYPES & INTERFACES
@@ -59,7 +51,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
           className
         )}
         aria-label={ARTICLE_I18N.goBackToArticles}
-        aria-describedby={`${debugId}-nav-button-description`}
+        aria-describedby={`${debugId}-article-nav-button-description`}
         onClick={() => router.back()}
         {...createComponentProps(debugId, "article-nav-button", debugMode)}
       >
@@ -70,9 +62,9 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
           debugId={debugId}
         />
         <span
-          id={`${debugId}-nav-button-description`}
           className="sr-only"
           aria-hidden="true"
+          {...createComponentProps(debugId, "article-nav-button-description", debugMode)}
         >
           {ARTICLE_I18N.goBackToArticles}
         </span>

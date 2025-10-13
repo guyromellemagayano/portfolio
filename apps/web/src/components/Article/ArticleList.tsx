@@ -9,15 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants/Article.i18n";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION: Presentational Component
-// - Type: Presentational (pure display, no sub-components)
-// - Testing: Unit tests only
-// - Structure: Single file + tests
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// ============================================================================
+import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE LIST COMPONENT TYPES & INTERFACES
@@ -51,7 +43,6 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
       <div
         {...rest}
         role="region"
-        id={`${componentId}-article-list`}
         className={cn(
           "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
           className
@@ -61,7 +52,6 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         {...createComponentProps(componentId, "article-list", isDebugMode)}
       >
         <h2
-          id={`${componentId}-article-list-heading`}
           className="sr-only"
           aria-hidden="true"
           {...createComponentProps(
@@ -74,7 +64,6 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         </h2>
         <div
           role="list"
-          id={`${componentId}-article-list-children`}
           className="flex w-full max-w-3xl flex-col space-y-16"
           aria-label={ARTICLE_I18N.articles}
           {...createComponentProps(

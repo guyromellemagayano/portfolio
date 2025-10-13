@@ -10,16 +10,7 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug, validateArticle } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants/Article.i18n";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION: Presentational Component
-// - Type: Orchestrator (uses Card compound component)
-// - Testing: Unit tests only (integration tested at Card level)
-// - Structure: Flat (no internal sub-components)
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Uses ArticleWithSlug type (Sanity integration planned for later)
-// ============================================================================
+import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE COMPONENT TYPES & INTERFACES
@@ -122,7 +113,6 @@ const BaseArticle: ArticleComponent = setDisplayName(
         !isNaN(new Date(articleData.date).getTime()) ? (
           <Card.Eyebrow
             as="time"
-            id={`${componentId}-base-article-card-date`}
             dateTime={articleData.date}
             debugId={componentId}
             debugMode={isDebugMode}
@@ -135,7 +125,6 @@ const BaseArticle: ArticleComponent = setDisplayName(
 
         {articleData?.description && articleData.description.length > 0 ? (
           <Card.Description
-            id={`${componentId}-base-article-card-description`}
             debugId={componentId}
             debugMode={isDebugMode}
           >
@@ -145,7 +134,6 @@ const BaseArticle: ArticleComponent = setDisplayName(
 
         <Card.Cta
           role="button"
-          id={`${componentId}-base-article-card-cta`}
           debugId={componentId}
           debugMode={isDebugMode}
           aria-label={`${ARTICLE_I18N.cta}: ${articleData?.title || "Article"}`}
