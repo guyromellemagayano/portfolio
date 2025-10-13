@@ -217,7 +217,7 @@ vi.mock("@web/utils", () => ({
 // Logger is automatically mocked via __mocks__ directory
 
 // Mock shared data
-vi.mock("../constants/Article.i18n", () => ({
+vi.mock("../constants", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

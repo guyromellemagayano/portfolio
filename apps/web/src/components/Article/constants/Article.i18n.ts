@@ -19,5 +19,4 @@ export const ARTICLE_I18N = {
   articlePublished: "Publication date",
   articleList: "Article list",
   articles: "Articles",
-  // Note: Error handling is managed by Next.js App Router
 } as const satisfies ArticleI18n;
