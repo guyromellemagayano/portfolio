@@ -13,6 +13,10 @@ alwaysApply: false
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `ComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
+- **Performance**: Use `React.memo` with custom comparison functions for expensive components
+- **State Management**: Use custom hooks for complex state logic, Context for shared state
+- **Error Boundaries**: Implement error boundaries for component error handling
+- **Loading States**: Provide loading, error, and empty states for all data-dependent components
 
 ## File Structure Standards
 
@@ -24,6 +28,8 @@ components/component/
 ├── __tests__/                 # Main tests
 │   ├── Component.test.tsx
 │   └── Component.integration.test.tsx
+├── constants/
+│   └── Component.i18n.ts      # Internationalization labels
 ├── _internal/                 # Sub-components
 │   ├── index.ts
 │   ├── ComponentSub/          # Each sub-component
@@ -56,6 +62,10 @@ components/component/
 - **Component Props**: Extend base component props + utility props
 - **Avoid Separate Types Files**: Don't create separate `.types.ts` files for single-component interfaces - use inline types instead
 - **Compound Component Types**: Define compound component types inline in main component file
+- **Generic Types**: Use generics for reusable component patterns
+- **Discriminated Unions**: Use discriminated unions for component states
+- **Utility Types**: Leverage TypeScript utility types for complex type transformations
+- **Type Guards**: Implement type guards for runtime type checking
 
 ## Testing Standards
 
@@ -165,6 +175,72 @@ describe("ComponentName", () => {
 
   // Additional test categories...
 });
+```
+
+## Internationalization (i18n) Standards
+
+### File Naming Conventions
+
+- **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
+- **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
+- **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
+- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+
+### i18n File Structure
+
+```typescript
+// ============================================================================
+// COMPONENT INTERNATIONALIZATION
+// ============================================================================
+
+/** `ComponentI18n` type. */
+export type ComponentI18n = Readonly<Record<string, string>>;
+
+/** `COMPONENT_I18N` object. */
+export const COMPONENT_I18N = {
+  // Action labels
+  cta: "Call to action",
+  submit: "Submit",
+  cancel: "Cancel",
+
+  // Content labels
+  title: "Title",
+  description: "Description",
+
+  // Navigation labels
+  goBack: "Go back",
+  nextPage: "Next page",
+
+  // Error messages
+  invalidData: "Invalid data provided",
+  requiredField: "This field is required",
+
+  // Accessibility labels
+  ariaLabel: "Accessible label",
+  ariaDescription: "Accessible description",
+} as const satisfies ComponentI18n;
+```
+
+### i18n Integration Patterns
+
+- **Import pattern**: `import { COMPONENT_I18N } from "./constants/Component.i18n";`
+- **Usage pattern**: `{COMPONENT_I18N.cta}` or `aria-label={COMPONENT_I18N.ariaLabel}`
+- **Type safety**: Use `satisfies ComponentI18n` for compile-time validation
+- **Const assertion**: Use `as const` for literal type inference
+- **Readonly**: Use `Readonly<Record<string, string>>` for immutability
+
+### i18n Testing Standards
+
+```typescript
+// Mock i18n constants in tests
+vi.mock("../constants/Component.i18n", () => ({
+  COMPONENT_I18N: {
+    cta: "Read article",
+    goBack: "Go back to articles",
+    invalidData: "Invalid article data",
+    // ... other labels
+  },
+}));
 ```
 
 ## Styling Standards
@@ -369,6 +445,8 @@ export type { ComponentCompoundComponent } from "./Component";
 ### Main Component
 
 ```typescript
+import { COMPONENT_I18N } from "./constants/Component.i18n";
+
 interface ComponentProps
   extends Omit<React.ComponentProps<"elementType">, "children">,
     ComponentProps {
@@ -503,10 +581,12 @@ export const COMPONENT_DEFAULT_DATA = {
   description: "Default Description",
 } as const;
 
-export const COMPONENT_LABELS = {
+// constants/Component.i18n.ts
+export const COMPONENT_I18N = {
   title: "Component Title",
   subtitle: "Component Subtitle",
-} as const;
+  cta: "Call to action",
+} as const satisfies ComponentI18n;
 ```
 
 ### **Type Definitions**
