@@ -1,3 +1,12 @@
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Orchestrator
+// - Testing: Unit tests only
+// - Structure: Flat, imports other components
+// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -25,6 +34,8 @@ export interface ArticleLayoutProps
     CommonComponentProps {
   /** The article to display. */
   article?: ArticleWithSlug;
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
 }
 
 /** `ArticleLayout` component type. */
@@ -116,6 +127,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
                 >
                   {articleData.title.length > 0 ? (
                     <h1
+                      id={`${componentId}-article-title`}
                       className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
                       aria-level={1}
                       {...createComponentProps(
@@ -130,6 +142,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
 
                   {articleData.date.length > 0 ? (
                     <time
+                      id={`${componentId}-article-date`}
                       className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
                       dateTime={articleData.date}
                       aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}

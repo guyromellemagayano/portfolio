@@ -1,3 +1,12 @@
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Article.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -26,6 +35,8 @@ export interface ArticleListItemProps
   article: ArticleWithSlug;
   /** Whether the article is on the front page. */
   isFrontPage?: boolean;
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
 }
 
 /** `ArticleListItem` component type. */
@@ -107,6 +118,7 @@ const BaseArticleListItem = setDisplayName(
                   debugId={componentId}
                   debugMode={isDebugMode}
                   aria-level={1}
+                  id={`${componentId}-article-list-item-card-title`}
                 >
                   {articleData.title}
                 </Card.Title>
@@ -120,6 +132,7 @@ const BaseArticleListItem = setDisplayName(
                   debugId={componentId}
                   debugMode={isDebugMode}
                   aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
+                  id={`${componentId}-article-list-item-card-date`}
                   decorate
                 >
                   {formatDateSafely(articleData.date)}
@@ -130,6 +143,7 @@ const BaseArticleListItem = setDisplayName(
                 <Card.Description
                   debugId={componentId}
                   debugMode={isDebugMode}
+                  id={`${componentId}-article-list-item-card-description`}
                 >
                   {articleData.description}
                 </Card.Description>
@@ -140,6 +154,7 @@ const BaseArticleListItem = setDisplayName(
                 debugId={componentId}
                 debugMode={isDebugMode}
                 aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || ARTICLE_I18N.articleItem}`}
+                id={`${componentId}-article-list-item-card-cta`}
               >
                 {ARTICLE_I18N.cta}
               </Card.Cta>
