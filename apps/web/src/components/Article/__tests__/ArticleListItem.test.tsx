@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -102,13 +110,19 @@ vi.mock("@web/components", () => ({
           const {
             children,
             href,
-            debugId: _debugId,
+            debugId,
             debugMode: _debugMode,
             ...rest
           } = props;
+          const componentId = debugId || "test-id";
           return (
-            <h2 ref={ref} data-testid="mock-card-title" {...rest}>
-              {href ? <a href={href}>{children}</a> : children}
+            <h2 
+              ref={ref} 
+              data-testid="mock-card-title" 
+              id={`${componentId}-article-list-item-card-title`}
+              {...rest}
+            >
+              {href ? <a href={href} aria-label="Article title link">{children}</a> : children}
             </h2>
           );
         }
@@ -118,12 +132,18 @@ vi.mock("@web/components", () => ({
           const {
             children,
             dateTime,
-            debugId: _debugId,
+            debugId,
             debugMode: _debugMode,
             ...rest
           } = props;
+          const componentId = debugId || "test-id";
           return (
-            <p ref={ref} data-testid="mock-card-eyebrow" {...rest}>
+            <p 
+              ref={ref} 
+              data-testid="mock-card-eyebrow" 
+              id={`${componentId}-article-list-item-card-date`}
+              {...rest}
+            >
               {dateTime ? (
                 <time dateTime={dateTime} {...rest}>
                   {children}
@@ -139,12 +159,18 @@ vi.mock("@web/components", () => ({
         function MockCardDescription(props, ref) {
           const {
             children,
-            debugId: _debugId,
+            debugId,
             debugMode: _debugMode,
             ...rest
           } = props;
+          const componentId = debugId || "test-id";
           return (
-            <p ref={ref} data-testid="mock-card-description" {...rest}>
+            <p 
+              ref={ref} 
+              data-testid="mock-card-description" 
+              id={`${componentId}-article-list-item-card-description`}
+              {...rest}
+            >
               {children}
             </p>
           );
@@ -154,12 +180,20 @@ vi.mock("@web/components", () => ({
         function MockCardCta(props, ref) {
           const {
             children,
-            debugId: _debugId,
+            debugId,
             debugMode: _debugMode,
             ...rest
           } = props;
+          const componentId = debugId || "test-id";
           return (
-            <div ref={ref} data-testid="mock-card-cta" {...rest}>
+            <div 
+              ref={ref} 
+              data-testid="mock-card-cta" 
+              role="button"
+              aria-label="Call to action"
+              id={`${componentId}-article-list-item-card-cta`}
+              {...rest}
+            >
               {children}
             </div>
           );
@@ -1062,7 +1096,7 @@ describe("ArticleListItem", () => {
 
       expect(wrapperArticle).toHaveAttribute(
         "aria-labelledby",
-        "aria-test-article-list-item-card-title"
+        "aria-test-article-item-card-title"
       );
       expect(cardArticle).toHaveAttribute(
         "aria-labelledby",
