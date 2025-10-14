@@ -17,6 +17,15 @@ import { cn } from "@web/utils";
 import { FOOTER_COMPONENT_NAV_LINKS, type FooterLink } from "../data";
 
 // ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Component.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
+// ============================================================================
 // FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
@@ -26,6 +35,8 @@ export interface FooterNavigationProps
     CommonComponentProps {
   /** Navigation links */
   links?: ReadonlyArray<FooterLink>;
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
 }
 
 /** `FooterNavigation` component type. */
@@ -59,6 +70,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
+        id={`${componentId}-footer-navigation`}
         className={cn(
           "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
           className
@@ -83,6 +95,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
           const element = (
             <li
               key={`${componentId}-footer-navigation-item-${label}`}
+              id={`${componentId}-footer-navigation-item-${label}`}
               {...createComponentProps(
                 componentId,
                 "footer-navigation-item",
