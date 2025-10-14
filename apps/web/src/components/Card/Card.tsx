@@ -18,6 +18,15 @@ import {
 } from "./internal";
 
 // ============================================================================
+// COMPONENT CLASSIFICATION: Compound Component
+// - Type: Compound (main component with orchestrated sub-components)
+// - Testing: Unit + Integration tests (both required)
+// - Structure: _internal/ folder with sub-components
+// - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
+// ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
 // ============================================================================
 
@@ -54,7 +63,6 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
   const element = (
     <Component
       {...rest}
-      id={rest.id || `${componentId}-card`}
       className={cn("group relative flex flex-col items-start", className)}
       {...createComponentProps(componentId, "card", isDebugMode)}
     >
