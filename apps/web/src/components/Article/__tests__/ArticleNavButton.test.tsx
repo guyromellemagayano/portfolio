@@ -1,3 +1,12 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -25,12 +34,16 @@ vi.mock("next/navigation", () => ({
   useRouter: mockUseRouter,
 }));
 
-// Mock useComponentId hook (not used by this component)
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ internalId, debugMode = false } = {}) => ({
-    id: internalId || "test-id",
-    isDebugMode: debugMode,
-  })),
+  useComponentId: mockUseComponentId,
 }));
 
 // Mock utils functions
@@ -122,7 +135,7 @@ const mockIcon = vi.hoisted(() => ({
     ArrowLeft: ({
       className,
       debugMode,
-      internalId: _internalId,
+      debugId: _debugId,
       ...props
     }: any) => (
       <svg
@@ -135,7 +148,7 @@ const mockIcon = vi.hoisted(() => ({
     ),
   },
   Link: vi.fn(({ children, ...props }) => (
-    <a data-testid="link" {...props}>
+    <a data-testid="link" role="link" aria-label="Link" {...props}>
       {children}
     </a>
   )),
@@ -155,12 +168,14 @@ describe("ArticleNavButton", () => {
   beforeEach(() => {
     mockBack.mockClear();
     mockUseRouter.mockClear();
+    mockUseComponentId.mockClear();
   });
 
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
     mockBack.mockClear();
+    mockUseComponentId.mockClear();
   });
 
   describe("Basic Rendering", () => {
@@ -206,10 +221,10 @@ describe("ArticleNavButton", () => {
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("data-custom", "test");
-      // Component now has its own aria-describedby based on debugId
+      // Component now has its own aria-describedby based on componentId
       expect(button).toHaveAttribute(
         "aria-describedby",
-        "test-id-nav-button-description"
+        "test-id-article-nav-button-description"
       );
       expect(button).toBeDisabled();
     });
@@ -272,7 +287,7 @@ describe("ArticleNavButton", () => {
     });
 
     it("passes correct props to the icon", () => {
-      render(<ArticleNavButton internalId="test-id" debugMode={true} />);
+      render(<ArticleNavButton debugId="test-id" debugMode={true} />);
 
       const icon = screen.getByTestId("arrow-left-icon");
       // Note: The global mock doesn't apply debug mode to icons
@@ -330,7 +345,7 @@ describe("ArticleNavButton", () => {
       // Button should be described by the description span
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-nav-button-description"
+        "aria-test-article-nav-button-description"
       );
     });
 
@@ -341,7 +356,7 @@ describe("ArticleNavButton", () => {
       const descriptionElement = screen.getByText("Go back to articles");
       expect(descriptionElement).toHaveAttribute(
         "id",
-        "aria-test-nav-button-description"
+        "aria-test-article-nav-button-description"
       );
     });
 
@@ -368,7 +383,7 @@ describe("ArticleNavButton", () => {
       expect(descriptionElement).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("applies ARIA attributes with different internal IDs", () => {
+    it("applies ARIA attributes with different debug IDs", () => {
       render(<ArticleNavButton debugId="custom-aria-id" />);
 
       const buttonElement = screen.getByRole("button");
@@ -377,11 +392,11 @@ describe("ArticleNavButton", () => {
       // Should use custom debugId in ARIA relationships
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "custom-aria-id-nav-button-description"
+        "custom-aria-id-article-nav-button-description"
       );
       expect(descriptionElement).toHaveAttribute(
         "id",
-        "custom-aria-id-nav-button-description"
+        "custom-aria-id-article-nav-button-description"
       );
     });
 
@@ -392,7 +407,7 @@ describe("ArticleNavButton", () => {
       let buttonElement = screen.getByRole("button");
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-nav-button-description"
+        "aria-test-article-nav-button-description"
       );
 
       // Update with different debugId
@@ -402,7 +417,7 @@ describe("ArticleNavButton", () => {
       buttonElement = screen.getByRole("button");
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "updated-aria-test-nav-button-description"
+        "updated-aria-test-article-nav-button-description"
       );
     });
 
@@ -422,7 +437,7 @@ describe("ArticleNavButton", () => {
       // Should have aria-describedby for the description
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-nav-button-description"
+        "aria-test-article-nav-button-description"
       );
     });
 
@@ -468,7 +483,7 @@ describe("ArticleNavButton", () => {
       // Should maintain both component ARIA attributes and custom ones
       expect(buttonElement).toHaveAttribute(
         "aria-describedby",
-        "aria-test-nav-button-description"
+        "aria-test-article-nav-button-description"
       );
       expect(buttonElement).toHaveAttribute("aria-expanded", "false");
       expect(buttonElement).toHaveAttribute("aria-controls", "article-content");

@@ -1,3 +1,12 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
+/* eslint-disable enterprise/require-i18n-constants */
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -99,7 +108,7 @@ vi.mock("@web/components", () => ({
           const { children, href, ...rest } = props;
           return (
             <h2 ref={ref} data-testid="mock-card-title" {...rest}>
-              {href ? <a href={href}>{children}</a> : children}
+              {href ? <a href={href} aria-label="Article title link">{children}</a> : children}
             </h2>
           );
         }
@@ -122,9 +131,15 @@ vi.mock("@web/components", () => ({
       ),
       Description: React.forwardRef<HTMLParagraphElement, any>(
         function MockCardDescription(props, ref) {
-          const { children, ...rest } = props;
+          const { children, debugId, ...rest } = props;
+          const componentId = debugId || "aria-test";
           return (
-            <p ref={ref} data-testid="mock-card-description" {...rest}>
+            <p 
+              ref={ref} 
+              data-testid="mock-card-description" 
+              id={`${componentId}-base-article-card-description`}
+              {...rest}
+            >
               {children}
             </p>
           );
@@ -134,7 +149,13 @@ vi.mock("@web/components", () => ({
         function MockCardCta(props, ref) {
           const { children, ...rest } = props;
           return (
-            <div ref={ref} data-testid="mock-card-cta" {...rest}>
+            <div 
+              ref={ref} 
+              data-testid="mock-card-cta" 
+              role="button"
+              aria-label="Call to action"
+              {...rest}
+            >
               {children}
             </div>
           );
@@ -145,7 +166,7 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock shared data
-vi.mock("../constants", () => ({
+vi.mock("../constants/Article.i18n", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",

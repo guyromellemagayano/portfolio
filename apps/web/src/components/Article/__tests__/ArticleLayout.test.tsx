@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 2 (80%+ coverage, key paths + edges)
+// - Risk Tier: Core
+// - Component Type: Orchestrator
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -75,7 +83,7 @@ vi.mock("@guyromellemagayano/utils", async () => {
         return true;
       })
     ),
-    formatDateSafely: vi.fn((date) => {
+    formatDateSafely: vi.fn((_date) => {
       return "Formatted Date";
     }),
     hasMeaningfulText: vi.fn((content) => {
@@ -100,12 +108,12 @@ vi.mock("@guyromellemagayano/utils", async () => {
 // Mock dependencies
 vi.mock("@guyromellemagayano/components", () => ({
   Article: vi.fn(({ children, ...props }) => (
-    <article data-testid="article" {...props}>
+    <article data-testid="article" role="article" aria-label="Article content" {...props}>
       {children}
     </article>
   )),
   Button: vi.fn(({ children, ...props }) => (
-    <button data-testid="button" {...props}>
+    <button data-testid="button" role="button" aria-label="Button" {...props}>
       {children}
     </button>
   )),
@@ -115,7 +123,7 @@ vi.mock("@guyromellemagayano/components", () => ({
     </div>
   )),
   Header: vi.fn(({ children, ...props }) => (
-    <header data-testid="header" {...props}>
+    <header data-testid="header" role="banner" aria-label="Article header" {...props}>
       {children}
     </header>
   )),
@@ -125,7 +133,7 @@ vi.mock("@guyromellemagayano/components", () => ({
     </h1>
   )),
   Link: vi.fn(({ children, ...props }) => (
-    <a data-testid="link" {...props}>
+    <a data-testid="link" role="link" aria-label="Link" {...props}>
       {children}
     </a>
   )),
@@ -184,11 +192,21 @@ vi.mock("@web/components", () => ({
     );
   }),
   Prose: vi.fn(
-    ({ children, debugId: _debugId, debugMode: _debugMode, ...props }) => (
-      <div data-testid="prose" data-mdx-content {...props}>
-        {children}
-      </div>
-    )
+    ({ children, debugId, debugMode: _debugMode, ...props }) => {
+      const componentId = debugId || "aria-test";
+      return (
+        <div 
+          data-testid="prose" 
+          data-mdx-content 
+          role="region"
+          aria-label="Article content"
+          aria-labelledby={`${componentId}-article-prose-title`}
+          {...props}
+        >
+          {children}
+        </div>
+      );
+    }
   ),
   Icon: {
     ArrowLeft: vi.fn(({ children, ...props }) => (
@@ -257,7 +275,13 @@ vi.mock("../ArticleNavButton", () => ({
       "data-testid": `${debugId || "test-id"}-article-nav-button-root`,
     };
     return (
-      <button {...componentProps} {...props}>
+      <button 
+        {...componentProps} 
+        {...props}
+        role="button"
+        aria-label="Go back to articles"
+        aria-describedby="nav-button-description"
+      >
         <svg data-testid="arrow-left-icon" />
       </button>
     );
@@ -1188,7 +1212,7 @@ describe("ArticleLayout", () => {
         expect(proseElement).toHaveAttribute("aria-label", "Article content");
         expect(proseElement).toHaveAttribute(
           "aria-labelledby",
-          "aria-test-article-title"
+          "aria-test-article-prose-title"
         );
       });
 

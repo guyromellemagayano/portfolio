@@ -1,10 +1,20 @@
 "use client";
 
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Article.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
 import React, { useContext } from "react";
 
 import { useRouter } from "next/navigation";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
   setDisplayName,
@@ -23,7 +33,10 @@ import { ARTICLE_I18N } from "./constants";
 /** `ArticleNavButton` component props. */
 export interface ArticleNavButtonProps
   extends React.ComponentProps<"button">,
-    CommonComponentProps {}
+    CommonComponentProps {
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
+}
 
 /** `ArticleNavButton` component type. */
 export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
@@ -36,6 +49,11 @@ export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function BaseArticleNavButton(props) {
     const { className, debugId, debugMode, ...rest } = props;
+
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
 
     let router = useRouter();
     let { previousPathname } = useContext(AppContext);
@@ -51,20 +69,21 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
           className
         )}
         aria-label={ARTICLE_I18N.goBackToArticles}
-        aria-describedby={`${debugId}-article-nav-button-description`}
+        aria-describedby={`${componentId}-article-nav-button-description`}
         onClick={() => router.back()}
-        {...createComponentProps(debugId, "article-nav-button", debugMode)}
+        {...createComponentProps(componentId, "article-nav-button", isDebugMode)}
       >
         <Icon.ArrowLeft
           className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400"
           aria-hidden="true"
-          debugMode={debugMode}
-          debugId={debugId}
+          debugMode={isDebugMode}
+          debugId={componentId}
         />
         <span
+          id={`${componentId}-article-nav-button-description`}
           className="sr-only"
           aria-hidden="true"
-          {...createComponentProps(debugId, "article-nav-button-description", debugMode)}
+          {...createComponentProps(componentId, "article-nav-button-description", isDebugMode)}
         >
           {ARTICLE_I18N.goBackToArticles}
         </span>
