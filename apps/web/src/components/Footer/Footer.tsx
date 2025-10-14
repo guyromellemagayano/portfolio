@@ -14,6 +14,15 @@ import { FooterComponentLabels } from "./data";
 import { FooterLegal, FooterNavigation } from "./internal";
 
 // ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Orchestrator
+// - Testing: Unit tests only (integration happens at parent level)
+// - Structure: Flat, imports other components
+// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
+// ============================================================================
 // FOOTER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
@@ -21,7 +30,10 @@ import { FooterLegal, FooterNavigation } from "./internal";
 export interface FooterProps
   extends React.ComponentProps<"footer">,
     FooterComponentLabels,
-    CommonComponentProps {}
+    CommonComponentProps {
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
+}
 
 /** `Footer` component type. */
 export type FooterComponent = React.FC<FooterProps>;

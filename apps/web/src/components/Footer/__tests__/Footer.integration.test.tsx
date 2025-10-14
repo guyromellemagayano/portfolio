@@ -3,6 +3,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Footer } from "../Footer";
 
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Integration
+// - Coverage: Tier 2 (80%+ coverage, key paths + edges)
+// - Risk Tier: Core
+// - Component Type: Orchestrator
+// ============================================================================
+
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
