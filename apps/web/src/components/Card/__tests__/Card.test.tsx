@@ -120,11 +120,11 @@ describe("Card", () => {
   });
 
   describe("Component Structure", () => {
-    it("renders as div element", () => {
+    it("renders as article element", () => {
       render(<Card>Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card.tagName).toBe("DIV");
+      expect(card.tagName).toBe("ARTICLE");
     });
 
     it("applies correct CSS classes", () => {

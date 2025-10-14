@@ -47,7 +47,6 @@ const BaseCardDescription: CardDescriptionComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-card-description`}
         className={cn(
           "relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400",
           className
