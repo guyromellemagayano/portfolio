@@ -1,5 +1,5 @@
 // ============================================================================
-// ARTICLE COMPONENT INTERNATIONALIZATION
+// COMPONENT INTERNATIONALIZATION
 // ============================================================================
 
 /** `ArticleI18n` type. */
@@ -7,16 +7,20 @@ export type ArticleI18n = Readonly<Record<string, string>>;
 
 /** `ARTICLE_I18N` object. */
 export const ARTICLE_I18N = {
+  // Action labels
   cta: "Read article",
   goBackToArticles: "Go back to articles",
-  invalidArticleData: "Invalid article data",
-  articleItem: "Article item",
-  articleLayout: "Article layout",
+
+  // Content labels
   articleContent: "Article content",
+  articleLayout: "Article layout",
   articleHeader: "Article header",
   articleTitle: "Article title",
   articleDate: "Published on",
   articlePublished: "Publication date",
   articleList: "Article list",
   articles: "Articles",
+
+  // Error messages
+  invalidArticleData: "Invalid article data",
 } as const satisfies ArticleI18n;
