@@ -1,3 +1,5 @@
 // ============================================================================
-// SHARED CONTAINER COMPONENT DATA
+// CONTAINER COMPONENT TYPES EXPORTS
 // ============================================================================
+
+export type * from "./Container.types";
