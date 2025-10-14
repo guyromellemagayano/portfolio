@@ -3,6 +3,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { FooterLegal } from "../internal/FooterLegal";
 
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: vi.fn((options = {}) => ({
