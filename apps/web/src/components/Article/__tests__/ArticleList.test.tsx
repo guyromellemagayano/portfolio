@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -730,7 +738,7 @@ describe("ArticleList", () => {
       );
 
       const container = screen.getByTestId("test-id-article-list-root");
-      expect(container).toHaveAttribute("id", "test-id-article-list");
+      expect(container).toHaveAttribute("id", "test-id");
       expect(container).toHaveAttribute("role", "region");
       expect(container).toHaveAttribute("tabIndex", "0");
     });

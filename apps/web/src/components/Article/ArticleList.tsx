@@ -1,3 +1,12 @@
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Article.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -18,7 +27,10 @@ import { ARTICLE_I18N } from "./constants";
 /** `ArticleList` component props. */
 export interface ArticleListProps
   extends React.ComponentProps<"div">,
-    CommonComponentProps {}
+    CommonComponentProps {
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
+}
 
 /** `ArticleList` component type. */
 export type ArticleListComponent = React.FC<ArticleListProps>;
@@ -42,6 +54,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
     const element = (
       <div
         {...rest}
+        id={rest.id || `${componentId}-article-list`}
         role="region"
         className={cn(
           "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
@@ -52,6 +65,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         {...createComponentProps(componentId, "article-list", isDebugMode)}
       >
         <h2
+          id={`${componentId}-article-list-heading`}
           className="sr-only"
           aria-hidden="true"
           {...createComponentProps(
@@ -63,6 +77,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
           {ARTICLE_I18N.articleList}
         </h2>
         <div
+          id={`${componentId}-article-list-children`}
           role="list"
           className="flex w-full max-w-3xl flex-col space-y-16"
           aria-label={ARTICLE_I18N.articles}
