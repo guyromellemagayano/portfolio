@@ -280,14 +280,14 @@ describe("CardCta", () => {
       render(<CardCta debugId="custom-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("custom-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute("id", "custom-id-card-cta");
+      expect(ctaElement).toHaveAttribute("data-card-cta-id", "custom-id-card-cta");
     });
 
-    it("uses provided internalId when available", () => {
+    it("uses provided debugId when available", () => {
       render(<CardCta debugId="test-id">Call to action</CardCta>);
 
       const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute("id", "test-id-card-cta");
+      expect(ctaElement).toHaveAttribute("data-card-cta-id", "test-id-card-cta");
     });
   });
 
