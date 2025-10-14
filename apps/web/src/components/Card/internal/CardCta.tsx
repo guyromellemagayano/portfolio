@@ -60,7 +60,6 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-card-cta`}
         className={cn(
           "relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500",
           className
