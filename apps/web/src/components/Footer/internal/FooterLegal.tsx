@@ -12,6 +12,15 @@ import { cn } from "@web/utils";
 import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../data";
 
 // ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Component.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
+// ============================================================================
 // FOOTER LEGAL COMPONENT TYPES & INTERFACES
 // ============================================================================
 
@@ -19,7 +28,10 @@ import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../data";
 export interface FooterLegalProps
   extends React.ComponentProps<"p">,
     FooterComponentLabels,
-    CommonComponentProps {}
+    CommonComponentProps {
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
+}
 
 /** `FooterLegal` component type. */
 export type FooterLegalComponent = React.FC<FooterLegalProps>;
