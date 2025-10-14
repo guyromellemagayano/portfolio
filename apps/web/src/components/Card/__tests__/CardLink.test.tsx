@@ -160,8 +160,8 @@ describe("CardLink", () => {
       );
 
       const container = screen.getByTestId("test-id-card-link-root-root");
-      // The component overrides the id with its internal ID
-      expect(container).toHaveAttribute("id", "test-id-card-link-root");
+      // The component uses createComponentProps which sets data-* attributes, not id
+      expect(container).toHaveAttribute("data-card-link-root-id", "test-id-card-link-root");
       expect(container).toHaveAttribute("data-test", "test-data");
     });
 
