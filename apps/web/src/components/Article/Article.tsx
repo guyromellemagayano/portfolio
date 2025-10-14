@@ -1,5 +1,14 @@
 "use client";
 
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Presentational
+// - Testing: Unit tests only
+// - Structure: Single file + tests + constants/Article.i18n.ts
+// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching)
+// ============================================================================
+
 import React, { useMemo } from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -22,6 +31,8 @@ export interface ArticleProps
     CommonComponentProps {
   /** The article to display. */
   article: ArticleWithSlug;
+  /** Whether to enable memoization */
+  isMemoized?: boolean;
 }
 
 /** `Article` component type. */
@@ -63,7 +74,7 @@ const BaseArticle: ArticleComponent = setDisplayName(
         description: article.description.trim(),
         formattedDate: formatDateSafely(article.date.trim()),
       };
-    }, [article?.title, article?.slug, article?.date, article?.description]);
+    }, [article]);
 
     if (!article) return null;
 
