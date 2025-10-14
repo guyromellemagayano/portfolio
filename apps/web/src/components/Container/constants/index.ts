@@ -1,3 +1,5 @@
 // ============================================================================
-// SHARED CONTAINER COMPONENT DATA FRAGMENTS
+// CONTAINER COMPONENT CONSTANTS EXPORTS
 // ============================================================================
+
+export * from "./Container.i18n";
