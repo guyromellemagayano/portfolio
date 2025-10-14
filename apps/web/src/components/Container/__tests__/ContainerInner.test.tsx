@@ -151,8 +151,8 @@ describe("ContainerInner", () => {
       );
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
-      // Component overrides the id with its own generated ID
-      expect(innerRoot).toHaveAttribute("id", "test-id-container-inner");
+      // Component uses createComponentProps which sets data-container-inner-id, not id
+      expect(innerRoot).toHaveAttribute("data-container-inner-id", "test-id-container-inner");
       expect(innerRoot).toHaveAttribute("data-test", "test-data");
     });
 

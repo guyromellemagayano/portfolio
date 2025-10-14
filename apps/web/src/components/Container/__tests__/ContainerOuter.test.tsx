@@ -147,7 +147,8 @@ describe("ContainerOuter", () => {
       );
 
       const outerRoot = screen.getByTestId("test-id-container-outer-root");
-      expect(outerRoot).toHaveAttribute("id", "test-id-container-outer");
+      // Component uses createComponentProps which sets data-container-outer-id, not id
+      expect(outerRoot).toHaveAttribute("data-container-outer-id", "test-id-container-outer");
       expect(outerRoot).toHaveAttribute("data-test", "test-data");
     });
 
