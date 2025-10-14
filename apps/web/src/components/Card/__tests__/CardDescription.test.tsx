@@ -291,12 +291,12 @@ describe("CardDescription", () => {
         "generated-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "id",
+        "data-card-description-id",
         "generated-id-card-description"
       );
     });
 
-    it("renders with custom internal ID", () => {
+    it("renders with custom debugId", () => {
       mockUseComponentId.mockReturnValue({
         componentId: "custom-id",
         isDebugMode: false,
@@ -310,7 +310,7 @@ describe("CardDescription", () => {
         "custom-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "id",
+        "data-card-description-id",
         "custom-id-card-description"
       );
     });
