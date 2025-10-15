@@ -10,7 +10,7 @@ import {
 import { ContainerInner, ContainerOuter } from "@web/components";
 import { cn } from "@web/utils";
 
-import { FooterComponentLabels } from "./data";
+import { type FooterComponentLabels } from "./data";
 import { FooterLegal, FooterNavigation } from "./internal";
 
 // ============================================================================
@@ -60,6 +60,7 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
   const element = (
     <Component
       {...rest}
+      role="contentinfo"
       className={cn("mt-32 flex-none", className)}
       {...createComponentProps(componentId, "footer", isDebugMode)}
     >
