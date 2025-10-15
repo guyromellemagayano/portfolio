@@ -1,0 +1,50 @@
+# Node modules and lock files
+node_modules/
+pnpm-lock.yaml
+.pnp/
+.pnp.js
+
+# NPM cache directories
+.npm-cache/
+.pnpm-store/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+.next/
+out/
+coverage/
+logs/
+dist/
+
+# Turbo/monorepo cache
+.turbo/
+.cache/
+
+# OS/system/editor files
+.DS_Store
+.env
+.env.local
+.env.*.local
+*.local
+*.log
+
+# Sanity
+.sanity/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Vercel
+.vercel/
+
+# Old folders
+*.old
+*-old/
+
+# Versioning
+v2/
+
+# Editor Workspaces
+*.code-workspace
