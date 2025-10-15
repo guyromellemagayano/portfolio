@@ -1,6 +1,6 @@
 ---
-description: Rules for writing frontend code for this monorepo (mostly React + Typescript)
-globs: apps/**/*.ts,apps/**/*.tsx,packages/**/*.ts,packages/**/*.tsx
+description: React + TypeScript Standards
+globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
 alwaysApply: false
 ---
 
