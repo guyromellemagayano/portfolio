@@ -1,3 +1,9 @@
+---
+description: Component Architecture Standards
+globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
+alwaysApply: false
+---
+
 # Component Architecture Standards
 
 ## Component Classification
