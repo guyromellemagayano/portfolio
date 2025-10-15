@@ -5,8 +5,6 @@
 // - Risk Tier: Presentational
 // - Component Type: Presentational
 // ============================================================================
-
-/* eslint-disable enterprise/require-i18n-constants */
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -134,9 +132,9 @@ vi.mock("@web/components", () => ({
           const { children, debugId, ...rest } = props;
           const componentId = debugId || "aria-test";
           return (
-            <p 
-              ref={ref} 
-              data-testid="mock-card-description" 
+            <p
+              ref={ref}
+              data-testid="mock-card-description"
               id={`${componentId}-base-article-card-description`}
               {...rest}
             >
@@ -149,9 +147,9 @@ vi.mock("@web/components", () => ({
         function MockCardCta(props, ref) {
           const { children, ...rest } = props;
           return (
-            <div 
-              ref={ref} 
-              data-testid="mock-card-cta" 
+            <div
+              ref={ref}
+              data-testid="mock-card-cta"
               role="button"
               aria-label="Call to action"
               {...rest}
