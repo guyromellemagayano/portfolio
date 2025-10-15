@@ -114,7 +114,7 @@ describe("FooterLegal", () => {
       );
 
       const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveAttribute("aria-label", "Legal information");
+      expect(legalElement).toHaveAttribute("aria-label", "&copy; 2024 Guy Romelle Magayano. All rights reserved.");
       expect(legalElement).toHaveAttribute("role", "contentinfo");
     });
   });
