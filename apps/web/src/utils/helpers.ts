@@ -29,11 +29,10 @@ export function isActivePath(
 }
 
 /** Clamps a value between a minimum and maximum. */
-export function clamp(value: number, min: number, max: number): number {
-  if (Number.isNaN(value)) return min;
-  if (value < min) return min;
-  if (value > max) return max;
-  return value;
+export function clamp(value: number, a: number, b: number): number {
+  let min = Math.min(a, b);
+  let max = Math.max(a, b);
+  return Math.min(Math.max(value, min), max);
 }
 
 /** Checks if a value is a valid string. */
