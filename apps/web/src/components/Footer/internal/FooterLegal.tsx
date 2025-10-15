@@ -63,6 +63,8 @@ const BaseFooterLegal: FooterLegalComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
+        role="contentinfo"
+        aria-label={legalText}
         className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
         {...createComponentProps(componentId, "footer-legal", isDebugMode)}
       >
