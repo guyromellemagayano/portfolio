@@ -70,6 +70,7 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
+        role="navigation"
         id={`${componentId}-footer-navigation`}
         className={cn(
           "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
