@@ -291,49 +291,5 @@ vi.mock(
 );
 // testLogger.debug("@guyromellemagayano/logger mocked via centralized mocks");
 
-// Global mock for Sanity client
-vi.mock("@sanity/client", () => ({
-  createClient: vi.fn(() => ({
-    fetch: vi.fn(),
-    listen: vi.fn(),
-    getDocument: vi.fn(),
-    getDocuments: vi.fn(),
-    create: vi.fn(),
-    createOrReplace: vi.fn(),
-    patch: vi.fn(),
-    delete: vi.fn(),
-    mutate: vi.fn(),
-    transaction: vi.fn(),
-  })),
-}));
-
-// Global mock for next-sanity
-vi.mock("next-sanity", () => ({
-  createClient: vi.fn(() => ({
-    fetch: vi.fn(),
-    listen: vi.fn(),
-    getDocument: vi.fn(),
-    getDocuments: vi.fn(),
-    create: vi.fn(),
-    createOrReplace: vi.fn(),
-    patch: vi.fn(),
-    delete: vi.fn(),
-    mutate: vi.fn(),
-    transaction: vi.fn(),
-  })),
-  sanityClient: vi.fn(() => ({
-    fetch: vi.fn(),
-    listen: vi.fn(),
-    getDocument: vi.fn(),
-    getDocuments: vi.fn(),
-    create: vi.fn(),
-    createOrReplace: vi.fn(),
-    patch: vi.fn(),
-    delete: vi.fn(),
-    mutate: vi.fn(),
-    transaction: vi.fn(),
-  })),
-}));
-
 // Final setup completion log
 // testLogger.info("All mocks and configurations initialized successfully");
