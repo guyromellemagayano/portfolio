@@ -12,25 +12,21 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonLinkProps } from "../data";
+import { type CommonLinkProps } from "../types";
 
 // ============================================================================
 // SOCIAL LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `SocialLinkProps` component props. */
 export interface SocialLinkProps extends CommonLinkProps {
   icon: React.ComponentType<{ className?: string }>;
 }
-
-/** `SocialLinkComponent` component type. */
 export type SocialLinkComponent = React.FC<SocialLinkProps>;
 
 // ============================================================================
 // BASE SOCIAL LINK COMPONENT
 // ============================================================================
 
-/** A base social media link component. */
 const BaseSocialLink: SocialLinkComponent = setDisplayName(
   function BaseSocialLink(props) {
     const {
@@ -61,9 +57,16 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
         title={title}
         aria-label={title}
         className={cn("group -m-1 p-1", className)}
-        {...createComponentProps(componentId, "social-link", isDebugMode)}
+        {...createComponentProps(componentId, "social-link-root", isDebugMode)}
       >
-        <Icon className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300" />
+        <Icon
+          className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300"
+          {...createComponentProps(
+            componentId,
+            "social-link-icon",
+            isDebugMode
+          )}
+        />
       </Link>
     );
 
@@ -75,14 +78,12 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
 // MEMOIZED SOCIAL LINK COMPONENT
 // ============================================================================
 
-/** A memoized social media link component. */
 const MemoizedSocialLink = React.memo(BaseSocialLink);
 
 // ============================================================================
 // MAIN SOCIAL LINK COMPONENT
 // ============================================================================
 
-/** A social media link component with icon support. */
 export const SocialLink = setDisplayName(function SocialLink(props) {
   const { isMemoized = false, ...rest } = props;
 
