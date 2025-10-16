@@ -444,33 +444,25 @@ describe("ArticleList", () => {
         name: "Article list",
       });
 
-      // Region should be labelled by the heading
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-article-list-heading"
-      );
+      // Region should have aria-label (no longer uses aria-labelledby)
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
     });
 
-    it("applies unique IDs for ARIA relationships", () => {
+    it("applies correct ARIA labels without ID dependencies", () => {
       render(
         <ArticleList debugId="aria-test">
           <div>Article content</div>
         </ArticleList>
       );
 
-      // Heading should have unique ID (using getByText since it's hidden)
+      // Heading should be present but hidden (no ID needed)
       const headingElement = screen.getByText("Article list");
-      expect(headingElement).toHaveAttribute(
-        "id",
-        "aria-test-article-list-heading"
-      );
+      expect(headingElement).toBeInTheDocument();
+      expect(headingElement).toHaveAttribute("aria-hidden", "true");
 
-      // List should have unique ID
+      // List should have aria-label (no ID needed)
       const listElement = screen.getByRole("list", { name: "Articles" });
-      expect(listElement).toHaveAttribute(
-        "id",
-        "aria-test-article-list-children"
-      );
+      expect(listElement).toHaveAttribute("aria-label", "Articles");
     });
 
     it("applies correct ARIA labels to content elements", () => {
@@ -527,19 +519,10 @@ describe("ArticleList", () => {
       const headingElement = screen.getByText("Article list");
       const listElement = screen.getByRole("list", { name: "Articles" });
 
-      // Should use custom debug ID in ARIA relationships
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "custom-aria-id-article-list-heading"
-      );
-      expect(headingElement).toHaveAttribute(
-        "id",
-        "custom-aria-id-article-list-heading"
-      );
-      expect(listElement).toHaveAttribute(
-        "id",
-        "custom-aria-id-article-list-children"
-      );
+      // Should have aria-label (no ID dependencies)
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
+      expect(headingElement).toBeInTheDocument();
+      expect(listElement).toHaveAttribute("aria-label", "Articles");
     });
 
     it("maintains ARIA attributes during component updates", () => {
@@ -551,10 +534,7 @@ describe("ArticleList", () => {
 
       // Initial render
       let regionElement = screen.getByRole("region", { name: "Article list" });
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-article-list-heading"
-      );
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
 
       // Update with different content
       rerender(
@@ -565,10 +545,7 @@ describe("ArticleList", () => {
 
       // ARIA attributes should be maintained
       regionElement = screen.getByRole("region", { name: "Article list" });
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-article-list-heading"
-      );
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
     });
 
     it("ensures proper ARIA landmark structure", () => {
@@ -604,11 +581,8 @@ describe("ArticleList", () => {
         name: "Article list",
       });
 
-      // Should have aria-labelledby for the heading
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-article-list-heading"
-      );
+      // Should have aria-label (no ID dependencies)
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
     });
 
     it("handles ARIA attributes when no children are provided", () => {
@@ -634,10 +608,7 @@ describe("ArticleList", () => {
       });
 
       // Should maintain both component ARIA attributes and custom ones
-      expect(regionElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-article-list-heading"
-      );
+      expect(regionElement).toHaveAttribute("aria-label", "Article list");
       expect(regionElement).toHaveAttribute("aria-expanded", "true");
       expect(regionElement).toHaveAttribute("aria-controls", "article-content");
     });

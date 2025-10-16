@@ -1,12 +1,3 @@
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Presentational
-// - Testing: Unit tests only
-// - Structure: Single file + tests + constants/Article.i18n.ts
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
-
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -27,7 +18,6 @@ import { ARTICLE_I18N } from "./constants";
 // ARTICLE LIST ITEM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `ArticleListItem` component props. */
 export interface ArticleListItemProps
   extends Omit<React.ComponentProps<"article">, "ref">,
     CommonComponentProps {
@@ -38,8 +28,6 @@ export interface ArticleListItemProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `ArticleListItem` component type. */
 export type ArticleListItemComponent = React.ForwardRefExoticComponent<
   ArticleListItemProps & React.RefAttributes<HTMLElement>
 >;
@@ -101,16 +89,6 @@ const BaseArticleListItem = setDisplayName(
               }
               debugId={componentId}
               debugMode={isDebugMode}
-              aria-labelledby={
-                articleData.title.length > 0
-                  ? `${componentId}-article-list-item-card-title`
-                  : undefined
-              }
-              aria-describedby={
-                articleData.description.length > 0
-                  ? `${componentId}-article-list-item-card-description`
-                  : undefined
-              }
             >
               {articleData.title.length > 0 ? (
                 <Card.Title
@@ -118,7 +96,6 @@ const BaseArticleListItem = setDisplayName(
                   debugId={componentId}
                   debugMode={isDebugMode}
                   aria-level={1}
-                  id={`${componentId}-article-list-item-card-title`}
                 >
                   {articleData.title}
                 </Card.Title>
@@ -132,7 +109,6 @@ const BaseArticleListItem = setDisplayName(
                   debugId={componentId}
                   debugMode={isDebugMode}
                   aria-label={`${ARTICLE_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
-                  id={`${componentId}-article-list-item-card-date`}
                   decorate
                 >
                   {formatDateSafely(articleData.date)}
@@ -140,11 +116,7 @@ const BaseArticleListItem = setDisplayName(
               ) : null}
 
               {articleData.description.length > 0 ? (
-                <Card.Description
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                  id={`${componentId}-article-list-item-card-description`}
-                >
+                <Card.Description debugId={componentId} debugMode={isDebugMode}>
                   {articleData.description}
                 </Card.Description>
               ) : null}
@@ -153,8 +125,7 @@ const BaseArticleListItem = setDisplayName(
                 role="button"
                 debugId={componentId}
                 debugMode={isDebugMode}
-                aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || ARTICLE_I18N.articleItem}`}
-                id={`${componentId}-article-list-item-card-cta`}
+                aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || ARTICLE_I18N.cta}`}
               >
                 {ARTICLE_I18N.cta}
               </Card.Cta>
@@ -170,16 +141,6 @@ const BaseArticleListItem = setDisplayName(
           {...rest}
           role="article"
           className={cn("md:grid md:grid-cols-4 md:items-baseline", className)}
-          aria-labelledby={
-            articleData.title.length > 0
-              ? `${componentId}-article-item-card-title`
-              : undefined
-          }
-          aria-describedby={
-            articleData.description.length > 0
-              ? `${componentId}-article-item-card-description`
-              : undefined
-          }
           {...createComponentProps(componentId, "article-item", debugMode)}
         >
           <ArticleCard {...rest} />
