@@ -27,12 +27,9 @@ import {
 // HEADER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `HeaderProps` component props. */
 export interface HeaderProps
   extends React.ComponentProps<"header">,
     CommonComponentProps {}
-
-/** `HeaderComponent` component type. */
 export type HeaderComponent = React.FC<HeaderProps>;
 
 // ============================================================================
@@ -184,6 +181,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                   "var(--header-position)" as React.CSSProperties["position"],
               }}
               className="top-0 order-last -mb-3 pt-3"
+              debugId={componentId}
+              debugMode={isDebugMode}
             >
               <div
                 style={{
@@ -210,12 +209,16 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                       opacity: "var(--avatar-border-opacity, 0)",
                       transform: "var(--avatar-border-transform)",
                     }}
-                    className="absolute left-0 top-3 origin-left transition-opacity"
+                    className="absolute top-3 left-0 origin-left transition-opacity"
+                    debugId={componentId}
+                    debugMode={isDebugMode}
                   />
                   <HeaderAvatar
                     large
                     style={{ transform: "var(--avatar-image-transform)" }}
                     className="block h-16 w-16 origin-left"
+                    debugId={componentId}
+                    debugMode={isDebugMode}
                   />
                 </div>
               </div>
@@ -238,6 +241,8 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               position:
                 "var(--header-inner-position)" as React.CSSProperties["position"],
             }}
+            debugId={componentId}
+            debugMode={isDebugMode}
           >
             <div
               className="relative flex gap-4"
@@ -256,8 +261,14 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                 )}
               >
                 {!isHomePage ? (
-                  <HeaderAvatarContainer>
-                    <HeaderAvatar />
+                  <HeaderAvatarContainer
+                    debugId={componentId}
+                    debugMode={isDebugMode}
+                  >
+                    <HeaderAvatar
+                      debugId={componentId}
+                      debugMode={isDebugMode}
+                    />
                   </HeaderAvatarContainer>
                 ) : null}
               </div>
@@ -269,8 +280,16 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                   debugMode
                 )}
               >
-                <HeaderMobileNav className="pointer-events-auto md:hidden" />
-                <HeaderDesktopNav className="pointer-events-auto hidden md:block" />
+                <HeaderMobileNav
+                  className="pointer-events-auto md:hidden"
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
+                <HeaderDesktopNav
+                  className="pointer-events-auto hidden md:block"
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
               </div>
               <div
                 className="flex justify-end md:flex-1"
@@ -288,7 +307,10 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                     debugMode
                   )}
                 >
-                  <HeaderThemeToggle />
+                  <HeaderThemeToggle
+                    debugId={componentId}
+                    debugMode={isDebugMode}
+                  />
                 </div>
               </div>
             </div>
