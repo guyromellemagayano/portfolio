@@ -10,24 +10,20 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonLinkProps } from "./data";
 import { SocialLink } from "./internal";
+import { type CommonLinkProps } from "./types";
 
 // ============================================================================
 // LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `LinkProps` component props. */
 export interface LinkProps extends CommonLinkProps {}
-
-/** `LinkComponent` component type. */
 export type LinkComponent = React.FC<LinkProps>;
 
 // ============================================================================
 // BASE LINK COMPONENT
 // ============================================================================
 
-/** Base link component. */
 const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
   const { children, href, target, title, debugId, debugMode, ...rest } = props;
 
@@ -47,7 +43,7 @@ const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
       rel={linkTargetProps.rel}
       title={title}
       aria-label={title}
-      {...createComponentProps(componentId, "link", isDebugMode)}
+      {...createComponentProps(componentId, "link-root", isDebugMode)}
     >
       {children}
     </NextLink>
@@ -60,14 +56,12 @@ const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
 // MEMOIZED LINK COMPONENT
 // ============================================================================
 
-/** A memoized link component. */
 const MemoizedLink = React.memo(BaseLink);
 
 // ============================================================================
 // MAIN LINK COMPONENT
 // ============================================================================
 
-/** A default link component. */
 export const Link = setDisplayName(function Link(props) {
   const { children, isMemoized = false, ...rest } = props;
 
