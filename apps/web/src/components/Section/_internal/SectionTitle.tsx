@@ -10,26 +10,22 @@ import {
 import { cn } from "@web/utils";
 
 // ============================================================================
-// SECTION CONTENT COMPONENT TYPES & INTERFACES
+// SECTION TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `SectionContent` component props. */
-export interface SectionContentProps
-  extends React.ComponentProps<"div">,
+export interface SectionTitleProps
+  extends React.ComponentProps<"h2">,
     CommonComponentProps {}
-
-/** `SectionContent` component type. */
-export type SectionContentComponent = React.FC<SectionContentProps>;
+export type SectionTitleComponent = React.FC<SectionTitleProps>;
 
 // ============================================================================
-// BASE SECTION CONTENT COMPONENT
+// BASE SECTION TITLE COMPONENT
 // ============================================================================
 
-/** A section content component that wraps section content with proper styling. */
-const BaseSectionContent: SectionContentComponent = setDisplayName(
-  function BaseSectionContent(props) {
+const BaseSectionTitle: SectionTitleComponent = setDisplayName(
+  function BaseSectionTitle(props) {
     const {
-      as: Component = "div",
+      as: Component = "h2",
       children,
       className,
       debugId,
@@ -37,14 +33,19 @@ const BaseSectionContent: SectionContentComponent = setDisplayName(
       ...rest
     } = props;
 
-    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
 
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-section-content-root`}
-        className={cn("md:col-span-3", className)}
-        {...createComponentProps(componentId, "section-content", isDebugMode)}
+        className={cn(
+          "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
+          className
+        )}
+        {...createComponentProps(componentId, "section-title", isDebugMode)}
       >
         {children}
       </Component>
@@ -55,22 +56,20 @@ const BaseSectionContent: SectionContentComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED SECTION CONTENT COMPONENT
+// MEMOIZED SECTION TITLE COMPONENT
 // ============================================================================
 
-/** A memoized section content component. */
-const MemoizedSectionContent = React.memo(BaseSectionContent);
+const MemoizedSectionTitle = React.memo(BaseSectionTitle);
 
 // ============================================================================
-// MAIN SECTION CONTENT COMPONENT
+// MAIN SECTION TITLE COMPONENT
 // ============================================================================
 
-/** A section content component that wraps section content with proper styling. */
-export const SectionContent: SectionContentComponent = setDisplayName(
-  function SectionContent(props) {
+export const SectionTitle: SectionTitleComponent = setDisplayName(
+  function SectionTitle(props) {
     const { children, isMemoized = false, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedSectionContent : BaseSectionContent;
+    const Component = isMemoized ? MemoizedSectionTitle : BaseSectionTitle;
     const element = <Component {...rest}>{children}</Component>;
     return element;
   }

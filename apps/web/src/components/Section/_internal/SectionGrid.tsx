@@ -10,26 +10,22 @@ import {
 import { cn } from "@web/utils";
 
 // ============================================================================
-// SECTION TITLE COMPONENT TYPES & INTERFACES
+// SECTION GRID COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `SectionTitle` component props. */
-export interface SectionTitleProps
-  extends React.ComponentProps<"h2">,
+export interface SectionGridProps
+  extends React.ComponentProps<"div">,
     CommonComponentProps {}
-
-/** `SectionTitle` component type. */
-export type SectionTitleComponent = React.FC<SectionTitleProps>;
+export type SectionGridComponent = React.FC<SectionGridProps>;
 
 // ============================================================================
-// BASE SECTION TITLE COMPONENT
+// BASE SECTION GRID COMPONENT
 // ============================================================================
 
-/** A section title component that renders a heading with proper styling and accessibility. */
-const BaseSectionTitle: SectionTitleComponent = setDisplayName(
-  function BaseSectionTitle(props) {
+const BaseSectionGrid: SectionGridComponent = setDisplayName(
+  function BaseSectionGrid(props) {
     const {
-      as: Component = "h2",
+      as: Component = "div",
       children,
       className,
       debugId,
@@ -37,17 +33,19 @@ const BaseSectionTitle: SectionTitleComponent = setDisplayName(
       ...rest
     } = props;
 
-    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
 
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-section-title-root`}
         className={cn(
-          "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
+          "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
           className
         )}
-        {...createComponentProps(componentId, "section-title", isDebugMode)}
+        {...createComponentProps(componentId, "section-grid", isDebugMode)}
       >
         {children}
       </Component>
@@ -58,22 +56,20 @@ const BaseSectionTitle: SectionTitleComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED SECTION TITLE COMPONENT
+// MEMOIZED SECTION GRID COMPONENT
 // ============================================================================
 
-/** A memoized section title component. */
-const MemoizedSectionTitle = React.memo(BaseSectionTitle);
+const MemoizedSectionGrid = React.memo(BaseSectionGrid);
 
 // ============================================================================
-// MAIN SECTION TITLE COMPONENT
+// MAIN SECTION GRID COMPONENT
 // ============================================================================
 
-/** A section title component that renders a heading with proper styling and accessibility. */
-export const SectionTitle: SectionTitleComponent = setDisplayName(
-  function SectionTitle(props) {
+export const SectionGrid: SectionGridComponent = setDisplayName(
+  function SectionGrid(props) {
     const { children, isMemoized = false, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedSectionTitle : BaseSectionTitle;
+    const Component = isMemoized ? MemoizedSectionGrid : BaseSectionGrid;
     const element = <Component {...rest}>{children}</Component>;
     return element;
   }
