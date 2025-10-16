@@ -1,12 +1,3 @@
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Orchestrator
-// - Testing: Unit tests only
-// - Structure: Flat, imports other components
-// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
-
 import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -28,7 +19,6 @@ import { ARTICLE_I18N } from "./constants";
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `ArticleLayout` component props. */
 export interface ArticleLayoutProps
   extends React.ComponentProps<typeof Container>,
     CommonComponentProps {
@@ -37,8 +27,6 @@ export interface ArticleLayoutProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `ArticleLayout` component type. */
 export type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 
 // ============================================================================
