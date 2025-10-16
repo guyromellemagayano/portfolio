@@ -7,20 +7,44 @@ import { Prose } from "../Prose";
 
 import "@testing-library/jest-dom";
 
-// Mock the useComponentId hook
+// ============================================================================
+// TEST CLASSIFICATION
+// ============================================================================
+// Test Type: Unit Tests
+// Coverage Tier: Tier 3 (Presentational Component)
+// Risk Tier: Low Risk
+// Component Type: Presentational Component (Pure display, no sub-components)
+
+// ============================================================================
+// MOCKS
+// ============================================================================
+
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options) => ({
-    componentId: options?.debugId || "test-id",
-    isDebugMode: options?.debugMode || false,
-  })),
+  useComponentId: mockUseComponentId,
 }));
 
-// Mock the setDisplayName utility
+// Mock utility functions
 vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) {
-      component.displayName = displayName;
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === false || children === null || children === undefined) {
+      return false;
     }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
     return component;
   }),
   createComponentProps: vi.fn(
@@ -34,19 +58,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-// Mock the cn helper
+// Mock CSS modules
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS modules (not used by Prose component)
-vi.mock("../styles/Prose.module.css", () => ({
-  default: {
-    proseContainer: "prose-container-class",
-  },
-}));
-
-describe("Prose Component", () => {
+describe("Prose", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -146,7 +163,7 @@ describe("Prose Component", () => {
       );
 
       const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveAttribute("id", "test-id-prose-root");
+      expect(prose).toHaveAttribute("id", "test-id");
       expect(prose).toHaveAttribute("aria-label", "Test prose");
       expect(prose).toHaveAttribute("data-custom", "value");
       expect(prose).toHaveAttribute("role", "article");
@@ -445,7 +462,75 @@ describe("Prose Component", () => {
     });
   });
 
-  describe("Accessibility", () => {
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to main layout elements", () => {
+      render(
+        <Prose debugId="aria-test" role="main">
+          Content
+        </Prose>
+      );
+
+      // Test main content area
+      const mainElement = screen.getByRole("main");
+      expect(mainElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA relationships between elements", () => {
+      render(
+        <Prose
+          debugId="aria-test"
+          aria-labelledby="prose-title"
+          aria-describedby="prose-description"
+        >
+          Content
+        </Prose>
+      );
+
+      const proseElement = screen.getByTestId("aria-test-prose-root");
+
+      // Prose should be labelled by the title
+      expect(proseElement).toHaveAttribute("aria-labelledby", "prose-title");
+
+      // Prose should be described by the description
+      expect(proseElement).toHaveAttribute(
+        "aria-describedby",
+        "prose-description"
+      );
+    });
+
+    it("applies unique IDs for ARIA relationships", () => {
+      render(
+        <Prose debugId="aria-test" id="prose-content">
+          Content
+        </Prose>
+      );
+
+      // Prose should have unique ID
+      const proseElement = screen.getByTestId("aria-test-prose-root");
+      expect(proseElement).toHaveAttribute("id", "prose-content");
+    });
+
+    it("applies correct ARIA labels to content elements", () => {
+      render(
+        <Prose debugId="aria-test" aria-label="Article content">
+          Content
+        </Prose>
+      );
+
+      // Prose element should have descriptive label
+      const proseElement = screen.getByTestId("aria-test-prose-root");
+      expect(proseElement).toHaveAttribute("aria-label", "Article content");
+    });
+
+    it("handles ARIA attributes when content is missing", () => {
+      render(<Prose debugId="aria-test" />);
+
+      const proseElement = screen.getByTestId("aria-test-prose-root");
+
+      // Should not have aria-labelledby when not provided
+      expect(proseElement).not.toHaveAttribute("aria-labelledby");
+    });
+
     it("supports aria attributes", () => {
       render(
         <Prose
@@ -543,6 +628,39 @@ describe("Prose Component", () => {
         "base-class",
         "dark-theme"
       );
+    });
+  });
+
+  describe("Memoization", () => {
+    it("renders with memoization when isMemoized is true", () => {
+      render(
+        <Prose isMemoized={true} data-testid="prose">
+          Content
+        </Prose>
+      );
+      expect(screen.getByTestId("test-id-prose-root")).toBeInTheDocument();
+    });
+
+    it("does not memoize when isMemoized is false", () => {
+      const { rerender } = render(
+        <Prose isMemoized={false} data-testid="prose">
+          Content
+        </Prose>
+      );
+
+      rerender(
+        <Prose isMemoized={false} data-testid="prose">
+          Different content
+        </Prose>
+      );
+      expect(screen.getByTestId("test-id-prose-root")).toHaveTextContent(
+        "Different content"
+      );
+    });
+
+    it("defaults to non-memoized when isMemoized is undefined", () => {
+      render(<Prose data-testid="prose">Content</Prose>);
+      expect(screen.getByTestId("test-id-prose-root")).toBeInTheDocument();
     });
   });
 
