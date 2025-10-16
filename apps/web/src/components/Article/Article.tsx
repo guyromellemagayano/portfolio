@@ -1,14 +1,5 @@
 "use client";
 
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Presentational
-// - Testing: Unit tests only
-// - Structure: Single file + tests + constants/Article.i18n.ts
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
-
 import React, { useMemo } from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
@@ -25,7 +16,6 @@ import { ARTICLE_I18N } from "./constants";
 // ARTICLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Article` component props. */
 export interface ArticleProps
   extends React.ComponentPropsWithRef<typeof Card>,
     CommonComponentProps {
@@ -34,8 +24,6 @@ export interface ArticleProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `Article` component type. */
 export type ArticleComponent = React.FC<ArticleProps>;
 
 // ============================================================================
@@ -135,10 +123,7 @@ const BaseArticle: ArticleComponent = setDisplayName(
         ) : null}
 
         {articleData?.description && articleData.description.length > 0 ? (
-          <Card.Description
-            debugId={componentId}
-            debugMode={isDebugMode}
-          >
+          <Card.Description debugId={componentId} debugMode={isDebugMode}>
             {articleData.description}
           </Card.Description>
         ) : null}
