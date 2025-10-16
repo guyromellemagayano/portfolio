@@ -1,9 +1,8 @@
 import React from "react";
 
-import {
-  type CommonComponentProps,
-  Link,
-} from "@guyromellemagayano/components";
+import Link from "next/link";
+
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
