@@ -19,12 +19,9 @@ import { SimpleLayout } from "./internal";
 // LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Layout` component props. */
 export interface LayoutProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-
-/** `Layout` component type. */
 export type LayoutComponent = React.FC<LayoutProps>;
 
 // ============================================================================
@@ -89,7 +86,11 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           role="main"
           id={`${componentId}-layout-main`}
           className="flex-auto"
-          {...createComponentProps(componentId, "layout-main", isDebugMode)}
+          {...createComponentProps(
+            componentId,
+            "layout-main-root",
+            isDebugMode
+          )}
         >
           {children}
         </main>
