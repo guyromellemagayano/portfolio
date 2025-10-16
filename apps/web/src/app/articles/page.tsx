@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 
 import { Article, Div } from "@guyromellemagayano/components";
+import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 
-import { Card, SimpleLayout } from "@web/components";
-import { type ArticleWithSlug, formatDate, getAllArticles } from "@web/lib";
+import { Card, Layout } from "@web/components";
+import { type ArticleWithSlug, getAllArticles } from "@web/utils";
 
 const articleStrings = {
   read: "Read article",
@@ -16,7 +17,7 @@ interface ArticleSingleProps {
 /**
  * A single article component
  */
-const ArticleSingle = (props: ArticleSingleProps) => {
+const ArticleSingle = function (props: ArticleSingleProps) {
   const { article } = props;
 
   const articleLink = `/articles/${article.slug}`;
@@ -30,7 +31,7 @@ const ArticleSingle = (props: ArticleSingleProps) => {
 
         {article.date && (
           <Card.Eyebrow dateTime={article.date} className="md:hidden" decorate>
-            {formatDate(article.date)}
+            {formatDateSafely(article.date)}
           </Card.Eyebrow>
         )}
 
@@ -43,7 +44,7 @@ const ArticleSingle = (props: ArticleSingleProps) => {
 
       {article.date && (
         <Card.Eyebrow dateTime={article.date} className="mt-1 max-md:hidden">
-          {formatDate(article.date)}
+          {formatDateSafely(article.date)}
         </Card.Eyebrow>
       )}
     </Article>
@@ -67,11 +68,11 @@ const pageContent = {
     "All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order.",
 };
 
-export default async function ArticlesPage() {
-  let articles = await getAllArticles();
+const ArticlesPage = setDisplayName(async function ArticlesPage() {
+  const articles = await getAllArticles();
 
-  return (
-    <SimpleLayout title={pageContent.title} intro={pageContent.intro}>
+  const element = (
+    <Layout.Simple title={pageContent.title} intro={pageContent.intro}>
       <Div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
         <Div className="flex max-w-3xl flex-col space-y-16">
           {articles.map((article) => (
@@ -79,6 +80,10 @@ export default async function ArticlesPage() {
           ))}
         </Div>
       </Div>
-    </SimpleLayout>
+    </Layout.Simple>
   );
-}
+
+  return element;
+});
+
+export default ArticlesPage;
