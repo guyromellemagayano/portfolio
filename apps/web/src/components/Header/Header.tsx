@@ -36,7 +36,6 @@ export type HeaderComponent = React.FC<HeaderProps>;
 // BASE HEADER COMPONENT
 // ============================================================================
 
-/** A responsive site header with avatar, navigation, and theme toggle */
 const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
   const { children, className, debugId, debugMode, ...rest } = props;
 
@@ -340,14 +339,12 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
 // MEMOIZED HEADER COMPONENT
 // ============================================================================
 
-/** A memoized header component. */
 const MemoizedHeader = React.memo(BaseHeader);
 
 // ============================================================================
 // MAIN HEADER COMPONENT
 // ============================================================================
 
-/** The main header component for the application. */
 export const Header: HeaderComponent = setDisplayName(function Header(props) {
   const { children, isMemoized = false, ...rest } = props;
 
