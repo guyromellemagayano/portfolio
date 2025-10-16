@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Moon icon. */
 export const MoonIcon: CommonIconComponent = setDisplayName(
   React.memo(function MoonIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
