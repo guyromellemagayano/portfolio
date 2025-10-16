@@ -1,5 +1,5 @@
 // ============================================================================
-// PHOTO GALLERY COMPONENT
+// PHOTO GALLERY COMPONENT EXPORTS
 // ============================================================================
 
 export { PhotoGallery } from "./PhotoGallery";
