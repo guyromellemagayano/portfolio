@@ -5,7 +5,6 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "prebuild": "rantail",
     "build": "next build",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo .next coverage",
