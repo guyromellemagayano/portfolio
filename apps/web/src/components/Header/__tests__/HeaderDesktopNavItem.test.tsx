@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -248,7 +256,9 @@ describe("HeaderDesktopNavItem", () => {
       // isActivePath is already mocked to return true by default
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveClass(
         "relative",
         "block",
@@ -264,7 +274,9 @@ describe("HeaderDesktopNavItem", () => {
       // isActivePath is already mocked to return true by default
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       const indicator = link.querySelector("span");
       expect(indicator).toBeInTheDocument();
     });
@@ -276,14 +288,18 @@ describe("HeaderDesktopNavItem", () => {
         <HeaderDesktopNavItem href="/custom">Custom</HeaderDesktopNavItem>
       );
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("href", "/custom");
     });
 
     it("uses default target when not provided", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("target", "_self");
     });
 
@@ -294,14 +310,18 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("target", "_blank");
     });
 
     it("uses default title when not provided", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).not.toHaveAttribute("title");
     });
 
@@ -312,7 +332,9 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("title", "About page");
     });
 
@@ -329,7 +351,9 @@ describe("HeaderDesktopNavItem", () => {
         </HeaderDesktopNavItem>
       );
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
@@ -341,14 +365,18 @@ describe("HeaderDesktopNavItem", () => {
       expect(
         screen.getByTestId("test-id-header-desktop-nav-item-root")
       ).toBeInTheDocument();
-      expect(screen.getByTestId("next-link")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-desktop-nav-item-link-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with proper semantic structure", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
       const item = screen.getByTestId("test-id-header-desktop-nav-item-root");
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(item.tagName).toBe("LI");
       expect(link.tagName).toBe("A");
     });
@@ -383,7 +411,9 @@ describe("HeaderDesktopNavItem", () => {
     it("renders with proper accessibility attributes", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("href", "/about");
     });
 
@@ -403,7 +433,9 @@ describe("HeaderDesktopNavItem", () => {
     it("applies Tailwind classes correctly", () => {
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
 
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-desktop-nav-item-link-root"
+      );
       expect(link).toHaveClass(
         "relative",
         "block",
@@ -480,7 +512,9 @@ describe("HeaderDesktopNavItem", () => {
       );
 
       const item = screen.getByTestId("custom-id-header-desktop-nav-item-root");
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "custom-id-header-desktop-nav-item-link-root"
+      );
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(

@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 2 (80%+ coverage, key paths + edges)
+// - Risk Tier: Core
+// - Component Type: Orchestrator
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -331,7 +339,7 @@ describe("Header", () => {
       render(<Header />);
 
       expect(screen.getByTestId("test-id-header-root")).toBeInTheDocument();
-      expect(screen.getAllByTestId("container")).toHaveLength(1);
+      expect(screen.getAllByTestId("container")).toHaveLength(2);
       expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
       expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
       expect(screen.getByTestId("header-theme-toggle")).toBeInTheDocument();
@@ -517,14 +525,14 @@ describe("Header", () => {
 
         // Check containers (there are multiple)
         const containers = screen.getAllByTestId("container");
-        expect(containers).toHaveLength(1);
+        expect(containers).toHaveLength(2);
 
         // Check all sub-components
         expect(
-          screen.getByTestId("test-header-header-avatar-image-root")
+          screen.getByTestId("test-id-header-avatar-image-root")
         ).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-header-header-avatar-container-root")
+          screen.getByTestId("test-id-header-avatar-container-root")
         ).toBeInTheDocument();
         expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
         expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
@@ -538,7 +546,7 @@ describe("Header", () => {
         expect(header.tagName).toBe("HEADER");
 
         const containers = screen.getAllByTestId("container");
-        expect(containers).toHaveLength(1);
+        expect(containers).toHaveLength(2);
       });
 
       it("renders header with proper CSS classes", () => {

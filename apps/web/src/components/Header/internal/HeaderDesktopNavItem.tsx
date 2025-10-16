@@ -14,13 +14,12 @@ import {
 
 import { cn, isActivePath } from "@web/utils";
 
-import { type HeaderNavItemComponent } from "../data";
+import { type HeaderNavItemComponent } from "../types";
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV ITEM COMPONENT
 // ============================================================================
 
-/** A desktop navigation item component for the header. */
 const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderDesktopNavItem(props) {
     const {
@@ -49,7 +48,6 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-header-desktop-nav-item`}
         {...createComponentProps(
           componentId,
           "header-desktop-nav-item",
@@ -68,10 +66,22 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
               ? "text-teal-500 dark:text-teal-400"
               : "hover:text-teal-500 dark:hover:text-teal-400"
           )}
+          {...createComponentProps(
+            componentId,
+            "header-desktop-nav-item-link",
+            isDebugMode
+          )}
         >
           {children}
           {isActive ? (
-            <span className="absolute inset-x-1 -bottom-px h-px bg-linear-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0" />
+            <span
+              className="absolute inset-x-1 -bottom-px h-px bg-linear-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0"
+              {...createComponentProps(
+                componentId,
+                "header-desktop-nav-item-link-active-span",
+                isDebugMode
+              )}
+            />
           ) : null}
         </Link>
       </Component>
@@ -82,17 +92,15 @@ const BaseHeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED HEADER DESKTOP NAV ITEM COMPONENT
+// MEMOIZED BASE HEADER DESKTOP NAV ITEM COMPONENT
 // ============================================================================
 
-/** A memoized desktop navigation item component. */
 const MemoizedHeaderDesktopNavItem = React.memo(BaseHeaderDesktopNavItem);
 
 // ============================================================================
 // MAIN HEADER DESKTOP NAV ITEM COMPONENT
 // ============================================================================
 
-/** A desktop navigation item component for the header. */
 export const HeaderDesktopNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderDesktopNavItem(props) {
     const { children, isMemoized = false, ...rest } = props;

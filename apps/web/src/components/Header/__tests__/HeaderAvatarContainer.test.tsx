@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -248,10 +256,7 @@ describe("HeaderAvatarContainer", () => {
       const container = screen.getByTestId(
         "test-id-header-avatar-container-root"
       );
-      expect(container).toHaveAttribute(
-        "id",
-        "test-id-header-avatar-container"
-      );
+      expect(container).toHaveAttribute("id", "test-id");
       expect(container).toHaveAttribute("data-test", "test-data");
       expect(container).toHaveAttribute("aria-label", "Test container");
     });
@@ -519,10 +524,7 @@ describe("HeaderAvatarContainer", () => {
       );
       expect(container).toHaveAttribute("data-debug-mode", "true");
       expect(container).toHaveAttribute("aria-label", "Test container");
-      expect(container).toHaveAttribute(
-        "id",
-        "custom-id-header-avatar-container"
-      );
+      expect(container).toHaveAttribute("id", "test-id");
     });
 
     it("handles undefined props gracefully", () => {

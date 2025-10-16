@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -231,20 +239,28 @@ describe("HeaderThemeToggle", () => {
     it("renders sun icon", () => {
       render(<HeaderThemeToggle />);
 
-      expect(screen.getByTestId("sun-icon")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-theme-toggle-sun-icon-root")
+      ).toBeInTheDocument();
     });
 
     it("renders moon icon", () => {
       render(<HeaderThemeToggle />);
 
-      expect(screen.getByTestId("moon-icon")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-theme-toggle-moon-icon-root")
+      ).toBeInTheDocument();
     });
 
     it("applies correct CSS classes to icons", () => {
       render(<HeaderThemeToggle />);
 
-      const sunIcon = screen.getByTestId("sun-icon");
-      const moonIcon = screen.getByTestId("moon-icon");
+      const sunIcon = screen.getByTestId(
+        "test-id-header-theme-toggle-sun-icon-root"
+      );
+      const moonIcon = screen.getByTestId(
+        "test-id-header-theme-toggle-moon-icon-root"
+      );
 
       // Check for Tailwind classes instead of CSS modules
       expect(sunIcon).toHaveClass(
@@ -269,8 +285,12 @@ describe("HeaderThemeToggle", () => {
       expect(
         screen.getByTestId("test-id-header-theme-toggle-root")
       ).toBeInTheDocument();
-      expect(screen.getByTestId("sun-icon")).toBeInTheDocument();
-      expect(screen.getByTestId("moon-icon")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-theme-toggle-sun-icon-root")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-theme-toggle-moon-icon-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with proper semantic structure", () => {

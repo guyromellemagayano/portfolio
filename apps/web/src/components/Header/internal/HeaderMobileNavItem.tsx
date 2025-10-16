@@ -12,13 +12,12 @@ import {
 
 import { cn, isActivePath } from "@web/utils";
 
-import { type HeaderNavItemComponent } from "../data";
+import { type HeaderNavItemComponent } from "../types";
 
 // ============================================================================
 // BASE HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A mobile navigation item component for the header. */
 const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function BaseHeaderMobileNavItem(props) {
     const {
@@ -65,6 +64,11 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
               ? "text-teal-500 dark:text-teal-400"
               : "hover:text-teal-500 dark:hover:text-teal-400"
           )}
+          {...createComponentProps(
+            componentId,
+            "header-mobile-nav-item-link",
+            isDebugMode
+          )}
         >
           {children}
         </Link>
@@ -79,14 +83,12 @@ const BaseHeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
 // MEMOIZED HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A memoized header mobile nav item component. */
 const MemoizedHeaderMobileNavItem = React.memo(BaseHeaderMobileNavItem);
 
 // ============================================================================
 // MAIN HEADER MOBILE NAV ITEM COMPONENT
 // ============================================================================
 
-/** A header mobile nav item component that supports memoization and internal debug props. */
 export const HeaderMobileNavItem: HeaderNavItemComponent = setDisplayName(
   function HeaderMobileNavItem(props) {
     const { children, isMemoized = false, ...rest } = props;
