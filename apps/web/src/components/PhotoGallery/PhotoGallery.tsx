@@ -11,28 +11,24 @@ import {
 
 import { cn } from "@web/utils";
 
-import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./data";
+import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./_data";
 
 // ============================================================================
 // PHOTO GALLERY COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `PhotoGalleryProps` component props. */
 export interface PhotoGalleryProps
   extends React.ComponentProps<"div">,
     Omit<CommonComponentProps, "as"> {
   /** Photo gallery photos */
   photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
 }
-
-/** `PhotoGalleryComponent` component type. */
 export type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
 
 // ============================================================================
 // BASE PHOTO GALLERY COMPONENT
 // ============================================================================
 
-/** A base photo gallery component. */
 const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
   function BasePhotoGallery(props) {
     const {
@@ -57,12 +53,10 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
       photos && photos.length > 0 ? (
         <div
           {...rest}
-          id={`${componentId}-photo-gallery`}
           className={cn("mt-16 sm:mt-20", className)}
           {...createComponentProps(componentId, "photo-gallery", isDebugMode)}
         >
           <div
-            id={`${componentId}-photo-gallery-grid`}
             className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8"
             {...createComponentProps(
               componentId,
@@ -87,7 +81,6 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
                   src={image}
                   alt=""
                   sizes="(min-width: 640px) 18rem, 11rem"
-                  id={`${componentId}-photo-gallery-image-${index}`}
                   className="absolute inset-0 h-full w-full object-cover"
                   fill
                   priority
@@ -111,14 +104,12 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
 // MEMOIZED BASE PHOTO GALLERY COMPONENT
 // ============================================================================
 
-/** A memoized photo gallery component. */
 const MemoizedPhotoGallery = React.memo(BasePhotoGallery);
 
 // ============================================================================
 // MAIN PHOTO GALLERY COMPONENT
 // ============================================================================
 
-/** A photo gallery component that displays a grid of photos with optional rotation effects. */
 export const PhotoGallery: PhotoGalleryComponent = setDisplayName(
   function PhotoGallery(props) {
     const { isMemoized = false, ...rest } = props;
