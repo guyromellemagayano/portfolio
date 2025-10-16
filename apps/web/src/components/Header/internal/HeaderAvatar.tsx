@@ -21,7 +21,6 @@ import { AVATAR_COMPONENT_LABELS } from "../data";
 // HEADER AVATAR COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `HeaderAvatar` component props. */
 export interface HeaderAvatarProps
   extends Omit<React.ComponentPropsWithRef<typeof Link>, "href">,
     Omit<CommonComponentProps, "as"> {
@@ -34,15 +33,12 @@ export interface HeaderAvatarProps
   /** Whether the avatar is large. */
   large?: boolean;
 }
-
-/** `HeaderAvatar` component type. */
 export type HeaderAvatarComponent = React.FC<HeaderAvatarProps>;
 
 // ============================================================================
 // BASE HEADER AVATAR COMPONENT
 // ============================================================================
 
-/** Renders a linked avatar image for the header. */
 const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function BaseHeaderAvatar(props) {
     const {
@@ -113,14 +109,12 @@ const BaseHeaderAvatar: HeaderAvatarComponent = setDisplayName(
 // MEMOIZED HEADER AVATAR COMPONENT
 // ============================================================================
 
-/** A memoized header avatar component. */
 const MemoizedHeaderAvatar = React.memo(BaseHeaderAvatar);
 
 // ============================================================================
 // MAIN HEADER AVATAR COMPONENT
 // ============================================================================
 
-/** Renders the avatar link for the `Header` compound component. */
 export const HeaderAvatar: HeaderAvatarComponent = setDisplayName(
   function HeaderAvatar(props) {
     const { isMemoized = false, ...rest } = props;
