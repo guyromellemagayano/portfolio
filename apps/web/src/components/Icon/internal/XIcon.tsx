@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** X (Twitter) icon. */
 export const XIcon: CommonIconComponent = setDisplayName(
   React.memo(function XIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;

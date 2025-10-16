@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Link icon. */
 export const LinkIcon: CommonIconComponent = setDisplayName(
   React.memo(function LinkIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;

@@ -6,7 +6,6 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "./data";
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -23,12 +22,12 @@ import {
   SunIcon,
   XIcon,
 } from "./internal";
+import { type CommonIconComponent } from "./types";
 
 // ============================================================================
 // BASE ICON COMPONENT
 // ============================================================================
 
-/** Internal icon component with all props */
 const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
   const {
     as: Component = "svg",
@@ -65,14 +64,12 @@ const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
 // MEMOIZED ICON COMPONENT
 // ============================================================================
 
-/** A memoized icon component. */
 const MemoizedIcon = React.memo(BaseIcon);
 
 // ============================================================================
 // MAIN ICON COMPONENT
 // ============================================================================
 
-/** A polymorphic SVG icon component with compound social and UI icons. */
 export const Icon = setDisplayName(function Icon(props) {
   const { children, isMemoized = false, ...rest } = props;
 

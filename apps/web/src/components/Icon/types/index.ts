@@ -1,5 +1,5 @@
 // ============================================================================
-// ICON COMPONENT EXPORTS
+// ICON COMPONENT TYPES EXPORTS
 // ============================================================================
 
-export { Icon } from "./Icon";
+export type * from "./Icon.types";
