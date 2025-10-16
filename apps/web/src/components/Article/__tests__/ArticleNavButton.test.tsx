@@ -6,7 +6,6 @@
 // - Component Type: Presentational
 // ============================================================================
 
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -132,12 +131,7 @@ vi.mock("*.module.css", () => ({
 // Mock Icon component with proper hoisting
 const mockIcon = vi.hoisted(() => ({
   Icon: {
-    ArrowLeft: ({
-      className,
-      debugMode,
-      debugId: _debugId,
-      ...props
-    }: any) => (
+    ArrowLeft: ({ className, debugMode, debugId: _debugId, ...props }: any) => (
       <svg
         data-testid="arrow-left-icon"
         className={className}
@@ -221,11 +215,8 @@ describe("ArticleNavButton", () => {
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("data-custom", "test");
-      // Component now has its own aria-describedby based on componentId
-      expect(button).toHaveAttribute(
-        "aria-describedby",
-        "test-id-article-nav-button-description"
-      );
+      // Component now has aria-label (no aria-describedby needed)
+      expect(button).toHaveAttribute("aria-label", "Go back to articles");
       expect(button).toBeDisabled();
     });
   });
@@ -342,22 +333,20 @@ describe("ArticleNavButton", () => {
 
       const buttonElement = screen.getByRole("button");
 
-      // Button should be described by the description span
+      // Button should have aria-label (no aria-describedby needed)
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "aria-test-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
     });
 
-    it("applies unique IDs for ARIA relationships", () => {
+    it("applies correct ARIA labels without ID dependencies", () => {
       render(<ArticleNavButton debugId="aria-test" />);
 
-      // Description span should have unique ID
+      // Description span should be present but hidden (no ID needed)
       const descriptionElement = screen.getByText("Go back to articles");
-      expect(descriptionElement).toHaveAttribute(
-        "id",
-        "aria-test-article-nav-button-description"
-      );
+      expect(descriptionElement).toBeInTheDocument();
+      expect(descriptionElement).toHaveAttribute("aria-hidden", "true");
     });
 
     it("applies correct ARIA labels to content elements", () => {
@@ -389,15 +378,12 @@ describe("ArticleNavButton", () => {
       const buttonElement = screen.getByRole("button");
       const descriptionElement = screen.getByText("Go back to articles");
 
-      // Should use custom debugId in ARIA relationships
+      // Should have aria-label (no ID dependencies)
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "custom-aria-id-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
-      expect(descriptionElement).toHaveAttribute(
-        "id",
-        "custom-aria-id-article-nav-button-description"
-      );
+      expect(descriptionElement).toBeInTheDocument();
     });
 
     it("maintains ARIA attributes during component updates", () => {
@@ -406,18 +392,18 @@ describe("ArticleNavButton", () => {
       // Initial render
       let buttonElement = screen.getByRole("button");
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "aria-test-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
 
       // Update with different debugId
       rerender(<ArticleNavButton debugId="updated-aria-test" />);
 
-      // ARIA attributes should be updated
+      // ARIA attributes should be maintained
       buttonElement = screen.getByRole("button");
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "updated-aria-test-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
     });
 
@@ -434,10 +420,10 @@ describe("ArticleNavButton", () => {
 
       const buttonElement = screen.getByRole("button");
 
-      // Should have aria-describedby for the description
+      // Should have aria-label (no ID dependencies)
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "aria-test-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
     });
 
@@ -482,8 +468,8 @@ describe("ArticleNavButton", () => {
 
       // Should maintain both component ARIA attributes and custom ones
       expect(buttonElement).toHaveAttribute(
-        "aria-describedby",
-        "aria-test-article-nav-button-description"
+        "aria-label",
+        "Go back to articles"
       );
       expect(buttonElement).toHaveAttribute("aria-expanded", "false");
       expect(buttonElement).toHaveAttribute("aria-controls", "article-content");
