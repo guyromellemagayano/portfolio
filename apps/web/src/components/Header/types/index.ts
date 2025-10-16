@@ -1,3 +1,5 @@
 // ============================================================================
-// SHARED HEADER COMPONENT DATA MUTATIONS
+// HEADER COMPONENT TYPES EXPORTS
 // ============================================================================
+
+export type * from "./Header.types";

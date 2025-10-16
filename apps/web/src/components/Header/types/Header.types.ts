@@ -1,16 +1,19 @@
+// ============================================================================
+// HEADER COMPONENT TYPES
+// ============================================================================
+
 import React from "react";
 
 import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 
-import { type HeaderComponentNavLinks } from "./Header.data";
+import { type HeaderComponentNavLinks } from "../data";
 
 // ============================================================================
 // COMMON HEADER NAV PROPS
 // ============================================================================
 
-/** `CommonHeaderNavProps` component props. */
 export interface CommonHeaderNavProps extends Omit<CommonComponentProps, "as"> {
   links?: HeaderComponentNavLinks;
 }
@@ -19,7 +22,6 @@ export interface CommonHeaderNavProps extends Omit<CommonComponentProps, "as"> {
 // COMMON HEADER NAV ITEM PROPS
 // ============================================================================
 
-/** `CommonHeaderNavItemProps` component props. */
 export interface CommonHeaderNavItemProps
   extends React.ComponentPropsWithRef<"li">,
     Pick<
@@ -27,6 +29,4 @@ export interface CommonHeaderNavItemProps
       "href" | "target" | "title"
     >,
     CommonComponentProps {}
-
-/** `HeaderNavItemComponent` component type. */
 export type HeaderNavItemComponent = React.FC<CommonHeaderNavItemProps>;

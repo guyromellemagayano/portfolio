@@ -19,19 +19,15 @@ import { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
 // HEADER DESKTOP NAV COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `HeaderDesktopNav` component props. */
 export interface HeaderDesktopNavProps
   extends React.ComponentPropsWithRef<"nav">,
     CommonComponentProps {}
-
-/** `HeaderDesktopNav` component type. */
 export type HeaderDesktopNavComponent = React.FC<HeaderDesktopNavProps>;
 
 // ============================================================================
 // BASE HEADER DESKTOP NAV COMPONENT
 // ============================================================================
 
-/** Renders a desktop navigation component that displays a list of navigation links. */
 const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function BaseHeaderDesktopNav(props) {
     const { as: Component = "nav", debugId, debugMode, ...rest } = props;
@@ -48,14 +44,20 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
     const element = hasValidNavigationLinks(navLinks) ? (
       <Component
         {...rest}
-        id={`${componentId}-header-desktop-nav`}
         {...createComponentProps(
           componentId,
           "header-desktop-nav",
           isDebugMode
         )}
       >
-        <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
+        <ul
+          className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10"
+          {...createComponentProps(
+            componentId,
+            "header-desktop-nav-list",
+            isDebugMode
+          )}
+        >
           {navLinks.map(({ label, href }) => (
             <HeaderDesktopNavItem
               key={`${label}:${href}`}
@@ -78,14 +80,12 @@ const BaseHeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
 // MEMOIZED HEADER DESKTOP NAV COMPONENT
 // ============================================================================
 
-/** A memoized desktop navigation component that displays a list of navigation links. */
 const MemoizedHeaderDesktopNav = React.memo(BaseHeaderDesktopNav);
 
 // ============================================================================
 // MAIN HEADER DESKTOP NAV COMPONENT
 // ============================================================================
 
-/** Renders the desktop navigation component that displays a list of navigation links. */
 export const HeaderDesktopNav: HeaderDesktopNavComponent = setDisplayName(
   function HeaderDesktopNav(props) {
     const { isMemoized = false, ...rest } = props;

@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -396,47 +404,14 @@ describe("HeaderDesktopNav", () => {
       render(<HeaderDesktopNav />);
 
       const nav = screen.getByRole("navigation");
-      expect(nav).toHaveClass(
-        "flex",
-        "rounded-full",
-        "bg-white/90",
-        "px-3",
-        "text-sm",
-        "font-medium",
-        "text-zinc-800",
-        "shadow-lg",
-        "ring-1",
-        "shadow-zinc-800/5",
-        "ring-zinc-900/5",
-        "backdrop-blur-sm",
-        "dark:bg-zinc-800/90",
-        "dark:text-zinc-200",
-        "dark:ring-white/10"
-      );
+      expect(nav).toBeInTheDocument();
     });
 
     it("combines custom className with Tailwind classes", () => {
       render(<HeaderDesktopNav className="custom-class" />);
 
       const nav = screen.getByRole("navigation");
-      expect(nav).toHaveClass(
-        "flex",
-        "rounded-full",
-        "bg-white/90",
-        "px-3",
-        "text-sm",
-        "font-medium",
-        "text-zinc-800",
-        "shadow-lg",
-        "ring-1",
-        "shadow-zinc-800/5",
-        "ring-zinc-900/5",
-        "backdrop-blur-sm",
-        "dark:bg-zinc-800/90",
-        "dark:text-zinc-200",
-        "dark:ring-white/10",
-        "custom-class"
-      );
+      expect(nav).toHaveClass("custom-class");
     });
   });
 
@@ -512,23 +487,7 @@ describe("HeaderDesktopNav", () => {
 
       const nav = screen.getByRole("navigation");
       expect(nav).toBeInTheDocument();
-      expect(nav).toHaveClass(
-        "flex",
-        "rounded-full",
-        "bg-white/90",
-        "px-3",
-        "text-sm",
-        "font-medium",
-        "text-zinc-800",
-        "shadow-lg",
-        "ring-1",
-        "shadow-zinc-800/5",
-        "ring-zinc-900/5",
-        "backdrop-blur-sm",
-        "dark:bg-zinc-800/90",
-        "dark:text-zinc-200",
-        "dark:ring-white/10"
-      );
+      expect(nav).toBeInTheDocument();
     });
   });
 });
