@@ -18,31 +18,18 @@ import {
 } from "./internal";
 
 // ============================================================================
-// COMPONENT CLASSIFICATION: Compound Component
-// - Type: Compound (main component with orchestrated sub-components)
-// - Testing: Unit + Integration tests (both required)
-// - Structure: _internal/ folder with sub-components
-// - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
-
-// ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Card` component props. */
 export interface CardProps
   extends React.ComponentPropsWithRef<"article">,
     CommonComponentProps {}
-
-/** `Card` component type. */
 export type CardComponent = React.FC<CardProps>;
 
 // ============================================================================
 // BASE CARD COMPONENT
 // ============================================================================
 
-/** A flexible card component for displaying grouped content with optional subcomponents */
 const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
   const {
     as: Component = "article",
@@ -77,14 +64,12 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
 // MEMOIZED CARD COMPONENT
 // ============================================================================
 
-/** A memoized card component. */
 const MemoizedCard = React.memo(BaseCard);
 
 // ============================================================================
 // MAIN CARD COMPONENT
 // ============================================================================
 
-/** `Card` compound component type. */
 export type CardCompoundComponent = CardComponent & {
   /** A card link component that provides interactive hover effects and accessibility features */
   Link: typeof CardLink;
@@ -98,7 +83,6 @@ export type CardCompoundComponent = CardComponent & {
   Eyebrow: typeof CardEyebrow;
 };
 
-/** A card component that can optionally be wrapped in a link for navigation */
 export const Card = setDisplayName(function Card(props) {
   const { children, isMemoized = false, ...rest } = props;
 
