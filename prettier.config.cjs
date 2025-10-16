@@ -8,8 +8,7 @@ module.exports = {
   plugins: [
     "prettier-plugin-pkg",
     "prettier-plugin-packagejson",
-    "prettier-plugin-tailwindcss",
-    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
   ],
   parser: "json-stringify",
   overrides: [
