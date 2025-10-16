@@ -16,7 +16,6 @@ import { CardLinkCustom } from "./CardLinkCustom";
 // CARD LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardLink` component props. */
 export interface CardLinkProps
   extends React.ComponentPropsWithRef<"div">,
     Omit<
@@ -24,15 +23,12 @@ export interface CardLinkProps
       keyof React.ComponentPropsWithRef<"div">
     >,
     Omit<CommonComponentProps, "as"> {}
-
-/** `CardLink` component type. */
 export type CardLinkComponent = React.FC<CardLinkProps>;
 
 // ============================================================================
 // BASE CARD LINK COMPONENT
 // ============================================================================
 
-/** A background and clickable wrapper for card links. */
 const BaseCardLink: CardLinkComponent = setDisplayName(
   function BaseCardLink(props) {
     const {
@@ -104,14 +100,12 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
 // MEMOIZED CARD LINK COMPONENT
 // ============================================================================
 
-/** A memoized card link component. */
 const MemoizedCardLink = React.memo(BaseCardLink);
 
 // ============================================================================
 // MAIN CARD LINK COMPONENT
 // ============================================================================
 
-/** A card link component that can optionally be wrapped in a link for navigation */
 export const CardLink: CardLinkComponent = setDisplayName(
   function CardLink(props) {
     const { children, isMemoized = false, ...rest } = props;
