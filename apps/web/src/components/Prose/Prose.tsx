@@ -13,19 +13,15 @@ import { cn } from "@web/utils";
 // PROSE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `ProseProps` component props. */
 export interface ProseProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-
-/** `ProseComponent` component type. */
 export type ProseComponent = React.FC<ProseProps>;
 
 // ============================================================================
 // BASE PROSE COMPONENT
 // ============================================================================
 
-/** Renders a styled prose container for rich text content. */
 const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
   const {
     as: Component = "div",
@@ -40,7 +36,6 @@ const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
   const element = (
     <Component
       {...rest}
-      id={`${componentId}-prose-root`}
       className={cn("prose dark:prose-invert", className)}
       {...createComponentProps(componentId, "prose", isDebugMode)}
     />
@@ -53,14 +48,12 @@ const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
 // MEMOIZED PROSE COMPONENT
 // ============================================================================
 
-/** A memoized prose component. */
 const MemoizedProse = React.memo(BaseProse);
 
 // ============================================================================
 // MAIN PROSE COMPONENT
 // ============================================================================
 
-/** Renders the main styled prose container component. */
 export const Prose: ProseComponent = setDisplayName(function Prose(props) {
   const { isMemoized = false, ...rest } = props;
 
