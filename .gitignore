@@ -37,7 +37,7 @@ dist/
 *.tsbuildinfo
 
 # Vercel
-.vercel/
+.vercel
 
 # Old folders
 *.old
