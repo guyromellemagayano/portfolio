@@ -14,17 +14,6 @@ import unusedImports from "eslint-plugin-unused-imports";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import requireAriaAttributes from "./rules/require-aria-attributes.js";
-import requireComponentClassification from "./rules/require-component-classification.js";
-import requireComponentDisplayName from "./rules/require-component-display-name.js";
-import requireDataFolderStructure from "./rules/require-data-folder-structure.js";
-import requireI18nConstants from "./rules/require-i18n-constants.js";
-import requireImportOrder from "./rules/require-import-order.js";
-import requireMemoizationProp from "./rules/require-memoization-prop.js";
-import requireTestClassification from "./rules/require-test-classification.js";
-import requireTestCleanup from "./rules/require-test-cleanup.js";
-import requireTypeOrganization from "./rules/require-type-organization.js";
-
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
 const repoRoot = resolve(dirName, "..", "..", "..");
@@ -57,20 +46,6 @@ export const baseEslintConfig = [
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
-      "enterprise": {
-        rules: {
-          "require-aria-attributes": requireAriaAttributes,
-          "require-component-classification": requireComponentClassification,
-          "require-component-display-name": requireComponentDisplayName,
-          "require-data-folder-structure": requireDataFolderStructure,
-          "require-i18n-constants": requireI18nConstants,
-          "require-import-order": requireImportOrder,
-          "require-memoization-prop": requireMemoizationProp,
-          "require-test-classification": requireTestClassification,
-          "require-test-cleanup": requireTestCleanup,
-          "require-type-organization": requireTypeOrganization,
-        },
-      },
     },
     settings: {
       "import/resolver": {
