@@ -1,11 +1,8 @@
 // ============================================================================
-// COMPONENT INTERNATIONALIZATION
+// ARTICLE COMPONENT INTERNATIONALIZATION
 // ============================================================================
 
-/** `ArticleI18n` type. */
 export type ArticleI18n = Readonly<Record<string, string>>;
-
-/** `ARTICLE_I18N` object. */
 export const ARTICLE_I18N = {
   // Action labels
   cta: "Read article",
