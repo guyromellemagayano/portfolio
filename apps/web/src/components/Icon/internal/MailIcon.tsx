@@ -6,16 +6,14 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconProps } from "../data";
+import { type CommonIconProps } from "../types";
 
-/** Mail icon component props. */
 export type MailIconComponent = React.FC<
   CommonIconProps & {
     page?: "about" | "home";
   }
 >;
 
-/** Mail icon. */
 export const MailIcon: MailIconComponent = setDisplayName(
   React.memo(function MailIcon(props) {
     const {

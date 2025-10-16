@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Instagram icon. */
 export const InstagramIcon: CommonIconComponent = setDisplayName(
   React.memo(function InstagramIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;

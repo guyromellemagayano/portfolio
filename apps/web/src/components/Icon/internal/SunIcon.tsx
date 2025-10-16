@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Sun icon. */
 export const SunIcon: CommonIconComponent = setDisplayName(
   React.memo(function SunIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
