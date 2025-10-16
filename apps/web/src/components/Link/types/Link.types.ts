@@ -8,10 +8,7 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 // COMMON LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CommonLinkProps` component props. */
 export interface CommonLinkProps
   extends React.ComponentPropsWithRef<typeof Link>,
     Omit<CommonComponentProps, "as"> {}
-
-/** `CommonLinkComponent` component type. */
 export type CommonLinkComponent = React.FC<CommonLinkProps>;
