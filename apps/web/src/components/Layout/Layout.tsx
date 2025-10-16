@@ -84,7 +84,7 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           isDebugMode
         )}
       >
-        <Header role="banner" />
+        <Header role="banner" debugId={componentId} debugMode={isDebugMode} />
         <main
           role="main"
           id={`${componentId}-layout-main`}
@@ -93,7 +93,11 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
         >
           {children}
         </main>
-        <Footer role="contentinfo" />
+        <Footer
+          role="contentinfo"
+          debugId={componentId}
+          debugMode={isDebugMode}
+        />
       </div>
     </div>
   );
