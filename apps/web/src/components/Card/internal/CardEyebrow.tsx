@@ -13,7 +13,6 @@ import { cn } from "@web/utils";
 // CARD EYEBROW COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardEyebrow` component props. */
 export interface CardEyebrowProps
   extends React.ComponentPropsWithRef<"p">,
     CommonComponentProps {
@@ -22,15 +21,12 @@ export interface CardEyebrowProps
   /** Enable decorative styling */
   decorate?: boolean;
 }
-
-/** `CardEyebrow` component type. */
 export type CardEyebrowComponent = React.FC<CardEyebrowProps>;
 
 // ============================================================================
 // BASE CARD EYEBROW COMPONENT
 // ============================================================================
 
-/** A card eyebrow component that can optionally be wrapped in a link for navigation */
 const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
   function BaseCardEyebrow(props) {
     const {
@@ -73,14 +69,12 @@ const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
 // MEMOIZED CARD EYEBROW COMPONENT
 // ============================================================================
 
-/** A memoized card eyebrow component. */
 const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
 
 // ============================================================================
 // MAIN CARD EYEBROW COMPONENT
 // ============================================================================
 
-/** A card eyebrow component that can optionally be wrapped in a link for navigation */
 export const CardEyebrow: CardEyebrowComponent = setDisplayName(
   function CardEyebrow(props) {
     const { children, isMemoized = false, ...rest } = props;
