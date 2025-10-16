@@ -10,24 +10,20 @@ import {
 import { cn } from "@web/utils";
 
 // ============================================================================
-// SECTION GRID COMPONENT TYPES & INTERFACES
+// SECTION CONTENT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `SectionGrid` component props. */
-export interface SectionGridProps
+export interface SectionContentProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-
-/** `SectionGrid` component type. */
-export type SectionGridComponent = React.FC<SectionGridProps>;
+export type SectionContentComponent = React.FC<SectionContentProps>;
 
 // ============================================================================
-// BASE SECTION GRID COMPONENT
+// BASE SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A section grid component that arranges section content in a grid layout. */
-const BaseSectionGrid: SectionGridComponent = setDisplayName(
-  function BaseSectionGrid(props) {
+const BaseSectionContent: SectionContentComponent = setDisplayName(
+  function BaseSectionContent(props) {
     const {
       as: Component = "div",
       children,
@@ -37,17 +33,16 @@ const BaseSectionGrid: SectionGridComponent = setDisplayName(
       ...rest
     } = props;
 
-    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+    const { componentId, isDebugMode } = useComponentId({
+      debugId,
+      debugMode,
+    });
 
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-section-grid-root`}
-        className={cn(
-          "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
-          className
-        )}
-        {...createComponentProps(componentId, "section-grid", isDebugMode)}
+        className={cn("md:col-span-3", className)}
+        {...createComponentProps(componentId, "section-content", isDebugMode)}
       >
         {children}
       </Component>
@@ -58,22 +53,20 @@ const BaseSectionGrid: SectionGridComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED SECTION GRID COMPONENT
+// MEMOIZED SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A memoized section grid component. */
-const MemoizedSectionGrid = React.memo(BaseSectionGrid);
+const MemoizedSectionContent = React.memo(BaseSectionContent);
 
 // ============================================================================
-// MAIN SECTION GRID COMPONENT
+// MAIN SECTION CONTENT COMPONENT
 // ============================================================================
 
-/** A section grid component that arranges section content in a grid layout. */
-export const SectionGrid: SectionGridComponent = setDisplayName(
-  function SectionGrid(props) {
+export const SectionContent: SectionContentComponent = setDisplayName(
+  function SectionContent(props) {
     const { children, isMemoized = false, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedSectionGrid : BaseSectionGrid;
+    const Component = isMemoized ? MemoizedSectionContent : BaseSectionContent;
     const element = <Component {...rest}>{children}</Component>;
     return element;
   }

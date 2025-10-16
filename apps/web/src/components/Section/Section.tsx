@@ -9,28 +9,24 @@ import {
 
 import { cn } from "@web/utils";
 
-import { SectionContent, SectionGrid, SectionTitle } from "./internal";
+import { SectionContent, SectionGrid, SectionTitle } from "./_internal";
 
 // ============================================================================
 // SECTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Section` component props. */
 export interface SectionProps
   extends React.ComponentProps<"section">,
     CommonComponentProps {
   /** Section title */
   title?: string;
 }
-
-/** `Section` component type. */
 export type SectionComponent = React.FC<SectionProps>;
 
 // ============================================================================
 // BASE SECTION COMPONENT
 // ============================================================================
 
-/** A layout section component with optional title and content, styled for web app usage. */
 const BaseSection: SectionComponent = setDisplayName(
   function BaseSection(props) {
     const {
@@ -48,7 +44,6 @@ const BaseSection: SectionComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-section-root`}
         className={cn(
           "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
           className
@@ -79,14 +74,12 @@ const BaseSection: SectionComponent = setDisplayName(
 // MEMOIZED SECTION COMPONENT
 // ============================================================================
 
-/** A memoized section component. */
 const MemoizedSection = React.memo(BaseSection);
 
 // ============================================================================
 // MAIN SECTION COMPONENT
 // ============================================================================
 
-/** A layout section component with optional title and content, styled for web app usage. */
 export const Section: SectionComponent = setDisplayName(
   function Section(props) {
     const { children, isMemoized = false, ...rest } = props;

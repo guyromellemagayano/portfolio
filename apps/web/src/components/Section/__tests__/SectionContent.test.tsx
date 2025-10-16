@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SectionContent } from "../internal/SectionContent";
+import { SectionContent } from "../_internal/SectionContent";
 
 import "@testing-library/jest-dom";
 
@@ -137,7 +137,7 @@ describe("SectionContent", () => {
       );
 
       const content = screen.getByTestId("section-content");
-      expect(content).toHaveAttribute("id", "test-id-section-content-root");
+      expect(content).toHaveAttribute("id", "test-id");
       expect(content).toHaveAttribute("aria-label", "Test section content");
       expect(content).toHaveAttribute("data-custom", "value");
     });
