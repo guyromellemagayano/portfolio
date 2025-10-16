@@ -20,19 +20,15 @@ import { THEME_TOGGLE_LABELS } from "../data";
 // HEADER THEME TOGGLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `ThemeToggleProps` component props. */
 export interface ThemeToggleProps
   extends React.ComponentPropsWithRef<"button">,
     CommonComponentProps {}
-
-/** `HeaderThemeToggleComponent` component type. */
 export type HeaderThemeToggleComponent = React.FC<ThemeToggleProps>;
 
 // ============================================================================
 // BASE HEADER THEME TOGGLE COMPONENT
 // ============================================================================
 
-/** A theme toggle component that allows users to switch between light and dark themes. */
 const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
   function BaseHeaderThemeToggle(props) {
     const {
@@ -93,8 +89,22 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
             isDebugMode
           )}
         >
-          <Icon.Sun className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600" />
-          <Icon.Moon className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400" />
+          <Icon.Sun
+            className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
+            {...createComponentProps(
+              componentId,
+              "header-theme-toggle-sun-icon",
+              isDebugMode
+            )}
+          />
+          <Icon.Moon
+            className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
+            {...createComponentProps(
+              componentId,
+              "header-theme-toggle-moon-icon",
+              isDebugMode
+            )}
+          />
         </Component>
       );
 
@@ -119,14 +129,12 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
 // MEMOIZED HEADER THEME TOGGLE COMPONENT
 // ============================================================================
 
-/** A memoized header theme toggle component. */
 const MemoizedHeaderThemeToggle = React.memo(BaseHeaderThemeToggle);
 
 // ============================================================================
 // MAIN HEADER THEME TOGGLE COMPONENT
 // ============================================================================
 
-/** A header theme toggle component that supports memoization and internal debug props. */
 export const HeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
   function HeaderThemeToggle(props) {
     const { isMemoized = false, ...rest } = props;

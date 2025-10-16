@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
+// - Risk Tier: Presentational
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -203,20 +211,26 @@ describe("HeaderMobileNavItem", () => {
 
     it("renders when href has meaningful content", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      expect(screen.getByTestId("next-link")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-mobile-nav-item-link-root")
+      ).toBeInTheDocument();
     });
   });
 
   describe("Link Properties", () => {
     it("uses provided href", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("href", "/about");
     });
 
     it("uses default target when not provided", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("target", "_self");
     });
 
@@ -226,13 +240,17 @@ describe("HeaderMobileNavItem", () => {
           About
         </HeaderMobileNavItem>
       );
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("target", "_blank");
     });
 
     it("uses default title when not provided", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).not.toHaveAttribute("title");
     });
 
@@ -242,7 +260,9 @@ describe("HeaderMobileNavItem", () => {
           About
         </HeaderMobileNavItem>
       );
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("title", "About page");
     });
 
@@ -252,7 +272,9 @@ describe("HeaderMobileNavItem", () => {
           External
         </HeaderMobileNavItem>
       );
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
   });
@@ -264,14 +286,18 @@ describe("HeaderMobileNavItem", () => {
       expect(
         screen.getByTestId("test-id-header-mobile-nav-item-root")
       ).toBeInTheDocument();
-      expect(screen.getByTestId("next-link")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-mobile-nav-item-link-root")
+      ).toBeInTheDocument();
     });
 
     it("renders with proper semantic structure", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
 
       const item = screen.getByTestId("test-id-header-mobile-nav-item-root");
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(item.tagName).toBe("LI");
       expect(link.tagName).toBe("A");
     });
@@ -304,7 +330,9 @@ describe("HeaderMobileNavItem", () => {
   describe("Accessibility", () => {
     it("renders with proper accessibility attributes", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).not.toHaveAttribute("aria-label");
     });
 
@@ -314,7 +342,9 @@ describe("HeaderMobileNavItem", () => {
           About
         </HeaderMobileNavItem>
       );
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       expect(link).toHaveAttribute("aria-label", "About page");
     });
   });
@@ -322,7 +352,9 @@ describe("HeaderMobileNavItem", () => {
   describe("CSS Module Integration", () => {
     it("applies Tailwind classes correctly", () => {
       render(<HeaderMobileNavItem href="/about">About</HeaderMobileNavItem>);
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "test-id-header-mobile-nav-item-link-root"
+      );
       // Check that the link has Tailwind classes
       expect(link.className).toMatch(/relative block py-2 transition/);
     });
@@ -400,7 +432,9 @@ describe("HeaderMobileNavItem", () => {
       );
 
       const item = screen.getByTestId("custom-id-header-mobile-nav-item-root");
-      const link = screen.getByTestId("next-link");
+      const link = screen.getByTestId(
+        "custom-id-header-mobile-nav-item-link-root"
+      );
 
       expect(item).toHaveClass("custom-class");
       expect(item).toHaveAttribute(

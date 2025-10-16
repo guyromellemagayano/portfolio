@@ -1,3 +1,7 @@
+// ============================================================================
+// HEADER COMPONENT INTERNAL EXPORTS
+// ============================================================================
+
 export { HeaderAvatar } from "./HeaderAvatar";
 export { HeaderAvatarContainer } from "./HeaderAvatarContainer";
 export { HeaderDesktopNav } from "./HeaderDesktopNav";
