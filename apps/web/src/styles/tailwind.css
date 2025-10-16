@@ -6,8 +6,9 @@
 @plugin "@tailwindcss/aspect-ratio";
 @plugin "@tailwindcss/container-queries";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@reference "tailwindcss"
 
+@custom-variant dark (&:where(.dark, .dark *));
 @theme {
     --text-xs: 0.8125rem;
   --text-xs--line-height: 1.5rem;
