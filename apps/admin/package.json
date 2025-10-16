@@ -20,11 +20,7 @@
     "test:ui": "echo 'No tests configured for admin app'"
   },
   "dependencies": {
-    "@guyromellemagayano/ui": "workspace:*",
-    "inquirer": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-router": "catalog:"
+    "@guyromellemagayano/ui": "workspace:*"
   },
   "devDependencies": {
     "@packages/eslint-config": "workspace:*",
@@ -35,6 +31,9 @@
     "@vitejs/plugin-react": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:",
     "rimraf": "catalog:",
     "sharp": "catalog:",
     "typescript": "catalog:",
