@@ -100,7 +100,48 @@ export const baseEslintConfig = [
           args: "after-used",
           argsIgnorePattern: "^_",
         },
-      ]
+      ],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "@web/components/*/internal",
+                "@web/components/*/internal/*",
+              ],
+              message:
+                "Do not import from another component's internal/ folder. Use the component's barrel export or relative imports within the same component.",
+            },
+            {
+              group: ["@web/components/*/data", "@web/components/*/data/*"],
+              message:
+                "Do not import from another component's data/ folder. Use the component's barrel export or relative imports within the same component.",
+            },
+            {
+              group: ["@web/components/*/types", "@web/components/*/types/*"],
+              message:
+                "Do not import from another component's types/ folder. Use the component's barrel export or relative imports within the same component.",
+            },
+            {
+              group: [
+                "@web/components/*/constants",
+                "@web/components/*/constants/*",
+              ],
+              message:
+                "Do not import from another component's constants/ folder. Use the component's barrel export or relative imports within the same component.",
+            },
+            {
+              group: [
+                "@web/components/*/queries",
+                "@web/components/*/queries/*",
+              ],
+              message:
+                "Do not import from another component's queries/ folder. Use the component's barrel export or relative imports within the same component.",
+            },
+          ],
+        },
+      ],
     },
     ignores: ["dist", "**/*.mdx"],
   },
