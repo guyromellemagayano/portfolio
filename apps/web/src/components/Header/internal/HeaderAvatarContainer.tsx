@@ -13,12 +13,9 @@ import { cn } from "@web/utils";
 // HEADER AVATAR CONTAINER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `HeaderAvatarContainer` component props. */
 export interface HeaderAvatarContainerProps
   extends React.ComponentPropsWithRef<"div">,
     CommonComponentProps {}
-
-/** `HeaderAvatarContainer` component type. */
 export type HeaderAvatarContainerComponent =
   React.FC<HeaderAvatarContainerProps>;
 
@@ -26,7 +23,6 @@ export type HeaderAvatarContainerComponent =
 // BASE HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-/** A container `div` for the `header` avatar, providing styling and debug attributes. */
 const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
   setDisplayName(function BaseHeaderAvatarContainer(props) {
     const {
@@ -64,14 +60,12 @@ const BaseHeaderAvatarContainer: HeaderAvatarContainerComponent =
 // MEMOIZED HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-/** A memoized container for the header avatar, used within the `Header` compound component. */
 const MemoizedHeaderAvatarContainer = React.memo(BaseHeaderAvatarContainer);
 
 // ============================================================================
 // MAIN HEADER AVATAR CONTAINER COMPONENT
 // ============================================================================
 
-/** Renders the container div for the `Header` avatar with styling and debug attributes. */
 export const HeaderAvatarContainer: HeaderAvatarContainerComponent =
   setDisplayName(function HeaderAvatarContainer(props) {
     const { isMemoized = false, ...rest } = props;
