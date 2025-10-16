@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SectionTitle } from "../internal/SectionTitle";
+import { SectionTitle } from "../_internal/SectionTitle";
 
 import "@testing-library/jest-dom";
 
@@ -128,7 +128,7 @@ describe("SectionTitle", () => {
         "data-section-title-id",
         "custom-id-section-title"
       );
-      expect(title).toHaveAttribute("id", "custom-id-section-title-root");
+      expect(title).not.toHaveAttribute("id");
     });
 
     it("passes through HTML attributes", () => {
@@ -144,7 +144,7 @@ describe("SectionTitle", () => {
       );
 
       const title = screen.getByTestId("section-title");
-      expect(title).toHaveAttribute("id", "custom-id-section-title-root");
+      expect(title).not.toHaveAttribute("id");
       expect(title).toHaveAttribute("aria-label", "Test section title");
       expect(title).toHaveAttribute("data-custom", "value");
     });
@@ -331,7 +331,7 @@ describe("SectionTitle", () => {
       );
 
       const title = screen.getByTestId("section-title");
-      expect(title).toHaveAttribute("id", "custom-id-section-title-root");
+      expect(title).not.toHaveAttribute("id");
     });
   });
 
@@ -410,7 +410,7 @@ describe("SectionTitle", () => {
         "data-section-title-id",
         "custom-id-section-title"
       );
-      expect(title).toHaveAttribute("id", "custom-id-section-title-root");
+      expect(title).not.toHaveAttribute("id");
     });
 
     it("generates ID when debugId is not provided", () => {
@@ -421,7 +421,7 @@ describe("SectionTitle", () => {
         "data-section-title-id",
         "test-id-section-title"
       );
-      expect(title).toHaveAttribute("id", "test-id-section-title-root");
+      expect(title).not.toHaveAttribute("id");
     });
 
     it("calls useComponentId with correct parameters", () => {
