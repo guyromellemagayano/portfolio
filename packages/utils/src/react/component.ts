@@ -76,8 +76,6 @@ export function createComponentDataAttributes(
 
   // Only add data attributes when both id and suffix are valid
   if (isValidId && isValidSuffix) {
-    attributes[`data-${sanitizedSuffix}-id`] =
-      `${sanitizedId}-${sanitizedSuffix}`;
     attributes["data-testid"] = `${sanitizedId}-${sanitizedSuffix}-root`;
   } else {
     if (
@@ -116,26 +114,41 @@ export function createComponentDataAttributes(
  * @param id - The component ID
  * @returns `aria-labelledby` value or undefined
  */
-//  TODO: Implement this function `createAriaLabelledBy` when we have a title and id.
+export function createAriaLabelledBy(
+  title: string,
+  id: string
+): string | undefined {
+  if (!title || !id) {
+    return undefined;
+  }
+
+  return `${id}-${trimStringContent(title)}`;
+}
 
 /**
- * Creates consistent component props with data attributes.
+ * Creates consistent component props with data attributes and optional `aria-labelledby`.
  *
  * @param id - The component ID
  * @param suffix - Optional suffix for the component type
  * @param debugMode - Whether debug mode is enabled
  * @param additionalProps - Additional props to merge
+ * @param title - Optional title for generating `aria-labelledby`
  * @returns Combined props object
  */
 export function createComponentProps(
   id?: string,
   suffix?: string,
   debugMode?: boolean,
+  title?: string,
   additionalProps?: Record<string, unknown>
 ) {
+
   const dataAttributes = createComponentDataAttributes(id, suffix, debugMode);
+  const ariaLabelledBy = title && id ? { "aria-labelledby": createAriaLabelledBy(title, id) } : {};
+
   return {
     ...dataAttributes,
+    ...ariaLabelledBy,
     ...additionalProps,
   };
 }
