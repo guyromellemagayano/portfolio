@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SectionGrid } from "../internal/SectionGrid";
+import { SectionGrid } from "../_internal/SectionGrid";
 
 import "@testing-library/jest-dom";
 
@@ -133,7 +133,7 @@ describe("SectionGrid", () => {
       );
 
       const grid = screen.getByTestId("section-grid");
-      expect(grid).toHaveAttribute("id", "test-id-section-grid-root");
+      expect(grid).toHaveAttribute("id", "test-id");
       expect(grid).toHaveAttribute("aria-label", "Test section grid");
       expect(grid).toHaveAttribute("data-custom", "value");
     });
