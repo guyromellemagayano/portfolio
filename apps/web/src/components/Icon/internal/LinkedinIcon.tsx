@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Linkedin icon. */
 export const LinkedinIcon: CommonIconComponent = setDisplayName(
   React.memo(function LinkedinIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;

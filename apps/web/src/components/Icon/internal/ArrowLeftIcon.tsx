@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Arrow left icon. */
 export const ArrowLeftIcon: CommonIconComponent = setDisplayName(
   React.memo(function ArrowLeftIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
