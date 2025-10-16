@@ -118,6 +118,7 @@ components/Component/
 - **Compound Pattern**: External consumers use `Component.SubComponent` pattern
 - **Encapsulation**: Prevents external components from importing internal sub-components directly
 - **Type Safety**: Internal components can use private types from `_types/` folder
+- **ESLint Enforcement**: Custom ESLint rule automatically blocks cross-component imports from `internal/`, `data/`, `types/`, `constants/`, `queries/` folders and any folder starting with `_`
 
 ## Component Props Standards
 
@@ -212,3 +213,76 @@ export const COMPONENT_I18N = {
 - **`getLinkTargetProps`**: For link target/rel attributes
 - **`createComponentProps`**: For component data attributes
 - **`cn`**: For className composition from `@web/utils`
+
+## ESLint Component Encapsulation Rule
+
+### Automatic Enforcement
+
+A custom ESLint rule (`component-encapsulation/no-underscore-folder-imports`) automatically enforces component encapsulation across the entire monorepo.
+
+### Blocked Patterns
+
+The rule prevents cross-component imports from private folders:
+
+```typescript
+// ❌ BLOCKED - Importing from another component's private folders
+import { SimpleLayout } from "@web/components/Layout/internal";
+import { FOOTER_I18N } from "@web/components/Footer/constants";
+import { type FooterLink } from "@web/components/Footer/data";
+import { ARTICLE_QUERY } from "@web/components/Article/queries";
+import { type CardProps } from "@web/components/Card/types";
+import { InternalComponent } from "@web/components/Header/_internal";
+```
+
+### Allowed Patterns
+
+```typescript
+// ✅ ALLOWED - Relative imports within the same component
+import { SimpleLayout } from "./internal";
+import { FOOTER_I18N } from "./constants";
+import { type FooterLink } from "./data";
+
+// ✅ ALLOWED - Barrel exports from other components
+import { Layout, Footer, Card } from "@web/components";
+```
+
+### Protected Folders
+
+The rule automatically blocks imports from:
+
+- `internal/` - Internal sub-components
+- `data/` - Component data and constants
+- `types/` - Component-specific types
+- `constants/` - Internationalization and labels
+- `queries/` - GraphQL/API queries
+- Any folder starting with `_` (e.g., `_internal/`, `_data/`, `_types/`)
+
+### Error Message
+
+When a violation is detected:
+
+```
+Cross-component import from private folder detected.
+
+Import: @web/components/Layout/internal
+From:   apps/web/src/components/Header/Header.tsx
+
+Private folders (starting with _) are not meant to be imported across components.
+
+Fix options:
+  1. Use the component's barrel export: import { Component } from '@web/components'
+  2. If within the same component, use relative imports: import { X } from './_internal'
+```
+
+### Implementation
+
+The rule is defined inline in `packages/config-eslint/src/index.js` and uses regex pattern matching to detect cross-component imports. It works with both underscore-prefixed folders (`_internal`) and non-prefixed folders (`internal`) for maximum compatibility.
+
+**Regex Pattern:** `/@(apps)\/components\/[^/]+\/(_[^/]+|internal|data|types|constants|queries)/`
+
+**Pattern Breakdown:**
+
+- `@(apps)` - matches `@apps` workspace
+- `\/components\/` - matches the components folder
+- `[^/]+` - matches component name (e.g., "Layout", "Footer", "Header")
+- `\/(_[^/]+|internal|data|types|constants|queries)` - matches any private folder (with or without underscore prefix)
