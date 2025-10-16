@@ -13,19 +13,15 @@ import { cn } from "@web/utils";
 // CARD DESCRIPTION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardDescription` component props. */
 export interface CardDescriptionProps
   extends React.ComponentPropsWithRef<"p">,
     CommonComponentProps {}
-
-/** `CardDescription` component type. */
 export type CardDescriptionComponent = React.FC<CardDescriptionProps>;
 
 // ============================================================================
 // BASE CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A card description component that can optionally be wrapped in a link for navigation */
 const BaseCardDescription: CardDescriptionComponent = setDisplayName(
   function BaseCardDescription(props) {
     const {
@@ -65,14 +61,12 @@ const BaseCardDescription: CardDescriptionComponent = setDisplayName(
 // MEMOIZED CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A memoized card description component. */
 const MemoizedCardDescription = React.memo(BaseCardDescription);
 
 // ============================================================================
 // MAIN CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-/** A card description component that can optionally be wrapped in a link for navigation */
 export const CardDescription: CardDescriptionComponent = setDisplayName(
   function CardDescription(props) {
     const { children, isMemoized = false, ...rest } = props;

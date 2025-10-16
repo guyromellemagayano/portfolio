@@ -18,7 +18,6 @@ import { CardLinkCustom } from "./CardLinkCustom";
 // CARD TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardTitle` component props. */
 export interface CardTitleProps
   extends React.ComponentPropsWithRef<"h2">,
     Pick<React.ComponentPropsWithoutRef<typeof Link>, "target" | "title">,
@@ -26,15 +25,12 @@ export interface CardTitleProps
   /** Optional href for linking the title */
   href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
 }
-
-/** `CardTitle` component type. */
 export type CardTitleComponent = React.FC<CardTitleProps>;
 
 // ============================================================================
 // BASE CARD TITLE COMPONENT
 // ============================================================================
 
-/** Public card title component with `useComponentId` integration */
 const BaseCardTitle: CardTitleComponent = setDisplayName(
   function BaseCardTitle(props) {
     const {
@@ -88,14 +84,12 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
 // MEMOIZED CARD TITLE COMPONENT
 // ============================================================================
 
-/** A memoized card title component. */
 const MemoizedCardTitle = React.memo(BaseCardTitle);
 
 // ============================================================================
 // MAIN CARD TITLE COMPONENT
 // ============================================================================
 
-/** A card title component that can optionally be wrapped in a link for navigation */
 export const CardTitle: CardTitleComponent = setDisplayName(
   function CardTitle(props) {
     const { children, isMemoized = false, ...rest } = props;
