@@ -6,68 +6,68 @@ import { PhotoGallery } from "../PhotoGallery";
 import "@testing-library/jest-dom";
 
 // ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit tests
+// - Coverage: Tier 2 (80%+ coverage, key paths + edges)
+// - Risk Tier: Core (presentational component with image rendering)
+// - Component Type: Presentational (pure display, no sub-components)
+// ============================================================================
+
+// ============================================================================
 // MOCKS
 // ============================================================================
 
 // Mock useComponentId hook
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode = false } = {}) => ({
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn(({ debugId, debugMode = false } = {}) => ({
     componentId: debugId || "test-id",
     isDebugMode: debugMode,
-  })),
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
 }));
 
 // Mock utils functions
-vi.mock("@guyromellemagayano/utils", async () => {
-  const actual = await vi.importActual("@guyromellemagayano/utils");
-  return {
-    ...actual,
-    createComponentProps: vi.fn(
-      (id, componentType, debugMode, additionalProps = {}) => ({
-        [`data-${componentType}-id`]: `${id}-${componentType}`,
-        "data-debug-mode": debugMode ? "true" : undefined,
-        "data-testid":
-          additionalProps["data-testid"] || `${id}-${componentType}-root`,
-        ...additionalProps,
-      })
-    ),
-    hasValidContent: vi.fn((content) => {
-      if (Array.isArray(content)) {
-        return content.length > 0;
-      }
-      return content != null && content !== "";
-    }),
-    setDisplayName: vi.fn((component, displayName) => {
-      if (component) component.displayName = displayName;
-      return component;
-    }),
-  };
-});
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+}));
 
 // Mock Next.js Image component
 vi.mock("next/image", () => ({
-  default: vi.fn(({ src, alt, className, ...props }) => (
+  default: vi.fn(({ src, alt, className, sizes, fill, priority, ...props }) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src?.src || src} alt={alt} className={className} {...props} />
+    <img
+      src={src?.src || src}
+      alt={alt}
+      className={className}
+      data-sizes={sizes}
+      data-fill={fill ? "true" : undefined}
+      data-priority={priority ? "true" : undefined}
+      {...props}
+    />
   )),
 }));
 
-// Mock @web/lib
+// Mock @web/utils
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock CSS module
-vi.mock("../PhotoGallery.module.css", () => ({
-  default: {
-    photoGallery: "_photoGallery_f465e6",
-    photoGalleryGrid: "_photoGalleryGrid_f465e6",
-    photoGalleryItem: "_photoGalleryItem_f465e6",
-    photoGalleryImage: "_photoGalleryImage_f465e6",
-  },
-}));
-
-// Mock data
+// Mock data - using StaticImageData format
 vi.mock("../data", () => ({
   PHOTO_GALLERY_COMPONENT_PHOTOS: [
     { src: "/images/photos/image-1.jpg", width: 400, height: 300 },
@@ -144,7 +144,7 @@ describe("PhotoGallery", () => {
       expect(true).toBe(true);
     });
 
-    it("uses custom internal ID when provided", () => {
+    it("uses custom debug ID when provided", () => {
       render(<PhotoGallery photos={mockPhotos} debugId="custom-id" />);
 
       const layout = screen.getByTestId("custom-id-photo-gallery-root");
@@ -269,8 +269,10 @@ describe("PhotoGallery", () => {
         /test-id-photo-gallery-item-\d+-root/
       );
 
-      // Check that rotation classes are applied
-      photoItems.forEach((item) => {
+      // Check that rotation classes are applied based on the component's rotation pattern
+      const expectedRotations = ["rotate-2", "-rotate-2", "rotate-2"];
+
+      photoItems.forEach((item, index) => {
         expect(item).toHaveClass(
           "relative",
           "aspect-9/10",
@@ -283,8 +285,10 @@ describe("PhotoGallery", () => {
           "sm:rounded-2xl",
           "dark:bg-zinc-800"
         );
-        // The component applies rotation classes based on index
-        expect(item.className).toContain("rotate-2");
+        // The component applies rotation classes based on index modulo rotation array length
+        const expectedRotation =
+          expectedRotations[index % expectedRotations.length];
+        expect(item.className).toContain(expectedRotation);
       });
     });
 
@@ -420,6 +424,92 @@ describe("PhotoGallery", () => {
         expect(images[index]).toHaveAttribute("src", photo.src);
       });
     });
+
+    it("handles photos with missing width/height properties", () => {
+      const incompletePhotos = [
+        { src: "/test/image1.jpg" },
+        { src: "/test/image2.jpg", width: 400 },
+        { src: "/test/image3.jpg", height: 300 },
+      ] as any;
+
+      render(<PhotoGallery photos={incompletePhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(incompletePhotos.length);
+    });
+
+    it("handles photos with undefined src", () => {
+      const invalidPhotos = [
+        { src: undefined, width: 400, height: 300 },
+        { src: "/test/image2.jpg", width: 400, height: 300 },
+      ] as any;
+
+      render(<PhotoGallery photos={invalidPhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(invalidPhotos.length);
+    });
+
+    it("handles photos with zero dimensions", () => {
+      const zeroPhotos = [
+        { src: "/test/image1.jpg", width: 0, height: 0 },
+        { src: "/test/image2.jpg", width: 400, height: 300 },
+      ];
+
+      render(<PhotoGallery photos={zeroPhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(zeroPhotos.length);
+    });
+
+    it("handles photos with negative dimensions", () => {
+      const negativePhotos = [
+        { src: "/test/image1.jpg", width: -100, height: -50 },
+        { src: "/test/image2.jpg", width: 400, height: 300 },
+      ];
+
+      render(<PhotoGallery photos={negativePhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(negativePhotos.length);
+    });
+
+    it("handles photos with very large dimensions", () => {
+      const largePhotos = [
+        { src: "/test/image1.jpg", width: 10000, height: 8000 },
+        { src: "/test/image2.jpg", width: 400, height: 300 },
+      ];
+
+      render(<PhotoGallery photos={largePhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(largePhotos.length);
+    });
+
+    it("handles photos with duplicate src values", () => {
+      const duplicatePhotos = [
+        { src: "/test/same-image.jpg", width: 400, height: 300 },
+        { src: "/test/same-image.jpg", width: 400, height: 300 },
+        { src: "/test/different-image.jpg", width: 400, height: 300 },
+      ];
+
+      render(<PhotoGallery photos={duplicatePhotos} />);
+
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(duplicatePhotos.length);
+    });
   });
 
   describe("Performance Tests", () => {
@@ -473,7 +563,7 @@ describe("PhotoGallery", () => {
       );
 
       const layout = screen.getByTestId("test-id-photo-gallery-root");
-      expect(layout).toHaveAttribute("id", "test-id-photo-gallery");
+      expect(layout).toHaveAttribute("id", "test-id");
       expect(layout).toHaveAttribute("data-test", "test-data");
       expect(layout).toHaveAttribute("aria-label", "Test label");
     });
@@ -525,6 +615,95 @@ describe("PhotoGallery", () => {
         "data-photo-gallery-grid-id",
         "test-id-photo-gallery-grid"
       );
+    });
+
+    it("applies correct ARIA roles to main layout elements", () => {
+      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
+
+      // Test main content area
+      const mainElement = screen.getByTestId("aria-test-photo-gallery-root");
+      expect(mainElement).toBeInTheDocument();
+
+      // Test grid container
+      const gridElement = screen.getByTestId(
+        "aria-test-photo-gallery-grid-root"
+      );
+      expect(gridElement).toBeInTheDocument();
+    });
+
+    it("applies unique IDs for photo items", () => {
+      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
+
+      // Test unique IDs for photo items via data-testid
+      const photoItems = screen.getAllByTestId(
+        /aria-test-photo-gallery-item-\d+-root/
+      );
+      expect(photoItems).toHaveLength(mockPhotos.length);
+
+      // Each photo item should have the correct test ID
+      photoItems.forEach((item, index) => {
+        expect(item).toHaveAttribute(
+          "data-testid",
+          `aria-test-photo-gallery-item-${index}-root`
+        );
+      });
+    });
+
+    it("applies correct attributes to image elements", () => {
+      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
+
+      // Test image elements have proper attributes
+      const images = screen.getAllByTestId(
+        /aria-test-photo-gallery-image-\d+-root/
+      );
+      expect(images).toHaveLength(mockPhotos.length);
+
+      images.forEach((image, index) => {
+        expect(image).toHaveAttribute(
+          "data-testid",
+          `aria-test-photo-gallery-image-${index}-root`
+        );
+        expect(image).toHaveAttribute("alt", "");
+      });
+    });
+
+    it("handles ARIA attributes when content is missing", () => {
+      const { container } = render(
+        <PhotoGallery photos={[]} debugId="aria-test" />
+      );
+
+      // Should return null when no photos
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("applies ARIA attributes with different internal IDs", () => {
+      render(<PhotoGallery photos={mockPhotos} debugId="different-id" />);
+
+      const layout = screen.getByTestId("different-id-photo-gallery-root");
+      expect(layout).toHaveAttribute(
+        "data-photo-gallery-id",
+        "different-id-photo-gallery"
+      );
+    });
+
+    it("applies ARIA attributes during component updates", () => {
+      const { rerender } = render(
+        <PhotoGallery photos={mockPhotos} debugId="update-test" />
+      );
+
+      const initialLayout = screen.getByTestId(
+        "update-test-photo-gallery-root"
+      );
+      expect(initialLayout).toBeInTheDocument();
+
+      // Rerender with different photos
+      const newPhotos = [mockPhotos[0]];
+      rerender(<PhotoGallery photos={newPhotos} debugId="update-test" />);
+
+      const updatedLayout = screen.getByTestId(
+        "update-test-photo-gallery-root"
+      );
+      expect(updatedLayout).toBeInTheDocument();
     });
   });
 

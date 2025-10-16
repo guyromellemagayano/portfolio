@@ -1,3 +1,5 @@
 // ============================================================================
-// SHARED PHOTO GALLERY COMPONENT I18N
+// PHOTO GALLERY COMPONENT DATA
 // ============================================================================
+
+export * from "./PhotoGallery.data";
