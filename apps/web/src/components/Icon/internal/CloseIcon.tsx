@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Close icon. */
 export const CloseIcon: CommonIconComponent = setDisplayName(
   React.memo(function CloseIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;

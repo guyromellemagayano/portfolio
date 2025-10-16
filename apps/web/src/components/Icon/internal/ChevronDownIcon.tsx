@@ -6,9 +6,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../data";
+import { type CommonIconComponent } from "../types";
 
-/** Chevron down icon. */
 export const ChevronDownIcon: CommonIconComponent = setDisplayName(
   React.memo(function ChevronDownIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
