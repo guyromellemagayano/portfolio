@@ -18,7 +18,6 @@ import { COMMON_LAYOUT_COMPONENT_LABELS } from "../data";
 // SIMPLE LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `SimpleLayout` component props. */
 export interface SimpleLayoutProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {
@@ -27,15 +26,12 @@ export interface SimpleLayoutProps
   /** Page introduction */
   intro: string;
 }
-
-/** `SimpleLayout` component type. */
 export type SimpleLayoutComponent = React.FC<SimpleLayoutProps>;
 
 // ============================================================================
 // BASE SIMPLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A base simple layout component. */
 const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
   function BaseSimpleLayout(props) {
     const {
@@ -57,7 +53,6 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        id={`${componentId}-simple-layout-root`}
         className={cn("mt-16 sm:mt-32", className)}
         {...createComponentProps(
           componentId,
@@ -67,7 +62,6 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
       >
         <Link
           href="#main-content"
-          id={`${componentId}-simple-layout-link`}
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-zinc-900 focus:px-3 focus:py-2 focus:text-white dark:focus:bg-zinc-100 dark:focus:text-zinc-900"
           aria-label={COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
           {...createComponentProps(
@@ -83,7 +77,6 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
           <header className="max-w-2xl">
             {title ? (
               <h1
-                id={`${componentId}-simple-layout-title`}
                 className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
                 {...createComponentProps(
                   componentId,
@@ -97,7 +90,6 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
 
             {intro ? (
               <p
-                id={`${componentId}-simple-layout-intro`}
                 className="mt-6 text-base text-zinc-600 dark:text-zinc-400"
                 {...createComponentProps(
                   componentId,
@@ -113,7 +105,6 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
 
         {children ? (
           <main
-            id={`${componentId}-simple-layout-main-content`}
             role="main"
             className="mt-16 sm:mt-20"
             {...createComponentProps(
@@ -136,14 +127,12 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
 // MEMOIZED BASE SIMPLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A memoized simple layout component. */
 const MemoizedSimpleLayout = React.memo(BaseSimpleLayout);
 
 // ============================================================================
 // MAIN SIMPLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A simple layout component that provides a consistent layout for page content. */
 export const SimpleLayout: SimpleLayoutComponent = setDisplayName(
   function SimpleLayout(props) {
     const { children, isMemoized = false, ...rest } = props;
