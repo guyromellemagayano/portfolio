@@ -19,7 +19,6 @@ import { CardLinkCustom } from "./CardLinkCustom";
 // CARD CTA COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardCta` component props. */
 export interface CardCtaProps
   extends React.ComponentPropsWithRef<"div">,
     CommonComponentProps {
@@ -27,15 +26,12 @@ export interface CardCtaProps
   target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
   title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
 }
-
-/** `CardCta` component type. */
 export type CardCtaComponent = React.FC<CardCtaProps>;
 
 // ============================================================================
 // BASE CARD CTA COMPONENT
 // ============================================================================
 
-/** A call-to-action subcomponent for `Card`, optionally rendering as a link if href is provided. */
 const BaseCardCta: CardCtaComponent = setDisplayName(
   function BaseCardCta(props) {
     const {
@@ -95,14 +91,12 @@ const BaseCardCta: CardCtaComponent = setDisplayName(
 // MEMOIZED CARD CTA COMPONENT
 // ============================================================================
 
-/** A memoized card call to action component. */
 const MemoizedCardCta = React.memo(BaseCardCta);
 
 // ============================================================================
 // MAIN CARD CTA COMPONENT
 // ============================================================================
 
-/** A card call to action component that can optionally be wrapped in a link for navigation */
 export const CardCta: CardCtaComponent = setDisplayName(
   function CardCta(props) {
     const { children, isMemoized = false, ...rest } = props;

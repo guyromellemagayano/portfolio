@@ -15,19 +15,15 @@ import {
 // CARD LINK CUSTOM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `CardLinkCustom` component props. */
 export interface CardLinkCustomProps
   extends React.ComponentPropsWithRef<typeof Link>,
     Omit<CommonComponentProps, "as"> {}
-
-/** `CardLinkCustom` component type. */
 export type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
 
 // ============================================================================
 // BASE CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
-/** A custom Link component for Card components */
 const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
   function BaseCardLinkCustom(props) {
     const { children, href, target, title, debugId, debugMode, ...rest } =
@@ -65,14 +61,12 @@ const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
 // MEMOIZED CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
-/** A memoized card link custom component. */
 const MemoizedCardLinkCustom = React.memo(BaseCardLinkCustom);
 
 // ============================================================================
 // MAIN CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
-/** A custom card link component that supports memoization and internal debug props. */
 export const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
   function CardLinkCustom(props) {
     const { children, isMemoized = false, ...rest } = props;
