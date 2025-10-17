@@ -2,10 +2,7 @@
 // CARD COMPONENT INTERNATIONALIZATION
 // ============================================================================
 
-/** `CardI18n` type. */
 export type CardI18n = Readonly<Record<string, string>>;
-
-/** `CARD_I18N` object. */
 export const CARD_I18N = {
   // Action labels
   cta: "Read more",

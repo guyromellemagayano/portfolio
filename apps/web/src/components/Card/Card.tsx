@@ -15,7 +15,7 @@ import {
   CardEyebrow,
   CardLink,
   CardTitle,
-} from "./internal";
+} from "./_internal";
 
 // ============================================================================
 // CARD COMPONENT TYPES & INTERFACES
