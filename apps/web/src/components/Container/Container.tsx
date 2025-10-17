@@ -11,19 +11,15 @@ import { ContainerOuter } from "./ContainerOuter";
 // CONTAINER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Container` component props. */
 export interface ContainerProps
   extends React.ComponentProps<"div">,
     CommonComponentProps {}
-
-/** `Container` component type. */
 export type ContainerComponent = React.FC<ContainerProps>;
 
 // ============================================================================
 // BASE CONTAINER COMPONENT
 // ============================================================================
 
-/** A flexible layout container component for consistent page structure. */
 const BaseContainer: ContainerComponent = setDisplayName(
   function BaseContainer(props) {
     const {
@@ -57,14 +53,12 @@ const BaseContainer: ContainerComponent = setDisplayName(
 // MEMOIZED CONTAINER COMPONENT
 // ============================================================================
 
-/** A memoized container component. */
 const MemoizedContainer = React.memo(BaseContainer);
 
 // ============================================================================
 // MAIN CONTAINER COMPONENT
 // ============================================================================
 
-/** Top-level layout container that provides consistent outer and inner structure for page content. */
 export const Container: ContainerComponent = setDisplayName(
   function Container(props) {
     const { children, isMemoized = false, ...rest } = props;
