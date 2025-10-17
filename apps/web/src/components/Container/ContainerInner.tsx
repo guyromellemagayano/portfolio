@@ -8,13 +8,12 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonContainerComponent } from "./types";
+import { type CommonContainerComponent } from "./_types";
 
 // ============================================================================
 // BASE CONTAINER INNER COMPONENT
 // ============================================================================
 
-/** Provides the inner structure for the `Container` compound component. */
 const BaseContainerInner: CommonContainerComponent = setDisplayName(
   function BaseContainerInner(props) {
     const {
@@ -60,14 +59,12 @@ const BaseContainerInner: CommonContainerComponent = setDisplayName(
 // MEMOIZED CONTAINER INNER COMPONENT
 // ============================================================================
 
-/** A memoized container inner component. */
 const MemoizedContainerInner = React.memo(BaseContainerInner);
 
 // ============================================================================
 // MAIN CONTAINER INNER COMPONENT
 // ============================================================================
 
-/** A container inner component that provides consistent inner structure for page content. */
 export const ContainerInner: CommonContainerComponent = setDisplayName(
   function ContainerInner(props) {
     const { children, isMemoized = false, ...rest } = props;
