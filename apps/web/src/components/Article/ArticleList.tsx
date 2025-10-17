@@ -9,7 +9,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants";
+import { ARTICLE_I18N } from "./_data";
 
 // ============================================================================
 // ARTICLE LIST COMPONENT TYPES & INTERFACES

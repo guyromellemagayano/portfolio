@@ -1,7 +1,3 @@
-// ============================================================================
-// ARTICLE COMPONENT EXPORTS
-// ============================================================================
-
 export { Article } from "./Article";
 export { ArticleLayout } from "./ArticleLayout";
 export { ArticleList } from "./ArticleList";
