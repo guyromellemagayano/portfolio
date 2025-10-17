@@ -30,10 +30,6 @@ export type ArticleComponent = React.FC<ArticleProps>;
 // BASE ARTICLE COMPONENT
 // ============================================================================
 
-/**
- * A presentational component that displays an article's title, date, description, and a
- * call-to-action inside a `Card` component.
- */
 const BaseArticle: ArticleComponent = setDisplayName(
   function BaseArticle(props) {
     const { article, debugId, debugMode, ...rest } = props;
@@ -147,7 +143,6 @@ const BaseArticle: ArticleComponent = setDisplayName(
 // MEMOIZED ARTICLE COMPONENT
 // ============================================================================
 
-/** A memoized article component with custom comparison. */
 const MemoizedArticle = React.memo(BaseArticle, (prevProps, nextProps) => {
   // Only re-render if article data actually changes
   return (
@@ -163,7 +158,6 @@ const MemoizedArticle = React.memo(BaseArticle, (prevProps, nextProps) => {
 // MAIN ARTICLE COMPONENT
 // ============================================================================
 
-/** Main article component that renders an article card component, optionally memoized. */
 export const Article: ArticleComponent = setDisplayName(
   function Article(props) {
     const { isMemoized = false, ...rest } = props;
