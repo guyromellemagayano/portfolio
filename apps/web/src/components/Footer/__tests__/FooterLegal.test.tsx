@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterLegal } from "../internal/FooterLegal";
+import { FooterLegal } from "../_internal/FooterLegal";
 
 // ============================================================================
 // TEST CLASSIFICATION
@@ -31,7 +31,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
       "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -57,7 +57,7 @@ vi.mock("@guyromellemagayano/logger", () => ({
 
 vi.mock("../data", () => ({
   FOOTER_COMPONENT_LABELS: {
-    legalText: "&copy; 2024 Guy Romelle Magayano. All rights reserved.",
+    legalText: "© 2025 Guy Romelle Magayano. All rights reserved.",
   },
 }));
 
@@ -75,7 +75,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -83,21 +83,21 @@ describe("FooterLegal", () => {
     it("applies custom className", () => {
       render(<FooterLegal debugId="test-id" className="custom-legal" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveClass("custom-legal");
     });
 
     it("renders with debug mode enabled", () => {
       render(<FooterLegal debugId="test-id" debugMode />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom debug ID", () => {
       render(<FooterLegal debugId="custom-legal" />);
 
-      const legalElement = screen.getByTestId("custom-legal-footer-legal-root");
+      const legalElement = screen.getByTestId("custom-legal-footer-legal");
       expect(legalElement).toHaveAttribute(
         "data-footer-legal-id",
         "custom-legal-footer-legal"
@@ -109,13 +109,15 @@ describe("FooterLegal", () => {
         <FooterLegal
           debugId="test-id"
           aria-label="Legal information"
-          role="contentinfo"
         />
       );
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
-      expect(legalElement).toHaveAttribute("aria-label", "&copy; 2024 Guy Romelle Magayano. All rights reserved.");
-      expect(legalElement).toHaveAttribute("role", "contentinfo");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
+      expect(legalElement).toHaveAttribute(
+        "aria-label",
+        "© 2025 Guy Romelle Magayano. All rights reserved."
+      );
+      // FooterLegal no longer has role="contentinfo" to avoid conflict with Footer
     });
   });
 
@@ -124,10 +126,10 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       expect(
-        screen.getByTestId("test-id-footer-legal-root")
+        screen.getByTestId("test-id-footer-legal")
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/&copy;.*Guy Romelle Magayano.*All rights reserved/)
+        screen.getByText(/©.*Guy Romelle Magayano.*All rights reserved/)
       ).toBeInTheDocument();
     });
 
@@ -135,11 +137,11 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" legalText="Custom legal text" />);
 
       expect(
-        screen.getByTestId("test-id-footer-legal-root")
+        screen.getByTestId("test-id-footer-legal")
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
       expect(screen.queryByText("Custom legal text")).not.toBeInTheDocument();
@@ -150,7 +152,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -160,14 +162,14 @@ describe("FooterLegal", () => {
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<FooterLegal debugId="test-id" debugMode={false} />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<FooterLegal debugId="test-id" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -176,21 +178,21 @@ describe("FooterLegal", () => {
     it("renders as p element by default", () => {
       render(<FooterLegal debugId="test-id" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement.tagName).toBe("P");
     });
 
     it("renders with custom element when as prop is provided", () => {
       render(<FooterLegal debugId="test-id" as="div" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement.tagName).toBe("DIV");
     });
 
     it("renders with correct CSS classes", () => {
       render(<FooterLegal debugId="test-id" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveClass(
         "text-sm text-zinc-400 dark:text-zinc-500"
       );
@@ -199,7 +201,7 @@ describe("FooterLegal", () => {
     it("combines Tailwind classes with custom className", () => {
       render(<FooterLegal debugId="test-id" className="custom-legal" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveClass(
         "text-sm text-zinc-400 dark:text-zinc-500 custom-legal"
       );
@@ -211,7 +213,7 @@ describe("FooterLegal", () => {
       const ref = { current: null };
       render(<FooterLegal debugId="test-id" ref={ref} />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(ref.current).toBe(legalElement);
     });
 
@@ -227,14 +229,14 @@ describe("FooterLegal", () => {
     it("renders with proper semantic structure", () => {
       render(<FooterLegal debugId="test-id" />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement.tagName).toBe("P");
     });
 
     it("renders with proper data attributes for debugging", () => {
       render(<FooterLegal debugId="test-id" debugMode />);
 
-      const legalElement = screen.getByTestId("test-id-footer-legal-root");
+      const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveAttribute(
         "data-footer-legal-id",
         "test-id-footer-legal"
@@ -242,7 +244,7 @@ describe("FooterLegal", () => {
       expect(legalElement).toHaveAttribute("data-debug-mode", "true");
       expect(legalElement).toHaveAttribute(
         "data-testid",
-        "test-id-footer-legal-root"
+        "test-id-footer-legal"
       );
     });
   });
@@ -253,7 +255,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -262,11 +264,11 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" legalText="" />);
 
       expect(
-        screen.getByTestId("test-id-footer-legal-root")
+        screen.getByTestId("test-id-footer-legal")
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -275,11 +277,11 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" legalText="   " />);
 
       expect(
-        screen.getByTestId("test-id-footer-legal-root")
+        screen.getByTestId("test-id-footer-legal")
       ).toBeInTheDocument();
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -291,7 +293,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -303,14 +305,14 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
 
       rerender(<FooterLegal debugId="test-id" isMemoized={false} />);
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });
@@ -320,7 +322,7 @@ describe("FooterLegal", () => {
 
       expect(
         screen.getByText(
-          "&copy; 2024 Guy Romelle Magayano. All rights reserved."
+          "© 2025 Guy Romelle Magayano. All rights reserved."
         )
       ).toBeInTheDocument();
     });

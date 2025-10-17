@@ -10,23 +10,13 @@ import {
 import { ContainerInner, ContainerOuter } from "@web/components";
 import { cn } from "@web/utils";
 
-import { type FooterComponentLabels } from "./data";
-import { FooterLegal, FooterNavigation } from "./internal";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Orchestrator
-// - Testing: Unit tests only (integration happens at parent level)
-// - Structure: Flat, imports other components
-// - Risk Tier: Tier 2 (80%+ coverage, key paths + edges)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
+import { type FooterComponentLabels } from "./_data";
+import { FooterLegal, FooterNavigation } from "./_internal";
 
 // ============================================================================
 // FOOTER COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `Footer` component props. */
 export interface FooterProps
   extends React.ComponentProps<"footer">,
     FooterComponentLabels,
@@ -34,15 +24,12 @@ export interface FooterProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `Footer` component type. */
 export type FooterComponent = React.FC<FooterProps>;
 
 // ============================================================================
 // BASE FOOTER COMPONENT
 // ============================================================================
 
-/** A base footer component (client, minimal effects split out). */
 const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
   const {
     as: Component = "footer",
@@ -98,14 +85,12 @@ const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
 // MEMOIZED FOOTER COMPONENT
 // ============================================================================
 
-/** A memoized footer component. */
 const MemoizedFooter = React.memo(BaseFooter);
 
 // ============================================================================
 // MAIN FOOTER COMPONENT
 // ============================================================================
 
-/** The main footer component for the application. */
 export const Footer: FooterComponent = setDisplayName(function Footer(props) {
   const { isMemoized = false, ...rest } = props;
 
