@@ -33,7 +33,6 @@ export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 // BASE ARTICLE NAVIGATION BUTTON COMPONENT
 // ============================================================================
 
-/** A navigation button that returns to the previous articles list. */
 const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function BaseArticleNavButton(props) {
     const { className, debugId, debugMode, ...rest } = props;
@@ -92,14 +91,12 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
 // MEMOIZED ARTICLE NAVIGATION BUTTON COMPONENT
 // ============================================================================
 
-/** A memoized article navigation button component. */
 const MemoizedArticleNavButton = React.memo(BaseArticleNavButton);
 
 // ============================================================================
 // MAIN ARTICLE NAVIGATION BUTTON COMPONENT
 // ============================================================================
 
-/** Renders a navigation button to go back to the articles list. */
 export const ArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function ArticleNavButton(props) {
     const { isMemoized = false, ...rest } = props;
