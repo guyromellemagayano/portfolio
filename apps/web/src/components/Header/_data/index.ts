@@ -1,5 +1,6 @@
 // ============================================================================
-// HEADER COMPONENT CONSTANTS EXPORTS
+// HEADER COMPONENT DATA EXPORTS
 // ============================================================================
 
+export * from "./Header.data";
 export * from "./Header.i18n";

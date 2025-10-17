@@ -14,14 +14,14 @@ import {
 import { Container } from "@web/components";
 import { clamp, cn } from "@web/utils";
 
-import { AVATAR_COMPONENT_LABELS } from "./data";
+import { AVATAR_COMPONENT_LABELS } from "./_data";
 import {
   HeaderAvatar,
   HeaderAvatarContainer,
   HeaderDesktopNav,
   HeaderMobileNav,
   HeaderThemeToggle,
-} from "./internal";
+} from "./_internal";
 
 // ============================================================================
 // HEADER COMPONENT TYPES & INTERFACES

@@ -120,7 +120,7 @@ vi.mock("next/link", () => ({
   }),
 }));
 
-import { HeaderDesktopNavItem } from "../internal/HeaderDesktopNavItem";
+import { HeaderDesktopNavItem } from "../_internal/HeaderDesktopNavItem";
 
 // Mock the CSS module
 vi.mock("../HeaderDesktopNavItem.module.css", () => ({

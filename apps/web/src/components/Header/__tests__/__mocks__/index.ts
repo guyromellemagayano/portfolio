@@ -7,7 +7,7 @@ mockIntersectionObserver.mockReturnValue({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 });
-Object.defineProperty(global, "IntersectionObserver", {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
@@ -155,6 +155,7 @@ vi.mock("@web/utils", () => ({
 // Mock next/link
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, href, className, ...props }) => {
+    // eslint-disable-next-line no-undef
     const React = require("react");
     return React.createElement(
       "a",
