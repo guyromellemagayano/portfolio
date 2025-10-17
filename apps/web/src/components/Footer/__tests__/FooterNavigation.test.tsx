@@ -1,26 +1,7 @@
-// Mock IntersectionObserver FIRST
-const mockIntersectionObserver = vi.fn(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-Object.defineProperty(window, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-});
-
-Object.defineProperty(global, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-});
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterNavigation } from "../internal/FooterNavigation";
+import { FooterNavigation } from "../_internal/FooterNavigation";
 
 // ============================================================================
 // TEST CLASSIFICATION
@@ -66,8 +47,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -153,21 +133,21 @@ describe("FooterNavigation", () => {
     it("applies custom className", () => {
       render(<FooterNavigation className="custom-nav" />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveClass("custom-nav");
     });
 
     it("renders with debug mode enabled", () => {
       render(<FooterNavigation debugId="test-id" debugMode />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom debug ID", () => {
       render(<FooterNavigation debugId="custom-nav" />);
 
-      const nav = screen.getByTestId("custom-nav-footer-navigation-root");
+      const nav = screen.getByTestId("custom-nav-footer-navigation");
       expect(nav).toHaveAttribute(
         "data-footer-navigation-id",
         "custom-nav-footer-navigation"
@@ -179,7 +159,7 @@ describe("FooterNavigation", () => {
         <FooterNavigation aria-label="Site navigation" role="navigation" />
       );
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveAttribute("aria-label", "Site navigation");
       expect(nav).toHaveAttribute("role", "navigation");
     });
@@ -190,7 +170,7 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation />);
 
       expect(
-        screen.getByTestId("test-id-footer-navigation-root")
+        screen.getByTestId("test-id-footer-navigation")
       ).toBeInTheDocument();
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
@@ -204,14 +184,14 @@ describe("FooterNavigation", () => {
     it("does not apply data-debug-mode when debugMode is false", () => {
       render(<FooterNavigation debugId="test-id" debugMode={false} />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<FooterNavigation debugId="test-id" />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -220,14 +200,14 @@ describe("FooterNavigation", () => {
     it("renders as nav element by default", () => {
       render(<FooterNavigation />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav.tagName).toBe("NAV");
     });
 
     it("renders with correct CSS classes", () => {
       render(<FooterNavigation />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveClass(
         "flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200"
       );
@@ -236,7 +216,7 @@ describe("FooterNavigation", () => {
     it("combines Tailwind classes with custom className", () => {
       render(<FooterNavigation className="custom-nav" />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveClass(
         "flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200 custom-nav"
       );
@@ -302,7 +282,7 @@ describe("FooterNavigation", () => {
     it("renders with proper semantic structure", () => {
       render(<FooterNavigation />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav.tagName).toBe("NAV");
 
       const links = screen.getAllByRole("link");
@@ -312,16 +292,13 @@ describe("FooterNavigation", () => {
     it("renders with proper data attributes for debugging", () => {
       render(<FooterNavigation debugId="test-id" debugMode />);
 
-      const nav = screen.getByTestId("test-id-footer-navigation-root");
+      const nav = screen.getByTestId("test-id-footer-navigation");
       expect(nav).toHaveAttribute(
         "data-footer-navigation-id",
         "test-id-footer-navigation"
       );
       expect(nav).toHaveAttribute("data-debug-mode", "true");
-      expect(nav).toHaveAttribute(
-        "data-testid",
-        "test-id-footer-navigation-root"
-      );
+      expect(nav).toHaveAttribute("data-testid", "test-id-footer-navigation");
     });
   });
 
@@ -342,23 +319,26 @@ describe("FooterNavigation", () => {
       render(<FooterNavigation debugId="aria-test" />);
 
       const navElement = screen.getByRole("navigation");
-      expect(navElement).toHaveAttribute("id", "aria-test-footer-navigation");
+      expect(navElement).toHaveAttribute(
+        "data-footer-navigation-id",
+        "aria-test-footer-navigation"
+      );
     });
 
     it("applies unique IDs for ARIA relationships", () => {
       render(<FooterNavigation debugId="aria-test" />);
 
-      // Each list item should have a unique ID
+      // Each list item should have data attributes
       const aboutItem = screen.getByText("About").closest("li");
       const articlesItem = screen.getByText("Articles").closest("li");
 
       expect(aboutItem).toHaveAttribute(
-        "id",
-        "aria-test-footer-navigation-item-About"
+        "data-footer-navigation-item-id",
+        "aria-test-footer-navigation-item"
       );
       expect(articlesItem).toHaveAttribute(
-        "id",
-        "aria-test-footer-navigation-item-Articles"
+        "data-footer-navigation-item-id",
+        "aria-test-footer-navigation-item"
       );
     });
 
@@ -378,14 +358,14 @@ describe("FooterNavigation", () => {
 
       const navElement = screen.getByRole("navigation");
       expect(navElement).toHaveAttribute(
-        "id",
+        "data-footer-navigation-id",
         "different-id-footer-navigation"
       );
 
       const aboutItem = screen.getByText("About").closest("li");
       expect(aboutItem).toHaveAttribute(
-        "id",
-        "different-id-footer-navigation-item-About"
+        "data-footer-navigation-item-id",
+        "different-id-footer-navigation-item"
       );
     });
   });
@@ -432,7 +412,7 @@ describe("FooterNavigation", () => {
 
       // Should still render the navigation element with default links
       expect(
-        screen.getByTestId("test-id-footer-navigation-root")
+        screen.getByTestId("test-id-footer-navigation")
       ).toBeInTheDocument();
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
