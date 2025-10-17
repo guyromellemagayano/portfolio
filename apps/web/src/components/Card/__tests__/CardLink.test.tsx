@@ -120,7 +120,7 @@ vi.mock("../CardLinkCustom", () => ({
 // Component uses Tailwind classes, no CSS modules to mock
 
 // Import the component after mocking
-import { CardLink } from "../internal";
+import { CardLink } from "../_internal";
 
 afterEach(() => {
   cleanup();
@@ -161,7 +161,10 @@ describe("CardLink", () => {
 
       const container = screen.getByTestId("test-id-card-link-root-root");
       // The component uses createComponentProps which sets data-* attributes, not id
-      expect(container).toHaveAttribute("data-card-link-root-id", "test-id-card-link-root");
+      expect(container).toHaveAttribute(
+        "data-card-link-root-id",
+        "test-id-card-link-root"
+      );
       expect(container).toHaveAttribute("data-test", "test-data");
     });
 

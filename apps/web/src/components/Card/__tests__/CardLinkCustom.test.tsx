@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardLinkCustom } from "../internal";
+import { CardLinkCustom } from "../_internal";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
