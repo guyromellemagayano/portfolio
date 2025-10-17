@@ -36,7 +36,6 @@ export type ArticleListItemComponent = React.ForwardRefExoticComponent<
 // BASE ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
-/** Renders the base article list item as a Card compound component. */
 const BaseArticleListItem = setDisplayName(
   React.forwardRef<HTMLElement, ArticleListItemProps>(
     function BaseArticleListItem(props, ref) {
@@ -158,14 +157,12 @@ const BaseArticleListItem = setDisplayName(
 // MEMOIZED ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
-/** A memoized article list item component. */
 const MemoizedArticleListItem = React.memo(BaseArticleListItem);
 
 // ============================================================================
 // MAIN ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
-/** Renders a flexible article list item component using the Card compound component. */
 export const ArticleListItem: ArticleListItemComponent = setDisplayName(
   React.forwardRef<HTMLElement, ArticleListItemProps>(
     function ArticleListItem(props, ref) {
