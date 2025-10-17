@@ -11,7 +11,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderAvatar } from "../internal/HeaderAvatar";
+import { HeaderAvatar } from "../_internal/HeaderAvatar";
 
 // Import shared mocks
 import "./__mocks__";
