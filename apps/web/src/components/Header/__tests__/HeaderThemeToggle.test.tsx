@@ -9,7 +9,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderThemeToggle } from "../internal/HeaderThemeToggle";
+import { HeaderThemeToggle } from "../_internal/HeaderThemeToggle";
 
 // Import shared mocks
 import "./__mocks__";

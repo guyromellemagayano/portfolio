@@ -21,8 +21,8 @@ import {
   type HeaderComponentNavLinks,
   MOBILE_HEADER_NAV_LINKS,
   MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS,
-} from "../data";
-import { type CommonHeaderNavProps } from "../types";
+} from "../_data";
+import { type CommonHeaderNavProps } from "../_types";
 import { HeaderMobileNavItem } from "./HeaderMobileNavItem";
 
 // ============================================================================
