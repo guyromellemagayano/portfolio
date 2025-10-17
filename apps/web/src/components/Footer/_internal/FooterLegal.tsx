@@ -9,22 +9,12 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../data";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Presentational
-// - Testing: Unit tests only
-// - Structure: Single file + tests + constants/Component.i18n.ts
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
+import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../_data";
 
 // ============================================================================
 // FOOTER LEGAL COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `FooterLegal` component props. */
 export interface FooterLegalProps
   extends React.ComponentProps<"p">,
     FooterComponentLabels,
@@ -32,15 +22,12 @@ export interface FooterLegalProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `FooterLegal` component type. */
 export type FooterLegalComponent = React.FC<FooterLegalProps>;
 
 // ============================================================================
 // BASE FOOTER LEGAL COMPONENT
 // ============================================================================
 
-/** A base footer legal component (client, minimal effects split out). */
 const BaseFooterLegal: FooterLegalComponent = setDisplayName(
   function BaseFooterLegal(props) {
     const {
@@ -63,7 +50,6 @@ const BaseFooterLegal: FooterLegalComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        role="contentinfo"
         aria-label={legalText}
         className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
         {...createComponentProps(componentId, "footer-legal", isDebugMode)}
@@ -80,14 +66,12 @@ const BaseFooterLegal: FooterLegalComponent = setDisplayName(
 // MEMOIZED FOOTER LEGAL COMPONENT
 // ============================================================================
 
-/** A memoized footer legal component. */
 const MemoizedFooterLegal = React.memo(BaseFooterLegal);
 
 // ============================================================================
 // MAIN FOOTER LEGAL COMPONENT
 // ============================================================================
 
-/** The main footer legal component for the application. */
 export const FooterLegal: FooterLegalComponent = setDisplayName(
   function FooterLegal(props) {
     const { isMemoized = false, ...rest } = props;
