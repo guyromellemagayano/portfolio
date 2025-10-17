@@ -14,22 +14,12 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_NAV_LINKS, type FooterLink } from "../data";
-
-// ============================================================================
-// COMPONENT CLASSIFICATION
-// - Type: Presentational
-// - Testing: Unit tests only
-// - Structure: Single file + tests + constants/Component.i18n.ts
-// - Risk Tier: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching)
-// ============================================================================
+import { FOOTER_COMPONENT_NAV_LINKS, type FooterLink } from "../_data";
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-/** `FooterNavigation` component props. */
 export interface FooterNavigationProps
   extends React.ComponentProps<"nav">,
     CommonComponentProps {
@@ -38,15 +28,12 @@ export interface FooterNavigationProps
   /** Whether to enable memoization */
   isMemoized?: boolean;
 }
-
-/** `FooterNavigation` component type. */
 export type FooterNavigationComponent = React.FC<FooterNavigationProps>;
 
 // ============================================================================
 // BASE FOOTER NAVIGATION COMPONENT
 // ============================================================================
 
-/** A base footer navigation component (client, minimal effects split out). */
 const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const {
@@ -65,61 +52,60 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
 
     const navLinks: ReadonlyArray<FooterLink> = links;
     const validNavLinks = filterValidNavigationLinks(navLinks);
-    if (!hasValidNavigationLinks(validNavLinks)) return null;
 
     const element = (
       <Component
         {...rest}
         role="navigation"
-        id={`${componentId}-footer-navigation`}
         className={cn(
           "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
           className
         )}
         {...createComponentProps(componentId, "footer-navigation", isDebugMode)}
       >
-        {validNavLinks.map(({ kind, label, href }) => {
-          const isExternal = kind === "external";
-          const hrefString = isExternal ? href : href?.toString() || "";
-          const hasLabelandLink =
-            typeof label === "string" &&
-            label.length > 0 &&
-            hrefString.length > 0;
+        {hasValidNavigationLinks(validNavLinks)
+          ? validNavLinks.map(({ kind, label, href }) => {
+              const isExternal = kind === "external";
+              const hrefString = isExternal ? href : href?.toString() || "";
+              const hasLabelandLink =
+                typeof label === "string" &&
+                label.length > 0 &&
+                hrefString.length > 0;
 
-          const targetProps = getLinkTargetProps(
-            hrefString,
-            isExternal ? "_blank" : "_self"
-          );
+              const targetProps = getLinkTargetProps(
+                hrefString,
+                isExternal ? "_blank" : "_self"
+              );
 
-          if (!hasLabelandLink) return null;
+              if (!hasLabelandLink) return null;
 
-          const element = (
-            <li
-              key={`${componentId}-footer-navigation-item-${label}`}
-              id={`${componentId}-footer-navigation-item-${label}`}
-              {...createComponentProps(
-                componentId,
-                "footer-navigation-item",
-                isDebugMode
-              )}
-            >
-              <Link
-                {...targetProps}
-                href={hrefString}
-                className="transition hover:text-teal-500 dark:hover:text-teal-400"
-                {...createComponentProps(
-                  componentId,
-                  "footer-navigation-link",
-                  isDebugMode
-                )}
-              >
-                {label}
-              </Link>
-            </li>
-          );
+              const element = (
+                <li
+                  key={`${componentId}-footer-navigation-item-${label}`}
+                  {...createComponentProps(
+                    componentId,
+                    "footer-navigation-item",
+                    isDebugMode
+                  )}
+                >
+                  <Link
+                    {...targetProps}
+                    href={hrefString}
+                    className="transition hover:text-teal-500 dark:hover:text-teal-400"
+                    {...createComponentProps(
+                      componentId,
+                      "footer-navigation-link",
+                      isDebugMode
+                    )}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
 
-          return element;
-        })}
+              return element;
+            })
+          : null}
       </Component>
     );
 
@@ -131,14 +117,12 @@ const BaseFooterNavigation: FooterNavigationComponent = setDisplayName(
 // MEMOIZED FOOTER NAVIGATION COMPONENT
 // ============================================================================
 
-/** A memoized footer navigation component. */
 const MemoizedFooterNavigation = React.memo(BaseFooterNavigation);
 
 // ============================================================================
 // MAIN FOOTER NAVIGATION COMPONENT
 // ============================================================================
 
-/** The main footer navigation component for the application. */
 export const FooterNavigation: FooterNavigationComponent = setDisplayName(
   function FooterNavigation(props) {
     const { isMemoized = false, ...rest } = props;
