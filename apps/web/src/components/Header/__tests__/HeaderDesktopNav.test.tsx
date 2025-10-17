@@ -11,7 +11,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderDesktopNav } from "../internal/HeaderDesktopNav";
+import { HeaderDesktopNav } from "../_internal/HeaderDesktopNav";
 
 // Import shared mocks
 import "./__mocks__";

@@ -12,7 +12,7 @@ import {
 import {
   DESKTOP_HEADER_NAV_LINKS,
   type HeaderComponentNavLinks,
-} from "../data";
+} from "../_data";
 import { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
 
 // ============================================================================
