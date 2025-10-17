@@ -59,6 +59,7 @@ const BaseCardLink: CardLinkComponent = setDisplayName(
           )}
           {...createComponentProps(componentId, "card-link-root", isDebugMode)}
         />
+
         {href && isValidLink(href) ? (
           <CardLinkCustom
             href={href}

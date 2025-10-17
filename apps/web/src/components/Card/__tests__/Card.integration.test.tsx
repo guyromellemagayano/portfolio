@@ -1,25 +1,70 @@
+// Mock IntersectionObserver first, before any imports
+(globalThis as any).IntersectionObserver = vi.fn().mockImplementation(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}));
+
 // Import the setup file for IntersectionObserver mocking
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { CardCta, CardDescription, CardEyebrow, CardTitle } from "../_internal";
 import { Card } from "../Card";
-import { CardCta, CardDescription, CardEyebrow, CardTitle } from "../internal";
 
 import "./setup";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
+    componentId: options.internalId || options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
+
+// Mock Next.js Link component
+vi.mock("next/link", () => ({
+  default: vi.fn(({ children, href, ...props }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  )),
+}));
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-// @guyromellemagayano/utils is mocked globally in test-setup.ts
+// Mock utils functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      ...additionalProps,
+    })
+  ),
+  isValidLink: vi.fn((href) => href != null && href !== ""),
+  getLinkTargetProps: vi.fn((target, rel) => ({
+    target: target || undefined,
+    rel: rel || undefined,
+  })),
+}));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
@@ -75,7 +120,7 @@ describe("Card Integration Tests", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = screen.getByTestId("test-id-card");
       expect(card).toBeInTheDocument();
 
       const eyebrow = screen.getByText("Eyebrow");
@@ -116,8 +161,8 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("External CTA")).toBeInTheDocument();
 
       // Test that the components have the correct test IDs
-      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-title")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-cta")).toBeInTheDocument();
     });
 
     it("handles mixed linked and non-linked sub-components", () => {
@@ -157,7 +202,7 @@ describe("Card Integration Tests", () => {
       );
 
       // Components should still render even with null/undefined children
-      expect(screen.getByTestId("test-id-card-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card")).toBeInTheDocument();
     });
 
     it("handles mixed valid and invalid content", () => {
