@@ -12,8 +12,8 @@ import {
 import { Container, Prose } from "@web/components";
 import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
 
+import { ARTICLE_I18N } from "./_data";
 import { ArticleNavButton } from "./ArticleNavButton";
-import { ARTICLE_I18N } from "./constants";
 
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT TYPES & INTERFACES
