@@ -33,7 +33,6 @@ export type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 // BASE ARTICLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A component that provides a consistent layout for an article. */
 const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
   function BaseArticleLayout(props) {
     const { article, children, className, debugId, debugMode, ...rest } = props;
@@ -205,14 +204,12 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
 // MEMOIZED ARTICLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A memoized article layout component. */
 const MemoizedArticleLayout = React.memo(BaseArticleLayout);
 
 // ============================================================================
 // MAIN ARTICLE LAYOUT COMPONENT
 // ============================================================================
 
-/** A component that provides a consistent layout for an article. */
 export const ArticleLayout: ArticleLayoutComponent = setDisplayName(
   function ArticleLayout(props) {
     const { children, isMemoized = false, ...rest } = props;

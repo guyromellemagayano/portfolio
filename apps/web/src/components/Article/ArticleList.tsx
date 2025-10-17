@@ -27,7 +27,6 @@ export type ArticleListComponent = React.FC<ArticleListProps>;
 // BASE LIST COMPONENT
 // ============================================================================
 
-/** Renders a base container for a list of articles. */
 const BaseArticleList: ArticleListComponent = setDisplayName(
   function BaseArticleList(props) {
     const { className, children, debugId, debugMode, ...rest } = props;
@@ -84,14 +83,12 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
 // MEMOIZED ARTICLE LIST COMPONENT
 // ============================================================================
 
-/** A memoized article list component. */
 const MemoizedArticleList = React.memo(BaseArticleList);
 
 // ============================================================================
 // MAIN ARTICLE LIST COMPONENT
 // ============================================================================
 
-/** Renders a top-level container for a list of articles. */
 export const ArticleList: ArticleListComponent = setDisplayName(
   function ArticleList(props) {
     const { children, isMemoized = false, ...rest } = props;
