@@ -10,7 +10,7 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug, validateArticle } from "@web/utils";
 
-import { ARTICLE_I18N } from "./constants";
+import { ARTICLE_I18N } from "./_data";
 
 // ============================================================================
 // ARTICLE COMPONENT TYPES & INTERFACES
