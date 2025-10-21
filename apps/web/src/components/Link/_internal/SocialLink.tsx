@@ -12,7 +12,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonLinkProps } from "../types";
+import { type CommonLinkProps } from "../_types";
 
 // ============================================================================
 // SOCIAL LINK COMPONENT TYPES & INTERFACES
