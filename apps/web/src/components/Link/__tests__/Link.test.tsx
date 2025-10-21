@@ -18,8 +18,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -270,7 +269,7 @@ describe("Link", () => {
       render(<Link href="/test">Test Link</Link>);
 
       const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("data-link-id", "test-id-link");
+      expect(link).toHaveAttribute("data-link-root-id", "test-id-link-root");
     });
 
     it("renders with custom internal ID", () => {
@@ -281,7 +280,7 @@ describe("Link", () => {
       );
 
       const link = screen.getByTestId("custom-id-link-root");
-      expect(link).toHaveAttribute("data-link-id", "custom-id-link");
+      expect(link).toHaveAttribute("data-link-root-id", "custom-id-link-root");
     });
   });
 

@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SocialLink } from "../internal";
+import { SocialLink } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
@@ -18,8 +18,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -99,8 +98,8 @@ describe("SocialLink", () => {
       const link = screen.getByTestId("custom-id-social-link-root");
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute(
-        "data-social-link-id",
-        "custom-id-social-link"
+        "data-social-link-root-id",
+        "custom-id-social-link-root"
       );
     });
 
