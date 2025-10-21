@@ -51,7 +51,7 @@ const BaseSection: SectionComponent = setDisplayName(
         {...createComponentProps(componentId, "section", isDebugMode)}
       >
         <SectionGrid debugId={debugId} debugMode={debugMode}>
-          {title && title.length > 0 ? (
+          {title && title.trim() !== "" && title.length > 0 ? (
             <SectionTitle debugId={debugId} debugMode={debugMode}>
               {title}
             </SectionTitle>
