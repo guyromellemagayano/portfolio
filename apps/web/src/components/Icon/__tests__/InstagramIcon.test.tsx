@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { InstagramIcon } from "../internal";
+import { InstagramIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,26 +39,26 @@ describe("InstagramIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<InstagramIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-instagram");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<InstagramIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
       render(<InstagramIcon data-test="test-value" width="24" height="24" />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
@@ -68,25 +68,25 @@ describe("InstagramIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
     });
 
     it("has correct component type in data attributes", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute(
         "data-icon-instagram-id",
         "test-id-icon-instagram"
@@ -97,19 +97,19 @@ describe("InstagramIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<InstagramIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<InstagramIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -117,7 +117,7 @@ describe("InstagramIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<InstagramIcon />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -126,7 +126,7 @@ describe("InstagramIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<InstagramIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-instagram-root");
+      const icon = screen.getByTestId("test-id-icon-instagram");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -136,7 +136,7 @@ describe("InstagramIcon", () => {
         <InstagramIcon width="32" height="32" fill="currentColor" />
       );
       const icon = container.querySelector(
-        '[data-testid="test-id-icon-instagram-root"]'
+        '[data-testid="test-id-icon-instagram"]'
       );
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");

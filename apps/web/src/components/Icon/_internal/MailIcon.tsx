@@ -6,7 +6,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconProps } from "../types";
+import { type CommonIconProps } from "../_types";
 
 export type MailIconComponent = React.FC<
   CommonIconProps & {
