@@ -31,7 +31,7 @@ export const createComponentProps = vi.fn(
     [`data-${componentType}-id`]: `${id}-${componentType}`,
     "data-debug-mode": debugMode ? "true" : undefined,
     "data-testid":
-      additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      additionalProps["data-testid"] || `${id}-${componentType}`,
     ...additionalProps,
   })
 );
