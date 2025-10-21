@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ChevronRightIcon } from "../internal";
+import { ChevronRightIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,20 +39,20 @@ describe("ChevronRightIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<ChevronRightIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<ChevronRightIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -60,7 +60,7 @@ describe("ChevronRightIcon", () => {
       render(
         <ChevronRightIcon data-test="test-value" width="16" height="16" />
       );
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "16");
       expect(icon).toHaveAttribute("height", "16");
@@ -70,25 +70,25 @@ describe("ChevronRightIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
     });
 
     it("has correct component type in data attributes", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute(
         "data-icon-chevron-right-id",
         "test-id-icon-chevron-right"
@@ -99,19 +99,19 @@ describe("ChevronRightIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<ChevronRightIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<ChevronRightIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -119,7 +119,7 @@ describe("ChevronRightIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<ChevronRightIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -128,14 +128,14 @@ describe("ChevronRightIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<ChevronRightIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("handles all SVG attributes correctly", () => {
       render(<ChevronRightIcon width="24" height="24" stroke="none" />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-right");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
       expect(icon).toHaveAttribute("fill", "none");

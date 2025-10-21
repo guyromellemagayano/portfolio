@@ -6,10 +6,10 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../types";
+import { type CommonIconComponent } from "../_types";
 
-export const ChevronDownIcon: CommonIconComponent = setDisplayName(
-  React.memo(function ChevronDownIcon(props) {
+export const ChevronRightIcon: CommonIconComponent = setDisplayName(
+  React.memo(function ChevronRightIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
@@ -20,13 +20,17 @@ export const ChevronDownIcon: CommonIconComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        viewBox="0 0 8 6"
+        viewBox="0 0 16 16"
+        fill="none"
         aria-hidden="true"
-        {...createComponentProps(componentId, "icon-chevron-down", isDebugMode)}
+        {...createComponentProps(
+          componentId,
+          "icon-chevron-right",
+          isDebugMode
+        )}
       >
         <path
-          d="M1.75 1.75 4 4.25l2.25-2.5"
-          fill="none"
+          d="M6.75 5.75 9.25 8l-2.5 2.25"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
