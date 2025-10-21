@@ -10,7 +10,6 @@ import image5 from "@web/images/photos/image-5.jpg";
 // PHOTO LAYOUT COMPONENT PHOTOS
 // ============================================================================
 
-/** The photos for the photo gallery component. */
 export const PHOTO_GALLERY_COMPONENT_PHOTOS: StaticImageData[] = [
   image1,
   image2,
