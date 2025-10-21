@@ -72,35 +72,33 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
           {COMMON_LAYOUT_COMPONENT_LABELS.skipToMainContent}
         </Link>
 
-        {(title && title.trim() !== "") || (intro && intro.trim() !== "") ? (
-          <header className="max-w-2xl">
-            {title ? (
-              <h1
-                className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
-                {...createComponentProps(
-                  componentId,
-                  "simple-layout-title",
-                  isDebugMode
-                )}
-              >
-                {title}
-              </h1>
-            ) : null}
+        <header className="max-w-2xl">
+          {title && title.trim() !== "" && title.length > 0 ? (
+            <h1
+              className="text-4xl font-bold tracking-tight text-zinc-800 sm:text-5xl dark:text-zinc-100"
+              {...createComponentProps(
+                componentId,
+                "simple-layout-title",
+                isDebugMode
+              )}
+            >
+              {title}
+            </h1>
+          ) : null}
 
-            {intro ? (
-              <p
-                className="mt-6 text-base text-zinc-600 dark:text-zinc-400"
-                {...createComponentProps(
-                  componentId,
-                  "simple-layout-intro",
-                  isDebugMode
-                )}
-              >
-                {intro}
-              </p>
-            ) : null}
-          </header>
-        ) : null}
+          {intro && intro.trim() !== "" && intro.length > 0 ? (
+            <p
+              className="mt-6 text-base text-zinc-600 dark:text-zinc-400"
+              {...createComponentProps(
+                componentId,
+                "simple-layout-intro",
+                isDebugMode
+              )}
+            >
+              {intro}
+            </p>
+          ) : null}
+        </header>
 
         {children ? (
           <main
