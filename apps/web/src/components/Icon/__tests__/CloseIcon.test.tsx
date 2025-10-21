@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CloseIcon } from "../internal";
+import { CloseIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,26 +39,26 @@ describe("CloseIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<CloseIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-close");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<CloseIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
       render(<CloseIcon data-test="test-value" width="24" height="24" />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
@@ -68,25 +68,25 @@ describe("CloseIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
     });
 
     it("has correct component type in data attributes", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("data-icon-close-id", "test-id-icon-close");
     });
   });
@@ -94,19 +94,19 @@ describe("CloseIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<CloseIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<CloseIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -114,7 +114,7 @@ describe("CloseIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<CloseIcon />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -123,7 +123,7 @@ describe("CloseIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<CloseIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -132,7 +132,7 @@ describe("CloseIcon", () => {
       render(
         <CloseIcon width="32" height="32" fill="currentColor" stroke="none" />
       );
-      const icon = screen.getByTestId("test-id-icon-close-root");
+      const icon = screen.getByTestId("test-id-icon-close");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");

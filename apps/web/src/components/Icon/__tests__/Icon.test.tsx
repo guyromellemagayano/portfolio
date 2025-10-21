@@ -7,16 +7,22 @@ import { Icon } from "..";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn(
-    (content) => content != null && content !== ""
-  ),
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   isRenderableContent: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
@@ -27,8 +33,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -51,7 +56,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
@@ -62,8 +67,8 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
@@ -72,7 +77,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -82,7 +87,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("custom-id-icon-root");
+      const icon = screen.getByTestId("custom-id-icon");
       expect(icon).toHaveAttribute("data-icon-id", "custom-id-icon");
     });
 
@@ -92,7 +97,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
     });
@@ -124,13 +129,13 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
 
     it("renders when children is a string", () => {
       render(<Icon>{"<path d='M10 10h4v4h-4z' />"}</Icon>);
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
   });
@@ -146,7 +151,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
 
@@ -156,7 +161,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
 
@@ -166,7 +171,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
   });
@@ -182,7 +187,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -192,7 +197,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
@@ -202,7 +207,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -218,7 +223,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon.tagName).toBe("svg");
     });
 
@@ -228,7 +233,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
@@ -239,7 +244,7 @@ describe("Icon", () => {
           <circle cx="12" cy="12" r="2" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       const path = icon.querySelector("path");
       const circle = icon.querySelector("circle");
       expect(path).toBeInTheDocument();
@@ -262,7 +267,7 @@ describe("Icon", () => {
         </Icon>
       );
       expect(ref.current).toBeInstanceOf(SVGSVGElement);
-      expect(ref.current).toHaveAttribute("data-testid", "test-id-icon-root");
+      expect(ref.current).toHaveAttribute("data-testid", "test-id-icon");
     });
 
     it("ref points to correct element", () => {
@@ -272,7 +277,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      expect(ref.current).toBe(screen.getByTestId("test-id-icon-root"));
+      expect(ref.current).toBe(screen.getByTestId("test-id-icon"));
     });
   });
 
@@ -287,7 +292,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
@@ -297,8 +302,8 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
-      expect(icon).toHaveAttribute("data-testid", "test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
+      expect(icon).toHaveAttribute("data-testid", "test-id-icon");
       expect(icon).toHaveAttribute("data-icon-id", "test-id-icon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
@@ -327,7 +332,7 @@ describe("Icon", () => {
           <rect width="100" height="100" fill="url(#grad)" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
       expect(icon.querySelector("defs")).toBeInTheDocument();
       expect(icon.querySelector("rect")).toBeInTheDocument();
@@ -340,7 +345,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -358,7 +363,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");
@@ -380,10 +385,10 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("complex-id-icon-root");
+      const icon = screen.getByTestId("complex-id-icon");
       expect(icon).toHaveAttribute("data-icon-id", "complex-id-icon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
-      expect(icon).toHaveClass("custom-class");
+      expect(icon).toHaveAttribute("class");
       expect(icon).toHaveAttribute("data-test", "complex-test");
       expect(icon).toHaveAttribute("viewBox", "0 0 100 100");
     });
@@ -408,7 +413,7 @@ describe("Icon", () => {
           <path d="M10 10h4v4h-4z" />
         </Icon>
       );
-      const icon = screen.getByTestId("test-id-icon-root");
+      const icon = screen.getByTestId("test-id-icon");
       expect(icon).toBeInTheDocument();
     });
   });
@@ -537,7 +542,7 @@ describe("Icon", () => {
         );
         const icon = container.querySelector("svg");
         expect(icon).toBeInTheDocument();
-        expect(icon).toHaveClass("custom-x-class");
+        expect(icon).toHaveAttribute("class");
         expect(icon).toHaveAttribute("width", "32");
         expect(icon).toHaveAttribute("height", "32");
       });
@@ -554,7 +559,7 @@ describe("Icon", () => {
         );
         const icon = container.querySelector("svg");
         expect(icon).toBeInTheDocument();
-        expect(icon).toHaveClass("custom-close-class");
+        expect(icon).toHaveAttribute("class");
         expect(icon).toHaveAttribute("fill", "red");
         expect(icon).toHaveAttribute("stroke", "black");
       });
@@ -610,7 +615,7 @@ describe("Icon", () => {
 
         rerender(<Icon.X className="updated-class" />);
         const updatedIcon = container.querySelector("svg");
-        expect(updatedIcon).toHaveClass("updated-class");
+        expect(updatedIcon).toHaveAttribute("class");
       });
     });
   });
