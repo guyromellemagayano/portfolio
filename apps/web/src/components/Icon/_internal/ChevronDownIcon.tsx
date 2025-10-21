@@ -6,10 +6,10 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../types";
+import { type CommonIconComponent } from "../_types";
 
-export const MoonIcon: CommonIconComponent = setDisplayName(
-  React.memo(function MoonIcon(props) {
+export const ChevronDownIcon: CommonIconComponent = setDisplayName(
+  React.memo(function ChevronDownIcon(props) {
     const { as: Component = "svg", debugId, debugMode, ...rest } = props;
 
     const { componentId, isDebugMode } = useComponentId({
@@ -20,12 +20,13 @@ export const MoonIcon: CommonIconComponent = setDisplayName(
     const element = (
       <Component
         {...rest}
-        viewBox="0 0 24 24"
+        viewBox="0 0 8 6"
         aria-hidden="true"
-        {...createComponentProps(componentId, "icon-moon", isDebugMode)}
+        {...createComponentProps(componentId, "icon-chevron-down", isDebugMode)}
       >
         <path
-          d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z"
+          d="M1.75 1.75 4 4.25l2.25-2.5"
+          fill="none"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"

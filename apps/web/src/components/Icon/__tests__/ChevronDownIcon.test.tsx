@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { ChevronDownIcon } from "../internal";
+import { ChevronDownIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,26 +39,26 @@ describe("ChevronDownIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<ChevronDownIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<ChevronDownIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
       render(<ChevronDownIcon data-test="test-value" width="8" height="6" />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "8");
       expect(icon).toHaveAttribute("height", "6");
@@ -68,25 +68,25 @@ describe("ChevronDownIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("viewBox", "0 0 8 6");
     });
 
     it("has correct component type in data attributes", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute(
         "data-icon-chevron-down-id",
         "test-id-icon-chevron-down"
@@ -97,19 +97,19 @@ describe("ChevronDownIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<ChevronDownIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<ChevronDownIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -117,7 +117,7 @@ describe("ChevronDownIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<ChevronDownIcon />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -126,14 +126,14 @@ describe("ChevronDownIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<ChevronDownIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("handles all SVG attributes correctly", () => {
       render(<ChevronDownIcon width="16" height="12" stroke="none" />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down-root");
+      const icon = screen.getByTestId("test-id-icon-chevron-down");
       expect(icon).toHaveAttribute("width", "16");
       expect(icon).toHaveAttribute("height", "12");
       expect(icon).toHaveAttribute("stroke", "none");

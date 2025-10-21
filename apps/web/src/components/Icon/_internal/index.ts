@@ -1,0 +1,14 @@
+export { ArrowDownIcon } from "./ArrowDownIcon";
+export { ArrowLeftIcon } from "./ArrowLeftIcon";
+export { BriefcaseIcon } from "./BriefcaseIcon";
+export { ChevronDownIcon } from "./ChevronDownIcon";
+export { ChevronRightIcon } from "./ChevronRightIcon";
+export { CloseIcon } from "./CloseIcon";
+export { GitHubIcon } from "./GithubIcon";
+export { InstagramIcon } from "./InstagramIcon";
+export { LinkedinIcon } from "./LinkedinIcon";
+export { LinkIcon } from "./LinkIcon";
+export { MailIcon } from "./MailIcon";
+export { MoonIcon } from "./MoonIcon";
+export { SunIcon } from "./SunIcon";
+export { XIcon } from "./XIcon";
