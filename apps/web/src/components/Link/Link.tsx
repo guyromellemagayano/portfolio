@@ -10,8 +10,8 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { SocialLink } from "./internal";
-import { type CommonLinkProps } from "./types";
+import { SocialLink } from "./_internal";
+import { type CommonLinkProps } from "./_types";
 
 // ============================================================================
 // LINK COMPONENT TYPES & INTERFACES
@@ -62,6 +62,11 @@ const MemoizedLink = React.memo(BaseLink);
 // MAIN LINK COMPONENT
 // ============================================================================
 
+type LinkCompoundComponent = React.FC<LinkProps> & {
+  /** A link social component that provides consistent social structure for page content. */
+  Social: typeof SocialLink;
+};
+
 export const Link = setDisplayName(function Link(props) {
   const { children, isMemoized = false, ...rest } = props;
 
@@ -69,14 +74,5 @@ export const Link = setDisplayName(function Link(props) {
   const element = <Component {...rest}>{children}</Component>;
   return element;
 } as LinkCompoundComponent);
-
-// ============================================================================
-// LINK COMPOUND COMPONENTS
-// ============================================================================
-
-type LinkCompoundComponent = React.FC<LinkProps> & {
-  /** A link social component that provides consistent social structure for page content. */
-  Social: typeof SocialLink;
-};
 
 Link.Social = SocialLink;
