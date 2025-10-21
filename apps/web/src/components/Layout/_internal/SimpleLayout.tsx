@@ -11,7 +11,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "../data";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "../_data";
 
 // ============================================================================
 // SIMPLE LAYOUT COMPONENT TYPES & INTERFACES
