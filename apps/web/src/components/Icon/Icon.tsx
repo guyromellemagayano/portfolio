@@ -21,8 +21,8 @@ import {
   MoonIcon,
   SunIcon,
   XIcon,
-} from "./internal";
-import { type CommonIconComponent } from "./types";
+} from "./_internal";
+import { type CommonIconComponent } from "./_types";
 
 // ============================================================================
 // BASE ICON COMPONENT
@@ -70,19 +70,7 @@ const MemoizedIcon = React.memo(BaseIcon);
 // MAIN ICON COMPONENT
 // ============================================================================
 
-export const Icon = setDisplayName(function Icon(props) {
-  const { children, isMemoized = false, ...rest } = props;
-
-  const Component = isMemoized ? MemoizedIcon : BaseIcon;
-  const element = <Component {...rest}>{children}</Component>;
-  return element;
-} as IconCompoundComponent);
-
-// ============================================================================
-// ICON COMPOUND COMPONENTS
-// ============================================================================
-
-type IconCompoundComponent = CommonIconComponent & {
+export type IconCompoundComponent = CommonIconComponent & {
   // ============================================================================
   // NAVIGATION
   // ============================================================================
@@ -126,6 +114,14 @@ type IconCompoundComponent = CommonIconComponent & {
   /** UI icon for briefcase */
   Briefcase: typeof BriefcaseIcon;
 };
+
+export const Icon = setDisplayName(function Icon(props) {
+  const { children, isMemoized = false, ...rest } = props;
+
+  const Component = isMemoized ? MemoizedIcon : BaseIcon;
+  const element = <Component {...rest}>{children}</Component>;
+  return element;
+} as IconCompoundComponent);
 
 Icon.X = XIcon;
 Icon.Instagram = InstagramIcon;

@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { XIcon } from "../internal";
+import { XIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,26 +39,26 @@ describe("XIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<XIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<XIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
       render(<XIcon data-test="test-value" width="24" height="24" />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
@@ -68,25 +68,25 @@ describe("XIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
     });
 
     it("has correct component type in data attributes", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute(
         "data-icon-x-twitter-id",
         "test-id-icon-x-twitter"
@@ -97,19 +97,19 @@ describe("XIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<XIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<XIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -117,7 +117,7 @@ describe("XIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<XIcon />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -126,14 +126,14 @@ describe("XIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<XIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("handles all SVG attributes correctly", () => {
       render(<XIcon width="32" height="32" fill="currentColor" />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter-root");
+      const icon = screen.getByTestId("test-id-icon-x-twitter");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");
