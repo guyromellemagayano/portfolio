@@ -12,8 +12,8 @@ import {
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "./data";
-import { SimpleLayout } from "./internal";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
+import { SimpleLayout } from "./_internal";
 
 // ============================================================================
 // LAYOUT COMPONENT TYPES & INTERFACES
@@ -84,7 +84,6 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
         <Header role="banner" debugId={componentId} debugMode={isDebugMode} />
         <main
           role="main"
-          id={`${componentId}-layout-main`}
           className="flex-auto"
           {...createComponentProps(
             componentId,
