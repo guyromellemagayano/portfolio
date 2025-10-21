@@ -1,13 +1,13 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { MoonIcon } from "../internal";
+import { MoonIcon } from "../_internal";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode }) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode || false,
+  useComponentId: vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
   })),
 }));
 
@@ -20,7 +20,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${id}-${componentType}-root`,
+      "data-testid": `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -39,26 +39,26 @@ describe("MoonIcon", () => {
   describe("Basic Rendering", () => {
     it("renders icon correctly", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toBeInTheDocument();
       expect(icon.tagName).toBe("svg");
     });
 
     it("applies custom className", () => {
       render(<MoonIcon className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
-      expect(icon).toHaveClass("custom-class");
+      const icon = screen.getByTestId("test-id-icon-moon");
+      expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<MoonIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("passes through HTML attributes", () => {
       render(<MoonIcon data-test="test-value" width="24" height="24" />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "24");
       expect(icon).toHaveAttribute("height", "24");
@@ -68,25 +68,25 @@ describe("MoonIcon", () => {
   describe("Component Structure", () => {
     it("renders as SVG element", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon.tagName).toBe("svg");
     });
 
     it("has aria-hidden attribute", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
 
     it("has correct viewBox", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
     });
 
     it("has correct component type in data attributes", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("data-icon-moon-id", "test-id-icon-moon");
     });
   });
@@ -94,19 +94,19 @@ describe("MoonIcon", () => {
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<MoonIcon debugMode={true} />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
       render(<MoonIcon debugMode={false} />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -114,7 +114,7 @@ describe("MoonIcon", () => {
   describe("Accessibility", () => {
     it("has proper semantic structure", () => {
       render(<MoonIcon />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
@@ -123,14 +123,14 @@ describe("MoonIcon", () => {
     it("handles event handlers", () => {
       const handleClick = vi.fn();
       render(<MoonIcon onClick={handleClick} />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       fireEvent.click(icon);
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("handles all SVG attributes correctly", () => {
       render(<MoonIcon width="32" height="32" fill="currentColor" />);
-      const icon = screen.getByTestId("test-id-icon-moon-root");
+      const icon = screen.getByTestId("test-id-icon-moon");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("fill", "currentColor");

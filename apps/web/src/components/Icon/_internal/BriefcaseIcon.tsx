@@ -6,7 +6,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { type CommonIconComponent } from "../types";
+import { type CommonIconComponent } from "../_types";
 
 export const BriefcaseIcon: CommonIconComponent = setDisplayName(
   React.memo(function BriefcaseIcon(props) {
