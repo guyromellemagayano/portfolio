@@ -30,8 +30,7 @@ export const createComponentProps = vi.fn(
   (id, componentType, debugMode, additionalProps = {}) => ({
     [`data-${componentType}-id`]: `${id}-${componentType}`,
     "data-debug-mode": debugMode ? "true" : undefined,
-    "data-testid":
-      additionalProps["data-testid"] || `${id}-${componentType}`,
+    "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
     ...additionalProps,
   })
 );
@@ -125,24 +124,6 @@ export const isValidImageSrc = vi.fn(
  * Mock cn utility (className composition)
  */
 export const cn = vi.fn((...classes) => classes.filter(Boolean).join(" "));
-
-/**
- * Mock validateArticle utility
- */
-export const validateArticle = vi.fn((article) => {
-  return (
-    article &&
-    typeof article.title === "string" &&
-    article.title.trim().length > 0 &&
-    typeof article.slug === "string" &&
-    article.slug.trim().length > 0 &&
-    typeof article.date === "string" &&
-    article.date.trim().length > 0 &&
-    !isNaN(new Date(article.date.trim()).getTime()) &&
-    typeof article.description === "string" &&
-    article.description.trim().length > 0
-  );
-});
 
 /**
  * Mock formatDate utility
