@@ -33,10 +33,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -319,8 +317,8 @@ describe("CardLinkCustom", () => {
 
       const linkElement = screen.getByTestId("custom-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-custom-id",
-        "custom-id-card-link-custom"
+        "data-testid",
+        "custom-id-card-link-custom-root"
       );
     });
 
@@ -333,8 +331,8 @@ describe("CardLinkCustom", () => {
 
       const linkElement = screen.getByTestId("test-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-custom-id",
-        "test-id-card-link-custom"
+        "data-testid",
+        "test-id-card-link-custom-root"
       );
     });
 
@@ -347,8 +345,8 @@ describe("CardLinkCustom", () => {
 
       const linkElement = screen.getByTestId("test-id-card-link-custom-root");
       expect(linkElement).toHaveAttribute(
-        "data-card-link-custom-id",
-        "test-id-card-link-custom"
+        "data-testid",
+        "test-id-card-link-custom-root"
       );
     });
   });
