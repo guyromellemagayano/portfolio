@@ -112,7 +112,7 @@ The vitest-presets package includes a comprehensive centralized mocking system t
 - `hasAnyRenderableContent`, `hasMeaningfulText`, `hasValidContent`
 - `formatDateSafely`, `isValidLink`, `getLinkTargetProps`
 - `hasValidNavigationLinks`, `filterValidNavigationLinks`
-- `isValidImageSrc`, `cn`, `validateArticle`, `formatDate`
+- `isValidImageSrc`, `cn`, `formatDate`
 
 #### **@guyromellemagayano/hooks Mocks**
 
