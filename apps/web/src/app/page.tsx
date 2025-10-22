@@ -6,6 +6,7 @@ import {
   Icon,
   Link,
   PhotoGallery,
+  Resume,
 } from "@web/components";
 import { getAllArticles } from "@web/utils";
 
@@ -58,7 +59,7 @@ const HomePage = async function HomePage() {
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
             {/* <Newsletter /> */}
-            {/* <WorkExperience /> */}
+            <Resume />
           </div>
         </div>
       </Container>

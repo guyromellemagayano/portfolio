@@ -47,7 +47,6 @@ const BaseIcon: CommonIconComponent = setDisplayName(function BaseIcon(props) {
   const element = (
     <Component
       {...rest}
-      id={`${componentId}-icon-root`}
       role="img"
       focusable="false"
       aria-hidden="true"
