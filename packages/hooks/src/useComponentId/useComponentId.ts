@@ -73,7 +73,13 @@ export function useComponentId({
 }: UseComponentIdOptions = {}): UseComponentIdReturn {
   // Always call hooks at the top level
   const generatedId = useId();
-  const componentId = debugId || generatedId;
+
+  // Sanitize the generated ID to be compatible with data attributes
+  // React's useId() generates IDs like ":r1:", ":r2:" which contain colons
+  // We need to remove colons and other invalid characters for data attributes
+  const sanitizedGeneratedId = generatedId.replace(/[^a-zA-Z0-9_-]/g, "");
+
+  const componentId = debugId || sanitizedGeneratedId;
 
   // Auto-detect component name from export const declaration
   const detectedComponentName = getComponentNameFromStack();
