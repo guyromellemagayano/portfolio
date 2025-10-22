@@ -2,13 +2,10 @@
 @import "./prism.css" layer(components);
 
 @plugin "@tailwindcss/typography";
-@plugin "@tailwindcss/forms";
-@plugin "@tailwindcss/aspect-ratio";
-@plugin "@tailwindcss/container-queries";
-
-@reference "tailwindcss"
+@config "../../typography.ts";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --text-xs: 0.8125rem;
   --text-xs--line-height: 1.5rem;
