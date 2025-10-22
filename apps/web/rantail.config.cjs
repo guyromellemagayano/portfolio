@@ -1,5 +1,5 @@
 /** @type {import('rantail').IConfig} */
-const config = {
+module.exports = {
   content: ["./src/components/**/*.{tsx}"],
   cssFilePath: "src/styles/tailwind.css",
   cuidLength: 5,
@@ -7,5 +7,3 @@ const config = {
   prefix: "_",
   ignore: "_",
 };
-
-export default config;
