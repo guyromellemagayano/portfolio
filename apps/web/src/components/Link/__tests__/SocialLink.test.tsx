@@ -59,13 +59,13 @@ describe("SocialLink", () => {
   describe("Basic Rendering", () => {
     it("renders without crashing", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       const icon = screen.getByTestId("mock-icon");
 
       expect(link).toBeInTheDocument();
@@ -81,7 +81,7 @@ describe("SocialLink", () => {
           className="custom-class"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveClass("custom-class");
     });
   });
@@ -95,11 +95,11 @@ describe("SocialLink", () => {
           debugId="custom-id"
         />
       );
-      const link = screen.getByTestId("custom-id-social-link-root");
+      const link = screen.getByTestId("custom-id-social-link");
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute(
-        "data-social-link-root-id",
-        "custom-id-social-link-root"
+        "data-social-link-id",
+        "custom-id-social-link"
       );
     });
 
@@ -111,7 +111,7 @@ describe("SocialLink", () => {
           debugMode={true}
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -123,13 +123,13 @@ describe("SocialLink", () => {
           debugMode={false}
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when debugMode is undefined", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -137,7 +137,7 @@ describe("SocialLink", () => {
   describe("Link Properties", () => {
     it("uses provided href", () => {
       render(<SocialLink href="https://github.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("href", "https://github.com");
     });
 
@@ -149,14 +149,14 @@ describe("SocialLink", () => {
           title="Custom Title"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("title", "Custom Title");
       expect(link).toHaveAttribute("aria-label", "Custom Title");
     });
 
     it("uses default target for external links", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
     });
@@ -165,13 +165,13 @@ describe("SocialLink", () => {
       render(
         <SocialLink href="https://example.com" icon={MockIcon} target="_self" />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("target", "_self");
     });
 
     it("handles internal links without target", () => {
       render(<SocialLink href="/about" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("href", "/about");
       expect(link).not.toHaveAttribute("target");
     });
@@ -203,31 +203,31 @@ describe("SocialLink", () => {
   describe("Content Validation", () => {
     it("renders when href is invalid but component still renders", () => {
       render(<SocialLink href="" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders when href is null", () => {
       render(<SocialLink href={null as any} icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders when href is undefined", () => {
       render(<SocialLink href={undefined as any} icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders when href is a placeholder", () => {
       render(<SocialLink href="#" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders when href is valid", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
     });
   });
@@ -248,7 +248,7 @@ describe("SocialLink", () => {
         <SocialLink href="https://example.com" icon={MockIcon} ref={ref} />
       );
 
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(ref.current).toBe(link);
     });
   });
@@ -256,7 +256,7 @@ describe("SocialLink", () => {
   describe("Component Structure", () => {
     it("renders correct HTML structure", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       const icon = screen.getByTestId("mock-icon");
 
       expect(link).toBeInTheDocument();
@@ -272,7 +272,7 @@ describe("SocialLink", () => {
           title="GitHub Profile"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("aria-label", "GitHub Profile");
     });
   });
@@ -286,7 +286,7 @@ describe("SocialLink", () => {
           title="Social Media Link"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("aria-label", "Social Media Link");
       expect(link).toHaveAttribute("title", "Social Media Link");
     });
@@ -299,7 +299,7 @@ describe("SocialLink", () => {
           aria-describedby="description"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveAttribute("aria-describedby", "description");
     });
   });
@@ -307,7 +307,7 @@ describe("SocialLink", () => {
   describe("CSS Integration", () => {
     it("applies Tailwind classes correctly", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       const icon = screen.getByTestId("mock-icon");
 
       expect(link).toBeInTheDocument();
@@ -322,7 +322,7 @@ describe("SocialLink", () => {
           className="custom-social-link"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveClass("custom-social-link");
     });
   });
@@ -332,10 +332,10 @@ describe("SocialLink", () => {
       const { rerender } = render(
         <SocialLink href="https://example.com" icon={MockIcon} />
       );
-      const initialLink = screen.getByTestId("test-id-social-link-root");
+      const initialLink = screen.getByTestId("test-id-social-link");
 
       rerender(<SocialLink href="https://example.com" icon={MockIcon} />);
-      const updatedLink = screen.getByTestId("test-id-social-link-root");
+      const updatedLink = screen.getByTestId("test-id-social-link");
 
       expect(initialLink).toBe(updatedLink);
     });
@@ -352,7 +352,7 @@ describe("SocialLink", () => {
           className="new-class"
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toHaveClass("new-class");
     });
   });
@@ -366,9 +366,7 @@ describe("SocialLink", () => {
           isMemoized={false}
         />
       );
-      expect(
-        screen.getByTestId("test-id-social-link-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-social-link")).toBeInTheDocument();
     });
 
     it("renders memoized component when isMemoized is true", () => {
@@ -379,16 +377,12 @@ describe("SocialLink", () => {
           isMemoized={true}
         />
       );
-      expect(
-        screen.getByTestId("test-id-social-link-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-social-link")).toBeInTheDocument();
     });
 
     it("defaults to base component when isMemoized is undefined", () => {
       render(<SocialLink href="https://example.com" icon={MockIcon} />);
-      expect(
-        screen.getByTestId("test-id-social-link-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-social-link")).toBeInTheDocument();
     });
   });
 
@@ -406,7 +400,7 @@ describe("SocialLink", () => {
           isMemoized={true}
         />
       );
-      const link = screen.getByTestId("complex-id-social-link-root");
+      const link = screen.getByTestId("complex-id-social-link");
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("data-debug-mode", "true");
       expect(link).toHaveClass("complex-class");
@@ -424,7 +418,7 @@ describe("SocialLink", () => {
           debugMode={undefined}
         />
       );
-      const link = screen.getByTestId("test-id-social-link-root");
+      const link = screen.getByTestId("test-id-social-link");
       expect(link).toBeInTheDocument();
       expect(link).not.toHaveAttribute("data-debug-mode");
     });
