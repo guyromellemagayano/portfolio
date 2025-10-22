@@ -24,10 +24,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -131,8 +129,8 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
-        "data-card-eyebrow-id",
-        "generated-id-card-eyebrow"
+        "data-testid",
+        "generated-id-card-eyebrow-root"
       );
     });
   });
@@ -240,8 +238,8 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
-        "data-card-eyebrow-id",
-        "generated-id-card-eyebrow"
+        "data-testid",
+        "generated-id-card-eyebrow-root"
       );
     });
 
@@ -255,8 +253,8 @@ describe("CardEyebrow", () => {
 
       const eyebrow = screen.getByTestId("custom-id-card-eyebrow-root");
       expect(eyebrow).toHaveAttribute(
-        "data-card-eyebrow-id",
-        "custom-id-card-eyebrow"
+        "data-testid",
+        "custom-id-card-eyebrow-root"
       );
     });
   });
@@ -414,8 +412,8 @@ describe("CardEyebrow", () => {
       );
       expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
       expect(eyebrow).toHaveAttribute(
-        "data-card-eyebrow-id",
-        "multi-prop-id-card-eyebrow"
+        "data-testid",
+        "multi-prop-id-card-eyebrow-root"
       );
       expect(eyebrow).toHaveAttribute("aria-label", "Multi prop test");
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();

@@ -53,9 +53,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -120,7 +119,7 @@ describe("Card Integration Tests", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toBeInTheDocument();
 
       const eyebrow = screen.getByText("Eyebrow");
@@ -161,8 +160,8 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("External CTA")).toBeInTheDocument();
 
       // Test that the components have the correct test IDs
-      expect(screen.getByTestId("test-id-card-title")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-card-cta")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
     });
 
     it("handles mixed linked and non-linked sub-components", () => {
@@ -202,7 +201,7 @@ describe("Card Integration Tests", () => {
       );
 
       // Components should still render even with null/undefined children
-      expect(screen.getByTestId("test-id-card")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-root")).toBeInTheDocument();
     });
 
     it("handles mixed valid and invalid content", () => {
