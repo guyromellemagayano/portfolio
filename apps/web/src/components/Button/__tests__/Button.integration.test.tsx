@@ -40,9 +40,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -132,10 +131,7 @@ describe("Button Integration Tests", () => {
       );
 
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute(
-        "data-button-root-id",
-        "debug-link-button-root"
-      );
+      expect(link).toHaveAttribute("data-testid", "debug-link-button-root");
       expect(link).toHaveAttribute("data-debug-mode", "true");
     });
   });
