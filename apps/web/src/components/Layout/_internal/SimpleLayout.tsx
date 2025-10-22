@@ -53,11 +53,7 @@ const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
       <Component
         {...rest}
         className={cn("mt-16 sm:mt-32", className)}
-        {...createComponentProps(
-          componentId,
-          "simple-layout-root",
-          isDebugMode
-        )}
+        {...createComponentProps(componentId, "simple-layout", isDebugMode)}
       >
         <Link
           href="#main-content"
