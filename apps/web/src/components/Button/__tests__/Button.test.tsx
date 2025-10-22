@@ -42,9 +42,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -104,7 +103,7 @@ describe("Button", () => {
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute(
-        "data-button-root-id",
+        "data-testid",
         "custom-button-button-root"
       );
     });
@@ -229,10 +228,7 @@ describe("Button", () => {
       render(<Button debugId="aria-test">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute(
-        "data-button-root-id",
-        "aria-test-button-root"
-      );
+      expect(button).toHaveAttribute("data-testid", "aria-test-button-root");
     });
 
     it("supports ARIA attributes", () => {
@@ -245,6 +241,111 @@ describe("Button", () => {
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("aria-label", "Custom button");
       expect(button).toHaveAttribute("aria-describedby", "button-help");
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+    it("applies correct ARIA roles to button elements", () => {
+      render(<Button internalId="aria-test">Button</Button>);
+
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA roles to link elements", () => {
+      render(
+        <Button href="/test" internalId="aria-test">
+          Link Button
+        </Button>
+      );
+
+      const linkElement = screen.getByRole("link");
+      expect(linkElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA labels to button elements", () => {
+      render(
+        <Button aria-label="Accessible button" internalId="aria-test">
+          Button
+        </Button>
+      );
+
+      const buttonElement = screen.getByRole("button", {
+        name: "Accessible button",
+      });
+      expect(buttonElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA labels to link elements", () => {
+      render(
+        <Button
+          href="/test"
+          aria-label="Accessible link"
+          internalId="aria-test"
+        >
+          Link
+        </Button>
+      );
+
+      const linkElement = screen.getByRole("link", { name: "Accessible link" });
+      expect(linkElement).toBeInTheDocument();
+    });
+
+    it("applies correct ARIA states for disabled buttons", () => {
+      render(
+        <Button disabled aria-disabled="true" internalId="aria-test">
+          Disabled Button
+        </Button>
+      );
+
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeDisabled();
+      expect(buttonElement).toHaveAttribute("aria-disabled", "true");
+    });
+
+    it("applies correct ARIA states for loading buttons", () => {
+      render(
+        <Button
+          aria-busy="true"
+          aria-label="Loading, please wait"
+          internalId="aria-test"
+        >
+          Loading...
+        </Button>
+      );
+
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toHaveAttribute("aria-busy", "true");
+      expect(buttonElement).toHaveAttribute(
+        "aria-label",
+        "Loading, please wait"
+      );
+    });
+
+    it("applies correct ARIA relationships", () => {
+      render(
+        <Button
+          aria-labelledby="button-title"
+          aria-describedby="button-description"
+          internalId="aria-test"
+        >
+          Button
+        </Button>
+      );
+
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toHaveAttribute("aria-labelledby", "button-title");
+      expect(buttonElement).toHaveAttribute(
+        "aria-describedby",
+        "button-description"
+      );
+    });
+
+    it("handles ARIA attributes when content is missing", () => {
+      render(<Button internalId="aria-test">{null}</Button>);
+
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
     });
   });
 
