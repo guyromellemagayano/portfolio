@@ -32,7 +32,13 @@ export type ArticleComponent = React.FC<ArticleProps>;
 
 const BaseArticle: ArticleComponent = setDisplayName(
   function BaseArticle(props) {
-    const { article, debugId, debugMode, ...rest } = props;
+    const {
+      as: Component = Card,
+      article,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -75,7 +81,7 @@ const BaseArticle: ArticleComponent = setDisplayName(
     }
 
     const element = (
-      <Card
+      <Component
         {...rest}
         role="article"
         debugId={componentId}
@@ -132,7 +138,7 @@ const BaseArticle: ArticleComponent = setDisplayName(
         >
           {ARTICLE_I18N.cta}
         </Card.Cta>
-      </Card>
+      </Component>
     );
 
     return element;

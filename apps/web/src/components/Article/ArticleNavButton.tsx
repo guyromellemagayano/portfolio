@@ -22,11 +22,8 @@ import { ARTICLE_I18N } from "./_data";
 // ============================================================================
 
 export interface ArticleNavButtonProps
-  extends React.ComponentProps<"button">,
-    CommonComponentProps {
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
-}
+  extends React.ComponentPropsWithRef<"button">,
+    CommonComponentProps {}
 export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 
 // ============================================================================
@@ -35,7 +32,13 @@ export type ArticleNavButtonComponent = React.FC<ArticleNavButtonProps>;
 
 const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
   function BaseArticleNavButton(props) {
-    const { className, debugId, debugMode, ...rest } = props;
+    const {
+      as: Component = "button",
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -48,7 +51,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
     if (!previousPathname) return null;
 
     const element = (
-      <button
+      <Component
         {...rest}
         role="button"
         className={cn(
@@ -80,7 +83,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
         >
           {ARTICLE_I18N.goBackToArticles}
         </span>
-      </button>
+      </Component>
     );
 
     return element;

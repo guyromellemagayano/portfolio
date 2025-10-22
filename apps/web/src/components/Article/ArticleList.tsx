@@ -16,11 +16,8 @@ import { ARTICLE_I18N } from "./_data";
 // ============================================================================
 
 export interface ArticleListProps
-  extends React.ComponentProps<"div">,
-    CommonComponentProps {
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
-}
+  extends React.ComponentPropsWithRef<"div">,
+    CommonComponentProps {}
 export type ArticleListComponent = React.FC<ArticleListProps>;
 
 // ============================================================================
@@ -29,7 +26,14 @@ export type ArticleListComponent = React.FC<ArticleListProps>;
 
 const BaseArticleList: ArticleListComponent = setDisplayName(
   function BaseArticleList(props) {
-    const { className, children, debugId, debugMode, ...rest } = props;
+    const {
+      as: Component = "div",
+      className,
+      children,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -39,7 +43,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
     if (!children) return null;
 
     const element = (
-      <div
+      <Component
         {...rest}
         role="region"
         className={cn(
@@ -72,7 +76,7 @@ const BaseArticleList: ArticleListComponent = setDisplayName(
         >
           {children}
         </div>
-      </div>
+      </Component>
     );
 
     return element;
