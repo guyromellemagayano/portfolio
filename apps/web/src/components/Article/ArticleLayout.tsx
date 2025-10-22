@@ -2,7 +2,6 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { logger } from "@guyromellemagayano/logger";
 import {
   createComponentProps,
   formatDateSafely,
@@ -10,7 +9,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container, Prose } from "@web/components";
-import { type ArticleWithSlug, cn, validateArticle } from "@web/utils";
+import { type ArticleWithSlug, cn } from "@web/utils";
 
 import { ARTICLE_I18N } from "./_data";
 import { ArticleNavButton } from "./ArticleNavButton";
@@ -49,16 +48,6 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
     });
 
     if (!article || !children) return null;
-
-    const isValidArticleData = validateArticle(article);
-    if (!isValidArticleData) {
-      logger.warn(
-        `${(BaseArticleLayout as unknown as { displayName: string }).displayName}: ${ARTICLE_I18N.invalidArticleData}`,
-        {
-          article,
-        }
-      );
-    }
 
     const articleData = {
       title: article.title.trim(),
