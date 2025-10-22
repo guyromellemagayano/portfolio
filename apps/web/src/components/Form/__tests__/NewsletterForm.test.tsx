@@ -35,15 +35,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-vi.mock("@guyromellemagayano/components", () => ({
+vi.mock("@web/components", () => ({
   Button: vi.fn(({ children, ...props }) => (
     <button data-testid="grm-button" {...props}>
       {children}
     </button>
   )),
-}));
-
-vi.mock("@web/components/Icon", () => ({
   Icon: {
     Mail: vi.fn((props) => <span data-testid="mail-icon" {...props} />),
   },
