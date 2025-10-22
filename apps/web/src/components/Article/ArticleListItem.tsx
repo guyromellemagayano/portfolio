@@ -19,14 +19,12 @@ import { ARTICLE_I18N } from "./_data";
 // ============================================================================
 
 export interface ArticleListItemProps
-  extends Omit<React.ComponentProps<"article">, "ref">,
+  extends Omit<React.ComponentPropsWithRef<"article">, "ref">,
     CommonComponentProps {
   /** The article to display. */
   article: ArticleWithSlug;
   /** Whether the article is on the front page. */
   isFrontPage?: boolean;
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
 }
 export type ArticleListItemComponent = React.ForwardRefExoticComponent<
   ArticleListItemProps & React.RefAttributes<HTMLElement>
@@ -40,6 +38,7 @@ const BaseArticleListItem = setDisplayName(
   React.forwardRef<HTMLElement, ArticleListItemProps>(
     function BaseArticleListItem(props, ref) {
       const {
+        as: Component = "article",
         className,
         article,
         isFrontPage = false,
@@ -89,7 +88,9 @@ const BaseArticleListItem = setDisplayName(
               debugId={componentId}
               debugMode={isDebugMode}
             >
-              {articleData.title.length > 0 ? (
+              {articleData?.title &&
+              articleData.title.trim().length > 0 &&
+              articleData.title !== "" ? (
                 <Card.Title
                   href={articleData.slug}
                   debugId={componentId}
@@ -114,7 +115,9 @@ const BaseArticleListItem = setDisplayName(
                 </Card.Eyebrow>
               ) : null}
 
-              {articleData.description.length > 0 ? (
+              {articleData?.description &&
+              articleData.description.trim().length > 0 &&
+              articleData.description !== "" ? (
                 <Card.Description debugId={componentId} debugMode={isDebugMode}>
                   {articleData.description}
                 </Card.Description>
@@ -135,7 +138,7 @@ const BaseArticleListItem = setDisplayName(
         };
 
       const element = !isFrontPage ? (
-        <article
+        <Component
           ref={ref}
           {...rest}
           role="article"
@@ -143,7 +146,7 @@ const BaseArticleListItem = setDisplayName(
           {...createComponentProps(componentId, "article-item", debugMode)}
         >
           <ArticleCard {...rest} />
-        </article>
+        </Component>
       ) : (
         <ArticleCard {...rest} />
       );
