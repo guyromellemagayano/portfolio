@@ -33,10 +33,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -245,8 +243,8 @@ describe("CardTitle", () => {
 
       const titleElement = screen.getByTestId("custom-id-card-title-root");
       expect(titleElement).toHaveAttribute(
-        "data-card-title-id",
-        "custom-id-card-title"
+        "data-testid",
+        "custom-id-card-title-root"
       );
     });
 
@@ -259,8 +257,8 @@ describe("CardTitle", () => {
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
       expect(titleElement).toHaveAttribute(
-        "data-card-title-id",
-        "test-id-card-title"
+        "data-testid",
+        "test-id-card-title-root"
       );
     });
   });
