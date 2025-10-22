@@ -50,7 +50,7 @@ const BaseButton: ButtonComponent = setDisplayName(function BaseButton(props) {
         BUTTON_VARIANT_STYLES[variant],
         className
       )}
-      {...createComponentProps(componentId, "button-root", isDebugMode)}
+      {...createComponentProps(componentId, "button", isDebugMode)}
     >
       {children}
     </Component>
