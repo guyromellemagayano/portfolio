@@ -42,6 +42,8 @@ const BaseButton: ButtonComponent = setDisplayName(function BaseButton(props) {
 
   const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
+  if (!children) return null;
+
   const element = (
     <Component
       {...rest}
