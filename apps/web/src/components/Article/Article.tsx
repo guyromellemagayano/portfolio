@@ -4,11 +4,10 @@ import React, { useMemo } from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import logger from "@guyromellemagayano/logger";
 import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 
 import { Card } from "@web/components";
-import { type ArticleWithSlug, validateArticle } from "@web/utils";
+import { type ArticleWithSlug } from "@web/utils";
 
 import { ARTICLE_I18N } from "./_data";
 
@@ -57,28 +56,36 @@ const BaseArticle: ArticleComponent = setDisplayName(
         return null;
       }
 
+      const trimmedTitle = article.title.trim();
+      const trimmedSlug = article.slug.trim();
+      const trimmedDate = article.date.trim();
+      const trimmedDescription = article.description.trim();
+
+      // Check if any required fields are empty after trimming
+      if (
+        !trimmedTitle ||
+        !trimmedSlug ||
+        !trimmedDate ||
+        !trimmedDescription
+      ) {
+        return null;
+      }
+
+      // Check if date is valid
+      if (isNaN(new Date(trimmedDate).getTime())) {
+        return null;
+      }
+
       return {
-        title: article.title.trim(),
-        slug: encodeURIComponent(`/articles/${article.slug.trim()}`),
-        date: article.date.trim(),
-        description: article.description.trim(),
-        formattedDate: formatDateSafely(article.date.trim()),
+        title: trimmedTitle,
+        slug: encodeURIComponent(`/articles/${trimmedSlug}`),
+        date: trimmedDate,
+        description: trimmedDescription,
+        formattedDate: formatDateSafely(trimmedDate),
       };
     }, [article]);
 
-    if (!article) return null;
-
-    const isValidArticleData = validateArticle(article);
-    if (!isValidArticleData) {
-      logger.warn(
-        `${(BaseArticle as unknown as { displayName: string }).displayName}: ${ARTICLE_I18N.invalidArticleData}`,
-        {
-          article,
-        }
-      );
-
-      return null;
-    }
+    if (!article || !articleData) return null;
 
     const element = (
       <Component

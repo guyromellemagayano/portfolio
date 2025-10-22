@@ -69,20 +69,6 @@ vi.mock("@web/utils", () => ({
     return date.toLocaleDateString();
   }),
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  validateArticle: vi.fn((article) => {
-    return (
-      article &&
-      typeof article.title === "string" &&
-      article.title.trim().length > 0 &&
-      typeof article.slug === "string" &&
-      article.slug.trim().length > 0 &&
-      typeof article.date === "string" &&
-      article.date.trim().length > 0 &&
-      !isNaN(new Date(article.date.trim()).getTime()) &&
-      typeof article.description === "string" &&
-      article.description.trim().length > 0
-    );
-  }),
 }));
 
 // Mock Card component
@@ -114,9 +100,9 @@ vi.mock("@web/components", () => ({
     {
       Title: React.forwardRef<HTMLHeadingElement, any>(
         function MockCardTitle(props, ref) {
-          const { children, href, ...rest } = props;
+          const { children, href, id, ...rest } = props;
           return (
-            <h2 ref={ref} data-testid="mock-card-title" {...rest}>
+            <h2 ref={ref} data-testid="mock-card-title" id={id} {...rest}>
               {href ? (
                 <a href={href} aria-label="Article title link">
                   {children}
@@ -181,7 +167,7 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock shared data
-vi.mock("../constants/Article.i18n", () => ({
+vi.mock("../_data", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
     goBackToArticles: "Go back to articles",
@@ -585,7 +571,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="custom-id" />);
+      render(<Article article={mockArticle} debugId="custom-id" />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
     });
@@ -711,7 +697,7 @@ describe("Article", () => {
       render(
         <Article
           article={complexArticle}
-          internalId="perf-test"
+          debugId="perf-test"
           debugMode={true}
           isMemoized={true}
         />
@@ -784,7 +770,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Test article role
       const articleElement = screen.getByRole("article");
@@ -801,7 +787,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       const articleElement = screen.getByRole("article");
 
@@ -820,7 +806,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Test that the component renders with proper structure
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
@@ -834,7 +820,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Test that the component renders with proper structure
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
@@ -848,7 +834,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Test that the heading element exists
       const titleElement = screen.getByTestId("mock-card-title");
@@ -863,7 +849,7 @@ describe("Article", () => {
 
       const articleWithoutTitle = { ...mockArticle, title: "" };
       const { container } = render(
-        <Article article={articleWithoutTitle} internalId="aria-test" />
+        <Article article={articleWithoutTitle} debugId="aria-test" />
       );
 
       // Should not render at all since validation fails
@@ -878,7 +864,7 @@ describe("Article", () => {
 
       const articleWithoutDescription = { ...mockArticle, description: "" };
       const { container } = render(
-        <Article article={articleWithoutDescription} internalId="aria-test" />
+        <Article article={articleWithoutDescription} debugId="aria-test" />
       );
 
       // Should not render at all since validation fails
@@ -899,7 +885,7 @@ describe("Article", () => {
       const { container } = render(
         <Article
           article={articleWithoutTitleAndDescription}
-          internalId="aria-test"
+          debugId="aria-test"
         />
       );
 
@@ -913,7 +899,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="custom-aria-id" />);
+      render(<Article article={mockArticle} debugId="custom-aria-id" />);
 
       // Test that the component renders with proper structure
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
@@ -928,7 +914,7 @@ describe("Article", () => {
       });
 
       const { rerender } = render(
-        <Article article={mockArticle} internalId="aria-test" />
+        <Article article={mockArticle} debugId="aria-test" />
       );
 
       // Initial render
@@ -937,7 +923,7 @@ describe("Article", () => {
 
       // Update with different article
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
-      rerender(<Article article={updatedArticle} internalId="aria-test" />);
+      rerender(<Article article={updatedArticle} debugId="aria-test" />);
 
       // Component should still render with updated content
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
@@ -950,7 +936,7 @@ describe("Article", () => {
         isDebugMode: false,
       });
 
-      render(<Article article={mockArticle} internalId="aria-test" />);
+      render(<Article article={mockArticle} debugId="aria-test" />);
 
       // Should have article landmark
       const articleElement = screen.getByRole("article");
