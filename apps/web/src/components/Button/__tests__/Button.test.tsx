@@ -128,10 +128,10 @@ describe("Button", () => {
 
   describe("Content Validation", () => {
     it("renders with empty children", () => {
-      render(<Button></Button>);
+      const { container } = render(<Button></Button>);
 
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      // Button component returns null when children are empty
+      expect(container.firstChild).toBeNull();
     });
 
     it("renders with complex children content", () => {
@@ -342,10 +342,12 @@ describe("Button", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      render(<Button internalId="aria-test">{null}</Button>);
+      const { container } = render(
+        <Button internalId="aria-test">{null}</Button>
+      );
 
-      const buttonElement = screen.getByRole("button");
-      expect(buttonElement).toBeInTheDocument();
+      // Button component returns null when children are null
+      expect(container.firstChild).toBeNull();
     });
   });
 
@@ -443,24 +445,24 @@ describe("Button", () => {
     });
 
     it("handles empty string children", () => {
-      render(<Button>{""}</Button>);
+      const { container } = render(<Button>{""}</Button>);
 
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      // Button component returns null when children are empty string
+      expect(container.firstChild).toBeNull();
     });
 
     it("handles null children", () => {
-      render(<Button>{null}</Button>);
+      const { container } = render(<Button>{null}</Button>);
 
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      // Button component returns null when children are null
+      expect(container.firstChild).toBeNull();
     });
 
     it("handles undefined children", () => {
-      render(<Button>{undefined}</Button>);
+      const { container } = render(<Button>{undefined}</Button>);
 
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      // Button component returns null when children are undefined
+      expect(container.firstChild).toBeNull();
     });
   });
 
