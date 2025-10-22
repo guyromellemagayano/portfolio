@@ -77,7 +77,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveClass("custom-class");
     });
 
@@ -88,7 +88,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("id", "custom-id");
       expect(link).toHaveAttribute("role", "button");
     });
@@ -98,7 +98,7 @@ describe("Link", () => {
       render(<Link href="/test">Test Link</Link>);
 
       // The mock verifies the hook is called with correct parameters
-      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-link")).toBeInTheDocument();
     });
 
     it("uses custom internal ID when provided", () => {
@@ -108,7 +108,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("custom-id-link-root");
+      const link = screen.getByTestId("custom-id-link");
       expect(link).toBeInTheDocument();
     });
 
@@ -119,7 +119,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("data-debug-mode", "true");
     });
   });
@@ -128,14 +128,14 @@ describe("Link", () => {
     it("renders with valid href", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "/test");
     });
 
     it("handles external links correctly", () => {
       render(<Link href="https://example.com">External Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "https://example.com");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
@@ -144,7 +144,7 @@ describe("Link", () => {
     it("handles internal links correctly", () => {
       render(<Link href="/internal">Internal Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "/internal");
       expect(link).not.toHaveAttribute("target");
       expect(link).not.toHaveAttribute("rel");
@@ -157,7 +157,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("target", "_self");
     });
 
@@ -168,7 +168,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("title", "Test Title");
       expect(link).toHaveAttribute("aria-label", "Test Title");
     });
@@ -182,19 +182,19 @@ describe("Link", () => {
 
     it("renders when href is valid but no children", () => {
       render(<Link href="/test"></Link>);
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
 
     it("handles null/undefined children", () => {
       render(<Link href="/test">{null}</Link>);
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
 
     it("handles empty string children", () => {
       render(<Link href="/test">{""}</Link>);
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
   });
@@ -207,14 +207,14 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -223,7 +223,7 @@ describe("Link", () => {
     it("renders as Next.js Link component", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
 
@@ -234,7 +234,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveClass("custom-class");
     });
   });
@@ -259,7 +259,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(ref.current).toBe(link);
     });
   });
@@ -268,8 +268,8 @@ describe("Link", () => {
     it("renders with generated component ID", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("data-link-root-id", "test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
+      expect(link).toHaveAttribute("data-link-id", "test-id-link");
     });
 
     it("renders with custom internal ID", () => {
@@ -279,8 +279,8 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("custom-id-link-root");
-      expect(link).toHaveAttribute("data-link-root-id", "custom-id-link-root");
+      const link = screen.getByTestId("custom-id-link");
+      expect(link).toHaveAttribute("data-link-id", "custom-id-link");
     });
   });
 
@@ -292,14 +292,14 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
 
     it("renders without memoization by default", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
 
@@ -310,7 +310,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
   });
@@ -330,21 +330,21 @@ describe("Link", () => {
     it("handles special characters in href", () => {
       render(<Link href="/test?param=value&other=123">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "/test?param=value&other=123");
     });
 
     it("handles empty href gracefully", () => {
       render(<Link href="">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "");
     });
 
     it("handles undefined href gracefully", () => {
       render(<Link href={undefined as any}>Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "");
     });
   });
@@ -362,7 +362,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("data-custom", "test");
       expect(link).toHaveAttribute("aria-label", "Custom Link");
       expect(link).toHaveAttribute("role", "button");
@@ -373,7 +373,7 @@ describe("Link", () => {
     it("integrates with Next.js Link correctly", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const nextLink = screen.getByTestId("test-id-link-root");
+      const nextLink = screen.getByTestId("test-id-link");
       expect(nextLink).toBeInTheDocument();
       expect(nextLink).toHaveAttribute("href", "/test");
     });
@@ -383,7 +383,7 @@ describe("Link", () => {
       render(<Link href="/test">Test Link</Link>);
 
       // The mocks verify the utility functions are called
-      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-link")).toBeInTheDocument();
     });
 
     it("integrates with useComponentId hook correctly", () => {
@@ -395,7 +395,7 @@ describe("Link", () => {
       );
 
       // The mock verifies the hook is called
-      expect(screen.getByTestId("custom-id-link-root")).toBeInTheDocument();
+      expect(screen.getByTestId("custom-id-link")).toBeInTheDocument();
     });
   });
 
@@ -409,7 +409,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "/test2");
       expect(link).toHaveClass("new-class");
     });
@@ -421,7 +421,7 @@ describe("Link", () => {
         rerender(<Link href={`/test${i}`}>Test Link {i}</Link>);
       }
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "/test4");
     });
   });
@@ -430,14 +430,14 @@ describe("Link", () => {
     it("handles invalid href gracefully", () => {
       render(<Link href={null as any}>Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toHaveAttribute("href", "");
     });
 
     it("handles missing children gracefully", () => {
       render(<Link href="/test">{undefined}</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByTestId("test-id-link");
       expect(link).toBeInTheDocument();
     });
   });
