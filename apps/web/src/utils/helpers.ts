@@ -32,6 +32,12 @@ export function isActivePath(
 export function clamp(value: number, a: number, b: number): number {
   let min = Math.min(a, b);
   let max = Math.max(a, b);
+
+  // Handle NaN input by returning the minimum value
+  if (isNaN(value)) {
+    return min;
+  }
+
   return Math.min(Math.max(value, min), max);
 }
 
