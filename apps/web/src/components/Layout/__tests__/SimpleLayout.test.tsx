@@ -85,7 +85,7 @@ describe("SimpleLayout", () => {
     it("renders with required props when content is provided", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toBeInTheDocument();
       expect(layout.tagName).toBe("DIV");
     });
@@ -99,7 +99,7 @@ describe("SimpleLayout", () => {
         />
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toHaveAttribute("class");
     });
 
@@ -113,7 +113,7 @@ describe("SimpleLayout", () => {
         />
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toHaveAttribute("data-test", "custom-data");
       expect(layout).toHaveAttribute("aria-label", "Test layout");
     });
@@ -130,10 +130,10 @@ describe("SimpleLayout", () => {
         <SimpleLayout title={mockTitle} intro={mockIntro} debugId="custom-id" />
       );
 
-      const layout = screen.getByTestId("custom-id-simple-layout-root");
+      const layout = screen.getByTestId("custom-id-simple-layout");
       expect(layout).toHaveAttribute(
-        "data-simple-layout-root-id",
-        "custom-id-simple-layout-root"
+        "data-simple-layout-id",
+        "custom-id-simple-layout"
       );
     });
 
@@ -142,7 +142,7 @@ describe("SimpleLayout", () => {
         <SimpleLayout title={mockTitle} intro={mockIntro} debugMode={true} />
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       // Debug mode is applied via createComponentProps mock
       expect(layout).toHaveAttribute("data-debug-mode", "true");
     });
@@ -152,7 +152,7 @@ describe("SimpleLayout", () => {
     it("renders layout with correct structure", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toBeInTheDocument();
       expect(layout).toHaveAttribute("class");
     });
@@ -170,7 +170,7 @@ describe("SimpleLayout", () => {
     it("renders header with correct structure", () => {
       render(<SimpleLayout title={mockTitle} intro={mockIntro} />);
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       const header = layout.querySelector("header");
       expect(header).toBeInTheDocument();
       expect(header).toHaveAttribute("class");
@@ -327,9 +327,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is false", () => {
@@ -339,9 +337,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
     });
 
     it("uses base component when isMemoized is undefined", () => {
@@ -351,9 +347,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
     });
   });
 
@@ -407,9 +401,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
       expect(
         screen.queryByTestId("test-id-simple-layout-main-content")
       ).not.toBeInTheDocument();
@@ -422,9 +414,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
       expect(
         screen.queryByTestId("test-id-simple-layout-main-content")
       ).not.toBeInTheDocument();
@@ -437,9 +427,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
       expect(
         screen.queryByTestId("test-id-simple-layout-main-content")
       ).not.toBeInTheDocument();
@@ -452,9 +440,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
       expect(screen.getByRole("main")).toBeInTheDocument();
     });
 
@@ -465,9 +451,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      expect(
-        screen.getByTestId("test-id-simple-layout-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-simple-layout")).toBeInTheDocument();
       expect(screen.getByText("42")).toBeInTheDocument();
     });
   });
@@ -485,7 +469,7 @@ describe("SimpleLayout", () => {
           {mockChildren}
         </SimpleLayout>
       );
-      expect(screen.getByTestId("test-id-simple-layout-root")).toHaveAttribute(
+      expect(screen.getByTestId("test-id-simple-layout")).toHaveAttribute(
         "class"
       );
 
@@ -494,7 +478,7 @@ describe("SimpleLayout", () => {
           {mockChildren}
         </SimpleLayout>
       );
-      expect(screen.getByTestId("test-id-simple-layout-root")).toHaveAttribute(
+      expect(screen.getByTestId("test-id-simple-layout")).toHaveAttribute(
         "data-debug-mode",
         "true"
       );
@@ -525,10 +509,10 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toHaveAttribute(
-        "data-simple-layout-root-id",
-        "test-id-simple-layout-root"
+        "data-simple-layout-id",
+        "test-id-simple-layout"
       );
       expect(layout).toHaveAttribute("data-test", "test-data");
       expect(layout).toHaveAttribute("aria-label", "Test label");
@@ -543,7 +527,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       const header = layout.querySelector("header");
       const main = screen.getByRole("main");
 
@@ -580,7 +564,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
 
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       // Note: aria-labelledby is not set by the component, this test may need to be removed or updated
       expect(layout).toBeInTheDocument();
     });
@@ -622,7 +606,7 @@ describe("SimpleLayout", () => {
       );
 
       // Test layout structure
-      const layout = screen.getByTestId("test-id-simple-layout-root");
+      const layout = screen.getByTestId("test-id-simple-layout");
       expect(layout).toBeInTheDocument();
       expect(layout).toHaveAttribute("class");
 
