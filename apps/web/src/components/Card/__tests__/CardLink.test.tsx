@@ -31,10 +31,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -137,7 +135,7 @@ describe("CardLink", () => {
     it("renders background div element", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container.tagName).toBe("DIV");
     });
 
@@ -148,7 +146,7 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass("custom-class");
     });
 
@@ -159,10 +157,10 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       // The component uses createComponentProps which sets data-* attributes, not id
       expect(container).toHaveAttribute(
-        "data-card-link-root-id",
+        "data-testid",
         "test-id-card-link-root"
       );
       expect(container).toHaveAttribute("data-test", "test-data");
@@ -172,7 +170,7 @@ describe("CardLink", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
       // Should have background div
-      const backgroundDiv = screen.getByTestId("test-id-card-link-root-root");
+      const backgroundDiv = screen.getByTestId("test-id-card-link-root");
       expect(backgroundDiv).toBeInTheDocument();
 
       // Should have CardLinkCustom with proper structure
@@ -248,7 +246,7 @@ describe("CardLink", () => {
     it("renders background element with correct Tailwind classes", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const background = screen.getByTestId("test-id-card-link-root-root");
+      const background = screen.getByTestId("test-id-card-link-root");
       expect(background).toBeInTheDocument();
       expect(background).toHaveClass(
         "absolute",
@@ -328,14 +326,14 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<CardLink href="/test">Link text</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -344,7 +342,7 @@ describe("CardLink", () => {
     it("applies correct Tailwind classes", () => {
       render(<CardLink href="/test">Link content</CardLink>);
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass(
         "absolute",
         "-inset-x-4",
@@ -369,7 +367,7 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveClass(
         "absolute",
         "-inset-x-4",
@@ -397,9 +395,9 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("custom-id-card-link-root-root");
+      const container = screen.getByTestId("custom-id-card-link-root");
       expect(container).toHaveAttribute(
-        "data-card-link-root-id",
+        "data-testid",
         "custom-id-card-link-root"
       );
     });
@@ -411,9 +409,9 @@ describe("CardLink", () => {
         </CardLink>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root-root");
+      const container = screen.getByTestId("test-id-card-link-root");
       expect(container).toHaveAttribute(
-        "data-card-link-root-id",
+        "data-testid",
         "test-id-card-link-root"
       );
     });
@@ -495,7 +493,7 @@ describe("CardLink", () => {
       expect(ref.current).toBeInTheDocument();
       expect(ref.current).toHaveAttribute(
         "data-testid",
-        "test-id-card-link-root-root"
+        "test-id-card-link-root"
       );
     });
 
@@ -534,9 +532,7 @@ describe("CardLink", () => {
     it("handles boolean children", () => {
       render(<CardLink href="/test">{true}</CardLink>);
       // Boolean true is not rendered as text content in React
-      expect(
-        screen.getByTestId("test-id-card-link-root-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-link-root")).toBeInTheDocument();
     });
 
     it("handles number children", () => {

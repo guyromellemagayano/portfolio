@@ -24,10 +24,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -150,8 +148,8 @@ describe("CardDescription", () => {
         "generated-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
-        "generated-id-card-description"
+        "data-testid",
+        "generated-id-card-description-root"
       );
     });
   });
@@ -291,8 +289,8 @@ describe("CardDescription", () => {
         "generated-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
-        "generated-id-card-description"
+        "data-testid",
+        "generated-id-card-description-root"
       );
     });
 
@@ -310,8 +308,8 @@ describe("CardDescription", () => {
         "custom-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
-        "custom-id-card-description"
+        "data-testid",
+        "custom-id-card-description-root"
       );
     });
   });
@@ -377,8 +375,8 @@ describe("CardDescription", () => {
       expect(descriptionElement).toHaveClass("multi-class");
       expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
       expect(descriptionElement).toHaveAttribute(
-        "data-card-description-id",
-        "multi-prop-id-card-description"
+        "data-testid",
+        "multi-prop-id-card-description-root"
       );
       expect(descriptionElement).toHaveAttribute(
         "aria-label",
