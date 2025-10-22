@@ -4,10 +4,7 @@ import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  createComponentProps,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Button, Icon } from "@web/components";
 import { cn } from "@web/utils";
@@ -45,11 +42,8 @@ const BaseResumeDownloadButton: ResumeDownloadButtonComponent = setDisplayName(
         href="/resume.pdf"
         variant="secondary"
         className={cn("group mt-6 w-full", className)}
-        {...createComponentProps(
-          componentId,
-          "resume-download-button",
-          isDebugMode
-        )}
+        debugId={componentId}
+        debugMode={isDebugMode}
       >
         {RESUME_I18N.download}
         <Icon.ArrowDown
