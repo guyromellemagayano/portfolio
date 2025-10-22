@@ -20,12 +20,10 @@ import { ArticleNavButton } from "./ArticleNavButton";
 // ============================================================================
 
 export interface ArticleLayoutProps
-  extends React.ComponentProps<typeof Container>,
+  extends React.ComponentPropsWithRef<typeof Container>,
     CommonComponentProps {
   /** The article to display. */
   article?: ArticleWithSlug;
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
 }
 export type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 
@@ -35,7 +33,15 @@ export type ArticleLayoutComponent = React.FC<ArticleLayoutProps>;
 
 const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
   function BaseArticleLayout(props) {
-    const { article, children, className, debugId, debugMode, ...rest } = props;
+    const {
+      as: Component = Container,
+      article,
+      children,
+      className,
+      debugId,
+      debugMode,
+      ...rest
+    } = props;
 
     const { componentId, isDebugMode } = useComponentId({
       debugId,
@@ -60,7 +66,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
     };
 
     const element = (
-      <Container
+      <Component
         {...rest}
         role="main"
         className={cn("mt-16 lg:mt-32", className)}
@@ -193,7 +199,7 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
             ) : null}
           </div>
         </div>
-      </Container>
+      </Component>
     );
 
     return element;
