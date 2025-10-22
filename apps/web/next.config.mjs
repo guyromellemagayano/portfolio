@@ -1,5 +1,5 @@
 import rehypePrism from "@mapbox/rehype-prism";
-import createMDX from "@next/mdx";
+import nextMDX from "@next/mdx";
 import remarkGfm from "remark-gfm";
 
 /** @type {import('next').NextConfig} */
@@ -17,10 +17,13 @@ const nextConfig = {
     },
   },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+  outputFileTracingIncludes: {
+    "/articles/*": ["./src/app/articles/**/*.mdx"],
+  },
 };
 
-const withMDX = createMDX({
-  extension: /\.(md|mdx)$/,
+const withMDX = nextMDX({
+  extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypePrism],
