@@ -43,7 +43,7 @@ const BaseLink: LinkComponent = setDisplayName(function BaseLink(props) {
       rel={linkTargetProps.rel}
       title={title}
       aria-label={title}
-      {...createComponentProps(componentId, "link-root", isDebugMode)}
+      {...createComponentProps(componentId, "link", isDebugMode)}
     >
       {children}
     </NextLink>
