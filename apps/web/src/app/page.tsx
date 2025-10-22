@@ -1,20 +1,21 @@
 import { logger } from "@guyromellemagayano/logger";
 
 import {
-  ArticleListItem,
+  // ArticleListItem,
   Container,
   Icon,
   Link,
+  NewsletterForm,
   PhotoGallery,
   Resume,
 } from "@web/components";
-import { getAllArticles } from "@web/utils";
+// import { getAllArticles } from "@web/utils";
 
 /** Home page component showcasing the portfolio and latest content. */
 const HomePage = async function HomePage() {
   logger.info("Hey! This is the Web page.");
 
-  const articles = await getAllArticles();
+  // const articles = await getAllArticles();
 
   const element = (
     <>
@@ -53,12 +54,12 @@ const HomePage = async function HomePage() {
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
           <div className="flex flex-col gap-16">
-            {articles?.map((article) => (
+            {/* {articles?.map((article) => (
               <ArticleListItem key={article.slug} article={article} />
-            ))}
+            ))} */}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
-            {/* <Newsletter /> */}
+            <NewsletterForm />
             <Resume />
           </div>
         </div>
