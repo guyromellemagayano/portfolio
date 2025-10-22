@@ -186,7 +186,7 @@ vi.mock("react", async () => {
 // Mock @web/components
 vi.mock("@web/components", () => ({
   Container: vi.fn(
-    ({ children, internalId: _internalId, debugMode, ...props }) => {
+    ({ children, debugId, debugMode, ...props }) => {
       return (
         <div
           data-testid="mock-container"
@@ -198,8 +198,8 @@ vi.mock("@web/components", () => ({
       );
     }
   ),
-  Prose: vi.fn(({ children, internalId, debugMode: _debugMode, ...props }) => {
-    const componentId = internalId || "aria-test";
+  Prose: vi.fn(({ children, debugId, debugMode: _debugMode, ...props }) => {
+    const componentId = debugId || "aria-test";
     return (
       <div
         data-testid="prose"
@@ -226,15 +226,6 @@ vi.mock("@web/components", () => ({
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
   formatDate: vi.fn((_date) => "Formatted Date"),
-  validateArticle: vi.fn((article) => {
-    return (
-      article &&
-      typeof article.title === "string" &&
-      article.title.trim().length > 0 &&
-      typeof article.date === "string" &&
-      article.date.trim().length > 0
-    );
-  }),
 }));
 
 // Logger is automatically mocked via __mocks__ directory
@@ -272,12 +263,12 @@ vi.mock("../ArticleLayout.module.css", () => ({
 
 // Mock ArticleNavButton component
 vi.mock("../ArticleNavButton", () => ({
-  ArticleNavButton: vi.fn(({ debugMode, internalId, ...props }) => {
+  ArticleNavButton: vi.fn(({ debugMode, debugId, ...props }) => {
     // Create component props manually to avoid require issues
     const componentProps = {
-      [`data-article-nav-button-id`]: `${internalId || "test-id"}-article-nav-button`,
+      [`data-article-nav-button-id`]: `${debugId || "test-id"}-article-nav-button`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": `${internalId || "test-id"}-article-nav-button-root`,
+      "data-testid": `${debugId || "test-id"}-article-nav-button-root`,
     };
     return (
       <button
@@ -365,7 +356,7 @@ describe("ArticleLayout", () => {
       );
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: undefined,
+        debugId: undefined,
         debugMode: undefined,
       });
     });
@@ -391,7 +382,7 @@ describe("ArticleLayout", () => {
       );
 
       expect(mockUseComponentId).toHaveBeenCalledWith({
-        internalId: undefined,
+        debugId: undefined,
         debugMode: true,
       });
     });
@@ -730,7 +721,7 @@ describe("ArticleLayout", () => {
         render(
           <ArticleLayout
             article={mockArticle}
-            internalId="test-layout"
+            debugId="test-layout"
             debugMode={false}
           >
             <p>Article content goes here...</p>
@@ -791,7 +782,7 @@ describe("ArticleLayout", () => {
         render(
           <ArticleLayout
             article={mockArticle}
-            internalId="debug-layout"
+            debugId="debug-layout"
             debugMode={true}
           >
             <div data-testid="child-content">Child content</div>
@@ -806,7 +797,7 @@ describe("ArticleLayout", () => {
         render(
           <ArticleLayout
             article={mockArticle}
-            internalId="debug-layout"
+            debugId="debug-layout"
             debugMode={false}
           >
             <div data-testid="child-content">Child content</div>
@@ -821,7 +812,7 @@ describe("ArticleLayout", () => {
     describe("Article Layout with Custom Debug IDs", () => {
       it("renders article layout with custom debug ID", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="custom-layout-id">
+          <ArticleLayout article={mockArticle} debugId="custom-layout-id">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -979,10 +970,10 @@ describe("ArticleLayout", () => {
       it("renders multiple article layouts correctly", () => {
         render(
           <div>
-            <ArticleLayout article={mockArticle} internalId="layout-1">
+            <ArticleLayout article={mockArticle} debugId="layout-1">
               <div data-testid="child-content-1">Child content 1</div>
             </ArticleLayout>
-            <ArticleLayout article={mockArticle} internalId="layout-2">
+            <ArticleLayout article={mockArticle} debugId="layout-2">
               <div data-testid="child-content-2">Child content 2</div>
             </ArticleLayout>
           </div>
@@ -994,7 +985,7 @@ describe("ArticleLayout", () => {
 
       it("handles article layout updates efficiently", () => {
         const { rerender } = render(
-          <ArticleLayout article={mockArticle} internalId="initial-layout">
+          <ArticleLayout article={mockArticle} debugId="initial-layout">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1003,7 +994,7 @@ describe("ArticleLayout", () => {
         expect(layout).toBeInTheDocument();
 
         rerender(
-          <ArticleLayout article={mockArticle} internalId="updated-layout">
+          <ArticleLayout article={mockArticle} debugId="updated-layout">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1015,7 +1006,7 @@ describe("ArticleLayout", () => {
         render(
           <ArticleLayout
             article={mockArticle}
-            internalId="complex-layout"
+            debugId="complex-layout"
             debugMode={true}
             className="complex-layout-class"
             style={{ position: "relative", zIndex: 10 }}
@@ -1081,7 +1072,7 @@ describe("ArticleLayout", () => {
     describe("ARIA Attributes Testing", () => {
       it("applies correct ARIA roles to main layout elements", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1101,7 +1092,7 @@ describe("ArticleLayout", () => {
 
       it("applies correct ARIA relationships between elements", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1118,7 +1109,7 @@ describe("ArticleLayout", () => {
 
       it("applies unique IDs for ARIA relationships", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1131,7 +1122,7 @@ describe("ArticleLayout", () => {
 
       it("applies correct ARIA labels to content elements", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1144,7 +1135,7 @@ describe("ArticleLayout", () => {
 
       it("hides decorative elements from screen readers", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1153,13 +1144,13 @@ describe("ArticleLayout", () => {
         expect(screen.getByTestId("mock-container")).toBeInTheDocument();
         expect(screen.getByText("Formatted Date")).toBeInTheDocument();
         expect(
-          screen.getByTestId("test-id-date-separator")
+          screen.getByTestId("aria-test-date-separator")
         ).toBeInTheDocument();
       });
 
       it("applies correct heading level ARIA attribute", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1171,7 +1162,7 @@ describe("ArticleLayout", () => {
 
       it("applies ARIA attributes to prose content region", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <p>Test content</p>
           </ArticleLayout>
         );
@@ -1185,7 +1176,7 @@ describe("ArticleLayout", () => {
       it("handles ARIA attributes when title is missing", () => {
         const articleWithoutTitle = { ...mockArticle, title: "" };
         render(
-          <ArticleLayout article={articleWithoutTitle} internalId="aria-test">
+          <ArticleLayout article={articleWithoutTitle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1198,7 +1189,7 @@ describe("ArticleLayout", () => {
       it("handles ARIA attributes when date is missing", () => {
         const articleWithoutDate = { ...mockArticle, date: "" };
         render(
-          <ArticleLayout article={articleWithoutDate} internalId="aria-test">
+          <ArticleLayout article={articleWithoutDate} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1217,7 +1208,7 @@ describe("ArticleLayout", () => {
         render(
           <ArticleLayout
             article={articleWithoutTitleAndDate}
-            internalId="aria-test"
+            debugId="aria-test"
           >
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
@@ -1230,7 +1221,7 @@ describe("ArticleLayout", () => {
 
       it("applies ARIA attributes with different debug IDs", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="custom-aria-id">
+          <ArticleLayout article={mockArticle} debugId="custom-aria-id">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1244,7 +1235,7 @@ describe("ArticleLayout", () => {
 
       it("maintains ARIA attributes during component updates", () => {
         const { rerender } = render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1256,7 +1247,7 @@ describe("ArticleLayout", () => {
         // Update with different article
         const updatedArticle = { ...mockArticle, title: "Updated Title" };
         rerender(
-          <ArticleLayout article={updatedArticle} internalId="aria-test">
+          <ArticleLayout article={updatedArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
@@ -1269,7 +1260,7 @@ describe("ArticleLayout", () => {
 
       it("ensures proper ARIA landmark structure", () => {
         render(
-          <ArticleLayout article={mockArticle} internalId="aria-test">
+          <ArticleLayout article={mockArticle} debugId="aria-test">
             <div data-testid="child-content">Child content</div>
           </ArticleLayout>
         );
