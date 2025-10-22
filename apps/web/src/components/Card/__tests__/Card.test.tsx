@@ -32,9 +32,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -70,22 +69,22 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<Card debugMode={true}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom debug ID", () => {
       render(<Card debugId="custom-id">Card content</Card>);
 
-      const card = screen.getByTestId("custom-id-card");
-      expect(card).toHaveAttribute("data-card-id", "custom-id-card");
+      const card = screen.getByTestId("custom-id-card-root");
+      expect(card).toHaveAttribute("data-testid", "custom-id-card-root");
     });
 
     it("passes through HTML attributes", () => {
@@ -95,7 +94,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("aria-label", "Card label");
     });
   });
@@ -116,14 +115,14 @@ describe("Card", () => {
     it("applies data-debug-mode when enabled", () => {
       render(<Card debugMode={true}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply when disabled/undefined", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -132,21 +131,21 @@ describe("Card", () => {
     it("renders as article element", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card.tagName).toBe("ARTICLE");
     });
 
     it("applies correct CSS classes", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
 
     it("combines Tailwind classes + custom classes", () => {
       render(<Card className="custom-class">Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
   });
@@ -278,7 +277,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toBeInTheDocument();
     });
 
@@ -289,7 +288,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("aria-label", "Custom card");
       expect(card).toHaveAttribute("aria-describedby", "card-description");
     });
@@ -301,7 +300,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("role", "region");
     });
   });
@@ -418,29 +417,29 @@ describe("Card", () => {
     it("applies correct data attributes with default ID", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
-      expect(card).toHaveAttribute("data-card-id", "test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
+      expect(card).toHaveAttribute("data-testid", "test-id-card-root");
       expect(card).not.toHaveAttribute("data-debug-mode");
     });
 
     it("applies correct data attributes with custom ID", () => {
       render(<Card debugId="custom-card-id">Card content</Card>);
 
-      const card = screen.getByTestId("custom-card-id-card");
-      expect(card).toHaveAttribute("data-card-id", "custom-card-id-card");
+      const card = screen.getByTestId("custom-card-id-card-root");
+      expect(card).toHaveAttribute("data-testid", "custom-card-id-card-root");
     });
 
     it("applies debug mode data attribute when enabled", () => {
       render(<Card debugMode={true}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply debug mode data attribute when disabled", () => {
       render(<Card debugMode={false}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -449,28 +448,28 @@ describe("Card", () => {
     it("applies base Tailwind CSS classes", () => {
       render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
 
     it("merges custom className with base classes", () => {
       render(<Card className="custom-card-class">Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
 
     it("handles multiple custom classes", () => {
       render(<Card className="class1 class2 class3">Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
 
     it("handles empty className gracefully", () => {
       render(<Card className="">Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("class");
     });
   });
@@ -488,7 +487,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
       expect(card).toHaveAttribute("id", "card-1");
       expect(card).toHaveAttribute("tabIndex", "0");
       expect(card).toHaveAttribute("data-custom", "value");
@@ -500,7 +499,7 @@ describe("Card", () => {
 
       render(<Card onClick={onClick}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card");
+      const card = screen.getByTestId("test-id-card-root");
 
       card.click();
       expect(onClick).toHaveBeenCalledTimes(1);
