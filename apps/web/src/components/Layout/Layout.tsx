@@ -20,7 +20,7 @@ import { SimpleLayout } from "./_internal";
 // ============================================================================
 
 export interface LayoutProps
-  extends React.ComponentProps<"div">,
+  extends React.ComponentPropsWithRef<"div">,
     CommonComponentProps {}
 export type LayoutComponent = React.FC<LayoutProps>;
 
@@ -28,9 +28,15 @@ export type LayoutComponent = React.FC<LayoutProps>;
 // BASE LAYOUT COMPONENT
 // ============================================================================
 
-/** A layout component that provides the base page structure with header, main content, and footer. */
 const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
-  const { children, className, debugId, debugMode, ...rest } = props;
+  const {
+    as: Component = "div",
+    children,
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
 
   const { componentId, isDebugMode } = useComponentId({
     debugId,
@@ -38,14 +44,18 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
   });
 
   const element = (
-    <div
+    <Component
       {...rest}
       className={cn("flex w-full", className)}
-      {...createComponentProps(componentId, "layout-root", isDebugMode)}
+      {...createComponentProps(componentId, "layout", isDebugMode)}
     >
       <div
         className="fixed inset-0 flex justify-center sm:px-8"
-        {...createComponentProps(componentId, "layout", isDebugMode)}
+        {...createComponentProps(
+          componentId,
+          "layout-background-wrapper",
+          isDebugMode
+        )}
       >
         <Link
           href={`#${componentId}-layout-main`}
@@ -99,7 +109,7 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
           debugMode={isDebugMode}
         />
       </div>
-    </div>
+    </Component>
   );
 
   return element;
@@ -109,14 +119,12 @@ const BaseLayout: LayoutComponent = setDisplayName(function BaseLayout(props) {
 // MEMOIZED LAYOUT COMPONENT
 // ============================================================================
 
-/** A memoized base layout component. */
 const MemoizedBaseLayout = React.memo(BaseLayout);
 
 // ============================================================================
 // MAIN LAYOUT COMPONENT
 // ============================================================================
 
-/** A layout component that provides the base page structure with header, main, and footer sections. */
 export const Layout = setDisplayName(function Layout(props) {
   const { children, isMemoized = false, ...rest } = props;
 
