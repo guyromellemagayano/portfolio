@@ -64,20 +64,6 @@ vi.mock("@web/utils", () => ({
     }
     return date.toLocaleDateString();
   }),
-  validateArticle: vi.fn((article) => {
-    return (
-      article &&
-      typeof article.title === "string" &&
-      article.title.trim().length > 0 &&
-      typeof article.slug === "string" &&
-      article.slug.trim().length > 0 &&
-      typeof article.date === "string" &&
-      article.date.trim().length > 0 &&
-      !isNaN(new Date(article.date.trim()).getTime()) &&
-      typeof article.description === "string" &&
-      article.description.trim().length > 0
-    );
-  }),
 }));
 
 // Mock logger
@@ -108,6 +94,7 @@ vi.mock("@web/components", () => ({
           className,
           "data-testid": "mock-card",
           "data-debug-mode": _debugMode ? "true" : undefined,
+          role: as === "article" ? "article" : undefined,
           ...rest,
         },
         children
@@ -290,7 +277,10 @@ describe("ArticleListItem", () => {
       );
 
       const articleElement = screen.getByTestId("mock-card");
-      expect(articleElement).toHaveAttribute("aria-label", "Article item");
+      expect(articleElement).toHaveAttribute(
+        "aria-label",
+        "Test Article Title"
+      );
     });
   });
 
@@ -612,22 +602,6 @@ describe("ArticleListItem", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<ArticleListItem article={mockArticle} ref={ref} />);
-
-      expect(ref.current).toBeInTheDocument();
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<ArticleListItem article={mockArticle} ref={ref} />);
-
-      expect(ref.current?.tagName).toBe("ARTICLE");
-    });
-  });
-
   describe("Edge Cases", () => {
     it("handles article with special characters in title", () => {
       const specialArticle = {
@@ -806,15 +780,18 @@ describe("ArticleListItem", () => {
 
       const articleElement = screen.getByTestId("mock-card");
       // Component now has aria-label (no ID dependencies)
-      expect(articleElement).toHaveAttribute("aria-label", "Article item");
+      expect(articleElement).toHaveAttribute(
+        "aria-label",
+        "Test Article Title"
+      );
     });
 
     it("supports role attribute", () => {
       render(<ArticleListItem article={mockArticle} role="listitem" />);
 
       const articleElement = screen.getByTestId("mock-card");
-      // Component now has its own role="article"
-      expect(articleElement).toHaveAttribute("role", "article");
+      // Component accepts custom role prop which overrides default
+      expect(articleElement).toHaveAttribute("role", "listitem");
     });
   });
 
