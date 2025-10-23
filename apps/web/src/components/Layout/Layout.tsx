@@ -13,7 +13,7 @@ import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
-import { SimpleLayout } from "./_internal";
+import { AboutPageLayout, HomePageLayout, SimpleLayout } from "./_internal";
 
 // ============================================================================
 // LAYOUT COMPONENT TYPES & INTERFACES
@@ -140,6 +140,12 @@ export const Layout = setDisplayName(function Layout(props) {
 type LayoutCompoundComponent = React.FC<LayoutProps> & {
   /** A simple layout component that provides a consistent layout for page content. */
   Simple: typeof SimpleLayout;
+  /** A home page layout component that provides a consistent layout for the home page. */
+  HomePage: typeof HomePageLayout;
+  /** A about page layout component that provides a consistent layout for the about page. */
+  AboutPage: typeof AboutPageLayout;
 };
 
 Layout.Simple = SimpleLayout;
+Layout.HomePage = HomePageLayout;
+Layout.AboutPage = AboutPageLayout;
