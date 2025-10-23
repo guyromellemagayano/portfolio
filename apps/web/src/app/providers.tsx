@@ -62,23 +62,25 @@ export type ProvidersComponent = React.FC<ProvidersProps>;
 // ============================================================================
 
 /** A context provider for the application. */
-export const Providers: ProvidersComponent = setDisplayName(function Providers(props) {
-  const { children } = props;
+export const Providers: ProvidersComponent = setDisplayName(
+  function Providers(props) {
+    const { children } = props;
 
-  let pathname = usePathname();
-  let previousPathname = usePrevious(pathname);
+    let pathname = usePathname();
+    let previousPathname = usePrevious(pathname);
 
-  return (
-    <AppContext.Provider value={{ previousPathname }}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        <ThemeWatcher />
-        {children}
-      </ThemeProvider>
-    </AppContext.Provider>
-  );
-});
+    return (
+      <AppContext.Provider value={{ previousPathname }}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ThemeWatcher />
+          {children}
+        </ThemeProvider>
+      </AppContext.Provider>
+    );
+  }
+);

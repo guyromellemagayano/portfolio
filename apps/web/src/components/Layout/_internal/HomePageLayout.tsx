@@ -20,17 +20,17 @@ import {
 // HOME LAYOUT COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface HomeLayoutProps
+export interface HomePageLayoutProps
   extends React.ComponentPropsWithRef<typeof React.Fragment>,
     CommonComponentProps {}
-export type HomeLayoutComponent = React.FC<HomeLayoutProps>;
+export type HomePageLayoutComponent = React.FC<HomePageLayoutProps>;
 
 // ============================================================================
-// BASE HOME PAGE COMPONENT
+// BASE HOME PAGE LAYOUT COMPONENT
 // ============================================================================
 
-const BaseHomeLayout: HomeLayoutComponent = setDisplayName(
-  function BaseHomeLayout(props) {
+const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
+  function BaseHomePageLayout(props) {
     const {
       as: Component = React.Fragment,
       debugId,
@@ -73,50 +73,51 @@ const BaseHomeLayout: HomeLayoutComponent = setDisplayName(
               technologies that empower regular people to explore space on their
               own terms.
             </p>
-            <div
+            <ul
+              role="list"
               className="mt-6 flex space-x-4"
               {...createComponentProps(componentId, "link-list", isDebugMode)}
             >
-              <Link.Social
-                isMemoized
-                href="#"
-                aria-label="Follow on X"
-                icon={Icon.X}
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
-              <Link.Social
-                isMemoized
-                href="#"
-                aria-label="Follow on Instagram"
-                icon={Icon.Instagram}
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
-              <Link.Social
-                isMemoized
-                href="#"
-                aria-label="Follow on GitHub"
-                icon={Icon.GitHub}
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
-              <Link.Social
-                isMemoized
-                href="#"
-                aria-label="Follow on LinkedIn"
-                icon={Icon.LinkedIn}
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
-            </div>
+              <li role="listitem" className="group -m-1 p-1">
+                <Link.Social
+                  href="#"
+                  aria-label="Follow on X"
+                  icon={Icon.X}
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
+              </li>
+              <li role="listitem" className="group -m-1 p-1">
+                <Link.Social
+                  href="#"
+                  aria-label="Follow on Instagram"
+                  icon={Icon.Instagram}
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
+              </li>
+              <li role="listitem" className="group -m-1 p-1">
+                <Link.Social
+                  href="#"
+                  aria-label="Follow on GitHub"
+                  icon={Icon.GitHub}
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
+              </li>
+              <li role="listitem" className="group -m-1 p-1">
+                <Link.Social
+                  href="#"
+                  aria-label="Follow on LinkedIn"
+                  icon={Icon.LinkedIn}
+                  debugId={componentId}
+                  debugMode={isDebugMode}
+                />
+              </li>
+            </ul>
           </div>
         </Container>
-        <PhotoGallery
-          isMemoized
-          debugId={componentId}
-          debugMode={isDebugMode}
-        />
+        <PhotoGallery debugId={componentId} debugMode={isDebugMode} />
         <Container
           className="mt-24 md:mt-28"
           debugId={componentId}
@@ -146,16 +147,8 @@ const BaseHomeLayout: HomeLayoutComponent = setDisplayName(
                 isDebugMode
               )}
             >
-              <NewsletterForm
-                isMemoized
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
-              <Resume
-                isMemoized
-                debugId={componentId}
-                debugMode={isDebugMode}
-              />
+              <NewsletterForm debugId={componentId} debugMode={isDebugMode} />
+              <Resume debugId={componentId} debugMode={isDebugMode} />
             </div>
           </div>
         </Container>
@@ -167,20 +160,20 @@ const BaseHomeLayout: HomeLayoutComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED HOME PAGE COMPONENT
+// MEMOIZED HOME PAGE LAYOUT COMPONENT
 // ============================================================================
 
-const MemoizedBaseHomeLayout = React.memo(BaseHomeLayout);
+const MemoizedHomePageLayout = React.memo(BaseHomePageLayout);
 
 // ============================================================================
-// MAIN HOME PAGE COMPONENT
+// MAIN HOME PAGE LAYOUT COMPONENT
 // ============================================================================
 
-export const HomeLayout: HomeLayoutComponent = setDisplayName(
-  function HomeLayout(props) {
+export const HomePageLayout: HomePageLayoutComponent = setDisplayName(
+  function HomePageLayout(props) {
     const { isMemoized = false, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedBaseHomeLayout : BaseHomeLayout;
+    const Component = isMemoized ? MemoizedHomePageLayout : BaseHomePageLayout;
     const element = <Component {...rest} />;
     return element;
   }
