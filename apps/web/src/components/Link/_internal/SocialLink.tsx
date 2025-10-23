@@ -20,6 +20,7 @@ import { type CommonLinkProps } from "../_types";
 
 export interface SocialLinkProps extends CommonLinkProps {
   icon: React.ComponentType<{ className?: string }>;
+  hasLabel?: boolean;
 }
 export type SocialLinkComponent = React.FC<SocialLinkProps>;
 
@@ -31,12 +32,13 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
   function BaseSocialLink(props) {
     const {
       href,
+      children,
       icon: Icon,
+      hasLabel = false,
       target,
       title,
       debugId,
       debugMode,
-      className,
       ...rest
     } = props;
 
@@ -56,17 +58,22 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
         rel={linkTargetProps.rel}
         title={title}
         aria-label={title}
-        className={cn("group -m-1 p-1", className)}
         {...createComponentProps(componentId, "social-link", isDebugMode)}
       >
         <Icon
-          className="h-6 w-6 fill-zinc-500 transition group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300"
+          className={cn(
+            "h-6 w-6 fill-zinc-500 transition",
+            "group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300",
+            hasLabel && "flex-none group-hover:fill-teal-500"
+          )}
           {...createComponentProps(
             componentId,
             "social-link-icon",
             isDebugMode
           )}
         />
+
+        {children && hasLabel ? <span className="ml-4">{children}</span> : null}
       </Link>
     );
 
