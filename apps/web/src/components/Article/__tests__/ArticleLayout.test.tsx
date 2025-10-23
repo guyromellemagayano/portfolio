@@ -185,19 +185,17 @@ vi.mock("react", async () => {
 
 // Mock @web/components
 vi.mock("@web/components", () => ({
-  Container: vi.fn(
-    ({ children, debugId, debugMode, ...props }) => {
-      return (
-        <div
-          data-testid="mock-container"
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...props}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
+  Container: vi.fn(({ children, debugId, debugMode, ...props }) => {
+    return (
+      <div
+        data-testid="mock-container"
+        data-debug-mode={debugMode ? "true" : undefined}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }),
   Prose: vi.fn(({ children, debugId, debugMode: _debugMode, ...props }) => {
     const componentId = debugId || "aria-test";
     return (
