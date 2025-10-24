@@ -1,3 +1,5 @@
+import React from "react";
+
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -40,8 +42,9 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      "data-testid": `${id}-${componentType}-root`,
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -131,7 +134,7 @@ describe("Button Integration Tests", () => {
       );
 
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("data-testid", "debug-link-button-root");
+      expect(link).toHaveAttribute("data-testid", "debug-link-button");
       expect(link).toHaveAttribute("data-debug-mode", "true");
     });
   });
