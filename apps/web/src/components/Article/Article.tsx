@@ -9,7 +9,7 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug } from "@web/utils";
 
-import { ARTICLE_I18N } from "./_data";
+import { ARTICLE_I18N } from "./Article.i18n";
 
 // ============================================================================
 // ARTICLE COMPONENT TYPES & INTERFACES
@@ -87,26 +87,35 @@ const BaseArticle: ArticleComponent = setDisplayName(
 
     if (!article || !articleData) return null;
 
+    // Pre-compute all conditions
+    const hasTitle = articleData?.title && articleData.title.length > 0;
+    const hasDate =
+      articleData?.date &&
+      articleData.date.length > 0 &&
+      !isNaN(new Date(articleData.date).getTime());
+    const hasDescription =
+      articleData?.description && articleData.description.length > 0;
+
+    // Pre-compute IDs for ARIA relationships
+    const titleId = hasTitle
+      ? `${componentId}-base-article-card-title`
+      : undefined;
+    const descriptionId = hasDescription
+      ? `${componentId}-base-article-card-description`
+      : undefined;
+
     const element = (
       <Component
         {...rest}
         role="article"
         debugId={componentId}
         debugMode={isDebugMode}
-        aria-labelledby={
-          articleData?.title && articleData.title.length > 0
-            ? `${componentId}-base-article-card-title`
-            : undefined
-        }
-        aria-describedby={
-          articleData?.description && articleData.description.length > 0
-            ? `${componentId}-base-article-card-description`
-            : undefined
-        }
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
       >
-        {articleData?.title && articleData.title.length > 0 ? (
+        {hasTitle ? (
           <Card.Title
-            id={`${componentId}-base-article-card-title`}
+            id={titleId}
             href={articleData.slug}
             debugId={componentId}
             debugMode={isDebugMode}
@@ -116,9 +125,7 @@ const BaseArticle: ArticleComponent = setDisplayName(
           </Card.Title>
         ) : null}
 
-        {articleData?.date &&
-        articleData.date.length > 0 &&
-        !isNaN(new Date(articleData.date).getTime()) ? (
+        {hasDate ? (
           <Card.Eyebrow
             as="time"
             dateTime={articleData.date}
@@ -131,8 +138,12 @@ const BaseArticle: ArticleComponent = setDisplayName(
           </Card.Eyebrow>
         ) : null}
 
-        {articleData?.description && articleData.description.length > 0 ? (
-          <Card.Description debugId={componentId} debugMode={isDebugMode}>
+        {hasDescription ? (
+          <Card.Description
+            id={descriptionId}
+            debugId={componentId}
+            debugMode={isDebugMode}
+          >
             {articleData.description}
           </Card.Description>
         ) : null}
