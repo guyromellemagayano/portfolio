@@ -303,10 +303,12 @@ describe("PhotoGallery", () => {
   });
 
   describe("Conditional Rendering", () => {
-    it("returns null when photos array is empty", () => {
-      const { container } = render(<PhotoGallery photos={[]} />);
+    it("renders layout structure when photos array is empty", () => {
+      render(<PhotoGallery photos={[]} />);
 
-      expect(container.firstChild).toBeNull();
+      const layout = screen.getByTestId("test-id-photo-gallery-root");
+      expect(layout).toBeInTheDocument();
+      expect(layout).toHaveClass("mt-16", "sm:mt-20");
     });
 
     it("returns null when photos is null", () => {
@@ -668,12 +670,15 @@ describe("PhotoGallery", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      const { container } = render(
-        <PhotoGallery photos={[]} debugId="aria-test" />
-      );
+      render(<PhotoGallery photos={[]} debugId="aria-test" />);
 
-      // Should return null when no photos
-      expect(container.firstChild).toBeNull();
+      // Should render layout structure even with empty photos
+      const layout = screen.getByTestId("aria-test-photo-gallery-root");
+      expect(layout).toBeInTheDocument();
+      expect(layout).toHaveAttribute(
+        "data-photo-gallery-id",
+        "aria-test-photo-gallery"
+      );
     });
 
     it("applies ARIA attributes with different internal IDs", () => {
