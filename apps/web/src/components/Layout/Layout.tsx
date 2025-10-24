@@ -12,8 +12,10 @@ import {
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
-import { COMMON_LAYOUT_COMPONENT_LABELS } from "./_data";
-import { AboutPageLayout, HomePageLayout, SimpleLayout } from "./_internal";
+import { AboutPageLayout } from "./_internal/AboutPageLayout";
+import { HomePageLayout } from "./_internal/HomePageLayout";
+import { SimpleLayout } from "./_internal/SimpleLayout";
+import { COMMON_LAYOUT_COMPONENT_LABELS } from "./Layout.data";
 
 // ============================================================================
 // LAYOUT COMPONENT TYPES & INTERFACES

@@ -9,9 +9,11 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Container, Icon, Link } from "@web/components";
+import { Container, Link, SocialList, SocialListItem } from "@web/components";
 import portraitImage from "@web/images/portrait.jpg";
 import { cn } from "@web/utils";
+
+import { SOCIAL_LIST_COMPONENT_LABELS } from "../../Layout.data";
 
 // ============================================================================
 // ABOUT PAGE LAYOUT COMPONENT TYPES & INTERFACES
@@ -167,61 +169,34 @@ const BaseAboutPageLayout: AboutPageLayoutComponent = setDisplayName(
               isDebugMode
             )}
           >
-            <ul role="list">
-              <li role="listitem" className="flex">
-                <Link.Social
-                  href="#"
-                  icon={Icon.X}
-                  className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
-                  hasLabel
-                >
-                  Follow on X
-                </Link.Social>
-              </li>
-              <li role="listitem" className="mt-4 flex">
-                <Link.Social
-                  href="#"
-                  icon={Icon.Instagram}
-                  className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
-                  hasLabel
-                >
-                  Follow on Instagram
-                </Link.Social>
-              </li>
-              <li role="listitem" className="mt-4 flex">
-                <Link.Social
-                  href="#"
-                  icon={Icon.GitHub}
-                  className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
-                  hasLabel
-                >
-                  Follow on GitHub
-                </Link.Social>
-              </li>
-              <li role="listitem" className="mt-4 flex">
-                <Link.Social
-                  href="#"
-                  icon={Icon.LinkedIn}
-                  className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
-                  hasLabel
-                >
-                  Follow on LinkedIn
-                </Link.Social>
-              </li>
-              <li
-                role="listitem"
-                className="mt-8 flex border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
-              >
-                <Link.Social
-                  href="mailto:spencer@planetaria.tech"
-                  icon={Icon.Mail}
-                  className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
-                  hasLabel
-                >
-                  spencer@planetaria.tech
-                </Link.Social>
-              </li>
-            </ul>
+            {SOCIAL_LIST_COMPONENT_LABELS ? (
+              <SocialList debugId={componentId} debugMode={isDebugMode}>
+                {SOCIAL_LIST_COMPONENT_LABELS.map(
+                  ({ slug, ...rest }, index) => (
+                    <SocialListItem
+                      key={`${slug}-${index}`}
+                      className={cn(
+                        "flex",
+                        slug === "instagram" && "mt-4",
+                        slug === "github" && "mt-4",
+                        slug === "linkedin" && "mt-4",
+                        slug === "email" &&
+                          "mt-8 flex border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
+                      )}
+                    >
+                      <Link.Social
+                        {...rest}
+                        className="group flex text-sm font-medium text-zinc-800 transition hover:text-teal-500 dark:text-zinc-200 dark:hover:text-teal-500"
+                        debugId={componentId}
+                        debugMode={isDebugMode}
+                        hasLabel
+                        {...(slug === "email" && { page: "about" })}
+                      />
+                    </SocialListItem>
+                  )
+                )}
+              </SocialList>
+            ) : null}
           </div>
         </div>
       </Component>
