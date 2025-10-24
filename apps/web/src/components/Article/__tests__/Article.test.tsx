@@ -24,6 +24,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
@@ -167,19 +171,10 @@ vi.mock("@web/components", () => ({
 }));
 
 // Mock shared data
-vi.mock("../_data", () => ({
+vi.mock("../Article.i18n", () => ({
   ARTICLE_I18N: {
     cta: "Read article",
-    goBackToArticles: "Go back to articles",
-    articleContent: "Article content",
-    articleLayout: "Article layout",
-    articleHeader: "Article header",
-    articleTitle: "Article title",
     articleDate: "Published on",
-    articlePublished: "Publication date",
-    articleList: "Article list",
-    articles: "Articles",
-    invalidArticleData: "Invalid article data",
   },
 }));
 
