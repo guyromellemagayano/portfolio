@@ -9,12 +9,15 @@ import {
 
 import {
   Container,
-  Icon,
   Link,
   NewsletterForm,
   PhotoGallery,
   Resume,
+  SocialList,
+  SocialListItem,
 } from "@web/components";
+
+import { SOCIAL_LIST_COMPONENT_LABELS } from "../../Layout.data";
 
 // ============================================================================
 // HOME LAYOUT COMPONENT TYPES & INTERFACES
@@ -73,48 +76,29 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
               technologies that empower regular people to explore space on their
               own terms.
             </p>
-            <ul
-              role="list"
-              className="mt-6 flex space-x-4"
-              {...createComponentProps(componentId, "link-list", isDebugMode)}
-            >
-              <li role="listitem" className="group -m-1 p-1">
-                <Link.Social
-                  href="#"
-                  aria-label="Follow on X"
-                  icon={Icon.X}
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
-              </li>
-              <li role="listitem" className="group -m-1 p-1">
-                <Link.Social
-                  href="#"
-                  aria-label="Follow on Instagram"
-                  icon={Icon.Instagram}
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
-              </li>
-              <li role="listitem" className="group -m-1 p-1">
-                <Link.Social
-                  href="#"
-                  aria-label="Follow on GitHub"
-                  icon={Icon.GitHub}
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
-              </li>
-              <li role="listitem" className="group -m-1 p-1">
-                <Link.Social
-                  href="#"
-                  aria-label="Follow on LinkedIn"
-                  icon={Icon.LinkedIn}
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
-              </li>
-            </ul>
+
+            {SOCIAL_LIST_COMPONENT_LABELS ? (
+              <SocialList
+                className="mt-6 flex space-x-4"
+                debugId={componentId}
+                debugMode={isDebugMode}
+              >
+                {SOCIAL_LIST_COMPONENT_LABELS.filter(
+                  ({ slug }) => slug !== "email"
+                ).map(({ slug, ...rest }, index) => (
+                  <SocialListItem
+                    key={`${slug}-${index}`}
+                    className="group -m-1 p-1"
+                  >
+                    <Link.Social
+                      {...rest}
+                      debugId={componentId}
+                      debugMode={isDebugMode}
+                    />
+                  </SocialListItem>
+                ))}
+              </SocialList>
+            ) : null}
           </div>
         </Container>
         <PhotoGallery debugId={componentId} debugMode={isDebugMode} />
