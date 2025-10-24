@@ -22,7 +22,7 @@ import {
   SunIcon,
   XIcon,
 } from "./_internal";
-import { type CommonIconComponent } from "./_types";
+import { type CommonIconComponent } from "./Icon.types";
 
 // ============================================================================
 // BASE ICON COMPONENT
