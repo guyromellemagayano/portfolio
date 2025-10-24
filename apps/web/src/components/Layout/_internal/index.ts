@@ -1,3 +1,3 @@
-export { AboutPageLayout } from "./AboutPageLayout";
-export { HomePageLayout } from "./HomePageLayout";
-export { SimpleLayout } from "./SimpleLayout";
+export * from "./AboutPageLayout";
+export * from "./HomePageLayout";
+export * from "./SimpleLayout";

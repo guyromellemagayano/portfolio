@@ -101,7 +101,7 @@ vi.mock("../_internal", () => ({
 }));
 
 // Mock data
-vi.mock("../_data", () => ({
+vi.mock("../Layout.data", () => ({
   COMMON_LAYOUT_COMPONENT_LABELS: {
     skipToMainContent: "Skip to main content",
   },
@@ -146,7 +146,7 @@ describe("Layout", () => {
         </Layout>
       );
 
-      const layoutRoot = screen.getByTestId("test-id-layout-root");
+      const layoutRoot = screen.getByTestId("test-id-layout");
       expect(layoutRoot).toHaveAttribute("data-test", "custom-data");
       expect(layoutRoot).toHaveAttribute("aria-label", "Test layout");
     });
@@ -201,9 +201,10 @@ describe("Layout", () => {
     it("renders background wrapper with correct structure", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const backgroundWrapper = screen.getByTestId(
+      const backgroundWrappers = screen.getAllByTestId(
         "test-id-layout-background-wrapper"
       );
+      const backgroundWrapper = backgroundWrappers[0];
       expect(backgroundWrapper).toBeInTheDocument();
       expect(backgroundWrapper).toHaveAttribute("class");
     });
@@ -396,7 +397,7 @@ describe("Layout", () => {
         </Layout>
       );
 
-      const layoutRoot = screen.getByTestId("test-id-layout-root");
+      const layoutRoot = screen.getByTestId("test-id-layout");
       expect(layoutRoot).toHaveAttribute("id", "test-id-layout");
       expect(layoutRoot).toHaveAttribute("data-test", "test-data");
       expect(layoutRoot).toHaveAttribute("aria-label", "Test label");
@@ -435,9 +436,10 @@ describe("Layout", () => {
     it("hides decorative background from accessibility tree", () => {
       render(<Layout>{mockChildren}</Layout>);
 
-      const backgroundWrapper = screen.getByTestId(
+      const backgroundWrappers = screen.getAllByTestId(
         "test-id-layout-background-wrapper"
       );
+      const backgroundWrapper = backgroundWrappers[0];
       expect(backgroundWrapper).toBeInTheDocument();
       // Note: The current implementation doesn't add aria-hidden or inert to background wrapper
       // This test verifies the element exists but doesn't enforce accessibility attributes
@@ -452,7 +454,7 @@ describe("Layout", () => {
         </Layout.Simple>
       );
 
-      const simpleLayout = screen.getByTestId("simple-layout");
+      const simpleLayout = screen.getByTestId("test-id-simple-layout");
       expect(simpleLayout).toBeInTheDocument();
     });
 
@@ -596,7 +598,7 @@ describe("Layout", () => {
           </Layout>
         );
 
-        const layoutRoot = screen.getByTestId("test-id-layout-root");
+        const layoutRoot = screen.getByTestId("test-id-layout");
         // Note: toHaveStyle() may not work reliably in JSDOM environment
         // but the style prop should be applied to the DOM element
         expect(layoutRoot).toHaveAttribute("style");
@@ -812,7 +814,7 @@ describe("Layout", () => {
         expect(layout).toHaveAttribute("data-debug-mode", "true");
         expect(layout).toHaveAttribute("class");
 
-        const layoutRoot = screen.getByTestId("complex-layout-layout-root");
+        const layoutRoot = screen.getByTestId("complex-layout-layout");
         // Note: toHaveStyle() may not work reliably in JSDOM environment
         // but the style prop should be applied to the DOM element
         expect(layoutRoot).toHaveAttribute("style");
@@ -832,7 +834,7 @@ describe("Layout", () => {
           </Layout>
         );
 
-        const layoutRoot = screen.getByTestId("test-id-layout-root");
+        const layoutRoot = screen.getByTestId("test-id-layout");
         expect(layoutRoot).toHaveAttribute("aria-label", "Main page layout");
         expect(layoutRoot).toHaveAttribute("role", "main");
         expect(layoutRoot).toHaveAttribute(
@@ -846,11 +848,11 @@ describe("Layout", () => {
           <Layout aria-label="Initial label">{mockChildren}</Layout>
         );
 
-        let layoutRoot = screen.getByTestId("test-id-layout-root");
+        let layoutRoot = screen.getByTestId("test-id-layout");
         expect(layoutRoot).toHaveAttribute("aria-label", "Initial label");
 
         rerender(<Layout aria-label="Updated label">{mockChildren}</Layout>);
-        layoutRoot = screen.getByTestId("test-id-layout-root");
+        layoutRoot = screen.getByTestId("test-id-layout");
         expect(layoutRoot).toHaveAttribute("aria-label", "Updated label");
       });
     });
