@@ -9,7 +9,7 @@ import { setDisplayName } from "@guyromellemagayano/utils";
 import { Button, Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { RESUME_I18N } from "../_data";
+import { RESUME_I18N } from "../../Resume.i18n";
 
 // ============================================================================
 // RESUME DOWNLOAD BUTTON COMPONENT TYPES & INTERFACES

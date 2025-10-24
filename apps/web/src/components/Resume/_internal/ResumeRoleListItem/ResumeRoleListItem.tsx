@@ -11,7 +11,8 @@ import {
 
 import { cn } from "@web/utils";
 
-import { RESUME_I18N, type Role } from "../_data";
+import { type Role } from "../../Resume.data";
+import { RESUME_I18N } from "../../Resume.i18n";
 
 // ============================================================================
 // RESUME ROLE LIST ITEM COMPONENT TYPES & INTERFACES
