@@ -12,6 +12,8 @@ export * from "./Header";
 export * from "./Icon";
 export * from "./Layout";
 export * from "./Link";
+export * from "./List";
+export * from "./ListItem";
 export * from "./PhotoGallery";
 export * from "./Prose";
 export * from "./Resume";
