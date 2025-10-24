@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SocialLink } from "../_internal";
+import { SocialLink } from "../../SocialLink";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({

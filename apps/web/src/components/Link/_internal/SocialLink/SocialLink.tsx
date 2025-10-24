@@ -10,17 +10,23 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import {
+  type CommonIconProps,
+  type IconCompoundComponent,
+} from "@web/components";
 import { cn } from "@web/utils";
 
-import { type CommonLinkProps } from "../_types";
+import { type CommonLinkProps } from "../../Link.types";
 
 // ============================================================================
 // SOCIAL LINK COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 export interface SocialLinkProps extends CommonLinkProps {
-  icon: React.ComponentType<{ className?: string }>;
+  icon: IconCompoundComponent;
+  page?: CommonIconProps["page"];
   hasLabel?: boolean;
+  label?: string;
 }
 export type SocialLinkComponent = React.FC<SocialLinkProps>;
 
@@ -32,9 +38,10 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
   function BaseSocialLink(props) {
     const {
       href,
-      children,
       icon: Icon,
+      page,
       hasLabel = false,
+      label,
       target,
       title,
       debugId,
@@ -57,7 +64,7 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
         title={title}
-        aria-label={title}
+        aria-label={label ?? title}
         {...createComponentProps(componentId, "social-link", isDebugMode)}
       >
         <Icon
@@ -66,6 +73,7 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
             "group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300",
             hasLabel && "flex-none group-hover:fill-teal-500"
           )}
+          page={page}
           {...createComponentProps(
             componentId,
             "social-link-icon",
@@ -73,7 +81,7 @@ const BaseSocialLink: SocialLinkComponent = setDisplayName(
           )}
         />
 
-        {children && hasLabel ? <span className="ml-4">{children}</span> : null}
+        {hasLabel && label ? <span className="ml-4">{label}</span> : null}
       </Link>
     );
 
