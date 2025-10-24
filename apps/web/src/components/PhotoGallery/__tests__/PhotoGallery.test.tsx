@@ -697,7 +697,7 @@ describe("PhotoGallery", () => {
       expect(initialLayout).toBeInTheDocument();
 
       // Rerender with different photos
-      const newPhotos = [mockPhotos[0]];
+      const newPhotos = mockPhotos[0] ? [mockPhotos[0]] : [];
       rerender(<PhotoGallery photos={newPhotos} debugId="update-test" />);
 
       const updatedLayout = screen.getByTestId(
@@ -755,7 +755,7 @@ describe("PhotoGallery", () => {
 
     it("works with different photo configurations", () => {
       const configs = [
-        { photos: [mockPhotos[0]], expectedCount: 1 },
+        { photos: mockPhotos[0] ? [mockPhotos[0]] : [], expectedCount: 1 },
         { photos: mockPhotos.slice(0, 2), expectedCount: 2 },
         { photos: mockPhotos, expectedCount: 3 },
       ];
