@@ -11,7 +11,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { SocialLink } from "./_internal";
-import { type CommonLinkProps } from "./_types";
+import { type CommonLinkProps } from "./Link.types";
 
 // ============================================================================
 // LINK COMPONENT TYPES & INTERFACES
