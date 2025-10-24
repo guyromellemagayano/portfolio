@@ -10,7 +10,7 @@ import {
 import { ResumeRoleListItem } from "@web/components/Resume/_internal";
 import { cn } from "@web/utils";
 
-import { RESUME_DATA } from "../_data";
+import { RESUME_DATA } from "../../Resume.data";
 
 // ============================================================================
 // RESUME ROLE LIST COMPONENT TYPES & INTERFACES

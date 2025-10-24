@@ -10,7 +10,7 @@ import {
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { RESUME_I18N } from "../_data";
+import { RESUME_I18N } from "../../Resume.i18n";
 
 // ============================================================================
 // RESUME TITLE COMPONENT TYPES & INTERFACES
