@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SimpleLayout } from "../_internal";
+import { SimpleLayout } from "../SimpleLayout";
 
 import "@testing-library/jest-dom";
 
@@ -57,7 +57,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock data
-vi.mock("../_data", () => ({
+vi.mock("../Layout.data", () => ({
   COMMON_LAYOUT_COMPONENT_LABELS: {
     skipToMainContent: "Skip to main content",
   },
