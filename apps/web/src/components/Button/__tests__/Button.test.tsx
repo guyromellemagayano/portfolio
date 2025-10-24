@@ -25,6 +25,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
@@ -42,8 +46,9 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      "data-testid": `${id}-${componentType}-root`,
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -102,10 +107,7 @@ describe("Button", () => {
       render(<Button debugId="custom-button">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute(
-        "data-testid",
-        "custom-button-button-root"
-      );
+      expect(button).toHaveAttribute("data-testid", "custom-button-button");
     });
 
     it("passes through HTML attributes", () => {
@@ -228,7 +230,7 @@ describe("Button", () => {
       render(<Button debugId="aria-test">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-testid", "aria-test-button-root");
+      expect(button).toHaveAttribute("data-testid", "aria-test-button");
     });
 
     it("supports ARIA attributes", () => {
@@ -246,7 +248,7 @@ describe("Button", () => {
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to button elements", () => {
-      render(<Button internalId="aria-test">Button</Button>);
+      render(<Button debugId="aria-test">Button</Button>);
 
       const buttonElement = screen.getByRole("button");
       expect(buttonElement).toBeInTheDocument();
@@ -254,7 +256,7 @@ describe("Button", () => {
 
     it("applies correct ARIA roles to link elements", () => {
       render(
-        <Button href="/test" internalId="aria-test">
+        <Button href="/test" debugId="aria-test">
           Link Button
         </Button>
       );
@@ -265,7 +267,7 @@ describe("Button", () => {
 
     it("applies correct ARIA labels to button elements", () => {
       render(
-        <Button aria-label="Accessible button" internalId="aria-test">
+        <Button aria-label="Accessible button" debugId="aria-test">
           Button
         </Button>
       );
@@ -278,11 +280,7 @@ describe("Button", () => {
 
     it("applies correct ARIA labels to link elements", () => {
       render(
-        <Button
-          href="/test"
-          aria-label="Accessible link"
-          internalId="aria-test"
-        >
+        <Button href="/test" aria-label="Accessible link" debugId="aria-test">
           Link
         </Button>
       );
@@ -293,7 +291,7 @@ describe("Button", () => {
 
     it("applies correct ARIA states for disabled buttons", () => {
       render(
-        <Button disabled aria-disabled="true" internalId="aria-test">
+        <Button disabled aria-disabled="true" debugId="aria-test">
           Disabled Button
         </Button>
       );
@@ -308,7 +306,7 @@ describe("Button", () => {
         <Button
           aria-busy="true"
           aria-label="Loading, please wait"
-          internalId="aria-test"
+          debugId="aria-test"
         >
           Loading...
         </Button>
@@ -327,7 +325,7 @@ describe("Button", () => {
         <Button
           aria-labelledby="button-title"
           aria-describedby="button-description"
-          internalId="aria-test"
+          debugId="aria-test"
         >
           Button
         </Button>
@@ -342,9 +340,7 @@ describe("Button", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      const { container } = render(
-        <Button internalId="aria-test">{null}</Button>
-      );
+      const { container } = render(<Button debugId="aria-test">{null}</Button>);
 
       // Button component returns null when children are null
       expect(container.firstChild).toBeNull();

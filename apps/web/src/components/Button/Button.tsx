@@ -11,7 +11,19 @@ import {
 
 import { cn } from "@web/utils";
 
-import { BUTTON_VARIANT_STYLES, ButtonVariant } from "./_data";
+import { ArticleNavButton } from "./_internal";
+
+// ============================================================================
+// BUTTON VARIANT STYLES
+// ============================================================================
+
+type ButtonVariant = "primary" | "secondary";
+const BUTTON_VARIANT_STYLES: Record<ButtonVariant, string> = {
+  primary:
+    "bg-zinc-800 font-semibold text-zinc-100 hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70",
+  secondary:
+    "bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70",
+};
 
 // ============================================================================
 // BUTTON COMPONENT TYPES & INTERFACES
@@ -71,14 +83,21 @@ const MemoizedButton = React.memo(BaseButton);
 // MAIN BUTTON COMPONENT
 // ============================================================================
 
-type ButtonCompoundComponent = React.FC<ButtonProps>;
+export const Button = setDisplayName(function Button(props) {
+  const { children, isMemoized = false, ...rest } = props;
 
-export const Button: ButtonCompoundComponent = setDisplayName(
-  function Button(props) {
-    const { children, isMemoized = false, ...rest } = props;
+  const Component = isMemoized ? MemoizedButton : BaseButton;
+  const element = <Component {...rest}>{children}</Component>;
+  return element;
+} as ButtonCompoundComponent);
 
-    const Component = isMemoized ? MemoizedButton : BaseButton;
-    const element = <Component {...rest}>{children}</Component>;
-    return element;
-  }
-);
+// ============================================================================
+// BUTTON COMPOUND COMPONENTS
+// ============================================================================
+
+type ButtonCompoundComponent = React.FC<ButtonProps> & {
+  /** A article navigation button component that provides a consistent layout for the article navigation button. */
+  ArticleNav: typeof ArticleNavButton;
+};
+
+Button.ArticleNav = ArticleNavButton;
