@@ -15,6 +15,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
@@ -64,7 +68,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock CardLinkCustom component
-vi.mock("../CardLinkCustom", () => ({
+vi.mock("../../CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const { children, href, target, title, debugId, debugMode, ...rest } =
@@ -115,10 +119,7 @@ vi.mock("../CardLinkCustom", () => ({
   ),
 }));
 
-// Component uses Tailwind classes, no CSS modules to mock
-
-// Import the component after mocking
-import { CardLink } from "../_internal";
+import { CardLink } from "../../CardLink";
 
 afterEach(() => {
   cleanup();
