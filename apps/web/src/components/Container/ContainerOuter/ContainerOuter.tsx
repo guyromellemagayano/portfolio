@@ -8,7 +8,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { type CommonContainerComponent } from "./_types";
+import { type CommonContainerComponent } from "../Container.types";
 
 // ============================================================================
 // BASE CONTAINER OUTER COMPONENT

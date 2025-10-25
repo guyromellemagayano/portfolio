@@ -8,43 +8,20 @@ import { Container } from "../Container";
 import "@testing-library/jest-dom";
 
 // Mock the external dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
-    componentId: options.internalId || options.debugId || "test-id",
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
-  })),
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasAnyRenderableContent: vi.fn((...values) => {
-    return values.some((value) => {
-      if (value === false || value === null || value === undefined) {
-        return false;
-      }
-      if (typeof value === "string" && value.length === 0) {
-        return false;
-      }
-      return true;
-    });
-  }),
-  hasValidContent: vi.fn((children) => {
-    if (children === null || children === undefined || children === "") {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
-    component.displayName = displayName;
+    if (component) component.displayName = displayName;
     return component;
   }),
   createComponentProps: vi.fn(
@@ -52,45 +29,30 @@ vi.mock("@guyromellemagayano/utils", () => ({
       [`data-${componentType}-id`]: `${componentId}-${componentType}`,
       "data-debug-mode": isDebugMode ? "true" : undefined,
       "data-testid":
-        additionalProps["data-testid"] || `${componentId}-${componentType}`,
+        additionalProps["data-testid"] ||
+        `${componentId}-${componentType}-root`,
       ...additionalProps,
     })
   ),
 }));
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("@web/components", () => ({
-  ContainerOuter: React.forwardRef<HTMLDivElement, any>(
-    function MockContainerOuter(props, ref) {
-      const { children, debugId, debugMode, ...rest } = props;
-      return (
-        <div
-          ref={ref}
-          data-testid="test-id-container-outer"
-          data-container-outer-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...rest}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
+vi.mock("../ContainerInner", () => ({
   ContainerInner: React.forwardRef<HTMLDivElement, any>(
     function MockContainerInner(props, ref) {
       const { children, debugId, debugMode, ...rest } = props;
       return (
         <div
           ref={ref}
-          data-testid="test-id-container-inner"
-          data-container-inner-id={debugId}
+          data-testid={`${debugId || "test-id"}-container-inner-root`}
+          data-container-inner-id={`${debugId || "test-id"}-container-inner`}
           data-debug-mode={debugMode ? "true" : undefined}
           {...rest}
         >
@@ -101,7 +63,24 @@ vi.mock("@web/components", () => ({
   ),
 }));
 
-// No CSS modules needed - using Tailwind CSS
+vi.mock("../ContainerOuter", () => ({
+  ContainerOuter: React.forwardRef<HTMLDivElement, any>(
+    function MockContainerOuter(props, ref) {
+      const { children, debugId, debugMode, ...rest } = props;
+      return (
+        <div
+          ref={ref}
+          data-testid={`${debugId || "test-id"}-container-outer-root`}
+          data-container-outer-id={`${debugId || "test-id"}-container-outer`}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </div>
+      );
+    }
+  ),
+}));
 
 describe("Container", () => {
   afterEach(() => {
@@ -119,21 +98,21 @@ describe("Container", () => {
     it("applies custom className", () => {
       render(<Container className="custom-class">Content</Container>);
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled", () => {
       render(<Container debugMode={true}>Content</Container>);
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom debug ID", () => {
       render(<Container debugId="custom-id">Content</Container>);
 
-      const container = screen.getByTestId("custom-id-container-outer");
+      const container = screen.getByTestId("custom-id-container-outer-root");
       expect(container).toHaveAttribute(
         "data-container-outer-id",
         "custom-id-container-outer"
@@ -147,7 +126,7 @@ describe("Container", () => {
         </Container>
       );
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("custom-testid");
       expect(container).toHaveAttribute("aria-label", "Container label");
     });
   });
@@ -177,7 +156,9 @@ describe("Container", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(<Container ref={ref}>Content</Container>);
 
-      expect(ref.current).toBe(screen.getByTestId("test-id-container-outer"));
+      expect(ref.current).toBe(
+        screen.getByTestId("test-id-container-outer-root")
+      );
     });
 
     it("ref points to correct element", () => {
@@ -231,7 +212,7 @@ describe("Container", () => {
     it("applies correct data attributes with default ID", () => {
       render(<Container>Content</Container>);
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute(
         "data-container-outer-id",
         "test-id-container-outer"
@@ -243,7 +224,7 @@ describe("Container", () => {
       render(<Container debugId="custom-container-id">Content</Container>);
 
       const container = screen.getByTestId(
-        "custom-container-id-container-outer"
+        "custom-container-id-container-outer-root"
       );
       expect(container).toHaveAttribute(
         "data-container-outer-id",
@@ -254,14 +235,14 @@ describe("Container", () => {
     it("applies debug mode data attribute when enabled", () => {
       render(<Container debugMode={true}>Content</Container>);
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply debug mode data attribute when disabled", () => {
       render(<Container debugMode={false}>Content</Container>);
 
-      const container = screen.getByTestId("test-id-container-outer");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).not.toHaveAttribute("data-debug-mode");
     });
   });
@@ -311,9 +292,11 @@ describe("Container", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
       // Test container structure
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
       const innerContainer = screen.getByTestId(
-        "aria-test-container-inner-content"
+        "aria-test-container-inner-root"
       );
 
       expect(outerContainer).toBeInTheDocument();
@@ -323,9 +306,11 @@ describe("Container", () => {
     it("applies correct ARIA relationships between elements", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
       const innerContainer = screen.getByTestId(
-        "aria-test-container-inner-content"
+        "aria-test-container-inner-root"
       );
 
       // Both containers should be present
@@ -349,7 +334,9 @@ describe("Container", () => {
       );
 
       // Container should have descriptive label
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
       expect(outerContainer).toHaveAttribute("aria-label", "Test container");
     });
 
@@ -357,7 +344,7 @@ describe("Container", () => {
       render(<Container debugId="custom-aria-id">Container content</Container>);
 
       const outerContainer = screen.getByTestId(
-        "custom-aria-id-container-outer"
+        "custom-aria-id-container-outer-root"
       );
 
       // Should be present (semantic HTML provides the role)
@@ -370,14 +357,14 @@ describe("Container", () => {
       );
 
       // Initial render
-      let outerContainer = screen.getByTestId("aria-test-container-outer");
+      let outerContainer = screen.getByTestId("aria-test-container-outer-root");
       expect(outerContainer).toBeInTheDocument();
 
       // Update with different content
       rerender(<Container debugId="aria-test">Updated content</Container>);
 
       // ARIA attributes should be maintained
-      outerContainer = screen.getByTestId("aria-test-container-outer");
+      outerContainer = screen.getByTestId("aria-test-container-outer-root");
       expect(outerContainer).toBeInTheDocument();
     });
 
@@ -385,9 +372,11 @@ describe("Container", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
       // Should have container structure
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
       const innerContainer = screen.getByTestId(
-        "aria-test-container-inner-content"
+        "aria-test-container-inner-root"
       );
 
       expect(outerContainer).toBeInTheDocument();
@@ -397,7 +386,9 @@ describe("Container", () => {
     it("applies conditional ARIA attributes correctly", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
 
       // Should be present (semantic HTML provides the role)
       expect(outerContainer).toBeInTheDocument();
@@ -423,7 +414,9 @@ describe("Container", () => {
         </Container>
       );
 
-      const outerContainer = screen.getByTestId("aria-test-container-outer");
+      const outerContainer = screen.getByTestId(
+        "aria-test-container-outer-root"
+      );
 
       // Should maintain both component ARIA attributes and custom ones
       expect(outerContainer).toBeInTheDocument();

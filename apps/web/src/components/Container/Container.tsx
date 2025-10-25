@@ -12,7 +12,7 @@ import { ContainerOuter } from "./ContainerOuter";
 // ============================================================================
 
 export interface ContainerProps
-  extends React.ComponentProps<"div">,
+  extends React.ComponentProps<typeof ContainerOuter>,
     CommonComponentProps {}
 export type ContainerComponent = React.FC<ContainerProps>;
 
