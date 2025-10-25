@@ -8,7 +8,7 @@ import Link from "next/link";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 
-import { type HeaderComponentNavLinks } from "../_data";
+import { type HeaderComponentNavLinks } from "./Header.data";
 
 // ============================================================================
 // COMMON HEADER NAV PROPS

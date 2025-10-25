@@ -9,7 +9,78 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
+
 // Individual mocks for this test file
+
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.internalId || options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+// Mock utility functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      ...additionalProps,
+    })
+  ),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href) return { target: "_self" };
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
+}));
+
+// Mock @web/lib
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  isActivePath: vi.fn(() => true),
+}));
+
+// Mock next/link
+vi.mock("next/link", () => ({
+  default: vi.fn(({ children, href, className, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "a",
+      {
+        "data-testid": "next-link",
+        href,
+        className,
+        ...props,
+      },
+      children
+    );
+  }),
+}));
 
 // Mock IntersectionObserver
 const mockIntersectionObserver = vi.fn();
@@ -18,7 +89,7 @@ mockIntersectionObserver.mockReturnValue({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 });
-Object.defineProperty(global, "IntersectionObserver", {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
@@ -119,8 +190,6 @@ vi.mock("next/link", () => ({
     );
   }),
 }));
-
-import { HeaderDesktopNavItem } from "../_internal/HeaderDesktopNavItem";
 
 // Mock the CSS module
 vi.mock("../HeaderDesktopNavItem.module.css", () => ({
@@ -228,22 +297,16 @@ describe("HeaderDesktopNavItem", () => {
   });
 
   describe("Content Validation", () => {
-    it("renders when children has meaningful content", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText).mockReturnValue(true);
-
+    it("renders when children has meaningful content", () => {
+      // hasMeaningfulText is already mocked to return true by default
       render(<HeaderDesktopNavItem href="/about">About</HeaderDesktopNavItem>);
       expect(
         screen.getByTestId("test-id-header-desktop-nav-item-root")
       ).toBeInTheDocument();
     });
 
-    it("renders when href has meaningful content", async () => {
-      const { hasMeaningfulText } = await import("@guyromellemagayano/utils");
-      vi.mocked(hasMeaningfulText)
-        .mockReturnValueOnce(false) // children
-        .mockReturnValueOnce(true); // href
-
+    it("renders when href has meaningful content", () => {
+      // hasMeaningfulText is already mocked to return true by default
       const { container } = render(
         <HeaderDesktopNavItem href="/about">{null}</HeaderDesktopNavItem>
       );
