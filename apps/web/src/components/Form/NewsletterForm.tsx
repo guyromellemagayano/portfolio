@@ -10,7 +10,7 @@ import {
 import { Button, Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { FORM_I18N } from "./_data";
+import { FORM_I18N } from "./Form.i18n";
 
 // ============================================================================
 // NEWSLETTER FORM COMPONENT TYPES & INTERFACES
