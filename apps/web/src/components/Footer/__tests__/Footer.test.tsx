@@ -11,37 +11,6 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-// Mock the sub-components
-const mockFooterNavigation = vi.fn(({ ...props }) => {
-  const mockLinks = [
-    { kind: "internal", label: "About", href: "/about" },
-    { kind: "internal", label: "Articles", href: "/articles" },
-    { kind: "internal", label: "Projects", href: "/projects" },
-    { kind: "internal", label: "Speaking", href: "/speaking" },
-    { kind: "internal", label: "Uses", href: "/uses" },
-  ];
-
-  return (
-    <nav data-testid="test-id-footer-navigation" {...props}>
-      {mockLinks.map((link) => (
-        <a key={link.label} href={link.href}>
-          {link.label}
-        </a>
-      ))}
-    </nav>
-  );
-});
-
-const mockFooterLegal = vi.fn(({ ...props }) => {
-  const mockLegalText = "© 2025 Guy Romelle Magayano. All rights reserved.";
-
-  return (
-    <div data-testid="test-id-footer-legal" {...props}>
-      {mockLegalText}
-    </div>
-  );
-});
-
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
@@ -131,7 +100,7 @@ vi.mock("./_data", () => ({
     { kind: "internal", label: "About", href: "/about" },
     { kind: "internal", label: "Articles", href: "/articles" },
     { kind: "internal", label: "Projects", href: "/projects" },
-    { kind: "internal", label: "Speaking", href: "/speaking" },
+
     { kind: "internal", label: "Uses", href: "/uses" },
   ],
 }));
@@ -178,7 +147,6 @@ describe("Footer", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });
@@ -296,7 +264,6 @@ describe("Footer", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
 
@@ -318,7 +285,6 @@ describe("Footer", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });
