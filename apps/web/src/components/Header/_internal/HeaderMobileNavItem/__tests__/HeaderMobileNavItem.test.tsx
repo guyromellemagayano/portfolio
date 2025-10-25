@@ -11,12 +11,55 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderMobileNavItem } from "../_internal/HeaderMobileNavItem";
-
-// Import shared mocks
-import "./__mocks__";
+import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
 // Individual mocks for this test file
+
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.internalId || options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+// Mock utility functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      ...additionalProps,
+    })
+  ),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  isValidLink: vi.fn((href) => {
+    if (!href) return false;
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    if (hrefString === "#" || hrefString === "") return false;
+    return true;
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (!href) return { target: "_self" };
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
+}));
 
 // Mock Next.js router
 vi.mock("next/navigation", () => ({
