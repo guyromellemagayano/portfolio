@@ -8,12 +8,6 @@ import { ContainerInner } from "../ContainerInner";
 import "@testing-library/jest-dom";
 
 // Mock the external dependencies
-vi.mock("@guyromellemagayano/components", () => ({
-  Div: React.forwardRef<HTMLDivElement, any>(function MockDiv(props, ref) {
-    return <div ref={ref} data-testid="div" {...props} />;
-  }),
-}));
-
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
     componentId: options.debugId || "test-id",
@@ -26,34 +20,8 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  isRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasAnyRenderableContent: vi.fn((...values) => {
-    return values.some((value) => {
-      if (value === false || value === null || value === undefined) {
-        return false;
-      }
-      if (typeof value === "string" && value.length === 0) {
-        return false;
-      }
-      return true;
-    });
-  }),
-  hasValidContent: vi.fn((children) => {
-    if (children === null || children === undefined || children === "") {
-      return false;
-    }
-    return true;
-  }),
   setDisplayName: vi.fn((component, displayName) => {
-    component.displayName = displayName;
+    if (component) component.displayName = displayName;
     return component;
   }),
   createComponentProps: vi.fn((id, componentType, debugMode) => ({
@@ -63,15 +31,13 @@ vi.mock("@guyromellemagayano/utils", () => ({
   })),
 }));
 
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
-
-// No CSS modules needed - using Tailwind CSS
 
 describe("ContainerInner", () => {
   afterEach(() => {
@@ -152,7 +118,10 @@ describe("ContainerInner", () => {
 
       const innerRoot = screen.getByTestId("test-id-container-inner-root");
       // Component uses createComponentProps which sets data-container-inner-id, not id
-      expect(innerRoot).toHaveAttribute("data-container-inner-id", "test-id-container-inner");
+      expect(innerRoot).toHaveAttribute(
+        "data-container-inner-id",
+        "test-id-container-inner"
+      );
       expect(innerRoot).toHaveAttribute("data-test", "test-data");
     });
 
