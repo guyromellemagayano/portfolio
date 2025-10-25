@@ -11,12 +11,68 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderDesktopNav } from "../_internal/HeaderDesktopNav";
-
-// Import shared mocks
-import "./__mocks__";
+import { HeaderDesktopNav } from "../HeaderDesktopNav";
 
 // Individual mocks for this test file
+
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.internalId || options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+// Mock utility functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      ...additionalProps,
+    })
+  ),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+  filterValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return [];
+    return links.filter((link) => {
+      if (!link || typeof link !== "object") return false;
+      if (!link.label || typeof link.label !== "string") return false;
+      if (!link.href || typeof link.href !== "string") return false;
+      if (link.href === "" || link.href === "#") return false;
+      if (link.kind && link.kind !== "internal") return false;
+      return true;
+    });
+  }),
+  hasValidNavigationLinks: vi.fn((links) => {
+    if (!Array.isArray(links)) return false;
+    return links.length > 0;
+  }),
+}));
+
+// Mock @web/lib
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock Header data
+vi.mock("../../Header.data", () => ({
+  DESKTOP_HEADER_NAV_LINKS: [
+    { kind: "internal", href: "/about", label: "About" },
+    { kind: "internal", href: "/articles", label: "Articles" },
+    { kind: "internal", href: "/projects", label: "Projects" },
+    { kind: "internal", href: "/uses", label: "Uses" },
+  ],
+}));
 
 // Mock IntersectionObserver
 const mockIntersectionObserver = vi.fn();
@@ -25,7 +81,7 @@ mockIntersectionObserver.mockReturnValue({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 });
-Object.defineProperty(global, "IntersectionObserver", {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
@@ -91,14 +147,7 @@ vi.mock("@web/utils", () => ({
   clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
 }));
 
-// Mock the useComponentId hook
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    id: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+// Mock the useComponentId hook (already declared above)
 
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
