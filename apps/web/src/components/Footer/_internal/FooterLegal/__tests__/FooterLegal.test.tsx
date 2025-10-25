@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterLegal } from "../_internal/FooterLegal";
+import { FooterLegal } from "../FooterLegal";
 
 // ============================================================================
 // TEST CLASSIFICATION
@@ -30,8 +30,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}`,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
       ...additionalProps,
     })
   ),
@@ -74,9 +73,7 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
@@ -105,12 +102,7 @@ describe("FooterLegal", () => {
     });
 
     it("passes through HTML attributes", () => {
-      render(
-        <FooterLegal
-          debugId="test-id"
-          aria-label="Legal information"
-        />
-      );
+      render(<FooterLegal debugId="test-id" aria-label="Legal information" />);
 
       const legalElement = screen.getByTestId("test-id-footer-legal");
       expect(legalElement).toHaveAttribute(
@@ -125,9 +117,7 @@ describe("FooterLegal", () => {
     it("renders with hardcoded legal text from labels", () => {
       render(<FooterLegal debugId="test-id" />);
 
-      expect(
-        screen.getByTestId("test-id-footer-legal")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
       expect(
         screen.getByText(/©.*Guy Romelle Magayano.*All rights reserved/)
       ).toBeInTheDocument();
@@ -136,13 +126,9 @@ describe("FooterLegal", () => {
     it("ignores legalText prop and uses hardcoded text", () => {
       render(<FooterLegal debugId="test-id" legalText="Custom legal text" />);
 
+      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
       expect(
-        screen.getByTestId("test-id-footer-legal")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
       expect(screen.queryByText("Custom legal text")).not.toBeInTheDocument();
     });
@@ -151,9 +137,7 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
   });
@@ -254,35 +238,25 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
     it("renders with hardcoded legalText when legalText prop is empty string", () => {
       render(<FooterLegal debugId="test-id" legalText="" />);
 
+      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
       expect(
-        screen.getByTestId("test-id-footer-legal")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
     it("renders with hardcoded legalText when legalText prop is whitespace-only", () => {
       render(<FooterLegal debugId="test-id" legalText="   " />);
 
+      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
       expect(
-        screen.getByTestId("test-id-footer-legal")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
   });
@@ -292,9 +266,7 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" isMemoized />);
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
@@ -304,16 +276,12 @@ describe("FooterLegal", () => {
       );
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
 
       rerender(<FooterLegal debugId="test-id" isMemoized={false} />);
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
@@ -321,9 +289,7 @@ describe("FooterLegal", () => {
       render(<FooterLegal debugId="test-id" />);
 
       expect(
-        screen.getByText(
-          "© 2025 Guy Romelle Magayano. All rights reserved."
-        )
+        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
   });
