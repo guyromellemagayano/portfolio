@@ -15,7 +15,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { AVATAR_COMPONENT_LABELS } from "../_data";
+import { AVATAR_COMPONENT_LABELS } from "../../Header.data";
 
 // ============================================================================
 // HEADER AVATAR COMPONENT TYPES & INTERFACES

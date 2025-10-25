@@ -21,9 +21,9 @@ import {
   type HeaderComponentNavLinks,
   MOBILE_HEADER_NAV_LINKS,
   MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS,
-} from "../_data";
-import { type CommonHeaderNavProps } from "../_types";
-import { HeaderMobileNavItem } from "./HeaderMobileNavItem";
+} from "../../Header.data";
+import { type CommonHeaderNavProps } from "../../Header.types";
+import { HeaderMobileNavItem } from "../HeaderMobileNavItem";
 
 // ============================================================================
 // HEADER MOBILE NAV COMPONENT TYPES & INTERFACES

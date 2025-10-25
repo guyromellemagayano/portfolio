@@ -14,7 +14,6 @@ import {
 import { Container } from "@web/components";
 import { clamp, cn } from "@web/utils";
 
-import { AVATAR_COMPONENT_LABELS } from "./_data";
 import {
   HeaderAvatar,
   HeaderAvatarContainer,
@@ -22,6 +21,7 @@ import {
   HeaderMobileNav,
   HeaderThemeToggle,
 } from "./_internal";
+import { AVATAR_COMPONENT_LABELS } from "./Header.data";
 
 // ============================================================================
 // HEADER COMPONENT TYPES & INTERFACES
