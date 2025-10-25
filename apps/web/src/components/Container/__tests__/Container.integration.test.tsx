@@ -1,10 +1,9 @@
-// Import the setup file for Container integration tests
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Container } from "../Container";
-
-import "./setup";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -24,7 +23,41 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Container sub-components are mocked globally in test-setup.ts
+// Mock Container sub-components
+vi.mock("../internal", () => ({
+  ContainerInner: React.forwardRef<HTMLDivElement, any>(
+    function MockContainerInner(props, ref) {
+      const { children, debugId, debugMode, ...rest } = props;
+      return (
+        <div
+          ref={ref}
+          data-testid="test-id-container-inner-root"
+          data-container-inner-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </div>
+      );
+    }
+  ),
+  ContainerOuter: React.forwardRef<HTMLDivElement, any>(
+    function MockContainerOuter(props, ref) {
+      const { children, debugId, debugMode, ...rest } = props;
+      return (
+        <div
+          ref={ref}
+          data-testid="test-id-container-outer-root"
+          data-container-outer-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...rest}
+        >
+          {children}
+        </div>
+      );
+    }
+  ),
+}));
 
 describe("Container Integration Tests", () => {
   afterEach(() => {
