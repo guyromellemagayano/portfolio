@@ -150,7 +150,7 @@ vi.mock("../_data", () => ({
 // Mock internal components
 vi.mock("../_internal/HeaderAvatar", () => ({
   HeaderAvatar: vi.fn(({ children, ...props }) => (
-    <div data-testid="test-id-header-avatar" {...props}>
+    <div data-testid="test-id-header-avatar-link" {...props}>
       {children}
     </div>
   )),
@@ -298,7 +298,9 @@ describe("Header", () => {
     it("renders avatar section on homepage", () => {
       render(<Header />);
 
-      expect(screen.getByTestId("test-id-header-avatar")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-header-avatar-link")
+      ).toBeInTheDocument();
       expect(
         screen.getByTestId("test-id-header-avatar-container")
       ).toBeInTheDocument();
@@ -328,7 +330,7 @@ describe("Header", () => {
     it("does not render large avatar on non-homepage", () => {
       render(<Header />);
 
-      const avatar = screen.getByTestId("test-id-header-avatar");
+      const avatar = screen.getByTestId("test-id-header-avatar-link");
       expect(avatar).toBeInTheDocument();
     });
   });
@@ -460,7 +462,9 @@ describe("Header", () => {
         expect(containers).toHaveLength(2);
 
         // Check all sub-components
-        expect(screen.getByTestId("test-id-header-avatar")).toBeInTheDocument();
+        expect(
+          screen.getByTestId("test-id-header-avatar-link")
+        ).toBeInTheDocument();
         expect(
           screen.getByTestId("test-id-header-avatar-container")
         ).toBeInTheDocument();
@@ -564,7 +568,7 @@ describe("Header", () => {
       it("renders avatar component correctly", () => {
         render(<Header />);
 
-        const avatar = screen.getByTestId("test-id-header-avatar");
+        const avatar = screen.getByTestId("test-id-header-avatar-link");
         expect(avatar).toBeInTheDocument();
       });
 

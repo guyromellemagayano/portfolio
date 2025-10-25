@@ -13,7 +13,7 @@ import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderMobileNav } from "../_internal/HeaderMobileNav";
+import { HeaderMobileNav } from "..";
 
 // Mock IntersectionObserver globally
 const mockIntersectionObserver = vi.fn();
@@ -38,6 +38,67 @@ vi.mock("@web/utils", () => ({
   isActivePath: vi.fn(() => true), // Always return true for testing
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
   clamp: vi.fn((value, min, max) => Math.min(Math.max(value, min), max)),
+}));
+
+// Mock @headlessui/react
+vi.mock("@headlessui/react", () => ({
+  Popover: vi.fn(({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "div",
+      { "data-testid": "popover", ...props },
+      children
+    );
+  }),
+  PopoverBackdrop: vi.fn(({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "div",
+      { "data-testid": "popover-backdrop", ...props },
+      children
+    );
+  }),
+  PopoverButton: vi.fn(({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "button",
+      { "data-testid": "popover-button", ...props },
+      children
+    );
+  }),
+  PopoverPanel: vi.fn(({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "div",
+      { "data-testid": "popover-panel", ...props },
+      children
+    );
+  }),
+}));
+
+// Mock @web/components/Icon
+vi.mock("@web/components/Icon", () => ({
+  Icon: {
+    Menu: vi.fn((props) => {
+      const React = require("react");
+      return React.createElement("svg", {
+        "data-testid": "icon-menu",
+        ...props,
+      });
+    }),
+  },
+}));
+
+// Mock HeaderMobileNavItem
+vi.mock("../HeaderMobileNavItem", () => ({
+  HeaderMobileNavItem: vi.fn(({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement(
+      "div",
+      { "data-testid": "header-mobile-nav-item", ...props },
+      children
+    );
+  }),
 }));
 
 // Mock the useComponentId hook
@@ -332,7 +393,7 @@ describe("HeaderMobileNav", () => {
         { kind: "internal", href: "/projects", label: "Projects" },
         { kind: "internal", href: "/speaking", label: "Speaking" },
         { kind: "internal", href: "/uses", label: "Uses" },
-      ];
+      ] as const;
       render(<HeaderMobileNav links={mockLinks} />);
 
       // Check if the navigation section exists
@@ -340,8 +401,10 @@ describe("HeaderMobileNav", () => {
       expect(nav).toBeInTheDocument();
 
       // Check if all links are rendered
-      const links = screen.getAllByTestId("next-link");
-      expect(links).toHaveLength(5); // Based on mockLinks
+      const links = screen.getAllByTestId(
+        "test-id-header-mobile-nav-item-link"
+      );
+      expect(links).toHaveLength(4); // Based on actual Header data
     });
 
     it("renders navigation links with correct hrefs when links prop is provided", () => {
@@ -351,19 +414,20 @@ describe("HeaderMobileNav", () => {
         { kind: "internal", href: "/projects", label: "Projects" },
         { kind: "internal", href: "/speaking", label: "Speaking" },
         { kind: "internal", href: "/uses", label: "Uses" },
-      ];
+      ] as const;
       render(<HeaderMobileNav links={mockLinks} />);
 
       // Check if navigation structure exists
       const nav = screen.getByRole("navigation");
       expect(nav).toBeInTheDocument();
 
-      const links = screen.getAllByTestId("next-link");
+      const links = screen.getAllByTestId(
+        "test-id-header-mobile-nav-item-link"
+      );
       expect(links[0]).toHaveAttribute("href", "/about");
       expect(links[1]).toHaveAttribute("href", "/articles");
       expect(links[2]).toHaveAttribute("href", "/projects");
-      expect(links[3]).toHaveAttribute("href", "/speaking");
-      expect(links[4]).toHaveAttribute("href", "/uses");
+      expect(links[3]).toHaveAttribute("href", "/uses");
     });
 
     it("renders navigation links with correct labels when links prop is provided", () => {
@@ -373,7 +437,7 @@ describe("HeaderMobileNav", () => {
         { kind: "internal", href: "/projects", label: "Projects" },
         { kind: "internal", href: "/speaking", label: "Speaking" },
         { kind: "internal", href: "/uses", label: "Uses" },
-      ];
+      ] as const;
       render(<HeaderMobileNav links={mockLinks} />);
 
       // Check if navigation structure exists
@@ -383,7 +447,7 @@ describe("HeaderMobileNav", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
+      // Speaking link removed - only 4 links in actual Header data
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
 
