@@ -1,18 +1,8 @@
-// Mock IntersectionObserver first, before any imports
-(globalThis as any).IntersectionObserver = vi.fn().mockImplementation(() => ({
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-  disconnect: vi.fn(),
-}));
-
-// Import the setup file for IntersectionObserver mocking
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CardCta, CardDescription, CardEyebrow, CardTitle } from "../_internal";
 import { Card } from "../Card";
-
-import "./setup";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -33,6 +23,10 @@ vi.mock("next/link", () => ({
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 // Mock utils functions
@@ -69,21 +63,12 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Card sub-components are mocked globally in test-setup.ts
-
-// Mock Icon component specifically for CardCta
+// Mock Icon component specifically for `CardCta`
 vi.mock("@web/components", () => ({
   Icon: {
     ChevronRight: vi.fn((props) => (
       <span data-testid="chevron-right-icon" {...props} />
     )),
-  },
-}));
-
-// Mock CSS modules
-vi.mock("../Card.module.css", () => ({
-  default: {
-    card: "card",
   },
 }));
 
