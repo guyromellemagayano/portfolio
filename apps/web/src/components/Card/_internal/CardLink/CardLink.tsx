@@ -10,7 +10,7 @@ import {
 
 import { cn } from "@web/utils";
 
-import { CardLinkCustom } from "./CardLinkCustom";
+import { CardLinkCustom } from "../CardLinkCustom";
 
 // ============================================================================
 // CARD LINK COMPONENT TYPES & INTERFACES

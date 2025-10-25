@@ -13,7 +13,7 @@ import {
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { CardLinkCustom } from "./CardLinkCustom";
+import { CardLinkCustom } from "../CardLinkCustom";
 
 // ============================================================================
 // CARD CTA COMPONENT TYPES & INTERFACES
