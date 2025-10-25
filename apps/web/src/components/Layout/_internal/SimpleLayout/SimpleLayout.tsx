@@ -9,6 +9,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
+import { Container } from "@web/components";
 import { cn } from "@web/utils";
 
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "../../Layout.data";
@@ -34,7 +35,7 @@ export type SimpleLayoutComponent = React.FC<SimpleLayoutProps>;
 const BaseSimpleLayout: SimpleLayoutComponent = setDisplayName(
   function BaseSimpleLayout(props) {
     const {
-      as: Component = "div",
+      as: Component = Container,
       children,
       className,
       title,
