@@ -1,7 +1,3 @@
-// ============================================================================
-// HEADER COMPONENT DATA
-// ============================================================================
-
 import type { Route } from "next";
 import { StaticImageData } from "next/image";
 
@@ -106,7 +102,6 @@ export const HEADER_COMPONENT_NAV_LINKS = [
   { kind: "internal", label: "About", href: "/about" },
   { kind: "internal", label: "Articles", href: "/articles" },
   { kind: "internal", label: "Projects", href: "/projects" },
-  { kind: "internal", label: "Speaking", href: "/speaking" },
   { kind: "internal", label: "Uses", href: "/uses" },
 ] as const satisfies HeaderComponentNavLinks;
 

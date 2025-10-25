@@ -14,7 +14,7 @@ import {
 import { Icon } from "@web/components/Icon";
 import { cn } from "@web/utils";
 
-import { THEME_TOGGLE_LABELS } from "../_data";
+import { THEME_TOGGLE_LABELS } from "../../Header.data";
 
 // ============================================================================
 // HEADER THEME TOGGLE COMPONENT TYPES & INTERFACES
