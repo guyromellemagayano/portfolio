@@ -15,6 +15,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
@@ -42,8 +46,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
-
-// Card sub-components are mocked globally in test-setup.ts
 
 describe("Card", () => {
   afterEach(() => {

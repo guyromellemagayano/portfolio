@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardCta } from "../_internal";
+import { CardCta } from "../CardCta";
 
 import "@testing-library/jest-dom";
 
@@ -17,6 +17,10 @@ const mockUseComponentId = vi.hoisted(() =>
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
@@ -85,8 +89,6 @@ vi.mock("../CardLink/CardLinkCustom", () => ({
     }
   ),
 }));
-
-// Component uses Tailwind classes, no CSS modules to mock
 
 // Mock Next.js Link component to avoid intersection observer issues
 vi.mock("next/link", () => ({
