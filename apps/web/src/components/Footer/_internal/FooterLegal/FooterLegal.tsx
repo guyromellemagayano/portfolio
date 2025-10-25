@@ -9,7 +9,10 @@ import {
 
 import { cn } from "@web/utils";
 
-import { FOOTER_COMPONENT_LABELS, type FooterComponentLabels } from "../_data";
+import {
+  FOOTER_COMPONENT_LABELS,
+  type FooterComponentLabels,
+} from "../../Footer.data";
 
 // ============================================================================
 // FOOTER LEGAL COMPONENT TYPES & INTERFACES
