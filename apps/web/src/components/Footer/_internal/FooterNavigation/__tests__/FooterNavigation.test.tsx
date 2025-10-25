@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { FooterNavigation } from "../_internal/FooterNavigation";
+import { FooterNavigation } from "../FooterNavigation";
 
 // ============================================================================
 // TEST CLASSIFICATION
@@ -72,7 +72,7 @@ vi.mock("../data", () => ({
     { kind: "internal", label: "About", href: "/about" },
     { kind: "internal", label: "Articles", href: "/articles" },
     { kind: "internal", label: "Projects", href: "/projects" },
-    { kind: "internal", label: "Speaking", href: "/speaking" },
+
     { kind: "internal", label: "Uses", href: "/uses" },
   ],
 }));
@@ -92,7 +92,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "About" })).toHaveAttribute(
         "href",
@@ -119,10 +118,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByRole("link", { name: "Projects" })).toHaveAttribute(
         "href",
         "/projects"
-      );
-      expect(screen.getByRole("link", { name: "Speaking" })).toHaveAttribute(
-        "href",
-        "/speaking"
       );
       expect(screen.getByRole("link", { name: "Uses" })).toHaveAttribute(
         "href",
@@ -175,7 +170,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });
@@ -239,10 +233,6 @@ describe("FooterNavigation", () => {
         "href",
         "/projects"
       );
-      expect(screen.getByRole("link", { name: "Speaking" })).toHaveAttribute(
-        "href",
-        "/speaking"
-      );
       expect(screen.getByRole("link", { name: "Uses" })).toHaveAttribute(
         "href",
         "/uses"
@@ -271,9 +261,6 @@ describe("FooterNavigation", () => {
       expect(
         screen.getByRole("link", { name: "Projects" })
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: "Speaking" })
-      ).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "Uses" })).toBeInTheDocument();
     });
   });
@@ -286,7 +273,7 @@ describe("FooterNavigation", () => {
       expect(nav.tagName).toBe("NAV");
 
       const links = screen.getAllByRole("link");
-      expect(links).toHaveLength(5); // About, Articles, Projects, Speaking, Uses
+      expect(links).toHaveLength(4); // About, Articles, Projects, Speaking, Uses
     });
 
     it("renders with proper data attributes for debugging", () => {
@@ -312,7 +299,7 @@ describe("FooterNavigation", () => {
 
       // Test list items
       const listItems = screen.getAllByRole("listitem");
-      expect(listItems).toHaveLength(5);
+      expect(listItems).toHaveLength(4);
     });
 
     it("applies correct ARIA relationships between elements", () => {
@@ -392,7 +379,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
 
@@ -403,7 +389,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
 
@@ -417,7 +402,6 @@ describe("FooterNavigation", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
   });

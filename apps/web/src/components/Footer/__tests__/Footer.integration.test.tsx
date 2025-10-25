@@ -80,32 +80,26 @@ vi.mock("@web/components", () => ({
 }));
 
 vi.mock("../internal", () => ({
-  FooterNavigation: vi.fn(({ links, ...props }) => {
+  FooterNavigation: vi.fn(({ links: _links, ...props }) => {
     // Use the mocked data from the _data mock
     const mockLinks = [
       { kind: "internal", label: "About", href: "/about" },
       { kind: "internal", label: "Articles", href: "/articles" },
       { kind: "internal", label: "Projects", href: "/projects" },
-      { kind: "internal", label: "Speaking", href: "/speaking" },
       { kind: "internal", label: "Uses", href: "/uses" },
     ];
 
     return (
       <nav data-testid="footer-navigation" {...props}>
         {mockLinks.map((link) => (
-          <a
-            key={link.label}
-            href={
-              typeof link.href === "string" ? link.href : link.href.toString()
-            }
-          >
+          <a key={link.label} href={String(link.href)}>
             {link.label}
           </a>
         ))}
       </nav>
     );
   }),
-  FooterLegal: vi.fn(({ legalText, ...props }) => {
+  FooterLegal: vi.fn(({ legalText: _legalText, ...props }) => {
     // Use the mocked data from the _data mock
     const mockLegalText =
       "&copy; 2024 Guy Romelle Magayano. All rights reserved.";
@@ -126,7 +120,7 @@ vi.mock("../data", () => ({
     { kind: "internal", label: "About", href: "/about" },
     { kind: "internal", label: "Articles", href: "/articles" },
     { kind: "internal", label: "Projects", href: "/projects" },
-    { kind: "internal", label: "Speaking", href: "/speaking" },
+
     { kind: "internal", label: "Uses", href: "/uses" },
   ],
 }));
@@ -167,7 +161,6 @@ describe("Footer Integration Tests", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
     });
 
@@ -177,7 +170,6 @@ describe("Footer Integration Tests", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
 
       const aboutLink = screen.getByText("About").closest("a");
@@ -284,7 +276,7 @@ describe("Footer Integration Tests", () => {
       expect(navigation).toBeInTheDocument();
 
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(5);
+      expect(links).toHaveLength(4);
 
       expect(links[0]).toHaveTextContent("About");
       expect(links[0]).toHaveAttribute("href", "/about");
@@ -292,10 +284,8 @@ describe("Footer Integration Tests", () => {
       expect(links[1]).toHaveAttribute("href", "/articles");
       expect(links[2]).toHaveTextContent("Projects");
       expect(links[2]).toHaveAttribute("href", "/projects");
-      expect(links[3]).toHaveTextContent("Speaking");
-      expect(links[3]).toHaveAttribute("href", "/speaking");
-      expect(links[4]).toHaveTextContent("Uses");
-      expect(links[4]).toHaveAttribute("href", "/uses");
+      expect(links[3]).toHaveTextContent("Uses");
+      expect(links[3]).toHaveAttribute("href", "/uses");
     });
   });
 
@@ -354,12 +344,11 @@ describe("Footer Integration Tests", () => {
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByText("Articles")).toBeInTheDocument();
       expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Speaking")).toBeInTheDocument();
       expect(screen.getByText("Uses")).toBeInTheDocument();
 
       const navigation = screen.getByTestId("test-id-footer-navigation");
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(5);
+      expect(links).toHaveLength(4);
     });
   });
 });

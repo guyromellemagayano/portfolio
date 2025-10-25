@@ -10,8 +10,8 @@ import {
 import { ContainerInner, ContainerOuter } from "@web/components";
 import { cn } from "@web/utils";
 
-import { type FooterComponentLabels } from "./_data";
 import { FooterLegal, FooterNavigation } from "./_internal";
+import { type FooterComponentLabels } from "./Footer.data";
 
 // ============================================================================
 // FOOTER COMPONENT TYPES & INTERFACES
