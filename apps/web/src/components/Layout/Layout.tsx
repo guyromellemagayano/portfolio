@@ -12,9 +12,13 @@ import {
 import { Footer, Header } from "@web/components";
 import { cn } from "@web/utils";
 
-import { AboutPageLayout } from "./_internal/AboutPageLayout";
-import { HomePageLayout } from "./_internal/HomePageLayout";
-import { SimpleLayout } from "./_internal/SimpleLayout";
+import {
+  AboutPageLayout,
+  ArticleLayout,
+  HomePageLayout,
+  ProjectsPageLayout,
+  SimpleLayout,
+} from "./_internal";
 import { COMMON_LAYOUT_COMPONENT_LABELS } from "./Layout.data";
 
 // ============================================================================
@@ -140,14 +144,20 @@ export const Layout = setDisplayName(function Layout(props) {
 // ============================================================================
 
 type LayoutCompoundComponent = React.FC<LayoutProps> & {
+  /** A article layout component that provides a consistent layout for the article page. */
+  Article: typeof ArticleLayout;
   /** A simple layout component that provides a consistent layout for page content. */
   Simple: typeof SimpleLayout;
-  /** A home page layout component that provides a consistent layout for the home page. */
-  HomePage: typeof HomePageLayout;
   /** A about page layout component that provides a consistent layout for the about page. */
   AboutPage: typeof AboutPageLayout;
+  /** A home page layout component that provides a consistent layout for the home page. */
+  HomePage: typeof HomePageLayout;
+  /** A projects page layout component that provides a consistent layout for the projects page. */
+  ProjectsPage: typeof ProjectsPageLayout;
 };
 
+Layout.Article = ArticleLayout;
 Layout.Simple = SimpleLayout;
-Layout.HomePage = HomePageLayout;
 Layout.AboutPage = AboutPageLayout;
+Layout.HomePage = HomePageLayout;
+Layout.ProjectsPage = ProjectsPageLayout;
