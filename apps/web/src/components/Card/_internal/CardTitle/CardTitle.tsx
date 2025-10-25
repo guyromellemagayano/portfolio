@@ -6,13 +6,14 @@ import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
   createComponentProps,
+  getLinkTargetProps,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
 import { cn } from "@web/utils";
 
-import { CardLinkCustom } from "./CardLinkCustom";
+import { CardLinkCustom } from "../CardLinkCustom";
 
 // ============================================================================
 // CARD TITLE COMPONENT TYPES & INTERFACES
@@ -51,6 +52,9 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
 
     if (!children) return null;
 
+    const linkHref = href && isValidLink(href) ? href : "";
+    const linkTargetProps = getLinkTargetProps(linkHref, target);
+
     const element = (
       <h2
         {...rest}
@@ -60,10 +64,11 @@ const BaseCardTitle: CardTitleComponent = setDisplayName(
         )}
         {...createComponentProps(componentId, "card-title", isDebugMode)}
       >
-        {href && isValidLink(href) ? (
+        {isValidLink(linkHref) ? (
           <CardLinkCustom
-            href={href}
-            target={target}
+            href={linkHref}
+            target={linkTargetProps.target}
+            rel={linkTargetProps.rel}
             title={title}
             debugId={componentId}
             debugMode={isDebugMode}

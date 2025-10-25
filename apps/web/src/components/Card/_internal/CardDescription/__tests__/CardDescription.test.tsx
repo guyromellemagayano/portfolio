@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardDescription } from "../_internal";
+import { CardDescription } from "../CardDescription";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
@@ -15,6 +15,10 @@ const mockUseComponentId = vi.hoisted(() =>
 
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
@@ -34,8 +38,6 @@ vi.mock("@guyromellemagayano/utils", () => ({
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
-
-// Component uses Tailwind classes, no CSS modules to mock
 
 describe("CardDescription", () => {
   afterEach(() => {
