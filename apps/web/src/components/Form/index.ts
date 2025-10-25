@@ -1,1 +1,1 @@
-export { NewsletterForm } from "./NewsletterForm";
+export * from "./NewsletterForm";
