@@ -12,8 +12,8 @@ import {
 import {
   DESKTOP_HEADER_NAV_LINKS,
   type HeaderComponentNavLinks,
-} from "../_data";
-import { HeaderDesktopNavItem } from "./HeaderDesktopNavItem";
+} from "../../Header.data";
+import { HeaderDesktopNavItem } from "../HeaderDesktopNavItem";
 
 // ============================================================================
 // HEADER DESKTOP NAV COMPONENT TYPES & INTERFACES

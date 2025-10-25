@@ -9,12 +9,46 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HeaderThemeToggle } from "../_internal/HeaderThemeToggle";
-
-// Import shared mocks
-import "./__mocks__";
+import { HeaderThemeToggle } from "../HeaderThemeToggle";
 
 // Individual mocks for this test file
+
+// Mock useComponentId hook
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.internalId || options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+// Mock utility functions
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      ...additionalProps,
+    })
+  ),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+}));
+
+// Mock @web/lib
+vi.mock("@web/lib", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  THEME_TOGGLE_LABELS: {
+    toggleTheme: "Toggle theme",
+  },
+}));
 
 // Mock IntersectionObserver
 const mockIntersectionObserver = vi.fn();
@@ -23,7 +57,7 @@ mockIntersectionObserver.mockReturnValue({
   unobserve: vi.fn(),
   disconnect: vi.fn(),
 });
-Object.defineProperty(global, "IntersectionObserver", {
+Object.defineProperty(globalThis, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
@@ -153,7 +187,7 @@ vi.mock("@web/components/icon", () => ({
 }));
 
 // Mock the data
-vi.mock("../data", () => ({
+vi.mock("../../Header.data", () => ({
   THEME_TOGGLE_LABELS: {
     toggleTheme: "Toggle theme",
   },

@@ -3,7 +3,6 @@
 // ============================================================================
 
 export type HeaderI18n = Readonly<Record<string, string>>;
-
 export const HEADER_I18N = {
   // Navigation labels
   home: "Home",
