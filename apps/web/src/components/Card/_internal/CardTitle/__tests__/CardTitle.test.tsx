@@ -3,7 +3,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardTitle } from "../_internal";
+import { CardTitle } from "../CardTitle";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -15,6 +15,10 @@ const mockUseComponentId = vi.hoisted(() =>
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
@@ -45,7 +49,7 @@ vi.mock("@web/utils", () => ({
 }));
 
 // Mock CardLinkCustom
-vi.mock("../CardLinkCustom", () => ({
+vi.mock("../../CardLinkCustom", () => ({
   CardLinkCustom: React.forwardRef<HTMLAnchorElement, any>(
     function MockCardLinkCustom(props, ref) {
       const { children, href, target, title, ...rest } = props;
