@@ -98,6 +98,27 @@ vi.mock("../_internal", () => ({
       {children}
     </div>
   )),
+  ArticleLayout: vi.fn(({ children, article, ...props }) => (
+    <div data-testid="article-layout" {...props}>
+      {article && <h1>{article.title}</h1>}
+      {children}
+    </div>
+  )),
+  AboutPageLayout: vi.fn(({ children, ...props }) => (
+    <div data-testid="about-page-layout" {...props}>
+      {children}
+    </div>
+  )),
+  HomePageLayout: vi.fn(({ children, ...props }) => (
+    <div data-testid="home-page-layout" {...props}>
+      {children}
+    </div>
+  )),
+  ProjectsPageLayout: vi.fn(({ children, ...props }) => (
+    <div data-testid="projects-page-layout" {...props}>
+      {children}
+    </div>
+  )),
 }));
 
 // Mock data
@@ -454,7 +475,7 @@ describe("Layout", () => {
         </Layout.Simple>
       );
 
-      const simpleLayout = screen.getByTestId("test-id-simple-layout");
+      const simpleLayout = screen.getByTestId("simple-layout");
       expect(simpleLayout).toBeInTheDocument();
     });
 
