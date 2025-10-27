@@ -211,6 +211,19 @@ vi.mock("@web/components", () => ({
       </div>
     );
   }),
+  Button: {
+    ArticleNav: vi.fn(({ children, debugId, debugMode, ...props }) => (
+      <button
+        data-testid="article-nav-button"
+        role="button"
+        aria-label="Go back to articles"
+        data-debug-mode={debugMode ? "true" : undefined}
+        {...props}
+      >
+        {children || "← Back to articles"}
+      </button>
+    )),
+  },
   Icon: {
     ArrowLeft: vi.fn(({ children, ...props }) => (
       <svg data-testid="arrow-left-icon" {...props}>
@@ -406,7 +419,7 @@ describe("ArticleLayout", () => {
         </ArticleLayout>
       );
 
-      const navButton = screen.getByTestId("test-id-article-nav-button-root");
+      const navButton = screen.getByTestId("article-nav-button");
       expect(navButton).toBeInTheDocument();
     });
 
@@ -947,7 +960,7 @@ describe("ArticleLayout", () => {
           </ArticleLayout>
         );
 
-        const navButton = screen.getByTestId("test-id-article-nav-button-root");
+        const navButton = screen.getByTestId("article-nav-button");
         expect(navButton).toBeInTheDocument();
       });
 
@@ -958,7 +971,7 @@ describe("ArticleLayout", () => {
           </ArticleLayout>
         );
 
-        const navButton = screen.getByTestId("test-id-article-nav-button-root");
+        const navButton = screen.getByTestId("article-nav-button");
         expect(navButton).toBeInTheDocument();
         // Navigation functionality would be tested in the actual component
       });

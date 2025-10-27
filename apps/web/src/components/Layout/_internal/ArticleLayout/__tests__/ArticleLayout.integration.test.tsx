@@ -87,6 +87,19 @@ vi.mock("@web/components", () => ({
       </div>
     );
   }),
+  Button: {
+    ArticleNav: vi.fn(({ children, debugId, debugMode, ...props }) => (
+      <button
+        data-testid="article-nav-button"
+        role="button"
+        aria-label="Go back to articles"
+        data-debug-mode={debugMode ? "true" : undefined}
+        {...props}
+      >
+        {children || "← Back to articles"}
+      </button>
+    )),
+  },
   Icon: {
     ArrowLeft: vi.fn(({ children, ...props }) => (
       <svg data-testid="arrow-left-icon" {...props}>
@@ -232,9 +245,7 @@ describe("ArticleLayout Integration Tests", () => {
       // Test that all main components are rendered
       expect(screen.getByTestId("mock-container")).toBeInTheDocument();
       expect(screen.getByTestId("prose")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-article-nav-button-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("article-nav-button")).toBeInTheDocument();
       expect(screen.getByTestId("child-content")).toBeInTheDocument();
     });
 
@@ -269,9 +280,7 @@ describe("ArticleLayout Integration Tests", () => {
         </ArticleLayout>
       );
 
-      const navButton = screen.getByTestId(
-        "integration-test-article-nav-button-root"
-      );
+      const navButton = screen.getByTestId("article-nav-button");
       expect(navButton).toBeInTheDocument();
       expect(navButton).toHaveAttribute("role", "button");
       expect(navButton).toHaveAttribute("aria-label", "Go back to articles");
@@ -287,9 +296,7 @@ describe("ArticleLayout Integration Tests", () => {
       );
 
       // Test that debugId is passed to ArticleNavButton
-      const navButton = screen.getByTestId(
-        "custom-debug-id-article-nav-button-root"
-      );
+      const navButton = screen.getByTestId("article-nav-button");
       expect(navButton).toBeInTheDocument();
     });
 
@@ -328,7 +335,7 @@ describe("ArticleLayout Integration Tests", () => {
       // Test that the layout structure is correct
       const container = screen.getByTestId("mock-container");
       const prose = screen.getByTestId("prose");
-      const navButton = screen.getByTestId("test-id-article-nav-button-root");
+      const navButton = screen.getByTestId("article-nav-button");
       const childContent = screen.getByTestId("child-content");
 
       expect(container).toBeInTheDocument();
@@ -362,9 +369,7 @@ describe("ArticleLayout Integration Tests", () => {
 
       // Test ARIA roles
       const prose = screen.getByTestId("prose");
-      const navButton = screen.getByTestId(
-        "aria-integration-test-article-nav-button-root"
-      );
+      const navButton = screen.getByTestId("article-nav-button");
 
       expect(prose).toHaveAttribute("role", "region");
       expect(prose).toHaveAttribute("aria-label", "Article content");
