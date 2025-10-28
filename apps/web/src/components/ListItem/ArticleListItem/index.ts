@@ -1,2 +1,1 @@
 export * from "./ArticleListItem";
-export * from "./SocialListItem";
