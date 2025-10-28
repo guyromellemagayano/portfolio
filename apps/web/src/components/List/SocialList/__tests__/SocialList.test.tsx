@@ -25,6 +25,10 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
+}));
+
 vi.mock("@guyromellemagayano/utils", () => ({
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
