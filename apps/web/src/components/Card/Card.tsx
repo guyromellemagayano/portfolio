@@ -21,18 +21,32 @@ import {
 // CARD COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardProps
-  extends React.ComponentPropsWithRef<"article">,
-    CommonComponentProps {}
-export type CardComponent = React.FC<CardProps>;
+type CardProps<T extends React.ElementType = "article"> = {
+  as?: T;
+} & Omit<CommonComponentProps, "as"> &
+  React.ComponentPropsWithRef<T>;
+type CardCompoundComponent = React.FC<CardProps> & {
+  /** A card link component that provides interactive hover effects and accessibility features */
+  Link: typeof CardLink;
+  /** A card title component that can optionally be wrapped in a link for navigation */
+  Title: typeof CardTitle;
+  /** A card description component that can optionally be wrapped in a link for navigation */
+  Description: typeof CardDescription;
+  /** A card call to action component that can optionally be wrapped in a link for navigation */
+  Cta: typeof CardCta;
+  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
+  Eyebrow: typeof CardEyebrow;
+};
 
 // ============================================================================
-// BASE CARD COMPONENT
+// MAIN CARD COMPONENT
 // ============================================================================
 
-const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
+export const Card = setDisplayName(function Card<
+  T extends React.ElementType = "article",
+>(props: CardProps<T>) {
   const {
-    as: Component = "article",
+    as: Component = "article" as T,
     children,
     className,
     debugId,
@@ -49,7 +63,7 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
 
   const element = (
     <Component
-      {...rest}
+      {...(rest as any)}
       className={cn("group relative flex flex-col items-start", className)}
       {...createComponentProps(componentId, "card", isDebugMode)}
     >
@@ -58,38 +72,11 @@ const BaseCard: CardComponent = setDisplayName(function BaseCard(props) {
   );
 
   return element;
-});
+}) as CardCompoundComponent;
 
 // ============================================================================
-// MEMOIZED CARD COMPONENT
+// CARD COMPOUND COMPONENTS
 // ============================================================================
-
-const MemoizedCard = React.memo(BaseCard);
-
-// ============================================================================
-// MAIN CARD COMPONENT
-// ============================================================================
-
-export type CardCompoundComponent = CardComponent & {
-  /** A card link component that provides interactive hover effects and accessibility features */
-  Link: typeof CardLink;
-  /** A card title component that can optionally be wrapped in a link for navigation */
-  Title: typeof CardTitle;
-  /** A card description component that can optionally be wrapped in a link for navigation */
-  Description: typeof CardDescription;
-  /** A card call to action component that can optionally be wrapped in a link for navigation */
-  Cta: typeof CardCta;
-  /** A card eyebrow component that can optionally be wrapped in a link for navigation */
-  Eyebrow: typeof CardEyebrow;
-};
-
-export const Card = setDisplayName(function Card(props) {
-  const { children, isMemoized = false, ...rest } = props;
-
-  const Component = isMemoized ? MemoizedCard : BaseCard;
-  const element = <Component {...rest}>{children}</Component>;
-  return element;
-} as CardCompoundComponent);
 
 Card.Cta = CardCta;
 Card.Title = CardTitle;
