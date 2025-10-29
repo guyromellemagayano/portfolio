@@ -1,7 +1,5 @@
 import React from "react";
 
-import Link from "next/link";
-
 import { CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
@@ -13,36 +11,29 @@ import {
 
 import { cn } from "@web/utils";
 
+import { type CardCtaLinkProps } from "../CardCta";
 import { CardLinkCustom } from "../CardLinkCustom";
 
 // ============================================================================
 // CARD TITLE COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-type LinkProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Link>,
-  "href" | "target" | "title"
-> & {
-  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
-  target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
-  title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
-};
-type CardTitleProps<T extends React.ElementType = "h2"> = {
-  /** Element type to render as */
-  as?: T;
-} & Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type CardTitleProps<T extends React.ComponentPropsWithRef<"h2">> = Omit<
+  T,
+  "as"
+> &
   CommonComponentProps &
-  LinkProps;
+  Omit<CardCtaLinkProps, keyof React.ComponentPropsWithoutRef<"h2">>;
 
 // ============================================================================
 // MAIN CARD TITLE COMPONENT
 // ============================================================================
 
 export const CardTitle = setDisplayName(function CardTitle<
-  T extends React.ElementType = "h2",
+  T extends React.ComponentPropsWithRef<"h2">,
 >(props: CardTitleProps<T>) {
   const {
-    as: Component = "h2" as T,
+    as: Component = "h2" as unknown as React.ElementType,
     children,
     className,
     href,
@@ -82,7 +73,7 @@ export const CardTitle = setDisplayName(function CardTitle<
 
   const element = (
     <Component
-      {...(rest as any)}
+      {...rest}
       className={cn(
         "text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100",
         className
@@ -95,3 +86,9 @@ export const CardTitle = setDisplayName(function CardTitle<
 
   return element;
 });
+
+// ============================================================================
+// MEMOIZED CARD TITLE COMPONENT
+// ============================================================================
+
+export const MemoizedCardTitle = React.memo(CardTitle);
