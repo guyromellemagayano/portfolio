@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 2 (80%+), key paths + edges
+// - Risk Tier: Core
+// - Component Type: Presentational
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -152,25 +160,56 @@ describe("Card", () => {
     });
   });
 
-  describe("Memoization", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(
-        <Card isMemoized={true}>
-          <div>Memoized card</div>
-        </Card>
-      );
-
-      expect(screen.getByText("Memoized card")).toBeInTheDocument();
-    });
-
-    it("renders without memoization by default", () => {
+  describe("Component Rendering", () => {
+    it("Card renders correctly with children", () => {
       render(
         <Card>
-          <div>Default card</div>
+          <div>Card content</div>
         </Card>
       );
 
-      expect(screen.getByText("Default card")).toBeInTheDocument();
+      expect(screen.getByText("Card content")).toBeInTheDocument();
+    });
+
+    it("Card re-renders when props change", () => {
+      const { rerender } = render(
+        <Card>
+          <div>Initial content</div>
+        </Card>
+      );
+
+      expect(screen.getByText("Initial content")).toBeInTheDocument();
+
+      // Re-render with different content
+      rerender(
+        <Card>
+          <div>Updated content</div>
+        </Card>
+      );
+
+      expect(screen.getByText("Updated content")).toBeInTheDocument();
+      expect(screen.queryByText("Initial content")).not.toBeInTheDocument();
+    });
+
+    it("Card maintains consistent rendering across re-renders", () => {
+      const { rerender } = render(
+        <Card>
+          <div>Consistent content</div>
+        </Card>
+      );
+
+      const initialElement = screen.getByText("Consistent content");
+      expect(initialElement).toBeInTheDocument();
+
+      // Re-render with same props
+      rerender(
+        <Card>
+          <div>Consistent content</div>
+        </Card>
+      );
+
+      const rerenderedElement = screen.getByText("Consistent content");
+      expect(rerenderedElement).toBeInTheDocument();
     });
   });
 
@@ -224,50 +263,6 @@ describe("Card", () => {
 
       expect(screen.getByText("Valid content")).toBeInTheDocument();
       expect(screen.getByText("More content")).toBeInTheDocument();
-    });
-  });
-
-  describe("Performance and Optimization", () => {
-    it("memoizes component when isMemoized is true", () => {
-      const { rerender } = render(
-        <Card isMemoized={true}>
-          <div>Memoized content</div>
-        </Card>
-      );
-
-      const _initialElement = screen.getByText("Memoized content");
-
-      // Re-render with same props
-      rerender(
-        <Card isMemoized={true}>
-          <div>Memoized content</div>
-        </Card>
-      );
-
-      const rerenderedElement = screen.getByText("Memoized content");
-      expect(rerenderedElement).toBe(_initialElement);
-    });
-
-    it("does not memoize when isMemoized is false", () => {
-      const { rerender } = render(
-        <Card isMemoized={false}>
-          <div>Non-memoized content</div>
-        </Card>
-      );
-
-      const _initialElement = screen.getByText("Non-memoized content");
-
-      // Re-render with different content to test non-memoization
-      rerender(
-        <Card isMemoized={false}>
-          <div>Different content</div>
-        </Card>
-      );
-
-      expect(screen.getByText("Different content")).toBeInTheDocument();
-      expect(
-        screen.queryByText("Non-memoized content")
-      ).not.toBeInTheDocument();
     });
   });
 

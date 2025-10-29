@@ -1,3 +1,11 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Integration
+// - Coverage: Tier 2 (80%+), key paths + edges
+// - Risk Tier: Core
+// - Component Type: Compound
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
