@@ -89,18 +89,9 @@
   "typescript.suggest.autoImports": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.suggest.includeCompletionsForModuleExports": true,
   "vitest.disableWorkspaceWarning": true,
-  // Markdownlint Configuration - Consolidated workspace settings
   "markdownlint.run": "onSave",
   "markdownlint.customRules": [],
-  "markdownlint.ignore": [
-    "**/node_modules/**",
-    "**/coverage/**",
-    "**/dist/**",
-    "**/build/**"
-  ],
-  "markdownlint.focusMode": false,
   "markdownlint.lintWorkspaceGlobs": [
     "**/*.md",
     "**/*.markdown"
