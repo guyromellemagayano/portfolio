@@ -1,9 +1,17 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 2 (80%+), key paths + edges
+// - Risk Tier: Core
+// - Component Type: Presentational
+// ============================================================================
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardDescription } from "../CardDescription";
+import { CardDescription, MemoizedCardDescription } from "../CardDescription";
 
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
@@ -189,26 +197,91 @@ describe("CardDescription", () => {
   });
 
   describe("Memoization", () => {
-    it("renders non-memoized component by default", () => {
+    it("CardDescription renders without memoization by default", () => {
       render(<CardDescription>Card description</CardDescription>);
 
       expect(screen.getByText("Card description")).toBeInTheDocument();
     });
 
-    it("renders memoized component when isMemoized is true", () => {
+    it("MemoizedCardDescription renders with memoization", () => {
       render(
-        <CardDescription isMemoized={true}>Card description</CardDescription>
+        <MemoizedCardDescription>Memoized description</MemoizedCardDescription>
       );
 
-      expect(screen.getByText("Card description")).toBeInTheDocument();
+      expect(screen.getByText("Memoized description")).toBeInTheDocument();
     });
 
-    it("renders non-memoized component when isMemoized is false", () => {
-      render(
-        <CardDescription isMemoized={false}>Card description</CardDescription>
+    it("MemoizedCardDescription maintains memoization across re-renders with same props", () => {
+      const { rerender } = render(
+        <MemoizedCardDescription>
+          <div>Memoized content</div>
+        </MemoizedCardDescription>
       );
 
-      expect(screen.getByText("Card description")).toBeInTheDocument();
+      const initialElement = screen.getByText("Memoized content");
+
+      // Re-render with same props
+      rerender(
+        <MemoizedCardDescription>
+          <div>Memoized content</div>
+        </MemoizedCardDescription>
+      );
+
+      const rerenderedElement = screen.getByText("Memoized content");
+      expect(rerenderedElement).toBe(initialElement);
+    });
+
+    it("CardDescription creates new elements on re-render (no memoization)", () => {
+      const { rerender } = render(
+        <CardDescription>
+          <div>Non-memoized content</div>
+        </CardDescription>
+      );
+
+      expect(screen.getByText("Non-memoized content")).toBeInTheDocument();
+
+      // Re-render with same props
+      rerender(
+        <CardDescription>
+          <div>Non-memoized content</div>
+        </CardDescription>
+      );
+
+      expect(screen.getByText("Non-memoized content")).toBeInTheDocument();
+    });
+
+    it("MemoizedCardDescription re-renders when props change", () => {
+      const { rerender } = render(
+        <MemoizedCardDescription>
+          <div>Initial content</div>
+        </MemoizedCardDescription>
+      );
+
+      expect(screen.getByText("Initial content")).toBeInTheDocument();
+
+      // Re-render with different props
+      rerender(
+        <MemoizedCardDescription>
+          <div>Updated content</div>
+        </MemoizedCardDescription>
+      );
+
+      expect(screen.getByText("Updated content")).toBeInTheDocument();
+      expect(screen.queryByText("Initial content")).not.toBeInTheDocument();
+    });
+
+    it("both CardDescription and MemoizedCardDescription render with same props", () => {
+      render(
+        <>
+          <CardDescription>Regular description</CardDescription>
+          <MemoizedCardDescription>
+            Memoized description
+          </MemoizedCardDescription>
+        </>
+      );
+
+      expect(screen.getByText("Regular description")).toBeInTheDocument();
+      expect(screen.getByText("Memoized description")).toBeInTheDocument();
     });
   });
 
@@ -363,7 +436,6 @@ describe("CardDescription", () => {
         <CardDescription
           debugId="multi-prop-id"
           debugMode={true}
-          isMemoized={true}
           className="multi-class"
           aria-label="Multi prop test"
         >

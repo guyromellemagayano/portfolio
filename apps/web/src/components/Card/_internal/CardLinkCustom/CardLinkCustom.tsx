@@ -15,64 +15,48 @@ import {
 // CARD LINK CUSTOM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardLinkCustomProps
-  extends React.ComponentPropsWithRef<typeof Link>,
-    Omit<CommonComponentProps, "as"> {}
-export type CardLinkCustomComponent = React.FC<CardLinkCustomProps>;
-
-// ============================================================================
-// BASE CARD LINK CUSTOM COMPONENT
-// ============================================================================
-
-const BaseCardLinkCustom: CardLinkCustomComponent = setDisplayName(
-  function BaseCardLinkCustom(props) {
-    const { children, href, target, title, debugId, debugMode, ...rest } =
-      props;
-
-    const { componentId, isDebugMode } = useComponentId({
-      debugId,
-      debugMode,
-    });
-
-    if (!children) return null;
-
-    const linkHref = href && isValidLink(href) ? href : "";
-    const linkTargetProps = getLinkTargetProps(linkHref, target);
-
-    const element = (
-      <Link
-        {...rest}
-        href={linkHref}
-        target={linkTargetProps.target}
-        rel={linkTargetProps.rel}
-        title={title}
-        aria-label={title}
-        {...createComponentProps(componentId, "card-link-custom", isDebugMode)}
-      >
-        {children}
-      </Link>
-    );
-
-    return element;
-  }
-);
-
-// ============================================================================
-// MEMOIZED CARD LINK CUSTOM COMPONENT
-// ============================================================================
-
-const MemoizedCardLinkCustom = React.memo(BaseCardLinkCustom);
+export type CardLinkCustomProps<
+  T extends React.ComponentPropsWithRef<typeof Link>,
+> = Omit<T, "as"> & CommonComponentProps;
 
 // ============================================================================
 // MAIN CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
-export const CardLinkCustom: CardLinkCustomComponent = setDisplayName(
-  function CardLinkCustom(props) {
-    const { children, isMemoized = false, ...rest } = props;
+export const CardLinkCustom = setDisplayName(function CardLinkCustom<
+  T extends React.ComponentPropsWithRef<typeof Link>,
+>(props: CardLinkCustomProps<T>) {
+  const { children, href, target, title, debugId, debugMode, ...rest } = props;
 
-    const Component = isMemoized ? MemoizedCardLinkCustom : BaseCardLinkCustom;
-    const element = <Component {...rest}>{children}</Component>;
-    return element;
-  }
-);
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  const linkHref = href && isValidLink(href) ? href : "";
+  const linkTargetProps = getLinkTargetProps(linkHref, target);
+
+  const element = (
+    <Link
+      {...rest}
+      href={linkHref}
+      target={linkTargetProps.target}
+      rel={linkTargetProps.rel}
+      title={title}
+      aria-label={title}
+      {...createComponentProps(componentId, "card-link-custom", isDebugMode)}
+    >
+      {children}
+    </Link>
+  );
+
+  return element;
+});
+
+// ============================================================================
+// MEMOIZED CARD LINK CUSTOM COMPONENT
+// ============================================================================
+
+export const MemoizedCardLinkCustom = React.memo(CardLinkCustom);
