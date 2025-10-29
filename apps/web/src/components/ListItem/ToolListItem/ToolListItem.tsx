@@ -2,21 +2,18 @@ import React from "react";
 
 import Link from "next/link";
 
-import { CommonComponentProps } from "@guyromellemagayano/components";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  createComponentProps,
   getLinkTargetProps,
   isValidLink,
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { cn } from "@web/utils";
-
-import { CardLinkCustom } from "../CardLinkCustom";
+import { Card } from "@web/components";
 
 // ============================================================================
-// CARD TITLE COMPONENT TYPES & INTERFACES
+// TOOL LIST ITEM COMPONENT TYPES & INTERFACES
 // ============================================================================
 
 type LinkProps = Omit<
@@ -27,45 +24,40 @@ type LinkProps = Omit<
   target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
   title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
 };
-type CardTitleProps<T extends React.ElementType = "h2"> = {
-  /** Element type to render as */
+type ToolListItemProps<T extends React.ComponentPropsWithRef<typeof Card>> = {
   as?: T;
-} & Omit<React.ComponentPropsWithRef<T>, "as"> &
-  CommonComponentProps &
+} & Omit<CommonComponentProps, "as"> &
   LinkProps;
 
 // ============================================================================
-// MAIN CARD TITLE COMPONENT
+// MAIN TOOL LIST ITEM COMPONENT
 // ============================================================================
 
-export const CardTitle = setDisplayName(function CardTitle<
-  T extends React.ElementType = "h2",
->(props: CardTitleProps<T>) {
-  const {
-    as: Component = "h2" as T,
-    children,
-    className,
-    href,
-    target,
-    title,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
+export const ToolListItem = setDisplayName(function ToolListItem<
+  T extends React.ComponentPropsWithRef<typeof Card>,
+>(props: ToolListItemProps<T>) {
+  const { children, href, target, title, debugId, debugMode, ...rest } = props;
 
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
   });
 
-  if (!children) return null;
+  if (!children || !title) return null;
 
   const linkHref = href && isValidLink(href) ? href : "";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
-  const LinkComponent = function () {
-    return isValidLink(linkHref) ? (
-      <CardLinkCustom
+  const element = (
+    <Card
+      {...(rest as any)}
+      as="li"
+      role="listitem"
+      debugId={componentId}
+      debugMode={isDebugMode}
+    >
+      <Card.Title
+        as="h3"
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
@@ -73,24 +65,12 @@ export const CardTitle = setDisplayName(function CardTitle<
         debugId={componentId}
         debugMode={isDebugMode}
       >
+        {title}
+      </Card.Title>
+      <Card.Description debugId={componentId} debugMode={isDebugMode}>
         {children}
-      </CardLinkCustom>
-    ) : (
-      <>{children}</>
-    );
-  };
-
-  const element = (
-    <Component
-      {...(rest as any)}
-      className={cn(
-        "text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100",
-        className
-      )}
-      {...createComponentProps(componentId, "card-title", isDebugMode)}
-    >
-      <LinkComponent />
-    </Component>
+      </Card.Description>
+    </Card>
   );
 
   return element;
