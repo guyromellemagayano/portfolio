@@ -13,74 +13,74 @@ import { cn } from "@web/utils";
 // CARD EYEBROW COMPONENT TYPES & INTERFACES
 // ============================================================================
 
-export interface CardEyebrowProps
-  extends React.ComponentPropsWithRef<"p">,
-    CommonComponentProps {
-  /** ISO date string for the eyebrow content */
-  dateTime?: string;
-  /** Enable decorative styling */
-  decorate?: boolean;
-}
-export type CardEyebrowComponent = React.FC<CardEyebrowProps>;
-
-// ============================================================================
-// BASE CARD EYEBROW COMPONENT
-// ============================================================================
-
-const BaseCardEyebrow: CardEyebrowComponent = setDisplayName(
-  function BaseCardEyebrow(props) {
-    const {
-      as: Component = "p",
-      children,
-      className,
-      debugId,
-      debugMode,
-      dateTime,
-      decorate,
-      ...rest
-    } = props;
-
-    const { componentId, isDebugMode } = useComponentId({
-      debugId,
-      debugMode,
-    });
-
-    if (!children) return null;
-
-    const element = (
-      <Component
-        {...rest}
-        className={cn(
-          "relative z-10 order-first mb-3 flex items-center text-sm text-wrap text-zinc-400 dark:text-zinc-500",
-          decorate && "pl-3.5",
-          className
-        )}
-        {...createComponentProps(componentId, "card-eyebrow", isDebugMode)}
-      >
-        {dateTime ? <time dateTime={dateTime}>{children}</time> : children}
-      </Component>
-    );
-
-    return element;
-  }
-);
-
-// ============================================================================
-// MEMOIZED CARD EYEBROW COMPONENT
-// ============================================================================
-
-const MemoizedCardEyebrow = React.memo(BaseCardEyebrow);
+export type CardEyebrowProps<T extends React.ComponentPropsWithRef<"p">> = Omit<
+  T,
+  "as"
+> &
+  CommonComponentProps & {
+    /** ISO date string for the eyebrow content */
+    dateTime?: string;
+    /** Enable decorative styling */
+    decorate?: boolean;
+  };
 
 // ============================================================================
 // MAIN CARD EYEBROW COMPONENT
 // ============================================================================
 
-export const CardEyebrow: CardEyebrowComponent = setDisplayName(
-  function CardEyebrow(props) {
-    const { children, isMemoized = false, ...rest } = props;
+export const CardEyebrow = setDisplayName(function CardEyebrow<
+  T extends React.ComponentPropsWithRef<"p">,
+>(props: CardEyebrowProps<T>) {
+  const {
+    as: Component = "p" as unknown as React.ElementType,
+    children,
+    className,
+    debugId,
+    debugMode,
+    dateTime,
+    decorate,
+    ...rest
+  } = props;
 
-    const Component = isMemoized ? MemoizedCardEyebrow : BaseCardEyebrow;
-    const element = <Component {...rest}>{children}</Component>;
-    return element;
-  }
-);
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  const TimeComponent = function () {
+    return dateTime ? (
+      <time
+        dateTime={dateTime}
+        {...createComponentProps(componentId, "card-eyebrow-time", isDebugMode)}
+      >
+        {children}
+      </time>
+    ) : (
+      children
+    );
+  };
+
+  const element = (
+    <Component
+      {...rest}
+      className={cn(
+        "relative z-10 order-first mb-3 flex items-center text-sm text-wrap text-zinc-400 dark:text-zinc-500",
+        decorate && "pl-3.5",
+        className
+      )}
+      {...createComponentProps(componentId, "card-eyebrow", isDebugMode)}
+    >
+      <TimeComponent />
+    </Component>
+  );
+
+  return element;
+});
+
+// ============================================================================
+// MEMOIZED CARD EYEBROW COMPONENT
+// ============================================================================
+
+export const MemoizedCardEyebrow = React.memo(CardEyebrow);
