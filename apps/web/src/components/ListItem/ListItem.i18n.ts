@@ -2,7 +2,7 @@
 // LIST ITEM COMPONENT INTERNATIONALIZATION
 // ============================================================================
 
-export type ListItemI18n = Readonly<Record<string, string>>;
+type ListItemI18n = Readonly<Record<string, string>>;
 export const LIST_ITEM_I18N = {
   // Action labels
   cta: "Read article",

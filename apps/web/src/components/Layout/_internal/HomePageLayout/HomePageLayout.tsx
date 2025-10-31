@@ -10,11 +10,11 @@ import {
 import {
   Container,
   Link,
+  List,
+  ListItem,
   NewsletterForm,
   PhotoGallery,
   Resume,
-  SocialList,
-  SocialListItem,
 } from "@web/components";
 
 import { SOCIAL_LIST_COMPONENT_LABELS } from "../../Layout.data";
@@ -78,16 +78,18 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
             </p>
 
             {SOCIAL_LIST_COMPONENT_LABELS ? (
-              <SocialList
-                className="mt-6 flex space-x-4"
+              <List
+                variant="social"
+                className="mt-6 flex gap-6"
                 debugId={componentId}
                 debugMode={isDebugMode}
               >
                 {SOCIAL_LIST_COMPONENT_LABELS.filter(
                   ({ slug }) => slug !== "email"
                 ).map(({ slug, ...rest }, index) => (
-                  <SocialListItem
+                  <ListItem
                     key={`${slug}-${index}`}
+                    variant="social"
                     className="group -m-1 p-1"
                   >
                     <Link.Social
@@ -95,9 +97,9 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
                       debugId={componentId}
                       debugMode={isDebugMode}
                     />
-                  </SocialListItem>
+                  </ListItem>
                 ))}
-              </SocialList>
+              </List>
             ) : null}
           </div>
         </Container>
