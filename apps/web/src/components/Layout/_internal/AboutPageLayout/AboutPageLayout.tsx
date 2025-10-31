@@ -9,7 +9,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Container, Link, SocialList, SocialListItem } from "@web/components";
+import { Container, Link, List, ListItem } from "@web/components";
 import portraitImage from "@web/images/portrait.jpg";
 import { cn } from "@web/utils";
 
@@ -170,10 +170,15 @@ const BaseAboutPageLayout: AboutPageLayoutComponent = setDisplayName(
             )}
           >
             {SOCIAL_LIST_COMPONENT_LABELS ? (
-              <SocialList debugId={componentId} debugMode={isDebugMode}>
+              <List
+                variant="social"
+                debugId={componentId}
+                debugMode={isDebugMode}
+              >
                 {SOCIAL_LIST_COMPONENT_LABELS.map(
                   ({ slug, ...rest }, index) => (
-                    <SocialListItem
+                    <ListItem
+                      variant="social"
                       key={`${slug}-${index}`}
                       className={cn(
                         "flex",
@@ -192,10 +197,10 @@ const BaseAboutPageLayout: AboutPageLayoutComponent = setDisplayName(
                         hasLabel
                         {...(slug === "email" && { page: "about" })}
                       />
-                    </SocialListItem>
+                    </ListItem>
                   )
                 )}
-              </SocialList>
+              </List>
             ) : null}
           </div>
         </div>
