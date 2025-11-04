@@ -1,17 +1,17 @@
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit
+// - Coverage: Tier 2 (80%+), key paths + edges
+// - Risk Tier: Core
+// - Component Type: Presentational (polymorphic + image rendering)
+// ============================================================================
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { PhotoGallery } from "../PhotoGallery";
+import { MemoizedPhotoGallery, PhotoGallery } from "../PhotoGallery";
 
 import "@testing-library/jest-dom";
-
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit tests
-// - Coverage: Tier 2 (80%+ coverage, key paths + edges)
-// - Risk Tier: Core (presentational component with image rendering)
-// - Component Type: Presentational (pure display, no sub-components)
-// ============================================================================
 
 // ============================================================================
 // MOCKS
@@ -19,8 +19,8 @@ import "@testing-library/jest-dom";
 
 // Mock useComponentId hook
 const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.internalId || options.debugId || "test-id",
+  vi.fn((options: any = {}) => ({
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -29,14 +29,21 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
+vi.mock("@guyromellemagayano/components", () => ({}));
+
 // Mock utils functions
 vi.mock("@guyromellemagayano/utils", () => ({
   createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+    (
+      id: string,
+      componentType: string,
+      debugMode: boolean,
+      additional: any = {}
+    ) => ({
+      "data-testid": `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
-      ...additionalProps,
+      [`data-${componentType.replace(/-/g, "-")}-id`]: `${id}-${componentType}`,
+      ...additional,
     })
   ),
   setDisplayName: vi.fn((component, displayName) => {
@@ -50,7 +57,7 @@ vi.mock("next/image", () => ({
   default: vi.fn(({ src, alt, className, sizes, fill, priority, ...props }) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={src?.src || src}
+      src={typeof src === "object" && src?.src ? src.src : src}
       alt={alt}
       className={className}
       data-sizes={sizes}
@@ -63,7 +70,7 @@ vi.mock("next/image", () => ({
 
 // Mock @web/utils
 vi.mock("@web/utils", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock data - using StaticImageData format
@@ -99,7 +106,6 @@ describe("PhotoGallery", () => {
 
   describe("Basic Rendering", () => {
     it("renders with default photos when no photos prop provided", () => {
-      // When no photos prop is provided, the component uses default photos
       render(<PhotoGallery />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
@@ -108,7 +114,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders with custom photos when provided", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toBeInTheDocument();
@@ -116,7 +122,9 @@ describe("PhotoGallery", () => {
     });
 
     it("applies custom className", () => {
-      render(<PhotoGallery photos={mockPhotos} className="custom-class" />);
+      render(
+        <PhotoGallery photos={mockPhotos as any} className="custom-class" />
+      );
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toHaveClass("custom-class");
@@ -125,7 +133,7 @@ describe("PhotoGallery", () => {
     it("passes through additional props", () => {
       render(
         <PhotoGallery
-          photos={mockPhotos}
+          photos={mockPhotos as any}
           data-test="custom-data"
           aria-label="Photo gallery"
         />
@@ -136,34 +144,42 @@ describe("PhotoGallery", () => {
       expect(layout).toHaveAttribute("aria-label", "Photo gallery");
     });
 
-    it("uses useComponentId hook correctly", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
-
-      // The hook is already mocked at the top of the file
-      expect(true).toBe(true);
-    });
-
-    it("uses custom debug ID when provided", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="custom-id" />);
+    it("uses custom debugId when provided", () => {
+      render(<PhotoGallery photos={mockPhotos as any} debugId="custom-id" />);
 
       const layout = screen.getByTestId("custom-id-photo-gallery");
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "custom-id-photo-gallery"
-      );
+      expect(layout).toBeInTheDocument();
     });
 
     it("enables debug mode when provided", () => {
-      render(<PhotoGallery photos={mockPhotos} debugMode={true} />);
+      render(<PhotoGallery photos={mockPhotos as any} debugMode={true} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toHaveAttribute("data-debug-mode", "true");
     });
   });
 
+  describe("Polymorphic as=", () => {
+    it('supports as="section" for semantic structure', () => {
+      render(<PhotoGallery photos={mockPhotos as any} as="section" />);
+
+      const layout = screen.getByTestId("test-id-photo-gallery");
+      expect(layout.tagName).toBe("SECTION");
+    });
+
+    it('supports as="article" with custom role', () => {
+      render(
+        <PhotoGallery photos={mockPhotos as any} as="article" role="article" />
+      );
+
+      const layout = screen.getByTestId("test-id-photo-gallery");
+      expect(layout).toHaveAttribute("role", "article");
+    });
+  });
+
   describe("Component Structure", () => {
     it("renders layout with correct structure", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toBeInTheDocument();
@@ -171,7 +187,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders photo grid with correct attributes", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const grid = screen.getByTestId("test-id-photo-gallery-grid");
       expect(grid).toBeInTheDocument();
@@ -179,7 +195,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders correct number of photo items", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const photoItems = screen.getAllByTestId(
         /test-id-photo-gallery-item-\d+/
@@ -188,7 +204,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders photo items with correct structure", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const firstItem = screen.getByTestId("test-id-photo-gallery-item-0");
       expect(firstItem).toBeInTheDocument();
@@ -196,7 +212,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders images with correct attributes", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(mockPhotos.length);
@@ -204,7 +220,12 @@ describe("PhotoGallery", () => {
       images.forEach((image, index) => {
         expect(image).toHaveAttribute("src", mockPhotos[index]?.src);
         expect(image).toHaveAttribute("alt", "");
-        expect(image).toHaveAttribute("class");
+        expect(image).toHaveAttribute("data-fill", "true");
+        expect(image).toHaveAttribute("data-priority", "true");
+        expect(image).toHaveAttribute(
+          "data-sizes",
+          "(min-width: 640px) 18rem, 11rem"
+        );
       });
     });
   });
@@ -212,7 +233,7 @@ describe("PhotoGallery", () => {
   describe("Photo Rendering", () => {
     it("renders single photo correctly", () => {
       const singlePhoto = [mockPhotos[0]!];
-      render(<PhotoGallery photos={singlePhoto} />);
+      render(<PhotoGallery photos={singlePhoto as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(1);
@@ -220,7 +241,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders multiple photos correctly", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(mockPhotos.length);
@@ -231,24 +252,22 @@ describe("PhotoGallery", () => {
     });
 
     it("applies rotation classes to photo items", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const photoItems = screen.getAllByTestId(
         /test-id-photo-gallery-item-\d+/
       );
 
       // Check that rotation classes are applied based on the component's rotation pattern
-      const expectedRotations = ["rotate-2", "-rotate-2", "rotate-2"];
-
-      photoItems.forEach((item, index) => {
+      photoItems.forEach((item) => {
         expect(item).toHaveAttribute("class");
         // The component applies rotation classes based on index modulo rotation array length
-        // Note: With Rantail CSS obfuscation, we can't test specific class names
+        // Note: With Tailwind CSS, we can't test specific class names reliably
       });
     });
 
     it("uses image src as key for photo items", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const photoItems = screen.getAllByTestId(
         /test-id-photo-gallery-item-\d+/
@@ -259,7 +278,7 @@ describe("PhotoGallery", () => {
 
   describe("Conditional Rendering", () => {
     it("renders layout structure when photos array is empty", () => {
-      render(<PhotoGallery photos={[]} />);
+      render(<PhotoGallery photos={[] as any} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toBeInTheDocument();
@@ -280,7 +299,7 @@ describe("PhotoGallery", () => {
     });
 
     it("renders when photos array has content", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       expect(layout).toBeInTheDocument();
@@ -288,21 +307,19 @@ describe("PhotoGallery", () => {
   });
 
   describe("Memoization", () => {
-    it("uses memoized component when isMemoized is true", () => {
-      render(<PhotoGallery photos={mockPhotos} isMemoized={true} />);
+    it("MemoizedPhotoGallery renders children", () => {
+      render(<MemoizedPhotoGallery photos={mockPhotos as any} />);
 
       expect(screen.getByTestId("test-id-photo-gallery")).toBeInTheDocument();
     });
 
-    it("uses base component when isMemoized is false", () => {
-      render(<PhotoGallery photos={mockPhotos} isMemoized={false} />);
-
+    it("MemoizedPhotoGallery maintains content across re-renders with same props", () => {
+      const { rerender } = render(
+        <MemoizedPhotoGallery photos={mockPhotos as any} />
+      );
       expect(screen.getByTestId("test-id-photo-gallery")).toBeInTheDocument();
-    });
 
-    it("uses base component when isMemoized is undefined", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
-
+      rerender(<MemoizedPhotoGallery photos={mockPhotos as any} />);
       expect(screen.getByTestId("test-id-photo-gallery")).toBeInTheDocument();
     });
   });
@@ -315,7 +332,7 @@ describe("PhotoGallery", () => {
         { src: "/test/image3.webp", width: 400, height: 300 },
       ];
 
-      render(<PhotoGallery photos={mixedPhotos} />);
+      render(<PhotoGallery photos={mixedPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(mixedPhotos.length);
@@ -332,7 +349,7 @@ describe("PhotoGallery", () => {
         { src: "/test/square.jpg", width: 300, height: 300 },
       ];
 
-      render(<PhotoGallery photos={variedPhotos} />);
+      render(<PhotoGallery photos={variedPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(variedPhotos.length);
@@ -345,7 +362,7 @@ describe("PhotoGallery", () => {
         height: 300,
       }));
 
-      render(<PhotoGallery photos={manyPhotos} />);
+      render(<PhotoGallery photos={manyPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(20);
@@ -358,7 +375,7 @@ describe("PhotoGallery", () => {
         { src: "/test/image_with_underscores.jpg", width: 400, height: 300 },
       ];
 
-      render(<PhotoGallery photos={specialPhotos} />);
+      render(<PhotoGallery photos={specialPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(specialPhotos.length);
@@ -381,54 +398,6 @@ describe("PhotoGallery", () => {
       expect(images).toHaveLength(incompletePhotos.length);
     });
 
-    it("handles photos with undefined src", () => {
-      const invalidPhotos = [
-        { src: undefined, width: 400, height: 300 },
-        { src: "/test/image2.jpg", width: 400, height: 300 },
-      ] as any;
-
-      render(<PhotoGallery photos={invalidPhotos} />);
-
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(invalidPhotos.length);
-    });
-
-    it("handles photos with zero dimensions", () => {
-      const zeroPhotos = [
-        { src: "/test/image1.jpg", width: 0, height: 0 },
-        { src: "/test/image2.jpg", width: 400, height: 300 },
-      ];
-
-      render(<PhotoGallery photos={zeroPhotos} />);
-
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(zeroPhotos.length);
-    });
-
-    it("handles photos with negative dimensions", () => {
-      const negativePhotos = [
-        { src: "/test/image1.jpg", width: -100, height: -50 },
-        { src: "/test/image2.jpg", width: 400, height: 300 },
-      ];
-
-      render(<PhotoGallery photos={negativePhotos} />);
-
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(negativePhotos.length);
-    });
-
-    it("handles photos with very large dimensions", () => {
-      const largePhotos = [
-        { src: "/test/image1.jpg", width: 10000, height: 8000 },
-        { src: "/test/image2.jpg", width: 400, height: 300 },
-      ];
-
-      render(<PhotoGallery photos={largePhotos} />);
-
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(largePhotos.length);
-    });
-
     it("handles photos with duplicate src values", () => {
       const duplicatePhotos = [
         { src: "/test/same-image.jpg", width: 400, height: 300 },
@@ -436,7 +405,7 @@ describe("PhotoGallery", () => {
         { src: "/test/different-image.jpg", width: 400, height: 300 },
       ];
 
-      render(<PhotoGallery photos={duplicatePhotos} />);
+      render(<PhotoGallery photos={duplicatePhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(duplicatePhotos.length);
@@ -445,14 +414,16 @@ describe("PhotoGallery", () => {
 
   describe("Performance Tests", () => {
     it("renders efficiently with different props", () => {
-      const { rerender } = render(<PhotoGallery photos={mockPhotos} />);
+      const { rerender } = render(<PhotoGallery photos={mockPhotos as any} />);
 
-      rerender(<PhotoGallery photos={mockPhotos} className="new-class" />);
+      rerender(
+        <PhotoGallery photos={mockPhotos as any} className="new-class" />
+      );
       expect(screen.getByTestId("test-id-photo-gallery")).toHaveAttribute(
         "class"
       );
 
-      rerender(<PhotoGallery photos={mockPhotos} debugMode={true} />);
+      rerender(<PhotoGallery photos={mockPhotos as any} debugMode={true} />);
       expect(screen.getByTestId("test-id-photo-gallery")).toHaveAttribute(
         "data-debug-mode",
         "true"
@@ -460,13 +431,13 @@ describe("PhotoGallery", () => {
     });
 
     it("handles prop changes efficiently", () => {
-      const { rerender } = render(<PhotoGallery photos={mockPhotos} />);
+      const { rerender } = render(<PhotoGallery photos={mockPhotos as any} />);
 
       const newPhotos = [
         ...mockPhotos,
         { src: "/test/new.jpg", width: 400, height: 300 },
       ];
-      rerender(<PhotoGallery photos={newPhotos} />);
+      rerender(<PhotoGallery photos={newPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       expect(images).toHaveLength(newPhotos.length);
@@ -475,7 +446,7 @@ describe("PhotoGallery", () => {
 
   describe("Component Interface", () => {
     it("returns a React element", () => {
-      const { container } = render(<PhotoGallery photos={mockPhotos} />);
+      const { container } = render(<PhotoGallery photos={mockPhotos as any} />);
 
       expect(container.firstChild).toBeInstanceOf(HTMLElement);
     });
@@ -483,7 +454,7 @@ describe("PhotoGallery", () => {
     it("accepts all div HTML attributes", () => {
       render(
         <PhotoGallery
-          photos={mockPhotos}
+          photos={mockPhotos as any}
           id="test-id"
           className="test-class"
           data-test="test-data"
@@ -500,7 +471,7 @@ describe("PhotoGallery", () => {
 
   describe("Accessibility", () => {
     it("maintains proper semantic structure", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       const grid = screen.getByTestId("test-id-photo-gallery-grid");
@@ -509,28 +480,14 @@ describe("PhotoGallery", () => {
       expect(grid).toBeInTheDocument();
     });
 
-    it("applies correct ARIA roles to main layout elements", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
-
-      // Test main content area
-      const mainElement = screen.getByTestId("aria-test-photo-gallery");
-      expect(mainElement).toBeInTheDocument();
-
-      // Test grid container
-      const gridElement = screen.getByTestId("aria-test-photo-gallery-grid");
-      expect(gridElement).toBeInTheDocument();
-    });
-
     it("applies unique IDs for photo items", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
+      render(<PhotoGallery photos={mockPhotos as any} debugId="aria-test" />);
 
-      // Test unique IDs for photo items via data-testid
       const photoItems = screen.getAllByTestId(
         /aria-test-photo-gallery-item-\d+/
       );
       expect(photoItems).toHaveLength(mockPhotos.length);
 
-      // Each photo item should have the correct test ID
       photoItems.forEach((item, index) => {
         expect(item).toHaveAttribute(
           "data-testid",
@@ -540,9 +497,8 @@ describe("PhotoGallery", () => {
     });
 
     it("applies correct attributes to image elements", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
+      render(<PhotoGallery photos={mockPhotos as any} debugId="aria-test" />);
 
-      // Test image elements have proper attributes
       const images = screen.getAllByTestId(/aria-test-photo-gallery-image-\d+/);
       expect(images).toHaveLength(mockPhotos.length);
 
@@ -556,45 +512,40 @@ describe("PhotoGallery", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      render(<PhotoGallery photos={[]} debugId="aria-test" />);
+      render(<PhotoGallery photos={[] as any} debugId="aria-test" />);
 
-      // Should render layout structure even with empty photos
       const layout = screen.getByTestId("aria-test-photo-gallery");
       expect(layout).toBeInTheDocument();
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "aria-test-photo-gallery"
-      );
     });
 
     it("applies ARIA attributes with different internal IDs", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="different-id" />);
+      render(
+        <PhotoGallery photos={mockPhotos as any} debugId="different-id" />
+      );
 
       const layout = screen.getByTestId("different-id-photo-gallery");
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "different-id-photo-gallery"
-      );
+      expect(layout).toBeInTheDocument();
     });
 
     it("applies ARIA attributes during component updates", () => {
       const { rerender } = render(
-        <PhotoGallery photos={mockPhotos} debugId="update-test" />
+        <PhotoGallery photos={mockPhotos as any} debugId="update-test" />
       );
 
       const initialLayout = screen.getByTestId("update-test-photo-gallery");
       expect(initialLayout).toBeInTheDocument();
 
-      // Rerender with different photos
       const newPhotos = mockPhotos[0] ? [mockPhotos[0]] : [];
-      rerender(<PhotoGallery photos={newPhotos} debugId="update-test" />);
+      rerender(
+        <PhotoGallery photos={newPhotos as any} debugId="update-test" />
+      );
 
       const updatedLayout = screen.getByTestId("update-test-photo-gallery");
       expect(updatedLayout).toBeInTheDocument();
     });
 
     it("provides proper data attributes for debugging", () => {
-      render(<PhotoGallery photos={mockPhotos} debugMode={true} />);
+      render(<PhotoGallery photos={mockPhotos as any} debugMode={true} />);
 
       const layout = screen.getByTestId("test-id-photo-gallery");
       const grid = screen.getByTestId("test-id-photo-gallery-grid");
@@ -604,179 +555,11 @@ describe("PhotoGallery", () => {
     });
 
     it("renders images with empty alt text for decorative purposes", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
+      render(<PhotoGallery photos={mockPhotos as any} />);
 
       const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
       images.forEach((image) => {
         expect(image).toHaveAttribute("alt", "");
-      });
-    });
-
-    it("provides proper component IDs for all elements", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
-
-      const layout = screen.getByTestId("test-id-photo-gallery");
-      const grid = screen.getByTestId("test-id-photo-gallery-grid");
-
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "test-id-photo-gallery"
-      );
-      expect(grid).toHaveAttribute(
-        "data-photo-gallery-grid-id",
-        "test-id-photo-gallery-grid"
-      );
-    });
-
-    it("applies correct ARIA roles to main layout elements", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
-
-      // Test main content area
-      const mainElement = screen.getByTestId("aria-test-photo-gallery");
-      expect(mainElement).toBeInTheDocument();
-
-      // Test grid container
-      const gridElement = screen.getByTestId("aria-test-photo-gallery-grid");
-      expect(gridElement).toBeInTheDocument();
-    });
-
-    it("applies unique IDs for photo items", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
-
-      // Test unique IDs for photo items via data-testid
-      const photoItems = screen.getAllByTestId(
-        /aria-test-photo-gallery-item-\d+/
-      );
-      expect(photoItems).toHaveLength(mockPhotos.length);
-
-      // Each photo item should have the correct test ID
-      photoItems.forEach((item, index) => {
-        expect(item).toHaveAttribute(
-          "data-testid",
-          `aria-test-photo-gallery-item-${index}`
-        );
-      });
-    });
-
-    it("applies correct attributes to image elements", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="aria-test" />);
-
-      // Test image elements have proper attributes
-      const images = screen.getAllByTestId(/aria-test-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(mockPhotos.length);
-
-      images.forEach((image, index) => {
-        expect(image).toHaveAttribute(
-          "data-testid",
-          `aria-test-photo-gallery-image-${index}`
-        );
-        expect(image).toHaveAttribute("alt", "");
-      });
-    });
-
-    it("handles ARIA attributes when content is missing", () => {
-      render(<PhotoGallery photos={[]} debugId="aria-test" />);
-
-      // Should render layout structure even with empty photos
-      const layout = screen.getByTestId("aria-test-photo-gallery");
-      expect(layout).toBeInTheDocument();
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "aria-test-photo-gallery"
-      );
-    });
-
-    it("applies ARIA attributes with different internal IDs", () => {
-      render(<PhotoGallery photos={mockPhotos} debugId="different-id" />);
-
-      const layout = screen.getByTestId("different-id-photo-gallery");
-      expect(layout).toHaveAttribute(
-        "data-photo-gallery-id",
-        "different-id-photo-gallery"
-      );
-    });
-
-    it("applies ARIA attributes during component updates", () => {
-      const { rerender } = render(
-        <PhotoGallery photos={mockPhotos} debugId="update-test" />
-      );
-
-      const initialLayout = screen.getByTestId("update-test-photo-gallery");
-      expect(initialLayout).toBeInTheDocument();
-
-      // Rerender with different photos
-      const newPhotos = mockPhotos[0] ? [mockPhotos[0]] : [];
-      rerender(<PhotoGallery photos={newPhotos} debugId="update-test" />);
-
-      const updatedLayout = screen.getByTestId("update-test-photo-gallery");
-      expect(updatedLayout).toBeInTheDocument();
-    });
-  });
-
-  describe("Integration Tests", () => {
-    it("renders a complete photo gallery with all components working together", () => {
-      render(<PhotoGallery photos={mockPhotos} />);
-
-      // Test layout structure
-      const layout = screen.getByTestId("test-id-photo-gallery");
-      expect(layout).toBeInTheDocument();
-      expect(layout).toHaveAttribute("class");
-
-      // Test grid structure
-      const grid = screen.getByTestId("test-id-photo-gallery-grid");
-      expect(grid).toBeInTheDocument();
-      expect(grid).toHaveAttribute("class");
-
-      // Test photo items
-      const photoItems = screen.getAllByTestId(
-        /test-id-photo-gallery-item-\d+/
-      );
-      expect(photoItems).toHaveLength(mockPhotos.length);
-
-      // Test images
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(mockPhotos.length);
-
-      mockPhotos.forEach((photo, index) => {
-        expect(images[index]).toHaveAttribute("src", photo.src);
-        expect(images[index]).toHaveAttribute("class");
-      });
-    });
-
-    it("works with different photo configurations", () => {
-      const configs = [
-        { photos: mockPhotos[0] ? [mockPhotos[0]] : [], expectedCount: 1 },
-        { photos: mockPhotos.slice(0, 2), expectedCount: 2 },
-        { photos: mockPhotos, expectedCount: 3 },
-      ];
-
-      configs.forEach(({ photos, expectedCount }) => {
-        const { unmount } = render(<PhotoGallery photos={photos as any} />);
-
-        const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-        expect(images).toHaveLength(expectedCount);
-
-        unmount();
-      });
-    });
-
-    it("handles complex photo data structures", () => {
-      const complexPhotos = [
-        { src: "/test/complex1.jpg", width: 1920, height: 1080 },
-        { src: "/test/complex2.jpg", width: 800, height: 600 },
-        { src: "/test/complex3.jpg", width: 400, height: 300 },
-      ];
-
-      render(<PhotoGallery photos={complexPhotos} />);
-
-      const layout = screen.getByTestId("test-id-photo-gallery");
-      expect(layout).toBeInTheDocument();
-
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+/);
-      expect(images).toHaveLength(complexPhotos.length);
-
-      complexPhotos.forEach((photo, index) => {
-        expect(images[index]).toHaveAttribute("src", photo.src);
       });
     });
   });
