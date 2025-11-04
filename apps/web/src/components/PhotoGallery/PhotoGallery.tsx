@@ -14,24 +14,27 @@ import { cn } from "@web/utils";
 import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./PhotoGallery.data";
 
 // ============================================================================
-// PHOTO GALLERY COMPONENT TYPES & INTERFACES
+// MAIN PHOTO GALLERY COMPONENT
 // ============================================================================
 
-export interface PhotoGalleryProps
-  extends React.ComponentProps<"div">,
-    Omit<CommonComponentProps, "as"> {
-  /** Photo gallery photos */
-  photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
-}
-export type PhotoGalleryComponent = React.FC<PhotoGalleryProps>;
+export type PhotoGalleryProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+    /** Photo gallery photos */
+    photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
+  };
+export type PhotoGalleryComponent = React.FC<
+  PhotoGalleryProps<React.ElementType>
+>;
 
-// ============================================================================
-// BASE PHOTO GALLERY COMPONENT
-// ============================================================================
-
-const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
-  function BasePhotoGallery(props) {
+export const PhotoGallery: PhotoGalleryComponent = setDisplayName(
+  function PhotoGallery(props) {
     const {
+      as: Component = "div",
       photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
       className,
       debugId,
@@ -39,8 +42,10 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
       ...rest
     } = props;
 
+    // Photo gallery component ID and debug mode
     const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
+    // Define the rotations for the photos
     let rotations = [
       "rotate-2",
       "-rotate-2",
@@ -52,7 +57,7 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
     if (!photos) return null;
 
     const element = (
-      <div
+      <Component
         {...rest}
         className={cn("mt-16 sm:mt-20", className)}
         {...createComponentProps(componentId, "photo-gallery", isDebugMode)}
@@ -94,7 +99,7 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
             </div>
           ))}
         </div>
-      </div>
+      </Component>
     );
 
     return element;
@@ -102,21 +107,7 @@ const BasePhotoGallery: PhotoGalleryComponent = setDisplayName(
 );
 
 // ============================================================================
-// MEMOIZED BASE PHOTO GALLERY COMPONENT
+// MEMOIZED PHOTO GALLERY COMPONENT
 // ============================================================================
 
-const MemoizedPhotoGallery = React.memo(BasePhotoGallery);
-
-// ============================================================================
-// MAIN PHOTO GALLERY COMPONENT
-// ============================================================================
-
-export const PhotoGallery: PhotoGalleryComponent = setDisplayName(
-  function PhotoGallery(props) {
-    const { isMemoized = false, ...rest } = props;
-
-    const Component = isMemoized ? MemoizedPhotoGallery : BasePhotoGallery;
-    const element = <Component {...rest} />;
-    return element;
-  }
-);
+export const MemoizedPhotoGallery = React.memo(PhotoGallery);
