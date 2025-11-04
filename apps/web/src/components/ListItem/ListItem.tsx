@@ -23,7 +23,7 @@ import { LIST_ITEM_I18N } from "./ListItem.i18n";
 // MAIN LIST ITEM COMPONENT
 // ============================================================================
 
-export type LinkProps = Omit<
+export type ListItemLinkProps = Omit<
   React.ComponentPropsWithoutRef<typeof Link>,
   "href" | "target" | "title"
 > & {
@@ -39,7 +39,7 @@ export type ListItemProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> &
-  LinkProps & {
+  ListItemLinkProps & {
     /** The component to render as */
     as?: T;
     /** The variant of the list item */
