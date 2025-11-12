@@ -141,6 +141,16 @@ describe("ListItem", () => {
       const root = screen.getByTestId("test-id-list-default-root");
       expect(root).toHaveAttribute("role", "listitem");
     });
+
+    it("default variant defaults to role='listitem' when not provided", () => {
+      render(
+        <ListItem href="#">
+          <span>Item</span>
+        </ListItem>
+      );
+      const root = screen.getByTestId("test-id-list-default-root");
+      expect(root).toHaveAttribute("role", "listitem");
+    });
   });
 
   describe("Variants", () => {
@@ -165,7 +175,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("article");
+        const articleElement = screen.getByTestId("test-id-list-article-root");
         expect(articleElement).toHaveAttribute("aria-label", "Hello World");
         expect(articleElement).toHaveAttribute(
           "aria-describedby",
@@ -181,7 +191,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("article");
+        const articleElement = screen.getByTestId("test-id-list-article-root");
         expect(articleElement).toHaveClass("md:col-span-3");
       });
 
@@ -192,7 +202,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("article");
+        const articleElement = screen.getByTestId("test-id-list-article-root");
         expect(articleElement).not.toHaveClass("md:col-span-3");
       });
 
@@ -267,6 +277,22 @@ describe("ListItem", () => {
         expect(timeElement).toHaveAttribute("dateTime", "2024-01-01");
       });
 
+      it("merges custom className with default md:col-span-3 class", () => {
+        const ArticleItem = React.createElement(
+          ListItem as any,
+          {
+            variant: "article",
+            article: ARTICLE,
+            className: "custom-article-class",
+            isFrontPage: false,
+          },
+          React.createElement("span", null, "child")
+        );
+        render(ArticleItem as any);
+        const articleElement = screen.getByTestId("test-id-list-article-root");
+        expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
+      });
+
       it("returns null when article fields missing", () => {
         const InvalidTitleItem = React.createElement(
           ListItem as any,
@@ -298,68 +324,118 @@ describe("ListItem", () => {
       });
     });
 
-    it("social variant renders li role listitem and children", () => {
-      render(
-        (
+    describe("social variant", () => {
+      it("renders li role listitem and children", () => {
+        render(
+          (
+            <ListItem variant="social" href="#">
+              <a href="#">Social</a>
+            </ListItem>
+          ) as any
+        );
+        const root = screen.getByTestId("test-id-social-list-item-root");
+        expect(root).toBeInTheDocument();
+        expect(root).toHaveAttribute("role", "listitem");
+        expect(screen.getByText("Social")).toBeInTheDocument();
+      });
+
+      it("returns null when no children", () => {
+        const { container } = render(
+          <ListItem variant="social" href="#" />
+        );
+        expect(container.firstChild).toBeNull();
+      });
+
+      it("respects custom as prop", () => {
+        render(
+          <ListItem variant="social" as="div" href="#">
+            <a href="#">Social Link</a>
+          </ListItem>
+        );
+        const root = screen.getByTestId("test-id-social-list-item-root");
+        expect(root.tagName).toBe("DIV");
+        expect(root).toHaveAttribute("role", "listitem");
+      });
+
+      it("defaults to role='listitem' when not provided", () => {
+        render(
           <ListItem variant="social" href="#">
             <a href="#">Social</a>
           </ListItem>
-        ) as any
-      );
-      const root = screen.getByTestId("test-id-social-list-item-root");
-      expect(root).toBeInTheDocument();
-      expect(root).toHaveAttribute("role", "listitem");
-      expect(screen.getByText("Social")).toBeInTheDocument();
+        );
+        const root = screen.getByTestId("test-id-social-list-item-root");
+        expect(root).toHaveAttribute("role", "listitem");
+      });
     });
 
-    it("tools variant renders Card structure with title and description", () => {
-      render(
-        <ListItem variant="tools" title="Tool Title" href="https://example.com">
-          Tool description
-        </ListItem>
-      );
-      const root = screen.getByTestId("test-id-list-tools-root");
-      expect(root).toBeInTheDocument();
-      expect(screen.getByText("Tool Title")).toBeInTheDocument();
-      expect(screen.getByText("Tool description")).toBeInTheDocument();
-    });
+    describe("tools variant", () => {
+      it("renders Card structure with title and description", () => {
+        render(
+          <ListItem variant="tools" title="Tool Title" href="https://example.com">
+            Tool description
+          </ListItem>
+        );
+        const root = screen.getByTestId("test-id-list-tools-root");
+        expect(root).toBeInTheDocument();
+        expect(screen.getByText("Tool Title")).toBeInTheDocument();
+        expect(screen.getByText("Tool description")).toBeInTheDocument();
+      });
 
-    it("tools variant returns null when missing title", () => {
-      const { container } = render(
-        <ListItem variant="tools" href="/internal">
-          Body
-        </ListItem>
-      );
-      expect(container.firstChild).toBeNull();
-    });
+      it("returns null when missing title", () => {
+        const { container } = render(
+          <ListItem variant="tools" href="/internal">
+            Body
+          </ListItem>
+        );
+        expect(container.firstChild).toBeNull();
+      });
 
-    it("tools variant adds rel for external _blank links", () => {
-      render(
-        <ListItem
-          variant="tools"
-          title="Ext"
-          href="https://example.com"
-          target="_blank"
-        >
-          Body
-        </ListItem>
-      );
-      const root = screen.getByTestId("test-id-list-tools-root");
-      expect(root).toBeInTheDocument();
-      // Title exists; href/rel logic executed in Card.Title via mocked utils
-      expect(screen.getByText("Ext")).toBeInTheDocument();
-    });
+      it("returns null when no children", () => {
+        const { container } = render(
+          <ListItem variant="tools" title="Tool Title" href="/internal" />
+        );
+        expect(container.firstChild).toBeNull();
+      });
 
-    it("tools variant returns null when href is invalid", () => {
-      render(
-        <ListItem variant="tools" title="Tool" href="">
-          Body
-        </ListItem>
-      );
-      // isValidLink returns false for empty href, so linkHref becomes ""
-      // Component should still render but without href
-      const root = screen.getByTestId("test-id-list-tools-root");
-      expect(root).toBeInTheDocument();
+      it("adds rel for external _blank links", () => {
+        render(
+          <ListItem
+            variant="tools"
+            title="Ext"
+            href="https://example.com"
+            target="_blank"
+          >
+            Body
+          </ListItem>
+        );
+        const root = screen.getByTestId("test-id-list-tools-root");
+        expect(root).toBeInTheDocument();
+        // Title exists; href/rel logic executed in Card.Title via mocked utils
+        expect(screen.getByText("Ext")).toBeInTheDocument();
+      });
+
+      it("renders when href is invalid (empty string)", () => {
+        render(
+          <ListItem variant="tools" title="Tool" href="">
+            Body
+          </ListItem>
+        );
+        // isValidLink returns false for empty href, so linkHref becomes ""
+        // Component should still render but without href
+        const root = screen.getByTestId("test-id-list-tools-root");
+        expect(root).toBeInTheDocument();
+      });
+
+      it("does not apply default role when not provided", () => {
+        render(
+          <ListItem variant="tools" title="Tool" href="/internal">
+            Body
+          </ListItem>
+        );
+        const root = screen.getByTestId("test-id-list-tools-root");
+        // ToolsListItem doesn't have a default role, so role should be undefined
+        expect(root).not.toHaveAttribute("role");
+      });
     });
   });
 
