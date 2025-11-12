@@ -9,12 +9,12 @@ catalog:
   "@commitlint/cz-commitlint": 19.8.1
   "@commitlint/types": 19.8.1
   "@eslint/js": 9.33.0
-  "@headlessui/react": 2.2.3
+  "@headlessui/react": 2.2.7
   "@mapbox/rehype-prism": 0.9.0
   "@mdx-js/loader": 3.1.0
   "@mdx-js/react": 3.1.0
   "@next/eslint-plugin-next": 15.4.5
-  "@next/mdx": 15.3.2
+  "@next/mdx": 15.4.5
   "@tailwindcss/postcss": 4.1.11
   "@tailwindcss/typography": 0.5.16
   "@testing-library/jest-dom": 6.6.3
@@ -26,8 +26,8 @@ catalog:
   "@types/mdx": 2.0.13
   "@types/morgan": 1.9.10
   "@types/node": 24.2.0
-  "@types/react": 19.2.0
-  "@types/react-dom": 19.2.0
+  "@types/react": 19.2.2
+  "@types/react-dom": 19.2.2
   "@types/supertest": 6.0.3
   "@typescript-eslint/eslint-plugin": 8.39.0
   "@typescript-eslint/parser": 8.39.0
@@ -40,7 +40,7 @@ catalog:
   "@vitest/ui": 3.2.4
   autoprefixer: 10.4.21
   body-parser: 2.2.0
-  cheerio: 1.0.0
+  cheerio: 1.1.2
   clsx: 2.1.1
   cors: 2.8.5
   czg: 1.11.1
@@ -58,7 +58,7 @@ catalog:
   eslint-plugin-unused-imports: 4.1.4
   express: 5.1.0
   fast-glob: 3.3.3
-  feed: 5.0.1
+  feed: 5.1.0
   globals: 16.3.0
   husky: 9.1.7
   jsdom: 27.0.0
@@ -67,7 +67,7 @@ catalog:
   next: 15.4.6
   next-themes: 0.4.6
   nodemon: 3.1.10
-  postcss: 8.5.3
+  postcss: 8.5.6
   prettier: 3.6.2
   prettier-plugin-packagejson: 2.5.13
   prettier-plugin-pkg: 0.19.1
@@ -83,7 +83,7 @@ catalog:
   sharp: 0.34.3
   sort-package-json: 3.4.0
   supertest: 7.1.4
-  tailwind-merge: 3.3.0
+  tailwind-merge: 3.3.1
   tailwindcss: 4.1.11
   tsconfig-paths: 4.2.0
   tsdown: 0.14.1
