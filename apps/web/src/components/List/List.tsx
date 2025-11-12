@@ -25,12 +25,13 @@ export type ListProps<T extends React.ElementType> = Omit<
     /** The variant of the list */
     variant?: "default" | "article" | "social" | "tools";
   };
+export type ListComponent = React.FC<ListProps<React.ElementType>>;
 
-export const List = setDisplayName(function List<
-  T extends React.ElementType = "ul",
->(props: ListProps<T>) {
+export const List: ListComponent = setDisplayName(function List(
+  props: ListProps<React.ElementType>
+) {
   const {
-    as: Component = "ul" as unknown as T,
+    as: Component = "ul",
     variant = "default",
     role = "list",
     children,
