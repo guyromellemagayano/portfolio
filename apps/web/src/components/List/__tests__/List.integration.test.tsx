@@ -82,6 +82,12 @@ describe("List (integration)", () => {
     expect(root).toBeInTheDocument();
     expect(root).toHaveAttribute("aria-label", "Article list");
     expect(root).toHaveAttribute("role", "region");
+    expect(root).toHaveClass(
+      "md:border-l",
+      "md:border-zinc-100",
+      "md:pl-6",
+      "md:dark:border-zinc-700/40"
+    );
     
     // Check sr-only heading
     const heading = screen.getByText("Article list");
@@ -93,10 +99,32 @@ describe("List (integration)", () => {
     const listContainer = screen.getByRole("list", { name: "Articles" });
     expect(listContainer).toBeInTheDocument();
     expect(listContainer).toHaveAttribute("aria-label", "Articles");
+    expect(listContainer).toHaveClass(
+      "flex",
+      "w-full",
+      "max-w-3xl",
+      "flex-col",
+      "space-y-16"
+    );
     
     // Check children are rendered
     expect(screen.getByText("First")).toBeInTheDocument();
     expect(screen.getByText("Second")).toBeInTheDocument();
+  });
+
+  it("renders article variant with default role and merged className", () => {
+    render(
+      <List variant="article" className="custom-article-class">
+        <article>Article One</article>
+        <article>Article Two</article>
+      </List>
+    );
+
+    const root = screen.getByTestId("test-id-article-list-root");
+    expect(root).toHaveAttribute("role", "region");
+    expect(root).toHaveClass("custom-article-class", "md:border-l");
+    expect(screen.getByText("Article One")).toBeInTheDocument();
+    expect(screen.getByText("Article Two")).toBeInTheDocument();
   });
 
   it("renders social variant with list semantics", () => {
@@ -114,7 +142,40 @@ describe("List (integration)", () => {
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
   });
 
-  it("renders tools variant with spacing and items", () => {
+  it("renders social variant with custom as prop", () => {
+    render(
+      <List variant="social" as="nav">
+        <li>GitHub</li>
+        <li>LinkedIn</li>
+        <li>Twitter</li>
+      </List>
+    );
+
+    const root = screen.getByTestId("test-id-social-list-root");
+    expect(root.tagName).toBe("NAV");
+    expect(screen.getByText("GitHub")).toBeInTheDocument();
+    expect(screen.getByText("LinkedIn")).toBeInTheDocument();
+    expect(screen.getByText("Twitter")).toBeInTheDocument();
+  });
+
+  it("renders tools variant with default spacing and items", () => {
+    render(
+      <List variant="tools">
+        <li>React</li>
+        <li>TypeScript</li>
+        <li>Node.js</li>
+      </List>
+    );
+
+    const root = screen.getByTestId("test-id-tools-list-root");
+    expect(root).toBeInTheDocument();
+    expect(root).toHaveClass("space-y-16");
+    expect(screen.getByText("React")).toBeInTheDocument();
+    expect(screen.getByText("TypeScript")).toBeInTheDocument();
+    expect(screen.getByText("Node.js")).toBeInTheDocument();
+  });
+
+  it("renders tools variant with merged className and spacing", () => {
     render(
       <List variant="tools" className="grid-gap">
         <li>React</li>
@@ -124,10 +185,8 @@ describe("List (integration)", () => {
 
     const root = screen.getByTestId("test-id-tools-list-root");
     expect(root).toBeInTheDocument();
-    expect(root).toHaveClass("grid-gap");
+    expect(root).toHaveClass("grid-gap", "space-y-16");
     expect(screen.getByText("React")).toBeInTheDocument();
     expect(screen.getByText("TypeScript")).toBeInTheDocument();
   });
 });
-
-
