@@ -156,6 +156,41 @@ describe("List", () => {
         );
       });
 
+      it("defaults to role='region' when not provided", () => {
+        render(
+          <List variant="article">
+            <article>Article child</article>
+          </List>
+        );
+        const root = screen.getByTestId("test-id-article-list-root");
+        expect(root).toHaveAttribute("role", "region");
+      });
+
+      it("applies default border and padding classes", () => {
+        render(
+          <List variant="article" role="region">
+            <article>Article child</article>
+          </List>
+        );
+        const root = screen.getByTestId("test-id-article-list-root");
+        expect(root).toHaveClass(
+          "md:border-l",
+          "md:border-zinc-100",
+          "md:pl-6",
+          "md:dark:border-zinc-700/40"
+        );
+      });
+
+      it("merges custom className with default border classes", () => {
+        render(
+          <List variant="article" className="custom-class" role="region">
+            <article>Article child</article>
+          </List>
+        );
+        const root = screen.getByTestId("test-id-article-list-root");
+        expect(root).toHaveClass("custom-class", "md:border-l");
+      });
+
       it("applies className to root component", () => {
         render(
           <List variant="article" className="custom-class" role="region">
@@ -177,16 +212,44 @@ describe("List", () => {
       expect(root.tagName).toBe("UL");
     });
 
-    it("tools variant applies spacing and accepts className", () => {
+    it("social variant returns null when no children", () => {
+      const { container } = render(<List variant="social" />);
+      expect(container.firstChild).toBeNull();
+    });
+
+    it("social variant respects custom as prop", () => {
       render(
-        (
-          <List variant="tools" className="custom-tools">
-            <li>Tool</li>
-          </List>
-        ) as any
+        <List variant="social" as="nav">
+          <li>Item</li>
+        </List>
+      );
+      const root = screen.getByTestId("test-id-social-list-root");
+      expect(root.tagName).toBe("NAV");
+    });
+
+    it("tools variant applies default space-y-16 class", () => {
+      render(
+        <List variant="tools">
+          <li>Tool</li>
+        </List>
       );
       const root = screen.getByTestId("test-id-tools-list-root");
-      expect(root).toHaveClass("custom-tools");
+      expect(root).toHaveClass("space-y-16");
+    });
+
+    it("tools variant merges custom className with default spacing", () => {
+      render(
+        <List variant="tools" className="custom-tools">
+          <li>Tool</li>
+        </List>
+      );
+      const root = screen.getByTestId("test-id-tools-list-root");
+      expect(root).toHaveClass("custom-tools", "space-y-16");
+    });
+
+    it("tools variant returns null when no children", () => {
+      const { container } = render(<List variant="tools" />);
+      expect(container.firstChild).toBeNull();
     });
   });
 
