@@ -135,8 +135,24 @@ describe("ListItem (integration)", () => {
       React.createElement("span", null, "child")
     );
     render(<div>{ArticleItemFrontPage as any}</div>);
-    const articleElement = screen.getByRole("article");
+    const articleElement = screen.getByTestId("test-id-list-article-root");
     expect(articleElement).not.toHaveClass("md:col-span-3");
+  });
+
+  it("renders article variant with merged className", () => {
+    const ArticleItem = React.createElement(
+      ListItem as any,
+      {
+        variant: "article",
+        article: ARTICLE,
+        className: "custom-article-class",
+        isFrontPage: false,
+      },
+      React.createElement("span", null, "child")
+    );
+    render(<div>{ArticleItem as any}</div>);
+    const articleElement = screen.getByTestId("test-id-list-article-root");
+    expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
   });
 
   it("renders article variant with ARIA attributes for accessibility", () => {
@@ -146,7 +162,7 @@ describe("ListItem (integration)", () => {
       React.createElement("span", null, "child")
     );
     render(<div>{ArticleItem as any}</div>);
-    const articleElement = screen.getByRole("article");
+    const articleElement = screen.getByTestId("test-id-list-article-root");
     expect(articleElement).toHaveAttribute("aria-label", "Integration Article");
     expect(articleElement).toHaveAttribute("aria-describedby", "Integration description");
     expect(articleElement).toHaveAttribute("id", "integration-article");
@@ -176,6 +192,20 @@ describe("ListItem (integration)", () => {
     expect(screen.getByText("Social link")).toBeInTheDocument();
   });
 
+  it("renders social variant with custom as prop", () => {
+    render(
+      <ul>
+        <ListItem variant="social" as="div" href="#">
+          <a href="#">GitHub</a>
+        </ListItem>
+      </ul>
+    );
+    const item = screen.getByTestId("test-id-social-list-item-root");
+    expect(item.tagName).toBe("DIV");
+    expect(item).toHaveAttribute("role", "listitem");
+    expect(screen.getByText("GitHub")).toBeInTheDocument();
+  });
+
   it("renders tools variant with title and description", () => {
     render(
       <ul>
@@ -188,6 +218,20 @@ describe("ListItem (integration)", () => {
     expect(root).toBeInTheDocument();
     expect(screen.getByText("My Tool")).toBeInTheDocument();
     expect(screen.getByText("Useful tool description")).toBeInTheDocument();
+  });
+
+  it("renders tools variant without default role", () => {
+    render(
+      <ul>
+        <ListItem variant="tools" title="Tool" href="/internal">
+          Description
+        </ListItem>
+      </ul>
+    );
+    const root = screen.getByTestId("test-id-list-tools-root");
+    expect(root).toBeInTheDocument();
+    // ToolsListItem doesn't have a default role
+    expect(root).not.toHaveAttribute("role");
   });
 
   it("returns null for tools variant without title (integration)", () => {
