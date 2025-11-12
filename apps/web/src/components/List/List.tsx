@@ -33,7 +33,7 @@ export const List: ListComponent = setDisplayName(function List(
   const {
     as: Component = "ul",
     variant = "default",
-    role = "list",
+    role,
     children,
     debugId,
     debugMode,
@@ -59,16 +59,38 @@ export const List: ListComponent = setDisplayName(function List(
   // Choose the component based on variant
   const VariantComponent = variantComponentMap[variant] || Component;
 
-  return (
-    <VariantComponent
-      {...(rest as any)}
-      role={role}
-      variant={variant}
-      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
-    >
-      {children}
-    </VariantComponent>
-  );
+  // For default variant, use string element directly
+  // Respect the `as` prop if provided, otherwise use "ul" from variant map
+  if (variant === "default") {
+    const defaultRole = role !== undefined ? role : "list";
+    const Element = (
+      Component !== "ul" ? Component : VariantComponent
+    ) as React.ElementType;
+    return (
+      <Element
+        {...(rest as any)}
+        role={defaultRole}
+        {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
+      >
+        {children}
+      </Element>
+    );
+  }
+
+  // For variant components, only pass role if explicitly provided
+  // Let variant components handle their own default roles
+  const variantProps: any = {
+    ...(rest as any),
+    as: Component,
+    variant,
+    ...createComponentProps(componentId, `list-${variant}`, isDebugMode),
+  };
+
+  if (role !== undefined) {
+    variantProps.role = role;
+  }
+
+  return <VariantComponent {...variantProps}>{children}</VariantComponent>;
 });
 
 // ============================================================================
@@ -191,6 +213,7 @@ const ToolsList = setDisplayName(function ToolsList<
     ...rest
   } = props;
 
+  // List item component component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
