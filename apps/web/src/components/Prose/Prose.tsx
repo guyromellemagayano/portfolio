@@ -10,19 +10,21 @@ import {
 import { cn } from "@web/utils";
 
 // ============================================================================
-// PROSE COMPONENT TYPES & INTERFACES
+// MAIN PROSE COMPONENT
 // ============================================================================
 
-export interface ProseProps
-  extends React.ComponentProps<"div">,
-    CommonComponentProps {}
-export type ProseComponent = React.FC<ProseProps>;
+export type ProseProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+  };
 
-// ============================================================================
-// BASE PROSE COMPONENT
-// ============================================================================
-
-const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
+export const Prose = setDisplayName(function Prose<
+  T extends React.ElementType = "div",
+>(props: ProseProps<T>) {
   const {
     as: Component = "div",
     className,
@@ -31,33 +33,20 @@ const BaseProse: ProseComponent = setDisplayName(function BaseProse(props) {
     ...rest
   } = props;
 
+  // Prose component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
-  const element = (
+  return (
     <Component
       {...rest}
       className={cn("prose dark:prose-invert", className)}
       {...createComponentProps(componentId, "prose", isDebugMode)}
     />
   );
-
-  return element;
 });
 
 // ============================================================================
 // MEMOIZED PROSE COMPONENT
 // ============================================================================
 
-const MemoizedProse = React.memo(BaseProse);
-
-// ============================================================================
-// MAIN PROSE COMPONENT
-// ============================================================================
-
-export const Prose: ProseComponent = setDisplayName(function Prose(props) {
-  const { isMemoized = false, ...rest } = props;
-
-  const Component = isMemoized ? MemoizedProse : BaseProse;
-  const element = <Component {...rest} />;
-  return element;
-});
+export const MemoizedProse = React.memo(Prose);
