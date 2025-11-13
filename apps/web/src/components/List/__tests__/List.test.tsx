@@ -84,19 +84,19 @@ describe("List", () => {
         </List>
       );
       const root = screen.getByTestId("test-id-list-default-root");
-      // Implementation maps default variant to UL regardless of `as`,
-      // so we assert semantics instead of tag name.
+      expect(root.tagName).toBe("OL");
       expect(root).toHaveAttribute("role", "list");
     });
 
-    it('supports as="nav" with custom role applied', () => {
+    it('supports as="ul" with custom role applied', () => {
       render(
-        <List as="nav" role="navigation">
-          <a href="#">Link</a>
+        <List as="ul" role="list">
+          <li>Item</li>
         </List>
       );
       const root = screen.getByTestId("test-id-list-default-root");
-      expect(root).toHaveAttribute("role", "navigation");
+      expect(root.tagName).toBe("UL");
+      expect(root).toHaveAttribute("role", "list");
     });
   });
 
@@ -119,7 +119,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toBeInTheDocument();
         expect(root).toHaveAttribute("aria-label", "Article list");
         expect(root).toHaveAttribute("role", "region");
@@ -162,7 +162,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveAttribute("role", "region");
       });
 
@@ -172,7 +172,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass(
           "md:border-l",
           "md:border-zinc-100",
@@ -187,7 +187,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass("custom-class", "md:border-l");
       });
 
@@ -197,7 +197,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass("custom-class");
       });
     });
@@ -219,12 +219,12 @@ describe("List", () => {
 
     it("social variant respects custom as prop", () => {
       render(
-        <List variant="social" as="nav">
+        <List variant="social" as="ol">
           <li>Item</li>
         </List>
       );
       const root = screen.getByTestId("test-id-social-list-root");
-      expect(root.tagName).toBe("NAV");
+      expect(root.tagName).toBe("OL");
     });
 
     it("tools variant applies default space-y-16 class", () => {
