@@ -78,7 +78,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-article-list-root");
+    const root = screen.getByTestId("test-id-list-article-root");
     expect(root).toBeInTheDocument();
     expect(root).toHaveAttribute("aria-label", "Article list");
     expect(root).toHaveAttribute("role", "region");
@@ -120,7 +120,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-article-list-root");
+    const root = screen.getByTestId("test-id-list-article-root");
     expect(root).toHaveAttribute("role", "region");
     expect(root).toHaveClass("custom-article-class", "md:border-l");
     expect(screen.getByText("Article One")).toBeInTheDocument();
@@ -144,7 +144,7 @@ describe("List (integration)", () => {
 
   it("renders social variant with custom as prop", () => {
     render(
-      <List variant="social" as="nav">
+      <List variant="social" as="ol">
         <li>GitHub</li>
         <li>LinkedIn</li>
         <li>Twitter</li>
@@ -152,7 +152,7 @@ describe("List (integration)", () => {
     );
 
     const root = screen.getByTestId("test-id-social-list-root");
-    expect(root.tagName).toBe("NAV");
+    expect(root.tagName).toBe("OL");
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
     expect(screen.getByText("Twitter")).toBeInTheDocument();
