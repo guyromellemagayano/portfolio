@@ -23,7 +23,7 @@ import { LIST_ITEM_I18N } from "./ListItem.i18n";
 // MAIN LIST ITEM COMPONENT
 // ============================================================================
 
-export type ListItemLinkProps = Omit<
+type ListItemLinkProps = Omit<
   React.ComponentPropsWithoutRef<typeof Link>,
   "href" | "target" | "title"
 > & {
@@ -34,7 +34,9 @@ export type ListItemLinkProps = Omit<
   /** The title of the link */
   title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
 };
-export type ListItemProps<T extends React.ElementType> = Omit<
+type ListItemVariant = "default" | "article" | "social" | "tools";
+
+export type ListItemProps<T extends React.ElementType = "li"> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
@@ -43,14 +45,14 @@ export type ListItemProps<T extends React.ElementType> = Omit<
     /** The component to render as */
     as?: T;
     /** The variant of the list item */
-    variant?: "default" | "article" | "social" | "tools";
+    variant?: ListItemVariant;
   };
 
 export const ListItem = setDisplayName(function ListItem<
   T extends React.ElementType = "li",
 >(props: ListItemProps<T>) {
   const {
-    as: Component = "li" as unknown as T,
+    as: Component = "li",
     variant = "default",
     role,
     children,
@@ -68,7 +70,7 @@ export const ListItem = setDisplayName(function ListItem<
   if (!children) return null;
 
   // Define a mapping of variants to components
-  const variantComponentMap: Record<string, React.ElementType> = {
+  const variantComponentMap: Record<ListItemVariant, React.ElementType> = {
     default: "li",
     article: ArticleListItem,
     social: SocialListItem,
@@ -87,7 +89,7 @@ export const ListItem = setDisplayName(function ListItem<
     ) as React.ElementType;
     return (
       <Element
-        {...(rest as any)}
+        {...rest}
         role={defaultRole}
         {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
       >
@@ -99,12 +101,23 @@ export const ListItem = setDisplayName(function ListItem<
   // For variant components, only pass role if explicitly provided
   // Let variant components handle their own default roles
   const variantProps: any = {
-    ...(rest as any),
+    ...rest,
     as: Component,
     variant,
-    ...createComponentProps(componentId, `list-${variant}`, isDebugMode),
+    debugId,
+    debugMode,
+    ...createComponentProps(
+      componentId,
+      variant === "social"
+        ? "social-list-item"
+        : variant === "tools"
+          ? "list-tools"
+          : `list-${variant}`,
+      isDebugMode
+    ),
   };
 
+  // Only pass role if explicitly provided - let variant components handle their own defaults
   if (role !== undefined) {
     variantProps.role = role;
   }
@@ -224,29 +237,19 @@ type SocialListItemProps = ListItemProps<"li">;
 const SocialListItem = setDisplayName(function SocialListItem(
   props: SocialListItemProps
 ) {
-  const {
-    as: Component = ListItem,
-    children,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  const { as: Component = "li", children, ...rest } = props;
 
   if (!children) return null;
 
+  const Element = Component as React.ElementType;
+
   return (
-    <Component
-      {...rest}
+    <Element
+      {...(rest as React.ComponentPropsWithoutRef<typeof Element>)}
       role="listitem"
-      {...createComponentProps(componentId, "social-list-item", isDebugMode)}
     >
       {children}
-    </Component>
+    </Element>
   );
 });
 
