@@ -15,21 +15,23 @@ import { LIST_I18N } from "./List.i18n";
 // MAIN LIST COMPONENT
 // ============================================================================
 
-export type ListProps<T extends React.ElementType> = Omit<
+type ListElementType = "ul" | "ol";
+type ListVariant = "default" | "article" | "social" | "tools";
+
+export type ListProps<T extends React.ElementType = "ul"> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "ul" or "ol" are allowed */
     as?: T;
     /** The variant of the list */
-    variant?: "default" | "article" | "social" | "tools";
+    variant?: ListVariant;
   };
-export type ListComponent = React.FC<ListProps<React.ElementType>>;
 
-export const List: ListComponent = setDisplayName(function List(
-  props: ListProps<React.ElementType>
-) {
+export const List = setDisplayName(function List<
+  T extends React.ElementType = "ul",
+>(props: ListProps<T>) {
   const {
     as: Component = "ul",
     variant = "default",
@@ -49,8 +51,8 @@ export const List: ListComponent = setDisplayName(function List(
   if (!children) return null;
 
   // Define a mapping of variants to components
-  const variantComponentMap: Record<string, React.ElementType> = {
-    default: "ul",
+  const variantComponentMap: Record<ListVariant, React.ElementType> = {
+    default: Component,
     article: ArticleList,
     social: SocialList,
     tools: ToolsList,
@@ -68,7 +70,7 @@ export const List: ListComponent = setDisplayName(function List(
     ) as React.ElementType;
     return (
       <Element
-        {...(rest as any)}
+        {...rest}
         role={defaultRole}
         {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
       >
@@ -77,15 +79,24 @@ export const List: ListComponent = setDisplayName(function List(
     );
   }
 
-  // For variant components, only pass role if explicitly provided
-  // Let variant components handle their own default roles
   const variantProps: any = {
-    ...(rest as any),
+    ...rest,
     as: Component,
     variant,
-    ...createComponentProps(componentId, `list-${variant}`, isDebugMode),
+    debugId,
+    debugMode,
+    ...createComponentProps(
+      componentId,
+      variant === "social"
+        ? "social-list"
+        : variant === "tools"
+          ? "tools-list"
+          : `list-${variant}`,
+      isDebugMode
+    ),
   };
 
+  // Only pass role if explicitly provided - let variant components handle their own defaults
   if (role !== undefined) {
     variantProps.role = role;
   }
@@ -103,13 +114,11 @@ export const MemoizedList = React.memo(List);
 // MAIN ARTICLE LIST COMPONENT
 // ============================================================================
 
-type ArticleListProps = ListProps<"div">;
-
-const ArticleList = setDisplayName(function ArticleList(
-  props: ArticleListProps
-) {
+const ArticleList = setDisplayName(function ArticleList<
+  T extends ListElementType = "ul",
+>(props: ListProps<T>) {
   const {
-    as: Component = "div",
+    as,
     role = "region",
     className,
     children,
@@ -118,6 +127,10 @@ const ArticleList = setDisplayName(function ArticleList(
     ...rest
   } = props;
 
+  // Component type as `ListElementType` since it's always "ul" or "ol"
+  const Component: ListElementType = as ?? "ul";
+
+  // List component component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
@@ -127,14 +140,13 @@ const ArticleList = setDisplayName(function ArticleList(
 
   return (
     <Component
-      {...(rest as any)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role={role}
       className={cn(
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
         className
       )}
       aria-label={LIST_I18N.articleList}
-      {...createComponentProps(componentId, "article-list", isDebugMode)}
     >
       <h2
         className="sr-only"
@@ -168,33 +180,20 @@ const ArticleList = setDisplayName(function ArticleList(
 // ============================================================================
 
 const SocialList = setDisplayName(function SocialList<
-  T extends React.ElementType = "ul",
+  T extends ListElementType = "ul",
 >(props: ListProps<T>) {
-  const {
-    as: Component = "ul" as unknown as T,
-    debugId,
-    debugMode,
-    children,
-    ...rest
-  } = props;
+  const { as, children, ...rest } = props;
 
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  // Component type as `ListElementType` since it's always "ul" or "ol"
+  const Component: ListElementType = as ?? "ul";
 
   if (!children) return null;
 
-  const element = (
-    <Component
-      {...(rest as any)}
-      {...createComponentProps(componentId, "social-list", isDebugMode)}
-    >
+  return (
+    <Component {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}>
       {children}
     </Component>
   );
-
-  return element;
 });
 
 // ============================================================================
@@ -202,34 +201,21 @@ const SocialList = setDisplayName(function SocialList<
 // ============================================================================
 
 const ToolsList = setDisplayName(function ToolsList<
-  T extends React.ElementType = "ul",
+  T extends ListElementType = "ul",
 >(props: ListProps<T>) {
-  const {
-    as: Component = "ul" as unknown as T,
-    children,
-    className,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
+  const { as, children, className, ...rest } = props;
 
-  // List item component component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  // Component type as `ListElementType` since it's always "ul" or "ol"
+  const Component: ListElementType = as ?? "ul";
 
   if (!children) return null;
 
-  const element = (
+  return (
     <Component
-      {...(rest as any)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("space-y-16", className)}
-      {...createComponentProps(componentId, "tools-list", isDebugMode)}
     >
       {children}
     </Component>
   );
-
-  return element;
 });
