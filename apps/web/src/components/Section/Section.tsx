@@ -9,83 +9,227 @@ import {
 
 import { cn } from "@web/utils";
 
-import { SectionContent, SectionGrid, SectionTitle } from "./_internal";
-
 // ============================================================================
-// SECTION COMPONENT TYPES & INTERFACES
+// SECTION TITLE COMPONENT
 // ============================================================================
 
-export interface SectionProps
-  extends React.ComponentProps<"section">,
-    CommonComponentProps {
-  /** Section title */
-  title?: string;
-}
-export type SectionComponent = React.FC<SectionProps>;
+type SectionTitleElementType = "h2" | "h3";
+type SectionTitleProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+  };
+
+const SectionTitle = setDisplayName(function SectionTitle<
+  T extends SectionTitleElementType = "h2",
+>(props: SectionTitleProps<T>) {
+  const {
+    as: Component = "h2",
+    children,
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      className={cn(
+        "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
+        className
+      )}
+      {...createComponentProps(componentId, "section-title", isDebugMode)}
+    >
+      {children}
+    </Component>
+  );
+});
 
 // ============================================================================
-// BASE SECTION COMPONENT
+// MEMOIZED SECTION TITLE COMPONENT
 // ============================================================================
 
-const BaseSection: SectionComponent = setDisplayName(
-  function BaseSection(props) {
-    const {
-      as: Component = "section",
-      children,
-      className,
-      title,
-      debugId,
-      debugMode,
-      ...rest
-    } = props;
+// eslint-disable-next-line unused-imports/no-unused-vars
+const MemoizedSectionTitle = React.memo(SectionTitle);
 
-    const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+// ============================================================================
+// SECTION CONTENT COMPONENT
+// ============================================================================
 
-    const element = (
-      <Component
-        {...rest}
-        className={cn(
-          "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
-          className
-        )}
-        {...createComponentProps(componentId, "section", isDebugMode)}
-      >
-        <SectionGrid debugId={debugId} debugMode={debugMode}>
-          {title && title.trim() !== "" && title.length > 0 ? (
-            <SectionTitle debugId={debugId} debugMode={debugMode}>
-              {title}
-            </SectionTitle>
-          ) : null}
+type SectionContentElementType = "div";
+type SectionContentProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+  };
 
-          {children ? (
-            <SectionContent debugId={debugId} debugMode={debugMode}>
-              {children}
-            </SectionContent>
-          ) : null}
-        </SectionGrid>
-      </Component>
-    );
+const SectionContent = setDisplayName(function SectionContent<
+  T extends SectionContentElementType = "div",
+>(props: SectionContentProps<T>) {
+  const {
+    as: Component = "div",
+    children,
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
 
-    return element;
+  // Section content component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      className={cn("md:col-span-3", className)}
+      {...createComponentProps(componentId, "section-content", isDebugMode)}
+    >
+      {children}
+    </Component>
+  );
+});
+
+// ============================================================================
+// MEMOIZED SECTION CONTENT COMPONENT
+// ============================================================================
+
+// eslint-disable-next-line unused-imports/no-unused-vars
+const MemoizedSectionContent = React.memo(SectionContent);
+
+// ============================================================================
+// SECTION GRID COMPONENT
+// ============================================================================
+
+type SectionGridElementType = "div";
+type SectionGridProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+  };
+
+const SectionGrid = setDisplayName(function SectionGrid<
+  T extends SectionGridElementType = "div",
+>(props: SectionGridProps<T>) {
+  const {
+    as: Component = "div",
+    children,
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      className={cn(
+        "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
+        className
+      )}
+      {...createComponentProps(componentId, "section-grid", isDebugMode)}
+    >
+      {children}
+    </Component>
+  );
+});
+
+// ============================================================================
+// MEMOIZED SECTION GRID COMPONENT
+// ============================================================================
+
+// eslint-disable-next-line unused-imports/no-unused-vars
+const MemoizedSectionGrid = React.memo(SectionGrid);
+
+// ============================================================================
+// SECTION COMPONENT
+// ============================================================================
+
+type SectionElementType = "section";
+
+export type SectionProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as */
+    as?: T;
+    /** The title of the section */
+    title?: string;
+  };
+
+export const Section = setDisplayName(function Section<
+  T extends SectionElementType = "section",
+>(props: SectionProps<T>) {
+  const {
+    as: Component = "section",
+    children,
+    className,
+    title,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  // Section component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+
+  if (!title?.trim()?.length || !children) {
+    return null;
   }
-);
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      className={cn(
+        "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
+        className
+      )}
+      {...createComponentProps(componentId, "section", isDebugMode)}
+    >
+      <SectionGrid debugId={debugId} debugMode={debugMode}>
+        <SectionTitle debugId={debugId} debugMode={debugMode}>
+          {title}
+        </SectionTitle>
+
+        <SectionContent debugId={debugId} debugMode={debugMode}>
+          {children}
+        </SectionContent>
+      </SectionGrid>
+    </Component>
+  );
+});
 
 // ============================================================================
 // MEMOIZED SECTION COMPONENT
 // ============================================================================
 
-const MemoizedSection = React.memo(BaseSection);
-
-// ============================================================================
-// MAIN SECTION COMPONENT
-// ============================================================================
-
-export const Section: SectionComponent = setDisplayName(
-  function Section(props) {
-    const { children, isMemoized = false, ...rest } = props;
-
-    const Component = isMemoized ? MemoizedSection : BaseSection;
-    const element = <Component {...rest}>{children}</Component>;
-    return element;
-  }
-);
+export const MemoizedSection = React.memo(Section);
