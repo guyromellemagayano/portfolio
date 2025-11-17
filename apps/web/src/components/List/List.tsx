@@ -18,7 +18,7 @@ import { LIST_I18N } from "./List.i18n";
 type ListElementType = "ul" | "ol";
 type ListVariant = "default" | "article" | "social" | "tools";
 
-export type ListProps<T extends ListElementType = "ul"> = Omit<
+export type ListProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
@@ -29,9 +29,9 @@ export type ListProps<T extends ListElementType = "ul"> = Omit<
     variant?: ListVariant;
   };
 
-export const List = setDisplayName(function List<
-  T extends ListElementType = "ul",
->(props: ListProps<T>) {
+export const List = setDisplayName(function List(
+  props: ListProps<ListElementType>
+) {
   const {
     as: Component = "ul",
     variant = "default",
@@ -110,9 +110,9 @@ export const MemoizedList = React.memo(List);
 // MAIN ARTICLE LIST COMPONENT
 // ============================================================================
 
-const ArticleList = setDisplayName(function ArticleList<
-  T extends ListElementType = "ul",
->(props: ListProps<T>) {
+const ArticleList = setDisplayName(function ArticleList(
+  props: ListProps<ListElementType>
+) {
   const {
     as: Component = "ul",
     role = "region",
@@ -172,9 +172,9 @@ const ArticleList = setDisplayName(function ArticleList<
 // MAIN SOCIAL LIST COMPONENT
 // ============================================================================
 
-const SocialList = setDisplayName(function SocialList<
-  T extends ListElementType = "ul",
->(props: ListProps<T>) {
+const SocialList = setDisplayName(function SocialList(
+  props: ListProps<ListElementType>
+) {
   const { as: Component = "ul", children, ...rest } = props;
 
   if (!children) return null;
@@ -190,9 +190,9 @@ const SocialList = setDisplayName(function SocialList<
 // MAIN TOOLS LIST COMPONENT
 // ============================================================================
 
-const ToolsList = setDisplayName(function ToolsList<
-  T extends ListElementType = "ul",
->(props: ListProps<T>) {
+const ToolsList = setDisplayName(function ToolsList(
+  props: ListProps<ListElementType>
+) {
   const { as: Component = "ul", children, className, ...rest } = props;
 
   if (!children) return null;
