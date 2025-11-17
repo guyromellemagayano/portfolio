@@ -18,7 +18,7 @@ import { LIST_I18N } from "./List.i18n";
 type ListElementType = "ul" | "ol";
 type ListVariant = "default" | "article" | "social" | "tools";
 
-export type ListProps<T extends React.ElementType = "ul"> = Omit<
+export type ListProps<T extends ListElementType = "ul"> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
@@ -30,7 +30,7 @@ export type ListProps<T extends React.ElementType = "ul"> = Omit<
   };
 
 export const List = setDisplayName(function List<
-  T extends React.ElementType = "ul",
+  T extends ListElementType = "ul",
 >(props: ListProps<T>) {
   const {
     as: Component = "ul",
@@ -79,10 +79,11 @@ export const List = setDisplayName(function List<
     );
   }
 
-  const variantProps: any = {
+  const variantProps = {
     ...rest,
     as: Component,
     variant,
+    role,
     debugId,
     debugMode,
     ...createComponentProps(
@@ -95,11 +96,6 @@ export const List = setDisplayName(function List<
       isDebugMode
     ),
   };
-
-  // Only pass role if explicitly provided - let variant components handle their own defaults
-  if (role !== undefined) {
-    variantProps.role = role;
-  }
 
   return <VariantComponent {...variantProps}>{children}</VariantComponent>;
 });
@@ -118,7 +114,7 @@ const ArticleList = setDisplayName(function ArticleList<
   T extends ListElementType = "ul",
 >(props: ListProps<T>) {
   const {
-    as,
+    as: Component = "ul",
     role = "region",
     className,
     children,
@@ -126,9 +122,6 @@ const ArticleList = setDisplayName(function ArticleList<
     debugMode,
     ...rest
   } = props;
-
-  // Component type as `ListElementType` since it's always "ul" or "ol"
-  const Component: ListElementType = as ?? "ul";
 
   // List component component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
@@ -182,10 +175,7 @@ const ArticleList = setDisplayName(function ArticleList<
 const SocialList = setDisplayName(function SocialList<
   T extends ListElementType = "ul",
 >(props: ListProps<T>) {
-  const { as, children, ...rest } = props;
-
-  // Component type as `ListElementType` since it's always "ul" or "ol"
-  const Component: ListElementType = as ?? "ul";
+  const { as: Component = "ul", children, ...rest } = props;
 
   if (!children) return null;
 
@@ -203,10 +193,7 @@ const SocialList = setDisplayName(function SocialList<
 const ToolsList = setDisplayName(function ToolsList<
   T extends ListElementType = "ul",
 >(props: ListProps<T>) {
-  const { as, children, className, ...rest } = props;
-
-  // Component type as `ListElementType` since it's always "ul" or "ol"
-  const Component: ListElementType = as ?? "ul";
+  const { as: Component = "ul", children, className, ...rest } = props;
 
   if (!children) return null;
 
