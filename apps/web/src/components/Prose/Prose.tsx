@@ -13,6 +13,8 @@ import { cn } from "@web/utils";
 // MAIN PROSE COMPONENT
 // ============================================================================
 
+type ProseElementType = "div";
+
 export type ProseProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
@@ -22,9 +24,9 @@ export type ProseProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-export const Prose = setDisplayName(function Prose<
-  T extends React.ElementType = "div",
->(props: ProseProps<T>) {
+export const Prose = setDisplayName(function Prose(
+  props: ProseProps<ProseElementType>
+) {
   const {
     as: Component = "div",
     className,
@@ -38,7 +40,7 @@ export const Prose = setDisplayName(function Prose<
 
   return (
     <Component
-      {...rest}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("prose dark:prose-invert", className)}
       {...createComponentProps(componentId, "prose", isDebugMode)}
     />
