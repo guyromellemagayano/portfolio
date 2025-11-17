@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import Link from "next/link";
@@ -25,7 +23,7 @@ import { LIST_ITEM_I18N } from "./ListItem.i18n";
 
 type ListItemLinkProps = Omit<
   React.ComponentPropsWithoutRef<typeof Link>,
-  "href" | "target" | "title"
+  "href" | "target" | "title" | "as"
 > & {
   /** The href of the link */
   href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
@@ -36,7 +34,7 @@ type ListItemLinkProps = Omit<
 };
 type ListItemVariant = "default" | "article" | "social" | "tools";
 
-export type ListItemProps<T extends React.ElementType = "li"> = Omit<
+export type ListItemProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
@@ -48,9 +46,9 @@ export type ListItemProps<T extends React.ElementType = "li"> = Omit<
     variant?: ListItemVariant;
   };
 
-export const ListItem = setDisplayName(function ListItem<
-  T extends React.ElementType = "li",
->(props: ListItemProps<T>) {
+export const ListItem = setDisplayName(function ListItem(
+  props: ListItemProps<"li">
+) {
   const {
     as: Component = "li",
     variant = "default",
@@ -71,7 +69,7 @@ export const ListItem = setDisplayName(function ListItem<
 
   // Define a mapping of variants to components
   const variantComponentMap: Record<ListItemVariant, React.ElementType> = {
-    default: "li",
+    default: Component,
     article: ArticleListItem,
     social: SocialListItem,
     tools: ToolsListItem,
@@ -98,12 +96,11 @@ export const ListItem = setDisplayName(function ListItem<
     );
   }
 
-  // For variant components, only pass role if explicitly provided
-  // Let variant components handle their own default roles
-  const variantProps: any = {
+  const variantProps = {
     ...rest,
     as: Component,
     variant,
+    role,
     debugId,
     debugMode,
     ...createComponentProps(
@@ -116,11 +113,6 @@ export const ListItem = setDisplayName(function ListItem<
       isDebugMode
     ),
   };
-
-  // Only pass role if explicitly provided - let variant components handle their own defaults
-  if (role !== undefined) {
-    variantProps.role = role;
-  }
 
   return <VariantComponent {...variantProps}>{children}</VariantComponent>;
 });
@@ -186,14 +178,14 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 
   return (
     <Component
-      {...(rest as any)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       as="article"
       className={cn(!isFrontPage ? "md:col-span-3" : undefined, className)}
-      debugId={componentId}
-      debugMode={isDebugMode}
       id={articleData.id}
       aria-label={articleData.title}
       aria-describedby={articleData.description}
+      debugId={componentId}
+      debugMode={isDebugMode}
     >
       <Card.Title
         href={articleData.slug}
@@ -232,24 +224,23 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 // MAIN SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-type SocialListItemProps = ListItemProps<"li">;
-
 const SocialListItem = setDisplayName(function SocialListItem(
-  props: SocialListItemProps
+  props: ListItemProps<"li">
 ) {
-  const { as: Component = "li", children, ...rest } = props;
+  const { as: Component = "li", children, role, ...rest } = props;
 
   if (!children) return null;
 
-  const Element = Component as React.ElementType;
+  // Set default role to "listitem" if not provided
+  const defaultRole = role !== undefined ? role : "listitem";
 
   return (
-    <Element
-      {...(rest as React.ComponentPropsWithoutRef<typeof Element>)}
-      role="listitem"
+    <Component
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      role={defaultRole}
     >
       {children}
-    </Element>
+    </Component>
   );
 });
 
@@ -257,10 +248,8 @@ const SocialListItem = setDisplayName(function SocialListItem(
 // MAIN TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
-type ToolsListItemProps = ListItemProps<typeof Card>;
-
 const ToolsListItem = setDisplayName(function ToolsListItem(
-  props: ToolsListItemProps
+  props: ListItemProps<typeof Card>
 ) {
   const {
     as: Component = Card,
@@ -287,7 +276,7 @@ const ToolsListItem = setDisplayName(function ToolsListItem(
 
   return (
     <Component
-      {...rest}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       as="li"
       role={role}
       debugId={componentId}
