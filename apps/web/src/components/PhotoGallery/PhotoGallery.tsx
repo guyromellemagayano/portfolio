@@ -17,6 +17,8 @@ import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./PhotoGallery.data";
 // MAIN PHOTO GALLERY COMPONENT
 // ============================================================================
 
+type PhotoGalleryElementType = "div";
+
 export type PhotoGalleryProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
@@ -28,9 +30,9 @@ export type PhotoGalleryProps<T extends React.ElementType> = Omit<
     photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
   };
 
-export const PhotoGallery = setDisplayName(function PhotoGallery<
-  T extends React.ElementType = "div",
->(props: PhotoGalleryProps<T>) {
+export const PhotoGallery = setDisplayName(function PhotoGallery(
+  props: PhotoGalleryProps<PhotoGalleryElementType>
+) {
   const {
     as: Component = "div",
     photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
@@ -56,7 +58,7 @@ export const PhotoGallery = setDisplayName(function PhotoGallery<
 
   return (
     <Component
-      {...rest}
+      {...(rest as React.ComponentPropsWithoutRef<PhotoGalleryElementType>)}
       className={cn("mt-16 sm:mt-20", className)}
       {...createComponentProps(componentId, "photo-gallery", isDebugMode)}
     >
