@@ -29,8 +29,8 @@ export type ListProps<T extends React.ElementType> = Omit<
     variant?: ListVariant;
   };
 
-export const List = setDisplayName(function List(
-  props: ListProps<ListElementType>
+export const List = setDisplayName(function List<T extends ListElementType>(
+  props: ListProps<T>
 ) {
   const {
     as: Component = "ul",
