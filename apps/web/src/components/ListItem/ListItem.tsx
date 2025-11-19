@@ -21,17 +21,7 @@ import { LIST_ITEM_I18N } from "./ListItem.i18n";
 // MAIN LIST ITEM COMPONENT
 // ============================================================================
 
-type ListItemLinkProps = Omit<
-  React.ComponentPropsWithoutRef<typeof Link>,
-  "href" | "target" | "title" | "as"
-> & {
-  /** The href of the link */
-  href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
-  /** The target of the link */
-  target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
-  /** The title of the link */
-  title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
-};
+type ListItemElementType = "li";
 type ListItemVariant = "default" | "article" | "social" | "tools";
 
 export type ListItemProps<T extends React.ElementType> = Omit<
@@ -39,16 +29,25 @@ export type ListItemProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> &
-  ListItemLinkProps & {
-    /** The component to render as */
+  Omit<
+    React.ComponentPropsWithoutRef<typeof Link>,
+    "href" | "target" | "title" | "as"
+  > & {
+    /** The component to render as - only "li" is allowed */
     as?: T;
     /** The variant of the list item */
     variant?: ListItemVariant;
+    /** The href of the link */
+    href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+    /** The target of the link */
+    target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
+    /** The title of the link */
+    title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
   };
 
-export const ListItem = setDisplayName(function ListItem(
-  props: ListItemProps<"li">
-) {
+export const ListItem = setDisplayName(function ListItem<
+  T extends ListItemElementType,
+>(props: ListItemProps<T>) {
   const {
     as: Component = "li",
     variant = "default",
@@ -224,9 +223,9 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 // MAIN SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-const SocialListItem = setDisplayName(function SocialListItem(
-  props: ListItemProps<"li">
-) {
+const SocialListItem = setDisplayName(function SocialListItem<
+  T extends ListItemElementType,
+>(props: ListItemProps<T>) {
   const { as: Component = "li", children, role, ...rest } = props;
 
   if (!children) return null;
@@ -263,6 +262,7 @@ const ToolsListItem = setDisplayName(function ToolsListItem(
     ...rest
   } = props;
 
+  // Tools list item component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
