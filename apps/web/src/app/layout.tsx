@@ -11,12 +11,9 @@ import "@web/styles/tailwind.css";
 // ROOT LAYOUT TYPES & INTERFACES
 // ============================================================================
 
-/** `RootLayoutProps` type. */
 export interface RootLayoutProps {
   children: React.ReactNode;
 }
-
-/** `RootLayoutComponent` type. */
 export type RootLayoutComponent = React.FC<RootLayoutProps>;
 
 // ============================================================================
