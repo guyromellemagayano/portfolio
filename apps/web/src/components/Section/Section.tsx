@@ -23,9 +23,9 @@ type SectionTitleProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-const SectionTitle = setDisplayName(function SectionTitle<
-  T extends SectionTitleElementType = "h2",
->(props: SectionTitleProps<T>) {
+const SectionTitle = setDisplayName(function SectionTitle(
+  props: SectionTitleProps<SectionTitleElementType>
+) {
   const {
     as: Component = "h2",
     children,
@@ -35,6 +35,7 @@ const SectionTitle = setDisplayName(function SectionTitle<
     ...rest
   } = props;
 
+  // Section title component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
@@ -44,7 +45,7 @@ const SectionTitle = setDisplayName(function SectionTitle<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
         className
@@ -77,9 +78,9 @@ type SectionContentProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-const SectionContent = setDisplayName(function SectionContent<
-  T extends SectionContentElementType = "div",
->(props: SectionContentProps<T>) {
+const SectionContent = setDisplayName(function SectionContent(
+  props: SectionContentProps<SectionContentElementType>
+) {
   const {
     as: Component = "div",
     children,
@@ -99,7 +100,7 @@ const SectionContent = setDisplayName(function SectionContent<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("md:col-span-3", className)}
       {...createComponentProps(componentId, "section-content", isDebugMode)}
     >
@@ -129,9 +130,9 @@ type SectionGridProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-const SectionGrid = setDisplayName(function SectionGrid<
-  T extends SectionGridElementType = "div",
->(props: SectionGridProps<T>) {
+const SectionGrid = setDisplayName(function SectionGrid(
+  props: SectionGridProps<SectionGridElementType>
+) {
   const {
     as: Component = "div",
     children,
@@ -141,6 +142,7 @@ const SectionGrid = setDisplayName(function SectionGrid<
     ...rest
   } = props;
 
+  // Section grid component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
     debugId,
     debugMode,
@@ -150,7 +152,7 @@ const SectionGrid = setDisplayName(function SectionGrid<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
         className
@@ -186,9 +188,9 @@ export type SectionProps<T extends React.ElementType> = Omit<
     title?: string;
   };
 
-export const Section = setDisplayName(function Section<
-  T extends SectionElementType = "section",
->(props: SectionProps<T>) {
+export const Section = setDisplayName(function Section(
+  props: SectionProps<SectionElementType>
+) {
   const {
     as: Component = "section",
     children,
@@ -208,7 +210,7 @@ export const Section = setDisplayName(function Section<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
         className
