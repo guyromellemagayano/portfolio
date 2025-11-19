@@ -29,6 +29,7 @@ export const Prose = setDisplayName(function Prose(
 ) {
   const {
     as: Component = "div",
+    ref,
     className,
     debugId,
     debugMode,
@@ -41,6 +42,7 @@ export const Prose = setDisplayName(function Prose(
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      ref={ref}
       className={cn("prose dark:prose-invert", className)}
       {...createComponentProps(componentId, "prose", isDebugMode)}
     />
