@@ -9,7 +9,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { CardCta, CardDescription, CardEyebrow, CardTitle } from "../_internal";
 import { Card } from "../Card";
 
 const mockUseComponentId = vi.hoisted(() =>
@@ -60,7 +59,9 @@ vi.mock("@guyromellemagayano/utils", () => ({
       ...additionalProps,
     })
   ),
-  isValidLink: vi.fn((href) => href != null && href !== ""),
+  isValidLink: vi.fn((href) => {
+    return href && href !== "" && href !== "#";
+  }),
   getLinkTargetProps: vi.fn((target, rel) => ({
     target: target || undefined,
     rel: rel || undefined,
@@ -71,7 +72,7 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock Icon component specifically for `CardCta`
+// Mock Icon component specifically for `Card.Cta`
 vi.mock("@web/components", () => ({
   Icon: {
     ChevronRight: vi.fn((props) => (
@@ -90,10 +91,10 @@ describe("Card Integration Tests", () => {
     it("renders Card with all sub-components", () => {
       render(
         <Card>
-          <CardEyebrow>Eyebrow text</CardEyebrow>
-          <CardTitle href="/test">Card Title</CardTitle>
-          <CardDescription>Card description text</CardDescription>
-          <CardCta href="/action">Call to Action</CardCta>
+          <Card.Eyebrow>Eyebrow text</Card.Eyebrow>
+          <Card.Title href="/test">Card Title</Card.Title>
+          <Card.Description>Card description text</Card.Description>
+          <Card.Cta href="/action">Call to Action</Card.Cta>
         </Card>
       );
 
@@ -106,9 +107,9 @@ describe("Card Integration Tests", () => {
     it("maintains proper component hierarchy", () => {
       render(
         <Card>
-          <CardEyebrow>Eyebrow</CardEyebrow>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
+          <Card.Eyebrow>Eyebrow</Card.Eyebrow>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
         </Card>
       );
 
@@ -127,8 +128,8 @@ describe("Card Integration Tests", () => {
     it("renders Card with only title and description", () => {
       render(
         <Card>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
         </Card>
       );
 
@@ -141,10 +142,10 @@ describe("Card Integration Tests", () => {
     it("renders Card with linked title and CTA", () => {
       render(
         <Card>
-          <CardTitle href="/title-link">Linked Title</CardTitle>
-          <CardCta href="/cta-link" target="_blank">
+          <Card.Title href="/title-link">Linked Title</Card.Title>
+          <Card.Cta href="/cta-link" target="_blank">
             External CTA
-          </CardCta>
+          </Card.Cta>
         </Card>
       );
 
@@ -160,9 +161,9 @@ describe("Card Integration Tests", () => {
     it("handles mixed linked and non-linked sub-components", () => {
       render(
         <Card>
-          <CardTitle href="/link">Linked Title</CardTitle>
-          <CardDescription>Non-linked Description</CardDescription>
-          <CardCta>Non-linked CTA</CardCta>
+          <Card.Title href="/link">Linked Title</Card.Title>
+          <Card.Description>Non-linked Description</Card.Description>
+          <Card.Cta>Non-linked CTA</Card.Cta>
         </Card>
       );
 
@@ -176,8 +177,8 @@ describe("Card Integration Tests", () => {
     it("renders Card with valid content", () => {
       render(
         <Card>
-          <CardTitle>Valid Title</CardTitle>
-          <CardDescription>Valid Description</CardDescription>
+          <Card.Title>Valid Title</Card.Title>
+          <Card.Description>Valid Description</Card.Description>
         </Card>
       );
 
@@ -188,8 +189,8 @@ describe("Card Integration Tests", () => {
     it("handles null and undefined children gracefully", () => {
       render(
         <Card>
-          <CardTitle>{null}</CardTitle>
-          <CardDescription>{undefined}</CardDescription>
+          <Card.Title>{null}</Card.Title>
+          <Card.Description>{undefined}</Card.Description>
         </Card>
       );
 
@@ -200,8 +201,8 @@ describe("Card Integration Tests", () => {
     it("handles mixed valid and invalid content", () => {
       render(
         <Card>
-          <CardTitle>{null}</CardTitle>
-          <CardDescription>Valid Description</CardDescription>
+          <Card.Title>{null}</Card.Title>
+          <Card.Description>Valid Description</Card.Description>
         </Card>
       );
 
@@ -211,12 +212,12 @@ describe("Card Integration Tests", () => {
     it("handles complex children content", () => {
       render(
         <Card>
-          <CardTitle>
+          <Card.Title>
             <span>Complex</span> <strong>Title</strong>
-          </CardTitle>
-          <CardDescription>
+          </Card.Title>
+          <Card.Description>
             <em>Complex</em> <code>Description</code>
-          </CardDescription>
+          </Card.Description>
         </Card>
       );
 
@@ -230,8 +231,8 @@ describe("Card Integration Tests", () => {
     it("renders multiple descriptions", () => {
       render(
         <Card>
-          <CardDescription>First description</CardDescription>
-          <CardDescription>Second description</CardDescription>
+          <Card.Description>First description</Card.Description>
+          <Card.Description>Second description</Card.Description>
         </Card>
       );
 
@@ -242,8 +243,8 @@ describe("Card Integration Tests", () => {
     it("renders multiple titles", () => {
       render(
         <Card>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
         </Card>
       );
 
@@ -254,8 +255,8 @@ describe("Card Integration Tests", () => {
     it("renders multiple CTAs", () => {
       render(
         <Card>
-          <CardTitle>Title</CardTitle>
-          <CardDescription>Description</CardDescription>
+          <Card.Title>Title</Card.Title>
+          <Card.Description>Description</Card.Description>
         </Card>
       );
 
@@ -275,11 +276,153 @@ describe("Card Integration Tests", () => {
     it("handles Card with only whitespace children", () => {
       render(
         <Card>
-          <CardTitle>Valid Title</CardTitle>
+          <Card.Title>Valid Title</Card.Title>
         </Card>
       );
 
       expect(screen.getByText("Valid Title")).toBeInTheDocument();
+    });
+  });
+
+  describe("Card.Title Integration", () => {
+    it("renders Card.Title within Card context", () => {
+      render(
+        <Card>
+          <Card.Title href="/test-link">Test Title</Card.Title>
+          <Card.Description>Test Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Test Title")).toBeInTheDocument();
+      expect(screen.getByText("Test Description")).toBeInTheDocument();
+    });
+
+    it("renders linked Card.Title within Card", () => {
+      render(
+        <Card>
+          <Card.Title href="/article">Article Title</Card.Title>
+          <Card.Description>Article Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Article Title")).toBeInTheDocument();
+      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
+    });
+
+    it("renders non-linked Card.Title within Card", () => {
+      render(
+        <Card>
+          <Card.Title href="#">Non-linked Title</Card.Title>
+          <Card.Description>Non-linked Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Non-linked Title")).toBeInTheDocument();
+      expect(
+        screen.queryByTestId("test-id-card-link-custom-root")
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders Card with Title, Eyebrow, and Description", () => {
+      render(
+        <Card>
+          <Card.Eyebrow>Category</Card.Eyebrow>
+          <Card.Title href="/article">Article Title</Card.Title>
+          <Card.Description>Article Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Category")).toBeInTheDocument();
+      expect(screen.getByText("Article Title")).toBeInTheDocument();
+      expect(screen.getByText("Article Description")).toBeInTheDocument();
+    });
+
+    it("renders Card with Title and CTA", () => {
+      render(
+        <Card>
+          <Card.Title href="/article">Article Title</Card.Title>
+          <Card.Cta href="/read-more">Read More</Card.Cta>
+        </Card>
+      );
+
+      expect(screen.getByText("Article Title")).toBeInTheDocument();
+      expect(screen.getByText("Read More")).toBeInTheDocument();
+    });
+
+    it("renders multiple Cards with Titles", () => {
+      render(
+        <>
+          <Card>
+            <Card.Title href="/article-1">First Article</Card.Title>
+            <Card.Description>First Description</Card.Description>
+          </Card>
+          <Card>
+            <Card.Title href="/article-2">Second Article</Card.Title>
+            <Card.Description>Second Description</Card.Description>
+          </Card>
+        </>
+      );
+
+      expect(screen.getByText("First Article")).toBeInTheDocument();
+      expect(screen.getByText("Second Article")).toBeInTheDocument();
+    });
+
+    it("handles Card.Title with complex children", () => {
+      render(
+        <Card>
+          <Card.Title href="/test">
+            <span>Complex</span> <strong>Title</strong>
+          </Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      expect(screen.getByText("Complex")).toBeInTheDocument();
+      expect(screen.getByText("Title")).toBeInTheDocument();
+    });
+
+    it("handles Card.Title with polymorphic rendering", () => {
+      render(
+        <Card>
+          <Card.Title as="h1" href="/test">
+            Main Heading
+          </Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      const titleElement = screen.getByTestId("test-id-card-title-root");
+      expect(titleElement.tagName).toBe("H1");
+    });
+
+    it("passes debug mode through Card to Card.Title", () => {
+      render(
+        <Card debugMode={true}>
+          <Card.Title href="/test" debugMode={true}>
+            Debug Title
+          </Card.Title>
+        </Card>
+      );
+
+      const cardElement = screen.getByTestId("test-id-card-root");
+      const titleElement = screen.getByTestId("test-id-card-title-root");
+
+      expect(cardElement).toHaveAttribute("data-debug-mode", "true");
+      expect(titleElement).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("renders Card.Title with ARIA attributes in Card context", () => {
+      render(
+        <Card>
+          <Card.Title href="/test" aria-label="Main article title">
+            Article Title
+          </Card.Title>
+          <Card.Description>Description</Card.Description>
+        </Card>
+      );
+
+      const titleElement = screen.getByTestId("test-id-card-title-root");
+      expect(titleElement).toHaveAttribute("aria-label", "Main article title");
     });
   });
 });
