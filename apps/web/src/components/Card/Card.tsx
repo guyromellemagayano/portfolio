@@ -166,6 +166,8 @@ type CardEyebrowProps<T extends React.ElementType> = Omit<
     as?: T;
     /** Enable decorative styling */
     decorate?: boolean;
+    /** The date time of the eyebrow */
+    dateTime?: string;
   };
 
 const CardEyebrow = setDisplayName(function CardEyebrow(
@@ -177,6 +179,7 @@ const CardEyebrow = setDisplayName(function CardEyebrow(
     className,
     debugId,
     debugMode,
+    dateTime,
     decorate = false,
     ...rest
   } = props;
@@ -197,6 +200,7 @@ const CardEyebrow = setDisplayName(function CardEyebrow(
         decorate && "pl-3.5",
         className
       )}
+      dateTime={dateTime}
       {...createComponentProps(componentId, "card-eyebrow", isDebugMode)}
     >
       {decorate ? (
