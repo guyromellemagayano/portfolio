@@ -14,7 +14,7 @@ import { cn } from "@web/utils";
 import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./PhotoGallery.data";
 
 // ============================================================================
-// MAIN PHOTO GALLERY COMPONENT
+// PHOTO GALLERY COMPONENT
 // ============================================================================
 
 type PhotoGalleryElementType = "div";
