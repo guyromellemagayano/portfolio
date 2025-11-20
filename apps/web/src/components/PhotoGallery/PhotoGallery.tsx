@@ -17,22 +17,22 @@ import { PHOTO_GALLERY_COMPONENT_PHOTOS } from "./PhotoGallery.data";
 // PHOTO GALLERY COMPONENT
 // ============================================================================
 
-type PhotoGalleryElementType = "div";
+type PhotoGalleryElementType = "div" | "section";
 
 export type PhotoGalleryProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "div" is allowed */
     as?: T;
     /** Photo gallery photos */
     photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
   };
 
-export const PhotoGallery = setDisplayName(function PhotoGallery(
-  props: PhotoGalleryProps<PhotoGalleryElementType>
-) {
+export const PhotoGallery = setDisplayName(function PhotoGallery<
+  T extends PhotoGalleryElementType,
+>(props: PhotoGalleryProps<T>) {
   const {
     as: Component = "div",
     photos = PHOTO_GALLERY_COMPONENT_PHOTOS,

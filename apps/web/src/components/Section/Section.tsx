@@ -23,9 +23,9 @@ type SectionTitleProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-const SectionTitle = setDisplayName(function SectionTitle(
-  props: SectionTitleProps<SectionTitleElementType>
-) {
+const SectionTitle = setDisplayName(function SectionTitle<
+  T extends SectionTitleElementType,
+>(props: SectionTitleProps<T>) {
   const {
     as: Component = "h2",
     children,
@@ -74,7 +74,7 @@ type SectionContentProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "div" is allowed */
     as?: T;
   };
 
@@ -126,13 +126,13 @@ type SectionGridProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "div" is allowed */
     as?: T;
   };
 
-const SectionGrid = setDisplayName(function SectionGrid(
-  props: SectionGridProps<SectionGridElementType>
-) {
+const SectionGrid = setDisplayName(function SectionGrid<
+  T extends SectionGridElementType,
+>(props: SectionGridProps<T>) {
   const {
     as: Component = "div",
     children,
@@ -182,15 +182,15 @@ export type SectionProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "section" is allowed */
     as?: T;
     /** The title of the section */
     title?: string;
   };
 
-export const Section = setDisplayName(function Section(
-  props: SectionProps<SectionElementType>
-) {
+export const Section = setDisplayName(function Section<
+  T extends SectionElementType,
+>(props: SectionProps<T>) {
   const {
     as: Component = "section",
     children,
