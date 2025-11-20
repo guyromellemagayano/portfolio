@@ -12,7 +12,7 @@ import { cn } from "@web/utils";
 import { LIST_I18N } from "./List.i18n";
 
 // ============================================================================
-// MAIN LIST COMPONENT
+// LIST COMPONENT
 // ============================================================================
 
 type ListElementType = "ul" | "ol";
@@ -98,7 +98,7 @@ export const List = setDisplayName(function List<T extends ListElementType>(
 export const MemoizedList = React.memo(List);
 
 // ============================================================================
-// MAIN ARTICLE LIST COMPONENT
+// ARTICLE LIST COMPONENT
 // ============================================================================
 
 const ArticleList = setDisplayName(function ArticleList(
@@ -160,7 +160,7 @@ const ArticleList = setDisplayName(function ArticleList(
 });
 
 // ============================================================================
-// MAIN SOCIAL LIST COMPONENT
+// SOCIAL LIST COMPONENT
 // ============================================================================
 
 const SocialList = setDisplayName(function SocialList(
@@ -187,7 +187,7 @@ const SocialList = setDisplayName(function SocialList(
 });
 
 // ============================================================================
-// MAIN TOOLS LIST COMPONENT
+// TOOLS LIST COMPONENT
 // ============================================================================
 
 const ToolsList = setDisplayName(function ToolsList(
