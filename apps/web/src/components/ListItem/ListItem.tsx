@@ -18,7 +18,7 @@ import { type ArticleWithSlug, cn } from "@web/utils";
 import { LIST_ITEM_I18N } from "./ListItem.i18n";
 
 // ============================================================================
-// MAIN LIST ITEM COMPONENT
+// LIST ITEM COMPONENT
 // ============================================================================
 
 type ListItemElementType = "li";
@@ -123,7 +123,7 @@ export const ListItem = setDisplayName(function ListItem<
 export const MemoizedListItem = React.memo(ListItem);
 
 // ============================================================================
-// MAIN ARTICLE LIST ITEM COMPONENT
+// ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
 type ArticleListItemProps = ListItemProps<typeof Card> & {
@@ -220,7 +220,7 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 });
 
 // ============================================================================
-// MAIN SOCIAL LIST ITEM COMPONENT
+// SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
 const SocialListItem = setDisplayName(function SocialListItem<
@@ -244,7 +244,7 @@ const SocialListItem = setDisplayName(function SocialListItem<
 });
 
 // ============================================================================
-// MAIN TOOLS LIST ITEM COMPONENT
+// TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
 const ToolsListItem = setDisplayName(function ToolsListItem(
