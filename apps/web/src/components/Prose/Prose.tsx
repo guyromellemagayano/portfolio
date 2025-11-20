@@ -20,12 +20,12 @@ export type ProseProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "div" is allowed */
     as?: T;
   };
 
-export const Prose = setDisplayName(function Prose(
-  props: ProseProps<ProseElementType>
+export const Prose = setDisplayName(function Prose<T extends ProseElementType>(
+  props: ProseProps<T>
 ) {
   const {
     as: Component = "div",
