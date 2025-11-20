@@ -19,7 +19,7 @@ type SectionTitleProps<T extends React.ElementType> = Omit<
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as */
+    /** The component to render as - only "h2" or "h3" are allowed */
     as?: T;
   };
 
