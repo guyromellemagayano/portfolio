@@ -86,15 +86,6 @@ export const List = setDisplayName(function List<T extends ListElementType>(
     role,
     debugId,
     debugMode,
-    ...createComponentProps(
-      componentId,
-      variant === "social"
-        ? "social-list"
-        : variant === "tools"
-          ? "tools-list"
-          : `list-${variant}`,
-      isDebugMode
-    ),
   };
 
   return <VariantComponent {...variantProps}>{children}</VariantComponent>;
@@ -175,12 +166,21 @@ const ArticleList = setDisplayName(function ArticleList(
 const SocialList = setDisplayName(function SocialList(
   props: ListProps<ListElementType>
 ) {
-  const { as: Component = "ul", children, ...rest } = props;
+  const { as: Component = "ul", children, debugId, debugMode, ...rest } = props;
+
+  // List component component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
 
   if (!children) return null;
 
   return (
-    <Component {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}>
+    <Component
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...createComponentProps(componentId, "social-list", isDebugMode)}
+    >
       {children}
     </Component>
   );
@@ -193,7 +193,20 @@ const SocialList = setDisplayName(function SocialList(
 const ToolsList = setDisplayName(function ToolsList(
   props: ListProps<ListElementType>
 ) {
-  const { as: Component = "ul", children, className, ...rest } = props;
+  const {
+    as: Component = "ul",
+    children,
+    className,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  // List component component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
 
   if (!children) return null;
 
@@ -201,6 +214,7 @@ const ToolsList = setDisplayName(function ToolsList(
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("space-y-16", className)}
+      {...createComponentProps(componentId, "tools-list", isDebugMode)}
     >
       {children}
     </Component>
