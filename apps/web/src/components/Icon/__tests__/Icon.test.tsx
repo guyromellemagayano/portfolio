@@ -626,4 +626,233 @@ describe("Icon", () => {
       });
     });
   });
+
+  // ============================================================================
+  // CUSTOM SVG CHILDREN TESTS (NO NAME PROP)
+  // ============================================================================
+
+  describe("Custom SVG Children (No Name Prop)", () => {
+    describe("Basic Rendering with Custom SVG", () => {
+      it("renders custom SVG with path element", () => {
+        const { container } = render(
+          <Icon>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toBeInTheDocument();
+        expect(icon?.tagName).toBe("svg");
+        expect(icon?.querySelector("path")).toBeInTheDocument();
+        expect(icon?.querySelector("path")).toHaveAttribute(
+          "d",
+          "M10 10h4v4h-4z"
+        );
+      });
+
+      it("renders custom SVG with multiple elements", () => {
+        const { container } = render(
+          <Icon>
+            <circle cx="12" cy="12" r="10" />
+            <path d="M8 12l4 4 8-8" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toBeInTheDocument();
+        expect(icon?.querySelector("circle")).toBeInTheDocument();
+        expect(icon?.querySelector("path")).toBeInTheDocument();
+        expect(icon?.querySelector("circle")).toHaveAttribute("cx", "12");
+        expect(icon?.querySelector("path")).toHaveAttribute(
+          "d",
+          "M8 12l4 4 8-8"
+        );
+      });
+
+      it("renders custom SVG with complex structure", () => {
+        const { container } = render(
+          <Icon>
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ff0000" />
+                <stop offset="100%" stopColor="#0000ff" />
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" fill="url(#grad)" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toBeInTheDocument();
+        expect(icon?.querySelector("defs")).toBeInTheDocument();
+        expect(icon?.querySelector("linearGradient")).toBeInTheDocument();
+        expect(icon?.querySelector("rect")).toBeInTheDocument();
+      });
+    });
+
+    describe("Attributes with Custom SVG", () => {
+      it("applies custom viewBox to SVG", () => {
+        const { container } = render(
+          <Icon viewBox="0 0 100 100">
+            <path d="M10 10h80v80h-80z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("viewBox", "0 0 100 100");
+      });
+
+      it("applies custom width and height", () => {
+        const { container } = render(
+          <Icon width="64" height="64">
+            <path d="M10 10h44v44h-44z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("width", "64");
+        expect(icon).toHaveAttribute("height", "64");
+      });
+
+      it("applies custom className", () => {
+        const { container } = render(
+          <Icon className="custom-svg-icon">
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("class", "custom-svg-icon");
+      });
+
+      it("applies custom data attributes", () => {
+        const { container } = render(
+          <Icon data-custom="test-value" data-icon-type="custom">
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("data-custom", "test-value");
+        expect(icon).toHaveAttribute("data-icon-type", "custom");
+      });
+    });
+
+    describe("ARIA Attributes with Custom SVG", () => {
+      it("applies default aria-hidden attribute", () => {
+        const { container } = render(
+          <Icon>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("aria-hidden", "true");
+      });
+
+      it("applies default role attribute", () => {
+        const { container } = render(
+          <Icon>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("role", "img");
+      });
+
+      it("applies aria-labelledby with undefined name", () => {
+        const { container } = render(
+          <Icon>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("aria-labelledby", "icon-undefined");
+      });
+
+      it("allows custom aria-label", () => {
+        const { container } = render(
+          <Icon aria-label="Custom icon">
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toHaveAttribute("aria-label", "Custom icon");
+        // aria-hidden is still applied (overrides custom aria-hidden)
+        expect(icon).toHaveAttribute("aria-hidden", "true");
+      });
+    });
+
+    describe("Debug Props with Custom SVG", () => {
+      it("does not create data attributes when debugId provided without name", () => {
+        // Note: createComponentProps is only called when name is provided
+        const { container } = render(
+          <Icon debugId="custom-debug-id">
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toBeInTheDocument();
+        // No data attributes created because createComponentProps is not called
+        expect(icon).not.toHaveAttribute("data-icon-undefined-id");
+        expect(icon).not.toHaveAttribute("data-testid");
+      });
+
+      it("does not create data-debug-mode when debugMode provided without name", () => {
+        // Note: createComponentProps is only called when name is provided
+        const { container } = render(
+          <Icon debugMode={true}>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        expect(icon).toBeInTheDocument();
+        // No data-debug-mode because createComponentProps is not called
+        expect(icon).not.toHaveAttribute("data-debug-mode");
+      });
+    });
+
+    describe("Event Handlers with Custom SVG", () => {
+      it("handles click events on custom SVG", () => {
+        const handleClick = vi.fn();
+        const { container } = render(
+          <Icon onClick={handleClick}>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        if (icon) fireEvent.click(icon);
+        expect(handleClick).toHaveBeenCalledTimes(1);
+      });
+
+      it("handles multiple event handlers on custom SVG", () => {
+        const handleClick = vi.fn();
+        const handleMouseEnter = vi.fn();
+        const handleMouseLeave = vi.fn();
+        const { container } = render(
+          <Icon
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        const icon = container.querySelector("svg");
+        if (icon) {
+          fireEvent.click(icon);
+          fireEvent.mouseEnter(icon);
+          fireEvent.mouseLeave(icon);
+        }
+        expect(handleClick).toHaveBeenCalledTimes(1);
+        expect(handleMouseEnter).toHaveBeenCalledTimes(1);
+        expect(handleMouseLeave).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("Ref Forwarding with Custom SVG", () => {
+      it("forwards ref to custom SVG", () => {
+        const ref = React.createRef<SVGSVGElement>();
+        const { container } = render(
+          <Icon ref={ref}>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        );
+        expect(ref.current).toBeInstanceOf(SVGSVGElement);
+        expect(ref.current).toBe(container.querySelector("svg"));
+      });
+    });
+  });
 });
