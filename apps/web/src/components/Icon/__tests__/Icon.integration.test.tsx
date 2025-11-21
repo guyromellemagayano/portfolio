@@ -501,6 +501,135 @@ describe("Icon Integration Tests", () => {
       expect(updatedIcon).toHaveAttribute("class");
     });
   });
+
+  // ============================================================================
+  // CUSTOM SVG CHILDREN INTEGRATION
+  // ============================================================================
+
+  describe("Custom SVG Children Integration", () => {
+    it("renders custom SVG alongside named icons", () => {
+      const { container } = render(
+        <div>
+          <Icon name="X" />
+          <Icon>
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+          <Icon name="Instagram" />
+        </div>
+      );
+
+      const svgs = container.querySelectorAll("svg");
+      expect(svgs).toHaveLength(3);
+
+      // Named icon
+      const xIcon = container.querySelector("[data-icon-X-id]");
+      expect(xIcon).toBeInTheDocument();
+
+      // Custom SVG (no data attributes)
+      const customIcon = container.querySelector("svg:not([data-icon-X-id]):not([data-icon-Instagram-id])");
+      expect(customIcon).toBeInTheDocument();
+      expect(customIcon?.querySelector("path")).toBeInTheDocument();
+
+      // Named icon
+      const instagramIcon = container.querySelector("[data-icon-Instagram-id]");
+      expect(instagramIcon).toBeInTheDocument();
+    });
+
+    it("handles custom SVG with all standard attributes", () => {
+      const { container } = render(
+        <Icon
+          viewBox="0 0 100 100"
+          width="100"
+          height="100"
+          className="custom-icon"
+          data-test="custom-svg"
+        >
+          <circle cx="50" cy="50" r="40" />
+          <path d="M30 50 L50 70 L70 30" />
+        </Icon>
+      );
+
+      const icon = container.querySelector("svg");
+      expect(icon).toBeInTheDocument();
+      expect(icon).toHaveAttribute("viewBox", "0 0 100 100");
+      expect(icon).toHaveAttribute("width", "100");
+      expect(icon).toHaveAttribute("height", "100");
+      expect(icon).toHaveAttribute("class", "custom-icon");
+      expect(icon).toHaveAttribute("data-test", "custom-svg");
+      expect(icon).toHaveAttribute("role", "img");
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon?.querySelector("circle")).toBeInTheDocument();
+      expect(icon?.querySelector("path")).toBeInTheDocument();
+    });
+
+    it("maintains consistent behavior between custom and named icons", () => {
+      const { container } = render(
+        <div>
+          <Icon name="X" className="icon-class" width="24" height="24" />
+          <Icon className="icon-class" width="24" height="24">
+            <path d="M10 10h4v4h-4z" />
+          </Icon>
+        </div>
+      );
+
+      const svgs = container.querySelectorAll("svg");
+      expect(svgs).toHaveLength(2);
+
+      svgs.forEach((svg) => {
+        expect(svg).toHaveAttribute("class", "icon-class");
+        expect(svg).toHaveAttribute("width", "24");
+        expect(svg).toHaveAttribute("height", "24");
+        expect(svg).toHaveAttribute("role", "img");
+        expect(svg).toHaveAttribute("aria-hidden", "true");
+      });
+    });
+
+    it("handles complex custom SVG structures", () => {
+      const { container } = render(
+        <Icon viewBox="0 0 200 200">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ff0000" stopOpacity="1" />
+              <stop offset="100%" stopColor="#0000ff" stopOpacity="1" />
+            </linearGradient>
+            <filter id="blur">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="3" />
+            </filter>
+          </defs>
+          <rect width="200" height="200" fill="url(#grad1)" />
+          <circle cx="100" cy="100" r="50" fill="white" filter="url(#blur)" />
+          <path d="M50 100 L100 50 L150 100 L100 150 Z" fill="black" />
+        </Icon>
+      );
+
+      const icon = container.querySelector("svg");
+      expect(icon).toBeInTheDocument();
+      expect(icon?.querySelector("defs")).toBeInTheDocument();
+      expect(icon?.querySelector("linearGradient")).toBeInTheDocument();
+      expect(icon?.querySelector("filter")).toBeInTheDocument();
+      expect(icon?.querySelector("rect")).toBeInTheDocument();
+      expect(icon?.querySelector("circle")).toBeInTheDocument();
+      expect(icon?.querySelector("path")).toBeInTheDocument();
+    });
+
+    it("handles custom SVG updates efficiently", () => {
+      const { rerender, container } = render(
+        <Icon>
+          <path d="M10 10h4v4h-4z" />
+        </Icon>
+      );
+      const icon = container.querySelector("svg");
+      expect(icon).toBeInTheDocument();
+
+      rerender(
+        <Icon className="updated-class">
+          <path d="M10 10h4v4h-4z" />
+        </Icon>
+      );
+      const updatedIcon = container.querySelector("svg");
+      expect(updatedIcon).toHaveAttribute("class", "updated-class");
+    });
+  });
 });
 
 type IconNames =
