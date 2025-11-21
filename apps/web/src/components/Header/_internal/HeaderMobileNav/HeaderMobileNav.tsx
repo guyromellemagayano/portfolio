@@ -65,7 +65,10 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
           )}
         >
           {MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS?.menu ?? null}
-          <Icon.ChevronDown className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400" />
+          <Icon
+            name="ChevronDown"
+            className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400"
+          />
         </PopoverButton>
         <PopoverBackdrop
           transition
@@ -99,7 +102,10 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
                 isDebugMode
               )}
             >
-              <Icon.Close className="h-6 w-6 text-zinc-500 dark:text-zinc-400" />
+              <Icon
+                name="Close"
+                className="h-6 w-6 text-zinc-500 dark:text-zinc-400"
+              />
             </PopoverButton>
 
             {MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS?.navigation ? (

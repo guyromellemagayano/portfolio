@@ -7,4 +7,6 @@ export const LIST_I18N = {
   // Heading labels
   articleList: "Article list",
   articles: "Articles",
+  socialList: "Social list",
+  toolsList: "Tools list",
 } as const satisfies ListI18n;

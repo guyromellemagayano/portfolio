@@ -49,165 +49,165 @@ describe("Icon Integration Tests", () => {
   });
 
   // ============================================================================
-  // COMPOUND COMPONENT INTEGRATION
+  // NAME PROP INTEGRATION
   // ============================================================================
 
-  describe("Compound Component Integration", () => {
-    it("renders Icon.X with correct props and behavior", () => {
-      render(<Icon.X debugMode />);
-      const icon = screen.getByTestId("test-id-icon-x-twitter");
+  describe("Name Prop Integration", () => {
+    it("renders X icon with name prop and correct attributes", () => {
+      const { container } = render(<Icon name="X" debugMode />);
+      const icon = container.querySelector('[data-icon-X-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("data-debug-mode", "true");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Instagram with correct props and behavior", () => {
-      render(<Icon.Instagram debugId="custom-id" />);
-      const icon = screen.getByTestId("custom-id-icon-instagram");
+    it("renders Instagram icon with name prop and custom ID", () => {
+      const { container } = render(<Icon name="Instagram" debugId="custom-id" />);
+      const icon = container.querySelector('[data-icon-Instagram-id="custom-id-icon-Instagram"]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute(
-        "data-icon-instagram-id",
-        "custom-id-icon-instagram"
+        "data-icon-Instagram-id",
+        "custom-id-icon-Instagram"
       );
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.LinkedIn with correct props and behavior", () => {
-      render(<Icon.LinkedIn className="custom-class" />);
-      const icon = screen.getByTestId("test-id-icon-linkedin");
+    it("renders LinkedIn icon with name prop and custom className", () => {
+      const { container } = render(<Icon name="LinkedIn" className="custom-class" />);
+      const icon = container.querySelector('[data-icon-LinkedIn-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("class");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.GitHub with correct props and behavior", () => {
-      render(<Icon.GitHub width="32" height="32" />);
-      const icon = screen.getByTestId("test-id-icon-github");
+    it("renders GitHub icon with name prop and dimensions", () => {
+      const { container } = render(<Icon name="GitHub" width="32" height="32" />);
+      const icon = container.querySelector('[data-icon-GitHub-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.ArrowDown with correct props and behavior", () => {
-      render(<Icon.ArrowDown data-test="arrow-test" />);
-      const icon = screen.getByTestId("test-id-icon-arrow-down");
+    it("renders ArrowDown icon with name prop and custom data attribute", () => {
+      const { container } = render(<Icon name="ArrowDown" data-test="arrow-test" />);
+      const icon = container.querySelector('[data-icon-ArrowDown-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("data-test", "arrow-test");
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.ArrowLeft with correct props and behavior", () => {
-      render(<Icon.ArrowLeft />);
-      const icon = screen.getByTestId("test-id-icon-arrow-left");
+    it("renders ArrowLeft icon with name prop", () => {
+      const { container } = render(<Icon name="ArrowLeft" />);
+      const icon = container.querySelector('[data-icon-ArrowLeft-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.ChevronDown with correct props and behavior", () => {
-      render(<Icon.ChevronDown />);
-      const icon = screen.getByTestId("test-id-icon-chevron-down");
+    it("renders Briefcase icon with name prop", () => {
+      const { container } = render(<Icon name="Briefcase" />);
+      const icon = container.querySelector('[data-icon-Briefcase-id]');
+      expect(icon).toBeInTheDocument();
+      expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon?.tagName).toBe("svg");
+    });
+
+    it("renders ChevronDown icon with name prop", () => {
+      const { container } = render(<Icon name="ChevronDown" />);
+      const icon = container.querySelector('[data-icon-ChevronDown-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 8 6");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.ChevronRight with correct props and behavior", () => {
-      render(<Icon.ChevronRight />);
-      const icon = screen.getByTestId("test-id-icon-chevron-right");
+    it("renders ChevronRight icon with name prop", () => {
+      const { container } = render(<Icon name="ChevronRight" />);
+      const icon = container.querySelector('[data-icon-ChevronRight-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Close with correct props and behavior", () => {
-      render(<Icon.Close />);
-      const icon = screen.getByTestId("test-id-icon-close");
+    it("renders Close icon with name prop", () => {
+      const { container } = render(<Icon name="Close" />);
+      const icon = container.querySelector('[data-icon-Close-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Link with correct props and behavior", () => {
-      render(<Icon.Link />);
-      const icon = screen.getByTestId("test-id-icon-link");
+    it("renders Link icon with name prop", () => {
+      const { container } = render(<Icon name="Link" />);
+      const icon = container.querySelector('[data-icon-Link-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Mail with correct props and behavior", () => {
-      render(<Icon.Mail />);
-      const icon = screen.getByTestId("test-id-icon-mail");
+    it("renders Mail icon with name prop", () => {
+      const { container } = render(<Icon name="Mail" />);
+      const icon = container.querySelector('[data-icon-Mail-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Briefcase with correct props and behavior", () => {
-      render(<Icon.Briefcase />);
-      const icon = screen.getByTestId("test-id-icon-briefcase");
+    it("renders Sun icon with name prop", () => {
+      const { container } = render(<Icon name="Sun" />);
+      const icon = container.querySelector('[data-icon-Sun-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Icon.Sun with correct props and behavior", () => {
-      render(<Icon.Sun />);
-      const icon = screen.getByTestId("test-id-icon-sun");
+    it("renders Moon icon with name prop", () => {
+      const { container } = render(<Icon name="Moon" />);
+      const icon = container.querySelector('[data-icon-Moon-id]');
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
-    });
-
-    it("renders Icon.Moon with correct props and behavior", () => {
-      render(<Icon.Moon />);
-      const icon = screen.getByTestId("test-id-icon-moon");
-      expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
-      expect(icon).toHaveAttribute("aria-hidden", "true");
-      expect(icon.tagName).toBe("svg");
+      expect(icon?.tagName).toBe("svg");
     });
   });
 
   // ============================================================================
-  // COMPONENT INTERACTION INTEGRATION
+  // PROP CONSISTENCY INTEGRATION
   // ============================================================================
 
-  describe("Component Interaction Integration", () => {
-    it("handles prop drilling correctly across all sub-components", () => {
-      render(
+  describe("Prop Consistency Integration", () => {
+    it("handles prop drilling correctly across all icons", () => {
+      const { container } = render(
         <div>
-          <Icon.X debugMode />
-          <Icon.Instagram debugMode />
-          <Icon.LinkedIn debugMode />
-          <Icon.GitHub debugMode />
+          <Icon name="X" debugMode />
+          <Icon name="Instagram" debugMode />
+          <Icon name="LinkedIn" debugMode />
+          <Icon name="GitHub" debugMode />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const linkedinIcon = screen.getByTestId("test-id-icon-linkedin");
-      const githubIcon = screen.getByTestId("test-id-icon-github");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id]');
+      const linkedinIcon = container.querySelector('[data-icon-LinkedIn-id]');
+      const githubIcon = container.querySelector('[data-icon-GitHub-id]');
 
       const icons = [xIcon, instagramIcon, linkedinIcon, githubIcon];
       expect(icons).toHaveLength(4);
@@ -215,51 +215,46 @@ describe("Icon Integration Tests", () => {
       icons.forEach((icon) => {
         expect(icon).toHaveAttribute("data-debug-mode", "true");
         expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
     });
 
-    it("handles custom component IDs consistently across sub-components", () => {
-      render(
+    it("handles custom component IDs consistently", () => {
+      const { container } = render(
         <div>
-          <Icon.X debugId="custom-x" />
-          <Icon.Instagram debugId="custom-instagram" />
-          <Icon.LinkedIn debugId="custom-linkedin" />
+          <Icon name="X" debugId="custom-x" />
+          <Icon name="Instagram" debugId="custom-instagram" />
+          <Icon name="LinkedIn" debugId="custom-linkedin" />
         </div>
       );
 
-      const xIcon = screen.getByTestId("custom-x-icon-x-twitter");
-      const instagramIcon = screen.getByTestId(
-        "custom-instagram-icon-instagram"
-      );
-      const linkedinIcon = screen.getByTestId("custom-linkedin-icon-linkedin");
+      const xIcon = container.querySelector('[data-icon-X-id="custom-x-icon-X"]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id="custom-instagram-icon-Instagram"]');
+      const linkedinIcon = container.querySelector('[data-icon-LinkedIn-id="custom-linkedin-icon-LinkedIn"]');
 
-      expect(xIcon).toHaveAttribute(
-        "data-icon-x-twitter-id",
-        "custom-x-icon-x-twitter"
-      );
+      expect(xIcon).toHaveAttribute("data-icon-X-id", "custom-x-icon-X");
       expect(instagramIcon).toHaveAttribute(
-        "data-icon-instagram-id",
-        "custom-instagram-icon-instagram"
+        "data-icon-Instagram-id",
+        "custom-instagram-icon-Instagram"
       );
       expect(linkedinIcon).toHaveAttribute(
-        "data-icon-linkedin-id",
-        "custom-linkedin-icon-linkedin"
+        "data-icon-LinkedIn-id",
+        "custom-linkedin-icon-LinkedIn"
       );
     });
 
-    it("handles HTML attributes consistently across sub-components", () => {
-      render(
+    it("handles HTML attributes consistently", () => {
+      const { container } = render(
         <div>
-          <Icon.X width="24" height="24" className="icon-class" />
-          <Icon.Instagram width="24" height="24" className="icon-class" />
-          <Icon.LinkedIn width="24" height="24" className="icon-class" />
+          <Icon name="X" width="24" height="24" className="icon-class" />
+          <Icon name="Instagram" width="24" height="24" className="icon-class" />
+          <Icon name="LinkedIn" width="24" height="24" className="icon-class" />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const linkedinIcon = screen.getByTestId("test-id-icon-linkedin");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id]');
+      const linkedinIcon = container.querySelector('[data-icon-LinkedIn-id]');
 
       const icons = [xIcon, instagramIcon, linkedinIcon];
 
@@ -269,24 +264,6 @@ describe("Icon Integration Tests", () => {
         expect(icon).toHaveAttribute("class");
       });
     });
-
-    it("handles custom element types consistently across sub-components", () => {
-      render(
-        <div>
-          <Icon.X as="div" />
-          <Icon.Instagram as="span" />
-          <Icon.LinkedIn as="div" />
-        </div>
-      );
-
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const linkedinIcon = screen.getByTestId("test-id-icon-linkedin");
-
-      expect(xIcon.tagName).toBe("DIV");
-      expect(instagramIcon.tagName).toBe("SPAN");
-      expect(linkedinIcon.tagName).toBe("DIV");
-    });
   });
 
   // ============================================================================
@@ -294,69 +271,68 @@ describe("Icon Integration Tests", () => {
   // ============================================================================
 
   describe("State Consistency Integration", () => {
-    it("maintains consistent debug mode state across all sub-components", () => {
-      render(
+    it("maintains consistent debug mode state across all icons", () => {
+      const { container } = render(
         <div>
-          <Icon.X debugMode />
-          <Icon.Instagram debugMode />
-          <Icon.ArrowDown debugMode />
-          <Icon.Close debugMode />
+          <Icon name="X" debugMode />
+          <Icon name="Instagram" debugMode />
+          <Icon name="ArrowDown" debugMode />
+          <Icon name="Close" debugMode />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const arrowDownIcon = screen.getByTestId("test-id-icon-arrow-down");
-      const closeIcon = screen.getByTestId("test-id-icon-close");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id]');
+      const arrowDownIcon = container.querySelector('[data-icon-ArrowDown-id]');
+      const closeIcon = container.querySelector('[data-icon-Close-id]');
 
       const icons = [xIcon, instagramIcon, arrowDownIcon, closeIcon];
 
       icons.forEach((icon) => {
         expect(icon).toHaveAttribute("data-debug-mode", "true");
+        expect(icon).toBeInTheDocument();
       });
     });
 
-    it("maintains consistent component ID generation across all sub-components", () => {
-      render(
+    it("maintains consistent component ID generation", () => {
+      const { container } = render(
         <div>
-          <Icon.X />
-          <Icon.Instagram />
-          <Icon.ArrowDown />
-          <Icon.Close />
+          <Icon name="X" />
+          <Icon name="Instagram" />
+          <Icon name="ArrowDown" />
+          <Icon name="Close" />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const arrowDownIcon = screen.getByTestId("test-id-icon-arrow-down");
-      const closeIcon = screen.getByTestId("test-id-icon-close");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id]');
+      const arrowDownIcon = container.querySelector('[data-icon-ArrowDown-id]');
+      const closeIcon = container.querySelector('[data-icon-Close-id]');
 
-      const icons = [xIcon, instagramIcon, arrowDownIcon, closeIcon];
-
-      icons.forEach((icon) => {
-        expect(icon).toHaveAttribute("data-testid");
-        expect(icon.getAttribute("data-testid")).toMatch(/^test-id-icon-/);
-      });
+      expect(xIcon).toHaveAttribute("data-icon-X-id");
+      expect(instagramIcon).toHaveAttribute("data-icon-Instagram-id");
+      expect(arrowDownIcon).toHaveAttribute("data-icon-ArrowDown-id");
+      expect(closeIcon).toHaveAttribute("data-icon-Close-id");
     });
 
-    it("maintains consistent accessibility attributes across all sub-components", () => {
-      render(
+    it("maintains consistent accessibility attributes", () => {
+      const { container } = render(
         <div>
-          <Icon.X />
-          <Icon.Instagram />
-          <Icon.ArrowDown />
-          <Icon.Close />
-          <Icon.Link />
-          <Icon.Mail />
+          <Icon name="X" />
+          <Icon name="Instagram" />
+          <Icon name="ArrowDown" />
+          <Icon name="Close" />
+          <Icon name="Link" />
+          <Icon name="Mail" />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const instagramIcon = screen.getByTestId("test-id-icon-instagram");
-      const arrowDownIcon = screen.getByTestId("test-id-icon-arrow-down");
-      const closeIcon = screen.getByTestId("test-id-icon-close");
-      const linkIcon = screen.getByTestId("test-id-icon-link");
-      const mailIcon = screen.getByTestId("test-id-icon-mail");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const instagramIcon = container.querySelector('[data-icon-Instagram-id]');
+      const arrowDownIcon = container.querySelector('[data-icon-ArrowDown-id]');
+      const closeIcon = container.querySelector('[data-icon-Close-id]');
+      const linkIcon = container.querySelector('[data-icon-Link-id]');
+      const mailIcon = container.querySelector('[data-icon-Mail-id]');
 
       const icons = [
         xIcon,
@@ -369,139 +345,80 @@ describe("Icon Integration Tests", () => {
 
       icons.forEach((icon) => {
         expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
     });
   });
 
   // ============================================================================
-  // CROSS-COMPONENT BEHAVIOR INTEGRATION
+  // CROSS-ICON BEHAVIOR INTEGRATION
   // ============================================================================
 
-  describe("Cross-Component Behavior Integration", () => {
+  describe("Cross-Icon Behavior Integration", () => {
     it("renders all social icons with consistent behavior", () => {
-      const socialIcons = [Icon.X, Icon.Instagram, Icon.LinkedIn, Icon.GitHub];
+      const socialIcons = ["X", "Instagram", "LinkedIn", "GitHub"] as const;
 
-      socialIcons.forEach((IconComponent) => {
-        const { unmount } = render(<IconComponent />);
-        const icon = screen.getByTestId(/test-id-icon-/);
+      socialIcons.forEach((iconName) => {
+        const { container, unmount } = render(<Icon name={iconName} />);
+        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
         expect(icon).toHaveAttribute("aria-hidden", "true");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
         unmount();
       });
     });
 
     it("renders all navigation icons with consistent behavior", () => {
       const navigationIcons = [
-        Icon.ArrowDown,
-        Icon.ArrowLeft,
-        Icon.ChevronDown,
-        Icon.ChevronRight,
-      ];
+        "ArrowDown",
+        "ArrowLeft",
+        "ChevronDown",
+        "ChevronRight",
+      ] as const;
 
-      navigationIcons.forEach((IconComponent) => {
-        const { unmount } = render(<IconComponent />);
-        const icon = screen.getByTestId(/test-id-icon-/);
+      navigationIcons.forEach((iconName) => {
+        const { container, unmount } = render(<Icon name={iconName} />);
+        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
         expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
         unmount();
       });
     });
 
     it("renders all UI icons with consistent behavior", () => {
-      const uiIcons = [
-        Icon.Close,
-        Icon.Link,
-        Icon.Mail,
-        Icon.Briefcase,
-        Icon.Sun,
-        Icon.Moon,
-      ];
+      const uiIcons = ["Close", "Link", "Mail", "Briefcase", "Sun", "Moon"] as const;
 
-      uiIcons.forEach((IconComponent) => {
-        const { unmount } = render(<IconComponent />);
-        const icon = screen.getByTestId(/test-id-icon-/);
+      uiIcons.forEach((iconName) => {
+        const { container, unmount } = render(<Icon name={iconName} />);
+        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
         expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
         unmount();
       });
     });
 
     it("handles mixed icon types in the same container", () => {
-      render(
+      const { container } = render(
         <div>
-          <Icon.X />
-          <Icon.ArrowDown />
-          <Icon.Close />
-          <Icon.Link />
+          <Icon name="X" />
+          <Icon name="ArrowDown" />
+          <Icon name="Close" />
+          <Icon name="Link" />
         </div>
       );
 
-      const xIcon = screen.getByTestId("test-id-icon-x-twitter");
-      const arrowDownIcon = screen.getByTestId("test-id-icon-arrow-down");
-      const closeIcon = screen.getByTestId("test-id-icon-close");
-      const linkIcon = screen.getByTestId("test-id-icon-link");
+      const xIcon = container.querySelector('[data-icon-X-id]');
+      const arrowDownIcon = container.querySelector('[data-icon-ArrowDown-id]');
+      const closeIcon = container.querySelector('[data-icon-Close-id]');
+      const linkIcon = container.querySelector('[data-icon-Link-id]');
 
       const icons = [xIcon, arrowDownIcon, closeIcon, linkIcon];
       expect(icons).toHaveLength(4);
 
       icons.forEach((icon) => {
         expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon.tagName).toBe("svg");
+        expect(icon?.tagName).toBe("svg");
       });
-    });
-  });
-
-  // ============================================================================
-  // COMPOUND COMPONENT PATTERN INTEGRATION
-  // ============================================================================
-
-  describe("Compound Component Pattern Integration", () => {
-    it("verifies all sub-components are properly attached to main Icon component", () => {
-      expect(Icon.X).toBeDefined();
-      expect(Icon.Instagram).toBeDefined();
-      expect(Icon.LinkedIn).toBeDefined();
-      expect(Icon.GitHub).toBeDefined();
-      expect(Icon.ArrowDown).toBeDefined();
-      expect(Icon.ArrowLeft).toBeDefined();
-      expect(Icon.ChevronDown).toBeDefined();
-      expect(Icon.ChevronRight).toBeDefined();
-      expect(Icon.Close).toBeDefined();
-      expect(Icon.Link).toBeDefined();
-      expect(Icon.Mail).toBeDefined();
-      expect(Icon.Briefcase).toBeDefined();
-      expect(Icon.Sun).toBeDefined();
-      expect(Icon.Moon).toBeDefined();
-    });
-
-    it("verifies sub-components are React components that can be rendered", () => {
-      expect(Icon.X).toBeDefined();
-      expect(Icon.Instagram).toBeDefined();
-      expect(Icon.LinkedIn).toBeDefined();
-      expect(Icon.GitHub).toBeDefined();
-      expect(Icon.ArrowDown).toBeDefined();
-      expect(Icon.ArrowLeft).toBeDefined();
-      expect(Icon.ChevronDown).toBeDefined();
-      expect(Icon.ChevronRight).toBeDefined();
-      expect(Icon.Close).toBeDefined();
-      expect(Icon.Link).toBeDefined();
-      expect(Icon.Mail).toBeDefined();
-      expect(Icon.Briefcase).toBeDefined();
-      expect(Icon.Sun).toBeDefined();
-      expect(Icon.Moon).toBeDefined();
-    });
-
-    it("verifies compound component pattern works with React.createElement", () => {
-      const xIcon = React.createElement(Icon.X, { debugMode: true });
-      const instagramIcon = React.createElement(Icon.Instagram, {
-        debugId: "test",
-      });
-
-      expect(xIcon).toBeDefined();
-      expect(instagramIcon).toBeDefined();
-      expect(xIcon.type).toBe(Icon.X);
-      expect(instagramIcon.type).toBe(Icon.Instagram);
     });
   });
 
@@ -510,48 +427,94 @@ describe("Icon Integration Tests", () => {
   // ============================================================================
 
   describe("Error Handling Integration", () => {
-    it("handles missing props gracefully across all sub-components", () => {
-      const iconComponents = [
-        Icon.X,
-        Icon.Instagram,
-        Icon.LinkedIn,
-        Icon.GitHub,
-        Icon.ArrowDown,
-        Icon.ArrowLeft,
-        Icon.ChevronDown,
-        Icon.ChevronRight,
-        Icon.Close,
-        Icon.Link,
-        Icon.Mail,
-        Icon.Briefcase,
-        Icon.Sun,
-        Icon.Moon,
+    it("handles missing props gracefully", () => {
+      const iconNames: IconNames[] = [
+        "X",
+        "Instagram",
+        "LinkedIn",
+        "GitHub",
+        "ArrowDown",
+        "ArrowLeft",
+        "ChevronDown",
+        "ChevronRight",
+        "Close",
+        "Link",
+        "Mail",
+        "Briefcase",
+        "Sun",
+        "Moon",
       ];
 
-      iconComponents.forEach((IconComponent) => {
+      iconNames.forEach((iconName) => {
         expect(() => {
-          const { unmount } = render(<IconComponent />);
+          const { unmount } = render(<Icon name={iconName} />);
           unmount();
         }).not.toThrow();
       });
     });
 
-    it("handles invalid props gracefully across all sub-components", () => {
-      const invalidProps = {
-        width: "invalid",
-        height: "invalid",
-        className: null,
-        debugMode: "invalid",
-      };
+    it("handles custom ARIA attributes correctly", () => {
+      const { container } = render(
+        <Icon
+          name="X"
+          role="img"
+          aria-label="X (Twitter) icon"
+          aria-hidden="false"
+        />
+      );
+      const icon = container.querySelector('[data-icon-X-id]');
+      expect(icon).toHaveAttribute("role", "img");
+      expect(icon).toHaveAttribute("aria-label", "X (Twitter) icon");
+      // Note: Icon component always sets aria-hidden="true" (line 73 in Icon.tsx)
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+    });
+  });
 
-      const iconComponents = [Icon.X, Icon.Instagram, Icon.LinkedIn];
+  // ============================================================================
+  // PERFORMANCE INTEGRATION
+  // ============================================================================
 
-      iconComponents.forEach((IconComponent) => {
-        expect(() => {
-          const { unmount } = render(<IconComponent {...invalidProps} />);
-          unmount();
-        }).not.toThrow();
-      });
+  describe("Performance Integration", () => {
+    it("renders multiple different icons efficiently", () => {
+      const { container } = render(
+        <div>
+          <Icon name="X" />
+          <Icon name="Instagram" />
+          <Icon name="ArrowDown" />
+          <Icon name="Close" />
+          <Icon name="Mail" />
+        </div>
+      );
+
+      const svgs = container.querySelectorAll("svg");
+      expect(svgs).toHaveLength(5);
+      svgs.forEach((svg) => expect(svg).toBeInTheDocument());
+    });
+
+    it("handles icon updates efficiently", () => {
+      const { rerender, container } = render(<Icon name="X" />);
+      const icon = container.querySelector("svg");
+      expect(icon).toBeInTheDocument();
+
+      rerender(<Icon name="X" className="updated-class" />);
+      const updatedIcon = container.querySelector("svg");
+      expect(updatedIcon).toHaveAttribute("class");
     });
   });
 });
+
+type IconNames =
+  | "X"
+  | "Instagram"
+  | "LinkedIn"
+  | "GitHub"
+  | "ArrowDown"
+  | "ArrowLeft"
+  | "Briefcase"
+  | "ChevronDown"
+  | "ChevronRight"
+  | "Close"
+  | "Link"
+  | "Mail"
+  | "Sun"
+  | "Moon";

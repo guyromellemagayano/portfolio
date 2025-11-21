@@ -78,12 +78,7 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
             </p>
 
             {SOCIAL_LIST_COMPONENT_LABELS ? (
-              <List
-                variant="social"
-                className="mt-6 flex gap-6"
-                debugId={componentId}
-                debugMode={isDebugMode}
-              >
+              <List variant="social" className="mt-6 flex gap-6">
                 {SOCIAL_LIST_COMPONENT_LABELS.filter(
                   ({ slug }) => slug !== "email"
                 ).map(({ slug, ...rest }, index) => (
@@ -92,23 +87,15 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
                     variant="social"
                     className="group -m-1 p-1"
                   >
-                    <Link.Social
-                      {...rest}
-                      debugId={componentId}
-                      debugMode={isDebugMode}
-                    />
+                    <Link variant="social" {...rest} />
                   </ListItem>
                 ))}
               </List>
             ) : null}
           </div>
         </Container>
-        <PhotoGallery debugId={componentId} debugMode={isDebugMode} />
-        <Container
-          className="mt-24 md:mt-28"
-          debugId={componentId}
-          debugMode={isDebugMode}
-        >
+        <PhotoGallery />
+        <Container className="mt-24 md:mt-28">
           <div
             className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2"
             {...createComponentProps(componentId, "content-grid", isDebugMode)}
@@ -133,8 +120,8 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
                 isDebugMode
               )}
             >
-              <NewsletterForm debugId={componentId} debugMode={isDebugMode} />
-              <Resume debugId={componentId} debugMode={isDebugMode} />
+              <NewsletterForm />
+              <Resume />
             </div>
           </div>
         </Container>

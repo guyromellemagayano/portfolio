@@ -84,11 +84,12 @@ export const ListItem = setDisplayName(function ListItem<
     const Element = (
       Component !== "li" ? Component : VariantComponent
     ) as React.ElementType;
+
     return (
       <Element
-        {...rest}
+        {...(rest as React.ComponentPropsWithoutRef<typeof Element>)}
         role={defaultRole}
-        {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
+        {...createComponentProps(componentId, "list-item", isDebugMode)}
       >
         {children}
       </Element>
@@ -102,15 +103,6 @@ export const ListItem = setDisplayName(function ListItem<
     role,
     debugId,
     debugMode,
-    ...createComponentProps(
-      componentId,
-      variant === "social"
-        ? "social-list-item"
-        : variant === "tools"
-          ? "list-tools"
-          : `list-${variant}`,
-      isDebugMode
-    ),
   };
 
   return <VariantComponent {...variantProps}>{children}</VariantComponent>;
@@ -226,21 +218,33 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 const SocialListItem = setDisplayName(function SocialListItem<
   T extends ListItemElementType,
 >(props: ListItemProps<T>) {
-  const { as: Component = "li", children, role, ...rest } = props;
+  const {
+    as: Component = "li",
+    children,
+    role,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
+
+  // List item component component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({
+    debugId,
+    debugMode,
+  });
 
   if (!children) return null;
 
   // Set default role to "listitem" if not provided
   const defaultRole = role !== undefined ? role : "listitem";
 
-  return (
-    <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-      role={defaultRole}
-    >
-      {children}
-    </Component>
-  );
+  const variantProps = {
+    ...(rest as React.ComponentPropsWithoutRef<typeof Component>),
+    role: defaultRole,
+    ...createComponentProps(componentId, "social-list-item", isDebugMode),
+  };
+
+  return <Component {...variantProps}>{children}</Component>;
 });
 
 // ============================================================================

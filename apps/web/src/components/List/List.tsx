@@ -35,7 +35,6 @@ export const List = setDisplayName(function List<T extends ListElementType>(
   const {
     as: Component = "ul",
     variant = "default",
-    role,
     children,
     debugId,
     debugMode,
@@ -64,18 +63,14 @@ export const List = setDisplayName(function List<T extends ListElementType>(
   // For default variant, use string element directly
   // Respect the `as` prop if provided, otherwise use "ul" from variant map
   if (variant === "default") {
-    const defaultRole = role !== undefined ? role : "list";
-    const Element = (
-      Component !== "ul" ? Component : VariantComponent
-    ) as React.ElementType;
     return (
-      <Element
-        {...rest}
-        role={defaultRole}
-        {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
+      <Component
+        {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+        role="list"
+        {...createComponentProps(componentId, "list", isDebugMode)}
       >
         {children}
-      </Element>
+      </Component>
     );
   }
 
@@ -83,7 +78,6 @@ export const List = setDisplayName(function List<T extends ListElementType>(
     ...rest,
     as: Component,
     variant,
-    role,
     debugId,
     debugMode,
   };
@@ -106,7 +100,6 @@ const ArticleList = setDisplayName(function ArticleList(
 ) {
   const {
     as: Component = "ul",
-    role = "region",
     className,
     children,
     debugId,
@@ -125,12 +118,13 @@ const ArticleList = setDisplayName(function ArticleList(
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-      role={role}
+      role="region"
       className={cn(
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
         className
       )}
       aria-label={LIST_I18N.articleList}
+      {...createComponentProps(componentId, "article-list", isDebugMode)}
     >
       <h2
         className="sr-only"
@@ -179,6 +173,8 @@ const SocialList = setDisplayName(function SocialList(
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      role="region"
+      aria-label={LIST_I18N.socialList}
       {...createComponentProps(componentId, "social-list", isDebugMode)}
     >
       {children}
@@ -213,6 +209,8 @@ const ToolsList = setDisplayName(function ToolsList(
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      role="region"
+      aria-label={LIST_I18N.toolsList}
       className={cn("space-y-16", className)}
       {...createComponentProps(componentId, "tools-list", isDebugMode)}
     >
