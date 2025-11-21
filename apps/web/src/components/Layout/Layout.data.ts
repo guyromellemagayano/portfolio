@@ -4,7 +4,6 @@
 
 import { type ImageProps } from "next/image";
 
-import { type CommonIconComponent, Icon } from "@web/components";
 import logoAnimaginary from "@web/images/logos/animaginary.svg";
 import logoCosmos from "@web/images/logos/cosmos.svg";
 import logoHelioStream from "@web/images/logos/helio-stream.svg";
@@ -23,38 +22,38 @@ export const COMMON_LAYOUT_COMPONENT_LABELS = {
 export type SocialListComponentLabels = ReadonlyArray<{
   slug: string;
   label: string;
-  icon: CommonIconComponent;
+  icon: string;
   href: string;
 }>;
 export const SOCIAL_LIST_COMPONENT_LABELS = [
   {
     slug: "x",
     label: "Follow on X",
-    icon: Icon.X,
+    icon: "X",
     href: "https://x.com/guyromellemagayano",
   },
   {
     slug: "instagram",
     label: "Follow on Instagram",
-    icon: Icon.Instagram,
+    icon: "Instagram",
     href: "https://www.instagram.com/guyromellemagayano",
   },
   {
     slug: "github",
     label: "Follow on GitHub",
-    icon: Icon.GitHub,
+    icon: "GitHub",
     href: "https://github.com/guyromellemagayano",
   },
   {
     slug: "linkedin",
     label: "Follow on LinkedIn",
-    icon: Icon.LinkedIn,
+    icon: "LinkedIn",
     href: "https://www.linkedin.com/in/guyromellemagayano",
   },
   {
     slug: "email",
     label: "aspiredtechie2010@gmail.com",
-    icon: Icon.Mail,
+    icon: "Mail",
     href: "mailto:aspiredtechie2010@gmail.com",
   },
 ] as const satisfies SocialListComponentLabels;

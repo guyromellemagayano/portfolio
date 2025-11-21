@@ -83,7 +83,7 @@ const CardCta = setDisplayName(function CardCta(
           debugMode={isDebugMode}
         >
           {children}
-          <Icon.ChevronRight />
+          <Icon name="ChevronRight" />
         </CardLinkCustom>
       ) : (
         children
