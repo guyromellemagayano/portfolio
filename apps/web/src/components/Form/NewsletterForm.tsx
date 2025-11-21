@@ -59,7 +59,8 @@ const BaseNewsletterForm: NewsletterFormComponent = setDisplayName(
             isDebugMode
           )}
         >
-          <Icon.Mail
+          <Icon
+            name="Mail"
             className="h-6 w-6 flex-none"
             debugId={componentId}
             debugMode={isDebugMode}
