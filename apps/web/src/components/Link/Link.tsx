@@ -11,7 +11,7 @@ import {
   setDisplayName,
 } from "@guyromellemagayano/utils";
 
-import { Icon, type IconNames, type IconProps } from "@web/components";
+import { Icon, type IconProps } from "@web/components";
 import { cn } from "@web/utils";
 
 // ============================================================================
@@ -21,12 +21,12 @@ import { cn } from "@web/utils";
 type LinkElementType = typeof NextLink;
 type LinkVariant = "default" | "social";
 
-export type LinkProps<T extends React.ElementType> = Omit<
+export type LinkProps<T extends LinkElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
   Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only `Link (NextLink)` is allowed */
+    /** The component to render as - only "a" or "Link (NextLink)" are allowed */
     as?: T;
     /** The variant of the link */
     variant?: LinkVariant;
@@ -98,7 +98,9 @@ export const Link = setDisplayName(function Link<T extends LinkElementType>(
 
   const variantProps = {
     ...rest,
-    as: Component,
+    href,
+    target,
+    title,
     variant,
     debugId,
     debugMode,
@@ -118,11 +120,11 @@ export const MemoizedLink = React.memo(Link);
 // ============================================================================
 
 const SocialLink = setDisplayName(function SocialLink(
-  props: LinkProps<typeof Link>
+  props: LinkProps<LinkElementType>
 ) {
   const {
-    as: Component = Link,
-    href,
+    as: Component = NextLink,
+    href = "#",
     icon,
     page,
     hasLabel = false,
@@ -139,7 +141,7 @@ const SocialLink = setDisplayName(function SocialLink(
     debugMode,
   });
 
-  const linkHref = href && isValidLink(href) ? href : "";
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
   const element = (
@@ -149,37 +151,24 @@ const SocialLink = setDisplayName(function SocialLink(
       target={linkTargetProps.target}
       rel={linkTargetProps.rel}
       title={title}
-      aria-label={label ?? title}
+      aria-label={hasLabel && label ? label : (title ?? "")}
       {...createComponentProps(componentId, "social-link", isDebugMode)}
     >
-      {icon ? (
-        <>
-          <Icon
-            name={icon}
-            className={cn(
-              "h-6 w-6 fill-zinc-500 transition",
-              "group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300",
-              hasLabel && "flex-none group-hover:fill-teal-500"
-            )}
-            page={page}
-            {...createComponentProps(
-              componentId,
-              "social-link-icon",
-              isDebugMode
-            )}
-          />
-          {
-            // data check if icon is within IconNames union type
-            !(icon as any as IconNames) && (
-              <span
-                style={{ color: "red", fontSize: "0.75em", marginLeft: 4 }}
-                data-icon-warning="true"
-              >
-                Invalid icon name: {icon as string}
-              </span>
-            )
-          }
-        </>
+      {icon && (icon as IconProps["name"]) ? (
+        <Icon
+          name={icon}
+          page={page}
+          className={cn(
+            "h-6 w-6 fill-zinc-500 transition",
+            "group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300",
+            hasLabel && "flex-none group-hover:fill-teal-500"
+          )}
+          {...createComponentProps(
+            componentId,
+            "social-link-icon",
+            isDebugMode
+          )}
+        />
       ) : null}
 
       {hasLabel && label ? <span className="ml-4">{label}</span> : null}
