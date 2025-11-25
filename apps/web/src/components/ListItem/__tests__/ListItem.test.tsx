@@ -13,6 +13,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ListItem, MemoizedListItem } from "../ListItem";
 
+import "@testing-library/jest-dom";
+
 // Mocks
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options: any = {}) => ({
@@ -120,25 +122,26 @@ describe("ListItem", () => {
           <span>Child</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-item-root");
       expect(root).toBeInTheDocument();
       expect(screen.getByText("Child")).toBeInTheDocument();
     });
 
     it("returns null when no children", () => {
       const { container } = render((<ListItem href="#" />) as any);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
   describe("Polymorphic as=", () => {
     it('supports as="div" for default variant (semantic role preserved)', () => {
+      // @ts-ignore
       render(
         <ListItem as="div" href="#">
           <span>Item</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-item-root");
       expect(root).toHaveAttribute("role", "listitem");
     });
 
@@ -148,7 +151,7 @@ describe("ListItem", () => {
           <span>Item</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-item-root");
       expect(root).toHaveAttribute("role", "listitem");
     });
   });
@@ -175,7 +178,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByTestId("test-id-list-article-root");
+        const articleElement = screen.getByRole("listitem", {
+          name: "Hello World",
+        });
         expect(articleElement).toHaveAttribute("aria-label", "Hello World");
         expect(articleElement).toHaveAttribute(
           "aria-describedby",
@@ -191,7 +196,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByTestId("test-id-list-article-root");
+        const articleElement = screen.getByRole("listitem", {
+          name: "Hello World",
+        });
         expect(articleElement).toHaveClass("md:col-span-3");
       });
 
@@ -202,7 +209,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByTestId("test-id-list-article-root");
+        const articleElement = screen.getByRole("listitem", {
+          name: "Hello World",
+        });
         expect(articleElement).not.toHaveClass("md:col-span-3");
       });
 
@@ -234,7 +243,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const timeElement = screen.getByRole("time");
+        const timeElement = screen.getByLabelText("Published on 2024-01-01");
         expect(timeElement).toHaveAttribute(
           "aria-label",
           "Published on 2024-01-01"
@@ -273,7 +282,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const timeElement = screen.getByRole("time");
+        const timeElement = screen.getByLabelText("Published on 2024-01-01");
         expect(timeElement).toHaveAttribute("dateTime", "2024-01-01");
       });
 
@@ -289,8 +298,13 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByTestId("test-id-list-article-root");
-        expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
+        const articleElement = screen.getByRole("listitem", {
+          name: "Hello World",
+        });
+        expect(articleElement).toHaveClass(
+          "custom-article-class",
+          "md:col-span-3"
+        );
       });
 
       it("returns null when article fields missing", () => {
@@ -300,7 +314,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         const { container } = render(InvalidTitleItem as any);
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
       });
 
       it("returns null when date invalid", () => {
@@ -310,7 +324,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         const { container } = render(InvalidDateItem as any);
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
       });
 
       it("returns null when description missing", () => {
@@ -320,7 +334,7 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         const { container } = render(InvalidDescItem as any);
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
       });
     });
 
@@ -340,13 +354,12 @@ describe("ListItem", () => {
       });
 
       it("returns null when no children", () => {
-        const { container } = render(
-          <ListItem variant="social" href="#" />
-        );
-        expect(container.firstChild).toBeNull();
+        const { container } = render(<ListItem variant="social" href="#" />);
+        expect(container).toBeEmptyDOMElement();
       });
 
       it("respects custom as prop", () => {
+        // @ts-ignore
         render(
           <ListItem variant="social" as="div" href="#">
             <a href="#">Social Link</a>
@@ -371,11 +384,15 @@ describe("ListItem", () => {
     describe("tools variant", () => {
       it("renders Card structure with title and description", () => {
         render(
-          <ListItem variant="tools" title="Tool Title" href="https://example.com">
+          <ListItem
+            variant="tools"
+            title="Tool Title"
+            href="https://example.com"
+          >
             Tool description
           </ListItem>
         );
-        const root = screen.getByTestId("test-id-list-tools-root");
+        const root = screen.getByRole("listitem");
         expect(root).toBeInTheDocument();
         expect(screen.getByText("Tool Title")).toBeInTheDocument();
         expect(screen.getByText("Tool description")).toBeInTheDocument();
@@ -387,14 +404,14 @@ describe("ListItem", () => {
             Body
           </ListItem>
         );
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
       });
 
       it("returns null when no children", () => {
         const { container } = render(
           <ListItem variant="tools" title="Tool Title" href="/internal" />
         );
-        expect(container.firstChild).toBeNull();
+        expect(container).toBeEmptyDOMElement();
       });
 
       it("adds rel for external _blank links", () => {
@@ -408,7 +425,7 @@ describe("ListItem", () => {
             Body
           </ListItem>
         );
-        const root = screen.getByTestId("test-id-list-tools-root");
+        const root = screen.getByRole("listitem");
         expect(root).toBeInTheDocument();
         // Title exists; href/rel logic executed in Card.Title via mocked utils
         expect(screen.getByText("Ext")).toBeInTheDocument();
@@ -422,7 +439,7 @@ describe("ListItem", () => {
         );
         // isValidLink returns false for empty href, so linkHref becomes ""
         // Component should still render but without href
-        const root = screen.getByTestId("test-id-list-tools-root");
+        const root = screen.getByRole("listitem");
         expect(root).toBeInTheDocument();
       });
 
@@ -432,7 +449,7 @@ describe("ListItem", () => {
             Body
           </ListItem>
         );
-        const root = screen.getByTestId("test-id-list-tools-root");
+        const root = screen.getByRole("listitem");
         // ToolsListItem doesn't have a default role, so role should be undefined
         expect(root).not.toHaveAttribute("role");
       });
@@ -446,7 +463,7 @@ describe("ListItem", () => {
           <span>Dbg</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-item-root");
       expect(root).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -457,7 +474,7 @@ describe("ListItem", () => {
         </ListItem>
       );
       expect(
-        screen.getByTestId("custom-id-list-default-root")
+        screen.getByTestId("custom-id-list-item-root")
       ).toBeInTheDocument();
     });
   });

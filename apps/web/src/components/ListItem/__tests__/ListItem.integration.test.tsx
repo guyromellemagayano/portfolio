@@ -13,6 +13,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ListItem } from "../ListItem";
 
+import "@testing-library/jest-dom";
+
 // Mocks
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options: any = {}) => ({
@@ -103,7 +105,7 @@ const ARTICLE: any = {
   description: "Integration description",
 };
 
-describe("ListItem (integration)", () => {
+describe("ListItem (Integration)", () => {
   it("renders default -> li -> child content end-to-end", () => {
     render(
       <ul>
@@ -113,7 +115,7 @@ describe("ListItem (integration)", () => {
       </ul>
     );
     expect(screen.getByText("Default item")).toBeInTheDocument();
-    expect(screen.getByTestId("test-id-list-default-root")).toBeInTheDocument();
+    expect(screen.getByTestId("test-id-list-item-root")).toBeInTheDocument();
   });
 
   it("renders article variant composing Card subcomponents", () => {
@@ -135,7 +137,9 @@ describe("ListItem (integration)", () => {
       React.createElement("span", null, "child")
     );
     render(<div>{ArticleItemFrontPage as any}</div>);
-    const articleElement = screen.getByTestId("test-id-list-article-root");
+    const articleElement = screen.getByRole("listitem", {
+      name: "Integration Article",
+    });
     expect(articleElement).not.toHaveClass("md:col-span-3");
   });
 
@@ -151,7 +155,9 @@ describe("ListItem (integration)", () => {
       React.createElement("span", null, "child")
     );
     render(<div>{ArticleItem as any}</div>);
-    const articleElement = screen.getByTestId("test-id-list-article-root");
+    const articleElement = screen.getByRole("listitem", {
+      name: "Integration Article",
+    });
     expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
   });
 
@@ -162,16 +168,27 @@ describe("ListItem (integration)", () => {
       React.createElement("span", null, "child")
     );
     render(<div>{ArticleItem as any}</div>);
-    const articleElement = screen.getByTestId("test-id-list-article-root");
+    const articleElement = screen.getByRole("listitem", {
+      name: "Integration Article",
+    });
     expect(articleElement).toHaveAttribute("aria-label", "Integration Article");
-    expect(articleElement).toHaveAttribute("aria-describedby", "Integration description");
+    expect(articleElement).toHaveAttribute(
+      "aria-describedby",
+      "Integration description"
+    );
     expect(articleElement).toHaveAttribute("id", "integration-article");
-    
-    const timeElement = screen.getByRole("time");
-    expect(timeElement).toHaveAttribute("aria-label", "Published on 2024-02-02");
-    
+
+    const timeElement = screen.getByLabelText("Published on 2024-02-02");
+    expect(timeElement).toHaveAttribute(
+      "aria-label",
+      "Published on 2024-02-02"
+    );
+
     const ctaButton = screen.getByRole("button");
-    expect(ctaButton).toHaveAttribute("aria-label", "Read article: Integration Article");
+    expect(ctaButton).toHaveAttribute(
+      "aria-label",
+      "Read article: Integration Article"
+    );
   });
 
   it("renders social variant with listitem role and children", () => {
@@ -193,6 +210,7 @@ describe("ListItem (integration)", () => {
   });
 
   it("renders social variant with custom as prop", () => {
+    // @ts-ignore
     render(
       <ul>
         <ListItem variant="social" as="div" href="#">
@@ -214,7 +232,7 @@ describe("ListItem (integration)", () => {
         </ListItem>
       </ul>
     );
-    const root = screen.getByTestId("test-id-list-tools-root");
+    const root = screen.getByRole("listitem");
     expect(root).toBeInTheDocument();
     expect(screen.getByText("My Tool")).toBeInTheDocument();
     expect(screen.getByText("Useful tool description")).toBeInTheDocument();
@@ -228,14 +246,14 @@ describe("ListItem (integration)", () => {
         </ListItem>
       </ul>
     );
-    const root = screen.getByTestId("test-id-list-tools-root");
+    const root = screen.getByRole("listitem");
     expect(root).toBeInTheDocument();
     // ToolsListItem doesn't have a default role
     expect(root).not.toHaveAttribute("role");
   });
 
   it("returns null for tools variant without title (integration)", () => {
-    const { container } = render(
+    render(
       <ul>
         <ListItem variant="tools" href="/internal">
           Body
@@ -243,8 +261,6 @@ describe("ListItem (integration)", () => {
       </ul>
     );
     // The list still exists, but the list item should not render
-    expect(
-      container.querySelector('[data-testid="test-id-list-tools-root"]')
-    ).toBeNull();
+    expect(screen.queryByRole("listitem")).not.toBeInTheDocument();
   });
 });
