@@ -16,7 +16,6 @@ build/
 out/
 coverage/
 logs/
-dist/
 
 # Turbo/monorepo cache
 .turbo/
