@@ -210,16 +210,15 @@ describe("ListItem (Integration)", () => {
   });
 
   it("renders social variant with custom as prop", () => {
-    // @ts-ignore
     render(
       <ul>
-        <ListItem variant="social" as="div" href="#">
+        <ListItem variant="social" as="li" href="#">
           <a href="#">GitHub</a>
         </ListItem>
       </ul>
     );
     const item = screen.getByTestId("test-id-social-list-item-root");
-    expect(item.tagName).toBe("DIV");
+    expect(item.tagName).toBe("LI");
     expect(item).toHaveAttribute("role", "listitem");
     expect(screen.getByText("GitHub")).toBeInTheDocument();
   });
