@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Menu } from '..';
+import { Menu } from "..";
 
 it("renders a menu element", () => {
   render(

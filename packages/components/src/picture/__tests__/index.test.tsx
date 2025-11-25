@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Picture } from '..';
+import { Picture } from "..";
 
 it("renders a picture element with sources and img fallback", () => {
   render(

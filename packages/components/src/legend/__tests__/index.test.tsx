@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Legend } from '..';
+import { Legend } from "..";
 
 it("renders a legend element", () => {
   render(<Legend data-testid="el">Caption</Legend>);

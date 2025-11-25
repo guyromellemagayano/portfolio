@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Fieldset } from '..';
+import { Fieldset } from "..";
 
 it("renders a fieldset element with legend", () => {
   render(

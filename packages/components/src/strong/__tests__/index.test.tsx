@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Strong } from '..';
+import { Strong } from "..";
 
 it("renders a strong element with text", () => {
   render(

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Figure } from '..';
+import { Figure } from "..";
 
 it("renders a figure element with content", () => {
   render(

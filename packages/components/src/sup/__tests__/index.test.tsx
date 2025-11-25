@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Sup } from '..';
+import { Sup } from "..";
 
 it("renders a sup element with text", () => {
   render(

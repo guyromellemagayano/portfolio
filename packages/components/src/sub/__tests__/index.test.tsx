@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Sub } from '..';
+import { Sub } from "..";
 
 it("renders a sub element with text", () => {
   render(

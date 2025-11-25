@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Datalist } from '..';
+import { Datalist } from "..";
 
 it("renders a datalist element", () => {
   render(

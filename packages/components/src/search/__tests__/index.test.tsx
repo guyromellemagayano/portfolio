@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Search } from '..';
+import { Search } from "..";
 
 it("renders a search element with children", () => {
   render(

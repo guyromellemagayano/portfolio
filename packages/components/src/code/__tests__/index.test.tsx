@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 
-import { Code } from '..';
+import { Code } from "..";
 
 // Basic render test
 it("renders a code element", () => {

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Nav } from '..';
+import { Nav } from "..";
 
 it("renders a nav element", () => {
   render(

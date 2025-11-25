@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Figcaption } from '..';
+import { Figcaption } from "..";
 
 it("renders a figcaption element", () => {
   render(<Figcaption data-testid="el">Caption</Figcaption>);

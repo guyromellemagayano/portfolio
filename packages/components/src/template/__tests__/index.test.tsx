@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Template } from '..';
+import { Template } from "..";
 
 it("renders a template element with content", () => {
   render(

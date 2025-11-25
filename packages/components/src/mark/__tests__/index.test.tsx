@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Mark } from '..';
+import { Mark } from "..";
 
 it("renders a mark element", () => {
   render(<Mark data-testid="el">highlight</Mark>);

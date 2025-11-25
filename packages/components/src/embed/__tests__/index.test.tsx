@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Embed } from '..';
+import { Embed } from "..";
 
 it("renders an embed element", () => {
   render(<Embed data-testid="el" src="movie.mp4" />);
