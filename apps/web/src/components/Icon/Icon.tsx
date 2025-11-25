@@ -13,32 +13,48 @@ import {
 
 type IconComponentElementType = "svg";
 
-export type IconNames =
-  | "ArrowDown"
-  | "ArrowLeft"
-  | "Briefcase"
-  | "ChevronDown"
-  | "ChevronRight"
-  | "Close"
-  | "GitHub"
-  | "Instagram"
-  | "LinkedIn"
-  | "Link"
-  | "Mail"
-  | "Moon"
-  | "Sun"
-  | "X";
+type IconNames =
+  | "default"
+  | "arrow-down"
+  | "arrow-left"
+  | "briefcase"
+  | "chevron-down"
+  | "chevron-right"
+  | "close"
+  | "github"
+  | "instagram"
+  | "linkedin"
+  | "link"
+  | "mail"
+  | "moon"
+  | "sun"
+  | "x";
 
-export type IconProps = React.ComponentPropsWithRef<IconComponentElementType> &
+export type IconProps<T extends IconComponentElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
   Omit<CommonComponentProps, "as"> & {
+    /** The component to render as - only "svg" is allowed */
+    as?: T;
     /** The name of the icon */
     name?: IconNames;
     /** The page to display */
     page?: string;
   };
 
-export const Icon = setDisplayName(function Icon(props: IconProps) {
-  const { name, children, debugId, debugMode, ...rest } = props;
+export const Icon = setDisplayName(function Icon<
+  T extends IconComponentElementType,
+>(props: IconProps<T>) {
+  const {
+    as: Component = "svg",
+    name,
+    children,
+    debugId,
+    debugMode,
+    page,
+    ...rest
+  } = props;
 
   // Icon component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
@@ -46,26 +62,29 @@ export const Icon = setDisplayName(function Icon(props: IconProps) {
     debugMode,
   });
 
+  if (!children) return null;
+
   // Define a mapping of names to components
   const iconComponentMap: Record<IconNames, React.ElementType> = {
-    ArrowDown: ArrowDownIcon,
-    ArrowLeft: ArrowLeftIcon,
-    Briefcase: BriefcaseIcon,
-    ChevronDown: ChevronDownIcon,
-    ChevronRight: ChevronRightIcon,
-    Close: CloseIcon,
-    GitHub: GitHubIcon,
-    Instagram: InstagramIcon,
-    LinkedIn: LinkedinIcon,
-    Link: LinkIcon,
-    Mail: MailIcon,
-    Moon: MoonIcon,
-    Sun: SunIcon,
-    X: XIcon,
+    default: Component,
+    "arrow-down": ArrowDownIcon,
+    "arrow-left": ArrowLeftIcon,
+    briefcase: BriefcaseIcon,
+    "chevron-down": ChevronDownIcon,
+    "chevron-right": ChevronRightIcon,
+    close: CloseIcon,
+    github: GitHubIcon,
+    instagram: InstagramIcon,
+    linkedin: LinkedinIcon,
+    link: LinkIcon,
+    mail: MailIcon,
+    moon: MoonIcon,
+    sun: SunIcon,
+    x: XIcon,
   };
 
-  // Choose the component based on name
-  const IconComponent = name ? iconComponentMap[name] : "svg";
+  // Choose the component based on the name
+  const IconComponent = name ? iconComponentMap[name] : Component;
 
   let iconComponentProps: React.ComponentPropsWithRef<typeof IconComponent> = {
     ...rest,
@@ -75,6 +94,7 @@ export const Icon = setDisplayName(function Icon(props: IconProps) {
     name,
     debugId: componentId,
     debugMode: isDebugMode,
+    ...(name && name !== "default" ? { page } : {}),
   };
 
   if (name && iconComponentMap[name]) {
@@ -98,7 +118,9 @@ export const MemoizedIcon = React.memo(Icon);
 // ============================================================================
 
 const ArrowDownIcon = setDisplayName(
-  React.memo(function ArrowDownIcon(props: IconProps) {
+  React.memo(function ArrowDownIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -130,7 +152,9 @@ const ArrowDownIcon = setDisplayName(
 // ============================================================================
 
 const ArrowLeftIcon = setDisplayName(
-  React.memo(function ArrowLeftIcon(props: IconProps) {
+  React.memo(function ArrowLeftIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -162,7 +186,9 @@ const ArrowLeftIcon = setDisplayName(
 // ============================================================================
 
 const BriefcaseIcon = setDisplayName(
-  React.memo(function BriefcaseIcon(props: IconProps) {
+  React.memo(function BriefcaseIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -199,7 +225,9 @@ const BriefcaseIcon = setDisplayName(
 // ============================================================================
 
 const ChevronDownIcon = setDisplayName(
-  React.memo(function ChevronDownIcon(props: IconProps) {
+  React.memo(function ChevronDownIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -232,7 +260,9 @@ const ChevronDownIcon = setDisplayName(
 // ============================================================================
 
 const ChevronRightIcon = setDisplayName(
-  React.memo(function ChevronRightIcon(props: IconProps) {
+  React.memo(function ChevronRightIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -264,7 +294,7 @@ const ChevronRightIcon = setDisplayName(
 // ============================================================================
 
 const CloseIcon = setDisplayName(
-  React.memo(function CloseIcon(props: IconProps) {
+  React.memo(function CloseIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -297,7 +327,7 @@ const CloseIcon = setDisplayName(
 // ============================================================================
 
 const GitHubIcon = setDisplayName(
-  React.memo(function GitHubIcon(props: IconProps) {
+  React.memo(function GitHubIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -328,7 +358,9 @@ const GitHubIcon = setDisplayName(
 // ============================================================================
 
 const InstagramIcon = setDisplayName(
-  React.memo(function InstagramIcon(props: IconProps) {
+  React.memo(function InstagramIcon(
+    props: IconProps<IconComponentElementType>
+  ) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -355,7 +387,7 @@ const InstagramIcon = setDisplayName(
 // ============================================================================
 
 const LinkedinIcon = setDisplayName(
-  React.memo(function LinkedinIcon(props: IconProps) {
+  React.memo(function LinkedinIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -381,7 +413,7 @@ const LinkedinIcon = setDisplayName(
 // ============================================================================
 
 const LinkIcon = setDisplayName(
-  React.memo(function LinkIcon(props: IconProps) {
+  React.memo(function LinkIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -410,7 +442,7 @@ const LinkIcon = setDisplayName(
 // ============================================================================
 
 const MailIcon = setDisplayName(
-  React.memo(function MailIcon(props: IconProps & Pick<IconProps, "page">) {
+  React.memo(function MailIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, page = "home", ...rest } = props;
 
     // Icon component ID and debug mode
@@ -463,7 +495,7 @@ const MailIcon = setDisplayName(
 // ============================================================================
 
 const MoonIcon = setDisplayName(
-  React.memo(function MoonIcon(props: IconProps) {
+  React.memo(function MoonIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -494,7 +526,7 @@ const MoonIcon = setDisplayName(
 // ============================================================================
 
 const SunIcon = setDisplayName(
-  React.memo(function SunIcon(props: IconProps) {
+  React.memo(function SunIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -527,7 +559,7 @@ const SunIcon = setDisplayName(
 // ============================================================================
 
 const XIcon = setDisplayName(
-  React.memo(function XIcon(props: IconProps) {
+  React.memo(function XIcon(props: IconProps<IconComponentElementType>) {
     const { name, debugId, debugMode, ...rest } = props;
 
     // Icon component ID and debug mode
@@ -545,5 +577,6 @@ const XIcon = setDisplayName(
         <path d="M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z" />
       </Icon>
     );
-  })
+  }),
+  "XIcon"
 );
