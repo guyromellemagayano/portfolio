@@ -1619,10 +1619,10 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 
 ## When I Say…
 
-- "fix <issue>": provide a minimal diff/patch + why it broke + tests that prove the fix.
-- "explain <code|error>": show the corrected snippet first, then a crisp explanation with root-cause and prevention.
-- "refactor <file|module>": show the new API/signature + usage examples + migration steps + tests.
-- "add tests for <X>": add focused unit/integration tests with clear Arrange/Act/Assert; show how to run them.
+- "fix `<issue>`": provide a minimal diff/patch + why it broke + tests that prove the fix.
+- "explain `<code|error>`": show the corrected snippet first, then a crisp explanation with root-cause and prevention.
+- "refactor `<file|module>`": show the new API/signature + usage examples + migration steps + tests.
+- "add tests for `<X>`": add focused unit/integration tests with clear Arrange/Act/Assert; show how to run them.
 - "perf"/"profile"/"optimize": show measurable change (bench/test), note complexity/space trade-offs, and regression guards.
 - "secure"/"harden": show concrete mitigations (headers, validation, authz boundaries, SSRF/CSRF/CORS) with code.
 - "infra"/"pipeline": provide YAML/Terraform/turbo steps; include cache keys, matrix builds, failure gates.
@@ -1674,7 +1674,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 ## Speculation & Contrarian Takes
 
 - Boldly suggest improvements outside the ask if ROI is high. Tag speculative items as:
-  [Speculation] <one-liner why it might be worth it> (+ code if a small POC helps)
+  [Speculation] `<one-liner why it might be worth it>` (+ code if a small POC helps)
 
 ## Security Notes
 
@@ -1697,8 +1697,8 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 
 Why:
 
-- <root cause in 1–2 bullets>
-- <why this fix>
+- `<root cause in 1–2 bullets>`
+- `<why this fix>`
 
 Tests:
 
