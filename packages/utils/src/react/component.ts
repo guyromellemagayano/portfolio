@@ -35,9 +35,22 @@ export function setDisplayName<T extends React.ComponentType<any>>(
   displayName?: string
 ): T {
   if (!displayName) {
-    const componentName =
-      component.name || component.displayName || "Component";
-    displayName = componentName;
+    // Attempt to resolve the component name through various properties:
+    // 1. `component.displayName` (explicitly set)
+    // 2. `component.name` (standard function name)
+    // 3. `component.type.displayName` or `component.type.name` (React.memo, ForwardRef wrapper)
+    // 4. `component.render.displayName` or `component.render.name` (React.forwardRef)
+    // 5. Fallback to "Component"
+
+    const anyComponent = component as any;
+    displayName =
+      anyComponent.displayName ||
+      anyComponent.name ||
+      anyComponent.type?.displayName ||
+      anyComponent.type?.name ||
+      anyComponent.render?.displayName ||
+      anyComponent.render?.name ||
+      "Component";
   }
 
   if (!component.displayName) {
@@ -142,9 +155,9 @@ export function createComponentProps(
   title?: string,
   additionalProps?: Record<string, unknown>
 ) {
-
   const dataAttributes = createComponentDataAttributes(id, suffix, debugMode);
-  const ariaLabelledBy = title && id ? { "aria-labelledby": createAriaLabelledBy(title, id) } : {};
+  const ariaLabelledBy =
+    title && id ? { "aria-labelledby": createAriaLabelledBy(title, id) } : {};
 
   return {
     ...dataAttributes,
