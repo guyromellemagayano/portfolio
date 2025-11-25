@@ -2,7 +2,7 @@ import React from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { Address } from '..';
+import { Address } from "..";
 
 // Basic render test
 it("renders an address element", () => {

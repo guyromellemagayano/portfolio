@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Rt } from '..';
+import { Rt } from "..";
 
 it("renders an rt element inside ruby", () => {
   render(

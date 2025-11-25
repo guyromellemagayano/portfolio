@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Main } from '..';
+import { Main } from "..";
 
 it("renders a main element", () => {
   render(<Main data-testid="el">content</Main>);

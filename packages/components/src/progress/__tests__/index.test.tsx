@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Progress } from '..';
+import { Progress } from "..";
 
 it("renders a progress element with value range", () => {
   render(<Progress data-testid="el" value={40} max={100} />);

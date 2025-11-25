@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Q } from '..';
+import { Q } from "..";
 
 it("renders a q element with cite and children", () => {
   render(

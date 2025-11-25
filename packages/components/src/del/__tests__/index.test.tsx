@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Del } from '..';
+import { Del } from "..";
 
 it("renders a del element", () => {
   render(<Del data-testid="el">Removed</Del>);

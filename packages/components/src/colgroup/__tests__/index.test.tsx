@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Colgroup } from '..';
+import { Colgroup } from "..";
 
 it("renders a colgroup element", () => {
   render(

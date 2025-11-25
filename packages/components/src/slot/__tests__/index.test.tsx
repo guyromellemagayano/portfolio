@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Slot } from '..';
+import { Slot } from "..";
 
 it("renders a slot element with name", () => {
   render(<Slot data-testid="el" name="summary" />);

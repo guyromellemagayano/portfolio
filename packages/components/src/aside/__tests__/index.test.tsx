@@ -2,7 +2,7 @@ import React from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { Aside } from '..';
+import { Aside } from "..";
 
 // Basic render test
 it("renders an aside element", () => {

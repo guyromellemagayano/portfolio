@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Optgroup } from '..';
+import { Optgroup } from "..";
 
 it("renders an optgroup element with label", () => {
   render(

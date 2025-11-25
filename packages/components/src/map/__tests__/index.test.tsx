@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Map } from '..';
+import { Map } from "..";
 
 it("renders a map element with name and areas", () => {
   render(
