@@ -467,7 +467,7 @@ The rule automatically blocks imports from:
 
 When a violation is detected:
 
-```
+```bash
 Cross-component import from private folder detected.
 
 Import: @web/components/Layout/internal

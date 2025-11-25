@@ -3,6 +3,8 @@ apply: by file patterns
 patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
+<!-- markdownlint-disable -->
+
 # Testing Standards
 
 ## Test Classification Requirements
