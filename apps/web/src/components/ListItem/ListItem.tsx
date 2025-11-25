@@ -74,11 +74,11 @@ export const ListItem = setDisplayName(function ListItem<
     tools: ToolsListItem,
   };
 
-  // Choose the component based on variant
+  // Choose the component based on a variant
   const VariantComponent = variantComponentMap[variant] || Component;
 
-  // For default variant, use string element directly
-  // Respect the `as` prop if provided, otherwise use "li" from variant map
+  // For the default variant, use a string element directly
+  // Respect the `as` prop if provided, otherwise use "li" from a variant map
   if (variant === "default") {
     const defaultRole = role !== undefined ? role : "listitem";
     const Element = (
@@ -235,7 +235,7 @@ const SocialListItem = setDisplayName(function SocialListItem<
 
   if (!children) return null;
 
-  // Set default role to "listitem" if not provided
+  // Set the default role to "listitem" if not provided
   const defaultRole = role !== undefined ? role : "listitem";
 
   const variantProps = {
