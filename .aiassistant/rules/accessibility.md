@@ -1,7 +1,6 @@
 ---
-description: Accessibility Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
-alwaysApply: false
+apply: by file patterns
+patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
 # Accessibility Standards
@@ -19,22 +18,26 @@ alwaysApply: false
 - **State Management**: Use `aria-expanded`, `aria-selected`, `aria-checked` for dynamic states
 - **Live Regions**: Use `aria-live` for dynamic content updates
 
-### ARIA Implementation Patterns
+### ARIA Implementation Patterns~
 
 #### 1. Landmark Roles
 
 ```typescript
 // Main content area
-<div role="main" aria-label="Article content">
+<div role = "main"
+aria - label = "Article content" / >
 
 // Navigation areas
-<nav role="navigation" aria-label="Main navigation">
+<nav role = "navigation"
+aria - label = "Main navigation" >
 
 // Content regions
-<section role="region" aria-label="Article layout">
+<section role = "region"
+aria - label = "Article layout" >
 
 // Article content
-<article role="article" aria-labelledby="article-title">
+<article role = "article"
+aria - labelledby = "article-title" >
 ```
 
 #### 2. Element Relationships
@@ -42,15 +45,19 @@ alwaysApply: false
 ```typescript
 // Article with title and date relationships
 <article
-  role="article"
-  aria-labelledby="article-title"
-  aria-describedby="article-date"
+  role = "article"
+aria - labelledby = "article-title"
+aria - describedby = "article-date"
 >
-  <h1 id="article-title">Article Title</h1>
-  <time id="article-date" aria-label="Published on January 1, 2023">
-    January 1, 2023
-  </time>
-</article>
+<h1 id = "article-title" > Article
+Title < /h1>
+< time
+id = "article-date"
+aria - label = "Published on January 1, 2023" >
+  January
+1, 2023
+< /time>
+< /article>
 ```
 
 #### 3. Interactive Elements
@@ -58,21 +65,21 @@ alwaysApply: false
 ```typescript
 // Button with descriptive label
 <button
-  role="button"
-  aria-label="Go back to articles"
-  aria-describedby="back-button-help"
+  role = "button"
+aria - label = "Go back to articles"
+aria - describedby = "back-button-help"
 >
-  <Icon.ArrowLeft aria-hidden="true" />
+<Icon.ArrowLeft aria - hidden = "true" / >
   Back
-</button>
+  < /button>
 
-// Form elements with proper labeling
-<input
-  type="text"
-  aria-label="Search articles"
-  aria-describedby="search-help"
-  aria-required="true"
-/>
+  // Form elements with proper labeling
+  < input
+type = "text"
+aria - label = "Search articles"
+aria - describedby = "search-help"
+aria - required = "true"
+  / >
 ```
 
 #### 4. Conditional ARIA Attributes
@@ -80,13 +87,14 @@ alwaysApply: false
 ```typescript
 // Only apply ARIA attributes when content exists
 <article
-  role="article"
-  aria-labelledby={title ? "article-title" : undefined}
-  aria-describedby={date ? "article-date" : undefined}
+  role = "article"
+aria - labelledby = {title ? "article-title" : undefined}
+aria - describedby = {date ? "article-date" : undefined}
 >
-  {title && <h1 id="article-title">{title}</h1>}
-  {date && <time id="article-date">{date}</time>}
-</article>
+{title && <h1 id = "article-title" > {title} < /h1>}
+{
+  date && <time id = "article-date" > {date} < /time>}
+    < /article>
 ```
 
 ## ARIA Testing Requirements
@@ -97,7 +105,7 @@ alwaysApply: false
 // Test ARIA roles are correctly applied
 const mainElement = screen.getByRole("main");
 const articleElement = screen.getByRole("article");
-const buttonElement = screen.getByRole("button", { name: /go back/i });
+const buttonElement = screen.getByRole("button", {name: /go back/i});
 ```
 
 ### 2. Relationship Testing
@@ -113,7 +121,7 @@ expect(articleElement).toHaveAttribute("aria-describedby", "article-date");
 
 ```typescript
 // Test unique IDs for ARIA relationships
-const titleElement = screen.getByRole("heading", { level: 1 });
+const titleElement = screen.getByRole("heading", {level: 1});
 expect(titleElement).toHaveAttribute("id", "article-title");
 ```
 
@@ -137,8 +145,9 @@ expect(separatorElement).toHaveAttribute("aria-hidden", "true");
 
 ```typescript
 // Test ARIA attributes when content is missing
-const articleWithoutTitle = { ...mockArticle, title: "" };
-render(<ArticleLayout article={articleWithoutTitle} />);
+const articleWithoutTitle = {...mockArticle, title: ""};
+render(<ArticleLayout article = {articleWithoutTitle}
+/>);
 
 const articleElement = screen.getByRole("article");
 expect(articleElement).not.toHaveAttribute("aria-labelledby");
@@ -194,12 +203,12 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 ### Testing Tools Integration
 
 ```typescript
-import { axe, toHaveNoViolations } from 'jest-axe';
+import {axe, toHaveNoViolations} from 'jest-axe';
 
 expect.extend(toHaveNoViolations);
 
 it('should not have accessibility violations', async () => {
-  const { container } = render(<Component />);
+  const {container} = render(<Component / >);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
 });
@@ -226,16 +235,20 @@ it('should not have accessibility violations', async () => {
 
 ```typescript
 // Main content area
-<div role="main" aria-label="Article content">
+<div role = "main"
+aria - label = "Article content" >
 
 // Navigation areas
-<nav role="navigation" aria-label="Main navigation">
+<nav role = "navigation"
+aria - label = "Main navigation" >
 
 // Content regions
-<section role="region" aria-label="Article layout">
+<section role = "region"
+aria - label = "Article layout" >
 
 // Article content
-<article role="article" aria-labelledby="article-title">
+<article role = "article"
+aria - labelledby = "article-title" >
 ```
 
 #### 2. Element Relationships
@@ -243,15 +256,19 @@ it('should not have accessibility violations', async () => {
 ```typescript
 // Article with title and date relationships
 <article
-  role="article"
-  aria-labelledby="article-title"
-  aria-describedby="article-date"
+  role = "article"
+aria - labelledby = "article-title"
+aria - describedby = "article-date"
 >
-  <h1 id="article-title">Article Title</h1>
-  <time id="article-date" aria-label="Published on January 1, 2023">
-    January 1, 2023
-  </time>
-</article>
+<h1 id = "article-title" > Article
+Title < /h1>
+< time
+id = "article-date"
+aria - label = "Published on January 1, 2023" >
+  January
+1, 2023
+< /time>
+< /article>
 ```
 
 #### 3. Interactive Elements
@@ -259,21 +276,21 @@ it('should not have accessibility violations', async () => {
 ```typescript
 // Button with descriptive label
 <button
-  role="button"
-  aria-label="Go back to articles"
-  aria-describedby="back-button-help"
+  role = "button"
+aria - label = "Go back to articles"
+aria - describedby = "back-button-help"
 >
-  <Icon.ArrowLeft aria-hidden="true" />
+<Icon.ArrowLeft aria - hidden = "true" / >
   Back
-</button>
+  < /button>
 
-// Form elements with proper labeling
-<input
-  type="text"
-  aria-label="Search articles"
-  aria-describedby="search-help"
-  aria-required="true"
-/>
+  // Form elements with proper labeling
+  < input
+type = "text"
+aria - label = "Search articles"
+aria - describedby = "search-help"
+aria - required = "true"
+  / >
 ```
 
 #### 4. Conditional ARIA Attributes
@@ -281,13 +298,14 @@ it('should not have accessibility violations', async () => {
 ```typescript
 // Only apply ARIA attributes when content exists
 <article
-  role="article"
-  aria-labelledby={title ? "article-title" : undefined}
-  aria-describedby={date ? "article-date" : undefined}
+  role = "article"
+aria - labelledby = {title ? "article-title" : undefined}
+aria - describedby = {date ? "article-date" : undefined}
 >
-  {title && <h1 id="article-title">{title}</h1>}
-  {date && <time id="article-date">{date}</time>}
-</article>
+{title && <h1 id = "article-title" > {title} < /h1>}
+{
+  date && <time id = "article-date" > {date} < /time>}
+    < /article>
 ```
 
 ## ARIA Testing Requirements
@@ -298,7 +316,7 @@ it('should not have accessibility violations', async () => {
 // Test ARIA roles are correctly applied
 const mainElement = screen.getByRole("main");
 const articleElement = screen.getByRole("article");
-const buttonElement = screen.getByRole("button", { name: /go back/i });
+const buttonElement = screen.getByRole("button", {name: /go back/i});
 ```
 
 ### 2. Relationship Testing
@@ -314,7 +332,7 @@ expect(articleElement).toHaveAttribute("aria-describedby", "article-date");
 
 ```typescript
 // Test unique IDs for ARIA relationships
-const titleElement = screen.getByRole("heading", { level: 1 });
+const titleElement = screen.getByRole("heading", {level: 1});
 expect(titleElement).toHaveAttribute("id", "article-title");
 ```
 
@@ -338,8 +356,9 @@ expect(separatorElement).toHaveAttribute("aria-hidden", "true");
 
 ```typescript
 // Test ARIA attributes when content is missing
-const articleWithoutTitle = { ...mockArticle, title: "" };
-render(<ArticleLayout article={articleWithoutTitle} />);
+const articleWithoutTitle = {...mockArticle, title: ""};
+render(<ArticleLayout article = {articleWithoutTitle}
+/>);
 
 const articleElement = screen.getByRole("article");
 expect(articleElement).not.toHaveAttribute("aria-labelledby");
@@ -395,12 +414,12 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 ### Testing Tools Integration
 
 ```typescript
-import { axe, toHaveNoViolations } from 'jest-axe';
+import {axe, toHaveNoViolations} from 'jest-axe';
 
 expect.extend(toHaveNoViolations);
 
 it('should not have accessibility violations', async () => {
-  const { container } = render(<Component />);
+  const {container} = render(<Component / >);
   const results = await axe(container);
   expect(results).toHaveNoViolations();
 });
