@@ -1,0 +1,409 @@
+---
+description: Accessibility Standards
+globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
+alwaysApply: false
+---
+
+<!-- markdownlint-disable -->
+
+# Accessibility Standards
+
+## ARIA Implementation Standards
+
+### Required ARIA Attributes for All Components
+
+- **Semantic Roles**: Apply appropriate ARIA roles (`main`, `region`, `article`, `banner`, `navigation`, `button`, etc.)
+- **Element Relationships**: Use `aria-labelledby` and `aria-describedby` to connect related elements
+- **Unique IDs**: Generate unique IDs for elements referenced by ARIA relationships
+- **Descriptive Labels**: Provide `aria-label` attributes for context and clarity
+- **Decorative Elements**: Use `aria-hidden="true"` for purely decorative elements
+- **Heading Structure**: Apply `aria-level` attributes for proper heading hierarchy
+- **State Management**: Use `aria-expanded`, `aria-selected`, `aria-checked` for dynamic states
+- **Live Regions**: Use `aria-live` for dynamic content updates
+
+### ARIA Implementation Patterns
+
+#### 1. Landmark Roles
+
+```typescript
+// Main content area
+<div role="main" aria-label="Article content">
+
+// Navigation areas
+<nav role="navigation" aria-label="Main navigation">
+
+// Content regions
+<section role="region" aria-label="Article layout">
+
+// Article content
+<article role="article" aria-labelledby="article-title">
+```
+
+#### 2. Element Relationships
+
+```typescript
+// Article with title and date relationships
+<article
+  role="article"
+  aria-labelledby="article-title"
+  aria-describedby="article-date"
+>
+  <h1 id="article-title">Article Title</h1>
+  <time id="article-date" aria-label="Published on January 1, 2023">
+    January 1, 2023
+  </time>
+</article>
+```
+
+#### 3. Interactive Elements
+
+```typescript
+// Button with descriptive label
+<button
+  role="button"
+  aria-label="Go back to articles"
+  aria-describedby="back-button-help"
+>
+  <Icon.ArrowLeft aria-hidden="true" />
+  Back
+</button>
+
+// Form elements with proper labeling
+<input
+  type="text"
+  aria-label="Search articles"
+  aria-describedby="search-help"
+  aria-required="true"
+/>
+```
+
+#### 4. Conditional ARIA Attributes
+
+```typescript
+// Only apply ARIA attributes when content exists
+<article
+  role="article"
+  aria-labelledby={title ? "article-title" : undefined}
+  aria-describedby={date ? "article-date" : undefined}
+>
+  {title && <h1 id="article-title">{title}</h1>}
+  {date && <time id="article-date">{date}</time>}
+</article>
+```
+
+## ARIA Testing Requirements
+
+### 1. Role Testing
+
+```typescript
+// Test ARIA roles are correctly applied
+const mainElement = screen.getByRole("main");
+const articleElement = screen.getByRole("article");
+const buttonElement = screen.getByRole("button", { name: /go back/i });
+```
+
+### 2. Relationship Testing
+
+```typescript
+// Test ARIA relationships
+const articleElement = screen.getByRole("article");
+expect(articleElement).toHaveAttribute("aria-labelledby", "article-title");
+expect(articleElement).toHaveAttribute("aria-describedby", "article-date");
+```
+
+### 3. ID Testing
+
+```typescript
+// Test unique IDs for ARIA relationships
+const titleElement = screen.getByRole("heading", { level: 1 });
+expect(titleElement).toHaveAttribute("id", "article-title");
+```
+
+### 4. Label Testing
+
+```typescript
+// Test descriptive labels
+const dateElement = screen.getByText("January 1, 2023").closest("time");
+expect(dateElement).toHaveAttribute("aria-label", "Published on January 1, 2023");
+```
+
+### 5. Decorative Element Testing
+
+```typescript
+// Test decorative elements are hidden
+const separatorElement = screen.getByTestId("date-separator");
+expect(separatorElement).toHaveAttribute("aria-hidden", "true");
+```
+
+### 6. Conditional ARIA Testing
+
+```typescript
+// Test ARIA attributes when content is missing
+const articleWithoutTitle = { ...mockArticle, title: "" };
+render(<ArticleLayout article={articleWithoutTitle} />);
+
+const articleElement = screen.getByRole("article");
+expect(articleElement).not.toHaveAttribute("aria-labelledby");
+```
+
+## ARIA Best Practices
+
+- **Semantic HTML First**: Use native HTML elements with built-in accessibility
+- **Progressive Enhancement**: Add ARIA attributes to enhance, not replace, semantic HTML
+- **User-Centric Testing**: Test with screen readers and assistive technologies
+- **Consistent Patterns**: Apply ARIA attributes consistently across similar components
+- **Documentation**: Document ARIA implementation decisions and patterns
+- **Validation**: Use accessibility testing tools to validate ARIA implementation
+
+## Keyboard Navigation Standards
+
+- **Tab Order**: Logical tab sequence through interactive elements
+- **Focus Indicators**: Visible focus indicators for all interactive elements
+- **Keyboard Shortcuts**: Provide keyboard alternatives for mouse interactions
+- **Skip Links**: Provide skip links for main content navigation
+- **Focus Management**: Proper focus management in dynamic content
+
+## Color and Contrast Standards
+
+- **WCAG AA Compliance**: Minimum 4.5:1 contrast ratio for normal text
+- **WCAG AAA Compliance**: 7:1 contrast ratio for enhanced accessibility
+- **Color Independence**: Information not conveyed by color alone
+- **High Contrast Mode**: Support for high contrast display modes
+
+## Screen Reader Support
+
+- **Semantic Structure**: Proper heading hierarchy (h1, h2, h3, etc.)
+- **Alternative Text**: Descriptive alt text for all images
+- **Form Labels**: Proper labeling for all form elements
+- **Error Messages**: Clear, descriptive error messages
+- **Loading States**: Announce loading states to screen readers
+
+## Testing Accessibility
+
+### Automated Testing
+
+- **axe-core**: Use axe-core for automated accessibility testing
+- **jest-axe**: Integrate accessibility testing into unit tests
+- **Lighthouse**: Use Lighthouse for accessibility audits
+
+### Manual Testing
+
+- **Screen Reader Testing**: Test with NVDA, JAWS, or VoiceOver
+- **Keyboard Navigation**: Test all functionality with keyboard only
+- **High Contrast**: Test in high contrast mode
+- **Zoom Testing**: Test at 200% zoom level
+
+### Testing Tools Integration
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
+
+it('should not have accessibility violations', async () => {
+  const { container } = render(<Component />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
+
+# Accessibility Standards
+
+## ARIA Implementation Standards
+
+### Required ARIA Attributes for All Components
+
+- **Semantic Roles**: Apply appropriate ARIA roles (`main`, `region`, `article`, `banner`, `navigation`, `button`, etc.)
+- **Element Relationships**: Use `aria-labelledby` and `aria-describedby` to connect related elements
+- **Unique IDs**: Generate unique IDs for elements referenced by ARIA relationships
+- **Descriptive Labels**: Provide `aria-label` attributes for context and clarity
+- **Decorative Elements**: Use `aria-hidden="true"` for purely decorative elements
+- **Heading Structure**: Apply `aria-level` attributes for proper heading hierarchy
+- **State Management**: Use `aria-expanded`, `aria-selected`, `aria-checked` for dynamic states
+- **Live Regions**: Use `aria-live` for dynamic content updates
+
+### ARIA Implementation Patterns
+
+#### 1. Landmark Roles
+
+```typescript
+// Main content area
+<div role="main" aria-label="Article content">
+
+// Navigation areas
+<nav role="navigation" aria-label="Main navigation">
+
+// Content regions
+<section role="region" aria-label="Article layout">
+
+// Article content
+<article role="article" aria-labelledby="article-title">
+```
+
+#### 2. Element Relationships
+
+```typescript
+// Article with title and date relationships
+<article
+  role="article"
+  aria-labelledby="article-title"
+  aria-describedby="article-date"
+>
+  <h1 id="article-title">Article Title</h1>
+  <time id="article-date" aria-label="Published on January 1, 2023">
+    January 1, 2023
+  </time>
+</article>
+```
+
+#### 3. Interactive Elements
+
+```typescript
+// Button with descriptive label
+<button
+  role="button"
+  aria-label="Go back to articles"
+  aria-describedby="back-button-help"
+>
+  <Icon.ArrowLeft aria-hidden="true" />
+  Back
+</button>
+
+// Form elements with proper labeling
+<input
+  type="text"
+  aria-label="Search articles"
+  aria-describedby="search-help"
+  aria-required="true"
+/>
+```
+
+#### 4. Conditional ARIA Attributes
+
+```typescript
+// Only apply ARIA attributes when content exists
+<article
+  role="article"
+  aria-labelledby={title ? "article-title" : undefined}
+  aria-describedby={date ? "article-date" : undefined}
+>
+  {title && <h1 id="article-title">{title}</h1>}
+  {date && <time id="article-date">{date}</time>}
+</article>
+```
+
+## ARIA Testing Requirements
+
+### 1. Role Testing
+
+```typescript
+// Test ARIA roles are correctly applied
+const mainElement = screen.getByRole("main");
+const articleElement = screen.getByRole("article");
+const buttonElement = screen.getByRole("button", { name: /go back/i });
+```
+
+### 2. Relationship Testing
+
+```typescript
+// Test ARIA relationships
+const articleElement = screen.getByRole("article");
+expect(articleElement).toHaveAttribute("aria-labelledby", "article-title");
+expect(articleElement).toHaveAttribute("aria-describedby", "article-date");
+```
+
+### 3. ID Testing
+
+```typescript
+// Test unique IDs for ARIA relationships
+const titleElement = screen.getByRole("heading", { level: 1 });
+expect(titleElement).toHaveAttribute("id", "article-title");
+```
+
+### 4. Label Testing
+
+```typescript
+// Test descriptive labels
+const dateElement = screen.getByText("January 1, 2023").closest("time");
+expect(dateElement).toHaveAttribute("aria-label", "Published on January 1, 2023");
+```
+
+### 5. Decorative Element Testing
+
+```typescript
+// Test decorative elements are hidden
+const separatorElement = screen.getByTestId("date-separator");
+expect(separatorElement).toHaveAttribute("aria-hidden", "true");
+```
+
+### 6. Conditional ARIA Testing
+
+```typescript
+// Test ARIA attributes when content is missing
+const articleWithoutTitle = { ...mockArticle, title: "" };
+render(<ArticleLayout article={articleWithoutTitle} />);
+
+const articleElement = screen.getByRole("article");
+expect(articleElement).not.toHaveAttribute("aria-labelledby");
+```
+
+## ARIA Best Practices
+
+- **Semantic HTML First**: Use native HTML elements with built-in accessibility
+- **Progressive Enhancement**: Add ARIA attributes to enhance, not replace, semantic HTML
+- **User-Centric Testing**: Test with screen readers and assistive technologies
+- **Consistent Patterns**: Apply ARIA attributes consistently across similar components
+- **Documentation**: Document ARIA implementation decisions and patterns
+- **Validation**: Use accessibility testing tools to validate ARIA implementation
+
+## Keyboard Navigation Standards
+
+- **Tab Order**: Logical tab sequence through interactive elements
+- **Focus Indicators**: Visible focus indicators for all interactive elements
+- **Keyboard Shortcuts**: Provide keyboard alternatives for mouse interactions
+- **Skip Links**: Provide skip links for main content navigation
+- **Focus Management**: Proper focus management in dynamic content
+
+## Color and Contrast Standards
+
+- **WCAG AA Compliance**: Minimum 4.5:1 contrast ratio for normal text
+- **WCAG AAA Compliance**: 7:1 contrast ratio for enhanced accessibility
+- **Color Independence**: Information not conveyed by color alone
+- **High Contrast Mode**: Support for high contrast display modes
+
+## Screen Reader Support
+
+- **Semantic Structure**: Proper heading hierarchy (h1, h2, h3, etc.)
+- **Alternative Text**: Descriptive alt text for all images
+- **Form Labels**: Proper labeling for all form elements
+- **Error Messages**: Clear, descriptive error messages
+- **Loading States**: Announce loading states to screen readers
+
+## Testing Accessibility
+
+### Automated Testing
+
+- **axe-core**: Use axe-core for automated accessibility testing
+- **jest-axe**: Integrate accessibility testing into unit tests
+- **Lighthouse**: Use Lighthouse for accessibility audits
+
+### Manual Testing
+
+- **Screen Reader Testing**: Test with NVDA, JAWS, or VoiceOver
+- **Keyboard Navigation**: Test all functionality with keyboard only
+- **High Contrast**: Test in high contrast mode
+- **Zoom Testing**: Test at 200% zoom level
+
+### Testing Tools Integration
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+expect.extend(toHaveNoViolations);
+
+it('should not have accessibility violations', async () => {
+  const { container } = render(<Component />);
+  const results = await axe(container);
+  expect(results).toHaveNoViolations();
+});
+```
