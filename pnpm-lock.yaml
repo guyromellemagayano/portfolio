@@ -6,6 +6,21 @@ settings:
 
 catalogs:
   default:
+    '@changesets/cli':
+      specifier: 2.29.5
+      version: 2.29.5
+    '@commitlint/cli':
+      specifier: 19.8.1
+      version: 19.8.1
+    '@commitlint/config-conventional':
+      specifier: 19.8.1
+      version: 19.8.1
+    '@commitlint/cz-commitlint':
+      specifier: 19.8.1
+      version: 19.8.1
+    '@commitlint/types':
+      specifier: 19.8.1
+      version: 19.8.1
     '@eslint/js':
       specifier: 9.33.0
       version: 9.33.0
@@ -111,6 +126,9 @@ catalogs:
     cors:
       specifier: 2.8.5
       version: 2.8.5
+    czg:
+      specifier: 1.12.0
+      version: 1.12.0
     eslint:
       specifier: 9.33.0
       version: 9.33.0
@@ -123,6 +141,9 @@ catalogs:
     eslint-plugin-import:
       specifier: 2.32.0
       version: 2.32.0
+    eslint-plugin-jest-dom:
+      specifier: 5.5.0
+      version: 5.5.0
     eslint-plugin-only-warn:
       specifier: 1.1.0
       version: 1.1.0
@@ -141,6 +162,9 @@ catalogs:
     eslint-plugin-simple-import-sort:
       specifier: 12.1.1
       version: 12.1.1
+    eslint-plugin-testing-library:
+      specifier: 7.13.5
+      version: 7.13.5
     eslint-plugin-turbo:
       specifier: 2.5.5
       version: 2.5.5
@@ -159,9 +183,15 @@ catalogs:
     globals:
       specifier: 16.3.0
       version: 16.3.0
+    husky:
+      specifier: 9.1.7
+      version: 9.1.7
     jsdom:
       specifier: 27.0.0
       version: 27.0.0
+    lint-staged:
+      specifier: 16.1.2
+      version: 16.1.2
     morgan:
       specifier: 1.10.1
       version: 1.10.1
@@ -171,12 +201,24 @@ catalogs:
     next-themes:
       specifier: 0.4.6
       version: 0.4.6
+    nodemon:
+      specifier: 3.1.10
+      version: 3.1.10
     postcss:
       specifier: 8.5.6
       version: 8.5.6
     prettier:
       specifier: 3.6.2
       version: 3.6.2
+    prettier-plugin-packagejson:
+      specifier: 2.5.19
+      version: 2.5.19
+    prettier-plugin-pkg:
+      specifier: 0.21.2
+      version: 0.21.2
+    prettier-plugin-tailwindcss:
+      specifier: 0.6.14
+      version: 0.6.14
     rantail:
       specifier: 0.0.6
       version: 0.0.6
@@ -204,6 +246,9 @@ catalogs:
     sharp:
       specifier: 0.34.3
       version: 0.34.3
+    sort-package-json:
+      specifier: 3.4.0
+      version: 3.4.0
     supertest:
       specifier: 7.1.4
       version: 7.1.4
@@ -216,6 +261,9 @@ catalogs:
     tsdown:
       specifier: 0.14.1
       version: 0.14.1
+    tsx:
+      specifier: 4.20.3
+      version: 4.20.3
     turbo:
       specifier: 2.5.5
       version: 2.5.5
@@ -225,6 +273,9 @@ catalogs:
     typescript-eslint:
       specifier: 8.39.0
       version: 8.39.0
+    validate-branch-name:
+      specifier: 1.3.2
+      version: 1.3.2
     vite:
       specifier: 7.2.2
       version: 7.2.2
@@ -247,7 +298,7 @@ overrides:
 importers:
 
   .:
-    dependencies:
+    devDependencies:
       '@changesets/cli':
         specifier: 'catalog:'
         version: 2.29.5
@@ -263,6 +314,12 @@ importers:
       '@commitlint/types':
         specifier: 'catalog:'
         version: 19.8.1
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:packages/config-eslint
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:packages/config-typescript
       '@tailwindcss/typography':
         specifier: 'catalog:'
         version: 0.5.16(tailwindcss@4.1.11)
@@ -274,28 +331,34 @@ importers:
         version: 19.2.2(@types/react@19.2.2)
       czg:
         specifier: 'catalog:'
-        version: 1.11.1
+        version: 1.12.0
       eslint:
         specifier: 'catalog:'
         version: 9.33.0(jiti@2.6.1)
+      eslint-plugin-jest-dom:
+        specifier: 'catalog:'
+        version: 5.5.0(@testing-library/dom@10.4.0)(eslint@9.33.0(jiti@2.6.1))
+      eslint-plugin-testing-library:
+        specifier: 'catalog:'
+        version: 7.13.5(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
       husky:
         specifier: 'catalog:'
         version: 9.1.7
       lint-staged:
         specifier: 'catalog:'
-        version: 16.0.0
+        version: 16.1.2
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
       prettier-plugin-packagejson:
         specifier: 'catalog:'
-        version: 2.5.13(prettier@3.6.2)
+        version: 2.5.19(prettier@3.6.2)
       prettier-plugin-pkg:
         specifier: 'catalog:'
-        version: 0.19.1(prettier@3.6.2)
+        version: 0.21.2(prettier@3.6.2)
       prettier-plugin-tailwindcss:
         specifier: 'catalog:'
-        version: 0.6.11(prettier@3.6.2)
+        version: 0.6.14(prettier@3.6.2)
       react:
         specifier: 'catalog:'
         version: 19.2.0
@@ -320,13 +383,6 @@ importers:
       validate-branch-name:
         specifier: 'catalog:'
         version: 1.3.2(typescript@5.8.3)
-    devDependencies:
-      '@packages/eslint-config':
-        specifier: workspace:*
-        version: link:packages/config-eslint
-      '@packages/typescript-config':
-        specifier: workspace:*
-        version: link:packages/config-typescript
 
   apps/admin:
     dependencies:
@@ -661,6 +717,22 @@ importers:
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../logger
+      react:
+        specifier: 'catalog:'
+        version: 19.2.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.0(react@19.2.0)
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@packages/vitest-presets':
+        specifier: workspace:*
+        version: link:../vitest-presets
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 6.6.3
@@ -691,12 +763,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
-      react:
-        specifier: 'catalog:'
-        version: 19.2.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.0(react@19.2.0)
       rimraf:
         specifier: 'catalog:'
         version: 6.0.1
@@ -712,29 +778,9 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.2.0)(@vitest/ui@3.2.4)(jiti@2.6.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
-    devDependencies:
-      '@packages/eslint-config':
-        specifier: workspace:*
-        version: link:../config-eslint
-      '@packages/typescript-config':
-        specifier: workspace:*
-        version: link:../config-typescript
-      '@packages/vitest-presets':
-        specifier: workspace:*
-        version: link:../vitest-presets
 
   packages/config-eslint:
     dependencies:
-      globals:
-        specifier: 'catalog:'
-        version: 16.3.0
-      react:
-        specifier: 'catalog:'
-        version: 19.2.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.0(react@19.2.0)
-    devDependencies:
       '@eslint/js':
         specifier: 'catalog:'
         version: 9.33.0
@@ -771,6 +817,9 @@ importers:
       eslint-plugin-import:
         specifier: 'catalog:'
         version: 2.32.0(@typescript-eslint/parser@8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.33.0(jiti@2.6.1))
+      eslint-plugin-jest-dom:
+        specifier: 'catalog:'
+        version: 5.5.0(@testing-library/dom@10.4.0)(eslint@9.33.0(jiti@2.6.1))
       eslint-plugin-only-warn:
         specifier: 'catalog:'
         version: 1.1.0
@@ -789,39 +838,46 @@ importers:
       eslint-plugin-simple-import-sort:
         specifier: 'catalog:'
         version: 12.1.1(eslint@9.33.0(jiti@2.6.1))
+      eslint-plugin-testing-library:
+        specifier: 'catalog:'
+        version: 7.13.5(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
       eslint-plugin-turbo:
         specifier: 'catalog:'
         version: 2.5.5(eslint@9.33.0(jiti@2.6.1))(turbo@2.5.5)
       eslint-plugin-unused-imports:
         specifier: 'catalog:'
         version: 4.1.4(@typescript-eslint/eslint-plugin@8.39.0(@typescript-eslint/parser@8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3))(eslint@9.33.0(jiti@2.6.1))
+      globals:
+        specifier: 'catalog:'
+        version: 16.3.0
+      typescript-eslint:
+        specifier: 'catalog:'
+        version: 8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
+    devDependencies:
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
+      react:
+        specifier: 'catalog:'
+        version: 19.2.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.0(react@19.2.0)
       rimraf:
         specifier: 'catalog:'
         version: 6.0.1
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
-      typescript-eslint:
-        specifier: 'catalog:'
-        version: 8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
 
   packages/config-typescript:
-    dependencies:
+    devDependencies:
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
       rimraf:
         specifier: 'catalog:'
         version: 6.0.1
-      tsconfig-paths:
-        specifier: 'catalog:'
-        version: 4.2.0
-      tslib:
-        specifier: 'catalog:'
-        version: 2.8.1
       typescript:
         specifier: 'catalog:'
         version: 5.8.3
@@ -831,24 +887,12 @@ importers:
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../logger
-      '@types/node':
+      react:
         specifier: 'catalog:'
-        version: 24.2.0
-      eslint:
+        version: 19.2.0
+      react-dom:
         specifier: 'catalog:'
-        version: 9.33.0(jiti@2.6.1)
-      prettier:
-        specifier: 'catalog:'
-        version: 3.6.2
-      rimraf:
-        specifier: 'catalog:'
-        version: 6.0.1
-      tsdown:
-        specifier: 'catalog:'
-        version: 0.14.1(typescript@5.8.3)
-      typescript:
-        specifier: 'catalog:'
-        version: 5.8.3
+        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@packages/eslint-config':
         specifier: workspace:*
@@ -862,21 +906,33 @@ importers:
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.2.0
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.2
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.2(@types/react@19.2.2)
+      eslint:
+        specifier: 'catalog:'
+        version: 9.33.0(jiti@2.6.1)
       jsdom:
         specifier: 'catalog:'
         version: 27.0.0(postcss@8.5.6)
-      react:
+      prettier:
         specifier: 'catalog:'
-        version: 19.2.0
-      react-dom:
+        version: 3.6.2
+      rimraf:
         specifier: 'catalog:'
-        version: 19.2.0(react@19.2.0)
+        version: 6.0.1
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.14.1(typescript@5.8.3)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
       vitest:
         specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.2.0)(@vitest/ui@3.2.4)(jiti@2.6.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
@@ -993,6 +1049,22 @@ importers:
       '@guyromellemagayano/logger':
         specifier: workspace:*
         version: link:../logger
+      react:
+        specifier: 'catalog:'
+        version: 19.2.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.0(react@19.2.0)
+    devDependencies:
+      '@packages/eslint-config':
+        specifier: workspace:*
+        version: link:../config-eslint
+      '@packages/typescript-config':
+        specifier: workspace:*
+        version: link:../config-typescript
+      '@packages/vitest-presets':
+        specifier: workspace:*
+        version: link:../vitest-presets
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.0(@testing-library/dom@10.4.0)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -1014,12 +1086,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.6.2
-      react:
-        specifier: 'catalog:'
-        version: 19.2.0
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.0(react@19.2.0)
       rimraf:
         specifier: 'catalog:'
         version: 6.0.1
@@ -1032,16 +1098,6 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.12)(@types/node@24.2.0)(@vitest/ui@3.2.4)(jiti@2.6.1)(jsdom@27.0.0(postcss@8.5.6))(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
-    devDependencies:
-      '@packages/eslint-config':
-        specifier: workspace:*
-        version: link:../config-eslint
-      '@packages/typescript-config':
-        specifier: workspace:*
-        version: link:../config-typescript
-      '@packages/vitest-presets':
-        specifier: workspace:*
-        version: link:../vitest-presets
 
   packages/vitest-presets:
     dependencies:
@@ -3008,9 +3064,9 @@ packages:
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
-  commander@13.1.0:
-    resolution: {integrity: sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw==}
-    engines: {node: '>=18'}
+  commander@14.0.0:
+    resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
+    engines: {node: '>=20'}
 
   commander@8.3.0:
     resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
@@ -3136,8 +3192,8 @@ packages:
     resolution: {integrity: sha512-U466fIzU5U22eES5lTNiNbZ+d8dfcHcssH4o7QsdWaCcRs/feIPCxKYSWkYBNs5mny7MvEfwpTLWjvbm94hecw==}
     engines: {node: '>= 10'}
 
-  czg@1.11.1:
-    resolution: {integrity: sha512-2k/Dh7MiRKMUEtQO3kWVkgPmvf0wZlxyS7Svr8cpI2ScATkLuA5uWa2ukJnTXG6Pwe73vFhGO9jd9IiE3NOM5g==}
+  czg@1.12.0:
+    resolution: {integrity: sha512-LGltcoZ5m7vhe3WNw16QXqd5WurnHegx9V15MwZJtFAU2AVCYLCqDbwxPUgZOnAcdzzooq33ONcU148HOQsjdA==}
     engines: {node: '>=v12.20.0'}
     hasBin: true
 
@@ -3489,6 +3545,16 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
+  eslint-plugin-jest-dom@5.5.0:
+    resolution: {integrity: sha512-CRlXfchTr7EgC3tDI7MGHY6QjdJU5Vv2RPaeeGtkXUHnKZf04kgzMPIJUXt4qKCvYWVVIEo9ut9Oq1vgXAykEA==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0, npm: '>=6', yarn: '>=1'}
+    peerDependencies:
+      '@testing-library/dom': ^8.0.0 || ^9.0.0 || ^10.0.0
+      eslint: ^6.8.0 || ^7.0.0 || ^8.0.0 || ^9.0.0
+    peerDependenciesMeta:
+      '@testing-library/dom':
+        optional: true
+
   eslint-plugin-only-warn@1.1.0:
     resolution: {integrity: sha512-2tktqUAT+Q3hCAU0iSf4xAN1k9zOpjK5WO8104mB0rT/dGhOa09582HN5HlbxNbPRZ0THV7nLGvzugcNOSjzfA==}
     engines: {node: '>=6'}
@@ -3528,6 +3594,12 @@ packages:
     resolution: {integrity: sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA==}
     peerDependencies:
       eslint: '>=5.0.0'
+
+  eslint-plugin-testing-library@7.13.5:
+    resolution: {integrity: sha512-75rUmtNnXeO9cyMwG78vXxGEB7muIQ+IwcwBTma+M9KFc68SFaMKevGydObsUgX+IFef4lRLO/ysR9JqK1odyg==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
 
   eslint-plugin-turbo@2.5.5:
     resolution: {integrity: sha512-IlN65X6W7rgK88u5xl1xC+7FIGKA7eyaca0yxZQ9CBNV6keAaqtjZQLw8ZfXdv7T+MzTLYkYOeOHAv8yCRUx4Q==}
@@ -4264,10 +4336,6 @@ packages:
   js-tokens@9.0.1:
     resolution: {integrity: sha512-mxa9E9ITFOt0ban3j6L5MpjwegGz6lBQmM1IJkWeBZGcMxto50+eWdjC/52xDbS2vy0k7vIMK0Fe2wfL9OQSpQ==}
 
-  js-yaml@4.1.0:
-    resolution: {integrity: sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==}
-    hasBin: true
-
   js-yaml@4.1.1:
     resolution: {integrity: sha512-qQKT4zQxXl8lLwBtHMWwaTcGfFOZviOJet3Oy/xmGk2gZH677CJM9EvtfdSkgWcATZhj/55JZ0rmy3myCT5lsA==}
     hasBin: true
@@ -4402,9 +4470,9 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lint-staged@16.0.0:
-    resolution: {integrity: sha512-sUCprePs6/rbx4vKC60Hez6X10HPkpDJaGcy3D1NdwR7g1RcNkWL8q9mJMreOqmHBTs+1sNFp+wOiX9fr+hoOQ==}
-    engines: {node: '>=20.18'}
+  lint-staged@16.1.2:
+    resolution: {integrity: sha512-sQKw2Si2g9KUZNY3XNvRuDq4UJqpHwF0/FQzZR2M7I5MvtpWvibikCjUVJzZdGE0ByurEl3KQNvsGetd1ty1/Q==}
+    engines: {node: '>=20.17'}
     hasBin: true
 
   listr2@8.3.3:
@@ -5079,25 +5147,27 @@ packages:
     resolution: {integrity: sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==}
     engines: {node: '>=6.0.0'}
 
-  prettier-plugin-packagejson@2.5.13:
-    resolution: {integrity: sha512-94B/Xy25HwiwSkGUGnwQw3cBw9jg9L5LfKCHpuRMjC8ETPq4oCMa2S4EblV628E0XER9n6v5rH0TQY9cUd10pg==}
+  prettier-plugin-packagejson@2.5.19:
+    resolution: {integrity: sha512-Qsqp4+jsZbKMpEGZB1UP1pxeAT8sCzne2IwnKkr+QhUe665EXUo3BAvTf1kAPCqyMv9kg3ZmO0+7eOni/C6Uag==}
     peerDependencies:
       prettier: '>= 1.16.0'
     peerDependenciesMeta:
       prettier:
         optional: true
 
-  prettier-plugin-pkg@0.19.1:
-    resolution: {integrity: sha512-9x2USWidQHxzd6a1+ikVqIm1K9qNs3f+XoUvq9EChaSdkkFUxUnWU/4+2EGttFLDT9DK4d9CwCKGSNZC/EE98g==}
+  prettier-plugin-pkg@0.21.2:
+    resolution: {integrity: sha512-CSlM5+51B7yTKcoRWT4M3ImcdFHD5NUz0Xu2t8J03B761zu6J3BjSo/XleKp2kB0tH49K7oG5Uuqn6ldI5LRLg==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       prettier: ^3.0.3
 
-  prettier-plugin-tailwindcss@0.6.11:
-    resolution: {integrity: sha512-YxaYSIvZPAqhrrEpRtonnrXdghZg1irNg4qrjboCXrpybLWVs55cW2N3juhspVJiO0JBvYJT8SYsJpc8OQSnsA==}
+  prettier-plugin-tailwindcss@0.6.14:
+    resolution: {integrity: sha512-pi2e/+ZygeIqntN+vC573BcW5Cve8zUB0SSAGxqpB4f96boZF4M3phPVoOFCeypwkpRYdi7+jQ5YJJUwrkGUAg==}
     engines: {node: '>=14.21.3'}
     peerDependencies:
       '@ianvs/prettier-plugin-sort-imports': '*'
+      '@prettier/plugin-hermes': '*'
+      '@prettier/plugin-oxc': '*'
       '@prettier/plugin-pug': '*'
       '@shopify/prettier-plugin-liquid': '*'
       '@trivago/prettier-plugin-sort-imports': '*'
@@ -5116,6 +5186,10 @@ packages:
       prettier-plugin-svelte: '*'
     peerDependenciesMeta:
       '@ianvs/prettier-plugin-sort-imports':
+        optional: true
+      '@prettier/plugin-hermes':
+        optional: true
+      '@prettier/plugin-oxc':
         optional: true
       '@prettier/plugin-pug':
         optional: true
@@ -5322,6 +5396,10 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
+
+  requireindex@1.2.0:
+    resolution: {integrity: sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==}
+    engines: {node: '>=0.10.5'}
 
   resolve-dir@1.0.1:
     resolution: {integrity: sha512-R7uiTjECzvOsWSfdM0QKFNBVFcK27aHOUwdvK53BcW8zqnGdYp0Fbj82cy54+2A4P2tFM22J5kRfe1R+lM/1yg==}
@@ -5543,10 +5621,6 @@ packages:
   sort-object-keys@1.1.3:
     resolution: {integrity: sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==}
 
-  sort-package-json@3.2.1:
-    resolution: {integrity: sha512-rTfRdb20vuoAn7LDlEtCqOkYfl2X+Qze6cLbNOzcDpbmKEhJI30tTN44d5shbKJnXsvz24QQhlCm81Bag7EOKg==}
-    hasBin: true
-
   sort-package-json@3.4.0:
     resolution: {integrity: sha512-97oFRRMM2/Js4oEA9LJhjyMlde+2ewpZQf53pgue27UkbEXfHJnDzHlUxQ/DWUkzqmp7DFwJp8D+wi/TYeQhpA==}
     engines: {node: '>=20'}
@@ -5709,10 +5783,6 @@ packages:
     resolution: {integrity: sha512-MeQTA1r0litLUf0Rp/iisCaL8761lKAZHaimlbGK4j0HysC4PLfqygQj9srcs0m2RdtDYnF8UuYyKpbjHYp7Jw==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  synckit@0.11.5:
-    resolution: {integrity: sha512-frqvfWyDA5VPVdrWfH24uM6SI/O8NLpVbIIJxb8t/a3YGsp4AW9CYgSKC0OaSEfexnp7Y1pVh2Y6IHO8ggGDmA==}
-    engines: {node: ^14.18.0 || >=16.0.0}
-
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
 
@@ -5823,10 +5893,6 @@ packages:
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
-
-  tsconfig-paths@4.2.0:
-    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
-    engines: {node: '>=6'}
 
   tsdown@0.14.1:
     resolution: {integrity: sha512-/nBuFDKZeYln9hAxwWG5Cm55/823sNIVI693iVi0xRFHzf9OVUq4b/lx9PH1TErFr/IQ0kd2hutFbJIPM0XQWA==}
@@ -6303,7 +6369,7 @@ snapshots:
       '@babel/types': 7.28.4
       '@jridgewell/remapping': 2.3.5
       convert-source-map: 2.0.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -6387,7 +6453,7 @@ snapshots:
       '@babel/parser': 7.28.4
       '@babel/template': 7.27.2
       '@babel/types': 7.28.4
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -6505,7 +6571,7 @@ snapshots:
   '@changesets/parse@0.4.1':
     dependencies:
       '@changesets/types': 6.1.0
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
 
   '@changesets/pre@2.0.2':
     dependencies:
@@ -6792,7 +6858,7 @@ snapshots:
   '@eslint/config-array@0.21.0':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -6806,7 +6872,7 @@ snapshots:
   '@eslint/eslintrc@3.3.1':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       espree: 10.4.0
       globals: 14.0.0
       ignore: 5.3.2
@@ -7620,7 +7686,7 @@ snapshots:
       '@typescript-eslint/types': 8.39.0
       '@typescript-eslint/typescript-estree': 8.39.0(typescript@5.8.3)
       '@typescript-eslint/visitor-keys': 8.39.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       eslint: 9.33.0(jiti@2.6.1)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -7630,7 +7696,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.39.0(typescript@5.8.3)
       '@typescript-eslint/types': 8.39.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
@@ -7649,7 +7715,7 @@ snapshots:
       '@typescript-eslint/types': 8.39.0
       '@typescript-eslint/typescript-estree': 8.39.0(typescript@5.8.3)
       '@typescript-eslint/utils': 8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       eslint: 9.33.0(jiti@2.6.1)
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
@@ -7664,7 +7730,7 @@ snapshots:
       '@typescript-eslint/tsconfig-utils': 8.39.0(typescript@5.8.3)
       '@typescript-eslint/types': 8.39.0
       '@typescript-eslint/visitor-keys': 8.39.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -7768,7 +7834,7 @@ snapshots:
       '@ampproject/remapping': 2.3.0
       '@bcoe/v8-coverage': 1.0.2
       ast-v8-to-istanbul: 0.3.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-report: 3.0.1
       istanbul-lib-source-maps: 5.0.6
@@ -8058,7 +8124,7 @@ snapshots:
     dependencies:
       bytes: 3.1.2
       content-type: 1.0.5
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       http-errors: 2.0.0
       iconv-lite: 0.6.3
       on-finished: 2.4.1
@@ -8278,7 +8344,7 @@ snapshots:
 
   comma-separated-tokens@2.0.3: {}
 
-  commander@13.1.0: {}
+  commander@14.0.0: {}
 
   commander@8.3.0: {}
 
@@ -8423,7 +8489,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  czg@1.11.1: {}
+  czg@1.12.0: {}
 
   dargs@8.1.0: {}
 
@@ -8455,10 +8521,6 @@ snapshots:
       ms: 2.0.0
 
   debug@3.2.7:
-    dependencies:
-      ms: 2.1.3
-
-  debug@4.4.3:
     dependencies:
       ms: 2.1.3
 
@@ -8789,7 +8851,7 @@ snapshots:
 
   eslint-import-resolver-typescript@4.4.4(eslint-plugin-import@2.32.0)(eslint@9.33.0(jiti@2.6.1)):
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       eslint: 9.33.0(jiti@2.6.1)
       eslint-import-context: 0.1.9(unrs-resolver@1.9.2)
       get-tsconfig: 4.10.1
@@ -8842,6 +8904,14 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
+  eslint-plugin-jest-dom@5.5.0(@testing-library/dom@10.4.0)(eslint@9.33.0(jiti@2.6.1)):
+    dependencies:
+      '@babel/runtime': 7.27.6
+      eslint: 9.33.0(jiti@2.6.1)
+      requireindex: 1.2.0
+    optionalDependencies:
+      '@testing-library/dom': 10.4.0
+
   eslint-plugin-only-warn@1.1.0: {}
 
   eslint-plugin-prettier@5.5.4(eslint-config-prettier@10.1.8(eslint@9.33.0(jiti@2.6.1)))(eslint@9.33.0(jiti@2.6.1))(prettier@3.6.2):
@@ -8887,6 +8957,15 @@ snapshots:
     dependencies:
       eslint: 9.33.0(jiti@2.6.1)
 
+  eslint-plugin-testing-library@7.13.5(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3):
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.39.0
+      '@typescript-eslint/utils': 8.39.0(eslint@9.33.0(jiti@2.6.1))(typescript@5.8.3)
+      eslint: 9.33.0(jiti@2.6.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   eslint-plugin-turbo@2.5.5(eslint@9.33.0(jiti@2.6.1))(turbo@2.5.5):
     dependencies:
       dotenv: 16.0.3
@@ -8926,7 +9005,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       escape-string-regexp: 4.0.0
       eslint-scope: 8.4.0
       eslint-visitor-keys: 4.2.1
@@ -9019,7 +9098,7 @@ snapshots:
       content-type: 1.0.5
       cookie: 0.7.2
       cookie-signature: 1.2.2
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -9109,7 +9188,7 @@ snapshots:
 
   finalhandler@2.1.0:
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       on-finished: 2.4.1
@@ -9446,14 +9525,14 @@ snapshots:
   http-proxy-agent@7.0.2:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
   https-proxy-agent@7.0.6:
     dependencies:
       agent-base: 7.1.4
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -9736,7 +9815,7 @@ snapshots:
   istanbul-lib-source-maps@5.0.6:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.29
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       istanbul-lib-coverage: 3.2.2
     transitivePeerDependencies:
       - supports-color
@@ -9764,10 +9843,6 @@ snapshots:
   js-tokens@4.0.0: {}
 
   js-tokens@9.0.1: {}
-
-  js-yaml@4.1.0:
-    dependencies:
-      argparse: 2.0.1
 
   js-yaml@4.1.1:
     dependencies:
@@ -9896,10 +9971,10 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lint-staged@16.0.0:
+  lint-staged@16.1.2:
     dependencies:
       chalk: 5.6.2
-      commander: 13.1.0
+      commander: 14.0.0
       debug: 4.4.3(supports-color@5.5.0)
       lilconfig: 3.1.3
       listr2: 8.3.3
@@ -10429,7 +10504,7 @@ snapshots:
   micromark@4.0.2:
     dependencies:
       '@types/debug': 4.1.12
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       decode-named-character-reference: 1.2.0
       devlop: 1.1.0
       micromark-core-commonmark: 2.0.3
@@ -10818,18 +10893,18 @@ snapshots:
     dependencies:
       fast-diff: 1.3.0
 
-  prettier-plugin-packagejson@2.5.13(prettier@3.6.2):
+  prettier-plugin-packagejson@2.5.19(prettier@3.6.2):
     dependencies:
-      sort-package-json: 3.2.1
-      synckit: 0.11.5
+      sort-package-json: 3.4.0
+      synckit: 0.11.11
     optionalDependencies:
       prettier: 3.6.2
 
-  prettier-plugin-pkg@0.19.1(prettier@3.6.2):
+  prettier-plugin-pkg@0.21.2(prettier@3.6.2):
     dependencies:
       prettier: 3.6.2
 
-  prettier-plugin-tailwindcss@0.6.11(prettier@3.6.2):
+  prettier-plugin-tailwindcss@0.6.14(prettier@3.6.2):
     dependencies:
       prettier: 3.6.2
 
@@ -10924,7 +10999,7 @@ snapshots:
   read-yaml-file@1.1.0:
     dependencies:
       graceful-fs: 4.2.11
-      js-yaml: 4.1.0
+      js-yaml: 4.1.1
       pify: 4.0.1
       strip-bom: 3.0.0
 
@@ -11053,6 +11128,8 @@ snapshots:
 
   require-from-string@2.0.2: {}
 
+  requireindex@1.2.0: {}
+
   resolve-dir@1.0.1:
     dependencies:
       expand-tilde: 2.0.2
@@ -11102,7 +11179,7 @@ snapshots:
       '@babel/types': 7.28.4
       ast-kit: 2.1.2
       birpc: 2.5.0
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       dts-resolver: 2.1.1
       get-tsconfig: 4.10.1
       rolldown: 1.0.0-beta.33
@@ -11162,7 +11239,7 @@ snapshots:
 
   router@2.2.0:
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       depd: 2.0.0
       is-promise: 4.0.0
       parseurl: 1.3.3
@@ -11223,7 +11300,7 @@ snapshots:
 
   send@1.2.0:
     dependencies:
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       encodeurl: 2.0.0
       escape-html: 1.0.3
       etag: 1.8.1
@@ -11368,16 +11445,6 @@ snapshots:
       is-fullwidth-code-point: 5.0.0
 
   sort-object-keys@1.1.3: {}
-
-  sort-package-json@3.2.1:
-    dependencies:
-      detect-indent: 7.0.1
-      detect-newline: 4.0.1
-      git-hooks-list: 4.1.1
-      is-plain-obj: 4.1.0
-      semver: 7.7.3
-      sort-object-keys: 1.1.3
-      tinyglobby: 0.2.15
 
   sort-package-json@3.4.0:
     dependencies:
@@ -11531,7 +11598,7 @@ snapshots:
     dependencies:
       component-emitter: 1.3.1
       cookiejar: 2.1.4
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       fast-safe-stringify: 2.1.1
       form-data: 4.0.4
       formidable: 3.5.4
@@ -11563,11 +11630,6 @@ snapshots:
   synckit@0.11.11:
     dependencies:
       '@pkgr/core': 0.2.9
-
-  synckit@0.11.5:
-    dependencies:
-      '@pkgr/core': 0.2.9
-      tslib: 2.8.1
 
   tabbable@6.2.0: {}
 
@@ -11658,18 +11720,12 @@ snapshots:
       minimist: 1.2.8
       strip-bom: 3.0.0
 
-  tsconfig-paths@4.2.0:
-    dependencies:
-      json5: 2.2.3
-      minimist: 1.2.8
-      strip-bom: 3.0.0
-
   tsdown@0.14.1(typescript@5.8.3):
     dependencies:
       ansis: 4.1.0
       cac: 6.7.14
       chokidar: 4.0.3
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       diff: 8.0.2
       empathic: 2.0.0
       hookable: 5.5.3
@@ -11925,7 +11981,7 @@ snapshots:
   vite-node@3.2.4(@types/node@24.2.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0):
     dependencies:
       cac: 6.7.14
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       es-module-lexer: 1.7.0
       pathe: 2.0.3
       vite: 7.2.2(@types/node@24.2.0)(jiti@2.6.1)(lightningcss@1.30.1)(tsx@4.20.3)(yaml@2.8.0)
@@ -11975,7 +12031,7 @@ snapshots:
       '@vitest/spy': 3.2.4
       '@vitest/utils': 3.2.4
       chai: 5.2.1
-      debug: 4.4.3
+      debug: 4.4.3(supports-color@5.5.0)
       expect-type: 1.2.2
       magic-string: 0.30.17
       pathe: 2.0.3

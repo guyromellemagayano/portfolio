@@ -35,11 +35,6 @@
     "test:ui": "echo 'No tests configured for eslint config package'"
   },
   "dependencies": {
-    "globals": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:"
-  },
-  "devDependencies": {
     "@eslint/js": "catalog:",
     "@next/eslint-plugin-next": "catalog:",
     "@typescript-eslint/eslint-plugin": "catalog:",
@@ -48,21 +43,28 @@
     "@typescript-eslint/types": "catalog:",
     "@typescript-eslint/utils": "catalog:",
     "@vitest/eslint-plugin": "catalog:",
+    "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
     "eslint-import-resolver-typescript": "catalog:",
     "eslint-plugin-import": "catalog:",
+    "eslint-plugin-jest-dom": "catalog:",
     "eslint-plugin-only-warn": "catalog:",
     "eslint-plugin-prettier": "catalog:",
+    "eslint-plugin-react": "catalog:",
     "eslint-plugin-react-hooks": "catalog:",
     "eslint-plugin-react-refresh": "catalog:",
-    "eslint-plugin-react": "catalog:",
     "eslint-plugin-simple-import-sort": "catalog:",
+    "eslint-plugin-testing-library": "catalog:",
     "eslint-plugin-turbo": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
-    "eslint": "catalog:",
+    "globals": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "devDependencies": {
     "prettier": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "rimraf": "catalog:",
-    "typescript-eslint": "catalog:",
     "typescript": "catalog:"
   }
 }
