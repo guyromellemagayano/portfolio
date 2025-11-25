@@ -62,38 +62,38 @@ describe("Icon", () => {
     });
 
     it("renders icon with name prop correctly", () => {
-      const { container } = render(<Icon name="X" />);
-      const icon = container.querySelector('[data-icon-X-id="test-id-icon-X"]');
+      const { container } = render(<Icon name="x" />);
+      const icon = container.querySelector('[data-icon-x-id="test-id-icon-x"]');
       expect(icon).toBeInTheDocument();
       expect(icon?.tagName).toBe("svg");
     });
 
     it("applies custom className with name prop", () => {
-      const { container } = render(<Icon name="X" className="custom-class" />);
-      const icon = container.querySelector("[data-icon-X-id]");
+      const { container } = render(<Icon name="x" className="custom-class" />);
+      const icon = container.querySelector("[data-icon-x-id]");
       expect(icon).toHaveAttribute("class");
     });
 
     it("renders with debug mode enabled using name prop", () => {
-      const { container } = render(<Icon name="X" debugMode={true} />);
-      const icon = container.querySelector("[data-icon-X-id]");
+      const { container } = render(<Icon name="x" debugMode={true} />);
+      const icon = container.querySelector("[data-icon-x-id]");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders with custom component ID using name prop", () => {
-      const { container } = render(<Icon name="X" debugId="custom-id" />);
+      const { container } = render(<Icon name="x" debugId="custom-id" />);
       const icon = container.querySelector(
-        '[data-icon-X-id="custom-id-icon-X"]'
+        '[data-icon-x-id="custom-id-icon-x"]'
       );
-      expect(icon).toHaveAttribute("data-icon-X-id", "custom-id-icon-X");
+      expect(icon).toHaveAttribute("data-icon-x-id", "custom-id-icon-x");
     });
 
     it("passes through HTML attributes with name prop", () => {
       const { container } = render(
-        <Icon name="X" data-test="test-value" width="32" height="32" />
+        <Icon name="x" data-test="test-value" width="32" height="32" />
       );
-      const icon = container.querySelector("[data-icon-X-id]");
+      const icon = container.querySelector("[data-icon-x-id]");
       expect(icon).toHaveAttribute("data-test", "test-value");
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
@@ -165,8 +165,8 @@ describe("Icon", () => {
 
   describe("Debug Mode", () => {
     it("applies data-debug-mode when enabled with name prop", () => {
-      const { container } = render(<Icon name="X" debugMode={true} />);
-      const icon = container.querySelector("[data-icon-X-id]");
+      const { container } = render(<Icon name="x" debugMode={true} />);
+      const icon = container.querySelector("[data-icon-x-id]");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -290,10 +290,10 @@ describe("Icon", () => {
 
     it("has correct data attributes for debugging with name prop", () => {
       const { container } = render(
-        <Icon name="X" debugId="test-id" debugMode={true} />
+        <Icon name="x" debugId="test-id" debugMode={true} />
       );
-      const icon = container.querySelector("[data-icon-X-id]");
-      expect(icon).toHaveAttribute("data-icon-X-id", "test-id-icon-X");
+      const icon = container.querySelector("[data-icon-x-id]");
+      expect(icon).toHaveAttribute("data-icon-x-id", "test-id-icon-x");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -378,15 +378,15 @@ describe("Icon", () => {
     it("handles complex prop combinations with name prop", () => {
       const { container } = render(
         <Icon
-          name="X"
+          name="x"
           debugId="complex-id"
           debugMode={true}
           className="custom-class"
           data-test="complex-test"
         />
       );
-      const icon = container.querySelector("[data-icon-X-id]");
-      expect(icon).toHaveAttribute("data-icon-X-id", "complex-id-icon-X");
+      const icon = container.querySelector("[data-icon-x-id]");
+      expect(icon).toHaveAttribute("data-icon-x-id", "complex-id-icon-x");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
       expect(icon).toHaveAttribute("class");
       expect(icon).toHaveAttribute("data-test", "complex-test");
@@ -446,99 +446,99 @@ describe("Icon", () => {
   describe("Icon Name Prop", () => {
     describe("Basic Rendering with name prop", () => {
       it("renders X icon with name prop", () => {
-        const { container } = render(<Icon name="X" />);
-        const icon = container.querySelector("[data-icon-X-id]");
+        const { container } = render(<Icon name="x" />);
+        const icon = container.querySelector("[data-icon-x-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Instagram icon with name prop", () => {
-        const { container } = render(<Icon name="Instagram" />);
-        const icon = container.querySelector("[data-icon-Instagram-id]");
+        const { container } = render(<Icon name="instagram" />);
+        const icon = container.querySelector("[data-icon-instagram-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders LinkedIn icon with name prop", () => {
-        const { container } = render(<Icon name="LinkedIn" />);
-        const icon = container.querySelector("[data-icon-LinkedIn-id]");
+        const { container } = render(<Icon name="linkedin" />);
+        const icon = container.querySelector("[data-icon-linkedin-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders GitHub icon with name prop", () => {
-        const { container } = render(<Icon name="GitHub" />);
-        const icon = container.querySelector("[data-icon-GitHub-id]");
+        const { container } = render(<Icon name="github" />);
+        const icon = container.querySelector("[data-icon-github-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ArrowDown icon with name prop", () => {
-        const { container } = render(<Icon name="ArrowDown" />);
-        const icon = container.querySelector("[data-icon-ArrowDown-id]");
+        const { container } = render(<Icon name="arrow-down" />);
+        const icon = container.querySelector("[data-icon-arrow-down-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ArrowLeft icon with name prop", () => {
-        const { container } = render(<Icon name="ArrowLeft" />);
-        const icon = container.querySelector("[data-icon-ArrowLeft-id]");
+        const { container } = render(<Icon name="arrow-left" />);
+        const icon = container.querySelector("[data-icon-arrow-left-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Briefcase icon with name prop", () => {
-        const { container } = render(<Icon name="Briefcase" />);
-        const icon = container.querySelector("[data-icon-Briefcase-id]");
+        const { container } = render(<Icon name="briefcase" />);
+        const icon = container.querySelector("[data-icon-briefcase-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ChevronDown icon with name prop", () => {
-        const { container } = render(<Icon name="ChevronDown" />);
-        const icon = container.querySelector("[data-icon-ChevronDown-id]");
+        const { container } = render(<Icon name="chevron-down" />);
+        const icon = container.querySelector("[data-icon-chevron-down-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders ChevronRight icon with name prop", () => {
-        const { container } = render(<Icon name="ChevronRight" />);
-        const icon = container.querySelector("[data-icon-ChevronRight-id]");
+        const { container } = render(<Icon name="chevron-right" />);
+        const icon = container.querySelector("[data-icon-chevron-right-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Close icon with name prop", () => {
-        const { container } = render(<Icon name="Close" />);
-        const icon = container.querySelector("[data-icon-Close-id]");
+        const { container } = render(<Icon name="close" />);
+        const icon = container.querySelector("[data-icon-close-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Link icon with name prop", () => {
-        const { container } = render(<Icon name="Link" />);
-        const icon = container.querySelector("[data-icon-Link-id]");
+        const { container } = render(<Icon name="link" />);
+        const icon = container.querySelector("[data-icon-link-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Mail icon with name prop", () => {
-        const { container } = render(<Icon name="Mail" />);
-        const icon = container.querySelector("[data-icon-Mail-id]");
+        const { container } = render(<Icon name="mail" />);
+        const icon = container.querySelector("[data-icon-mail-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Sun icon with name prop", () => {
-        const { container } = render(<Icon name="Sun" />);
-        const icon = container.querySelector("[data-icon-Sun-id]");
+        const { container } = render(<Icon name="sun" />);
+        const icon = container.querySelector("[data-icon-sun-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
 
       it("renders Moon icon with name prop", () => {
-        const { container } = render(<Icon name="Moon" />);
-        const icon = container.querySelector("[data-icon-Moon-id]");
+        const { container } = render(<Icon name="moon" />);
+        const icon = container.querySelector("[data-icon-moon-id]");
         expect(icon).toBeInTheDocument();
         expect(icon?.tagName).toBe("svg");
       });
@@ -547,24 +547,24 @@ describe("Icon", () => {
     describe("Name prop with custom props", () => {
       it("applies custom className with name prop", () => {
         const { container } = render(
-          <Icon name="X" className="custom-class" />
+          <Icon name="x" className="custom-class" />
         );
-        const icon = container.querySelector("[data-icon-X-id]");
+        const icon = container.querySelector("[data-icon-x-id]");
         expect(icon).toHaveAttribute("class");
       });
 
       it("applies debug mode with name prop", () => {
-        const { container } = render(<Icon name="X" debugMode={true} />);
-        const icon = container.querySelector("[data-icon-X-id]");
+        const { container } = render(<Icon name="x" debugMode={true} />);
+        const icon = container.querySelector("[data-icon-x-id]");
         expect(icon).toBeInTheDocument();
         expect(icon).toHaveAttribute("data-debug-mode", "true");
       });
 
       it("passes through HTML attributes with name prop", () => {
         const { container } = render(
-          <Icon name="X" width="32" height="32" data-test="test-value" />
+          <Icon name="x" width="32" height="32" data-test="test-value" />
         );
-        const icon = container.querySelector("[data-icon-X-id]");
+        const icon = container.querySelector("[data-icon-x-id]");
         expect(icon).toHaveAttribute("width", "32");
         expect(icon).toHaveAttribute("height", "32");
         expect(icon).toHaveAttribute("data-test", "test-value");
@@ -573,26 +573,26 @@ describe("Icon", () => {
 
     describe("Name prop with viewBox", () => {
       it("X icon has correct viewBox", () => {
-        const { container } = render(<Icon name="X" />);
-        const icon = container.querySelector("[data-icon-X-id]");
+        const { container } = render(<Icon name="x" />);
+        const icon = container.querySelector("[data-icon-x-id]");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
 
       it("ArrowDown icon has correct viewBox", () => {
-        const { container } = render(<Icon name="ArrowDown" />);
-        const icon = container.querySelector("[data-icon-ArrowDown-id]");
+        const { container } = render(<Icon name="arrow-down" />);
+        const icon = container.querySelector("[data-icon-arrow-down-id]");
         expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       });
 
       it("ChevronDown icon has correct viewBox", () => {
-        const { container } = render(<Icon name="ChevronDown" />);
-        const icon = container.querySelector("[data-icon-ChevronDown-id]");
+        const { container } = render(<Icon name="chevron-down" />);
+        const icon = container.querySelector("[data-icon-chevron-down-id]");
         expect(icon).toHaveAttribute("viewBox", "0 0 8 6");
       });
 
       it("Mail icon has correct viewBox", () => {
-        const { container } = render(<Icon name="Mail" />);
-        const icon = container.querySelector("[data-icon-Mail-id]");
+        const { container } = render(<Icon name="mail" />);
+        const icon = container.querySelector("[data-icon-mail-id]");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       });
     });
@@ -600,8 +600,8 @@ describe("Icon", () => {
     describe("Name prop with event handlers", () => {
       it("handles click events", () => {
         const handleClick = vi.fn();
-        const { container } = render(<Icon name="X" onClick={handleClick} />);
-        const icon = container.querySelector("[data-icon-X-id]");
+        const { container } = render(<Icon name="x" onClick={handleClick} />);
+        const icon = container.querySelector("[data-icon-x-id]");
         if (icon) fireEvent.click(icon);
         expect(handleClick).toHaveBeenCalledTimes(1);
       });
@@ -611,12 +611,12 @@ describe("Icon", () => {
         const handleMouseEnter = vi.fn();
         const { container } = render(
           <Icon
-            name="Close"
+            name="close"
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
           />
         );
-        const icon = container.querySelector("[data-icon-Close-id]");
+        const icon = container.querySelector("[data-icon-close-id]");
         if (icon) {
           fireEvent.click(icon);
           fireEvent.mouseEnter(icon);
@@ -853,6 +853,29 @@ describe("Icon", () => {
         expect(ref.current).toBeInstanceOf(SVGSVGElement);
         expect(ref.current).toBe(container.querySelector("svg"));
       });
+    });
+  });
+
+  // ============================================================================
+  // PAGE PROP TESTS
+  // ============================================================================
+
+  describe("Page Prop", () => {
+    it("renders Mail icon with page prop 'about'", () => {
+      const { container } = render(<Icon name="mail" page="about" />);
+      const icon = container.querySelector("[data-icon-mail-id]");
+      expect(icon).toBeInTheDocument();
+      // The about version path d starts with M6 5a3...
+      const path = icon?.querySelector("path");
+      expect(path).toHaveAttribute("d", expect.stringMatching(/^M6 5a3/));
+    });
+
+    it("renders Mail icon with default page prop", () => {
+      const { container } = render(<Icon name="mail" />);
+      const icon = container.querySelector("[data-icon-mail-id]");
+      const path = icon?.querySelector("path");
+      // The default version path d starts with M2.75 7.75...
+      expect(path).toHaveAttribute("d", expect.stringMatching(/^M2.75 7.75/));
     });
   });
 });
