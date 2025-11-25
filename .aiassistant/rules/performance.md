@@ -1,7 +1,6 @@
 ---
-description: Performance Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
-alwaysApply: false
+apply: by file patterns
+patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
 # Performance Standards
@@ -31,9 +30,9 @@ const MemoizedComponent = React.memo(BaseComponent, (prevProps, nextProps) => {
 // Main component with memoization option
 export const Component: ComponentComponent = setDisplayName(
   function Component(props) {
-    const { children, isMemoized = false, ...rest } = props;
+    const {children, isMemoized = false, ...rest} = props;
     const ComponentToRender = isMemoized ? MemoizedComponent : BaseComponent;
-    return <ComponentToRender {...rest}>{children}</ComponentToRender>;
+    return <ComponentToRender {...rest} > {children} < /ComponentToRender>;
   }
 );
 ```
@@ -61,8 +60,8 @@ const componentRef = useRef<HTMLElement>(null);
 
 ```typescript
 // For large lists (>100 items)
-export function VirtualizedList({ items }: { items: Item[] }) {
-  const [containerRef, { width, height }] = useResizeObserver();
+export function VirtualizedList({items}: { items: Item[] }) {
+  const [containerRef, {width, height}] = useResizeObserver();
 
   const virtualizer = useVirtualizer({
     count: items.length,
@@ -72,26 +71,55 @@ export function VirtualizedList({ items }: { items: Item[] }) {
   });
 
   return (
-    <div ref={containerRef} style={{ height, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map(virtualItem => (
-          <div
-            key={virtualItem.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: virtualItem.size,
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            <ListItem item={items[virtualItem.index]} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    <div ref = {containerRef}
+  style = {
+  {
+    height, overflow
+  :
+    'auto'
+  }
+}>
+  <div style = {
+  {
+    height: virtualizer.getTotalSize(), position
+  :
+    'relative'
+  }
+}>
+  {
+    virtualizer.getVirtualItems().map(virtualItem => (
+      <div
+        key = {virtualItem.key}
+    style = {
+    {
+      position: 'absolute',
+        top
+    :
+      0,
+        left
+    :
+      0,
+        width
+    :
+      '100%',
+        height
+    :
+      virtualItem.size,
+        transform
+    :
+      `translateY(${virtualItem.start}px)`,
+    }
+  }
+  >
+    <ListItem item = {items[virtualItem.index]}
+    />
+    < /div>
+  ))
+  }
+  </div>
+  < /div>
+)
+  ;
 }
 ```
 
@@ -105,7 +133,7 @@ export function useComponentVisibility(ref: React.RefObject<HTMLElement>) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      {threshold: 0.1}
     );
 
     if (ref.current) observer.observe(ref.current);
@@ -121,10 +149,12 @@ const LazyComponent = React.lazy(() => import('./HeavyComponent'));
 
 function App() {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <LazyComponent />
-    </Suspense>
-  );
+    <Suspense fallback = { < LoadingSpinner / >
+}>
+  <LazyComponent / >
+  </Suspense>
+)
+  ;
 }
 ```
 
@@ -140,7 +170,7 @@ const HeavyChart = React.lazy(() => import('./HeavyChart'));
 
 // Dynamic imports for conditional loading
 const loadFeature = async () => {
-  const { FeatureComponent } = await import('./FeatureComponent');
+  const {FeatureComponent} = await import('./FeatureComponent');
   return FeatureComponent;
 };
 ```
@@ -151,13 +181,13 @@ const loadFeature = async () => {
 
 ```typescript
 // Use named imports for better tree shaking
-import { specificFunction } from 'large-library';
+import {specificFunction} from 'large-library';
 // Instead of: import * as library from 'large-library';
 
 // Use dynamic imports for optional features
 const loadOptionalFeature = async () => {
   if (shouldLoadFeature) {
-    const { OptionalFeature } = await import('./OptionalFeature');
+    const {OptionalFeature} = await import('./OptionalFeature');
     return OptionalFeature;
   }
   return null;
@@ -170,29 +200,40 @@ const loadOptionalFeature = async () => {
 // Image optimization with next/image
 import Image from 'next/image';
 
-function OptimizedImage({ src, alt, ...props }) {
+function OptimizedImage({src, alt, ...props}) {
   return (
     <Image
-      src={src}
-      alt={alt}
-      width={800}
-      height={600}
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,..."
-      {...props}
-    />
-  );
+      src = {src}
+  alt = {alt}
+  width = {800}
+  height = {600}
+  placeholder = "blur"
+  blurDataURL = "data:image/jpeg;base64,..."
+  {...
+    props
+  }
+  />
+)
+  ;
 }
 
 // WebP format with fallbacks
-function ResponsiveImage({ src, alt }) {
+function ResponsiveImage({src, alt}) {
   return (
     <picture>
-      <source srcSet={`${src}.webp`} type="image/webp" />
-      <source srcSet={`${src}.jpg`} type="image/jpeg" />
-      <img src={`${src}.jpg`} alt={alt} />
-    </picture>
-  );
+      <source srcSet = {`${src}.webp`
+}
+  type = "image/webp" / >
+  <source srcSet = {`${src}.jpg`
+}
+  type = "image/jpeg" / >
+  <img src = {`${src}.jpg`
+}
+  alt = {alt}
+  />
+  < /picture>
+)
+  ;
 }
 ```
 
@@ -225,7 +266,7 @@ export function usePrefetchData() {
     });
   }, [queryClient]);
 
-  return { prefetchData };
+  return {prefetchData};
 }
 ```
 
@@ -245,7 +286,7 @@ export function useDebouncedSearch(delay: number = 300) {
     return () => clearTimeout(timer);
   }, [searchTerm, delay]);
 
-  return { searchTerm, setSearchTerm, debouncedSearchTerm };
+  return {searchTerm, setSearchTerm, debouncedSearchTerm};
 }
 
 // Request deduplication
@@ -341,7 +382,7 @@ const updateState = useCallback((newState) => {
 
 ```typescript
 // Web Vitals monitoring
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import {getCLS, getFID, getFCP, getLCP, getTTFB} from 'web-vitals';
 
 function sendToAnalytics(metric) {
   // Send to analytics service
@@ -365,19 +406,19 @@ performance.measure('component-render', 'component-render-start', 'component-ren
 
 ```typescript
 // Performance testing with React Testing Library
-import { render } from '@testing-library/react';
-import { performance } from 'perf_hooks';
+import {render} from '@testing-library/react';
+import {performance} from 'perf_hooks';
 
 it('should render within performance budget', () => {
   const start = performance.now();
-  render(<Component />);
+  render(<Component / >);
   const end = performance.now();
 
   expect(end - start).toBeLessThan(100); // 100ms budget
 });
 
 // Bundle size testing
-import { getBundleSize } from 'bundle-analyzer';
+import {getBundleSize} from 'bundle-analyzer';
 
 it('should not exceed bundle size limit', () => {
   const bundleSize = getBundleSize('./dist/main.js');
@@ -427,9 +468,9 @@ const MemoizedComponent = React.memo(BaseComponent, (prevProps, nextProps) => {
 // Main component with memoization option
 export const Component: ComponentComponent = setDisplayName(
   function Component(props) {
-    const { children, isMemoized = false, ...rest } = props;
+    const {children, isMemoized = false, ...rest} = props;
     const ComponentToRender = isMemoized ? MemoizedComponent : BaseComponent;
-    return <ComponentToRender {...rest}>{children}</ComponentToRender>;
+    return <ComponentToRender {...rest} > {children} < /ComponentToRender>;
   }
 );
 ```
@@ -457,8 +498,8 @@ const componentRef = useRef<HTMLElement>(null);
 
 ```typescript
 // For large lists (>100 items)
-export function VirtualizedList({ items }: { items: Item[] }) {
-  const [containerRef, { width, height }] = useResizeObserver();
+export function VirtualizedList({items}: { items: Item[] }) {
+  const [containerRef, {width, height}] = useResizeObserver();
 
   const virtualizer = useVirtualizer({
     count: items.length,
@@ -468,26 +509,55 @@ export function VirtualizedList({ items }: { items: Item[] }) {
   });
 
   return (
-    <div ref={containerRef} style={{ height, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map(virtualItem => (
-          <div
-            key={virtualItem.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: virtualItem.size,
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            <ListItem item={items[virtualItem.index]} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    <div ref = {containerRef}
+  style = {
+  {
+    height, overflow
+  :
+    'auto'
+  }
+}>
+  <div style = {
+  {
+    height: virtualizer.getTotalSize(), position
+  :
+    'relative'
+  }
+}>
+  {
+    virtualizer.getVirtualItems().map(virtualItem => (
+      <div
+        key = {virtualItem.key}
+    style = {
+    {
+      position: 'absolute',
+        top
+    :
+      0,
+        left
+    :
+      0,
+        width
+    :
+      '100%',
+        height
+    :
+      virtualItem.size,
+        transform
+    :
+      `translateY(${virtualItem.start}px)`,
+    }
+  }
+  >
+    <ListItem item = {items[virtualItem.index]}
+    />
+    < /div>
+  ))
+  }
+  </div>
+  < /div>
+)
+  ;
 }
 ```
 
@@ -501,7 +571,7 @@ export function useComponentVisibility(ref: React.RefObject<HTMLElement>) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
+      {threshold: 0.1}
     );
 
     if (ref.current) observer.observe(ref.current);
@@ -517,10 +587,12 @@ const LazyComponent = React.lazy(() => import('./HeavyComponent'));
 
 function App() {
   return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <LazyComponent />
-    </Suspense>
-  );
+    <Suspense fallback = { < LoadingSpinner / >
+}>
+  <LazyComponent / >
+  </Suspense>
+)
+  ;
 }
 ```
 
@@ -536,7 +608,7 @@ const HeavyChart = React.lazy(() => import('./HeavyChart'));
 
 // Dynamic imports for conditional loading
 const loadFeature = async () => {
-  const { FeatureComponent } = await import('./FeatureComponent');
+  const {FeatureComponent} = await import('./FeatureComponent');
   return FeatureComponent;
 };
 ```
@@ -547,13 +619,13 @@ const loadFeature = async () => {
 
 ```typescript
 // Use named imports for better tree shaking
-import { specificFunction } from 'large-library';
+import {specificFunction} from 'large-library';
 // Instead of: import * as library from 'large-library';
 
 // Use dynamic imports for optional features
 const loadOptionalFeature = async () => {
   if (shouldLoadFeature) {
-    const { OptionalFeature } = await import('./OptionalFeature');
+    const {OptionalFeature} = await import('./OptionalFeature');
     return OptionalFeature;
   }
   return null;
@@ -566,29 +638,40 @@ const loadOptionalFeature = async () => {
 // Image optimization with next/image
 import Image from 'next/image';
 
-function OptimizedImage({ src, alt, ...props }) {
+function OptimizedImage({src, alt, ...props}) {
   return (
     <Image
-      src={src}
-      alt={alt}
-      width={800}
-      height={600}
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,..."
-      {...props}
-    />
-  );
+      src = {src}
+  alt = {alt}
+  width = {800}
+  height = {600}
+  placeholder = "blur"
+  blurDataURL = "data:image/jpeg;base64,..."
+  {...
+    props
+  }
+  />
+)
+  ;
 }
 
 // WebP format with fallbacks
-function ResponsiveImage({ src, alt }) {
+function ResponsiveImage({src, alt}) {
   return (
     <picture>
-      <source srcSet={`${src}.webp`} type="image/webp" />
-      <source srcSet={`${src}.jpg`} type="image/jpeg" />
-      <img src={`${src}.jpg`} alt={alt} />
-    </picture>
-  );
+      <source srcSet = {`${src}.webp`
+}
+  type = "image/webp" / >
+  <source srcSet = {`${src}.jpg`
+}
+  type = "image/jpeg" / >
+  <img src = {`${src}.jpg`
+}
+  alt = {alt}
+  />
+  < /picture>
+)
+  ;
 }
 ```
 
@@ -621,7 +704,7 @@ export function usePrefetchData() {
     });
   }, [queryClient]);
 
-  return { prefetchData };
+  return {prefetchData};
 }
 ```
 
@@ -641,7 +724,7 @@ export function useDebouncedSearch(delay: number = 300) {
     return () => clearTimeout(timer);
   }, [searchTerm, delay]);
 
-  return { searchTerm, setSearchTerm, debouncedSearchTerm };
+  return {searchTerm, setSearchTerm, debouncedSearchTerm};
 }
 
 // Request deduplication
@@ -737,7 +820,7 @@ const updateState = useCallback((newState) => {
 
 ```typescript
 // Web Vitals monitoring
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import {getCLS, getFID, getFCP, getLCP, getTTFB} from 'web-vitals';
 
 function sendToAnalytics(metric) {
   // Send to analytics service
@@ -761,19 +844,19 @@ performance.measure('component-render', 'component-render-start', 'component-ren
 
 ```typescript
 // Performance testing with React Testing Library
-import { render } from '@testing-library/react';
-import { performance } from 'perf_hooks';
+import {render} from '@testing-library/react';
+import {performance} from 'perf_hooks';
 
 it('should render within performance budget', () => {
   const start = performance.now();
-  render(<Component />);
+  render(<Component / >);
   const end = performance.now();
 
   expect(end - start).toBeLessThan(100); // 100ms budget
 });
 
 // Bundle size testing
-import { getBundleSize } from 'bundle-analyzer';
+import {getBundleSize} from 'bundle-analyzer';
 
 it('should not exceed bundle size limit', () => {
   const bundleSize = getBundleSize('./dist/main.js');

@@ -1,7 +1,6 @@
 ---
-description: Testing Standards
-globs: ["apps/**/*.test.tsx", "packages/**/*.test.tsx", "apps/**/*.test.ts", "packages/**/*.test.ts" ]
-alwaysApply: false
+apply: by file patterns
+patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
 # Testing Standards
