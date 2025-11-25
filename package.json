@@ -49,35 +49,33 @@
       "useEmoji": true
     }
   },
-  "dependencies": {
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "turbo": "catalog:"
-  },
   "devDependencies": {
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*"
-  },
-  "peerDependencies": {
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@commitlint/cz-commitlint": "catalog:",
     "@commitlint/types": "catalog:",
+    "@packages/eslint-config": "workspace:*",
+    "@packages/typescript-config": "workspace:*",
     "@tailwindcss/typography": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "czg": "catalog:",
     "eslint": "catalog:",
+    "eslint-plugin-jest-dom": "catalog:",
+    "eslint-plugin-testing-library": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-packagejson": "catalog:",
     "prettier-plugin-pkg": "catalog:",
     "prettier-plugin-tailwindcss": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "sort-package-json": "catalog:",
     "tailwindcss": "catalog:",
     "tsdown": "catalog:",
+    "turbo": "catalog:",
     "typescript": "catalog:",
     "validate-branch-name": "catalog:"
   },
