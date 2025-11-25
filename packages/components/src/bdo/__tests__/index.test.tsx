@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 
-import { Bdo } from '..';
+import { Bdo } from "..";
 
 // Basic render test
 it("renders a bdo element", () => {

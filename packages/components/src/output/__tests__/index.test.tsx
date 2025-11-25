@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Output } from '..';
+import { Output } from "..";
 
 it("renders an output element with form-related attributes", () => {
   render(

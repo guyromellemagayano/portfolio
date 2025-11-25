@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { U } from '..';
+import { U } from "..";
 
 it("renders a u element with text", () => {
   render(

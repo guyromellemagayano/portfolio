@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Meter } from '..';
+import { Meter } from "..";
 
 it("renders a meter element with attributes", () => {
   render(<Meter data-testid="el" min={0} max={100} value={40} />);
