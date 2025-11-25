@@ -22,6 +22,9 @@ dist/
 .turbo/
 .cache/
 
+# OS/system/editor folders
+.idea/
+
 # OS/system/editor files
 .DS_Store
 .env
