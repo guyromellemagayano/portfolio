@@ -1,15 +1,16 @@
 ---
-description: React + TypeScript Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
-alwaysApply: false
+apply: by file patterns
+patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
 # React + TypeScript Standards
 
 ## Component Architecture
 
-- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props
-- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasMeaningfulText` for content validation
+- **Main Components**: Use `setDisplayName` for proper component naming, extend
+  `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props
+- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use
+  `setDisplayName`, `hasMeaningfulText` for content validation
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `ComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
@@ -60,7 +61,8 @@ components/component/
 - **Interface Naming**: `ComponentProps`, `ComponentCompoundComponent`
 - **Export Types**: Re-export types from index files only when shared across multiple components
 - **Component Props**: Extend base component props + utility props
-- **Avoid Separate Types Files**: Don't create separate `.types.ts` files for single-component interfaces - use inline types instead
+- **Avoid Separate Types Files**: Don't create separate `.types.ts` files for single-component interfaces - use inline
+  types instead
 - **Compound Component Types**: Define compound component types inline in main component file
 - **Generic Types**: Use generics for reusable component patterns
 - **Discriminated Unions**: Use discriminated unions for component states
@@ -130,19 +132,26 @@ Every component should include these test categories:
 
 ```typescript
 import React from "react";
-import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import {cleanup, render, screen} from "@testing-library/react";
+import {afterEach, describe, expect, it, vi} from "vitest";
 
-import { ComponentName } from "../ComponentName";
+import {ComponentName} from "../ComponentName";
 
 // Mock dependencies
 vi.mock("@guyromellemagayano/components", () => ({
-  Div: vi.fn(({ children, ...props }) => (
-    <div data-testid="grm-div" {...props}>
-      {children}
-    </div>
-  )),
-}));
+  Div: vi.fn(({children, ...props}) => (
+    <div data - testid = "grm-div"
+{...
+  props
+}
+>
+{
+  children
+}
+</div>
+)),
+}))
+;
 
 vi.mock("@guyromellemagayano/utils", () => ({
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
@@ -157,7 +166,7 @@ vi.mock("@web/lib", () => ({
 }));
 
 vi.mock("../ComponentName.module.css", () => ({
-  default: { componentName: "componentName" },
+  default: {componentName: "componentName"},
 }));
 
 describe("ComponentName", () => {
@@ -262,7 +271,8 @@ vi.mock("../constants/Component.i18n", () => ({
 ### **Avoiding Cyclic Dependencies**
 
 - **Inline Types**: Use inline type definitions for component-specific interfaces
-- **Self-Contained Components**: Each component should be able to function without importing types from sibling components
+- **Self-Contained Components**: Each component should be able to function without importing types from sibling
+  components
 - **Shared Types**: Only create separate `.types.ts` files for types used across multiple components
 - **Import Hierarchy**: Maintain clear import hierarchy - parent components can import from children, but not vice versa
 
@@ -432,12 +442,14 @@ interface ComponentProps {
 ```typescript
 // ✅ GOOD: Export only what's needed
 // Component.tsx
-interface ComponentProps { /* ... */ }
+interface ComponentProps { /* ... */
+}
+
 type ComponentCompoundComponent = /* ... */;
 
 // index.ts
-export { Component } from "./Component";
-export type { ComponentCompoundComponent } from "./Component";
+export {Component} from "./Component";
+export type {ComponentCompoundComponent} from "./Component";
 ```
 
 ## Component Examples
@@ -445,7 +457,7 @@ export type { ComponentCompoundComponent } from "./Component";
 ### Main Component
 
 ```typescript
-import { COMPONENT_I18N } from "./constants/Component.i18n";
+import {COMPONENT_I18N} from "./constants/Component.i18n";
 
 interface ComponentProps
   extends Omit<React.ComponentProps<"elementType">, "children">,
@@ -472,14 +484,18 @@ const Component = setDisplayName(function Component(props) {
   const element = (
     <elementType
       {...rest}
-      className={cn(styles.component, className)}
-      data-component-id={internalId}
-      data-debug-mode={debugMode ? "true" : undefined}
-      data-testid="component-root"
-    >
-      <SubComponent customProp={customProp} />
-    </elementType>
-  );
+  className = {cn(styles.component, className
+)
+}
+  data - component - id = {internalId}
+  data - debug - mode = {debugMode ? "true" : undefined}
+  data - testid = "component-root"
+  >
+  <SubComponent customProp = {customProp}
+  />
+  < /elementType>
+)
+  ;
 
   return element;
 } as ComponentCompoundComponent);
@@ -490,7 +506,7 @@ const Component = setDisplayName(function Component(props) {
 
 Component.SubComponent = SubComponent;
 
-export { Component };
+export {Component};
 ```
 
 ### Sub-component
@@ -506,9 +522,9 @@ interface SubComponentProps
 /** Sub-component for specific functionality. */
 const SubComponent: React.FC<SubComponentProps> = setDisplayName(
   function SubComponent(props) {
-    const { className, internalId, debugMode, customProp, ...rest } = props;
+    const {className, internalId, debugMode, customProp, ...rest} = props;
 
-    const { id, isDebugMode } = useComponentId({
+    const {id, isDebugMode} = useComponentId({
       internalId,
       debugMode,
     });
@@ -518,20 +534,23 @@ const SubComponent: React.FC<SubComponentProps> = setDisplayName(
     const element = (
       <ElementType
         {...rest}
-        className={cn(styles.subComponent, className)}
-        data-sub-component-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="sub-component-root"
+    className = {cn(styles.subComponent, className
+  )
+  }
+    data - sub - component - id = {id}
+    data - debug - mode = {isDebugMode ? "true" : undefined}
+    data - testid = "sub-component-root"
       >
-        {customProp}
-      </ElementType>
-    );
+      {customProp}
+      < /ElementType>
+  )
+    ;
 
     return element;
   }
 );
 
-export { SubComponent };
+export {SubComponent};
 ```
 
 ## Import Organization
@@ -543,7 +562,7 @@ export { SubComponent };
 import React from "react";
 
 // 2. External packages
-import { useComponentId } from "@guyromellemagayano/hooks";
+import {useComponentId} from "@guyromellemagayano/hooks";
 import {
   type ComponentProps,
   hasMeaningfulText,
@@ -551,11 +570,11 @@ import {
 } from "@guyromellemagayano/utils";
 
 // 3. Internal packages
-import { cn } from "@web/lib";
+import {cn} from "@web/lib";
 
 // 4. Relative imports (data first, then internal, then parent)
-import { type ComponentData } from "../_data";
-import { SubComponent } from "./_internal";
+import {type ComponentData} from "../_data";
+import {SubComponent} from "./_internal";
 import styles from "./Component.module.css";
 ```
 
@@ -563,11 +582,11 @@ import styles from "./Component.module.css";
 
 ```typescript
 // ✅ GOOD: Use type imports for types
-import { type ComponentProps } from "@guyromellemagayano/utils";
-import { type ComponentData } from "../_data";
+import {type ComponentProps} from "@guyromellemagayano/utils";
+import {type ComponentData} from "../_data";
 
 // ❌ BAD: Don't import types as values
-import { ComponentProps } from "@guyromellemagayano/utils";
+import {ComponentProps} from "@guyromellemagayano/utils";
 ```
 
 ## Data Organization

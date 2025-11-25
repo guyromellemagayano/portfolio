@@ -1,7 +1,6 @@
 ---
-description: Component Architecture Standards
-globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
-alwaysApply: false
+apply: by file patterns
+patterns: apps/**/*.tsx, packages/**/*.tsx
 ---
 
 # Component Architecture Standards
