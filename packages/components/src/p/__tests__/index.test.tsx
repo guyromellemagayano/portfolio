@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { P } from '..';
+import { P } from "..";
 
 it("renders a paragraph element", () => {
   render(<P data-testid="p-element">Text</P>);

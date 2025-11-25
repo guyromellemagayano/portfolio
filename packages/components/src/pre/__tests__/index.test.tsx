@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Pre } from '..';
+import { Pre } from "..";
 
 it("renders a pre element with code text", () => {
   render(

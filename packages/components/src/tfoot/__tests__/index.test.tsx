@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Tfoot } from '..';
+import { Tfoot } from "..";
 
 it("renders a tfoot within a table", () => {
   render(

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Dfn } from '..';
+import { Dfn } from "..";
 
 it("renders a dfn element", () => {
   render(<Dfn data-testid="el">Term</Dfn>);

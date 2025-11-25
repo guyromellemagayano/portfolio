@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Object as ObjectTag } from '..';
+import { Object as ObjectTag } from "..";
 
 it("renders an object element with data/type", () => {
   render(<ObjectTag data-testid="el" data="/a.svg" type="image/svg+xml" />);

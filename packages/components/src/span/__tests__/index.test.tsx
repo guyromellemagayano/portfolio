@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Span } from '..';
+import { Span } from "..";
 
 it("renders a span element", () => {
   render(<Span data-testid="span-element">Text</Span>);

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Data } from '..';
+import { Data } from "..";
 
 it("renders a data element", () => {
   render(

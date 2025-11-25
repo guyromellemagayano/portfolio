@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Iframe } from '..';
+import { Iframe } from "..";
 
 it("renders an iframe element with src", () => {
   render(<Iframe data-testid="el" src="/page" title="t" />);

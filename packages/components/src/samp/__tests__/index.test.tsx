@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Samp } from '..';
+import { Samp } from "..";
 
 it("renders a samp element with content", () => {
   render(
