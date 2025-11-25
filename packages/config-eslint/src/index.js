@@ -11,6 +11,8 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
+import testingLibrary from "eslint-plugin-testing-library";
+import jestDom from "eslint-plugin-jest-dom";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -46,6 +48,8 @@ export const baseEslintConfig = [
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
+      "testing-library": testingLibrary,
+      "jest-dom": jestDom,
     },
     settings: {
       "import/resolver": {
@@ -200,6 +204,26 @@ export const baseEslintConfig = [
         "warn",
         { args: "none", varsIgnorePattern: "^_" },
       ],
+    },
+  },
+  {
+    files: ["**/__tests__/**/*.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],
+    rules: {
+      "testing-library/await-async-queries": "error",
+      "testing-library/no-await-sync-queries": "error",
+      "testing-library/no-debugging-utils": "warn",
+      "testing-library/no-dom-import": ["error", "react"],
+      "testing-library/no-unnecessary-act": "warn",
+      "testing-library/prefer-find-by": "warn",
+      "testing-library/prefer-screen-queries": "warn",
+      "testing-library/render-result-naming-convention": "warn",
+      "jest-dom/prefer-checked": "warn",
+      "jest-dom/prefer-enabled-disabled": "warn",
+      "jest-dom/prefer-in-document": "warn",
+      "jest-dom/prefer-required": "warn",
+      "jest-dom/prefer-to-have-attribute": "warn",
+      "jest-dom/prefer-to-have-class": "warn",
+      "jest-dom/prefer-empty": "warn",
     },
   },
 ];
