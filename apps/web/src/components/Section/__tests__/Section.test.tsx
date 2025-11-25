@@ -16,7 +16,7 @@ import { MemoizedSection, Section } from "../Section";
 
 import "@testing-library/jest-dom";
 
-// Set up test environment
+// Set up a test environment
 beforeAll(() => {
   // Mock globalThis.process for the test environment
   (globalThis as any).process = {
@@ -83,16 +83,14 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (children === "") {
       return false;
     }
-    if (Array.isArray(children) && children.length === 0) {
-      return false;
-    }
-    return true;
+    return !(Array.isArray(children) && children.length === 0);
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -139,12 +137,12 @@ describe("Section", () => {
 
     it("returns null when no title and no children", () => {
       const { container } = render(<Section title="" data-testid="section" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("returns null when title is empty string and no children", () => {
       const { container } = render(<Section title="" data-testid="section" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("returns null when children is empty string and no title", () => {
@@ -153,7 +151,7 @@ describe("Section", () => {
           {""}
         </Section>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -275,7 +273,6 @@ describe("Section", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
       const grid = screen.getByTestId("test-id-section-grid-root");
       expect(grid).toBeInTheDocument();
       expect(grid?.tagName).toBe("DIV");
@@ -362,7 +359,11 @@ describe("Section", () => {
 
     it("renders title with custom debugId", () => {
       render(
-        <Section title="Custom ID Title" debugId="custom-id" data-testid="section">
+        <Section
+          title="Custom ID Title"
+          debugId="custom-id"
+          data-testid="section"
+        >
           Content
         </Section>
       );
@@ -406,7 +407,7 @@ describe("Section", () => {
           {null}
         </Section>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles complex children content", () => {
@@ -443,7 +444,11 @@ describe("Section", () => {
 
     it("renders with custom debugId", () => {
       render(
-        <Section title="Custom ID Content" debugId="custom-id" data-testid="section">
+        <Section
+          title="Custom ID Content"
+          debugId="custom-id"
+          data-testid="section"
+        >
           <p>Content</p>
         </Section>
       );
@@ -476,7 +481,7 @@ describe("Section", () => {
           {null}
         </Section>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders with debug mode", () => {
@@ -492,7 +497,11 @@ describe("Section", () => {
 
     it("renders with custom debugId", () => {
       render(
-        <Section title="Custom ID Grid" debugId="custom-id" data-testid="section">
+        <Section
+          title="Custom ID Grid"
+          debugId="custom-id"
+          data-testid="section"
+        >
           <p>Content</p>
         </Section>
       );
@@ -603,7 +612,7 @@ describe("Section", () => {
 
     it("handles ARIA attributes when content is missing", () => {
       const { container } = render(<Section debugId="aria-test" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("applies ARIA attributes with different debug IDs", () => {
