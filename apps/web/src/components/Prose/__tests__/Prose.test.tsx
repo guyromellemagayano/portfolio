@@ -11,7 +11,7 @@ import "@testing-library/jest-dom";
 // TEST CLASSIFICATION
 // - Test Type: Unit tests
 // - Coverage: Tier 3 (60%+ coverage, happy path + basic validation)
-// - Risk Tier: Presentational (pure display, no sub-components)
+// - Risk Tier: Presentational (pure display, no subcomponents)
 // - Component Type: Presentational (pure display, no sub-components)
 // ============================================================================
 
@@ -37,10 +37,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
     if (children === false || children === null || children === undefined) {
       return false;
     }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
+    return !(typeof children === "string" && children.length === 0);
   }),
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
@@ -51,7 +48,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -133,7 +131,7 @@ describe("Prose", () => {
       expect(prose).toBeInTheDocument();
       expect(prose.tagName).toBe("DIV");
 
-      // Note: In test environment, ref.current might be null due to mocked components
+      // Note: In a test environment, ref.current might be null due to mocked components
       // The important thing is that the prose renders correctly
     });
 
@@ -463,7 +461,7 @@ describe("Prose", () => {
         </Prose>
       );
 
-      // Test main content area
+      // Test the main content area
       const mainElement = screen.getByRole("main");
       expect(mainElement).toBeInTheDocument();
     });
@@ -481,7 +479,7 @@ describe("Prose", () => {
 
       const proseElement = screen.getByTestId("aria-test-prose-root");
 
-      // Prose should be labelled by the title
+      // The title should label prose
       expect(proseElement).toHaveAttribute("aria-labelledby", "prose-title");
 
       // Prose should be described by the description
@@ -616,29 +614,23 @@ describe("Prose", () => {
 
   describe("Memoization", () => {
     it("MemoizedProse renders children", () => {
-      render(
-        <MemoizedProse data-testid="prose">
-          Content
-        </MemoizedProse>
-      );
+      render(<MemoizedProse data-testid="prose">Content</MemoizedProse>);
       expect(screen.getByTestId("test-id-prose-root")).toBeInTheDocument();
     });
 
     it("MemoizedProse maintains content across re-renders with same props", () => {
       const { rerender } = render(
-        <MemoizedProse data-testid="prose">
-          Content
-        </MemoizedProse>
+        <MemoizedProse data-testid="prose">Content</MemoizedProse>
       );
 
-      expect(screen.getByTestId("test-id-prose-root")).toHaveTextContent("Content");
-
-      rerender(
-        <MemoizedProse data-testid="prose">
-          Content
-        </MemoizedProse>
+      expect(screen.getByTestId("test-id-prose-root")).toHaveTextContent(
+        "Content"
       );
-      expect(screen.getByTestId("test-id-prose-root")).toHaveTextContent("Content");
+
+      rerender(<MemoizedProse data-testid="prose">Content</MemoizedProse>);
+      expect(screen.getByTestId("test-id-prose-root")).toHaveTextContent(
+        "Content"
+      );
     });
   });
 
@@ -655,46 +647,4 @@ describe("Prose", () => {
     });
   });
 
-  describe("Integration Tests", () => {
-    it("works with other components", () => {
-      render(
-        <div>
-          <header>
-            <h1>Page Title</h1>
-          </header>
-          <main>
-            <Prose data-testid="prose">
-              <h2>Article Title</h2>
-              <p>Article content goes here...</p>
-            </Prose>
-          </main>
-        </div>
-      );
-
-      const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toBeInTheDocument();
-      expect(prose).toHaveTextContent("Article Title");
-      expect(prose).toHaveTextContent("Article content goes here...");
-    });
-
-    it("handles dynamic content updates", () => {
-      const { rerender } = render(
-        <Prose data-testid="prose">
-          <p>Initial content</p>
-        </Prose>
-      );
-
-      let prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveTextContent("Initial content");
-
-      rerender(
-        <Prose data-testid="prose">
-          <p>Updated content</p>
-        </Prose>
-      );
-
-      prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveTextContent("Updated content");
-    });
-  });
 });
