@@ -15,11 +15,9 @@
     "test:run:coverage": "echo 'No tests configured for typescript config package'",
     "test:ui": "echo 'No tests configured for typescript config package'"
   },
-  "peerDependencies": {
+  "devDependencies": {
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "tsconfig-paths": "catalog:",
-    "tslib": "catalog:",
     "typescript": "catalog:"
   }
 }
