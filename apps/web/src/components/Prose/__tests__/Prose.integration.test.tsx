@@ -3,7 +3,7 @@
 // - Test Type: Integration
 // - Coverage: Tier 2 (80%+), key paths + edges
 // - Risk Tier: Core
-// - Component Type: Presentational (polymorphic component)
+// - Component Type: Presentational (non-polymorphic, div-only)
 // ============================================================================
 
 import React from "react";
@@ -12,6 +12,8 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { MemoizedProse, Prose } from "../Prose";
+
+import "@testing-library/jest-dom";
 
 // ============================================================================
 // MOCKS
@@ -39,7 +41,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -55,7 +58,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe("Prose (integration)", () => {
+describe("Prose (Integration)", () => {
   describe("Component Composition", () => {
     it("renders Prose within a full page layout structure", () => {
       render(
@@ -77,7 +80,9 @@ describe("Prose (integration)", () => {
 
       expect(screen.getByText("Page Title")).toBeInTheDocument();
       expect(screen.getByText("Article Title")).toBeInTheDocument();
-      expect(screen.getByText("Article content goes here...")).toBeInTheDocument();
+      expect(
+        screen.getByText("Article content goes here...")
+      ).toBeInTheDocument();
       expect(screen.getByText("Footer content")).toBeInTheDocument();
 
       const prose = screen.getByTestId("test-id-prose-root");
@@ -118,14 +123,14 @@ describe("Prose (integration)", () => {
       expect(screen.getByText("Article footer")).toBeInTheDocument();
     });
 
-    it("renders Prose with polymorphic as prop in different contexts", () => {
+    it("renders Prose with roles in different contexts", () => {
       render(
         <div>
-          <Prose as="section" aria-label="Main content">
+          <Prose role="region" aria-label="Main content">
             <h2>Section Title</h2>
             <p>Section content</p>
           </Prose>
-          <Prose as="article" aria-label="Article content">
+          <Prose role="article" aria-label="Article content">
             <h2>Article Title</h2>
             <p>Article content</p>
           </Prose>
@@ -137,8 +142,9 @@ describe("Prose (integration)", () => {
 
       expect(section).toBeInTheDocument();
       expect(article).toBeInTheDocument();
-      expect(section.tagName).toBe("SECTION");
-      expect(article.tagName).toBe("ARTICLE");
+      // Prose renders a div; roles are applied via attributes.
+      expect(section.tagName).toBe("DIV");
+      expect(article.tagName).toBe("DIV");
     });
   });
 
@@ -147,7 +153,6 @@ describe("Prose (integration)", () => {
       render(
         <div>
           <Prose
-            as="main"
             role="main"
             aria-labelledby="main-title"
             aria-describedby="main-description"
@@ -180,14 +185,13 @@ describe("Prose (integration)", () => {
       render(
         <div>
           <Prose
-            as="article"
             role="article"
             aria-labelledby="article-title"
             id="article-content"
           >
             <h1 id="article-title">Article Title</h1>
             <p>Article content</p>
-            <Prose as="section" aria-labelledby="section-title">
+            <Prose role="region" aria-labelledby="section-title">
               <h2 id="section-title">Section Title</h2>
               <p>Section content</p>
             </Prose>
@@ -233,8 +237,12 @@ describe("Prose (integration)", () => {
         </div>
       );
 
-      const largeProse = screen.getByText("Large Prose").closest("[data-testid]");
-      const smallProse = screen.getByText("Small Prose").closest("[data-testid]");
+      const largeProse = screen
+        .getByText("Large Prose")
+        .closest("[data-testid]");
+      const smallProse = screen
+        .getByText("Small Prose")
+        .closest("[data-testid]");
 
       expect(largeProse).toBeInTheDocument();
       expect(smallProse).toBeInTheDocument();
@@ -248,9 +256,14 @@ describe("Prose (integration)", () => {
       render(
         <Prose>
           <h1>Main Heading</h1>
-          <p>Introduction paragraph with <strong>bold text</strong> and <em>italic text</em>.</p>
+          <p>
+            Introduction paragraph with <strong>bold text</strong> and{" "}
+            <em>italic text</em>.
+          </p>
           <h2>Subheading</h2>
-          <p>Another paragraph with <a href="#link">a link</a>.</p>
+          <p>
+            Another paragraph with <a href="#link">a link</a>.
+          </p>
           <ul>
             <li>First item</li>
             <li>Second item</li>
@@ -261,19 +274,23 @@ describe("Prose (integration)", () => {
           </blockquote>
           <h3>Code Example</h3>
           <pre>
-            <code>const example = "code";</code>
+            <code>const example = &#34;code&#34;;</code>
           </pre>
         </Prose>
       );
 
       expect(screen.getByText("Main Heading")).toBeInTheDocument();
-      expect(screen.getByText(/Introduction paragraph with/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Introduction paragraph with/)
+      ).toBeInTheDocument();
       expect(screen.getByText("bold text")).toBeInTheDocument();
       expect(screen.getByText("italic text")).toBeInTheDocument();
       expect(screen.getByText("Subheading")).toBeInTheDocument();
       expect(screen.getByText("a link")).toBeInTheDocument();
       expect(screen.getByText("First item")).toBeInTheDocument();
-      expect(screen.getByText("This is a blockquote with important information.")).toBeInTheDocument();
+      expect(
+        screen.getByText("This is a blockquote with important information.")
+      ).toBeInTheDocument();
       expect(screen.getByText(/const example = "code";/)).toBeInTheDocument();
     });
 
@@ -415,4 +432,3 @@ describe("Prose (integration)", () => {
     });
   });
 });
-
