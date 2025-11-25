@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Section } from '..';
+import { Section } from "..";
 
 it("renders a section element with heading", () => {
   render(

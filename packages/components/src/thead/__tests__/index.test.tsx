@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Thead } from '..';
+import { Thead } from "..";
 
 it("renders a thead within a table", () => {
   render(

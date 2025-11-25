@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Heading } from '..';
+import { Heading } from "..";
 
 it("renders default h1 and toggles via as prop", () => {
   const { rerender } = render(

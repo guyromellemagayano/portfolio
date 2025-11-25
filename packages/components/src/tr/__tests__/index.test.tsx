@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Tr } from '..';
+import { Tr } from "..";
 
 it("renders a tr within a table body", () => {
   render(

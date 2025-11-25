@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Footer } from '..';
+import { Footer } from "..";
 
 it("renders a footer element", () => {
   render(<Footer data-testid="el">f</Footer>);

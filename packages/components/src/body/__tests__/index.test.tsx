@@ -3,7 +3,7 @@ import React from "react";
 import { render, waitFor } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 
-import { Body } from '..';
+import { Body } from "..";
 
 // Helper function to get body element from container
 const getBodyElement = (container: HTMLElement) => {

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Kbd } from '..';
+import { Kbd } from "..";
 
 it("renders a kbd element", () => {
   render(<Kbd data-testid="el">⌘K</Kbd>);

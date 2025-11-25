@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Label } from '..';
+import { Label } from "..";
 
 it("renders a label element with htmlFor", () => {
   render(
