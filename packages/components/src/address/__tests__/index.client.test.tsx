@@ -2,7 +2,7 @@ import React from "react";
 
 import { render, screen } from "@testing-library/react";
 
-import { AddressClient, MemoizedAddressClient } from '..';
+import { AddressClient, MemoizedAddressClient } from "..";
 
 // Basic render test for AddressClient
 it("renders an address element", async () => {

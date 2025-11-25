@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Summary } from '..';
+import { Summary } from "..";
 
 it("renders summary inside details and toggles open", () => {
   render(

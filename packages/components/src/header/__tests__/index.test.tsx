@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Header } from '..';
+import { Header } from "..";
 
 it("renders a header element", () => {
   render(<Header data-testid="el">h</Header>);

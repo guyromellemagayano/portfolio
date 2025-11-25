@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Dialog } from '..';
+import { Dialog } from "..";
 
 it("renders a dialog element", () => {
   render(<Dialog data-testid="el">Content</Dialog>);

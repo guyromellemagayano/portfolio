@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Noscript } from '..';
+import { Noscript } from "..";
 
 it("renders a noscript block", () => {
   const { container } = render(

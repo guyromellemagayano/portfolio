@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { expect, it } from "vitest";
 
-import { Cite } from '..';
+import { Cite } from "..";
 
 it("renders a cite element", () => {
   render(<Cite data-testid="el">Citation</Cite>);
