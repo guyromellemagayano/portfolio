@@ -66,7 +66,7 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
         >
           {MOBILE_HEADER_NAVIGATION_COMPONENT_LABELS?.menu ?? null}
           <Icon
-            name="ChevronDown"
+            name="chevron-down"
             className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400"
           />
         </PopoverButton>
@@ -103,7 +103,7 @@ const BaseHeaderMobileNav: HeaderMobileNavComponent = setDisplayName(
               )}
             >
               <Icon
-                name="Close"
+                name="close"
                 className="h-6 w-6 text-zinc-500 dark:text-zinc-400"
               />
             </PopoverButton>

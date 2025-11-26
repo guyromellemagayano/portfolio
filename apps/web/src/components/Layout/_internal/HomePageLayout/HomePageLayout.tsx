@@ -80,14 +80,14 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
             {SOCIAL_LIST_COMPONENT_LABELS ? (
               <List variant="social" className="mt-6 flex gap-6">
                 {SOCIAL_LIST_COMPONENT_LABELS.filter(
-                  ({ slug }) => slug !== "email"
-                ).map(({ slug, ...rest }, index) => (
+                  ({ icon }) => icon !== "mail"
+                ).map((value, index) => (
                   <ListItem
-                    key={`${slug}-${index}`}
+                    key={`${value.icon}-${index}`}
                     variant="social"
                     className="group -m-1 p-1"
                   >
-                    <Link variant="social" {...rest} />
+                    <Link variant="social" {...value} />
                   </ListItem>
                 ))}
               </List>
