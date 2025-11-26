@@ -9,10 +9,10 @@ import {
 
 import {
   Container,
+  Form,
   Link,
   List,
   ListItem,
-  NewsletterForm,
   PhotoGallery,
   Resume,
 } from "@web/components";
@@ -120,7 +120,7 @@ const BaseHomePageLayout: HomePageLayoutComponent = setDisplayName(
                 isDebugMode
               )}
             >
-              <NewsletterForm />
+              <Form variant="newsletter" />
               <Resume />
             </div>
           </div>
