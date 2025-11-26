@@ -57,11 +57,11 @@ export const List = setDisplayName(function List<T extends ListElementType>(
     tools: ToolsList,
   };
 
-  // Choose the component based on variant
+  // Choose the component based on a variant
   const VariantComponent = variantComponentMap[variant] || Component;
 
-  // For default variant, use string element directly
-  // Respect the `as` prop if provided, otherwise use "ul" from variant map
+  // For the default variant, use a string element directly
+  // Respect the `as` prop if provided, otherwise use "ul" from a variant map
   if (variant === "default") {
     return (
       <Component
