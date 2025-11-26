@@ -14,7 +14,7 @@ import { List, MemoizedList } from "../List";
 // Mocks
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options: any = {}) => ({
-    componentId: options.debugId || "test-id",
+    componentId: options.internalId || options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -37,6 +37,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
       debugMode: boolean,
       additional: any = {}
     ) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
       "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
       ...additional,
@@ -72,7 +73,7 @@ describe("List", () => {
 
     it("returns null when no children", () => {
       const { container } = render((<List />) as any);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -83,7 +84,7 @@ describe("List", () => {
           <li>One</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-root");
+      const root = screen.getByTestId("test-id-list-default-root");
       expect(root.tagName).toBe("OL");
       expect(root).toHaveAttribute("role", "list");
     });
@@ -94,7 +95,7 @@ describe("List", () => {
           <li>Item</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-root");
+      const root = screen.getByTestId("test-id-list-default-root");
       expect(root.tagName).toBe("UL");
       expect(root).toHaveAttribute("role", "list");
     });
@@ -108,7 +109,7 @@ describe("List", () => {
         </List>
       );
       expect(
-        screen.getByTestId("test-id-list-root")
+        screen.getByTestId("test-id-list-default-root")
       ).toBeInTheDocument();
     });
 
@@ -119,7 +120,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toBeInTheDocument();
         expect(root).toHaveAttribute("aria-label", "Article list");
         expect(root).toHaveAttribute("role", "region");
@@ -162,7 +163,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveAttribute("role", "region");
       });
 
@@ -172,7 +173,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass(
           "md:border-l",
           "md:border-zinc-100",
@@ -187,7 +188,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass("custom-class", "md:border-l");
       });
 
@@ -197,7 +198,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-article-list-root");
+        const root = screen.getByTestId("test-id-list-article-root");
         expect(root).toHaveClass("custom-class");
       });
     });
@@ -208,13 +209,13 @@ describe("List", () => {
           <li>Social child</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-social-list-root");
+      const root = screen.getByTestId("test-id-list-social-root");
       expect(root.tagName).toBe("UL");
     });
 
     it("social variant returns null when no children", () => {
       const { container } = render(<List variant="social" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("social variant respects custom as prop", () => {
@@ -223,7 +224,7 @@ describe("List", () => {
           <li>Item</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-social-list-root");
+      const root = screen.getByTestId("test-id-list-social-root");
       expect(root.tagName).toBe("OL");
     });
 
@@ -233,7 +234,7 @@ describe("List", () => {
           <li>Tool</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-tools-list-root");
+      const root = screen.getByTestId("test-id-list-tools-root");
       expect(root).toHaveClass("space-y-16");
     });
 
@@ -243,13 +244,13 @@ describe("List", () => {
           <li>Tool</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-tools-list-root");
+      const root = screen.getByTestId("test-id-list-tools-root");
       expect(root).toHaveClass("custom-tools", "space-y-16");
     });
 
     it("tools variant returns null when no children", () => {
       const { container } = render(<List variant="tools" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -260,7 +261,7 @@ describe("List", () => {
           <li>Dbg</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-root");
+      const root = screen.getByTestId("test-id-list-default-root");
       expect(root).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -271,7 +272,7 @@ describe("List", () => {
         </List>
       );
       expect(
-        screen.getByTestId("custom-id-list-root")
+        screen.getByTestId("custom-id-list-default-root")
       ).toBeInTheDocument();
     });
   });
