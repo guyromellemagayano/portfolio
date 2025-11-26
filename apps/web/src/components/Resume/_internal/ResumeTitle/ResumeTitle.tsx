@@ -48,7 +48,7 @@ const BaseResumeTitle: ResumeTitleComponent = setDisplayName(
         {...createComponentProps(componentId, "resume-title", isDebugMode)}
       >
         <Icon
-          name="Briefcase"
+          name="briefcase"
           className="h-6 w-6 flex-none"
           debugId={componentId}
           debugMode={isDebugMode}

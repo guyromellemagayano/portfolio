@@ -30,9 +30,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -68,12 +69,12 @@ describe("Icon Integration Tests", () => {
         <Icon name="instagram" debugId="custom-id" />
       );
       const icon = container.querySelector(
-        '[data-icon-instagram-id="custom-id-icon-instagram"]'
+        '[data-icon-instagram-id="custom-id-icon-instagram-root"]'
       );
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute(
         "data-icon-instagram-id",
-        "custom-id-icon-instagram"
+        "custom-id-icon-instagram-root"
       );
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
@@ -191,7 +192,7 @@ describe("Icon Integration Tests", () => {
 
     it("renders Moon icon with name prop", () => {
       const { container } = render(<Icon name="moon" />);
-      const icon = container.querySelector("[data-icon-Moon-id]");
+      const icon = container.querySelector("[data-icon-moon-id]");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
@@ -239,23 +240,23 @@ describe("Icon Integration Tests", () => {
       );
 
       const xIcon = container.querySelector(
-        '[data-icon-x-id="custom-x-icon-x"]'
+        '[data-icon-x-id="custom-x-icon-x-root"]'
       );
       const instagramIcon = container.querySelector(
-        '[data-icon-instagram-id="custom-instagram-icon-instagram"]'
+        '[data-icon-instagram-id="custom-instagram-icon-instagram-root"]'
       );
       const linkedinIcon = container.querySelector(
-        '[data-icon-linkedin-id="custom-linkedin-icon-linkedin"]'
+        '[data-icon-linkedin-id="custom-linkedin-icon-linkedin-root"]'
       );
 
-      expect(xIcon).toHaveAttribute("data-icon-x-id", "custom-x-icon-x");
+      expect(xIcon).toHaveAttribute("data-icon-x-id", "custom-x-icon-x-root");
       expect(instagramIcon).toHaveAttribute(
         "data-icon-instagram-id",
-        "custom-instagram-icon-instagram"
+        "custom-instagram-icon-instagram-root"
       );
       expect(linkedinIcon).toHaveAttribute(
         "data-icon-linkedin-id",
-        "custom-linkedin-icon-linkedin"
+        "custom-linkedin-icon-linkedin-root"
       );
     });
 

@@ -4,6 +4,7 @@
 
 import { type ImageProps } from "next/image";
 
+import { type IconProps } from "@web/components";
 import logoAnimaginary from "@web/images/logos/animaginary.svg";
 import logoCosmos from "@web/images/logos/cosmos.svg";
 import logoHelioStream from "@web/images/logos/helio-stream.svg";
@@ -20,41 +21,41 @@ export const COMMON_LAYOUT_COMPONENT_LABELS = {
 // ============================================================================
 
 export type SocialListComponentLabels = ReadonlyArray<{
-  slug: string;
-  label: string;
-  icon: string;
-  href: string;
+  label?: string;
+  icon: IconProps<"svg">["name"];
+  href?: string;
+  target?: string;
 }>;
 export const SOCIAL_LIST_COMPONENT_LABELS = [
   {
-    slug: "x",
     label: "Follow on X",
-    icon: "X",
+    icon: "x",
     href: "https://x.com/guyromellemagayano",
+    target: "_blank",
   },
   {
-    slug: "instagram",
     label: "Follow on Instagram",
-    icon: "Instagram",
+    icon: "instagram",
     href: "https://www.instagram.com/guyromellemagayano",
+    target: "_blank",
   },
   {
-    slug: "github",
     label: "Follow on GitHub",
-    icon: "GitHub",
+    icon: "github",
     href: "https://github.com/guyromellemagayano",
+    target: "_blank",
   },
   {
-    slug: "linkedin",
     label: "Follow on LinkedIn",
-    icon: "LinkedIn",
+    icon: "linkedin",
     href: "https://www.linkedin.com/in/guyromellemagayano",
+    target: "_blank",
   },
   {
-    slug: "email",
-    label: "aspiredtechie2010@gmail.com",
-    icon: "Mail",
+    label: "Send me an Email",
+    icon: "mail",
     href: "mailto:aspiredtechie2010@gmail.com",
+    target: "_blank",
   },
 ] as const satisfies SocialListComponentLabels;
 

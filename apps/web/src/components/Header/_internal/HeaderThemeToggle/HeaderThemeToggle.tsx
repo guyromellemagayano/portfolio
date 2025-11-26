@@ -90,7 +90,7 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
           )}
         >
           <Icon
-            name="Sun"
+            name="sun"
             className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
             {...createComponentProps(
               componentId,
@@ -99,7 +99,7 @@ const BaseHeaderThemeToggle: HeaderThemeToggleComponent = setDisplayName(
             )}
           />
           <Icon
-            name="Moon"
+            name="moon"
             className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
             {...createComponentProps(
               componentId,
