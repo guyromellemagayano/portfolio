@@ -64,7 +64,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-list-default-root");
+    const root = screen.getByTestId("test-id-list-root");
     expect(root).toBeInTheDocument();
     expect(screen.getByText("A")).toBeInTheDocument();
     expect(screen.getByText("B")).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-list-article-root");
+    const root = screen.getByTestId("test-id-article-list-root");
     expect(root).toBeInTheDocument();
     expect(root).toHaveAttribute("aria-label", "Article list");
     expect(root).toHaveAttribute("role", "region");
@@ -120,7 +120,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-list-article-root");
+    const root = screen.getByTestId("test-id-article-list-root");
     expect(root).toHaveAttribute("role", "region");
     expect(root).toHaveClass("custom-article-class", "md:border-l");
     expect(screen.getByText("Article One")).toBeInTheDocument();
@@ -180,7 +180,7 @@ describe("List (integration)", () => {
       <List variant="tools" className="grid-gap">
         <li>React</li>
         <li>TypeScript</li>
-      </List> as any
+      </List>
     );
 
     const root = screen.getByTestId("test-id-tools-list-root");
