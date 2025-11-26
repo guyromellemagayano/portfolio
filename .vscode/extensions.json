@@ -1,0 +1,22 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "bradlc.vscode-tailwindcss",
+    "Vercel.turbo-vsc",
+    "vitest.explorer",
+    "unifiedjs.vscode-mdx",
+    "dotenv.dotenv-vscode",
+    "foxundermoon.shell-format",
+    "lokalise.i18n-ally",
+    "redhat.vscode-yaml",
+    "GraphQL.vscode-graphql",
+    "DavidAnson.vscode-markdownlint",
+    "eamodio.gitlens",
+    "github.vscode-pull-request-github",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "waderyan.gitblame"
+  ]
+}
