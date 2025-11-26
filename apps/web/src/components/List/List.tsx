@@ -67,7 +67,7 @@ export const List = setDisplayName(function List<T extends ListElementType>(
       <Component
         {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
         role="list"
-        {...createComponentProps(componentId, "list", isDebugMode)}
+        {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
       >
         {children}
       </Component>
@@ -100,6 +100,7 @@ const ArticleList = setDisplayName(function ArticleList(
 ) {
   const {
     as: Component = "ul",
+    variant,
     className,
     children,
     debugId,
@@ -124,14 +125,14 @@ const ArticleList = setDisplayName(function ArticleList(
         className
       )}
       aria-label={LIST_I18N.articleList}
-      {...createComponentProps(componentId, "article-list", isDebugMode)}
+      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
     >
       <h2
         className="sr-only"
         aria-hidden="true"
         {...createComponentProps(
           componentId,
-          "article-list-heading",
+          `${variant}-list-heading`,
           isDebugMode
         )}
       >
@@ -143,7 +144,7 @@ const ArticleList = setDisplayName(function ArticleList(
         aria-label={LIST_I18N.articles}
         {...createComponentProps(
           componentId,
-          "article-list-children",
+          `${variant}-list-children`,
           isDebugMode
         )}
       >
@@ -160,7 +161,14 @@ const ArticleList = setDisplayName(function ArticleList(
 const SocialList = setDisplayName(function SocialList(
   props: ListProps<ListElementType>
 ) {
-  const { as: Component = "ul", children, debugId, debugMode, ...rest } = props;
+  const {
+    as: Component = "ul",
+    variant,
+    children,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
 
   // List component component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({
@@ -175,7 +183,7 @@ const SocialList = setDisplayName(function SocialList(
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role="region"
       aria-label={LIST_I18N.socialList}
-      {...createComponentProps(componentId, "social-list", isDebugMode)}
+      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
     >
       {children}
     </Component>
@@ -191,6 +199,7 @@ const ToolsList = setDisplayName(function ToolsList(
 ) {
   const {
     as: Component = "ul",
+    variant,
     children,
     className,
     debugId,
@@ -212,7 +221,7 @@ const ToolsList = setDisplayName(function ToolsList(
       role="region"
       aria-label={LIST_I18N.toolsList}
       className={cn("space-y-16", className)}
-      {...createComponentProps(componentId, "tools-list", isDebugMode)}
+      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
     >
       {children}
     </Component>
