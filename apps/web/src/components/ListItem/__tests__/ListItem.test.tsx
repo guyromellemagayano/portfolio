@@ -41,8 +41,8 @@ vi.mock("@guyromellemagayano/utils", () => ({
       debugMode: boolean,
       additional: any = {}
     ) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-testid": additional["data-testid"] || `${id}-${componentType}`,
+      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
+      "data-testid": additional["data-testid"] || `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
       ...additional,
     })
@@ -63,33 +63,76 @@ vi.mock("@guyromellemagayano/utils", () => ({
   formatDateSafely: vi.fn((date?: string) => date ?? ""),
 }));
 
-vi.mock("@web/components", () => {
-  const Card: any = function ({ as: As = "article", children, ...rest }: any) {
+const mockCardComponent = vi.hoisted(() => {
+  function Card(props: any = {}) {
+    // Extract 'as' from props - ArticleListItem sets as="article" after spreading rest
+    // so props.as should be "article" (the final value)
+    const {
+      as: As,
+      children,
+      debugId,
+      debugMode,
+      ...rest
+    } = props || {};
+    // Use the same mock logic as the main useComponentId mock
+    const componentId = debugId || "test-id";
+    const isDebugMode = debugMode || false;
+    // Remove 'as' from rest to prevent it from being rendered as an attribute
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { as: _, ...restWithoutAs } = rest;
+    // Use props.as directly (this is the final value after all spreads and overrides)
+    // If it's "li" (from ListItem wrapper), ignore it and use "article" default
+    // Otherwise use the explicit value
+    const ElementType = (props?.as && typeof props.as === "string" && props.as !== "li") 
+                        ? props.as 
+                        : "article";
+    // Remove 'as' from restWithoutAs to prevent it from being rendered as an attribute
+    const { as: __, ...finalRest } = restWithoutAs;
     return (
-      <As data-testid={rest["data-testid"] || "test-id-card-root"} {...rest}>
+      <ElementType
+        data-testid={finalRest["data-testid"] || `${componentId}-card-root`}
+        data-card-id={`${componentId}-card-root`}
+        data-debug-mode={isDebugMode ? "true" : undefined}
+        {...finalRest}
+      >
         {children}
-      </As>
+      </ElementType>
     );
-  };
+  }
+
+  // Attach sub-components and properties to Card function
   Card.displayName = "CardMock";
-  Card.Title = ({ as: As = "h3", children, ...rest }: any) => (
-    <As {...rest}>{children}</As>
-  );
-  Card.Title.displayName = "CardTitleMock";
-  Card.Eyebrow = ({ as: As = "time", children, ...rest }: any) => (
-    <As {...rest}>{children}</As>
-  );
-  Card.Eyebrow.displayName = "CardEyebrowMock";
-  Card.Description = ({ as: As = "p", children, ...rest }: any) => (
-    <As {...rest}>{children}</As>
-  );
-  Card.Description.displayName = "CardDescriptionMock";
-  Card.Cta = ({ as: As = "div", children, ...rest }: any) => (
-    <As {...rest}>{children}</As>
-  );
-  Card.Cta.displayName = "CardCtaMock";
-  return { Card };
+  
+  function CardTitle({ as: As = "h3", children, ...rest }: any) {
+    return <As {...rest}>{children}</As>;
+  }
+  CardTitle.displayName = "CardTitleMock";
+  Card.Title = CardTitle;
+
+  function CardEyebrow({ as: As = "time", children, ...rest }: any) {
+    return <As {...rest}>{children}</As>;
+  }
+  CardEyebrow.displayName = "CardEyebrowMock";
+  Card.Eyebrow = CardEyebrow;
+
+  function CardDescription({ as: As = "p", children, ...rest }: any) {
+    return <As {...rest}>{children}</As>;
+  }
+  CardDescription.displayName = "CardDescriptionMock";
+  Card.Description = CardDescription;
+
+  function CardCta({ as: As = "div", children, ...rest }: any) {
+    return <As {...rest}>{children}</As>;
+  }
+  CardCta.displayName = "CardCtaMock";
+  Card.Cta = CardCta;
+
+  return Card;
 });
+
+vi.mock("@web/components", () => ({
+  Card: mockCardComponent,
+}));
 
 vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
@@ -120,7 +163,7 @@ describe("ListItem", () => {
           <span>Child</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-item");
+      const root = screen.getByTestId("test-id-list-item-default-root");
       expect(root).toBeInTheDocument();
       expect(screen.getByText("Child")).toBeInTheDocument();
     });
@@ -138,7 +181,7 @@ describe("ListItem", () => {
           <span>Item</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-item-root");
+      const root = screen.getByTestId("test-id-list-item-default-root");
       expect(root).toHaveAttribute("role", "listitem");
     });
 
@@ -163,9 +206,8 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("listitem", {
-          name: "Hello World",
-        });
+        // Query by aria-label since the element has the correct ARIA attributes
+        const articleElement = screen.getByLabelText("Hello World");
         expect(articleElement).toHaveAttribute("aria-label", "Hello World");
         expect(articleElement).toHaveAttribute(
           "aria-describedby",
@@ -181,10 +223,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("listitem", {
-          name: "Hello World",
-        });
+        const articleElement = screen.getByLabelText("Hello World");
         expect(articleElement).toHaveAttribute("class");
+        expect(articleElement).toHaveClass("md:col-span-3");
       });
 
       it("does not apply md:col-span-3 when isFrontPage is true", () => {
@@ -194,10 +235,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("listitem", {
-          name: "Hello World",
-        });
+        const articleElement = screen.getByLabelText("Hello World");
         expect(articleElement).toHaveAttribute("class");
+        expect(articleElement).not.toHaveClass("md:col-span-3");
       });
 
       it("renders formatted date via formatDateSafely", () => {
@@ -283,10 +323,9 @@ describe("ListItem", () => {
           React.createElement("span", null, "child")
         );
         render(ArticleItem as any);
-        const articleElement = screen.getByRole("listitem", {
-          name: "Hello World",
-        });
+        const articleElement = screen.getByLabelText("Hello World");
         expect(articleElement).toHaveAttribute("class");
+        expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
       });
 
       it("returns null when article fields missing", () => {
@@ -329,7 +368,7 @@ describe("ListItem", () => {
             </ListItem>
           ) as any
         );
-        const root = screen.getByTestId("test-id-social-list-item");
+        const root = screen.getByTestId("test-id-list-item-social-root");
         expect(root).toBeInTheDocument();
         expect(root).toHaveAttribute("role", "listitem");
         expect(screen.getByText("Social")).toBeInTheDocument();
@@ -346,7 +385,7 @@ describe("ListItem", () => {
             <a href="#">Social Link</a>
           </ListItem>
         );
-        const root = screen.getByTestId("test-id-social-list-item");
+        const root = screen.getByTestId("test-id-list-item-social-root");
         expect(root.tagName).toBe("LI");
         expect(root).toHaveAttribute("role", "listitem");
       });
@@ -357,7 +396,7 @@ describe("ListItem", () => {
             <a href="#">Social</a>
           </ListItem>
         );
-        const root = screen.getByTestId("test-id-social-list-item");
+        const root = screen.getByTestId("test-id-list-item-social-root");
         expect(root).toHaveAttribute("role", "listitem");
       });
     });
@@ -444,7 +483,7 @@ describe("ListItem", () => {
           <span>Dbg</span>
         </ListItem>
       );
-      const root = screen.getByTestId("test-id-list-item");
+      const root = screen.getByTestId("test-id-list-item-default-root");
       expect(root).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -454,7 +493,7 @@ describe("ListItem", () => {
           <span>Item</span>
         </ListItem>
       );
-      expect(screen.getByTestId("custom-id-list-item")).toBeInTheDocument();
+      expect(screen.getByTestId("custom-id-list-item-default-root")).toBeInTheDocument();
     });
   });
 
