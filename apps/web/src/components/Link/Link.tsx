@@ -23,7 +23,7 @@ type LinkVariant = "default" | "social";
 
 export type LinkProps<T extends LinkElementType> = Omit<
   React.ComponentPropsWithRef<T>,
-  "as"
+  "as" | "href"
 > &
   Omit<CommonComponentProps, "as"> & {
     /** The component to render as - only "a" or "Link (NextLink)" are allowed */
@@ -31,13 +31,15 @@ export type LinkProps<T extends LinkElementType> = Omit<
     /** The variant of the link */
     variant?: LinkVariant;
     /** The icon to display */
-    icon?: IconProps["name"];
+    icon?: IconProps<"svg">["name"];
     /** The page to display */
-    page?: IconProps["page"];
+    page?: IconProps<"svg">["page"];
     /** Whether to display a label */
     hasLabel?: boolean;
     /** The label to display */
     label?: string;
+    /** The href of the link */
+    href?: string;
   };
 
 export const Link = setDisplayName(function Link<T extends LinkElementType>(
@@ -49,7 +51,7 @@ export const Link = setDisplayName(function Link<T extends LinkElementType>(
     children,
     href,
     target,
-    title,
+    label,
     debugId,
     debugMode,
     ...rest
@@ -61,8 +63,6 @@ export const Link = setDisplayName(function Link<T extends LinkElementType>(
     debugMode,
   });
 
-  if (!children) return null;
-
   // Define a mapping of variants to components
   const variantComponentMap: Record<LinkVariant, React.ElementType> = {
     default: Component,
@@ -72,23 +72,23 @@ export const Link = setDisplayName(function Link<T extends LinkElementType>(
   // Choose the component based on variant
   const VariantComponent = variantComponentMap[variant] || Component;
 
+  const linkHref = href && isValidLink(href) ? href : "";
+  const linkTargetProps = getLinkTargetProps(linkHref, target);
+  const Element = (
+    Component !== NextLink ? Component : VariantComponent
+  ) as React.ElementType;
+
   // For default variant, use string element directly
   // Respect the `as` prop if provided, otherwise use "Link (NextLink)" from variant map
   if (variant === "default") {
-    const linkHref = href && isValidLink(href) ? href : "";
-    const linkTargetProps = getLinkTargetProps(linkHref, target);
-    const Element = (
-      Component !== NextLink ? Component : VariantComponent
-    ) as React.ElementType;
-
     return (
       <Element
         {...(rest as React.ComponentPropsWithoutRef<typeof Element>)}
         href={linkHref}
         target={linkTargetProps.target}
         rel={linkTargetProps.rel}
-        title={title}
-        aria-label={title}
+        title={label}
+        aria-label={label}
         {...createComponentProps(componentId, "link", isDebugMode)}
       >
         {children}
@@ -98,22 +98,18 @@ export const Link = setDisplayName(function Link<T extends LinkElementType>(
 
   const variantProps = {
     ...rest,
-    href,
-    target,
-    title,
+    href: linkHref,
+    target: linkTargetProps.target,
+    rel: linkTargetProps.rel,
+    label,
+    title: label,
     variant,
-    debugId,
-    debugMode,
+    debugId: componentId,
+    debugMode: isDebugMode,
   };
 
   return <VariantComponent {...variantProps}>{children}</VariantComponent>;
 });
-
-// ============================================================================
-// MEMOIZED LINK COMPONENT
-// ============================================================================
-
-export const MemoizedLink = React.memo(Link);
 
 // ============================================================================
 // SOCIAL LINK COMPONENT
@@ -144,7 +140,7 @@ const SocialLink = setDisplayName(function SocialLink(
   const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
-  const element = (
+  return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       href={linkHref}
@@ -154,7 +150,7 @@ const SocialLink = setDisplayName(function SocialLink(
       aria-label={hasLabel && label ? label : (title ?? "")}
       {...createComponentProps(componentId, "social-link", isDebugMode)}
     >
-      {icon && (icon as IconProps["name"]) ? (
+      {icon && (icon as IconProps<"svg">["name"]) ? (
         <Icon
           name={icon}
           page={page}
@@ -163,17 +159,10 @@ const SocialLink = setDisplayName(function SocialLink(
             "group-hover:fill-zinc-600 dark:fill-zinc-400 dark:group-hover:fill-zinc-300",
             hasLabel && "flex-none group-hover:fill-teal-500"
           )}
-          {...createComponentProps(
-            componentId,
-            "social-link-icon",
-            isDebugMode
-          )}
         />
       ) : null}
 
       {hasLabel && label ? <span className="ml-4">{label}</span> : null}
     </Component>
   );
-
-  return element;
 });
