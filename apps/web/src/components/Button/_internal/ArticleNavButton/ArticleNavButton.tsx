@@ -67,7 +67,7 @@ const BaseArticleNavButton: ArticleNavButtonComponent = setDisplayName(
         )}
       >
         <Icon
-          name="ArrowLeft"
+          name="arrow-left"
           className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400"
           aria-hidden="true"
           debugMode={isDebugMode}
