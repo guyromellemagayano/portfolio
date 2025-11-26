@@ -31,9 +31,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
       ...additionalProps,
     })
   ),
@@ -63,7 +64,7 @@ describe("Icon", () => {
 
     it("renders icon with name prop correctly", () => {
       const { container } = render(<Icon name="x" />);
-      const icon = container.querySelector('[data-icon-x-id="test-id-icon-x"]');
+      const icon = container.querySelector('[data-icon-x-id="test-id-icon-x-root"]');
       expect(icon).toBeInTheDocument();
       expect(icon?.tagName).toBe("svg");
     });
@@ -84,9 +85,9 @@ describe("Icon", () => {
     it("renders with custom component ID using name prop", () => {
       const { container } = render(<Icon name="x" debugId="custom-id" />);
       const icon = container.querySelector(
-        '[data-icon-x-id="custom-id-icon-x"]'
+        '[data-icon-x-id="custom-id-icon-x-root"]'
       );
-      expect(icon).toHaveAttribute("data-icon-x-id", "custom-id-icon-x");
+      expect(icon).toHaveAttribute("data-icon-x-id", "custom-id-icon-x-root");
     });
 
     it("passes through HTML attributes with name prop", () => {
@@ -293,7 +294,7 @@ describe("Icon", () => {
         <Icon name="x" debugId="test-id" debugMode={true} />
       );
       const icon = container.querySelector("[data-icon-x-id]");
-      expect(icon).toHaveAttribute("data-icon-x-id", "test-id-icon-x");
+      expect(icon).toHaveAttribute("data-icon-x-id", "test-id-icon-x-root");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -386,7 +387,7 @@ describe("Icon", () => {
         />
       );
       const icon = container.querySelector("[data-icon-x-id]");
-      expect(icon).toHaveAttribute("data-icon-x-id", "complex-id-icon-x");
+      expect(icon).toHaveAttribute("data-icon-x-id", "complex-id-icon-x-root");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
       expect(icon).toHaveAttribute("class");
       expect(icon).toHaveAttribute("data-test", "complex-test");
