@@ -34,6 +34,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
   createComponentProps: vi.fn(
     (id: string, componentType: string, debugMode: boolean, additional: any = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
       "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
       ...additional,
@@ -64,7 +65,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-list-root");
+    const root = screen.getByTestId("test-id-list-default-root");
     expect(root).toBeInTheDocument();
     expect(screen.getByText("A")).toBeInTheDocument();
     expect(screen.getByText("B")).toBeInTheDocument();
@@ -78,7 +79,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-article-list-root");
+    const root = screen.getByTestId("test-id-list-article-root");
     expect(root).toBeInTheDocument();
     expect(root).toHaveAttribute("aria-label", "Article list");
     expect(root).toHaveAttribute("role", "region");
@@ -120,7 +121,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-article-list-root");
+    const root = screen.getByTestId("test-id-list-article-root");
     expect(root).toHaveAttribute("role", "region");
     expect(root).toHaveClass("custom-article-class", "md:border-l");
     expect(screen.getByText("Article One")).toBeInTheDocument();
@@ -135,7 +136,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-social-list-root");
+    const root = screen.getByTestId("test-id-list-social-root");
     expect(root).toBeInTheDocument();
     expect(root.tagName).toBe("UL");
     expect(screen.getByText("Twitter")).toBeInTheDocument();
@@ -151,7 +152,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-social-list-root");
+    const root = screen.getByTestId("test-id-list-social-root");
     expect(root.tagName).toBe("OL");
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
@@ -167,7 +168,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-tools-list-root");
+    const root = screen.getByTestId("test-id-list-tools-root");
     expect(root).toBeInTheDocument();
     expect(root).toHaveClass("space-y-16");
     expect(screen.getByText("React")).toBeInTheDocument();
@@ -183,7 +184,7 @@ describe("List (integration)", () => {
       </List>
     );
 
-    const root = screen.getByTestId("test-id-tools-list-root");
+    const root = screen.getByTestId("test-id-list-tools-root");
     expect(root).toBeInTheDocument();
     expect(root).toHaveClass("grid-gap", "space-y-16");
     expect(screen.getByText("React")).toBeInTheDocument();

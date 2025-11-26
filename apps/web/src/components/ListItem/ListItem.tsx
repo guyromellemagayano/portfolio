@@ -89,7 +89,11 @@ export const ListItem = setDisplayName(function ListItem<
       <Element
         {...(rest as React.ComponentPropsWithoutRef<typeof Element>)}
         role={defaultRole}
-        {...createComponentProps(componentId, "list-item", isDebugMode)}
+        {...createComponentProps(
+          componentId,
+          `list-item-${variant}`,
+          isDebugMode
+        )}
       >
         {children}
       </Element>
@@ -130,6 +134,7 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
 ) {
   const {
     as: Component = Card,
+    variant,
     className,
     article,
     isFrontPage = false,
@@ -177,6 +182,11 @@ const ArticleListItem = setDisplayName(function ArticleListItem(
       aria-describedby={articleData.description}
       debugId={componentId}
       debugMode={isDebugMode}
+      {...createComponentProps(
+        componentId,
+        `list-item-${variant}`,
+        isDebugMode
+      )}
     >
       <Card.Title
         href={articleData.slug}
@@ -220,6 +230,7 @@ const SocialListItem = setDisplayName(function SocialListItem<
 >(props: ListItemProps<T>) {
   const {
     as: Component = "li",
+    variant,
     children,
     role,
     debugId,
@@ -238,13 +249,19 @@ const SocialListItem = setDisplayName(function SocialListItem<
   // Set the default role to "listitem" if not provided
   const defaultRole = role !== undefined ? role : "listitem";
 
-  const variantProps = {
-    ...(rest as React.ComponentPropsWithoutRef<typeof Component>),
-    role: defaultRole,
-    ...createComponentProps(componentId, "social-list-item", isDebugMode),
-  };
-
-  return <Component {...variantProps}>{children}</Component>;
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      role={defaultRole}
+      {...createComponentProps(
+        componentId,
+        `list-item-${variant}`,
+        isDebugMode
+      )}
+    >
+      {children}
+    </Component>
+  );
 });
 
 // ============================================================================
