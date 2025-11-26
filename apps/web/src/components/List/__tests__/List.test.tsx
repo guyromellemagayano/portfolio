@@ -83,7 +83,7 @@ describe("List", () => {
           <li>One</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-root");
       expect(root.tagName).toBe("OL");
       expect(root).toHaveAttribute("role", "list");
     });
@@ -94,21 +94,21 @@ describe("List", () => {
           <li>Item</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-root");
       expect(root.tagName).toBe("UL");
       expect(root).toHaveAttribute("role", "list");
     });
   });
 
   describe("Variants", () => {
-    it("default variant uses data-testid list-default", () => {
+    it("default variant uses data-testid list", () => {
       render(
         <List>
           <li>Default</li>
         </List>
       );
       expect(
-        screen.getByTestId("test-id-list-default-root")
+        screen.getByTestId("test-id-list-root")
       ).toBeInTheDocument();
     });
 
@@ -119,7 +119,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-list-article-root");
+        const root = screen.getByTestId("test-id-article-list-root");
         expect(root).toBeInTheDocument();
         expect(root).toHaveAttribute("aria-label", "Article list");
         expect(root).toHaveAttribute("role", "region");
@@ -162,7 +162,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-list-article-root");
+        const root = screen.getByTestId("test-id-article-list-root");
         expect(root).toHaveAttribute("role", "region");
       });
 
@@ -172,7 +172,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-list-article-root");
+        const root = screen.getByTestId("test-id-article-list-root");
         expect(root).toHaveClass(
           "md:border-l",
           "md:border-zinc-100",
@@ -187,7 +187,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-list-article-root");
+        const root = screen.getByTestId("test-id-article-list-root");
         expect(root).toHaveClass("custom-class", "md:border-l");
       });
 
@@ -197,7 +197,7 @@ describe("List", () => {
             <article>Article child</article>
           </List>
         );
-        const root = screen.getByTestId("test-id-list-article-root");
+        const root = screen.getByTestId("test-id-article-list-root");
         expect(root).toHaveClass("custom-class");
       });
     });
@@ -260,7 +260,7 @@ describe("List", () => {
           <li>Dbg</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
+      const root = screen.getByTestId("test-id-list-root");
       expect(root).toHaveAttribute("data-debug-mode", "true");
     });
 
@@ -271,7 +271,7 @@ describe("List", () => {
         </List>
       );
       expect(
-        screen.getByTestId("custom-id-list-default-root")
+        screen.getByTestId("custom-id-list-root")
       ).toBeInTheDocument();
     });
   });
