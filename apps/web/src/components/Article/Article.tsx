@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useMemo } from "react";
+import React from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
@@ -12,182 +10,97 @@ import { type ArticleWithSlug } from "@web/utils";
 import { ARTICLE_I18N } from "./Article.i18n";
 
 // ============================================================================
-// ARTICLE COMPONENT TYPES & INTERFACES
+// ARTICLE COMPONENT
 // ============================================================================
 
-export interface ArticleProps
-  extends React.ComponentPropsWithRef<typeof Card>,
-    CommonComponentProps {
-  /** The article to display. */
-  article: ArticleWithSlug;
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
-}
-export type ArticleComponent = React.FC<ArticleProps>;
+type ArticleElementType = typeof Card;
 
-// ============================================================================
-// BASE ARTICLE COMPONENT
-// ============================================================================
+export type ArticleProps<T extends React.ElementType> = Omit<
+  React.ComponentPropsWithRef<T>,
+  "as"
+> &
+  Omit<CommonComponentProps, "as"> & {
+    /** The component to render as - only `Card` is allowed */
+    as?: T;
+    /** The article to render */
+    article: ArticleWithSlug;
+  };
 
-const BaseArticle: ArticleComponent = setDisplayName(
-  function BaseArticle(props) {
-    const {
-      as: Component = Card,
-      article,
-      debugId,
-      debugMode,
-      ...rest
-    } = props;
+export const Article = setDisplayName(function Article<
+  T extends ArticleElementType,
+>(props: ArticleProps<T>) {
+  const { as: Component = Card, article, debugId, debugMode, ...rest } = props;
 
-    const { componentId, isDebugMode } = useComponentId({
-      debugId,
-      debugMode,
-    });
+  // Article component ID and debug mode
+  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
-    // Optimized data processing with useMemo (must be before early returns)
-    const articleData = useMemo(() => {
-      if (
-        !article ||
-        !article.title ||
-        !article.slug ||
-        !article.date ||
-        !article.description
-      ) {
-        return null;
-      }
+  if (!article) return null;
 
-      const trimmedTitle = article.title.trim();
-      const trimmedSlug = article.slug.trim();
-      const trimmedDate = article.date.trim();
-      const trimmedDescription = article.description.trim();
+  const articleData = {
+    title: article.title?.trim() ?? "",
+    description: article.description?.trim() ?? "",
+    date: article.date?.trim() ?? null,
+    formattedDate: formatDateSafely(article.date?.trim() ?? null),
+    slug: isNaN(new Date(article.date?.trim() ?? "").getTime())
+      ? undefined
+      : new URL(encodeURIComponent(`/articles/${article.slug.trim()}`)),
+    image: article.image?.trim() ?? "#",
+    tags: article.tags?.map((tag) => tag.trim()) ?? [],
+  };
 
-      // Check if any required fields are empty after trimming
-      if (
-        !trimmedTitle ||
-        !trimmedSlug ||
-        !trimmedDate ||
-        !trimmedDescription
-      ) {
-        return null;
-      }
+  // ARIA relationships
+  const titleId = `${componentId}-base-article-card-title`;
+  const descriptionId = `${componentId}-base-article-card-description`;
 
-      // Check if date is valid
-      if (isNaN(new Date(trimmedDate).getTime())) {
-        return null;
-      }
-
-      return {
-        title: trimmedTitle,
-        slug: encodeURIComponent(`/articles/${trimmedSlug}`),
-        date: trimmedDate,
-        description: trimmedDescription,
-        formattedDate: formatDateSafely(trimmedDate),
-      };
-    }, [article]);
-
-    if (!article || !articleData) return null;
-
-    // Pre-compute all conditions
-    const hasTitle = articleData?.title && articleData.title.length > 0;
-    const hasDate =
-      articleData?.date &&
-      articleData.date.length > 0 &&
-      !isNaN(new Date(articleData.date).getTime());
-    const hasDescription =
-      articleData?.description && articleData.description.length > 0;
-
-    // Pre-compute IDs for ARIA relationships
-    const titleId = hasTitle
-      ? `${componentId}-base-article-card-title`
-      : undefined;
-    const descriptionId = hasDescription
-      ? `${componentId}-base-article-card-description`
-      : undefined;
-
-    const element = (
-      <Component
-        {...rest}
-        role="article"
+  return (
+    <Component
+      {...rest}
+      role="article"
+      debugId={componentId}
+      debugMode={isDebugMode}
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+    >
+      <Card.Title
+        id={titleId}
+        href={articleData.slug}
         debugId={componentId}
         debugMode={isDebugMode}
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-level={1}
       >
-        {hasTitle ? (
-          <Card.Title
-            id={titleId}
-            href={articleData.slug}
-            debugId={componentId}
-            debugMode={isDebugMode}
-            aria-level={1}
-          >
-            {articleData.title}
-          </Card.Title>
-        ) : null}
-
-        {hasDate ? (
-          <Card.Eyebrow
-            as="time"
-            dateTime={articleData.date}
-            debugId={componentId}
-            debugMode={isDebugMode}
-            aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
-            decorate
-          >
-            {articleData.formattedDate}
-          </Card.Eyebrow>
-        ) : null}
-
-        {hasDescription ? (
-          <Card.Description
-            id={descriptionId}
-            debugId={componentId}
-            debugMode={isDebugMode}
-          >
-            {articleData.description}
-          </Card.Description>
-        ) : null}
-
-        <Card.Cta
-          role="button"
-          debugId={componentId}
-          debugMode={isDebugMode}
-          aria-label={`${ARTICLE_I18N.cta}: ${articleData?.title || "Article"}`}
-        >
-          {ARTICLE_I18N.cta}
-        </Card.Cta>
-      </Component>
-    );
-
-    return element;
-  }
-);
+        {articleData.title}
+      </Card.Title>
+      <Card.Eyebrow
+        as="time"
+        dateTime={articleData.date}
+        debugId={componentId}
+        debugMode={isDebugMode}
+        aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
+        decorate
+      >
+        {articleData.formattedDate}
+      </Card.Eyebrow>
+      <Card.Description
+        id={descriptionId}
+        debugId={componentId}
+        debugMode={isDebugMode}
+      >
+        {articleData.description}
+      </Card.Description>
+      <Card.Cta
+        role="button"
+        debugId={componentId}
+        debugMode={isDebugMode}
+        aria-label={`${ARTICLE_I18N.cta}: ${articleData?.title || "Article"}`}
+      >
+        {ARTICLE_I18N.cta}
+      </Card.Cta>
+    </Component>
+  );
+});
 
 // ============================================================================
 // MEMOIZED ARTICLE COMPONENT
 // ============================================================================
 
-const MemoizedArticle = React.memo(BaseArticle, (prevProps, nextProps) => {
-  // Only re-render if article data actually changes
-  return (
-    prevProps.article === nextProps.article ||
-    (prevProps.article?.title === nextProps.article?.title &&
-      prevProps.article?.slug === nextProps.article?.slug &&
-      prevProps.article?.date === nextProps.article?.date &&
-      prevProps.article?.description === nextProps.article?.description)
-  );
-});
-
-// ============================================================================
-// MAIN ARTICLE COMPONENT
-// ============================================================================
-
-export const Article: ArticleComponent = setDisplayName(
-  function Article(props) {
-    const { isMemoized = false, ...rest } = props;
-
-    const Component = isMemoized ? MemoizedArticle : BaseArticle;
-    const element = <Component {...rest} />;
-    return element;
-  }
-);
+export const MemoizedArticle = React.memo(Article);
