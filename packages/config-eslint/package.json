@@ -1,5 +1,5 @@
 {
-  "name": "@packages/eslint-config",
+  "name": "@guyromellemagayano/config-eslint",
   "version": "1.0.0",
   "private": true,
   "description": "Shared ESLint config presets",
@@ -57,10 +57,12 @@
     "eslint-plugin-testing-library": "catalog:",
     "eslint-plugin-turbo": "catalog:",
     "eslint-plugin-unused-imports": "catalog:",
-    "globals": "catalog:",
     "typescript-eslint": "catalog:"
   },
   "devDependencies": {
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "globals": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
