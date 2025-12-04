@@ -1,5 +1,5 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
-# @packages/Vitest-presets
+# @guyromellemagayano/Vitest-presets
 
 Shared Vitest configuration presets for the monorepo with integrated V8 coverage support.
 
@@ -16,7 +16,7 @@ Shared Vitest configuration presets for the monorepo with integrated V8 coverage
 
 ## Presets
 
-### Browser Preset (`browser/vitest-preset.js`)
+### Browser Preset (`browser/vitest-preset.ts`)
 
 For DOM testing with JSDOM environment.
 
@@ -27,9 +27,10 @@ For DOM testing with JSDOM environment.
 - Functions: 80%
 - Lines: 80%
 
-```javascript
+```typescript
+// Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import browserPreset from "@packages/vitest-presets/browser/vitest-preset.js";
+import { browserPreset } from "@guyromellemagayano/vitest-presets";
 
 export default defineConfig(browserPreset);
 ```
@@ -41,7 +42,7 @@ export default defineConfig(browserPreset);
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
 - Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
 
-### Node Preset (`node/vitest-preset.js`)
+### Node Preset (`node/vitest-preset.ts`)
 
 For server-side testing with Node.js environment.
 
@@ -52,9 +53,18 @@ For server-side testing with Node.js environment.
 - Functions: 85%
 - Lines: 85%
 
-```javascript
+```typescript
+// Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import nodePreset from "@packages/vitest-presets/node/vitest-preset.js";
+import { nodePreset } from "@guyromellemagayano/vitest-presets";
+
+export default defineConfig(nodePreset);
+```
+
+```typescript
+// Option 2: Using directory barrel export
+import { defineConfig } from "vitest/config";
+import { nodePreset } from "@guyromellemagayano/vitest-presets/node";
 
 export default defineConfig(nodePreset);
 ```
@@ -65,7 +75,7 @@ export default defineConfig(nodePreset);
 - Logger integration with test setup logging
 - Node.js environment optimizations
 
-### React Preset (`react/vitest-preset.js`)
+### React Preset (`react/vitest-preset.ts`)
 
 For React component testing with full Testing Library support.
 
@@ -76,9 +86,18 @@ For React component testing with full Testing Library support.
 - Functions: 80%
 - Lines: 80%
 
-```javascript
+```typescript
+// Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
+import { reactPreset } from "@guyromellemagayano/vitest-presets";
+
+export default defineConfig(reactPreset);
+```
+
+```typescript
+// Option 2: Using directory barrel export
+import { defineConfig } from "vitest/config";
+import { reactPreset } from "@guyromellemagayano/vitest-presets/react";
 
 export default defineConfig(reactPreset);
 ```
@@ -146,12 +165,12 @@ The test setup includes built-in logging that provides visibility into:
 
 All presets use the V8 coverage provider for fast, accurate coverage collection:
 
-```json
+```typescript
 {
-  "coverage": {
-    "provider": "v8",
-    "reporter": ["text", "json", "html", "lcov", "clover"],
-    "reportOnFailure": true
+  coverage: {
+    provider: "v8" as const,
+    reporter: ["text", "json", "html", "lcov", "clover"],
+    reportOnFailure: true
   }
 }
 ```
@@ -224,7 +243,7 @@ Coverage is automatically configured with sensible defaults:
 Install in your package:
 
 ```bash
-pnpm add -D @packages/vitest-presets @vitest/coverage-v8
+pnpm add -D @guyromellemagayano/vitest-presets @vitest/coverage-v8
 ```
 
 Add to `package.json` peer dependencies:
@@ -232,7 +251,7 @@ Add to `package.json` peer dependencies:
 ```json
 {
   "peerDependencies": {
-    "@packages/vitest-presets": "workspace:*",
+    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
     "@guyromellemagayano/logger": "workspace:*",
     "vitest": "catalog:"
@@ -249,17 +268,22 @@ Add to `package.json` peer dependencies:
 Create `vitest.config.ts` in your package:
 
 ```typescript
+// Recommended: Using barrel export
 import { defineConfig } from "vitest/config";
-import browserPreset from "@packages/vitest-presets/browser/vitest-preset.js";
+import { browserPreset } from "@guyromellemagayano/vitest-presets";
 
 export default defineConfig(browserPreset);
 ```
 
 **Available Presets:**
 
-- `@packages/vitest-presets/browser/vitest-preset.js` - For DOM testing
-- `@packages/vitest-presets/react/vitest-preset.js` - For React component testing  
-- `@packages/vitest-presets/node/vitest-preset.js` - For server-side testing
+- `@guyromellemagayano/vitest-presets` - Main barrel export (recommended)
+  - `browserPreset` - For DOM testing
+  - `reactPreset` - For React component testing
+  - `nodePreset` - For server-side testing
+- `@guyromellemagayano/vitest-presets/browser` - Browser preset directory export
+- `@guyromellemagayano/vitest-presets/react` - React preset directory export
+- `@guyromellemagayano/vitest-presets/node` - Node preset directory export
 
 All presets include:
 

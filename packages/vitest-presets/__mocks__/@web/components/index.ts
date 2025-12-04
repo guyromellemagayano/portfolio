@@ -7,7 +7,7 @@ import React from "react";
 /**
  * Creates a mock component with consistent behavior
  */
-function createMockComponent(componentName: string) {
+const createMockComponent = (componentName: string) => {
   return React.forwardRef<HTMLElement, any>(function MockComponent(props, ref) {
     const {
       children,
@@ -31,7 +31,7 @@ function createMockComponent(componentName: string) {
       children
     );
   });
-}
+};
 
 // ============================================================================
 // CARD COMPONENT MOCKS

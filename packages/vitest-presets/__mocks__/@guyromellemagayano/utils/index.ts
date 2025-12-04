@@ -4,18 +4,14 @@ import { vi } from "vitest";
 // CENTRALIZED UTILITY MOCKS
 // ============================================================================
 
-/**
- * Mock useComponentId hook with consistent behavior
- */
+/** Mock `useComponentId` hook with consistent behavior */
 export const useComponentId = vi.fn((options = {}) => ({
   componentId: options.debugId || "test-id",
   isDebugMode: options.debugMode || false,
   id: options.debugId || "test-id", // For backward compatibility
 }));
 
-/**
- * Mock setDisplayName utility
- */
+/** Mock `setDisplayName` utility */
 export const setDisplayName = vi.fn((component, displayName) => {
   if (component) {
     component.displayName = displayName;
@@ -23,9 +19,7 @@ export const setDisplayName = vi.fn((component, displayName) => {
   return component;
 });
 
-/**
- * Mock createComponentProps utility
- */
+/** Mock `createComponentProps` utility */
 export const createComponentProps = vi.fn(
   (id, componentType, debugMode, additionalProps = {}) => ({
     [`data-${componentType}-id`]: `${id}-${componentType}`,
@@ -35,9 +29,7 @@ export const createComponentProps = vi.fn(
   })
 );
 
-/**
- * Mock hasAnyRenderableContent utility
- */
+/** Mock `hasAnyRenderableContent` utility */
 export const hasAnyRenderableContent = vi.fn((children) => {
   if (children === false || children === null || children === undefined) {
     return false;
@@ -48,23 +40,17 @@ export const hasAnyRenderableContent = vi.fn((children) => {
   return true;
 });
 
-/**
- * Mock hasMeaningfulText utility
- */
+/** Mock `hasMeaningfulText` utility */
 export const hasMeaningfulText = vi.fn(
   (content) => content != null && content !== ""
 );
 
-/**
- * Mock hasValidContent utility
- */
+/** Mock `hasValidContent` utility */
 export const hasValidContent = vi.fn(
   (content) => content != null && content !== ""
 );
 
-/**
- * Mock formatDateSafely utility
- */
+/** Mock `formatDateSafely` utility */
 export const formatDateSafely = vi.fn((date, options) => {
   if (options?.year === "numeric") {
     return new Date(date).getFullYear().toString();
@@ -75,31 +61,23 @@ export const formatDateSafely = vi.fn((date, options) => {
   return date.toLocaleDateString();
 });
 
-/**
- * Mock isValidLink utility
- */
+/** Mock `isValidLink` utility */
 export const isValidLink = vi.fn((href) => href && href !== "" && href !== "#");
 
-/**
- * Mock getLinkTargetProps utility
- */
+/** Mock `getLinkTargetProps` utility */
 export const getLinkTargetProps = vi.fn((href, target) => ({
   target: target || "_self",
   rel: target === "_blank" ? "noopener noreferrer" : undefined,
 }));
 
-/**
- * Mock hasValidNavigationLinks utility
- */
+/** Mock `hasValidNavigationLinks` utility */
 export const hasValidNavigationLinks = vi.fn((links) => {
   if (links === null || links === undefined) return false;
   if (!Array.isArray(links)) return false;
   return links.length > 0;
 });
 
-/**
- * Mock filterValidNavigationLinks utility
- */
+/** Mock `filterValidNavigationLinks` utility */
 export const filterValidNavigationLinks = vi.fn((links) => {
   if (!links || !Array.isArray(links)) return [];
   return links.filter((link) => {
@@ -113,21 +91,15 @@ export const filterValidNavigationLinks = vi.fn((links) => {
   });
 });
 
-/**
- * Mock isValidImageSrc utility
- */
+/** Mock `isValidImageSrc` utility */
 export const isValidImageSrc = vi.fn(
   (src) => src && typeof src === "string" && src.length > 0
 );
 
-/**
- * Mock cn utility (className composition)
- */
+/** Mock `cn` utility (className composition) */
 export const cn = vi.fn((...classes) => classes.filter(Boolean).join(" "));
 
-/**
- * Mock formatDate utility
- */
+/** Mock `formatDate` utility */
 export const formatDate = vi.fn((date) => {
   if (typeof date === "string") {
     return new Date(date).toLocaleDateString();
