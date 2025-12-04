@@ -8,6 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "build:packages": "pnpm build --filter=\"@guyromellemagayano/*\"",
     "changeset": "changeset",
     "changeset:publish": "changeset publish",
     "changeset:status": "changeset status",
@@ -21,7 +22,7 @@
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "prepare": "husky",
-    "release": "pnpm build --filter=\"@guyromellemagayano/*\" && pnpm changeset:publish",
+    "release": "pnpm build:packages && pnpm changeset:publish",
     "test": "turbo run test",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
@@ -36,10 +37,8 @@
     "version-packages": "changeset version && pnpm install --lockfile-only"
   },
   "lint-staged": {
-    "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx,css,md,mdx,json,jsonc}": [
-      "pnpm format"
-    ],
     "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}": [
+      "pnpm format",
       "pnpm test:run"
     ]
   },
@@ -55,11 +54,14 @@
     "@commitlint/config-conventional": "catalog:",
     "@commitlint/cz-commitlint": "catalog:",
     "@commitlint/types": "catalog:",
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
+    "@guyromellemagayano/config-eslint": "workspace:*",
+    "@guyromellemagayano/config-typescript": "workspace:*",
+    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@tailwindcss/typography": "catalog:",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "baseline-browser-mapping": "catalog:",
     "czg": "catalog:",
     "eslint": "catalog:",
     "eslint-plugin-jest-dom": "catalog:",
@@ -74,7 +76,6 @@
     "react-dom": "catalog:",
     "sort-package-json": "catalog:",
     "tailwindcss": "catalog:",
-    "tsdown": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
     "validate-branch-name": "catalog:"
