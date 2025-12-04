@@ -1,8 +1,8 @@
 /// <reference types="vitest/globals" />
 /// <reference types="@testing-library/jest-dom" />
 
-// CRITICAL: Override IntersectionObserver IMMEDIATELY before any imports
-// This must be the very first thing to prevent Next.js from using the real IntersectionObserver
+// CRITICAL: Override `IntersectionObserver` IMMEDIATELY before any imports
+// This must be the very first thing to prevent Next.js from using the real `IntersectionObserver`
 const createIntersectionObserverMock = () => {
   return function MockIntersectionObserver(callback: any, options?: any) {
     const mockObserver = {
@@ -40,7 +40,7 @@ const createIntersectionObserverMock = () => {
         time: 0,
       };
 
-      // Use setTimeout to avoid synchronous execution issues
+      // Use `setTimeout` to avoid synchronous execution issues
       setTimeout(() => {
         try {
           callback([mockEntry], mockObserver);
@@ -91,12 +91,6 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import "@testing-library/jest-dom";
 
 // IntersectionObserver is already mocked at the top of the file
-
-// Simple test setup logger (avoids conflicts with mocked logger)
-// const testLogger = {
-//   info: (message: string) => console.log(`🧪 [TEST-SETUP] ${message}`),
-//   debug: (message: string) => console.log(`🔍 [TEST-SETUP] ${message}`),
-// };
 
 // Extend global interface to avoid TypeScript errors
 declare global {
@@ -163,17 +157,13 @@ Object.defineProperty(globalThis.window, "getComputedStyle", {
 // Mock console methods to reduce noise in tests
 const originalConsole = { ...console };
 beforeAll(() => {
-  // testLogger.info("Initializing test environment");
   globalThis.global.console.warn = vi.fn();
   globalThis.global.console.error = vi.fn();
-  // testLogger.debug("Console methods mocked");
 });
 
 afterAll(() => {
-  // testLogger.info("Cleaning up test environment");
   globalThis.global.console.warn = originalConsole.warn;
   globalThis.global.console.error = originalConsole.error;
-  // testLogger.debug("Console methods restored");
 });
 
 // Reset modules and mocks between tests
@@ -181,7 +171,6 @@ afterEach(() => {
   vi.resetModules(); // Clear module cache
   vi.clearAllMocks(); // Clear mock call history
   vi.resetAllMocks(); // Reset mocks to original implementations
-  // testLogger.debug("Modules and mocks reset");
 });
 
 // Global mock for next/navigation
@@ -270,7 +259,7 @@ vi.mock("next/src/client/use-intersection", () => {
   }));
 
   // Override the default export
-  mockUseIntersection.default = mockUseIntersection;
+  (mockUseIntersection as any).default = mockUseIntersection;
   return { default: mockUseIntersection };
 });
 
@@ -305,7 +294,7 @@ vi.mock("next/use-intersection", () => {
   }));
 
   // Override the default export
-  mockUseIntersection.default = mockUseIntersection;
+  (mockUseIntersection as any).default = mockUseIntersection;
   return { default: mockUseIntersection };
 });
 
@@ -400,7 +389,6 @@ vi.mock("@guyromellemagayano/components", () => {
 
 // Use centralized mocks for @web/components
 vi.mock("@web/components", () => import("../__mocks__/@web/components"));
-// testLogger.debug("@web/components mocked via centralized mocks");
 
 // Global mock for @web/lib
 vi.mock("@web/lib", () => ({
@@ -428,21 +416,25 @@ vi.mock(
   "@guyromellemagayano/utils",
   () => import("../__mocks__/@guyromellemagayano/utils")
 );
-// testLogger.debug("@guyromellemagayano/utils mocked via centralized mocks");
 
 // Use centralized mocks for @guyromellemagayano/hooks
 vi.mock(
   "@guyromellemagayano/hooks",
   () => import("../__mocks__/@guyromellemagayano/hooks")
 );
-// testLogger.debug("@guyromellemagayano/hooks mocked via centralized mocks");
 
 // Use centralized mocks for @guyromellemagayano/logger
 vi.mock(
   "@guyromellemagayano/logger",
   () => import("../__mocks__/@guyromellemagayano/logger")
 );
-// testLogger.debug("@guyromellemagayano/logger mocked via centralized mocks");
+
+// Import logger after all mocks are declared (vi.mock is hoisted, so this is safe)
+import { logDebug, logInfo } from "@guyromellemagayano/logger";
+
+logDebug("@guyromellemagayano/utils mocked via centralized mocks");
+logDebug("@guyromellemagayano/hooks mocked via centralized mocks");
+logDebug("@guyromellemagayano/logger mocked via centralized mocks");
 
 // Final setup completion log
-// testLogger.info("All mocks and configurations initialized successfully");
+logInfo("All mocks and configurations initialized successfully");
