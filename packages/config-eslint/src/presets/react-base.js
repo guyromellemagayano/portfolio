@@ -1,8 +1,25 @@
+/* eslint-disable simple-import-sort/imports */
 import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { baseEslintConfig } from "../index.js";
+
+const fileName = fileURLToPath(import.meta.url);
+const dirName = dirname(fileName);
+const repoRoot = resolve(dirName, "..", "..", "..");
+const tsProjects = [
+  resolve(repoRoot, "tsconfig.json"),
+  resolve(repoRoot, "apps", "admin", "tsconfig.json"),
+  resolve(repoRoot, "apps", "api", "tsconfig.json"),
+  resolve(repoRoot, "apps", "web", "tsconfig.json"),
+  resolve(repoRoot, "apps", "storefront", "tsconfig.json"),
+  resolve(repoRoot, "packages", "ui", "tsconfig.json"),
+  resolve(repoRoot, "packages", "logger", "tsconfig.json"),
+  resolve(repoRoot, "packages", "components", "tsconfig.json"),
+];
 
 /**
  * Shared base `eslint` configuration for React-based apps.
@@ -27,7 +44,9 @@ export const reactBaseEslintConfig = [
       react: { version: "detect" },
       "import/resolver": {
         typescript: {
-          project: ["./tsconfig.json"],
+          project: tsProjects,
+          alwaysTryTypes: true,
+          noWarnOnMultipleProjects: true,
         },
       },
     },
