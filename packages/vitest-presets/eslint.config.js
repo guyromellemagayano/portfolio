@@ -1,4 +1,6 @@
-import { baseEslintConfig } from "@packages/eslint-config";
+import { baseEslintConfig } from "@guyromellemagayano/config-eslint";
+import globals from "globals";
+import vitestPlugin from "@vitest/eslint-plugin";
 
 /** @type {import("eslint").Linter.Config} */
 export default [
@@ -8,6 +10,13 @@ export default [
       "**/__tests__/**/*.{js,ts,jsx,tsx}",
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
     ],
+    languageOptions: {
+      globals: {
+        ...vitestPlugin.environments.env.globals,
+        ...globals.browser,
+        ...globals.node,
+      },
+    },
     rules: {
       "vitest/expect-expect": "error",
       "vitest/no-disabled-tests": "warn",
