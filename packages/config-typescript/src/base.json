@@ -25,5 +25,6 @@
     "composite": false,
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false
-  }
+  },
+  "exclude": ["dist", "**/dist/**", "node_modules"]
 }
