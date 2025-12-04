@@ -16,9 +16,6 @@ node_modules/
 .turbo/
 .cache/
 
-# Sanity artifacts
-.sanity/
-
 # Generated files
 *.tsbuildinfo
 
