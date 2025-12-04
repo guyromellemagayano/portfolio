@@ -12,12 +12,6 @@ export const nextEslintConfig = [
     plugins: {
       "@next/next": pluginNext,
     },
-    languageOptions: {
-      globals: {
-        ...reactBaseEslintConfig[reactBaseEslintConfig.length - 1]
-          .languageOptions.globals,
-      },
-    },
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
