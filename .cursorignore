@@ -33,9 +33,6 @@ dist/
 *.local
 *.log
 
-# Sanity
-.sanity/
-
 # TypeScript build info
 *.tsbuildinfo
 
