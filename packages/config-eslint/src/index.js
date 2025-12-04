@@ -3,16 +3,16 @@ import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import vitestPlugin from "@vitest/eslint-plugin";
-import eslintConfigPrettier from "eslint-config-prettier/flat";
+import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
+import jestDom from "eslint-plugin-jest-dom";
 import onlyWarn from "eslint-plugin-only-warn";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactRefresh from "eslint-plugin-react-refresh";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+import testingLibrary from "eslint-plugin-testing-library";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import testingLibrary from "eslint-plugin-testing-library";
-import jestDom from "eslint-plugin-jest-dom";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -66,7 +66,6 @@ export const baseEslintConfig = [
         { considerQueryString: true, "prefer-inline": true },
       ],
       "import/no-unresolved": "error",
-      "no-duplicate-imports": ["error", { includeExports: true }],
       "no-unused-vars": "off",
       "react-refresh/only-export-components": [
         "warn",
@@ -83,8 +82,7 @@ export const baseEslintConfig = [
               "^@(?!guyromellemagayano|packages/|admin/|api/|storefront/|web/).+",
               "^[a-z]",
             ],
-            ["^@guyromellemagayano/"],
-            ["^@packages/", "^~"],
+            ["^@guyromellemagayano/", "^~"],
             ["^@admin/"],
             ["^@api/"],
             ["^@storefront/"],
@@ -147,7 +145,7 @@ export const baseEslintConfig = [
         },
       ],
     },
-    ignores: ["dist", "**/*.mdx"],
+    ignores: ["dist/**", "**/dist/**", "**/*.mdx"],
   },
   {
     files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
@@ -189,26 +187,6 @@ export const baseEslintConfig = [
       "import/no-extraneous-dependencies": "off",
       "vitest/no-focused-tests": "error",
       "vitest/no-disabled-tests": "warn",
-    },
-    settings: {
-      vitest: {
-        typecheck: true,
-      },
-    },
-  },
-  {
-    files: ["**/@types/**/*.{ts,tsx}", "**/models/types.ts"],
-    rules: {
-      "unused-imports/no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
-        { args: "none", varsIgnorePattern: "^_" },
-      ],
-    },
-  },
-  {
-    files: ["**/__tests__/**/*.{ts,tsx}", "**/*.{test,spec}.{ts,tsx}"],
-    rules: {
       "testing-library/await-async-queries": "error",
       "testing-library/no-await-sync-queries": "error",
       "testing-library/no-debugging-utils": "warn",
@@ -224,6 +202,21 @@ export const baseEslintConfig = [
       "jest-dom/prefer-to-have-attribute": "warn",
       "jest-dom/prefer-to-have-class": "warn",
       "jest-dom/prefer-empty": "warn",
+    },
+    settings: {
+      vitest: {
+        typecheck: true,
+      },
+    },
+  },
+  {
+    files: ["**/@types/**/*.{ts,tsx}", "**/models/types.ts"],
+    rules: {
+      "unused-imports/no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { args: "none", varsIgnorePattern: "^_" },
+      ],
     },
   },
 ];
