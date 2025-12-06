@@ -72,6 +72,11 @@
   },
   "eslint.useFlatConfig": true,
   "eslint.run": "onSave",
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
   "files.associations": {
     ".env*": "dotenv",
     "*ignore": "ignore"
