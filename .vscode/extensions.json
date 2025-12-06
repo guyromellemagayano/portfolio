@@ -13,7 +13,6 @@
     "redhat.vscode-yaml",
     "GraphQL.vscode-graphql",
     "DavidAnson.vscode-markdownlint",
-    "eamodio.gitlens",
     "github.vscode-pull-request-github",
     "formulahendry.auto-rename-tag",
     "christian-kohler.path-intellisense",

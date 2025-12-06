@@ -8,18 +8,18 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@packages/eslint-config",
-    "@packages/typescript-config",
-    "@packages/vitest-presets",
+    "@guyromellemagayano/components",
+    "@guyromellemagayano/config-eslint",
+    "@guyromellemagayano/hooks",
+    "@guyromellemagayano/logger",
+    "@guyromellemagayano/config-typescript",
+    "@guyromellemagayano/ui",
+    "@guyromellemagayano/utils",
+    "@guyromellemagayano/vitest-presets",
     "admin",
     "api",
-    "web",
     "storefront",
-    "@guyromellemagayano/components",
-    "@guyromellemagayano/logger",
-    "@guyromellemagayano/ui",
-    "@guyromellemagayano/hooks",
-    "@guyromellemagayano/utils"
+    "web"
   ],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
