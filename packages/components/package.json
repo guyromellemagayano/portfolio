@@ -1,6 +1,7 @@
 {
   "name": "@guyromellemagayano/components",
   "version": "1.0.0",
+  "private": true,
   "description": "Reusable React components library with TypeScript support, analytics, accessibility features, and polymorphic support",
   "keywords": [
     "react",
@@ -19,50 +20,49 @@
     "directory": "packages/components"
   },
   "license": "MIT",
-  "private": true,
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
-  "sideEffects": false,
+  "sideEffects": true,
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/es/index.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/es/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsdown --minify",
+    "build": "bunchee",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "tsdown --watch",
+    "dev": "bunchee --watch",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
-    "prepublishOnly": "npm run build",
-    "scaffold": "tsx scripts/scaffold-component.ts",
-    "scaffold:watch": "nodemon --exec \"tsx\" scripts/scaffold-component.ts",
+    "prepublishOnly": "pnpm run build && pnpm run test:run",
     "test": "vitest",
-    "test:components": "tsx scripts/test-components.ts",
-    "test:components:watch": "nodemon --exec \"tsx\" scripts/test-components.ts",
-    "test:coverage": "vitest run --coverage",
+    "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",
-    "test:scripts": "vitest run --config vitest.scripts.config.ts scripts/__tests__/",
-    "test:ui": "vitest --ui"
-  },
-  "dependencies": {
-    "@guyromellemagayano/hooks": "workspace:*",
-    "@guyromellemagayano/logger": "workspace:*"
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch"
   },
   "devDependencies": {
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
-    "@packages/vitest-presets": "workspace:*",
+    "@guyromellemagayano/config-eslint": "workspace:*",
+    "@guyromellemagayano/config-typescript": "workspace:*",
+    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
@@ -70,17 +70,23 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "bunchee": "catalog:",
     "eslint": "catalog:",
     "nodemon": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "peerDependencies": {
+    "@guyromellemagayano/hooks": "workspace:*",
+    "@guyromellemagayano/logger": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
   }
 }
