@@ -1,4 +1,4 @@
-import { nextEslintConfig } from "@packages/eslint-config/next";
+import { nextEslintConfig } from "@guyromellemagayano/config-eslint/next";
 
 /** @type {import("eslint").Linter.Config} */
 export default [

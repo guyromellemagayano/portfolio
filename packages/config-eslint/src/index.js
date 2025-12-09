@@ -3,7 +3,7 @@ import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import vitestPlugin from "@vitest/eslint-plugin";
-import eslintConfigPrettier from "eslint-config-prettier";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 import importPlugin from "eslint-plugin-import";
 import jestDom from "eslint-plugin-jest-dom";
 import onlyWarn from "eslint-plugin-only-warn";
@@ -177,6 +177,12 @@ export const baseEslintConfig = [
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
     ],
     ...vitestPlugin.configs.recommended,
+  },
+  {
+    files: [
+      "**/__tests__/**/*.{js,ts,jsx,tsx}",
+      "**/*.{test,spec}.{js,ts,jsx,tsx}",
+    ],
     languageOptions: {
       globals: vitestPlugin.environments.env.globals,
     },

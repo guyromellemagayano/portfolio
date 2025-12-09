@@ -8,12 +8,12 @@ module.exports = {
   plugins: [
     "prettier-plugin-pkg",
     "prettier-plugin-packagejson",
-    "prettier-plugin-tailwindcss"
+    "prettier-plugin-tailwindcss",
   ],
   parser: "json-stringify",
   overrides: [
     {
-      files: ["**/*.{mjs,cjs,mts,cts,js,ts,tsx}"],
+      files: ["**/*.{mjs,cjs,mts,cts,js,ts,jsx,tsx}"],
       options: {
         parser: "typescript",
         importOrder: [
@@ -24,7 +24,6 @@ module.exports = {
           "^@(?!guyromellemagayano|packages/|admin/|api/|storefront/|web/).+",
           "^[a-z]",
           "^@guyromellemagayano/",
-          "^@packages/",
           "^~",
           "^@admin/",
           "^@api/",
