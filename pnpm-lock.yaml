@@ -987,6 +987,9 @@ importers:
       '@guyromellemagayano/config-typescript':
         specifier: workspace:*
         version: link:../config-typescript
+      '@guyromellemagayano/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@guyromellemagayano/vitest-presets':
         specifier: workspace:*
         version: link:../vitest-presets
