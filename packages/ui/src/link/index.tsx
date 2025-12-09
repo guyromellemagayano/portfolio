@@ -1,22 +1,27 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+import { setDisplayName } from "@guyromellemagayano/utils";
+
+type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
   newTab?: boolean;
   href: string;
-}
+};
 
-export const Link = ({ children, href, newTab, ...other }: LinkProps) => {
+export const Link = setDisplayName(function Link({
+  children,
+  href,
+  newTab,
+  ...rest
+}: LinkProps) {
   return (
     <a
       href={href}
       rel={newTab ? "noreferrer" : undefined}
       target={newTab ? "_blank" : undefined}
-      {...other}
+      {...rest}
     >
       {children}
     </a>
   );
-};
-
-Link.displayName = "Link";
+});

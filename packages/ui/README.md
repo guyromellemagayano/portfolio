@@ -72,14 +72,14 @@ This library only supports individual component imports, which is the recommende
 
 ```typescript
 // ✅ Tree-shakeable individual imports
-import { CounterButton } from "@packages/ui/counter-button";
-import { Link } from "@packages/ui/link";
+import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@guyromellemagayano/ui/link";
 
 // ✅ Memoized versions can also be imported
-import { MemoizedCounterButton } from "@packages/ui/counter-button";
+import { MemoizedCounterButton } from "@guyromellemagayano/ui/counter-button";
 
 // ✅ Types are available from the same module path
-import type { CounterButtonProps } from "@packages/ui/counter-button";
+import type { CounterButtonProps } from "@guyromellemagayano/ui/counter-button";
 ```
 
 ## 📦 Import Patterns
@@ -95,11 +95,11 @@ To maintain optimal bundle size and perfect tree-shaking, this library does not 
 
 ```typescript
 // ✅ The only way to import components for optimal bundle size
-import { CounterButton } from "@packages/ui/counter-button";
-import { Link } from "@packages/ui/link";
+import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@guyromellemagayano/ui/link";
 
 // ❌ This will NOT work - there is no main export
-// import { CounterButton, Link } from "@packages/ui";
+// import { CounterButton, Link } from "@guyromellemagayano/ui";
 ```
 
 ### Dynamic Imports for Code Splitting
@@ -111,11 +111,11 @@ import { lazy } from "react";
 
 // ✅ Lazy loading individual components for performance
 const CounterButton = lazy(() => 
-  import("@packages/ui/counter-button").then(m => ({ default: m.CounterButton }))
+  import("@guyromellemagayano/ui/counter-button").then(m => ({ default: m.CounterButton }))
 );
 
 const Link = lazy(() => 
-  import("@packages/ui/link").then(m => ({ default: m.Link }))
+  import("@guyromellemagayano/ui/link").then(m => ({ default: m.Link }))
 );
 ```
 
@@ -125,8 +125,8 @@ If you prefer a centralized import for your application, you can create your own
 
 ```typescript
 // src/components/ui/index.ts - Example of creating your own barrel export
-export { CounterButton, MemoizedCounterButton } from "@packages/ui/counter-button";
-export { Link, MemoizedLink } from "@packages/ui/link";
+export { CounterButton, MemoizedCounterButton } from "@guyromellemagayano/ui/counter-button";
+export { Link, MemoizedLink } from "@guyromellemagayano/ui/link";
 
 // Then import from your custom barrel in your application
 import { CounterButton, Link } from "@/components/ui";
@@ -139,7 +139,7 @@ import { CounterButton, Link } from "@/components/ui";
 An enhanced counter button with configurable `min`/`max` constraints, `step` increments, and comprehensive accessibility features.
 
 ```typescript
-import { CounterButton } from "@packages/ui/counter-button";
+import { CounterButton } from "@guyromellemagayano/ui/counter-button";
 
 <CounterButton
   label="Vote Count"
@@ -158,7 +158,7 @@ import { CounterButton } from "@packages/ui/counter-button";
 A secure link component that automatically detects external links, applies security attributes, and supports analytics tracking.
 
 ```typescript
-import { Link } from "@packages/ui/link";
+import { Link } from "@guyromellemagayano/ui/link";
 
 <Link
   href="https://example.com"
@@ -217,8 +217,8 @@ If you are migrating from UI libraries that use convenience imports (barrel expo
 // import { Button, Link } from "other-ui-library";
 
 // ✅ New pattern (required for optimal performance and bundle size)
-import { CounterButton } from "@packages/ui/counter-button";
-import { Link } from "@packages/ui/link";
+import { CounterButton } from "@guyromellemagayano/ui/counter-button";
+import { Link } from "@guyromellemagayano/ui/link";
 ```
 
 ### Bundle Size Benefits

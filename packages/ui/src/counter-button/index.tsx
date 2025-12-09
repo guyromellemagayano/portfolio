@@ -2,8 +2,23 @@
 
 import { useState } from "react";
 
-export const CounterButton = function () {
-  const [count, setCount] = useState(0);
+import { setDisplayName } from "@guyromellemagayano/utils";
+
+type CounterButtonProps = {
+  label: string;
+  initialValue: number;
+  min: number;
+  max: number;
+  step: number;
+  variant: "primary" | "secondary";
+  size: "small" | "medium" | "large";
+  onCountChange: (count: number) => void;
+};
+
+export const CounterButton = setDisplayName(function CounterButton({
+  initialValue,
+}: CounterButtonProps) {
+  const [count, setCount] = useState(initialValue);
 
   return (
     <div
@@ -47,6 +62,4 @@ export const CounterButton = function () {
       </div>
     </div>
   );
-};
-
-CounterButton.displayName = "CounterButton";
+});
