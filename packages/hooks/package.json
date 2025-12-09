@@ -17,31 +17,36 @@
     "directory": "packages/hooks"
   },
   "license": "MIT",
-  "private": true,
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
-  "sideEffects": false,
+  "sideEffects": true,
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/es/index.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/es/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsdown --minify",
+    "build": "bunchee",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "tsdown --watch",
-    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
-    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
-    "lint": "eslint src/",
-    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
@@ -53,23 +58,27 @@
     "@guyromellemagayano/logger": "workspace:*"
   },
   "devDependencies": {
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
-    "@packages/vitest-presets": "workspace:*",
+    "@guyromellemagayano/config-eslint": "workspace:*",
+    "@guyromellemagayano/config-typescript": "workspace:*",
+    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "bunchee": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
   "peerDependencies": {
     "react": "catalog:",
     "react-dom": "catalog:"
+  },
+  "publishConfig": {
+    "access": "restricted",
+    "registry": "https://npm.pkg.github.com/"
   }
 }
