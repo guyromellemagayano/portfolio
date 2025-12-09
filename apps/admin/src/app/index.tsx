@@ -2,7 +2,7 @@ import { CounterButton, Link } from "@guyromellemagayano/ui";
 
 import "./styles.css";
 
-function App() {
+const App = function () {
   return (
     <div className="container">
       <h1 className="title">
@@ -22,6 +22,6 @@ function App() {
       </p>
     </div>
   );
-}
+};
 
 export default App;
