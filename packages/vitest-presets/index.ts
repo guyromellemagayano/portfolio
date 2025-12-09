@@ -5,9 +5,9 @@
  */
 
 // Presets
-export { browserPreset } from "./browser";
-export { nodePreset } from "./node";
-export { reactPreset } from "./react";
+export { browserPreset } from "./browser/index.ts";
+export { nodePreset } from "./node/index.ts";
+export { reactPreset } from "./react/index.ts";
 
-// Test setup (side-effect file, re-exported for convenience)
-export { testSetup } from "./shared";
+// Note: test-setup.ts should be imported directly in vitest.config.ts setupFiles
+// Do not import it here as it will execute during config loading
