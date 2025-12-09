@@ -1,6 +1,6 @@
 import { baseEslintConfig } from "@guyromellemagayano/config-eslint";
-import globals from "globals";
 import vitestPlugin from "@vitest/eslint-plugin";
+import globals from "globals";
 
 /** @type {import("eslint").Linter.Config} */
 export default [
