@@ -1,14 +1,8 @@
-/**
- * Safely formats a date string with fallback handling.
- *
- * @param date - The date to format (string, Date, null, or undefined)
- * @param options - Optional Intl.DateTimeFormatOptions for formatting
- * @returns Formatted date string or empty string if invalid
- */
-export function formatDateSafely(
+/** Safely formats a date string with fallback handling. */
+export const formatDateSafely = (
   date: string | Date | null | undefined,
   options?: Intl.DateTimeFormatOptions
-): string {
+): string => {
   // Handle null, undefined, or empty string
   if (!date) {
     return "";
@@ -30,4 +24,4 @@ export function formatDateSafely(
     // Return empty string for any formatting errors
     return "";
   }
-}
+};

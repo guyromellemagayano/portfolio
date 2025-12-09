@@ -42,7 +42,7 @@
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
-    "test": "vitest",
+    "test": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",

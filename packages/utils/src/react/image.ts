@@ -1,19 +1,11 @@
-// ============================================================================
-// REACT FRAMEWORK IMAGE UTILITIES
-// ============================================================================
-
 /**
- * Validates if an image source is valid and usable.
- *
- * Handles both string URLs and StaticImageData objects (imported images).
- * Useful for preventing broken images and ensuring proper image rendering.
- *
- * @param src - The image source to validate
- * @returns `true` if src is valid, `false` otherwise
+ * Validates if an image source is valid and usable. Handles both string URLs \
+ * and `StaticImageData` objects (imported images). Useful for preventing broken \
+ * images and ensuring proper image rendering.
  */
-export function isValidImageSrc(
+export const isValidImageSrc = (
   src?: string | { src: string } | { default: { src: string } }
-): boolean {
+): boolean => {
   if (!src) return false;
 
   // Handle `StaticImageData` (imported images) with `src` property
@@ -65,4 +57,4 @@ export function isValidImageSrc(
   }
 
   return false;
-}
+};

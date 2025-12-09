@@ -13,7 +13,9 @@ describe("setDisplayName", () => {
       return null;
     }
     const wrapped = setDisplayName(MyComponent);
-    expect(wrapped.displayName).toBe("MyComponent");
+    expect(
+      (wrapped as typeof MyComponent & { displayName: string }).displayName
+    ).toBe("MyComponent");
   });
 
   it("should use custom displayName if provided", () => {
@@ -21,7 +23,9 @@ describe("setDisplayName", () => {
       return null;
     }
     const wrapped = setDisplayName(MyComponent, "CustomName");
-    expect(wrapped.displayName).toBe("CustomName");
+    expect(
+      (wrapped as typeof MyComponent & { displayName: string }).displayName
+    ).toBe("CustomName");
   });
 
   it("should handle React.memo components correctly (The Issue)", () => {
@@ -32,11 +36,15 @@ describe("setDisplayName", () => {
     const wrapped = setDisplayName(Memoized);
 
     // We expect it to find the inner name "MyMemoComponent"
-    expect(wrapped.displayName).toBe("MyMemoComponent");
+    expect(
+      (wrapped as typeof Memoized & { displayName: string }).displayName
+    ).toBe("MyMemoComponent");
   });
 
   it("should handle components with no name", () => {
     const wrapped = setDisplayName(() => null);
-    expect(wrapped.displayName).toBe("Component");
+    expect((wrapped as unknown as { displayName: string }).displayName).toBe(
+      "Component"
+    );
   });
 });

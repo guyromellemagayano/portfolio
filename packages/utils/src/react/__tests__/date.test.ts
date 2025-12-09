@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDateSafely } from "./date";
+import { formatDateSafely } from "../date";
 
 describe("formatDateSafely", () => {
   it("formats a valid date string", () => {
