@@ -120,7 +120,9 @@ describe("PhotoGallery (Integration)", () => {
     );
     expect(photoItems).toHaveLength(mockPhotos.length);
 
-    const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+    const images = screen.getAllByTestId(
+      /test-id-photo-gallery-image-\d+-root/
+    );
     expect(images).toHaveLength(mockPhotos.length);
 
     mockPhotos.forEach((photo, index) => {
@@ -139,7 +141,9 @@ describe("PhotoGallery (Integration)", () => {
     configs.forEach(({ photos, expectedCount }) => {
       const { unmount } = render(<PhotoGallery photos={photos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(expectedCount);
 
       unmount();
@@ -156,7 +160,9 @@ describe("PhotoGallery (Integration)", () => {
     expect(grid).toBeInTheDocument();
 
     // Default photos should render (5 photos from mock)
-    const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+    const images = screen.getAllByTestId(
+      /test-id-photo-gallery-image-\d+-root/
+    );
     expect(images.length).toBeGreaterThan(0);
   });
 
@@ -166,7 +172,9 @@ describe("PhotoGallery (Integration)", () => {
     const layout = screen.getByTestId("test-id-photo-gallery-root");
     expect(layout.tagName).toBe("SECTION");
 
-    const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+    const images = screen.getAllByTestId(
+      /test-id-photo-gallery-image-\d+-root/
+    );
     expect(images).toHaveLength(mockPhotos.length);
   });
 
@@ -202,4 +210,3 @@ describe("PhotoGallery (Integration)", () => {
     expect(photoItems).toHaveLength(mockPhotos.length);
   });
 });
-

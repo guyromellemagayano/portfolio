@@ -160,7 +160,7 @@ describe("Container Integration Tests", () => {
       const { container } = render(<Container>{null}</Container>);
 
       // Container should return null when no children are provided
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles mixed valid and invalid content", () => {
@@ -241,13 +241,13 @@ describe("Container Integration Tests", () => {
       const { container } = render(<Container />);
 
       // Container component returns null when no children are provided
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles Container with only whitespace children", () => {
       const { container } = render(<Container>{""}</Container>);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles large content efficiently", () => {
@@ -283,7 +283,7 @@ describe("Container Integration Tests", () => {
     it("handles empty children efficiently", () => {
       const { container } = render(<Container>{null}</Container>);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
