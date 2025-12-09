@@ -5,19 +5,7 @@
   "description": "Shared TypeScript configuration",
   "license": "MIT",
   "type": "module",
-  "scripts": {
-    "clean": "rimraf node_modules .turbo dist",
-    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx,json}\"",
-    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx,json}\"",
-    "test": "echo 'No tests configured for typescript config package'",
-    "test:coverage": "echo 'No tests configured for typescript config package'",
-    "test:run": "echo 'No tests configured for typescript config package'",
-    "test:run:coverage": "echo 'No tests configured for typescript config package'",
-    "test:ui": "echo 'No tests configured for typescript config package'"
-  },
-  "devDependencies": {
-    "prettier": "catalog:",
-    "rimraf": "catalog:",
-    "typescript": "catalog:"
+  "publishConfig": {
+    "access": "public"
   }
 }
