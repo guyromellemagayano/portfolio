@@ -5,7 +5,7 @@ import { log } from ".";
 // Spy on console.info since the enhanced logger uses info level
 vi.spyOn(global.console, "info");
 
-describe("@packages/logger", () => {
+describe("@guyromellemagayano/logger", () => {
   it("prints a message using enhanced logger", () => {
     log("hello");
 
