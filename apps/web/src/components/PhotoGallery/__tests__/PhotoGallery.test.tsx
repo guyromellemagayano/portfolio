@@ -167,7 +167,7 @@ describe("PhotoGallery", () => {
       expect(layout.tagName).toBe("SECTION");
     });
 
-    it('supports custom role on section', () => {
+    it("supports custom role on section", () => {
       render(
         <PhotoGallery photos={mockPhotos as any} as="section" role="article" />
       );
@@ -215,7 +215,9 @@ describe("PhotoGallery", () => {
     it("renders images with correct attributes", () => {
       render(<PhotoGallery photos={mockPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(mockPhotos.length);
 
       images.forEach((image, index) => {
@@ -236,7 +238,9 @@ describe("PhotoGallery", () => {
       const singlePhoto = [mockPhotos[0]!];
       render(<PhotoGallery photos={singlePhoto as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(1);
       expect(images[0]).toHaveAttribute("src", singlePhoto[0]!.src);
     });
@@ -244,7 +248,9 @@ describe("PhotoGallery", () => {
     it("renders multiple photos correctly", () => {
       render(<PhotoGallery photos={mockPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(mockPhotos.length);
 
       mockPhotos.forEach((photo, index) => {
@@ -289,7 +295,7 @@ describe("PhotoGallery", () => {
     it("returns null when photos is null", () => {
       const { container } = render(<PhotoGallery photos={null as any} />);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("uses default photos when photos is undefined", () => {
@@ -311,17 +317,23 @@ describe("PhotoGallery", () => {
     it("MemoizedPhotoGallery renders children", () => {
       render(<MemoizedPhotoGallery photos={mockPhotos as any} />);
 
-      expect(screen.getByTestId("test-id-photo-gallery-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-photo-gallery-root")
+      ).toBeInTheDocument();
     });
 
     it("MemoizedPhotoGallery maintains content across re-renders with same props", () => {
       const { rerender } = render(
         <MemoizedPhotoGallery photos={mockPhotos as any} />
       );
-      expect(screen.getByTestId("test-id-photo-gallery-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-photo-gallery-root")
+      ).toBeInTheDocument();
 
       rerender(<MemoizedPhotoGallery photos={mockPhotos as any} />);
-      expect(screen.getByTestId("test-id-photo-gallery-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-photo-gallery-root")
+      ).toBeInTheDocument();
     });
   });
 
@@ -335,7 +347,9 @@ describe("PhotoGallery", () => {
 
       render(<PhotoGallery photos={mixedPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(mixedPhotos.length);
 
       mixedPhotos.forEach((photo, index) => {
@@ -352,7 +366,9 @@ describe("PhotoGallery", () => {
 
       render(<PhotoGallery photos={variedPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(variedPhotos.length);
     });
 
@@ -365,7 +381,9 @@ describe("PhotoGallery", () => {
 
       render(<PhotoGallery photos={manyPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(20);
     });
 
@@ -378,7 +396,9 @@ describe("PhotoGallery", () => {
 
       render(<PhotoGallery photos={specialPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(specialPhotos.length);
 
       specialPhotos.forEach((photo, index) => {
@@ -500,7 +520,9 @@ describe("PhotoGallery", () => {
     it("applies correct attributes to image elements", () => {
       render(<PhotoGallery photos={mockPhotos as any} debugId="aria-test" />);
 
-      const images = screen.getAllByTestId(/aria-test-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /aria-test-photo-gallery-image-\d+-root/
+      );
       expect(images).toHaveLength(mockPhotos.length);
 
       images.forEach((image, index) => {
@@ -533,7 +555,9 @@ describe("PhotoGallery", () => {
         <PhotoGallery photos={mockPhotos as any} debugId="update-test" />
       );
 
-      const initialLayout = screen.getByTestId("update-test-photo-gallery-root");
+      const initialLayout = screen.getByTestId(
+        "update-test-photo-gallery-root"
+      );
       expect(initialLayout).toBeInTheDocument();
 
       const newPhotos = mockPhotos[0] ? [mockPhotos[0]] : [];
@@ -541,7 +565,9 @@ describe("PhotoGallery", () => {
         <PhotoGallery photos={newPhotos as any} debugId="update-test" />
       );
 
-      const updatedLayout = screen.getByTestId("update-test-photo-gallery-root");
+      const updatedLayout = screen.getByTestId(
+        "update-test-photo-gallery-root"
+      );
       expect(updatedLayout).toBeInTheDocument();
     });
 
@@ -558,7 +584,9 @@ describe("PhotoGallery", () => {
     it("renders images with empty alt text for decorative purposes", () => {
       render(<PhotoGallery photos={mockPhotos as any} />);
 
-      const images = screen.getAllByTestId(/test-id-photo-gallery-image-\d+-root/);
+      const images = screen.getAllByTestId(
+        /test-id-photo-gallery-image-\d+-root/
+      );
       images.forEach((image) => {
         expect(image).toHaveAttribute("alt", "");
       });

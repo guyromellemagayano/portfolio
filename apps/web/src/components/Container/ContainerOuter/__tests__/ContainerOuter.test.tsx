@@ -72,24 +72,24 @@ describe("ContainerOuter", () => {
 
     it("does not render if children is null", () => {
       const { container } = render(<ContainerOuter>{null}</ContainerOuter>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render if children is undefined", () => {
       const { container } = render(
         <ContainerOuter>{undefined}</ContainerOuter>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render if children is false", () => {
       const { container } = render(<ContainerOuter>{false}</ContainerOuter>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render with empty string children", () => {
       const { container } = render(<ContainerOuter>{""}</ContainerOuter>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 

@@ -270,7 +270,7 @@ describe("Card Integration Tests", () => {
       const { container } = render(<Card />);
 
       // Card component returns null when no children are provided
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles Card with only whitespace children", () => {

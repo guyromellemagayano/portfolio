@@ -267,7 +267,7 @@ describe("SimpleLayout", () => {
       const { container } = render(<SimpleLayout title="" intro="" />);
 
       // Component always renders the skip link, even when no content
-      expect(container.firstChild).not.toBeNull();
+      expect(container).not.toBeEmptyDOMElement();
       expect(screen.getByText("Skip to main content")).toBeInTheDocument();
     });
 

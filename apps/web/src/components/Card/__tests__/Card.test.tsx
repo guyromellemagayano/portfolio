@@ -242,12 +242,12 @@ describe("Card", () => {
   describe("Content Validation", () => {
     it("does not render when no content", () => {
       const { container } = render(<Card>{null}</Card>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined/empty children", () => {
       const { container } = render(<Card>{undefined}</Card>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -368,17 +368,17 @@ describe("Card", () => {
 
     it("handles empty string children", () => {
       const { container } = render(<Card>{""}</Card>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles false children", () => {
       const { container } = render(<Card>{false}</Card>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles zero children", () => {
       const { container } = render(<Card>{0}</Card>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles mixed valid and invalid children", () => {
@@ -517,7 +517,7 @@ describe("Card", () => {
       const { container } = render(<Card debugId="aria-test">{null}</Card>);
 
       // Component should not render when no content
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("maintains ARIA attributes with additional HTML attributes", () => {
@@ -809,17 +809,17 @@ describe("Card.Cta", () => {
   describe("Content Validation", () => {
     it("does not render when no children", () => {
       const { container } = render(<Card.Cta />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined children", () => {
       const { container } = render(<Card.Cta>{null}</Card.Cta>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles empty string children", () => {
       const { container } = render(<Card.Cta>{""}</Card.Cta>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders with valid children", () => {
@@ -990,7 +990,7 @@ describe("Card.Cta", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Cta>{0}</Card.Cta>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -1113,7 +1113,11 @@ describe("Card.Cta", () => {
     it("forwards ref correctly for span element", () => {
       const ref = React.createRef<HTMLSpanElement>();
       render(
-        (<Card.Cta as="span" ref={ref}>Call to action</Card.Cta>) as any
+        (
+          <Card.Cta as="span" ref={ref}>
+            Call to action
+          </Card.Cta>
+        ) as any
       );
 
       expect(ref.current).toBeInTheDocument();
@@ -1165,17 +1169,17 @@ describe("Card.Description", () => {
   describe("Content Validation", () => {
     it("does not render when no children", () => {
       const { container } = render(<Card.Description />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined children", () => {
       const { container } = render(<Card.Description>{null}</Card.Description>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles empty string children", () => {
       const { container } = render(<Card.Description>{""}</Card.Description>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles boolean children", () => {
@@ -1187,7 +1191,7 @@ describe("Card.Description", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Description>{0}</Card.Description>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders with valid children", () => {
@@ -1480,17 +1484,17 @@ describe("Card.Eyebrow", () => {
   describe("Content Validation", () => {
     it("does not render when no children", () => {
       const { container } = render(<Card.Eyebrow />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined children", () => {
       const { container } = render(<Card.Eyebrow>{null}</Card.Eyebrow>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles empty string children", () => {
       const { container } = render(<Card.Eyebrow>{""}</Card.Eyebrow>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles boolean children", () => {
@@ -1504,7 +1508,7 @@ describe("Card.Eyebrow", () => {
     it("handles number children", () => {
       const { container } = render(<Card.Eyebrow>{0}</Card.Eyebrow>);
       // Component returns null for falsy children like 0
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -1897,7 +1901,11 @@ describe("Card.Link", () => {
 
     it("renders as custom element when as prop is provided", () => {
       render(
-        (<Card.Link as="section" href="/test">Link content</Card.Link>) as any
+        (
+          <Card.Link as="section" href="/test">
+            Link content
+          </Card.Link>
+        ) as any
       );
 
       const container = screen.getByTestId("test-id-card-link-root");
@@ -2089,17 +2097,17 @@ describe("Card.Link", () => {
   describe("Content Validation", () => {
     it("does not render when no children", () => {
       const { container } = render(<Card.Link href="/test" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined children", () => {
       const { container } = render(<Card.Link href="/test">{null}</Card.Link>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles empty string children", () => {
       const { container } = render(<Card.Link href="/test">{""}</Card.Link>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles boolean children", () => {
@@ -2111,7 +2119,7 @@ describe("Card.Link", () => {
     it("handles number children", () => {
       const { container } = render(<Card.Link href="/test">{0}</Card.Link>);
       // Component returns null for falsy children like 0
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -2294,7 +2302,11 @@ describe("Card.Link", () => {
 
     it("renders as span when as prop is span", () => {
       render(
-        (<Card.Link as="span" href="/test">Link content</Card.Link>) as any
+        (
+          <Card.Link as="span" href="/test">
+            Link content
+          </Card.Link>
+        ) as any
       );
 
       const container = screen.getByTestId("test-id-card-link-root");
@@ -2303,7 +2315,11 @@ describe("Card.Link", () => {
 
     it("renders as article when as prop is article", () => {
       render(
-        (<Card.Link as="article" href="/test">Link content</Card.Link>) as any
+        (
+          <Card.Link as="article" href="/test">
+            Link content
+          </Card.Link>
+        ) as any
       );
 
       const container = screen.getByTestId("test-id-card-link-root");
@@ -2362,9 +2378,11 @@ describe("Card.Link", () => {
     it("forwards ref correctly for section element", () => {
       const ref = React.createRef<HTMLElement>();
       render(
-        (<Card.Link as="section" href="/test" ref={ref}>
-          Link content
-        </Card.Link>) as any
+        (
+          <Card.Link as="section" href="/test" ref={ref}>
+            Link content
+          </Card.Link>
+        ) as any
       );
 
       expect(ref.current).toBeInTheDocument();
@@ -2460,7 +2478,11 @@ describe("Card.LinkCustom", () => {
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2470,7 +2492,11 @@ describe("Card.LinkCustom", () => {
 
     it("renders with correct href", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2530,7 +2556,11 @@ describe("Card.LinkCustom", () => {
 
     it("does not set aria-label when title is not provided", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2649,7 +2679,11 @@ describe("Card.LinkCustom", () => {
 
     it("does not apply when disabled", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link text
         </Card.LinkCustom>
       );
@@ -2662,7 +2696,11 @@ describe("Card.LinkCustom", () => {
   describe("Component Structure", () => {
     it("renders as anchor element", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2673,7 +2711,11 @@ describe("Card.LinkCustom", () => {
 
     it("applies correct CSS classes", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2702,7 +2744,11 @@ describe("Card.LinkCustom", () => {
   describe("Component ID", () => {
     it("renders with custom debugId", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="custom-id" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="custom-id"
+          debugMode={false}
+        >
           Link text
         </Card.LinkCustom>
       );
@@ -2746,7 +2792,11 @@ describe("Card.LinkCustom", () => {
   describe("Memoization", () => {
     it("Card.LinkCustom renders without memoization by default", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Default content
         </Card.LinkCustom>
       );
@@ -2797,7 +2847,11 @@ describe("Card.LinkCustom", () => {
 
     it("Card.LinkCustom creates new elements on re-render (no memoization)", () => {
       const { rerender } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Non-memoized content
         </Card.LinkCustom>
       );
@@ -2806,7 +2860,11 @@ describe("Card.LinkCustom", () => {
 
       // Re-render with same props
       rerender(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Non-memoized content
         </Card.LinkCustom>
       );
@@ -2845,7 +2903,11 @@ describe("Card.LinkCustom", () => {
 
     it("both Card.LinkCustom and Card.MemoizedLinkCustom render with same props", () => {
       const { rerender } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2909,7 +2971,11 @@ describe("Card.LinkCustom", () => {
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           <span>Complex</span> <strong>content</strong>
         </Card.LinkCustom>
       );
@@ -2920,7 +2986,11 @@ describe("Card.LinkCustom", () => {
 
     it("handles special characters", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           Special chars: &lt;&gt;&amp;
         </Card.LinkCustom>
       );
@@ -2933,37 +3003,53 @@ describe("Card.LinkCustom", () => {
 
     it("does not render when children are empty", () => {
       const { container } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           {""}
         </Card.LinkCustom>
       );
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when children are null", () => {
       const { container } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           {null}
         </Card.LinkCustom>
       );
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when children are undefined", () => {
       const { container } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           {undefined}
         </Card.LinkCustom>
       );
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles boolean children", () => {
       render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           {true}
         </Card.LinkCustom>
       );
@@ -2976,13 +3062,17 @@ describe("Card.LinkCustom", () => {
 
     it("handles number children", () => {
       const { container } = render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={false}>
+        <Card.LinkCustom
+          href="/test-link"
+          debugId="test-link"
+          debugMode={false}
+        >
           {0}
         </Card.LinkCustom>
       );
 
       // Component returns null for falsy children like 0
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles multiple props together", () => {
@@ -3020,11 +3110,7 @@ describe("Card.LinkCustom", () => {
   describe("useComponentId Integration", () => {
     it("calls useComponentId with correct parameters", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="custom-id"
-          debugMode={true}
-        >
+        <Card.LinkCustom href="/test-link" debugId="custom-id" debugMode={true}>
           Link content
         </Card.LinkCustom>
       );
@@ -3060,7 +3146,9 @@ describe("Card.LinkCustom", () => {
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByTestId("generated-id-card-link-custom-root");
+      const linkElement = screen.getByTestId(
+        "generated-id-card-link-custom-root"
+      );
       expect(linkElement).toHaveAttribute(
         "data-testid",
         "generated-id-card-link-custom-root"
@@ -3142,17 +3230,17 @@ describe("Card.Title", () => {
   describe("Content Validation", () => {
     it("does not render when no children", () => {
       const { container } = render(<Card.Title href="#" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined children", () => {
       const { container } = render(<Card.Title href="#">{null}</Card.Title>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when only href is provided without children", () => {
       const { container } = render(<Card.Title href="/test" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders children without link when href is invalid", () => {
@@ -3232,7 +3320,10 @@ describe("Card.Title", () => {
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("data-testid", "test-id-card-title-root");
+      expect(titleElement).toHaveAttribute(
+        "data-testid",
+        "test-id-card-title-root"
+      );
     });
   });
 
@@ -3263,7 +3354,11 @@ describe("Card.Title", () => {
   describe("Polymorphic Rendering", () => {
     it("renders as h1 when as prop is h1", () => {
       render(
-        (<Card.Title as="h1" href="#">Card title</Card.Title>) as any
+        (
+          <Card.Title as="h1" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3272,7 +3367,11 @@ describe("Card.Title", () => {
 
     it("renders as div when as prop is div", () => {
       render(
-        (<Card.Title as="div" href="#">Card title</Card.Title>) as any
+        (
+          <Card.Title as="div" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3281,7 +3380,11 @@ describe("Card.Title", () => {
 
     it("renders as button when as prop is button", () => {
       render(
-        (<Card.Title as="button" href="#">Card title</Card.Title>) as any
+        (
+          <Card.Title as="button" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3290,7 +3393,11 @@ describe("Card.Title", () => {
 
     it("renders as span when as prop is span", () => {
       render(
-        (<Card.Title as="span" href="#">Card title</Card.Title>) as any
+        (
+          <Card.Title as="span" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3299,15 +3406,17 @@ describe("Card.Title", () => {
 
     it("passes through element-specific props", () => {
       render(
-        (<Card.Title
-          as="div"
-          role="button"
-          tabIndex={0}
-          onClick={() => {}}
-          href="#"
-        >
-          Card title
-        </Card.Title>) as any
+        (
+          <Card.Title
+            as="div"
+            role="button"
+            tabIndex={0}
+            onClick={() => {}}
+            href="#"
+          >
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3318,9 +3427,11 @@ describe("Card.Title", () => {
     it("passes through event handlers", () => {
       const handleClick = vi.fn();
       render(
-        (<Card.Title as="div" onClick={handleClick} href="#">
-          Card title
-        </Card.Title>) as any
+        (
+          <Card.Title as="div" onClick={handleClick} href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3342,14 +3453,16 @@ describe("Card.Title", () => {
 
     it("applies correct ARIA relationships between elements", () => {
       render(
-        (<Card.Title
-          as="article"
-          aria-labelledby="title-id"
-          aria-describedby="desc-id"
-          href="#"
-        >
-          Card title
-        </Card.Title>) as any
+        (
+          <Card.Title
+            as="article"
+            aria-labelledby="title-id"
+            aria-describedby="desc-id"
+            href="#"
+          >
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3359,9 +3472,11 @@ describe("Card.Title", () => {
 
     it("applies unique IDs for ARIA relationships", () => {
       render(
-        (<Card.Title as="h1" id="title-id" href="#">
-          Card title
-        </Card.Title>) as any
+        (
+          <Card.Title as="h1" id="title-id" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3370,9 +3485,11 @@ describe("Card.Title", () => {
 
     it("applies correct ARIA labels to content elements", () => {
       render(
-        (<Card.Title as="div" aria-label="Clickable card title" href="#">
-          Card title
-        </Card.Title>) as any
+        (
+          <Card.Title as="div" aria-label="Clickable card title" href="#">
+            Card title
+          </Card.Title>
+        ) as any
       );
 
       const titleElement = screen.getByTestId("test-id-card-title-root");
@@ -3384,7 +3501,7 @@ describe("Card.Title", () => {
 
     it("handles ARIA attributes when content is missing", () => {
       const { container } = render(<Card.Title href="#" />);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
