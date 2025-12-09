@@ -64,28 +64,23 @@ vi.mock("@guyromellemagayano/utils", () => ({
 }));
 
 const mockCardComponent = vi.hoisted(() => {
-  function Card(props: any = {}) {
+  const Card = function (props: any = {}) {
     // Extract 'as' from props - ArticleListItem sets as="article" after spreading rest
     // so props.as should be "article" (the final value)
-    const {
-      as: As,
-      children,
-      debugId,
-      debugMode,
-      ...rest
-    } = props || {};
+    const { as: As, children, debugId, debugMode, ...rest } = props || {};
     // Use the same mock logic as the main useComponentId mock
     const componentId = debugId || "test-id";
     const isDebugMode = debugMode || false;
     // Remove 'as' from rest to prevent it from being rendered as an attribute
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     const { as: _, ...restWithoutAs } = rest;
     // Use props.as directly (this is the final value after all spreads and overrides)
     // If it's "li" (from ListItem wrapper), ignore it and use "article" default
     // Otherwise use the explicit value
-    const ElementType = (props?.as && typeof props.as === "string" && props.as !== "li") 
-                        ? props.as 
-                        : "article";
+    const ElementType =
+      props?.as && typeof props.as === "string" && props.as !== "li"
+        ? props.as
+        : "article";
     // Remove 'as' from restWithoutAs to prevent it from being rendered as an attribute
     const { as: __, ...finalRest } = restWithoutAs;
     return (
@@ -98,32 +93,32 @@ const mockCardComponent = vi.hoisted(() => {
         {children}
       </ElementType>
     );
-  }
+  };
 
   // Attach sub-components and properties to Card function
   Card.displayName = "CardMock";
-  
-  function CardTitle({ as: As = "h3", children, ...rest }: any) {
+
+  const CardTitle = function ({ as: As = "h3", children, ...rest }: any) {
     return <As {...rest}>{children}</As>;
-  }
+  };
   CardTitle.displayName = "CardTitleMock";
   Card.Title = CardTitle;
 
-  function CardEyebrow({ as: As = "time", children, ...rest }: any) {
+  const CardEyebrow = function ({ as: As = "time", children, ...rest }: any) {
     return <As {...rest}>{children}</As>;
-  }
+  };
   CardEyebrow.displayName = "CardEyebrowMock";
   Card.Eyebrow = CardEyebrow;
 
-  function CardDescription({ as: As = "p", children, ...rest }: any) {
+  const CardDescription = function ({ as: As = "p", children, ...rest }: any) {
     return <As {...rest}>{children}</As>;
-  }
+  };
   CardDescription.displayName = "CardDescriptionMock";
   Card.Description = CardDescription;
 
-  function CardCta({ as: As = "div", children, ...rest }: any) {
+  const CardCta = function ({ as: As = "div", children, ...rest }: any) {
     return <As {...rest}>{children}</As>;
-  }
+  };
   CardCta.displayName = "CardCtaMock";
   Card.Cta = CardCta;
 
@@ -325,7 +320,10 @@ describe("ListItem", () => {
         render(ArticleItem as any);
         const articleElement = screen.getByLabelText("Hello World");
         expect(articleElement).toHaveAttribute("class");
-        expect(articleElement).toHaveClass("custom-article-class", "md:col-span-3");
+        expect(articleElement).toHaveClass(
+          "custom-article-class",
+          "md:col-span-3"
+        );
       });
 
       it("returns null when article fields missing", () => {
@@ -493,7 +491,9 @@ describe("ListItem", () => {
           <span>Item</span>
         </ListItem>
       );
-      expect(screen.getByTestId("custom-id-list-item-default-root")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("custom-id-list-item-default-root")
+      ).toBeInTheDocument();
     });
   });
 
