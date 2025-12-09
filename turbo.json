@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
+  "concurrency": "12",
   "remoteCache": {
     "enabled": true,
     "signature": true
@@ -35,18 +36,6 @@
     "NPM_TOKEN",
     "PAPERTRAIL_HOST",
     "PAPERTRAIL_PORT",
-    "SANITY_API_DATASET",
-    "SANITY_API_PROJECT_ID",
-    "SANITY_API_READ_TOKEN",
-    "SANITY_API_WRITE_TOKEN",
-    "SANITY_DEPLOY_TOKEN",
-    "SANITY_STUDIO_DATASET",
-    "SANITY_STUDIO_PRESENTATION_URL",
-    "SANITY_STUDIO_PREVIEW_URL",
-    "SANITY_STUDIO_PROJECT_ID",
-    "SANITY_STUDIO_STEGA_ENABLED",
-    "SANITY_STUDIO_TITLE",
-    "SANITY_STUDIO_URL",
     "SENTRY_AUTH_TOKEN",
     "SENTRY_ORG",
     "SENTRY_PROJECT",
@@ -68,12 +57,9 @@
         ".env*"
       ],
       "outputs": [
-        "build/**",
         "dist/**",
         ".next/**",
-        "!.next/cache/**",
-        ".vercel/**",
-        ".sanity/**"
+        "!.next/cache/**"
       ]
     },
     "test": {
