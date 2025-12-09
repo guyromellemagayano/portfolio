@@ -3,8 +3,8 @@ import React from "react";
 import { renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { useComponentId } from "../useComponentId";
 import { setDisplayName } from "../utils";
-import { useComponentId } from "./useComponentId";
 
 describe("useComponentId", () => {
   it("generates unique IDs when no options provided", () => {
