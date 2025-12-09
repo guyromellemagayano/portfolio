@@ -29,8 +29,8 @@
     "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
+    "@guyromellemagayano/config-eslint": "workspace:*",
+    "@guyromellemagayano/config-typescript": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

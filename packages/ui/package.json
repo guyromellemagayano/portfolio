@@ -21,30 +21,36 @@
   },
   "license": "MIT",
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
-  "sideEffects": false,
+  "sideEffects": true,
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
     }
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/es/index.js",
+  "module": "./dist/es/index.js",
+  "types": "./dist/es/index.d.ts",
   "files": [
     "dist/**"
   ],
   "scripts": {
-    "build": "tsdown --minify",
+    "build": "bunchee",
     "build-storybook": "storybook build",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "tsdown --watch",
-    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
-    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
-    "lint": "eslint src/",
-    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "storybook": "storybook dev -p 6006",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
@@ -57,11 +63,10 @@
     "@guyromellemagayano/logger": "workspace:*"
   },
   "devDependencies": {
-    "@packages/eslint-config": "workspace:*",
-    "@packages/typescript-config": "workspace:*",
-    "@packages/vitest-presets": "workspace:*"
-  },
-  "peerDependencies": {
+    "@guyromellemagayano/config-eslint": "workspace:*",
+    "@guyromellemagayano/config-typescript": "workspace:*",
+    "@guyromellemagayano/utils": "workspace:*",
+    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
@@ -69,16 +74,18 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "bunchee": "catalog:",
     "eslint": "catalog:",
     "nodemon": "catalog:",
     "prettier": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "rimraf": "catalog:",
-    "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "publishConfig": {
     "access": "restricted",
