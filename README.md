@@ -39,7 +39,7 @@ pnpm test:coverage
   - `ui` - Base UI components
   - `logger` - Logging utilities
   - `vitest-presets` - Shared Vitest configurations with V8 coverage
-  - Config packages: `eslint-config`, `typescript-config`
+  - Config packages: `config-eslint`, `config-typescript`
 
 ## 🧪 Testing & Coverage
 
@@ -212,7 +212,7 @@ Optimized task configuration in `turbo.json`:
 2. **Maintain coverage** above thresholds (Node: 85%, React: 80%)
 3. **Use appropriate preset**: Node for utilities, React for components
 4. **Run coverage** before submitting PRs: `pnpm test:coverage`
-5. **Leverage shared presets** from `@packages/vitest-presets`
+5. **Leverage shared presets** from `@guyromellemagayano/vitest-presets`
 
 ## 🚀 Deployment
 
