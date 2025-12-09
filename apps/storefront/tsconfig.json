@@ -1,5 +1,5 @@
 {
-  "extends": "@packages/typescript-config/src/nextjs.json",
+  "extends": "@guyromellemagayano/config-typescript/src/nextjs.json",
   "compilerOptions": {
     "outDir": "dist",
     "plugins": [
@@ -17,6 +17,8 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist",
+    "**/dist/**"
   ]
 }
