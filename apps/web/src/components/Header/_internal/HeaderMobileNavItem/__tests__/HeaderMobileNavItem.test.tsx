@@ -228,21 +228,21 @@ describe("HeaderMobileNavItem", () => {
       const { container } = render(
         <HeaderMobileNavItem href="">{null}</HeaderMobileNavItem>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when children is undefined and href is not meaningful", () => {
       const { container } = render(
         <HeaderMobileNavItem href="">{undefined}</HeaderMobileNavItem>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when children is empty string and href is not meaningful", () => {
       const { container } = render(
         <HeaderMobileNavItem href="">{""}</HeaderMobileNavItem>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders when children has meaningful content", () => {

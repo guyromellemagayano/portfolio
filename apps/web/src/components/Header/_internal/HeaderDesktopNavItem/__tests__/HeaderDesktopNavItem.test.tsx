@@ -310,7 +310,7 @@ describe("HeaderDesktopNavItem", () => {
       const { container } = render(
         <HeaderDesktopNavItem href="/about">{null}</HeaderDesktopNavItem>
       );
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 

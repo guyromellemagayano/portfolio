@@ -64,7 +64,9 @@ describe("Icon", () => {
 
     it("renders icon with name prop correctly", () => {
       const { container } = render(<Icon name="x" />);
-      const icon = container.querySelector('[data-icon-x-id="test-id-icon-x-root"]');
+      const icon = container.querySelector(
+        '[data-icon-x-id="test-id-icon-x-root"]'
+      );
       expect(icon).toBeInTheDocument();
       expect(icon?.tagName).toBe("svg");
     });

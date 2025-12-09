@@ -79,7 +79,11 @@ const BaseArticleLayout: ArticleLayoutComponent = setDisplayName(
               isDebugMode
             )}
           >
-            <Button.ArticleNav debugMode={debugMode} debugId={debugId} />
+            <Button
+              variant="article-nav"
+              debugMode={debugMode}
+              debugId={debugId}
+            />
 
             {article ? (
               <article

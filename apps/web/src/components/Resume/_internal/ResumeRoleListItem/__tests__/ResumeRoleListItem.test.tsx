@@ -404,7 +404,7 @@ describe("ResumeRoleListItem", () => {
       );
       expect(image).toHaveAttribute("src", "/logos/planetaria.svg");
       expect(image).toHaveAttribute("alt", "Planetaria");
-      expect(image).toHaveAttribute("class", "h-7 w-7");
+      expect(image).toHaveClass("h-7 w-7", { exact: true });
     });
   });
 

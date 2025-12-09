@@ -143,7 +143,7 @@ describe("ResumeTitle", () => {
 
       const icon = screen.getByTestId("briefcase-icon");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("class", "h-6 w-6 flex-none");
+      expect(icon).toHaveClass("h-6 w-6 flex-none", { exact: true });
     });
 
     it("renders work text", () => {
@@ -316,7 +316,7 @@ describe("ResumeTitle", () => {
       render(<ResumeTitle />);
 
       const icon = screen.getByTestId("briefcase-icon");
-      expect(icon).toHaveAttribute("class", "h-6 w-6 flex-none");
+      expect(icon).toHaveClass("h-6 w-6 flex-none", { exact: true });
     });
 
     it("passes correct props to Icon.Briefcase", () => {
@@ -408,7 +408,7 @@ describe("ResumeTitle", () => {
       // Test icon
       const icon = screen.getByTestId("briefcase-icon");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("class", "h-6 w-6 flex-none");
+      expect(icon).toHaveClass("h-6 w-6 flex-none", { exact: true });
       expect(icon).toHaveAttribute("data-icon-id", "title-test");
       expect(icon).toHaveAttribute("data-debug-mode", "true");
 

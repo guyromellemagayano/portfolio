@@ -1,5 +1,3 @@
-import React from "react";
-
 import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -305,7 +303,9 @@ describe("Icon Integration Tests", () => {
 
       const xIcon = container.querySelector("[data-icon-x-id]");
       const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector("[data-icon-arrow-down-id]");
+      const arrowDownIcon = container.querySelector(
+        "[data-icon-arrow-down-id]"
+      );
       const closeIcon = container.querySelector("[data-icon-close-id]");
 
       const icons = [xIcon, instagramIcon, arrowDownIcon, closeIcon];
@@ -328,7 +328,9 @@ describe("Icon Integration Tests", () => {
 
       const xIcon = container.querySelector("[data-icon-x-id]");
       const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector("[data-icon-arrow-down-id]");
+      const arrowDownIcon = container.querySelector(
+        "[data-icon-arrow-down-id]"
+      );
       const closeIcon = container.querySelector("[data-icon-close-id]");
 
       expect(xIcon).toHaveAttribute("data-icon-x-id");
@@ -351,7 +353,9 @@ describe("Icon Integration Tests", () => {
 
       const xIcon = container.querySelector("[data-icon-x-id]");
       const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector("[data-icon-arrow-down-id]");
+      const arrowDownIcon = container.querySelector(
+        "[data-icon-arrow-down-id]"
+      );
       const closeIcon = container.querySelector("[data-icon-close-id]");
       const linkIcon = container.querySelector("[data-icon-link-id]");
       const mailIcon = container.querySelector("[data-icon-mail-id]");

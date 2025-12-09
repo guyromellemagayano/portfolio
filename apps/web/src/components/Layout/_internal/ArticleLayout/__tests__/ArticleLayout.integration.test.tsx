@@ -402,7 +402,7 @@ describe("ArticleLayout Integration Tests", () => {
       );
 
       // Component should not render when article is null
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles empty article data gracefully", () => {
