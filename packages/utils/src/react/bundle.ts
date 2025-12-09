@@ -1,45 +1,40 @@
-// ============================================================================
-// REACT FRAMEWORK BUNDLE INFORMATION
-// ============================================================================
-
 import { logger } from "@guyromellemagayano/logger";
 
 // ============================================================================
 // BUNDLE INFORMATION
 // ============================================================================
 
-interface BundleSizeInfo {
+type BundleSizeInfo = {
   name: string;
   size: number;
   gzipSize: number;
   isTreeShakeable: boolean;
-}
+};
 
 /** Get bundle size information for a module. */
-export function getBundleSize(moduleName: string): BundleSizeInfo {
-  return {
-    name: moduleName,
-    size: 0,
-    gzipSize: 0,
-    isTreeShakeable: true,
-  };
-}
+export const getBundleSize = (moduleName: string): BundleSizeInfo => {
+  return { name: moduleName, size: 0, gzipSize: 0, isTreeShakeable: true };
+};
 
 // ============================================================================
 // LOGGING
 // ============================================================================
 
 /** Get environment information for bundle monitoring */
-export function getEnvironmentInfo() {
+export const getEnvironmentInfo = (): {
+  isDevelopment: boolean;
+  isProduction: boolean;
+  isTest: boolean;
+} => {
   return {
     isDevelopment: globalThis?.process?.env?.NODE_ENV === "development",
     isProduction: globalThis?.process.env.NODE_ENV === "production",
     isTest: globalThis?.process.env.NODE_ENV === "test",
   };
-}
+};
 
 /** Log bundle size information for React components */
-export function logBundleSize(componentName: string): void {
+export const logBundleSize = (componentName: string): void => {
   const env = getEnvironmentInfo();
 
   if (env.isDevelopment) {
@@ -49,10 +44,10 @@ export function logBundleSize(componentName: string): void {
       bundleInfo
     );
   }
-}
+};
 
 /** Log tree shaking verification results for React components */
-export function logTreeShakingVerification(componentName: string): void {
+export const logTreeShakingVerification = (componentName: string): void => {
   const env = getEnvironmentInfo();
 
   if (env.isDevelopment) {
@@ -62,10 +57,12 @@ export function logTreeShakingVerification(componentName: string): void {
       report
     );
   }
-}
+};
 
 /** Check if React component is tree-shakeable */
-export function isReactComponentTreeShakeable(componentName: string): boolean {
+export const isReactComponentTreeShakeable = (
+  componentName: string
+): boolean => {
   const reactPatterns = [
     "React.memo",
     "React.forwardRef",
@@ -76,14 +73,14 @@ export function isReactComponentTreeShakeable(componentName: string): boolean {
   ];
 
   return reactPatterns.some((pattern) => componentName.includes(pattern));
-}
+};
 
 // ============================================================================
 // TREE SHAKING
 // ============================================================================
 
 /** Check if a component is tree-shakeable. */
-export function isTreeShakeable(componentName: string): boolean {
+export const isTreeShakeable = (componentName: string): boolean => {
   const treeShakeablePatterns = [
     "export const",
     "export function",
@@ -95,18 +92,18 @@ export function isTreeShakeable(componentName: string): boolean {
   return treeShakeablePatterns.some((pattern) =>
     componentName.includes(pattern)
   );
-}
+};
 
-interface TreeShakingReport {
+type TreeShakingReport = {
   componentName: string;
   isTreeShakeable: boolean;
   exports: string[];
   unusedExports: string[];
   bundleImpact: "low" | "medium" | "high";
-}
+};
 
 /** Verify if a component is properly tree-shakeable */
-export function verifyTreeShaking(componentName: string): TreeShakingReport {
+export const verifyTreeShaking = (componentName: string): TreeShakingReport => {
   const report: TreeShakingReport = {
     componentName,
     isTreeShakeable: true,
@@ -134,10 +131,10 @@ export function verifyTreeShaking(componentName: string): TreeShakingReport {
   }
 
   return report;
-}
+};
 
 /** Check if imports are tree-shakeable */
-export function verifyImports(imports: string[]): boolean {
+export const verifyImports = (imports: string[]): boolean => {
   const treeShakeablePatterns = [
     "import {",
     "import type {",
@@ -149,4 +146,4 @@ export function verifyImports(imports: string[]): boolean {
   return imports.every((importStatement) =>
     treeShakeablePatterns.some((pattern) => importStatement.includes(pattern))
   );
-}
+};
