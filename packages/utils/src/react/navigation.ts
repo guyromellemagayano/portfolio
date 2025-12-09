@@ -1,32 +1,22 @@
-// ============================================================================
-// REACT FRAMEWORK NAVIGATION UTILITIES
-// ============================================================================
-
-/**
- * Validates if navigation links data is valid and usable.
- *
- * @param links - The navigation links data to validate
- * @returns `true` if the links data is valid and contains items, `false` otherwise
- */
-export function hasValidNavigationLinks<
+/** Validates if navigation links data is valid and usable. */
+export const hasValidNavigationLinks = <
   T extends
     | { readonly label?: any; readonly href?: any }
     | { label?: any; href?: any },
->(links: readonly T[] | T[] | null | undefined): links is readonly T[] | T[] {
+>(
+  links: readonly T[] | T[] | null | undefined
+): links is readonly T[] | T[] => {
   return Boolean(links && Array.isArray(links) && links.length > 0);
-}
+};
 
-/**
- * Validates if a single navigation link item is valid.
- *
- * @param link - The navigation link item to validate
- * @returns `true` if the link has both label and href, `false` otherwise
- */
-export function isValidNavigationLink<
+/** Validates if a single navigation link item is valid. */
+export const isValidNavigationLink = <
   T extends
     | { readonly label?: any; readonly href?: any }
     | { label?: any; href?: any },
->(link: T): link is T & { label: string; href: string } {
+>(
+  link: T
+): link is T & { label: string; href: string } => {
   return Boolean(
     link &&
       typeof link.label === "string" &&
@@ -34,22 +24,19 @@ export function isValidNavigationLink<
       typeof link.href === "string" &&
       link.href.length > 0
   );
-}
+};
 
 /**
- * Filters navigation links to only include valid items.
- * Automatically handles readonly arrays and other array-like structures.
- *
- * @param links - The navigation links array to filter (can be readonly or mutable)
- * @returns A new array containing only valid navigation links
+ * Filters navigation links to only include valid items. Automatically handles \
+ * readonly arrays and other array-like structures.
  */
-export function filterValidNavigationLinks<
+export const filterValidNavigationLinks = <
   T extends
     | { readonly label?: any; readonly href?: any }
     | { label?: any; href?: any },
 >(
   links: readonly T[] | T[] | null | undefined
-): (T & { label: string; href: string })[] {
+): (T & { label: string; href: string })[] => {
   if (!hasValidNavigationLinks(links)) {
     return [];
   }
@@ -67,4 +54,4 @@ export function filterValidNavigationLinks<
       );
     }
   );
-}
+};

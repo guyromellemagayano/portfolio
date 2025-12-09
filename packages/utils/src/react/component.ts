@@ -1,39 +1,27 @@
-// ============================================================================
-// REACT FRAMEWORK COMPONENT INFORMATION
-// ============================================================================
-
 import React from "react";
 
 import logger from "@guyromellemagayano/logger";
 
 /**
- * Safely trims whitespace from string content.
- *
- * Handles various input types and provides a consistent string output for
- * content processing and validation.
+ * Safely trims whitespace from string content. Handles various input types \
+ * and provides a consistent string output for content processing and validation.
  */
-export function trimStringContent(content: unknown): string {
+export const trimStringContent = (content: unknown): string => {
   if (typeof content === "string") {
     return content.trim();
   }
+
   return String(content || "");
-}
+};
 
 /**
- * Sets `displayName` for React components with improved type safety.
- *
- * This utility ensures React DevTools displays meaningful component names
- * for debugging and development purposes. It preserves existing `displayName`
- * values and provides fallback naming.
- *
- * @param component - The React component to set `displayName` for
- * @param displayName - Optional custom display name (defaults to component name)
- * @returns The component with `displayName` set
+ * Sets `displayName` for React components with improved type safety. \
+ * It preserves existing `displayName` values and provides fallback naming.
  */
-export function setDisplayName<T extends React.ComponentType<any>>(
+export const setDisplayName = <T extends React.ComponentType<any>>(
   component: T,
   displayName?: string
-): T {
+): T => {
   if (!displayName) {
     // Attempt to resolve the component name through various properties:
     // 1. `component.displayName` (explicitly set)
@@ -58,21 +46,14 @@ export function setDisplayName<T extends React.ComponentType<any>>(
   }
 
   return component;
-}
+};
 
-/**
- * Creates consistent data attributes for components
- *
- * @param id - The component ID
- * @param debugMode - Whether debug mode is enabled
- * @param suffix - Optional suffix for the component type (e.g., 'section', 'card')
- * @returns Object with data attributes
- */
-export function createComponentDataAttributes(
+/** Creates consistent data attributes for components */
+export const createComponentDataAttributes = (
   id?: string,
   suffix?: string,
   debugMode?: boolean
-) {
+): Record<string, string> => {
   /* eslint-disable no-undef */
   const attributes: Record<string, string> = {};
 
@@ -118,43 +99,28 @@ export function createComponentDataAttributes(
 
   return attributes;
   /* eslint-enable no-undef */
-}
+};
 
-/**
- * Creates `aria-labelledby` attribute based on title and ID.
- *
- * @param title - The title text
- * @param id - The component ID
- * @returns `aria-labelledby` value or undefined
- */
-export function createAriaLabelledBy(
+/** Creates `aria-labelledby` attribute based on title and ID. */
+export const createAriaLabelledBy = (
   title: string,
   id: string
-): string | undefined {
+): string | undefined => {
   if (!title || !id) {
     return undefined;
   }
 
   return `${id}-${trimStringContent(title)}`;
-}
+};
 
-/**
- * Creates consistent component props with data attributes and optional `aria-labelledby`.
- *
- * @param id - The component ID
- * @param suffix - Optional suffix for the component type
- * @param debugMode - Whether debug mode is enabled
- * @param additionalProps - Additional props to merge
- * @param title - Optional title for generating `aria-labelledby`
- * @returns Combined props object
- */
-export function createComponentProps(
+/** Creates consistent component props with data attributes and optional `aria-labelledby`. */
+export const createComponentProps = (
   id?: string,
   suffix?: string,
   debugMode?: boolean,
   title?: string,
   additionalProps?: Record<string, unknown>
-) {
+): Record<string, unknown> => {
   const dataAttributes = createComponentDataAttributes(id, suffix, debugMode);
   const ariaLabelledBy =
     title && id ? { "aria-labelledby": createAriaLabelledBy(title, id) } : {};
@@ -164,4 +130,4 @@ export function createComponentProps(
     ...ariaLabelledBy,
     ...additionalProps,
   };
-}
+};
