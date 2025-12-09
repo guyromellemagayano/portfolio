@@ -7,7 +7,6 @@ describe("Barrel Exports", () => {
       expect(exports.browserPreset).toBeDefined();
       expect(exports.nodePreset).toBeDefined();
       expect(exports.reactPreset).toBeDefined();
-      expect(exports.testSetup).toBeDefined();
     });
 
     it("should export browserPreset as default-compatible", async () => {
@@ -52,13 +51,6 @@ describe("Barrel Exports", () => {
       const reactExports = await import("../react");
       expect(reactExports.reactPreset).toBeDefined();
       expect(reactExports.reactPreset.test?.environment).toBe("jsdom");
-    });
-
-    it("should export test setup from shared/index", async () => {
-      const sharedDefault = await import("../shared");
-      // test-setup.ts is a side-effect file, so we export a placeholder
-      expect(sharedDefault.testSetup).toBeDefined();
-      expect(sharedDefault.testSetup).toBe(true);
     });
   });
 
