@@ -646,5 +646,4 @@ describe("Prose", () => {
       expect(Prose).toBeDefined();
     });
   });
-
 });

@@ -135,19 +135,19 @@ describe("Container", () => {
     it("does not render when no children provided", () => {
       const { container } = render(<Container />);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("does not render when empty string children provided", () => {
       const { container } = render(<Container>{""}</Container>);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles null/undefined/empty children", () => {
       const { container } = render(<Container>{null}</Container>);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -194,17 +194,17 @@ describe("Container", () => {
 
     it("handles empty string children", () => {
       const { container } = render(<Container>{""}</Container>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles false children", () => {
       const { container } = render(<Container>{false}</Container>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("handles zero children", () => {
       const { container } = render(<Container>{0}</Container>);
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -400,7 +400,7 @@ describe("Container", () => {
       );
 
       // Component should not render when no content
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("maintains ARIA attributes with additional HTML attributes", () => {

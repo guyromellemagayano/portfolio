@@ -514,7 +514,7 @@ describe("ArticleLayout", () => {
     it("returns null when no article and no children", () => {
       const { container } = render(<ArticleLayout />);
 
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders when only article is provided", () => {
@@ -536,7 +536,7 @@ describe("ArticleLayout", () => {
       );
 
       // Component requires both article and children, so it should return null
-      expect(container.firstChild).toBeNull();
+      expect(container).toBeEmptyDOMElement();
     });
 
     it("renders when both article and children are provided", () => {

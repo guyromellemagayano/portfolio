@@ -6,8 +6,6 @@
 // - Component Type: Compound (variants orchestration)
 // ============================================================================
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -33,7 +31,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return component;
   }),
   createComponentProps: vi.fn(
-    (id: string, componentType: string, debugMode: boolean, additional: any = {}) => ({
+    (
+      id: string,
+      componentType: string,
+      debugMode: boolean,
+      additional: any = {}
+    ) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}-root`,
       "data-testid": `${id}-${componentType}-root`,
       "data-debug-mode": debugMode ? "true" : undefined,
@@ -89,13 +92,13 @@ describe("List (integration)", () => {
       "md:pl-6",
       "md:dark:border-zinc-700/40"
     );
-    
+
     // Check sr-only heading
     const heading = screen.getByText("Article list");
     expect(heading.tagName).toBe("H2");
     expect(heading).toHaveClass("sr-only");
     expect(heading).toHaveAttribute("aria-hidden", "true");
-    
+
     // Check nested list container - use aria-label to avoid ambiguity
     const listContainer = screen.getByRole("list", { name: "Articles" });
     expect(listContainer).toBeInTheDocument();
@@ -107,7 +110,7 @@ describe("List (integration)", () => {
       "flex-col",
       "space-y-16"
     );
-    
+
     // Check children are rendered
     expect(screen.getByText("First")).toBeInTheDocument();
     expect(screen.getByText("Second")).toBeInTheDocument();
