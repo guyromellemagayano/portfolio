@@ -1,10 +1,11 @@
 {
-  "extends": "@packages/typescript-config/src/react-library.json",
+  "extends": "@guyromellemagayano/config-typescript/src/react-library.json",
   "compilerOptions": {
     "lib": [
       "DOM",
       "ES2015"
     ],
+    "outDir": "./dist",
     "sourceMap": true,
     "types": [
       "vitest/globals",
@@ -16,7 +17,6 @@
   ],
   "exclude": [
     "dist",
-    "build",
     "node_modules"
   ]
 }
