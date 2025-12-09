@@ -86,7 +86,7 @@ import { utils } from '@guyromellemagayano/logger/utils';
 
 ### Build Output Structure
 
-`tsdown` automatically generates optimized builds based on the `exports`
+`bunchee` automatically generates optimized builds based on the `exports`
 field in `package.json`:
 
 ```text
@@ -117,7 +117,7 @@ This package is **ESM-only** and configured entirely through `package.json`:
 }
 ```
 
-No separate config file is needed - `tsdown` reads the package configuration and
+No separate config file is needed - `bunchee` reads the package configuration and
 automatically generates optimized ESM builds with tree-shaking and minification.
 
 ## 🚀 Quick Start
