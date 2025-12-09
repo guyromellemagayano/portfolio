@@ -42,13 +42,12 @@
   ],
   "scripts": {
     "check-types": "tsc --noEmit",
-    "test": "vitest",
+    "test": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",
     "test:run:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
-    "test:watch": "vitest --watch"
+    "test:ui": "vitest --ui"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
