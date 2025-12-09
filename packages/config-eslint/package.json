@@ -19,20 +19,12 @@
       "default": "./src/presets/next.js"
     }
   },
-  "main": "./src/index.js",
-  "module": "./src/index.js",
-  "types": "./src/index.d.ts",
   "scripts": {
     "clean": "rimraf node_modules .turbo dist",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,md,mdx}\"",
     "lint": "eslint --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
-    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/",
-    "test": "echo 'No tests configured for eslint config package'",
-    "test:coverage": "echo 'No tests configured for eslint config package'",
-    "test:run": "echo 'No tests configured for eslint config package'",
-    "test:run:coverage": "echo 'No tests configured for eslint config package'",
-    "test:ui": "echo 'No tests configured for eslint config package'"
+    "lint:fix": "eslint --fix --ext .js,.cjs,.mjs,.ts,.cts,.mts src/"
   },
   "dependencies": {
     "@eslint/js": "catalog:",
