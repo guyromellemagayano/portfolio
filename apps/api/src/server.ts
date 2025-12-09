@@ -29,9 +29,7 @@ const createMorganStream = () => ({
 });
 
 // Custom Morgan format with request correlation
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 morgan.token("id", (req: any) => req.id);
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 morgan.token("correlation-id", (req: any) => req.correlationId);
 
 const morganFormat =
@@ -45,7 +43,7 @@ export const createServer = (): Express => {
   app
     .disable("x-powered-by")
     // Add request correlation middleware
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     .use((req: any, res, next) => {
       req.id = generateRequestId();
       req.correlationId = req.headers["x-correlation-id"] || req.id;
@@ -69,7 +67,7 @@ export const createServer = (): Express => {
     .use(
       morgan(morganFormat, {
         stream: createMorganStream(),
-        // eslint-disable-next-line unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line unused-imports/no-unused-vars
         skip: (req, res) => {
           // Skip health checks in production
           return (
@@ -83,7 +81,6 @@ export const createServer = (): Express => {
     .use(json())
     .use(cors());
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const messageHandler: RequestHandler = (req: any, res) => {
     req.logger.info("Processing message request", {
       name: req.params.name,
@@ -93,14 +90,13 @@ export const createServer = (): Express => {
     res.json({ message: `hello ${req.params.name}` });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const statusHandler: RequestHandler = (req: any, res) => {
     req.logger.debug("Health check requested");
     res.json({ ok: true });
   };
 
   // Error handling middleware
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, unused-imports/no-unused-vars, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line unused-imports/no-unused-vars
   app.use((error: Error, req: any, res: any, next: any) => {
     req.logger.error("Unhandled error in request", error, {
       stack: error.stack,
