@@ -184,7 +184,10 @@ export const baseEslintConfig = [
       "**/*.{test,spec}.{js,ts,jsx,tsx}",
     ],
     languageOptions: {
-      globals: vitestPlugin.environments.env.globals,
+      globals: {
+        ...vitestPlugin.environments.env.globals,
+        process: "readonly",
+      },
     },
     rules: {
       ...vitestPlugin.configs.recommended.rules,
