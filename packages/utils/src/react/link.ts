@@ -1,17 +1,11 @@
-// ============================================================================
-// REACT FRAMEWORK LINK UTILITIES
-// ============================================================================
-
 /**
- * Validates if a URL is valid and not a placeholder.
- *
- * Checks that href is provided and not an empty string or placeholder value.
- * Useful for preventing broken links and ensuring proper link behavior.
- *
- * @param href - The URL to validate
- * @returns `true` if href is valid, `false` otherwise
+ * Validates if a URL is valid and not a placeholder. Checks that `href` is provided \
+ * and not an empty string or placeholder value. Useful for preventing broken links \
+ * and ensuring proper link behavior.
  */
-export function isValidLink(href?: string | { toString(): string }): boolean {
+export const isValidLink = (
+  href?: string | { toString(): string }
+): boolean => {
   if (!href) return false;
 
   // Convert to string for validation
@@ -19,26 +13,20 @@ export function isValidLink(href?: string | { toString(): string }): boolean {
 
   if (hrefString === "#" || hrefString === "") return false;
   return true;
-}
+};
 
 /**
- * Gets safe link target attributes for external links.
- *
- * Automatically determines appropriate `target` and `rel` attributes based on
- * link type and user preferences. Ensures security best practices for
- * external links.
- *
- * @param href - The URL to analyze
- * @param target - Optional user-specified target
- * @returns Object with `target` and `rel` attributes
+ * Gets safe link target attributes for external links. Automatically determines \
+ * appropriate `target` and `rel` attributes based on link type and user \
+ * preferences. Ensures security best practices for external links.
  */
-export function getLinkTargetProps(
+export const getLinkTargetProps = (
   href?: string | { toString(): string },
   target?: string
 ): {
   target: string;
   rel?: string;
-} {
+} => {
   if (!isValidLink(href)) {
     return { target: "_self" };
   }
@@ -54,18 +42,14 @@ export function getLinkTargetProps(
     target: shouldOpenNewTab ? "_blank" : "_self",
     rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
   };
-}
+};
 
 /**
- * Validates and provides default values for common link props.
- *
- * Ensures link components have consistent, safe default values for
- * `href`, `target`, and `title` attributes.
- *
- * @param props - The link props to validate
- * @returns Object with validated link props
+ * Validates and provides default values for common link props. \
+ * Ensures link components have consistent, safe default values \
+ * for `href`, `target`, and `title` attributes.
  */
-export function getDefaultLinkProps(props: {
+export const getDefaultLinkProps = (props: {
   href?: string | { toString(): string };
   target?: string;
   title?: string;
@@ -73,7 +57,7 @@ export function getDefaultLinkProps(props: {
   href: string;
   target: string;
   title: string;
-} {
+} => {
   const hrefString =
     typeof props.href === "string" ? props.href : props.href?.toString() || "";
 
@@ -82,4 +66,4 @@ export function getDefaultLinkProps(props: {
     target: props.target || "_self",
     title: props.title || "",
   };
-}
+};
