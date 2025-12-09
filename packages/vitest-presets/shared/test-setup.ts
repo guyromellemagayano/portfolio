@@ -54,7 +54,7 @@ const createIntersectionObserverMock = () => {
   };
 };
 
-// Force override IntersectionObserver with our mock - MUST BE FIRST
+// Force override `IntersectionObserver` with our mock - MUST BE FIRST
 const mockIntersectionObserver = createIntersectionObserverMock();
 
 // Override on globalThis
@@ -78,7 +78,7 @@ Object.defineProperty(globalThis.global, "IntersectionObserver", {
   value: mockIntersectionObserver,
 });
 
-// CRITICAL: Also override the IntersectionObserver constructor directly
+// CRITICAL: Also override the `IntersectionObserver` constructor directly
 // This prevents Next.js from accessing the real constructor
 (globalThis as any).IntersectionObserver = mockIntersectionObserver;
 (globalThis.window as any).IntersectionObserver = mockIntersectionObserver;
@@ -90,7 +90,7 @@ import { afterAll, afterEach, beforeAll, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
-// IntersectionObserver is already mocked at the top of the file
+// `IntersectionObserver` is already mocked at the top of the file
 
 // Extend global interface to avoid TypeScript errors
 declare global {
@@ -102,7 +102,7 @@ declare global {
   }
 }
 
-// Mock window.matchMedia
+// Mock `window.matchMedia`
 Object.defineProperty(globalThis.window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => ({
@@ -117,7 +117,7 @@ Object.defineProperty(globalThis.window, "matchMedia", {
   })),
 });
 
-// Mock ResizeObserver
+// Mock `ResizeObserver`
 const mockResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
   unobserve: vi.fn(),
@@ -136,7 +136,7 @@ Object.defineProperty(globalThis.global, "ResizeObserver", {
   value: mockResizeObserver,
 });
 
-// Mock requestAnimationFrame
+// Mock `requestAnimationFrame`
 globalThis.global.requestAnimationFrame = vi.fn(
   (callback: (time: number) => void) => {
     callback(0);
@@ -144,10 +144,10 @@ globalThis.global.requestAnimationFrame = vi.fn(
   }
 );
 
-// Mock cancelAnimationFrame
+// Mock `cancelAnimationFrame`
 globalThis.global.cancelAnimationFrame = vi.fn();
 
-// Mock getComputedStyle
+// Mock `getComputedStyle`
 Object.defineProperty(globalThis.window, "getComputedStyle", {
   value: vi.fn(() => ({
     getPropertyValue: vi.fn(),
@@ -173,7 +173,7 @@ afterEach(() => {
   vi.resetAllMocks(); // Reset mocks to original implementations
 });
 
-// Global mock for next/navigation
+// Global mock for `next/navigation`
 const mockBack = vi.fn();
 vi.mock("next/navigation", () => ({
   usePathname: () => (globalThis as any).__TEST_PATHNAME__ ?? "/about",
@@ -190,7 +190,7 @@ vi.mock("next/navigation", () => ({
 // Export for tests to use
 (globalThis as any).__MOCK_ROUTER_BACK__ = mockBack;
 
-// Global mock for next/image
+// Global mock for `next/image`
 vi.mock("next/image", () => ({
   default: (props: any) =>
     React.createElement("div", {
@@ -201,7 +201,7 @@ vi.mock("next/image", () => ({
     }),
 }));
 
-// Global mock for next/link
+// Global mock for `next/link`
 vi.mock("next/link", () => {
   const MockLink = React.forwardRef<HTMLAnchorElement, any>((props, ref) => {
     const { href, children, ...rest } = props;
@@ -220,7 +220,7 @@ vi.mock("next/link", () => {
   return { default: MockLink };
 });
 
-// Global mock for next-themes
+// Global mock for `next-themes`
 vi.mock("next-themes", () => ({
   useTheme: () => ({
     resolvedTheme: "dark",
@@ -263,7 +263,7 @@ vi.mock("next/src/client/use-intersection", () => {
   return { default: mockUseIntersection };
 });
 
-// Global mock for next/use-intersection (alternative path)
+// Global mock for `next/use-intersection` (alternative path)
 vi.mock("next/use-intersection", () => {
   const mockRef = vi.fn();
   const mockUseIntersection = vi.fn(() => ({
@@ -332,7 +332,7 @@ vi.mock("next/src/client/use-intersection.tsx", () => {
   return { default: mockUseIntersection };
 });
 
-// Global mock for react-intersection-observer
+// Global mock for `react-intersection-observer`
 vi.mock("react-intersection-observer", () => ({
   useInView: vi.fn(() => ({
     ref: vi.fn(),
@@ -342,12 +342,12 @@ vi.mock("react-intersection-observer", () => ({
   InView: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-// Global mock for react-intersection-observer/test-utils
+// Global mock for `react-intersection-observer/test-utils`
 vi.mock("react-intersection-observer/test-utils", () => ({
   mockAllIsIntersecting: vi.fn(),
 }));
 
-// Global fallback mock for @guyromellemagayano/components
+// Global fallback mock for `@guyromellemagayano/components`
 vi.mock("@guyromellemagayano/components", () => {
   // Create mock components with data-testid for testing
   const createMockComponent = (tag: string, testId: string) => {
@@ -387,10 +387,10 @@ vi.mock("@guyromellemagayano/components", () => {
   return mockComponents;
 });
 
-// Use centralized mocks for @web/components
+// Use centralized mocks for `@web/components`
 vi.mock("@web/components", () => import("../__mocks__/@web/components"));
 
-// Global mock for @web/lib
+// Global mock for `@web/lib`
 vi.mock("@web/lib", () => ({
   cn: (...classes: (string | undefined | null | false)[]) =>
     classes.filter(Boolean).join(" "),
@@ -404,26 +404,26 @@ vi.mock("@web/lib", () => ({
   },
 }));
 
-// Global mock for @web/utils
+// Global mock for `@web/utils`
 vi.mock("@web/utils", () => ({
   cn: (...classes: (string | undefined | null | false)[]) =>
     classes.filter(Boolean).join(" "),
   formatDate: vi.fn((_date) => "Formatted Date"),
 }));
 
-// Use centralized mocks for @guyromellemagayano/utils
+// Use centralized mocks for `@guyromellemagayano/utils`
 vi.mock(
   "@guyromellemagayano/utils",
   () => import("../__mocks__/@guyromellemagayano/utils")
 );
 
-// Use centralized mocks for @guyromellemagayano/hooks
+// Use centralized mocks for `@guyromellemagayano/hooks`
 vi.mock(
   "@guyromellemagayano/hooks",
   () => import("../__mocks__/@guyromellemagayano/hooks")
 );
 
-// Use centralized mocks for @guyromellemagayano/logger
+// Use centralized mocks for `@guyromellemagayano/logger`
 vi.mock(
   "@guyromellemagayano/logger",
   () => import("../__mocks__/@guyromellemagayano/logger")

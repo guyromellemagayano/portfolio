@@ -17,6 +17,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
     "types": [
       "vitest",
       "@testing-library/jest-dom"
