@@ -1,5 +1,5 @@
 {
-  "extends": "@packages/typescript-config/src/react-library.json",
+  "extends": "@guyromellemagayano/config-typescript/src/react-library.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": [
