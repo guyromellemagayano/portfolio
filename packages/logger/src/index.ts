@@ -1,4 +1,3 @@
-/* eslint-disable no-duplicate-imports */
 /**
  * Universal Logger Package
  * Comprehensive, robust, scalable, and flexible logging system
@@ -71,21 +70,7 @@ export {
 } from "./formatters";
 
 // Export integrations for external logging services
-export {
-  AzureMonitorIntegration,
-  CloudWatchIntegration,
-  createIntegration,
-  DatadogIntegration,
-  ElasticsearchIntegration,
-  GoogleCloudIntegration,
-  type IntegrationConfig,
-  integrations,
-  LogRocketIntegration,
-  NewRelicIntegration,
-  PapertrailIntegration,
-  SentryIntegration,
-  SplunkIntegration,
-} from "./integrations";
+export { integrations } from "./integrations";
 
 // Export core logger functionality
 export { createLogger, Logger, logger } from "./logger";
@@ -104,7 +89,9 @@ export {
 } from "./transports";
 
 // Export types and enums
+// eslint-disable-next-line simple-import-sort/exports
 export {
+  LogLevel,
   type Environment,
   type Formatter,
   type ILogger,
@@ -112,7 +99,6 @@ export {
   type LogEntry,
   type LoggerConfig,
   type LoggerPlugin,
-  LogLevel,
   type LogLevelString,
   type MetricEntry,
   type MetricType,
