@@ -32,7 +32,6 @@
     "@typescript-eslint/eslint-plugin": "catalog:",
     "@typescript-eslint/parser": "catalog:",
     "@typescript-eslint/type-utils": "catalog:",
-    "@typescript-eslint/types": "catalog:",
     "@typescript-eslint/utils": "catalog:",
     "@vitest/eslint-plugin": "catalog:",
     "eslint": "catalog:",
