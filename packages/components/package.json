@@ -75,7 +75,6 @@
     "nodemon": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
