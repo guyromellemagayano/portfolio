@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { defineConfig } from "vitest/config";
 
-import reactPreset from "@packages/vitest-presets/react/vitest-preset.js";
+import { reactPreset } from "@guyromellemagayano/vitest-presets";
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -20,7 +20,7 @@ export default defineConfig({
   },
   test: {
     ...reactPreset.test,
-    setupFiles: ["@packages/vitest-presets/shared/test-setup.ts"], // Use shared test setup
+    setupFiles: ["@guyromellemagayano/vitest-presets/shared/test-setup.ts"], // Use shared test setup
     globals: true,
 
     // Memory optimization settings
