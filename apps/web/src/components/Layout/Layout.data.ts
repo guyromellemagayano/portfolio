@@ -1,7 +1,3 @@
-// ============================================================================
-// COMMON LAYOUT COMPONENT LABELS
-// ============================================================================
-
 import { type ImageProps } from "next/image";
 
 import { type IconProps } from "@web/components";
@@ -10,6 +6,10 @@ import logoCosmos from "@web/images/logos/cosmos.svg";
 import logoHelioStream from "@web/images/logos/helio-stream.svg";
 import logoOpenShuttle from "@web/images/logos/open-shuttle.svg";
 import logoPlanetaria from "@web/images/logos/planetaria.svg";
+
+// ============================================================================
+// COMMON LAYOUT COMPONENT LABELS
+// ============================================================================
 
 export type CommonLayoutComponentLabels = Readonly<Record<string, string>>;
 export const COMMON_LAYOUT_COMPONENT_LABELS = {
@@ -60,7 +60,7 @@ export const SOCIAL_LIST_COMPONENT_LABELS = [
 ] as const satisfies SocialListComponentLabels;
 
 // ============================================================================
-// PROJECTS COMPONENT DATA
+// PROJECTS DATA
 // ============================================================================
 
 export type ProjectsComponentData = ReadonlyArray<{
@@ -69,40 +69,50 @@ export type ProjectsComponentData = ReadonlyArray<{
   link: { href: string; label: string };
   logo: ImageProps["src"];
 }>;
-export const PROJECTS_COMPONENT_DATA = [
-  {
-    name: "Planetaria",
-    description:
-      "Creating technology to empower civilians to explore space on their own terms.",
-    link: { href: "http://planetaria.tech", label: "planetaria.tech" },
-    logo: logoPlanetaria,
-  },
-  {
-    name: "Animaginary",
-    description:
-      "High performance web animation library, hand-written in optimized WASM.",
-    link: { href: "#", label: "github.com" },
-    logo: logoAnimaginary,
-  },
-  {
-    name: "HelioStream",
-    description:
-      "Real-time video streaming library, optimized for interstellar transmission.",
-    link: { href: "#", label: "github.com" },
-    logo: logoHelioStream,
-  },
-  {
-    name: "cosmOS",
-    description:
-      "The operating system that powers our Planetaria space shuttles.",
-    link: { href: "#", label: "github.com" },
-    logo: logoCosmos,
-  },
-  {
-    name: "OpenShuttle",
-    description:
-      "The schematics for the first rocket I designed that successfully made it to orbit.",
-    link: { href: "#", label: "github.com" },
-    logo: logoOpenShuttle,
-  },
-] as const satisfies ProjectsComponentData;
+export type ProjectsPageLayoutData = Readonly<{
+  title: string;
+  intro: string;
+  projects: ProjectsComponentData;
+}>;
+export const PROJECTS_PAGE_LAYOUT_DATA: ProjectsPageLayoutData = {
+  title: "Things I’ve made trying to put my dent in the universe.",
+  intro:
+    "I’ve worked on tons of little projects over the years but these are the ones that I’m most proud of. Many of them are open-source, so if you see something that piques your interest, check out the code and contribute if you have ideas for how it can be improved.",
+  projects: [
+    {
+      name: "Planetaria",
+      description:
+        "Creating technology to empower civilians to explore space on their own terms.",
+      link: { href: "http://planetaria.tech", label: "planetaria.tech" },
+      logo: logoPlanetaria,
+    },
+    {
+      name: "Animaginary",
+      description:
+        "High performance web animation library, hand-written in optimized WASM.",
+      link: { href: "#", label: "github.com" },
+      logo: logoAnimaginary,
+    },
+    {
+      name: "HelioStream",
+      description:
+        "Real-time video streaming library, optimized for interstellar transmission.",
+      link: { href: "#", label: "github.com" },
+      logo: logoHelioStream,
+    },
+    {
+      name: "cosmOS",
+      description:
+        "The operating system that powers our Planetaria space shuttles.",
+      link: { href: "#", label: "github.com" },
+      logo: logoCosmos,
+    },
+    {
+      name: "OpenShuttle",
+      description:
+        "The schematics for the first rocket I designed that successfully made it to orbit.",
+      link: { href: "#", label: "github.com" },
+      logo: logoOpenShuttle,
+    },
+  ],
+} as const satisfies ProjectsPageLayoutData;
