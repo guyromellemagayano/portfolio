@@ -7,33 +7,26 @@ import { Layout } from "@web/components";
 
 import "@web/styles/tailwind.css";
 
-// ============================================================================
-// ROOT LAYOUT TYPES & INTERFACES
-// ============================================================================
-
-export interface RootLayoutProps {
+export type RootLayoutProps = {
   children: React.ReactNode;
-}
-export type RootLayoutComponent = React.FC<RootLayoutProps>;
+};
 
 // ============================================================================
 // ROOT LAYOUT COMPONENT
 // ============================================================================
 
-const RootLayout: RootLayoutComponent = setDisplayName(
-  function RootLayout(props) {
-    const { children } = props;
+const RootLayout = setDisplayName(function RootLayout(props: RootLayoutProps) {
+  const { children } = props;
 
-    return (
-      <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-        <body className="flex h-full bg-zinc-50 dark:bg-black">
-          <Providers>
-            <Layout>{children}</Layout>
-          </Providers>
-        </body>
-      </html>
-    );
-  }
-);
+  return (
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <body className="flex h-full bg-zinc-50 dark:bg-black">
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
+      </body>
+    </html>
+  );
+});
 
 export default RootLayout;
