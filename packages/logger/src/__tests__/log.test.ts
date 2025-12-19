@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { log } from ".";
+import { log } from "..";
 
 // Spy on console.info since the enhanced logger uses info level
 vi.spyOn(global.console, "info");

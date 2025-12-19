@@ -18,7 +18,7 @@ import {
   sanitizeData,
   shouldLog,
   SimpleFormatter,
-} from ".";
+} from "..";
 
 describe("Logger System", () => {
   let logger: Logger;
