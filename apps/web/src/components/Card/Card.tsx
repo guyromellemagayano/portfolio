@@ -93,12 +93,6 @@ const CardCta = setDisplayName(function CardCta(
 });
 
 // ============================================================================
-// MEMOIZED CARD CTA COMPONENT
-// ============================================================================
-
-const MemoizedCardCta = React.memo(CardCta);
-
-// ============================================================================
 // CARD DESCRIPTION COMPONENT
 // ===========================================================================
 
@@ -145,12 +139,6 @@ const CardDescription = setDisplayName(function CardDescription(
     </Component>
   );
 });
-
-// ============================================================================
-// MEMOIZED CARD DESCRIPTION COMPONENT
-// ============================================================================
-
-const MemoizedCardDescription = React.memo(CardDescription);
 
 // ============================================================================
 // CARD EYEBROW COMPONENT
@@ -227,12 +215,6 @@ const CardEyebrow = setDisplayName(function CardEyebrow(
     </Component>
   );
 });
-
-// ============================================================================
-// MEMOIZED CARD EYEBROW COMPONENT
-// ============================================================================
-
-const MemoizedCardEyebrow = React.memo(CardEyebrow);
 
 // ============================================================================
 // CARD LINK COMPONENT
@@ -327,12 +309,6 @@ const CardLink = setDisplayName(function CardLink(
 });
 
 // ============================================================================
-// MEMOIZED CARD LINK COMPONENT
-// ============================================================================
-
-const MemoizedCardLink = React.memo(CardLink);
-
-// ============================================================================
 // CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
@@ -385,12 +361,6 @@ const CardLinkCustom = setDisplayName(function CardLinkCustom(
     </Component>
   );
 });
-
-// ============================================================================
-// MEMOIZED CARD LINK CUSTOM COMPONENT
-// ============================================================================
-
-const MemoizedCardLinkCustom = React.memo(CardLinkCustom);
 
 // ============================================================================
 // CARD TITLE COMPONENT
@@ -460,17 +430,12 @@ const CardTitle = setDisplayName(function CardTitle(
 });
 
 // ============================================================================
-// MEMOIZED CARD TITLE COMPONENT
-// ============================================================================
-
-const MemoizedCardTitle = React.memo(CardTitle);
-
-// ============================================================================
 // CARD COMPONENT
 // ============================================================================
 
 type CardElementType = "article" | "div" | "li";
-type CardProps<T extends React.ElementType> = Omit<
+
+export type CardProps<T extends React.ElementType> = Omit<
   React.ComponentPropsWithRef<T>,
   "as"
 > &
@@ -479,7 +444,7 @@ type CardProps<T extends React.ElementType> = Omit<
     as?: T;
   };
 
-export type CardCompoundComponent = ((
+type CardCompoundComponent = ((
   props: CardProps<CardElementType>
 ) => React.ReactElement | null) & {
   /** A card link component that provides interactive hover effects and accessibility features */
@@ -494,23 +459,7 @@ export type CardCompoundComponent = ((
   Cta: typeof CardCta;
   /** A card eyebrow component that can optionally be wrapped in a link for navigation */
   Eyebrow: typeof CardEyebrow;
-  /** A memoized card call to action component that can optionally be wrapped in a link for navigation */
-  MemoizedCta: typeof MemoizedCardCta;
-  /** A memoized card title component that can optionally be wrapped in a link for navigation */
-  MemoizedTitle: typeof MemoizedCardTitle;
-  /** A memoized card description component that can optionally be wrapped in a link for navigation */
-  MemoizedDescription: typeof MemoizedCardDescription;
-  /** A memoized card eyebrow component that can optionally be wrapped in a link for navigation */
-  MemoizedEyebrow: typeof MemoizedCardEyebrow;
-  /** A memoized card link component that provides interactive hover effects and accessibility features */
-  MemoizedLink: typeof MemoizedCardLink;
-  /** A memoized card link custom component that provides interactive hover effects and accessibility features */
-  MemoizedLinkCustom: typeof MemoizedCardLinkCustom;
 };
-
-// ============================================================================
-// MAIN CARD COMPONENT
-// ============================================================================
 
 export const Card = setDisplayName(function Card<T extends React.ElementType>(
   props: CardProps<T>
@@ -553,12 +502,6 @@ Card.Description = CardDescription;
 Card.Link = CardLink;
 Card.LinkCustom = CardLinkCustom;
 Card.Eyebrow = CardEyebrow;
-Card.MemoizedCta = MemoizedCardCta;
-Card.MemoizedTitle = MemoizedCardTitle;
-Card.MemoizedDescription = MemoizedCardDescription;
-Card.MemoizedEyebrow = MemoizedCardEyebrow;
-Card.MemoizedLink = MemoizedCardLink;
-Card.MemoizedLinkCustom = MemoizedCardLinkCustom;
 
 // ============================================================================
 // MEMOIZED CARD COMPONENT
