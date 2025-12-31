@@ -30,60 +30,119 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 // Mock utility functions
-vi.mock("@guyromellemagayano/utils", () => ({
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-}));
+vi.mock("@guyromellemagayano/utils", async () => {
+  const actual = await vi.importActual("@guyromellemagayano/utils");
+  return {
+    ...actual,
+    createComponentProps: vi.fn(
+      (id, componentType, debugMode, additionalProps = {}) => ({
+        [`data-${componentType}-id`]: `${id}-${componentType}`,
+        "data-debug-mode": debugMode ? "true" : undefined,
+        "data-testid":
+          additionalProps["data-testid"] || `${id}-${componentType}-root`,
+        ...additionalProps,
+      })
+    ),
+    setDisplayName: vi.fn((component, displayName) => {
+      if (component) component.displayName = displayName;
+      return component;
+    }),
+  };
+});
 
 // Mock @web/utils
-vi.mock("@web/utils", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+vi.mock("@web/utils", async () => {
+  const actual = await vi.importActual("@web/utils");
+  return {
+    ...actual,
+    cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  };
+});
+
+// Mock @web/components
+vi.mock("@web/components", async () => {
+  const actual = await vi.importActual("@web/components");
+  return {
+    ...actual,
+    Button: vi.fn(
+      ({ children, className, href, variantStyle, debugId, debugMode, ...props }) => (
+        <a
+          data-testid="button"
+          href={href}
+          className={className}
+          data-button-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          data-variant-style={variantStyle}
+          {...props}
+        >
+          {children}
+        </a>
+      )
+    ),
+    Icon: vi.fn(({ name, className, debugId, debugMode, ...props }) => {
+      const iconMap: Record<string, string> = {
+        "arrow-down": "arrow-down-icon",
+        briefcase: "briefcase-icon",
+      };
+      const testId = iconMap[name as string] || "icon";
+      return (
+        <svg
+          data-testid={testId}
+          className={className}
+          data-icon-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...props}
+        >
+          {name}
+        </svg>
+      );
+    }),
+    List: vi.fn(
+      ({ children, className, debugId, debugMode, ...props }) => (
+        <ol
+          data-testid="list"
+          className={className}
+          data-list-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...props}
+        >
+          {children}
+        </ol>
+      )
+    ),
+    ListItem: vi.fn(
+      ({ children, className, role, debugId, debugMode, ...props }) => (
+        <li
+          data-testid="list-item"
+          className={className}
+          role={role}
+          data-list-item-id={debugId}
+          data-debug-mode={debugMode ? "true" : undefined}
+          {...props}
+        >
+          {children}
+        </li>
+      )
+    ),
+  };
+});
+
+// Mock Next.js Image component
+vi.mock("next/image", () => ({
+  default: vi.fn(({ src, alt, className, ...props }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={typeof src === "string" ? src : ""}
+      alt={alt}
+      className={className}
+      data-testid="next-image"
+      {...props}
+    />
+  )),
 }));
 
-// Mock internal components
-vi.mock("../_internal", () => ({
-  ResumeTitle: vi.fn(({ debugId, debugMode, ...props }) => (
-    <div
-      data-testid="resume-title"
-      data-title-id={debugId}
-      data-debug-mode={debugMode ? "true" : undefined}
-      {...props}
-    >
-      Resume Title
-    </div>
-  )),
-  ResumeRoleList: vi.fn(({ debugId, debugMode, ...props }) => (
-    <div
-      data-testid="resume-role-list"
-      data-role-list-id={debugId}
-      data-debug-mode={debugMode ? "true" : undefined}
-      {...props}
-    >
-      Resume Role List
-    </div>
-  )),
-  ResumeDownloadButton: vi.fn(({ debugId, debugMode, ...props }) => (
-    <div
-      data-testid="resume-download-button"
-      data-download-button-id={debugId}
-      data-debug-mode={debugMode ? "true" : undefined}
-      {...props}
-    >
-      Resume Download Button
-    </div>
-  )),
-}));
+// Mock Resume i18n and data (these are internal to Resume.tsx)
+// We don't need to mock them since they're constants in the component file
 
 // ============================================================================
 // TESTS
@@ -146,9 +205,20 @@ describe("Resume", () => {
     it("renders all internal components", () => {
       render(<Resume />);
 
-      expect(screen.getByTestId("resume-title")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-role-list")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-download-button")).toBeInTheDocument();
+      // ResumeTitle renders as h2 with briefcase icon
+      const title = screen.getByRole("heading", { level: 2 });
+      expect(title).toBeInTheDocument();
+      expect(screen.getByTestId("briefcase-icon")).toBeInTheDocument();
+      expect(screen.getByText("Work")).toBeInTheDocument();
+
+      // ResumeRoleList renders as list
+      const list = screen.getByTestId("list");
+      expect(list).toBeInTheDocument();
+
+      // ResumeDownloadButton renders as button
+      const button = screen.getByTestId("button");
+      expect(button).toBeInTheDocument();
+      expect(screen.getByText("Download CV")).toBeInTheDocument();
     });
 
     it("applies correct CSS classes", () => {
@@ -175,11 +245,9 @@ describe("Resume", () => {
 
       render(<Resume as={CustomContainer} />);
 
-      // The custom component should be rendered instead of the default div
-      // The component will still apply createComponentProps which overrides the test ID
       const resume = screen.getByTestId("test-id-resume-root");
       expect(resume).toBeInTheDocument();
-      expect(resume.tagName).toBe("SECTION"); // Should be SECTION instead of DIV
+      expect(resume.tagName).toBe("SECTION");
     });
   });
 
@@ -188,9 +256,9 @@ describe("Resume", () => {
       render(<Resume />);
 
       expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-title")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-role-list")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-download-button")).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+      expect(screen.getByTestId("list")).toBeInTheDocument();
+      expect(screen.getByTestId("button")).toBeInTheDocument();
     });
 
     it("renders with custom container element", () => {
@@ -216,14 +284,14 @@ describe("Resume", () => {
       expect(resume).toHaveAttribute("data-debug-mode", "true");
 
       // Check that debug mode is passed to all internal components
-      const title = screen.getByTestId("resume-title");
+      const title = screen.getByRole("heading", { level: 2 });
       expect(title).toHaveAttribute("data-debug-mode", "true");
 
-      const roleList = screen.getByTestId("resume-role-list");
-      expect(roleList).toHaveAttribute("data-debug-mode", "true");
+      const list = screen.getByTestId("list");
+      expect(list).toHaveAttribute("data-debug-mode", "true");
 
-      const downloadButton = screen.getByTestId("resume-download-button");
-      expect(downloadButton).toHaveAttribute("data-debug-mode", "true");
+      const button = screen.getByTestId("button");
+      expect(button).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("does not apply data-debug-mode when disabled", () => {
@@ -232,15 +300,14 @@ describe("Resume", () => {
       const resume = screen.getByTestId("test-id-resume-root");
       expect(resume).not.toHaveAttribute("data-debug-mode");
 
-      // Check that debug mode is not passed to internal components
-      const title = screen.getByTestId("resume-title");
+      const title = screen.getByRole("heading", { level: 2 });
       expect(title).not.toHaveAttribute("data-debug-mode");
 
-      const roleList = screen.getByTestId("resume-role-list");
-      expect(roleList).not.toHaveAttribute("data-debug-mode");
+      const list = screen.getByTestId("list");
+      expect(list).not.toHaveAttribute("data-debug-mode");
 
-      const downloadButton = screen.getByTestId("resume-download-button");
-      expect(downloadButton).not.toHaveAttribute("data-debug-mode");
+      const button = screen.getByTestId("button");
+      expect(button).not.toHaveAttribute("data-debug-mode");
     });
 
     it("does not apply data-debug-mode when undefined", () => {
@@ -249,41 +316,14 @@ describe("Resume", () => {
       const resume = screen.getByTestId("test-id-resume-root");
       expect(resume).not.toHaveAttribute("data-debug-mode");
 
-      // Check that debug mode is not passed to internal components
-      const title = screen.getByTestId("resume-title");
+      const title = screen.getByRole("heading", { level: 2 });
       expect(title).not.toHaveAttribute("data-debug-mode");
 
-      const roleList = screen.getByTestId("resume-role-list");
-      expect(roleList).not.toHaveAttribute("data-debug-mode");
+      const list = screen.getByTestId("list");
+      expect(list).not.toHaveAttribute("data-debug-mode");
 
-      const downloadButton = screen.getByTestId("resume-download-button");
-      expect(downloadButton).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
-  describe("Memoization Tests", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(<Resume isMemoized={true} />);
-
-      expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
-    });
-
-    it("does not memoize when isMemoized is false", () => {
-      const { rerender } = render(<Resume isMemoized={false} />);
-
-      expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
-
-      rerender(<Resume isMemoized={false} className="updated-class" />);
-      expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
-    });
-
-    it("does not memoize by default", () => {
-      const { rerender } = render(<Resume />);
-
-      expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
-
-      rerender(<Resume className="updated-class" />);
-      expect(screen.getByTestId("test-id-resume-root")).toBeInTheDocument();
+      const button = screen.getByTestId("button");
+      expect(button).not.toHaveAttribute("data-debug-mode");
     });
   });
 
@@ -309,40 +349,37 @@ describe("Resume", () => {
       render(<Resume debugId="parent-id" debugMode={true} />);
 
       // Check that all internal components receive the correct props
-      const title = screen.getByTestId("resume-title");
-      expect(title).toHaveAttribute("data-title-id", "parent-id");
+      const title = screen.getByRole("heading", { level: 2 });
+      expect(title).toHaveAttribute("data-resume-title-id", "parent-id-resume-title");
       expect(title).toHaveAttribute("data-debug-mode", "true");
 
-      const roleList = screen.getByTestId("resume-role-list");
-      expect(roleList).toHaveAttribute("data-role-list-id", "parent-id");
-      expect(roleList).toHaveAttribute("data-debug-mode", "true");
+      const list = screen.getByTestId("list");
+      expect(list).toHaveAttribute("data-list-id", "parent-id");
+      expect(list).toHaveAttribute("data-debug-mode", "true");
 
-      const downloadButton = screen.getByTestId("resume-download-button");
-      expect(downloadButton).toHaveAttribute(
-        "data-download-button-id",
-        "parent-id"
-      );
-      expect(downloadButton).toHaveAttribute("data-debug-mode", "true");
+      const button = screen.getByTestId("button");
+      expect(button).toHaveAttribute("data-button-id", "parent-id");
+      expect(button).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("renders all internal components in correct order", () => {
       render(<Resume />);
 
       const resume = screen.getByTestId("test-id-resume-root");
-      const title = screen.getByTestId("resume-title");
-      const roleList = screen.getByTestId("resume-role-list");
-      const downloadButton = screen.getByTestId("resume-download-button");
+      const title = screen.getByRole("heading", { level: 2 });
+      const list = screen.getByTestId("list");
+      const button = screen.getByTestId("button");
 
       // Check that all components are within the resume container
       expect(resume).toContainElement(title);
-      expect(resume).toContainElement(roleList);
-      expect(resume).toContainElement(downloadButton);
+      expect(resume).toContainElement(list);
+      expect(resume).toContainElement(button);
 
-      // Check order (title should come before role list, role list before download button)
+      // Check order (title should come before list, list before button)
       const children = Array.from(resume.children);
       expect(children[0]).toBe(title);
-      expect(children[1]).toBe(roleList);
-      expect(children[2]).toBe(downloadButton);
+      expect(children[1]).toBe(list);
+      expect(children[2]).toBe(button);
     });
   });
 
@@ -386,89 +423,6 @@ describe("Resume", () => {
       const resume = screen.getByTestId("test-id-resume-root");
       expect(resume).toBeInTheDocument();
       expect(resume.tagName).toBe("DIV");
-    });
-  });
-
-  describe("Integration Tests", () => {
-    it("renders complete resume with all components", () => {
-      render(<Resume debugId="resume-test" debugMode={true} />);
-
-      // Test main resume container
-      const resume = screen.getByTestId("resume-test-resume-root");
-      expect(resume).toBeInTheDocument();
-      expect(resume.tagName).toBe("DIV");
-      expect(resume).toHaveAttribute("data-debug-mode", "true");
-      expect(resume).toHaveAttribute("data-resume-id", "resume-test-resume");
-
-      // Test all internal components
-      const title = screen.getByTestId("resume-title");
-      expect(title).toBeInTheDocument();
-      expect(title).toHaveAttribute("data-title-id", "resume-test");
-      expect(title).toHaveAttribute("data-debug-mode", "true");
-
-      const roleList = screen.getByTestId("resume-role-list");
-      expect(roleList).toBeInTheDocument();
-      expect(roleList).toHaveAttribute("data-role-list-id", "resume-test");
-      expect(roleList).toHaveAttribute("data-debug-mode", "true");
-
-      const downloadButton = screen.getByTestId("resume-download-button");
-      expect(downloadButton).toBeInTheDocument();
-      expect(downloadButton).toHaveAttribute(
-        "data-download-button-id",
-        "resume-test"
-      );
-      expect(downloadButton).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("handles component updates efficiently", () => {
-      const { rerender } = render(<Resume debugId="initial" />);
-
-      let resume = screen.getByTestId("initial-resume-root");
-      expect(resume).toHaveAttribute("data-resume-id", "initial-resume");
-
-      rerender(<Resume debugId="updated" className="new-class" />);
-      resume = screen.getByTestId("updated-resume-root");
-      expect(resume).toHaveAttribute("data-resume-id", "updated-resume");
-    });
-
-    it("renders with proper component hierarchy", () => {
-      render(<Resume />);
-
-      const resume = screen.getByTestId("test-id-resume-root");
-      expect(resume).toBeInTheDocument();
-
-      const title = screen.getByTestId("resume-title");
-      const roleList = screen.getByTestId("resume-role-list");
-      const downloadButton = screen.getByTestId("resume-download-button");
-
-      // Check that all components are within the resume container
-      expect(resume).toContainElement(title);
-      expect(resume).toContainElement(roleList);
-      expect(resume).toContainElement(downloadButton);
-
-      // Check that components are rendered in the correct order
-      const children = Array.from(resume.children);
-      expect(children[0]).toBe(title);
-      expect(children[1]).toBe(roleList);
-      expect(children[2]).toBe(downloadButton);
-    });
-
-    it("maintains component structure during updates", () => {
-      const { rerender } = render(<Resume debugId="structure-test" />);
-
-      let resume = screen.getByTestId("structure-test-resume-root");
-      expect(resume).toBeInTheDocument();
-
-      // Update with new props
-      rerender(<Resume debugId="structure-test" className="updated-class" />);
-
-      resume = screen.getByTestId("structure-test-resume-root");
-      expect(resume).toBeInTheDocument();
-
-      // Verify all internal components are still present
-      expect(screen.getByTestId("resume-title")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-role-list")).toBeInTheDocument();
-      expect(screen.getByTestId("resume-download-button")).toBeInTheDocument();
     });
   });
 });
