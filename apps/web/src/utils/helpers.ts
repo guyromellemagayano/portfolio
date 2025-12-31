@@ -45,3 +45,18 @@ export function clamp(value: number, a: number, b: number): number {
 export function isValidString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
+
+/** Parses a role date (string or object) into label and dateTime. */
+export function parseRoleDate(
+  date: string | { label: string; dateTime: string }
+): { label: string; dateTime: string } {
+  return typeof date === "string" ? { label: date, dateTime: date } : date;
+}
+
+/** Generates a unique key for a role list item. */
+export function getRoleItemKey(
+  role: { company: string; title: string },
+  index: number
+): string {
+  return `${role.company}-${role.title}-${index}`;
+}
