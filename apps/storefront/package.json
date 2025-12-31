@@ -39,5 +39,7 @@
     "rimraf": "catalog:",
     "sharp": "catalog:",
     "typescript": "catalog:"
-  }
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }
