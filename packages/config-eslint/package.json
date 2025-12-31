@@ -59,5 +59,7 @@
     "react-dom": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:"
-  }
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }
