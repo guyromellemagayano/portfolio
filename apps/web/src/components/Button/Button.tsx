@@ -23,8 +23,8 @@ import { BUTTON_I18N } from "./Button.i18n";
 
 type ButtonElementType = "button";
 type ButtonVariant = "default" | "article-nav";
-
 type ButtonVariantStyles = "primary" | "secondary";
+
 const BUTTON_VARIANT_STYLES: Record<ButtonVariantStyles, string> = {
   primary:
     "bg-zinc-800 font-semibold text-zinc-100 hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70",
@@ -39,6 +39,8 @@ export type ButtonProps<T extends React.ElementType> = Omit<
   Omit<CommonComponentProps, "as"> & {
     /** The component to render as - only "button" and "Link" are allowed */
     as?: T;
+    /** The href for link functionality */
+    href?: string;
     /** The variant of the button */
     variant?: ButtonVariant;
     /** The variant style of the button */
@@ -78,7 +80,7 @@ export const Button = setDisplayName(function Button<
   if (variant === "default") {
     return (
       <Component
-        {...rest}
+        {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
         role="button"
         className={cn(
           "inline-flex items-center justify-center gap-2 rounded-md bg-zinc-800 px-3 py-2 text-sm font-semibold text-zinc-100 outline-offset-2 transition hover:bg-zinc-700 active:bg-zinc-800 active:text-zinc-100/70 active:transition-none dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:active:bg-zinc-700 dark:active:text-zinc-100/70",
