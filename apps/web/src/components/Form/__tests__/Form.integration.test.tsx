@@ -70,11 +70,6 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../Form.i18n", async (orig) => {
-  const mod = await orig<typeof import("../Form.i18n")>();
-  return { ...mod };
-});
-
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
