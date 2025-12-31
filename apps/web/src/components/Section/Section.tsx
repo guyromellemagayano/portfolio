@@ -58,13 +58,6 @@ const SectionTitle = setDisplayName(function SectionTitle<
 });
 
 // ============================================================================
-// MEMOIZED SECTION TITLE COMPONENT
-// ============================================================================
-
-// eslint-disable-next-line unused-imports/no-unused-vars
-const MemoizedSectionTitle = React.memo(SectionTitle);
-
-// ============================================================================
 // SECTION CONTENT COMPONENT
 // ============================================================================
 
@@ -108,13 +101,6 @@ const SectionContent = setDisplayName(function SectionContent(
     </Component>
   );
 });
-
-// ============================================================================
-// MEMOIZED SECTION CONTENT COMPONENT
-// ============================================================================
-
-// eslint-disable-next-line unused-imports/no-unused-vars
-const MemoizedSectionContent = React.memo(SectionContent);
 
 // ============================================================================
 // SECTION GRID COMPONENT
@@ -163,13 +149,6 @@ const SectionGrid = setDisplayName(function SectionGrid<
     </Component>
   );
 });
-
-// ============================================================================
-// MEMOIZED SECTION GRID COMPONENT
-// ============================================================================
-
-// eslint-disable-next-line unused-imports/no-unused-vars
-const MemoizedSectionGrid = React.memo(SectionGrid);
 
 // ============================================================================
 // SECTION COMPONENT
@@ -221,7 +200,6 @@ export const Section = setDisplayName(function Section<
         <SectionTitle debugId={debugId} debugMode={debugMode}>
           {title}
         </SectionTitle>
-
         <SectionContent debugId={debugId} debugMode={debugMode}>
           {children}
         </SectionContent>
