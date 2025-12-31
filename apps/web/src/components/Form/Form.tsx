@@ -10,7 +10,19 @@ import {
 import { Button, Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { FORM_I18N } from "./Form.i18n";
+// ============================================================================
+// FORM COMPONENT I18N
+// ============================================================================
+
+type FormI18n = Readonly<Record<string, string>>;
+
+const FORM_I18N = {
+  newsletterFormHeading: "Stay up to date",
+  newsletterFormDescription:
+    "Get notified when I publish something new, and unsubscribe at any time.",
+  newsletterFormEmailAddressLabel: "Email address",
+  newsletterFormJoinButtonTextLabel: "Join",
+} as const satisfies FormI18n;
 
 // ============================================================================
 // FORM COMPONENT
