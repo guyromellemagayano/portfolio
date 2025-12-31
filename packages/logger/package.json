@@ -113,5 +113,8 @@
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.pkg.github.com/"
-  }
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }
