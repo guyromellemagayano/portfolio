@@ -15,7 +15,16 @@ import { AppContext } from "@web/app/context";
 import { Icon } from "@web/components";
 import { cn } from "@web/utils";
 
-import { BUTTON_I18N } from "./Button.i18n";
+// ============================================================================
+// BUTTON COMPONENT INTERNATIONALIZATION
+// ============================================================================
+
+type ButtonI18n = Readonly<Record<string, string>>;
+
+const BUTTON_I18N = {
+  // Action labels
+  goBackToArticles: "Go back to articles",
+} as const satisfies ButtonI18n;
 
 // ============================================================================
 // BUTTON COMPONENT
