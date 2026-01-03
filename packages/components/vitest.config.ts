@@ -101,4 +101,4 @@ export default defineConfig({
       "**/*.stories.*",
     ],
   },
-});
+} as any);
