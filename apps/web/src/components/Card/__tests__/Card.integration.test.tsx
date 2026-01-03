@@ -74,11 +74,11 @@ vi.mock("@web/utils", () => ({
 
 // Mock Icon component specifically for `Card.Cta`
 vi.mock("@web/components", () => ({
-  Icon: {
-    ChevronRight: vi.fn((props) => (
-      <span data-testid="chevron-right-icon" {...props} />
-    )),
-  },
+  Icon: vi.fn(({ name, ...props }) => (
+    <span data-testid={`icon-${name}`} {...props}>
+      →
+    </span>
+  )),
 }));
 
 describe("Card Integration Tests", () => {
