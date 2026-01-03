@@ -127,18 +127,13 @@ const mockIcon = vi.hoisted(() => ({
         />
       );
     }
-    return <svg data-testid={`icon-${name}`} className={className} {...props} />;
+    return (
+      <svg data-testid={`icon-${name}`} className={className} {...props} />
+    );
   },
 }));
 
 vi.mock("@web/components", () => mockIcon);
-
-// Mock Button.i18n
-vi.mock("../Button.i18n", () => ({
-  BUTTON_I18N: {
-    goBackToArticles: "Go back to articles",
-  },
-}));
 
 // Mock CSS modules
 vi.mock("*.module.css", () => ({
