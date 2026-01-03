@@ -7,7 +7,19 @@ import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
 import { Card } from "@web/components";
 import { type ArticleWithSlug } from "@web/utils";
 
-import { ARTICLE_I18N } from "./Article.i18n";
+// ============================================================================
+// ARTICLE COMPONENT I18N
+// ============================================================================
+
+type ArticleI18n = Readonly<Record<string, string>>;
+
+const ARTICLE_I18N = {
+  // Action labels
+  cta: "Read article",
+
+  // Content labels
+  articleDate: "Published on",
+} as const satisfies ArticleI18n;
 
 // ============================================================================
 // ARTICLE COMPONENT
@@ -54,7 +66,7 @@ export const Article = setDisplayName(function Article<
 
   return (
     <Component
-      {...rest}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role="article"
       debugId={componentId}
       debugMode={isDebugMode}

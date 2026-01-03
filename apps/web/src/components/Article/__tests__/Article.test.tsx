@@ -180,14 +180,6 @@ vi.mock("@web/components", () => ({
   ),
 }));
 
-// Mock shared data
-vi.mock("../Article.i18n", () => ({
-  ARTICLE_I18N: {
-    cta: "Read article",
-    articleDate: "Published on",
-  },
-}));
-
 describe("Article", () => {
   // Mock URL constructor to handle relative paths in test environment
   // eslint-disable-next-line no-undef
