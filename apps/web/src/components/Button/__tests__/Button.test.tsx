@@ -130,18 +130,13 @@ const mockIcon = vi.hoisted(() => ({
         />
       );
     }
-    return <svg data-testid={`icon-${name}`} className={className} {...props} />;
+    return (
+      <svg data-testid={`icon-${name}`} className={className} {...props} />
+    );
   },
 }));
 
 vi.mock("@web/components", () => mockIcon);
-
-// Mock Button.i18n
-vi.mock("../Button.i18n", () => ({
-  BUTTON_I18N: {
-    goBackToArticles: "Go back to articles",
-  },
-}));
 
 // Mock CSS modules
 vi.mock("*.module.css", () => ({
@@ -194,7 +189,10 @@ describe("Button", () => {
       render(<Button debugId="custom-button">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-testid", "custom-button-button-default");
+      expect(button).toHaveAttribute(
+        "data-testid",
+        "custom-button-button-default"
+      );
     });
 
     it("passes through HTML attributes", () => {
@@ -376,7 +374,9 @@ describe("Button", () => {
         </Button>
       );
 
-      const buttonElement = screen.getByRole("button", { name: "Accessible link" });
+      const buttonElement = screen.getByRole("button", {
+        name: "Accessible link",
+      });
       expect(buttonElement).toBeInTheDocument();
       expect(buttonElement).toHaveAttribute("href", "/test");
     });
