@@ -23,42 +23,6 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock Container sub-components
-vi.mock("../internal", () => ({
-  ContainerInner: React.forwardRef<HTMLDivElement, any>(
-    function MockContainerInner(props, ref) {
-      const { children, debugId, debugMode, ...rest } = props;
-      return (
-        <div
-          ref={ref}
-          data-testid="test-id-container-inner-root"
-          data-container-inner-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...rest}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
-  ContainerOuter: React.forwardRef<HTMLDivElement, any>(
-    function MockContainerOuter(props, ref) {
-      const { children, debugId, debugMode, ...rest } = props;
-      return (
-        <div
-          ref={ref}
-          data-testid="test-id-container-outer-root"
-          data-container-outer-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...rest}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
-}));
-
 describe("Container Integration Tests", () => {
   afterEach(() => {
     cleanup();
@@ -326,6 +290,116 @@ describe("Container Integration Tests", () => {
 
       const outer = screen.getByTestId("test-id-container-outer-root");
       expect(outer).toHaveClass("custom-class");
+    });
+  });
+
+  describe("Container Compound Component Integration", () => {
+    it("works with Container.Inner as standalone component", () => {
+      render(<Container.Inner>Inner standalone</Container.Inner>);
+
+      expect(screen.getByText("Inner standalone")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-inner-root")
+      ).toBeInTheDocument();
+    });
+
+    it("works with Container.Outer as standalone component", () => {
+      render(<Container.Outer>Outer standalone</Container.Outer>);
+
+      expect(screen.getByText("Outer standalone")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-outer-root")
+      ).toBeInTheDocument();
+    });
+
+    it("maintains proper structure when using compound components separately", () => {
+      render(
+        <Container.Outer>
+          <Container.Inner>Nested compound</Container.Inner>
+        </Container.Outer>
+      );
+
+      const outer = screen.getByTestId("test-id-container-outer-root");
+      const inner = screen.getByTestId("test-id-container-inner-root");
+      const content = screen.getByText("Nested compound");
+
+      expect(outer).toContainElement(inner);
+      expect(inner).toContainElement(content);
+    });
+
+    it("handles ref forwarding through compound component structure", () => {
+      const containerRef = React.createRef<HTMLDivElement>();
+      const innerRef = React.createRef<HTMLDivElement>();
+      const outerRef = React.createRef<HTMLDivElement>();
+
+      render(
+        <Container ref={containerRef}>
+          <Container.Inner ref={innerRef}>Inner with ref</Container.Inner>
+        </Container>
+      );
+
+      render(<Container.Outer ref={outerRef}>Outer with ref</Container.Outer>);
+
+      expect(containerRef.current).toBeInTheDocument();
+      expect(innerRef.current).toBeInTheDocument();
+      expect(outerRef.current).toBeInTheDocument();
+    });
+  });
+
+  describe("Container Layout Structure", () => {
+    it("applies correct outer container wrapper classes", () => {
+      render(<Container>Content</Container>);
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      const outerContentWrapper = outerRoot.querySelector("div");
+
+      expect(outerContentWrapper).toHaveClass(
+        "mx-auto",
+        "w-full",
+        "max-w-7xl",
+        "lg:px-8"
+      );
+    });
+
+    it("applies correct inner container wrapper classes", () => {
+      render(<Container>Content</Container>);
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      const innerContentWrapper = innerRoot.querySelector("div");
+
+      expect(innerContentWrapper).toHaveClass(
+        "mx-auto",
+        "max-w-2xl",
+        "lg:max-w-5xl"
+      );
+    });
+
+    it("handles complex layout structures", () => {
+      render(
+        <Container>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            <div data-testid="left-column">Left column</div>
+            <div data-testid="right-column">Right column</div>
+          </div>
+        </Container>
+      );
+
+      expect(screen.getByTestId("left-column")).toBeInTheDocument();
+      expect(screen.getByTestId("right-column")).toBeInTheDocument();
+    });
+
+    it("supports responsive design patterns", () => {
+      render(
+        <Container>
+          <div className="responsive-container">
+            <div data-testid="mobile-content">Mobile content</div>
+            <div data-testid="desktop-content">Desktop content</div>
+          </div>
+        </Container>
+      );
+
+      expect(screen.getByTestId("mobile-content")).toBeInTheDocument();
+      expect(screen.getByTestId("desktop-content")).toBeInTheDocument();
     });
   });
 });
