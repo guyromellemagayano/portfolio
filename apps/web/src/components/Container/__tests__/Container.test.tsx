@@ -44,44 +44,6 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("../ContainerInner", () => ({
-  ContainerInner: React.forwardRef<HTMLDivElement, any>(
-    function MockContainerInner(props, ref) {
-      const { children, debugId, debugMode, ...rest } = props;
-      return (
-        <div
-          ref={ref}
-          data-testid={`${debugId || "test-id"}-container-inner-root`}
-          data-container-inner-id={`${debugId || "test-id"}-container-inner`}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...rest}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
-}));
-
-vi.mock("../ContainerOuter", () => ({
-  ContainerOuter: React.forwardRef<HTMLDivElement, any>(
-    function MockContainerOuter(props, ref) {
-      const { children, debugId, debugMode, ...rest } = props;
-      return (
-        <div
-          ref={ref}
-          data-testid={`${debugId || "test-id"}-container-outer-root`}
-          data-container-outer-id={`${debugId || "test-id"}-container-outer`}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...rest}
-        >
-          {children}
-        </div>
-      );
-    }
-  ),
-}));
-
 describe("Container", () => {
   afterEach(() => {
     cleanup();
@@ -121,12 +83,12 @@ describe("Container", () => {
 
     it("passes through HTML attributes", () => {
       render(
-        <Container data-testid="custom-testid" aria-label="Container label">
+        <Container aria-label="Container label">
           Content
         </Container>
       );
 
-      const container = screen.getByTestId("custom-testid");
+      const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute("aria-label", "Container label");
     });
   });
@@ -149,10 +111,20 @@ describe("Container", () => {
 
       expect(container).toBeEmptyDOMElement();
     });
+
+    it("handles false children", () => {
+      const { container } = render(<Container>{false}</Container>);
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("handles zero children", () => {
+      const { container } = render(<Container>{0}</Container>);
+      expect(container).toBeEmptyDOMElement();
+    });
   });
 
   describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
+    it("forwards ref correctly to Container", () => {
       const ref = React.createRef<HTMLDivElement>();
       render(<Container ref={ref}>Content</Container>);
 
@@ -166,6 +138,280 @@ describe("Container", () => {
       render(<Container ref={ref}>Content</Container>);
 
       expect(ref.current?.tagName).toBe("DIV");
+    });
+  });
+
+  describe("Compound Component Structure", () => {
+    it("exposes Inner as compound component", () => {
+      expect(Container.Inner).toBeDefined();
+    });
+
+    it("exposes Outer as compound component", () => {
+      expect(Container.Outer).toBeDefined();
+    });
+
+    it("renders Container.Inner correctly", () => {
+      render(<Container.Inner>Inner content</Container.Inner>);
+
+      expect(screen.getByText("Inner content")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-inner-root")
+      ).toBeInTheDocument();
+    });
+
+    it("renders Container.Outer correctly", () => {
+      render(<Container.Outer>Outer content</Container.Outer>);
+
+      expect(screen.getByText("Outer content")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-container-outer-root")
+      ).toBeInTheDocument();
+    });
+
+    it("forwards ref correctly to Container.Inner", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container.Inner ref={ref}>Ref test</Container.Inner>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+
+    it("forwards ref correctly to Container.Outer", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container.Outer ref={ref}>Ref test</Container.Outer>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+  });
+
+  describe("Container.Inner Component", () => {
+    it("renders with proper structure", () => {
+      render(
+        <Container.Inner>
+          <div data-testid="child">Child content</div>
+        </Container.Inner>
+      );
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      const child = screen.getByTestId("child");
+
+      expect(innerRoot).toBeInTheDocument();
+      expect(child).toBeInTheDocument();
+      expect(child).toHaveTextContent("Child content");
+    });
+
+    it("passes className correctly to Container.Inner", () => {
+      render(
+        <Container.Inner className="custom-class">Content</Container.Inner>
+      );
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveClass("custom-class");
+    });
+
+    it("applies Tailwind CSS classes to Container.Inner", () => {
+      render(<Container.Inner>Content</Container.Inner>);
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveClass("relative", "px-4", "sm:px-8", "lg:px-12");
+    });
+
+    it("merges custom className with Tailwind CSS classes in Container.Inner", () => {
+      render(
+        <Container.Inner className="custom-class">Content</Container.Inner>
+      );
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveClass("custom-class");
+      expect(innerRoot).toHaveClass("relative", "px-4", "sm:px-8", "lg:px-12");
+    });
+
+    it("applies debug mode to Container.Inner when enabled", () => {
+      render(<Container.Inner debugMode={true}>Content</Container.Inner>);
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("applies custom component ID to Container.Inner", () => {
+      render(<Container.Inner debugId="custom-id">Content</Container.Inner>);
+
+      const innerRoot = screen.getByTestId("custom-id-container-inner-root");
+      expect(innerRoot).toHaveAttribute(
+        "data-container-inner-id",
+        "custom-id-container-inner"
+      );
+    });
+
+    it("forwards aria attributes to Container.Inner", () => {
+      render(
+        <Container.Inner aria-label="Inner container" aria-describedby="desc">
+          Content
+        </Container.Inner>
+      );
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot).toHaveAttribute("aria-label", "Inner container");
+      expect(innerRoot).toHaveAttribute("aria-describedby", "desc");
+    });
+
+    it("renders Container.Inner as custom element when as prop is provided", () => {
+      render(<Container.Inner as="section">Content</Container.Inner>);
+
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot.tagName).toBe("SECTION");
+    });
+  });
+
+  describe("Container.Outer Component", () => {
+    it("renders with proper structure", () => {
+      render(
+        <Container.Outer>
+          <div data-testid="child">Child content</div>
+        </Container.Outer>
+      );
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      const child = screen.getByTestId("child");
+
+      expect(outerRoot).toBeInTheDocument();
+      expect(child).toBeInTheDocument();
+      expect(child).toHaveTextContent("Child content");
+    });
+
+    it("passes className correctly to Container.Outer", () => {
+      render(
+        <Container.Outer className="custom-class">Content</Container.Outer>
+      );
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot).toHaveClass("custom-class");
+    });
+
+    it("applies Tailwind CSS classes to Container.Outer", () => {
+      render(<Container.Outer>Content</Container.Outer>);
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot).toHaveClass("sm:px-8");
+    });
+
+    it("merges custom className with Tailwind CSS classes in Container.Outer", () => {
+      render(
+        <Container.Outer className="custom-class">Content</Container.Outer>
+      );
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot).toHaveClass("custom-class");
+      expect(outerRoot).toHaveClass("sm:px-8");
+    });
+
+    it("applies debug mode to Container.Outer when enabled", () => {
+      render(<Container.Outer debugMode={true}>Content</Container.Outer>);
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("applies custom component ID to Container.Outer", () => {
+      render(<Container.Outer debugId="custom-id">Content</Container.Outer>);
+
+      const outerRoot = screen.getByTestId("custom-id-container-outer-root");
+      expect(outerRoot).toHaveAttribute(
+        "data-container-outer-id",
+        "custom-id-container-outer"
+      );
+    });
+
+    it("forwards aria attributes to Container.Outer", () => {
+      render(
+        <Container.Outer aria-label="Outer container" aria-describedby="desc">
+          Content
+        </Container.Outer>
+      );
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot).toHaveAttribute("aria-label", "Outer container");
+      expect(outerRoot).toHaveAttribute("aria-describedby", "desc");
+    });
+
+    it("applies container outer content wrapper classes", () => {
+      render(<Container.Outer>Content</Container.Outer>);
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      const contentWrapper = outerRoot.querySelector("div");
+
+      expect(outerRoot).toContainElement(contentWrapper);
+      expect(contentWrapper).toHaveClass(
+        "mx-auto",
+        "w-full",
+        "max-w-7xl",
+        "lg:px-8"
+      );
+    });
+
+    it("renders Container.Outer as custom element when as prop is provided", () => {
+      render(<Container.Outer as="section">Content</Container.Outer>);
+
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot.tagName).toBe("SECTION");
+    });
+  });
+
+  describe("Content Types", () => {
+    it("handles string children", () => {
+      render(<Container>String content</Container>);
+      expect(screen.getByText("String content")).toBeInTheDocument();
+    });
+
+    it("handles number children", () => {
+      render(<Container>{42}</Container>);
+      expect(screen.getByText("42")).toBeInTheDocument();
+    });
+
+    it("handles React elements", () => {
+      const ChildComponent = function () {
+        return <div data-testid="react-element">React Element</div>;
+      };
+      render(
+        <Container>
+          <ChildComponent />
+        </Container>
+      );
+
+      expect(screen.getByTestId("react-element")).toBeInTheDocument();
+    });
+
+    it("handles array children", () => {
+      const arrayChildren = [
+        <div key="1" data-testid="array-child-1">
+          Array Child 1
+        </div>,
+        <div key="2" data-testid="array-child-2">
+          Array Child 2
+        </div>,
+      ];
+
+      render(<Container>{arrayChildren}</Container>);
+
+      expect(screen.getByTestId("array-child-1")).toBeInTheDocument();
+      expect(screen.getByTestId("array-child-2")).toBeInTheDocument();
+    });
+
+    it("handles mixed content types", () => {
+      render(
+        <Container>
+          <div data-testid="element">Element</div>
+          String content
+          {42}
+          {true && <span data-testid="conditional">Conditional</span>}
+        </Container>
+      );
+
+      expect(screen.getByTestId("element")).toBeInTheDocument();
+      expect(screen.getByText(/String content/)).toBeInTheDocument();
+      expect(screen.getByText(/42/)).toBeInTheDocument();
+      expect(screen.getByTestId("conditional")).toBeInTheDocument();
     });
   });
 
@@ -190,21 +436,6 @@ describe("Container", () => {
         return element?.textContent?.includes("Special chars:") || false;
       });
       expect(elements[0]).toBeInTheDocument();
-    });
-
-    it("handles empty string children", () => {
-      const { container } = render(<Container>{""}</Container>);
-      expect(container).toBeEmptyDOMElement();
-    });
-
-    it("handles false children", () => {
-      const { container } = render(<Container>{false}</Container>);
-      expect(container).toBeEmptyDOMElement();
-    });
-
-    it("handles zero children", () => {
-      const { container } = render(<Container>{0}</Container>);
-      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -247,51 +478,10 @@ describe("Container", () => {
     });
   });
 
-  describe("Memoization", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(<Container isMemoized={true}>Content</Container>);
-      expect(screen.getByText("Content")).toBeInTheDocument();
-    });
-
-    it("renders without memoization by default", () => {
-      render(<Container>Content</Container>);
-      expect(screen.getByText("Content")).toBeInTheDocument();
-    });
-
-    it("maintains memoization across re-renders when isMemoized is true", () => {
-      const { rerender } = render(
-        <Container isMemoized={true}>Content</Container>
-      );
-
-      const initialElement = screen.getByText("Content");
-
-      // Re-render with same props
-      rerender(<Container isMemoized={true}>Content</Container>);
-
-      const rerenderedElement = screen.getByText("Content");
-      expect(rerenderedElement).toBe(initialElement);
-    });
-
-    it("does not memoize when isMemoized is false", () => {
-      const { rerender } = render(
-        <Container isMemoized={false}>Content</Container>
-      );
-
-      const _initialElement = screen.getByText("Content");
-
-      // Re-render with different content to test non-memoization
-      rerender(<Container isMemoized={false}>Different content</Container>);
-
-      expect(screen.getByText("Different content")).toBeInTheDocument();
-      expect(screen.queryByText("Content")).not.toBeInTheDocument();
-    });
-  });
-
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
-      // Test container structure
       const outerContainer = screen.getByTestId(
         "aria-test-container-outer-root"
       );
@@ -313,7 +503,6 @@ describe("Container", () => {
         "aria-test-container-inner-root"
       );
 
-      // Both containers should be present
       expect(outerContainer).toBeInTheDocument();
       expect(innerContainer).toBeInTheDocument();
     });
@@ -321,7 +510,6 @@ describe("Container", () => {
     it("applies correct ARIA labels without ID dependencies", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
-      // Content should be present (no ID needed)
       const contentElement = screen.getByText("Container content");
       expect(contentElement).toBeInTheDocument();
     });
@@ -333,7 +521,6 @@ describe("Container", () => {
         </Container>
       );
 
-      // Container should have descriptive label
       const outerContainer = screen.getByTestId(
         "aria-test-container-outer-root"
       );
@@ -347,7 +534,6 @@ describe("Container", () => {
         "custom-aria-id-container-outer-root"
       );
 
-      // Should be present (semantic HTML provides the role)
       expect(outerContainer).toBeInTheDocument();
     });
 
@@ -356,14 +542,11 @@ describe("Container", () => {
         <Container debugId="aria-test">Container content</Container>
       );
 
-      // Initial render
       let outerContainer = screen.getByTestId("aria-test-container-outer-root");
       expect(outerContainer).toBeInTheDocument();
 
-      // Update with different content
       rerender(<Container debugId="aria-test">Updated content</Container>);
 
-      // ARIA attributes should be maintained
       outerContainer = screen.getByTestId("aria-test-container-outer-root");
       expect(outerContainer).toBeInTheDocument();
     });
@@ -371,7 +554,6 @@ describe("Container", () => {
     it("ensures proper ARIA landmark structure", () => {
       render(<Container debugId="aria-test">Container content</Container>);
 
-      // Should have container structure
       const outerContainer = screen.getByTestId(
         "aria-test-container-outer-root"
       );
@@ -390,7 +572,6 @@ describe("Container", () => {
         "aria-test-container-outer-root"
       );
 
-      // Should be present (semantic HTML provides the role)
       expect(outerContainer).toBeInTheDocument();
     });
 
@@ -399,7 +580,6 @@ describe("Container", () => {
         <Container debugId="aria-test">{null}</Container>
       );
 
-      // Component should not render when no content
       expect(container).toBeEmptyDOMElement();
     });
 
@@ -418,13 +598,42 @@ describe("Container", () => {
         "aria-test-container-outer-root"
       );
 
-      // Should maintain both component ARIA attributes and custom ones
       expect(outerContainer).toBeInTheDocument();
       expect(outerContainer).toHaveAttribute("aria-expanded", "true");
       expect(outerContainer).toHaveAttribute(
         "aria-controls",
         "container-content"
       );
+    });
+  });
+
+  describe("Performance", () => {
+    it("renders efficiently with multiple children", () => {
+      const children = Array.from({ length: 100 }, (_, i) => (
+        <div key={i}>Child {i}</div>
+      ));
+
+      render(<Container>{children}</Container>);
+
+      expect(screen.getByText("Child 0")).toBeInTheDocument();
+      expect(screen.getByText("Child 99")).toBeInTheDocument();
+    });
+
+    it("handles large content efficiently", () => {
+      const largeContent = "x".repeat(10000);
+      render(<Container>{largeContent}</Container>);
+
+      expect(screen.getByText(largeContent)).toBeInTheDocument();
+    });
+
+    it("handles dynamic content updates efficiently", () => {
+      const { rerender } = render(<Container>Initial</Container>);
+
+      expect(screen.getByText("Initial")).toBeInTheDocument();
+
+      rerender(<Container>Updated</Container>);
+
+      expect(screen.getByText("Updated")).toBeInTheDocument();
     });
   });
 });
