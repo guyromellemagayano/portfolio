@@ -15,7 +15,7 @@ import { Card, MemoizedCard } from "../Card";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    componentId: options.internalId || options.debugId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -70,113 +70,18 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-// Mock _internal components
-vi.mock("../_internal", () => ({
-  CardDescription: vi.fn(({ children, ...props }) => (
-    <div data-testid="card-description-mock" {...props}>
-      {children}
-    </div>
-  )),
-  CardEyebrow: vi.fn(({ children, ...props }) => (
-    <div data-testid="card-eyebrow-mock" {...props}>
-      {children}
-    </div>
-  )),
-  CardLink: vi.fn(({ children, ...props }) => (
-    <a data-testid="card-link-mock" {...props}>
-      {children}
-    </a>
-  )),
-  CardTitle: vi.fn(({ children, ...props }) => (
-    <h2 data-testid="card-title-mock" {...props}>
-      {children}
-    </h2>
-  )),
-  CardLinkCustom: (props: any) => {
-    const {
-      children,
-      href,
-      target,
-      title,
-      className,
-      debugId,
-      debugMode,
-      ...rest
-    } = props;
-    return (
-      <a
-        href={href}
-        target={target}
-        title={title}
-        className={className}
-        data-card-link-custom-id={`${debugId || "test-id"}-card-link-custom`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid={`${debugId || "test-id"}-card-link-custom-root`}
-        {...rest}
-      >
-        {children}
-      </a>
-    );
-  },
-  MemoizedCardDescription: vi.fn(({ children, ...props }) => (
-    <div data-testid="card-description-mock" {...props}>
-      {children}
-    </div>
-  )),
-  MemoizedCardEyebrow: vi.fn(({ children, ...props }) => (
-    <div data-testid="card-eyebrow-mock" {...props}>
-      {children}
-    </div>
-  )),
-  MemoizedCardLink: vi.fn(({ children, ...props }) => (
-    <a data-testid="card-link-mock" {...props}>
-      {children}
-    </a>
-  )),
-  MemoizedCardTitle: vi.fn(({ children, ...props }) => (
-    <h2 data-testid="card-title-mock" {...props}>
-      {children}
-    </h2>
-  )),
-  MemoizedCardLinkCustom: (props: any) => {
-    const {
-      children,
-      href,
-      target,
-      title,
-      className,
-      debugId,
-      debugMode,
-      ...rest
-    } = props;
-    return (
-      <a
-        href={href}
-        target={target}
-        title={title}
-        className={className}
-        data-card-link-custom-id={`${debugId || "test-id"}-card-link-custom`}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid={`${debugId || "test-id"}-card-link-custom-root`}
-        {...rest}
-      >
-        {children}
-      </a>
-    );
-  },
-}));
-
 // Mock Next.js Link component
 vi.mock("next/link", () => ({
   default: React.forwardRef<HTMLAnchorElement, any>(
     function MockNextLink(props, ref) {
-      const { href, target, title, children, ...rest } = props;
+      const { href, target, title, rel, children, ...rest } = props;
       return (
         <a
           ref={ref}
-          href={href}
+          href={href ?? ""}
           target={target}
           title={title}
+          rel={rel}
           data-testid="card-link-custom-root"
           {...rest}
         >
