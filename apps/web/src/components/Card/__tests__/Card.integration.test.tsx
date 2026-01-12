@@ -13,7 +13,7 @@ import { Card } from "../Card";
 
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    componentId: options.internalId || options.debugId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
@@ -62,10 +62,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
-  getLinkTargetProps: vi.fn((target, rel) => ({
-    target: target || undefined,
-    rel: rel || undefined,
-  })),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
+    }
+    return { target };
+  }),
 }));
 
 vi.mock("@web/utils", () => ({
