@@ -538,6 +538,40 @@ export { SubComponent };
 
 ## Import Organization
 
+### **Avoid Barrel File Imports (CRITICAL)**
+
+**Barrel files** are entry points that re-export multiple modules (e.g., `index.js` that does `export * from './module'`). They can cause 200-800ms import cost and slow builds.
+
+**Incorrect (imports entire library, 200-800ms import cost):**
+```tsx
+import { Check, X, Menu } from 'lucide-react'
+// Loads 1,583 modules, takes ~2.8s extra in dev
+// Runtime cost: 200-800ms on every cold start
+```
+
+**Correct (imports only what you need):**
+```tsx
+import Check from 'lucide-react/dist/esm/icons/check'
+import X from 'lucide-react/dist/esm/icons/x'
+import Menu from 'lucide-react/dist/esm/icons/menu'
+// Loads only 3 modules (~2KB vs ~1MB)
+```
+
+**Alternative (Next.js 13.5+ with optimizePackageImports):**
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@mui/material']
+  }
+}
+// Then you can keep barrel imports - automatically transformed at build time
+```
+
+**Libraries commonly affected:** `lucide-react`, `@mui/material`, `@mui/icons-material`, `@tabler/icons-react`, `react-icons`, `@headlessui/react`, `@radix-ui/react-*`, `lodash`, `ramda`, `date-fns`, `rxjs`, `react-use`.
+
+**Note:** This applies to external libraries. Internal barrel exports (like `@web/utils`) are acceptable when properly tree-shaken.
+
 ### **Standard Import Order**
 
 ```typescript
