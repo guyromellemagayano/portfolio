@@ -1,5 +1,5 @@
 ---
-description: Performance Standards
+description: Performance Standards - Vercel React Best Practices
 globs: ["apps/**/*.tsx", "packages/**/*.tsx"]
 alwaysApply: false
 ---
@@ -8,14 +8,622 @@ alwaysApply: false
 
 # Performance Standards
 
-## React Performance Optimization
+Based on Vercel React Best Practices - 45 rules across 8 priority categories.
 
-### Memoization Patterns
+## Priority 1: Eliminating Waterfalls (CRITICAL)
 
-#### Component Memoization
+### async-parallel: Promise.all() for Independent Operations
+
+**Incorrect (sequential execution, 3 round trips):**
+```typescript
+const user = await fetchUser()
+const posts = await fetchPosts()
+const comments = await fetchComments()
+```
+
+**Correct (parallel execution, 1 round trip):**
+```typescript
+const [user, posts, comments] = await Promise.all([
+  fetchUser(),
+  fetchPosts(),
+  fetchComments()
+])
+```
+
+### async-defer-await: Defer Await Until Needed
+
+Move `await` operations into branches where they're actually used.
+
+**Incorrect (blocks both branches):**
+```typescript
+async function handleRequest(userId: string, skipProcessing: boolean) {
+  const userData = await fetchUserData(userId)
+  
+  if (skipProcessing) {
+    return { skipped: true }
+  }
+  
+  return processUserData(userData)
+}
+```
+
+**Correct (only blocks when needed):**
+```typescript
+async function handleRequest(userId: string, skipProcessing: boolean) {
+  if (skipProcessing) {
+    return { skipped: true }
+  }
+  
+  const userData = await fetchUserData(userId)
+  return processUserData(userData)
+}
+```
+
+### async-dependencies: Use better-all for Partial Dependencies
+
+When operations have partial dependencies, use `Promise.all()` with proper ordering.
+
+**Incorrect:**
+```typescript
+const a = await fetchA()
+const b = await fetchB(a.id)
+const c = await fetchC()
+```
+
+**Correct:**
+```typescript
+const [a, c] = await Promise.all([fetchA(), fetchC()])
+const b = await fetchB(a.id)
+```
+
+### async-api-routes: Start Promises Early, Await Late
+
+In API routes, start promises early and await them when needed.
+
+**Incorrect:**
+```typescript
+export async function GET(request: Request) {
+  const data = await fetchData()
+  const processed = await processData(data)
+  return Response.json(processed)
+}
+```
+
+**Correct:**
+```typescript
+export async function GET(request: Request) {
+  const dataPromise = fetchData()
+  // Do other work
+  const data = await dataPromise
+  const processed = await processData(data)
+  return Response.json(processed)
+}
+```
+
+### async-suspense-boundaries: Use Suspense to Stream Content
+
+Use React Suspense boundaries to stream content and improve perceived performance.
 
 ```typescript
-// Base component with memoization control
+import { Suspense } from 'react'
+
+export default function Page() {
+  return (
+    <div>
+      <Suspense fallback={<Skeleton />}>
+        <AsyncContent />
+      </Suspense>
+    </div>
+  )
+}
+```
+
+## Priority 2: Bundle Size Optimization (CRITICAL)
+
+### bundle-barrel-imports: Import Directly, Avoid Barrel Files
+
+**Incorrect (imports entire library, 200-800ms import cost):**
+```tsx
+import { Check, X, Menu } from 'lucide-react'
+// Loads 1,583 modules, takes ~2.8s extra in dev
+```
+
+**Correct (imports only what you need):**
+```tsx
+import Check from 'lucide-react/dist/esm/icons/check'
+import X from 'lucide-react/dist/esm/icons/x'
+import Menu from 'lucide-react/dist/esm/icons/menu'
+// Loads only 3 modules (~2KB vs ~1MB)
+```
+
+**Alternative (Next.js 13.5+):**
+```js
+// next.config.js
+module.exports = {
+  experimental: {
+    optimizePackageImports: ['lucide-react', '@mui/material']
+  }
+}
+// Then you can keep barrel imports - automatically transformed
+```
+
+### bundle-dynamic-imports: Use next/dynamic for Heavy Components
+
+**Incorrect (Monaco bundles with main chunk ~300KB):**
+```tsx
+import { MonacoEditor } from './monaco-editor'
+
+function CodePanel({ code }: { code: string }) {
+  return <MonacoEditor value={code} />
+}
+```
+
+**Correct (Monaco loads on demand):**
+```tsx
+import dynamic from 'next/dynamic'
+
+const MonacoEditor = dynamic(
+  () => import('./monaco-editor').then(m => m.MonacoEditor),
+  { ssr: false }
+)
+
+function CodePanel({ code }: { code: string }) {
+  return <MonacoEditor value={code} />
+}
+```
+
+### bundle-defer-third-party: Load Analytics/Logging After Hydration
+
+Defer third-party scripts (analytics, logging) until after hydration.
+
+```typescript
+useEffect(() => {
+  // Load analytics after hydration
+  import('./analytics').then(({ initAnalytics }) => {
+    initAnalytics()
+  })
+}, [])
+```
+
+### bundle-conditional: Load Modules Only When Feature is Activated
+
+```typescript
+const loadFeature = async () => {
+  if (featureEnabled) {
+    const { FeatureComponent } = await import('./FeatureComponent')
+    return FeatureComponent
+  }
+  return null
+}
+```
+
+### bundle-preload: Preload on Hover/Focus for Perceived Speed
+
+```typescript
+const handleMouseEnter = () => {
+  import('./HeavyComponent')
+}
+
+<button onMouseEnter={handleMouseEnter}>
+  Open Heavy Component
+</button>
+```
+
+## Priority 3: Server-Side Performance (HIGH)
+
+### server-cache-react: Use React.cache() for Per-Request Deduplication
+
+```typescript
+import { cache } from 'react'
+
+export const getCurrentUser = cache(async () => {
+  const session = await auth()
+  if (!session?.user?.id) return null
+  return await db.user.findUnique({
+    where: { id: session.user.id }
+  })
+})
+```
+
+### server-cache-lru: Use LRU Cache for Cross-Request Caching
+
+```typescript
+import { LRUCache } from 'lru-cache'
+
+const cache = new LRUCache<string, any>({
+  max: 500,
+  ttl: 1000 * 60 * 5 // 5 minutes
+})
+
+export async function getCachedData(key: string) {
+  if (cache.has(key)) {
+    return cache.get(key)
+  }
+  const data = await fetchData(key)
+  cache.set(key, data)
+  return data
+}
+```
+
+### server-serialization: Minimize Data Passed to Client Components
+
+Only pass necessary data to client components to reduce serialization overhead.
+
+**Incorrect:**
+```tsx
+'use client'
+export function ClientComponent({ fullUser }: { fullUser: User }) {
+  return <div>{fullUser.name}</div>
+}
+```
+
+**Correct:**
+```tsx
+'use client'
+export function ClientComponent({ userName }: { userName: string }) {
+  return <div>{userName}</div>
+}
+```
+
+### server-parallel-fetching: Restructure Components to Parallelize Fetches
+
+**Incorrect (Sidebar waits for Page's fetch):**
+```tsx
+export default async function Page() {
+  const header = await fetchHeader()
+  return (
+    <div>
+      <div>{header}</div>
+      <Sidebar />
+    </div>
+  )
+}
+
+async function Sidebar() {
+  const items = await fetchSidebarItems()
+  return <nav>{items.map(renderItem)}</nav>
+}
+```
+
+**Correct (both fetch simultaneously):**
+```tsx
+async function Header() {
+  const data = await fetchHeader()
+  return <div>{data}</div>
+}
+
+async function Sidebar() {
+  const items = await fetchSidebarItems()
+  return <nav>{items.map(renderItem)}</nav>
+}
+
+export default function Page() {
+  return (
+    <div>
+      <Header />
+      <Sidebar />
+    </div>
+  )
+}
+```
+
+### server-after-nonblocking: Use after() for Non-Blocking Operations
+
+```typescript
+import { after } from 'next/server'
+
+export async function GET() {
+  after(async () => {
+    // Non-blocking operations (logging, analytics)
+    await logRequest()
+  })
+  
+  return Response.json({ data: 'response' })
+}
+```
+
+## Priority 4: Client-Side Data Fetching (MEDIUM-HIGH)
+
+### client-swr-dedup: Use SWR for Automatic Request Deduplication
+
+```typescript
+import useSWR from 'swr'
+
+function Profile() {
+  const { data, error } = useSWR('/api/user', fetcher)
+  // Multiple components using same key = single request
+}
+```
+
+### client-event-listeners: Deduplicate Global Event Listeners
+
+```typescript
+// Use singleton pattern for global listeners
+const globalListeners = new Map()
+
+function useGlobalListener(event: string, handler: () => void) {
+  useEffect(() => {
+    if (!globalListeners.has(event)) {
+      window.addEventListener(event, handler)
+      globalListeners.set(event, handler)
+    }
+    return () => {
+      globalListeners.delete(event)
+      window.removeEventListener(event, handler)
+    }
+  }, [event, handler])
+}
+```
+
+## Priority 5: Re-render Optimization (MEDIUM)
+
+### rerender-memo: Extract Expensive Work into Memoized Components
+
+**Incorrect (computes avatar even when loading):**
+```tsx
+function Profile({ user, loading }: Props) {
+  const avatar = useMemo(() => {
+    const id = computeAvatarId(user)
+    return <Avatar id={id} />
+  }, [user])
+
+  if (loading) return <Skeleton />
+  return <div>{avatar}</div>
+}
+```
+
+**Correct (skips computation when loading):**
+```tsx
+const UserAvatar = memo(function UserAvatar({ user }: { user: User }) {
+  const id = useMemo(() => computeAvatarId(user), [user])
+  return <Avatar id={id} />
+})
+
+function Profile({ user, loading }: Props) {
+  if (loading) return <Skeleton />
+  return (
+    <div>
+      <UserAvatar user={user} />
+    </div>
+  )
+}
+```
+
+**Note:** If React Compiler is enabled, manual memoization is not necessary.
+
+### rerender-defer-reads: Don't Subscribe to State Only Used in Callbacks
+
+**Incorrect:**
+```tsx
+function Component({ count, onClick }) {
+  // Re-renders when count changes, but only uses it in callback
+  return <button onClick={() => onClick(count)}>Click</button>
+}
+```
+
+**Correct:**
+```tsx
+function Component({ onClick }) {
+  const countRef = useRef(count)
+  countRef.current = count
+  return <button onClick={() => onClick(countRef.current)}>Click</button>
+}
+```
+
+### rerender-dependencies: Use Primitive Dependencies in Effects
+
+**Incorrect:**
+```tsx
+useEffect(() => {
+  fetchData(user.id)
+}, [user]) // Re-runs when any user property changes
+```
+
+**Correct:**
+```tsx
+useEffect(() => {
+  fetchData(user.id)
+}, [user.id]) // Only re-runs when id changes
+```
+
+### rerender-derived-state: Subscribe to Derived Booleans, Not Raw Values
+
+**Incorrect:**
+```tsx
+const [items, setItems] = useState([])
+const hasItems = items.length > 0
+// Component re-renders when items change, even if hasItems stays false
+```
+
+**Correct:**
+```tsx
+const [hasItems, setHasItems] = useState(false)
+// Only re-renders when hasItems actually changes
+```
+
+### rerender-functional-setstate: Use Functional setState for Stable Callbacks
+
+```typescript
+// Stable callback that doesn't cause re-renders
+const handleClick = useCallback(() => {
+  setCount(prev => prev + 1)
+}, []) // No dependencies needed
+```
+
+### rerender-lazy-state-init: Pass Function to useState for Expensive Values
+
+**Incorrect:**
+```tsx
+function Component() {
+  const [data, setData] = useState(expensiveComputation()) // Runs every render
+}
+```
+
+**Correct:**
+```tsx
+function Component() {
+  const [data, setData] = useState(() => expensiveComputation()) // Runs once
+}
+```
+
+### rerender-transitions: Use startTransition for Non-Urgent Updates
+
+```typescript
+import { startTransition } from 'react'
+
+function handleInputChange(value: string) {
+  setInputValue(value) // Urgent update
+  
+  startTransition(() => {
+    setSearchResults(computeResults(value)) // Non-urgent update
+  })
+}
+```
+
+## Priority 6: Rendering Performance (MEDIUM)
+
+### rendering-content-visibility: Use content-visibility for Long Lists
+
+```css
+.long-list {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px;
+}
+```
+
+### rendering-hoist-jsx: Extract Static JSX Outside Components
+
+**Incorrect:**
+```tsx
+function Component() {
+  const staticContent = <div>Static content</div> // Recreated every render
+  return <div>{staticContent}</div>
+}
+```
+
+**Correct:**
+```tsx
+const staticContent = <div>Static content</div> // Created once
+
+function Component() {
+  return <div>{staticContent}</div>
+}
+```
+
+### rendering-conditional-render: Use Ternary, Not && for Conditionals
+
+**Incorrect:**
+```tsx
+{items.length && <List items={items} />} // Renders 0 if empty
+```
+
+**Correct:**
+```tsx
+{items.length > 0 ? <List items={items} /> : null}
+```
+
+### rendering-hydration-no-flicker: Use Inline Script for Client-Only Data
+
+```tsx
+<script
+  dangerouslySetInnerHTML={{
+    __html: `window.__INITIAL_DATA__ = ${JSON.stringify(data)}`
+  }}
+/>
+```
+
+## Priority 7: JavaScript Performance (LOW-MEDIUM)
+
+### js-batch-dom-css: Group CSS Changes via Classes or cssText
+
+**Incorrect:**
+```typescript
+element.style.width = '100px'
+element.style.height = '200px'
+element.style.color = 'red'
+```
+
+**Correct:**
+```typescript
+element.className = 'w-100 h-200 text-red'
+// Or
+element.style.cssText = 'width: 100px; height: 200px; color: red;'
+```
+
+### js-index-maps: Build Map for Repeated Lookups
+
+**Incorrect:**
+```typescript
+const items = [{ id: 1 }, { id: 2 }]
+items.find(item => item.id === targetId) // O(n) lookup
+```
+
+**Correct:**
+```typescript
+const itemMap = new Map(items.map(item => [item.id, item]))
+itemMap.get(targetId) // O(1) lookup
+```
+
+### js-cache-property-access: Cache Object Properties in Loops
+
+**Incorrect:**
+```typescript
+for (let i = 0; i < items.length; i++) {
+  process(items[i].property.nested.value) // Repeated property access
+}
+```
+
+**Correct:**
+```typescript
+for (let i = 0; i < items.length; i++) {
+  const value = items[i].property.nested.value
+  process(value)
+}
+```
+
+### js-set-map-lookups: Use Set/Map for O(1) Lookups
+
+```typescript
+const allowedIds = new Set([1, 2, 3, 4, 5])
+if (allowedIds.has(id)) { // O(1)
+  // Process
+}
+```
+
+## Priority 8: Advanced Patterns (LOW)
+
+### advanced-event-handler-refs: Store Event Handlers in Refs
+
+```typescript
+const handlerRef = useRef(handler)
+handlerRef.current = handler
+
+useEffect(() => {
+  const element = ref.current
+  const handler = (e: Event) => handlerRef.current(e)
+  element.addEventListener('click', handler)
+  return () => element.removeEventListener('click', handler)
+}, []) // Stable dependency array
+```
+
+### advanced-use-latest: useLatest for Stable Callback Refs
+
+```typescript
+function useLatest<T>(value: T) {
+  const ref = useRef(value)
+  ref.current = value
+  return ref
+}
+
+const latestCallback = useLatest(callback)
+// Use latestCallback.current in effects
+```
+
+## Component Memoization Patterns
+
+### Base Component with Memoization Control
+
+```typescript
 export interface ComponentProps extends CommonComponentProps {
   /** Whether to enable memoization */
   isMemoized?: boolean;
@@ -40,7 +648,7 @@ export const Component: ComponentComponent = setDisplayName(
 );
 ```
 
-#### Hook Memoization
+### Hook Memoization
 
 ```typescript
 // Memoize expensive computations
@@ -57,9 +665,7 @@ const handleClick = useCallback((event: React.MouseEvent) => {
 const componentRef = useRef<HTMLElement>(null);
 ```
 
-### Performance Optimization Patterns
-
-#### Virtual Scrolling
+## Virtual Scrolling for Large Lists
 
 ```typescript
 // For large lists (>100 items)
@@ -97,76 +703,7 @@ export function VirtualizedList({ items }: { items: Item[] }) {
 }
 ```
 
-#### Lazy Loading
-
-```typescript
-// Intersection observer for lazy loading
-export function useComponentVisibility(ref: React.RefObject<HTMLElement>) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-
-    return () => observer.disconnect();
-  }, [ref]);
-
-  return isVisible;
-}
-
-// Lazy component loading
-const LazyComponent = React.lazy(() => import('./HeavyComponent'));
-
-function App() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <LazyComponent />
-    </Suspense>
-  );
-}
-```
-
-#### Code Splitting
-
-```typescript
-// Route-based code splitting
-const HomePage = React.lazy(() => import('./pages/HomePage'));
-const AboutPage = React.lazy(() => import('./pages/AboutPage'));
-
-// Component-based code splitting
-const HeavyChart = React.lazy(() => import('./HeavyChart'));
-
-// Dynamic imports for conditional loading
-const loadFeature = async () => {
-  const { FeatureComponent } = await import('./FeatureComponent');
-  return FeatureComponent;
-};
-```
-
-## Bundle Optimization
-
-### Tree Shaking
-
-```typescript
-// Use named imports for better tree shaking
-import { specificFunction } from 'large-library';
-// Instead of: import * as library from 'large-library';
-
-// Use dynamic imports for optional features
-const loadOptionalFeature = async () => {
-  if (shouldLoadFeature) {
-    const { OptionalFeature } = await import('./OptionalFeature');
-    return OptionalFeature;
-  }
-  return null;
-};
-```
-
-### Asset Optimization
+## Image Optimization
 
 ```typescript
 // Image optimization with next/image
@@ -185,164 +722,13 @@ function OptimizedImage({ src, alt, ...props }) {
     />
   );
 }
-
-// WebP format with fallbacks
-function ResponsiveImage({ src, alt }) {
-  return (
-    <picture>
-      <source srcSet={`${src}.webp`} type="image/webp" />
-      <source srcSet={`${src}.jpg`} type="image/jpeg" />
-      <img src={`${src}.jpg`} alt={alt} />
-    </picture>
-  );
-}
-```
-
-## Network Performance
-
-### Data Fetching Optimization
-
-```typescript
-// React Query for caching and background updates
-export function useOptimizedData(key: string, fetcher: () => Promise<any>) {
-  return useQuery({
-    queryKey: [key],
-    queryFn: fetcher,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
-    refetchOnWindowFocus: false,
-    retry: 3,
-  });
-}
-
-// Prefetching for better UX
-export function usePrefetchData() {
-  const queryClient = useQueryClient();
-
-  const prefetchData = useCallback(async (key: string) => {
-    await queryClient.prefetchQuery({
-      queryKey: [key],
-      queryFn: () => fetchData(key),
-      staleTime: 5 * 60 * 1000,
-    });
-  }, [queryClient]);
-
-  return { prefetchData };
-}
-```
-
-### Request Optimization
-
-```typescript
-// Debounced search
-export function useDebouncedSearch(delay: number = 300) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm, delay]);
-
-  return { searchTerm, setSearchTerm, debouncedSearchTerm };
-}
-
-// Request deduplication
-const requestCache = new Map();
-
-export async function deduplicatedRequest(url: string, options: RequestInit) {
-  const key = `${url}-${JSON.stringify(options)}`;
-
-  if (requestCache.has(key)) {
-    return requestCache.get(key);
-  }
-
-  const promise = fetch(url, options);
-  requestCache.set(key, promise);
-
-  // Clean up after request completes
-  promise.finally(() => {
-    requestCache.delete(key);
-  });
-
-  return promise;
-}
-```
-
-## Memory Management
-
-### Cleanup Patterns
-
-```typescript
-// Cleanup event listeners
-useEffect(() => {
-  const handleResize = () => {
-    // Handle resize
-  };
-
-  window.addEventListener('resize', handleResize);
-
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
-}, []);
-
-// Cleanup timers
-useEffect(() => {
-  const timer = setInterval(() => {
-    // Periodic task
-  }, 1000);
-
-  return () => clearInterval(timer);
-}, []);
-
-// Cleanup subscriptions
-useEffect(() => {
-  const subscription = dataStream.subscribe(handleData);
-
-  return () => subscription.unsubscribe();
-}, []);
-```
-
-### Memory Leak Prevention
-
-```typescript
-// Avoid closures in useEffect dependencies
-useEffect(() => {
-  const fetchData = async () => {
-    const data = await api.getData();
-    setData(data);
-  };
-
-  fetchData();
-}, []); // Empty dependency array
-
-// Use refs for mutable values
-const isMountedRef = useRef(true);
-
-useEffect(() => {
-  return () => {
-    isMountedRef.current = false;
-  };
-}, []);
-
-// Check if component is still mounted before state updates
-const updateState = useCallback((newState) => {
-  if (isMountedRef.current) {
-    setState(newState);
-  }
-}, []);
 ```
 
 ## Performance Monitoring
 
-### Performance Metrics
+### Web Vitals Monitoring
 
 ```typescript
-// Web Vitals monitoring
 import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
 
 function sendToAnalytics(metric) {
@@ -355,432 +741,6 @@ getFID(sendToAnalytics);
 getFCP(sendToAnalytics);
 getLCP(sendToAnalytics);
 getTTFB(sendToAnalytics);
-
-// Custom performance marks
-performance.mark('component-render-start');
-// Component rendering logic
-performance.mark('component-render-end');
-performance.measure('component-render', 'component-render-start', 'component-render-end');
-```
-
-### Performance Testing
-
-```typescript
-// Performance testing with React Testing Library
-import { render } from '@testing-library/react';
-import { performance } from 'perf_hooks';
-
-it('should render within performance budget', () => {
-  const start = performance.now();
-  render(<Component />);
-  const end = performance.now();
-
-  expect(end - start).toBeLessThan(100); // 100ms budget
-});
-
-// Bundle size testing
-import { getBundleSize } from 'bundle-analyzer';
-
-it('should not exceed bundle size limit', () => {
-  const bundleSize = getBundleSize('./dist/main.js');
-  expect(bundleSize).toBeLessThan(500 * 1024); // 500KB limit
-});
-```
-
-## Performance Best Practices
-
-### General Guidelines
-
-- **Measure First**: Always measure before optimizing
-- **Profile Regularly**: Use React DevTools Profiler
-- **Set Performance Budgets**: Define acceptable performance thresholds
-- **Monitor in Production**: Use real user monitoring (RUM)
-- **Optimize Critical Path**: Focus on above-the-fold content
-- **Lazy Load Non-Critical**: Defer non-essential resources
-- **Use CDN**: Serve static assets from CDN
-- **Enable Compression**: Use gzip/brotli compression
-- **Minimize HTTP Requests**: Combine and minify resources
-- **Cache Strategically**: Implement appropriate caching strategies
-
-# Performance Standards
-
-## React Performance Optimization
-
-### Memoization Patterns
-
-#### Component Memoization
-
-```typescript
-// Base component with memoization control
-export interface ComponentProps extends CommonComponentProps {
-  /** Whether to enable memoization */
-  isMemoized?: boolean;
-}
-
-// Memoized version with custom comparison
-const MemoizedComponent = React.memo(BaseComponent, (prevProps, nextProps) => {
-  return (
-    prevProps.id === nextProps.id &&
-    prevProps.children === nextProps.children &&
-    prevProps.className === nextProps.className
-  );
-});
-
-// Main component with memoization option
-export const Component: ComponentComponent = setDisplayName(
-  function Component(props) {
-    const { children, isMemoized = false, ...rest } = props;
-    const ComponentToRender = isMemoized ? MemoizedComponent : BaseComponent;
-    return <ComponentToRender {...rest}>{children}</ComponentToRender>;
-  }
-);
-```
-
-#### Hook Memoization
-
-```typescript
-// Memoize expensive computations
-const processedData = useMemo(() => {
-  return expensiveDataProcessing(rawData);
-}, [rawData]);
-
-// Memoize event handlers
-const handleClick = useCallback((event: React.MouseEvent) => {
-  onAction?.(event);
-}, [onAction]);
-
-// Memoize component references
-const componentRef = useRef<HTMLElement>(null);
-```
-
-### Performance Optimization Patterns
-
-#### Virtual Scrolling
-
-```typescript
-// For large lists (>100 items)
-export function VirtualizedList({ items }: { items: Item[] }) {
-  const [containerRef, { width, height }] = useResizeObserver();
-
-  const virtualizer = useVirtualizer({
-    count: items.length,
-    getScrollElement: () => containerRef.current,
-    estimateSize: () => 200,
-    overscan: 5,
-  });
-
-  return (
-    <div ref={containerRef} style={{ height, overflow: 'auto' }}>
-      <div style={{ height: virtualizer.getTotalSize(), position: 'relative' }}>
-        {virtualizer.getVirtualItems().map(virtualItem => (
-          <div
-            key={virtualItem.key}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: virtualItem.size,
-              transform: `translateY(${virtualItem.start}px)`,
-            }}
-          >
-            <ListItem item={items[virtualItem.index]} />
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-```
-
-#### Lazy Loading
-
-```typescript
-// Intersection observer for lazy loading
-export function useComponentVisibility(ref: React.RefObject<HTMLElement>) {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-
-    return () => observer.disconnect();
-  }, [ref]);
-
-  return isVisible;
-}
-
-// Lazy component loading
-const LazyComponent = React.lazy(() => import('./HeavyComponent'));
-
-function App() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <LazyComponent />
-    </Suspense>
-  );
-}
-```
-
-#### Code Splitting
-
-```typescript
-// Route-based code splitting
-const HomePage = React.lazy(() => import('./pages/HomePage'));
-const AboutPage = React.lazy(() => import('./pages/AboutPage'));
-
-// Component-based code splitting
-const HeavyChart = React.lazy(() => import('./HeavyChart'));
-
-// Dynamic imports for conditional loading
-const loadFeature = async () => {
-  const { FeatureComponent } = await import('./FeatureComponent');
-  return FeatureComponent;
-};
-```
-
-## Bundle Optimization
-
-### Tree Shaking
-
-```typescript
-// Use named imports for better tree shaking
-import { specificFunction } from 'large-library';
-// Instead of: import * as library from 'large-library';
-
-// Use dynamic imports for optional features
-const loadOptionalFeature = async () => {
-  if (shouldLoadFeature) {
-    const { OptionalFeature } = await import('./OptionalFeature');
-    return OptionalFeature;
-  }
-  return null;
-};
-```
-
-### Asset Optimization
-
-```typescript
-// Image optimization with next/image
-import Image from 'next/image';
-
-function OptimizedImage({ src, alt, ...props }) {
-  return (
-    <Image
-      src={src}
-      alt={alt}
-      width={800}
-      height={600}
-      placeholder="blur"
-      blurDataURL="data:image/jpeg;base64,..."
-      {...props}
-    />
-  );
-}
-
-// WebP format with fallbacks
-function ResponsiveImage({ src, alt }) {
-  return (
-    <picture>
-      <source srcSet={`${src}.webp`} type="image/webp" />
-      <source srcSet={`${src}.jpg`} type="image/jpeg" />
-      <img src={`${src}.jpg`} alt={alt} />
-    </picture>
-  );
-}
-```
-
-## Network Performance
-
-### Data Fetching Optimization
-
-```typescript
-// React Query for caching and background updates
-export function useOptimizedData(key: string, fetcher: () => Promise<any>) {
-  return useQuery({
-    queryKey: [key],
-    queryFn: fetcher,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
-    refetchOnWindowFocus: false,
-    retry: 3,
-  });
-}
-
-// Prefetching for better UX
-export function usePrefetchData() {
-  const queryClient = useQueryClient();
-
-  const prefetchData = useCallback(async (key: string) => {
-    await queryClient.prefetchQuery({
-      queryKey: [key],
-      queryFn: () => fetchData(key),
-      staleTime: 5 * 60 * 1000,
-    });
-  }, [queryClient]);
-
-  return { prefetchData };
-}
-```
-
-### Request Optimization
-
-```typescript
-// Debounced search
-export function useDebouncedSearch(delay: number = 300) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchTerm(searchTerm);
-    }, delay);
-
-    return () => clearTimeout(timer);
-  }, [searchTerm, delay]);
-
-  return { searchTerm, setSearchTerm, debouncedSearchTerm };
-}
-
-// Request deduplication
-const requestCache = new Map();
-
-export async function deduplicatedRequest(url: string, options: RequestInit) {
-  const key = `${url}-${JSON.stringify(options)}`;
-
-  if (requestCache.has(key)) {
-    return requestCache.get(key);
-  }
-
-  const promise = fetch(url, options);
-  requestCache.set(key, promise);
-
-  // Clean up after request completes
-  promise.finally(() => {
-    requestCache.delete(key);
-  });
-
-  return promise;
-}
-```
-
-## Memory Management
-
-### Cleanup Patterns
-
-```typescript
-// Cleanup event listeners
-useEffect(() => {
-  const handleResize = () => {
-    // Handle resize
-  };
-
-  window.addEventListener('resize', handleResize);
-
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
-}, []);
-
-// Cleanup timers
-useEffect(() => {
-  const timer = setInterval(() => {
-    // Periodic task
-  }, 1000);
-
-  return () => clearInterval(timer);
-}, []);
-
-// Cleanup subscriptions
-useEffect(() => {
-  const subscription = dataStream.subscribe(handleData);
-
-  return () => subscription.unsubscribe();
-}, []);
-```
-
-### Memory Leak Prevention
-
-```typescript
-// Avoid closures in useEffect dependencies
-useEffect(() => {
-  const fetchData = async () => {
-    const data = await api.getData();
-    setData(data);
-  };
-
-  fetchData();
-}, []); // Empty dependency array
-
-// Use refs for mutable values
-const isMountedRef = useRef(true);
-
-useEffect(() => {
-  return () => {
-    isMountedRef.current = false;
-  };
-}, []);
-
-// Check if component is still mounted before state updates
-const updateState = useCallback((newState) => {
-  if (isMountedRef.current) {
-    setState(newState);
-  }
-}, []);
-```
-
-## Performance Monitoring
-
-### Performance Metrics
-
-```typescript
-// Web Vitals monitoring
-import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
-
-function sendToAnalytics(metric) {
-  // Send to analytics service
-  console.log(metric);
-}
-
-getCLS(sendToAnalytics);
-getFID(sendToAnalytics);
-getFCP(sendToAnalytics);
-getLCP(sendToAnalytics);
-getTTFB(sendToAnalytics);
-
-// Custom performance marks
-performance.mark('component-render-start');
-// Component rendering logic
-performance.mark('component-render-end');
-performance.measure('component-render', 'component-render-start', 'component-render-end');
-```
-
-### Performance Testing
-
-```typescript
-// Performance testing with React Testing Library
-import { render } from '@testing-library/react';
-import { performance } from 'perf_hooks';
-
-it('should render within performance budget', () => {
-  const start = performance.now();
-  render(<Component />);
-  const end = performance.now();
-
-  expect(end - start).toBeLessThan(100); // 100ms budget
-});
-
-// Bundle size testing
-import { getBundleSize } from 'bundle-analyzer';
-
-it('should not exceed bundle size limit', () => {
-  const bundleSize = getBundleSize('./dist/main.js');
-  expect(bundleSize).toBeLessThan(500 * 1024); // 500KB limit
-});
 ```
 
 ## Performance Best Practices
