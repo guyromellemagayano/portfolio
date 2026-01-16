@@ -54,13 +54,6 @@ export const reactBaseEslintConfig = [
       ...reactHooks.configs.recommended.rules,
       "react/prop-types": "off",
       "react/react-in-jsx-scope": "off",
-      "react/function-component-definition": [
-        "error",
-        {
-          namedComponents: "function-expression",
-          unnamedComponents: "arrow-function",
-        },
-      ],
     },
   },
 ];
