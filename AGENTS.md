@@ -2,9 +2,10 @@
 
 - Treat the user as a senior software architect who knows the direction and wants surgical help executing.
 - Assume deep experience with: TypeScript/React/Next.js/Remix, Node/Express, Python/Django, Go, PostgreSQL, Redis,
-  Docker/Compose, AWS (ECS/Fargate/Lambda/RDS/S3/CloudFront/SQS/Step Functions), Terraform, Nx/Turborepo/PNPM,
+  Docker/Compose, AWS (ECS/Fargate/Lambda/RDS/S3/CloudFront/SQS/Step Functions), Terraform, Nx/Turborepo/pnpm,
   Tailwind, Storybook, Vitest/Jest/RTL/Cypress/Playwright, Sentry/LogRocket, Sanity.
 - Default to modern patterns and strong typing; prefer boring, reliable solutions unless a contrarian idea clearly wins.
+- **Industry Standards**: Follow WCAG 2.1 (AA/AAA), OWASP Top 10, W3C ARIA Authoring Practices, Core Web Vitals, and Vercel React Best Practices.
 
 ## Golden Rules (follow strictly)
 
@@ -22,8 +23,72 @@
 12) **RESPECT COMPONENT ARCHITECTURE DECISIONS** - If I revert changes, follow the pattern I establish, not what I initially suggested.
 13) **IMPLEMENT COMPREHENSIVE ARIA ATTRIBUTES** - All interactive components must have proper ARIA roles, relationships, and labels.
 14) **TEST ARIA ATTRIBUTES THOROUGHLY** - Use `getByRole` queries and test all ARIA relationships, IDs, and conditional behavior.
+15) **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
+16) **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
+
+## Standards Reference
+
+**Quick Reference to All Standards**:
+
+- **Component Architecture**: `.cursor/rules/component-architecture.mdc`
+- **React + TypeScript**: `.cursor/rules/react-typescript.mdc`
+- **Accessibility (WCAG 2.1)**: `.cursor/rules/accessibility.mdc`
+- **Performance (Vercel Best Practices)**: `.cursor/rules/performance.mdc`
+- **Testing**: `.cursor/rules/testing.mdc`
+- **Documentation**: `.cursor/rules/documentation.mdc`
+- **Security**: `.cursor/rules/security.mdc`
+- **Vercel React Best Practices**: `.cursor/skills/vercel-react-best-practices/`
+- **Web Design Guidelines**: `.cursor/skills/web-design-guidelines/`
+
+**Industry Standards**:
+
+- **Accessibility**: WCAG 2.1 Level AA/AAA, W3C ARIA Authoring Practices
+- **Security**: OWASP Top 10, OWASP ASVS Level 2
+- **Performance**: Core Web Vitals (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- **Code Quality**: TypeScript strict mode, ESLint recommended rules
+
+## Documentation Standards (Quick Reference)
+
+**Reference**: See `.cursor/rules/documentation.mdc` for comprehensive documentation standards.
+
+### Documentation Levels
+
+- **Components**: File-level JSDoc with `@file`, `@author`, `@description`
+- **Types**: One-liner JSDoc (`/** Ref type for Component. */`)
+- **Functions**: Full JSDoc with `@param`/`@returns`/`@example` (when needed)
+- **Memoized Components**: Brief explanation of memoization behavior
+
+### Documentation Template
+
+```typescript
+/**
+ * @file ComponentName.tsx
+ * @author Guy Romelle Magayano
+ * @description [One-line description of what the component does].
+ */
+
+import React from "react";
+// ... other imports
+
+/** Ref type for the ComponentName component. */
+export type ComponentNameRef = React.ComponentRef<typeof ComponentElementType>;
+
+/** Props for the ComponentName component. */
+export interface ComponentNameProps {
+  /** Prop description. */
+  prop: Type;
+}
+
+export const ComponentName = setDisplayName(
+  React.forwardRef<ComponentNameRef, ComponentNameProps>(function ComponentName(props, ref) {
+    // Implementation
+  })
+);
+```
 
 ## Component Standardization Patterns
+
+**Reference**: See `.cursor/rules/component-architecture.mdc` and `.cursor/rules/react-typescript.mdc` for detailed standards.
 
 - **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props
 - **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
@@ -42,6 +107,7 @@
 - **Component Mocking**: Mock `@web/components`, `@web/utils`, and internal components in tests
 - **ESLint Protection**: Rules prevent cross-component access to `_internal/`, `_types/`, `_data/` folders
 - **ARIA Implementation**: Comprehensive accessibility attributes required for all interactive components
+- **Import Organization**: Avoid barrel file imports (see `.cursor/rules/react-typescript.mdc` for direct import patterns)
 
 ## ARIA Implementation Standards
 
@@ -214,6 +280,21 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
    - Structure: Single file
    - Tests: Basic unit tests (60% coverage acceptable)
    - Example: Container, Section, Grid
+
+### Required Component Classification Comments
+
+All component files must include classification comments at the top:
+
+```typescript
+// ============================================================================
+// COMPONENT CLASSIFICATION
+// - Type: Compound/Orchestrator/Presentational/Utility
+// - Testing: Unit + Integration tests (both required) / Unit tests only / Basic unit tests
+// - Structure: _internal/ folder with sub-components / Flat, imports other components / Single file + tests + constants/Component.i18n.ts / Single file
+// - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases) / Tier 2 (80%+ coverage, key paths + edges) / Tier 3 (60%+ coverage, happy path + basic validation)
+// - Data Source: Static data (no external data fetching) / Sanity CMS (GROQ queries) / External API / GraphQL
+// ============================================================================
+```
 
 ### Scalable Folder Structure
 
@@ -495,6 +576,8 @@ vi.mock("../constants/Component.i18n", () => ({
 
 ## Testing Standards
 
+**Reference**: See `.cursor/rules/testing.mdc` for comprehensive testing standards and patterns.
+
 - **Vitest**: Use Vitest for all testing
 - **RTL**: Use React Testing Library for component tests
 - **Mocking**: Mock dependencies properly, use `vi.mock()`
@@ -502,6 +585,20 @@ vi.mock("../constants/Component.i18n", () => ({
 - **Test Structure**: Arrange/Act/Assert pattern
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
 - **Accessibility Testing**: Comprehensive ARIA attribute testing required for all components
+
+### Required Test Classification Comments
+
+All test files must include classification comments at the top:
+
+```typescript
+// ============================================================================
+// TEST CLASSIFICATION
+// - Test Type: Unit/Integration/E2E
+// - Coverage: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
+// - Risk Tier: Critical/Core/Presentational
+// - Component Type: Compound/Orchestrator/Presentational/Utility
+// ============================================================================
+```
 
 ## Enterprise Testing Strategy
 
@@ -1380,6 +1477,110 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 }
 ```
 
+## Industry Standards & Compliance
+
+### Standards Compliance Checklist
+
+**Accessibility**:
+
+- ✅ WCAG 2.1 Level AA compliance (target AAA where feasible)
+- ✅ W3C ARIA Authoring Practices compliance
+- ✅ Semantic HTML5 usage
+- ✅ Screen reader testing (NVDA, JAWS, VoiceOver)
+
+**Security**:
+
+- ✅ OWASP Top 10 mitigation
+- ✅ OWASP ASVS Level 2 compliance
+- ✅ Content Security Policy (CSP) implementation
+- ✅ Secure headers (HSTS, X-Frame-Options, X-Content-Type-Options)
+
+**Performance**:
+
+- ✅ Core Web Vitals targets (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- ✅ Lighthouse Performance score > 90
+- ✅ Bundle size optimization (code splitting, tree shaking)
+- ✅ Image optimization (WebP, lazy loading, responsive images)
+
+**Code Quality**:
+
+- ✅ TypeScript strict mode enabled
+- ✅ ESLint with recommended rules + custom rules
+- ✅ Prettier for consistent formatting
+- ✅ Pre-commit hooks (Husky, lint-staged)
+
+**Testing**:
+
+- ✅ Test coverage: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
+- ✅ Accessibility testing with axe-core
+- ✅ E2E testing for critical user flows
+- ✅ Performance testing with Lighthouse CI
+
+**Documentation**:
+
+- ✅ JSDoc for all exported functions/types (concise, one-liner for types, full JSDoc for functions)
+- ✅ Component documentation with `@example` when helpful
+- ✅ README for each package
+- ✅ ADRs for architectural decisions
+- ✅ Storybook for UI components
+- ✅ Code comments only for non-obvious behavior
+
+### Code Quality Standards
+
+**TypeScript**:
+
+- **Strict Mode**: Always enabled (`strict: true` in tsconfig.JSON)
+- **Type Safety**: Use `satisfies` operator, exhaustive switches, `never` checks
+- **No `any`**: Use `unknown` with type guards instead
+- **Type Co-location**: Keep types close to usage, avoid global type pollution
+
+**ESLint Configuration**:
+
+- Use recommended rulesets: `@typescript-eslint/recommended`, `eslint:recommended`
+- Custom rules for component architecture enforcement
+- Import organization: `eslint-plugin-import`, `eslint-plugin-simple-import-sort`
+- React best practices: `eslint-plugin-react`, `eslint-plugin-react-hooks`
+
+**Prettier Configuration**:
+
+- Consistent formatting across all file types
+- Integration with ESLint (`eslint-config-prettier`)
+- Pre-commit formatting with `lint-staged`
+
+**Pre-commit Hooks** (Husky):
+
+- Lint staged files
+- Format staged files
+- Run type checking
+- Run tests for changed files (if applicable)
+
+### Performance Benchmarks
+
+**Core Web Vitals Targets**:
+
+- **LCP (Largest Contentful Paint)**: < 2.5 seconds (Good), < 4.0s (Needs Improvement)
+- **FID (First Input Delay)**: < 100ms (Good), < 300ms (Needs Improvement)
+- **CLS (Cumulative Layout Shift)**: < 0.1 (Good), < 0.25 (Needs Improvement)
+
+**Lighthouse Targets**:
+
+- Performance: > 90
+- Accessibility: > 95
+- Best Practices: > 90
+- SEO: > 90
+
+**Bundle Size Targets**:
+
+- Initial JavaScript: < 200KB (gzipped)
+- Total JavaScript: < 500KB (gzipped) for above-the-fold content
+- Images: WebP format, lazy loading, responsive sizes
+
+**Monitoring**:
+
+- Use Web Vitals API for real user monitoring (RUM)
+- Integrate with analytics (Google Analytics, Vercel Analytics)
+- Set up alerts for performance regressions
+
 ## Enterprise Development Patterns
 
 ### Modularity and Reusability
@@ -1391,13 +1592,74 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 ### Security Best Practices
 
-- Sanitize all user inputs
-- Use parameterized queries (GraphQL variables, not string interpolation)
-- Implement Content Security Policy headers
-- Validate data on both client and server
-- Use secure defaults (e.g., `rel="noopener noreferrer"` for external links)
+**Reference**: OWASP Top 10, OWASP ASVS (Application Security Verification Standard), Next.js Security Best Practices.
+
+**Core Security Requirements**:
+
+- **Input Validation & Sanitization**:
+  - Sanitize all user inputs (client and server-side)
+  - Use parameterized queries (GraphQL variables, not string interpolation)
+  - Validate data schemas with Zod/Yup before processing
+  - Escape user-generated content to prevent XSS attacks
+
+- **Content Security Policy (CSP)**:
+  - Implement strict CSP headers in `next.config.js`
+  - Use nonce-based CSP for inline scripts when necessary
+  - Restrict resource loading to trusted domains only
+
+- **Authentication & Authorization**:
+  - Use secure session management (httpOnly cookies, secure flag)
+  - Implement proper authorization checks on all protected routes
+  - Validate JWT tokens server-side, never trust client-side validation
+  - Use CSRF tokens for state-changing operations
+
+- **Data Protection**:
+  - Never expose sensitive data in client-side code
+  - Use environment variables for secrets (never commit to git)
+  - Encrypt sensitive data at rest and in transit (HTTPS/TLS 1.3)
+  - Implement rate limiting on API endpoints
+
+- **Secure Defaults**:
+  - Use `rel="noopener noreferrer"` for external links
+  - Set secure cookie flags (`Secure`, `HttpOnly`, `SameSite`)
+  - Disable unnecessary HTTP methods (HEAD, OPTIONS if not needed)
+  - Use Subresource Integrity (SRI) for external scripts
+
+- **Dependency Security**:
+  - Regularly update dependencies (`pnpm audit`, Dependabot)
+  - Review and audit third-party packages before integration
+  - Use lock files to prevent supply chain attacks
+  - Scan for known vulnerabilities in CI/CD pipeline
+
+**OWASP Top 10 Compliance**:
+
+- A01:2021 – Broken Access Control → Implement proper authorization
+- A02:2021 – Cryptographic Failures → Use strong encryption, secure defaults
+- A03:2021 – Injection → Parameterized queries, input validation
+- A04:2021 – Insecure Design → Security by design, threat modeling
+- A05:2021 – Security Misconfiguration → Secure defaults, CSP headers
+- A06:2021 – Vulnerable Components → Dependency scanning, updates
+- A07:2021 – Authentication Failures → Secure session management
+- A08:2021 – Software and Data Integrity → SRI, secure supply chain
+- A09:2021 – Security Logging Failures → Structured logging, monitoring
+- A10:2021 – Server-Side Request Forgery (SSRF) → Validate URLs, use allowlists
 
 ### Performance Optimization
+
+**Reference**: See `.cursor/rules/performance.mdc` for comprehensive Vercel React Best Practices (45 rules across 8 priority categories).
+
+**Key Patterns**:
+
+- **Eliminating Waterfalls** (CRITICAL): Use `Promise.all()` for independent operations, defer await until needed, use Suspense boundaries
+- **Bundle Size** (CRITICAL): Avoid barrel imports, use `next/dynamic` for heavy components, load third-party scripts after hydration
+- **Server-Side** (HIGH): Use `React.cache()` for per-request deduplication, minimize data passed to client components, parallelize fetches
+- **Client-Side** (MEDIUM-HIGH): Use SWR for request deduplication, deduplicate global event listeners
+- **Re-render** (MEDIUM): Extract expensive work into memoized components, use primitive dependencies, subscribe to derived booleans
+- **Rendering** (MEDIUM): Use `content-visibility` for long lists, hoist static JSX, use ternary not `&&` for conditionals
+- **JavaScript** (LOW-MEDIUM): Use Set/Map for O(1) lookups, cache property access in loops, batch DOM/CSS changes
+- **Advanced** (LOW): Store event handlers in refs, use `useLatest` for stable callbacks
+
+**General Guidelines**:
 
 - Lazy load non-critical components
 - Memoize expensive computations
@@ -1406,22 +1668,67 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 - Optimize images (next/image with proper sizing)
 - Code-split by route
 
+**Full Reference**: See `.cursor/skills/vercel-react-best-practices/` for detailed rule explanations and code examples.
+
 ### Accessibility Requirements
 
-- All interactive elements: keyboard accessible
-- All images: alt text
-- All forms: labels and validation messages
-- Color contrast: WCAG AA minimum
-- Focus indicators: visible and consistent
-- Screen reader testing for critical flows
+**Reference**: See `.cursor/rules/accessibility.mdc` for comprehensive ARIA implementation standards.
+
+**WCAG 2.1 Compliance** (Target: Level AA, Strive for AAA where feasible):
+
+- **Perceivable**:
+  - All images: descriptive alt text (empty alt for decorative images)
+  - Color contrast: WCAG AA minimum (4.5:1 for text, 3:1 for UI components)
+  - Text alternatives for non-text content (audio, video transcripts)
+  - Responsive design: content readable at 200% zoom without horizontal scrolling
+
+- **Operable**:
+  - All interactive elements: keyboard accessible (Tab, Enter, Space, Arrow keys)
+  - Focus indicators: visible and consistent (minimum 2px outline)
+  - No keyboard traps: users can navigate away from all components
+  - Sufficient time: no time limits, or user can extend/adjust
+  - Seizure safe: no content flashes more than 3 times per second
+
+- **Understandable**:
+  - All forms: labels and validation messages (use `aria-describedby` for errors)
+  - Language declared: use `lang` attribute on HTML element
+  - Consistent navigation: predictable UI patterns
+  - Error identification: clear error messages with suggestions
+
+- **Robust**:
+  - Valid HTML: semantic markup, proper nesting
+  - ARIA attributes: correct usage, no redundant roles
+  - Screen reader compatibility: test with NVDA, JAWS, VoiceOver
+  - Future-proof: use semantic HTML5 elements
+
+**Testing Requirements**:
+
+- Automated: Use `@axe-core/react` in tests (see `.cursor/rules/accessibility.mdc`)
+- Manual: Keyboard navigation testing, screen reader testing
+- Tools: Lighthouse accessibility audit, WAVE, axe DevTools
+- Continuous: Include accessibility checks in CI/CD pipeline
+
+**Web Design Guidelines**: Use `.cursor/skills/web-design-guidelines/` skill to review UI code for Web Interface Guidelines compliance. Fetch latest guidelines from: `https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md`
 
 ### Documentation Standards
 
-- **JSDoc**: All exported functions, types, and components
-- **README**: Each package in monorepo
-- **Inline comments**: Complex logic only (not obvious code)
-- **Storybook**: All reusable UI components
-- **ADRs**: Architectural decisions in `docs/adr/`
+**Industry Best Practices**:
+
+- **JSDoc**: All exported functions, types, and components (follow TypeScript JSDoc standards)
+- **README**: Each package in monorepo with usage examples, API documentation
+- **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
+- **Storybook**: All reusable UI components with interactive examples and accessibility notes
+- **ADRs**: Architectural decisions in `docs/adr/` (follow MADR format)
+- **API Documentation**: OpenAPI/Swagger for REST APIs, GraphQL schema documentation
+- **CHANGELOG**: Keep CHANGELOG.md following Keep a CHANGELOG format
+- **Contributing Guide**: CONTRIBUTING.md with setup, testing, and PR guidelines
+
+**Documentation Quality**:
+
+- Use clear, concise language
+- Include code examples for complex patterns
+- Document breaking changes prominently
+- Keep documentation in sync with code (automated checks where possible)
 
 ## Component Composition Patterns
 
@@ -1587,7 +1894,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 
 ## Command Policy (no interactive tools assumed)
 
-- Use plain shell commands. Assume PNPM workspaces + Turborepo.
+- Use plain shell commands. Assume pnpm workspaces + Turborepo.
 - Prefer workspace-aware invocations:
   - Run all tests:            `pnpm -w -r test`
   - Type-check all:           `pnpm -w -r typecheck`  # fall back to `pnpm -w tsc -b` if missing
@@ -1597,7 +1904,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
     - web (Next.js):          `pnpm --filter ./apps/web dev`
     - storefront (Next.js):   `pnpm --filter ./apps/storefront dev`
     - admin (Vite):           `pnpm --filter ./apps/admin dev`
-    - api (Node/Express):     `pnpm --filter ./apps/api dev`
+    - API (Node/Express):     `pnpm --filter ./apps/api dev`
   - Scoped operations:
     - components pkg tests:   `pnpm --filter ./packages/components test`
     - utils pkg tests:        `pnpm --filter ./packages/utils test`
@@ -1615,7 +1922,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 - React: function components, hooks, RSC where applicable (Next 13+), suspense-ready, a11y-first.
 - Styling: Tailwind + CSS Modules; use `cn/clsx` helper; no global leaks.
 - API: Express handlers typed; schema validation with Zod; error boundaries and structured logs.
-- CI: GitHub Actions with turbo cache keys (lockfile + turbo.json + tsconfig); run per-package tests in parallel matrices.
+- CI: GitHub Actions with turbo cache keys (lockfile + turbo.JSON + tsconfig); run per-package tests in parallel matrices.
 
 ## When I Say…
 
@@ -1652,7 +1959,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 ## Testing Defaults
 
 - FE (Next/Vite): Vitest + RTL; mock network with MSW; Playwright/Cypress optional for e2e.
-- BE (api): Vitest/Jest; fast, deterministic; cover happy/edge/failure paths.
+- BE (API): Vitest/Jest; fast, deterministic; cover happy/edge/failure paths.
 - Contract checks: OpenAPI/GraphQL schema tests if relevant.
 - Perf claims must include a repro script or benchmark.
 

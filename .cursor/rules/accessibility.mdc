@@ -178,6 +178,94 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 - **Error Messages**: Clear, descriptive error messages
 - **Loading States**: Announce loading states to screen readers
 
+## Web Interface Guidelines Integration
+
+### Focus States (CRITICAL)
+
+- **Visible Focus Indicators**: All interactive elements need visible focus
+- **Never Remove Outline Without Replacement**: Never use `outline-none` / `outline: none` without focus replacement
+- **Use `:focus-visible` Over `:focus`**: Avoid focus ring on click, show on keyboard navigation
+- **Group Focus**: Use `:focus-within` for compound controls
+
+```typescript
+// ✅ CORRECT: Visible focus with Tailwind
+<button className="focus-visible:ring-2 focus-visible:ring-blue-500">
+  Click me
+</button>
+
+// ❌ INCORRECT: No focus indicator
+<button className="outline-none">Click me</button>
+```
+
+### Forms (CRITICAL)
+
+- **Input Labels**: All inputs need `<label>` or `aria-label`
+- **Autocomplete**: Use meaningful `autocomplete` and `name` attributes
+- **Input Types**: Use correct `type` (`email`, `tel`, `url`, `number`) and `inputmode`
+- **Never Block Paste**: Never use `onPaste` + `preventDefault`
+- **Clickable Labels**: Labels must be clickable (`htmlFor` or wrapping control)
+- **Spellcheck**: Disable spellcheck on emails, codes, usernames (`spellCheck={false}`)
+- **Checkboxes/Radios**: Label + control share single hit target (no dead zones)
+- **Submit Buttons**: Stay enabled until request starts; show spinner during request
+- **Error Messages**: Inline next to fields; focus first error on submit
+- **Placeholders**: End with `…` and show example pattern
+- **Autocomplete Off**: Use `autocomplete="off"` on non-auth fields to avoid password manager triggers
+- **Unsaved Changes**: Warn before navigation with unsaved changes (`beforeunload` or router guard)
+
+### Animation (CRITICAL)
+
+- **Honor `prefers-reduced-motion`**: Provide reduced variant or disable animations
+- **Compositor-Friendly**: Animate `transform`/`opacity` only (not layout properties)
+- **Never `transition: all`**: List properties explicitly
+- **Transform Origin**: Set correct `transform-origin`
+- **SVG Transforms**: Transforms on `<g>` wrapper with `transform-box: fill-box; transform-origin: center`
+- **Interruptible**: Animations must respond to user input mid-animation
+
+### Typography Standards
+
+- **Ellipsis**: Use `…` not `...`
+- **Curly Quotes**: Use `"` `"` not straight `"`
+- **Non-Breaking Spaces**: Use `&nbsp;` for `10&nbsp;MB`, `⌘&nbsp;K`, brand names
+- **Loading States**: End with `…`: `"Loading…"`, `"Saving…"`
+- **Tabular Numbers**: Use `font-variant-numeric: tabular-nums` for number columns
+- **Text Wrapping**: Use `text-wrap: balance` or `text-pretty` on headings
+
+### Content Handling
+
+- **Text Containers**: Handle long content with `truncate`, `line-clamp-*`, or `break-words`
+- **Flex Children**: Need `min-w-0` to allow text truncation
+- **Empty States**: Don't render broken UI for empty strings/arrays
+- **User-Generated Content**: Anticipate short, average, and very long inputs
+
+### Images
+
+- **Explicit Dimensions**: `<img>` needs explicit `width` and `height` (prevents CLS)
+- **Lazy Loading**: Below-fold images use `loading="lazy"`
+- **Priority Loading**: Above-fold critical images use `priority` or `fetchpriority="high"`
+
+### Touch & Interaction
+
+- **Touch Action**: Use `touch-action: manipulation` (prevents double-tap zoom delay)
+- **Tap Highlight**: Set `-webkit-tap-highlight-color` intentionally
+- **Overscroll**: Use `overscroll-behavior: contain` in modals/drawers/sheets
+- **Drag States**: During drag: disable text selection, use `inert` on dragged elements
+- **AutoFocus**: Use sparingly—desktop only, single primary input; avoid on mobile
+
+### Anti-patterns (Flag These)
+
+- ❌ `user-scalable=no` or `maximum-scale=1` disabling zoom
+- ❌ `onPaste` with `preventDefault`
+- ❌ `transition: all`
+- ❌ `outline-none` without focus-visible replacement
+- ❌ Inline `onClick` navigation without `<a>`
+- ❌ `<div>` or `<span>` with click handlers (should be `<button>`)
+- ❌ Images without dimensions
+- ❌ Large arrays `.map()` without virtualization
+- ❌ Form inputs without labels
+- ❌ Icon buttons without `aria-label`
+- ❌ Hardcoded date/number formats (use `Intl.*`)
+- ❌ `autoFocus` without clear justification
+
 ## Testing Accessibility
 
 ### Automated Testing
@@ -185,6 +273,8 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 - **axe-core**: Use axe-core for automated accessibility testing
 - **jest-axe**: Integrate accessibility testing into unit tests
 - **Lighthouse**: Use Lighthouse for accessibility audits
+- **WAVE**: Web Accessibility Evaluation Tool
+- **Pa11y**: Command-line accessibility testing
 
 ### Manual Testing
 
@@ -192,6 +282,8 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 - **Keyboard Navigation**: Test all functionality with keyboard only
 - **High Contrast**: Test in high contrast mode
 - **Zoom Testing**: Test at 200% zoom level
+- **Focus Indicators**: Verify all interactive elements have visible focus
+- **Color Contrast**: Verify WCAG AA/AAA contrast ratios
 
 ### Testing Tools Integration
 
@@ -207,7 +299,14 @@ it('should not have accessibility violations', async () => {
 });
 ```
 
-# Accessibility Standards
+### WCAG 2.1 AAA Compliance Checklist
+
+- ✅ **Perceivable**: All images have descriptive alt text, color contrast 7:1, text alternatives for all non-text content
+- ✅ **Operable**: All functionality keyboard accessible, no time limits, no seizure-inducing content
+- ✅ **Understandable**: Language declared, consistent navigation, clear error messages
+- ✅ **Robust**: Valid HTML, proper ARIA usage, screen reader compatible
+
+# Accessibility Standards (Legacy - See Above for Updated Standards)
 
 ## ARIA Implementation Standards
 

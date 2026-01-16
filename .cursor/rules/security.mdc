@@ -1,0 +1,497 @@
+---
+description: Security Standards - OWASP Top 10, ASVS Level 2, Next.js Security Best Practices
+globs: ["apps/**/*.ts", "apps/**/*.tsx", "packages/**/*.ts", "packages/**/*.tsx"]
+alwaysApply: false
+---
+
+<!-- markdownlint-disable -->
+
+# Security Standards
+
+Based on OWASP Top 10 (2021), OWASP ASVS Level 2, and Next.js Security Best Practices.
+
+## OWASP Top 10 Compliance
+
+### A01:2021 – Broken Access Control
+
+**Mitigation Strategies:**
+
+- Implement proper authorization checks on all protected routes
+- Use role-based access control (RBAC) or attribute-based access control (ABAC)
+- Validate user permissions server-side, never trust client-side validation
+- Use principle of least privilege
+
+```typescript
+// ✅ CORRECT: Server-side authorization check
+export async function GET(request: Request) {
+  const session = await auth()
+  if (!session?.user) {
+    return new Response('Unauthorized', { status: 401 })
+  }
+  
+  // Check permissions server-side
+  const hasPermission = await checkUserPermission(session.user.id, 'read:data')
+  if (!hasPermission) {
+    return new Response('Forbidden', { status: 403 })
+  }
+  
+  return Response.json({ data: await fetchData() })
+}
+```
+
+### A02:2021 – Cryptographic Failures
+
+**Mitigation Strategies:**
+
+- Use strong encryption algorithms (AES-256, RSA-2048+)
+- Use HTTPS/TLS 1.3 for all communications
+- Hash passwords with bcrypt, argon2, or scrypt
+- Never store sensitive data in plaintext
+- Use secure defaults for cryptographic operations
+
+```typescript
+// ✅ CORRECT: Secure password hashing
+import bcrypt from 'bcryptjs'
+
+const hashedPassword = await bcrypt.hash(password, 12)
+
+// ✅ CORRECT: Secure session management
+const session = await createSession({
+  userId: user.id,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  maxAge: 60 * 60 * 24 * 7 // 7 days
+})
+```
+
+### A03:2021 – Injection
+
+**Mitigation Strategies:**
+
+- Use parameterized queries (GraphQL variables, not string interpolation)
+- Validate and sanitize all user inputs (client and server-side)
+- Use schema validation with Zod/Yup before processing
+- Escape user-generated content to prevent XSS attacks
+- Use Content Security Policy (CSP) headers
+
+```typescript
+// ✅ CORRECT: Parameterized GraphQL query
+const { data } = await client.query({
+  query: gql`
+    query GetUser($id: ID!) {
+      user(id: $id) {
+        id
+        name
+      }
+    }
+  `,
+  variables: { id: userId } // Safe parameterization
+})
+
+// ✅ CORRECT: Input validation with Zod
+import { z } from 'zod'
+
+const UserSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(1).max(100),
+  age: z.number().int().min(0).max(120)
+})
+
+const validatedData = UserSchema.parse(userInput)
+```
+
+### A04:2021 – Insecure Design
+
+**Mitigation Strategies:**
+
+- Security by design: threat modeling, secure architecture
+- Implement defense in depth
+- Use secure coding practices from the start
+- Regular security reviews and audits
+
+### A05:2021 – Security Misconfiguration
+
+**Mitigation Strategies:**
+
+- Use secure defaults for all configurations
+- Implement Content Security Policy (CSP) headers
+- Set secure HTTP headers (HSTS, X-Frame-Options, X-Content-Type-Options)
+- Remove default credentials and unnecessary features
+- Keep dependencies updated
+
+```typescript
+// ✅ CORRECT: Next.js security headers
+// next.config.js
+module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';",
+          },
+        ],
+      },
+    ]
+  },
+}
+```
+
+### A06:2021 – Vulnerable and Outdated Components
+
+**Mitigation Strategies:**
+
+- Regularly update dependencies (`pnpm audit`, Dependabot)
+- Review and audit third-party packages before integration
+- Use lock files to prevent supply chain attacks
+- Scan for known vulnerabilities in CI/CD pipeline
+- Monitor security advisories
+
+```bash
+# Regular security audits
+pnpm audit
+pnpm audit --fix
+
+# Check for outdated packages
+pnpm outdated
+```
+
+### A07:2021 – Identification and Authentication Failures
+
+**Mitigation Strategies:**
+
+- Use secure session management (httpOnly cookies, secure flag)
+- Implement proper password policies (length, complexity, rotation)
+- Use multi-factor authentication (MFA) for sensitive operations
+- Implement account lockout after failed login attempts
+- Validate JWT tokens server-side, never trust client-side validation
+
+```typescript
+// ✅ CORRECT: Secure session management
+export async function POST(request: Request) {
+  const { email, password } = await request.json()
+  
+  const user = await authenticateUser(email, password)
+  if (!user) {
+    // Rate limit failed attempts
+    await incrementFailedAttempts(email)
+    return new Response('Invalid credentials', { status: 401 })
+  }
+  
+  const session = await createSession({
+    userId: user.id,
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict',
+    maxAge: 60 * 60 * 24 * 7
+  })
+  
+  return Response.json({ user }, {
+    headers: {
+      'Set-Cookie': session.cookie
+    }
+  })
+}
+```
+
+### A08:2021 – Software and Data Integrity Failures
+
+**Mitigation Strategies:**
+
+- Use Subresource Integrity (SRI) for external scripts
+- Implement secure supply chain practices
+- Verify software integrity before deployment
+- Use code signing for releases
+
+```html
+<!-- ✅ CORRECT: Subresource Integrity -->
+<script
+  src="https://cdn.example.com/library.js"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+></script>
+```
+
+### A09:2021 – Security Logging and Monitoring Failures
+
+**Mitigation Strategies:**
+
+- Implement structured logging for security events
+- Log authentication failures, authorization failures, and data access
+- Monitor for suspicious activities
+- Set up alerts for security incidents
+- Use security information and event management (SIEM) tools
+
+```typescript
+// ✅ CORRECT: Security event logging
+import { logger } from '@guyromellemagayano/logger'
+
+export async function handleAuthFailure(email: string, ip: string) {
+  logger.warn('Authentication failure', {
+    event: 'auth_failure',
+    email,
+    ip,
+    timestamp: new Date().toISOString(),
+    userAgent: request.headers.get('user-agent')
+  })
+  
+  // Alert on suspicious patterns
+  const failures = await getRecentFailures(email)
+  if (failures > 5) {
+    await sendSecurityAlert({ type: 'brute_force_attempt', email, ip })
+  }
+}
+```
+
+### A10:2021 – Server-Side Request Forgery (SSRF)
+
+**Mitigation Strategies:**
+
+- Validate and sanitize all URLs before making requests
+- Use allowlists for internal resources
+- Disable internal network access when possible
+- Use network segmentation
+
+```typescript
+// ✅ CORRECT: SSRF protection
+const ALLOWED_DOMAINS = ['api.example.com', 'cdn.example.com']
+
+function isAllowedUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url)
+    return ALLOWED_DOMAINS.includes(parsed.hostname)
+  } catch {
+    return false
+  }
+}
+
+export async function fetchExternalData(url: string) {
+  if (!isAllowedUrl(url)) {
+    throw new Error('URL not allowed')
+  }
+  return fetch(url)
+}
+```
+
+## Input Validation & Sanitization
+
+### Client-Side Validation
+
+- Validate inputs in the UI for better UX
+- Never rely solely on client-side validation
+- Use schema validation libraries (Zod, Yup)
+
+```typescript
+// ✅ CORRECT: Client-side validation with Zod
+import { z } from 'zod'
+
+const FormSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  age: z.number().int().min(18, 'Must be 18 or older')
+})
+
+function MyForm() {
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  
+  const handleSubmit = (data: unknown) => {
+    try {
+      const validated = FormSchema.parse(data)
+      // Submit validated data
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(error.flatten().fieldErrors)
+      }
+    }
+  }
+}
+```
+
+### Server-Side Validation
+
+- Always validate inputs server-side
+- Sanitize user-generated content
+- Use parameterized queries
+
+```typescript
+// ✅ CORRECT: Server-side validation
+export async function POST(request: Request) {
+  const body = await request.json()
+  
+  // Validate with Zod
+  const validated = UserSchema.parse(body)
+  
+  // Sanitize HTML content
+  const sanitized = sanitizeHtml(validated.content)
+  
+  // Process sanitized data
+  return Response.json({ success: true })
+}
+```
+
+## Content Security Policy (CSP)
+
+### Implementation
+
+- Implement strict CSP headers in `next.config.js`
+- Use nonce-based CSP for inline scripts when necessary
+- Restrict resource loading to trusted domains only
+
+```typescript
+// ✅ CORRECT: Strict CSP configuration
+const cspHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' blob: data: https:;
+  font-src 'self';
+  connect-src 'self' https://api.example.com;
+  frame-ancestors 'none';
+  base-uri 'self';
+  form-action 'self';
+`
+```
+
+## Secure Defaults
+
+### External Links
+
+- Use `rel="noopener noreferrer"` for external links
+- Validate external URLs before rendering
+
+```typescript
+// ✅ CORRECT: Secure external links
+function ExternalLink({ href, children }: Props) {
+  const isExternal = href.startsWith('http')
+  const rel = isExternal ? 'noopener noreferrer' : undefined
+  const target = isExternal ? '_blank' : undefined
+  
+  return (
+    <a href={href} rel={rel} target={target}>
+      {children}
+    </a>
+  )
+}
+```
+
+### Cookie Security
+
+- Set secure cookie flags (`Secure`, `HttpOnly`, `SameSite`)
+- Use appropriate expiration times
+
+```typescript
+// ✅ CORRECT: Secure cookie configuration
+res.cookie('session', token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  maxAge: 60 * 60 * 24 * 7 // 7 days
+})
+```
+
+## Dependency Security
+
+### Regular Audits
+
+- Run `pnpm audit` regularly
+- Use Dependabot for automated updates
+- Review security advisories
+
+```bash
+# Check for vulnerabilities
+pnpm audit
+
+# Fix automatically where possible
+pnpm audit --fix
+
+# Check for outdated packages
+pnpm outdated
+```
+
+### Supply Chain Security
+
+- Use lock files (`pnpm-lock.yaml`)
+- Verify package integrity
+- Review third-party packages before integration
+
+## Rate Limiting
+
+### Implementation
+
+- Implement rate limiting on API endpoints
+- Use different limits for authenticated vs unauthenticated users
+- Return appropriate HTTP status codes (429 Too Many Requests)
+
+```typescript
+// ✅ CORRECT: Rate limiting with middleware
+import { Ratelimit } from '@upstash/ratelimit'
+import { Redis } from '@upstash/redis'
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(10, '10 s'),
+})
+
+export async function middleware(request: Request) {
+  const ip = request.headers.get('x-forwarded-for') ?? 'unknown'
+  const { success } = await ratelimit.limit(ip)
+  
+  if (!success) {
+    return new Response('Too Many Requests', { status: 429 })
+  }
+}
+```
+
+## Data Protection
+
+### Sensitive Data
+
+- Never expose sensitive data in client-side code
+- Use environment variables for secrets (never commit to git)
+- Encrypt sensitive data at rest and in transit
+
+```typescript
+// ✅ CORRECT: Environment variables
+const API_KEY = process.env.API_KEY // Server-side only
+
+// ❌ INCORRECT: Exposing secrets
+const API_KEY = 'sk_live_...' // Never hardcode
+```
+
+### Data Encryption
+
+- Use HTTPS/TLS 1.3 for all communications
+- Encrypt sensitive data at rest
+- Use strong encryption algorithms
+
+## Security Best Practices Summary
+
+- ✅ **Input Validation**: Validate and sanitize all user inputs
+- ✅ **Authentication**: Secure session management, MFA for sensitive operations
+- ✅ **Authorization**: Server-side permission checks
+- ✅ **CSP Headers**: Implement Content Security Policy
+- ✅ **Secure Headers**: HSTS, X-Frame-Options, X-Content-Type-Options
+- ✅ **Dependency Security**: Regular audits and updates
+- ✅ **Rate Limiting**: Protect against abuse
+- ✅ **Logging**: Security event logging and monitoring
+- ✅ **Secure Defaults**: Use secure defaults everywhere
+- ✅ **Data Protection**: Encrypt sensitive data, use environment variables
