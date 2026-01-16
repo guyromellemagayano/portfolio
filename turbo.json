@@ -7,7 +7,11 @@
     "signature": true
   },
   "globalDependencies": [
-    ".env*"
+    ".env*",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "tsconfig.json"
   ],
   "globalEnv": [
     "AWS_ACCESS_KEY_ID",
@@ -54,7 +58,12 @@
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
-        ".env*"
+        ".env*",
+        "next.config.*",
+        "vite.config.*",
+        "tailwind.config.*",
+        "postcss.config.*",
+        "rantail.config.*"
       ],
       "outputs": [
         "dist/**",
@@ -67,7 +76,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [],
       "cache": false
@@ -77,7 +90,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [],
       "cache": false,
@@ -88,7 +105,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [],
       "cache": true
@@ -98,7 +119,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [
         "coverage/**"
@@ -110,7 +135,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [
         "coverage/**"
@@ -123,7 +152,11 @@
       "inputs": [
         "$TURBO_DEFAULT$",
         "vitest.config.*",
-        "src/test-setup.*"
+        "vitest.workspace.*",
+        "src/test-setup.*",
+        "**/*.test.{ts,tsx,js,jsx}",
+        "**/*.spec.{ts,tsx,js,jsx}",
+        "**/__tests__/**"
       ],
       "outputs": [
         "coverage/**"
@@ -131,56 +164,58 @@
       "cache": true
     },
     "format": {
-      "dependsOn": [
-        "^format"
-      ],
+      "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "prettier.config.*"
-      ],
-      "outputs": []
-    },
-    "format:check": {
-      "dependsOn": [
-        "^format:check"
-      ],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "prettier.config.*"
+        "prettier.config.*",
+        ".prettierrc*",
+        ".prettierignore"
       ],
       "outputs": [],
-      "cache": false
+      "cache": true
+    },
+    "format:check": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "prettier.config.*",
+        ".prettierrc*",
+        ".prettierignore"
+      ],
+      "outputs": [],
+      "cache": true
     },
     "lint": {
-      "dependsOn": [
-        "^lint"
-      ],
+      "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "eslint.config.*"
+        "eslint.config.*",
+        ".eslintrc*",
+        ".eslintignore"
       ],
-      "outputs": []
+      "outputs": [],
+      "cache": true
     },
     "lint:fix": {
-      "dependsOn": [
-        "^lint:fix"
-      ],
+      "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "eslint.config.*"
+        "eslint.config.*",
+        ".eslintrc*",
+        ".eslintignore"
       ],
       "outputs": [],
       "cache": false
     },
     "check-types": {
-      "dependsOn": [
-        "^check-types"
-      ],
+      "dependsOn": [],
       "inputs": [
         "$TURBO_DEFAULT$",
-        "tsconfig.json"
+        "tsconfig.json",
+        "tsconfig.*.json"
       ],
-      "outputs": []
+      "outputs": [],
+      "cache": true
     },
     "dev": {
       "dependsOn": [
