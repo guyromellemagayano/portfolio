@@ -1,64 +1,71 @@
-import React from "react";
+/**
+ * @file Article.tsx
+ * @author Guy Romelle Magayano
+ * @description Presentational component for displaying article cards using the Card compound component.
+ */
+
+import React, { useMemo } from "react";
 
 import { type CommonComponentProps } from "@guyromellemagayano/components";
 import { useComponentId } from "@guyromellemagayano/hooks";
-import { formatDateSafely, setDisplayName } from "@guyromellemagayano/utils";
+import { formatDateSafely } from "@guyromellemagayano/utils";
 
-import { Card } from "@web/components";
+import { Card } from "@web/components/Card";
 import { type ArticleWithSlug } from "@web/utils";
 
-// ============================================================================
-// ARTICLE COMPONENT I18N
-// ============================================================================
+import { ARTICLE_I18N } from "./constants/Article.i18n";
 
-type ArticleI18n = Readonly<Record<string, string>>;
+const ArticleElementType = Card;
 
-const ARTICLE_I18N = {
-  // Action labels
-  cta: "Read article",
+export interface ArticleProps
+  extends
+    React.ComponentPropsWithoutRef<typeof ArticleElementType>,
+    Pick<CommonComponentProps, "as" | "debugId" | "debugMode"> {
+  article: ArticleWithSlug;
+}
 
-  // Content labels
-  articleDate: "Published on",
-} as const satisfies ArticleI18n;
-
-// ============================================================================
-// ARTICLE COMPONENT
-// ============================================================================
-
-type ArticleElementType = typeof Card;
-
-export type ArticleProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
-  "as"
-> &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only `Card` is allowed */
-    as?: T;
-    /** The article to render */
-    article: ArticleWithSlug;
-  };
-
-export const Article = setDisplayName(function Article<
-  T extends ArticleElementType,
->(props: ArticleProps<T>) {
-  const { as: Component = Card, article, debugId, debugMode, ...rest } = props;
+export function Article(props: ArticleProps) {
+  const {
+    as: Component = ArticleElementType,
+    article,
+    debugId,
+    debugMode,
+    ...rest
+  } = props;
 
   // Article component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
-  if (!article) return null;
+  // Use primitive dependencies to avoid unnecessary recalculations
+  const title = article.title?.trim() ?? "";
+  const description = article.description?.trim() ?? "";
+  const date = article.date?.trim() ?? null;
+  const slug = article.slug?.trim() ?? "";
+  const image = article.image?.trim();
+  const tagsString = article.tags?.map((tag) => tag.trim()).join(",") ?? "";
 
-  const articleData = {
-    title: article.title?.trim() ?? "",
-    description: article.description?.trim() ?? "",
-    date: article.date?.trim() ?? null,
-    formattedDate: formatDateSafely(article.date?.trim() ?? null),
-    slug: isNaN(new Date(article.date?.trim() ?? "").getTime())
-      ? undefined
-      : new URL(encodeURIComponent(`/articles/${article.slug.trim()}`)),
-    image: article.image?.trim() ?? "#",
-    tags: article.tags?.map((tag) => tag.trim()) ?? [],
-  };
+  // Article data object
+  const articleData = useMemo(() => {
+    if (!article) return null;
+
+    // Reconstruct tags array from string for consistency
+    const tags = tagsString ? tagsString.split(",").filter(Boolean) : [];
+
+    return {
+      title,
+      description,
+      date,
+      formattedDate: formatDateSafely(date),
+      slug: slug ? `/articles/${encodeURIComponent(slug)}` : undefined,
+      image: image || undefined,
+      tags,
+    };
+  }, [article, title, description, date, slug, image, tagsString]);
+
+  if (!articleData) return null;
+
+  if (!articleData.title || !articleData.description || !articleData.date)
+    return null;
 
   // ARIA relationships
   const titleId = `${componentId}-base-article-card-title`;
@@ -70,28 +77,34 @@ export const Article = setDisplayName(function Article<
       role="article"
       debugId={componentId}
       debugMode={isDebugMode}
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      aria-labelledby={articleData.title ? titleId : undefined}
+      aria-describedby={articleData.description ? descriptionId : undefined}
     >
-      <Card.Title
-        id={titleId}
-        href={articleData.slug}
-        debugId={componentId}
-        debugMode={isDebugMode}
-        aria-level={1}
-      >
-        {articleData.title}
-      </Card.Title>
-      <Card.Eyebrow
-        as="time"
-        dateTime={articleData.date}
-        debugId={componentId}
-        debugMode={isDebugMode}
-        aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
-        decorate
-      >
-        {articleData.formattedDate}
-      </Card.Eyebrow>
+      {articleData.title && (
+        <Card.Title
+          id={titleId}
+          href={articleData.slug}
+          debugId={componentId}
+          debugMode={isDebugMode}
+          aria-level={1}
+        >
+          {articleData.title}
+        </Card.Title>
+      )}
+
+      {articleData.date && (
+        <Card.Eyebrow
+          as="time"
+          dateTime={articleData.date}
+          debugId={componentId}
+          debugMode={isDebugMode}
+          aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
+          decorate
+        >
+          {articleData.formattedDate}
+        </Card.Eyebrow>
+      )}
+
       <Card.Description
         id={descriptionId}
         debugId={componentId}
@@ -103,16 +116,10 @@ export const Article = setDisplayName(function Article<
         role="button"
         debugId={componentId}
         debugMode={isDebugMode}
-        aria-label={`${ARTICLE_I18N.cta}: ${articleData?.title || "Article"}`}
+        aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || "Article"}`}
       >
         {ARTICLE_I18N.cta}
       </Card.Cta>
     </Component>
   );
-});
-
-// ============================================================================
-// MEMOIZED ARTICLE COMPONENT
-// ============================================================================
-
-export const MemoizedArticle = React.memo(Article);
+}
