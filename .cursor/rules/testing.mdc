@@ -159,7 +159,374 @@ data-card-id="test-id-card"
 data-header-id="test-id-header"
 ```
 
-# Testing Standards
+## E2E Testing Standards
+
+### Playwright Configuration
+
+```typescript
+// ✅ GOOD: Playwright test structure
+import { test, expect } from '@playwright/test'
+
+test.describe('Article Component E2E', () => {
+  test('should navigate to article page', async ({ page }) => {
+    await page.goto('/articles')
+    await page.click('text=My Article')
+    await expect(page).toHaveURL('/articles/my-article')
+    await expect(page.locator('h1')).toContainText('My Article')
+  })
+
+  test('should handle keyboard navigation', async ({ page }) => {
+    await page.goto('/articles')
+    await page.keyboard.press('Tab')
+    await expect(page.locator('a:focus')).toBeVisible()
+  })
+})
+```
+
+### Cypress Configuration
+
+```typescript
+// ✅ GOOD: Cypress test structure
+describe('Article Component E2E', () => {
+  it('should load article content', () => {
+    cy.visit('/articles/my-article')
+    cy.get('h1').should('contain', 'My Article')
+    cy.get('[role="article"]').should('be.visible')
+  })
+
+  it('should be accessible', () => {
+    cy.visit('/articles/my-article')
+    cy.injectAxe()
+    cy.checkA11y()
+  })
+})
+```
+
+## Visual Regression Testing
+
+### Chromatic/Percy Integration
+
+```typescript
+// ✅ GOOD: Visual regression testing
+import { within } from '@storybook/testing-library'
+
+export default {
+  title: 'Components/Article',
+  component: Article,
+  parameters: {
+    chromatic: { viewports: [320, 768, 1024] },
+  },
+}
+
+export const Default = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getByRole('article')).toBeInTheDocument()
+  },
+}
+```
+
+## Performance Testing
+
+### Lighthouse CI Integration
+
+```typescript
+// ✅ GOOD: Performance testing with Lighthouse
+import { test } from '@playwright/test'
+
+test('should meet performance budgets', async ({ page }) => {
+  await page.goto('/articles/my-article')
+  
+  const metrics = await page.evaluate(() => {
+    return {
+      lcp: performance.getEntriesByType('largest-contentful-paint')[0]?.startTime,
+      fid: performance.getEntriesByType('first-input')[0]?.processingStart,
+      cls: performance.getEntriesByType('layout-shift')
+        .reduce((sum, entry) => sum + entry.value, 0),
+    }
+  })
+
+  expect(metrics.lcp).toBeLessThan(2500) // LCP < 2.5s
+  expect(metrics.fid).toBeLessThan(100) // FID < 100ms
+  expect(metrics.cls).toBeLessThan(0.1) // CLS < 0.1
+})
+```
+
+### Web Vitals Testing
+
+```typescript
+// ✅ GOOD: Web Vitals monitoring in tests
+import { getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals'
+
+test('should report good Web Vitals', async ({ page }) => {
+  const vitals: Record<string, number> = {}
+
+  await page.addInitScript(() => {
+    getCLS((metric) => {
+      vitals.cls = metric.value
+    })
+    getFID((metric) => {
+      vitals.fid = metric.value
+    })
+    getLCP((metric) => {
+      vitals.lcp = metric.value
+    })
+  })
+
+  await page.goto('/articles/my-article')
+  await page.waitForLoadState('networkidle')
+
+  expect(vitals.lcp).toBeLessThan(2500)
+  expect(vitals.fid).toBeLessThan(100)
+  expect(vitals.cls).toBeLessThan(0.1)
+})
+```
+
+## Accessibility Testing Tools
+
+### axe-core Integration
+
+```typescript
+// ✅ GOOD: axe-core automated accessibility testing
+import { axe, toHaveNoViolations } from 'jest-axe'
+
+expect.extend(toHaveNoViolations)
+
+describe('Article Component Accessibility', () => {
+  it('should not have accessibility violations', async () => {
+    const { container } = render(<Article article={mockArticle} />)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
+  it('should have proper ARIA attributes', async () => {
+    render(<Article article={mockArticle} />)
+    const article = screen.getByRole('article')
+    expect(article).toHaveAttribute('aria-labelledby')
+    expect(article).toHaveAttribute('aria-describedby')
+  })
+})
+```
+
+### jest-axe Matchers
+
+```typescript
+// ✅ GOOD: jest-axe custom matchers
+import '@testing-library/jest-dom'
+import 'jest-axe/extend-expect'
+
+it('should be accessible', async () => {
+  const { container } = render(<Article article={mockArticle} />)
+  await expect(container).toHaveNoViolations()
+})
+```
+
+## Test Data Management
+
+### Factory Pattern for Test Data
+
+```typescript
+// ✅ GOOD: Factory pattern for test data
+export function createMockArticle(
+  overrides?: Partial<SanityArticle>
+): SanityArticle {
+  return {
+    _id: 'test-id',
+    _type: 'article',
+    title: 'Test Article',
+    slug: { current: 'test-article' },
+    publishedAt: '2024-01-01',
+    content: [],
+    author: {
+      _id: 'author-id',
+      name: 'Test Author',
+    },
+    mainImage: {
+      asset: {
+        url: 'https://example.com/image.jpg',
+        metadata: {},
+      },
+    },
+    ...overrides,
+  }
+}
+
+// Usage
+const article = createMockArticle({ title: 'Custom Title' })
+```
+
+### Test Fixtures
+
+```typescript
+// ✅ GOOD: Test fixtures for complex data
+export const articleFixtures = {
+  minimal: createMockArticle({
+    title: 'Minimal Article',
+    content: [],
+  }),
+  full: createMockArticle({
+    title: 'Full Article',
+    content: [
+      { _type: 'block', children: [{ text: 'Content' }] },
+    ],
+    tags: ['tech', 'react'],
+  }),
+  withImage: createMockArticle({
+    mainImage: {
+      asset: {
+        url: 'https://example.com/image.jpg',
+        metadata: { dimensions: { width: 800, height: 600 } },
+      },
+    },
+  }),
+}
+```
+
+## Snapshot Testing Guidelines
+
+### When to Use Snapshots
+
+- ✅ **Component Structure**: Test component structure doesn't change unexpectedly
+- ✅ **Error Messages**: Test error message formatting
+- ✅ **Serialized Data**: Test data transformation outputs
+- ❌ **Avoid**: Testing styling, dynamic content, or frequently changing output
+
+```typescript
+// ✅ GOOD: Snapshot for component structure
+it('should match component structure snapshot', () => {
+  const { container } = render(<Article article={mockArticle} />)
+  expect(container.firstChild).toMatchSnapshot()
+})
+
+// ❌ BAD: Snapshot for dynamic content
+it('should match timestamp snapshot', () => {
+  const { container } = render(<Article article={mockArticle} />)
+  expect(container).toMatchSnapshot() // Fails due to dynamic timestamps
+})
+```
+
+## CI/CD Integration
+
+### GitHub Actions Test Workflow
+
+```yaml
+# ✅ GOOD: CI/CD test workflow
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      
+      - run: pnpm install
+      - run: pnpm test -- --coverage
+      - run: pnpm test:e2e
+      - run: pnpm test:a11y
+      
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+```
+
+### Test Coverage Reporting
+
+```typescript
+// ✅ GOOD: Coverage configuration
+// vitest.config.ts
+export default defineConfig({
+  test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        'node_modules/',
+        '**/*.test.ts',
+        '**/*.test.tsx',
+        '**/__tests__/',
+      ],
+      thresholds: {
+        lines: 80,
+        functions: 80,
+        branches: 80,
+        statements: 80,
+      },
+    },
+  },
+})
+```
+
+## Test Automation Best Practices
+
+### Test Organization
+
+```typescript
+// ✅ GOOD: Organized test structure
+describe('Article Component', () => {
+  describe('Rendering', () => {
+    // Basic rendering tests
+  })
+
+  describe('Accessibility', () => {
+    // ARIA and accessibility tests
+  })
+
+  describe('Interactions', () => {
+    // User interaction tests
+  })
+
+  describe('Edge Cases', () => {
+    // Error handling and edge cases
+  })
+})
+```
+
+### Test Isolation
+
+```typescript
+// ✅ GOOD: Isolated tests with proper setup/teardown
+describe('Article Component', () => {
+  beforeEach(() => {
+    // Setup test environment
+    vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    // Cleanup
+    cleanup()
+    vi.clearAllMocks()
+  })
+
+  it('should render article', () => {
+    // Test implementation
+  })
+})
+```
+
+## Industry Testing Standards
+
+### Testing Pyramid
+
+- **70% Unit Tests**: Fast, isolated, test individual components/functions
+- **20% Integration Tests**: Test component interactions, data flow
+- **10% E2E Tests**: Test critical user flows, full application
+
+### Test Quality Metrics
+
+- ✅ **Coverage**: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
+- ✅ **Speed**: Unit tests < 100ms, Integration < 1s, E2E < 30s
+- ✅ **Reliability**: Tests should be deterministic, no flaky tests
+- ✅ **Maintainability**: Tests should be easy to read and update
+- ✅ **Accessibility**: All components tested for WCAG 2.1 compliance
+
+# Testing Standards (Legacy - See Above for Updated Standards)
 
 ## Test Classification Requirements
 

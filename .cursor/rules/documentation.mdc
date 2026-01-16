@@ -1,0 +1,534 @@
+---
+description: Documentation Standards - JSDoc, README, ADR, API Documentation
+globs: ["**/*.ts", "**/*.tsx", "**/*.md"]
+alwaysApply: false
+---
+
+<!-- markdownlint-disable -->
+
+# Documentation Standards
+
+Concise, actionable documentation practices for maintainable and discoverable code.
+
+## Quick Reference: Documentation Levels
+
+| Type | Documentation Level | When to Use |
+|------|-------------------|-------------|
+| **Types** | One-liner | Always |
+| **Simple Components** | One-liner | Presentational/Utility components |
+| **Standard Components** | One-liner + `@example` | Most components |
+| **Complex Components** | Full JSDoc + `@remarks` | Compound/Orchestrator with complex behavior |
+| **Functions** | Full JSDoc with `@param`/`@returns` | Utility functions, hooks |
+| **Memoized Components** | Brief explanation | When custom comparison exists |
+
+## JSDoc Standards
+
+### Type Documentation (One-Liner)
+
+**Rule**: All exported types get a single-line JSDoc comment.
+
+```typescript
+// ✅ GOOD: Concise
+/** Ref type for the Article component. */
+export type ArticleRef = React.ComponentRef<typeof ArticleElementType>;
+
+/** Props for the Article component. */
+export interface ArticleProps {
+  /** Article data with slug. */
+  article: ArticleWithSlug;
+}
+
+// ❌ VERBOSE: Unnecessary detail
+/**
+ * The ArticleRef type is a React component reference type that allows you to
+ * forward refs to the Article component. This is useful when you need to
+ * access the underlying DOM element or component instance.
+ */
+```
+
+### Component Documentation (Tiered Approach)
+
+**Level 1: Simple Components** (One-liner)
+```typescript
+/** Presentational component for displaying article cards. */
+export const Article = ...
+```
+
+**Level 2: Standard Components** (One-liner + Example)
+```typescript
+/**
+ * Presentational component for displaying article cards using the Card compound component.
+ *
+ * @example
+ * ```tsx
+ * <Article article={{ title: "...", slug: "...", date: "...", description: "..." }} />
+ * ```
+ */
+export const Article = ...
+```
+
+**Level 3: Complex Components** (Full JSDoc - use sparingly)
+```typescript
+/**
+ * Compound component for article layouts with header, content, and footer sections.
+ *
+ * @remarks
+ * This component orchestrates multiple sub-components and manages complex state.
+ * It handles data fetching, error states, and loading states internally.
+ *
+ * @example
+ * ```tsx
+ * <ArticleLayout article={articleData} />
+ * ```
+ */
+```
+
+### Function Documentation
+
+**Rule**: Full JSDoc for exported utility functions and hooks.
+
+```typescript
+/**
+ * Formats a date string according to the specified locale and options.
+ *
+ * @param date - The date to format (string, Date, or timestamp)
+ * @param locale - The locale to use for formatting (default: 'en-US')
+ * @param options - Intl.DateTimeFormat options
+ * @returns Formatted date string
+ * @throws {Error} If date is invalid or cannot be parsed
+ *
+ * @example
+ * ```typescript
+ * formatDateSafely('2023-01-01', 'en-US', { year: 'numeric', month: 'long' })
+ * // Returns: "January 2023"
+ * ```
+ */
+export function formatDateSafely(...)
+
+```typescript
+/**
+ * Formats a date string according to the specified locale and options.
+ *
+ * @param date - The date to format (string, Date, or timestamp)
+ * @param locale - The locale to use for formatting (default: 'en-US')
+ * @param options - Intl.DateTimeFormat options
+ * @returns Formatted date string
+ * @throws {Error} If date is invalid or cannot be parsed
+ *
+ * @example
+ * ```typescript
+ * formatDateSafely('2023-01-01', 'en-US', { year: 'numeric', month: 'long' })
+ * // Returns: "January 2023"
+ * ```
+ */
+export function formatDateSafely(
+  date: string | Date | number | null,
+  locale: string = 'en-US',
+  options?: Intl.DateTimeFormatOptions
+): string {
+  // Implementation
+}
+```
+
+### Memoized Component Documentation
+
+**Rule**: Brief explanation of what the memoization does.
+
+```typescript
+// ✅ GOOD: Concise explanation
+/**
+ * Memoized Article component with custom comparison function.
+ *
+ * Prevents re-renders when article data (title, slug, date, description, image, tags) hasn't changed.
+ */
+export const MemoizedArticle = React.memo(Article, ...)
+
+// ❌ VERBOSE: Too much detail
+/**
+ * This is a memoized version of the Article component that uses React.memo
+ * with a custom comparison function. The comparison function checks if the
+ * article data has changed by comparing primitive values. This prevents
+ * unnecessary re-renders when the article object reference changes but the
+ * actual data values remain the same. This is a performance optimization...
+ */
+```
+
+### JSDoc Tags Reference
+
+- `@param {Type} name - Description`
+- `@returns {Type} Description`
+- `@throws {ErrorType} Description`
+- `@example Code example`
+- `@remarks Additional notes`
+- `@see Reference to related documentation`
+- `@since Version when added`
+- `@deprecated Description of deprecation`
+- `@internal Internal-only documentation`
+
+## README Standards
+
+### Package README Structure
+
+Every package in the monorepo must have a README.md with:
+
+```markdown
+# Package Name
+
+Brief description of the package.
+
+## Installation
+
+\`\`\`bash
+pnpm add @package/name
+\`\`\`
+
+## Usage
+
+\`\`\`typescript
+import { Component } from '@package/name'
+
+function App() {
+  return <Component />
+}
+\`\`\`
+
+## API Reference
+
+### Component
+
+Props description and examples.
+
+## Contributing
+
+See [CONTRIBUTING.md](../../CONTRIBUTING.md) for guidelines.
+
+## License
+
+MIT
+```
+
+### App README Structure
+
+Every app must have a README.md with:
+
+- Project overview
+- Tech stack
+- Getting started instructions
+- Development workflow
+- Deployment instructions
+- Environment variables
+- Scripts reference
+
+## Architectural Decision Records (ADRs)
+
+### ADR Format
+
+Use Markdown Architectural Decision Records (MADR) format:
+
+```markdown
+# ADR-001: Use React Server Components
+
+## Status
+
+Accepted
+
+## Context
+
+We need to decide on the component architecture for the Next.js application.
+
+## Decision
+
+We will use React Server Components (RSC) for server-rendered content
+and Client Components for interactive features.
+
+## Consequences
+
+### Positive
+
+- Better performance with server-side rendering
+- Reduced client bundle size
+- Improved SEO
+
+### Negative
+
+- Learning curve for team
+- Some limitations with client-side interactivity
+
+## Alternatives Considered
+
+- Pure Client Components: Rejected due to bundle size concerns
+- Static Site Generation: Rejected due to dynamic content requirements
+```
+
+### ADR Location
+
+Store ADRs in `docs/adr/` directory:
+
+```
+docs/
+  adr/
+    001-use-react-server-components.md
+    002-use-zod-for-validation.md
+    003-implement-component-encapsulation.md
+```
+
+## API Documentation
+
+### REST API Documentation
+
+Use OpenAPI/Swagger for REST APIs:
+
+```yaml
+openapi: 3.0.0
+info:
+  title: API Documentation
+  version: 1.0.0
+paths:
+  /api/users:
+    get:
+      summary: Get all users
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+```
+
+### GraphQL Documentation
+
+Document GraphQL schemas with descriptions:
+
+```graphql
+"""
+A user in the system.
+"""
+type User {
+  """
+  Unique identifier for the user.
+  """
+  id: ID!
+  
+  """
+  User's email address.
+  """
+  email: String!
+  
+  """
+  User's display name.
+  """
+  name: String!
+}
+
+"""
+Query for fetching users.
+"""
+type Query {
+  """
+  Get a user by ID.
+  """
+  user(id: ID!): User
+  
+  """
+  Get all users with optional filtering.
+  """
+  users(limit: Int, offset: Int): [User!]!
+}
+```
+
+## Code Comments
+
+### When to Comment (Minimal Approach)
+
+**Rule**: Only comment when behavior is non-obvious or performance-critical.
+
+```typescript
+// ✅ GOOD: Explains why (non-obvious)
+// Use primitive dependencies to avoid unnecessary recalculations when article object reference changes
+const articleData = React.useMemo(() => {...}, [title, description, date, slug])
+
+// ✅ GOOD: Performance optimization
+// Use React.cache() to deduplicate requests within the same render
+const getUser = cache(async (id: string) => {...})
+
+// ❌ BAD: States the obvious
+// Get user from database
+const getUser = async (id: string) => {...}
+
+// ❌ BAD: Documents implementation details
+// Extract title from article object and trim whitespace
+const title = article.title?.trim() ?? ""
+```
+
+### Inline Comments in Components
+
+**Rule**: Use sparingly, only for non-obvious logic.
+
+```typescript
+// ✅ GOOD: Non-obvious behavior
+// Reconstruct tags array from string for consistency with useMemo dependencies
+const tags = tagsString ? tagsString.split(",").filter(Boolean) : []
+
+// ❌ BAD: Obvious behavior
+// Check if articleData exists
+if (!articleData) return null
+```
+
+## Changelog Standards
+
+### Keep a Changelog Format
+
+Follow [Keep a Changelog](https://keepachangelog.com/) format:
+
+```markdown
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.2.0] - 2024-01-15
+
+### Added
+- New Article component with improved accessibility
+- Support for dark mode in all components
+
+### Changed
+- Updated Card component to use compound component pattern
+- Improved performance with React.memo optimization
+
+### Fixed
+- Fixed ARIA attributes in Article component
+- Resolved hydration mismatch in date formatting
+
+### Security
+- Updated dependencies to address security vulnerabilities
+```
+
+## Storybook Documentation
+
+### Component Stories
+
+Document all reusable UI components in Storybook:
+
+```typescript
+import type { Meta, StoryObj } from '@storybook/react'
+import { Article } from './Article'
+
+const meta: Meta<typeof Article> = {
+  title: 'Components/Article',
+  component: Article,
+  parameters: {
+    docs: {
+      description: {
+        component: 'A presentational component for displaying article cards.',
+      },
+    },
+  },
+  tags: ['autodocs'],
+}
+
+export default meta
+type Story = StoryObj<typeof Article>
+
+export const Default: Story = {
+  args: {
+    article: {
+      title: 'Example Article',
+      description: 'This is an example article description.',
+      slug: 'example-article',
+      date: '2024-01-01',
+    },
+  },
+}
+```
+
+## Documentation Templates
+
+### Component Template
+
+```typescript
+/**
+ * @file ComponentName.tsx
+ * @author Guy Romelle Magayano
+ * @description [One-line description of what the component does].
+ */
+
+import React from "react";
+// ... other imports
+
+/** Ref type for the ComponentName component. */
+export type ComponentNameRef = React.ComponentRef<typeof ComponentElementType>;
+
+/** Props for the ComponentName component. */
+export interface ComponentNameProps {
+  /** Required prop description. */
+  requiredProp: string;
+  /** Optional prop description. */
+  optionalProp?: string;
+}
+
+export const ComponentName = setDisplayName(
+  React.forwardRef<ComponentNameRef, ComponentNameProps>(function ComponentName(props, ref) {
+    // Implementation
+  })
+);
+
+/**
+ * Memoized ComponentName component with custom comparison function.
+ *
+ * [Brief explanation of what the memoization prevents/optimizes].
+ */
+export const MemoizedComponentName = React.memo(ComponentName, ...)
+```
+
+### Function Template
+
+```typescript
+/**
+ * [One-line description of what the function does].
+ *
+ * @param paramName - Parameter description
+ * @param optionalParam - Optional parameter description
+ * @returns Return value description
+ * @throws {ErrorType} When this error occurs
+ *
+ * @example
+ * ```typescript
+ * functionName('value', { option: true })
+ * // Returns: result
+ * ```
+ */
+export function functionName(paramName: string, optionalParam?: Options): ReturnType {
+  // Implementation
+}
+```
+
+## Documentation Quality Checklist
+
+### Required (All Files)
+- ✅ All exported types have one-liner JSDoc
+- ✅ All exported components have JSDoc (one-liner minimum)
+- ✅ All exported functions have full JSDoc with `@param`/`@returns`
+- ✅ All interface properties have inline `/** */` comments
+
+### Recommended (When Applicable)
+- ✅ `@example` tag for components (Level 2+)
+- ✅ `@remarks` tag for complex behavior (Level 3 only)
+- ✅ Code comments for non-obvious logic
+- ✅ README files for packages/apps
+- ✅ ADRs for architectural decisions
+- ✅ Storybook stories for UI components
+
+### Anti-Patterns (Avoid)
+- ❌ Verbose JSDoc that restates the obvious
+- ❌ Documenting implementation details
+- ❌ Comments that explain "what" instead of "why"
+- ❌ Over-documenting simple components
+- ❌ Missing documentation on exported types/functions
