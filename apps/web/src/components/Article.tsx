@@ -6,47 +6,45 @@
 
 import React, { useMemo } from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useTranslations } from "next-intl";
+
 import { useComponentId } from "@guyromellemagayano/hooks";
 import { formatDateSafely } from "@guyromellemagayano/utils";
 
-import { Card } from "@web/components/Card";
-import { type ArticleWithSlug } from "@web/utils";
+import { type CommonAppComponentProps } from "@web/types/common";
+import { type ArticleWithSlug } from "@web/utils/articles";
 
-import { ARTICLE_I18N } from "./constants/Article.i18n";
+import { Card } from "./Card";
 
-const ArticleElementType = Card;
+export type ArticleProps<T extends Record<string, unknown> = {}> =
+  CommonAppComponentProps &
+    React.ComponentPropsWithRef<typeof Card> &
+    T & {
+      article: ArticleWithSlug;
+    };
 
-export interface ArticleProps
-  extends
-    React.ComponentPropsWithoutRef<typeof ArticleElementType>,
-    Pick<CommonComponentProps, "as" | "debugId" | "debugMode"> {
-  article: ArticleWithSlug;
-}
+export function Article<T extends Record<string, unknown> = {}>(
+  props: ArticleProps<T>
+) {
+  const { as: Component = Card, article, debugId, debugMode, ...rest } = props;
 
-export function Article(props: ArticleProps) {
-  const {
-    as: Component = ArticleElementType,
-    article,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
+  // Internationalization
+  const t = useTranslations("article");
 
   // Article component ID and debug mode
   const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
-  // Use primitive dependencies to avoid unnecessary recalculations
-  const title = article.title?.trim() ?? "";
-  const description = article.description?.trim() ?? "";
-  const date = article.date?.trim() ?? null;
-  const slug = article.slug?.trim() ?? "";
-  const image = article.image?.trim();
-  const tagsString = article.tags?.map((tag) => tag.trim()).join(",") ?? "";
-
   // Article data object
   const articleData = useMemo(() => {
     if (!article) return null;
+
+    // Use primitive dependencies to avoid unnecessary recalculations
+    const title = article.title?.trim() ?? "";
+    const description = article.description?.trim() ?? "";
+    const date = article.date?.trim() ?? null;
+    const slug = article.slug?.trim() ?? "";
+    const image = article.image?.trim();
+    const tagsString = article.tags?.map((tag) => tag.trim()).join(",") ?? "";
 
     // Reconstruct tags array from string for consistency
     const tags = tagsString ? tagsString.split(",").filter(Boolean) : [];
@@ -60,12 +58,9 @@ export function Article(props: ArticleProps) {
       image: image || undefined,
       tags,
     };
-  }, [article, title, description, date, slug, image, tagsString]);
+  }, [article]);
 
   if (!articleData) return null;
-
-  if (!articleData.title || !articleData.description || !articleData.date)
-    return null;
 
   // ARIA relationships
   const titleId = `${componentId}-base-article-card-title`;
@@ -73,14 +68,14 @@ export function Article(props: ArticleProps) {
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...rest}
       role="article"
       debugId={componentId}
       debugMode={isDebugMode}
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
-      {articleData.title && (
+      {articleData.title ? (
         <Card.Title
           id={titleId}
           href={articleData.slug}
@@ -90,36 +85,43 @@ export function Article(props: ArticleProps) {
         >
           {articleData.title}
         </Card.Title>
-      )}
+      ) : null}
 
-      {articleData.date && (
+      {articleData.date ? (
         <Card.Eyebrow
           as="time"
           dateTime={articleData.date}
           debugId={componentId}
           debugMode={isDebugMode}
-          aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
+          aria-label={`${t("articleDate")} ${articleData.formattedDate}`}
           decorate
         >
           {articleData.formattedDate}
         </Card.Eyebrow>
-      )}
+      ) : null}
 
-      <Card.Description
-        id={descriptionId}
-        debugId={componentId}
-        debugMode={isDebugMode}
-      >
-        {articleData.description}
-      </Card.Description>
-      <Card.Cta
-        role="button"
-        debugId={componentId}
-        debugMode={isDebugMode}
-        aria-label={`${ARTICLE_I18N.cta}: ${articleData.title || "Article"}`}
-      >
-        {ARTICLE_I18N.cta}
-      </Card.Cta>
+      {articleData.description ? (
+        <Card.Description
+          id={descriptionId}
+          debugId={componentId}
+          debugMode={isDebugMode}
+        >
+          {articleData.description}
+        </Card.Description>
+      ) : null}
+
+      {articleData.title && articleData.date && articleData.description ? (
+        <Card.Cta
+          role="button"
+          debugId={componentId}
+          debugMode={isDebugMode}
+          aria-label={`${t("cta")}: ${articleData.title || "Article"}`}
+        >
+          {t("cta")}
+        </Card.Cta>
+      ) : null}
     </Component>
   );
 }
+
+Article.displayName = "Article";
