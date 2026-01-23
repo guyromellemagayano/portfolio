@@ -8,18 +8,26 @@ alwaysApply: false
 
 # Testing Standards
 
-## Test Classification Requirements
+## Test File Documentation Requirements
 
-All test files must include classification comments:
+All test files must include JSDoc at the top:
 
 ```typescript
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit/Integration/E2E
-// - Coverage: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
-// - Risk Tier: Critical/Core/Presentational
-// - Component Type: Compound/Orchestrator/Presentational/Utility
-// ============================================================================
+/**
+ * @file ComponentName.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the ComponentName component.
+ */
+```
+
+For integration tests:
+
+```typescript
+/**
+ * @file ComponentName.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the ComponentName component.
+ */
 ```
 
 ## Test Structure Standards
@@ -528,18 +536,26 @@ describe('Article Component', () => {
 
 # Testing Standards (Legacy - See Above for Updated Standards)
 
-## Test Classification Requirements
+## Test File Documentation Requirements
 
-All test files must include classification comments:
+All test files must include JSDoc at the top:
 
 ```typescript
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit/Integration/E2E
-// - Coverage: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
-// - Risk Tier: Critical/Core/Presentational
-// - Component Type: Compound/Orchestrator/Presentational/Utility
-// ============================================================================
+/**
+ * @file ComponentName.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the ComponentName component.
+ */
+```
+
+For integration tests:
+
+```typescript
+/**
+ * @file ComponentName.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the ComponentName component.
+ */
 ```
 
 ## Test Structure Standards
