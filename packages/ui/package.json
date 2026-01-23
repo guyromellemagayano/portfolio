@@ -77,6 +77,7 @@
     "bunchee": "catalog:",
     "eslint": "catalog:",
     "nodemon": "catalog:",
+    "postcss": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
@@ -86,9 +87,9 @@
     "react": "catalog:",
     "react-dom": "catalog:"
   },
+  "optionalDependencies": {},
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.pkg.github.com/"
-  },
-  "optionalDependencies": {}
+  }
 }

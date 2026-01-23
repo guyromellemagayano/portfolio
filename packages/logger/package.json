@@ -97,6 +97,7 @@
     "test:ui": "vitest --ui",
     "test:watch": "vitest --watch"
   },
+  "dependencies": {},
   "devDependencies": {
     "@guyromellemagayano/config-eslint": "workspace:*",
     "@guyromellemagayano/config-typescript": "workspace:*",
@@ -105,16 +106,16 @@
     "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "postcss": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
+  "peerDependencies": {},
+  "optionalDependencies": {},
   "publishConfig": {
     "access": "restricted",
     "registry": "https://npm.pkg.github.com/"
-  },
-  "dependencies": {},
-  "peerDependencies": {},
-  "optionalDependencies": {}
+  }
 }

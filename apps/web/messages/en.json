@@ -1,0 +1,9 @@
+{
+  "article": {
+    "cta": "Read article",
+    "articleDate": "Published on"
+  },
+  "button": {
+    "goBackToArticles": "Go back to articles"
+  }
+}
