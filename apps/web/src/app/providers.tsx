@@ -1,3 +1,9 @@
+/**
+ * @file providers.tsx
+ * @author Guy Romelle Magayano
+ * @description Providers component for the web application.
+ */
+
 "use client";
 
 // eslint-disable-next-line simple-import-sort/imports
@@ -7,6 +13,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 
 import { setDisplayName } from "@guyromellemagayano/utils";
+import { NextIntlClientProvider } from "next-intl";
 import { AppContext } from "./context";
 
 /** A hook that returns the previous value of a given value. */
@@ -71,15 +78,17 @@ export const Providers: ProvidersComponent = setDisplayName(
 
     return (
       <AppContext.Provider value={{ previousPathname }}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ThemeWatcher />
-          {children}
-        </ThemeProvider>
+        <NextIntlClientProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ThemeWatcher />
+            {children}
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </AppContext.Provider>
     );
   }

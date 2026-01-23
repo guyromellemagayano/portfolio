@@ -23,8 +23,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "main": "./dist/index.js",
@@ -64,6 +64,7 @@
     "bunchee": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
+    "postcss": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
