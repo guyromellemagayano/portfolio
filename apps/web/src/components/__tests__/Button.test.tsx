@@ -52,8 +52,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   ),
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+vi.mock("next/link", () => ({
+  default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
 }));
 
 describe("Button", () => {
@@ -304,25 +308,95 @@ describe("Button", () => {
   });
 
   describe("Button Variants", () => {
-    it("renders with primary variantStyle by default", () => {
+    it("renders with primary variant by default", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
     });
 
-    it("renders with primary variantStyle explicitly", () => {
-      render(<Button variantStyle="primary">Button</Button>);
+    it("renders with primary variant explicitly", () => {
+      render(<Button variant="primary">Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
     });
 
-    it("renders with secondary variantStyle", () => {
-      render(<Button variantStyle="secondary">Button</Button>);
+    it("renders with secondary variant", () => {
+      render(<Button variant="secondary">Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
+    });
+  });
+
+  describe("Button as Link", () => {
+    it("renders as Link when href is provided", () => {
+      render(<Button href="/test">Link Button</Button>);
+
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "/test");
+      expect(link).toHaveTextContent("Link Button");
+    });
+
+    it("applies link component props when href is provided", () => {
+      render(
+        <Button href="/test" debugId="link-test">
+          Link Button
+        </Button>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("data-link-id", "link-test-link");
+    });
+
+    it("applies button component props when href is not provided", () => {
+      render(<Button debugId="button-test">Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-button-id", "button-test-button");
+    });
+
+    it("passes through Link props when href is provided", () => {
+      render(
+        <Button href="/test" aria-label="Test link">
+          Link Button
+        </Button>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("aria-label", "Test link");
+    });
+
+    it("renders as button when href is not provided", () => {
+      render(<Button>Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button.tagName).toBe("BUTTON");
+    });
+
+    it("renders as button when href is undefined", () => {
+      render(<Button href={undefined}>Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button.tagName).toBe("BUTTON");
+    });
+
+    it("handles external URLs correctly", () => {
+      render(<Button href="https://example.com">External Link</Button>);
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "https://example.com");
+    });
+
+    it("handles relative paths correctly", () => {
+      render(<Button href="/about">About</Button>);
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/about");
     });
   });
 
@@ -366,8 +440,8 @@ describe("Button", () => {
   });
 
   describe("Component-Specific Tests", () => {
-    it("applies correct variantStyle styles", () => {
-      render(<Button variantStyle="secondary">Secondary Button</Button>);
+    it("applies correct variant styles", () => {
+      render(<Button variant="secondary">Secondary Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
@@ -395,6 +469,131 @@ describe("Button", () => {
 
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("type", "submit");
+    });
+  });
+
+  describe("Custom Props Type Safety", () => {
+    it("accepts and passes through custom string props", () => {
+      render(
+        <Button<{ customProp: string }> customProp="test-value">Button</Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("customProp", "test-value");
+    });
+
+    it("accepts and passes through custom data attributes", () => {
+      render(
+        <Button<{ "data-custom": string }> data-custom="custom-data">
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-custom", "custom-data");
+    });
+
+    it("accepts multiple custom props", () => {
+      render(
+        <Button<{ customProp: string; count: number }>
+          customProp="value"
+          count={42}
+        >
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("customProp", "value");
+      expect(button).toHaveAttribute("count", "42");
+    });
+
+    it("preserves custom props when rendering as button", () => {
+      render(
+        <Button<{
+          "data-test-custom": string;
+        }> data-test-custom="button-custom">
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-test-custom", "button-custom");
+    });
+
+    it("preserves custom props when rendering as link", () => {
+      render(
+        <Button<{ "data-test-custom": string }>
+          href="/test"
+          data-test-custom="link-custom"
+        >
+          Link
+        </Button>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("data-test-custom", "link-custom");
+    });
+
+    it("works with custom props and standard button props", () => {
+      render(
+        <Button<{ "data-analytics": string }>
+          data-analytics="button-click"
+          onClick={vi.fn()}
+          disabled={false}
+        >
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-analytics", "button-click");
+      expect(button).toBeEnabled();
+    });
+
+    it("works with custom props and variant", () => {
+      render(
+        <Button<{ "data-variant-custom": string }>
+          variant="secondary"
+          data-variant-custom="secondary-custom"
+        >
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("data-variant-custom", "secondary-custom");
+    });
+
+    it("accepts custom props with different value types", () => {
+      render(
+        <Button<{
+          stringProp: string;
+          numberProp: number;
+          dataBooleanProp: string;
+        }>
+          stringProp="test"
+          numberProp={123}
+          dataBooleanProp="true"
+        >
+          Button
+        </Button>
+      );
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("stringProp", "test");
+      expect(button).toHaveAttribute("numberProp", "123");
+      expect(button).toHaveAttribute("dataBooleanProp", "true");
+    });
+
+    it("allows custom props without explicit generic type", () => {
+      // TypeScript should infer custom props from usage
+      render(<Button customProp="inferred-type">Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      // React converts prop names to lowercase for non-standard attributes
+      expect(button).toHaveAttribute("customprop", "inferred-type");
     });
   });
 });
