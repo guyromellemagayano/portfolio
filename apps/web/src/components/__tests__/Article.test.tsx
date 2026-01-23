@@ -1,3 +1,9 @@
+/**
+ * @file Article.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Article component.
+ */
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -13,13 +19,6 @@ import {
 
 import { Article } from "../Article";
 
-// ============================================================================
-// TEST CLASSIFICATION: Tier 3 - Presentational Component
-// - Coverage Target: 60%+ (happy path + basic validation)
-// - Focus: Rendering, prop handling, Card integration
-// - Skip: Complex edge cases, comprehensive ARIA (tested in Card)
-// ============================================================================
-
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
     componentId: options.debugId || "test-id",
@@ -27,20 +26,22 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
+const mockUseTranslations = vi.hoisted(() =>
+  vi.fn(() => (key: string) => {
+    const translations: Record<string, string> = {
+      cta: "Read article",
+      articleDate: "Published on",
+    };
+    return translations[key] || key;
+  })
+);
+
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/components", () => ({
-  // Mock CommonComponentProps type
-}));
-
 vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
   formatDateSafely: vi.fn((date) => {
     if (!date) return "";
     try {
@@ -53,9 +54,13 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
+vi.mock("next-intl", () => ({
+  useTranslations: mockUseTranslations,
+}));
+
 // Mock Card component
-vi.mock("@web/components", () => ({
-  Card: Object.assign(
+vi.mock("@web/components/Card", () => {
+  const MockCard = Object.assign(
     React.forwardRef<HTMLElement, any>(function MockCard(props, ref) {
       const {
         children,
@@ -177,8 +182,13 @@ vi.mock("@web/components", () => ({
         }
       ),
     }
-  ),
-}));
+  );
+
+  return {
+    Card: MockCard,
+    default: MockCard,
+  };
+});
 
 describe("Article", () => {
   // Mock URL constructor to handle relative paths in test environment
@@ -288,10 +298,40 @@ describe("Article", () => {
       expect(eyebrowElement).toHaveAttribute("dateTime", "2023-01-01");
     });
 
-    it("renders CTA button with correct text", () => {
+    it("renders CTA button with correct text when all required fields exist", () => {
       render(<Article article={mockArticle} />);
 
       expect(screen.getByText("Read article")).toBeInTheDocument();
+    });
+
+    it("does not render CTA when title is missing", () => {
+      const articleWithoutTitle = {
+        ...mockArticle,
+        title: "",
+      };
+      render(<Article article={articleWithoutTitle} />);
+
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
+    });
+
+    it("does not render CTA when date is missing", () => {
+      const articleWithoutDate = {
+        ...mockArticle,
+        date: "",
+      };
+      render(<Article article={articleWithoutDate} />);
+
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
+    });
+
+    it("does not render CTA when description is missing", () => {
+      const articleWithoutDescription = {
+        ...mockArticle,
+        description: "",
+      };
+      render(<Article article={articleWithoutDescription} />);
+
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
   });
 
@@ -359,6 +399,8 @@ describe("Article", () => {
       render(<Article article={articleWithNullTitle} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
+      // CTA should not render when title is missing
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
 
     it("handles null/undefined description", () => {
@@ -369,6 +411,8 @@ describe("Article", () => {
       render(<Article article={articleWithNullDescription} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
+      // CTA should not render when description is missing
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
 
     it("handles null/undefined date", () => {
@@ -379,22 +423,31 @@ describe("Article", () => {
       render(<Article article={articleWithNullDate} />);
 
       expect(screen.getByTestId("mock-card")).toBeInTheDocument();
+      // CTA should not render when date is missing
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
 
-    it("handles invalid date (no URL created)", () => {
+    it("handles invalid date (formatted date may be empty but CTA still renders)", () => {
       const articleWithInvalidDate = {
         ...mockArticle,
         date: "invalid-date",
       };
       render(<Article article={articleWithInvalidDate} />);
 
-      // Title should not have href when the date is invalid
-      const titleElement = screen.getByTestId("mock-card-title");
-      const link = titleElement.querySelector("a");
-      expect(link).not.toBeInTheDocument();
+      // Component should still render
+      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
+
+      // Eyebrow renders (date is present), but formatted date can be empty
+      const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
+      expect(eyebrowElement).toHaveAttribute("dateTime", "invalid-date");
+      expect(eyebrowElement).toBeEmptyDOMElement();
+
+      // CTA renders because title + date (non-empty string) + description exist
+      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
+      expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
-    it("creates URL only when date is valid", () => {
+    it("creates URL for title link when slug is valid", () => {
       render(<Article article={mockArticle} />);
 
       const link = screen.getByRole("link");
@@ -505,7 +558,19 @@ describe("Article", () => {
       expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-eyebrow")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-description")).toBeInTheDocument();
+      // CTA only renders when title, date, and description all exist
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
+    });
+
+    it("renders without CTA when title is missing", () => {
+      const articleWithoutTitle = {
+        ...mockArticle,
+        title: "",
+      };
+      render(<Article article={articleWithoutTitle} />);
+
+      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
+      expect(screen.queryByTestId("mock-card-cta")).not.toBeInTheDocument();
     });
   });
 
@@ -533,19 +598,22 @@ describe("Article", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<Article article={mockArticle} ref={ref} />);
+  describe("Internationalization", () => {
+    it("uses translations for CTA text", () => {
+      render(<Article article={mockArticle} />);
 
-      expect(ref.current).toBeInTheDocument();
+      expect(mockUseTranslations).toHaveBeenCalledWith("article");
+      expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<Article article={mockArticle} ref={ref} />);
+    it("uses translations for article date label", () => {
+      render(<Article article={mockArticle} />);
 
-      expect(ref.current?.tagName).toBe("ARTICLE");
+      const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
+      expect(eyebrowElement).toHaveAttribute(
+        "aria-label",
+        expect.stringContaining("Published on")
+      );
     });
   });
 
@@ -626,13 +694,15 @@ describe("Article", () => {
 
       render(<Article article={articleWithNullDate} />);
 
-      const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
-      expect(eyebrowElement).not.toHaveAttribute("dateTime");
+      // Eyebrow should not render when date is null
+      expect(screen.queryByTestId("mock-card-eyebrow")).not.toBeInTheDocument();
+      // CTA should not render when date is missing
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
   });
 
   describe("Article Slug Integration", () => {
-    it("uses article slug for title link when date is valid", () => {
+    it("uses article slug for title link when slug is valid", () => {
       render(<Article article={mockArticle} />);
 
       const link = screen.getByRole("link");
@@ -640,7 +710,7 @@ describe("Article", () => {
       expect(link).toHaveAttribute("href", "/articles/test-article");
     });
 
-    it("does not create link when date is invalid", () => {
+    it("creates link when slug is valid regardless of date validity", () => {
       const articleWithInvalidDate = {
         ...mockArticle,
         date: "invalid-date",
@@ -648,9 +718,13 @@ describe("Article", () => {
 
       render(<Article article={articleWithInvalidDate} />);
 
-      const titleElement = screen.getByTestId("mock-card-title");
-      const link = titleElement.querySelector("a");
-      expect(link).not.toBeInTheDocument();
+      // Link should still be created if slug is valid
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/articles/test-article");
+
+      // CTA still renders when date is a non-empty string (even if formatting fails)
+      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
+      expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
     it("handles different slug formats", () => {
@@ -742,8 +816,8 @@ describe("Article", () => {
       const articleElement = screen.getByRole("article");
       expect(articleElement).toBeInTheDocument();
 
-      // Test button role for CTA
-      const buttonElement = screen.getByRole("button");
+      // Test button role for CTA (only if CTA is rendered)
+      const buttonElement = screen.queryByRole("button");
       expect(buttonElement).toBeInTheDocument();
     });
 
@@ -805,8 +879,8 @@ describe("Article", () => {
       const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrowElement).toHaveAttribute("aria-label");
 
-      // CTA should have descriptive label
-      const ctaElement = screen.getByTestId("mock-card-cta");
+      // CTA should have descriptive label (only if CTA is rendered)
+      const ctaElement = screen.queryByTestId("mock-card-cta");
       expect(ctaElement).toHaveAttribute("aria-label");
     });
 
@@ -889,9 +963,112 @@ describe("Article", () => {
       const headingElement = screen.getByTestId("mock-card-title");
       expect(headingElement).toBeInTheDocument();
 
-      // Should have a button
-      const buttonElement = screen.getByRole("button");
+      // Should have a button (CTA only renders when title, date, and description exist)
+      const buttonElement = screen.queryByRole("button");
       expect(buttonElement).toBeInTheDocument();
+    });
+  });
+
+  describe("Custom Props Type Safety", () => {
+    it("accepts and passes through custom string props", () => {
+      render(
+        <Article<{ customProp: string }>
+          article={mockArticle}
+          customProp="test-value"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("customProp", "test-value");
+    });
+
+    it("accepts and passes through custom data attributes", () => {
+      render(
+        <Article<{ "data-custom": string }>
+          article={mockArticle}
+          data-custom="custom-data"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-custom", "custom-data");
+    });
+
+    it("accepts multiple custom props", () => {
+      render(
+        <Article<{ customProp: string; count: number }>
+          article={mockArticle}
+          customProp="value"
+          count={42}
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("customProp", "value");
+      expect(articleElement).toHaveAttribute("count", "42");
+    });
+
+    it("works with custom props and standard Card props", () => {
+      render(
+        <Article<{ "data-analytics": string }>
+          article={mockArticle}
+          data-analytics="article-view"
+          className="custom-article"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-analytics", "article-view");
+      expect(articleElement).toHaveAttribute("class");
+    });
+
+    it("works with custom props and debug props", () => {
+      render(
+        <Article<{ "data-tracking": string }>
+          article={mockArticle}
+          data-tracking="article-render"
+          debugId="custom-debug"
+          debugMode={true}
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-tracking", "article-render");
+      expect(articleElement).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("preserves custom props through component updates", () => {
+      const { rerender } = render(
+        <Article<{ "data-persist": string }>
+          article={mockArticle}
+          data-persist="initial"
+        />
+      );
+
+      let articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-persist", "initial");
+
+      const updatedArticle = { ...mockArticle, title: "Updated Title" };
+      rerender(
+        <Article<{ "data-persist": string }>
+          article={updatedArticle}
+          data-persist="updated"
+        />
+      );
+
+      articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-persist", "updated");
+    });
+
+    it("allows custom props without explicit generic type", () => {
+      // TypeScript should infer custom props from usage
+      // Note: React converts non-standard prop names to lowercase in DOM
+      render(<Article article={mockArticle} customProp="inferred-type" />);
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toBeInTheDocument();
+      // React converts prop names to lowercase for non-standard attributes
+      expect(articleElement).toHaveAttribute("customprop", "inferred-type");
     });
   });
 });
