@@ -49,6 +49,7 @@
     "test:run:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
+  "dependencies": {},
   "devDependencies": {
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
@@ -57,6 +58,7 @@
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "jsdom": "catalog:",
+    "postcss": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "vitest": "catalog:"
@@ -64,6 +66,5 @@
   "peerDependencies": {
     "@guyromellemagayano/logger": "workspace:*"
   },
-  "dependencies": {},
   "optionalDependencies": {}
 }

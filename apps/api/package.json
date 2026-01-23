@@ -41,6 +41,7 @@
     "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
+    "postcss": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "supertest": "catalog:",
