@@ -1,5 +1,6 @@
 import nextMDX from "@next/mdx";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   transpilePackages: [
@@ -20,8 +21,10 @@ const nextConfig: NextConfig = {
   },
 };
 
+const withNextIntl = createNextIntlPlugin();
+
 const withMDX = nextMDX({
   extension: /\.mdx?$/,
 });
 
-export default withMDX(nextConfig);
+export default withMDX(withNextIntl(nextConfig));
