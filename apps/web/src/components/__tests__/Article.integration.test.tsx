@@ -1,3 +1,9 @@
+/**
+ * @file Article.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Article component.
+ */
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -13,12 +19,6 @@ import {
 
 import { Article } from "../Article";
 
-// ============================================================================
-// INTEGRATION TESTS: Article with Card Sub-components
-// - Tests Article component's orchestration of Card subcomponents
-// - Verifies proper data flow and prop passing
-// ============================================================================
-
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
     componentId: options.debugId || "test-id",
@@ -26,20 +26,22 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
+const mockUseTranslations = vi.hoisted(() =>
+  vi.fn(() => (key: string) => {
+    const translations: Record<string, string> = {
+      cta: "Read article",
+      articleDate: "Published on",
+    };
+    return translations[key] || key;
+  })
+);
+
 // Mock dependencies
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/components", () => ({
-  // Mock CommonComponentProps type
-}));
-
 vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
   formatDateSafely: vi.fn((date) => {
     if (!date) return "";
     try {
@@ -52,9 +54,13 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
+vi.mock("next-intl", () => ({
+  useTranslations: mockUseTranslations,
+}));
+
 // Mock Card component with a realistic structure
-vi.mock("@web/components", () => ({
-  Card: Object.assign(
+vi.mock("@web/components/Card", () => {
+  const MockCard = Object.assign(
     React.forwardRef<HTMLElement, any>(function MockCard(props, ref) {
       const {
         children,
@@ -176,8 +182,13 @@ vi.mock("@web/components", () => ({
         }
       ),
     }
-  ),
-}));
+  );
+
+  return {
+    Card: MockCard,
+    default: MockCard,
+  };
+});
 
 describe("Article Integration Tests", () => {
   // Mock URL constructor to handle relative paths in test environment
@@ -237,6 +248,7 @@ describe("Article Integration Tests", () => {
       const title = screen.getByTestId("mock-card-title");
       const eyebrow = screen.getByTestId("mock-card-eyebrow");
       const description = screen.getByTestId("mock-card-description");
+      // CTA only renders when title, date, and description all exist
       const cta = screen.getByTestId("mock-card-cta");
 
       expect(title).toBeInTheDocument();
@@ -249,6 +261,7 @@ describe("Article Integration Tests", () => {
       expect(
         screen.getByText("This is a test article description")
       ).toBeInTheDocument();
+      // CTA should render when all required fields exist
       expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
@@ -324,8 +337,8 @@ describe("Article Integration Tests", () => {
       const eyebrow = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrow).toHaveAttribute("dateTime", "2023-01-01");
 
-      // Verify slug is trimmed and used in URL
-      const link = screen.getByRole("link");
+      // Verify slug is trimmed and used in URL (if title link exists)
+      const link = screen.queryByRole("link");
       expect(link).toHaveAttribute("href", "/articles/trimmed-slug");
     });
 
@@ -335,11 +348,11 @@ describe("Article Integration Tests", () => {
       const title = screen.getByTestId("mock-card-title");
       const link = title.querySelector("a");
 
-      expect(link).toBeInTheDocument();
+      // Link should exist when slug is valid
       expect(link).toHaveAttribute("href", "/articles/test-article");
     });
 
-    it("handles article with invalid date and does not create URL", () => {
+    it("handles article with invalid date and still renders CTA", () => {
       const articleWithInvalidDate = {
         ...mockArticle,
         date: "invalid-date",
@@ -347,10 +360,17 @@ describe("Article Integration Tests", () => {
 
       render(<Article article={articleWithInvalidDate} />);
 
-      const title = screen.getByTestId("mock-card-title");
-      const link = title.querySelector("a");
+      // Component should still render
+      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
 
-      expect(link).not.toBeInTheDocument();
+      // Eyebrow renders (date is present), but formatted date can be empty
+      const eyebrow = screen.getByTestId("mock-card-eyebrow");
+      expect(eyebrow).toHaveAttribute("dateTime", "invalid-date");
+      expect(eyebrow).toBeEmptyDOMElement();
+
+      // CTA renders because title + date (non-empty string) + description exist
+      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
+      expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
     it("applies correct ARIA attributes across all sub-components", () => {
@@ -377,8 +397,8 @@ describe("Article Integration Tests", () => {
         expect.stringContaining("Published on")
       );
 
-      // CTA with role and aria-label
-      const cta = screen.getByRole("button");
+      // CTA with role and aria-label (only if CTA is rendered)
+      const cta = screen.queryByRole("button");
       expect(cta).toHaveAttribute("aria-label");
       expect(cta).toHaveAttribute(
         "aria-label",
@@ -412,6 +432,7 @@ describe("Article Integration Tests", () => {
       expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-description")).toBeInTheDocument();
       expect(screen.getByTestId("mock-card-eyebrow")).toBeInTheDocument();
+      // CTA only renders when title, date, and description all exist
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
     });
 
@@ -430,10 +451,8 @@ describe("Article Integration Tests", () => {
       expect(screen.getByText("Minimal Title")).toBeInTheDocument();
       expect(screen.getByText("Minimal Description")).toBeInTheDocument();
 
-      // Title should not have a link when date is invalid
-      const title = screen.getByTestId("mock-card-title");
-      const link = title.querySelector("a");
-      expect(link).not.toBeInTheDocument();
+      // CTA should not render when date is invalid/empty
+      expect(screen.queryByText("Read article")).not.toBeInTheDocument();
     });
 
     it("handles article with tags array", () => {
@@ -466,8 +485,8 @@ describe("Article Integration Tests", () => {
       expect(heading.tagName).toBe("H2");
       expect(heading).toHaveAttribute("aria-level", "1");
 
-      // Verify button structure
-      const button = screen.getByRole("button");
+      // Verify button structure (only if CTA is rendered)
+      const button = screen.queryByRole("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute("aria-label");
 
@@ -476,6 +495,165 @@ describe("Article Integration Tests", () => {
       expect(time.tagName).toBe("TIME");
       expect(time).toHaveAttribute("dateTime");
       expect(time).toHaveAttribute("aria-label");
+    });
+  });
+
+  describe("Article with Custom Props Integration", () => {
+    it("integrates custom props with article rendering", () => {
+      render(
+        <Article<{ "data-analytics": string }>
+          article={mockArticle}
+          data-analytics="article-view"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-analytics", "article-view");
+      expect(screen.getByText("Test Article Title")).toBeInTheDocument();
+    });
+
+    it("integrates custom props with ARIA attributes", () => {
+      mockUseComponentId.mockReturnValue({
+        componentId: "custom-aria",
+        isDebugMode: false,
+      });
+
+      render(
+        <Article<{ "data-aria-custom": string }>
+          article={mockArticle}
+          debugId="custom-aria"
+          data-aria-custom="aria-integration"
+        />
+      );
+
+      const articleElement = screen.getByRole("article");
+      expect(articleElement).toHaveAttribute(
+        "data-aria-custom",
+        "aria-integration"
+      );
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "custom-aria-base-article-card-title"
+      );
+    });
+
+    it("handles multiple custom props with article updates", () => {
+      const { rerender } = render(
+        <Article<{
+          "data-analytics": string;
+          "data-tracking": string;
+          "data-context": string;
+        }>
+          article={mockArticle}
+          data-analytics="click-event"
+          data-tracking="user-action"
+          data-context="main-page"
+        />
+      );
+
+      let articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-analytics", "click-event");
+      expect(articleElement).toHaveAttribute("data-tracking", "user-action");
+      expect(articleElement).toHaveAttribute("data-context", "main-page");
+
+      const updatedArticle = { ...mockArticle, title: "Updated Title" };
+      rerender(
+        <Article<{
+          "data-analytics": string;
+          "data-tracking": string;
+          "data-context": string;
+        }>
+          article={updatedArticle}
+          data-analytics="updated-event"
+          data-tracking="updated-action"
+          data-context="updated-page"
+        />
+      );
+
+      articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute("data-analytics", "updated-event");
+      expect(articleElement).toHaveAttribute("data-tracking", "updated-action");
+      expect(articleElement).toHaveAttribute("data-context", "updated-page");
+    });
+
+    it("preserves custom props when article data changes", () => {
+      const { rerender } = render(
+        <Article<{ "data-persist": string }>
+          article={mockArticle}
+          data-persist="persistent-value"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "data-persist",
+        "persistent-value"
+      );
+
+      const updatedArticle = {
+        ...mockArticle,
+        title: "New Title",
+        description: "New Description",
+      };
+
+      rerender(
+        <Article<{ "data-persist": string }>
+          article={updatedArticle}
+          data-persist="persistent-value"
+        />
+      );
+
+      const updatedElement = screen.getByTestId("mock-card");
+      expect(updatedElement).toHaveAttribute(
+        "data-persist",
+        "persistent-value"
+      );
+      expect(screen.getByText("New Title")).toBeInTheDocument();
+      expect(screen.getByText("New Description")).toBeInTheDocument();
+    });
+
+    it("works with custom props and debug mode", () => {
+      mockUseComponentId.mockReturnValue({
+        componentId: "custom-debug",
+        isDebugMode: true,
+      });
+
+      render(
+        <Article<{ "data-debug-custom": string }>
+          article={mockArticle}
+          debugId="custom-debug"
+          debugMode={true}
+          data-debug-custom="debug-value"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "data-debug-custom",
+        "debug-value"
+      );
+      expect(articleElement).toHaveAttribute("data-debug-mode", "true");
+    });
+
+    it("integrates custom props with Card component structure", () => {
+      render(
+        <Article<{ "data-structure": string }>
+          article={mockArticle}
+          data-structure="card-integration"
+        />
+      );
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).toHaveAttribute(
+        "data-structure",
+        "card-integration"
+      );
+
+      // Verify all subcomponents still render correctly
+      expect(screen.getByTestId("mock-card-title")).toBeInTheDocument();
+      expect(screen.getByTestId("mock-card-eyebrow")).toBeInTheDocument();
+      expect(screen.getByTestId("mock-card-description")).toBeInTheDocument();
+      expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
     });
   });
 });
