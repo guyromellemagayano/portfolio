@@ -586,18 +586,26 @@ vi.mock("../constants/Component.i18n", () => ({
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
 - **Accessibility Testing**: Comprehensive ARIA attribute testing required for all components
 
-### Required Test Classification Comments
+### Required Test File Documentation
 
-All test files must include classification comments at the top:
+All test files must include JSDoc at the top:
 
 ```typescript
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit/Integration/E2E
-// - Coverage: Tier 1 (90%+), Tier 2 (80%+), Tier 3 (60%+)
-// - Risk Tier: Critical/Core/Presentational
-// - Component Type: Compound/Orchestrator/Presentational/Utility
-// ============================================================================
+/**
+ * @file ComponentName.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the ComponentName component.
+ */
+```
+
+For integration tests:
+
+```typescript
+/**
+ * @file ComponentName.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the ComponentName component.
+ */
 ```
 
 ## Enterprise Testing Strategy
