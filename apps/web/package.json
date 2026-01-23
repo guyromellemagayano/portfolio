@@ -31,6 +31,7 @@
     "@mdx-js/react": "catalog:",
     "clsx": "catalog:",
     "next": "catalog:",
+    "next-intl": "catalog:",
     "next-themes": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
@@ -70,7 +71,5 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  },
-  "peerDependencies": {},
-  "optionalDependencies": {}
+  }
 }
