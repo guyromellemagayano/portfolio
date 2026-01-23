@@ -1,3 +1,9 @@
+/**
+ * @file Button.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Button component.
+ */
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -5,35 +11,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Button } from "../Button";
 
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit
-// - Coverage: Tier 2 (80%+)
-// - Risk Tier: Core
-// - Component Type: Presentational
-// ============================================================================
-
 // Mock dependencies
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
-    componentId: options.debugId || options.internalId || "test-id",
+    componentId: options.debugId || "test-id",
     isDebugMode: options.debugMode || false,
   }))
 );
-
-const mockBack = vi.hoisted(() => vi.fn());
-const mockUseRouter = vi.hoisted(() =>
-  vi.fn(() => ({
-    back: mockBack,
-    push: vi.fn(),
-    replace: vi.fn(),
-    forward: vi.fn(),
-    refresh: vi.fn(),
-    prefetch: vi.fn(),
-  }))
-);
-
-const mockUseContext = vi.hoisted(() => vi.fn());
 
 vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
@@ -72,96 +56,15 @@ vi.mock("@web/utils", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("next/link", () => ({
-  default: vi.fn(({ children, ...props }) => {
-    // Prevent navigation in tests
-    const handleClick = (e: React.MouseEvent) => {
-      e.preventDefault();
-      if (props.onClick) {
-        props.onClick(e);
-      }
-    };
-
-    return (
-      <a data-testid="mock-link" {...props} onClick={handleClick}>
-        {children}
-      </a>
-    );
-  }),
-}));
-
-// Mock next/navigation
-vi.mock("next/navigation", () => ({
-  usePathname: () => "/about",
-  useRouter: mockUseRouter,
-}));
-
-// Mock AppContext
-vi.mock("@web/app/context", () => {
-  const React = require("react"); // eslint-disable-line no-undef
-  const mockContext = React.createContext({
-    previousPathname: "/articles",
-  });
-  return {
-    AppContext: mockContext,
-  };
-});
-
-// Mock React useContext
-vi.mock("react", async () => {
-  const actual = await vi.importActual("react");
-  return {
-    ...actual,
-    useContext: mockUseContext,
-  };
-});
-
-// Mock Icon component
-const mockIcon = vi.hoisted(() => ({
-  Icon: ({ name, className, debugMode, debugId: _debugId, ...props }: any) => {
-    if (name === "arrow-left") {
-      return (
-        <svg
-          data-testid="arrow-left-icon"
-          className={className}
-          data-debug-mode={debugMode ? "true" : undefined}
-          data-icon-arrow-left-id="test-id-icon-arrow-left"
-          {...props}
-        />
-      );
-    }
-    return (
-      <svg data-testid={`icon-${name}`} className={className} {...props} />
-    );
-  },
-}));
-
-vi.mock("@web/components", () => mockIcon);
-
-// Mock CSS modules
-vi.mock("*.module.css", () => ({
-  default: {},
-}));
-
 describe("Button", () => {
   beforeEach(() => {
-    mockBack.mockClear();
-    mockUseRouter.mockClear();
     mockUseComponentId.mockClear();
-    mockUseContext.mockClear();
-
-    // Default mock context with previousPathname
-    mockUseContext.mockReturnValue({
-      previousPathname: "/articles",
-    });
   });
 
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
-    mockBack.mockClear();
     mockUseComponentId.mockClear();
-    mockUseContext.mockClear();
   });
 
   describe("Basic Rendering", () => {
@@ -189,10 +92,7 @@ describe("Button", () => {
       render(<Button debugId="custom-button">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute(
-        "data-testid",
-        "custom-button-button-default"
-      );
+      expect(button).toHaveAttribute("data-button-id", "custom-button-button");
     });
 
     it("passes through HTML attributes", () => {
@@ -276,13 +176,6 @@ describe("Button", () => {
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("class");
     });
-
-    it("combines CSS module and custom classes", () => {
-      render(<Button className="custom-class">Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("class");
-    });
   });
 
   describe("Ref Forwarding Tests", () => {
@@ -315,7 +208,7 @@ describe("Button", () => {
       render(<Button debugId="aria-test">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-testid", "aria-test-button-default");
+      expect(button).toHaveAttribute("data-button-id", "aria-test-button");
     });
 
     it("supports ARIA attributes", () => {
@@ -339,20 +232,6 @@ describe("Button", () => {
       expect(buttonElement).toBeInTheDocument();
     });
 
-    it("applies correct ARIA roles to button elements with href prop", () => {
-      // Note: Button component doesn't render as link when href is provided
-      // It still renders as a button element, just with href attribute
-      render(
-        <Button href="/test" debugId="aria-test">
-          Link Button
-        </Button>
-      );
-
-      const buttonElement = screen.getByRole("button");
-      expect(buttonElement).toBeInTheDocument();
-      expect(buttonElement).toHaveAttribute("href", "/test");
-    });
-
     it("applies correct ARIA labels to button elements", () => {
       render(
         <Button aria-label="Accessible button" debugId="aria-test">
@@ -364,21 +243,6 @@ describe("Button", () => {
         name: "Accessible button",
       });
       expect(buttonElement).toBeInTheDocument();
-    });
-
-    it("applies correct ARIA labels to button elements with href prop", () => {
-      // Note: Button component doesn't render as link when href is provided
-      render(
-        <Button href="/test" aria-label="Accessible link" debugId="aria-test">
-          Link
-        </Button>
-      );
-
-      const buttonElement = screen.getByRole("button", {
-        name: "Accessible link",
-      });
-      expect(buttonElement).toBeInTheDocument();
-      expect(buttonElement).toHaveAttribute("href", "/test");
     });
 
     it("applies correct ARIA states for disabled buttons", () => {
@@ -440,15 +304,15 @@ describe("Button", () => {
   });
 
   describe("Button Variants", () => {
-    it("renders with primary variant by default", () => {
+    it("renders with primary variantStyle by default", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
     });
 
-    it("renders with primary variant explicitly", () => {
-      render(<Button variant="primary">Button</Button>);
+    it("renders with primary variantStyle explicitly", () => {
+      render(<Button variantStyle="primary">Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
@@ -459,238 +323,6 @@ describe("Button", () => {
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
-    });
-
-    describe("Article Nav Variant", () => {
-      it("renders article nav button when variant is article-nav and previousPathname exists", () => {
-        render(<Button variant="article-nav">Button</Button>);
-
-        const button = screen.getByRole("button");
-        expect(button).toBeInTheDocument();
-        expect(button).toHaveAttribute(
-          "data-testid",
-          "test-id-button-article-nav"
-        );
-      });
-
-      it("returns null when variant is article-nav and previousPathname is missing", () => {
-        mockUseContext.mockReturnValue({
-          previousPathname: null,
-        });
-
-        const { container } = render(
-          <Button variant="article-nav">Button</Button>
-        );
-        expect(container).toBeEmptyDOMElement();
-      });
-
-      it("returns null when variant is article-nav and previousPathname is undefined", () => {
-        mockUseContext.mockReturnValue({
-          previousPathname: undefined,
-        });
-
-        const { container } = render(
-          <Button variant="article-nav">Button</Button>
-        );
-        expect(container).toBeEmptyDOMElement();
-      });
-
-      it("applies custom className to article nav button", () => {
-        render(
-          <Button variant="article-nav" className="custom-class">
-            Button
-          </Button>
-        );
-
-        const button = screen.getByRole("button");
-        expect(button).toHaveAttribute("class");
-      });
-
-      it("renders article nav button with debug mode enabled", () => {
-        render(
-          <Button variant="article-nav" debugMode={true}>
-            Button
-          </Button>
-        );
-
-        const button = screen.getByRole("button");
-        expect(button).toHaveAttribute("data-debug-mode", "true");
-      });
-
-      it("renders article nav button with custom component ID", () => {
-        render(
-          <Button variant="article-nav" debugId="custom-id">
-            Button
-          </Button>
-        );
-
-        const button = screen.getByRole("button");
-        expect(button).toHaveAttribute(
-          "data-button-article-nav-id",
-          "custom-id-button-article-nav"
-        );
-      });
-
-      it("renders ArrowLeft icon in article nav button", () => {
-        render(<Button variant="article-nav">Button</Button>);
-
-        const icon = screen.getByTestId("arrow-left-icon");
-        expect(icon).toBeInTheDocument();
-      });
-
-      it("passes correct props to the icon in article nav button", () => {
-        render(
-          <Button variant="article-nav" debugId="test-id" debugMode={true}>
-            Button
-          </Button>
-        );
-
-        const icon = screen.getByTestId("arrow-left-icon");
-        expect(icon).toBeInTheDocument();
-        expect(icon).toHaveAttribute("aria-hidden", "true");
-        expect(icon).toHaveAttribute("data-debug-mode", "true");
-      });
-
-      it("has correct aria-label for article nav button", () => {
-        render(<Button variant="article-nav">Button</Button>);
-
-        const button = screen.getByRole("button");
-        expect(button).toHaveAttribute("aria-label", "Go back to articles");
-      });
-
-      it("calls router.back() when article nav button is clicked", () => {
-        render(<Button variant="article-nav">Button</Button>);
-
-        const button = screen.getByRole("button");
-        button.click();
-
-        expect(mockBack).toHaveBeenCalledTimes(1);
-      });
-
-      it("passes through HTML attributes to article nav button", () => {
-        render(
-          <Button
-            variant="article-nav"
-            debugId="test-id"
-            data-custom="test"
-            disabled
-          >
-            Button
-          </Button>
-        );
-
-        const button = screen.getByRole("button");
-        expect(button).toHaveAttribute("data-custom", "test");
-        expect(button).toHaveAttribute("aria-label", "Go back to articles");
-        expect(button).toBeDisabled();
-      });
-
-      it("hides decorative elements from screen readers in article nav button", () => {
-        render(
-          <Button variant="article-nav" debugId="aria-test">
-            Button
-          </Button>
-        );
-
-        const iconElement = screen.getByTestId("arrow-left-icon");
-        expect(iconElement).toHaveAttribute("aria-hidden", "true");
-
-        const descriptionElement = screen.getByText("Go back to articles");
-        expect(descriptionElement).toHaveAttribute("aria-hidden", "true");
-      });
-
-      it("maintains ARIA attributes during article nav button updates", () => {
-        const { rerender } = render(
-          <Button variant="article-nav" debugId="aria-test">
-            Button
-          </Button>
-        );
-
-        let buttonElement = screen.getByRole("button");
-        expect(buttonElement).toHaveAttribute(
-          "aria-label",
-          "Go back to articles"
-        );
-
-        rerender(
-          <Button variant="article-nav" debugId="updated-aria-test">
-            Button
-          </Button>
-        );
-
-        buttonElement = screen.getByRole("button");
-        expect(buttonElement).toHaveAttribute(
-          "aria-label",
-          "Go back to articles"
-        );
-      });
-
-      it("handles router errors gracefully in article nav button", () => {
-        mockBack.mockImplementation(() => {
-          throw new Error("Router error");
-        });
-
-        render(<Button variant="article-nav">Button</Button>);
-
-        const button = screen.getByRole("button");
-        expect(button).toBeInTheDocument();
-      });
-    });
-  });
-
-  describe("Link Functionality", () => {
-    it("renders as button even when href is provided", () => {
-      // Note: Button component doesn't render as link when href is provided
-      // It still renders as a button element, just with href attribute
-      render(<Button href="/test">Link Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-      expect(button).toHaveAttribute("href", "/test");
-    });
-
-    it("renders as button when href is undefined", () => {
-      render(<Button>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-
-    it("passes through href and related props to button element", () => {
-      // Note: Button component passes href through but doesn't render as link
-      render(
-        <Button href="/test" target="_blank" rel="noopener noreferrer">
-          External Link
-        </Button>
-      );
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("href", "/test");
-      expect(button).toHaveAttribute("target", "_blank");
-      expect(button).toHaveAttribute("rel", "noopener noreferrer");
-    });
-  });
-
-  describe("Memoization Tests", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(<Button isMemoized={true}>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
-    });
-
-    it("does not memoize when isMemoized is false", () => {
-      const { rerender } = render(<Button isMemoized={false}>Button</Button>);
-
-      rerender(<Button isMemoized={false}>Different content</Button>);
-      expect(screen.getByText("Different content")).toBeInTheDocument();
-    });
-
-    it("does not memoize by default", () => {
-      const { rerender } = render(<Button>Button</Button>);
-
-      rerender(<Button>Different content</Button>);
-      expect(screen.getByText("Different content")).toBeInTheDocument();
     });
   });
 
@@ -734,8 +366,8 @@ describe("Button", () => {
   });
 
   describe("Component-Specific Tests", () => {
-    it("applies correct variant styles", () => {
-      render(<Button variant="secondary">Secondary Button</Button>);
+    it("applies correct variantStyle styles", () => {
+      render(<Button variantStyle="secondary">Secondary Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
@@ -749,14 +381,6 @@ describe("Button", () => {
       button.click();
 
       expect(handleClick).toHaveBeenCalledTimes(1);
-    });
-
-    it("handles href prop on button element", () => {
-      // Note: Button component doesn't render as link when href is provided
-      render(<Button href="/about">About</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("href", "/about");
     });
 
     it("supports disabled state", () => {
