@@ -1,10 +1,8 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Integration
-// - Coverage: Tier 2 (80%+), key paths + edges
-// - Risk Tier: Core
-// - Component Type: Compound
-// ============================================================================
+/**
+ * @file Card.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Card component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
