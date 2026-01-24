@@ -1,10 +1,8 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit
-// - Coverage: Tier 2 (80%+), key paths + edges
-// - Risk Tier: Core
-// - Component Type: Presentational
-// ============================================================================
+/**
+ * @file Card.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Card component.
+ */
 
 import React from "react";
 
@@ -136,7 +134,9 @@ describe("Card.Cta", () => {
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("href", "/test-link");
       expect(screen.getByText("Call to action")).toBeInTheDocument();
-      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-icon-chevron-right-root")
+      ).toBeInTheDocument();
     });
 
     it("renders children directly when href is invalid", () => {
@@ -147,7 +147,7 @@ describe("Card.Cta", () => {
       ).not.toBeInTheDocument();
       expect(screen.getByText("Call to action")).toBeInTheDocument();
       expect(
-        screen.queryByTestId("icon-chevron-right")
+        screen.queryByTestId("test-id-icon-chevron-right-root")
       ).not.toBeInTheDocument();
     });
 
@@ -159,7 +159,7 @@ describe("Card.Cta", () => {
       ).not.toBeInTheDocument();
       expect(screen.getByText("Call to action")).toBeInTheDocument();
       expect(
-        screen.queryByTestId("icon-chevron-right")
+        screen.queryByTestId("test-id-icon-chevron-right-root")
       ).not.toBeInTheDocument();
     });
 
@@ -174,7 +174,17 @@ describe("Card.Cta", () => {
       expect(link).toHaveAttribute("href", "/valid-link");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
-      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
+      expect(
+        screen.getByTestId("test-id-icon-chevron-right-root")
+      ).toBeInTheDocument();
+    });
+
+    it("applies aria-hidden to decorative chevron icon", () => {
+      render(<Card.Cta href="/test-link">Call to action</Card.Cta>);
+
+      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      expect(icon).toBeInTheDocument();
+      expect(icon).toHaveAttribute("aria-hidden", "true");
     });
   });
 
@@ -313,9 +323,9 @@ describe("Card.Cta", () => {
     });
 
     it("ref points to correct element with custom as prop", () => {
-      const ref = React.createRef<HTMLElement>();
+      const ref = React.createRef<HTMLDivElement>();
       render(
-        <Card.Cta as="section" ref={ref}>
+        <Card.Cta as="section" ref={ref as any}>
           Call to action
         </Card.Cta>
       );
@@ -422,30 +432,6 @@ describe("Card.Cta", () => {
 
       expect(screen.getByText("Updated content")).toBeInTheDocument();
       expect(screen.queryByText("Initial content")).not.toBeInTheDocument();
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly for div element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Card.Cta ref={ref}>Call to action</Card.Cta>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("forwards ref correctly for span element", () => {
-      const ref = React.createRef<HTMLSpanElement>();
-      render(
-        (
-          <Card.Cta as="span" ref={ref}>
-            Call to action
-          </Card.Cta>
-        ) as any
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("SPAN");
     });
   });
 });
@@ -1588,10 +1574,10 @@ describe("Card.Link", () => {
     });
 
     it("forwards ref correctly for section element", () => {
-      const ref = React.createRef<HTMLElement>();
+      const ref = React.createRef<HTMLDivElement>();
       render(
         (
-          <Card.Link as="section" href="/test" ref={ref}>
+          <Card.Link as="section" href="/test" ref={ref as any}>
             Link content
           </Card.Link>
         ) as any
@@ -2815,11 +2801,11 @@ describe("Card", () => {
   });
 
   describe("Component Structure", () => {
-    it("renders as article element", () => {
+    it("renders as div element by default", () => {
       render(<Card>Card content</Card>);
 
       const card = screen.getByTestId("test-id-card-root");
-      expect(card.tagName).toBe("ARTICLE");
+      expect(card.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
@@ -2983,18 +2969,19 @@ describe("Card", () => {
     it("applies correct ARIA roles to main elements", () => {
       render(<Card debugId="aria-test">Card content</Card>);
 
-      // Test article role
-      const articleElement = screen.getByRole("article");
-      expect(articleElement).toBeInTheDocument();
+      // Card renders as div by default
+      const cardElement = screen.getByTestId("aria-test-card-root");
+      expect(cardElement).toBeInTheDocument();
+      expect(cardElement.tagName).toBe("DIV");
     });
 
     it("applies correct ARIA relationships between elements", () => {
       render(<Card debugId="aria-test">Card content</Card>);
 
-      const articleElement = screen.getByRole("article");
+      const cardElement = screen.getByTestId("aria-test-card-root");
 
-      // Article should be present (semantic HTML provides the role)
-      expect(articleElement).toBeInTheDocument();
+      // Card should be present
+      expect(cardElement).toBeInTheDocument();
     });
 
     it("applies correct ARIA labels without ID dependencies", () => {
@@ -3013,17 +3000,17 @@ describe("Card", () => {
       );
 
       // Card should have descriptive label
-      const articleElement = screen.getByRole("article");
-      expect(articleElement).toHaveAttribute("aria-label", "Test card");
+      const cardElement = screen.getByTestId("aria-test-card-root");
+      expect(cardElement).toHaveAttribute("aria-label", "Test card");
     });
 
     it("applies ARIA attributes with different debug IDs", () => {
       render(<Card debugId="custom-aria-id">Card content</Card>);
 
-      const articleElement = screen.getByRole("article");
+      const cardElement = screen.getByTestId("custom-aria-id-card-root");
 
-      // Should be present (semantic HTML provides the role)
-      expect(articleElement).toBeInTheDocument();
+      // Should be present
+      expect(cardElement).toBeInTheDocument();
     });
 
     it("maintains ARIA attributes during component updates", () => {
@@ -3032,32 +3019,33 @@ describe("Card", () => {
       );
 
       // Initial render
-      let articleElement = screen.getByRole("article");
-      expect(articleElement).toBeInTheDocument();
+      let cardElement = screen.getByTestId("aria-test-card-root");
+      expect(cardElement).toBeInTheDocument();
 
       // Update with different content
       rerender(<Card debugId="aria-test">Updated content</Card>);
 
       // ARIA attributes should be maintained
-      articleElement = screen.getByRole("article");
-      expect(articleElement).toBeInTheDocument();
+      cardElement = screen.getByTestId("aria-test-card-root");
+      expect(cardElement).toBeInTheDocument();
     });
 
     it("ensures proper ARIA landmark structure", () => {
       render(<Card debugId="aria-test">Card content</Card>);
 
-      // Should have article landmark
-      const articleElement = screen.getByRole("article");
-      expect(articleElement).toBeInTheDocument();
+      // Card renders as div element
+      const cardElement = screen.getByTestId("aria-test-card-root");
+      expect(cardElement).toBeInTheDocument();
+      expect(cardElement.tagName).toBe("DIV");
     });
 
     it("applies conditional ARIA attributes correctly", () => {
       render(<Card debugId="aria-test">Card content</Card>);
 
-      const articleElement = screen.getByRole("article");
+      const cardElement = screen.getByTestId("aria-test-card-root");
 
-      // Should be present (semantic HTML provides the role)
-      expect(articleElement).toBeInTheDocument();
+      // Should be present
+      expect(cardElement).toBeInTheDocument();
     });
 
     it("handles ARIA attributes when content is missing", () => {
@@ -3078,12 +3066,12 @@ describe("Card", () => {
         </Card>
       );
 
-      const articleElement = screen.getByRole("article");
+      const cardElement = screen.getByTestId("aria-test-card-root");
 
       // Should maintain both component ARIA attributes and custom ones
-      expect(articleElement).toBeInTheDocument();
-      expect(articleElement).toHaveAttribute("aria-expanded", "true");
-      expect(articleElement).toHaveAttribute("aria-controls", "card-content");
+      expect(cardElement).toBeInTheDocument();
+      expect(cardElement).toHaveAttribute("aria-expanded", "true");
+      expect(cardElement).toHaveAttribute("aria-controls", "card-content");
     });
   });
 
@@ -3182,11 +3170,11 @@ describe("Card", () => {
 
   describe("Ref Forwarding", () => {
     it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<Card ref={ref}>Card content</Card>);
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Card ref={ref as any}>Card content</Card>);
 
       expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("ARTICLE");
+      expect(ref.current?.tagName).toBe("DIV");
     });
 
     it("ref points to correct element with custom as prop", () => {
@@ -3202,8 +3190,8 @@ describe("Card", () => {
     });
 
     it("allows ref access to DOM methods", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(<Card ref={ref}>Card content</Card>);
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Card ref={ref as any}>Card content</Card>);
 
       expect(ref.current?.getAttribute("data-testid")).toBe(
         "test-id-card-root"
