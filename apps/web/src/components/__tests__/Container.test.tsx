@@ -1,3 +1,9 @@
+/**
+ * @file Container.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Container component.
+ */
+
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
@@ -20,10 +26,6 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
   createComponentProps: vi.fn(
     (componentId, componentType, isDebugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${componentId}-${componentType}`,
@@ -40,7 +42,7 @@ vi.mock("@guyromellemagayano/components", () => ({
   // Mock CommonComponentProps type
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -82,11 +84,7 @@ describe("Container", () => {
     });
 
     it("passes through HTML attributes", () => {
-      render(
-        <Container aria-label="Container label">
-          Content
-        </Container>
-      );
+      render(<Container aria-label="Container label">Content</Container>);
 
       const container = screen.getByTestId("test-id-container-outer-root");
       expect(container).toHaveAttribute("aria-label", "Container label");
@@ -123,21 +121,45 @@ describe("Container", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly to Container", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container ref={ref}>Content</Container>);
+  describe("Polymorphic Element Types", () => {
+    it("renders as div by default", () => {
+      render(<Container>Content</Container>);
 
-      expect(ref.current).toBe(
-        screen.getByTestId("test-id-container-outer-root")
-      );
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container.tagName).toBe("DIV");
     });
 
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container ref={ref}>Content</Container>);
+    it("renders as section when as prop is section", () => {
+      render(<Container as="section">Content</Container>);
 
-      expect(ref.current?.tagName).toBe("DIV");
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container.tagName).toBe("SECTION");
+    });
+
+    it("renders as main when as prop is main", () => {
+      render(<Container as="main">Content</Container>);
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container.tagName).toBe("MAIN");
+    });
+
+    it("renders as article when as prop is article", () => {
+      render(<Container as="article">Content</Container>);
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container.tagName).toBe("ARTICLE");
+    });
+
+    it("allows custom props to be passed through", () => {
+      render(
+        <Container data-custom="value" aria-label="Custom container">
+          Content
+        </Container>
+      );
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container).toHaveAttribute("data-custom", "value");
+      expect(container).toHaveAttribute("aria-label", "Custom container");
     });
   });
 
@@ -168,20 +190,18 @@ describe("Container", () => {
       ).toBeInTheDocument();
     });
 
-    it("forwards ref correctly to Container.Inner", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container.Inner ref={ref}>Ref test</Container.Inner>);
+    it("renders Container.Inner with polymorphic as prop", () => {
+      render(<Container.Inner as="section">Inner content</Container.Inner>);
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
+      const innerRoot = screen.getByTestId("test-id-container-inner-root");
+      expect(innerRoot.tagName).toBe("SECTION");
     });
 
-    it("forwards ref correctly to Container.Outer", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container.Outer ref={ref}>Ref test</Container.Outer>);
+    it("renders Container.Outer with polymorphic as prop", () => {
+      render(<Container.Outer as="main">Outer content</Container.Outer>);
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
+      const outerRoot = screen.getByTestId("test-id-container-outer-root");
+      expect(outerRoot.tagName).toBe("MAIN");
     });
   });
 
@@ -256,11 +276,28 @@ describe("Container", () => {
       expect(innerRoot).toHaveAttribute("aria-describedby", "desc");
     });
 
-    it("renders Container.Inner as custom element when as prop is provided", () => {
-      render(<Container.Inner as="section">Content</Container.Inner>);
+    it("renders Container.Inner with all supported element types", () => {
+      const { rerender } = render(
+        <Container.Inner as="div">Content</Container.Inner>
+      );
+      expect(screen.getByTestId("test-id-container-inner-root").tagName).toBe(
+        "DIV"
+      );
 
-      const innerRoot = screen.getByTestId("test-id-container-inner-root");
-      expect(innerRoot.tagName).toBe("SECTION");
+      rerender(<Container.Inner as="section">Content</Container.Inner>);
+      expect(screen.getByTestId("test-id-container-inner-root").tagName).toBe(
+        "SECTION"
+      );
+
+      rerender(<Container.Inner as="main">Content</Container.Inner>);
+      expect(screen.getByTestId("test-id-container-inner-root").tagName).toBe(
+        "MAIN"
+      );
+
+      rerender(<Container.Inner as="article">Content</Container.Inner>);
+      expect(screen.getByTestId("test-id-container-inner-root").tagName).toBe(
+        "ARTICLE"
+      );
     });
   });
 
@@ -350,11 +387,28 @@ describe("Container", () => {
       );
     });
 
-    it("renders Container.Outer as custom element when as prop is provided", () => {
-      render(<Container.Outer as="section">Content</Container.Outer>);
+    it("renders Container.Outer with all supported element types", () => {
+      const { rerender } = render(
+        <Container.Outer as="div">Content</Container.Outer>
+      );
+      expect(screen.getByTestId("test-id-container-outer-root").tagName).toBe(
+        "DIV"
+      );
 
-      const outerRoot = screen.getByTestId("test-id-container-outer-root");
-      expect(outerRoot.tagName).toBe("SECTION");
+      rerender(<Container.Outer as="section">Content</Container.Outer>);
+      expect(screen.getByTestId("test-id-container-outer-root").tagName).toBe(
+        "SECTION"
+      );
+
+      rerender(<Container.Outer as="main">Content</Container.Outer>);
+      expect(screen.getByTestId("test-id-container-outer-root").tagName).toBe(
+        "MAIN"
+      );
+
+      rerender(<Container.Outer as="article">Content</Container.Outer>);
+      expect(screen.getByTestId("test-id-container-outer-root").tagName).toBe(
+        "ARTICLE"
+      );
     });
   });
 
@@ -404,7 +458,7 @@ describe("Container", () => {
           <div data-testid="element">Element</div>
           String content
           {42}
-          {true && <span data-testid="conditional">Conditional</span>}
+          <span data-testid="conditional">Conditional</span>
         </Container>
       );
 
@@ -604,6 +658,82 @@ describe("Container", () => {
         "aria-controls",
         "container-content"
       );
+    });
+  });
+
+  describe("React 19 Ref Support", () => {
+    it("accepts ref as a prop (React 19 pattern)", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container ref={ref}>Content</Container>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+
+    it("ref points to correct element with custom as prop", () => {
+      const ref = React.createRef<HTMLElement>();
+      render(
+        <Container as="section" ref={ref as React.Ref<HTMLElement>}>
+          Content
+        </Container>
+      );
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("SECTION");
+    });
+
+    it("allows ref access to DOM methods", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container ref={ref}>Content</Container>);
+
+      expect(ref.current?.getAttribute("data-testid")).toBe(
+        "test-id-container-outer-root"
+      );
+    });
+  });
+
+  describe("Custom Props Support", () => {
+    it("accepts and passes through custom data attributes", () => {
+      render(
+        <Container data-test-custom="custom-value" data-analytics="track">
+          Content
+        </Container>
+      );
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container).toHaveAttribute("data-test-custom", "custom-value");
+      expect(container).toHaveAttribute("data-analytics", "track");
+    });
+
+    it("accepts and passes through event handlers", () => {
+      const handleClick = vi.fn();
+      render(
+        <Container onClick={handleClick} onMouseEnter={vi.fn()}>
+          Content
+        </Container>
+      );
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      container.click();
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("merges custom props with component props", () => {
+      render(
+        <Container
+          className="custom-class"
+          data-custom="value"
+          aria-label="Label"
+        >
+          Content
+        </Container>
+      );
+
+      const container = screen.getByTestId("test-id-container-outer-root");
+      expect(container).toHaveClass("custom-class");
+      expect(container).toHaveAttribute("data-custom", "value");
+      expect(container).toHaveAttribute("aria-label", "Label");
     });
   });
 

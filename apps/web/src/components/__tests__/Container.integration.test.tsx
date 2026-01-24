@@ -1,6 +1,12 @@
+/**
+ * @file Container.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Container component.
+ */
+
 import React from "react";
 
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Container } from "../Container";
@@ -19,7 +25,7 @@ vi.mock("@guyromellemagayano/hooks", () => ({
 
 // @guyromellemagayano/utils is mocked globally in test-setup.ts
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -189,7 +195,7 @@ describe("Container Integration Tests", () => {
           Text
           <div>Element</div>
           {42}
-          {true && "Conditional"}
+          Conditional
         </Container>
       );
 
@@ -327,22 +333,48 @@ describe("Container Integration Tests", () => {
       expect(inner).toContainElement(content);
     });
 
-    it("handles ref forwarding through compound component structure", () => {
-      const containerRef = React.createRef<HTMLDivElement>();
-      const innerRef = React.createRef<HTMLDivElement>();
-      const outerRef = React.createRef<HTMLDivElement>();
+    it("handles polymorphic as prop through compound component structure", () => {
+      // Test Container with polymorphic as prop
+      const { unmount: unmountContainer } = render(
+        <Container as="main">Content</Container>
+      );
 
+      const outer = screen.getByTestId("test-id-container-outer-root");
+      expect(outer.tagName).toBe("MAIN");
+
+      unmountContainer();
+
+      // Test Container.Inner with polymorphic as prop (standalone)
+      const { unmount: unmountInner } = render(
+        <Container.Inner as="section">Inner content</Container.Inner>
+      );
+      const inner = screen.getByTestId("test-id-container-inner-root");
+      expect(inner.tagName).toBe("SECTION");
+
+      unmountInner();
+
+      // Test Container.Outer with polymorphic as prop (standalone)
+      render(<Container.Outer as="article">Outer content</Container.Outer>);
+      const outerStandalone = screen.getByTestId("test-id-container-outer-root");
+      expect(outerStandalone.tagName).toBe("ARTICLE");
+    });
+
+    it("supports custom props through compound component structure", () => {
       render(
-        <Container ref={containerRef}>
-          <Container.Inner ref={innerRef}>Inner with ref</Container.Inner>
+        <Container
+          as="main"
+          data-custom="value"
+          aria-label="Main container"
+          onClick={vi.fn()}
+        >
+          Content
         </Container>
       );
 
-      render(<Container.Outer ref={outerRef}>Outer with ref</Container.Outer>);
-
-      expect(containerRef.current).toBeInTheDocument();
-      expect(innerRef.current).toBeInTheDocument();
-      expect(outerRef.current).toBeInTheDocument();
+      const outer = screen.getByTestId("test-id-container-outer-root");
+      expect(outer.tagName).toBe("MAIN");
+      expect(outer).toHaveAttribute("data-custom", "value");
+      expect(outer).toHaveAttribute("aria-label", "Main container");
     });
   });
 
@@ -400,6 +432,80 @@ describe("Container Integration Tests", () => {
 
       expect(screen.getByTestId("mobile-content")).toBeInTheDocument();
       expect(screen.getByTestId("desktop-content")).toBeInTheDocument();
+    });
+  });
+
+  describe("Container with React 19 Ref Support", () => {
+    it("accepts ref as prop in Container component", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container ref={ref}>Content</Container>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+
+    it("ref works with polymorphic as prop", () => {
+      const ref = React.createRef<HTMLElement>();
+      render(
+        <Container as="main" ref={ref as React.Ref<HTMLElement>}>
+          Content
+        </Container>
+      );
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("MAIN");
+    });
+
+    it("ref works with Container.Inner standalone", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container.Inner ref={ref}>Inner content</Container.Inner>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+
+    it("ref works with Container.Outer standalone", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<Container.Outer ref={ref}>Outer content</Container.Outer>);
+
+      expect(ref.current).toBeInTheDocument();
+      expect(ref.current?.tagName).toBe("DIV");
+    });
+  });
+
+  describe("Container with Custom Props", () => {
+    it("passes custom props through Container to ContainerOuter", () => {
+      render(
+        <Container
+          data-custom="value"
+          aria-label="Custom"
+          onClick={vi.fn()}
+        >
+          Content
+        </Container>
+      );
+
+      const outer = screen.getByTestId("test-id-container-outer-root");
+      expect(outer).toHaveAttribute("data-custom", "value");
+      expect(outer).toHaveAttribute("aria-label", "Custom");
+    });
+
+    it("handles event handlers correctly", () => {
+      const handleClick = vi.fn();
+      const handleMouseEnter = vi.fn();
+
+      render(
+        <Container onClick={handleClick} onMouseEnter={handleMouseEnter}>
+          Content
+        </Container>
+      );
+
+      const outer = screen.getByTestId("test-id-container-outer-root");
+      fireEvent.click(outer);
+      fireEvent.mouseEnter(outer);
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+      expect(handleMouseEnter).toHaveBeenCalledTimes(1);
     });
   });
 });
