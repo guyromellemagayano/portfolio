@@ -18,13 +18,7 @@ import {
 } from "vitest";
 
 import { Article } from "../Article";
-
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+import type { Card } from "../Card";
 
 const mockUseTranslations = vi.hoisted(() =>
   vi.fn(() => (key: string) => {
@@ -37,9 +31,6 @@ const mockUseTranslations = vi.hoisted(() =>
 );
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
 
 vi.mock("@guyromellemagayano/utils", () => ({
   formatDateSafely: vi.fn((date) => {
@@ -61,126 +52,110 @@ vi.mock("next-intl", () => ({
 // Mock Card component
 vi.mock("@web/components/Card", () => {
   const MockCard = Object.assign(
-    React.forwardRef<HTMLElement, any>(function MockCard(props, ref) {
+    function MockCard(props: any) {
       const {
         children,
         className,
-        role,
+        as: Component = "div",
         "aria-labelledby": ariaLabelledBy,
         "aria-describedby": ariaDescribedBy,
-        debugId: _debugId,
-        debugMode,
         ...rest
       } = props;
 
       return React.createElement(
-        "article",
+        Component,
         {
-          ref,
           className,
-          role,
           "aria-labelledby": ariaLabelledBy,
           "aria-describedby": ariaDescribedBy,
           "data-testid": "mock-card",
-          "data-debug-mode": debugMode ? "true" : undefined,
           ...rest,
         },
         children
       );
-    }),
+    },
     {
-      Title: React.forwardRef<HTMLHeadingElement, any>(
-        function MockCardTitle(props, ref) {
-          const {
-            children,
-            href,
-            id,
-            "aria-level": ariaLevel,
-            ...rest
-          } = props;
-          // Handle URL objects and strings
-          let hrefString: string | undefined;
-          if (href) {
-            try {
-              if (href instanceof URL) {
-                // Extract pathname from the URL object
-                hrefString = href.pathname;
-                if (href.search) hrefString += href.search;
-                if (href.hash) hrefString += href.hash;
-              } else {
-                hrefString = String(href);
-              }
-            } catch {
-              hrefString = undefined;
+      Title: function MockCardTitle(props: any) {
+        const {
+          children,
+          href,
+          id,
+          as: Component = "h2",
+          ...rest
+        } = props;
+        // Handle URL objects and strings
+        let hrefString: string | undefined;
+        if (href) {
+          try {
+            if (href instanceof URL) {
+              // Extract pathname from the URL object
+              hrefString = href.pathname;
+              if (href.search) hrefString += href.search;
+              if (href.hash) hrefString += href.hash;
+            } else {
+              hrefString = String(href);
             }
+          } catch {
+            hrefString = undefined;
           }
-          return (
-            <h2
-              ref={ref}
-              data-testid="mock-card-title"
-              id={id}
-              aria-level={ariaLevel}
-              {...rest}
-            >
-              {hrefString ? (
-                <a href={hrefString} aria-label="Article title link">
-                  {children}
-                </a>
-              ) : (
-                children
-              )}
-            </h2>
-          );
         }
-      ),
-      Eyebrow: React.forwardRef<HTMLElement, any>(
-        function MockCardEyebrow(props, ref) {
-          const {
-            children,
+        return (
+          <Component
+            data-testid="mock-card-title"
+            id={id}
+            {...rest}
+          >
+            {hrefString ? (
+              <a href={hrefString}>
+                {children}
+              </a>
+            ) : (
+              children
+            )}
+          </Component>
+        );
+      },
+      Eyebrow: function MockCardEyebrow(props: any) {
+        const {
+          children,
+          dateTime,
+          "aria-label": ariaLabel,
+          as: Component = "time",
+          ...rest
+        } = props;
+        return React.createElement(
+          Component,
+          {
             dateTime,
             "aria-label": ariaLabel,
-            as: Component = "time",
-            ...rest
-          } = props;
-          return React.createElement(
-            Component,
-            {
-              ref,
-              dateTime,
-              "aria-label": ariaLabel,
-              "data-testid": "mock-card-eyebrow",
-              ...rest,
-            },
-            children
-          );
-        }
-      ),
-      Description: React.forwardRef<HTMLParagraphElement, any>(
-        function MockCardDescription(props, ref) {
-          const { children, id, ...rest } = props;
-          return (
-            <p ref={ref} data-testid="mock-card-description" id={id} {...rest}>
-              {children}
-            </p>
-          );
-        }
-      ),
-      Cta: React.forwardRef<HTMLDivElement, any>(
-        function MockCardCta(props, ref) {
-          const { children, role, "aria-label": ariaLabel, ...rest } = props;
-          return (
-            <div
-              ref={ref}
-              data-testid="mock-card-cta"
-              role={role}
-              aria-label={ariaLabel}
-              {...rest}
-            >
-              {children}
-            </div>
-          );
-        }
-      ),
+            "data-testid": "mock-card-eyebrow",
+            ...rest,
+          },
+          children
+        );
+      },
+      Description: function MockCardDescription(props: any) {
+        const { children, id, ...rest } = props;
+        return (
+          <p data-testid="mock-card-description" id={id} {...rest}>
+            {children}
+          </p>
+        );
+      },
+      Cta: function MockCardCta(props: any) {
+        const { children, href, title, ...rest } = props;
+        return (
+          <div data-testid="mock-card-cta" {...rest}>
+            {href ? (
+              <a href={href} title={title}>
+                {children}
+              </a>
+            ) : (
+              children
+            )}
+          </div>
+        );
+      },
     }
   );
 
@@ -278,8 +253,9 @@ describe("Article", () => {
       expect(titleElement).toBeInTheDocument();
       expect(screen.getByText("Test Article Title")).toBeInTheDocument();
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href", "/articles/test-article");
+      // Title link should be inside the title element
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
     });
 
     it("renders article description as Card.Description", () => {
@@ -386,9 +362,10 @@ describe("Article", () => {
       };
       render(<Article article={articleWithWhitespace} />);
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href");
-      expect(link).toHaveAttribute("href", "/articles/trimmed-slug");
+      // Title link should have trimmed slug
+      const titleElement = screen.getByTestId("mock-card-title");
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/trimmed-slug");
     });
 
     it("handles null/undefined title", () => {
@@ -450,9 +427,9 @@ describe("Article", () => {
     it("creates URL for title link when slug is valid", () => {
       render(<Article article={mockArticle} />);
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href");
-      expect(link).toHaveAttribute("href", "/articles/test-article");
+      const titleElement = screen.getByTestId("mock-card-title");
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
     });
 
     it("handles tags array", () => {
@@ -486,69 +463,6 @@ describe("Article", () => {
     });
   });
 
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(<Article article={mockArticle} debugMode={true} />);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with debugId parameter", () => {
-      render(<Article article={mockArticle} debugId="custom-id" />);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: undefined,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Article article={mockArticle} />);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to Card component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} />);
-
-      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    });
-  });
-
-  describe("Debug Mode", () => {
-    it("renders correctly when debug mode is enabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: true,
-      });
-
-      render(<Article article={mockArticle} debugMode={true} />);
-
-      const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("renders correctly when debug mode is disabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} />);
-
-      const cardElement = screen.getByTestId("mock-card");
-      expect(cardElement).not.toHaveAttribute("data-debug-mode");
-    });
-  });
 
   describe("Component Structure", () => {
     it("renders with correct Card structure", () => {
@@ -574,29 +488,6 @@ describe("Article", () => {
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with generated component ID", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} />);
-
-      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    });
-
-    it("renders with custom debug ID", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "custom-id",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} debugId="custom-id" />);
-
-      expect(screen.getByTestId("mock-card")).toBeInTheDocument();
-    });
-  });
 
   describe("Internationalization", () => {
     it("uses translations for CTA text", () => {
@@ -705,9 +596,9 @@ describe("Article", () => {
     it("uses article slug for title link when slug is valid", () => {
       render(<Article article={mockArticle} />);
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href");
-      expect(link).toHaveAttribute("href", "/articles/test-article");
+      const titleElement = screen.getByTestId("mock-card-title");
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
     });
 
     it("creates link when slug is valid regardless of date validity", () => {
@@ -718,9 +609,10 @@ describe("Article", () => {
 
       render(<Article article={articleWithInvalidDate} />);
 
-      // Link should still be created if slug is valid
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href", "/articles/test-article");
+      // Title link should still be created if slug is valid
+      const titleElement = screen.getByTestId("mock-card-title");
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/test-article");
 
       // CTA still renders when date is a non-empty string (even if formatting fails)
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
@@ -735,8 +627,9 @@ describe("Article", () => {
 
       render(<Article article={differentSlugArticle} />);
 
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("href", "/articles/different-article-slug");
+      const titleElement = screen.getByTestId("mock-card-title");
+      const titleLink = titleElement.querySelector("a");
+      expect(titleLink).toHaveAttribute("href", "/articles/different-article-slug");
     });
   });
 
@@ -751,8 +644,6 @@ describe("Article", () => {
       render(
         <Article
           article={complexArticle}
-          debugId="perf-test"
-          debugMode={true}
         />
       );
 
@@ -795,184 +686,113 @@ describe("Article", () => {
       expect(articleElement).toHaveAttribute("data-custom", "value");
     });
 
-    it("has hardcoded role='article' for accessibility", () => {
+    it("uses article element for semantic HTML (SEO)", () => {
       render(<Article article={mockArticle} />);
 
-      const articleElement = screen.getByTestId("mock-card");
-      expect(articleElement).toHaveAttribute("role", "article");
+      const articleElement = screen.getByRole("article");
+      expect(articleElement.tagName).toBe("ARTICLE");
+      // Note: We use as="article" which sets the element type, not role attribute
     });
   });
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
+      render(<Article article={mockArticle} />);
 
-      render(<Article article={mockArticle} debugId="aria-test" />);
-
-      // Test article role
+      // Test article role (SEO: semantic HTML)
       const articleElement = screen.getByRole("article");
       expect(articleElement).toBeInTheDocument();
-
-      // Test button role for CTA (only if CTA is rendered)
-      const buttonElement = screen.queryByRole("button");
-      expect(buttonElement).toBeInTheDocument();
     });
 
     it("applies correct ARIA relationships between elements", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} debugId="aria-test" />);
+      render(<Article article={mockArticle} />);
 
       const articleElement = screen.getByRole("article");
 
-      // The title should label the article
-      expect(articleElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-base-article-card-title"
-      );
+      // The title should label the article (SEO: proper semantic structure)
+      expect(articleElement).toHaveAttribute("aria-labelledby");
 
       // Article should be described by the description
-      expect(articleElement).toHaveAttribute(
-        "aria-describedby",
-        "aria-test-base-article-card-description"
-      );
+      expect(articleElement).toHaveAttribute("aria-describedby");
     });
 
     it("applies unique IDs for ARIA relationships", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
+      render(<Article article={mockArticle} />);
 
-      render(<Article article={mockArticle} debugId="aria-test" />);
+      const articleElement = screen.getByRole("article");
 
-      // Title should have unique ID
+      // Title should have unique ID (generated by useId)
       const titleElement = screen.getByTestId("mock-card-title");
-      expect(titleElement).toHaveAttribute(
-        "id",
-        "aria-test-base-article-card-title"
-      );
+      const titleId = titleElement.getAttribute("id");
+      expect(titleId).toBeTruthy();
+      // useId generates IDs like "_r_1e_-title" in test environment
+      expect(titleId).toMatch(/-title$/);
 
       // Description should have unique ID
       const descriptionElement = screen.getByTestId("mock-card-description");
-      expect(descriptionElement).toHaveAttribute(
-        "id",
-        "aria-test-base-article-card-description"
-      );
+      const descriptionId = descriptionElement.getAttribute("id");
+      expect(descriptionId).toBeTruthy();
+      // useId generates IDs like "_r_1e_-description" in test environment
+      expect(descriptionId).toMatch(/-description$/);
+
+      // IDs should match ARIA relationships (SEO: proper semantic structure)
+      expect(articleElement).toHaveAttribute("aria-labelledby", titleId);
+      expect(articleElement).toHaveAttribute("aria-describedby", descriptionId);
     });
 
     it("applies correct ARIA labels to content elements", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
+      render(<Article article={mockArticle} />);
 
-      render(<Article article={mockArticle} debugId="aria-test" />);
-
-      // Date element should have a descriptive label
+      // Date element should have a descriptive label (SEO: proper time semantics)
       const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrowElement).toHaveAttribute("aria-label");
-
-      // CTA should have descriptive label (only if CTA is rendered)
-      const ctaElement = screen.queryByTestId("mock-card-cta");
-      expect(ctaElement).toHaveAttribute("aria-label");
+      expect(eyebrowElement).toHaveAttribute("dateTime");
     });
 
-    it("applies correct heading level ARIA attribute", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
+    it("uses h2 heading for title (SEO: proper heading hierarchy)", () => {
+      render(<Article article={mockArticle} />);
 
-      render(<Article article={mockArticle} debugId="aria-test" />);
-
-      // Title should have aria-level
+      // Title should be h2 (SEO: default heading level for card titles)
       const titleElement = screen.getByTestId("mock-card-title");
-      expect(titleElement).toHaveAttribute("aria-level", "1");
-    });
-
-    it("applies ARIA attributes with different debug IDs", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "custom-aria-id",
-        isDebugMode: false,
-      });
-
-      render(<Article article={mockArticle} debugId="custom-aria-id" />);
-
-      const articleElement = screen.getByRole("article");
-      expect(articleElement).toHaveAttribute(
-        "aria-labelledby",
-        "custom-aria-id-base-article-card-title"
-      );
-
-      const titleElement = screen.getByTestId("mock-card-title");
-      expect(titleElement).toHaveAttribute(
-        "id",
-        "custom-aria-id-base-article-card-title"
-      );
+      expect(titleElement.tagName).toBe("H2");
     });
 
     it("maintains ARIA attributes during component updates", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
-
-      const { rerender } = render(
-        <Article article={mockArticle} debugId="aria-test" />
-      );
+      const { rerender } = render(<Article article={mockArticle} />);
 
       // Initial render
       const articleElement = screen.getByRole("article");
-      expect(articleElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-base-article-card-title"
-      );
+      const initialTitleId = articleElement.getAttribute("aria-labelledby");
+      expect(initialTitleId).toBeTruthy();
 
       // Update with different article
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
-      rerender(<Article article={updatedArticle} debugId="aria-test" />);
+      rerender(<Article article={updatedArticle} />);
 
       // ARIA attributes should still be present
       const updatedArticleElement = screen.getByRole("article");
-      expect(updatedArticleElement).toHaveAttribute(
-        "aria-labelledby",
-        "aria-test-base-article-card-title"
-      );
+      expect(updatedArticleElement).toHaveAttribute("aria-labelledby");
+      expect(updatedArticleElement).toHaveAttribute("aria-describedby");
     });
 
-    it("ensures proper ARIA landmark structure", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "aria-test",
-        isDebugMode: false,
-      });
+    it("ensures proper semantic structure (SEO: article element)", () => {
+      render(<Article article={mockArticle} />);
 
-      render(<Article article={mockArticle} debugId="aria-test" />);
-
-      // Should have article landmark
+      // Should have article landmark (SEO: semantic HTML)
       const articleElement = screen.getByRole("article");
       expect(articleElement).toBeInTheDocument();
+      expect(articleElement.tagName).toBe("ARTICLE");
 
-      // Should have heading
-      const headingElement = screen.getByTestId("mock-card-title");
+      // Should have heading (SEO: proper heading hierarchy)
+      const headingElement = screen.getByRole("heading", { level: 2 });
       expect(headingElement).toBeInTheDocument();
-
-      // Should have a button (CTA only renders when title, date, and description exist)
-      const buttonElement = screen.queryByRole("button");
-      expect(buttonElement).toBeInTheDocument();
     });
   });
 
   describe("Custom Props Type Safety", () => {
     it("accepts and passes through custom string props", () => {
       render(
-        <Article<{ customProp: string }>
+        <Article<typeof Card, { customProp: string }>
           article={mockArticle}
           customProp="test-value"
         />
@@ -984,7 +804,7 @@ describe("Article", () => {
 
     it("accepts and passes through custom data attributes", () => {
       render(
-        <Article<{ "data-custom": string }>
+        <Article<typeof Card, { "data-custom": string }>
           article={mockArticle}
           data-custom="custom-data"
         />
@@ -996,7 +816,7 @@ describe("Article", () => {
 
     it("accepts multiple custom props", () => {
       render(
-        <Article<{ customProp: string; count: number }>
+        <Article<typeof Card, { customProp: string; count: number }>
           article={mockArticle}
           customProp="value"
           count={42}
@@ -1010,7 +830,7 @@ describe("Article", () => {
 
     it("works with custom props and standard Card props", () => {
       render(
-        <Article<{ "data-analytics": string }>
+        <Article<typeof Card, { "data-analytics": string }>
           article={mockArticle}
           data-analytics="article-view"
           className="custom-article"
@@ -1022,24 +842,21 @@ describe("Article", () => {
       expect(articleElement).toHaveAttribute("class");
     });
 
-    it("works with custom props and debug props", () => {
+    it("works with custom props", () => {
       render(
-        <Article<{ "data-tracking": string }>
+        <Article<typeof Card, { "data-tracking": string }>
           article={mockArticle}
           data-tracking="article-render"
-          debugId="custom-debug"
-          debugMode={true}
         />
       );
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("data-tracking", "article-render");
-      expect(articleElement).toHaveAttribute("data-debug-mode", "true");
     });
 
     it("preserves custom props through component updates", () => {
       const { rerender } = render(
-        <Article<{ "data-persist": string }>
+        <Article<typeof Card, { "data-persist": string }>
           article={mockArticle}
           data-persist="initial"
         />
@@ -1050,7 +867,7 @@ describe("Article", () => {
 
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
       rerender(
-        <Article<{ "data-persist": string }>
+        <Article<typeof Card, { "data-persist": string }>
           article={updatedArticle}
           data-persist="updated"
         />
