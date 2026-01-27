@@ -1,16 +1,14 @@
+/**
+ * @file index.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Link component.
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Link } from ".";
-
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit
-// - Coverage: Tier 2 (80%+)
-// - Risk Tier: Core
-// - Component Type: Presentational
-// ============================================================================
 
 describe("Link", () => {
   afterEach(() => {
