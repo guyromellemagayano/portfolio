@@ -10,40 +10,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Button } from "../Button";
 
 // Mock dependencies
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
-      ...additionalProps,
-    })
-  ),
+vi.mock("@guyromellemagayano/components", () => ({
+  // Mock CommonComponentProps type
 }));
 
 vi.mock("@web/utils/helpers", () => ({
@@ -55,14 +23,9 @@ vi.mock("next/link", () => ({
 }));
 
 describe("Button Integration Tests", () => {
-  beforeEach(() => {
-    mockUseComponentId.mockClear();
-  });
-
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
-    mockUseComponentId.mockClear();
   });
 
   describe("Button with Event Handlers Integration", () => {
