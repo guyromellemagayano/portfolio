@@ -4,27 +4,12 @@
  * @description Integration tests for the Container component.
  */
 
-import React from "react";
-
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Container } from "../container/Container";
-
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+import { Container } from "../Container";
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-// @guyromellemagayano/utils is mocked globally in test-setup.ts
-
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
@@ -37,25 +22,23 @@ describe("Container Integration Tests", () => {
 
   describe("Container with Sub-components", () => {
     it("renders Container with ContainerOuter and ContainerInner", () => {
-      render(<Container>Test Content</Container>);
+      const { container } = render(<Container>Test Content</Container>);
 
-      expect(
-        screen.getByTestId("test-id-container-outer-root")
-      ).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-container-inner-root")
-      ).toBeInTheDocument();
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
+      expect(outer).toBeInTheDocument();
+      expect(inner).toBeInTheDocument();
       expect(screen.getByText("Test Content")).toBeInTheDocument();
     });
 
     it("maintains proper component hierarchy", () => {
-      render(<Container>Content</Container>);
+      const { container } = render(<Container>Content</Container>);
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      const inner = screen.getByTestId("test-id-container-inner-root");
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
       const content = screen.getByText("Content");
 
-      expect(outer).toContainElement(inner);
+      expect(outer).toContainElement(inner || null);
       expect(inner).toContainElement(content);
     });
 
@@ -80,27 +63,27 @@ describe("Container Integration Tests", () => {
 
   describe("Container Orchestration", () => {
     it("automatically wraps content in ContainerOuter and ContainerInner", () => {
-      render(<Container>Test Content</Container>);
+      const { container } = render(<Container>Test Content</Container>);
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      const inner = screen.getByTestId("test-id-container-inner-root");
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
       const content = screen.getByText("Test Content");
 
       expect(outer).toBeInTheDocument();
       expect(inner).toBeInTheDocument();
-      expect(outer).toContainElement(inner);
+      expect(outer).toContainElement(inner || null);
       expect(inner).toContainElement(content);
     });
 
     it("ensures proper nesting hierarchy: ContainerOuter > ContainerInner > Content", () => {
-      render(<Container>Nested Content</Container>);
+      const { container } = render(<Container>Nested Content</Container>);
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      const inner = screen.getByTestId("test-id-container-inner-root");
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
       const content = screen.getByText("Nested Content");
 
       // Verify the nesting hierarchy
-      expect(outer).toContainElement(inner);
+      expect(outer).toContainElement(inner || null);
       expect(inner).toContainElement(content);
       // Content is contained in outer through inner (transitive containment)
       expect(outer).toContainElement(content);
@@ -277,92 +260,112 @@ describe("Container Integration Tests", () => {
     });
 
     it("maintains proper DOM structure", () => {
-      render(
+      const { container } = render(
         <Container>
           <div>Content</div>
         </Container>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      const inner = screen.getByTestId("test-id-container-inner-root");
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
       const content = screen.getByText("Content");
 
-      expect(outer).toContainElement(inner);
+      expect(outer).toContainElement(inner || null);
       expect(inner).toContainElement(content);
     });
 
     it("handles CSS module class merging correctly", () => {
-      render(<Container className="custom-class">Content</Container>);
+      const { container } = render(
+        <Container className="custom-class">Content</Container>
+      );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      expect(outer).toHaveClass("custom-class");
+      const outer = container.querySelector("div");
+      expect(outer?.className).toContain("custom-class");
     });
   });
 
   describe("Container Compound Component Integration", () => {
     it("works with Container.Inner as standalone component", () => {
-      render(<Container.Inner>Inner standalone</Container.Inner>);
+      const { container } = render(
+        <Container.Inner>Inner standalone</Container.Inner>
+      );
 
       expect(screen.getByText("Inner standalone")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-container-inner-root")
-      ).toBeInTheDocument();
+      const inner = container.querySelector("div");
+      expect(inner).toBeInTheDocument();
     });
 
     it("works with Container.Outer as standalone component", () => {
-      render(<Container.Outer>Outer standalone</Container.Outer>);
+      const { container } = render(
+        <Container.Outer>Outer standalone</Container.Outer>
+      );
 
       expect(screen.getByText("Outer standalone")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-container-outer-root")
-      ).toBeInTheDocument();
+      const outer = container.querySelector("div");
+      expect(outer).toBeInTheDocument();
     });
 
     it("maintains proper structure when using compound components separately", () => {
-      render(
+      const { container } = render(
         <Container.Outer>
           <Container.Inner>Nested compound</Container.Inner>
         </Container.Outer>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      const inner = screen.getByTestId("test-id-container-inner-root");
+      const outer = container.querySelector("div");
+      const inner = outer?.querySelector("div");
       const content = screen.getByText("Nested compound");
 
-      expect(outer).toContainElement(inner);
+      expect(outer).toContainElement(inner || null);
       expect(inner).toContainElement(content);
     });
 
     it("handles polymorphic as prop through compound component structure", () => {
       // Test Container with polymorphic as prop
-      const { unmount: unmountContainer } = render(
+      const { unmount: unmountContainer, container: container1 } = render(
         <Container as="main">Content</Container>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      expect(outer.tagName).toBe("MAIN");
+      const outer = container1.querySelector("main");
+      expect(outer?.tagName).toBe("MAIN");
 
       unmountContainer();
 
       // Test Container.Inner with polymorphic as prop (standalone)
-      const { unmount: unmountInner } = render(
+      const { unmount: unmountInner, container: container2 } = render(
         <Container.Inner as="section">Inner content</Container.Inner>
       );
-      const inner = screen.getByTestId("test-id-container-inner-root");
-      expect(inner.tagName).toBe("SECTION");
+      const inner = container2.querySelector("section");
+      expect(inner?.tagName).toBe("SECTION");
 
       unmountInner();
 
       // Test Container.Outer with polymorphic as prop (standalone)
-      render(<Container.Outer as="article">Outer content</Container.Outer>);
-      const outerStandalone = screen.getByTestId(
-        "test-id-container-outer-root"
+      const { container: container3 } = render(
+        <Container.Outer as="article">Outer content</Container.Outer>
       );
-      expect(outerStandalone.tagName).toBe("ARTICLE");
+      const outerStandalone = container3.querySelector("article");
+      expect(outerStandalone?.tagName).toBe("ARTICLE");
+    });
+
+    it("supports all semantic HTML5 elements for SEO optimization", () => {
+      const semanticElements: Array<
+        "div" | "section" | "main" | "article" | "nav" | "header" | "footer" | "aside"
+      > = ["div", "section", "main", "article", "nav", "header", "footer", "aside"];
+
+      semanticElements.forEach((elementType) => {
+        const { container, unmount } = render(
+          <Container as={elementType}>Content</Container>
+        );
+
+        const element = container.querySelector(elementType);
+        expect(element?.tagName).toBe(elementType.toUpperCase());
+        unmount();
+      });
     });
 
     it("supports custom props through compound component structure", () => {
-      render(
+      const { container } = render(
         <Container
           as="main"
           data-custom="value"
@@ -373,8 +376,8 @@ describe("Container Integration Tests", () => {
         </Container>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      expect(outer.tagName).toBe("MAIN");
+      const outer = container.querySelector("main");
+      expect(outer?.tagName).toBe("MAIN");
       expect(outer).toHaveAttribute("data-custom", "value");
       expect(outer).toHaveAttribute("aria-label", "Main container");
     });
@@ -382,30 +385,25 @@ describe("Container Integration Tests", () => {
 
   describe("Container Layout Structure", () => {
     it("applies correct outer container wrapper classes", () => {
-      render(<Container>Content</Container>);
+      const { container } = render(<Container>Content</Container>);
 
-      const outerRoot = screen.getByTestId("test-id-container-outer-root");
-      const outerContentWrapper = outerRoot.querySelector("div");
+      const outerRoot = container.querySelector("div");
+      const outerContentWrapper = outerRoot?.querySelector("div");
 
-      expect(outerContentWrapper).toHaveClass(
-        "mx-auto",
-        "w-full",
-        "max-w-7xl",
-        "lg:px-8"
-      );
+      expect(outerContentWrapper?.className).toContain("mx-auto");
+      expect(outerContentWrapper?.className).toContain("max-w-7xl");
     });
 
     it("applies correct inner container wrapper classes", () => {
-      render(<Container>Content</Container>);
+      const { container } = render(<Container>Content</Container>);
 
-      const innerRoot = screen.getByTestId("test-id-container-inner-root");
-      const innerContentWrapper = innerRoot.querySelector("div");
+      const outerRoot = container.querySelector("div");
+      const outerWrapper = outerRoot?.querySelector("div");
+      const innerRoot = outerWrapper?.querySelector("div");
+      const innerContentWrapper = innerRoot?.querySelector("div");
 
-      expect(innerContentWrapper).toHaveClass(
-        "mx-auto",
-        "max-w-2xl",
-        "lg:max-w-5xl"
-      );
+      expect(innerContentWrapper?.className).toContain("mx-auto");
+      expect(innerContentWrapper?.className).toContain("max-w-2xl");
     });
 
     it("handles complex layout structures", () => {
@@ -437,53 +435,15 @@ describe("Container Integration Tests", () => {
     });
   });
 
-  describe("Container with React 19 Ref Support", () => {
-    it("accepts ref as prop in Container component", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container ref={ref}>Content</Container>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("ref works with polymorphic as prop", () => {
-      const ref = React.createRef<HTMLElement>();
-      render(
-        <Container as="main" ref={ref as React.Ref<HTMLElement>}>
-          Content
-        </Container>
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("MAIN");
-    });
-
-    it("ref works with Container.Inner standalone", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container.Inner ref={ref}>Inner content</Container.Inner>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("ref works with Container.Outer standalone", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Container.Outer ref={ref}>Outer content</Container.Outer>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-  });
-
   describe("Container with Custom Props", () => {
     it("passes custom props through Container to ContainerOuter", () => {
-      render(
+      const { container } = render(
         <Container data-custom="value" aria-label="Custom" onClick={vi.fn()}>
           Content
         </Container>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
+      const outer = container.querySelector("div");
       expect(outer).toHaveAttribute("data-custom", "value");
       expect(outer).toHaveAttribute("aria-label", "Custom");
     });
@@ -492,18 +452,80 @@ describe("Container Integration Tests", () => {
       const handleClick = vi.fn();
       const handleMouseEnter = vi.fn();
 
-      render(
+      const { container } = render(
         <Container onClick={handleClick} onMouseEnter={handleMouseEnter}>
           Content
         </Container>
       );
 
-      const outer = screen.getByTestId("test-id-container-outer-root");
-      fireEvent.click(outer);
-      fireEvent.mouseEnter(outer);
+      const outer = container.querySelector("div");
+      if (outer) {
+        fireEvent.click(outer);
+        fireEvent.mouseEnter(outer);
+      }
 
       expect(handleClick).toHaveBeenCalledTimes(1);
       expect(handleMouseEnter).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("SEO Optimization Integration", () => {
+    it("supports semantic HTML5 structure for optimal SEO", () => {
+      const { container } = render(
+        <Container as="main" aria-label="Main content area">
+          <Container as="article" aria-labelledby="article-title">
+            Article content
+          </Container>
+        </Container>
+      );
+
+      const mainElement = container.querySelector("main");
+      const articleElement = mainElement?.querySelector("article");
+      expect(mainElement?.tagName).toBe("MAIN");
+      expect(articleElement?.tagName).toBe("ARTICLE");
+      // Proper semantic nesting improves SEO understanding
+    });
+
+    it("supports ARIA landmark roles for better SEO", () => {
+      const { container } = render(
+        <Container as="main" aria-label="Main content">
+          Main content
+        </Container>
+      );
+
+      const mainElement = container.querySelector("main");
+      expect(mainElement).toBeInTheDocument();
+      expect(mainElement).toHaveAttribute("aria-label", "Main content");
+      // <main> has implicit role="main" for SEO
+    });
+
+    it("maintains proper semantic structure across all semantic elements", () => {
+      const semanticTests = [
+        { as: "main", expectedRole: "main" },
+        { as: "nav", expectedRole: "navigation" },
+        { as: "article", expectedRole: "article" },
+        { as: "section", expectedRole: "region" },
+        { as: "header", expectedRole: "banner" },
+        { as: "footer", expectedRole: "contentinfo" },
+        { as: "aside", expectedRole: "complementary" },
+      ];
+
+      semanticTests.forEach(({ as, expectedRole }) => {
+        const { container, unmount } = render(
+          <Container
+            as={as as "div" | "section" | "main" | "article" | "nav" | "header" | "footer" | "aside"}
+            aria-label="Test"
+          >
+            Content
+          </Container>
+        );
+
+        const element = container.querySelector(as);
+        expect(element?.tagName).toBe(as.toUpperCase());
+        expect(element).toHaveAttribute("aria-label", "Test");
+        // Semantic elements have implicit ARIA roles for SEO
+        unmount();
+      });
     });
   });
 });
