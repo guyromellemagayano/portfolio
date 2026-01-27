@@ -5,5 +5,21 @@
   },
   "button": {
     "goBackToArticles": "Go back to articles"
+  },
+  "footer": {
+    "navigation": {
+      "about": "About",
+      "articles": "Articles",
+      "projects": "Projects",
+      "uses": "Uses"
+    },
+    "legal": {
+      "copyright": "© {{year}} {{brandName}}. All rights reserved."
+    },
+    "ariaLabels": {
+      "navigation": "Footer navigation",
+      "footer": "Site footer"
+    },
+    "brandName": "Guy Romelle Magayano"
   }
 }
