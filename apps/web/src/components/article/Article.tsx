@@ -13,7 +13,7 @@ import { formatDateSafely } from "@guyromellemagayano/utils";
 import { type CommonAppComponentProps } from "@web/types/common";
 import { type ArticleWithSlug } from "@web/utils/articles";
 
-import { Card } from "../Card";
+import { Card } from "../card/Card";
 
 type ArticleElementType = typeof Card;
 
