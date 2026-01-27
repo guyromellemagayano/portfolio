@@ -13,7 +13,7 @@ import { formatDateSafely } from "@guyromellemagayano/utils";
 import { type CommonAppComponentProps } from "@web/types/common";
 import { type ArticleWithSlug } from "@web/utils/articles";
 
-import { Card } from "./Card";
+import { Card } from "../Card";
 
 type ArticleElementType = typeof Card;
 
@@ -71,8 +71,7 @@ export function Article<
 
   return (
     <Component
-      {...rest}
-      as="article"
+      {...(rest as React.ComponentPropsWithRef<T>)}
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
@@ -80,7 +79,7 @@ export function Article<
       articleData.title.trim().length > 0 &&
       articleData.slug &&
       articleData.slug.trim().length > 0 ? (
-        <Card.Title as="h2" id={titleId} href={articleData.slug}>
+        <Card.Title id={titleId} href={articleData.slug}>
           {articleData.title}
         </Card.Title>
       ) : null}
