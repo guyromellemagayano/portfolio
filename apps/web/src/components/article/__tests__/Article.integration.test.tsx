@@ -17,7 +17,7 @@ import {
   vi,
 } from "vitest";
 
-import { Card } from "../../Card";
+import { Card } from "../../card/Card";
 import { Article } from "../Article";
 
 const mockUseTranslations = vi.hoisted(() =>
