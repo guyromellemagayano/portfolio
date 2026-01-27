@@ -9,13 +9,6 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
 
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
 // Mock Next.js Link component
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, href, ...props }) => (
@@ -26,37 +19,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-vi.mock("@guyromellemagayano/components", () => ({
-  // Mock CommonComponentProps type
-}));
-
-// Mock utils functions
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      "data-testid": `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      ...additionalProps,
-    })
-  ),
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -68,12 +31,12 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Mock Icon component specifically for `Card.Cta`
-vi.mock("@web/components", () => ({
+vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
     <span data-testid={`icon-${name}`} {...props}>
       →
@@ -105,7 +68,7 @@ describe("Card Integration Tests", () => {
     });
 
     it("maintains proper component hierarchy", () => {
-      render(
+      const { container } = render(
         <Card>
           <Card.Eyebrow>Eyebrow</Card.Eyebrow>
           <Card.Title>Title</Card.Title>
@@ -113,7 +76,7 @@ describe("Card Integration Tests", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = container.querySelector("div");
       expect(card).toBeInTheDocument();
 
       const eyebrow = screen.getByText("Eyebrow");
@@ -153,9 +116,9 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("Linked Title")).toBeInTheDocument();
       expect(screen.getByText("External CTA")).toBeInTheDocument();
 
-      // Test that the components have the correct test IDs
-      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
+      // Test that the components render correctly
+      expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+      expect(screen.getByText("External CTA")).toBeInTheDocument();
     });
 
     it("handles mixed linked and non-linked sub-components", () => {
@@ -194,8 +157,8 @@ describe("Card Integration Tests", () => {
         </Card>
       );
 
-      // Components should still render even with null/undefined children
-      expect(screen.getByTestId("test-id-card-root")).toBeInTheDocument();
+      // Components should not render with null/undefined children
+      expect(screen.queryByText("Category")).not.toBeInTheDocument();
     });
 
     it("handles mixed valid and invalid content", () => {
@@ -306,7 +269,9 @@ describe("Card Integration Tests", () => {
       );
 
       expect(screen.getByText("Article Title")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-card-title-root")).toBeInTheDocument();
+      expect(
+        screen.getByRole("heading", { level: 2, name: /article title/i })
+      ).toBeInTheDocument();
     });
 
     it("renders non-linked Card.Title within Card", () => {
@@ -318,9 +283,7 @@ describe("Card Integration Tests", () => {
       );
 
       expect(screen.getByText("Non-linked Title")).toBeInTheDocument();
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
     });
 
     it("renders Card with Title, Eyebrow, and Description", () => {
@@ -381,34 +344,16 @@ describe("Card Integration Tests", () => {
       expect(screen.getByText("Title")).toBeInTheDocument();
     });
 
-    it("handles Card.Title with polymorphic rendering", () => {
+    it("renders Card.Title as h2 by default", () => {
       render(
         <Card>
-          <Card.Title as="h1" href="/test">
-            Main Heading
-          </Card.Title>
+          <Card.Title href="/test">Main Heading</Card.Title>
           <Card.Description>Description</Card.Description>
         </Card>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("H1");
-    });
-
-    it("passes debug mode through Card to Card.Title", () => {
-      render(
-        <Card debugMode={true}>
-          <Card.Title href="/test" debugMode={true}>
-            Debug Title
-          </Card.Title>
-        </Card>
-      );
-
-      const cardElement = screen.getByTestId("test-id-card-root");
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-
-      expect(cardElement).toHaveAttribute("data-debug-mode", "true");
-      expect(titleElement).toHaveAttribute("data-debug-mode", "true");
+      const titleElement = screen.getByRole("heading", { level: 2 });
+      expect(titleElement.tagName).toBe("H2");
     });
 
     it("renders Card.Title with ARIA attributes in Card context", () => {
@@ -421,8 +366,8 @@ describe("Card Integration Tests", () => {
         </Card>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("aria-label", "Main article title");
+      const titleElement = screen.getByLabelText("Main article title");
+      expect(titleElement).toBeInTheDocument();
     });
   });
 });

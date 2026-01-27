@@ -11,19 +11,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card, MemoizedCard } from "../Card";
 
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-vi.mock("@web/components", () => ({
+vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
     <span data-testid={`icon-${name}`} {...props}>
       →
@@ -32,27 +21,6 @@ vi.mock("@web/components", () => ({
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      "data-testid": `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      ...additionalProps,
-    })
-  ),
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -64,7 +32,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -80,7 +48,6 @@ vi.mock("next/link", () => ({
           target={target}
           title={title}
           rel={rel}
-          data-testid="card-link-custom-root"
           {...rest}
         >
           {children}
@@ -108,9 +75,11 @@ describe("Card.Cta", () => {
     });
 
     it("applies custom className", () => {
-      render(<Card.Cta className="custom-class">Call to action</Card.Cta>);
+      const { container } = render(
+        <Card.Cta className="custom-class">Call to action</Card.Cta>
+      );
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      const ctaElement = container.querySelector("div");
       expect(ctaElement).toHaveClass("custom-class");
     });
 
@@ -121,8 +90,9 @@ describe("Card.Cta", () => {
         </Card.Cta>
       );
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      const ctaElement = screen.getByTestId("custom-testid");
       expect(ctaElement).toBeInTheDocument();
+      expect(ctaElement).toHaveAttribute("aria-label", "CTA");
     });
   });
 
@@ -130,36 +100,30 @@ describe("Card.Cta", () => {
     it("renders CardLinkCustom when href is provided and valid", () => {
       render(<Card.Cta href="/test-link">Call to action</Card.Cta>);
 
-      const link = screen.getByTestId("test-id-card-link-custom-root");
+      const link = screen.getByRole("link", { name: /call to action/i });
       expect(link).toBeInTheDocument();
       expect(link).toHaveAttribute("href", "/test-link");
       expect(screen.getByText("Call to action")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-icon-chevron-right-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
     it("renders children directly when href is invalid", () => {
       render(<Card.Cta href="#">Call to action</Card.Cta>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Call to action")).toBeInTheDocument();
       expect(
-        screen.queryByTestId("test-id-icon-chevron-right-root")
+        screen.queryByTestId("icon-chevron-right")
       ).not.toBeInTheDocument();
     });
 
     it("renders children directly when href is not provided", () => {
       render(<Card.Cta>Call to action</Card.Cta>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Call to action")).toBeInTheDocument();
       expect(
-        screen.queryByTestId("test-id-icon-chevron-right-root")
+        screen.queryByTestId("icon-chevron-right")
       ).not.toBeInTheDocument();
     });
 
@@ -170,19 +134,17 @@ describe("Card.Cta", () => {
         </Card.Cta>
       );
 
-      const link = screen.getByTestId("test-id-card-link-custom-root");
+      const link = screen.getByRole("link", { name: "Test title" });
       expect(link).toHaveAttribute("href", "/valid-link");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
-      expect(
-        screen.getByTestId("test-id-icon-chevron-right-root")
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
     it("applies aria-hidden to decorative chevron icon", () => {
       render(<Card.Cta href="/test-link">Call to action</Card.Cta>);
 
-      const icon = screen.getByTestId("test-id-icon-chevron-right-root");
+      const icon = screen.getByTestId("icon-chevron-right");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("aria-hidden", "true");
     });
@@ -210,34 +172,19 @@ describe("Card.Cta", () => {
     });
   });
 
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(<Card.Cta debugMode={true}>Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled/undefined", () => {
-      render(<Card.Cta>Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
   describe("Component Structure", () => {
-    it("renders as div element", () => {
-      render(<Card.Cta>Call to action</Card.Cta>);
+    it("renders as div element by default", () => {
+      const { container } = render(<Card.Cta>Call to action</Card.Cta>);
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement.tagName).toBe("DIV");
+      const ctaElement = container.querySelector("div");
+      expect(ctaElement).toBeInTheDocument();
+      expect(ctaElement?.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
-      render(<Card.Cta>Call to action</Card.Cta>);
+      const { container } = render(<Card.Cta>Call to action</Card.Cta>);
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      const ctaElement = container.querySelector("div");
       expect(ctaElement).toHaveClass(
         "relative",
         "z-10",
@@ -251,9 +198,11 @@ describe("Card.Cta", () => {
     });
 
     it("combines Tailwind + custom classes", () => {
-      render(<Card.Cta className="custom-class">Call to action</Card.Cta>);
+      const { container } = render(
+        <Card.Cta className="custom-class">Call to action</Card.Cta>
+      );
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
+      const ctaElement = container.querySelector("div");
       expect(ctaElement).toHaveClass(
         "relative",
         "z-10",
@@ -268,79 +217,39 @@ describe("Card.Cta", () => {
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with custom debug ID", () => {
-      render(<Card.Cta debugId="custom-id">Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("custom-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-cta-root"
-      );
-    });
-
-    it("uses provided debugId when available", () => {
-      render(<Card.Cta debugId="test-id">Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute(
-        "data-testid",
-        "test-id-card-cta-root"
-      );
-    });
-  });
-
-  describe("Component Element Type", () => {
+  describe("Polymorphic Element Types", () => {
     it("renders as div by default", () => {
-      render(<Card.Cta>Call to action</Card.Cta>);
+      const { container } = render(<Card.Cta>Call to action</Card.Cta>);
 
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement.tagName).toBe("DIV");
+      const ctaElement = container.querySelector("div");
+      expect(ctaElement?.tagName).toBe("DIV");
     });
 
-    it("renders as custom element when as prop is provided", () => {
-      render(<Card.Cta as="section">Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement.tagName).toBe("SECTION");
-    });
-
-    it("renders as span when as prop is span", () => {
-      render(<Card.Cta as="span">Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("test-id-card-cta-root");
-      expect(ctaElement.tagName).toBe("SPAN");
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Card.Cta ref={ref}>Call to action</Card.Cta>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("ref points to correct element with custom as prop", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        <Card.Cta as="section" ref={ref as any}>
-          Call to action
-        </Card.Cta>
+    it("renders as section when as prop is section", () => {
+      const { container } = render(
+        <Card.Cta as="section">Call to action</Card.Cta>
       );
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("SECTION");
+      const ctaElement = container.querySelector("section");
+      expect(ctaElement?.tagName).toBe("SECTION");
     });
 
-    it("allows ref access to DOM methods", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Card.Cta ref={ref}>Call to action</Card.Cta>);
-
-      expect(ref.current?.getAttribute("data-testid")).toBe(
-        "test-id-card-cta-root"
+    it("renders as article when as prop is article", () => {
+      const { container } = render(
+        <Card.Cta as="article">Call to action</Card.Cta>
       );
+
+      const ctaElement = container.querySelector("article");
+      expect(ctaElement?.tagName).toBe("ARTICLE");
+    });
+
+    it("renders as main when as prop is main", () => {
+      const { container } = render(
+        <Card.Cta as="main">Call to action</Card.Cta>
+      );
+
+      const ctaElement = container.querySelector("main");
+      expect(ctaElement?.tagName).toBe("MAIN");
     });
   });
 
@@ -366,52 +275,13 @@ describe("Card.Cta", () => {
     });
 
     it("handles boolean children", () => {
-      render(<Card.Cta>{true}</Card.Cta>);
-      expect(screen.getByTestId("test-id-card-cta-root")).toBeInTheDocument();
+      const { container } = render(<Card.Cta>{true}</Card.Cta>);
+      expect(container.querySelector("div")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
       const { container } = render(<Card.Cta>{0}</Card.Cta>);
       expect(container).toBeEmptyDOMElement();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.Cta debugId="custom-id" debugMode={true}>
-          Call to action
-        </Card.Cta>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Card.Cta>Call to action</Card.Cta>);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to base component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Cta>Call to action</Card.Cta>);
-
-      const ctaElement = screen.getByTestId("generated-id-card-cta-root");
-      expect(ctaElement).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-cta-root"
-      );
     });
   });
 
@@ -454,15 +324,13 @@ describe("Card.Description", () => {
     });
 
     it("applies custom className", () => {
-      render(
+      const { container } = render(
         <Card.Description className="custom-class">
           Card description
         </Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
+      const descriptionElement = container.querySelector("p");
       expect(descriptionElement).toHaveClass("custom-class");
     });
 
@@ -473,10 +341,8 @@ describe("Card.Description", () => {
         </Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute("aria-label", "Description");
+      const descriptionElement = screen.getByLabelText("Description");
+      expect(descriptionElement).toBeInTheDocument();
     });
   });
 
@@ -497,10 +363,8 @@ describe("Card.Description", () => {
     });
 
     it("handles boolean children", () => {
-      render(<Card.Description>{true}</Card.Description>);
-      expect(
-        screen.getByTestId("test-id-card-description-root")
-      ).toBeInTheDocument();
+      const { container } = render(<Card.Description>{true}</Card.Description>);
+      expect(container.querySelector("p")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
@@ -514,66 +378,22 @@ describe("Card.Description", () => {
     });
   });
 
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(
-        <Card.Description debugMode={true}>Card description</Card.Description>
-      );
-
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled/undefined", () => {
-      render(<Card.Description>Card description</Card.Description>);
-
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
   describe("Component Structure", () => {
     it("renders as p element by default", () => {
-      render(<Card.Description>Card description</Card.Description>);
-
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement.tagName).toBe("P");
-    });
-
-    it("renders as custom element when as prop is provided", () => {
-      render(
-        (<Card.Description as="div">Card description</Card.Description>) as any
+      const { container } = render(
+        <Card.Description>Card description</Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement.tagName).toBe("DIV");
-    });
-
-    it("renders as span element when as prop is span", () => {
-      render(
-        (<Card.Description as="span">Card description</Card.Description>) as any
-      );
-
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement.tagName).toBe("SPAN");
+      const descriptionElement = container.querySelector("p");
+      expect(descriptionElement?.tagName).toBe("P");
     });
 
     it("applies correct CSS classes", () => {
-      render(<Card.Description>Card description</Card.Description>);
-
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
+      const { container } = render(
+        <Card.Description>Card description</Card.Description>
       );
+
+      const descriptionElement = container.querySelector("p");
       expect(descriptionElement).toHaveClass(
         "relative",
         "z-10",
@@ -585,15 +405,13 @@ describe("Card.Description", () => {
     });
 
     it("combines Tailwind + custom classes", () => {
-      render(
+      const { container } = render(
         <Card.Description className="custom-class">
           Card description
         </Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
+      const descriptionElement = container.querySelector("p");
       expect(descriptionElement).toHaveClass(
         "relative",
         "z-10",
@@ -606,68 +424,32 @@ describe("Card.Description", () => {
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with custom debugId", () => {
-      render(
-        <Card.Description debugId="custom-id">
-          Card description
-        </Card.Description>
+  describe("Polymorphic Element Types", () => {
+    it("renders as p by default", () => {
+      const { container } = render(
+        <Card.Description>Card description</Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "custom-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-description-root"
-      );
+      const descriptionElement = container.querySelector("p");
+      expect(descriptionElement?.tagName).toBe("P");
     });
 
-    it("uses provided debugId when available", () => {
-      render(
-        <Card.Description debugId="test-id">Card description</Card.Description>
+    it("renders as div when as prop is div", () => {
+      const { container } = render(
+        <Card.Description as="div">Card description</Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "test-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute(
-        "data-testid",
-        "test-id-card-description-root"
-      );
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLParagraphElement>();
-      render(<Card.Description ref={ref}>Card description</Card.Description>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("P");
+      const descriptionElement = container.querySelector("div");
+      expect(descriptionElement?.tagName).toBe("DIV");
     });
 
-    it("ref points to correct element with custom as prop", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        (
-          <Card.Description as="div" ref={ref}>
-            Card description
-          </Card.Description>
-        ) as any
+    it("renders as span when as prop is span", () => {
+      const { container } = render(
+        <Card.Description as="span">Card description</Card.Description>
       );
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("allows ref access to DOM methods", () => {
-      const ref = React.createRef<HTMLParagraphElement>();
-      render(<Card.Description ref={ref}>Card description</Card.Description>);
-
-      expect(ref.current?.getAttribute("data-testid")).toBe(
-        "test-id-card-description-root"
-      );
+      const descriptionElement = container.querySelector("span");
+      expect(descriptionElement?.tagName).toBe("SPAN");
     });
   });
 
@@ -694,71 +476,14 @@ describe("Card.Description", () => {
 
     it("handles multiple props together", () => {
       render(
-        <Card.Description
-          debugId="multi-prop-id"
-          debugMode={true}
-          className="multi-class"
-          aria-label="Multi prop test"
-        >
+        <Card.Description className="multi-class" aria-label="Multi prop test">
           Multi prop test
         </Card.Description>
       );
 
-      const descriptionElement = screen.getByTestId(
-        "multi-prop-id-card-description-root"
-      );
+      const descriptionElement = screen.getByLabelText("Multi prop test");
       expect(descriptionElement).toHaveClass("multi-class");
-      expect(descriptionElement).toHaveAttribute("data-debug-mode", "true");
-      expect(descriptionElement).toHaveAttribute(
-        "data-testid",
-        "multi-prop-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute(
-        "aria-label",
-        "Multi prop test"
-      );
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.Description debugId="custom-id" debugMode={true}>
-          Card description
-        </Card.Description>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Card.Description>Card description</Card.Description>);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to base component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Description>Card description</Card.Description>);
-
-      const descriptionElement = screen.getByTestId(
-        "generated-id-card-description-root"
-      );
-      expect(descriptionElement).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-description-root"
-      );
     });
   });
 });
@@ -781,17 +506,19 @@ describe("Card.Eyebrow", () => {
     });
 
     it("applies custom className", () => {
-      render(<Card.Eyebrow className="custom-class">Eyebrow</Card.Eyebrow>);
+      const { container } = render(
+        <Card.Eyebrow className="custom-class">Eyebrow</Card.Eyebrow>
+      );
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
       render(<Card.Eyebrow aria-label="Eyebrow">Eyebrow text</Card.Eyebrow>);
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute("aria-label", "Eyebrow");
+      const eyebrow = screen.getByLabelText("Eyebrow");
+      expect(eyebrow).toBeInTheDocument();
     });
   });
 
@@ -812,82 +539,15 @@ describe("Card.Eyebrow", () => {
     });
 
     it("handles boolean children", () => {
-      render(<Card.Eyebrow>{true}</Card.Eyebrow>);
+      const { container } = render(<Card.Eyebrow>{true}</Card.Eyebrow>);
       // Boolean true is not rendered as text content in React
-      expect(
-        screen.getByTestId("test-id-card-eyebrow-root")
-      ).toBeInTheDocument();
+      expect(container.querySelector("p")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
       const { container } = render(<Card.Eyebrow>{0}</Card.Eyebrow>);
       // Component returns null for falsy children like 0
       expect(container).toBeEmptyDOMElement();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.Eyebrow debugId="custom-id" debugMode={true}>
-          Eyebrow text
-        </Card.Eyebrow>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to base component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
-
-      const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-eyebrow-root"
-      );
-    });
-  });
-
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: true,
-      });
-
-      render(<Card.Eyebrow debugMode={true}>Eyebrow</Card.Eyebrow>);
-
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Eyebrow>Eyebrow</Card.Eyebrow>);
-
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow).not.toHaveAttribute("data-debug-mode");
     });
   });
 
@@ -913,23 +573,16 @@ describe("Card.Eyebrow", () => {
 
   describe("Component Structure", () => {
     it("renders as p element by default", () => {
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
+      const { container } = render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow.tagName).toBe("P");
-    });
-
-    it("renders as time element when as prop is time", () => {
-      render((<Card.Eyebrow as="time">Eyebrow text</Card.Eyebrow>) as any);
-
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
-      expect(eyebrow.tagName).toBe("TIME");
+      const eyebrow = container.querySelector("p");
+      expect(eyebrow?.tagName).toBe("P");
     });
 
     it("applies correct CSS classes", () => {
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
+      const { container } = render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).toHaveClass(
         "relative",
         "z-10",
@@ -945,9 +598,11 @@ describe("Card.Eyebrow", () => {
     });
 
     it("combines Tailwind + custom classes", () => {
-      render(<Card.Eyebrow className="custom-class">Eyebrow</Card.Eyebrow>);
+      const { container } = render(
+        <Card.Eyebrow className="custom-class">Eyebrow</Card.Eyebrow>
+      );
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).toHaveClass(
         "relative",
         "z-10",
@@ -964,92 +619,58 @@ describe("Card.Eyebrow", () => {
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with generated component ID", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
+  describe("Polymorphic Element Types", () => {
+    it("renders as p by default", () => {
+      const { container } = render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
 
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
-
-      const eyebrow = screen.getByTestId("generated-id-card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-eyebrow-root"
-      );
+      const eyebrow = container.querySelector("p");
+      expect(eyebrow?.tagName).toBe("P");
     });
 
-    it("renders with custom debugId", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "custom-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Eyebrow debugId="custom-id">Eyebrow</Card.Eyebrow>);
-
-      const eyebrow = screen.getByTestId("custom-id-card-eyebrow-root");
-      expect(eyebrow).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-eyebrow-root"
+    it("renders as time when as prop is time", () => {
+      const { container } = render(
+        <Card.Eyebrow as="time">Eyebrow text</Card.Eyebrow>
       );
+
+      const eyebrow = container.querySelector("time");
+      expect(eyebrow?.tagName).toBe("TIME");
     });
   });
 
   describe("Decorative Styling", () => {
     it("renders with decoration when decorate is true", () => {
-      render(<Card.Eyebrow decorate>Eyebrow text</Card.Eyebrow>);
+      const { container } = render(
+        <Card.Eyebrow decorate>Eyebrow text</Card.Eyebrow>
+      );
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).toHaveClass("pl-3.5");
     });
 
     it("does not apply decoration when decorate is false", () => {
-      render(<Card.Eyebrow decorate={false}>Eyebrow text</Card.Eyebrow>);
+      const { container } = render(
+        <Card.Eyebrow decorate={false}>Eyebrow text</Card.Eyebrow>
+      );
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).not.toHaveClass("pl-3.5");
     });
 
     it("does not apply decoration when decorate is undefined", () => {
-      render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
+      const { container } = render(<Card.Eyebrow>Eyebrow text</Card.Eyebrow>);
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).not.toHaveClass("pl-3.5");
     });
 
     it("renders decorative span when decorate is true", () => {
-      render(<Card.Eyebrow decorate>Eyebrow text</Card.Eyebrow>);
-
-      const decorateSpan = screen.getByTestId(
-        "test-id-card-eyebrow-decorate-root"
+      const { container } = render(
+        <Card.Eyebrow decorate>Eyebrow text</Card.Eyebrow>
       );
+
+      const decorateSpan = container.querySelector('span[aria-hidden="true"]');
       expect(decorateSpan).toBeInTheDocument();
       expect(decorateSpan).toHaveAttribute("aria-hidden", "true");
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly for p element", () => {
-      const ref = React.createRef<HTMLParagraphElement>();
-      render(<Card.Eyebrow ref={ref}>Eyebrow text</Card.Eyebrow>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("P");
-    });
-
-    it("forwards ref correctly for time element", () => {
-      const ref = React.createRef<HTMLTimeElement>();
-      render(
-        (
-          <Card.Eyebrow as="time" ref={ref}>
-            Eyebrow text
-          </Card.Eyebrow>
-        ) as any
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("TIME");
     });
   });
 
@@ -1075,13 +696,13 @@ describe("Card.Eyebrow", () => {
     });
 
     it("combines decoration with custom className", () => {
-      render(
+      const { container } = render(
         <Card.Eyebrow decorate className="custom-class">
           Eyebrow text
         </Card.Eyebrow>
       );
 
-      const eyebrow = screen.getByTestId("test-id-card-eyebrow-root");
+      const eyebrow = container.querySelector("p");
       expect(eyebrow).toHaveClass(
         "relative",
         "z-10",
@@ -1099,15 +720,8 @@ describe("Card.Eyebrow", () => {
     });
 
     it("handles multiple props together", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "multi-prop-id",
-        isDebugMode: true,
-      });
-
       render(
         <Card.Eyebrow
-          debugId="multi-prop-id"
-          debugMode={true}
           decorate={true}
           className="multi-class"
           aria-label="Multi prop test"
@@ -1116,27 +730,8 @@ describe("Card.Eyebrow", () => {
         </Card.Eyebrow>
       );
 
-      const eyebrow = screen.getByTestId("multi-prop-id-card-eyebrow-root");
-      expect(eyebrow).toHaveClass(
-        "relative",
-        "z-10",
-        "order-first",
-        "mb-3",
-        "flex",
-        "items-center",
-        "text-sm",
-        "text-wrap",
-        "text-zinc-400",
-        "dark:text-zinc-500",
-        "pl-3.5",
-        "multi-class"
-      );
-      expect(eyebrow).toHaveAttribute("data-debug-mode", "true");
-      expect(eyebrow).toHaveAttribute(
-        "data-testid",
-        "multi-prop-id-card-eyebrow-root"
-      );
-      expect(eyebrow).toHaveAttribute("aria-label", "Multi prop test");
+      const eyebrow = screen.getByLabelText("Multi prop test");
+      expect(eyebrow).toHaveClass("multi-class");
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();
     });
   });
@@ -1159,35 +754,25 @@ describe("Card.Link", () => {
     });
 
     it("renders as div element by default", () => {
-      render(<Card.Link href="/test">Link content</Card.Link>);
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container.tagName).toBe("DIV");
-    });
-
-    it("renders as custom element when as prop is provided", () => {
-      render(
-        (
-          <Card.Link as="section" href="/test">
-            Link content
-          </Card.Link>
-        ) as any
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container.tagName).toBe("SECTION");
+      const linkContainer = container.querySelector("div");
+      expect(linkContainer?.tagName).toBe("DIV");
     });
 
     it("applies custom className", () => {
-      render(
+      const { container } = render(
         <Card.Link href="/test" className="custom-class">
           Link content
         </Card.Link>
       );
 
-      const background = screen.getByTestId(
-        "test-id-card-link-background-root"
-      );
+      // className is applied to the background div (first child div of outer div)
+      const outerDiv = container.querySelector("div");
+      const background = outerDiv?.querySelector("div:first-child");
+      expect(background).toBeInTheDocument();
       expect(background).toHaveClass("custom-class");
     });
 
@@ -1198,25 +783,25 @@ describe("Card.Link", () => {
         </Card.Link>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveAttribute("data-test", "test-data");
+      const link = screen.getByRole("link", { name: /link content/i });
+      expect(link.closest("div")).toHaveAttribute("data-test", "test-data");
     });
 
     it("renders structure with background div and CardLinkCustom", () => {
-      render(<Card.Link href="/test">Link content</Card.Link>);
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
+      );
 
-      // Should have container
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toBeInTheDocument();
+      // Should have container div
+      const linkContainer = container.querySelector("div");
+      expect(linkContainer).toBeInTheDocument();
 
       // Should have background div
-      const backgroundDiv = screen.getByTestId(
-        "test-id-card-link-background-root"
-      );
+      const backgroundDiv = container.querySelector("div > div");
       expect(backgroundDiv).toBeInTheDocument();
 
-      // Should have CardLinkCustom
-      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      // Should have CardLinkCustom (link)
+      const customLink = screen.getByRole("link");
       expect(customLink).toBeInTheDocument();
     });
   });
@@ -1225,7 +810,7 @@ describe("Card.Link", () => {
     it("renders CardLinkCustom when href is provided and valid", () => {
       render(<Card.Link href="/test-link">Link content</Card.Link>);
 
-      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      const customLink = screen.getByRole("link", { name: /link content/i });
       expect(customLink).toBeInTheDocument();
       expect(customLink).toHaveAttribute("href", "/test-link");
       expect(screen.getByText("Link content")).toBeInTheDocument();
@@ -1234,27 +819,21 @@ describe("Card.Link", () => {
     it("renders children directly when href is invalid", () => {
       render(<Card.Link href="">Link content</Card.Link>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders children directly when href is null", () => {
       render(<Card.Link href={null as any}>Link content</Card.Link>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders children directly when href is undefined", () => {
       render(<Card.Link href={undefined as any}>Link content</Card.Link>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
@@ -1265,7 +844,7 @@ describe("Card.Link", () => {
         </Card.Link>
       );
 
-      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      const customLink = screen.getByRole("link", { name: "Test title" });
       expect(customLink).toHaveAttribute("href", "/valid-link");
       expect(customLink).toHaveAttribute("target", "_blank");
       expect(customLink).toHaveAttribute("title", "Test title");
@@ -1274,11 +853,13 @@ describe("Card.Link", () => {
 
   describe("Styling Structure", () => {
     it("renders background element with correct Tailwind classes", () => {
-      render(<Card.Link href="/test">Link content</Card.Link>);
-
-      const background = screen.getByTestId(
-        "test-id-card-link-background-root"
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
       );
+
+      const outerDiv = container.querySelector("div");
+      const background = outerDiv?.querySelector("div:first-child");
+      expect(background).toBeInTheDocument();
       expect(background).toHaveClass(
         "absolute",
         "-inset-x-4",
@@ -1299,20 +880,22 @@ describe("Card.Link", () => {
     it("renders CardLinkCustom with clickable area and content when href is valid", () => {
       render(<Card.Link href="/test">Link content</Card.Link>);
 
-      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      const customLink = screen.getByRole("link");
       expect(customLink).toBeInTheDocument();
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders CardLinkCustom with proper span structure", () => {
-      render(<Card.Link href="/test">Link content</Card.Link>);
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
+      );
 
-      const customLink = screen.getByTestId("test-id-card-link-custom-root");
+      const customLink = screen.getByRole("link");
       expect(customLink).toBeInTheDocument();
 
       // Should have clickable area span
-      const clickableArea = screen.getByTestId(
-        "test-id-card-link-custom-span-root"
+      const clickableArea = container.querySelector(
+        'a[href="/test"] > span:first-child'
       );
       expect(clickableArea).toHaveClass(
         "absolute",
@@ -1324,23 +907,23 @@ describe("Card.Link", () => {
       );
 
       // Should have content span
-      const contentSpan = screen.getByTestId(
-        "test-id-card-link-custom-span-content-root"
+      const contentSpan = container.querySelector(
+        'a[href="/test"] > span:last-child'
       );
       expect(contentSpan).toHaveClass("relative", "z-10");
       expect(contentSpan).toHaveTextContent("Link content");
     });
 
     it("combines Tailwind + custom classes", () => {
-      render(
+      const { container } = render(
         <Card.Link href="/test" className="custom-class">
           Link content
         </Card.Link>
       );
 
-      const background = screen.getByTestId(
-        "test-id-card-link-background-root"
-      );
+      const outerDiv = container.querySelector("div");
+      const background = outerDiv?.querySelector("div:first-child");
+      expect(background).toBeInTheDocument();
       expect(background).toHaveClass(
         "absolute",
         "-inset-x-4",
@@ -1377,84 +960,15 @@ describe("Card.Link", () => {
     });
 
     it("handles boolean children", () => {
-      render(<Card.Link href="/test">{true}</Card.Link>);
+      const { container } = render(<Card.Link href="/test">{true}</Card.Link>);
       // Boolean true is not rendered as text content in React
-      expect(screen.getByTestId("test-id-card-link-root")).toBeInTheDocument();
+      expect(container.querySelector("div")).toBeInTheDocument();
     });
 
     it("handles number children", () => {
       const { container } = render(<Card.Link href="/test">{0}</Card.Link>);
       // Component returns null for falsy children like 0
       expect(container).toBeEmptyDOMElement();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.Link href="/test" debugId="custom-id" debugMode={true}>
-          Link text
-        </Card.Link>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Card.Link href="/test">Link text</Card.Link>);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Link href="/test">Link text</Card.Link>);
-
-      const container = screen.getByTestId("generated-id-card-link-root");
-      expect(container).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-link-root"
-      );
-    });
-  });
-
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: true,
-      });
-
-      render(
-        <Card.Link href="/test" debugMode={true}>
-          Link text
-        </Card.Link>
-      );
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "test-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Link href="/test">Link text</Card.Link>);
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).not.toHaveAttribute("data-debug-mode");
     });
   });
 
@@ -1492,114 +1006,56 @@ describe("Card.Link", () => {
 
   describe("Component Structure", () => {
     it("renders with correct element type", () => {
-      render(<Card.Link href="/test">Link content</Card.Link>);
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container.tagName).toBe("DIV");
-    });
-
-    it("renders as span when as prop is span", () => {
-      render(
-        (
-          <Card.Link as="span" href="/test">
-            Link content
-          </Card.Link>
-        ) as any
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
       );
 
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container.tagName).toBe("SPAN");
+      const linkContainer = container.querySelector("div");
+      expect(linkContainer?.tagName).toBe("DIV");
+    });
+  });
+
+  describe("Polymorphic Element Types", () => {
+    it("renders as div by default", () => {
+      const { container } = render(
+        <Card.Link href="/test">Link content</Card.Link>
+      );
+
+      const linkContainer = container.querySelector("div");
+      expect(linkContainer?.tagName).toBe("DIV");
+    });
+
+    it("renders as section when as prop is section", () => {
+      const { container } = render(
+        <Card.Link as="section" href="/test">
+          Link content
+        </Card.Link>
+      );
+
+      const linkContainer = container.querySelector("section");
+      expect(linkContainer?.tagName).toBe("SECTION");
     });
 
     it("renders as article when as prop is article", () => {
-      render(
-        (
-          <Card.Link as="article" href="/test">
-            Link content
-          </Card.Link>
-        ) as any
-      );
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container.tagName).toBe("ARTICLE");
-    });
-  });
-
-  describe("Component ID", () => {
-    it("renders with custom debugId", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "custom-id",
-        isDebugMode: false,
-      });
-
-      render(
-        <Card.Link href="/test" debugId="custom-id">
-          Link text
-        </Card.Link>
-      );
-
-      const container = screen.getByTestId("custom-id-card-link-root");
-      expect(container).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-link-root"
-      );
-    });
-
-    it("uses provided debugId when available", () => {
-      render(
-        <Card.Link href="/test" debugId="test-id">
-          Link text
-        </Card.Link>
-      );
-
-      const container = screen.getByTestId("test-id-card-link-root");
-      expect(container).toHaveAttribute(
-        "data-testid",
-        "test-id-card-link-root"
-      );
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly for div element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        <Card.Link href="/test" ref={ref}>
+      const { container } = render(
+        <Card.Link as="article" href="/test">
           Link content
         </Card.Link>
       );
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
+      const linkContainer = container.querySelector("article");
+      expect(linkContainer?.tagName).toBe("ARTICLE");
     });
 
-    it("forwards ref correctly for section element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        (
-          <Card.Link as="section" href="/test" ref={ref as any}>
-            Link content
-          </Card.Link>
-        ) as any
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("SECTION");
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        <Card.Link href="/test" ref={ref}>
+    it("renders as span when as prop is span", () => {
+      const { container } = render(
+        <Card.Link as="span" href="/test">
           Link content
         </Card.Link>
       );
 
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current).toHaveAttribute(
-        "data-testid",
-        "test-id-card-link-root"
-      );
+      const linkContainer = container.querySelector("span");
+      expect(linkContainer?.tagName).toBe("SPAN");
     });
   });
 
@@ -1623,16 +1079,9 @@ describe("Card.Link", () => {
     });
 
     it("handles multiple props together", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "multi-prop-id",
-        isDebugMode: true,
-      });
-
       render(
         <Card.Link
           href="/test"
-          debugId="multi-prop-id"
-          debugMode={true}
           className="multi-class"
           target="_blank"
           title="Multi prop test"
@@ -1641,21 +1090,7 @@ describe("Card.Link", () => {
         </Card.Link>
       );
 
-      const container = screen.getByTestId("multi-prop-id-card-link-root");
-      expect(container).toHaveAttribute("data-debug-mode", "true");
-      expect(container).toHaveAttribute(
-        "data-testid",
-        "multi-prop-id-card-link-root"
-      );
-
-      const background = screen.getByTestId(
-        "multi-prop-id-card-link-background-root"
-      );
-      expect(background).toHaveClass("multi-class");
-
-      const customLink = screen.getByTestId(
-        "multi-prop-id-card-link-custom-root"
-      );
+      const customLink = screen.getByRole("link", { name: /multi prop test/i });
       expect(customLink).toHaveAttribute("target", "_blank");
       expect(customLink).toHaveAttribute("title", "Multi prop test");
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();
@@ -1675,29 +1110,13 @@ describe("Card.LinkCustom", () => {
 
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders with correct href", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("href", "/test-link");
@@ -1705,44 +1124,29 @@ describe("Card.LinkCustom", () => {
 
     it("applies custom className", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          className="custom-class"
-        >
+        <Card.LinkCustom href="/test-link" className="custom-class">
           Link content
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          title="Link"
-        >
+        <Card.LinkCustom href="/test-link" title="Link">
           Link content
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement).toHaveAttribute("aria-label", "Link");
     });
 
     it("sets aria-label from title prop", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          title="Custom title"
-        >
+        <Card.LinkCustom href="/test-link" title="Custom title">
           Link content
         </Card.LinkCustom>
       );
@@ -1753,15 +1157,7 @@ describe("Card.LinkCustom", () => {
     });
 
     it("does not set aria-label when title is not provided", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
       const link = screen.getByRole("link");
       expect(link).not.toHaveAttribute("aria-label");
@@ -1772,13 +1168,7 @@ describe("Card.LinkCustom", () => {
   describe("Link Properties", () => {
     it("passes through link attributes", () => {
       render(
-        <Card.LinkCustom
-          href="/test"
-          target="_blank"
-          title="Test title"
-          debugId="test-link"
-          debugMode={false}
-        >
+        <Card.LinkCustom href="/test" target="_blank" title="Test title">
           Link text
         </Card.LinkCustom>
       );
@@ -1791,12 +1181,7 @@ describe("Card.LinkCustom", () => {
 
     it("adds rel attribute for external links", () => {
       render(
-        <Card.LinkCustom
-          href="https://example.com"
-          target="_blank"
-          debugId="test-link"
-          debugMode={false}
-        >
+        <Card.LinkCustom href="https://example.com" target="_blank">
           Link text
         </Card.LinkCustom>
       );
@@ -1807,12 +1192,7 @@ describe("Card.LinkCustom", () => {
 
     it("does not add rel attribute for internal links", () => {
       render(
-        <Card.LinkCustom
-          href="/internal-link"
-          target="_self"
-          debugId="test-link"
-          debugMode={false}
-        >
+        <Card.LinkCustom href="/internal-link" target="_self">
           Link text
         </Card.LinkCustom>
       );
@@ -1821,209 +1201,83 @@ describe("Card.LinkCustom", () => {
       expect(link).not.toHaveAttribute("rel");
     });
 
-    it("handles invalid href by setting empty href", () => {
-      render(
-        <Card.LinkCustom href="" debugId="test-link" debugMode={false}>
-          Link text
-        </Card.LinkCustom>
+    it("handles invalid href by rendering with empty href", () => {
+      const { container } = render(
+        <Card.LinkCustom href="">Link text</Card.LinkCustom>
       );
 
-      const link = screen.getByTestId("test-link-card-link-custom-root");
-      expect(link).toHaveAttribute("href", "");
+      // When href is invalid, linkHref becomes null, so href becomes undefined
+      // React renders href={undefined} as href=""
+      const anchor = container.querySelector("a");
+      expect(anchor).toBeInTheDocument();
+      expect(anchor).toHaveAttribute("href", "");
     });
 
-    it("handles null href by setting empty href", () => {
-      render(
-        <Card.LinkCustom
-          href={null as any}
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link text
-        </Card.LinkCustom>
+    it("handles null href by rendering with empty href", () => {
+      const { container } = render(
+        <Card.LinkCustom href={null as any}>Link text</Card.LinkCustom>
       );
 
-      const link = screen.getByTestId("test-link-card-link-custom-root");
-      expect(link).toHaveAttribute("href", "");
+      const anchor = container.querySelector("a");
+      expect(anchor).toBeInTheDocument();
+      expect(anchor).toHaveAttribute("href", "");
     });
 
-    it("handles undefined href by setting empty href", () => {
-      render(
-        <Card.LinkCustom
-          href={undefined as any}
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link text
-        </Card.LinkCustom>
+    it("handles undefined href by rendering with empty href", () => {
+      const { container } = render(
+        <Card.LinkCustom href={undefined as any}>Link text</Card.LinkCustom>
       );
 
-      const link = screen.getByTestId("test-link-card-link-custom-root");
-      expect(link).toHaveAttribute("href", "");
-    });
-  });
-
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(
-        <Card.LinkCustom href="/test-link" debugId="test-link" debugMode={true}>
-          Link text
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
-      expect(linkElement).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link text
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
-      expect(linkElement).not.toHaveAttribute("data-debug-mode");
+      const anchor = container.querySelector("a");
+      expect(anchor).toBeInTheDocument();
+      expect(anchor).toHaveAttribute("href", "");
     });
   });
 
   describe("Component Structure", () => {
     it("renders as anchor element", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement.tagName).toBe("A");
     });
 
     it("applies correct CSS classes", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement).toBeInTheDocument();
     });
 
     it("combines CSS module + custom classes", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          className="custom-class"
-        >
+        <Card.LinkCustom href="/test-link" className="custom-class">
           Link content
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement).toHaveClass("custom-class");
-    });
-  });
-
-  describe("Component ID", () => {
-    it("renders with custom debugId", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="custom-id"
-          debugMode={false}
-        >
-          Link text
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId("custom-id-card-link-custom-root");
-      expect(linkElement).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-link-custom-root"
-      );
-    });
-
-    it("uses provided debugId when available", () => {
-      render(
-        <Card.LinkCustom href="/test-link" debugId="test-id" debugMode={false}>
-          Link text
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId("test-id-card-link-custom-root");
-      expect(linkElement).toHaveAttribute(
-        "data-testid",
-        "test-id-card-link-custom-root"
-      );
-    });
-
-    it("renders with generated ID when not provided", () => {
-      render(
-        <Card.LinkCustom href="/test-link" debugMode={false}>
-          Link text
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId("test-id-card-link-custom-root");
-      expect(linkElement).toHaveAttribute(
-        "data-testid",
-        "test-id-card-link-custom-root"
-      );
     });
   });
 
   describe("Memoization", () => {
     it("Card.LinkCustom renders correctly", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">Link content</Card.LinkCustom>);
 
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("Card.LinkCustom re-renders when props change", () => {
       const { rerender } = render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Initial content
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">Initial content</Card.LinkCustom>
       );
 
       expect(screen.getByText("Initial content")).toBeInTheDocument();
 
       // Re-render with different content
       rerender(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          Updated content
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">Updated content</Card.LinkCustom>
       );
 
       expect(screen.getByText("Updated content")).toBeInTheDocument();
@@ -2031,53 +1285,10 @@ describe("Card.LinkCustom", () => {
     });
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLAnchorElement>();
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          ref={ref}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("A");
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLAnchorElement>();
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-          ref={ref}
-        >
-          Link content
-        </Card.LinkCustom>
-      );
-
-      expect(ref.current?.tagName).toBe("A");
-      expect(ref.current).toHaveAttribute(
-        "data-testid",
-        "test-link-card-link-custom-root"
-      );
-    });
-  });
-
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
+        <Card.LinkCustom href="/test-link">
           <span>Complex</span> <strong>content</strong>
         </Card.LinkCustom>
       );
@@ -2088,11 +1299,7 @@ describe("Card.LinkCustom", () => {
 
     it("handles special characters", () => {
       render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
+        <Card.LinkCustom href="/test-link">
           Special chars: &lt;&gt;&amp;
         </Card.LinkCustom>
       );
@@ -2105,13 +1312,7 @@ describe("Card.LinkCustom", () => {
 
     it("does not render when children are empty", () => {
       const { container } = render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          {""}
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">{""}</Card.LinkCustom>
       );
 
       expect(container).toBeEmptyDOMElement();
@@ -2119,13 +1320,7 @@ describe("Card.LinkCustom", () => {
 
     it("does not render when children are null", () => {
       const { container } = render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          {null}
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">{null}</Card.LinkCustom>
       );
 
       expect(container).toBeEmptyDOMElement();
@@ -2133,44 +1328,24 @@ describe("Card.LinkCustom", () => {
 
     it("does not render when children are undefined", () => {
       const { container } = render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          {undefined}
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">{undefined}</Card.LinkCustom>
       );
 
       expect(container).toBeEmptyDOMElement();
     });
 
     it("handles boolean children", () => {
-      render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          {true}
-        </Card.LinkCustom>
-      );
+      render(<Card.LinkCustom href="/test-link">{true}</Card.LinkCustom>);
 
       // Boolean true is not rendered as text content in React but link element renders
-      const linkElement = screen.getByTestId("test-link-card-link-custom-root");
+      const linkElement = screen.getByRole("link");
       expect(linkElement).toBeInTheDocument();
       expect(linkElement.tagName).toBe("A");
     });
 
     it("handles number children", () => {
       const { container } = render(
-        <Card.LinkCustom
-          href="/test-link"
-          debugId="test-link"
-          debugMode={false}
-        >
-          {0}
-        </Card.LinkCustom>
+        <Card.LinkCustom href="/test-link">{0}</Card.LinkCustom>
       );
 
       // Component returns null for falsy children like 0
@@ -2181,8 +1356,6 @@ describe("Card.LinkCustom", () => {
       render(
         <Card.LinkCustom
           href="https://example.com"
-          debugId="multi-prop-id"
-          debugMode={true}
           className="multi-class"
           target="_blank"
           title="Multi prop test"
@@ -2191,70 +1364,16 @@ describe("Card.LinkCustom", () => {
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByTestId(
-        "multi-prop-id-card-link-custom-root"
-      );
+      const linkElement = screen.getByRole("link", {
+        name: /multi prop test/i,
+      });
       expect(linkElement).toHaveClass("multi-class");
-      expect(linkElement).toHaveAttribute("data-debug-mode", "true");
-      expect(linkElement).toHaveAttribute(
-        "data-testid",
-        "multi-prop-id-card-link-custom-root"
-      );
       expect(linkElement).toHaveAttribute("href", "https://example.com");
       expect(linkElement).toHaveAttribute("target", "_blank");
       expect(linkElement).toHaveAttribute("title", "Multi prop test");
       expect(linkElement).toHaveAttribute("aria-label", "Multi prop test");
       expect(linkElement).toHaveAttribute("rel", "noopener noreferrer");
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.LinkCustom href="/test-link" debugId="custom-id" debugMode={true}>
-          Link content
-        </Card.LinkCustom>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(
-        <Card.LinkCustom href="/test-link" debugMode={false}>
-          Link content
-        </Card.LinkCustom>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: false,
-      });
-    });
-
-    it("passes generated ID to base component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(
-        <Card.LinkCustom href="/test-link" debugMode={false}>
-          Link content
-        </Card.LinkCustom>
-      );
-
-      const linkElement = screen.getByTestId(
-        "generated-id-card-link-custom-root"
-      );
-      expect(linkElement).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-link-custom-root"
-      );
     });
   });
 });
@@ -2277,14 +1396,14 @@ describe("Card.Title", () => {
     });
 
     it("applies custom className", () => {
-      render(
+      const { container } = render(
         <Card.Title className="custom-class" href="#">
           Card title
         </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("class");
+      const titleElement = container.querySelector("h2");
+      expect(titleElement).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
@@ -2294,8 +1413,8 @@ describe("Card.Title", () => {
         </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("aria-label", "Title");
+      const titleElement = screen.getByLabelText("Title");
+      expect(titleElement).toBeInTheDocument();
     });
   });
 
@@ -2303,16 +1422,14 @@ describe("Card.Title", () => {
     it("renders with link when href is provided and valid", () => {
       render(<Card.Title href="/test-link">Card title</Card.Title>);
 
-      const link = screen.getByTestId("test-id-card-link-custom-root");
+      const link = screen.getByRole("link", { name: /card title/i });
       expect(link).toHaveAttribute("href", "/test-link");
     });
 
     it("renders without link when href is not valid", () => {
       render(<Card.Title href="#">Card title</Card.Title>);
 
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
       expect(screen.getByText("Card title")).toBeInTheDocument();
     });
 
@@ -2323,7 +1440,7 @@ describe("Card.Title", () => {
         </Card.Title>
       );
 
-      const link = screen.getByTestId("test-id-card-link-custom-root");
+      const link = screen.getByRole("link", { name: "Test title" });
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
     });
@@ -2352,253 +1469,102 @@ describe("Card.Title", () => {
     });
   });
 
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(
-        <Card.Title debugMode={true} href="#">
-          Card title
-        </Card.Title>
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled/undefined", () => {
-      render(<Card.Title href="#">Card title</Card.Title>);
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
   describe("Component Structure", () => {
     it("renders as h2 element by default", () => {
-      render(<Card.Title href="#">Card title</Card.Title>);
+      const { container } = render(
+        <Card.Title href="#">Card title</Card.Title>
+      );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("H2");
+      const titleElement = container.querySelector("h2");
+      expect(titleElement?.tagName).toBe("H2");
     });
 
     it("applies CSS classes", () => {
-      render(<Card.Title href="#">Card title</Card.Title>);
+      const { container } = render(
+        <Card.Title href="#">Card title</Card.Title>
+      );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("class");
+      const titleElement = container.querySelector("h2");
+      expect(titleElement).toHaveClass(
+        "text-base",
+        "font-semibold",
+        "tracking-tight",
+        "text-zinc-800",
+        "dark:text-zinc-100"
+      );
     });
 
     it("combines custom classes", () => {
-      render(
+      const { container } = render(
         <Card.Title className="custom-class" href="#">
           Card title
         </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("class");
+      const titleElement = container.querySelector("h2");
+      expect(titleElement).toHaveClass("custom-class");
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with custom debugId", () => {
+  describe("Element Props", () => {
+    it("passes through element props on h2", () => {
       render(
-        <Card.Title debugId="custom-id" href="#">
+        <Card.Title href="#" id="title-id" tabIndex={0}>
           Card title
         </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("custom-id-card-title-root");
-      expect(titleElement).toHaveAttribute(
-        "data-testid",
-        "custom-id-card-title-root"
-      );
-    });
-
-    it("uses provided debugId when available", () => {
-      render(
-        <Card.Title debugId="test-id" href="#">
-          Card title
-        </Card.Title>
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute(
-        "data-testid",
-        "test-id-card-title-root"
-      );
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLHeadingElement>();
-      render(
-        <Card.Title ref={ref} href="#">
-          Card title
-        </Card.Title>
-      );
-
-      expect(ref.current).toBeInTheDocument();
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLHeadingElement>();
-      render(
-        <Card.Title ref={ref} href="#">
-          Card title
-        </Card.Title>
-      );
-
-      expect(ref.current?.tagName).toBe("H2");
-    });
-  });
-
-  describe("Polymorphic Rendering", () => {
-    it("renders as h1 when as prop is h1", () => {
-      render(
-        (
-          <Card.Title as="h1" href="#">
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("H1");
-    });
-
-    it("renders as div when as prop is div", () => {
-      render(
-        (
-          <Card.Title as="div" href="#">
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("DIV");
-    });
-
-    it("renders as button when as prop is button", () => {
-      render(
-        (
-          <Card.Title as="button" href="#">
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("BUTTON");
-    });
-
-    it("renders as span when as prop is span", () => {
-      render(
-        (
-          <Card.Title as="span" href="#">
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement.tagName).toBe("SPAN");
-    });
-
-    it("passes through element-specific props", () => {
-      render(
-        (
-          <Card.Title
-            as="div"
-            role="button"
-            tabIndex={0}
-            onClick={() => {}}
-            href="#"
-          >
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute("role", "button");
+      const titleElement = screen.getByRole("heading", { level: 2 });
+      expect(titleElement.tagName).toBe("H2");
+      expect(titleElement).toHaveAttribute("id", "title-id");
       expect(titleElement).toHaveAttribute("tabIndex", "0");
-    });
-
-    it("passes through event handlers", () => {
-      const handleClick = vi.fn();
-      render(
-        (
-          <Card.Title as="div" onClick={handleClick} href="#">
-            Card title
-          </Card.Title>
-        ) as any
-      );
-
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toBeInTheDocument();
     });
   });
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main layout elements", () => {
-      render(
-        <Card.Title debugId="aria-test" href="#">
-          Card title
-        </Card.Title>
-      );
+      render(<Card.Title href="#">Card title</Card.Title>);
 
-      const titleElement = screen.getByTestId("aria-test-card-title-root");
+      const titleElement = screen.getByRole("heading", { level: 2 });
       expect(titleElement).toBeInTheDocument();
     });
 
     it("applies correct ARIA relationships between elements", () => {
       render(
-        (
-          <Card.Title
-            as="article"
-            aria-labelledby="title-id"
-            aria-describedby="desc-id"
-            href="#"
-          >
-            Card title
-          </Card.Title>
-        ) as any
+        <Card.Title
+          aria-labelledby="title-id"
+          aria-describedby="desc-id"
+          href="#"
+        >
+          Card title
+        </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
+      const titleElement = screen.getByRole("heading", { level: 2 });
       expect(titleElement).toHaveAttribute("aria-labelledby", "title-id");
       expect(titleElement).toHaveAttribute("aria-describedby", "desc-id");
     });
 
     it("applies unique IDs for ARIA relationships", () => {
       render(
-        (
-          <Card.Title as="h1" id="title-id" href="#">
-            Card title
-          </Card.Title>
-        ) as any
+        <Card.Title id="title-id" href="#">
+          Card title
+        </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
+      const titleElement = screen.getByRole("heading", { level: 2 });
       expect(titleElement).toHaveAttribute("id", "title-id");
     });
 
     it("applies correct ARIA labels to content elements", () => {
       render(
-        (
-          <Card.Title as="div" aria-label="Clickable card title" href="#">
-            Card title
-          </Card.Title>
-        ) as any
+        <Card.Title aria-label="Clickable card title" href="#">
+          Card title
+        </Card.Title>
       );
 
-      const titleElement = screen.getByTestId("test-id-card-title-root");
-      expect(titleElement).toHaveAttribute(
-        "aria-label",
-        "Clickable card title"
-      );
+      const titleElement = screen.getByLabelText("Clickable card title");
+      expect(titleElement).toBeInTheDocument();
     });
 
     it("handles ARIA attributes when content is missing", () => {
@@ -2668,48 +1634,7 @@ describe("Card.Title", () => {
       );
 
       expect(screen.getByText("Title with invalid link")).toBeInTheDocument();
-      expect(
-        screen.queryByTestId("test-id-card-link-custom-root")
-      ).not.toBeInTheDocument();
-    });
-  });
-
-  describe("useComponentId Integration", () => {
-    it("calls useComponentId with correct parameters", () => {
-      render(
-        <Card.Title debugId="custom-id" debugMode={true} href="#">
-          Card title
-        </Card.Title>
-      );
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: "custom-id",
-        debugMode: true,
-      });
-    });
-
-    it("calls useComponentId with undefined parameters", () => {
-      render(<Card.Title href="#">Card title</Card.Title>);
-
-      expect(mockUseComponentId).toHaveBeenCalledWith({
-        debugId: undefined,
-        debugMode: undefined,
-      });
-    });
-
-    it("passes generated ID to base component", () => {
-      mockUseComponentId.mockReturnValue({
-        componentId: "generated-id",
-        isDebugMode: false,
-      });
-
-      render(<Card.Title href="#">Card title</Card.Title>);
-
-      const titleElement = screen.getByTestId("generated-id-card-title-root");
-      expect(titleElement).toHaveAttribute(
-        "data-testid",
-        "generated-id-card-title-root"
-      );
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
     });
   });
 });
@@ -2736,28 +1661,14 @@ describe("Card", () => {
     });
 
     it("applies custom className", () => {
-      render(
+      const { container } = render(
         <Card className="custom-class">
           <div>Card content</div>
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
-    });
-
-    it("renders with debug mode enabled", () => {
-      render(<Card debugMode={true}>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("renders with custom debug ID", () => {
-      render(<Card debugId="custom-id">Card content</Card>);
-
-      const card = screen.getByTestId("custom-id-card-root");
-      expect(card).toHaveAttribute("data-testid", "custom-id-card-root");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
@@ -2767,7 +1678,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = screen.getByTestId("custom-testid");
       expect(card).toHaveAttribute("aria-label", "Card label");
     });
   });
@@ -2784,42 +1695,34 @@ describe("Card", () => {
     });
   });
 
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(<Card debugMode={true}>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled/undefined", () => {
-      render(<Card>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
   describe("Component Structure", () => {
     it("renders as div element by default", () => {
-      render(<Card>Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card.tagName).toBe("DIV");
+      const card = container.querySelector("div");
+      expect(card?.tagName).toBe("DIV");
     });
 
     it("applies correct CSS classes", () => {
-      render(<Card>Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start"
+      );
     });
 
     it("combines Tailwind classes + custom classes", () => {
-      render(<Card className="custom-class">Card content</Card>);
+      const { container } = render(
+        <Card className="custom-class">Card content</Card>
+      );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass("custom-class");
     });
   });
 
@@ -2931,13 +1834,13 @@ describe("Card", () => {
 
   describe("Accessibility", () => {
     it("renders with proper semantic structure", () => {
-      render(
+      const { container } = render(
         <Card>
           <div>Card content</div>
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = container.querySelector("div");
       expect(card).toBeInTheDocument();
     });
 
@@ -2948,8 +1851,7 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("aria-label", "Custom card");
+      const card = screen.getByLabelText("Custom card");
       expect(card).toHaveAttribute("aria-describedby", "card-description");
     });
 
@@ -2960,32 +1862,32 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("role", "region");
+      const card = screen.getByRole("region");
+      expect(card).toBeInTheDocument();
     });
   });
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to main elements", () => {
-      render(<Card debugId="aria-test">Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
       // Card renders as div by default
-      const cardElement = screen.getByTestId("aria-test-card-root");
+      const cardElement = container.querySelector("div");
       expect(cardElement).toBeInTheDocument();
-      expect(cardElement.tagName).toBe("DIV");
+      expect(cardElement?.tagName).toBe("DIV");
     });
 
     it("applies correct ARIA relationships between elements", () => {
-      render(<Card debugId="aria-test">Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
-      const cardElement = screen.getByTestId("aria-test-card-root");
+      const cardElement = container.querySelector("div");
 
       // Card should be present
       expect(cardElement).toBeInTheDocument();
     });
 
     it("applies correct ARIA labels without ID dependencies", () => {
-      render(<Card debugId="aria-test">Card content</Card>);
+      render(<Card>Card content</Card>);
 
       // Content should be present (no ID needed)
       const contentElement = screen.getByText("Card content");
@@ -2993,63 +1895,57 @@ describe("Card", () => {
     });
 
     it("applies correct ARIA labels to content elements", () => {
-      render(
-        <Card debugId="aria-test" aria-label="Test card">
-          Card content
-        </Card>
-      );
+      render(<Card aria-label="Test card">Card content</Card>);
 
       // Card should have descriptive label
-      const cardElement = screen.getByTestId("aria-test-card-root");
-      expect(cardElement).toHaveAttribute("aria-label", "Test card");
+      const cardElement = screen.getByLabelText("Test card");
+      expect(cardElement).toBeInTheDocument();
     });
 
-    it("applies ARIA attributes with different debug IDs", () => {
-      render(<Card debugId="custom-aria-id">Card content</Card>);
+    it("applies ARIA attributes with different IDs", () => {
+      const { container } = render(<Card>Card content</Card>);
 
-      const cardElement = screen.getByTestId("custom-aria-id-card-root");
+      const cardElement = container.querySelector("div");
 
       // Should be present
       expect(cardElement).toBeInTheDocument();
     });
 
     it("maintains ARIA attributes during component updates", () => {
-      const { rerender } = render(
-        <Card debugId="aria-test">Card content</Card>
-      );
+      const { rerender, container } = render(<Card>Card content</Card>);
 
       // Initial render
-      let cardElement = screen.getByTestId("aria-test-card-root");
+      let cardElement = container.querySelector("div");
       expect(cardElement).toBeInTheDocument();
 
       // Update with different content
-      rerender(<Card debugId="aria-test">Updated content</Card>);
+      rerender(<Card>Updated content</Card>);
 
       // ARIA attributes should be maintained
-      cardElement = screen.getByTestId("aria-test-card-root");
+      cardElement = container.querySelector("div");
       expect(cardElement).toBeInTheDocument();
     });
 
     it("ensures proper ARIA landmark structure", () => {
-      render(<Card debugId="aria-test">Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
       // Card renders as div element
-      const cardElement = screen.getByTestId("aria-test-card-root");
+      const cardElement = container.querySelector("div");
       expect(cardElement).toBeInTheDocument();
-      expect(cardElement.tagName).toBe("DIV");
+      expect(cardElement?.tagName).toBe("DIV");
     });
 
     it("applies conditional ARIA attributes correctly", () => {
-      render(<Card debugId="aria-test">Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
-      const cardElement = screen.getByTestId("aria-test-card-root");
+      const cardElement = container.querySelector("div");
 
       // Should be present
       expect(cardElement).toBeInTheDocument();
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      const { container } = render(<Card debugId="aria-test">{null}</Card>);
+      const { container } = render(<Card>{null}</Card>);
 
       // Component should not render when no content
       expect(container).toBeEmptyDOMElement();
@@ -3057,16 +1953,12 @@ describe("Card", () => {
 
     it("maintains ARIA attributes with additional HTML attributes", () => {
       render(
-        <Card
-          debugId="aria-test"
-          aria-expanded="true"
-          aria-controls="card-content"
-        >
+        <Card aria-expanded="true" aria-controls="card-content">
           Card content
         </Card>
       );
 
-      const cardElement = screen.getByTestId("aria-test-card-root");
+      const cardElement = screen.getByText("Card content").closest("div");
 
       // Should maintain both component ARIA attributes and custom ones
       expect(cardElement).toBeInTheDocument();
@@ -3075,64 +1967,43 @@ describe("Card", () => {
     });
   });
 
-  describe("Data Attributes and Debugging", () => {
-    it("applies correct data attributes with default ID", () => {
-      render(<Card>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("data-testid", "test-id-card-root");
-      expect(card).not.toHaveAttribute("data-debug-mode");
-    });
-
-    it("applies correct data attributes with custom ID", () => {
-      render(<Card debugId="custom-card-id">Card content</Card>);
-
-      const card = screen.getByTestId("custom-card-id-card-root");
-      expect(card).toHaveAttribute("data-testid", "custom-card-id-card-root");
-    });
-
-    it("applies debug mode data attribute when enabled", () => {
-      render(<Card debugMode={true}>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply debug mode data attribute when disabled", () => {
-      render(<Card debugMode={false}>Card content</Card>);
-
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).not.toHaveAttribute("data-debug-mode");
-    });
-  });
-
   describe("CSS and Styling", () => {
     it("applies base Tailwind CSS classes", () => {
-      render(<Card>Card content</Card>);
+      const { container } = render(<Card>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass(
+        "group",
+        "relative",
+        "flex",
+        "flex-col",
+        "items-start"
+      );
     });
 
     it("merges custom className with base classes", () => {
-      render(<Card className="custom-card-class">Card content</Card>);
+      const { container } = render(
+        <Card className="custom-card-class">Card content</Card>
+      );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass("custom-card-class");
     });
 
     it("handles multiple custom classes", () => {
-      render(<Card className="class1 class2 class3">Card content</Card>);
+      const { container } = render(
+        <Card className="class1 class2 class3">Card content</Card>
+      );
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toHaveClass("class1", "class2", "class3");
     });
 
     it("handles empty className gracefully", () => {
-      render(<Card className="">Card content</Card>);
+      const { container } = render(<Card className="">Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card-root");
-      expect(card).toHaveAttribute("class");
+      const card = container.querySelector("div");
+      expect(card).toBeInTheDocument();
     });
   });
 
@@ -3149,11 +2020,11 @@ describe("Card", () => {
         </Card>
       );
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = screen.getByText("Card content").closest("div");
       expect(card).toHaveAttribute("id", "card-1");
       expect(card).toHaveAttribute("tabIndex", "0");
       expect(card).toHaveAttribute("data-custom", "value");
-      expect(card.style.backgroundColor).toBe("red");
+      expect(card?.style.backgroundColor).toBe("red");
     });
 
     it("forwards event handlers", () => {
@@ -3161,41 +2032,10 @@ describe("Card", () => {
 
       render(<Card onClick={onClick}>Card content</Card>);
 
-      const card = screen.getByTestId("test-id-card-root");
+      const card = screen.getByText("Card content").closest("div");
 
-      card.click();
+      card?.click();
       expect(onClick).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Card ref={ref as any}>Card content</Card>);
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("ref points to correct element with custom as prop", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(
-        <Card as="div" ref={ref}>
-          Card content
-        </Card>
-      );
-
-      expect(ref.current).toBeInTheDocument();
-      expect(ref.current?.tagName).toBe("DIV");
-    });
-
-    it("allows ref access to DOM methods", () => {
-      const ref = React.createRef<HTMLDivElement>();
-      render(<Card ref={ref as any}>Card content</Card>);
-
-      expect(ref.current?.getAttribute("data-testid")).toBe(
-        "test-id-card-root"
-      );
     });
   });
 
