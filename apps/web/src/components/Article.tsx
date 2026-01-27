@@ -4,11 +4,10 @@
  * @description Presentational component for displaying article cards using the Card compound component.
  */
 
-import React, { useMemo } from "react";
+import React, { useId, useMemo } from "react";
 
 import { useTranslations } from "next-intl";
 
-import { useComponentId } from "@guyromellemagayano/hooks";
 import { formatDateSafely } from "@guyromellemagayano/utils";
 
 import { type CommonAppComponentProps } from "@web/types/common";
@@ -16,23 +15,31 @@ import { type ArticleWithSlug } from "@web/utils/articles";
 
 import { Card } from "./Card";
 
-export type ArticleProps<T extends Record<string, unknown> = {}> =
-  CommonAppComponentProps &
-    React.ComponentPropsWithRef<typeof Card> &
-    T & {
-      article: ArticleWithSlug;
-    };
+type ArticleElementType = typeof Card;
 
-export function Article<T extends Record<string, unknown> = {}>(
-  props: ArticleProps<T>
-) {
-  const { as: Component = Card, article, debugId, debugMode, ...rest } = props;
+export type ArticleProps<
+  T extends ArticleElementType,
+  P extends Record<string, unknown> = {},
+> = CommonAppComponentProps &
+  React.ComponentPropsWithRef<T> &
+  P & {
+    as?: T;
+    article: ArticleWithSlug;
+  };
+
+export function Article<
+  T extends ArticleElementType,
+  P extends Record<string, unknown> = {},
+>(props: ArticleProps<T, P>) {
+  const { as: Component = Card, article, ...rest } = props;
+
+  // Generate unique IDs for ARIA relationships (SEO: proper semantic structure)
+  const articleId = useId();
+  const titleId = `${articleId}-title`;
+  const descriptionId = `${articleId}-description`;
 
   // Internationalization
   const t = useTranslations("article");
-
-  // Article component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
 
   // Article data object
   const articleData = useMemo(() => {
@@ -62,37 +69,26 @@ export function Article<T extends Record<string, unknown> = {}>(
 
   if (!articleData) return null;
 
-  // ARIA relationships
-  const titleId = `${componentId}-base-article-card-title`;
-  const descriptionId = `${componentId}-base-article-card-description`;
-
   return (
     <Component
       {...rest}
-      role="article"
-      debugId={componentId}
-      debugMode={isDebugMode}
+      as="article"
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
-      {articleData.title ? (
-        <Card.Title
-          id={titleId}
-          href={articleData.slug}
-          debugId={componentId}
-          debugMode={isDebugMode}
-          aria-level={1}
-        >
+      {articleData.title &&
+      articleData.title.trim().length > 0 &&
+      articleData.slug &&
+      articleData.slug.trim().length > 0 ? (
+        <Card.Title as="h2" id={titleId} href={articleData.slug}>
           {articleData.title}
         </Card.Title>
       ) : null}
 
-      {articleData.date ? (
+      {articleData.date && articleData.date.trim().length > 0 ? (
         <Card.Eyebrow
           as="time"
           dateTime={articleData.date}
-          debugId={componentId}
-          debugMode={isDebugMode}
           aria-label={`${t("articleDate")} ${articleData.formattedDate}`}
           decorate
         >
@@ -100,23 +96,21 @@ export function Article<T extends Record<string, unknown> = {}>(
         </Card.Eyebrow>
       ) : null}
 
-      {articleData.description ? (
-        <Card.Description
-          id={descriptionId}
-          debugId={componentId}
-          debugMode={isDebugMode}
-        >
+      {articleData.description && articleData.description.trim().length > 0 ? (
+        <Card.Description id={descriptionId}>
           {articleData.description}
         </Card.Description>
       ) : null}
 
-      {articleData.title && articleData.date && articleData.description ? (
-        <Card.Cta
-          role="button"
-          debugId={componentId}
-          debugMode={isDebugMode}
-          aria-label={`${t("cta")}: ${articleData.title || "Article"}`}
-        >
+      {articleData.title &&
+      articleData.title.trim().length > 0 &&
+      articleData.slug &&
+      articleData.slug.trim().length > 0 &&
+      articleData.date &&
+      articleData.date.trim().length > 0 &&
+      articleData.description &&
+      articleData.description.trim().length > 0 ? (
+        <Card.Cta href={articleData.slug} title={articleData.title}>
           {t("cta")}
         </Card.Cta>
       ) : null}
