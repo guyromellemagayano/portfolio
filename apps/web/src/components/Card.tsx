@@ -125,7 +125,7 @@ function CardCta<
     >
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref}
+          href={linkHref ?? undefined}
           target={linkTargetProps?.target ?? undefined}
           rel={linkTargetProps?.rel ?? undefined}
           title={title ?? undefined}
@@ -296,10 +296,10 @@ function CardLink<
 
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref}
-          target={linkTargetProps?.target}
-          rel={linkTargetProps?.rel}
-          title={title}
+          href={linkHref ?? undefined}
+          target={linkTargetProps?.target ?? undefined}
+          rel={linkTargetProps?.rel ?? undefined}
+          title={title ?? undefined}
         >
           <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
           <span className="relative z-10">{children}</span>
@@ -317,7 +317,7 @@ CardLink.displayName = "CardLink";
 // CARD TITLE COMPONENT
 // ============================================================================
 
-type CardTitleElementType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+type CardTitleElementType = "h2" | "h3";
 type CardTitleProps<
   T extends CardTitleElementType,
   P extends Record<string, unknown> = {},
@@ -362,7 +362,7 @@ function CardTitle<
     >
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref}
+          href={linkHref ?? undefined}
           target={linkTargetProps?.target ?? undefined}
           rel={linkTargetProps?.rel ?? undefined}
           title={title ?? undefined}

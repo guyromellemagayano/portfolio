@@ -134,10 +134,11 @@ describe("Card.Cta", () => {
         </Card.Cta>
       );
 
-      const link = screen.getByRole("link", { name: "Test title" });
+      const link = screen.getByRole("link", { name: /call to action/i });
       expect(link).toHaveAttribute("href", "/valid-link");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
+      expect(link).not.toHaveAttribute("aria-label"); // Should not have aria-label when children are descriptive
       expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
@@ -147,6 +148,30 @@ describe("Card.Cta", () => {
       const icon = screen.getByTestId("icon-chevron-right");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("handles null target by rendering without target attribute", () => {
+      render(
+        <Card.Cta href="/test-link" target={null as any}>
+          Call to action
+        </Card.Cta>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("target");
+    });
+
+    it("handles null title by rendering without title attribute", () => {
+      render(
+        <Card.Cta href="/test-link" title={null as any}>
+          Call to action
+        </Card.Cta>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("title");
     });
   });
 
@@ -637,6 +662,43 @@ describe("Card.Eyebrow", () => {
     });
   });
 
+  describe("dateTime Prop", () => {
+    it("applies dateTime when as='time' and dateTime is provided", () => {
+      render(
+        <Card.Eyebrow as="time" dateTime="2023-01-01">
+          January 1, 2023
+        </Card.Eyebrow>
+      );
+
+      const time = screen.getByText("January 1, 2023");
+      expect(time.tagName).toBe("TIME");
+      expect(time).toHaveAttribute("dateTime", "2023-01-01");
+    });
+
+    it("renders time element without dateTime when not provided", () => {
+      render(<Card.Eyebrow as="time">Date text</Card.Eyebrow>);
+
+      const time = screen.getByText("Date text");
+      expect(time.tagName).toBe("TIME");
+      expect(time).not.toHaveAttribute("dateTime");
+    });
+
+    it("does not apply dateTime when as='p' (default)", () => {
+      // TypeScript prevents dateTime when as="p", but we test the runtime behavior
+      // by using type assertion to bypass TypeScript check
+      render(
+        <Card.Eyebrow {...({ dateTime: "2023-01-01" } as any)} as="p">
+          Date text
+        </Card.Eyebrow>
+      );
+
+      const eyebrow = screen.getByText("Date text");
+      expect(eyebrow.tagName).toBe("P");
+      // dateTime should not be applied to p element
+      expect(eyebrow).not.toHaveAttribute("dateTime");
+    });
+  });
+
   describe("Decorative Styling", () => {
     it("renders with decoration when decorate is true", () => {
       const { container } = render(
@@ -844,10 +906,12 @@ describe("Card.Link", () => {
         </Card.Link>
       );
 
-      const customLink = screen.getByRole("link", { name: "Test title" });
+      // Query by visible text since aria-label is not set when children are descriptive
+      const customLink = screen.getByRole("link", { name: /link content/i });
       expect(customLink).toHaveAttribute("href", "/valid-link");
       expect(customLink).toHaveAttribute("target", "_blank");
       expect(customLink).toHaveAttribute("title", "Test title");
+      expect(customLink).not.toHaveAttribute("aria-label");
     });
   });
 
@@ -1135,16 +1199,22 @@ describe("Card.LinkCustom", () => {
 
     it("passes through HTML attributes", () => {
       render(
-        <Card.LinkCustom href="/test-link" title="Link">
+        <Card.LinkCustom href="/test-link" title="Link" data-testid="custom-link">
           Link content
         </Card.LinkCustom>
       );
 
-      const linkElement = screen.getByRole("link");
-      expect(linkElement).toHaveAttribute("aria-label", "Link");
+      const linkElement = screen.getByTestId("custom-link");
+      expect(linkElement).toBeInTheDocument();
+      expect(linkElement).toHaveAttribute("href", "/test-link");
+      expect(linkElement).toHaveAttribute("title", "Link");
+      // aria-label should NOT be set when children are descriptive
+      expect(linkElement).not.toHaveAttribute("aria-label");
     });
 
-    it("sets aria-label from title prop", () => {
+    it("does not set aria-label when title provided and children are descriptive text", () => {
+      // When children are descriptive (non-empty string), aria-label should NOT be set
+      // SEO: Prefer visible link text over aria-label
       render(
         <Card.LinkCustom href="/test-link" title="Custom title">
           Link content
@@ -1152,7 +1222,7 @@ describe("Card.LinkCustom", () => {
       );
 
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("aria-label", "Custom title");
+      expect(link).not.toHaveAttribute("aria-label");
       expect(link).toHaveAttribute("title", "Custom title");
     });
 
@@ -1162,6 +1232,53 @@ describe("Card.LinkCustom", () => {
       const link = screen.getByRole("link");
       expect(link).not.toHaveAttribute("aria-label");
       expect(link).not.toHaveAttribute("title");
+    });
+
+    it("does not render when children are empty string (component returns null)", () => {
+      // Empty string children cause component to return null due to !children check
+      const { container } = render(
+        <Card.LinkCustom href="/test-link" title="Link title">
+          {""}
+        </Card.LinkCustom>
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("does not set aria-label when title provided and children are descriptive text", () => {
+      render(
+        <Card.LinkCustom href="/test-link" title="Link title">
+          Descriptive link text
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("aria-label");
+      expect(link).toHaveAttribute("title", "Link title");
+    });
+
+    it("does not set aria-label when title provided and children contain React elements", () => {
+      render(
+        <Card.LinkCustom href="/test-link" title="Link title">
+          <span>Link content</span>
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).not.toHaveAttribute("aria-label");
+      expect(link).toHaveAttribute("title", "Link title");
+    });
+
+    it("sets aria-label when title provided and children are whitespace-only string", () => {
+      render(
+        <Card.LinkCustom href="/test-link" title="Link title">
+          {"   "}
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("aria-label", "Link title");
+      expect(link).toHaveAttribute("title", "Link title");
     });
   });
 
@@ -1173,10 +1290,12 @@ describe("Card.LinkCustom", () => {
         </Card.LinkCustom>
       );
 
-      const link = screen.getByRole("link");
+      const link = screen.getByRole("link", { name: /link text/i });
       expect(link).toHaveAttribute("href", "/test");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
+      // aria-label should NOT be set when children are descriptive
+      expect(link).not.toHaveAttribute("aria-label");
     });
 
     it("adds rel attribute for external links", () => {
@@ -1231,6 +1350,43 @@ describe("Card.LinkCustom", () => {
       const anchor = container.querySelector("a");
       expect(anchor).toBeInTheDocument();
       expect(anchor).toHaveAttribute("href", "");
+    });
+
+    it("handles null target by rendering without target attribute", () => {
+      render(
+        <Card.LinkCustom href="/test-link" target={null as any}>
+          Link text
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("target");
+    });
+
+    it("handles null rel by rendering without rel attribute", () => {
+      render(
+        <Card.LinkCustom href="/test-link" rel={null as any}>
+          Link text
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("rel");
+    });
+
+    it("handles null title by rendering without title attribute", () => {
+      render(
+        <Card.LinkCustom href="/test-link" title={null as any}>
+          Link text
+        </Card.LinkCustom>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("title");
+      expect(link).not.toHaveAttribute("aria-label");
     });
   });
 
@@ -1371,7 +1527,8 @@ describe("Card.LinkCustom", () => {
       expect(linkElement).toHaveAttribute("href", "https://example.com");
       expect(linkElement).toHaveAttribute("target", "_blank");
       expect(linkElement).toHaveAttribute("title", "Multi prop test");
-      expect(linkElement).toHaveAttribute("aria-label", "Multi prop test");
+      // aria-label should NOT be set when children are descriptive
+      expect(linkElement).not.toHaveAttribute("aria-label");
       expect(linkElement).toHaveAttribute("rel", "noopener noreferrer");
       expect(screen.getByText("Multi prop test")).toBeInTheDocument();
     });
@@ -1440,9 +1597,35 @@ describe("Card.Title", () => {
         </Card.Title>
       );
 
-      const link = screen.getByRole("link", { name: "Test title" });
+      // Query by visible text since aria-label is not set when children are descriptive
+      const link = screen.getByRole("link", { name: /card title/i });
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("title", "Test title");
+      expect(link).not.toHaveAttribute("aria-label");
+    });
+
+    it("handles null target by rendering without target attribute", () => {
+      render(
+        <Card.Title href="/test-link" target={null as any}>
+          Card title
+        </Card.Title>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("target");
+    });
+
+    it("handles null title by rendering without title attribute", () => {
+      render(
+        <Card.Title href="/test-link" title={null as any}>
+          Card title
+        </Card.Title>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "/test-link");
+      expect(link).not.toHaveAttribute("title");
     });
   });
 
@@ -1477,6 +1660,17 @@ describe("Card.Title", () => {
 
       const titleElement = container.querySelector("h2");
       expect(titleElement?.tagName).toBe("H2");
+    });
+
+    it("renders as h3 when as prop is h3", () => {
+      const { container } = render(
+        <Card.Title as="h3" href="#">
+          Card title
+        </Card.Title>
+      );
+
+      const titleElement = container.querySelector("h3");
+      expect(titleElement?.tagName).toBe("H3");
     });
 
     it("applies CSS classes", () => {
@@ -1516,6 +1710,19 @@ describe("Card.Title", () => {
 
       const titleElement = screen.getByRole("heading", { level: 2 });
       expect(titleElement.tagName).toBe("H2");
+      expect(titleElement).toHaveAttribute("id", "title-id");
+      expect(titleElement).toHaveAttribute("tabIndex", "0");
+    });
+
+    it("passes through element props on h3", () => {
+      render(
+        <Card.Title as="h3" href="#" id="title-id" tabIndex={0}>
+          Card title
+        </Card.Title>
+      );
+
+      const titleElement = screen.getByRole("heading", { level: 3 });
+      expect(titleElement.tagName).toBe("H3");
       expect(titleElement).toHaveAttribute("id", "title-id");
       expect(titleElement).toHaveAttribute("tabIndex", "0");
     });
