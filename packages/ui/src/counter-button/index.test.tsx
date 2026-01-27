@@ -1,16 +1,14 @@
+/**
+ * @file index.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the CounterButton component.
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { CounterButton } from ".";
-
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit
-// - Coverage: Tier 2 (80%+)
-// - Risk Tier: Core
-// - Component Type: Presentational with State
-// ============================================================================
 
 describe("CounterButton", () => {
   afterEach(() => {
