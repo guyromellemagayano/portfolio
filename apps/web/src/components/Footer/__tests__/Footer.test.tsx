@@ -1,35 +1,65 @@
+/**
+ * @file Footer.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Footer component.
+ */
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Footer } from "../Footer";
 
-// Mock dependencies
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || options.internalId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+import "@testing-library/jest-dom";
 
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: vi.fn((namespace: string) => {
+    const translations: Record<string, any> = {
+      "footer.navigation": {
+        about: "About",
+        articles: "Articles",
+        projects: "Projects",
+        uses: "Uses",
+      },
+      "footer.ariaLabels": {
+        navigation: "Footer navigation",
+        footer: "Site footer",
+      },
+      footer: {
+        brandName: "Guy Romelle Magayano",
+        legal: {
+          copyright: (params: { year: string; brandName: string }) =>
+            `© ${params.year} ${params.brandName}. All rights reserved.`,
+        },
+        ariaLabels: {
+          footer: "Site footer",
+        },
+      },
+    };
+
+    return (key: string, params?: Record<string, any>) => {
+      const keys = key.split(".");
+      let value: any = translations[namespace];
+
+      for (const k of keys) {
+        if (value && typeof value === "object" && k in value) {
+          value = value[k];
+        } else {
+          return key;
+        }
+      }
+
+      if (typeof value === "function") {
+        return value(params || {});
+      }
+
+      return value || key;
+    };
+  }),
 }));
 
+// Mock dependencies
 vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) {
-      component.displayName = displayName;
-    }
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
-      ...additionalProps,
-    })
-  ),
   formatDateSafely: vi.fn((date, options) => {
     if (options?.year === "numeric") {
       return new Date(date).getFullYear().toString();
@@ -53,63 +83,49 @@ vi.mock("@guyromellemagayano/utils", () => ({
       );
     });
   }),
-  isValidLink: vi.fn((href) => {
-    return href && typeof href === "string" && href.length > 0;
-  }),
   getLinkTargetProps: vi.fn((href, target) => ({
     target: target || "_self",
     rel: target === "_blank" ? "noopener noreferrer" : undefined,
   })),
 }));
 
-vi.mock("@web/components", () => ({
-  ContainerOuter: vi.fn(({ children, ...props }) => (
-    <div data-testid="test-id-container-outer" {...props}>
-      {children}
-    </div>
-  )),
-  ContainerInner: vi.fn(({ children, ...props }) => (
-    <div data-testid="test-id-container-inner" {...props}>
-      {children}
-    </div>
-  )),
-}));
-
-vi.mock("./_internal", () => ({
-  FooterNavigation: ({ ...props }) => (
-    <nav data-testid="test-id-footer-navigation" {...props}>
-      <a href="/about">About</a>
-      <a href="/articles">Articles</a>
-      <a href="/projects">Projects</a>
-      <a href="/speaking">Speaking</a>
-      <a href="/uses">Uses</a>
-    </nav>
-  ),
-  FooterLegal: ({ ...props }) => (
-    <div data-testid="test-id-footer-legal" {...props}>
-      © 2025 Guy Romelle Magayano. All rights reserved.
-    </div>
-  ),
-}));
-
-vi.mock("./_data", () => ({
-  FOOTER_COMPONENT_LABELS: {
-    legalText: "© 2025 Guy Romelle Magayano. All rights reserved.",
+vi.mock("@web/components/container/Container", () => ({
+  Container: {
+    Outer: vi.fn(({ children, ...props }) => (
+      <div data-testid="container-outer" {...props}>
+        {children}
+      </div>
+    )),
+    Inner: vi.fn(({ children, ...props }) => (
+      <div data-testid="container-inner" {...props}>
+        {children}
+      </div>
+    )),
   },
-  FOOTER_COMPONENT_NAV_LINKS: [
+}));
+
+vi.mock("next/link", () => ({
+  default: vi.fn(({ children, href, ...props }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  )),
+}));
+
+vi.mock("@web/utils/helpers", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Test data
+const mockFooterData = {
+  legalText: "© 2025 Guy Romelle Magayano. All rights reserved.",
+  nav: [
     { kind: "internal", label: "About", href: "/about" },
     { kind: "internal", label: "Articles", href: "/articles" },
     { kind: "internal", label: "Projects", href: "/projects" },
-
     { kind: "internal", label: "Uses", href: "/uses" },
-  ],
-}));
-
-// Footer component uses Tailwind CSS, no CSS modules needed
-
-vi.mock("@web/utils", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
+  ] as const,
+};
 
 describe("Footer", () => {
   afterEach(() => {
@@ -118,286 +134,482 @@ describe("Footer", () => {
   });
 
   describe("Basic Rendering", () => {
-    it("renders footer with default content", () => {
-      render(<Footer />);
+    it("renders footer with data prop", () => {
+      render(<Footer data={mockFooterData} />);
 
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-container-outer")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-container-inner")).toBeInTheDocument();
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      expect(footer.tagName).toBe("FOOTER");
+    });
+
+    it("renders footer navigation links", () => {
+      render(<Footer data={mockFooterData} />);
+
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
       expect(
-        screen.getByTestId("test-id-footer-navigation")
+        screen.getByRole("link", { name: "Articles" })
       ).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: "Projects" })
+      ).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Uses" })).toBeInTheDocument();
+    });
+
+    it("renders footer legal text", () => {
+      render(<Footer data={mockFooterData} />);
+
       expect(
         screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
       ).toBeInTheDocument();
     });
 
-    it("renders with default legal text from internal data", () => {
+    it("renders with container structure", () => {
+      render(<Footer data={mockFooterData} />);
+
+      expect(screen.getByTestId("container-outer")).toBeInTheDocument();
+      expect(screen.getByTestId("container-inner")).toBeInTheDocument();
+    });
+
+    it("renders with default navigation and legal text when data prop is missing", () => {
       render(<Footer />);
 
+      // Footer renders with defaults when data is not provided
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+
+      // Default navigation links should render
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
+
+      // Default legal text should render
       expect(
-        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
+        screen.getByText(/© \d{4} Guy Romelle Magayano/)
       ).toBeInTheDocument();
     });
 
-    it("renders with default navigation links from internal data", () => {
-      render(<Footer />);
+    it("does not render when legalText is missing", () => {
+      const { container } = render(
+        <Footer data={{ nav: mockFooterData.nav, legalText: "" }} />
+      );
 
-      expect(screen.getByText("About")).toBeInTheDocument();
-      expect(screen.getByText("Articles")).toBeInTheDocument();
-      expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Uses")).toBeInTheDocument();
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("does not render when nav array is empty", () => {
+      // Empty array is truthy, so Footer renders but FooterNavigation returns null
+      render(
+        <Footer data={{ legalText: mockFooterData.legalText, nav: [] }} />
+      );
+
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      // Navigation should not render when nav is empty
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
     });
   });
 
-  describe("Debug Mode", () => {
-    it("renders with debug mode enabled", () => {
-      render(<Footer debugId="test-id" debugMode />);
+  describe("FooterNavigation Component", () => {
+    it("renders navigation with aria-label", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).toHaveAttribute("data-debug-mode", "true");
+      const nav = screen.getByRole("navigation", { name: "Footer navigation" });
+      expect(nav).toBeInTheDocument();
+      expect(nav.tagName).toBe("NAV");
     });
 
-    it("does not render debug mode when disabled", () => {
-      render(<Footer debugId="test-id" debugMode={false} />);
+    it("renders navigation links correctly", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).not.toHaveAttribute("data-debug-mode");
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      expect(aboutLink).toHaveAttribute("href", "/about");
+
+      const articlesLink = screen.getByRole("link", { name: "Articles" });
+      expect(articlesLink).toHaveAttribute("href", "/articles");
+    });
+
+    it("renders navigation with list items structure", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const nav = screen.getByRole("navigation");
+      const listItems = nav.querySelectorAll("li");
+      expect(listItems).toHaveLength(4);
+
+      // Verify each link is wrapped in a list item
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      expect(aboutLink.closest("li")).toBeInTheDocument();
+    });
+
+    it("renders with correct CSS classes", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const nav = screen.getByRole("navigation");
+      expect(nav).toHaveClass("flex");
+      expect(nav).toHaveClass("list-none");
+      expect(nav).toHaveClass("justify-center");
+      expect(nav).toHaveClass("text-sm");
+    });
+
+    it("renders external links with proper attributes", () => {
+      const externalNavData = {
+        legalText: mockFooterData.legalText,
+        nav: [
+          {
+            kind: "external" as const,
+            label: "GitHub",
+            href: "https://github.com",
+            newTab: true,
+          },
+        ],
+      };
+
+      render(<Footer data={externalNavData} />);
+
+      const githubLink = screen.getByRole("link", { name: "GitHub" });
+      expect(githubLink).toHaveAttribute("href", "https://github.com");
+      expect(githubLink).toHaveAttribute("target", "_blank");
+      expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
+    });
+
+    it("renders internal links with target _self", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      expect(aboutLink).toHaveAttribute("target", "_self");
+    });
+
+    it("renders navigation with custom navLinks in data prop", () => {
+      const customNavLinks = [
+        { kind: "internal" as const, label: "Home", href: "/" },
+        { kind: "internal" as const, label: "Contact", href: "/contact" },
+      ];
+
+      render(
+        <Footer
+          data={{
+            ...mockFooterData,
+            nav: customNavLinks,
+          }}
+        />
+      );
+
+      expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Contact" })).toBeInTheDocument();
+    });
+
+    it("does not render navigation when navLinks are invalid", () => {
+      render(<Footer data={{ ...mockFooterData, nav: [] }} />);
+
+      // Footer renders but FooterNavigation returns null when nav is empty
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      // Navigation should not render
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    });
+
+    it("handles invalid links gracefully", () => {
+      const invalidNavData = {
+        legalText: mockFooterData.legalText,
+        nav: [
+          { kind: "internal" as const, label: "", href: "/about" }, // Empty label
+          { kind: "internal" as const, label: "Valid", href: "/valid" },
+        ],
+      };
+
+      render(<Footer data={invalidNavData} />);
+
+      // Only valid link should render
+      expect(screen.getByRole("link", { name: "Valid" })).toBeInTheDocument();
+      // Empty label links should be filtered out
+      const links = screen.getAllByRole("link");
+      expect(links).toHaveLength(1);
+      expect(links[0]).toHaveTextContent("Valid");
     });
   });
 
-  describe("Component ID", () => {
-    it("renders with custom debug ID", () => {
-      render(<Footer debugId="custom-id" />);
+  describe("FooterLegal Component", () => {
+    it("renders legal text correctly", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footer = screen.getByTestId("custom-id-footer");
-      expect(footer).toHaveAttribute("data-footer-id", "custom-id-footer");
+      const legalText = screen.getByText(
+        "© 2025 Guy Romelle Magayano. All rights reserved."
+      );
+      expect(legalText).toBeInTheDocument();
+      expect(legalText.tagName).toBe("P");
     });
 
-    it("renders without debug ID when not provided", () => {
-      render(<Footer />);
+    it("renders with custom legalText in data prop", () => {
+      const customLegalText = "© 2024 Custom Company. All rights reserved.";
 
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
+      render(
+        <Footer
+          data={{
+            ...mockFooterData,
+            legalText: customLegalText,
+          }}
+        />
+      );
+
+      expect(screen.getByText(customLegalText)).toBeInTheDocument();
+    });
+
+    it("renders legal text without redundant aria-label", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const legalElement = screen
+        .getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
+        .closest("p");
+
+      expect(legalElement).not.toHaveAttribute("aria-label");
+    });
+
+    it("renders with correct CSS classes", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const legalElement = screen
+        .getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
+        .closest("p");
+
+      expect(legalElement?.className).toContain("text-sm");
+      expect(legalElement?.className).toContain("text-zinc-400");
+    });
+
+    it("does not render when legalText is empty", () => {
+      const { container } = render(
+        <Footer data={{ ...mockFooterData, legalText: "" }} />
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("does not render when legalText is null", () => {
+      const { container } = render(
+        <Footer data={{ ...mockFooterData, legalText: null as any }} />
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+  });
+
+  describe("Polymorphic Element Types", () => {
+    it("renders as footer element by default", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const footer = screen.getByRole("contentinfo");
+      expect(footer.tagName).toBe("FOOTER");
+    });
+
+    it("renders with aria-label for footer landmark", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toHaveAttribute("aria-label", "Site footer");
+    });
+
+    it("does not have redundant role attribute", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const footer = screen.getByRole("contentinfo");
+      // Footer element has implicit role="contentinfo", should not be explicitly set
+      expect(footer).not.toHaveAttribute("role", "contentinfo");
     });
   });
 
   describe("Styling", () => {
     it("applies custom className", () => {
-      render(<Footer className="custom-footer" />);
+      render(<Footer data={mockFooterData} className="custom-footer" />);
 
-      const footer = screen.getByTestId("test-id-footer");
+      const footer = screen.getByRole("contentinfo");
       expect(footer).toHaveAttribute("class");
+      expect(footer).toHaveClass("custom-footer");
     });
 
-    it("combines Tailwind classes with custom className", () => {
-      render(<Footer className="custom-footer" />);
+    it("applies default Tailwind classes", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).toHaveAttribute("class");
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toHaveClass("mt-32");
+      expect(footer).toHaveClass("flex-none");
     });
   });
 
   describe("HTML Attributes", () => {
     it("passes through HTML attributes", () => {
-      render(<Footer aria-label="Site footer" role="contentinfo" />);
-
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).toHaveAttribute("aria-label", "Site footer");
-      expect(footer).toHaveAttribute("role", "contentinfo");
-    });
-
-    it("passes through all standard HTML attributes", () => {
       render(
-        <Footer
-          id="main-footer"
-          className="footer-class"
-          style={{ backgroundColor: "black" }}
-          data-custom="value"
-        />
+        <Footer data={mockFooterData} id="main-footer" data-custom="value" />
       );
 
-      const footer = screen.getByTestId("test-id-footer");
+      const footer = screen.getByRole("contentinfo");
       expect(footer).toHaveAttribute("id", "main-footer");
-      expect(footer).toHaveAttribute("class");
       expect(footer).toHaveAttribute("data-custom", "value");
+    });
+
+    it("allows custom aria-label override", () => {
+      render(<Footer data={mockFooterData} aria-label="Custom footer label" />);
+
+      const footer = screen.getByRole("contentinfo");
+      // Custom aria-label should override default "Site footer"
+      expect(footer).toHaveAttribute("aria-label", "Custom footer label");
     });
   });
 
   describe("Component Structure", () => {
-    it("renders as footer element", () => {
-      render(<Footer />);
+    it("renders with proper container nesting", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer.tagName).toBe("FOOTER");
+      const outer = screen.getByTestId("container-outer");
+      const inner = screen.getByTestId("container-inner");
+
+      expect(outer).toBeInTheDocument();
+      expect(inner).toBeInTheDocument();
+      expect(outer).toContainElement(inner);
     });
 
-    it("renders with proper container structure", () => {
-      render(<Footer />);
+    it("renders navigation and legal in correct order", () => {
+      render(<Footer data={mockFooterData} />);
 
-      expect(screen.getByTestId("test-id-container-outer")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-container-inner")).toBeInTheDocument();
-    });
+      const inner = screen.getByTestId("container-inner");
+      const nav = screen.getByRole("navigation");
+      const legalText = screen.getByText(
+        "© 2025 Guy Romelle Magayano. All rights reserved."
+      );
 
-    it("renders with proper layout structure", () => {
-      render(<Footer />);
-
-      const contentWrapper = screen.getByTestId("test-id-container-outer");
-      const firstDiv = contentWrapper.querySelector("div");
-      expect(firstDiv).toHaveAttribute("class");
-
-      // Check for the inner layout div (ContainerInner > div)
-      const containerInner = screen.getByTestId("test-id-container-inner");
-      const layoutDiv = containerInner.querySelector("div");
-      expect(layoutDiv).toHaveAttribute("class");
-    });
-  });
-
-  describe("Sub-component Integration", () => {
-    it("renders FooterNavigation with internal data", () => {
-      render(<Footer />);
-
-      expect(
-        screen.getByTestId("test-id-footer-navigation")
-      ).toBeInTheDocument();
-      expect(screen.getByText("About")).toBeInTheDocument();
-      expect(screen.getByText("Articles")).toBeInTheDocument();
-      expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Uses")).toBeInTheDocument();
-    });
-
-    it("renders FooterLegal with internal data", () => {
-      render(<Footer />);
-
-      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
-      expect(
-        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
-      ).toBeInTheDocument();
-    });
-
-    it("uses internal data for all sub-components", () => {
-      render(<Footer />);
-
-      expect(
-        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
-      ).toBeInTheDocument();
-      expect(screen.getByText("About")).toBeInTheDocument();
-      expect(screen.getByText("Articles")).toBeInTheDocument();
-      expect(screen.getByText("Projects")).toBeInTheDocument();
-      expect(screen.getByText("Uses")).toBeInTheDocument();
-    });
-  });
-
-  describe("Accessibility", () => {
-    it("renders with proper semantic structure", () => {
-      render(<Footer />);
-
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer.tagName).toBe("FOOTER");
-    });
-
-    it("renders with proper data attributes for debugging", () => {
-      render(<Footer debugId="test-id" debugMode />);
-
-      const footer = screen.getByTestId("test-id-footer");
-      expect(footer).toHaveAttribute("data-footer-id", "test-id-footer");
-      expect(footer).toHaveAttribute("data-debug-mode", "true");
-      expect(footer).toHaveAttribute("data-testid", "test-id-footer");
+      expect(inner).toContainElement(nav);
+      expect(inner).toContainElement(legalText);
     });
   });
 
   describe("ARIA Attributes Testing", () => {
-    it("applies correct ARIA roles to main footer elements", () => {
-      render(<Footer debugId="aria-test" />);
+    it("applies correct ARIA roles to footer element", () => {
+      render(<Footer data={mockFooterData} />);
 
-      // Test footer element
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toBeInTheDocument();
-      expect(footerElement.tagName).toBe("FOOTER");
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      expect(footer.tagName).toBe("FOOTER");
     });
 
-    it("applies correct ARIA relationships between elements", () => {
-      render(<Footer debugId="aria-test" />);
+    it("applies correct ARIA label to footer", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toHaveAttribute("role", "contentinfo");
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toHaveAttribute("aria-label", "Site footer");
     });
 
-    it("applies unique IDs for ARIA relationships", () => {
-      render(<Footer debugId="aria-test" />);
+    it("applies correct ARIA label to navigation", () => {
+      render(<Footer data={mockFooterData} />);
 
-      // Footer should have unique ID
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toHaveAttribute(
-        "data-footer-id",
-        "aria-test-footer"
-      );
+      const nav = screen.getByRole("navigation", { name: "Footer navigation" });
+      expect(nav).toBeInTheDocument();
+      expect(nav).toHaveAttribute("aria-label", "Footer navigation");
     });
 
-    it("applies correct ARIA labels to content elements", () => {
-      render(<Footer debugId="aria-test" aria-label="Site footer" />);
+    it("does not apply redundant role to navigation", () => {
+      render(<Footer data={mockFooterData} />);
 
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toHaveAttribute("aria-label", "Site footer");
+      const nav = screen.getByRole("navigation");
+      // Nav element has implicit role="navigation", should not be explicitly set
+      expect(nav).not.toHaveAttribute("role", "navigation");
     });
 
-    it("handles ARIA attributes when content is missing", () => {
-      render(<Footer debugId="aria-test" />);
+    it("maintains ARIA attributes during component updates", () => {
+      const { rerender } = render(<Footer data={mockFooterData} />);
 
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toHaveAttribute("role", "contentinfo");
-    });
+      let footer = screen.getByRole("contentinfo");
+      expect(footer).toHaveAttribute("aria-label", "Site footer");
 
-    it("applies ARIA attributes with different debug IDs", () => {
-      render(<Footer debugId="different-test" />);
+      rerender(<Footer data={mockFooterData} aria-label="Updated footer" />);
 
-      const footerElement = screen.getByRole("contentinfo");
-      expect(footerElement).toHaveAttribute(
-        "data-footer-id",
-        "different-test-footer"
-      );
+      footer = screen.getByRole("contentinfo");
+      // Custom aria-label should override default
+      expect(footer).toHaveAttribute("aria-label", "Updated footer");
     });
   });
 
-  describe("Memoization", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(<Footer isMemoized={true} />);
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
+  describe("Link Optimization (SEO)", () => {
+    it("renders internal links with descriptive text", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      expect(aboutLink).toHaveTextContent("About");
+      expect(aboutLink).toHaveAttribute("href", "/about");
     });
 
-    it("does not memoize when isMemoized is false", () => {
-      const { rerender } = render(<Footer isMemoized={false} />);
+    it("renders external links with proper rel attributes", () => {
+      const externalData = {
+        legalText: mockFooterData.legalText,
+        nav: [
+          {
+            kind: "external" as const,
+            label: "GitHub",
+            href: "https://github.com",
+            newTab: true,
+          },
+        ],
+      };
 
-      rerender(<Footer isMemoized={false} />);
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
+      render(<Footer data={externalData} />);
+
+      const githubLink = screen.getByRole("link", { name: "GitHub" });
+      expect(githubLink).toHaveAttribute("rel", "noopener noreferrer");
+      expect(githubLink).toHaveAttribute("target", "_blank");
+    });
+
+    it("does not use aria-label on links with descriptive text", () => {
+      render(<Footer data={mockFooterData} />);
+
+      const aboutLink = screen.getByRole("link", { name: "About" });
+      // Links with descriptive text should not have aria-label (SEO best practice)
+      expect(aboutLink).not.toHaveAttribute("aria-label");
     });
   });
 
   describe("Edge Cases", () => {
-    it("renders without any props", () => {
-      render(<Footer />);
+    it("renders with defaults when data prop is undefined", () => {
+      render(<Footer data={undefined} />);
 
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
+      // Footer renders with defaults when data is undefined
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
     });
 
-    it("renders with default navigation links", () => {
-      render(<Footer />);
+    it("renders with defaults when data prop is null", () => {
+      render(<Footer data={null as any} />);
 
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("test-id-footer-navigation")
-      ).toBeInTheDocument();
-      expect(screen.getByText("About")).toBeInTheDocument();
+      // Footer renders with defaults when data is null
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "About" })).toBeInTheDocument();
     });
 
-    it("renders with default legal text", () => {
-      render(<Footer />);
+    it("handles data with empty nav array", () => {
+      render(
+        <Footer data={{ legalText: mockFooterData.legalText, nav: [] }} />
+      );
 
-      expect(screen.getByTestId("test-id-footer")).toBeInTheDocument();
-      expect(screen.getByTestId("test-id-footer-legal")).toBeInTheDocument();
+      // Footer renders but FooterNavigation returns null when nav is empty
+      const footer = screen.getByRole("contentinfo");
+      expect(footer).toBeInTheDocument();
+      // Navigation should not render
+      expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+    });
+
+    it("handles data with empty legalText", () => {
+      const { container } = render(
+        <Footer data={{ legalText: "", nav: mockFooterData.nav }} />
+      );
+
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("handles special characters in legal text", () => {
+      const specialData = {
+        legalText: "© 2025 Test & Company. All rights reserved.",
+        nav: mockFooterData.nav,
+      };
+
+      render(<Footer data={specialData} />);
+
       expect(
-        screen.getByText("© 2025 Guy Romelle Magayano. All rights reserved.")
+        screen.getByText("© 2025 Test & Company. All rights reserved.")
       ).toBeInTheDocument();
     });
   });
