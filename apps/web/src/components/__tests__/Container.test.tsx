@@ -9,7 +9,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Container } from "../Container";
+import { Container } from "../container/Container";
 
 import "@testing-library/jest-dom";
 
