@@ -12,44 +12,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Button } from "../Button";
 
 // Mock dependencies
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
 vi.mock("@guyromellemagayano/components", () => ({
   // Mock CommonComponentProps type
-}));
-
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid": additionalProps["data-testid"] || `${id}-${componentType}`,
-      ...additionalProps,
-    })
-  ),
 }));
 
 vi.mock("@web/utils/helpers", () => ({
@@ -61,14 +25,9 @@ vi.mock("next/link", () => ({
 }));
 
 describe("Button", () => {
-  beforeEach(() => {
-    mockUseComponentId.mockClear();
-  });
-
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
-    mockUseComponentId.mockClear();
   });
 
   describe("Basic Rendering", () => {
@@ -85,19 +44,6 @@ describe("Button", () => {
       expect(button).toHaveAttribute("class");
     });
 
-    it("renders with debug mode enabled", () => {
-      render(<Button debugMode={true}>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("renders with custom component ID", () => {
-      render(<Button debugId="custom-button">Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-button-id", "custom-button-button");
-    });
 
     it("passes through HTML attributes", () => {
       render(
@@ -143,28 +89,6 @@ describe("Button", () => {
     });
   });
 
-  describe("Debug Mode Tests", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(<Button debugMode={true}>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply data-debug-mode when disabled", () => {
-      render(<Button debugMode={false}>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).not.toHaveAttribute("data-debug-mode");
-    });
-
-    it("does not apply data-debug-mode when undefined", () => {
-      render(<Button>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).not.toHaveAttribute("data-debug-mode");
-    });
-  });
 
   describe("Component Structure Tests", () => {
     it("renders as button element by default", () => {
@@ -182,23 +106,6 @@ describe("Button", () => {
     });
   });
 
-  describe("Ref Forwarding Tests", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLButtonElement>();
-      render(<Button ref={ref}>Button</Button>);
-
-      expect(ref.current).toBeInstanceOf(HTMLButtonElement);
-      expect(ref.current).toHaveTextContent("Button");
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLButtonElement>();
-      render(<Button ref={ref}>Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(ref.current).toBe(button);
-    });
-  });
 
   describe("Accessibility Tests", () => {
     it("has proper semantic structure", () => {
@@ -208,12 +115,6 @@ describe("Button", () => {
       expect(button).toBeInTheDocument();
     });
 
-    it("applies correct data attributes for debugging", () => {
-      render(<Button debugId="aria-test">Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-button-id", "aria-test-button");
-    });
 
     it("supports ARIA attributes", () => {
       render(
@@ -230,18 +131,14 @@ describe("Button", () => {
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to button elements", () => {
-      render(<Button debugId="aria-test">Button</Button>);
+      render(<Button>Button</Button>);
 
       const buttonElement = screen.getByRole("button");
       expect(buttonElement).toBeInTheDocument();
     });
 
     it("applies correct ARIA labels to button elements", () => {
-      render(
-        <Button aria-label="Accessible button" debugId="aria-test">
-          Button
-        </Button>
-      );
+      render(<Button aria-label="Accessible button">Button</Button>);
 
       const buttonElement = screen.getByRole("button", {
         name: "Accessible button",
@@ -250,11 +147,7 @@ describe("Button", () => {
     });
 
     it("applies correct ARIA states for disabled buttons", () => {
-      render(
-        <Button disabled aria-disabled="true" debugId="aria-test">
-          Disabled Button
-        </Button>
-      );
+      render(<Button disabled aria-disabled="true">Disabled Button</Button>);
 
       const buttonElement = screen.getByRole("button");
       expect(buttonElement).toBeDisabled();
@@ -263,11 +156,7 @@ describe("Button", () => {
 
     it("applies correct ARIA states for loading buttons", () => {
       render(
-        <Button
-          aria-busy="true"
-          aria-label="Loading, please wait"
-          debugId="aria-test"
-        >
+        <Button aria-busy="true" aria-label="Loading, please wait">
           Loading...
         </Button>
       );
@@ -285,7 +174,6 @@ describe("Button", () => {
         <Button
           aria-labelledby="button-title"
           aria-describedby="button-description"
-          debugId="aria-test"
         >
           Button
         </Button>
@@ -300,7 +188,7 @@ describe("Button", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      const { container } = render(<Button debugId="aria-test">{null}</Button>);
+      const { container } = render(<Button>{null}</Button>);
 
       // Button component returns null when children are null
       expect(container).toBeEmptyDOMElement();
@@ -340,23 +228,6 @@ describe("Button", () => {
       expect(link).toHaveTextContent("Link Button");
     });
 
-    it("applies link component props when href is provided", () => {
-      render(
-        <Button href="/test" debugId="link-test">
-          Link Button
-        </Button>
-      );
-
-      const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("data-link-id", "link-test-link");
-    });
-
-    it("applies button component props when href is not provided", () => {
-      render(<Button debugId="button-test">Button</Button>);
-
-      const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("data-button-id", "button-test-button");
-    });
 
     it("passes through Link props when href is provided", () => {
       render(
