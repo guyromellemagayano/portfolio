@@ -54,11 +54,40 @@
 ### Documentation Levels
 
 - **Components**: File-level JSDoc with `@file`, `@author`, `@description`
-- **Types**: One-liner JSDoc (`/** Ref type for Component. */`)
+- **Types**: For `@packages/` components, use one-liner JSDoc (`/** Ref type for Component. */`). For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
 - **Functions**: Full JSDoc with `@param`/`@returns`/`@example` (when needed)
 - **Memoized Components**: Brief explanation of memoization behavior
 
 ### Documentation Template
+
+**For `@apps/` components (web, storefront, admin, API):**
+
+```typescript
+/**
+ * @file ComponentName.tsx
+ * @author Guy Romelle Magayano
+ * @description [One-line description of what the component does].
+ */
+
+import React from "react";
+// ... other imports
+
+export type ComponentNameRef = React.ComponentRef<typeof ComponentElementType>;
+
+export interface ComponentNameProps {
+  prop: Type;
+}
+
+export function ComponentName(props: ComponentNameProps) {
+  const { ...rest } = props;
+  // ref is available via props spread (React 19)
+  // Implementation
+}
+
+ComponentName.displayName = "ComponentName"; // Optional: manual assignment or omit
+```
+
+**For `@packages/` components:**
 
 ```typescript
 /**
@@ -90,8 +119,8 @@ export const ComponentName = setDisplayName(
 
 **Reference**: See `.cursor/rules/component-architecture.mdc` and `.cursor/rules/react-typescript.mdc` for detailed standards.
 
-- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props
-- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
+- **Main Components**: For `@packages/` components, use `setDisplayName` for proper component naming. For `@apps/` components (web, storefront, admin, API), `setDisplayName` is NOT ALLOWED - use manual `displayName` assignment or omit it entirely. Extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props. For `@apps/` components, refs work via props spread in `rest` (React 19 pattern), so `forwardRef` is NOT ALLOWED. For `@packages/` components, `forwardRef` is REQUIRED.
+- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly. For `@packages/` sub-components, use `setDisplayName`. For `@apps/` sub-components, `setDisplayName` is NOT ALLOWED. Use `hasAnyRenderableContent` for content validation
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
@@ -256,6 +285,310 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 - **Documentation**: Document ARIA implementation decisions and patterns
 - **Validation**: Use accessibility testing tools to validate ARIA implementation
 
+## SEO Best Practices for Components
+
+**Reference**: Google Search Central Guidelines, Schema.org, Next.js SEO Documentation, Core Web Vitals.
+
+### **Core SEO Requirements**
+
+All components must follow these SEO best practices to ensure optimal search engine visibility and ranking:
+
+#### **1. Semantic HTML Structure**
+
+- **Use Semantic Elements**: Prefer semantic HTML5 elements (`<article>`, `<section>`, `<nav>`, `<header>`, `<footer>`, `<main>`, `<time>`, `<figure>`, `<figcaption>`) over generic `<div>` elements
+- **Proper Element Types**: Components should support semantic element types via `as` prop when appropriate
+- **Example**:
+
+```typescript
+// ✅ Good: Supports semantic elements
+type CardElementType = "div" | "article" | "section";
+
+export function Card<T extends CardElementType>(props: CardProps<T>) {
+  const { as: Component = "div", ...rest } = props;
+  return <Component {...rest}>{children}</Component>;
+}
+
+// ❌ Bad: Only supports div
+export function Card(props: CardProps) {
+  return <div {...props}>{children}</div>;
+}
+```
+
+#### **2. Heading Hierarchy**
+
+- **Flexible Heading Levels**: Title/heading components must support all heading levels (`h1` through `h6`) via `as` prop
+- **Proper Hierarchy**: Maintain logical heading hierarchy (h1 → h2 → h3, no skipping levels)
+- **Default to h2**: Default to `h2` for card titles and list items, allow override for page-level titles
+- **Example**:
+
+```typescript
+// ✅ Good: Supports all heading levels
+type CardTitleElementType = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+
+function CardTitle<T extends CardTitleElementType>(props: CardTitleProps<T>) {
+  const { as: Component = "h2", ...rest } = props;
+  return <Component {...rest}>{children}</Component>;
+}
+
+// ❌ Bad: Locked to single heading level
+function CardTitle(props: CardTitleProps) {
+  return <h2 {...props}>{children}</h2>;
+}
+```
+
+#### **3. Link Optimization**
+
+- **Descriptive Link Text**: Links must have descriptive, visible text content (not just icons or generic text)
+- **Aria-Label Strategy**: Only use `aria-label` when link text is not descriptive (e.g., icon-only links). Search engines prioritize visible link text over `aria-label`
+- **Proper Rel Attributes**: External links must include `rel="noopener noreferrer"` for security and SEO
+- **Internal Link Optimization**: Use Next.js `Link` component for internal links to enable prefetching
+- **Example**:
+
+```typescript
+// ✅ Good: Descriptive link text, aria-label only when needed
+function CardLinkCustom(props: CardLinkCustomProps) {
+  const hasDescriptiveText =
+    typeof children === "string"
+      ? children.trim().length > 0
+      : React.Children.count(children) > 0;
+  const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+
+  return (
+    <Link href={href} aria-label={ariaLabel}>
+      {children}
+    </Link>
+  );
+}
+
+// ❌ Bad: Always uses aria-label, overriding link text
+function CardLinkCustom(props: CardLinkCustomProps) {
+  return (
+    <Link href={href} aria-label={title}>
+      {children}
+    </Link>
+  );
+}
+```
+
+#### **4. Date and Time Semantics**
+
+- **Time Element Support**: Date/time components must support `<time>` element via `as` prop
+- **DateTime Attribute**: When using `<time>` element, always include `dateTime` attribute with ISO 8601 format
+- **Example**:
+
+```typescript
+// ✅ Good: Supports time element with dateTime
+type CardEyebrowElementType = "p" | "time";
+type CardEyebrowProps<T extends CardEyebrowElementType> = {
+  as?: T;
+  dateTime?: T extends "time" ? string : never;
+};
+
+function CardEyebrow<T extends CardEyebrowElementType>(props: CardEyebrowProps<T>) {
+  const { as: Component = "p", dateTime, ...rest } = props;
+  const timeProps = Component === "time" && dateTime ? { dateTime } : {};
+  
+  return (
+    <Component {...rest} {...timeProps}>
+      {children}
+    </Component>
+  );
+}
+
+// ❌ Bad: No dateTime support
+function CardEyebrow(props: CardEyebrowProps) {
+  return <p {...props}>{children}</p>;
+}
+```
+
+#### **5. Image Optimization**
+
+- **Alt Text Required**: All images must have descriptive `alt` attributes (empty `alt=""` only for decorative images)
+- **Responsive Images**: Use Next.js `Image` component with proper `width`, `height`, and `sizes` attributes
+- **Lazy Loading**: Implement lazy loading for below-the-fold images
+- **WebP Format**: Prefer WebP format with fallbacks for better performance
+- **Example**:
+
+```typescript
+// ✅ Good: Proper image optimization
+import Image from "next/image";
+
+function CardImage({ src, alt, ...props }: CardImageProps) {
+  return (
+    <Image
+      src={src}
+      alt={alt || ""}
+      width={800}
+      height={600}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+      loading="lazy"
+      {...props}
+    />
+  );
+}
+```
+
+#### **6. Content Structure**
+
+- **Logical Content Order**: Structure content in logical order (title → date → description → CTA)
+- **Unique Content**: Avoid duplicate content across pages
+- **Content Length**: Ensure descriptive text is sufficient (minimum 150-300 words for articles)
+- **Keyword Optimization**: Use natural, semantic keywords without keyword stuffing
+
+#### **7. Meta Tags and Structured Data**
+
+- **Page-Level Meta Tags**: Use Next.js `Metadata` API for title, description, and Open Graph tags
+- **Structured Data**: Implement JSON-LD schema markup for articles, products, and other content types
+- **Canonical URLs**: Always include canonical URLs to prevent duplicate content issues
+- **Example**:
+
+```typescript
+// Page-level metadata (in page.tsx or layout.tsx)
+export const metadata: Metadata = {
+  title: "Article Title | Site Name",
+  description: "Article description for search engines",
+  openGraph: {
+    title: "Article Title",
+    description: "Article description",
+    images: ["/og-image.jpg"],
+  },
+};
+
+// Structured data (in component or page)
+export function ArticleStructuredData({ article }: { article: Article }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    datePublished: article.publishedAt,
+    author: {
+      "@type": "Person",
+      name: article.author.name,
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+    />
+  );
+}
+```
+
+#### **8. Performance and Core Web Vitals**
+
+- **LCP Optimization**: Optimize Largest Contentful Paint (LCP) by prioritizing above-the-fold content
+- **CLS Prevention**: Prevent Cumulative Layout Shift (CLS) by setting explicit dimensions for images and avoiding dynamic content insertion
+- **FID Optimization**: Minimize First Input Delay (FID) by reducing JavaScript execution time
+- **Code Splitting**: Use dynamic imports for below-the-fold components
+- **Example**:
+
+```typescript
+// ✅ Good: Dynamic import for heavy components
+import dynamic from "next/dynamic";
+
+const HeavyComponent = dynamic(() => import("./HeavyComponent"), {
+  loading: () => <Skeleton />,
+  ssr: false, // Only if component doesn't need SSR
+});
+
+// ✅ Good: Explicit image dimensions to prevent CLS
+<Image
+  src={src}
+  alt={alt}
+  width={800}
+  height={600}
+  style={{ width: "100%", height: "auto" }}
+/>
+```
+
+### **SEO Testing Requirements**
+
+#### **1. Semantic Structure Testing**
+
+```typescript
+// Test semantic elements are used correctly
+it("uses article element for article cards", () => {
+  render(<Card as="article">Content</Card>);
+  const article = screen.getByRole("article");
+  expect(article).toBeInTheDocument();
+});
+```
+
+#### **2. Heading Hierarchy Testing**
+
+```typescript
+// Test heading levels are correct
+it("supports all heading levels", () => {
+  const { rerender } = render(<Card.Title as="h1">Title</Card.Title>);
+  expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
+
+  rerender(<Card.Title as="h3">Title</Card.Title>);
+  expect(screen.getByRole("heading", { level: 3 })).toBeInTheDocument();
+});
+```
+
+#### **3. Link Text Testing**
+
+```typescript
+// Test links have descriptive text
+it("prioritizes visible link text over aria-label", () => {
+  render(
+    <Card.LinkCustom href="/article" title="Article title">
+      Read full article
+    </Card.LinkCustom>
+  );
+  
+  const link = screen.getByRole("link", { name: "Read full article" });
+  expect(link).toBeInTheDocument();
+  expect(link).not.toHaveAttribute("aria-label");
+});
+```
+
+#### **4. Date/Time Testing**
+
+```typescript
+// Test time element has dateTime attribute
+it("includes dateTime when using time element", () => {
+  render(
+    <Card.Eyebrow as="time" dateTime="2023-01-01">
+      January 1, 2023
+    </Card.Eyebrow>
+  );
+  
+  const time = screen.getByText("January 1, 2023");
+  expect(time).toHaveAttribute("dateTime", "2023-01-01");
+});
+```
+
+### **SEO Best Practices Checklist**
+
+- ✅ Use semantic HTML5 elements (`article`, `section`, `time`, etc.)
+- ✅ Support flexible heading levels (h1-h6) via `as` prop
+- ✅ Prioritize descriptive link text over `aria-label`
+- ✅ Include `rel="noopener noreferrer"` for external links
+- ✅ Support `<time>` element with `dateTime` attribute
+- ✅ Provide descriptive `alt` text for images
+- ✅ Use Next.js `Image` component with proper dimensions
+- ✅ Implement structured data (JSON-LD) for rich results
+- ✅ Optimize for Core Web Vitals (LCP, FID, CLS)
+- ✅ Use dynamic imports for below-the-fold content
+- ✅ Include canonical URLs to prevent duplicate content
+- ✅ Test semantic structure and heading hierarchy
+
+### **SEO Anti-Patterns to Avoid**
+
+- ❌ **Locked Heading Levels**: Don't lock components to single heading level (e.g., always `h2`)
+- ❌ **Aria-Label Overuse**: Don't use `aria-label` when link text is already descriptive
+- ❌ **Generic Elements**: Don't use `<div>` when semantic elements are more appropriate
+- ❌ **Missing DateTime**: Don't use `<time>` element without `dateTime` attribute
+- ❌ **Missing Alt Text**: Don't omit `alt` attributes on images
+- ❌ **Duplicate Content**: Don't create duplicate content across pages
+- ❌ **Keyword Stuffing**: Don't over-optimize with unnatural keyword density
+- ❌ **Hidden Content**: Don't hide important content with `display: none` or `visibility: hidden` (use `sr-only` class for screen reader-only content)
+
 ## Enterprise Component Architecture Standards
 
 ### Component Classification
@@ -283,7 +616,9 @@ expect(articleElement).not.toHaveAttribute("aria-labelledby");
 
 ### Required Component Classification Comments
 
-All component files must include classification comments at the top:
+**For `@packages/` components only**: All component files must include classification comments at the top.
+
+**For `@apps/` components (web, storefront, admin, API)**: Component classification comments are NOT ALLOWED.
 
 ```typescript
 // ============================================================================
@@ -410,7 +745,7 @@ components/ComponentName/
 ## Utility Function Standards
 
 - **`useComponentId`**: For ID generation and debug mode in sub-components
-- **`setDisplayName`**: For component naming in all components
+- **`setDisplayName`**: For component naming in `@packages/` components only. NOT ALLOWED in `@apps/` components (web, storefront, admin, API)
 - **`hasAnyRenderableContent`**: For content validation in main components
 - **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
@@ -432,7 +767,7 @@ components/ComponentName/
 - **Separate Types Files**: Only create `.types.ts` files when types are shared across multiple components
 - **Compound Component Types**: Define compound component types inline in main component file
 - **Data Types**: Keep `_data/` types simple - only constants, labels, and shared interfaces
-- **Type Documentation**: Document all exported types with JSDoc comments, document type properties with `/** */` comments
+- **Type Documentation**: For `@packages/` components, document all exported types with JSDoc comments, document type properties with `/** */` comments. For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
 
 ## Data Organization Standards
 
@@ -457,15 +792,19 @@ components/ComponentName/
 
 ## Type Documentation Standards
 
-- **Exported Types**: Always document exported types with JSDoc comments
-- **Type Properties**: Document all type properties with `/** */` comments
-- **Union Types**: Document each union variant with descriptive comments
-- **Interface Properties**: Document each interface property with purpose and constraints
-- **Type Aliases**: Document type aliases with their intended usage
-- **Generic Types**: Document generic type parameters and constraints
-- **One-liner Comments**: Use single-line `/** */` format instead of multiline for concise documentation
-- **JSDoc Titles**: Use uppercase for JSDoc comment titles only when they serve as section headers (e.g., `/** FOOTER LINK CONFIGURATION */`), otherwise use proper English casing (e.g., `/** Internal link */`)
-- **Example Pattern**:
+**For `@packages/` components only**: Type documentation is REQUIRED.
+
+**For `@apps/` components (web, storefront, admin, API)**: Type documentation is NOT ALLOWED.
+
+- **Exported Types**: For `@packages/`, always document exported types with JSDoc comments
+- **Type Properties**: For `@packages/`, document all type properties with `/** */` comments
+- **Union Types**: For `@packages/`, document each union variant with descriptive comments
+- **Interface Properties**: For `@packages/`, document each interface property with purpose and constraints
+- **Type Aliases**: For `@packages/`, document type aliases with their intended usage
+- **Generic Types**: For `@packages/`, document generic type parameters and constraints
+- **One-liner Comments**: For `@packages/`, use single-line `/** */` format instead of multiline for concise documentation
+- **JSDoc Titles**: For `@packages/`, use uppercase for JSDoc comment titles only when they serve as section headers (e.g., `/** FOOTER LINK CONFIGURATION */`), otherwise use proper English casing (e.g., `/** Internal link */`)
+- **Example Pattern for `@packages/`**:
 
   ```typescript
   /** FOOTER LINK CONFIGURATION FOR NAVIGATION AND EXTERNAL LINKS */
@@ -488,6 +827,24 @@ components/ComponentName/
         /** Open link in new tab */
         newTab?: boolean;
         /** Link rel */
+        rel?: string;
+      };
+  ```
+
+- **Example Pattern for `@apps/`** (no type documentation):
+
+  ```typescript
+  export type FooterLink =
+    | {
+        kind: "internal";
+        label: string;
+        href: React.ComponentProps<typeof Link>["href"];
+      }
+    | {
+        kind: "external";
+        label: string;
+        href: string;
+        newTab?: boolean;
         rel?: string;
       };
   ```
@@ -586,6 +943,50 @@ vi.mock("../constants/Component.i18n", () => ({
 - **Cleanup**: Use `afterEach(cleanup)` in all test files
 - **Accessibility Testing**: Comprehensive ARIA attribute testing required for all components
 
+### Test Standardization Rules
+
+**Critical**: Test patterns differ significantly between `@apps/` and `@packages/` components. Follow the correct pattern for each.
+
+#### **For `@apps/` Components (web, storefront, admin, API)**
+
+- ❌ **NO ref forwarding tests** - Refs work via props spread in React 19, not `forwardRef`. Remove any existing ref forwarding tests.
+- ❌ **NO `setDisplayName` mocks** - `@apps/` components use manual `displayName` assignment or omit it entirely. Do not mock `setDisplayName`.
+- ❌ **NO `useComponentId` mocks or tests** - `@apps/` components do not use `useComponentId` hook. Remove all `useComponentId` mocks and integration tests.
+- ❌ **NO `createComponentProps` mocks** - `@apps/` components do not use `createComponentProps`. Remove from mocks unless needed for other utilities.
+- ✅ **Polymorphic `as` prop tests** - Test all supported element types when component supports polymorphism (e.g., `div`, `section`, `main`, `article`).
+- ✅ **Correct mock paths** - Use actual import paths (e.g., `@web/utils/helpers` not `@web/utils`). Verify imports match implementation.
+- ✅ **Essential tests only** - Focus on critical paths, avoid exhaustive edge case testing. Keep tests maintainable and non-flaky.
+- ✅ **Integration tests ONLY for compound components** - Write integration tests only for components with 3+ sub-components that require orchestration.
+
+#### **For `@packages/` Components**
+
+- ✅ **Ref forwarding tests REQUIRED** - `@packages/` components use `forwardRef`, so ref forwarding tests are mandatory.
+- ✅ **`setDisplayName` mocks REQUIRED** - `@packages/` components use `setDisplayName`, so this mock is required.
+- ✅ **Comprehensive testing** - Higher coverage requirements (90%+ for Tier 1 components).
+- ✅ **Full test suite** - Include all standard test categories with comprehensive edge case coverage.
+
+#### **Test Cleanup Guidelines**
+
+When updating existing test files for `@apps/` components, remove:
+
+- ❌ Ref forwarding tests (refs work via props spread in React 19)
+- ❌ `setDisplayName`-related mocks and tests
+- ❌ `useComponentId` mocks and integration tests (not used in `@apps/` components)
+- ❌ `createComponentProps` mocks (not used in `@apps/` components)
+- ❌ `debugId` and `debugMode` prop tests (not used in `@apps/` components)
+- ❌ Excessive edge case tests (keep only critical ones)
+- ❌ Tests for features that don't exist in implementation
+- ❌ Outdated mock paths that don't match actual imports
+
+When updating existing test files for `@apps/` components, add:
+
+- ✅ Polymorphic `as` prop tests (when component supports polymorphism)
+- ✅ Integration tests only for compound components (3+ sub-components)
+- ✅ Essential ARIA attribute tests
+- ✅ Correct mock paths matching actual imports
+
+**Reference**: See `apps/web/src/components/__tests__/Container.test.tsx` for the standard `@apps/` component test pattern.
+
 ### Required Test File Documentation
 
 All test files must include JSDoc at the top:
@@ -669,6 +1070,70 @@ describe("ComponentName", () => {
 - **When**: Required in ALL test files - main component tests and internal sub-component tests
 - **Exception**: None - this pattern is mandatory for all component tests
 
+### Test Cleanup Guidelines for Existing Test Files
+
+When updating existing test files, follow these guidelines to remove outdated patterns and add missing tests:
+
+#### **Tests to Remove from `@apps/` Components**
+
+- ❌ **Ref forwarding tests** - Refs work via props spread in React 19, not `forwardRef`. Remove all `React.createRef()` and ref forwarding assertions.
+- ❌ **`setDisplayName` mocks** - `@apps/` components don't use `setDisplayName`. Remove from mocks.
+- ❌ **Excessive edge case tests** - Keep only critical edge cases. Remove tests for unlikely scenarios that don't add value.
+- ❌ **Tests for non-existent features** - Remove tests that verify features not present in the implementation.
+- ❌ **Incorrect mock paths** - Update mock paths to match actual imports (e.g., `@web/utils/helpers` not `@web/utils`).
+
+#### **Tests to Add for `@apps/` Components**
+
+- ✅ **Polymorphic `as` prop tests** - When component supports polymorphism, test all supported element types.
+- ✅ **Integration tests for compound components** - Only for components with 3+ sub-components that require orchestration.
+- ✅ **Essential ARIA attribute tests** - Test critical accessibility attributes, relationships, and roles.
+- ✅ **Correct mock paths** - Ensure all mocks use actual import paths from the component implementation.
+
+#### **Migration Example**
+
+**Before (outdated pattern):**
+
+```typescript
+// ❌ REMOVE: Ref forwarding test for @apps/ component
+describe("Ref Forwarding", () => {
+  it("forwards ref correctly", () => {
+    const ref = React.createRef<HTMLDivElement>();
+    render(<Container ref={ref}>Content</Container>);
+    expect(ref.current).toBeInTheDocument();
+  });
+});
+
+// ❌ REMOVE: setDisplayName mock
+vi.mock("@guyromellemagayano/utils", () => ({
+  setDisplayName: vi.fn(/* ... */), // Not used in @apps/
+}));
+```
+
+**After (correct pattern):**
+
+```typescript
+// ✅ ADD: Polymorphic element type tests
+describe("Polymorphic Element Types", () => {
+  it("renders as div by default", () => {
+    render(<Container>Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("DIV");
+  });
+
+  it("renders as section when as prop is section", () => {
+    render(<Container as="section">Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("SECTION");
+  });
+});
+
+// ✅ CORRECT: No setDisplayName mock for @apps/
+vi.mock("@guyromellemagayano/utils", () => ({
+  createComponentProps: vi.fn(/* ... */),
+  // NO setDisplayName - not used in @apps/
+}));
+```
+
 ### Test Categories by Risk Level
 
 #### Tier 1: Critical Components (Auth, Payments, Data Mutations)
@@ -726,17 +1191,61 @@ describe("ComponentName", () => {
 - ✅ Applies correct CSS classes
 - ✅ Combines CSS module + custom classes
 
-#### **5. Ref Forwarding Tests**
+#### **5. Polymorphic Element Type Tests** (for components with `as` prop)
 
-- ✅ Forwards ref correctly
-- ✅ Ref points to correct element
+**Required for components that support polymorphic `as` prop:**
 
-#### **6. Accessibility Tests**
+- ✅ Test default element type renders correctly
+- ✅ Test all supported element types (e.g., `div`, `section`, `main`, `article`)
+- ✅ Test element-specific props are correctly typed and applied
+- ✅ Test element tag name changes based on `as` prop value
+
+**Example:**
+
+```typescript
+describe("Polymorphic Element Types", () => {
+  it("renders as div by default", () => {
+    render(<Container>Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("DIV");
+  });
+
+  it("renders as section when as prop is section", () => {
+    render(<Container as="section">Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("SECTION");
+  });
+
+  it("renders as main when as prop is main", () => {
+    render(<Container as="main">Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("MAIN");
+  });
+
+  it("renders as article when as prop is article", () => {
+    render(<Container as="article">Content</Container>);
+    const container = screen.getByTestId("test-id-container-outer-root");
+    expect(container.tagName).toBe("ARTICLE");
+  });
+});
+```
+
+#### **6. Ref Forwarding Tests**
+
+**For `@packages/` components only**: Ref forwarding tests are REQUIRED.
+
+**For `@apps/` components (web, storefront, admin, API)**: Ref forwarding tests are NOT REQUIRED and should be REMOVED (refs work via props spread in React 19).
+
+- ✅ For `@packages/`: Forwards ref correctly
+- ✅ For `@packages/`: Ref points to correct element
+- ❌ For `@apps/`: Do not write ref forwarding tests
+
+#### **7. Accessibility Tests**
 
 - ✅ Proper semantic structure
 - ✅ Correct data attributes for debugging
 
-#### **7. ARIA Attributes Testing (Required)**
+#### **8. ARIA Attributes Testing (Required)**
 
 - ✅ Test ARIA roles are correctly applied (`role="main"`, `role="region"`, `role="article"`, etc.)
 - ✅ Test ARIA relationships (`aria-labelledby`, `aria-describedby`)
@@ -751,6 +1260,8 @@ describe("ComponentName", () => {
 
 ### Test File Structure
 
+#### **For `@apps/` Components**
+
 ```typescript
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
@@ -758,24 +1269,33 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { ComponentName } from "../ComponentName";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/components", () => ({
-  Div: vi.fn(({ children, ...props }) => (
-    <div data-testid="grm-div" {...props}>
-      {children}
-    </div>
-  )),
+// Mock dependencies (NO setDisplayName for @apps/)
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    componentId: options.debugId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
 }));
 
 vi.mock("@guyromellemagayano/utils", () => ({
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
+  createComponentProps: vi.fn(
+    (componentId, componentType, isDebugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${componentId}-${componentType}`,
+      "data-debug-mode": isDebugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] ||
+        `${componentId}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+  // NO setDisplayName - not used in @apps/ components
 }));
 
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -786,6 +1306,7 @@ vi.mock("../ComponentName.module.css", () => ({
 describe("ComponentName", () => {
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
@@ -794,6 +1315,10 @@ describe("ComponentName", () => {
 
   describe("Content Validation", () => {
     // Test cases...
+  });
+
+  describe("Polymorphic Element Types", () => {
+    // Test cases for components with `as` prop...
   });
 
   describe("ARIA Attributes Testing", () => {
@@ -876,14 +1401,117 @@ describe("ComponentName", () => {
   });
 
   // Additional test categories...
+  // NOTE: NO ref forwarding tests for @apps/ components
 });
 ```
 
-### Mocking Standards
-
-#### **Required Mocks for All Components**
+#### **For `@packages/` Components**
 
 ```typescript
+import React from "react";
+import { cleanup, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { ComponentName } from "../ComponentName";
+
+// Mock dependencies (setDisplayName REQUIRED for @packages/)
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }), // REQUIRED for @packages/ components
+  createComponentProps: vi.fn(
+    (id, componentType, debugMode, additionalProps = {}) => ({
+      [`data-${componentType}-id`]: `${id}-${componentType}`,
+      "data-debug-mode": debugMode ? "true" : undefined,
+      "data-testid":
+        additionalProps["data-testid"] || `${id}-${componentType}-root`,
+      ...additionalProps,
+    })
+  ),
+}));
+
+vi.mock("../ComponentName.module.css", () => ({
+  default: { componentName: "componentName" },
+}));
+
+describe("ComponentName", () => {
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
+  describe("Basic Rendering", () => {
+    // Test cases...
+  });
+
+  describe("Content Validation", () => {
+    // Test cases...
+  });
+
+  describe("Ref Forwarding", () => {
+    // REQUIRED for @packages/ components
+    it("forwards ref correctly", () => {
+      const ref = React.createRef<HTMLDivElement>();
+      render(<ComponentName ref={ref}>Content</ComponentName>);
+      expect(ref.current).toBeInTheDocument();
+    });
+  });
+
+  describe("ARIA Attributes Testing", () => {
+
+### Mocking Standards
+
+#### **Required Mocks for `@apps/` Components**
+
+```typescript
+// ✅ CORRECT: @apps/ component mocks
+// NO useComponentId mock - not used in @apps/ components
+// NO createComponentProps mock - not used in @apps/ components
+
+// Mock utility functions (only what's actually used)
+vi.mock("@guyromellemagayano/utils", () => ({
+  isValidLink: vi.fn((href) => {
+    return href && href !== "" && href !== "#";
+  }),
+  getLinkTargetProps: vi.fn((href, target) => {
+    if (target === "_blank" && href?.startsWith("http")) {
+      return { rel: "noopener noreferrer", target };
+    }
+    return { target };
+  }),
+  // NO setDisplayName - not used in @apps/ components
+  // NO createComponentProps - not used in @apps/ components
+  // NO useComponentId - not used in @apps/ components
+}));
+
+// Mock utils with correct import path (match actual imports)
+vi.mock("@web/utils/helpers", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+}));
+
+// Mock CSS modules (if component uses CSS modules)
+vi.mock("../ComponentName.module.css", () => ({
+  default: { componentName: "componentName" },
+}));
+```
+
+#### **Required Mocks for `@packages/` Components**
+
+```typescript
+// ✅ CORRECT: @packages/ component mocks
 // Mock useComponentId hook
 const mockUseComponentId = vi.hoisted(() =>
   vi.fn((options = {}) => ({
@@ -896,7 +1524,7 @@ vi.mock("@guyromellemagayano/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-// Mock utility functions
+// Mock utility functions (setDisplayName REQUIRED for @packages/)
 vi.mock("@guyromellemagayano/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
@@ -911,7 +1539,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
     return component;
-  }),
+  }), // REQUIRED for @packages/ components
   createComponentProps: vi.fn(
     (id, componentType, debugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${id}-${componentType}`,
@@ -1496,6 +2124,18 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 - ✅ Semantic HTML5 usage
 - ✅ Screen reader testing (NVDA, JAWS, VoiceOver)
 
+**SEO**:
+
+- ✅ Semantic HTML5 structure (article, section, time, etc.)
+- ✅ Flexible heading hierarchy (h1-h6 support)
+- ✅ Descriptive link text (prioritize visible text over aria-label)
+- ✅ Proper date/time semantics (time element with dateTime)
+- ✅ Image optimization (alt text, responsive images, lazy loading)
+- ✅ Structured data (JSON-LD schema markup)
+- ✅ Core Web Vitals optimization (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- ✅ Meta tags and Open Graph tags
+- ✅ Canonical URLs to prevent duplicate content
+
 **Security**:
 
 - ✅ OWASP Top 10 mitigation
@@ -1526,7 +2166,8 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Documentation**:
 
-- ✅ JSDoc for all exported functions/types (concise, one-liner for types, full JSDoc for functions)
+- ✅ JSDoc for all exported functions (both `@apps/` and `@packages/`)
+- ✅ For `@packages/` only: JSDoc for all exported types (concise, one-liner for types). For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
 - ✅ Component documentation with `@example` when helpful
 - ✅ README for each package
 - ✅ ADRs for architectural decisions
@@ -1722,7 +2363,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Industry Best Practices**:
 
-- **JSDoc**: All exported functions, types, and components (follow TypeScript JSDoc standards)
+- **JSDoc**: All exported functions and components (follow TypeScript JSDoc standards). For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
 - **README**: Each package in monorepo with usage examples, API documentation
 - **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
 - **Storybook**: All reusable UI components with interactive examples and accessibility notes
@@ -1741,6 +2382,58 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 ## Component Composition Patterns
 
 ### Main Component Pattern
+
+**For `@apps/` components (web, storefront, admin, API):**
+
+```typescript
+import React from "react";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import { cn } from "@web/utils";
+import styles from "./ComponentName.module.css";
+import { COMPONENT_I18N } from "./constants/Component.i18n";
+
+export interface ComponentNameProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {}
+
+export type ComponentNameComponent = React.FC<ComponentNameProps>;
+
+export function ComponentName(props: ComponentNameProps) {
+  const {
+    as: Component = "div",
+    children,
+    className,
+    internalId,
+    debugMode,
+    ...rest
+  } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...rest}
+      id={`${componentId}-component-name`}
+      className={cn(styles.componentName, className)}
+      data-component-name-id={componentId}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid={`${componentId}-component-name-root`}
+    >
+      {children}
+    </Component>
+  );
+}
+
+ComponentName.displayName = "ComponentName"; // Optional
+```
+
+**For `@packages/` components:**
 
 ```typescript
 import React from "react";
@@ -1769,38 +2462,41 @@ export type ComponentNameComponent = React.FC<ComponentNameProps>;
 
 /** A flexible component for [purpose]. */
 const BaseComponentName: ComponentNameComponent = setDisplayName(
-  function BaseComponentName(props) {
-    const {
-      as: Component = "div",
-      children,
-      className,
-      internalId,
-      debugMode,
-      ...rest
-    } = props;
+  React.forwardRef<HTMLDivElement, ComponentNameProps>(
+    function BaseComponentName(props, ref) {
+      const {
+        as: Component = "div",
+        children,
+        className,
+        internalId,
+        debugMode,
+        ...rest
+      } = props;
 
-    const { componentId, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+      const { componentId, isDebugMode } = useComponentId({
+        internalId,
+        debugMode,
+      });
 
-    if (!children) return null;
+      if (!children) return null;
 
-    const element = (
-      <Component
-        {...rest}
-        id={`${componentId}-component-name`}
-        className={cn(styles.componentName, className)}
-        data-component-name-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid={`${componentId}-component-name-root`}
-      >
-        {children}
-      </Component>
-    );
+      const element = (
+        <Component
+          {...rest}
+          ref={ref}
+          id={`${componentId}-component-name`}
+          className={cn(styles.componentName, className)}
+          data-component-name-id={componentId}
+          data-debug-mode={isDebugMode ? "true" : undefined}
+          data-testid={`${componentId}-component-name-root`}
+        >
+          {children}
+        </Component>
+      );
 
-    return element;
-  }
+      return element;
+    }
+  )
 );
 
 // ============================================================================
@@ -1827,6 +2523,61 @@ export const ComponentName: ComponentNameComponent = setDisplayName(
 ```
 
 ### Sub-Component Pattern
+
+**For `@apps/` components (web, storefront, admin, API):**
+
+```typescript
+import React from "react";
+import { type CommonComponentProps } from "@guyromellemagayano/components";
+import { useComponentId } from "@guyromellemagayano/hooks";
+import { hasMeaningfulText } from "@guyromellemagayano/utils";
+import { cn } from "@web/utils";
+import styles from "./SubComponent.module.css";
+
+export interface SubComponentProps
+  extends React.ComponentProps<"div">,
+    CommonComponentProps {
+  customProp?: string;
+}
+
+export type SubComponentComponent = React.FC<SubComponentProps>;
+
+export function SubComponent(props: SubComponentProps) {
+  const {
+    as: Component = "div",
+    children,
+    className,
+    internalId,
+    debugMode,
+    customProp,
+    ...rest
+  } = props;
+
+  const { componentId, isDebugMode } = useComponentId({
+    internalId,
+    debugMode,
+  });
+
+  if (!hasMeaningfulText(customProp)) return null;
+
+  return (
+    <Component
+      {...rest}
+      id={`${componentId}-sub-component`}
+      className={cn(styles.subComponent, className)}
+      data-sub-component-id={componentId}
+      data-debug-mode={isDebugMode ? "true" : undefined}
+      data-testid={`${componentId}-sub-component-root`}
+    >
+      {children}
+    </Component>
+  );
+}
+
+SubComponent.displayName = "SubComponent"; // Optional
+```
+
+**For `@packages/` components:**
 
 ```typescript
 import React from "react";
@@ -1857,39 +2608,42 @@ export type SubComponentComponent = React.FC<SubComponentProps>;
 
 /** A sub-component for specific functionality. */
 export const SubComponent: SubComponentComponent = setDisplayName(
-  function SubComponent(props) {
-    const {
-      as: Component = "div",
-      children,
-      className,
-      internalId,
-      debugMode,
-      customProp,
-      ...rest
-    } = props;
+  React.forwardRef<HTMLDivElement, SubComponentProps>(
+    function SubComponent(props, ref) {
+      const {
+        as: Component = "div",
+        children,
+        className,
+        internalId,
+        debugMode,
+        customProp,
+        ...rest
+      } = props;
 
-    const { componentId, isDebugMode } = useComponentId({
-      internalId,
-      debugMode,
-    });
+      const { componentId, isDebugMode } = useComponentId({
+        internalId,
+        debugMode,
+      });
 
-    if (!hasMeaningfulText(customProp)) return null;
+      if (!hasMeaningfulText(customProp)) return null;
 
-    const element = (
-      <Component
-        {...rest}
-        id={`${componentId}-sub-component`}
-        className={cn(styles.subComponent, className)}
-        data-sub-component-id={componentId}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid={`${componentId}-sub-component-root`}
-      >
-        {children}
-      </Component>
-    );
+      const element = (
+        <Component
+          {...rest}
+          ref={ref}
+          id={`${componentId}-sub-component`}
+          className={cn(styles.subComponent, className)}
+          data-sub-component-id={componentId}
+          data-debug-mode={isDebugMode ? "true" : undefined}
+          data-testid={`${componentId}-sub-component-root`}
+        >
+          {children}
+        </Component>
+      );
 
-    return element;
-  }
+      return element;
+    }
+  )
 );
 ```
 
