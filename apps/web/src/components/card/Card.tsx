@@ -50,9 +50,6 @@ function CardLinkCustom<
     ? getLinkTargetProps(linkHref, target)
     : undefined;
 
-  // SEO: Prefer descriptive link text content over aria-label for better SEO
-  // Only use aria-label when link text is not descriptive (e.g., icon-only links)
-  // Search engines prioritize visible link text, so aria-label should complement, not replace it
   const hasDescriptiveText =
     typeof children === "string"
       ? children.trim().length > 0
@@ -208,7 +205,6 @@ function CardEyebrow<
 
   const Element = Component as React.ElementType;
 
-  // SEO: When using time element, dateTime is required for proper semantic markup
   const timeProps =
     Component === "time" && dateTime
       ? { dateTime }
