@@ -1,1 +1,1 @@
-export { Form, MemoizedForm } from "./Form";
+export * from "./Form";
