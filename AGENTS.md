@@ -633,22 +633,24 @@ it("includes dateTime when using time element", () => {
 
 ### Scalable Folder Structure
 
+**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+
 #### For Compound Components (with sub-components)
 
 ```bash
-components/Component/
-├── Component.tsx              # Main component
+components/component-name/
+├── ComponentName.tsx          # Main component (PascalCase file)
 ├── index.ts                   # Public exports
 ├── __tests__/
-│   ├── Component.test.tsx
-│   └── Component.integration.test.tsx
+│   ├── ComponentName.test.tsx
+│   └── ComponentName.integration.test.tsx
 ├── _types/                    # Shared types (main + internal)
 │   ├── index.ts
-│   └── Component.types.ts
+│   └── ComponentName.types.ts
 ├── _internal/                 # Sub-components
 │   ├── index.ts
-│   ├── SubComponent/
-│   │   ├── SubComponent.tsx
+│   ├── sub-component/        # Kebab-case folder
+│   │   ├── SubComponent.tsx  # PascalCase file
 │   │   ├── SubComponent.module.css
 │   │   └── __tests__/
 │   └── _types/               # Internal-only types
@@ -656,29 +658,29 @@ components/Component/
 │       └── Internal.types.ts
 ├── _data/                    # Constants, labels, defaults
 │   ├── index.ts
-│   ├── Component.data.ts
-│   └── Component.i18n.ts
+│   ├── ComponentName.data.ts
+│   └── ComponentName.i18n.ts
 └── _queries/                 # GraphQL/API (if needed)
     ├── index.ts
-    ├── Component.queries.ts
-    └── Component.mutations.ts
+    ├── ComponentName.queries.ts
+    └── ComponentName.mutations.ts
 ```
 
 #### For Orchestrator/Presentational Components (no sub-components)
 
 ```bash
-components/Component/
-├── Component.tsx              # Main component
-├── Component.module.css
+components/component-name/
+├── ComponentName.tsx          # Main component (PascalCase file)
+├── ComponentName.module.css
 ├── index.ts
 ├── __tests__/
-│   └── Component.test.tsx    # Unit tests only
+│   └── ComponentName.test.tsx # Unit tests only
 ├── constants/
-│   └── Component.i18n.ts     # Internationalization labels
-└── _data/                    # Optional: if shared data/types
+│   └── ComponentName.i18n.ts   # Internationalization labels
+└── _data/                     # Optional: if shared data/types
     ├── index.ts
-    ├── Component.data.ts
-    └── Component.types.ts
+    ├── ComponentName.data.ts
+    └── ComponentName.types.ts
 ```
 
 ### Type Organization Rules
@@ -710,9 +712,11 @@ For `@web/` components using Sanity CMS:
 
 ## File Structure Standards
 
+**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+
 ```bash
-components/ComponentName/
-├── ComponentName.tsx              # Main component
+components/component-name/
+├── ComponentName.tsx              # Main component (PascalCase file)
 ├── ComponentName.module.css       # CSS modules
 ├── index.ts                       # Public exports
 ├── __tests__/                     # Main tests
@@ -726,13 +730,13 @@ components/ComponentName/
 │   ├── _types/                    # Private internal types (for sub-components only)
 │   │   ├── index.ts
 │   │   └── Internal.types.ts      # Internal component interfaces
-│   ├── ComponentSub/              # Each sub-component
-│   │   ├── ComponentSub.tsx
-│   │   ├── ComponentSub.module.css
+│   ├── sub-component/             # Each sub-component (kebab-case folder)
+│   │   ├── SubComponent.tsx       # PascalCase file
+│   │   ├── SubComponent.module.css
 │   │   ├── index.ts
 │   │   └── __tests__/
 │   └── styles/                    # Sub-component styles
-│       ├── ComponentSub.module.css
+│       ├── SubComponent.module.css
 │       └── AnotherSub.module.css
 ├── _data/                         # Simple constants and labels only
 │   ├── index.ts
@@ -1036,12 +1040,14 @@ For integration tests:
 
 ### Test Organization
 
+**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+
 ```bash
-components/Component/
+components/component-name/
 ├── __tests__/
-│   ├── Component.test.tsx           # Unit tests (always required)
-│   ├── Component.integration.test.tsx  # Only if compound component
-│   └── Component.e2e.test.tsx       # Only for critical user flows
+│   ├── ComponentName.test.tsx           # Unit tests (always required)
+│   ├── ComponentName.integration.test.tsx  # Only if compound component
+│   └── ComponentName.e2e.test.tsx       # Only for critical user flows
 ```
 
 ### Test Cleanup Implementation
@@ -1717,29 +1723,32 @@ describe("Edge Cases", () => {
 
 For components that fetch Sanity data:
 
+**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+
 ```bash
-components/Component/
-├── Component.tsx              # Main component
+components/component-name/
+├── ComponentName.tsx          # Main component (PascalCase file)
 ├── index.ts                   # Public exports
 ├── __tests__/
-│   ├── Component.test.tsx
-│   └── Component.integration.test.tsx
+│   ├── ComponentName.test.tsx
+│   └── ComponentName.integration.test.tsx
 ├── _types/                    # Sanity types + component interfaces
 │   ├── index.ts
-│   ├── Component.types.ts     # Component props + Sanity document types
+│   ├── ComponentName.types.ts     # Component props + Sanity document types
 │   └── Sanity.types.ts        # Generated Sanity schema types
 ├── _queries/                  # GROQ queries
 │   ├── index.ts
-│   ├── Component.queries.ts   # Main GROQ queries
-│   ├── Component.fragments.ts # Reusable GROQ fragments
-│   └── Component.mutations.ts # Sanity mutations (if needed)
+│   ├── ComponentName.queries.ts   # Main GROQ queries
+│   ├── ComponentName.fragments.ts # Reusable GROQ fragments
+│   └── ComponentName.mutations.ts # Sanity mutations (if needed)
 ├── _data/                     # Static data
 │   ├── index.ts
-│   ├── Component.data.ts      # Constants, defaults
-│   └── Component.i18n.ts      # Labels
+│   ├── ComponentName.data.ts      # Constants, defaults
+│   └── ComponentName.i18n.ts      # Labels
 └── _internal/                 # Sub-components (if compound)
     ├── index.ts
-    └── SubComponent/
+    └── sub-component/         # Kebab-case folder
+        └── SubComponent.tsx   # PascalCase file
 ```
 
 ### GROQ Query Patterns
