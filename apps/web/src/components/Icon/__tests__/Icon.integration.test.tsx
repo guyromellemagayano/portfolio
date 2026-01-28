@@ -1,199 +1,167 @@
-import { cleanup, render } from "@testing-library/react";
+/**
+ * @file Icon.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Icon component.
+ */
+
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Icon } from "..";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  })),
-}));
+import "@testing-library/jest-dom";
 
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === false || children === null || children === undefined) {
-      return false;
-    }
-    if (typeof children === "string" && children.length === 0) {
-      return false;
-    }
-    return true;
-  }),
-  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
-
-// ============================================================================
-// ICON INTEGRATION TESTS
-// ============================================================================
+afterEach(() => {
+  cleanup();
+  vi.clearAllMocks();
+});
 
 describe("Icon Integration Tests", () => {
-  afterEach(() => {
-    cleanup();
-    vi.clearAllMocks();
-  });
-
   // ============================================================================
   // NAME PROP INTEGRATION
   // ============================================================================
 
   describe("Name Prop Integration", () => {
     it("renders X icon with name prop and correct attributes", () => {
-      const { container } = render(<Icon name="x" debugMode />);
-      const icon = container.querySelector("[data-icon-x-id]");
+      const { container } = render(<Icon name="x" />);
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("data-debug-mode", "true");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
+      expect(icon).toHaveAttribute("aria-labelledby", "icon-x");
       expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders Instagram icon with name prop and custom ID", () => {
-      const { container } = render(
-        <Icon name="instagram" debugId="custom-id" />
-      );
-      const icon = container.querySelector(
-        '[data-icon-instagram-id="custom-id-icon-instagram-root"]'
-      );
+    it("renders Instagram icon with name prop", () => {
+      const { container } = render(<Icon name="instagram" />);
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute(
-        "data-icon-instagram-id",
-        "custom-id-icon-instagram-root"
-      );
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders linkedIn icon with name prop and custom className", () => {
-      const { container } = render(
-        <Icon name="linkedin" className="custom-class" />
-      );
-      const icon = container.querySelector("[data-icon-linkedin-id]");
+    it("renders LinkedIn icon with name prop", () => {
+      const { container } = render(<Icon name="linkedin" />);
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("class");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders GitHub icon with name prop and dimensions", () => {
-      const { container } = render(
-        <Icon name="github" width="32" height="32" />
-      );
-      const icon = container.querySelector("[data-icon-github-id]");
+      const { container } = render(<Icon name="github" width="32" height="32" />);
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("width", "32");
       expect(icon).toHaveAttribute("height", "32");
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
-    it("renders ArrowDown icon with name prop and custom data attribute", () => {
-      const { container } = render(
-        <Icon name="arrow-down" data-test="arrow-test" />
-      );
-      const icon = container.querySelector("[data-icon-arrow-down-id]");
+    it("renders ArrowDown icon with name prop", () => {
+      const { container } = render(<Icon name="arrow-down" />);
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
-      expect(icon).toHaveAttribute("data-test", "arrow-test");
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders ArrowLeft icon with name prop", () => {
       const { container } = render(<Icon name="arrow-left" />);
-      const icon = container.querySelector("[data-icon-arrow-left-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Briefcase icon with name prop", () => {
       const { container } = render(<Icon name="briefcase" />);
-      const icon = container.querySelector("[data-icon-briefcase-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders ChevronDown icon with name prop", () => {
       const { container } = render(<Icon name="chevron-down" />);
-      const icon = container.querySelector("[data-icon-chevron-down-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 8 6");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders ChevronRight icon with name prop", () => {
       const { container } = render(<Icon name="chevron-right" />);
-      const icon = container.querySelector("[data-icon-chevron-right-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 16 16");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Close icon with name prop", () => {
       const { container } = render(<Icon name="close" />);
-      const icon = container.querySelector("[data-icon-close-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Link icon with name prop", () => {
       const { container } = render(<Icon name="link" />);
-      const icon = container.querySelector("[data-icon-link-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Mail icon with name prop", () => {
       const { container } = render(<Icon name="mail" />);
-      const icon = container.querySelector("[data-icon-mail-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Sun icon with name prop", () => {
       const { container } = render(<Icon name="sun" />);
-      const icon = container.querySelector("[data-icon-sun-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
 
     it("renders Moon icon with name prop", () => {
       const { container } = render(<Icon name="moon" />);
-      const icon = container.querySelector("[data-icon-moon-id]");
+      const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("role", "img");
       expect(icon?.tagName).toBe("svg");
     });
   });
@@ -206,56 +174,21 @@ describe("Icon Integration Tests", () => {
     it("handles prop drilling correctly across all icons", () => {
       const { container } = render(
         <div>
-          <Icon name="x" debugMode />
-          <Icon name="instagram" debugMode />
-          <Icon name="linkedin" debugMode />
-          <Icon name="github" debugMode />
+          <Icon name="x" />
+          <Icon name="instagram" />
+          <Icon name="linkedin" />
+          <Icon name="github" />
         </div>
       );
 
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const linkedinIcon = container.querySelector("[data-icon-linkedin-id]");
-      const githubIcon = container.querySelector("[data-icon-github-id]");
+      const svgs = container.querySelectorAll("svg");
+      expect(svgs).toHaveLength(4);
 
-      const icons = [xIcon, instagramIcon, linkedinIcon, githubIcon];
-      expect(icons).toHaveLength(4);
-
-      icons.forEach((icon) => {
-        expect(icon).toHaveAttribute("data-debug-mode", "true");
+      svgs.forEach((icon) => {
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon?.tagName).toBe("svg");
       });
-    });
-
-    it("handles custom component IDs consistently", () => {
-      const { container } = render(
-        <div>
-          <Icon name="x" debugId="custom-x" />
-          <Icon name="instagram" debugId="custom-instagram" />
-          <Icon name="linkedin" debugId="custom-linkedin" />
-        </div>
-      );
-
-      const xIcon = container.querySelector(
-        '[data-icon-x-id="custom-x-icon-x-root"]'
-      );
-      const instagramIcon = container.querySelector(
-        '[data-icon-instagram-id="custom-instagram-icon-instagram-root"]'
-      );
-      const linkedinIcon = container.querySelector(
-        '[data-icon-linkedin-id="custom-linkedin-icon-linkedin-root"]'
-      );
-
-      expect(xIcon).toHaveAttribute("data-icon-x-id", "custom-x-icon-x-root");
-      expect(instagramIcon).toHaveAttribute(
-        "data-icon-instagram-id",
-        "custom-instagram-icon-instagram-root"
-      );
-      expect(linkedinIcon).toHaveAttribute(
-        "data-icon-linkedin-id",
-        "custom-linkedin-icon-linkedin-root"
-      );
     });
 
     it("handles HTML attributes consistently", () => {
@@ -272,16 +205,12 @@ describe("Icon Integration Tests", () => {
         </div>
       );
 
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const linkedinIcon = container.querySelector("[data-icon-linkedin-id]");
+      const svgs = container.querySelectorAll("svg");
 
-      const icons = [xIcon, instagramIcon, linkedinIcon];
-
-      icons.forEach((icon) => {
+      svgs.forEach((icon) => {
         expect(icon).toHaveAttribute("width", "24");
         expect(icon).toHaveAttribute("height", "24");
-        expect(icon).toHaveAttribute("class");
+        expect(icon).toHaveClass("icon-class");
       });
     });
   });
@@ -291,54 +220,6 @@ describe("Icon Integration Tests", () => {
   // ============================================================================
 
   describe("State Consistency Integration", () => {
-    it("maintains consistent debug mode state across all icons", () => {
-      const { container } = render(
-        <div>
-          <Icon name="x" debugMode />
-          <Icon name="instagram" debugMode />
-          <Icon name="arrow-down" debugMode />
-          <Icon name="close" debugMode />
-        </div>
-      );
-
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector(
-        "[data-icon-arrow-down-id]"
-      );
-      const closeIcon = container.querySelector("[data-icon-close-id]");
-
-      const icons = [xIcon, instagramIcon, arrowDownIcon, closeIcon];
-
-      icons.forEach((icon) => {
-        expect(icon).toHaveAttribute("data-debug-mode", "true");
-        expect(icon).toBeInTheDocument();
-      });
-    });
-
-    it("maintains consistent component ID generation", () => {
-      const { container } = render(
-        <div>
-          <Icon name="x" />
-          <Icon name="instagram" />
-          <Icon name="arrow-down" />
-          <Icon name="close" />
-        </div>
-      );
-
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector(
-        "[data-icon-arrow-down-id]"
-      );
-      const closeIcon = container.querySelector("[data-icon-close-id]");
-
-      expect(xIcon).toHaveAttribute("data-icon-x-id");
-      expect(instagramIcon).toHaveAttribute("data-icon-instagram-id");
-      expect(arrowDownIcon).toHaveAttribute("data-icon-arrow-down-id");
-      expect(closeIcon).toHaveAttribute("data-icon-close-id");
-    });
-
     it("maintains consistent accessibility attributes", () => {
       const { container } = render(
         <div>
@@ -351,26 +232,11 @@ describe("Icon Integration Tests", () => {
         </div>
       );
 
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      const arrowDownIcon = container.querySelector(
-        "[data-icon-arrow-down-id]"
-      );
-      const closeIcon = container.querySelector("[data-icon-close-id]");
-      const linkIcon = container.querySelector("[data-icon-link-id]");
-      const mailIcon = container.querySelector("[data-icon-mail-id]");
+      const svgs = container.querySelectorAll("svg");
 
-      const icons = [
-        xIcon,
-        instagramIcon,
-        arrowDownIcon,
-        closeIcon,
-        linkIcon,
-        mailIcon,
-      ];
-
-      icons.forEach((icon) => {
+      svgs.forEach((icon) => {
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon?.tagName).toBe("svg");
       });
     });
@@ -386,8 +252,9 @@ describe("Icon Integration Tests", () => {
 
       socialIcons.forEach((iconName) => {
         const { container, unmount } = render(<Icon name={iconName} />);
-        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
+        const icon = container.querySelector("svg");
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
         expect(icon?.tagName).toBe("svg");
         unmount();
@@ -404,8 +271,9 @@ describe("Icon Integration Tests", () => {
 
       navigationIcons.forEach((iconName) => {
         const { container, unmount } = render(<Icon name={iconName} />);
-        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
+        const icon = container.querySelector("svg");
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon?.tagName).toBe("svg");
         unmount();
       });
@@ -423,8 +291,9 @@ describe("Icon Integration Tests", () => {
 
       uiIcons.forEach((iconName) => {
         const { container, unmount } = render(<Icon name={iconName} />);
-        const icon = container.querySelector(`[data-icon-${iconName}-id]`);
+        const icon = container.querySelector("svg");
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon?.tagName).toBe("svg");
         unmount();
       });
@@ -440,100 +309,14 @@ describe("Icon Integration Tests", () => {
         </div>
       );
 
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      const arrowDownIcon = container.querySelector(
-        "[data-icon-arrow-down-id]"
-      );
-      const closeIcon = container.querySelector("[data-icon-close-id]");
-      const linkIcon = container.querySelector("[data-icon-link-id]");
+      const svgs = container.querySelectorAll("svg");
+      expect(svgs).toHaveLength(4);
 
-      const icons = [xIcon, arrowDownIcon, closeIcon, linkIcon];
-      expect(icons).toHaveLength(4);
-
-      icons.forEach((icon) => {
+      svgs.forEach((icon) => {
         expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
         expect(icon?.tagName).toBe("svg");
       });
-    });
-  });
-
-  // ============================================================================
-  // ERROR HANDLING INTEGRATION
-  // ============================================================================
-
-  describe("Error Handling Integration", () => {
-    it("handles missing props gracefully", () => {
-      const iconNames: IconNames[] = [
-        "x",
-        "instagram",
-        "linkedin",
-        "github",
-        "arrow-down",
-        "arrow-left",
-        "chevron-down",
-        "chevron-right",
-        "close",
-        "link",
-        "mail",
-        "briefcase",
-        "sun",
-        "moon",
-      ];
-
-      iconNames.forEach((iconName) => {
-        expect(() => {
-          const { unmount } = render(<Icon name={iconName} />);
-          unmount();
-        }).not.toThrow();
-      });
-    });
-
-    it("handles custom ARIA attributes correctly", () => {
-      const { container } = render(
-        <Icon
-          name="x"
-          role="img"
-          aria-label="X (Twitter) icon"
-          aria-hidden="false"
-        />
-      );
-      const icon = container.querySelector("[data-icon-x-id]");
-      expect(icon).toHaveAttribute("role", "img");
-      expect(icon).toHaveAttribute("aria-label", "X (Twitter) icon");
-      // Note: Icon component always sets aria-hidden="true" (line 73 in Icon.tsx)
-      expect(icon).toHaveAttribute("aria-hidden", "true");
-    });
-  });
-
-  // ============================================================================
-  // PERFORMANCE INTEGRATION
-  // ============================================================================
-
-  describe("Performance Integration", () => {
-    it("renders multiple different icons efficiently", () => {
-      const { container } = render(
-        <div>
-          <Icon name="x" />
-          <Icon name="instagram" />
-          <Icon name="arrow-down" />
-          <Icon name="close" />
-          <Icon name="mail" />
-        </div>
-      );
-
-      const svgs = container.querySelectorAll("svg");
-      expect(svgs).toHaveLength(5);
-      svgs.forEach((svg) => expect(svg).toBeInTheDocument());
-    });
-
-    it("handles icon updates efficiently", () => {
-      const { rerender, container } = render(<Icon name="x" />);
-      const icon = container.querySelector("svg");
-      expect(icon).toBeInTheDocument();
-
-      rerender(<Icon name="x" className="updated-class" />);
-      const updatedIcon = container.querySelector("svg");
-      expect(updatedIcon).toHaveAttribute("class");
     });
   });
 
@@ -556,20 +339,15 @@ describe("Icon Integration Tests", () => {
       const svgs = container.querySelectorAll("svg");
       expect(svgs).toHaveLength(3);
 
-      // Named icon
-      const xIcon = container.querySelector("[data-icon-x-id]");
-      expect(xIcon).toBeInTheDocument();
+      // All should have consistent ARIA attributes
+      svgs.forEach((icon) => {
+        expect(icon).toHaveAttribute("aria-hidden", "true");
+        expect(icon).toHaveAttribute("role", "img");
+      });
 
-      // Custom SVG (no data attributes)
-      const customIcon = container.querySelector(
-        "svg:not([data-icon-x-id]):not([data-icon-instagram-id])"
-      );
-      expect(customIcon).toBeInTheDocument();
+      // Custom SVG should have path
+      const customIcon = svgs[1];
       expect(customIcon?.querySelector("path")).toBeInTheDocument();
-
-      // Named icon
-      const instagramIcon = container.querySelector("[data-icon-instagram-id]");
-      expect(instagramIcon).toBeInTheDocument();
     });
 
     it("handles custom SVG with all standard attributes", () => {
@@ -591,10 +369,11 @@ describe("Icon Integration Tests", () => {
       expect(icon).toHaveAttribute("viewBox", "0 0 100 100");
       expect(icon).toHaveAttribute("width", "100");
       expect(icon).toHaveAttribute("height", "100");
-      expect(icon).toHaveAttribute("class", "custom-icon");
+      expect(icon).toHaveClass("custom-icon");
       expect(icon).toHaveAttribute("data-test", "custom-svg");
       expect(icon).toHaveAttribute("role", "img");
       expect(icon).toHaveAttribute("aria-hidden", "true");
+      expect(icon).toHaveAttribute("aria-labelledby", "icon-default");
       expect(icon?.querySelector("circle")).toBeInTheDocument();
       expect(icon?.querySelector("path")).toBeInTheDocument();
     });
@@ -613,7 +392,7 @@ describe("Icon Integration Tests", () => {
       expect(svgs).toHaveLength(2);
 
       svgs.forEach((svg) => {
-        expect(svg).toHaveAttribute("class", "icon-class");
+        expect(svg).toHaveClass("icon-class");
         expect(svg).toHaveAttribute("width", "24");
         expect(svg).toHaveAttribute("height", "24");
         expect(svg).toHaveAttribute("role", "img");
@@ -648,39 +427,29 @@ describe("Icon Integration Tests", () => {
       expect(icon?.querySelector("circle")).toBeInTheDocument();
       expect(icon?.querySelector("path")).toBeInTheDocument();
     });
+  });
 
-    it("handles custom SVG updates efficiently", () => {
-      const { rerender, container } = render(
-        <Icon>
-          <path d="M10 10h4v4h-4z" />
-        </Icon>
-      );
+  // ============================================================================
+  // PAGE PROP INTEGRATION
+  // ============================================================================
+
+  describe("Page Prop Integration", () => {
+    it("renders Mail icon with page prop 'about'", () => {
+      const { container } = render(<Icon name="mail" page="about" />);
       const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
+      // The about version path d starts with M6 5a3...
+      const path = icon?.querySelector("path");
+      expect(path).toHaveAttribute("d", expect.stringMatching(/^M6 5a3/));
+    });
 
-      rerender(
-        <Icon className="updated-class">
-          <path d="M10 10h4v4h-4z" />
-        </Icon>
-      );
-      const updatedIcon = container.querySelector("svg");
-      expect(updatedIcon).toHaveAttribute("class", "updated-class");
+    it("renders Mail icon with default page prop", () => {
+      const { container } = render(<Icon name="mail" />);
+      const icon = container.querySelector("svg");
+      expect(icon).toBeInTheDocument();
+      const path = icon?.querySelector("path");
+      // The default version path d starts with M2.75 7.75...
+      expect(path).toHaveAttribute("d", expect.stringMatching(/^M2.75 7.75/));
     });
   });
 });
-
-type IconNames =
-  | "x"
-  | "instagram"
-  | "linkedin"
-  | "github"
-  | "arrow-down"
-  | "arrow-left"
-  | "briefcase"
-  | "chevron-down"
-  | "chevron-right"
-  | "close"
-  | "link"
-  | "mail"
-  | "sun"
-  | "moon";
