@@ -88,18 +88,20 @@ function FooterNavigation<
   const t = useTranslations("footer.navigation");
   const tAria = useTranslations("footer.ariaLabels");
 
-  // Use provided navLinks or default translated links
-  const defaultNavLinks: ReadonlyArray<FooterLink> = React.useMemo(
-    () =>
-      FOOTER_COMPONENT_NAV_LINKS.map((link) => ({
+  // Footer navigation ARIA label and default nav links
+  const FOOTER_I18N = React.useMemo(
+    () => ({
+      footerNavigation: tAria("navigation"),
+      defaultNavLinks: FOOTER_COMPONENT_NAV_LINKS.map((link) => ({
         kind: link.kind,
         label: t(link.labelKey),
         href: link.href,
       })),
-    [t]
+    }),
+    [t, tAria]
   );
 
-  const linksToUse = navLinks || defaultNavLinks;
+  const linksToUse = navLinks || FOOTER_I18N.defaultNavLinks;
   const validNavLinks = filterValidNavigationLinks(linksToUse);
 
   if (!hasValidNavigationLinks(validNavLinks)) return null;
@@ -107,7 +109,7 @@ function FooterNavigation<
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<T>)}
-      aria-label={tAria("navigation")}
+      aria-label={FOOTER_I18N.footerNavigation}
       className={cn(
         "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
         className
@@ -129,7 +131,7 @@ function FooterNavigation<
         if (!hasLabelandLink) return null;
 
         return (
-          <li key={label}>
+          <li key={`${kind}-${label}-${hrefString}`}>
             <Link
               {...targetProps}
               href={hrefString}
@@ -157,41 +159,38 @@ type FooterLegalProps<
 > = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
-    legalText?: string;
   };
 
 function FooterLegal<
   T extends FooterLegalElementType,
   P extends Record<string, unknown> = {},
 >(props: FooterLegalProps<T, P>) {
-  const {
-    as: Component = "p",
-    legalText: providedLegalText,
-    className,
-    ...rest
-  } = props;
+  const { as: Component = "p", className, ...rest } = props;
 
   // Internationalization
   const t = useTranslations("footer");
   const brandName = t("brandName");
   const currentYear = formatDateSafely(new Date(), { year: "numeric" });
 
-  // Use provided legalText or generate from translations
-  const legalText =
-    providedLegalText ||
-    t("legal.copyright", {
-      year: currentYear,
-      brandName,
-    });
+  // Footer legal text and copyright text
+  const FOOTER_I18N = React.useMemo(
+    () => ({
+      legalText: t("legal.copyright", {
+        year: currentYear,
+        brandName,
+      }),
+    }),
+    [t, currentYear, brandName]
+  );
 
-  if (!legalText) return null;
+  if (!FOOTER_I18N.legalText) return null;
 
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<T>)}
       className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
     >
-      {legalText}
+      {FOOTER_I18N.legalText}
     </Component>
   );
 }
@@ -222,29 +221,30 @@ export function Footer<
   const { as: Component = "footer", className, data, ...rest } = props;
 
   // Internationalization
-  const t = useTranslations("footer");
+  const tAria = useTranslations("footer.ariaLabels");
 
-  const { legalText, nav } = data || {};
+  // Footer ARIA label and default nav links
+  const FOOTER_I18N = React.useMemo(
+    () => ({
+      footerAriaLabel: tAria("footer"),
+    }),
+    [tAria]
+  );
 
-  if (data && (!legalText || !nav)) return null;
-
-  const ariaLabel =
-    "aria-label" in rest && rest["aria-label"]
-      ? rest["aria-label"]
-      : t("ariaLabels.footer");
+  if (!data || !data.nav) return null;
 
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<T>)}
-      aria-label={ariaLabel}
+      aria-label={FOOTER_I18N.footerAriaLabel}
       className={cn("mt-32 flex-none", className)}
     >
       <Container.Outer>
         <div className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40">
           <Container.Inner>
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-              <FooterNavigation navLinks={nav} />
-              <FooterLegal legalText={legalText} />
+              <FooterNavigation navLinks={data.nav} />
+              <FooterLegal />
             </div>
           </Container.Inner>
         </div>
