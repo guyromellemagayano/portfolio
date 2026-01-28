@@ -10,7 +10,7 @@ import React from "react";
 // ICON COMPONENT
 // ============================================================================
 
-type IconComponentElementType = "svg";
+type IconElementType = "svg";
 type IconNames =
   | "default"
   | "arrow-down"
@@ -29,7 +29,7 @@ type IconNames =
   | "x";
 
 export type IconProps<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 > = Omit<React.ComponentPropsWithRef<T>, "as" | "name"> &
   P & {
@@ -38,8 +38,8 @@ export type IconProps<
     page?: string;
   };
 
-function IconBaseComponent<
-  T extends IconComponentElementType,
+export function Icon<
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const {
@@ -83,14 +83,14 @@ function IconBaseComponent<
   return <IconComponent {...iconComponentProps}>{children}</IconComponent>;
 }
 
-export const Icon = React.memo(IconBaseComponent);
+Icon.displayName = "Icon";
 
 // ============================================================================
 // ARROW DOWN ICON
 // ============================================================================
 
 function ArrowDownIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -118,7 +118,7 @@ ArrowDownIcon.displayName = "ArrowDownIcon";
 // ============================================================================
 
 function ArrowLeftIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -146,7 +146,7 @@ ArrowLeftIcon.displayName = "ArrowLeftIcon";
 // ============================================================================
 
 function BriefcaseIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -179,7 +179,7 @@ BriefcaseIcon.displayName = "BriefcaseIcon";
 // ============================================================================
 
 function ChevronDownIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -208,7 +208,7 @@ ChevronDownIcon.displayName = "ChevronDownIcon";
 // ============================================================================
 
 function ChevronRightIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -236,7 +236,7 @@ ChevronRightIcon.displayName = "ChevronRightIcon";
 // ============================================================================
 
 function CloseIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -265,7 +265,7 @@ CloseIcon.displayName = "CloseIcon";
 // ============================================================================
 
 function GitHubIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -292,7 +292,7 @@ GitHubIcon.displayName = "GitHubIcon";
 // ============================================================================
 
 function InstagramIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -315,7 +315,7 @@ InstagramIcon.displayName = "InstagramIcon";
 // ============================================================================
 
 function LinkedinIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -337,7 +337,7 @@ LinkedinIcon.displayName = "LinkedinIcon";
 // ============================================================================
 
 function LinkIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -362,7 +362,7 @@ LinkIcon.displayName = "LinkIcon";
 // ============================================================================
 
 function MailIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", page, ...rest } = props;
@@ -409,7 +409,7 @@ function MailIcon<
 // ============================================================================
 
 function MoonIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -436,7 +436,7 @@ MoonIcon.displayName = "MoonIcon";
 // ============================================================================
 
 function SunIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
@@ -465,7 +465,7 @@ SunIcon.displayName = "SunIcon";
 // ============================================================================
 
 function XIcon<
-  T extends IconComponentElementType,
+  T extends IconElementType,
   P extends Record<string, unknown> = {},
 >(props: IconProps<T, P>) {
   const { as: Component = "svg", ...rest } = props;
