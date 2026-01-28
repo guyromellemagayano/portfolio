@@ -10,7 +10,6 @@ import { useTranslations } from "next-intl";
 
 import { formatDateSafely } from "@guyromellemagayano/utils";
 
-import { type CommonAppComponentProps } from "@web/types/common";
 import { type ArticleWithSlug } from "@web/utils/articles";
 
 import { Card } from "../card";
@@ -20,8 +19,7 @@ type ArticleElementType = typeof Card;
 export type ArticleProps<
   T extends ArticleElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
     article: ArticleWithSlug;
