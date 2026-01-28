@@ -21,5 +21,13 @@
       "footer": "Site footer"
     },
     "brandName": "Guy Romelle Magayano"
+  },
+  "form": {
+    "newsletterForm": {
+      "heading": "Stay up to date",
+      "description": "Get notified when I publish something new, and unsubscribe at any time.",
+      "emailAddressLabel": "Email address",
+      "joinButtonTextLabel": "Join"
+    }
   }
 }
