@@ -7,7 +7,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Form, MemoizedForm } from "../Form";
+import { Form } from "../Form";
 
 import "@testing-library/jest-dom";
 
@@ -102,7 +102,7 @@ describe("Form", () => {
   // ============================================================================
 
   describe("Polymorphic as=", () => {
-    it('renders as form element by default', () => {
+    it("renders as form element by default", () => {
       render(
         <Form>
           <input type="text" />
@@ -164,21 +164,6 @@ describe("Form", () => {
 
       const form = screen.getByRole("form");
       expect(form).toBeInTheDocument();
-    });
-  });
-
-  // ============================================================================
-  // MEMOIZATION TESTS
-  // ============================================================================
-
-  describe("Memoization", () => {
-    it("MemoizedForm renders children", () => {
-      render(
-        <MemoizedForm>
-          <input type="text" />
-        </MemoizedForm>
-      );
-      expect(screen.getByRole("textbox")).toBeInTheDocument();
     });
   });
 });
