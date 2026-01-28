@@ -4,6 +4,8 @@
  * @description Footer component for the website.
  */
 
+"use client";
+
 // eslint-disable-next-line simple-import-sort/imports
 import React from "react";
 

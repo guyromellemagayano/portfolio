@@ -4,6 +4,8 @@
  * @description Compound components for the form component.
  */
 
+"use client";
+
 import React from "react";
 
 import { useTranslations } from "next-intl";
@@ -124,12 +126,6 @@ export function Form<
 }
 
 Form.displayName = "Form";
-
-// ============================================================================
-// MEMOIZED FORM COMPONENT
-// ============================================================================
-
-export const MemoizedForm = React.memo(Form);
 
 // ============================================================================
 // FORM COMPOUND COMPONENTS
