@@ -1,4 +1,8 @@
-import React from "react";
+/**
+ * @file Link.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Link component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -6,44 +10,25 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn(({ debugId, debugMode = false } = {}) => ({
-    componentId: debugId || "test-id",
-    isDebugMode: debugMode,
-  })),
-}));
-
 vi.mock("@guyromellemagayano/utils", () => ({
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
   getLinkTargetProps: vi.fn((href, target) => ({
     target: target || (href?.startsWith("http") ? "_blank" : undefined),
     rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,
   })),
   isValidLink: vi.fn((href) => href != null && href !== "" && href !== "#"),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
 }));
 
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
 }));
 
-vi.mock("@web/components", () => ({
-  Icon: vi.fn(({ name, className, ...props }) => (
+vi.mock("@web/components/icon/Icon", () => ({
+  Icon: vi.fn(({ name, className, page, ...props }) => (
     <svg
       className={className}
-      data-testid={`icon-${name?.toLowerCase() || name}`}
+      data-testid={`icon-${name}`}
       data-icon-name={name}
+      data-icon-page={page}
       {...props}
     >
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />
@@ -51,22 +36,22 @@ vi.mock("@web/components", () => ({
   )),
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
 // Import the component after all mocks are set up
-import { Link, MemoizedLink } from "../Link";
-
-// ============================================================================
-// LINK COMPONENT TESTS
-// ============================================================================
+import { Link } from "../Link";
 
 describe("Link", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
   });
+
+  // ============================================================================
+  // BASIC RENDERING TESTS
+  // ============================================================================
 
   describe("Basic Rendering", () => {
     it("renders children correctly", () => {
@@ -87,7 +72,7 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveClass("custom-class");
     });
 
@@ -98,54 +83,28 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("id", "custom-id");
       expect(link).toHaveAttribute("role", "button");
     });
-
-    it("uses useComponentId hook correctly", () => {
-      // Test that useComponentId hook is called correctly
-      render(<Link href="/test">Test Link</Link>);
-
-      // The mock verifies the hook is called with correct parameters
-      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
-    });
-
-    it("uses custom internal ID when provided", () => {
-      render(
-        <Link href="/test" debugId="custom-id">
-          Test Link
-        </Link>
-      );
-
-      const link = screen.getByTestId("custom-id-link-root");
-      expect(link).toBeInTheDocument();
-    });
-
-    it("enables debug mode when provided", () => {
-      render(
-        <Link href="/test" debugMode={true}>
-          Test Link
-        </Link>
-      );
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("data-debug-mode", "true");
-    });
   });
+
+  // ============================================================================
+  // LINK FUNCTIONALITY TESTS
+  // ============================================================================
 
   describe("Link Functionality", () => {
     it("renders with valid href", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("href", "/test");
     });
 
     it("handles external links correctly", () => {
       render(<Link href="https://example.com">External Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("External Link").closest("a");
       expect(link).toHaveAttribute("href", "https://example.com");
       expect(link).toHaveAttribute("target", "_blank");
       expect(link).toHaveAttribute("rel", "noopener noreferrer");
@@ -154,7 +113,7 @@ describe("Link", () => {
     it("handles internal links correctly", () => {
       render(<Link href="/internal">Internal Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Internal Link").closest("a");
       expect(link).toHaveAttribute("href", "/internal");
       expect(link).not.toHaveAttribute("target");
       expect(link).not.toHaveAttribute("rel");
@@ -167,22 +126,40 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("target", "_self");
     });
 
-    it("applies title attribute when provided", () => {
+    it("applies title and aria-label attributes when label is provided", () => {
       render(
-        <Link href="/test" title="Test Title">
+        <Link href="/test" label="Test Title">
           Test Link
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("title", "Test Title");
       expect(link).toHaveAttribute("aria-label", "Test Title");
     });
+
+    it("handles invalid href gracefully", () => {
+      render(<Link href="">Test Link</Link>);
+
+      const link = screen.getByText("Test Link").closest("a");
+      expect(link).toHaveAttribute("href", "");
+    });
+
+    it("handles null href gracefully", () => {
+      render(<Link href={null as any}>Test Link</Link>);
+
+      const link = screen.getByText("Test Link").closest("a");
+      expect(link).toHaveAttribute("href", "");
+    });
   });
+
+  // ============================================================================
+  // CONTENT VALIDATION TESTS
+  // ============================================================================
 
   describe("Content Validation", () => {
     it("renders when href is invalid but children exist", () => {
@@ -190,52 +167,34 @@ describe("Link", () => {
       expect(screen.getByText("Test Link")).toBeInTheDocument();
     });
 
-    it("does not render when href is valid but no children", () => {
-      const { container } = render(<Link href="/test"></Link>);
-      expect(container).toBeEmptyDOMElement();
-    });
-
-    it("does not render when children is null", () => {
+    it("renders when children is null", () => {
       const { container } = render(<Link href="/test">{null}</Link>);
-      expect(container).toBeEmptyDOMElement();
+      const link = container.querySelector("a");
+      expect(link).toBeInTheDocument();
     });
 
-    it("does not render when children is undefined", () => {
+    it("renders when children is undefined", () => {
       const { container } = render(<Link href="/test">{undefined}</Link>);
-      expect(container).toBeEmptyDOMElement();
+      const link = container.querySelector("a");
+      expect(link).toBeInTheDocument();
     });
 
-    it("does not render when children is empty string", () => {
+    it("renders when children is empty string", () => {
       const { container } = render(<Link href="/test">{""}</Link>);
-      expect(container).toBeEmptyDOMElement();
+      const link = container.querySelector("a");
+      expect(link).toBeInTheDocument();
     });
   });
 
-  describe("Debug Mode", () => {
-    it("applies data-debug-mode when enabled", () => {
-      render(
-        <Link href="/test" debugMode={true}>
-          Test Link
-        </Link>
-      );
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply when disabled/undefined", () => {
-      render(<Link href="/test">Test Link</Link>);
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).not.toHaveAttribute("data-debug-mode");
-    });
-  });
+  // ============================================================================
+  // COMPONENT STRUCTURE TESTS
+  // ============================================================================
 
   describe("Component Structure", () => {
     it("renders as Next.js Link component", () => {
       render(<Link href="/test">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toBeInTheDocument();
     });
 
@@ -246,64 +205,14 @@ describe("Link", () => {
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveClass("custom-class");
     });
   });
 
-  describe("Ref Forwarding", () => {
-    it("forwards ref correctly", () => {
-      const ref = React.createRef<HTMLAnchorElement>();
-      render(
-        <Link href="/test" ref={ref}>
-          Test Link
-        </Link>
-      );
-
-      expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
-    });
-
-    it("ref points to correct element", () => {
-      const ref = React.createRef<HTMLAnchorElement>();
-      render(
-        <Link href="/test" ref={ref}>
-          Test Link
-        </Link>
-      );
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(ref.current).toBe(link);
-    });
-  });
-
-  describe("Component ID", () => {
-    it("renders with generated component ID", () => {
-      render(<Link href="/test">Test Link</Link>);
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("data-link-id", "test-id-link-root");
-    });
-
-    it("renders with custom internal ID", () => {
-      render(
-        <Link href="/test" debugId="custom-id">
-          Test Link
-        </Link>
-      );
-
-      const link = screen.getByTestId("custom-id-link-root");
-      expect(link).toHaveAttribute("data-link-id", "custom-id-link-root");
-    });
-  });
-
-  describe("Memoization", () => {
-    it("renders MemoizedLink correctly", () => {
-      render(<MemoizedLink href="/test">Test Link</MemoizedLink>);
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toBeInTheDocument();
-    });
-  });
+  // ============================================================================
+  // EDGE CASES TESTS
+  // ============================================================================
 
   describe("Edge Cases", () => {
     it("handles complex children content", () => {
@@ -320,487 +229,288 @@ describe("Link", () => {
     it("handles special characters in href", () => {
       render(<Link href="/test?param=value&other=123">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("href", "/test?param=value&other=123");
     });
 
     it("handles empty href gracefully", () => {
       render(<Link href="">Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("href", "");
     });
 
     it("handles undefined href gracefully", () => {
       render(<Link href={undefined as any}>Test Link</Link>);
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("href", "");
     });
   });
 
-  describe("Component Interface", () => {
-    it("returns a React element", () => {
-      const element = <Link href="/test">Test Link</Link>;
-      expect(React.isValidElement(element)).toBe(true);
-    });
+  // ============================================================================
+  // COMPONENT INTERFACE TESTS
+  // ============================================================================
 
+  describe("Component Interface", () => {
     it("accepts all Link HTML attributes", () => {
       render(
-        <Link href="/test" data-custom="test" title="Custom Link" role="button">
+        <Link href="/test" data-custom="test" label="Custom Link" role="button">
           Test Link
         </Link>
       );
 
-      const link = screen.getByTestId("test-id-link-root");
+      const link = screen.getByText("Test Link").closest("a");
       expect(link).toHaveAttribute("data-custom", "test");
       expect(link).toHaveAttribute("aria-label", "Custom Link");
       expect(link).toHaveAttribute("role", "button");
     });
   });
 
-  describe("Integration Tests", () => {
-    it("integrates with Next.js Link correctly", () => {
-      render(<Link href="/test">Test Link</Link>);
-
-      const nextLink = screen.getByTestId("test-id-link-root");
-      expect(nextLink).toBeInTheDocument();
-      expect(nextLink).toHaveAttribute("href", "/test");
-    });
-
-    it("integrates with utility functions correctly", () => {
-      // Test that utility functions are called correctly
-      render(<Link href="/test">Test Link</Link>);
-
-      // The mocks verify the utility functions are called
-      expect(screen.getByTestId("test-id-link-root")).toBeInTheDocument();
-    });
-
-    it("integrates with useComponentId hook correctly", () => {
-      // Test that useComponentId hook is called correctly
-      render(
-        <Link href="/test" debugId="custom-id" debugMode={true}>
-          Test Link
-        </Link>
-      );
-
-      // The mock verifies the hook is called
-      expect(screen.getByTestId("custom-id-link-root")).toBeInTheDocument();
-    });
-  });
-
-  describe("Performance Tests", () => {
-    it("renders efficiently with different props", () => {
-      const { rerender } = render(<Link href="/test">Test Link</Link>);
-
-      rerender(
-        <Link href="/test2" className="new-class">
-          Test Link 2
-        </Link>
-      );
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("href", "/test2");
-      expect(link).toHaveClass("new-class");
-    });
-
-    it("handles multiple re-renders efficiently", () => {
-      const { rerender } = render(<Link href="/test">Test Link</Link>);
-
-      for (let i = 0; i < 5; i++) {
-        rerender(<Link href={`/test${i}`}>Test Link {i}</Link>);
-      }
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("href", "/test4");
-    });
-  });
-
-  describe("Error Handling", () => {
-    it("handles invalid href gracefully", () => {
-      render(<Link href={null as any}>Test Link</Link>);
-
-      const link = screen.getByTestId("test-id-link-root");
-      expect(link).toHaveAttribute("href", "");
-    });
-
-    it("does not render when children is missing", () => {
-      const { container } = render(<Link href="/test">{undefined}</Link>);
-      expect(container).toBeEmptyDOMElement();
-    });
-  });
-
   // ============================================================================
-  // SOCIAL VARIANT TESTS
+  // LINK.SOCIAL COMPOUND COMPONENT TESTS
   // ============================================================================
 
-  describe("Social Variant", () => {
+  describe("Link.Social", () => {
     describe("Basic Rendering", () => {
       it("renders social link with icon", () => {
-        const { container } = render(
-          <Link href="https://example.com" variant="social" icon="github">
+        render(
+          <Link.Social href="https://example.com" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
-        const icon = container.querySelector("svg");
+        const link = screen.getByRole("link");
+        const icon = screen.getByTestId("icon-github");
         expect(link).toBeInTheDocument();
         expect(icon).toBeInTheDocument();
       });
 
       it("renders social link without icon when icon prop is not provided", () => {
-        render(
-          <Link href="https://example.com" variant="social">
-            Test
-          </Link>
-        );
-        const link = screen.getByTestId("test-id-social-link-root");
+        render(<Link.Social href="https://example.com">Test</Link.Social>);
+        const link = screen.getByRole("link");
         expect(link).toBeInTheDocument();
         expect(screen.queryByTestId(/icon-/)).not.toBeInTheDocument();
       });
 
       it("applies custom className to social link", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             className="custom-class"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveClass("custom-class");
       });
 
       it("passes through HTML attributes to social link", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             id="custom-id"
             role="button"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("button");
         expect(link).toHaveAttribute("id", "custom-id");
         expect(link).toHaveAttribute("role", "button");
-      });
-    });
-
-    describe("Component ID and Debug Mode", () => {
-      it("uses provided debugId for social link", () => {
-        render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            debugId="custom-id"
-          >
-            Test
-          </Link>
-        );
-        const link = screen.getByTestId("custom-id-social-link-root");
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute(
-          "data-social-link-id",
-          "custom-id-social-link-root"
-        );
-      });
-
-      it("applies data-debug-mode when debugMode is true", () => {
-        render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            debugMode={true}
-          >
-            Test
-          </Link>
-        );
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(link).toHaveAttribute("data-debug-mode", "true");
-      });
-
-      it("does not apply data-debug-mode when debugMode is false", () => {
-        render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            debugMode={false}
-          >
-            Test
-          </Link>
-        );
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(link).not.toHaveAttribute("data-debug-mode");
-      });
-
-      it("does not apply data-debug-mode when debugMode is undefined", () => {
-        render(
-          <Link href="https://example.com" variant="social" icon="github">
-            Test
-          </Link>
-        );
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(link).not.toHaveAttribute("data-debug-mode");
       });
     });
 
     describe("Link Properties", () => {
       it("uses provided href", () => {
         render(
-          <Link href="https://github.com" variant="social" icon="github">
+          <Link.Social href="https://github.com" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("href", "https://github.com");
       });
 
       it("uses provided title", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             title="Custom Title"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("title", "Custom Title");
         expect(link).toHaveAttribute("aria-label", "Custom Title");
       });
 
       it("uses default target for external links", () => {
         render(
-          <Link href="https://example.com" variant="social" icon="github">
+          <Link.Social href="https://example.com" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("target", "_blank");
         expect(link).toHaveAttribute("rel", "noopener noreferrer");
       });
 
       it("uses custom target when provided", () => {
         render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            target="_self"
-          >
+          <Link.Social href="https://example.com" icon="github" target="_self">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("target", "_self");
       });
 
       it("handles internal links without target", () => {
         render(
-          <Link href="/about" variant="social" icon="github">
+          <Link.Social href="/about" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("href", "/about");
         expect(link).not.toHaveAttribute("target");
       });
 
-      it("defaults to # when href is invalid", () => {
-        render(
-          <Link href="" variant="social" icon="github">
+      it("handles invalid href gracefully", () => {
+        const { container } = render(
+          <Link.Social href="" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(link).toHaveAttribute("href", "#");
+        const link = container.querySelector("a");
+        expect(link).toBeInTheDocument();
+        expect(link).not.toHaveAttribute("href");
       });
     });
 
     describe("Icon Rendering", () => {
       it("renders the provided icon by name", () => {
-        const { container } = render(
-          <Link href="https://example.com" variant="social" icon="github">
+        render(
+          <Link.Social href="https://example.com" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const icon = container.querySelector("svg");
+        const icon = screen.getByTestId("icon-github");
         expect(icon).toBeInTheDocument();
       });
 
       it("renders different icon names", () => {
-        const { container } = render(
-          <Link href="https://example.com" variant="social" icon="instagram">
+        render(
+          <Link.Social href="https://example.com" icon="instagram">
             Test
-          </Link>
+          </Link.Social>
         );
-        const icon = container.querySelector("svg");
+        const icon = screen.getByTestId("icon-instagram");
         expect(icon).toBeInTheDocument();
       });
 
       it("passes page prop to icon", () => {
-        const { container } = render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="mail"
-            page="about"
-          >
+        render(
+          <Link.Social href="https://example.com" icon="mail" page="about">
             Test
-          </Link>
+          </Link.Social>
         );
-        const icon = container.querySelector("svg");
-        expect(icon).toBeInTheDocument();
+        const icon = screen.getByTestId("icon-mail");
+        expect(icon).toHaveAttribute("data-icon-page", "about");
       });
 
       it("does not render icon when icon prop is not provided", () => {
-        const { container } = render(
-          <Link href="https://example.com" variant="social">
-            Test
-          </Link>
-        );
-        const icon = container.querySelector("svg");
-        expect(icon).not.toBeInTheDocument();
+        render(<Link.Social href="https://example.com">Test</Link.Social>);
+        expect(screen.queryByTestId(/icon-/)).not.toBeInTheDocument();
       });
     });
 
     describe("Label Rendering", () => {
       it("renders label when hasLabel is true and label is provided", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             hasLabel={true}
             label="GitHub Profile"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveTextContent("GitHub Profile");
         expect(screen.getByText("GitHub Profile")).toBeInTheDocument();
       });
 
       it("does not render label when hasLabel is false", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             hasLabel={false}
             label="GitHub Profile"
           >
             Test
-          </Link>
+          </Link.Social>
         );
         expect(screen.queryByText("GitHub Profile")).not.toBeInTheDocument();
       });
 
       it("does not render label when label is not provided", () => {
         render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            hasLabel={true}
-          >
+          <Link.Social href="https://example.com" icon="github" hasLabel={true}>
             Test
-          </Link>
+          </Link.Social>
         );
         expect(screen.queryByText(/Profile/)).not.toBeInTheDocument();
       });
 
-      it("uses label for aria-label when hasLabel is true", () => {
+      it("uses label for aria-label when label is provided", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             hasLabel={true}
             label="GitHub Profile"
             title="Custom Title"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("aria-label", "GitHub Profile");
       });
 
-      it("uses title for aria-label when hasLabel is false", () => {
+      it("uses title for aria-label when label is not provided", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             hasLabel={false}
-            label="GitHub Profile"
             title="Custom Title"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("aria-label", "Custom Title");
-      });
-    });
-
-    describe("Ref Forwarding", () => {
-      it("forwards ref correctly to social link", () => {
-        const ref = React.createRef<HTMLAnchorElement>();
-        render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            ref={ref}
-          >
-            Test
-          </Link>
-        );
-
-        expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
-      });
-
-      it("ref points to correct element for social link", () => {
-        const ref = React.createRef<HTMLAnchorElement>();
-        render(
-          <Link
-            href="https://example.com"
-            variant="social"
-            icon="github"
-            ref={ref}
-          >
-            Test
-          </Link>
-        );
-
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(ref.current).toBe(link);
       });
     });
 
     describe("Component Structure", () => {
       it("renders correct HTML structure with icon", () => {
-        const { container } = render(
-          <Link href="https://example.com" variant="social" icon="github">
+        render(
+          <Link.Social href="https://example.com" icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
-        const icon = container.querySelector("svg");
+        const link = screen.getByRole("link");
+        const icon = screen.getByTestId("icon-github");
 
         expect(link).toBeInTheDocument();
         expect(icon).toBeInTheDocument();
@@ -809,16 +519,15 @@ describe("Link", () => {
 
       it("renders with proper semantic structure", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             title="GitHub Profile"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("aria-label", "GitHub Profile");
       });
     });
@@ -826,32 +535,30 @@ describe("Link", () => {
     describe("Accessibility", () => {
       it("renders with proper accessibility attributes", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             title="Social Media Link"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("aria-label", "Social Media Link");
         expect(link).toHaveAttribute("title", "Social Media Link");
       });
 
       it("passes through aria attributes", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             aria-describedby="description"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toHaveAttribute("aria-describedby", "description");
       });
     });
@@ -859,56 +566,49 @@ describe("Link", () => {
     describe("Edge Cases", () => {
       it("handles complex prop combinations", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             title="Complex Link"
             target="_blank"
             className="complex-class"
-            debugId="complex-id"
-            debugMode={true}
             hasLabel={true}
             label="GitHub"
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("complex-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute("data-debug-mode", "true");
         expect(link).toHaveClass("complex-class");
         expect(link).toHaveAttribute("aria-label", "GitHub");
       });
 
       it("handles undefined props gracefully", () => {
         render(
-          <Link
+          <Link.Social
             href="https://example.com"
-            variant="social"
             icon="github"
             title={undefined}
             target={undefined}
             className={undefined}
-            debugId={undefined}
-            debugMode={undefined}
           >
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
+        const link = screen.getByRole("link");
         expect(link).toBeInTheDocument();
-        expect(link).not.toHaveAttribute("data-debug-mode");
       });
 
       it("handles invalid href gracefully", () => {
-        render(
-          <Link href={null as any} variant="social" icon="github">
+        const { container } = render(
+          <Link.Social href={null as any} icon="github">
             Test
-          </Link>
+          </Link.Social>
         );
-        const link = screen.getByTestId("test-id-social-link-root");
-        expect(link).toHaveAttribute("href", "#");
+        const link = container.querySelector("a");
+        expect(link).toBeInTheDocument();
+        expect(link).not.toHaveAttribute("href");
       });
     });
   });
