@@ -10,8 +10,9 @@ import Link from "next/link";
 
 import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
-import { Icon } from "@web/components/icon/Icon";
 import { cn } from "@web/utils/helpers";
+
+import { Icon } from "../icon";
 
 // ============================================================================
 // CARD LINK CUSTOM COMPONENT
