@@ -8,9 +8,10 @@ import React from "react";
 
 import { useTranslations } from "next-intl";
 
-import { Button } from "@web/components/button";
-import { Icon } from "@web/components/icon/Icon";
 import { cn } from "@web/utils/helpers";
+
+import { Button } from "../button";
+import { Icon } from "../icon";
 
 // ============================================================================
 // COMMON FORM COMPONENT TYPES
