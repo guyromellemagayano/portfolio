@@ -11,7 +11,6 @@ import Link from "next/link";
 import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
 import { Icon } from "@web/components/icon/Icon";
-import { CommonAppComponentProps } from "@web/types/common";
 import { cn } from "@web/utils/helpers";
 
 // ============================================================================
@@ -22,8 +21,7 @@ type CardLinkCustomElementType = typeof Link;
 type CardLinkCustomProps<
   T extends CardLinkCustomElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "href" | "target" | "title"> &
+> = Omit<React.ComponentPropsWithRef<T>, "href" | "target" | "title" | "as"> &
   P & {
     as?: T;
     href?: React.ComponentPropsWithoutRef<T>["href"];
@@ -84,8 +82,7 @@ type CardCtaElementType = "div" | "section" | "article" | "main";
 type CardCtaProps<
   T extends CardCtaElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   Pick<
     CardLinkCustomProps<CardLinkCustomElementType, P>,
     "href" | "target" | "title"
@@ -150,8 +147,7 @@ type CardDescriptionElementType = "p" | "div" | "span";
 type CardDescriptionProps<
   T extends CardDescriptionElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
   };
@@ -187,8 +183,7 @@ type CardEyebrowElementType = "p" | "time";
 type CardEyebrowProps<
   T extends CardEyebrowElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as" | "dateTime"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as" | "dateTime"> &
   P & {
     as?: T;
     decorate?: boolean;
@@ -254,8 +249,7 @@ type CardLinkElementType = "div" | "section" | "article" | "span";
 type CardLinkProps<
   T extends CardLinkElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   Pick<
     CardLinkCustomProps<CardLinkCustomElementType, P>,
     "href" | "target" | "title"
@@ -321,8 +315,7 @@ type CardTitleElementType = "h2" | "h3";
 type CardTitleProps<
   T extends CardTitleElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   Pick<
     CardLinkCustomProps<CardLinkCustomElementType, P>,
     "href" | "target" | "title"
@@ -387,8 +380,7 @@ type CardElementType = "div" | "article" | "section";
 export type CardProps<
   T extends CardElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
   };

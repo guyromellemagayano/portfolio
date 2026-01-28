@@ -10,20 +10,24 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@web/components/button";
 import { Icon } from "@web/components/icon/Icon";
-import { CommonAppComponentProps } from "@web/types/common";
 import { cn } from "@web/utils/helpers";
+
+// ============================================================================
+// COMMON FORM COMPONENT TYPES
+// ============================================================================
+
+type FormElementType = "form";
 
 // ============================================================================
 // NEWSLETTER FORM COMPONENT
 // ============================================================================
 
-type NewsletterFormElementType = typeof Form;
+type NewsletterFormElementType = FormElementType;
 
 export type NewsletterFormProps<
   T extends NewsletterFormElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
   };
@@ -38,6 +42,8 @@ export function NewsletterForm<
     className,
     ...rest
   } = props;
+
+  const Element = Component as React.ElementType;
 
   // Internationalization
   const t = useTranslations("form.newsletterForm");
@@ -54,7 +60,7 @@ export function NewsletterForm<
   );
 
   return (
-    <Component
+    <Element
       {...(rest as React.ComponentPropsWithoutRef<T>)}
       action={action}
       className={cn(
@@ -83,7 +89,7 @@ export function NewsletterForm<
           {FORM_I18N.newsletterFormJoinButtonTextLabel}
         </Button>
       </div>
-    </Component>
+    </Element>
   );
 }
 
@@ -93,13 +99,10 @@ NewsletterForm.displayName = "NewsletterForm";
 // MAIN NEWSLETTER FORM COMPONENT
 // ============================================================================
 
-type FormElementType = "form";
-
 export type FormProps<
   T extends FormElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  Omit<React.ComponentPropsWithRef<T>, "as"> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
   };
