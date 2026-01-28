@@ -17,8 +17,9 @@ import {
   hasValidNavigationLinks,
 } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components/container";
 import { cn } from "@web/utils/helpers";
+
+import { Container } from "../container";
 
 // ============================================================================
 // COMMON FOOTER COMPONENT TYPES
