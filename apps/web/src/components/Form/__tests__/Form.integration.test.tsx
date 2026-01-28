@@ -1,72 +1,62 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Integration
-// - Coverage: Tier 2 (80%+), key paths + edges
-// - Risk Tier: Core
-// - Component Type: Compound (variants orchestration)
-// ============================================================================
+/**
+ * @file Form.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Form component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Form } from "../Form";
 
-// Mocks
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options: any = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+import "@testing-library/jest-dom";
 
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: vi.fn((namespace: string) => {
+    const translations: Record<string, any> = {
+      "form.newsletterForm": {
+        heading: "Stay up to date",
+        description:
+          "Get notified when I publish something new, and unsubscribe at any time.",
+        emailAddressLabel: "Email address",
+        joinButtonTextLabel: "Join",
+      },
+    };
 
-vi.mock("@guyromellemagayano/components", () => ({}));
+    return (key: string) => {
+      const keys = key.split(".");
+      let value: any = translations[namespace];
 
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, name) => {
-    if (component) component.displayName = name;
-    return component;
+      for (const k of keys) {
+        if (value && typeof value === "object" && k in value) {
+          value = value[k];
+        } else {
+          return key;
+        }
+      }
+
+      return value || key;
+    };
   }),
-  createComponentProps: vi.fn(
-    (
-      id: string,
-      componentType: string,
-      debugMode: boolean,
-      additional: any = {}
-    ) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
-      "data-testid": `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      ...additional,
-    })
-  ),
 }));
 
-vi.mock("@web/components", () => ({
+// Mock components
+vi.mock("@web/components/button", () => ({
   Button: vi.fn(({ children, ...props }) => (
     <button data-testid="grm-button" {...props}>
       {children}
     </button>
   )),
-  Icon: vi.fn(({ name, debugId, debugMode, ...props }) => {
-    const componentId = debugId || "test-id";
-    const iconComponentType = `icon-${name}`;
-    const dataAttrName = `data-${iconComponentType}-id`;
-    return (
-      <svg
-        data-testid={`${componentId}-${iconComponentType}-root`}
-        {...{ [dataAttrName]: `${componentId}-${iconComponentType}-root` }}
-        data-debug-mode={debugMode ? "true" : undefined}
-        {...props}
-      />
-    );
-  }),
 }));
 
-vi.mock("@web/utils", () => ({
+vi.mock("@web/components/icon/Icon", () => ({
+  Icon: vi.fn(({ name, ...props }) => (
+    <svg data-testid={`icon-${name}`} {...props} />
+  )),
+}));
+
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -75,104 +65,188 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe("Form (Integration)", () => {
-  it("renders default form with form controls end-to-end", () => {
-    render(
-      <Form>
-        <input type="text" name="name" />
-        <button type="submit">Submit</button>
-      </Form>
-    );
+describe("Form Integration Tests", () => {
+  // ============================================================================
+  // DEFAULT FORM INTEGRATION
+  // ============================================================================
 
-    const root = screen.getByTestId("test-id-form-default-root");
-    expect(root).toBeInTheDocument();
-    expect(screen.getByRole("textbox")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+  describe("Default Form", () => {
+    it("renders default form with form controls end-to-end", () => {
+      render(
+        <Form>
+          <input type="text" name="name" />
+          <button type="submit">Submit</button>
+        </Form>
+      );
+
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+      expect(screen.getByRole("textbox")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+    });
+
+    it("renders default variant with form semantics", () => {
+      render(
+        <Form>
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email" name="email" />
+          <button type="submit">Submit</button>
+        </Form>
+      );
+
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+      expect(form.tagName).toBe("FORM");
+      expect(form).toHaveAttribute("role", "form");
+      expect(screen.getByLabelText("Email")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+    });
   });
 
-  it("renders newsletter variant with heading and form controls", () => {
-    render(<Form variant="newsletter" />);
+  // ============================================================================
+  // NEWSLETTER FORM INTEGRATION
+  // ============================================================================
 
-    const root = screen.getByTestId("test-id-form-newsletter-root");
-    expect(root).toBeInTheDocument();
-    expect(root).toHaveAttribute("role", "form");
-    expect(root).toHaveAttribute("action", "/thank-you");
-    expect(root).toHaveClass(
-      "rounded-2xl",
-      "border",
-      "border-zinc-100",
-      "p-6",
-      "dark:border-zinc-700/40"
-    );
+  describe("Newsletter Form", () => {
+    it("renders newsletter form with heading and form controls", () => {
+      render(<Form.Newsletter />);
 
-    // Check heading
-    const heading = screen.getByRole("heading", { level: 2 });
-    expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent("Stay up to date");
-    expect(screen.getByTestId("test-id-icon-mail-root")).toBeInTheDocument();
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+      expect(form).toHaveAttribute("role", "form");
+      expect(form).toHaveAttribute("action", "/thank-you");
+      expect(form).toHaveClass(
+        "rounded-2xl",
+        "border",
+        "border-zinc-100",
+        "p-6",
+        "dark:border-zinc-700/40"
+      );
 
-    // Check description
-    expect(
-      screen.getByText(
-        "Get notified when I publish something new, and unsubscribe at any time."
-      )
-    ).toBeInTheDocument();
+      // Check heading
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toBeInTheDocument();
+      expect(heading).toHaveTextContent("Stay up to date");
+      expect(screen.getByTestId("icon-mail")).toBeInTheDocument();
 
-    // Check form controls
-    expect(
-      screen.getByRole("textbox", { name: "Email address" })
-    ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Join" })).toBeInTheDocument();
+      // Check description
+      expect(
+        screen.getByText(
+          "Get notified when I publish something new, and unsubscribe at any time."
+        )
+      ).toBeInTheDocument();
+
+      // Check form controls
+      expect(
+        screen.getByRole("textbox", { name: "Email address" })
+      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Join" })).toBeInTheDocument();
+    });
+
+    it("renders newsletter form with custom action and merged className", () => {
+      render(<Form.Newsletter action="/custom-action" className="custom-class" />);
+
+      const form = screen.getByRole("form");
+      expect(form).toHaveAttribute("action", "/custom-action");
+      expect(form).toHaveClass("custom-class", "rounded-2xl");
+    });
+
+    it("renders complete newsletter form with all sub-components", () => {
+      render(<Form.Newsletter />);
+
+      // Check main form
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+      expect(form.tagName).toBe("FORM");
+
+      // Check heading with icon
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toBeInTheDocument();
+      expect(heading).toHaveTextContent("Stay up to date");
+      expect(screen.getByTestId("icon-mail")).toBeInTheDocument();
+
+      // Check description
+      expect(
+        screen.getByText(
+          "Get notified when I publish something new, and unsubscribe at any time."
+        )
+      ).toBeInTheDocument();
+
+      // Check email input
+      const emailInput = screen.getByRole("textbox", { name: "Email address" });
+      expect(emailInput).toHaveAttribute("type", "email");
+      expect(emailInput).toHaveAttribute("placeholder", "Email address");
+      expect(emailInput).toHaveAttribute("aria-label", "Email address");
+      expect(emailInput).toBeRequired();
+
+      // Check submit button
+      const submitButton = screen.getByRole("button", { name: "Join" });
+      expect(submitButton).toHaveAttribute("type", "submit");
+      expect(submitButton).toHaveTextContent("Join");
+    });
+
+    it("renders newsletter form with proper DOM structure", () => {
+      render(<Form.Newsletter />);
+
+      const form = screen.getByRole("form");
+      const heading = screen.getByRole("heading", { level: 2 });
+      const emailInput = screen.getByRole("textbox");
+      const submitButton = screen.getByRole("button");
+
+      // Verify nesting
+      expect(form).toContainElement(heading);
+      expect(form).toContainElement(emailInput);
+      expect(form).toContainElement(submitButton);
+    });
+
+    it("uses semantic HTML5 form element", () => {
+      render(<Form.Newsletter />);
+
+      const form = screen.getByRole("form");
+      expect(form.tagName).toBe("FORM");
+    });
+
+    it("provides accessible names for form elements", () => {
+      render(<Form.Newsletter />);
+
+      const emailInput = screen.getByRole("textbox", { name: "Email address" });
+      expect(emailInput).toHaveAttribute("aria-label", "Email address");
+    });
+
+    it("uses descriptive text for form elements", () => {
+      render(<Form.Newsletter />);
+
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toHaveTextContent("Stay up to date");
+
+      const submitButton = screen.getByRole("button");
+      expect(submitButton).toHaveTextContent("Join");
+    });
+
+    it("applies proper form structure", () => {
+      render(<Form.Newsletter />);
+
+      const form = screen.getByRole("form");
+      expect(form).toHaveAttribute("role", "form");
+      expect(form).toHaveAttribute("action", "/thank-you");
+    });
   });
 
-  it("renders newsletter variant with custom action and merged className", () => {
-    render(
-      <Form
-        variant="newsletter"
-        action="/custom-action"
-        className="custom-class"
-      >
-        <div>Custom content</div>
-      </Form>
-    );
+  // ============================================================================
+  // COMPOUND COMPONENT INTEGRATION
+  // ============================================================================
 
-    const root = screen.getByTestId("test-id-form-newsletter-root");
-    expect(root).toHaveAttribute("action", "/custom-action");
-    expect(root).toHaveClass("custom-class", "rounded-2xl");
-  });
+  describe("Compound Component Integration", () => {
+    it("exposes Newsletter as compound component", () => {
+      expect(Form.Newsletter).toBeDefined();
+      expect(typeof Form.Newsletter).toBe("function");
+    });
 
-  it("renders default variant with form semantics", () => {
-    render(
-      <Form>
-        <label htmlFor="email">Email</label>
-        <input type="email" id="email" name="email" />
-        <button type="submit">Submit</button>
-      </Form>
-    );
+    it("renders Form.Newsletter independently", () => {
+      render(<Form.Newsletter />);
 
-    const root = screen.getByTestId("test-id-form-default-root");
-    expect(root).toBeInTheDocument();
-    expect(root.tagName).toBe("FORM");
-    expect(root).toHaveAttribute("role", "form");
-    expect(screen.getByLabelText("Email")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
-  });
-
-  it("renders newsletter variant with debug mode", () => {
-    render(<Form variant="newsletter" debugMode={true} />);
-
-    const root = screen.getByTestId("test-id-form-newsletter-root");
-    expect(root).toHaveAttribute("data-debug-mode", "true");
-  });
-
-  it("renders default variant with custom debug ID", () => {
-    render(
-      <Form debugId="custom-form-id">
-        <input type="text" />
-      </Form>
-    );
-
-    const root = screen.getByTestId("custom-form-id-form-default-root");
-    expect(root).toBeInTheDocument();
+      const form = screen.getByRole("form");
+      expect(form).toBeInTheDocument();
+    });
   });
 });
