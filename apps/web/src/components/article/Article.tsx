@@ -4,7 +4,7 @@
  * @description Presentational component for displaying article cards using the Card compound component.
  */
 
-import React, { useId, useMemo } from "react";
+import React from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -13,7 +13,7 @@ import { formatDateSafely } from "@guyromellemagayano/utils";
 import { type CommonAppComponentProps } from "@web/types/common";
 import { type ArticleWithSlug } from "@web/utils/articles";
 
-import { Card } from "../card/Card";
+import { Card } from "../card";
 
 type ArticleElementType = typeof Card;
 
@@ -34,15 +34,24 @@ export function Article<
   const { as: Component = Card, article, ...rest } = props;
 
   // Generate unique IDs for ARIA relationships (SEO: proper semantic structure)
-  const articleId = useId();
+  const articleId = React.useId();
   const titleId = `${articleId}-title`;
   const descriptionId = `${articleId}-description`;
 
   // Internationalization
   const t = useTranslations("article");
 
+  // Article labels
+  const ARTICLE_I18N = React.useMemo(
+    () => ({
+      articleDate: t("articleDate"),
+      cta: t("cta"),
+    }),
+    [t]
+  );
+
   // Article data object
-  const articleData = useMemo(() => {
+  const articleData = React.useMemo(() => {
     if (!article) return null;
 
     // Use primitive dependencies to avoid unnecessary recalculations
@@ -88,7 +97,7 @@ export function Article<
         <Card.Eyebrow
           as="time"
           dateTime={articleData.date}
-          aria-label={`${t("articleDate")} ${articleData.formattedDate}`}
+          aria-label={`${ARTICLE_I18N.articleDate} ${articleData.formattedDate}`}
           decorate
         >
           {articleData.formattedDate}
@@ -110,7 +119,7 @@ export function Article<
       articleData.description &&
       articleData.description.trim().length > 0 ? (
         <Card.Cta href={articleData.slug} title={articleData.title}>
-          {t("cta")}
+          {ARTICLE_I18N.cta}
         </Card.Cta>
       ) : null}
     </Component>
