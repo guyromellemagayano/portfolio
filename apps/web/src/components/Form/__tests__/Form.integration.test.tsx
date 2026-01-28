@@ -82,7 +82,9 @@ describe("Form Integration Tests", () => {
       const form = screen.getByRole("form");
       expect(form).toBeInTheDocument();
       expect(screen.getByRole("textbox")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Submit" })
+      ).toBeInTheDocument();
     });
 
     it("renders default variant with form semantics", () => {
@@ -99,7 +101,9 @@ describe("Form Integration Tests", () => {
       expect(form.tagName).toBe("FORM");
       expect(form).toHaveAttribute("role", "form");
       expect(screen.getByLabelText("Email")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Submit" })
+      ).toBeInTheDocument();
     });
   });
 
@@ -127,7 +131,11 @@ describe("Form Integration Tests", () => {
       const heading = screen.getByRole("heading", { level: 2 });
       expect(heading).toBeInTheDocument();
       expect(heading).toHaveTextContent("Stay up to date");
-      expect(screen.getByTestId("icon-mail")).toBeInTheDocument();
+      expect(heading).toHaveAttribute("id");
+
+      const icon = screen.getByTestId("icon-mail");
+      expect(icon).toBeInTheDocument();
+      expect(icon).toHaveAttribute("aria-hidden", "true");
 
       // Check description
       expect(
@@ -137,14 +145,24 @@ describe("Form Integration Tests", () => {
       ).toBeInTheDocument();
 
       // Check form controls
-      expect(
-        screen.getByRole("textbox", { name: "Email address" })
-      ).toBeInTheDocument();
+      const emailInput = screen.getByRole("textbox", { name: "Email address" });
+      expect(emailInput).toBeInTheDocument();
+      expect(emailInput).toHaveAttribute("id");
+      expect(emailInput).toHaveAttribute("name", "email");
+      expect(emailInput).toHaveAttribute("autoComplete", "email");
+
       expect(screen.getByRole("button", { name: "Join" })).toBeInTheDocument();
+
+      // Check form ARIA relationships
+      expect(form).toHaveAttribute("aria-labelledby");
+      expect(form).toHaveAttribute("aria-describedby");
+      expect(form).toHaveAttribute("method", "post");
     });
 
     it("renders newsletter form with custom action and merged className", () => {
-      render(<Form.Newsletter action="/custom-action" className="custom-class" />);
+      render(
+        <Form.Newsletter action="/custom-action" className="custom-class" />
+      );
 
       const form = screen.getByRole("form");
       expect(form).toHaveAttribute("action", "/custom-action");
@@ -163,21 +181,39 @@ describe("Form Integration Tests", () => {
       const heading = screen.getByRole("heading", { level: 2 });
       expect(heading).toBeInTheDocument();
       expect(heading).toHaveTextContent("Stay up to date");
-      expect(screen.getByTestId("icon-mail")).toBeInTheDocument();
+      expect(heading).toHaveAttribute("id");
+
+      const icon = screen.getByTestId("icon-mail");
+      expect(icon).toBeInTheDocument();
+      expect(icon).toHaveAttribute("aria-hidden", "true");
 
       // Check description
-      expect(
-        screen.getByText(
-          "Get notified when I publish something new, and unsubscribe at any time."
-        )
-      ).toBeInTheDocument();
+      const description = screen.getByText(
+        "Get notified when I publish something new, and unsubscribe at any time."
+      );
+      expect(description).toBeInTheDocument();
+      expect(description).toHaveAttribute("id");
 
       // Check email input
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("type", "email");
+      expect(emailInput).toHaveAttribute("name", "email");
+      expect(emailInput).toHaveAttribute("autoComplete", "email");
+      expect(emailInput).toHaveAttribute("inputMode", "email");
+      expect(emailInput).toHaveAttribute("spellCheck", "false");
       expect(emailInput).toHaveAttribute("placeholder", "Email address");
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
+      expect(emailInput).toHaveAttribute("aria-required", "true");
       expect(emailInput).toBeRequired();
+      expect(emailInput).toHaveAttribute("id");
+
+      // Check label element
+      const emailInputId = emailInput.getAttribute("id");
+      const label = document.querySelector(`label[for="${emailInputId}"]`);
+      expect(label).toBeInTheDocument();
+      expect(label).toHaveClass("sr-only");
+      expect(label?.getAttribute("for")).toBe(emailInputId);
+      expect(label).toHaveTextContent("Email address");
 
       // Check submit button
       const submitButton = screen.getByRole("button", { name: "Join" });
@@ -211,6 +247,14 @@ describe("Form Integration Tests", () => {
 
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
+      expect(emailInput).toHaveAttribute("aria-required", "true");
+
+      // Check for screen reader only label
+      const emailInputId = emailInput.getAttribute("id");
+      const label = document.querySelector(`label[for="${emailInputId}"]`);
+      expect(label).toBeInTheDocument();
+      expect(label).toHaveClass("sr-only");
+      expect(label).toHaveTextContent("Email address");
     });
 
     it("uses descriptive text for form elements", () => {
@@ -229,6 +273,50 @@ describe("Form Integration Tests", () => {
       const form = screen.getByRole("form");
       expect(form).toHaveAttribute("role", "form");
       expect(form).toHaveAttribute("action", "/thank-you");
+      expect(form).toHaveAttribute("method", "post");
+      expect(form).toHaveAttribute("aria-labelledby");
+      expect(form).toHaveAttribute("aria-describedby");
+    });
+
+    it("applies correct ARIA relationships between form elements", () => {
+      render(<Form.Newsletter />);
+
+      const formElement = screen.getByRole("form");
+      const heading = screen.getByRole("heading", { level: 2 });
+      const description = screen.getByText(
+        "Get notified when I publish something new, and unsubscribe at any time."
+      );
+
+      // Verify ARIA relationships
+      const headingId = heading.getAttribute("id");
+      const descriptionId = description.getAttribute("id");
+
+      expect(headingId).toBeTruthy();
+      expect(descriptionId).toBeTruthy();
+      expect(formElement.getAttribute("aria-labelledby")).toBe(headingId);
+      expect(formElement.getAttribute("aria-describedby")).toBe(descriptionId);
+    });
+
+    it("ensures unique IDs for all form elements", () => {
+      render(<Form.Newsletter />);
+
+      const heading = screen.getByRole("heading", { level: 2 });
+      const description = screen.getByText(
+        "Get notified when I publish something new, and unsubscribe at any time."
+      );
+      const emailInput = screen.getByRole("textbox", { name: "Email address" });
+
+      const headingId = heading.getAttribute("id");
+      const descriptionId = description.getAttribute("id");
+      const emailInputId = emailInput.getAttribute("id");
+
+      // All IDs should be unique
+      expect(headingId).toBeTruthy();
+      expect(descriptionId).toBeTruthy();
+      expect(emailInputId).toBeTruthy();
+      expect(headingId).not.toBe(descriptionId);
+      expect(headingId).not.toBe(emailInputId);
+      expect(descriptionId).not.toBe(emailInputId);
     });
   });
 
