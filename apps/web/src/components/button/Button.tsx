@@ -10,7 +10,6 @@ import React from "react";
 
 import Link from "next/link";
 
-import { type CommonAppComponentProps } from "@web/types/common";
 import { cn } from "@web/utils/helpers";
 
 type ButtonElementType = "button";
@@ -26,8 +25,7 @@ const BUTTON_VARIANT: Record<ButtonVariant, string> = {
 export type ButtonProps<
   T extends ButtonElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
     variant?: ButtonVariant;

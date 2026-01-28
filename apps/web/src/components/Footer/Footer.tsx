@@ -18,7 +18,6 @@ import {
 } from "@guyromellemagayano/utils";
 
 import { Container } from "@web/components/container";
-import { CommonAppComponentProps } from "@web/types/common";
 import { cn } from "@web/utils/helpers";
 
 // ============================================================================
@@ -70,8 +69,7 @@ type FooterNavigationElementType = "nav";
 type FooterNavigationProps<
   T extends FooterNavigationElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
     navLinks?: ReadonlyArray<FooterLink>;
@@ -153,8 +151,7 @@ type FooterLegalElementType = "p";
 type FooterLegalProps<
   T extends FooterLegalElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
     legalText?: string;
@@ -207,8 +204,7 @@ type FooterElementType = "footer";
 export type FooterProps<
   T extends FooterElementType,
   P extends Record<string, unknown> = {},
-> = CommonAppComponentProps &
-  React.ComponentPropsWithRef<T> &
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
     as?: T;
     data?: FooterData;
