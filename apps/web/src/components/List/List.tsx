@@ -1,229 +1,190 @@
+/**
+ * @file List.tsx
+ * @author Guy Romelle Magayano
+ * @description List component for the web application.
+ */
+
+"use client";
+
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  createComponentProps,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+import { useTranslations } from "next-intl";
 
-import { cn } from "@web/utils";
-
-import { LIST_I18N } from "./List.i18n";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
-// LIST COMPONENT
+// COMMON LIST COMPONENT TYPES
 // ============================================================================
 
 type ListElementType = "ul" | "ol";
-type ListVariant = "default" | "article" | "social" | "tools";
 
-export type ListProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
-  "as"
-> &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "ul" or "ol" are allowed */
+export type ListProps<
+  T extends React.ElementType,
+  P extends Record<string, unknown> = {},
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+  P & {
     as?: T;
-    /** The variant of the list */
-    variant?: ListVariant;
   };
 
-export const List = setDisplayName(function List<T extends ListElementType>(
-  props: ListProps<T>
-) {
+// ============================================================================
+// ARTICLE LIST ITEM COMPONENT
+// ============================================================================
+
+function ArticleList<
+  T extends ListElementType,
+  P extends Record<string, unknown> = {},
+>(props: ListProps<T, P>) {
   const {
     as: Component = "ul",
-    variant = "default",
+    role = "region",
     children,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  // List component component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
-
-  if (!children) return null;
-
-  // Define a mapping of variants to components
-  const variantComponentMap: Record<ListVariant, React.ElementType> = {
-    default: Component,
-    article: ArticleList,
-    social: SocialList,
-    tools: ToolsList,
-  };
-
-  // Choose the component based on a variant
-  const VariantComponent = variantComponentMap[variant] || Component;
-
-  // For the default variant, use a string element directly
-  // Respect the `as` prop if provided, otherwise use "ul" from a variant map
-  if (variant === "default") {
-    return (
-      <Component
-        {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-        role="list"
-        {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
-      >
-        {children}
-      </Component>
-    );
-  }
-
-  const variantProps = {
-    ...rest,
-    as: Component,
-    variant,
-    debugId,
-    debugMode,
-  };
-
-  return <VariantComponent {...variantProps}>{children}</VariantComponent>;
-});
-
-// ============================================================================
-// MEMOIZED LIST COMPONENT
-// ============================================================================
-
-export const MemoizedList = React.memo(List);
-
-// ============================================================================
-// ARTICLE LIST COMPONENT
-// ============================================================================
-
-const ArticleList = setDisplayName(function ArticleList(
-  props: ListProps<ListElementType>
-) {
-  const {
-    as: Component = "ul",
-    variant,
     className,
-    children,
-    debugId,
-    debugMode,
     ...rest
   } = props;
 
-  // List component component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  // Internationalization
+  const tAria = useTranslations("list.ariaLabels");
+
+  // Article list ARIA
+  const LIST_I18N = React.useMemo(
+    () => ({
+      articleList: tAria("articleList"),
+      articles: tAria("articles"),
+    }),
+    [tAria]
+  );
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-      role="region"
+      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      role={role}
       className={cn(
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
         className
       )}
-      aria-label={LIST_I18N.articleList}
-      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
     >
-      <h2
-        className="sr-only"
-        aria-hidden="true"
-        {...createComponentProps(
-          componentId,
-          `${variant}-list-heading`,
-          isDebugMode
-        )}
-      >
+      <h2 className="sr-only" aria-hidden="true">
         {LIST_I18N.articleList}
       </h2>
       <div
         role="list"
         className="flex w-full max-w-3xl flex-col space-y-16"
         aria-label={LIST_I18N.articles}
-        {...createComponentProps(
-          componentId,
-          `${variant}-list-children`,
-          isDebugMode
-        )}
       >
         {children}
       </div>
     </Component>
   );
-});
+}
+
+ArticleList.displayName = "ArticleList";
 
 // ============================================================================
-// SOCIAL LIST COMPONENT
+// SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-const SocialList = setDisplayName(function SocialList(
-  props: ListProps<ListElementType>
-) {
-  const {
-    as: Component = "ul",
-    variant,
-    children,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
+function SocialList<
+  T extends ListElementType,
+  P extends Record<string, unknown> = {},
+>(props: ListProps<T, P>) {
+  const { as: Component = "ul", role = "region", children, ...rest } = props;
 
-  // List component component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  // Internationalization
+  const tAria = useTranslations("list.ariaLabels");
+
+  // Social list ARIA
+  const LIST_I18N = React.useMemo(
+    () => ({
+      socialList: tAria("socialList"),
+    }),
+    [tAria]
+  );
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-      role="region"
+      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      role={role}
       aria-label={LIST_I18N.socialList}
-      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
     >
       {children}
     </Component>
   );
-});
+}
+
+SocialList.displayName = "SocialList";
 
 // ============================================================================
-// TOOLS LIST COMPONENT
+// TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
-const ToolsList = setDisplayName(function ToolsList(
-  props: ListProps<ListElementType>
-) {
+function ToolsList<
+  T extends ListElementType,
+  P extends Record<string, unknown> = {},
+>(props: ListProps<T, P>) {
   const {
     as: Component = "ul",
-    variant,
+    role = "region",
     children,
     className,
-    debugId,
-    debugMode,
     ...rest
   } = props;
 
-  // List component component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  // Internationalization
+  const tAria = useTranslations("list.ariaLabels");
+
+  // Tools list ARIA
+  const LIST_I18N = React.useMemo(
+    () => ({
+      toolsList: tAria("toolsList"),
+    }),
+    [tAria]
+  );
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
-      role="region"
-      aria-label={LIST_I18N.toolsList}
+      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      role={role}
       className={cn("space-y-16", className)}
-      {...createComponentProps(componentId, `list-${variant}`, isDebugMode)}
+      aria-label={LIST_I18N.toolsList}
     >
       {children}
     </Component>
   );
-});
+}
+
+ToolsList.displayName = "ToolsList";
+
+// ============================================================================
+// MAIN LIST COMPONENT
+// ============================================================================
+
+export function List<
+  T extends ListElementType,
+  P extends Record<string, unknown> = {},
+>(props: ListProps<T, P>) {
+  const { as: Component = "ul", children, role = "list", ...rest } = props;
+
+  if (!children) return null;
+
+  return (
+    <Component {...(rest as React.ComponentPropsWithoutRef<T>)} role={role}>
+      {children}
+    </Component>
+  );
+}
+
+List.displayName = "List";
+
+// ============================================================================
+// LIST COMPOUND COMPONENTS
+// ============================================================================
+
+List.Article = ArticleList;
+List.Social = SocialList;
+List.Tools = ToolsList;

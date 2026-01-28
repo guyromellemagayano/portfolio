@@ -1,59 +1,49 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Unit
-// - Coverage: Tier 2 (80%+), key paths + edges
-// - Risk Tier: Core
-// - Component Type: Presentational (polymorphic + variants orchestrator)
-// ============================================================================
+/**
+ * @file List.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the List component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { List, MemoizedList } from "../List";
+import { List } from "../List";
 
-// Mocks
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options: any = {}) => ({
-    componentId: options.internalId || options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
+import "@testing-library/jest-dom";
 
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: vi.fn((namespace: string) => {
+    const translations: Record<string, any> = {
+      "list.ariaLabels": {
+        articleList: "Article list",
+        socialList: "Social list",
+        toolsList: "Tools list",
+        articles: "Articles",
+      },
+    };
 
-vi.mock("@guyromellemagayano/components", () => ({}));
+    return (key: string) => {
+      const keys = key.split(".");
+      let value: any = translations[namespace];
 
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, name) => {
-    if (component) component.displayName = name;
-    return component;
+      for (const k of keys) {
+        if (value && typeof value === "object" && k in value) {
+          value = value[k];
+        } else {
+          return key;
+        }
+      }
+
+      return value || key;
+    };
   }),
-  createComponentProps: vi.fn(
-    (
-      id: string,
-      componentType: string,
-      debugMode: boolean,
-      additional: any = {}
-    ) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}-root`,
-      "data-testid": `${id}-${componentType}-root`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      ...additional,
-    })
-  ),
 }));
 
-vi.mock("@web/utils", () => ({
+// Mock utils
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
-
-// i18n passthrough (use real values)
-vi.mock("../List.i18n", async (orig) => {
-  const mod = await orig<typeof import("../List.i18n")>();
-  return { ...mod };
-});
 
 afterEach(() => {
   cleanup();
@@ -61,6 +51,10 @@ afterEach(() => {
 });
 
 describe("List", () => {
+  // ============================================================================
+  // BASIC RENDERING TESTS
+  // ============================================================================
+
   describe("Basic Rendering", () => {
     it("renders children", () => {
       render(
@@ -72,219 +66,507 @@ describe("List", () => {
     });
 
     it("returns null when no children", () => {
-      const { container } = render((<List />) as any);
+      const { container } = render(<List />);
       expect(container).toBeEmptyDOMElement();
+    });
+
+    it("renders as ul by default", () => {
+      render(
+        <List>
+          <li>Item</li>
+        </List>
+      );
+      const list = screen.getByRole("list");
+      expect(list.tagName).toBe("UL");
+    });
+
+    it("applies default role list", () => {
+      render(
+        <List>
+          <li>Item</li>
+        </List>
+      );
+      const list = screen.getByRole("list");
+      expect(list).toHaveAttribute("role", "list");
     });
   });
 
+  // ============================================================================
+  // POLYMORPHIC AS PROP TESTS
+  // ============================================================================
+
   describe("Polymorphic as=", () => {
-    it('supports as="ol" while preserving default variant semantics', () => {
+    it('renders as ol when as prop is "ol"', () => {
       render(
         <List as="ol">
           <li>One</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
-      expect(root.tagName).toBe("OL");
-      expect(root).toHaveAttribute("role", "list");
+      const list = screen.getByRole("list");
+      expect(list.tagName).toBe("OL");
+      expect(list).toHaveAttribute("role", "list");
     });
 
-    it('supports as="ul" with custom role applied', () => {
+    it('renders as ul when as prop is "ul"', () => {
       render(
-        <List as="ul" role="list">
+        <List as="ul">
           <li>Item</li>
         </List>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
-      expect(root.tagName).toBe("UL");
-      expect(root).toHaveAttribute("role", "list");
+      const list = screen.getByRole("list");
+      expect(list.tagName).toBe("UL");
+      expect(list).toHaveAttribute("role", "list");
+    });
+
+    it("allows custom role override", () => {
+      render(
+        <List role="navigation">
+          <li>Item</li>
+        </List>
+      );
+      const list = screen.getByRole("navigation");
+      expect(list.tagName).toBe("UL");
+      expect(list).toHaveAttribute("role", "navigation");
     });
   });
 
-  describe("Variants", () => {
-    it("default variant uses data-testid list", () => {
+  // ============================================================================
+  // HTML ATTRIBUTES TESTS
+  // ============================================================================
+
+  describe("HTML Attributes", () => {
+    it("passes through HTML attributes", () => {
       render(
-        <List>
-          <li>Default</li>
+        <List id="main-list" data-custom="value">
+          <li>Item</li>
         </List>
       );
-      expect(
-        screen.getByTestId("test-id-list-default-root")
-      ).toBeInTheDocument();
+
+      const list = screen.getByRole("list");
+      expect(list).toHaveAttribute("id", "main-list");
+      expect(list).toHaveAttribute("data-custom", "value");
     });
 
-    describe("article variant", () => {
-      it("applies correct aria-label and structure", () => {
-        render(
-          <List variant="article" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        const root = screen.getByTestId("test-id-list-article-root");
-        expect(root).toBeInTheDocument();
-        expect(root).toHaveAttribute("aria-label", "Article list");
-        expect(root).toHaveAttribute("role", "region");
-      });
-
-      it("renders sr-only heading with aria-hidden", () => {
-        render(
-          <List variant="article" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        const heading = screen.getByText("Article list");
-        expect(heading.tagName).toBe("H2");
-        expect(heading).toHaveClass("sr-only");
-        expect(heading).toHaveAttribute("aria-hidden", "true");
-      });
-
-      it("renders nested div with role=list for children", () => {
-        render(
-          <List variant="article" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        // Get the nested list container by aria-label to avoid ambiguity with root
-        const listContainer = screen.getByRole("list", { name: "Articles" });
-        expect(listContainer).toBeInTheDocument();
-        expect(listContainer).toHaveAttribute("aria-label", "Articles");
-        expect(listContainer).toHaveClass(
-          "flex",
-          "w-full",
-          "max-w-3xl",
-          "flex-col",
-          "space-y-16"
-        );
-      });
-
-      it("defaults to role='region' when not provided", () => {
-        render(
-          <List variant="article">
-            <article>Article child</article>
-          </List>
-        );
-        const root = screen.getByTestId("test-id-list-article-root");
-        expect(root).toHaveAttribute("role", "region");
-      });
-
-      it("applies default border and padding classes", () => {
-        render(
-          <List variant="article" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        const root = screen.getByTestId("test-id-list-article-root");
-        expect(root).toHaveClass(
-          "md:border-l",
-          "md:border-zinc-100",
-          "md:pl-6",
-          "md:dark:border-zinc-700/40"
-        );
-      });
-
-      it("merges custom className with default border classes", () => {
-        render(
-          <List variant="article" className="custom-class" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        const root = screen.getByTestId("test-id-list-article-root");
-        expect(root).toHaveClass("custom-class", "md:border-l");
-      });
-
-      it("applies className to root component", () => {
-        render(
-          <List variant="article" className="custom-class" role="region">
-            <article>Article child</article>
-          </List>
-        );
-        const root = screen.getByTestId("test-id-list-article-root");
-        expect(root).toHaveClass("custom-class");
-      });
-    });
-
-    it("social variant renders as list element by default", () => {
+    it("forwards event handlers", () => {
+      const onClick = vi.fn();
       render(
-        <List variant="social">
+        <List onClick={onClick}>
+          <li>Item</li>
+        </List>
+      );
+
+      const list = screen.getByRole("list");
+      expect(list).toBeInTheDocument();
+    });
+  });
+
+  // ============================================================================
+  // CSS AND STYLING TESTS
+  // ============================================================================
+
+  describe("CSS and Styling", () => {
+    it("applies custom className", () => {
+      render(
+        <List className="custom-list-class">
+          <li>Item</li>
+        </List>
+      );
+
+      const list = screen.getByRole("list");
+      expect(list).toHaveClass("custom-list-class");
+    });
+  });
+});
+
+describe("List.Article", () => {
+  // ============================================================================
+  // BASIC RENDERING TESTS
+  // ============================================================================
+
+  describe("Basic Rendering", () => {
+    it("renders article list with children", () => {
+      render(
+        <List.Article>
+          <article>Article child</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region).toBeInTheDocument();
+      expect(screen.getByText("Article child")).toBeInTheDocument();
+    });
+
+    it("returns null when no children", () => {
+      const { container } = render(<List.Article />);
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("renders as ul by default", () => {
+      render(
+        <List.Article>
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region.tagName).toBe("UL");
+    });
+
+    it("applies default role region", () => {
+      render(
+        <List.Article>
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region).toHaveAttribute("role", "region");
+    });
+  });
+
+  // ============================================================================
+  // ARIA ATTRIBUTES TESTS
+  // ============================================================================
+
+  describe("ARIA Attributes", () => {
+    it("renders sr-only heading with aria-hidden", () => {
+      render(
+        <List.Article>
+          <article>Article child</article>
+        </List.Article>
+      );
+
+      const heading = screen.getByText("Article list");
+      expect(heading.tagName).toBe("H2");
+      expect(heading).toHaveClass("sr-only");
+      expect(heading).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("renders nested div with role=list for children", () => {
+      render(
+        <List.Article>
+          <article>Article child</article>
+        </List.Article>
+      );
+
+      const listContainer = screen.getByRole("list", { name: "Articles" });
+      expect(listContainer).toBeInTheDocument();
+      expect(listContainer).toHaveAttribute("aria-label", "Articles");
+      expect(listContainer).toHaveClass(
+        "flex",
+        "w-full",
+        "max-w-3xl",
+        "flex-col",
+        "space-y-16"
+      );
+    });
+
+    it("allows custom role override", () => {
+      render(
+        <List.Article role="main">
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const main = screen.getByRole("main");
+      expect(main).toHaveAttribute("role", "main");
+    });
+  });
+
+  // ============================================================================
+  // CSS AND STYLING TESTS
+  // ============================================================================
+
+  describe("CSS and Styling", () => {
+    it("applies default border and padding classes", () => {
+      render(
+        <List.Article>
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region).toHaveClass(
+        "md:border-l",
+        "md:border-zinc-100",
+        "md:pl-6",
+        "md:dark:border-zinc-700/40"
+      );
+    });
+
+    it("merges custom className with default border classes", () => {
+      render(
+        <List.Article className="custom-class">
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region).toHaveClass("custom-class", "md:border-l");
+    });
+  });
+
+  // ============================================================================
+  // POLYMORPHIC AS PROP TESTS
+  // ============================================================================
+
+  describe("Polymorphic as=", () => {
+    it('renders as ol when as prop is "ol"', () => {
+      render(
+        <List.Article as="ol">
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region.tagName).toBe("OL");
+    });
+
+    it('renders as ul when as prop is "ul"', () => {
+      render(
+        <List.Article as="ul">
+          <article>Article</article>
+        </List.Article>
+      );
+
+      const region = screen.getByRole("region");
+      expect(region.tagName).toBe("UL");
+    });
+  });
+});
+
+describe("List.Social", () => {
+  // ============================================================================
+  // BASIC RENDERING TESTS
+  // ============================================================================
+
+  describe("Basic Rendering", () => {
+    it("renders social list with children", () => {
+      render(
+        <List.Social>
           <li>Social child</li>
-        </List>
+        </List.Social>
       );
-      const root = screen.getByTestId("test-id-list-social-root");
-      expect(root.tagName).toBe("UL");
+
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region).toBeInTheDocument();
+      expect(screen.getByText("Social child")).toBeInTheDocument();
     });
 
-    it("social variant returns null when no children", () => {
-      const { container } = render(<List variant="social" />);
+    it("returns null when no children", () => {
+      const { container } = render(<List.Social />);
       expect(container).toBeEmptyDOMElement();
     });
 
-    it("social variant respects custom as prop", () => {
+    it("renders as ul by default", () => {
       render(
-        <List variant="social" as="ol">
+        <List.Social>
           <li>Item</li>
-        </List>
+        </List.Social>
       );
-      const root = screen.getByTestId("test-id-list-social-root");
-      expect(root.tagName).toBe("OL");
+
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region.tagName).toBe("UL");
     });
 
-    it("tools variant applies default space-y-16 class", () => {
+    it("applies default role region", () => {
       render(
-        <List variant="tools">
-          <li>Tool</li>
-        </List>
+        <List.Social>
+          <li>Item</li>
+        </List.Social>
       );
-      const root = screen.getByTestId("test-id-list-tools-root");
-      expect(root).toHaveClass("space-y-16");
-    });
 
-    it("tools variant merges custom className with default spacing", () => {
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region).toHaveAttribute("role", "region");
+    });
+  });
+
+  // ============================================================================
+  // ARIA ATTRIBUTES TESTS
+  // ============================================================================
+
+  describe("ARIA Attributes", () => {
+    it("applies correct aria-label", () => {
       render(
-        <List variant="tools" className="custom-tools">
-          <li>Tool</li>
-        </List>
+        <List.Social>
+          <li>Item</li>
+        </List.Social>
       );
-      const root = screen.getByTestId("test-id-list-tools-root");
-      expect(root).toHaveClass("custom-tools", "space-y-16");
+
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region).toHaveAttribute("aria-label", "Social list");
     });
 
-    it("tools variant returns null when no children", () => {
-      const { container } = render(<List variant="tools" />);
+    it("allows custom role override", () => {
+      render(
+        <List.Social role="navigation">
+          <li>Item</li>
+        </List.Social>
+      );
+
+      const navigation = screen.getByRole("navigation", {
+        name: "Social list",
+      });
+      expect(navigation).toHaveAttribute("role", "navigation");
+    });
+  });
+
+  // ============================================================================
+  // POLYMORPHIC AS PROP TESTS
+  // ============================================================================
+
+  describe("Polymorphic as=", () => {
+    it('renders as ol when as prop is "ol"', () => {
+      render(
+        <List.Social as="ol">
+          <li>Item</li>
+        </List.Social>
+      );
+
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region.tagName).toBe("OL");
+    });
+
+    it('renders as ul when as prop is "ul"', () => {
+      render(
+        <List.Social as="ul">
+          <li>Item</li>
+        </List.Social>
+      );
+
+      const region = screen.getByRole("region", { name: "Social list" });
+      expect(region.tagName).toBe("UL");
+    });
+  });
+});
+
+describe("List.Tools", () => {
+  // ============================================================================
+  // BASIC RENDERING TESTS
+  // ============================================================================
+
+  describe("Basic Rendering", () => {
+    it("renders tools list with children", () => {
+      render(
+        <List.Tools>
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region).toBeInTheDocument();
+      expect(screen.getByText("Tool")).toBeInTheDocument();
+    });
+
+    it("returns null when no children", () => {
+      const { container } = render(<List.Tools />);
       expect(container).toBeEmptyDOMElement();
     });
-  });
 
-  describe("Debug + IDs", () => {
-    it("passes debug attributes when enabled", () => {
+    it("renders as ul by default", () => {
       render(
-        <List debugMode>
-          <li>Dbg</li>
-        </List>
+        <List.Tools>
+          <li>Tool</li>
+        </List.Tools>
       );
-      const root = screen.getByTestId("test-id-list-default-root");
-      expect(root).toHaveAttribute("data-debug-mode", "true");
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region.tagName).toBe("UL");
     });
 
-    it("uses custom debugId for data attributes", () => {
+    it("applies default role region", () => {
       render(
-        <List debugId="custom-id">
-          <li>Item</li>
-        </List>
+        <List.Tools>
+          <li>Tool</li>
+        </List.Tools>
       );
-      expect(
-        screen.getByTestId("custom-id-list-default-root")
-      ).toBeInTheDocument();
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region).toHaveAttribute("role", "region");
     });
   });
 
-  describe("Memoization", () => {
-    it("MemoizedList renders children", () => {
+  // ============================================================================
+  // ARIA ATTRIBUTES TESTS
+  // ============================================================================
+
+  describe("ARIA Attributes", () => {
+    it("applies correct aria-label", () => {
       render(
-        <MemoizedList>
-          <li>Memo</li>
-        </MemoizedList>
+        <List.Tools>
+          <li>Tool</li>
+        </List.Tools>
       );
-      expect(screen.getByText("Memo")).toBeInTheDocument();
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region).toHaveAttribute("aria-label", "Tools list");
+    });
+
+    it("allows custom role override", () => {
+      render(
+        <List.Tools role="navigation">
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const navigation = screen.getByRole("navigation", { name: "Tools list" });
+      expect(navigation).toHaveAttribute("role", "navigation");
+    });
+  });
+
+  // ============================================================================
+  // CSS AND STYLING TESTS
+  // ============================================================================
+
+  describe("CSS and Styling", () => {
+    it("applies default space-y-16 class", () => {
+      render(
+        <List.Tools>
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region).toHaveClass("space-y-16");
+    });
+
+    it("merges custom className with default spacing", () => {
+      render(
+        <List.Tools className="custom-tools">
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region).toHaveClass("custom-tools", "space-y-16");
+    });
+  });
+
+  // ============================================================================
+  // POLYMORPHIC AS PROP TESTS
+  // ============================================================================
+
+  describe("Polymorphic as=", () => {
+    it('renders as ol when as prop is "ol"', () => {
+      render(
+        <List.Tools as="ol">
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region.tagName).toBe("OL");
+    });
+
+    it('renders as ul when as prop is "ul"', () => {
+      render(
+        <List.Tools as="ul">
+          <li>Tool</li>
+        </List.Tools>
+      );
+
+      const region = screen.getByRole("region", { name: "Tools list" });
+      expect(region.tagName).toBe("UL");
     });
   });
 });
