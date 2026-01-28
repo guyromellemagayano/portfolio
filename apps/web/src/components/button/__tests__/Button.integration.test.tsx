@@ -5,7 +5,7 @@
  */
 
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Button } from "../Button";
 
@@ -229,7 +229,11 @@ describe("Button Integration Tests", () => {
     });
 
     it("applies styles to link when href is provided", () => {
-      render(<Button href="/test" className="custom-link">Link Button</Button>);
+      render(
+        <Button href="/test" className="custom-link">
+          Link Button
+        </Button>
+      );
 
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("class");
