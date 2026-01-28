@@ -48,6 +48,12 @@ export function NewsletterForm<
 
   const Element = Component as React.ElementType;
 
+  // Generate unique IDs for ARIA relationships for better accessibility and SEO
+  const formId = React.useId();
+  const headingId = `${formId}-heading`;
+  const descriptionId = `${formId}-description`;
+  const emailInputId = `${formId}-email`;
+
   // Internationalization
   const t = useTranslations("form.newsletterForm");
 
@@ -66,25 +72,43 @@ export function NewsletterForm<
     <Element
       {...(rest as React.ComponentPropsWithoutRef<T>)}
       action={action}
+      method="post"
+      aria-labelledby={headingId}
+      aria-describedby={descriptionId}
       className={cn(
         "rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40",
         className
       )}
     >
-      <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-        <Icon name="mail" className="h-6 w-6 flex-none" />
+      <h2
+        id={headingId}
+        className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100"
+      >
+        <Icon name="mail" className="h-6 w-6 flex-none" aria-hidden="true" />
         <span className="ml-3">{FORM_I18N.newsletterFormHeading}</span>
       </h2>
-      <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+      <p
+        id={descriptionId}
+        className="mt-2 text-sm text-zinc-600 dark:text-zinc-400"
+      >
         {FORM_I18N.newsletterFormDescription}
       </p>
       <div className="mt-6 flex items-center">
         <span className="flex min-w-0 flex-auto p-px">
+          <label htmlFor={emailInputId} className="sr-only">
+            {FORM_I18N.newsletterFormEmailAddressLabel}
+          </label>
           <input
+            id={emailInputId}
             type="email"
+            name="email"
+            autoComplete="email"
+            inputMode="email"
+            spellCheck={false}
             placeholder={FORM_I18N.newsletterFormEmailAddressLabel}
             aria-label={FORM_I18N.newsletterFormEmailAddressLabel}
-            className="w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 py-[calc(--spacing(2)-1px)] shadow-md shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus:ring-4 focus:ring-teal-500/10 focus:outline-teal-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus:ring-teal-400/10 dark:focus:outline-teal-400"
+            aria-required="true"
+            className="w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 py-[calc(--spacing(2)-1px)] shadow-md shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus-visible:ring-4 focus-visible:ring-teal-500/10 focus-visible:outline-teal-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus-visible:ring-teal-400/10 dark:focus-visible:outline-teal-400"
             required
           />
         </span>
@@ -119,7 +143,11 @@ export function Form<
   if (!children) return null;
 
   return (
-    <Component {...(rest as React.ComponentPropsWithoutRef<T>)} role="form">
+    <Component
+      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      role="form"
+      method="post"
+    >
       {children}
     </Component>
   );
