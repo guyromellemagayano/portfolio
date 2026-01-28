@@ -4,6 +4,8 @@
  * @description Presentational component for displaying article cards using the Card compound component.
  */
 
+"use client";
+
 import React from "react";
 
 import { useTranslations } from "next-intl";
