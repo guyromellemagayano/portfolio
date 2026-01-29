@@ -64,15 +64,10 @@ function ArticleList<
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
         className
       )}
+      aria-label={LIST_I18N.articleList}
     >
-      <h2 className="sr-only" aria-hidden="true">
-        {LIST_I18N.articleList}
-      </h2>
-      <div
-        role="list"
-        className="flex w-full max-w-3xl flex-col space-y-16"
-        aria-label={LIST_I18N.articles}
-      >
+      <h2 className="sr-only">{LIST_I18N.articleList}</h2>
+      <div className="flex w-full max-w-3xl flex-col space-y-16">
         {children}
       </div>
     </Component>
