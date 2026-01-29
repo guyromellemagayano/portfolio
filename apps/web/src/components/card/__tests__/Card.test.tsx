@@ -9,7 +9,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Card, MemoizedCard } from "../Card";
+import { Card } from "../Card";
 
 // Mock dependencies
 vi.mock("@web/components/icon/Icon", () => ({
@@ -1199,7 +1199,11 @@ describe("Card.LinkCustom", () => {
 
     it("passes through HTML attributes", () => {
       render(
-        <Card.LinkCustom href="/test-link" title="Link" data-testid="custom-link">
+        <Card.LinkCustom
+          href="/test-link"
+          title="Link"
+          data-testid="custom-link"
+        >
           Link content
         </Card.LinkCustom>
       );
@@ -2246,62 +2250,44 @@ describe("Card", () => {
     });
   });
 
-  describe("Memoization", () => {
-    it("Card renders without memoization by default", () => {
-      render(
+  describe("Component Updates", () => {
+    it("re-renders when props change", () => {
+      const { rerender } = render(
         <Card>
-          <div>Default Card</div>
-        </Card>
-      );
-
-      expect(screen.getByText("Default Card")).toBeInTheDocument();
-    });
-
-    it("MemoizedCard renders with memoization", () => {
-      render(
-        <MemoizedCard>
-          <div>Memoized Card</div>
-        </MemoizedCard>
-      );
-
-      expect(screen.getByText("Memoized Card")).toBeInTheDocument();
-    });
-
-    it("MemoizedCard maintains memoization across re-renders with same props", () => {
-      const { rerender } = render(
-        <MemoizedCard>
-          <div>Memoized content</div>
-        </MemoizedCard>
-      );
-
-      // Re-render with same props
-      rerender(
-        <MemoizedCard>
-          <div>Memoized content</div>
-        </MemoizedCard>
-      );
-
-      expect(screen.getByText("Memoized content")).toBeInTheDocument();
-    });
-
-    it("MemoizedCard re-renders when props change", () => {
-      const { rerender } = render(
-        <MemoizedCard>
           <div>Initial content</div>
-        </MemoizedCard>
+        </Card>
       );
 
       expect(screen.getByText("Initial content")).toBeInTheDocument();
 
       // Re-render with different content
       rerender(
-        <MemoizedCard>
+        <Card>
           <div>Updated content</div>
-        </MemoizedCard>
+        </Card>
       );
 
       expect(screen.getByText("Updated content")).toBeInTheDocument();
       expect(screen.queryByText("Initial content")).not.toBeInTheDocument();
+    });
+
+    it("maintains component state across re-renders with same props", () => {
+      const { rerender } = render(
+        <Card>
+          <div>Card content</div>
+        </Card>
+      );
+
+      expect(screen.getByText("Card content")).toBeInTheDocument();
+
+      // Re-render with same props
+      rerender(
+        <Card>
+          <div>Card content</div>
+        </Card>
+      );
+
+      expect(screen.getByText("Card content")).toBeInTheDocument();
     });
   });
 });
