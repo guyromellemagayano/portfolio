@@ -6,7 +6,7 @@
 
 import React from "react";
 
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 
 import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
@@ -18,22 +18,21 @@ import { Icon } from "../icon";
 // CARD LINK CUSTOM COMPONENT
 // ============================================================================
 
-type CardLinkCustomElementType = typeof Link;
-type CardLinkCustomProps<
-  T extends CardLinkCustomElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "href" | "target" | "title" | "as"> &
+export type CardLinkCustomElementType = typeof Link;
+export type CardLinkCustomProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardLinkCustomElementType>,
+  "as" | "href"
+> &
   P & {
-    as?: T;
-    href?: React.ComponentPropsWithoutRef<T>["href"];
-    target?: React.ComponentPropsWithoutRef<T>["target"];
-    title?: React.ComponentPropsWithoutRef<T>["title"];
+    as?: CardLinkCustomElementType;
+    href?: LinkProps["href"];
+    title?: string;
+    target?: string;
   };
 
-function CardLinkCustom<
-  T extends CardLinkCustomElementType,
-  P extends Record<string, unknown> = {},
->(props: CardLinkCustomProps<T, P>) {
+function CardLinkCustom<P extends Record<string, unknown> = {}>(
+  props: CardLinkCustomProps<P>
+) {
   const {
     as: Component = Link,
     children,
@@ -58,11 +57,11 @@ function CardLinkCustom<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...rest}
       href={linkHref ?? undefined}
       target={linkTargetProps?.target ?? undefined}
       rel={linkTargetProps?.rel ?? undefined}
-      title={title ?? undefined}
+      title={title || undefined}
       aria-label={ariaLabel}
     >
       {children}
@@ -76,23 +75,19 @@ CardLinkCustom.displayName = "CardLinkCustom";
 // CARD CTA COMPONENT
 // ============================================================================
 
-type CardCtaElementType = "div" | "section" | "article" | "main";
-type CardCtaProps<
-  T extends CardCtaElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
-  Pick<
-    CardLinkCustomProps<CardLinkCustomElementType, P>,
-    "href" | "target" | "title"
-  > &
+export type CardCtaElementType = "div" | "section" | "article" | "main";
+export type CardCtaProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardCtaElementType>,
+  "as"
+> &
+  Pick<CardLinkCustomProps<P>, "href" | "target" | "title"> &
   P & {
-    as?: T;
+    as?: CardCtaElementType;
   };
 
-function CardCta<
-  T extends CardCtaElementType,
-  P extends Record<string, unknown> = {},
->(props: CardCtaProps<T, P>) {
+function CardCta<P extends Record<string, unknown> = {}>(
+  props: CardCtaProps<P>
+) {
   const {
     as: Component = "div",
     children,
@@ -112,7 +107,7 @@ function CardCta<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500",
         className
@@ -120,10 +115,10 @@ function CardCta<
     >
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref ?? undefined}
+          href={linkHref}
           target={linkTargetProps?.target ?? undefined}
           rel={linkTargetProps?.rel ?? undefined}
-          title={title ?? undefined}
+          title={title || undefined}
         >
           {children}
           <Icon name="chevron-right" aria-hidden="true" />
@@ -141,26 +136,25 @@ CardCta.displayName = "CardCta";
 // CARD DESCRIPTION COMPONENT
 // ============================================================================
 
-type CardDescriptionElementType = "p" | "div" | "span";
-type CardDescriptionProps<
-  T extends CardDescriptionElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type CardDescriptionElementType = "p" | "div" | "span";
+export type CardDescriptionProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardDescriptionElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: CardDescriptionElementType;
   };
 
-function CardDescription<
-  T extends CardDescriptionElementType,
-  P extends Record<string, unknown> = {},
->(props: CardDescriptionProps<T, P>) {
+function CardDescription<P extends Record<string, unknown> = {}>(
+  props: CardDescriptionProps<P>
+) {
   const { as: Component = "p", children, className, ...rest } = props;
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400",
         className
@@ -177,21 +171,24 @@ CardDescription.displayName = "CardDescription";
 // CARD EYEBROW COMPONENT
 // ============================================================================
 
-type CardEyebrowElementType = "p" | "time";
-type CardEyebrowProps<
-  T extends CardEyebrowElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as" | "dateTime"> &
-  P & {
-    as?: T;
-    decorate?: boolean;
-    dateTime?: T extends "time" ? string : never;
-  };
+export type CardEyebrowElementType = "p" | "time";
+export type CardEyebrowProps<P extends Record<string, unknown> = {}> =
+  | (Omit<React.ComponentPropsWithRef<"p">, "as" | "dateTime"> &
+      P & {
+        as?: "p";
+        decorate?: boolean;
+        dateTime?: never;
+      })
+  | (Omit<React.ComponentPropsWithRef<"time">, "as" | "dateTime"> &
+      P & {
+        as: "time";
+        decorate?: boolean;
+        dateTime?: string;
+      });
 
-function CardEyebrow<
-  T extends CardEyebrowElementType,
-  P extends Record<string, unknown> = {},
->(props: CardEyebrowProps<T, P>) {
+function CardEyebrow<P extends Record<string, unknown> = {}>(
+  props: CardEyebrowProps<P>
+) {
   const {
     as: Component = "p",
     decorate = false,
@@ -199,7 +196,13 @@ function CardEyebrow<
     className,
     dateTime,
     ...rest
-  } = props;
+  } = props as CardEyebrowProps<P> & {
+    as?: CardEyebrowElementType;
+    decorate?: boolean;
+    dateTime?: string;
+    children?: React.ReactNode;
+    className?: string;
+  };
 
   if (!children) return null;
 
@@ -214,7 +217,7 @@ function CardEyebrow<
 
   return (
     <Element
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       {...timeProps}
       className={cn(
         "relative z-10 order-first mb-3 flex items-center text-sm text-wrap text-zinc-400 dark:text-zinc-500",
@@ -242,23 +245,19 @@ CardEyebrow.displayName = "CardEyebrow";
 // CARD LINK COMPONENT
 // ============================================================================
 
-type CardLinkElementType = "div" | "section" | "article" | "span";
-type CardLinkProps<
-  T extends CardLinkElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
-  Pick<
-    CardLinkCustomProps<CardLinkCustomElementType, P>,
-    "href" | "target" | "title"
-  > &
+export type CardLinkElementType = "div" | "section" | "article" | "span";
+export type CardLinkProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardLinkElementType>,
+  "as"
+> &
+  Pick<CardLinkCustomProps<P>, "href" | "target" | "title"> &
   P & {
-    as?: T;
+    as?: CardLinkElementType;
   };
 
-function CardLink<
-  T extends CardLinkElementType,
-  P extends Record<string, unknown> = {},
->(props: CardLinkProps<T, P>) {
+function CardLink<P extends Record<string, unknown> = {}>(
+  props: CardLinkProps<P>
+) {
   const {
     as: Component = "div",
     children,
@@ -277,7 +276,7 @@ function CardLink<
     : undefined;
 
   return (
-    <Component {...(rest as React.ComponentPropsWithoutRef<T>)}>
+    <Component {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}>
       <div
         className={cn(
           "absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50",
@@ -308,23 +307,19 @@ CardLink.displayName = "CardLink";
 // CARD TITLE COMPONENT
 // ============================================================================
 
-type CardTitleElementType = "h2" | "h3";
-type CardTitleProps<
-  T extends CardTitleElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
-  Pick<
-    CardLinkCustomProps<CardLinkCustomElementType, P>,
-    "href" | "target" | "title"
-  > &
+export type CardTitleElementType = "h2" | "h3";
+export type CardTitleProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardTitleElementType>,
+  "as"
+> &
+  Pick<CardLinkCustomProps<P>, "href" | "target" | "title"> &
   P & {
-    as?: T;
+    as?: CardTitleElementType;
   };
 
-function CardTitle<
-  T extends CardTitleElementType,
-  P extends Record<string, unknown> = {},
->(props: CardTitleProps<T, P>) {
+function CardTitle<P extends Record<string, unknown> = {}>(
+  props: CardTitleProps<P>
+) {
   const {
     as: Component = "h2",
     children,
@@ -344,7 +339,7 @@ function CardTitle<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn(
         "text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100",
         className
@@ -372,27 +367,25 @@ CardTitle.displayName = "CardTitle";
 // CARD COMPONENT
 // ============================================================================
 
-type CardElementType = "div" | "article" | "section";
-
-export type CardProps<
-  T extends React.ElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type CardElementType = "div" | "article" | "section";
+export type CardProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<CardElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: CardElementType;
   };
 
-export function Card<
-  T extends CardElementType,
-  P extends Record<string, unknown> = {},
->(props: CardProps<T, P>) {
+export function Card<P extends Record<string, unknown> = {}>(
+  props: CardProps<P>
+) {
   const { as: Component = "div", children, className, ...rest } = props;
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("group relative flex flex-col items-start", className)}
     >
       {children}

@@ -16,21 +16,19 @@ import { type ArticleWithSlug } from "@web/utils/articles";
 
 import { Card } from "../card";
 
-type ArticleElementType = typeof Card;
-
-export type ArticleProps<
-  T extends ArticleElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type ArticleElementType = typeof Card;
+export type ArticleProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<ArticleElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: ArticleElementType;
     article: ArticleWithSlug;
   };
 
-export function Article<
-  T extends ArticleElementType,
-  P extends Record<string, unknown> = {},
->(props: ArticleProps<T, P>) {
+export function Article<P extends Record<string, unknown> = {}>(
+  props: ArticleProps<P>
+) {
   const { as: Component = Card, article, ...rest } = props;
 
   // Generate unique IDs for ARIA relationships (SEO: proper semantic structure)
@@ -80,7 +78,7 @@ export function Article<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<T>)}
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
