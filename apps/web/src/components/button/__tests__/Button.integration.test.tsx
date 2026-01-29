@@ -9,11 +9,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Button } from "../Button";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/components", () => ({
-  // Mock CommonComponentProps type
-}));
+import "@testing-library/jest-dom";
 
+// Mock @web/utils/helpers
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));

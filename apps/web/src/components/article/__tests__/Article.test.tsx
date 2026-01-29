@@ -7,18 +7,12 @@
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { Card } from "../../card/Card";
 import { Article } from "../Article";
+
+import "@testing-library/jest-dom";
 
 const mockUseTranslations = vi.hoisted(() =>
   vi.fn(() => (key: string) => {
@@ -50,7 +44,7 @@ vi.mock("next-intl", () => ({
 }));
 
 // Mock Card component
-vi.mock("@web/components/Card", () => {
+vi.mock("../../card", () => {
   const MockCard = Object.assign(
     function MockCard(props: any) {
       const {
@@ -77,22 +71,8 @@ vi.mock("@web/components/Card", () => {
     {
       Title: function MockCardTitle(props: any) {
         const { children, href, id, as: Component = "h2", ...rest } = props;
-        // Handle URL objects and strings
-        let hrefString: string | undefined;
-        if (href) {
-          try {
-            if (href instanceof URL) {
-              // Extract pathname from the URL object
-              hrefString = href.pathname;
-              if (href.search) hrefString += href.search;
-              if (href.hash) hrefString += href.hash;
-            } else {
-              hrefString = String(href);
-            }
-          } catch {
-            hrefString = undefined;
-          }
-        }
+        // Handle href as string (component creates string paths, not URL objects)
+        const hrefString = href ? String(href) : undefined;
         return (
           <Component data-testid="mock-card-title" id={id} {...rest}>
             {hrefString ? <a href={hrefString}>{children}</a> : children}
@@ -128,15 +108,26 @@ vi.mock("@web/components/Card", () => {
       },
       Cta: function MockCardCta(props: any) {
         const { children, href, title, ...rest } = props;
+        // Mock CardLinkCustom behavior: sets title attribute and aria-label when title exists and children aren't descriptive
+        // Since our children are descriptive ("Read article"), aria-label is not set, but title attribute is set
+        const hasDescriptiveText =
+          typeof children === "string"
+            ? children.trim().length > 0
+            : React.Children.count(children) > 0;
+        const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+
+        const linkProps: Record<string, any> = { href };
+        if (title) {
+          // CardLinkCustom sets title={title ?? undefined}, so we set it if title is truthy
+          linkProps.title = String(title);
+        }
+        if (ariaLabel) {
+          linkProps["aria-label"] = String(ariaLabel);
+        }
+
         return (
           <div data-testid="mock-card-cta" {...rest}>
-            {href ? (
-              <a href={href} title={title}>
-                {children}
-              </a>
-            ) : (
-              children
-            )}
+            {href ? <a {...linkProps}>{children}</a> : children}
           </div>
         );
       },
@@ -150,37 +141,6 @@ vi.mock("@web/components/Card", () => {
 });
 
 describe("Article", () => {
-  // Mock URL constructor to handle relative paths in test environment
-  // eslint-disable-next-line no-undef
-  const OriginalURL = global.URL;
-  beforeAll(() => {
-    // eslint-disable-next-line no-undef
-    global.URL = class MockURL extends OriginalURL {
-      constructor(input: string | URL, base?: string | URL) {
-        // Handle the component's buggy URL creation: new URL(encodeURIComponent("/path"))
-        // The component encodes the entire path, which creates an invalid URL
-        if (typeof input === "string") {
-          // If input looks like an encoded path (starts with %2F), decode it
-          if (input.startsWith("%2F") || input.startsWith("%2f")) {
-            input = decodeURIComponent(input);
-          }
-          // If no base is provided, and it's a relative path, use a dummy base
-          if (!base && input.startsWith("/")) {
-            super(input, "http://localhost");
-            return;
-          }
-        }
-        // Fall back to the original URL constructor
-        super(input, base);
-      }
-    };
-  });
-
-  afterAll(() => {
-    // eslint-disable-next-line no-undef
-    global.URL = OriginalURL;
-  });
-
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
@@ -408,7 +368,7 @@ describe("Article", () => {
       expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
-    it("creates URL for title link when slug is valid", () => {
+    it("creates href for title link when slug is valid", () => {
       render(<Article article={mockArticle} />);
 
       const titleElement = screen.getByTestId("mock-card-title");
@@ -583,7 +543,7 @@ describe("Article", () => {
       expect(titleLink).toHaveAttribute("href", "/articles/test-article");
     });
 
-    it("creates link when slug is valid regardless of date validity", () => {
+    it("creates href for title link when slug is valid regardless of date validity", () => {
       const articleWithInvalidDate = {
         ...mockArticle,
         date: "invalid-date",
