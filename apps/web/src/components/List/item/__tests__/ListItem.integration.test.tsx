@@ -4,6 +4,8 @@
  * @description Integration tests for the ListItem component.
  */
 
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -110,7 +112,32 @@ const mockCardComponent = vi.hoisted(() => {
   CardDescription.displayName = "CardDescriptionMock";
   Card.Description = CardDescription;
 
-  const CardCta = function ({ as: As = "div", children, ...rest }: any) {
+  const CardCta = function (props: any) {
+    const { as: As = "div", children, href, title, ...rest } = props;
+    if (href) {
+      // Mock CardLinkCustom behavior: sets title attribute and aria-label when title exists and children aren't descriptive
+      // Since our children are descriptive ("Read article"), aria-label is not set, but title attribute is set
+      const hasDescriptiveText =
+        typeof children === "string"
+          ? children.trim().length > 0
+          : React.Children.count(children) > 0;
+      const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+
+      const linkProps: Record<string, any> = { href };
+      // CardLinkCustom sets title={title ?? undefined}, so we set it if title is truthy
+      if (title) {
+        linkProps.title = String(title);
+      }
+      if (ariaLabel) {
+        linkProps["aria-label"] = String(ariaLabel);
+      }
+
+      return (
+        <As {...rest}>
+          <a {...linkProps}>{children}</a>
+        </As>
+      );
+    }
     return <As {...rest}>{children}</As>;
   };
   CardCta.displayName = "CardCtaMock";
@@ -194,20 +221,40 @@ describe("ListItem (Integration)", () => {
       </div>
     );
     const articleElement = screen.getByRole("article");
-    expect(articleElement).toHaveAttribute("aria-label", "Integration Article");
+    expect(articleElement).toHaveAttribute(
+      "aria-labelledby",
+      "integration-article-title"
+    );
+    expect(articleElement).toHaveAttribute(
+      "aria-describedby",
+      "integration-article-description"
+    );
     expect(articleElement).toHaveAttribute("id", "integration-article");
 
+    const titleElement = screen.getByRole("heading", { level: 2 });
+    expect(titleElement).toHaveAttribute("id", "integration-article-title");
+
     const timeElement = screen.getByRole("time");
+    expect(timeElement).toHaveAttribute("id", "integration-article-date");
     expect(timeElement).toHaveAttribute(
       "aria-label",
       "Published on 2024-02-02"
     );
 
-    const ctaButton = screen.getByRole("button");
-    expect(ctaButton).toHaveAttribute(
-      "aria-label",
-      "Read article: Integration Article"
+    const descriptionElement = screen.getByText("Integration description");
+    expect(descriptionElement).toHaveAttribute(
+      "id",
+      "integration-article-description"
     );
+
+    const ctaLink = articleElement.querySelector(
+      'a[href="/articles/integration-article"]'
+    );
+    expect(ctaLink).toBeInTheDocument();
+    expect(ctaLink).toHaveAttribute("href", "/articles/integration-article");
+    // Card.Cta receives title prop and passes it to CardLinkCustom
+    // CardLinkCustom may set title attribute depending on link text descriptiveness
+    // Link text is descriptive ("Read article"), so aria-label is not set (CardLinkCustom logic)
   });
 
   it("renders social variant with listitem role and children", () => {
