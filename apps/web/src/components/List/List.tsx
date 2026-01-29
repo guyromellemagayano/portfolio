@@ -16,10 +16,9 @@ import { cn } from "@web/utils/helpers";
 // COMMON LIST COMPONENT TYPES
 // ============================================================================
 
-type ListElementType = "ul" | "ol";
-
+export type ListElementType = "ul" | "ol";
 export type ListProps<
-  T extends React.ElementType,
+  T extends ListElementType,
   P extends Record<string, unknown> = {},
 > = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
@@ -30,10 +29,12 @@ export type ListProps<
 // ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
-function ArticleList<
-  T extends ListElementType,
-  P extends Record<string, unknown> = {},
->(props: ListProps<T, P>) {
+export type ArticleListProps<P extends Record<string, unknown> = {}> =
+  ListProps<ListElementType, P> & P & {};
+
+function ArticleList<P extends Record<string, unknown> = {}>(
+  props: ArticleListProps<P>
+) {
   const {
     as: Component = "ul",
     role = "region",
@@ -58,7 +59,7 @@ function ArticleList<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role={role}
       className={cn(
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
@@ -80,10 +81,15 @@ ArticleList.displayName = "ArticleList";
 // SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-function SocialList<
-  T extends ListElementType,
-  P extends Record<string, unknown> = {},
->(props: ListProps<T, P>) {
+export type SocialListProps<P extends Record<string, unknown> = {}> = ListProps<
+  ListElementType,
+  P
+> &
+  P & {};
+
+function SocialList<P extends Record<string, unknown> = {}>(
+  props: SocialListProps<P>
+) {
   const { as: Component = "ul", role = "region", children, ...rest } = props;
 
   // Internationalization
@@ -101,7 +107,7 @@ function SocialList<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role={role}
       aria-label={LIST_I18N.socialList}
     >
@@ -159,16 +165,18 @@ ToolsList.displayName = "ToolsList";
 // MAIN LIST COMPONENT
 // ============================================================================
 
-export function List<
-  T extends ListElementType,
-  P extends Record<string, unknown> = {},
->(props: ListProps<T, P>) {
+export function List<P extends Record<string, unknown> = {}>(
+  props: ListProps<ListElementType, P>
+) {
   const { as: Component = "ul", children, role = "list", ...rest } = props;
 
   if (!children) return null;
 
   return (
-    <Component {...(rest as React.ComponentPropsWithoutRef<T>)} role={role}>
+    <Component
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      role={role}
+    >
       {children}
     </Component>
   );
