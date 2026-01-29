@@ -35,7 +35,9 @@
       "articleList": "Article list",
       "socialList": "Social list",
       "toolsList": "Tools list",
-      "articles": "Articles"
+      "articles": "Articles",
+      "articleDate": "Published on",
+      "cta": "Read article"
     }
   },
   "listItem": {

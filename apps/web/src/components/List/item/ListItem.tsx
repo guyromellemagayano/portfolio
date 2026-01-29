@@ -27,8 +27,7 @@ import { Card } from "../../card";
 // COMMON LIST COMPONENT TYPES
 // ============================================================================
 
-type ListItemElementType = "li" | typeof Card;
-
+export type ListItemElementType = "li" | typeof Card;
 export type ListItemProps<
   T extends ListItemElementType,
   P extends Record<string, unknown> = {},
@@ -44,10 +43,9 @@ export type ListItemProps<
 // ARTICLE LIST ITEM COMPONENT
 // ============================================================================
 
-type ArticleListItemProps<P extends Record<string, unknown> = {}> =
-  ListItemProps<typeof Card, P> &
+export type ArticleListItemProps<P extends Record<string, unknown> = {}> =
+  ListItemProps<ListItemElementType, P> &
     P & {
-      as?: typeof Card;
       article: ArticleWithSlug;
       isFrontPage?: boolean;
     };
@@ -145,7 +143,7 @@ ArticleListItem.displayName = "ArticleListItem";
 // ============================================================================
 
 function SocialListItem<P extends Record<string, unknown> = {}>(
-  props: ListItemProps<"li", P>
+  props: ListItemProps<ListItemElementType, P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
@@ -167,13 +165,8 @@ SocialListItem.displayName = "SocialListItem";
 // TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
-type ToolsListItemProps<P extends Record<string, unknown> = {}> = ListItemProps<
-  typeof Card,
-  P
-> &
-  P & {
-    as?: typeof Card;
-  };
+export type ToolsListItemProps<P extends Record<string, unknown> = {}> =
+  ListItemProps<ListItemElementType, P> & P & {};
 
 function ToolsListItem<P extends Record<string, unknown> = {}>(
   props: ToolsListItemProps<P>
@@ -218,7 +211,7 @@ ToolsListItem.displayName = "ToolsListItem";
 // ============================================================================
 
 export function ListItem<P extends Record<string, unknown> = {}>(
-  props: ListItemProps<"li", P>
+  props: ListItemProps<ListItemElementType, P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
