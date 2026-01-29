@@ -29,5 +29,25 @@
       "emailAddressLabel": "Email address",
       "joinButtonTextLabel": "Join"
     }
+  },
+  "list": {
+    "ariaLabels": {
+      "articleList": "Article list",
+      "socialList": "Social list",
+      "toolsList": "Tools list",
+      "articles": "Articles"
+    }
+  },
+  "listItem": {
+    "ariaLabels": {
+      "cta": "Read article",
+      "articleDate": "Published on"
+    }
+  },
+  "photoGallery": {
+    "ariaLabels": {
+      "photoGallery": "Photo gallery",
+      "photoGalleryImages": "Photo gallery images"
+    }
   }
 }
