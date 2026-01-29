@@ -1,53 +1,18 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Integration
-// - Coverage: Tier 2 (80%+), key paths + edges
-// - Risk Tier: Core
-// - Component Type: Presentational (non-polymorphic, div-only)
-// ============================================================================
+/**
+ * @file Prose.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Prose component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { MemoizedProse, Prose } from "../Prose";
+import { Prose } from "../Prose";
 
 import "@testing-library/jest-dom";
 
-// ============================================================================
-// MOCKS
-// ============================================================================
-
-// Mock useComponentId hook
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options: any = {}) => ({
-    componentId: options.debugId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-// Mock utility functions
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        additionalProps["data-testid"] || `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
-  ),
-}));
-
-// Mock CSS modules
-vi.mock("@web/utils", () => ({
+// Mock @web/utils/helpers
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes: string[]) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -57,9 +22,14 @@ afterEach(() => {
 });
 
 describe("Prose (Integration)", () => {
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+
   describe("Component Composition", () => {
     it("renders Prose within a full page layout structure", () => {
-      render(
+      const { container } = render(
         <div>
           <header>
             <h1>Page Title</h1>
@@ -83,12 +53,13 @@ describe("Prose (Integration)", () => {
       ).toBeInTheDocument();
       expect(screen.getByText("Footer content")).toBeInTheDocument();
 
-      const prose = screen.getByTestId("test-id-prose-root");
+      const prose = container.querySelector("main > div");
       expect(prose).toBeInTheDocument();
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
 
     it("renders Prose with multiple nested components", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose>
             <article>
@@ -119,10 +90,14 @@ describe("Prose (Integration)", () => {
       expect(screen.getByText("List item 1")).toBeInTheDocument();
       expect(screen.getByText("List item 2")).toBeInTheDocument();
       expect(screen.getByText("Article footer")).toBeInTheDocument();
+
+      const prose = container.querySelector("div > div.prose");
+      expect(prose).toBeInTheDocument();
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
 
     it("renders Prose with roles in different contexts", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose role="region" aria-label="Main content">
             <h2>Section Title</h2>
@@ -143,12 +118,14 @@ describe("Prose (Integration)", () => {
       // Prose renders a div; roles are applied via attributes.
       expect(section.tagName).toBe("DIV");
       expect(article.tagName).toBe("DIV");
+      expect(section).toHaveClass("prose", "dark:prose-invert");
+      expect(article).toHaveClass("prose", "dark:prose-invert");
     });
   });
 
   describe("ARIA Integration", () => {
     it("integrates with ARIA landmarks and relationships", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose
             role="main"
@@ -168,6 +145,7 @@ describe("Prose (Integration)", () => {
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("aria-labelledby", "main-title");
       expect(main).toHaveAttribute("aria-describedby", "main-description");
+      expect(main).toHaveClass("prose", "dark:prose-invert");
 
       const title = screen.getByText("Main Content");
       expect(title).toHaveAttribute("id", "main-title");
@@ -180,7 +158,7 @@ describe("Prose (Integration)", () => {
     });
 
     it("maintains ARIA relationships across component hierarchy", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose
             role="article"
@@ -200,15 +178,17 @@ describe("Prose (Integration)", () => {
       const article = screen.getByRole("article");
       expect(article).toHaveAttribute("aria-labelledby", "article-title");
       expect(article).toHaveAttribute("id", "article-content");
+      expect(article).toHaveClass("prose", "dark:prose-invert");
 
       const section = screen.getByRole("region", { name: "Section Title" });
       expect(section).toHaveAttribute("aria-labelledby", "section-title");
+      expect(section).toHaveClass("prose", "dark:prose-invert");
     });
   });
 
   describe("Styling Integration", () => {
     it("applies prose styling classes correctly with custom classes", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose className="custom-prose-class">
             <h1>Title</h1>
@@ -217,12 +197,16 @@ describe("Prose (Integration)", () => {
         </div>
       );
 
-      const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toHaveAttribute("class");
+      const prose = container.querySelector("div > div.prose");
+      expect(prose).toHaveClass(
+        "prose",
+        "dark:prose-invert",
+        "custom-prose-class"
+      );
     });
 
     it("integrates with theme-aware styling", () => {
-      render(
+      const { container } = render(
         <div>
           <Prose className="prose-lg">
             <h1>Large Prose</h1>
@@ -235,23 +219,22 @@ describe("Prose (Integration)", () => {
         </div>
       );
 
-      const largeProse = screen
-        .getByText("Large Prose")
-        .closest("[data-testid]");
-      const smallProse = screen
-        .getByText("Small Prose")
-        .closest("[data-testid]");
+      const proseElements = container.querySelectorAll("div > div.prose");
+      expect(proseElements).toHaveLength(2);
+
+      const largeProse = proseElements[0];
+      const smallProse = proseElements[1];
 
       expect(largeProse).toBeInTheDocument();
       expect(smallProse).toBeInTheDocument();
-      expect(largeProse).toHaveAttribute("class");
-      expect(smallProse).toHaveAttribute("class");
+      expect(largeProse).toHaveClass("prose", "dark:prose-invert", "prose-lg");
+      expect(smallProse).toHaveClass("prose", "dark:prose-invert", "prose-sm");
     });
   });
 
   describe("Content Integration", () => {
     it("renders markdown-like content structure", () => {
-      render(
+      const { container } = render(
         <Prose>
           <h1>Main Heading</h1>
           <p>
@@ -290,10 +273,13 @@ describe("Prose (Integration)", () => {
         screen.getByText("This is a blockquote with important information.")
       ).toBeInTheDocument();
       expect(screen.getByText(/const example = "code";/)).toBeInTheDocument();
+
+      const prose = container.firstChild as HTMLElement;
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
 
     it("handles complex nested content structures", () => {
-      render(
+      const { container } = render(
         <Prose>
           <article>
             <header>
@@ -337,96 +323,9 @@ describe("Prose (Integration)", () => {
       expect(screen.getByText("Conclusion")).toBeInTheDocument();
       expect(screen.getByAltText("Example image")).toBeInTheDocument();
       expect(screen.getByText("Image caption")).toBeInTheDocument();
-    });
-  });
 
-  describe("Memoization Integration", () => {
-    it("MemoizedProse works correctly in component composition", () => {
-      render(
-        <div>
-          <MemoizedProse>
-            <h1>Memoized Title</h1>
-            <p>Memoized content</p>
-          </MemoizedProse>
-        </div>
-      );
-
-      expect(screen.getByText("Memoized Title")).toBeInTheDocument();
-      expect(screen.getByText("Memoized content")).toBeInTheDocument();
-
-      const prose = screen.getByTestId("test-id-prose-root");
-      expect(prose).toBeInTheDocument();
-    });
-
-    it("MemoizedProse maintains performance with multiple instances", () => {
-      render(
-        <div>
-          <MemoizedProse>
-            <h1>First Prose</h1>
-            <p>First content</p>
-          </MemoizedProse>
-          <MemoizedProse>
-            <h1>Second Prose</h1>
-            <p>Second content</p>
-          </MemoizedProse>
-          <MemoizedProse>
-            <h1>Third Prose</h1>
-            <p>Third content</p>
-          </MemoizedProse>
-        </div>
-      );
-
-      expect(screen.getByText("First Prose")).toBeInTheDocument();
-      expect(screen.getByText("Second Prose")).toBeInTheDocument();
-      expect(screen.getByText("Third Prose")).toBeInTheDocument();
-
-      const proseElements = screen.getAllByTestId(/test-id-prose-root/);
-      expect(proseElements).toHaveLength(3);
-    });
-  });
-
-  describe("Debug Mode Integration", () => {
-    it("applies debug mode across multiple Prose instances", () => {
-      render(
-        <div>
-          <Prose debugMode={true} debugId="prose-1">
-            <p>First prose</p>
-          </Prose>
-          <Prose debugMode={true} debugId="prose-2">
-            <p>Second prose</p>
-          </Prose>
-        </div>
-      );
-
-      const firstProse = screen.getByTestId("prose-1-prose-root");
-      const secondProse = screen.getByTestId("prose-2-prose-root");
-
-      expect(firstProse).toHaveAttribute("data-debug-mode", "true");
-      expect(secondProse).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("handles mixed debug mode states", () => {
-      render(
-        <div>
-          <Prose debugMode={true} debugId="debug-prose">
-            <p>Debug prose</p>
-          </Prose>
-          <Prose debugMode={false} debugId="no-debug-prose">
-            <p>No debug prose</p>
-          </Prose>
-          <Prose debugId="default-prose">
-            <p>Default prose</p>
-          </Prose>
-        </div>
-      );
-
-      const debugProse = screen.getByTestId("debug-prose-prose-root");
-      const noDebugProse = screen.getByTestId("no-debug-prose-prose-root");
-      const defaultProse = screen.getByTestId("default-prose-prose-root");
-
-      expect(debugProse).toHaveAttribute("data-debug-mode", "true");
-      expect(noDebugProse).not.toHaveAttribute("data-debug-mode");
-      expect(defaultProse).not.toHaveAttribute("data-debug-mode");
+      const prose = container.firstChild as HTMLElement;
+      expect(prose).toHaveClass("prose", "dark:prose-invert");
     });
   });
 });
