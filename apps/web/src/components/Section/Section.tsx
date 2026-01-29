@@ -1,45 +1,30 @@
+/**
+ * @file Section.tsx
+ * @author Guy Romelle Magayano
+ * @description Section component for the web application.
+ */
+
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  createComponentProps,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
-
-import { cn } from "@web/utils";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
 // SECTION TITLE COMPONENT
 // ============================================================================
 
-type SectionTitleElementType = "h2" | "h3";
-type SectionTitleProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
+export type SectionTitleElementType = "h2" | "h3";
+export type SectionTitleProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<SectionTitleElementType>,
   "as"
 > &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "h2" or "h3" are allowed */
-    as?: T;
+  P & {
+    as?: SectionTitleElementType;
   };
 
-const SectionTitle = setDisplayName(function SectionTitle<
-  T extends SectionTitleElementType,
->(props: SectionTitleProps<T>) {
-  const {
-    as: Component = "h2",
-    children,
-    className,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  // Section title component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+function SectionTitle<P extends Record<string, unknown> = {}>(
+  props: SectionTitleProps<P>
+) {
+  const { as: Component = "h2", className, children, ...rest } = props;
 
   if (!children) return null;
 
@@ -50,44 +35,31 @@ const SectionTitle = setDisplayName(function SectionTitle<
         "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
         className
       )}
-      {...createComponentProps(componentId, "section-title", isDebugMode)}
     >
       {children}
     </Component>
   );
-});
+}
+
+SectionTitle.displayName = "SectionTitle";
 
 // ============================================================================
 // SECTION CONTENT COMPONENT
 // ============================================================================
 
-type SectionContentElementType = "div";
-type SectionContentProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
+export type SectionContentElementType = "div" | "section" | "article";
+export type SectionContentProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<SectionContentElementType>,
   "as"
 > &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "div" is allowed */
-    as?: T;
+  P & {
+    as?: SectionContentElementType;
   };
 
-const SectionContent = setDisplayName(function SectionContent(
-  props: SectionContentProps<SectionContentElementType>
+function SectionContent<P extends Record<string, unknown> = {}>(
+  props: SectionContentProps<P>
 ) {
-  const {
-    as: Component = "div",
-    children,
-    className,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  // Section content component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+  const { as: Component = "div", className, children, ...rest } = props;
 
   if (!children) return null;
 
@@ -95,44 +67,31 @@ const SectionContent = setDisplayName(function SectionContent(
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("md:col-span-3", className)}
-      {...createComponentProps(componentId, "section-content", isDebugMode)}
     >
       {children}
     </Component>
   );
-});
+}
+
+SectionContent.displayName = "SectionContent";
 
 // ============================================================================
 // SECTION GRID COMPONENT
 // ============================================================================
 
-type SectionGridElementType = "div";
-type SectionGridProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
+export type SectionGridElementType = "div" | "section" | "article";
+export type SectionGridProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<SectionGridElementType>,
   "as"
 > &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "div" is allowed */
-    as?: T;
+  P & {
+    as?: SectionGridElementType;
   };
 
-const SectionGrid = setDisplayName(function SectionGrid<
-  T extends SectionGridElementType,
->(props: SectionGridProps<T>) {
-  const {
-    as: Component = "div",
-    children,
-    className,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  // Section grid component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+function SectionGrid<P extends Record<string, unknown> = {}>(
+  props: SectionGridProps<P>
+) {
+  const { as: Component = "div", className, children, ...rest } = props;
 
   if (!children) return null;
 
@@ -143,45 +102,41 @@ const SectionGrid = setDisplayName(function SectionGrid<
         "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
         className
       )}
-      {...createComponentProps(componentId, "section-grid", isDebugMode)}
     >
       {children}
     </Component>
   );
-});
+}
+
+SectionGrid.displayName = "SectionGrid";
 
 // ============================================================================
-// SECTION COMPONENT
+// MAIN SECTION COMPONENT
 // ============================================================================
 
-type SectionElementType = "section";
-
-export type SectionProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
+export type SectionElementType = "section" | "div" | "article";
+export type SectionProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<SectionElementType>,
   "as"
 > &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "section" is allowed */
-    as?: T;
-    /** The title of the section */
+  P & {
+    as?: SectionElementType;
     title?: string;
   };
 
-export const Section = setDisplayName(function Section<
-  T extends SectionElementType,
->(props: SectionProps<T>) {
+export function Section<P extends Record<string, unknown> = {}>(
+  props: SectionProps<P>
+) {
   const {
     as: Component = "section",
-    children,
-    className,
     title,
-    debugId,
-    debugMode,
+    className,
+    children,
     ...rest
   } = props;
 
-  // Section component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+  const titleId = React.useId();
+  const sectionTitleId = `${titleId}-section-title`;
 
   if (!title?.trim()?.length || !children) {
     return null;
@@ -190,26 +145,18 @@ export const Section = setDisplayName(function Section<
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      aria-labelledby={sectionTitleId}
       className={cn(
         "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
         className
       )}
-      {...createComponentProps(componentId, "section", isDebugMode)}
     >
-      <SectionGrid debugId={debugId} debugMode={debugMode}>
-        <SectionTitle debugId={debugId} debugMode={debugMode}>
-          {title}
-        </SectionTitle>
-        <SectionContent debugId={debugId} debugMode={debugMode}>
-          {children}
-        </SectionContent>
+      <SectionGrid>
+        <SectionTitle id={sectionTitleId}>{title}</SectionTitle>
+        <SectionContent>{children}</SectionContent>
       </SectionGrid>
     </Component>
   );
-});
+}
 
-// ============================================================================
-// MEMOIZED SECTION COMPONENT
-// ============================================================================
-
-export const MemoizedSection = React.memo(Section);
+Section.displayName = "Section";
