@@ -1,134 +1,37 @@
-// =============================================================================
-// SECTION COMPONENT INTEGRATION TESTS
-// =============================================================================
-// Test Type: Integration Tests
-// Coverage Tier: Tier 2 (Core Components)
-// Risk Tier: Medium
-// Component Type: Compound Component (with sub-components)
-// =============================================================================
-
-import React from "react";
+/**
+ * @file Section.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Section component.
+ */
 
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Section } from "../Section";
 
-import "@testing-library/jest-dom";
+// ============================================================================
+// MOCKS
+// ============================================================================
 
-// Set up a test environments
-beforeAll(() => {
-  // Mock globalThis.process for the test environment
-  (globalThis as any).process = {
-    env: {
-      NODE_ENV: "test",
-    },
-    memoryUsage: () => ({
-      rss: 0,
-      heapTotal: 0,
-      heapUsed: 0,
-      external: 0,
-      arrayBuffers: 0,
-    }),
-  };
-});
-
-// Mock the shared components
-vi.mock("@guyromellemagayano/components", () => ({
-  Div: React.forwardRef(function Div(props: any, ref: any) {
-    return React.createElement("div", { ...props, ref, "data-testid": "div" });
-  }),
-  Heading: React.forwardRef(function Heading(props: any, ref: any) {
-    return React.createElement("h2", {
-      ...props,
-      ref,
-      "data-testid": "heading",
-    });
-  }),
-  Section: React.forwardRef(function GRMSectionComponent(props: any, ref: any) {
-    return React.createElement("section", {
-      ...props,
-      ref,
-      "data-testid": "grm-section",
-    });
-  }),
-}));
-
-// Mock the useComponentId hook
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: (options as any).debugId || "test-id",
-    isDebugMode: (options as any).debugMode || false,
-  }))
-);
-
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
-}));
-
-// Mock the utils
-// @ts-ignore
-vi.mock("@guyromellemagayano/utils", () => ({
-  hasValidContent: vi.fn((content) => {
-    if (content == null) return false;
-    if (content === false) return false;
-    if (typeof content === "string") return content.trim() !== "";
-    if (Array.isArray(content))
-      return content.some((item) => item != null && item !== "");
-    return true;
-  }),
-  hasAnyRenderableContent: vi.fn((children) => {
-    if (children === null || children === undefined || children === false) {
-      return false;
-    }
-    if (children === "") {
-      return false;
-    }
-    return !(Array.isArray(children) && children.length === 0);
-  }),
-  createComponentProps: vi.fn(
-    (id, componentType, debugMode, additionalProps = {}) => ({
-      [`data-${componentType}-id`]: `${id}-${componentType}`,
-      "data-debug-mode": debugMode ? "true" : undefined,
-      "data-testid":
-        // @ts-ignore
-        (additionalProps as any)["data-testid"] ||
-        `${id}-${componentType}-root`,
-      ...additionalProps,
-    })
+vi.mock("@web/utils/helpers", () => ({
+  cn: vi.fn((...classes: (string | undefined)[]) =>
+    classes.filter(Boolean).join(" ")
   ),
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) {
-      // @ts-ignore
-      component.displayName = displayName;
-    }
-    return component;
-  }),
-  isValidImageSrc: vi.fn((src) => {
-    if (!src) return false;
-    if (typeof src !== "string") return false;
-    return src.trim() !== "";
-  }),
 }));
 
-// Mock the cn helper
-vi.mock("@web/utils", () => ({
-  cn: vi.fn((...classes: any[]) => classes.filter(Boolean).join(" ")),
-  clamp: vi.fn((value: number, min: number, max: number) =>
-    Math.min(Math.max(value, min), max)
-  ),
-  isActivePath: vi.fn(() => true),
-}));
+// ============================================================================
+// TESTS
+// ============================================================================
 
-afterEach(() => {
-  cleanup();
-  vi.clearAllMocks();
-});
+describe("Section Integration Tests", () => {
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
 
-describe("Section (Integration)", () => {
   describe("Component Composition", () => {
     it("renders complete Section structure with all sub-components", () => {
-      render(
+      const { container } = render(
         <Section title="Integration Test">
           <div>
             <p>Section content</p>
@@ -140,64 +43,42 @@ describe("Section (Integration)", () => {
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = screen.getByTestId("test-id-section-grid-root");
-      const title = screen.getByTestId("test-id-section-title-root");
-      const content = screen.getByTestId("test-id-section-content-root");
-
+      const section = container.querySelector("section");
       expect(section).toBeInTheDocument();
+
+      const grid = section?.querySelector("div");
       expect(grid).toBeInTheDocument();
-      expect(title).toBeInTheDocument();
-      expect(content).toBeInTheDocument();
+      expect(grid?.className).toContain("grid");
 
-      expect(section.tagName).toBe("SECTION");
-      expect(grid.tagName).toBe("DIV");
-      expect(title.tagName).toBe("H2");
-      expect(content.tagName).toBe("DIV");
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toHaveTextContent("Integration Test");
+      expect(heading.tagName).toBe("H2");
 
-      expect(title).toHaveTextContent("Integration Test");
-      expect(content).toHaveTextContent("Section content");
-      expect(content).toHaveTextContent("Item 1");
-      expect(content).toHaveTextContent("Item 2");
+      expect(section).toHaveTextContent("Section content");
+      expect(section).toHaveTextContent("Item 1");
+      expect(section).toHaveTextContent("Item 2");
     });
 
     it("maintains proper component hierarchy", () => {
-      render(
+      const { container } = render(
         <Section title="Hierarchy Test">
           <p>Content</p>
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = screen.getByTestId("test-id-section-grid-root");
-      const title = screen.getByTestId("test-id-section-title-root");
-      const content = screen.getByTestId("test-id-section-content-root");
+      const section = container.querySelector("section");
+      const grid = section?.firstElementChild;
+      expect(section).toContainElement(grid ?? null);
 
-      expect(section.contains(grid)).toBe(true);
-      expect(grid.contains(title)).toBe(true);
-      expect(grid.contains(content)).toBe(true);
-    });
-
-    it("propagates debug props to all sub-components", () => {
-      render(
-        <Section title="Debug Propagation" debugId="debug-id" debugMode={true}>
-          <p>Content</p>
-        </Section>
-      );
-
-      const section = screen.getByTestId("debug-id-section-root");
-      const grid = screen.getByTestId("debug-id-section-grid-root");
-      const title = screen.getByTestId("debug-id-section-title-root");
-      const content = screen.getByTestId("debug-id-section-content-root");
-
-      expect(section).toHaveAttribute("data-debug-mode", "true");
-      expect(grid).toHaveAttribute("data-debug-mode", "true");
-      expect(title).toHaveAttribute("data-debug-mode", "true");
-      expect(content).toHaveAttribute("data-debug-mode", "true");
+      const heading = screen.getByRole("heading", { level: 2 });
+      const contentWrapper = grid?.children[1];
+      expect(section).toContainElement(heading);
+      expect(grid?.childElementCount).toBe(2);
+      expect(contentWrapper).toBeInTheDocument();
     });
 
     it("handles multiple Section instances", () => {
-      render(
+      const { container } = render(
         <div>
           <Section title="First Section">
             <p>First content</p>
@@ -213,7 +94,7 @@ describe("Section (Integration)", () => {
       expect(screen.getByText("First content")).toBeInTheDocument();
       expect(screen.getByText("Second content")).toBeInTheDocument();
 
-      const sections = screen.getAllByTestId(/test-id-section-root/);
+      const sections = container.querySelectorAll("section");
       expect(sections).toHaveLength(2);
     });
 
@@ -241,27 +122,50 @@ describe("Section (Integration)", () => {
     });
   });
 
-  describe("ARIA Integration", () => {
-    it("integrates with ARIA landmarks and relationships", () => {
-      render(
-        <Section
-          title="ARIA Section"
-          aria-labelledby="section-title"
-          debugId="aria-integration"
-        >
+  describe("Styling Integration", () => {
+    it("applies styling classes correctly across all components", () => {
+      const { container } = render(
+        <Section title="Styling Test" className="custom-section">
+          <p>Content</p>
+        </Section>
+      );
+
+      const section = container.querySelector("section");
+      expect(section).toHaveClass("custom-section");
+      expect(section).toHaveClass("md:border-l");
+
+      const grid = section?.firstElementChild;
+      expect(grid).toHaveClass("grid");
+      expect(grid).toHaveClass("max-w-3xl");
+
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toHaveClass("text-sm");
+      expect(heading).toHaveClass("font-semibold");
+
+      const contentWrapper = grid?.children[1];
+      expect(contentWrapper).toBeInTheDocument();
+      expect(contentWrapper).toHaveClass("md:col-span-3");
+    });
+  });
+
+  describe("Accessibility and SEO Integration", () => {
+    it("section has aria-labelledby pointing to title id", () => {
+      const { container } = render(
+        <Section title="ARIA Section">
           <p>Section content</p>
         </Section>
       );
 
-      const section = screen.getByTestId("aria-integration-section-root");
-      const title = screen.getByRole("heading", { level: 2 });
+      const section = container.querySelector("section");
+      expect(section).toHaveAttribute("aria-labelledby");
 
-      expect(section).toHaveAttribute("aria-labelledby", "section-title");
-      expect(title).toBeInTheDocument();
-      expect(title).toHaveTextContent("ARIA Section");
+      const titleId = section?.getAttribute("aria-labelledby");
+      const titleEl = titleId ? document.getElementById(titleId) : null;
+      expect(titleEl).toBeInTheDocument();
+      expect(titleEl).toHaveTextContent("ARIA Section");
     });
 
-    it("maintains proper heading hierarchy", () => {
+    it("maintains proper heading hierarchy in page context", () => {
       render(
         <div>
           <h1>Page Title</h1>
@@ -277,25 +181,48 @@ describe("Section (Integration)", () => {
       expect(h1).toHaveTextContent("Page Title");
       expect(h2).toHaveTextContent("Section Title");
     });
-  });
 
-  describe("Styling Integration", () => {
-    it("applies styling classes correctly across all components", () => {
-      render(
-        <Section title="Styling Test" className="custom-section">
+    it("polymorphic as preserves aria-labelledby", () => {
+      const { container } = render(
+        <Section title="Article Section" as="article">
           <p>Content</p>
         </Section>
       );
 
-      const section = screen.getByTestId("test-id-section-root");
-      const grid = screen.getByTestId("test-id-section-grid-root");
-      const title = screen.getByTestId("test-id-section-title-root");
-      const content = screen.getByTestId("test-id-section-content-root");
+      const article = container.querySelector("article");
+      expect(article).toHaveAttribute("aria-labelledby");
+      const titleId = article?.getAttribute("aria-labelledby");
+      const titleEl = titleId ? document.getElementById(titleId) : null;
+      expect(titleEl).toHaveTextContent("Article Section");
+    });
 
-      expect(section).toHaveAttribute("class");
-      expect(grid).toHaveAttribute("class");
-      expect(title).toHaveAttribute("class");
-      expect(content).toHaveAttribute("class");
+    it("single h2 per section for SEO", () => {
+      render(
+        <Section title="SEO Heading">
+          <p>Content</p>
+        </Section>
+      );
+
+      const headings = screen.getAllByRole("heading", { level: 2 });
+      expect(headings).toHaveLength(1);
+      expect(headings[0]).toHaveTextContent("SEO Heading");
+    });
+
+    it("passes through aria-label and id on section root", () => {
+      const { container } = render(
+        <Section
+          title="Label Test"
+          id="section-about"
+          aria-label="About section"
+        >
+          <p>Content</p>
+        </Section>
+      );
+
+      const section = container.querySelector("section");
+      expect(section).toHaveAttribute("id", "section-about");
+      expect(section).toHaveAttribute("aria-label", "About section");
+      expect(section).toHaveAttribute("aria-labelledby");
     });
   });
 });
