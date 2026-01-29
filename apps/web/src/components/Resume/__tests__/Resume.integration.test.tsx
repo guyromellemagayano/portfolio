@@ -1,10 +1,8 @@
-// ============================================================================
-// TEST CLASSIFICATION
-// - Test Type: Integration
-// - Coverage: Tier 2 (80%+)
-// - Risk Tier: Core
-// - Component Type: Orchestrator with Sub-components
-// ============================================================================
+/**
+ * @file Resume.integration.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Integration tests for the Resume component.
+ */
 
 import React from "react";
 
@@ -17,128 +15,147 @@ import { Resume } from "../Resume";
 // MOCKS
 // ============================================================================
 
-// Mock useComponentId hook
-const mockUseComponentId = vi.hoisted(() =>
-  vi.fn((options = {}) => ({
-    componentId: options.debugId || options.internalId || "test-id",
-    isDebugMode: options.debugMode || false,
-  }))
-);
-
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: mockUseComponentId,
+// Mock next-intl
+vi.mock("next-intl", () => ({
+  useTranslations: vi.fn((namespace: string) => {
+    const translations: Record<string, Record<string, string>> = {
+      "resume.ariaLabels": {
+        work: "Work",
+        downloadCV: "Download CV",
+        company: "Company",
+        role: "Role",
+        date: "Date",
+      },
+    };
+    return (key: string) => {
+      const translation = translations[namespace];
+      return translation?.[key] || key;
+    };
+  }),
 }));
 
-// Mock utility functions
-vi.mock("@guyromellemagayano/utils", async () => {
-  const actual = await vi.importActual("@guyromellemagayano/utils");
-  return {
-    ...actual,
-    createComponentProps: vi.fn(
-      (id, componentType, debugMode, additionalProps = {}) => ({
-        [`data-${componentType}-id`]: `${id}-${componentType}`,
-        "data-debug-mode": debugMode ? "true" : undefined,
-        "data-testid":
-          additionalProps["data-testid"] || `${id}-${componentType}-root`,
-        ...additionalProps,
-      })
-    ),
-    setDisplayName: vi.fn((component, displayName) => {
-      if (component) component.displayName = displayName;
-      return component;
-    }),
-  };
-});
+// Mock @web/utils/helpers
+vi.mock("@web/utils/helpers", () => ({
+  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
+  getRoleItemKey: vi.fn(
+    (role: { company: string; title: string }, index: number) =>
+      `${role.company}-${role.title}-${index}`
+  ),
+  parseRoleDate: vi.fn((date: string | { label: string; dateTime: string }) => {
+    if (typeof date === "string") {
+      return { label: date, dateTime: date };
+    }
+    return date;
+  }),
+}));
 
-// Mock @web/utils
-vi.mock("@web/utils", async () => {
-  const actual = await vi.importActual("@web/utils");
-  return {
-    ...actual,
-    cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-  };
-});
+// Mock @web/components
+vi.mock("@web/components/button", () => ({
+  Button: React.forwardRef<
+    HTMLAnchorElement,
+    React.ComponentProps<"a"> & { variant?: string }
+  >(function Button({ children, className, href, variant, ...props }, ref) {
+    return (
+      <a
+        ref={ref}
+        href={href}
+        className={className}
+        data-testid="button"
+        data-variant={variant}
+        {...props}
+      >
+        {children}
+      </a>
+    );
+  }),
+}));
 
-// Mock @web/components with realistic implementations
-vi.mock("@web/components", async () => {
-  const actual = await vi.importActual("@web/components");
-  return {
-    ...actual,
-    Button: vi.fn(
-      ({ children, className, href, variantStyle, debugId, debugMode, ...props }) => (
-        <a
-          data-testid="button"
-          href={href}
-          className={className}
-          data-button-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          data-variant-style={variantStyle}
-          {...props}
-        >
-          {children}
-        </a>
-      )
-    ),
-    Icon: vi.fn(({ name, className, debugId, debugMode, ...props }) => {
-      const iconMap: Record<string, string> = {
-        "arrow-down": "arrow-down-icon",
-        briefcase: "briefcase-icon",
-      };
-      const testId = iconMap[name as string] || "icon";
-      return (
-        <svg
-          data-testid={testId}
-          className={className}
-          data-icon-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...props}
-        >
-          {name}
-        </svg>
-      );
-    }),
-    List: vi.fn(
-      ({ children, className, debugId, debugMode, ...props }) => (
-        <ol
-          data-testid="list"
-          className={className}
-          data-list-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...props}
-        >
-          {children}
-        </ol>
-      )
-    ),
-    ListItem: vi.fn(
-      ({ children, className, role, debugId, debugMode, ...props }) => (
-        <li
-          data-testid="list-item"
-          className={className}
-          role={role}
-          data-list-item-id={debugId}
-          data-debug-mode={debugMode ? "true" : undefined}
-          {...props}
-        >
-          {children}
-        </li>
-      )
-    ),
-  };
-});
+vi.mock("@web/components/icon", () => ({
+  Icon: function Icon({
+    name,
+    className,
+    "aria-hidden": ariaHidden,
+    ...props
+  }: {
+    name: string;
+    className?: string;
+    "aria-hidden"?: boolean;
+    [key: string]: any;
+  }) {
+    const iconMap: Record<string, string> = {
+      "arrow-down": "arrow-down-icon",
+      briefcase: "briefcase-icon",
+    };
+    const testId = iconMap[name] || "icon";
+    return (
+      <svg
+        data-testid={testId}
+        className={className}
+        aria-hidden={ariaHidden}
+        {...props}
+      >
+        {name}
+      </svg>
+    );
+  },
+}));
+
+vi.mock("@web/components/list", () => ({
+  List: function List({
+    children,
+    className,
+    ...props
+  }: {
+    children: React.ReactNode;
+    className?: string;
+    [key: string]: any;
+  }) {
+    return (
+      <ol data-testid="list" className={className} {...props}>
+        {children}
+      </ol>
+    );
+  },
+  ListItem: function ListItem({
+    children,
+    className,
+    ...props
+  }: {
+    children: React.ReactNode;
+    className?: string;
+    [key: string]: any;
+  }) {
+    return (
+      <li data-testid="list-item" className={className} {...props}>
+        {children}
+      </li>
+    );
+  },
+}));
 
 // Mock Next.js Image component
 vi.mock("next/image", () => ({
-  default: vi.fn(({ src, alt, className, ...props }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={typeof src === "string" ? src : ""}
-      alt={alt}
-      className={className}
-      data-testid="next-image"
-      {...props}
-    />
-  )),
+  default: function Image({
+    src,
+    alt,
+    className,
+    ...props
+  }: {
+    src: any;
+    alt: string;
+    className?: string;
+    [key: string]: any;
+  }) {
+    return (
+      <img
+        src={typeof src === "string" ? src : ""}
+        alt={alt}
+        className={className}
+        data-testid="next-image"
+        {...props}
+      />
+    );
+  },
 }));
 
 // ============================================================================
@@ -153,44 +170,36 @@ describe("Resume Integration Tests", () => {
 
   describe("Resume Component Integration", () => {
     it("renders complete resume with all components", () => {
-      render(<Resume debugId="resume-test" debugMode={true} />);
+      const { container } = render(<Resume />);
 
       // Test main resume container
-      const resume = screen.getByTestId("resume-test-resume-root");
+      const resume = container.querySelector("div");
       expect(resume).toBeInTheDocument();
-      expect(resume.tagName).toBe("DIV");
-      expect(resume).toHaveAttribute("data-debug-mode", "true");
-      expect(resume).toHaveAttribute("data-resume-id", "resume-test-resume");
+      expect(resume?.tagName).toBe("DIV");
 
       // Test ResumeTitle component
       const title = screen.getByRole("heading", { level: 2 });
       expect(title).toBeInTheDocument();
-      expect(title).toHaveAttribute("data-resume-title-id", "resume-test-resume-title");
-      expect(title).toHaveAttribute("data-debug-mode", "true");
       expect(screen.getByText("Work")).toBeInTheDocument();
       expect(screen.getByTestId("briefcase-icon")).toBeInTheDocument();
 
       // Test ResumeRoleList component
       const list = screen.getByTestId("list");
       expect(list).toBeInTheDocument();
-      expect(list).toHaveAttribute("data-list-id", "resume-test");
-      expect(list).toHaveAttribute("data-debug-mode", "true");
 
       // Test ResumeDownloadButton component
       const button = screen.getByTestId("button");
       expect(button).toBeInTheDocument();
-      expect(button).toHaveAttribute("data-button-id", "resume-test");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
       expect(button).toHaveAttribute("href", "/resume.pdf");
-      expect(button).toHaveAttribute("data-variant-style", "secondary");
+      expect(button).toHaveAttribute("data-variant", "secondary");
       expect(screen.getByText("Download CV")).toBeInTheDocument();
       expect(screen.getByTestId("arrow-down-icon")).toBeInTheDocument();
     });
 
     it("maintains proper component hierarchy", () => {
-      render(<Resume debugId="hierarchy-test" />);
+      const { container } = render(<Resume />);
 
-      const resume = screen.getByTestId("hierarchy-test-resume-root");
+      const resume = container.querySelector("div");
       expect(resume).toBeInTheDocument();
 
       const title = screen.getByRole("heading", { level: 2 });
@@ -203,58 +212,33 @@ describe("Resume Integration Tests", () => {
       expect(resume).toContainElement(button);
 
       // Check that components are rendered in the correct order
-      const children = Array.from(resume.children);
+      const children = Array.from(resume?.children || []);
       expect(children[0]).toBe(title);
       expect(children[1]).toBe(list);
       expect(children[2]).toBe(button);
     });
 
-    it("propagates debug props to all sub-components", () => {
-      render(<Resume debugId="debug-test" debugMode={true} />);
-
-      const resume = screen.getByTestId("debug-test-resume-root");
-      expect(resume).toHaveAttribute("data-debug-mode", "true");
-
-      // ResumeTitle should receive debug props
-      const title = screen.getByRole("heading", { level: 2 });
-      expect(title).toHaveAttribute("data-debug-mode", "true");
-      // Note: ResumeTitle's Icon doesn't receive debug props in the implementation
-      const briefcaseIcon = screen.getByTestId("briefcase-icon");
-      expect(briefcaseIcon).toBeInTheDocument();
-
-      // ResumeRoleList should receive debug props
-      const list = screen.getByTestId("list");
-      expect(list).toHaveAttribute("data-debug-mode", "true");
-
-      // ResumeDownloadButton should receive debug props
-      const button = screen.getByTestId("button");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
-      const arrowDownIcon = screen.getByTestId("arrow-down-icon");
-      expect(arrowDownIcon).toHaveAttribute("data-debug-mode", "true");
-    });
-
     it("handles component updates efficiently", () => {
-      const { rerender } = render(<Resume debugId="initial" />);
+      const { rerender, container } = render(<Resume />);
 
-      let resume = screen.getByTestId("initial-resume-root");
-      expect(resume).toHaveAttribute("data-resume-id", "initial-resume");
+      let resume = container.querySelector("div");
+      expect(resume).toBeInTheDocument();
 
-      rerender(<Resume debugId="updated" className="new-class" />);
-      resume = screen.getByTestId("updated-resume-root");
-      expect(resume).toHaveAttribute("data-resume-id", "updated-resume");
+      rerender(<Resume className="new-class" />);
+      resume = container.querySelector("div");
+      expect(resume).toHaveClass("new-class");
     });
 
     it("maintains component structure during updates", () => {
-      const { rerender } = render(<Resume debugId="structure-test" />);
+      const { rerender } = render(<Resume />);
 
-      let resume = screen.getByTestId("structure-test-resume-root");
-      expect(resume).toBeInTheDocument();
+      // Verify all internal components are present
+      expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+      expect(screen.getByTestId("list")).toBeInTheDocument();
+      expect(screen.getByTestId("button")).toBeInTheDocument();
 
       // Update with new props
-      rerender(<Resume debugId="structure-test" className="updated-class" />);
-
-      resume = screen.getByTestId("structure-test-resume-root");
-      expect(resume).toBeInTheDocument();
+      rerender(<Resume className="updated-class" />);
 
       // Verify all internal components are still present
       expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
@@ -265,11 +249,11 @@ describe("Resume Integration Tests", () => {
 
   describe("ResumeTitle Integration", () => {
     it("renders ResumeTitle with Icon and text", () => {
-      render(<Resume debugId="title-test" />);
+      render(<Resume />);
 
       const title = screen.getByRole("heading", { level: 2 });
       expect(title).toBeInTheDocument();
-      expect(title).toHaveAttribute("role", "heading");
+      expect(title.tagName).toBe("H2");
 
       const icon = screen.getByTestId("briefcase-icon");
       expect(icon).toBeInTheDocument();
@@ -280,59 +264,64 @@ describe("Resume Integration Tests", () => {
       expect(title).toContainElement(text);
     });
 
-    it("passes debug props to ResumeTitle", () => {
-      render(<Resume debugId="title-debug" debugMode={true} />);
+    it("renders ResumeTitle with correct structure", () => {
+      render(<Resume />);
 
       const title = screen.getByRole("heading", { level: 2 });
-      expect(title).toHaveAttribute("data-resume-title-id", "title-debug-resume-title");
-      expect(title).toHaveAttribute("data-debug-mode", "true");
-
-      // Note: ResumeTitle's Icon doesn't receive debug props in the implementation
-      const icon = screen.getByTestId("briefcase-icon");
-      expect(icon).toBeInTheDocument();
+      expect(title).toBeInTheDocument();
+      expect(title).toHaveClass("flex");
+      expect(title).toHaveClass("text-sm");
+      expect(title).toHaveClass("font-semibold");
     });
   });
 
   describe("ResumeRoleList Integration", () => {
     it("renders ResumeRoleList with ResumeRoleListItem children", () => {
-      render(<Resume debugId="list-test" />);
+      render(<Resume />);
 
       const list = screen.getByTestId("list");
       expect(list).toBeInTheDocument();
 
-      // Should render list items for each role in RESUME_DATA
+      // Should render list items for each role in RESUME_DATA (4 items)
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBeGreaterThan(0);
+      expect(listItems.length).toBe(4);
     });
 
-    it("passes debug props to ResumeRoleList and ListItem children", () => {
-      render(<Resume debugId="list-debug" debugMode={true} />);
+    it("renders all role data correctly", () => {
+      render(<Resume />);
 
-      const list = screen.getByTestId("list");
-      expect(list).toHaveAttribute("data-list-id", "list-debug");
-      expect(list).toHaveAttribute("data-debug-mode", "true");
+      // Should render all companies from RESUME_DATA
+      expect(screen.getByText("Planetaria")).toBeInTheDocument();
+      expect(screen.getByText("Airbnb")).toBeInTheDocument();
+      expect(screen.getByText("Facebook")).toBeInTheDocument();
+      expect(screen.getByText("Starbucks")).toBeInTheDocument();
 
-      // ListItem children receive debug props from ResumeRoleList via ResumeRoleListItem
-      const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBeGreaterThan(0);
-      // Note: ResumeRoleListItem uses ListItem but doesn't pass debugId directly to it
-      // Instead, ResumeRoleListItem uses createComponentProps on its own elements
-      listItems.forEach((item) => {
-        expect(item).toBeInTheDocument();
-        // ListItem may not receive debugId if ResumeRoleListItem doesn't pass it
-        // This is acceptable as ResumeRoleListItem handles its own debug attributes
-      });
+      // Should render all titles
+      expect(screen.getByText("CEO")).toBeInTheDocument();
+      expect(screen.getByText("Product Designer")).toBeInTheDocument();
+      expect(screen.getByText("iOS Software Engineer")).toBeInTheDocument();
+      expect(screen.getByText("Shift Supervisor")).toBeInTheDocument();
+    });
+
+    it("renders role dates correctly", () => {
+      render(<Resume />);
+
+      // Should render date ranges for roles (using getAllByText since dates may appear multiple times)
+      expect(screen.getAllByText("2019").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2014").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2011").length).toBeGreaterThan(0);
+      expect(screen.getAllByText("2008").length).toBeGreaterThan(0);
     });
   });
 
   describe("ResumeDownloadButton Integration", () => {
     it("renders ResumeDownloadButton with Button and Icon", () => {
-      render(<Resume debugId="button-test" />);
+      render(<Resume />);
 
       const button = screen.getByTestId("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute("href", "/resume.pdf");
-      expect(button).toHaveAttribute("data-variant-style", "secondary");
+      expect(button).toHaveAttribute("data-variant", "secondary");
 
       expect(screen.getByText("Download CV")).toBeInTheDocument();
       expect(button).toContainElement(screen.getByText("Download CV"));
@@ -342,53 +331,55 @@ describe("Resume Integration Tests", () => {
       expect(button).toContainElement(icon);
     });
 
-    it("passes debug props to ResumeDownloadButton, Button, and Icon", () => {
-      render(<Resume debugId="button-debug" debugMode={true} />);
+    it("renders ResumeDownloadButton with correct classes", () => {
+      render(<Resume />);
 
       const button = screen.getByTestId("button");
-      expect(button).toHaveAttribute("data-button-id", "button-debug");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
-
-      const icon = screen.getByTestId("arrow-down-icon");
-      expect(icon).toHaveAttribute("data-icon-id", "button-debug");
-      expect(icon).toHaveAttribute("data-debug-mode", "true");
+      expect(button).toHaveClass("group");
+      expect(button).toHaveClass("mt-6");
+      expect(button).toHaveClass("w-full");
     });
   });
 
   describe("Resume with ResumeRoleListItem Integration", () => {
     it("renders ResumeRoleListItem with role data", () => {
-      render(<Resume debugId="role-item-test" />);
+      render(<Resume />);
 
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBeGreaterThan(0);
+      expect(listItems.length).toBe(4);
 
       // Each list item should contain role information
-      // Note: Images are rendered within ResumeRoleListItem, but may not be visible if RESUME_DATA is empty in test
       listItems.forEach((item) => {
-        expect(item).toHaveAttribute("role", "listitem");
+        expect(item).toBeInTheDocument();
       });
     });
 
     it("renders role data correctly in ResumeRoleListItem", () => {
-      render(<Resume debugId="role-data-test" />);
+      render(<Resume />);
 
       // Should render company names, titles, and dates from RESUME_DATA
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBeGreaterThan(0);
+      expect(listItems.length).toBe(4);
 
-      // Each item should have role="listitem"
-      listItems.forEach((item) => {
-        expect(item).toHaveAttribute("role", "listitem");
-      });
+      // Verify structure: each item should have company, title, and dates
+      expect(screen.getByText("Planetaria")).toBeInTheDocument();
+      expect(screen.getByText("CEO")).toBeInTheDocument();
+    });
+
+    it("renders images for each role", () => {
+      render(<Resume />);
+
+      const images = screen.getAllByTestId("next-image");
+      expect(images.length).toBe(4); // One image per role
     });
   });
 
   describe("Complete Resume Integration", () => {
     it("renders complete resume with all sub-components working together", () => {
-      render(<Resume debugId="complete-test" debugMode={true} />);
+      const { container } = render(<Resume />);
 
       // Main container
-      const resume = screen.getByTestId("complete-test-resume-root");
+      const resume = container.querySelector("div");
       expect(resume).toBeInTheDocument();
 
       // ResumeTitle
@@ -401,7 +392,7 @@ describe("Resume Integration Tests", () => {
       const list = screen.getByTestId("list");
       expect(list).toBeInTheDocument();
       const listItems = screen.getAllByTestId("list-item");
-      expect(listItems.length).toBeGreaterThan(0);
+      expect(listItems.length).toBe(4);
 
       // ResumeDownloadButton
       const button = screen.getByTestId("button");
@@ -416,9 +407,9 @@ describe("Resume Integration Tests", () => {
     });
 
     it("maintains proper component relationships", () => {
-      render(<Resume debugId="relationships-test" />);
+      const { container } = render(<Resume />);
 
-      const resume = screen.getByTestId("relationships-test-resume-root");
+      const resume = container.querySelector("div");
       const title = screen.getByRole("heading", { level: 2 });
       const list = screen.getByTestId("list");
       const button = screen.getByTestId("button");
@@ -444,27 +435,105 @@ describe("Resume Integration Tests", () => {
     });
 
     it("handles prop updates across all components", () => {
-      const { rerender } = render(<Resume debugId="update-test" debugMode={false} />);
+      const { rerender, container } = render(<Resume />);
 
-      let resume = screen.getByTestId("update-test-resume-root");
-      expect(resume).not.toHaveAttribute("data-debug-mode");
+      let resume = container.querySelector("div");
+      expect(resume).toBeInTheDocument();
 
-      // Update with debug mode enabled
-      rerender(<Resume debugId="update-test" debugMode={true} />);
+      // Update with new className
+      rerender(<Resume className="updated-class" />);
 
-      resume = screen.getByTestId("update-test-resume-root");
-      expect(resume).toHaveAttribute("data-debug-mode", "true");
+      resume = container.querySelector("div");
+      expect(resume).toHaveClass("updated-class");
 
-      // All sub-components should also have debug mode
-      const title = screen.getByRole("heading", { level: 2 });
-      expect(title).toHaveAttribute("data-debug-mode", "true");
+      // All sub-components should still be present
+      expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();
+      expect(screen.getByTestId("list")).toBeInTheDocument();
+      expect(screen.getByTestId("button")).toBeInTheDocument();
+    });
+  });
+
+  describe("SEO and Accessibility Integration", () => {
+    it("renders full resume with correct semantic structure for SEO", () => {
+      const { container } = render(<Resume as="section" />);
+
+      const section = container.querySelector("section");
+      expect(section).toBeInTheDocument();
+
+      const heading = screen.getByRole("heading", { level: 2 });
+      expect(heading).toHaveTextContent("Work");
 
       const list = screen.getByTestId("list");
-      expect(list).toHaveAttribute("data-debug-mode", "true");
+      expect(list.tagName).toBe("OL");
 
-      const button = screen.getByTestId("button");
-      expect(button).toHaveAttribute("data-debug-mode", "true");
+      const link = screen.getByRole("link", { name: /download cv/i });
+      expect(link).toHaveAttribute("href", "/resume.pdf");
+      expect(link).toHaveTextContent("Download CV");
+    });
+
+    it("all role list items have definition lists with dt/dd structure", () => {
+      render(<Resume />);
+
+      const listItems = screen.getAllByTestId("list-item");
+      expect(listItems.length).toBe(4);
+
+      listItems.forEach((li) => {
+        const dl = li.querySelector("dl");
+        expect(dl).toBeInTheDocument();
+        const dts = li.querySelectorAll("dt");
+        const dds = li.querySelectorAll("dd");
+        expect(dts.length).toBeGreaterThan(0);
+        expect(dds.length).toBeGreaterThan(0);
+      });
+    });
+
+    it("all images have descriptive alt text", () => {
+      render(<Resume />);
+
+      const images = screen.getAllByTestId("next-image");
+      const expectedAlts = ["Planetaria", "Airbnb", "Facebook", "Starbucks"];
+
+      expect(images.length).toBe(4);
+      images.forEach((img, i) => {
+        expect(img).toHaveAttribute("alt", expectedAlts[i]);
+      });
+    });
+
+    it("decorative icons are hidden from screen readers", () => {
+      render(<Resume />);
+
+      expect(screen.getByTestId("briefcase-icon")).toHaveAttribute(
+        "aria-hidden",
+        "true"
+      );
+      expect(screen.getByTestId("arrow-down-icon")).toHaveAttribute(
+        "aria-hidden",
+        "true"
+      );
+    });
+
+    it("date ranges have aria-label and time with dateTime", () => {
+      render(<Resume />);
+
+      const dateDds = document.querySelectorAll(
+        'dd[aria-label][class*="ml-auto"]'
+      );
+      expect(dateDds.length).toBe(4);
+
+      const timeElements = document.querySelectorAll("time[dateTime]");
+      expect(timeElements.length).toBeGreaterThanOrEqual(4);
+    });
+
+    it("decorative dash in date range is aria-hidden", () => {
+      render(<Resume />);
+
+      const hiddenDashes = document.querySelectorAll(
+        'span[aria-hidden="true"]'
+      );
+      const dashSpan = Array.from(hiddenDashes).find(
+        (el) => el.textContent?.trim() === "—"
+      );
+      expect(dashSpan).toBeInTheDocument();
     });
   });
 });
-
