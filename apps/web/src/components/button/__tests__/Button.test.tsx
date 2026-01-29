@@ -4,18 +4,14 @@
  * @description Unit tests for the Button component.
  */
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Button } from "../Button";
 
-// Mock dependencies
-vi.mock("@guyromellemagayano/components", () => ({
-  // Mock CommonComponentProps type
-}));
+import "@testing-library/jest-dom";
 
+// Mock @web/utils/helpers
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
@@ -43,7 +39,6 @@ describe("Button", () => {
       const button = screen.getByRole("button");
       expect(button).toHaveAttribute("class");
     });
-
 
     it("passes through HTML attributes", () => {
       render(
@@ -89,13 +84,19 @@ describe("Button", () => {
     });
   });
 
-
   describe("Component Structure Tests", () => {
     it("renders as button element by default", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button.tagName).toBe("BUTTON");
+    });
+
+    it("applies role='button' attribute to button element", () => {
+      render(<Button>Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveAttribute("role", "button");
     });
 
     it("applies correct CSS classes", () => {
@@ -106,7 +107,6 @@ describe("Button", () => {
     });
   });
 
-
   describe("Accessibility Tests", () => {
     it("has proper semantic structure", () => {
       render(<Button>Button</Button>);
@@ -114,7 +114,6 @@ describe("Button", () => {
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
     });
-
 
     it("supports ARIA attributes", () => {
       render(
@@ -147,7 +146,11 @@ describe("Button", () => {
     });
 
     it("applies correct ARIA states for disabled buttons", () => {
-      render(<Button disabled aria-disabled="true">Disabled Button</Button>);
+      render(
+        <Button disabled aria-disabled="true">
+          Disabled Button
+        </Button>
+      );
 
       const buttonElement = screen.getByRole("button");
       expect(buttonElement).toBeDisabled();
@@ -227,7 +230,6 @@ describe("Button", () => {
       expect(link).toHaveAttribute("href", "/test");
       expect(link).toHaveTextContent("Link Button");
     });
-
 
     it("passes through Link props when href is provided", () => {
       render(
