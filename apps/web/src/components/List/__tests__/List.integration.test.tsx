@@ -116,19 +116,19 @@ describe("List Integration Tests", () => {
       const heading = screen.getByText("Article list");
       expect(heading.tagName).toBe("H2");
       expect(heading).toHaveClass("sr-only");
-      expect(heading).toHaveAttribute("aria-hidden", "true");
+      expect(heading).not.toHaveAttribute("aria-hidden");
 
-      // Check nested list container
-      const listContainer = screen.getByRole("list", { name: "Articles" });
-      expect(listContainer).toBeInTheDocument();
-      expect(listContainer).toHaveAttribute("aria-label", "Articles");
-      expect(listContainer).toHaveClass(
+      // Check nested container div (no role="list" since ul already has list semantics)
+      const container = region.querySelector("div.flex");
+      expect(container).toBeInTheDocument();
+      expect(container).toHaveClass(
         "flex",
         "w-full",
         "max-w-3xl",
         "flex-col",
         "space-y-16"
       );
+      expect(container).not.toHaveAttribute("role");
 
       // Check children are rendered
       expect(screen.getByText("First")).toBeInTheDocument();
@@ -158,11 +158,11 @@ describe("List Integration Tests", () => {
         </List.Article>
       );
 
-      const region = screen.getByRole("region");
-      const listContainer = screen.getByRole("list", { name: "Articles" });
-      const articles = listContainer.querySelectorAll("article");
+      const region = screen.getByRole("region", { name: "Article list" });
+      const container = region.querySelector("div.flex");
+      const articles = container?.querySelectorAll("article") || [];
 
-      expect(region).toContainElement(listContainer);
+      expect(region).toContainElement(container);
       expect(articles).toHaveLength(2);
       expect(articles[0]).toHaveTextContent("Article 1");
       expect(articles[1]).toHaveTextContent("Article 2");

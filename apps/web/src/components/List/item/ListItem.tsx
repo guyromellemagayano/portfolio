@@ -79,7 +79,7 @@ function ArticleListItem<P extends Record<string, unknown> = {}>(
   const articleData = {
     id: article.slug?.trim(),
     title: article.title?.trim(),
-    slug: encodeURIComponent(`/articles/${article.slug?.trim()}`),
+    slug: `/articles/${article.slug?.trim()}`,
     date: article.date?.trim(),
     description: article.description?.trim(),
   };
@@ -96,6 +96,11 @@ function ArticleListItem<P extends Record<string, unknown> = {}>(
 
   if (!hasArticle) return null;
 
+  // Generate unique IDs for ARIA relationships
+  const titleId = `${articleData.id}-title`;
+  const dateId = `${articleData.id}-date`;
+  const descriptionId = `${articleData.id}-description`;
+
   return (
     <Component
       {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
@@ -105,24 +110,27 @@ function ArticleListItem<P extends Record<string, unknown> = {}>(
         className as string
       )}
       id={articleData.id}
-      aria-label={articleData.title || undefined}
-      aria-describedby={articleData.description || undefined}
+      aria-labelledby={hasTitle ? titleId : undefined}
+      aria-describedby={hasDescription ? descriptionId : undefined}
     >
-      <Card.Title href={articleData.slug} aria-level={1}>
+      <Card.Title as="h2" href={articleData.slug} id={titleId}>
         {articleData.title || undefined}
       </Card.Title>
       <Card.Eyebrow
         as="time"
         dateTime={articleData.date}
+        id={dateId}
         aria-label={`${ARTICLE_LIST_ITEM_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
         decorate
       >
         {formatDateSafely(articleData.date)}
       </Card.Eyebrow>
-      <Card.Description>{articleData.description}</Card.Description>
+      <Card.Description id={descriptionId}>
+        {articleData.description}
+      </Card.Description>
       <Card.Cta
-        role="button"
-        aria-label={`${ARTICLE_LIST_ITEM_I18N.cta}: ${articleData.title || ARTICLE_LIST_ITEM_I18N.cta}`}
+        href={articleData.slug}
+        title={`${ARTICLE_LIST_ITEM_I18N.cta}: ${articleData.title || ARTICLE_LIST_ITEM_I18N.cta}`}
       >
         {ARTICLE_LIST_ITEM_I18N.cta}
       </Card.Cta>
