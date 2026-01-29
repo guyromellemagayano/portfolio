@@ -12,8 +12,6 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import Image, { type StaticImageData } from "next/image";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-
 import image1 from "@web/images/photos/image-1.jpg";
 import image2 from "@web/images/photos/image-2.jpg";
 import image3 from "@web/images/photos/image-3.jpg";
@@ -43,8 +41,7 @@ export type PhotoGalleryProps<
   T extends React.ElementType,
   P extends Record<string, unknown> = {},
 > = Omit<React.ComponentPropsWithRef<T>, "as"> &
-  P &
-  Omit<CommonComponentProps, "as"> & {
+  P & {
     as?: T;
     photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
     "aria-label"?: string;
