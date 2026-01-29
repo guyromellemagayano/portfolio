@@ -11,6 +11,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
 
+import "@testing-library/jest-dom";
+
 // Mock dependencies
 vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
@@ -1324,7 +1326,7 @@ describe("Card.LinkCustom", () => {
       expect(link).not.toHaveAttribute("rel");
     });
 
-    it("handles invalid href by rendering with empty href", () => {
+    it("handles invalid href by rendering with null href", () => {
       const { container } = render(
         <Card.LinkCustom href="">Link text</Card.LinkCustom>
       );
@@ -1336,7 +1338,7 @@ describe("Card.LinkCustom", () => {
       expect(anchor).toHaveAttribute("href", "");
     });
 
-    it("handles null href by rendering with empty href", () => {
+    it("handles null href by rendering with null href", () => {
       const { container } = render(
         <Card.LinkCustom href={null as any}>Link text</Card.LinkCustom>
       );
@@ -1346,7 +1348,7 @@ describe("Card.LinkCustom", () => {
       expect(anchor).toHaveAttribute("href", "");
     });
 
-    it("handles undefined href by rendering with empty href", () => {
+    it("handles undefined href by rendering with null href", () => {
       const { container } = render(
         <Card.LinkCustom href={undefined as any}>Link text</Card.LinkCustom>
       );

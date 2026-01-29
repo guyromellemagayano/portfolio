@@ -9,6 +9,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Card } from "../Card";
 
+import "@testing-library/jest-dom";
+
 // Mock Next.js Link component
 vi.mock("next/link", () => ({
   default: vi.fn(({ children, href, ...props }) => (
