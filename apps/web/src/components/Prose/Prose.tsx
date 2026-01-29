@@ -1,13 +1,12 @@
+/**
+ * @file Prose.tsx
+ * @author Guy Romelle Magayano
+ * @description Prose component for the web application.
+ */
+
 import React from "react";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import {
-  createComponentProps,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
-
-import { cn } from "@web/utils";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
 // PROSE COMPONENT
@@ -15,40 +14,26 @@ import { cn } from "@web/utils";
 
 type ProseElementType = "div";
 
-export type ProseProps<T extends React.ElementType> = Omit<
-  React.ComponentPropsWithRef<T>,
-  "as"
-> &
-  Omit<CommonComponentProps, "as"> & {
-    /** The component to render as - only "div" is allowed */
+export type ProseProps<
+  T extends ProseElementType,
+  P extends Record<string, unknown> = {},
+> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+  P & {
     as?: T;
   };
 
-export const Prose = setDisplayName(function Prose<T extends ProseElementType>(
-  props: ProseProps<T>
-) {
-  const {
-    as: Component = "div",
-    className,
-    debugId,
-    debugMode,
-    ...rest
-  } = props;
-
-  // Prose component ID and debug mode
-  const { componentId, isDebugMode } = useComponentId({ debugId, debugMode });
+export function Prose<
+  T extends ProseElementType,
+  P extends Record<string, unknown> = {},
+>(props: ProseProps<T, P>) {
+  const { as: Component = "div", className, ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithoutRef<T>)}
       className={cn("prose dark:prose-invert", className)}
-      {...createComponentProps(componentId, "prose", isDebugMode)}
     />
   );
-});
+}
 
-// ============================================================================
-// MEMOIZED PROSE COMPONENT
-// ============================================================================
-
-export const MemoizedProse = React.memo(Prose);
+Prose.displayName = "Prose";
