@@ -28,12 +28,12 @@ import { Card } from "../../card";
 // ============================================================================
 
 export type ListItemElementType = "li" | typeof Card;
-export type ListItemProps<
-  T extends ListItemElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type ListItemProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<ListItemElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: ListItemElementType;
     href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
     target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
     title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
@@ -44,7 +44,7 @@ export type ListItemProps<
 // ============================================================================
 
 export type ArticleListItemProps<P extends Record<string, unknown> = {}> =
-  ListItemProps<ListItemElementType, P> &
+  ListItemProps<P> &
     P & {
       article: ArticleWithSlug;
       isFrontPage?: boolean;
@@ -143,7 +143,7 @@ ArticleListItem.displayName = "ArticleListItem";
 // ============================================================================
 
 function SocialListItem<P extends Record<string, unknown> = {}>(
-  props: ListItemProps<ListItemElementType, P>
+  props: ListItemProps<P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
@@ -166,7 +166,7 @@ SocialListItem.displayName = "SocialListItem";
 // ============================================================================
 
 export type ToolsListItemProps<P extends Record<string, unknown> = {}> =
-  ListItemProps<ListItemElementType, P> & P & {};
+  ListItemProps<P> & P & {};
 
 function ToolsListItem<P extends Record<string, unknown> = {}>(
   props: ToolsListItemProps<P>
@@ -211,7 +211,7 @@ ToolsListItem.displayName = "ToolsListItem";
 // ============================================================================
 
 export function ListItem<P extends Record<string, unknown> = {}>(
-  props: ListItemProps<ListItemElementType, P>
+  props: ListItemProps<P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
