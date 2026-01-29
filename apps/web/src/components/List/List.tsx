@@ -17,12 +17,12 @@ import { cn } from "@web/utils/helpers";
 // ============================================================================
 
 export type ListElementType = "ul" | "ol";
-export type ListProps<
-  T extends ListElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type ListProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<ListElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: ListElementType;
   };
 
 // ============================================================================
@@ -30,7 +30,7 @@ export type ListProps<
 // ============================================================================
 
 export type ArticleListProps<P extends Record<string, unknown> = {}> =
-  ListProps<ListElementType, P> & P & {};
+  ListProps<P> & P & {};
 
 function ArticleList<P extends Record<string, unknown> = {}>(
   props: ArticleListProps<P>
@@ -81,11 +81,8 @@ ArticleList.displayName = "ArticleList";
 // SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-export type SocialListProps<P extends Record<string, unknown> = {}> = ListProps<
-  ListElementType,
-  P
-> &
-  P & {};
+export type SocialListProps<P extends Record<string, unknown> = {}> =
+  ListProps<P> & P & {};
 
 function SocialList<P extends Record<string, unknown> = {}>(
   props: SocialListProps<P>
@@ -122,10 +119,9 @@ SocialList.displayName = "SocialList";
 // TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
-function ToolsList<
-  T extends ListElementType,
-  P extends Record<string, unknown> = {},
->(props: ListProps<T, P>) {
+function ToolsList<P extends Record<string, unknown> = {}>(
+  props: ListProps<P>
+) {
   const {
     as: Component = "ul",
     role = "region",
@@ -149,7 +145,7 @@ function ToolsList<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       role={role}
       className={cn("space-y-16", className)}
       aria-label={LIST_I18N.toolsList}
@@ -166,7 +162,7 @@ ToolsList.displayName = "ToolsList";
 // ============================================================================
 
 export function List<P extends Record<string, unknown> = {}>(
-  props: ListProps<ListElementType, P>
+  props: ListProps<P>
 ) {
   const { as: Component = "ul", children, role = "list", ...rest } = props;
 
