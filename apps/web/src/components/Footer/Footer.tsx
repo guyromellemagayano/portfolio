@@ -68,20 +68,17 @@ const FOOTER_COMPONENT_NAV_LINKS: ReadonlyArray<FooterNavLinkConfig> = [
 // FOOTER NAVIGATION COMPONENT
 // ============================================================================
 
-type FooterNavigationElementType = "nav";
-type FooterNavigationProps<
-  T extends FooterNavigationElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
-  P & {
-    as?: T;
-    navLinks?: ReadonlyArray<FooterLink>;
-  };
+export type FooterNavigationElementType = "nav";
+export type FooterNavigationProps<P extends Record<string, unknown> = {}> =
+  Omit<React.ComponentPropsWithRef<FooterNavigationElementType>, "as"> &
+    P & {
+      as?: FooterNavigationElementType;
+      navLinks?: ReadonlyArray<FooterLink>;
+    };
 
-function FooterNavigation<
-  T extends FooterNavigationElementType,
-  P extends Record<string, unknown> = {},
->(props: FooterNavigationProps<T, P>) {
+function FooterNavigation<P extends Record<string, unknown> = {}>(
+  props: FooterNavigationProps<P>
+) {
   const { as: Component = "nav", className, navLinks, ...rest } = props;
 
   // Internationalization
@@ -108,7 +105,7 @@ function FooterNavigation<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       aria-label={FOOTER_I18N.footerNavigation}
       className={cn(
         "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
@@ -152,19 +149,18 @@ FooterNavigation.displayName = "FooterNavigation";
 // FOOTER LEGAL COMPONENT
 // ============================================================================
 
-type FooterLegalElementType = "p";
-type FooterLegalProps<
-  T extends FooterLegalElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type FooterLegalElementType = "p";
+export type FooterLegalProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<FooterLegalElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: FooterLegalElementType;
   };
 
-function FooterLegal<
-  T extends FooterLegalElementType,
-  P extends Record<string, unknown> = {},
->(props: FooterLegalProps<T, P>) {
+function FooterLegal<P extends Record<string, unknown> = {}>(
+  props: FooterLegalProps<P>
+) {
   const { as: Component = "p", className, ...rest } = props;
 
   // Internationalization
@@ -187,7 +183,7 @@ function FooterLegal<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
     >
       {FOOTER_I18N.legalText}
@@ -201,23 +197,21 @@ FooterLegal.displayName = "FooterLegal";
 // MAIN FOOTER COMPONENT
 // ============================================================================
 
-type FooterElementType = "footer";
-
-export type FooterProps<
-  T extends FooterElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type FooterElementType = "footer";
+export type FooterProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<FooterElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: FooterElementType;
     data?: FooterData;
     navLinks?: ReadonlyArray<FooterLink>;
     legalText?: string;
   };
 
-export function Footer<
-  T extends FooterElementType,
-  P extends Record<string, unknown> = {},
->(props: FooterProps<T, P>) {
+export function Footer<P extends Record<string, unknown> = {}>(
+  props: FooterProps<P>
+) {
   const { as: Component = "footer", className, data, ...rest } = props;
 
   // Internationalization
@@ -235,7 +229,7 @@ export function Footer<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
       aria-label={FOOTER_I18N.footerAriaLabel}
       className={cn("mt-32 flex-none", className)}
     >
@@ -254,9 +248,3 @@ export function Footer<
 }
 
 Footer.displayName = "Footer";
-
-// ============================================================================
-// MEMOIZED FOOTER COMPONENT
-// ============================================================================
-
-export const MemoizedFooter = React.memo(Footer);

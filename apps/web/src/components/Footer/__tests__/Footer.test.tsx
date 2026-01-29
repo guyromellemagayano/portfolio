@@ -83,24 +83,35 @@ vi.mock("@guyromellemagayano/utils", () => ({
       );
     });
   }),
-  getLinkTargetProps: vi.fn((href, target) => ({
-    target: target || "_self",
-    rel: target === "_blank" ? "noopener noreferrer" : undefined,
-  })),
+  getLinkTargetProps: vi.fn((href, target) => {
+    const hrefString = typeof href === "string" ? href : href?.toString() || "";
+    const isExternal = hrefString?.startsWith("http");
+    const shouldOpenNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+
+    return {
+      target: shouldOpenNewTab ? "_blank" : "_self",
+      rel: shouldOpenNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
 }));
 
-vi.mock("@web/components/container/Container", () => ({
+vi.mock("@web/components/container", () => ({
   Container: {
-    Outer: vi.fn(({ children, ...props }) => (
-      <div data-testid="container-outer" {...props}>
-        {children}
-      </div>
-    )),
-    Inner: vi.fn(({ children, ...props }) => (
-      <div data-testid="container-inner" {...props}>
-        {children}
-      </div>
-    )),
+    Outer: function ContainerOuter({ children, ...props }: any) {
+      return (
+        <div data-testid="container-outer" {...props}>
+          {children}
+        </div>
+      );
+    },
+    Inner: function ContainerInner({ children, ...props }: any) {
+      return (
+        <div data-testid="container-inner" {...props}>
+          {children}
+        </div>
+      );
+    },
   },
 }));
 
