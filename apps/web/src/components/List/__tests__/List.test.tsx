@@ -219,8 +219,9 @@ describe("List.Article", () => {
         </List.Article>
       );
 
-      const region = screen.getByRole("region");
+      const region = screen.getByRole("region", { name: "Article list" });
       expect(region).toHaveAttribute("role", "region");
+      expect(region).toHaveAttribute("aria-label", "Article list");
     });
   });
 
@@ -229,7 +230,7 @@ describe("List.Article", () => {
   // ============================================================================
 
   describe("ARIA Attributes", () => {
-    it("renders sr-only heading with aria-hidden", () => {
+    it("renders sr-only heading without aria-hidden", () => {
       render(
         <List.Article>
           <article>Article child</article>
@@ -239,26 +240,29 @@ describe("List.Article", () => {
       const heading = screen.getByText("Article list");
       expect(heading.tagName).toBe("H2");
       expect(heading).toHaveClass("sr-only");
-      expect(heading).toHaveAttribute("aria-hidden", "true");
+      expect(heading).not.toHaveAttribute("aria-hidden");
     });
 
-    it("renders nested div with role=list for children", () => {
+    it("renders nested div container for children", () => {
       render(
         <List.Article>
           <article>Article child</article>
         </List.Article>
       );
 
-      const listContainer = screen.getByRole("list", { name: "Articles" });
-      expect(listContainer).toBeInTheDocument();
-      expect(listContainer).toHaveAttribute("aria-label", "Articles");
-      expect(listContainer).toHaveClass(
+      const region = screen.getByRole("region", { name: "Article list" });
+      expect(region).toHaveAttribute("aria-label", "Article list");
+
+      const container = region.querySelector("div.flex");
+      expect(container).toBeInTheDocument();
+      expect(container).toHaveClass(
         "flex",
         "w-full",
         "max-w-3xl",
         "flex-col",
         "space-y-16"
       );
+      expect(container).not.toHaveAttribute("role");
     });
 
     it("allows custom role override", () => {

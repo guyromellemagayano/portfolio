@@ -4,6 +4,8 @@
  * @description Unit tests for the ListItem component.
  */
 
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -110,7 +112,32 @@ const mockCardComponent = vi.hoisted(() => {
   CardDescription.displayName = "CardDescriptionMock";
   Card.Description = CardDescription;
 
-  const CardCta = function ({ as: As = "div", children, ...rest }: any) {
+  const CardCta = function (props: any) {
+    const { as: As = "div", children, href, title, ...rest } = props;
+    if (href) {
+      // Mock CardLinkCustom behavior: sets title attribute and aria-label when title exists and children aren't descriptive
+      // Since our children are descriptive ("Read article"), aria-label is not set, but title attribute is set
+      const hasDescriptiveText =
+        typeof children === "string"
+          ? children.trim().length > 0
+          : React.Children.count(children) > 0;
+      const ariaLabel = title && !hasDescriptiveText ? title : undefined;
+
+      const linkProps: Record<string, any> = { href };
+      // CardLinkCustom sets title={title ?? undefined}, so we set it if title is truthy
+      if (title) {
+        linkProps.title = String(title);
+      }
+      if (ariaLabel) {
+        linkProps["aria-label"] = String(ariaLabel);
+      }
+
+      return (
+        <As {...rest}>
+          <a {...linkProps}>{children}</a>
+        </As>
+      );
+    }
     return <As {...rest}>{children}</As>;
   };
   CardCta.displayName = "CardCtaMock";
@@ -211,7 +238,14 @@ describe("ListItem", () => {
     it("applies correct ARIA attributes", () => {
       render(<ListItem.Article article={ARTICLE} />);
       const articleElement = screen.getByRole("article");
-      expect(articleElement).toHaveAttribute("aria-label", "Hello World");
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "hello-world-title"
+      );
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "hello-world-description"
+      );
       expect(articleElement).toHaveAttribute("id", "hello-world");
     });
 
@@ -246,25 +280,54 @@ describe("ListItem", () => {
       );
     });
 
-    it("applies aria-label to Card.Cta with article title", () => {
+    it("renders Card.Cta as link with correct href", () => {
       render(<ListItem.Article article={ARTICLE} />);
-      const ctaButton = screen.getByRole("button");
-      expect(ctaButton).toHaveAttribute(
-        "aria-label",
-        "Read article: Hello World"
+      const articleElement = screen.getByRole("article");
+      const ctaLink = articleElement.querySelector(
+        'a[href="/articles/hello-world"]'
       );
+      expect(ctaLink).toBeInTheDocument();
+      expect(ctaLink).toHaveAttribute("href", "/articles/hello-world");
+      // Card.Cta receives title prop and passes it to CardLinkCustom
+      // CardLinkCustom may set title attribute depending on link text descriptiveness
+      // Link text is descriptive ("Read article"), so aria-label is not set (CardLinkCustom logic)
     });
 
-    it("applies aria-level={1} to Card.Title", () => {
+    it("applies h2 heading level to Card.Title", () => {
       render(<ListItem.Article article={ARTICLE} />);
-      const title = screen.getByRole("heading", { level: 1 });
+      const title = screen.getByRole("heading", { level: 2 });
       expect(title).toBeInTheDocument();
+      expect(title).toHaveAttribute("id", "hello-world-title");
     });
 
     it("applies dateTime and decorate props to Card.Eyebrow", () => {
       render(<ListItem.Article article={ARTICLE} />);
       const timeElement = screen.getByRole("time");
       expect(timeElement).toHaveAttribute("dateTime", "2024-01-01");
+      expect(timeElement).toHaveAttribute("id", "hello-world-date");
+    });
+
+    it("applies correct IDs for ARIA relationships", () => {
+      render(<ListItem.Article article={ARTICLE} />);
+      const articleElement = screen.getByRole("article");
+      const titleElement = screen.getByRole("heading", { level: 2 });
+      const descriptionElement = screen.getByText("A short description");
+      const dateElement = screen.getByRole("time");
+
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "hello-world-title"
+      );
+      expect(articleElement).toHaveAttribute(
+        "aria-describedby",
+        "hello-world-description"
+      );
+      expect(titleElement).toHaveAttribute("id", "hello-world-title");
+      expect(descriptionElement).toHaveAttribute(
+        "id",
+        "hello-world-description"
+      );
+      expect(dateElement).toHaveAttribute("id", "hello-world-date");
     });
 
     it("merges custom className with default md:col-span-3 class", () => {
@@ -299,6 +362,14 @@ describe("ListItem", () => {
     it("returns null when description missing", () => {
       const { container } = render(
         <ListItem.Article article={{ ...ARTICLE, description: "" }} />
+      );
+      expect(container).toBeEmptyDOMElement();
+    });
+
+    it("handles conditional ARIA attributes when content is missing", () => {
+      const articleWithoutTitle = { ...ARTICLE, title: "" };
+      const { container } = render(
+        <ListItem.Article article={articleWithoutTitle} />
       );
       expect(container).toBeEmptyDOMElement();
     });
