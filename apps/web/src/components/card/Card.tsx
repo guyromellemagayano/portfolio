@@ -375,7 +375,7 @@ CardTitle.displayName = "CardTitle";
 type CardElementType = "div" | "article" | "section";
 
 export type CardProps<
-  T extends CardElementType,
+  T extends React.ElementType,
   P extends Record<string, unknown> = {},
 > = Omit<React.ComponentPropsWithRef<T>, "as"> &
   P & {
@@ -401,12 +401,6 @@ export function Card<
 }
 
 Card.displayName = "Card";
-
-// ============================================================================
-// MEMOIZED CARD COMPONENT
-// ============================================================================
-
-export const MemoizedCard = React.memo(Card);
 
 // ============================================================================
 // CARD COMPOUND COMPONENTS
