@@ -12,8 +12,8 @@ import Link from "next/link";
 
 import { cn } from "@web/utils/helpers";
 
-type ButtonElementType = "button";
-type ButtonVariant = "primary" | "secondary";
+export type ButtonElementType = "button";
+export type ButtonVariant = "primary" | "secondary";
 
 const BUTTON_VARIANT: Record<ButtonVariant, string> = {
   primary:
@@ -22,20 +22,19 @@ const BUTTON_VARIANT: Record<ButtonVariant, string> = {
     "bg-zinc-50 font-medium text-zinc-900 hover:bg-zinc-100 active:bg-zinc-100 active:text-zinc-900/60 dark:bg-zinc-800/50 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-50 dark:active:bg-zinc-800/50 dark:active:text-zinc-50/70",
 };
 
-export type ButtonProps<
-  T extends ButtonElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<ButtonElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: ButtonElementType;
     variant?: ButtonVariant;
     href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
   };
 
-export function Button<
-  T extends ButtonElementType,
-  P extends Record<string, unknown> = {},
->(props: ButtonProps<T, P>) {
+export function Button<P extends Record<string, unknown> = {}>(
+  props: ButtonProps<P>
+) {
   const {
     as: Component = "button",
     variant = "primary",
@@ -69,7 +68,7 @@ export function Button<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<T>)}
+      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
       role="button"
       className={buttonClassName}
     >
