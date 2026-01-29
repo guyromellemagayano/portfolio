@@ -51,5 +51,14 @@
       "photoGallery": "Photo gallery",
       "photoGalleryImages": "Photo gallery images"
     }
+  },
+  "resume": {
+    "ariaLabels": {
+      "work": "Work",
+      "download": "Download CV",
+      "company": "Company",
+      "role": "Role",
+      "date": "Date"
+    }
   }
 }
