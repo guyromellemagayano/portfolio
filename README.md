@@ -32,7 +32,6 @@ pnpm test:coverage
   - `admin` - Admin dashboard (Vite + React Router)
   - `api` - Express.js API server
   - `web` - Marketing website (Next.js)
-  - `storefront` - E-commerce frontend (Next.js)
 
 - **Packages**:
   - `components` - Shared React components
@@ -221,7 +220,6 @@ Each app has its own deployment configuration:
 - **Admin**: Static build
 - **API**: Server deployment
 - **Web**: Next.js deployment
-- **Storefront**: Next.js deployment
 
 ## 📚 Learn More
 
