@@ -8,8 +8,7 @@
 
 import React from "react";
 
-import Link from "next/link";
-
+import { Link } from "@web/components/link";
 import { cn } from "@web/utils/helpers";
 
 export type ButtonElementType = "button";

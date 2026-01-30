@@ -7,17 +7,22 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import React from "react";
+
 import { Button } from "../Button";
 
 import "@testing-library/jest-dom";
 
-// Mock @web/utils/helpers
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
-vi.mock("next/link", () => ({
-  default: vi.fn(({ children, ...props }) => <a {...props}>{children}</a>),
+vi.mock("@web/components/link", () => ({
+  Link: ({ children, href, ...props }: { children: React.ReactNode; href?: string }) => (
+    <a href={href ?? "#"} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 describe("Button Integration Tests", () => {
