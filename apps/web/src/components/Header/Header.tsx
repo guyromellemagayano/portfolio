@@ -1,56 +1,592 @@
+/**
+ * @file Header.tsx
+ * @author Guy Romelle Magayano
+ * @description Header component for the web application.
+ */
+
 "use client";
 
-import React, { useEffect, useRef } from "react";
+// eslint-disable-next-line simple-import-sort/imports
+import React from "react";
 
+import {
+  Popover,
+  PopoverBackdrop,
+  PopoverButton,
+  PopoverPanel,
+} from "@headlessui/react";
+import { type Route } from "next";
+import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  createComponentProps,
-  setDisplayName,
+  filterValidNavigationLinks,
+  getLinkTargetProps,
+  hasValidNavigationLinks,
+  isValidImageSrc,
+  isValidLink,
 } from "@guyromellemagayano/utils";
 
-import { Container } from "@web/components";
-import { clamp, cn } from "@web/utils";
-
-import {
-  HeaderAvatar,
-  HeaderAvatarContainer,
-  HeaderDesktopNav,
-  HeaderMobileNav,
-  HeaderThemeToggle,
-} from "./_internal";
-import { AVATAR_COMPONENT_LABELS } from "./Header.data";
+import { Button } from "@web/components/button";
+import { Container } from "@web/components/container";
+import { Icon } from "@web/components/icon";
+import avatarImage from "@web/images/avatar.jpg";
+import { clamp, cn, isActivePath } from "@web/utils/helpers";
 
 // ============================================================================
-// HEADER COMPONENT TYPES & INTERFACES
+// AVATAR STATIC CONFIG
 // ============================================================================
 
-export interface HeaderProps
-  extends React.ComponentProps<"header">,
-    CommonComponentProps {}
-export type HeaderComponent = React.FC<HeaderProps>;
+export const AVATAR_LINK_HREF = "/" as const;
 
 // ============================================================================
-// BASE HEADER COMPONENT
+// HEADER LINK TYPES
 // ============================================================================
 
-const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
-  const { children, className, debugId, debugMode, ...rest } = props;
+type InternalHref = Route | (string & {});
 
-  const { componentId, isDebugMode } = useComponentId({
-    debugId,
-    debugMode,
-  });
+export type HeaderLink =
+  | {
+      kind: "internal";
+      label: string;
+      href: InternalHref;
+    }
+  | {
+      kind: "external";
+      label: string;
+      href: string;
+      newTab?: boolean;
+      rel?: string;
+    };
 
-  const isHomePage: boolean = usePathname() === AVATAR_COMPONENT_LABELS.link;
+// ============================================================================
+// HEADER NAV LINK CONFIG
+// ============================================================================
 
-  let headerRef = useRef<React.ComponentRef<"div"> | null>(null);
-  let avatarRef = useRef<React.ComponentRef<"div"> | null>(null);
-  let isInitial = useRef(true);
+export type HeaderNavLabelKey = "about" | "articles" | "projects" | "uses";
 
-  useEffect(() => {
+export type HeaderNavLinkConfig = Readonly<{
+  kind: "internal";
+  labelKey: HeaderNavLabelKey;
+  href: InternalHref;
+}>;
+
+export type HeaderComponentNavLinks = ReadonlyArray<
+  Extract<HeaderLink, { kind: "internal" }>
+>;
+
+export const HEADER_NAV_LINK_CONFIG: ReadonlyArray<HeaderNavLinkConfig> = [
+  { kind: "internal", labelKey: "about", href: "/about" },
+  { kind: "internal", labelKey: "articles", href: "/articles" },
+  { kind: "internal", labelKey: "projects", href: "/projects" },
+  { kind: "internal", labelKey: "uses", href: "/uses" },
+] as const;
+
+// ============================================================================
+// HEADER AVATAR COMPONENT
+// ============================================================================
+
+export type HeaderAvatarElementType = typeof Link;
+export type HeaderAvatarProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<HeaderAvatarElementType>,
+  "as" | "href"
+> &
+  P & {
+    as?: HeaderAvatarElementType;
+    href?: React.ComponentProps<typeof Link>["href"];
+    alt?: React.ComponentProps<typeof Image>["alt"];
+    src?: React.ComponentProps<typeof Image>["src"];
+    large?: boolean;
+  };
+
+function HeaderAvatar<P extends Record<string, unknown> = {}>(
+  props: HeaderAvatarProps<P>
+) {
+  const {
+    as: Component = Link,
+    className,
+    large = false,
+    href,
+    alt,
+    src,
+    title,
+    target,
+    ...rest
+  } = props;
+
+  // Internationalization
+  const tAria = useTranslations("header.ariaLabels");
+  const tHeader = useTranslations("header");
+
+  // Header avatar ARIA
+  const HEADER_AVATAR_I18N = React.useMemo(
+    () => ({
+      home: tAria("home"),
+      brandName: tHeader("brandName"),
+    }),
+    [tAria, tHeader]
+  );
+
+  const linkHref = href && isValidLink(href) ? href : AVATAR_LINK_HREF;
+  const linkTitle = title && title.length > 0 ? title : HEADER_AVATAR_I18N.home;
+  const linkTargetProps = getLinkTargetProps(linkHref, target);
+  const imageSrc = src && isValidImageSrc(src) ? src : avatarImage;
+  const imageAlt = alt && alt.length > 0 ? alt : HEADER_AVATAR_I18N.brandName;
+
+  return (
+    <Component
+      {...rest}
+      href={linkHref}
+      target={linkTargetProps.target}
+      rel={linkTargetProps.rel}
+      title={linkTitle}
+      aria-label={linkTitle}
+      className={cn("pointer-events-auto", className)}
+    >
+      <Image
+        src={imageSrc}
+        alt={imageAlt}
+        sizes={large ? "4rem" : "2.25rem"}
+        className={cn(
+          "rounded-full bg-zinc-100 object-cover dark:bg-zinc-800",
+          large ? "h-16 w-16" : "h-9 w-9"
+        )}
+        priority
+      />
+    </Component>
+  );
+}
+
+HeaderAvatar.displayName = "HeaderAvatar";
+
+// ============================================================================
+// HEADER AVATAR CONTAINER COMPONENT
+// ============================================================================
+
+export type HeaderAvatarContainerElementType = "div";
+export type HeaderAvatarContainerProps<P extends Record<string, unknown> = {}> =
+  Omit<React.ComponentPropsWithRef<HeaderAvatarContainerElementType>, "as"> &
+    P & { as?: HeaderAvatarContainerElementType };
+
+function HeaderAvatarContainer<P extends Record<string, unknown> = {}>(
+  props: HeaderAvatarContainerProps<P>
+) {
+  const { as: Component = "div", className, ...rest } = props;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderAvatarContainerElementType>)}
+      className={cn(
+        "h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:ring-white/10",
+        className
+      )}
+    />
+  );
+}
+
+HeaderAvatarContainer.displayName = "HeaderAvatarContainer";
+
+// ============================================================================
+// HEADER DESKTOP NAVIGATION COMPONENT
+// ============================================================================
+
+export type HeaderDesktopNavElementType = "nav";
+export type HeaderDesktopNavProps<P extends Record<string, unknown> = {}> =
+  Omit<React.ComponentPropsWithRef<HeaderDesktopNavElementType>, "as"> &
+    P & { as?: HeaderDesktopNavElementType };
+
+function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
+  props: HeaderDesktopNavProps<P>
+) {
+  const { as: Component = "nav", ...rest } = props;
+
+  // Internationalization
+  const tAria = useTranslations("header.ariaLabels");
+
+  // Header desktop navigation ARIA
+  const HEADER_DESKTOP_NAV_I18N = React.useMemo(
+    () => ({
+      desktopNavigation: tAria("desktopNavigation"),
+    }),
+    [tAria]
+  );
+
+  const navConfig = HEADER_NAV_LINK_CONFIG;
+  const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
+    kind: "internal" as const,
+    label: tAria(link.labelKey),
+    href: link.href,
+  }));
+  const validLinks = filterValidNavigationLinks(navLinksWithLabels);
+
+  if (!hasValidNavigationLinks(validLinks)) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderDesktopNavElementType>)}
+      aria-label={HEADER_DESKTOP_NAV_I18N.desktopNavigation}
+    >
+      <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
+        {navLinksWithLabels.map(({ label, href }) => (
+          <HeaderDesktopNavItem key={`${label}:${href}`} href={href}>
+            {label}
+          </HeaderDesktopNavItem>
+        ))}
+      </ul>
+    </Component>
+  );
+}
+
+HeaderDesktopNav.displayName = "HeaderDesktopNav";
+
+// ============================================================================
+// HEADER DESKTOP NAVIGATION ITEM COMPONENT
+// ============================================================================
+
+export type HeaderDesktopNavItemElementType = "li";
+export type HeaderDesktopNavItemProps<P extends Record<string, unknown> = {}> =
+  Omit<React.ComponentPropsWithRef<HeaderDesktopNavItemElementType>, "as"> &
+    Pick<
+      React.ComponentPropsWithoutRef<typeof Link>,
+      "href" | "target" | "title"
+    > &
+    P & { as?: HeaderDesktopNavItemElementType };
+
+function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
+  props: HeaderDesktopNavItemProps<P>
+) {
+  const {
+    as: Component = "li",
+    children,
+    href,
+    target,
+    title,
+    ...rest
+  } = props;
+
+  const pathname = usePathname();
+  const isActive = isActivePath(pathname, href);
+  const linkTargetProps = getLinkTargetProps(href?.toString(), target);
+  const linkHref = href && isValidLink(href) ? href : "#";
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderDesktopNavItemElementType>)}
+    >
+      <Link
+        href={linkHref}
+        target={linkTargetProps.target}
+        rel={linkTargetProps.rel}
+        title={title}
+        aria-label={title}
+        className={cn(
+          "relative block px-3 py-2 transition",
+          isActive
+            ? "text-teal-500 dark:text-teal-400"
+            : "hover:text-teal-500 dark:hover:text-teal-400"
+        )}
+      >
+        {children}
+        {isActive ? (
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-1 -bottom-px h-px bg-linear-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0"
+          />
+        ) : null}
+      </Link>
+    </Component>
+  );
+}
+
+HeaderDesktopNavItem.displayName = "HeaderDesktopNavItem";
+
+// ============================================================================
+// HEADER MOBILE NAVIGATION COMPONENT
+// ============================================================================
+
+export type HeaderMobileNavElementType = typeof Popover;
+export type HeaderMobileNavProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<HeaderMobileNavElementType>,
+  "as"
+> &
+  P & { as?: HeaderMobileNavElementType };
+
+function HeaderMobileNav<P extends Record<string, unknown> = {}>(
+  props: HeaderMobileNavProps<P>
+) {
+  const { as: Component = Popover, ...rest } = props;
+
+  // Internationalization
+  const tAria = useTranslations("header.ariaLabels");
+
+  // Header mobile navigation ARIA
+  const HEADER_MOBILE_NAV_I18N = React.useMemo(
+    () => ({
+      menu: tAria("menu"),
+      closeMenu: tAria("closeMenu"),
+      mobileNavigation: tAria("mobileNavigation"),
+    }),
+    [tAria]
+  );
+
+  const navConfig = HEADER_NAV_LINK_CONFIG;
+  const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
+    kind: "internal" as const,
+    label: tAria(link.labelKey),
+    href: link.href,
+  }));
+  const validLinks = filterValidNavigationLinks(navLinksWithLabels);
+
+  if (!hasValidNavigationLinks(validLinks)) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderMobileNavElementType>)}
+    >
+      <PopoverButton
+        aria-label={HEADER_MOBILE_NAV_I18N.menu}
+        className="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20"
+      >
+        {HEADER_MOBILE_NAV_I18N.menu}
+        <Icon
+          name="chevron-down"
+          aria-hidden
+          className="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400"
+        />
+      </PopoverButton>
+      <PopoverBackdrop
+        transition
+        className="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-xs duration-150 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in dark:bg-black/80"
+      />
+      <PopoverPanel
+        focus
+        transition
+        className="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 duration-150 data-closed:scale-95 data-closed:opacity-0 data-enter:ease-out data-leave:ease-in dark:bg-zinc-900 dark:ring-zinc-800"
+      >
+        <div className="flex flex-row-reverse items-center justify-between">
+          <PopoverButton
+            aria-label={HEADER_MOBILE_NAV_I18N.closeMenu}
+            className="-m-1 p-1"
+          >
+            <Icon
+              name="close"
+              aria-hidden
+              className="h-6 w-6 text-zinc-500 dark:text-zinc-400"
+            />
+          </PopoverButton>
+
+          <h2 className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            {HEADER_MOBILE_NAV_I18N.mobileNavigation}
+          </h2>
+        </div>
+        <nav
+          aria-label={HEADER_MOBILE_NAV_I18N.mobileNavigation}
+          className="mt-6"
+        >
+          <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
+            {validLinks.map(({ label, href }) => (
+              <HeaderMobileNavItem key={`${label}:${href}`} href={href}>
+                {label}
+              </HeaderMobileNavItem>
+            ))}
+          </ul>
+        </nav>
+      </PopoverPanel>
+    </Component>
+  );
+}
+
+HeaderMobileNav.displayName = "HeaderMobileNav";
+
+// ============================================================================
+// HEADER MOBILE NAVIGATION ITEM COMPONENT
+// ============================================================================
+
+export type HeaderMobileNavItemElementType = HeaderDesktopNavItemElementType;
+export type HeaderMobileNavItemProps<P extends Record<string, unknown> = {}> =
+  HeaderDesktopNavItemProps<P> & {};
+
+function HeaderMobileNavItem<P extends Record<string, unknown> = {}>(
+  props: HeaderMobileNavItemProps<P>
+) {
+  const {
+    as: Component = "li",
+    children,
+    href,
+    target,
+    title,
+    ...rest
+  } = props;
+
+  const pathname = usePathname();
+  const isActive = isActivePath(pathname, href);
+  const linkTargetProps = getLinkTargetProps(href?.toString(), target);
+  const linkHref = href && isValidLink(href) ? href : "#";
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderMobileNavItemElementType>)}
+    >
+      <Link
+        href={linkHref}
+        target={linkTargetProps.target}
+        rel={linkTargetProps.rel}
+        title={title}
+        aria-label={title}
+        className={cn(
+          "relative block py-2 transition",
+          isActive
+            ? "text-teal-500 dark:text-teal-400"
+            : "hover:text-teal-500 dark:hover:text-teal-400"
+        )}
+      >
+        {children}
+      </Link>
+    </Component>
+  );
+}
+
+HeaderMobileNavItem.displayName = "HeaderMobileNavItem";
+
+// ============================================================================
+// HEADER THEME TOGGLE COMPONENT
+// ============================================================================
+
+export type HeaderThemeToggleElementType = "button";
+export type HeaderThemeToggleProps<P extends Record<string, unknown> = {}> =
+  Omit<React.ComponentPropsWithRef<HeaderThemeToggleElementType>, "as"> &
+    P & { as?: HeaderThemeToggleElementType };
+
+function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
+  props: HeaderThemeToggleProps<P>
+) {
+  const { as: Component = Button, className, ...rest } = props;
+
+  const { resolvedTheme, setTheme } = useTheme();
+  const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
+
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const handleClick = React.useCallback(() => {
+    setTheme(otherTheme);
+  }, [otherTheme, setTheme]);
+
+  const handleKeyDown = React.useCallback(
+    (e: React.KeyboardEvent<React.ComponentRef<"button">>) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleClick();
+      }
+    },
+    [handleClick]
+  );
+
+  // Internationalization
+  const tAria = useTranslations("header.ariaLabels");
+
+  // Header theme toggle ARIA
+  const HEADER_THEME_TOGGLE_I18N = React.useMemo(
+    () => ({
+      toggleTheme: tAria("toggleTheme"),
+      darkMode: tAria("darkMode"),
+      lightMode: tAria("lightMode"),
+    }),
+    [tAria]
+  );
+
+  const element = React.useMemo(() => {
+    const ariaLabel = mounted
+      ? `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`
+      : HEADER_THEME_TOGGLE_I18N.toggleTheme;
+
+    const element = (
+      <Component
+        {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+        className={cn(
+          "group rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20",
+          className
+        )}
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+        aria-label={ariaLabel}
+      >
+        <Icon
+          name="sun"
+          aria-hidden
+          className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
+        />
+        <Icon
+          name="moon"
+          aria-hidden
+          className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
+        />
+      </Component>
+    );
+
+    return element;
+  }, [
+    mounted,
+    otherTheme,
+    handleClick,
+    handleKeyDown,
+    className,
+    rest,
+    Component,
+    HEADER_THEME_TOGGLE_I18N,
+  ]);
+
+  return element;
+}
+
+HeaderThemeToggle.displayName = "HeaderThemeToggle";
+
+// ============================================================================
+// MAIN HEADER COMPONENT
+// ============================================================================
+
+export type HeaderElementType = "header";
+export type HeaderProps<P extends Record<string, unknown> = {}> = Omit<
+  React.ComponentPropsWithRef<HeaderElementType>,
+  "as"
+> &
+  P & {
+    as?: HeaderElementType;
+  };
+
+export function Header<P extends Record<string, unknown> = {}>(
+  props: HeaderProps<P>
+) {
+  const { as: Component = "header", children, className, ...rest } = props;
+
+  // Internationalization
+  const tHeader = useTranslations("header");
+
+  // Header ARIA
+  const HEADER_I18N = React.useMemo(
+    () => ({
+      brandName: tHeader("brandName"),
+    }),
+    [tHeader]
+  );
+
+  const isHomePage: boolean = usePathname() === AVATAR_LINK_HREF;
+
+  let headerRef = React.useRef<React.ComponentRef<"div"> | null>(null);
+  let avatarRef = React.useRef<React.ComponentRef<"div"> | null>(null);
+  let isInitial = React.useRef(true);
+
+  React.useEffect(() => {
     let downDelay = avatarRef.current?.offsetTop ?? 0;
     let upDelay = 64;
 
@@ -149,30 +685,30 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
     };
   }, [isHomePage]);
 
-  const element = (
+  return (
     <>
-      <header
+      <Component
         {...rest}
+        aria-label={
+          (rest as React.ComponentPropsWithRef<HeaderElementType>)[
+            "aria-label"
+          ] ?? HEADER_I18N.brandName
+        }
         className={cn(
           "pointer-events-none relative z-50 flex flex-none flex-col",
           className
         )}
+        role="banner"
         style={{
           height: "var(--header-height)",
           marginBottom: "var(--header-mb)",
         }}
-        {...createComponentProps(componentId, "header", isDebugMode)}
       >
         {isHomePage ? (
           <>
             <div
               ref={avatarRef}
               className="order-last mt-[calc(--spacing(16)-(--spacing(3)))]"
-              {...createComponentProps(
-                componentId,
-                "header-avatar-div",
-                debugMode
-              )}
             />
             <Container
               style={{
@@ -180,8 +716,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                   "var(--header-position)" as React.CSSProperties["position"],
               }}
               className="top-0 order-last -mb-3 pt-3"
-              debugId={componentId}
-              debugMode={isDebugMode}
             >
               <div
                 style={{
@@ -189,35 +723,19 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
                     "var(--header-inner-position)" as React.CSSProperties["position"],
                 }}
                 className="top-(--avatar-top,--spacing(3)) w-full"
-                {...createComponentProps(
-                  componentId,
-                  "header-avatar-positioning-div",
-                  debugMode
-                )}
               >
-                <div
-                  className="relative"
-                  {...createComponentProps(
-                    componentId,
-                    "header-avatar-relative-div",
-                    debugMode
-                  )}
-                >
+                <div className="relative">
                   <HeaderAvatarContainer
                     style={{
                       opacity: "var(--avatar-border-opacity, 0)",
                       transform: "var(--avatar-border-transform)",
                     }}
                     className="absolute top-3 left-0 origin-left transition-opacity"
-                    debugId={componentId}
-                    debugMode={isDebugMode}
                   />
                   <HeaderAvatar
                     large
                     style={{ transform: "var(--avatar-image-transform)" }}
                     className="block h-16 w-16 origin-left"
-                    debugId={componentId}
-                    debugMode={isDebugMode}
                   />
                 </div>
               </div>
@@ -232,7 +750,6 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
             position:
               "var(--header-position)" as React.CSSProperties["position"],
           }}
-          {...createComponentProps(componentId, "header-section", debugMode)}
         >
           <Container
             className="top-(--header-top,--spacing(6)) w-full"
@@ -240,115 +757,38 @@ const BaseHeader: HeaderComponent = setDisplayName(function BaseHeader(props) {
               position:
                 "var(--header-inner-position)" as React.CSSProperties["position"],
             }}
-            debugId={componentId}
-            debugMode={isDebugMode}
           >
-            <div
-              className="relative flex gap-4"
-              {...createComponentProps(
-                componentId,
-                "header-content",
-                debugMode
-              )}
-            >
-              <div
-                className="flex flex-1"
-                {...createComponentProps(
-                  componentId,
-                  "header-left-section",
-                  debugMode
-                )}
-              >
+            <div className="relative flex gap-4">
+              <div className="flex flex-1">
                 {!isHomePage ? (
-                  <HeaderAvatarContainer
-                    debugId={componentId}
-                    debugMode={isDebugMode}
-                  >
-                    <HeaderAvatar
-                      debugId={componentId}
-                      debugMode={isDebugMode}
-                    />
+                  <HeaderAvatarContainer>
+                    <HeaderAvatar />
                   </HeaderAvatarContainer>
                 ) : null}
               </div>
-              <div
-                className="flex flex-1 justify-end md:justify-center"
-                {...createComponentProps(
-                  componentId,
-                  "header-center-section",
-                  debugMode
-                )}
-              >
-                <HeaderMobileNav
-                  className="pointer-events-auto md:hidden"
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
-                <HeaderDesktopNav
-                  className="pointer-events-auto hidden md:block"
-                  debugId={componentId}
-                  debugMode={isDebugMode}
-                />
+              <div className="flex flex-1 justify-end md:justify-center">
+                <HeaderMobileNav className="pointer-events-auto md:hidden" />
+                <HeaderDesktopNav className="pointer-events-auto hidden md:block" />
               </div>
-              <div
-                className="flex justify-end md:flex-1"
-                {...createComponentProps(
-                  componentId,
-                  "header-right-section",
-                  debugMode
-                )}
-              >
-                <div
-                  className="pointer-events-auto"
-                  {...createComponentProps(
-                    componentId,
-                    "header-theme-toggle-wrapper",
-                    debugMode
-                  )}
-                >
-                  <HeaderThemeToggle
-                    debugId={componentId}
-                    debugMode={isDebugMode}
-                  />
+              <div className="flex justify-end md:flex-1">
+                <div className="pointer-events-auto">
+                  <HeaderThemeToggle />
                 </div>
               </div>
             </div>
           </Container>
         </div>
         {children}
-      </header>
+      </Component>
 
       {isHomePage ? (
         <div
           className="flex-none"
           style={{ height: "var(--content-offset)" }}
-          {...createComponentProps(
-            componentId,
-            "header-content-offset",
-            debugMode
-          )}
         />
       ) : null}
     </>
   );
+}
 
-  return element;
-});
-
-// ============================================================================
-// MEMOIZED HEADER COMPONENT
-// ============================================================================
-
-const MemoizedHeader = React.memo(BaseHeader);
-
-// ============================================================================
-// MAIN HEADER COMPONENT
-// ============================================================================
-
-export const Header: HeaderComponent = setDisplayName(function Header(props) {
-  const { children, isMemoized = false, ...rest } = props;
-
-  const Component = isMemoized ? MemoizedHeader : BaseHeader;
-  const element = <Component {...rest}>{children}</Component>;
-  return element;
-});
+Header.displayName = "Header";

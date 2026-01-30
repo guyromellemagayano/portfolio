@@ -6,6 +6,27 @@
   "button": {
     "goBackToArticles": "Go back to articles"
   },
+  "header": {
+    "brandName": "Guy Romelle Magayano",
+    "ariaLabels": {
+      "home": "Home",
+      "about": "About",
+      "articles": "Articles",
+      "projects": "Projects",
+      "speaking": "Speaking",
+      "uses": "Uses",
+      "menu": "Menu",
+      "closeMenu": "Close menu",
+      "navigation": "Navigation",
+      "toggleTheme": "Toggle theme",
+      "lightMode": "Light mode",
+      "darkMode": "Dark mode",
+      "avatar": "Avatar",
+      "mainNavigation": "Main navigation",
+      "mobileNavigation": "Mobile navigation",
+      "desktopNavigation": "Desktop navigation"
+    }
+  },
   "footer": {
     "navigation": {
       "about": "About",
