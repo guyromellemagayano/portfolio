@@ -53,7 +53,7 @@ function SocialLink<
     ...rest
   } = props;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
     ? getLinkTargetProps(linkHref, target)
     : undefined;
@@ -62,10 +62,10 @@ function SocialLink<
     <Component
       {...(rest as React.ComponentPropsWithoutRef<T>)}
       href={linkHref}
-      target={linkTargetProps?.target ?? undefined}
-      rel={linkTargetProps?.rel ?? undefined}
-      title={title ?? undefined}
-      aria-label={label ?? title ?? undefined}
+      target={linkTargetProps?.target}
+      rel={linkTargetProps?.rel}
+      title={title}
+      aria-label={label ?? title}
     >
       {icon ? (
         <Icon
@@ -103,7 +103,7 @@ export const Link = function Link<
     ...rest
   } = props;
 
-  const linkHref = href && isValidLink(href) ? href : "";
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
   return (
