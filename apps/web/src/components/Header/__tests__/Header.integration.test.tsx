@@ -1,19 +1,20 @@
 /**
- * @file Header.test.tsx
+ * @file Header.integration.test.tsx
  * @author Guy Romelle Magayano
- * @description Unit tests for the Header component.
+ * @description Integration tests for the Header component.
  */
 
 import React from "react";
 
 import { cleanup, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "../Header";
 
 // ============================================================================
-// MOCKS
+// MOCKS (same as Header.test.tsx for integration context)
 // ============================================================================
 
 vi.mock("next-intl", () => ({
@@ -63,10 +64,11 @@ vi.mock("next/navigation", () => ({
   usePathname: vi.fn(() => "/"),
 }));
 
+const mockSetTheme = vi.fn();
 vi.mock("next-themes", () => ({
   useTheme: vi.fn(() => ({
     resolvedTheme: "light",
-    setTheme: vi.fn(),
+    setTheme: mockSetTheme,
   })),
 }));
 
@@ -217,7 +219,6 @@ vi.mock("@web/components/icon", () => ({
   },
 }));
 
-// Headless UI Popover: render as a wrapper with button + panel so structure is testable
 vi.mock("@headlessui/react", () => ({
   Popover: function Popover({ children }: { children: React.ReactNode }) {
     return <div data-testid="popover">{children}</div>;
@@ -267,12 +268,13 @@ vi.mock("@headlessui/react", () => ({
 }));
 
 // ============================================================================
-// TESTS
+// INTEGRATION TESTS
 // ============================================================================
 
-describe("Header", () => {
+describe("Header Integration", () => {
   beforeEach(() => {
     vi.mocked(usePathname).mockReturnValue("/");
+    mockSetTheme.mockClear();
   });
 
   afterEach(() => {
@@ -280,182 +282,77 @@ describe("Header", () => {
     vi.clearAllMocks();
   });
 
-  describe("Basic Rendering", () => {
-    it("renders without crashing", () => {
+  describe("Full Header with sub-components", () => {
+    it("renders complete header with banner, navs, avatar, and theme toggle", () => {
       render(<Header />);
-      expect(screen.getByRole("banner")).toBeInTheDocument();
-    });
 
-    it("renders with default props", () => {
-      render(<Header />);
       const banner = screen.getByRole("banner");
       expect(banner).toBeInTheDocument();
-    });
 
-    it("renders with custom className", () => {
-      render(<Header className="custom-class" />);
-      const banner = screen.getByRole("banner");
-      expect(banner).toHaveAttribute("class");
-      expect(banner).toHaveClass("custom-class");
-    });
-  });
-
-  describe("Component Structure", () => {
-    it("renders as header element", () => {
-      render(<Header />);
-      const banner = screen.getByRole("banner");
-      expect(banner.tagName).toBe("HEADER");
-    });
-
-    it("renders main navigation and theme toggle", () => {
-      render(<Header />);
       const navs = screen.getAllByRole("navigation", {
         name: /desktop navigation|mobile navigation|navigation/i,
       });
       expect(navs.length).toBeGreaterThanOrEqual(1);
+
+      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
       expect(
         screen.getByRole("button", {
           name: /toggle theme|switch to (light|dark) mode/i,
         })
       ).toBeInTheDocument();
-    });
 
-    it("renders navigation links", () => {
-      render(<Header />);
       expect(
-        screen.getAllByRole("link", { name: /about/i }).length
-      ).toBeGreaterThanOrEqual(1);
-      expect(
-        screen.getAllByRole("link", { name: /articles/i }).length
-      ).toBeGreaterThanOrEqual(1);
-      expect(
-        screen.getAllByRole("link", { name: /projects/i }).length
-      ).toBeGreaterThanOrEqual(1);
-      expect(
-        screen.getAllByRole("link", { name: /uses/i }).length
-      ).toBeGreaterThanOrEqual(1);
-    });
-  });
-
-  describe("ARIA and Accessibility", () => {
-    it("has banner role and aria-label for site header", () => {
-      render(<Header />);
-      const banner = screen.getByRole("banner", {
-        name: /Guy Romelle Magayano/i,
-      });
-      expect(banner).toBeInTheDocument();
-      expect(banner).toHaveAttribute("aria-label", "Guy Romelle Magayano");
-      expect(banner).toHaveAttribute("role", "banner");
+        screen.getByRole("img", { name: /Guy Romelle Magayano/i })
+      ).toBeInTheDocument();
     });
 
-    it("nav elements have accessible navigation label", () => {
+    it("theme toggle button triggers setTheme on click", async () => {
+      const user = userEvent.setup();
       render(<Header />);
-      const navs = screen.getAllByRole("navigation", {
-        name: /desktop navigation|mobile navigation|navigation/i,
-      });
-      expect(navs.length).toBeGreaterThanOrEqual(1);
-      const validLabels = ["Desktop navigation", "Mobile navigation"];
-      navs.forEach((nav) => {
-        const label = nav.getAttribute("aria-label");
-        expect(label).toBeTruthy();
-        expect(validLabels).toContain(label);
-      });
-    });
 
-    it("avatar link has accessible label", () => {
-      render(<Header />);
-      const homeLink = screen.getByRole("link", { name: /home/i });
-      expect(homeLink).toBeInTheDocument();
-      expect(homeLink).toHaveAttribute("aria-label", "Home");
-    });
-
-    it("theme toggle button has accessible label", () => {
-      render(<Header />);
       const toggle = screen.getByRole("button", {
         name: /toggle theme|switch to (light|dark) mode/i,
       });
-      expect(toggle).toHaveAttribute("aria-label");
+      await user.click(toggle);
+
+      expect(mockSetTheme).toHaveBeenCalledWith("dark");
     });
 
-    it("passes through custom aria attributes", () => {
-      render(
-        <Header aria-label="Custom header" aria-describedby="header-desc" />
-      );
-      const banner = screen.getByRole("banner", { name: /custom header/i });
-      expect(banner).toHaveAttribute("aria-label", "Custom header");
-      expect(banner).toHaveAttribute("aria-describedby", "header-desc");
+    it("navigation links have correct hrefs", () => {
+      render(<Header />);
+
+      const aboutLinks = screen.getAllByRole("link", { name: /about/i });
+      expect(
+        aboutLinks.some((el) => el.getAttribute("href") === "/about")
+      ).toBe(true);
+
+      const articlesLinks = screen.getAllByRole("link", { name: /articles/i });
+      expect(
+        articlesLinks.some((el) => el.getAttribute("href") === "/articles")
+      ).toBe(true);
     });
   });
 
-  describe("SEO and Semantics", () => {
-    it("uses semantic header element", () => {
-      render(<Header />);
-      const header = document.querySelector("header");
-      expect(header).toBeInTheDocument();
-      expect(header).toHaveAttribute("role", "banner");
-    });
-
-    it("uses semantic nav for main navigation", () => {
-      render(<Header />);
-      const navs = screen.getAllByRole("navigation", {
-        name: /desktop navigation|mobile navigation|navigation/i,
-      });
-      expect(navs.length).toBeGreaterThanOrEqual(1);
-      const firstNav = navs[0];
-      expect(firstNav).toBeInTheDocument();
-      expect(firstNav!.tagName).toBe("NAV");
-    });
-
-    it("avatar image has descriptive alt text", () => {
-      render(<Header />);
-      const img = screen.getByRole("img", { name: /Guy Romelle Magayano/i });
-      expect(img).toHaveAttribute("alt", "Guy Romelle Magayano");
-    });
-  });
-
-  describe("Homepage Behavior", () => {
-    it("renders avatar and containers on homepage", () => {
+  describe("Homepage vs non-homepage layout", () => {
+    it("on homepage renders large avatar and content offset", () => {
       vi.mocked(usePathname).mockReturnValue("/");
       render(<Header />);
-      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
+
+      const homeLink = screen.getByRole("link", { name: /home/i });
+      expect(homeLink).toBeInTheDocument();
       const containers = screen.getAllByTestId("container");
       expect(containers.length).toBeGreaterThanOrEqual(1);
     });
-  });
 
-  describe("Non-Homepage Behavior", () => {
-    it("renders avatar in left section on non-homepage", () => {
+    it("on non-homepage still renders banner and navigation", () => {
       vi.mocked(usePathname).mockReturnValue("/about");
       render(<Header />);
-      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
-      expect(screen.getByRole("banner")).toBeInTheDocument();
-    });
-  });
 
-  describe("Compound Component Integration", () => {
-    it("renders header with all sub-components", () => {
-      render(<Header />);
       expect(screen.getByRole("banner")).toBeInTheDocument();
       const navs = screen.getAllByRole("navigation", {
         name: /desktop navigation|mobile navigation|navigation/i,
       });
       expect(navs.length).toBeGreaterThanOrEqual(1);
-      expect(
-        screen.getByRole("button", {
-          name: /toggle theme|switch to (light|dark) mode/i,
-        })
-      ).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
-    });
-  });
-
-  describe("Edge Cases", () => {
-    it("handles custom className and aria props", () => {
-      render(<Header className="edge-class" aria-label="Edge header" />);
-      const banner = screen.getByRole("banner", { name: /edge header/i });
-      expect(banner).toHaveAttribute("class");
-      expect(banner).toHaveClass("edge-class");
-      expect(banner).toHaveAttribute("aria-label", "Edge header");
     });
   });
 });
