@@ -54,13 +54,13 @@
 ### Documentation Levels
 
 - **Components**: File-level JSDoc with `@file`, `@author`, `@description`
-- **Types**: For `@packages/` components, use one-liner JSDoc (`/** Ref type for Component. */`). For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
+- **Types**: For `@packages/` components, use one-liner JSDoc (`/** Ref type for Component. */`). For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - **Functions**: Full JSDoc with `@param`/`@returns`/`@example` (when needed)
 - **Memoized Components**: Brief explanation of memoization behavior
 
 ### Documentation Template
 
-**For `@apps/` components (web, storefront, admin, API):**
+**For `@apps/` components (web, admin, API):**
 
 ```typescript
 /**
@@ -119,7 +119,7 @@ export const ComponentName = setDisplayName(
 
 **Reference**: See `.cursor/rules/component-architecture.mdc` and `.cursor/rules/react-typescript.mdc` for detailed standards.
 
-- **Main Components**: For `@packages/` components, use `setDisplayName` for proper component naming. For `@apps/` components (web, storefront, admin, API), `setDisplayName` is NOT ALLOWED - use manual `displayName` assignment or omit it entirely. Extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props. For `@apps/` components, refs work via props spread in `rest` (React 19 pattern), so `forwardRef` is NOT ALLOWED. For `@packages/` components, `forwardRef` is REQUIRED.
+- **Main Components**: For `@packages/` components, use `setDisplayName` for proper component naming. For `@apps/` components (web, admin, API), `setDisplayName` is NOT ALLOWED - use manual `displayName` assignment or omit it entirely. Extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props. For `@apps/` components, refs work via props spread in `rest` (React 19 pattern), so `forwardRef` is NOT ALLOWED. For `@packages/` components, `forwardRef` is REQUIRED.
 - **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly. For `@packages/` sub-components, use `setDisplayName`. For `@apps/` sub-components, `setDisplayName` is NOT ALLOWED. Use `hasAnyRenderableContent` for content validation
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
@@ -618,7 +618,7 @@ it("includes dateTime when using time element", () => {
 
 **For `@packages/` components only**: All component files must include classification comments at the top.
 
-**For `@apps/` components (web, storefront, admin, API)**: Component classification comments are NOT ALLOWED.
+**For `@apps/` components (web, admin, API)**: Component classification comments are NOT ALLOWED.
 
 ```typescript
 // ============================================================================
@@ -749,7 +749,7 @@ components/component-name/
 ## Utility Function Standards
 
 - **`useComponentId`**: For ID generation and debug mode in sub-components
-- **`setDisplayName`**: For component naming in `@packages/` components only. NOT ALLOWED in `@apps/` components (web, storefront, admin, API)
+- **`setDisplayName`**: For component naming in `@packages/` components only. NOT ALLOWED in `@apps/` components (web, admin, API)
 - **`hasAnyRenderableContent`**: For content validation in main components
 - **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
@@ -771,7 +771,7 @@ components/component-name/
 - **Separate Types Files**: Only create `.types.ts` files when types are shared across multiple components
 - **Compound Component Types**: Define compound component types inline in main component file
 - **Data Types**: Keep `_data/` types simple - only constants, labels, and shared interfaces
-- **Type Documentation**: For `@packages/` components, document all exported types with JSDoc comments, document type properties with `/** */` comments. For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
+- **Type Documentation**: For `@packages/` components, document all exported types with JSDoc comments, document type properties with `/** */` comments. For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 
 ## Data Organization Standards
 
@@ -798,7 +798,7 @@ components/component-name/
 
 **For `@packages/` components only**: Type documentation is REQUIRED.
 
-**For `@apps/` components (web, storefront, admin, API)**: Type documentation is NOT ALLOWED.
+**For `@apps/` components (web, admin, API)**: Type documentation is NOT ALLOWED.
 
 - **Exported Types**: For `@packages/`, always document exported types with JSDoc comments
 - **Type Properties**: For `@packages/`, document all type properties with `/** */` comments
@@ -951,7 +951,7 @@ vi.mock("../constants/Component.i18n", () => ({
 
 **Critical**: Test patterns differ significantly between `@apps/` and `@packages/` components. Follow the correct pattern for each.
 
-#### **For `@apps/` Components (web, storefront, admin, API)**
+#### **For `@apps/` Components (web, admin, API)**
 
 - ❌ **NO ref forwarding tests** - Refs work via props spread in React 19, not `forwardRef`. Remove any existing ref forwarding tests.
 - ❌ **NO `setDisplayName` mocks** - `@apps/` components use manual `displayName` assignment or omit it entirely. Do not mock `setDisplayName`.
@@ -1240,7 +1240,7 @@ describe("Polymorphic Element Types", () => {
 
 **For `@packages/` components only**: Ref forwarding tests are REQUIRED.
 
-**For `@apps/` components (web, storefront, admin, API)**: Ref forwarding tests are NOT REQUIRED and should be REMOVED (refs work via props spread in React 19).
+**For `@apps/` components (web, admin, API)**: Ref forwarding tests are NOT REQUIRED and should be REMOVED (refs work via props spread in React 19).
 
 - ✅ For `@packages/`: Forwards ref correctly
 - ✅ For `@packages/`: Ref points to correct element
@@ -2176,7 +2176,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 **Documentation**:
 
 - ✅ JSDoc for all exported functions (both `@apps/` and `@packages/`)
-- ✅ For `@packages/` only: JSDoc for all exported types (concise, one-liner for types). For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
+- ✅ For `@packages/` only: JSDoc for all exported types (concise, one-liner for types). For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - ✅ Component documentation with `@example` when helpful
 - ✅ README for each package
 - ✅ ADRs for architectural decisions
@@ -2372,7 +2372,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Industry Best Practices**:
 
-- **JSDoc**: All exported functions and components (follow TypeScript JSDoc standards). For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, storefront, admin, API), type documentation is NOT ALLOWED.
+- **JSDoc**: All exported functions and components (follow TypeScript JSDoc standards). For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - **README**: Each package in monorepo with usage examples, API documentation
 - **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
 - **Storybook**: All reusable UI components with interactive examples and accessibility notes
@@ -2392,7 +2392,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 ### Main Component Pattern
 
-**For `@apps/` components (web, storefront, admin, API):**
+**For `@apps/` components (web, admin, API):**
 
 ```typescript
 import React from "react";
@@ -2533,7 +2533,7 @@ export const ComponentName: ComponentNameComponent = setDisplayName(
 
 ### Sub-Component Pattern
 
-**For `@apps/` components (web, storefront, admin, API):**
+**For `@apps/` components (web, admin, API):**
 
 ```typescript
 import React from "react";
@@ -2673,7 +2673,6 @@ export const SubComponent: SubComponentComponent = setDisplayName(
   - Build all via turbo:      `pnpm -w turbo run build`
   - Dev targets (per app):
     - web (Next.js):          `pnpm --filter ./apps/web dev`
-    - storefront (Next.js):   `pnpm --filter ./apps/storefront dev`
     - admin (Vite):           `pnpm --filter ./apps/admin dev`
     - API (Node/Express):     `pnpm --filter ./apps/api dev`
   - Scoped operations:
@@ -2686,7 +2685,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 ## Project Defaults & Assumptions (tailored to this repo)
 
 - Monorepo layout:
-  - Apps: `./apps/web` (Next.js), `./apps/storefront` (Next.js), `./apps/admin` (Vite), `./apps/api` (Node/Express).
+  - Apps: `./apps/web` (Next.js), `./apps/admin` (Vite), `./apps/api` (Node/Express).
   - Packages: `./packages/{components,ui,utils,hooks,logger,config-eslint,config-typescript,vitest-presets}`.
 - Testing: Vitest everywhere; use `vitest-presets/{browser,node,react}` when applicable.
 - TypeScript: strict; prefer `satisfies`, exhaustive switches, and `never` checks; keep ambient types in `global.d.ts` minimal.
