@@ -78,7 +78,7 @@ export function Article<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as React.ComponentPropsWithRef<ArticleElementType>)}
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
