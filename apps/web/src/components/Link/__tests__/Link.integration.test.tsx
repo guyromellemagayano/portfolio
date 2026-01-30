@@ -341,7 +341,7 @@ describe("Link Integration Tests", () => {
       );
       const link = container.querySelector("a");
       expect(link).toBeInTheDocument();
-      expect(link).not.toHaveAttribute("href");
+      expect(link).toHaveAttribute("href", "#");
     });
 
     it("handles social link with all optional props", () => {

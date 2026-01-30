@@ -182,7 +182,7 @@ function ToolsListItem<P extends Record<string, unknown> = {}>(
 
   if (!children || !title) return null;
 
-  const linkHref = href && isValidLink(href) ? href : "";
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = getLinkTargetProps(linkHref, target);
 
   return (

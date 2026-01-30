@@ -44,7 +44,7 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
 
   if (!children) return null;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
     ? getLinkTargetProps(linkHref, target)
     : undefined;
@@ -58,10 +58,10 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
   return (
     <Component
       {...rest}
-      href={linkHref ?? undefined}
-      target={linkTargetProps?.target ?? undefined}
-      rel={linkTargetProps?.rel ?? undefined}
-      title={title || undefined}
+      href={linkHref}
+      target={linkTargetProps?.target}
+      rel={linkTargetProps?.rel}
+      title={title}
       aria-label={ariaLabel}
     >
       {children}
@@ -100,7 +100,7 @@ function CardCta<P extends Record<string, unknown> = {}>(
 
   if (!children) return null;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
     ? getLinkTargetProps(linkHref, target)
     : undefined;
@@ -116,9 +116,9 @@ function CardCta<P extends Record<string, unknown> = {}>(
       {linkHref ? (
         <CardLinkCustom
           href={linkHref}
-          target={linkTargetProps?.target ?? undefined}
-          rel={linkTargetProps?.rel ?? undefined}
-          title={title || undefined}
+          target={linkTargetProps?.target}
+          rel={linkTargetProps?.rel}
+          title={title}
         >
           {children}
           <Icon name="chevron-right" aria-hidden="true" />
@@ -270,7 +270,7 @@ function CardLink<P extends Record<string, unknown> = {}>(
 
   if (!children) return null;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
     ? getLinkTargetProps(linkHref, target)
     : undefined;
@@ -286,10 +286,10 @@ function CardLink<P extends Record<string, unknown> = {}>(
 
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref ?? undefined}
-          target={linkTargetProps?.target ?? undefined}
-          rel={linkTargetProps?.rel ?? undefined}
-          title={title ?? undefined}
+          href={linkHref}
+          target={linkTargetProps?.target}
+          rel={linkTargetProps?.rel}
+          title={title}
         >
           <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
           <span className="relative z-10">{children}</span>
@@ -332,7 +332,7 @@ function CardTitle<P extends Record<string, unknown> = {}>(
 
   if (!children) return null;
 
-  const linkHref = href && isValidLink(href) ? href : null;
+  const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
     ? getLinkTargetProps(linkHref, target)
     : undefined;
@@ -347,10 +347,10 @@ function CardTitle<P extends Record<string, unknown> = {}>(
     >
       {linkHref ? (
         <CardLinkCustom
-          href={linkHref ?? undefined}
-          target={linkTargetProps?.target ?? undefined}
-          rel={linkTargetProps?.rel ?? undefined}
-          title={title ?? undefined}
+          href={linkHref}
+          target={linkTargetProps?.target}
+          rel={linkTargetProps?.rel}
+          title={title}
         >
           {children}
         </CardLinkCustom>
