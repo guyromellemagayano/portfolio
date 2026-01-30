@@ -146,14 +146,14 @@ describe("Link", () => {
       render(<Link href="">Test Link</Link>);
 
       const link = screen.getByText("Test Link").closest("a");
-      expect(link).toHaveAttribute("href", "");
+      expect(link).toHaveAttribute("href", "#");
     });
 
     it("handles null href gracefully", () => {
       render(<Link href={null as any}>Test Link</Link>);
 
       const link = screen.getByText("Test Link").closest("a");
-      expect(link).toHaveAttribute("href", "");
+      expect(link).toHaveAttribute("href", "#");
     });
   });
 
@@ -237,14 +237,14 @@ describe("Link", () => {
       render(<Link href="">Test Link</Link>);
 
       const link = screen.getByText("Test Link").closest("a");
-      expect(link).toHaveAttribute("href", "");
+      expect(link).toHaveAttribute("href", "#");
     });
 
     it("handles undefined href gracefully", () => {
       render(<Link href={undefined as any}>Test Link</Link>);
 
       const link = screen.getByText("Test Link").closest("a");
-      expect(link).toHaveAttribute("href", "");
+      expect(link).toHaveAttribute("href", "#");
     });
   });
 
@@ -389,7 +389,7 @@ describe("Link", () => {
         );
         const link = container.querySelector("a");
         expect(link).toBeInTheDocument();
-        expect(link).not.toHaveAttribute("href");
+        expect(link).toHaveAttribute("href", "#");
       });
     });
 
@@ -608,7 +608,7 @@ describe("Link", () => {
         );
         const link = container.querySelector("a");
         expect(link).toBeInTheDocument();
-        expect(link).not.toHaveAttribute("href");
+        expect(link).toHaveAttribute("href", "#");
       });
     });
   });
