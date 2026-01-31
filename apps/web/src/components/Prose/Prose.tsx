@@ -4,7 +4,10 @@
  * @description Prose component for the web application.
  */
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
 import { cn } from "@web/utils/helpers";
 
@@ -14,23 +17,22 @@ import { cn } from "@web/utils/helpers";
 
 type ProseElementType = "div";
 
-export type ProseProps<
-  T extends ProseElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type ProseProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<ProseElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: ProseElementType;
   };
 
-export function Prose<
-  T extends ProseElementType,
-  P extends Record<string, unknown> = {},
->(props: ProseProps<T, P>) {
+export function Prose<P extends Record<string, unknown> = {}>(
+  props: ProseProps<P>
+) {
   const { as: Component = "div", className, ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<ProseElementType>)}
       className={cn("prose dark:prose-invert", className)}
     />
   );
