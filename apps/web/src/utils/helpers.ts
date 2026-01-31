@@ -1,4 +1,10 @@
-import React from "react";
+/**
+ * @file helpers.ts
+ * @author Guy Romelle Magayano
+ * @description Utility functions for the web application.
+ */
+
+import { type ComponentPropsWithoutRef } from "react";
 
 import { type ClassValue, clsx } from "clsx";
 import Link from "next/link";
@@ -21,7 +27,7 @@ export function cn(...classes: ClassValue[]): string {
 /** Checks if a path is active. */
 export function isActivePath(
   pathname: string | null | undefined,
-  href: React.ComponentProps<typeof Link>["href"]
+  href: ComponentPropsWithoutRef<typeof Link>["href"]
 ): boolean {
   if (!pathname) return false;
   if (href === "/") return pathname === "/";
