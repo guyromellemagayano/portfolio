@@ -7,7 +7,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Form } from "../Form";
+import { Form, NewsletterForm } from "../Form";
 
 import "@testing-library/jest-dom";
 
@@ -168,14 +168,14 @@ describe("Form", () => {
   });
 });
 
-describe("Form.Newsletter", () => {
+describe("NewsletterForm", () => {
   // ============================================================================
   // BASIC RENDERING TESTS
   // ============================================================================
 
   describe("Basic Rendering", () => {
     it("renders newsletter form correctly", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       expect(screen.getByRole("form")).toBeInTheDocument();
       expect(screen.getByText("Stay up to date")).toBeInTheDocument();
@@ -191,14 +191,14 @@ describe("Form.Newsletter", () => {
     });
 
     it("renders as form element", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form.tagName).toBe("FORM");
     });
 
     it("renders heading with icon", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const heading = screen.getByRole("heading", { level: 2 });
       expect(heading).toBeInTheDocument();
@@ -211,7 +211,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("renders description text", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const description = screen.getByText(
         "Get notified when I publish something new, and unsubscribe at any time."
@@ -221,7 +221,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("renders email input with correct attributes", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("type", "email");
@@ -231,13 +231,13 @@ describe("Form.Newsletter", () => {
       expect(emailInput).toHaveAttribute("spellCheck", "false");
       expect(emailInput).toHaveAttribute("placeholder", "Email address");
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
-      expect(emailInput).toHaveAttribute("aria-required", "true");
+      expect(emailInput).toBeRequired();
       expect(emailInput).toBeRequired();
       expect(emailInput).toHaveAttribute("id");
     });
 
     it("renders submit button with correct text", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const submitButton = screen.getByRole("button", { name: "Join" });
       expect(submitButton).toHaveAttribute("type", "submit");
@@ -251,7 +251,7 @@ describe("Form.Newsletter", () => {
 
   describe("Form Attributes", () => {
     it("sets default action and method attributes", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveAttribute("action", "/thank-you");
@@ -259,7 +259,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("allows custom action attribute", () => {
-      render(<Form.Newsletter action="/custom-action" />);
+      render(<NewsletterForm action="/custom-action" />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveAttribute("action", "/custom-action");
@@ -267,7 +267,7 @@ describe("Form.Newsletter", () => {
 
     it("forwards all HTML form attributes", () => {
       render(
-        <Form.Newsletter
+        <NewsletterForm
           method="post"
           encType="multipart/form-data"
           data-custom="value"
@@ -282,7 +282,7 @@ describe("Form.Newsletter", () => {
 
     it("passes through HTML attributes", () => {
       render(
-        <Form.Newsletter
+        <NewsletterForm
           aria-label="Newsletter subscription form"
           data-custom="value"
         />
@@ -303,7 +303,7 @@ describe("Form.Newsletter", () => {
 
   describe("CSS and Styling", () => {
     it("applies base Tailwind CSS classes", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveClass("rounded-2xl");
@@ -313,7 +313,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("merges custom className with base classes", () => {
-      render(<Form.Newsletter className="custom-form-class" />);
+      render(<NewsletterForm className="custom-form-class" />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveClass("custom-form-class");
@@ -321,7 +321,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("handles multiple custom classes", () => {
-      render(<Form.Newsletter className="class1 class2 class3" />);
+      render(<NewsletterForm className="class1 class2 class3" />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveClass("class1");
@@ -336,7 +336,7 @@ describe("Form.Newsletter", () => {
 
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA roles to form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const formElement = screen.getByRole("form");
       expect(formElement).toBeInTheDocument();
@@ -352,15 +352,15 @@ describe("Form.Newsletter", () => {
     });
 
     it("applies correct ARIA labels to form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
-      expect(emailInput).toHaveAttribute("aria-required", "true");
+      expect(emailInput).toBeRequired();
     });
 
     it("renders screen reader only label for email input", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       const emailInputId = emailInput.getAttribute("id");
@@ -373,7 +373,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("ensures proper form landmark structure", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const formElement = screen.getByRole("form");
       expect(formElement).toBeInTheDocument();
@@ -388,7 +388,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("applies correct ARIA relationships between form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const formElement = screen.getByRole("form");
       const heading = screen.getByRole("heading", { level: 2 });
@@ -406,12 +406,12 @@ describe("Form.Newsletter", () => {
 
       expect(headingId).toBeTruthy();
       expect(descriptionId).toBeTruthy();
-      expect(formElement.getAttribute("aria-labelledby")).toBe(headingId);
-      expect(formElement.getAttribute("aria-describedby")).toBe(descriptionId);
+      expect(formElement).toHaveAttribute("aria-labelledby", headingId);
+      expect(formElement).toHaveAttribute("aria-describedby", descriptionId);
     });
 
     it("applies unique IDs for ARIA relationships", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const heading = screen.getByRole("heading", { level: 2 });
       const description = screen.getByText(
@@ -440,7 +440,7 @@ describe("Form.Newsletter", () => {
     });
 
     it("applies conditional ARIA attributes correctly", () => {
-      render(<Form.Newsletter aria-label="Custom form label" />);
+      render(<NewsletterForm aria-label="Custom form label" />);
 
       const formElement = screen.getByRole("form");
       expect(formElement).toHaveAttribute("aria-label", "Custom form label");
@@ -456,7 +456,7 @@ describe("Form.Newsletter", () => {
   describe("Edge Cases", () => {
     it("handles special characters in attributes", () => {
       render(
-        <Form.Newsletter
+        <NewsletterForm
           action="/path?param=value&other=test"
           data-special="special chars: <>&"
         />
