@@ -1,3 +1,5 @@
+/* eslint-disable simple-import-sort/imports */
+
 /**
  * @file Resume.tsx
  * @author Guy Romelle Magayano
@@ -6,17 +8,26 @@
 
 "use client";
 
-// eslint-disable-next-line simple-import-sort/imports
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useMemo,
+} from "react";
 
 import { useTranslations } from "next-intl";
 import Image, { type ImageProps } from "next/image";
 
-import { Button, type ButtonProps } from "@web/components/button";
+import {
+  Button,
+  ButtonElementType,
+  type ButtonProps,
+} from "@web/components/button";
 import { Icon } from "@web/components/icon";
 import {
   List,
+  ListElementType,
   ListItem,
+  ListItemElementType,
   type ListItemProps,
   type ListProps,
 } from "@web/components/list";
@@ -90,7 +101,7 @@ function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("resume.ariaLabels");
 
   // Resume download button ARIA
-  const RESUME_DOWNLOAD_BUTTON_I18N = React.useMemo(
+  const RESUME_DOWNLOAD_BUTTON_I18N = useMemo(
     () => ({
       downloadCV: tAria("downloadCV"),
     }),
@@ -99,7 +110,7 @@ function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ButtonElementType>)}
       href={RESUME_FILE_NAME}
       variant="secondary"
       className={cn("group mt-6 w-full", className)}
@@ -132,7 +143,7 @@ function ResumeRoleList<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       className={cn("mt-6 space-y-4", className)}
     >
       {RESUME_DATA.map((role, index) => (
@@ -163,7 +174,7 @@ function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("resume.ariaLabels");
 
   // Resume role list item ARIA
-  const RESUME_ROLE_LIST_ITEM_I18N = React.useMemo(
+  const RESUME_ROLE_LIST_ITEM_I18N = useMemo(
     () => ({
       company: tAria("company"),
       role: tAria("role"),
@@ -179,7 +190,7 @@ function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       className={cn("flex gap-4", className)}
     >
       <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
@@ -221,7 +232,7 @@ ResumeRoleListItem.displayName = "ResumeRoleListItem";
 
 export type ResumeTitleElementType = "h2" | "h3";
 export type ResumeTitleProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ResumeTitleElementType>,
+  ComponentPropsWithRef<ResumeTitleElementType>,
   "as"
 > &
   P & {
@@ -237,7 +248,7 @@ function ResumeTitle<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("resume.ariaLabels");
 
   // Resume title ARIA
-  const RESUME_TITLE_I18N = React.useMemo(
+  const RESUME_TITLE_I18N = useMemo(
     () => ({
       work: tAria("work"),
     }),
@@ -246,7 +257,7 @@ function ResumeTitle<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ResumeTitleElementType>)}
       className={cn(
         "flex text-sm font-semibold text-zinc-900 dark:text-zinc-100",
         className
@@ -266,7 +277,7 @@ ResumeTitle.displayName = "ResumeTitle";
 
 export type ResumeElementType = "div" | "section" | "article";
 export type ResumeProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ResumeElementType>,
+  ComponentPropsWithRef<ResumeElementType>,
   "as"
 > &
   P & {
@@ -280,7 +291,7 @@ export function Resume<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ResumeElementType>)}
       className={cn(
         "rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40",
         className
