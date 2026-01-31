@@ -1,3 +1,5 @@
+/* eslint-disable simple-import-sort/imports */
+
 /**
  * @file PhotoGallery.tsx
  * @author Guy Romelle Magayano
@@ -6,18 +8,20 @@
 
 "use client";
 
-// eslint-disable-next-line simple-import-sort/imports
-import React from "react";
-
+import { cn } from "@web/utils/helpers";
 import { useTranslations } from "next-intl";
 import Image, { type StaticImageData } from "next/image";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useMemo,
+} from "react";
 
 import image1 from "@web/images/photos/image-1.jpg";
 import image2 from "@web/images/photos/image-2.jpg";
 import image3 from "@web/images/photos/image-3.jpg";
 import image4 from "@web/images/photos/image-4.jpg";
 import image5 from "@web/images/photos/image-5.jpg";
-import { cn } from "@web/utils/helpers";
 
 // ============================================================================
 // PHOTO GALLERY DATA
@@ -37,20 +41,19 @@ const PHOTO_GALLERY_COMPONENT_PHOTOS: StaticImageData[] = [
 
 type PhotoGalleryElementType = "div" | "section";
 
-export type PhotoGalleryProps<
-  T extends React.ElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type PhotoGalleryProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<PhotoGalleryElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: PhotoGalleryElementType;
     photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
     "aria-label"?: string;
   };
 
-export function PhotoGallery<
-  T extends PhotoGalleryElementType,
-  P extends Record<string, unknown> = {},
->(props: PhotoGalleryProps<T, P>) {
+export function PhotoGallery<P extends Record<string, unknown> = {}>(
+  props: PhotoGalleryProps<P>
+) {
   const {
     as: Component = "section",
     photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
@@ -64,7 +67,7 @@ export function PhotoGallery<
   const tAria = useTranslations("photoGallery.ariaLabels");
 
   // Photo gallery ARIA labels
-  const PHOTO_GALLERY_I18N = React.useMemo(
+  const PHOTO_GALLERY_I18N = useMemo(
     () => ({
       photoGallery: tAria("photoGallery"),
       photoGalleryImages: tAria("photoGalleryImages"),
@@ -90,7 +93,7 @@ export function PhotoGallery<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<PhotoGalleryElementType>)}
       className={cn("mt-16 sm:mt-20", className)}
       role={role || "region"}
       aria-label={galleryAriaLabel}
