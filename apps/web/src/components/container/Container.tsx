@@ -4,7 +4,10 @@
  * @description Container component for the web application.
  */
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
 import { cn } from "@web/utils/helpers";
 
@@ -27,7 +30,7 @@ type ContainerElementType =
 // ============================================================================
 
 export type ContainerOuterProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ContainerElementType>,
+  ComponentPropsWithRef<ContainerElementType>,
   "as"
 > &
   P & {
@@ -43,7 +46,7 @@ function ContainerOuter<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<ContainerElementType>)}
+      {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}
       className={cn("sm:px-8", className)}
     >
       <div className="mx-auto w-full max-w-7xl lg:px-8">{children}</div>
@@ -58,7 +61,7 @@ ContainerOuter.displayName = "ContainerOuter";
 // ============================================================================
 
 type ContainerInnerProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ContainerElementType>,
+  ComponentPropsWithRef<ContainerElementType>,
   "as"
 > &
   P & {
@@ -74,7 +77,7 @@ function ContainerInner<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<ContainerElementType>)}
+      {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}
       className={cn("relative px-4 sm:px-8 lg:px-12", className)}
     >
       <div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</div>
@@ -99,7 +102,7 @@ export function Container<P extends Record<string, unknown> = {}>(
   if (!children) return null;
 
   return (
-    <Component {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}>
+    <Component {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}>
       <ContainerInner>{children}</ContainerInner>
     </Component>
   );
