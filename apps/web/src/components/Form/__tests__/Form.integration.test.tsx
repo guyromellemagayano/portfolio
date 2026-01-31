@@ -7,7 +7,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Form } from "../Form";
+import { Form, NewsletterForm } from "../Form";
 
 import "@testing-library/jest-dom";
 
@@ -113,7 +113,7 @@ describe("Form Integration Tests", () => {
 
   describe("Newsletter Form", () => {
     it("renders newsletter form with heading and form controls", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form).toBeInTheDocument();
@@ -161,7 +161,7 @@ describe("Form Integration Tests", () => {
 
     it("renders newsletter form with custom action and merged className", () => {
       render(
-        <Form.Newsletter action="/custom-action" className="custom-class" />
+        <NewsletterForm action="/custom-action" className="custom-class" />
       );
 
       const form = screen.getByRole("form");
@@ -170,7 +170,7 @@ describe("Form Integration Tests", () => {
     });
 
     it("renders complete newsletter form with all sub-components", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       // Check main form
       const form = screen.getByRole("form");
@@ -203,7 +203,7 @@ describe("Form Integration Tests", () => {
       expect(emailInput).toHaveAttribute("spellCheck", "false");
       expect(emailInput).toHaveAttribute("placeholder", "Email address");
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
-      expect(emailInput).toHaveAttribute("aria-required", "true");
+      expect(emailInput).toBeRequired();
       expect(emailInput).toBeRequired();
       expect(emailInput).toHaveAttribute("id");
 
@@ -222,7 +222,7 @@ describe("Form Integration Tests", () => {
     });
 
     it("renders newsletter form with proper DOM structure", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       const heading = screen.getByRole("heading", { level: 2 });
@@ -236,18 +236,18 @@ describe("Form Integration Tests", () => {
     });
 
     it("uses semantic HTML5 form element", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form.tagName).toBe("FORM");
     });
 
     it("provides accessible names for form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
-      expect(emailInput).toHaveAttribute("aria-required", "true");
+      expect(emailInput).toBeRequired();
 
       // Check for screen reader only label
       const emailInputId = emailInput.getAttribute("id");
@@ -258,7 +258,7 @@ describe("Form Integration Tests", () => {
     });
 
     it("uses descriptive text for form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const heading = screen.getByRole("heading", { level: 2 });
       expect(heading).toHaveTextContent("Stay up to date");
@@ -268,7 +268,7 @@ describe("Form Integration Tests", () => {
     });
 
     it("applies proper form structure", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form).toHaveAttribute("role", "form");
@@ -279,7 +279,7 @@ describe("Form Integration Tests", () => {
     });
 
     it("applies correct ARIA relationships between form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const formElement = screen.getByRole("form");
       const heading = screen.getByRole("heading", { level: 2 });
@@ -293,12 +293,12 @@ describe("Form Integration Tests", () => {
 
       expect(headingId).toBeTruthy();
       expect(descriptionId).toBeTruthy();
-      expect(formElement.getAttribute("aria-labelledby")).toBe(headingId);
-      expect(formElement.getAttribute("aria-describedby")).toBe(descriptionId);
+      expect(formElement).toHaveAttribute("aria-labelledby", headingId);
+      expect(formElement).toHaveAttribute("aria-describedby", descriptionId);
     });
 
     it("ensures unique IDs for all form elements", () => {
-      render(<Form.Newsletter />);
+      render(<NewsletterForm />);
 
       const heading = screen.getByRole("heading", { level: 2 });
       const description = screen.getByText(
@@ -326,12 +326,12 @@ describe("Form Integration Tests", () => {
 
   describe("Compound Component Integration", () => {
     it("exposes Newsletter as compound component", () => {
-      expect(Form.Newsletter).toBeDefined();
-      expect(typeof Form.Newsletter).toBe("function");
+      expect(NewsletterForm).toBeDefined();
+      expect(typeof NewsletterForm).toBe("function");
     });
 
-    it("renders Form.Newsletter independently", () => {
-      render(<Form.Newsletter />);
+    it("renders NewsletterForm independently", () => {
+      render(<NewsletterForm />);
 
       const form = screen.getByRole("form");
       expect(form).toBeInTheDocument();
