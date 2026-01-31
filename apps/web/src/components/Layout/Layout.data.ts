@@ -1,6 +1,6 @@
 import { type ImageProps } from "next/image";
 
-import { type IconProps } from "@web/components";
+import { type IconProps } from "@web/components/icon";
 import logoAnimaginary from "@web/images/logos/animaginary.svg";
 import logoCosmos from "@web/images/logos/cosmos.svg";
 import logoHelioStream from "@web/images/logos/helio-stream.svg";
@@ -8,24 +8,16 @@ import logoOpenShuttle from "@web/images/logos/open-shuttle.svg";
 import logoPlanetaria from "@web/images/logos/planetaria.svg";
 
 // ============================================================================
-// COMMON LAYOUT COMPONENT LABELS
-// ============================================================================
-
-export type CommonLayoutComponentLabels = Readonly<Record<string, string>>;
-export const COMMON_LAYOUT_COMPONENT_LABELS = {
-  skipToMainContent: "Skip to main content",
-} as const satisfies CommonLayoutComponentLabels;
-
-// ============================================================================
-// SOCIAL LIST COMPONENT LABELS
+// SOCIAL LIST DATA
 // ============================================================================
 
 export type SocialListComponentLabels = ReadonlyArray<{
   label?: string;
-  icon: IconProps<"svg">["name"];
+  icon: IconProps["name"];
   href?: string;
   target?: string;
 }>;
+
 export const SOCIAL_LIST_COMPONENT_LABELS = [
   {
     label: "Follow on X",
@@ -69,11 +61,13 @@ export type ProjectsComponentData = ReadonlyArray<{
   link: { href: string; label: string };
   logo: ImageProps["src"];
 }>;
+
 export type ProjectsPageLayoutData = Readonly<{
   title: string;
   intro: string;
   projects: ProjectsComponentData;
 }>;
+
 export const PROJECTS_PAGE_LAYOUT_DATA: ProjectsPageLayoutData = {
   title: "Things I’ve made trying to put my dent in the universe.",
   intro:
