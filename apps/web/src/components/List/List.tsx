@@ -6,7 +6,11 @@
 
 "use client";
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useMemo,
+} from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -18,7 +22,7 @@ import { cn } from "@web/utils/helpers";
 
 export type ListElementType = "ul" | "ol";
 export type ListProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ListElementType>,
+  ComponentPropsWithRef<ListElementType>,
   "as"
 > &
   P & {
@@ -32,7 +36,7 @@ export type ListProps<P extends Record<string, unknown> = {}> = Omit<
 export type ArticleListProps<P extends Record<string, unknown> = {}> =
   ListProps<P> & P & {};
 
-function ArticleList<P extends Record<string, unknown> = {}>(
+export function ArticleList<P extends Record<string, unknown> = {}>(
   props: ArticleListProps<P>
 ) {
   const {
@@ -47,7 +51,7 @@ function ArticleList<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("list.ariaLabels");
 
   // Article list ARIA
-  const LIST_I18N = React.useMemo(
+  const LIST_I18N = useMemo(
     () => ({
       articleList: tAria("articleList"),
       articles: tAria("articles"),
@@ -59,7 +63,7 @@ function ArticleList<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       role={role}
       className={cn(
         "md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40",
@@ -84,7 +88,7 @@ ArticleList.displayName = "ArticleList";
 export type SocialListProps<P extends Record<string, unknown> = {}> =
   ListProps<P> & P & {};
 
-function SocialList<P extends Record<string, unknown> = {}>(
+export function SocialList<P extends Record<string, unknown> = {}>(
   props: SocialListProps<P>
 ) {
   const { as: Component = "ul", role = "region", children, ...rest } = props;
@@ -93,7 +97,7 @@ function SocialList<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("list.ariaLabels");
 
   // Social list ARIA
-  const LIST_I18N = React.useMemo(
+  const LIST_I18N = useMemo(
     () => ({
       socialList: tAria("socialList"),
     }),
@@ -104,7 +108,7 @@ function SocialList<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       role={role}
       aria-label={LIST_I18N.socialList}
     >
@@ -119,7 +123,7 @@ SocialList.displayName = "SocialList";
 // TOOLS LIST ITEM COMPONENT
 // ============================================================================
 
-function ToolsList<P extends Record<string, unknown> = {}>(
+export function ToolsList<P extends Record<string, unknown> = {}>(
   props: ListProps<P>
 ) {
   const {
@@ -134,7 +138,7 @@ function ToolsList<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("list.ariaLabels");
 
   // Tools list ARIA
-  const LIST_I18N = React.useMemo(
+  const LIST_I18N = useMemo(
     () => ({
       toolsList: tAria("toolsList"),
     }),
@@ -145,7 +149,7 @@ function ToolsList<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       role={role}
       className={cn("space-y-16", className)}
       aria-label={LIST_I18N.toolsList}
@@ -170,7 +174,7 @@ export function List<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       role={role}
     >
       {children}
@@ -179,11 +183,3 @@ export function List<P extends Record<string, unknown> = {}>(
 }
 
 List.displayName = "List";
-
-// ============================================================================
-// LIST COMPOUND COMPONENTS
-// ============================================================================
-
-List.Article = ArticleList;
-List.Social = SocialList;
-List.Tools = ToolsList;
