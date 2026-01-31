@@ -6,7 +6,12 @@
 
 "use client";
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useId,
+  useMemo,
+} from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -27,18 +32,17 @@ type FormElementType = "form";
 
 type NewsletterFormElementType = FormElementType;
 
-export type NewsletterFormProps<
-  T extends NewsletterFormElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type NewsletterFormProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<NewsletterFormElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: NewsletterFormElementType;
   };
 
-export function NewsletterForm<
-  T extends NewsletterFormElementType,
-  P extends Record<string, unknown> = {},
->(props: NewsletterFormProps<T, P>) {
+export function NewsletterForm<P extends Record<string, unknown> = {}>(
+  props: NewsletterFormProps<P>
+) {
   const {
     as: Component = Form,
     action = "/thank-you",
@@ -46,10 +50,8 @@ export function NewsletterForm<
     ...rest
   } = props;
 
-  const Element = Component as React.ElementType;
-
   // Generate unique IDs for ARIA relationships for better accessibility and SEO
-  const formId = React.useId();
+  const formId = useId();
   const headingId = `${formId}-heading`;
   const descriptionId = `${formId}-description`;
   const emailInputId = `${formId}-email`;
@@ -58,7 +60,7 @@ export function NewsletterForm<
   const t = useTranslations("form.newsletterForm");
 
   // Newsletter form labels
-  const FORM_I18N = React.useMemo(
+  const FORM_I18N = useMemo(
     () => ({
       newsletterFormHeading: t("heading"),
       newsletterFormDescription: t("description"),
@@ -69,8 +71,8 @@ export function NewsletterForm<
   );
 
   return (
-    <Element
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+    <Component
+      {...(rest as ComponentPropsWithoutRef<NewsletterFormElementType>)}
       action={action}
       method="post"
       aria-labelledby={headingId}
@@ -116,35 +118,34 @@ export function NewsletterForm<
           {FORM_I18N.newsletterFormJoinButtonTextLabel}
         </Button>
       </div>
-    </Element>
+    </Component>
   );
 }
 
 NewsletterForm.displayName = "NewsletterForm";
 
 // ============================================================================
-// MAIN NEWSLETTER FORM COMPONENT
+// MAIN FORM COMPONENT
 // ============================================================================
 
-export type FormProps<
-  T extends FormElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as"> &
+export type FormProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<FormElementType>,
+  "as"
+> &
   P & {
-    as?: T;
+    as?: FormElementType;
   };
 
-export function Form<
-  T extends FormElementType,
-  P extends Record<string, unknown> = {},
->(props: FormProps<T, P>) {
+export function Form<P extends Record<string, unknown> = {}>(
+  props: FormProps<P>
+) {
   const { as: Component = "form", children, ...rest } = props;
 
   if (!children) return null;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<FormElementType>)}
       role="form"
       method="post"
     >
@@ -154,9 +155,3 @@ export function Form<
 }
 
 Form.displayName = "Form";
-
-// ============================================================================
-// FORM COMPOUND COMPONENTS
-// ============================================================================
-
-Form.Newsletter = NewsletterForm;
