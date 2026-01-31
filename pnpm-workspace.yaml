@@ -1,6 +1,7 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
 catalog:
   "@changesets/cli": 2.29.8
   "@commitlint/cli": 20.3.1
@@ -59,6 +60,7 @@ catalog:
   express: 5.2.1
   fast-glob: 3.3.3
   feed: 5.2.0
+  fuse.js: 7.1.0
   globals: 17.2.0
   husky: 9.1.7
   jsdom: 27.4.0
@@ -92,6 +94,7 @@ catalog:
   vite: 7.3.1
   vite-plugin-devtools-json: 1.0.0
   vitest: 4.0.18
+
 catalogMode: strict
 
 cleanupUnusedCatalogs: true
