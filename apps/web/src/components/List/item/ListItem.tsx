@@ -1,3 +1,5 @@
+/* eslint-disable simple-import-sort/imports */
+
 /**
  * @file ListItem.tsx
  * @author Guy Romelle Magayano
@@ -6,11 +8,14 @@
 
 "use client";
 
-// eslint-disable-next-line simple-import-sort/imports
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useMemo,
+} from "react";
 
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { type LinkProps } from "next/link";
 
 import {
   formatDateSafely,
@@ -29,14 +34,14 @@ import { Card } from "../../card";
 
 export type ListItemElementType = "li" | typeof Card;
 export type ListItemProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ListItemElementType>,
+  ComponentPropsWithRef<ListItemElementType>,
   "as"
 > &
   P & {
     as?: ListItemElementType;
-    href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
-    target?: React.ComponentPropsWithoutRef<typeof Link>["target"];
-    title?: React.ComponentPropsWithoutRef<typeof Link>["title"];
+    href?: LinkProps["href"];
+    target?: string;
+    title?: string;
   };
 
 // ============================================================================
@@ -50,7 +55,7 @@ export type ArticleListItemProps<P extends Record<string, unknown> = {}> =
       isFrontPage?: boolean;
     };
 
-function ArticleListItem<P extends Record<string, unknown> = {}>(
+export function ArticleListItem<P extends Record<string, unknown> = {}>(
   props: ArticleListItemProps<P>
 ) {
   const {
@@ -65,7 +70,7 @@ function ArticleListItem<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("list.ariaLabels");
 
   // Article list ARIA
-  const ARTICLE_LIST_ITEM_I18N = React.useMemo(
+  const ARTICLE_LIST_ITEM_I18N = useMemo(
     () => ({
       articleDate: tAria("articleDate"),
       cta: tAria("cta"),
@@ -101,12 +106,9 @@ function ArticleListItem<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       as="article"
-      className={cn(
-        !isFrontPage ? "md:col-span-3" : undefined,
-        className as string
-      )}
+      className={cn(!isFrontPage ? "md:col-span-3" : undefined, className)}
       id={articleData.id}
       aria-labelledby={hasTitle ? titleId : undefined}
       aria-describedby={hasDescription ? descriptionId : undefined}
@@ -142,7 +144,7 @@ ArticleListItem.displayName = "ArticleListItem";
 // SOCIAL LIST ITEM COMPONENT
 // ============================================================================
 
-function SocialListItem<P extends Record<string, unknown> = {}>(
+export function SocialListItem<P extends Record<string, unknown> = {}>(
   props: ListItemProps<P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
@@ -151,7 +153,7 @@ function SocialListItem<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       role={role}
     >
       {children}
@@ -168,7 +170,7 @@ SocialListItem.displayName = "SocialListItem";
 export type ToolsListItemProps<P extends Record<string, unknown> = {}> =
   ListItemProps<P> & P & {};
 
-function ToolsListItem<P extends Record<string, unknown> = {}>(
+export function ToolsListItem<P extends Record<string, unknown> = {}>(
   props: ToolsListItemProps<P>
 ) {
   const {
@@ -187,7 +189,7 @@ function ToolsListItem<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       as="article"
     >
       <Card.Title
@@ -219,7 +221,7 @@ export function ListItem<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       role={role}
     >
       {children}
@@ -228,11 +230,3 @@ export function ListItem<P extends Record<string, unknown> = {}>(
 }
 
 ListItem.displayName = "ListItem";
-
-// ============================================================================
-// LIST ITEM COMPOUND COMPONENTS
-// ============================================================================
-
-ListItem.Article = ArticleListItem;
-ListItem.Social = SocialListItem;
-ListItem.Tools = ToolsListItem;
