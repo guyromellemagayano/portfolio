@@ -1,3 +1,6 @@
+/* eslint-disable simple-import-sort/imports */
+/* eslint-disable react-hooks/set-state-in-effect */
+
 /**
  * @file Header.tsx
  * @author Guy Romelle Magayano
@@ -6,8 +9,7 @@
 
 "use client";
 
-// eslint-disable-next-line simple-import-sort/imports
-import React from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Popover,
@@ -30,7 +32,6 @@ import {
   isValidLink,
 } from "@guyromellemagayano/utils";
 
-import { Button } from "@web/components/button";
 import { Container } from "@web/components/container";
 import { Icon } from "@web/components/icon";
 import avatarImage from "@web/images/avatar.jpg";
@@ -96,9 +97,9 @@ export type HeaderAvatarProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: HeaderAvatarElementType;
-    href?: React.ComponentProps<typeof Link>["href"];
-    alt?: React.ComponentProps<typeof Image>["alt"];
-    src?: React.ComponentProps<typeof Image>["src"];
+    href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+    alt?: React.ComponentPropsWithoutRef<typeof Image>["alt"];
+    src?: React.ComponentPropsWithoutRef<typeof Image>["src"];
     large?: boolean;
   };
 
@@ -122,7 +123,7 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
   const tHeader = useTranslations("header");
 
   // Header avatar ARIA
-  const HEADER_AVATAR_I18N = React.useMemo(
+  const HEADER_AVATAR_I18N = useMemo(
     () => ({
       home: tAria("home"),
       brandName: tHeader("brandName"),
@@ -207,7 +208,7 @@ function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("header.ariaLabels");
 
   // Header desktop navigation ARIA
-  const HEADER_DESKTOP_NAV_I18N = React.useMemo(
+  const HEADER_DESKTOP_NAV_I18N = useMemo(
     () => ({
       desktopNavigation: tAria("desktopNavigation"),
     }),
@@ -325,7 +326,7 @@ function HeaderMobileNav<P extends Record<string, unknown> = {}>(
   const tAria = useTranslations("header.ariaLabels");
 
   // Header mobile navigation ARIA
-  const HEADER_MOBILE_NAV_I18N = React.useMemo(
+  const HEADER_MOBILE_NAV_I18N = useMemo(
     () => ({
       menu: tAria("menu"),
       closeMenu: tAria("closeMenu"),
@@ -467,36 +468,21 @@ export type HeaderThemeToggleProps<P extends Record<string, unknown> = {}> =
 function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
   props: HeaderThemeToggleProps<P>
 ) {
-  const { as: Component = Button, className, ...rest } = props;
+  const { as: Component = "button", className, ...rest } = props;
 
   const { resolvedTheme, setTheme } = useTheme();
   const otherTheme = resolvedTheme === "dark" ? "light" : "dark";
+  const [mounted, setMounted] = useState(false);
 
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true);
   }, []);
-
-  const handleClick = React.useCallback(() => {
-    setTheme(otherTheme);
-  }, [otherTheme, setTheme]);
-
-  const handleKeyDown = React.useCallback(
-    (e: React.KeyboardEvent<React.ComponentRef<"button">>) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        handleClick();
-      }
-    },
-    [handleClick]
-  );
 
   // Internationalization
   const tAria = useTranslations("header.ariaLabels");
 
   // Header theme toggle ARIA
-  const HEADER_THEME_TOGGLE_I18N = React.useMemo(
+  const HEADER_THEME_TOGGLE_I18N = useMemo(
     () => ({
       toggleTheme: tAria("toggleTheme"),
       darkMode: tAria("darkMode"),
@@ -505,51 +491,31 @@ function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
     [tAria]
   );
 
-  const element = React.useMemo(() => {
-    const ariaLabel = mounted
-      ? `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`
-      : HEADER_THEME_TOGGLE_I18N.toggleTheme;
+  const ariaLabel = mounted
+    ? `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`
+    : HEADER_THEME_TOGGLE_I18N.toggleTheme;
 
-    const element = (
-      <Component
-        {...(rest as React.ComponentPropsWithRef<typeof Component>)}
-        className={cn(
-          "group rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20",
-          className
-        )}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        aria-label={ariaLabel}
-      >
-        <Icon
-          name="sun"
-          aria-hidden
-          className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
-        />
-        <Icon
-          name="moon"
-          aria-hidden
-          className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
-        />
-      </Component>
-    );
-
-    return element;
-  }, [
-    mounted,
-    otherTheme,
-    handleClick,
-    handleKeyDown,
-    className,
-    rest,
-    Component,
-    HEADER_THEME_TOGGLE_I18N,
-  ]);
-
-  return element;
+  return (
+    <Component
+      {...(rest as React.ComponentPropsWithRef<HeaderThemeToggleElementType>)}
+      className={cn(
+        "group rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20",
+        className as string
+      )}
+      onClick={() => setTheme(otherTheme)}
+      aria-label={ariaLabel}
+    >
+      <Icon
+        name="sun"
+        className="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
+      />
+      <Icon
+        name="moon"
+        className="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
+      />
+    </Component>
+  );
 }
-
-HeaderThemeToggle.displayName = "HeaderThemeToggle";
 
 // ============================================================================
 // MAIN HEADER COMPONENT
@@ -573,7 +539,7 @@ export function Header<P extends Record<string, unknown> = {}>(
   const tHeader = useTranslations("header");
 
   // Header ARIA
-  const HEADER_I18N = React.useMemo(
+  const HEADER_I18N = useMemo(
     () => ({
       brandName: tHeader("brandName"),
     }),
@@ -582,11 +548,11 @@ export function Header<P extends Record<string, unknown> = {}>(
 
   const isHomePage: boolean = usePathname() === AVATAR_LINK_HREF;
 
-  let headerRef = React.useRef<React.ComponentRef<"div"> | null>(null);
-  let avatarRef = React.useRef<React.ComponentRef<"div"> | null>(null);
-  let isInitial = React.useRef(true);
+  let headerRef = useRef<React.ComponentRef<"div"> | null>(null);
+  let avatarRef = useRef<React.ComponentRef<"div"> | null>(null);
+  let isInitial = useRef(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let downDelay = avatarRef.current?.offsetTop ?? 0;
     let upDelay = 64;
 
