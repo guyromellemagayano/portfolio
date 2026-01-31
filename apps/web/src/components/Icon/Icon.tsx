@@ -4,7 +4,11 @@
  * @description Icon component for the web application.
  */
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  type ElementType,
+} from "react";
 
 // ============================================================================
 // ICON COMPONENT
@@ -25,23 +29,23 @@ type IconNames =
   | "link"
   | "mail"
   | "moon"
+  | "search"
   | "sun"
   | "x";
 
-export type IconProps<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as" | "name"> &
+export type IconProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<IconElementType>,
+  "as" | "name"
+> &
   P & {
-    as?: T;
+    as?: IconElementType;
     name?: IconNames;
     page?: string;
   };
 
-export function Icon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+export function Icon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const {
     as: Component = "svg",
     name = "default",
@@ -51,7 +55,7 @@ export function Icon<
   } = props;
 
   // Define a mapping of names to components
-  const iconComponentMap: Record<IconNames, React.ElementType> = {
+  const iconComponentMap: Record<IconNames, ElementType> = {
     default: Component,
     "arrow-down": ArrowDownIcon,
     "arrow-left": ArrowLeftIcon,
@@ -65,6 +69,7 @@ export function Icon<
     link: LinkIcon,
     mail: MailIcon,
     moon: MoonIcon,
+    search: SearchIcon,
     sun: SunIcon,
     x: XIcon,
   };
@@ -72,7 +77,7 @@ export function Icon<
   // Choose the component based on the name
   const IconComponent = name ? iconComponentMap[name] : Component;
 
-  let iconComponentProps: React.ComponentPropsWithRef<typeof IconComponent> = {
+  let iconComponentProps: ComponentPropsWithRef<typeof IconComponent> = {
     ...rest,
     role: "img",
     "aria-hidden": "true",
@@ -89,17 +94,17 @@ Icon.displayName = "Icon";
 // ARROW DOWN ICON
 // ============================================================================
 
-function ArrowDownIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function ArrowDownIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 16 16"
       fill="none"
+      aria-hidden="true"
     >
       <path
         d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
@@ -117,17 +122,17 @@ ArrowDownIcon.displayName = "ArrowDownIcon";
 // ARROW LEFT ICON
 // ============================================================================
 
-function ArrowLeftIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function ArrowLeftIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 16 16"
       fill="none"
+      aria-hidden="true"
     >
       <path
         d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
@@ -145,20 +150,20 @@ ArrowLeftIcon.displayName = "ArrowLeftIcon";
 // BRIEFCASE ICON
 // ============================================================================
 
-function BriefcaseIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function BriefcaseIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       <path
         d="M2.75 9.75a3 3 0 0 1 3-3h12.5a3 3 0 0 1 3 3v8.5a3 3 0 0 1-3 3H5.75a3 3 0 0 1-3-3v-8.5Z"
@@ -178,17 +183,17 @@ BriefcaseIcon.displayName = "BriefcaseIcon";
 // CHEVRON DOWN ICON
 // ============================================================================
 
-function ChevronDownIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function ChevronDownIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 8 6"
       fill="none"
+      aria-hidden="true"
     >
       <path
         d="M1.75 1.75 4 4.25l2.25-2.5"
@@ -207,17 +212,17 @@ ChevronDownIcon.displayName = "ChevronDownIcon";
 // CHEVRON RIGHT ICON
 // ============================================================================
 
-function ChevronRightIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function ChevronRightIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 16 16"
       fill="none"
+      aria-hidden="true"
     >
       <path
         d="M6.75 5.75 9.25 8l-2.5 2.25"
@@ -235,16 +240,16 @@ ChevronRightIcon.displayName = "ChevronRightIcon";
 // CLOSE ICON
 // ============================================================================
 
-function CloseIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function CloseIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path
         d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5"
@@ -264,17 +269,17 @@ CloseIcon.displayName = "CloseIcon";
 // GITHUB ICON
 // ============================================================================
 
-function GitHubIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function GitHubIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
       fill="none"
+      aria-hidden="true"
     >
       <path
         fillRule="evenodd"
@@ -291,16 +296,16 @@ GitHubIcon.displayName = "GitHubIcon";
 // INSTAGRAM ICON
 // ============================================================================
 
-function InstagramIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function InstagramIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path d="M12 3c-2.444 0-2.75.01-3.71.054-.959.044-1.613.196-2.185.418A4.412 4.412 0 0 0 4.51 4.511c-.5.5-.809 1.002-1.039 1.594-.222.572-.374 1.226-.418 2.184C3.01 9.25 3 9.556 3 12s.01 2.75.054 3.71c.044.959.196 1.613.418 2.185.23.592.538 1.094 1.039 1.595.5.5 1.002.808 1.594 1.038.572.222 1.226.374 2.184.418C9.25 20.99 9.556 21 12 21s2.75-.01 3.71-.054c.959-.044 1.613-.196 2.185-.419a4.412 4.412 0 0 0 1.595-1.038c.5-.5.808-1.002 1.038-1.594.222-.572.374-1.226.418-2.184.044-.96.054-1.267.054-3.711s-.01-2.75-.054-3.71c-.044-.959-.196-1.613-.419-2.185A4.412 4.412 0 0 0 19.49 4.51c-.5-.5-1.002-.809-1.594-1.039-.572-.222-1.226-.374-2.184-.418C14.75 3.01 14.444 3 12 3Zm0 1.622c2.403 0 2.688.009 3.637.052.877.04 1.354.187 1.67.31.421.163.72.358 1.036.673.315.315.51.615.673 1.035.123.317.27.794.31 1.671.043.95.052 1.234.052 3.637s-.009 2.688-.052 3.637c-.04.877-.187 1.354-.31 1.67-.163.421-.358.72-.673 1.036a2.79 2.79 0 0 1-1.035.673c-.317.123-.794.27-1.671.31-.95.043-1.234.052-3.637.052s-2.688-.009-3.637-.052c-.877-.04-1.354-.187-1.67-.31a2.789 2.789 0 0 1-1.036-.673 2.79 2.79 0 0 1-.673-1.035c-.123-.317-.27-.794-.31-1.671-.043-.95-.052-1.234-.052-3.637s.009-2.688.052-3.637c.04-.877.187-1.354.31-1.67.163-.421.358-.72.673-1.036.315-.315.615-.51 1.035-.673.317-.123.794-.27 1.671-.31.95-.043 1.234-.052 3.637-.052Z" />
       <path d="M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6Zm0-7.622a4.622 4.622 0 1 0 0 9.244 4.622 4.622 0 0 0 0-9.244Zm5.884-.182a1.08 1.08 0 1 1-2.16 0 1.08 1.08 0 0 1 2.16 0Z" />
@@ -314,16 +319,16 @@ InstagramIcon.displayName = "InstagramIcon";
 // LINKEDIN ICON
 // ============================================================================
 
-function LinkedinIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function LinkedinIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path d="M18.335 18.339H15.67v-4.177c0-.996-.02-2.278-1.39-2.278-1.389 0-1.601 1.084-1.601 2.205v4.25h-2.666V9.75h2.56v1.17h.035c.358-.674 1.228-1.387 2.528-1.387 2.7 0 3.2 1.778 3.2 4.091v4.715zM7.003 8.575a1.546 1.546 0 01-1.548-1.549 1.548 1.548 0 111.547 1.549zm1.336 9.764H5.666V9.75H8.34v8.589zM19.67 3H4.329C3.593 3 3 3.58 3 4.297v15.406C3 20.42 3.594 21 4.328 21h15.338C20.4 21 21 20.42 21 19.703V4.297C21 3.58 20.4 3 19.666 3h.003z" />
     </Component>
@@ -336,16 +341,14 @@ LinkedinIcon.displayName = "LinkedinIcon";
 // LINK ICON
 // ============================================================================
 
-function LinkIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function LinkIcon<P extends Record<string, unknown> = {}>(props: IconProps<P>) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path
         d="M15.712 11.823a.75.75 0 1 0 1.06 1.06l-1.06-1.06Zm-4.95 1.768a.75.75 0 0 0 1.06-1.06l-1.06 1.06Zm-2.475-1.414a.75.75 0 1 0-1.06-1.06l1.06 1.06Zm4.95-1.768a.75.75 0 1 0-1.06 1.06l1.06-1.06Zm3.359.53-.884.884 1.06 1.06.885-.883-1.061-1.06Zm-4.95-2.12 1.414-1.415L12 6.344l-1.415 1.413 1.061 1.061Zm0 3.535a2.5 2.5 0 0 1 0-3.536l-1.06-1.06a4 4 0 0 0 0 5.656l1.06-1.06Zm4.95-4.95a2.5 2.5 0 0 1 0 3.535L17.656 12a4 4 0 0 0 0-5.657l-1.06 1.06Zm1.06-1.06a4 4 0 0 0-5.656 0l1.06 1.06a2.5 2.5 0 0 1 3.536 0l1.06-1.06Zm-7.07 7.07.176.177 1.06-1.06-.176-.177-1.06 1.06Zm-3.183-.353.884-.884-1.06-1.06-.884.883 1.06 1.06Zm4.95 2.121-1.414 1.414 1.06 1.06 1.415-1.413-1.06-1.061Zm0-3.536a2.5 2.5 0 0 1 0 3.536l1.06 1.06a4 4 0 0 0 0-5.656l-1.06 1.06Zm-4.95 4.95a2.5 2.5 0 0 1 0-3.535L6.344 12a4 4 0 0 0 0 5.656l1.06-1.06Zm-1.06 1.06a4 4 0 0 0 5.657 0l-1.061-1.06a2.5 2.5 0 0 1-3.535 0l-1.061 1.06Zm7.07-7.07-.176-.177-1.06 1.06.176.178 1.06-1.061Z"
@@ -361,16 +364,13 @@ LinkIcon.displayName = "LinkIcon";
 // MAIL ICON
 // ============================================================================
 
-function MailIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function MailIcon<P extends Record<string, unknown> = {}>(props: IconProps<P>) {
   const { as: Component = "svg", page, ...rest } = props;
 
   if (page && page === "about") {
     return (
       <Component
-        {...(rest as React.ComponentPropsWithoutRef<T>)}
+        {...(rest as ComponentPropsWithoutRef<IconElementType>)}
         viewBox="0 0 24 24"
         aria-hidden="true"
       >
@@ -384,7 +384,7 @@ function MailIcon<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
       fill="none"
       strokeWidth="1.5"
@@ -408,16 +408,14 @@ function MailIcon<
 // MOON ICON
 // ============================================================================
 
-function MoonIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function MoonIcon<P extends Record<string, unknown> = {}>(props: IconProps<P>) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path
         d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z"
@@ -432,22 +430,47 @@ function MoonIcon<
 MoonIcon.displayName = "MoonIcon";
 
 // ============================================================================
-// SUN ICON
+// SEARCH ICON
 // ============================================================================
 
-function SunIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function SearchIcon<P extends Record<string, unknown> = {}>(
+  props: IconProps<P>
+) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
+      viewBox="0 0 20 20"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12.01 12a4.25 4.25 0 1 0-6.02-6.02 4.25 4.25 0 0 0 6.02 6.02Zm0 0 3.24 3.25"
+      />
+    </Component>
+  );
+}
+
+SearchIcon.displayName = "SearchIcon";
+
+// ============================================================================
+// SUN ICON
+// ============================================================================
+
+function SunIcon<P extends Record<string, unknown> = {}>(props: IconProps<P>) {
+  const { as: Component = "svg", ...rest } = props;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden="true"
     >
       <path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
       <path
@@ -464,16 +487,14 @@ SunIcon.displayName = "SunIcon";
 // X ICON
 // ============================================================================
 
-function XIcon<
-  T extends IconElementType,
-  P extends Record<string, unknown> = {},
->(props: IconProps<T, P>) {
+function XIcon<P extends Record<string, unknown> = {}>(props: IconProps<P>) {
   const { as: Component = "svg", ...rest } = props;
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...(rest as ComponentPropsWithoutRef<IconElementType>)}
       viewBox="0 0 24 24"
+      aria-hidden="true"
     >
       <path d="M13.3174 10.7749L19.1457 4H17.7646L12.7039 9.88256L8.66193 4H4L10.1122 12.8955L4 20H5.38119L10.7254 13.7878L14.994 20H19.656L13.3171 10.7749H13.3174ZM11.4257 12.9738L10.8064 12.0881L5.87886 5.03974H8.00029L11.9769 10.728L12.5962 11.6137L17.7652 19.0075H15.6438L11.4257 12.9742V12.9738Z" />
     </Component>
