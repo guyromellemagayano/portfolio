@@ -4,7 +4,7 @@
  * @description Link component for the web application.
  */
 
-import React from "react";
+import { type ComponentPropsWithRef } from "react";
 
 import { default as NextLink } from "next/link";
 
@@ -18,32 +18,27 @@ import { Icon, type IconProps } from "../icon";
 // COMMON LINK COMPONENT TYPES
 // ============================================================================
 
-type LinkElementType = typeof NextLink;
-
-export type LinkProps<
-  T extends LinkElementType,
-  P extends Record<string, unknown> = {},
-> = Omit<React.ComponentPropsWithRef<T>, "as" | "href"> &
-  P & {
-    as?: T;
-    icon?: IconProps<"svg">["name"];
-    page?: IconProps<"svg">["page"];
-    hasLabel?: boolean;
-    label?: string;
-    href?: string;
-  };
+export type LinkElementType = typeof NextLink;
+export type LinkProps<P extends Record<string, unknown> = {}> =
+  ComponentPropsWithRef<LinkElementType> &
+    P & {
+      as?: LinkElementType;
+      icon?: IconProps["name"];
+      page?: IconProps["page"];
+      hasLabel?: boolean;
+      label?: string;
+    };
 
 // ============================================================================
 // SOCIAL LINK COMPONENT
 // ============================================================================
 
-function SocialLink<
-  T extends LinkElementType,
-  P extends Record<string, unknown> = {},
->(props: LinkProps<T, P>) {
+export function SocialLink<P extends Record<string, unknown> = {}>(
+  props: LinkProps<P>
+) {
   const {
     as: Component = NextLink,
-    href = null,
+    href,
     icon,
     page,
     hasLabel = false,
@@ -60,7 +55,7 @@ function SocialLink<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...rest}
       href={linkHref}
       target={linkTargetProps?.target}
       rel={linkTargetProps?.rel}
@@ -90,15 +85,15 @@ SocialLink.displayName = "SocialLink";
 // LINK COMPONENT
 // ============================================================================
 
-export const Link = function Link<
-  T extends LinkElementType,
-  P extends Record<string, unknown> = {},
->(props: LinkProps<T, P>) {
+export const Link = function Link<P extends Record<string, unknown> = {}>(
+  props: LinkProps<P>
+) {
   const {
     as: Component = NextLink,
     children,
     href,
     target,
+    title,
     label,
     ...rest
   } = props;
@@ -108,11 +103,11 @@ export const Link = function Link<
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<T>)}
+      {...rest}
       href={linkHref}
       target={linkTargetProps.target}
       rel={linkTargetProps.rel}
-      title={label}
+      title={title ?? label}
       aria-label={label}
     >
       {children}
@@ -121,9 +116,3 @@ export const Link = function Link<
 };
 
 Link.displayName = "Link";
-
-// ============================================================================
-// LINK COMPOUND COMPONENTS
-// ============================================================================
-
-Link.Social = SocialLink;
