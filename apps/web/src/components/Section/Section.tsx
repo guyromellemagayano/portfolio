@@ -4,7 +4,11 @@
  * @description Section component for the web application.
  */
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+  useId,
+} from "react";
 
 import { cn } from "@web/utils/helpers";
 
@@ -14,7 +18,7 @@ import { cn } from "@web/utils/helpers";
 
 export type SectionTitleElementType = "h2" | "h3";
 export type SectionTitleProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<SectionTitleElementType>,
+  ComponentPropsWithRef<SectionTitleElementType>,
   "as"
 > &
   P & {
@@ -30,7 +34,7 @@ function SectionTitle<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<SectionTitleElementType>)}
       className={cn(
         "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
         className
@@ -49,7 +53,7 @@ SectionTitle.displayName = "SectionTitle";
 
 export type SectionContentElementType = "div" | "section" | "article";
 export type SectionContentProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<SectionContentElementType>,
+  ComponentPropsWithRef<SectionContentElementType>,
   "as"
 > &
   P & {
@@ -65,7 +69,7 @@ function SectionContent<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<SectionContentElementType>)}
       className={cn("md:col-span-3", className)}
     >
       {children}
@@ -81,7 +85,7 @@ SectionContent.displayName = "SectionContent";
 
 export type SectionGridElementType = "div" | "section" | "article";
 export type SectionGridProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<SectionGridElementType>,
+  ComponentPropsWithRef<SectionGridElementType>,
   "as"
 > &
   P & {
@@ -97,7 +101,7 @@ function SectionGrid<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<SectionGridElementType>)}
       className={cn(
         "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
         className
@@ -116,7 +120,7 @@ SectionGrid.displayName = "SectionGrid";
 
 export type SectionElementType = "section" | "div" | "article";
 export type SectionProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<SectionElementType>,
+  ComponentPropsWithRef<SectionElementType>,
   "as"
 > &
   P & {
@@ -135,7 +139,7 @@ export function Section<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  const titleId = React.useId();
+  const titleId = useId();
   const sectionTitleId = `${titleId}-section-title`;
 
   if (!title?.trim()?.length || !children) {
@@ -144,7 +148,7 @@ export function Section<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithoutRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<SectionElementType>)}
       aria-labelledby={sectionTitleId}
       className={cn(
         "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
