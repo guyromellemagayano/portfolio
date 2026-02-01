@@ -112,21 +112,21 @@ describe("Card.Cta", () => {
     it("renders children directly when href is invalid", () => {
       render(<Card.Cta href="#">Call to action</Card.Cta>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Call to action")).toBeInTheDocument();
-      expect(
-        screen.queryByTestId("icon-chevron-right")
-      ).not.toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
     it("renders children directly when href is not provided", () => {
       render(<Card.Cta>Call to action</Card.Cta>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Call to action")).toBeInTheDocument();
-      expect(
-        screen.queryByTestId("icon-chevron-right")
-      ).not.toBeInTheDocument();
+      expect(screen.getByTestId("icon-chevron-right")).toBeInTheDocument();
     });
 
     it("renders CardLinkCustom with correct props when href is valid", () => {
@@ -883,21 +883,27 @@ describe("Card.Link", () => {
     it("renders children directly when href is invalid", () => {
       render(<Card.Link href="">Link content</Card.Link>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders children directly when href is null", () => {
       render(<Card.Link href={null as any}>Link content</Card.Link>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
     it("renders children directly when href is undefined", () => {
       render(<Card.Link href={undefined as any}>Link content</Card.Link>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Link content")).toBeInTheDocument();
     });
 
@@ -1331,11 +1337,10 @@ describe("Card.LinkCustom", () => {
         <Card.LinkCustom href="">Link text</Card.LinkCustom>
       );
 
-      // When href is invalid, linkHref becomes null, so href becomes undefined
-      // React renders href={undefined} as href=""
+      // When href is invalid, linkHref becomes "#"
       const anchor = container.querySelector("a");
       expect(anchor).toBeInTheDocument();
-      expect(anchor).toHaveAttribute("href", "");
+      expect(anchor).toHaveAttribute("href", "#");
     });
 
     it("handles null href by rendering with null href", () => {
@@ -1345,7 +1350,7 @@ describe("Card.LinkCustom", () => {
 
       const anchor = container.querySelector("a");
       expect(anchor).toBeInTheDocument();
-      expect(anchor).toHaveAttribute("href", "");
+      expect(anchor).toHaveAttribute("href", "#");
     });
 
     it("handles undefined href by rendering with null href", () => {
@@ -1355,7 +1360,7 @@ describe("Card.LinkCustom", () => {
 
       const anchor = container.querySelector("a");
       expect(anchor).toBeInTheDocument();
-      expect(anchor).toHaveAttribute("href", "");
+      expect(anchor).toHaveAttribute("href", "#");
     });
 
     it("handles null target by rendering without target attribute", () => {
@@ -1592,7 +1597,9 @@ describe("Card.Title", () => {
     it("renders without link when href is not valid", () => {
       render(<Card.Title href="#">Card title</Card.Title>);
 
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
       expect(screen.getByText("Card title")).toBeInTheDocument();
     });
 
@@ -1654,7 +1661,9 @@ describe("Card.Title", () => {
     it("renders children without link when href is invalid", () => {
       render(<Card.Title href="#">Valid children</Card.Title>);
       expect(screen.getByText("Valid children")).toBeInTheDocument();
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
     });
   });
 
@@ -1847,7 +1856,9 @@ describe("Card.Title", () => {
       );
 
       expect(screen.getByText("Title with invalid link")).toBeInTheDocument();
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
     });
   });
 });

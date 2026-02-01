@@ -285,7 +285,9 @@ describe("Card Integration Tests", () => {
       );
 
       expect(screen.getByText("Non-linked Title")).toBeInTheDocument();
-      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      const link = screen.getByRole("link");
+      expect(link).toBeInTheDocument();
+      expect(link).toHaveAttribute("href", "#");
     });
 
     it("renders Card with Title, Eyebrow, and Description", () => {
