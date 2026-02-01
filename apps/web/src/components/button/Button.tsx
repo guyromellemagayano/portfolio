@@ -6,7 +6,10 @@
 
 "use client";
 
-import React from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
 import { Link } from "@web/components/link";
 import { cn } from "@web/utils/helpers";
@@ -22,13 +25,13 @@ const BUTTON_VARIANT: Record<ButtonVariant, string> = {
 };
 
 export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ButtonElementType>,
+  ComponentPropsWithRef<ButtonElementType>,
   "as"
 > &
   P & {
     as?: ButtonElementType;
     variant?: ButtonVariant;
-    href?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+    href?: ComponentPropsWithoutRef<typeof Link>["href"];
   };
 
 export function Button<P extends Record<string, unknown> = {}>(
@@ -56,7 +59,7 @@ export function Button<P extends Record<string, unknown> = {}>(
   if (href) {
     return (
       <Link
-        {...(rest as Omit<React.ComponentPropsWithRef<typeof Link>, "href">)}
+        {...(rest as Omit<ComponentPropsWithoutRef<typeof Link>, "href">)}
         href={href}
         className={buttonClassName}
       >
@@ -67,7 +70,7 @@ export function Button<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<typeof Component>)}
+      {...(rest as ComponentPropsWithoutRef<ButtonElementType>)}
       role="button"
       className={buttonClassName}
     >
