@@ -17,7 +17,7 @@ import "@testing-library/jest-dom";
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
-      "list.ariaLabels": {
+      "list.labels": {
         articleDate: "Published on",
         cta: "Read article",
       },
@@ -273,7 +273,7 @@ describe("ListItem", () => {
 
     it("applies aria-label to Card.Eyebrow with formatted date", () => {
       render(<ListItem.Article article={ARTICLE} />);
-      const timeElement = screen.getByRole("time");
+      const timeElement = screen.getByLabelText("Published on 2024-01-01");
       expect(timeElement).toHaveAttribute(
         "aria-label",
         "Published on 2024-01-01"
@@ -302,7 +302,7 @@ describe("ListItem", () => {
 
     it("applies dateTime and decorate props to Card.Eyebrow", () => {
       render(<ListItem.Article article={ARTICLE} />);
-      const timeElement = screen.getByRole("time");
+      const timeElement = screen.getByLabelText("Published on 2024-01-01");
       expect(timeElement).toHaveAttribute("dateTime", "2024-01-01");
       expect(timeElement).toHaveAttribute("id", "hello-world-date");
     });
@@ -312,7 +312,7 @@ describe("ListItem", () => {
       const articleElement = screen.getByRole("article");
       const titleElement = screen.getByRole("heading", { level: 2 });
       const descriptionElement = screen.getByText("A short description");
-      const dateElement = screen.getByRole("time");
+      const dateElement = screen.getByLabelText("Published on 2024-01-01");
 
       expect(articleElement).toHaveAttribute(
         "aria-labelledby",
