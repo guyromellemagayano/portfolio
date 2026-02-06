@@ -19,7 +19,7 @@ import { Resume } from "../Resume";
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, Record<string, string>> = {
-      "resume.ariaLabels": {
+      "resume.labels": {
         work: "Work",
         downloadCV: "Download CV",
         company: "Company",
@@ -191,7 +191,7 @@ describe("Resume Integration Tests", () => {
       const button = screen.getByTestId("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute("href", "/resume.pdf");
-      expect(button).toHaveAttribute("data-variant", "secondary");
+      expect(button).toHaveAttribute("data-variant", "primary");
       expect(screen.getByText("Download CV")).toBeInTheDocument();
       expect(screen.getByTestId("arrow-down-icon")).toBeInTheDocument();
     });
@@ -321,7 +321,7 @@ describe("Resume Integration Tests", () => {
       const button = screen.getByTestId("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveAttribute("href", "/resume.pdf");
-      expect(button).toHaveAttribute("data-variant", "secondary");
+      expect(button).toHaveAttribute("data-variant", "primary");
 
       expect(screen.getByText("Download CV")).toBeInTheDocument();
       expect(button).toContainElement(screen.getByText("Download CV"));
