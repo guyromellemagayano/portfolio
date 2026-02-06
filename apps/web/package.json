@@ -28,6 +28,7 @@
     "@guyromellemagayano/ui": "workspace:*",
     "@guyromellemagayano/utils": "workspace:*",
     "@headlessui/react": "catalog:",
+    "@heroicons/react": "catalog:",
     "@mdx-js/react": "catalog:",
     "clsx": "catalog:",
     "fuse.js": "catalog:",
@@ -72,5 +73,7 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }
