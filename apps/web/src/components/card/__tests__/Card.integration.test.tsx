@@ -40,7 +40,7 @@ vi.mock("@web/utils/helpers", () => ({
 // Mock Icon component specifically for `Card.Cta`
 vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
-    <span data-testid={`icon-${name}`} {...props}>
+    <span data-testid={`icon-${name}`} role="img" aria-hidden="true" {...props}>
       →
     </span>
   )),

@@ -115,7 +115,7 @@ function CardCta<P extends Record<string, unknown> = {}>(
     <Component
       {...(rest as ComponentPropsWithoutRef<CardCtaElementType>)}
       className={cn(
-        "relative z-10 mt-2 flex items-start text-sm font-medium text-amber-500",
+        "relative z-10 mt-2 flex items-start text-sm font-medium text-teal-500",
         className
       )}
     >
@@ -125,9 +125,10 @@ function CardCta<P extends Record<string, unknown> = {}>(
           target={linkTargetProps?.target}
           rel={linkTargetProps?.rel}
           title={title}
+          className="relative z-10 mt-4 flex items-center text-sm font-medium"
         >
           {children}
-          <Icon name="chevron-right" aria-hidden="true" />
+          <Icon name="chevron-right" className="ml-1 h-4 w-4 stroke-current" />
         </CardLinkCustom>
       ) : (
         children
@@ -251,7 +252,7 @@ CardEyebrow.displayName = "CardEyebrow";
 // CARD LINK COMPONENT
 // ============================================================================
 
-export type CardLinkElementType = "div" | "section" | "article" | "span";
+export type CardLinkElementType = typeof CardLinkCustom;
 export type CardLinkProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<CardLinkElementType>,
   "as"
@@ -259,15 +260,15 @@ export type CardLinkProps<P extends Record<string, unknown> = {}> = Omit<
   Pick<CardLinkCustomProps<P>, "href" | "target" | "title"> &
   P & {
     as?: CardLinkElementType;
+    children?: ReactNode;
   };
 
 function CardLink<P extends Record<string, unknown> = {}>(
   props: CardLinkProps<P>
 ) {
   const {
-    as: Component = "div",
+    as: Component = CardLinkCustom,
     children,
-    className,
     href,
     target,
     title,
@@ -282,32 +283,21 @@ function CardLink<P extends Record<string, unknown> = {}>(
     : undefined;
 
   return (
-    <Component {...(rest as ComponentPropsWithoutRef<CardLinkElementType>)}>
-      <div
-        className={cn(
-          "absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50",
-          className
-        )}
-      />
-
-      {linkHref ? (
-        <CardLinkCustom
-          href={linkHref}
-          target={linkTargetProps?.target}
-          rel={linkTargetProps?.rel}
-          title={title}
-        >
-          <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
-          <span className="relative z-10">{children}</span>
-        </CardLinkCustom>
-      ) : (
-        children
-      )}
-    </Component>
+    <>
+      <div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50" />
+      <Component
+        {...(rest as ComponentPropsWithoutRef<CardLinkElementType>)}
+        href={linkHref}
+        target={linkTargetProps?.target}
+        rel={linkTargetProps?.rel}
+        title={title}
+      >
+        <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
+        <span className="relative z-10">{children}</span>
+      </Component>
+    </>
   );
 }
-
-CardLink.displayName = "CardLink";
 
 // ============================================================================
 // CARD TITLE COMPONENT
@@ -318,9 +308,11 @@ export type CardTitleProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<CardTitleElementType>,
   "as"
 > &
-  Pick<CardLinkCustomProps<P>, "href" | "target" | "title"> &
   P & {
     as?: CardTitleElementType;
+    href?: LinkProps["href"];
+    target?: string;
+    title?: string;
   };
 
 function CardTitle<P extends Record<string, unknown> = {}>(
@@ -352,14 +344,14 @@ function CardTitle<P extends Record<string, unknown> = {}>(
       )}
     >
       {linkHref ? (
-        <CardLinkCustom
+        <CardLink
           href={linkHref}
           target={linkTargetProps?.target}
           rel={linkTargetProps?.rel}
           title={title}
         >
           {children}
-        </CardLinkCustom>
+        </CardLink>
       ) : (
         children
       )}

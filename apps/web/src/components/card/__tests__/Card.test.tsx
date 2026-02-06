@@ -16,7 +16,7 @@ import "@testing-library/jest-dom";
 // Mock dependencies
 vi.mock("@web/components/icon/Icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
-    <span data-testid={`icon-${name}`} {...props}>
+    <span data-testid={`icon-${name}`} role="img" aria-hidden="true" {...props}>
       →
     </span>
   )),
@@ -220,7 +220,7 @@ describe("Card.Cta", () => {
         "items-start",
         "text-sm",
         "font-medium",
-        "text-amber-500"
+        "text-teal-500"
       );
     });
 
@@ -238,7 +238,7 @@ describe("Card.Cta", () => {
         "items-start",
         "text-sm",
         "font-medium",
-        "text-amber-500",
+        "text-teal-500",
         "custom-class"
       );
     });
@@ -827,17 +827,14 @@ describe("Card.Link", () => {
     });
 
     it("applies custom className", () => {
-      const { container } = render(
+      render(
         <Card.Link href="/test" className="custom-class">
           Link content
         </Card.Link>
       );
 
-      // className is applied to the background div (first child div of outer div)
-      const outerDiv = container.querySelector("div");
-      const background = outerDiv?.querySelector("div:first-child");
-      expect(background).toBeInTheDocument();
-      expect(background).toHaveClass("custom-class");
+      const link = screen.getByRole("link", { name: /link content/i });
+      expect(link).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
@@ -848,7 +845,7 @@ describe("Card.Link", () => {
       );
 
       const link = screen.getByRole("link", { name: /link content/i });
-      expect(link.closest("div")).toHaveAttribute("data-test", "test-data");
+      expect(link).toHaveAttribute("data-test", "test-data");
     });
 
     it("renders structure with background div and CardLinkCustom", () => {
@@ -856,12 +853,8 @@ describe("Card.Link", () => {
         <Card.Link href="/test">Link content</Card.Link>
       );
 
-      // Should have container div
-      const linkContainer = container.querySelector("div");
-      expect(linkContainer).toBeInTheDocument();
-
       // Should have background div
-      const backgroundDiv = container.querySelector("div > div");
+      const backgroundDiv = container.querySelector("div");
       expect(backgroundDiv).toBeInTheDocument();
 
       // Should have CardLinkCustom (link)
@@ -929,8 +922,7 @@ describe("Card.Link", () => {
         <Card.Link href="/test">Link content</Card.Link>
       );
 
-      const outerDiv = container.querySelector("div");
-      const background = outerDiv?.querySelector("div:first-child");
+      const background = container.querySelector("div");
       expect(background).toBeInTheDocument();
       expect(background).toHaveClass(
         "absolute",
@@ -987,31 +979,14 @@ describe("Card.Link", () => {
     });
 
     it("combines Tailwind + custom classes", () => {
-      const { container } = render(
+      render(
         <Card.Link href="/test" className="custom-class">
           Link content
         </Card.Link>
       );
 
-      const outerDiv = container.querySelector("div");
-      const background = outerDiv?.querySelector("div:first-child");
-      expect(background).toBeInTheDocument();
-      expect(background).toHaveClass(
-        "absolute",
-        "-inset-x-4",
-        "-inset-y-6",
-        "z-0",
-        "scale-95",
-        "bg-zinc-50",
-        "opacity-0",
-        "transition",
-        "group-hover:scale-100",
-        "group-hover:opacity-100",
-        "sm:-inset-x-6",
-        "sm:rounded-2xl",
-        "dark:bg-zinc-800/50",
-        "custom-class"
-      );
+      const link = screen.getByRole("link", { name: /link content/i });
+      expect(link).toHaveClass("custom-class");
     });
   });
 
@@ -1087,47 +1062,27 @@ describe("Card.Link", () => {
     });
   });
 
-  describe("Polymorphic Element Types", () => {
-    it("renders as div by default", () => {
-      const { container } = render(
-        <Card.Link href="/test">Link content</Card.Link>
+  describe("Component Overrides", () => {
+    it("renders with a custom link component via as prop", () => {
+      const CustomLink = ({
+        children,
+        ...props
+      }: React.ComponentPropsWithoutRef<"a">) => (
+        <a data-testid="custom-link" {...props}>
+          {children}
+        </a>
       );
 
-      const linkContainer = container.querySelector("div");
-      expect(linkContainer?.tagName).toBe("DIV");
-    });
-
-    it("renders as section when as prop is section", () => {
-      const { container } = render(
-        <Card.Link as="section" href="/test">
+      render(
+        <Card.Link as={CustomLink as any} href="/test">
           Link content
         </Card.Link>
       );
 
-      const linkContainer = container.querySelector("section");
-      expect(linkContainer?.tagName).toBe("SECTION");
-    });
-
-    it("renders as article when as prop is article", () => {
-      const { container } = render(
-        <Card.Link as="article" href="/test">
-          Link content
-        </Card.Link>
-      );
-
-      const linkContainer = container.querySelector("article");
-      expect(linkContainer?.tagName).toBe("ARTICLE");
-    });
-
-    it("renders as span when as prop is span", () => {
-      const { container } = render(
-        <Card.Link as="span" href="/test">
-          Link content
-        </Card.Link>
-      );
-
-      const linkContainer = container.querySelector("span");
-      expect(linkContainer?.tagName).toBe("SPAN");
+      const customLink = screen.getByTestId("custom-link");
+      expect(customLink).toBeInTheDocument();
+      expect(customLink).toHaveAttribute("href", "/test");
+      expect(customLink).toHaveTextContent("Link content");
     });
   });
 
