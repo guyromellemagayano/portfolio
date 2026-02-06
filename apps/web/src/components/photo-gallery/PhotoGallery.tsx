@@ -64,15 +64,15 @@ export function PhotoGallery<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tAria = useTranslations("photoGallery.ariaLabels");
+  const tLabels = useTranslations("photoGallery.labels");
 
   // Photo gallery ARIA labels
   const PHOTO_GALLERY_I18N = useMemo(
     () => ({
-      photoGallery: tAria("photoGallery"),
-      photoGalleryImages: tAria("photoGalleryImages"),
+      photoGallery: tLabels("photoGallery"),
+      photoGalleryImages: tLabels("photoGalleryImages"),
     }),
-    [tAria]
+    [tLabels]
   );
 
   const galleryAriaLabel = ariaLabel || PHOTO_GALLERY_I18N.photoGallery;
