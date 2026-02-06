@@ -17,15 +17,12 @@ import {
 import { useTranslations } from "next-intl";
 import { type LinkProps } from "next/link";
 
-import {
-  formatDateSafely,
-  getLinkTargetProps,
-  isValidLink,
-} from "@guyromellemagayano/utils";
+import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { cn } from "@web/utils/helpers";
 
+import { setCustomDateFormat } from "@web/utils/datetime";
 import { Card } from "../../card";
 
 // ============================================================================
@@ -67,15 +64,15 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tAria = useTranslations("list.ariaLabels");
+  const tLabels = useTranslations("list.labels");
 
   // Article list ARIA
   const ARTICLE_LIST_ITEM_I18N = useMemo(
     () => ({
-      articleDate: tAria("articleDate"),
-      cta: tAria("cta"),
+      articleDate: tLabels("articleDate"),
+      cta: tLabels("cta"),
     }),
-    [tAria]
+    [tLabels]
   );
 
   // Article data
@@ -104,6 +101,9 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   const dateId = `${articleData.id}-date`;
   const descriptionId = `${articleData.id}-description`;
 
+  // Format the date custom format
+  const formattedDate = setCustomDateFormat(articleData.date);
+
   return (
     <Component
       {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
@@ -120,10 +120,10 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
         as="time"
         dateTime={articleData.date}
         id={dateId}
-        aria-label={`${ARTICLE_LIST_ITEM_I18N.articleDate} ${formatDateSafely(articleData.date)}`}
+        aria-label={`${ARTICLE_LIST_ITEM_I18N.articleDate} ${formattedDate}`}
         decorate
       >
-        {formatDateSafely(articleData.date)}
+        {formattedDate}
       </Card.Eyebrow>
       <Card.Description id={descriptionId}>
         {articleData.description}
@@ -230,3 +230,6 @@ export function ListItem<P extends Record<string, unknown> = {}>(
 }
 
 ListItem.displayName = "ListItem";
+ListItem.Article = ArticleListItem;
+ListItem.Social = SocialListItem;
+ListItem.Tools = ToolsListItem;

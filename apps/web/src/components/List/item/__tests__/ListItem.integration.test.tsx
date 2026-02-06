@@ -17,7 +17,7 @@ import "@testing-library/jest-dom";
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
-      "list.ariaLabels": {
+      "list.labels": {
         articleDate: "Published on",
         cta: "Read article",
       },
@@ -234,7 +234,7 @@ describe("ListItem (Integration)", () => {
     const titleElement = screen.getByRole("heading", { level: 2 });
     expect(titleElement).toHaveAttribute("id", "integration-article-title");
 
-    const timeElement = screen.getByRole("time");
+    const timeElement = screen.getByLabelText("Published on 2024-02-02");
     expect(timeElement).toHaveAttribute("id", "integration-article-date");
     expect(timeElement).toHaveAttribute(
       "aria-label",
