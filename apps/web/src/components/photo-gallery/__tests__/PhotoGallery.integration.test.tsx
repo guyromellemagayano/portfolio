@@ -15,7 +15,7 @@ import "@testing-library/jest-dom";
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
-      "photoGallery.ariaLabels": {
+      "photoGallery.labels": {
         photoGallery: "Photo gallery",
         photoGalleryImages: "Photo gallery images",
       },
