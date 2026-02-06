@@ -6,7 +6,7 @@
 
 "use client";
 
-import React from "react";
+import { type ComponentPropsWithRef, useId, useMemo } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -18,7 +18,7 @@ import { Card } from "../card";
 
 export type ArticleElementType = typeof Card;
 export type ArticleProps<P extends Record<string, unknown> = {}> = Omit<
-  React.ComponentPropsWithRef<ArticleElementType>,
+  ComponentPropsWithRef<ArticleElementType>,
   "as"
 > &
   P & {
@@ -32,7 +32,7 @@ export function Article<P extends Record<string, unknown> = {}>(
   const { as: Component = Card, article, ...rest } = props;
 
   // Generate unique IDs for ARIA relationships (SEO: proper semantic structure)
-  const articleId = React.useId();
+  const articleId = useId();
   const titleId = `${articleId}-title`;
   const descriptionId = `${articleId}-description`;
 
@@ -40,7 +40,7 @@ export function Article<P extends Record<string, unknown> = {}>(
   const t = useTranslations("article");
 
   // Article labels
-  const ARTICLE_I18N = React.useMemo(
+  const ARTICLE_I18N = useMemo(
     () => ({
       articleDate: t("articleDate"),
       cta: t("cta"),
@@ -49,7 +49,7 @@ export function Article<P extends Record<string, unknown> = {}>(
   );
 
   // Article data object
-  const articleData = React.useMemo(() => {
+  const articleData = useMemo(() => {
     if (!article) return null;
 
     // Use primitive dependencies to avoid unnecessary recalculations
@@ -78,7 +78,7 @@ export function Article<P extends Record<string, unknown> = {}>(
 
   return (
     <Component
-      {...(rest as React.ComponentPropsWithRef<ArticleElementType>)}
+      {...(rest as ComponentPropsWithRef<ArticleElementType>)}
       aria-labelledby={articleData.title ? titleId : undefined}
       aria-describedby={articleData.description ? descriptionId : undefined}
     >
