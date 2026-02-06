@@ -9,7 +9,6 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import type { Card } from "../../card/Card";
 import { Article } from "../Article";
 
 import "@testing-library/jest-dom";
@@ -725,37 +724,21 @@ describe("Article", () => {
 
   describe("Custom Props Type Safety", () => {
     it("accepts and passes through custom string props", () => {
-      render(
-        <Article<typeof Card, { customProp: string }>
-          article={mockArticle}
-          customProp="test-value"
-        />
-      );
+      render(<Article article={mockArticle} customProp="test-value" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("customProp", "test-value");
     });
 
     it("accepts and passes through custom data attributes", () => {
-      render(
-        <Article<typeof Card, { "data-custom": string }>
-          article={mockArticle}
-          data-custom="custom-data"
-        />
-      );
+      render(<Article article={mockArticle} data-custom="custom-data" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("data-custom", "custom-data");
     });
 
     it("accepts multiple custom props", () => {
-      render(
-        <Article<typeof Card, { customProp: string; count: number }>
-          article={mockArticle}
-          customProp="value"
-          count={42}
-        />
-      );
+      render(<Article article={mockArticle} customProp="value" count={42} />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("customProp", "value");
@@ -764,7 +747,7 @@ describe("Article", () => {
 
     it("works with custom props and standard Card props", () => {
       render(
-        <Article<typeof Card, { "data-analytics": string }>
+        <Article
           article={mockArticle}
           data-analytics="article-view"
           className="custom-article"
@@ -777,12 +760,7 @@ describe("Article", () => {
     });
 
     it("works with custom props", () => {
-      render(
-        <Article<typeof Card, { "data-tracking": string }>
-          article={mockArticle}
-          data-tracking="article-render"
-        />
-      );
+      render(<Article article={mockArticle} data-tracking="article-render" />);
 
       const articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("data-tracking", "article-render");
@@ -790,22 +768,14 @@ describe("Article", () => {
 
     it("preserves custom props through component updates", () => {
       const { rerender } = render(
-        <Article<typeof Card, { "data-persist": string }>
-          article={mockArticle}
-          data-persist="initial"
-        />
+        <Article article={mockArticle} data-persist="initial" />
       );
 
       let articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("data-persist", "initial");
 
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
-      rerender(
-        <Article<typeof Card, { "data-persist": string }>
-          article={updatedArticle}
-          data-persist="updated"
-        />
-      );
+      rerender(<Article article={updatedArticle} data-persist="updated" />);
 
       articleElement = screen.getByTestId("mock-card");
       expect(articleElement).toHaveAttribute("data-persist", "updated");
