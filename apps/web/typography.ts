@@ -31,10 +31,10 @@ export default {
         css: {
           "--tw-prose-body": theme("colors.zinc.600"),
           "--tw-prose-headings": theme("colors.zinc.900"),
-          "--tw-prose-links": theme("colors.teal.500"),
-          "--tw-prose-links-hover": theme("colors.teal.600"),
-          "--tw-prose-underline": theme("colors.teal.500 / 0.2"),
-          "--tw-prose-underline-hover": theme("colors.teal.500"),
+          "--tw-prose-links": theme("colors.zinc.500"),
+          "--tw-prose-links-hover": theme("colors.zinc.600"),
+          "--tw-prose-underline": theme("colors.zinc.500 / 0.2"),
+          "--tw-prose-underline-hover": theme("colors.zinc.500"),
           "--tw-prose-bold": theme("colors.zinc.900"),
           "--tw-prose-counters": theme("colors.zinc.900"),
           "--tw-prose-bullets": theme("colors.zinc.900"),
@@ -51,10 +51,10 @@ export default {
 
           "--tw-prose-invert-body": theme("colors.zinc.400"),
           "--tw-prose-invert-headings": theme("colors.zinc.200"),
-          "--tw-prose-invert-links": theme("colors.teal.400"),
-          "--tw-prose-invert-links-hover": theme("colors.teal.400"),
-          "--tw-prose-invert-underline": theme("colors.teal.400 / 0.3"),
-          "--tw-prose-invert-underline-hover": theme("colors.teal.400"),
+          "--tw-prose-invert-links": theme("colors.zinc.400"),
+          "--tw-prose-invert-links-hover": theme("colors.zinc.400"),
+          "--tw-prose-invert-underline": theme("colors.zinc.400 / 0.3"),
+          "--tw-prose-invert-underline-hover": theme("colors.zinc.400"),
           "--tw-prose-invert-bold": theme("colors.zinc.200"),
           "--tw-prose-invert-counters": theme("colors.zinc.200"),
           "--tw-prose-invert-bullets": theme("colors.zinc.200"),
@@ -89,14 +89,14 @@ export default {
           h2: {
             fontSize: theme("fontSize.xl")[0],
             lineHeight: theme("lineHeight.7"),
-            marginTop: theme("spacing.20"),
-            marginBottom: theme("spacing.4"),
+            marginTop: theme("spacing.16"),
+            marginBottom: theme("spacing.3"),
           },
           h3: {
             fontSize: theme("fontSize.base")[0],
             lineHeight: theme("lineHeight.7"),
             marginTop: theme("spacing.16"),
-            marginBottom: theme("spacing.4"),
+            marginBottom: theme("spacing.3"),
           },
           ":is(h2, h3) + *": {
             marginTop: 0,
@@ -144,7 +144,7 @@ export default {
 
           // Quotes
           blockquote: {
-            paddingLeft: theme("spacing.6"),
+            paddingLeft: theme("spacing.3"),
             borderLeftWidth: theme("borderWidth.2"),
             borderLeftColor: "var(--tw-prose-quote-borders)",
             fontStyle: "italic",
@@ -169,11 +169,11 @@ export default {
             listStyleType: "decimal",
           },
           "ul, ol": {
-            paddingLeft: theme("spacing.6"),
+            paddingLeft: theme("spacing.3"),
           },
           li: {
-            marginTop: theme("spacing.6"),
-            marginBottom: theme("spacing.6"),
+            marginTop: theme("spacing.3"),
+            marginBottom: theme("spacing.3"),
             paddingLeft: theme("spacing[3.5]"),
           },
           "li::marker": {
@@ -187,8 +187,8 @@ export default {
             color: "var(--tw-prose-bullets)",
           },
           "li :is(ol, ul)": {
-            marginTop: theme("spacing.4"),
-            marginBottom: theme("spacing.4"),
+            marginTop: theme("spacing.3"),
+            marginBottom: theme("spacing.3"),
           },
           "li :is(li, p)": {
             marginTop: theme("spacing.3"),
