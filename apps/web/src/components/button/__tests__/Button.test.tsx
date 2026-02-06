@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -17,13 +18,21 @@ vi.mock("@web/utils/helpers", () => ({
 }));
 
 vi.mock("@web/components/link", () => ({
-  Link: ({ children, href, ...props }: { children: React.ReactNode; href?: string }) => (
-    <a href={href ?? "#"} {...props}>
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href?: string | false;
+  }) => (
+    <a href={href ? href : "#"} {...props}>
       {children}
     </a>
   ),
 }));
 
+// TODO: Add unit tests for the `SkipToMainContentButton` component
 describe("Button", () => {
   afterEach(() => {
     cleanup();
@@ -64,10 +73,11 @@ describe("Button", () => {
 
   describe("Content Validation", () => {
     it("renders with empty children", () => {
-      const { container } = render(<Button></Button>);
+      render(<Button></Button>);
 
-      // Button component returns null when children are empty
-      expect(container).toBeEmptyDOMElement();
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button).toBeEmptyDOMElement();
     });
 
     it("renders with complex children content", () => {
@@ -100,7 +110,7 @@ describe("Button", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("role", "button");
+      expect(button).toBeInTheDocument();
     });
 
     it("applies correct CSS classes", () => {
@@ -150,11 +160,7 @@ describe("Button", () => {
     });
 
     it("applies correct ARIA states for disabled buttons", () => {
-      render(
-        <Button disabled aria-disabled="true">
-          Disabled Button
-        </Button>
-      );
+      render(<Button isDisabled>Disabled Button</Button>);
 
       const buttonElement = screen.getByRole("button");
       expect(buttonElement).toBeDisabled();
@@ -195,10 +201,11 @@ describe("Button", () => {
     });
 
     it("handles ARIA attributes when content is missing", () => {
-      const { container } = render(<Button>{null}</Button>);
+      render(<Button>{null}</Button>);
 
-      // Button component returns null when children are null
-      expect(container).toBeEmptyDOMElement();
+      const buttonElement = screen.getByRole("button");
+      expect(buttonElement).toBeInTheDocument();
+      expect(buttonElement).toBeEmptyDOMElement();
     });
   });
 
@@ -295,24 +302,27 @@ describe("Button", () => {
     });
 
     it("handles empty string children", () => {
-      const { container } = render(<Button>{""}</Button>);
+      render(<Button>{""}</Button>);
 
-      // Button component returns null when children are empty string
-      expect(container).toBeEmptyDOMElement();
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button).toBeEmptyDOMElement();
     });
 
     it("handles null children", () => {
-      const { container } = render(<Button>{null}</Button>);
+      render(<Button>{null}</Button>);
 
-      // Button component returns null when children are null
-      expect(container).toBeEmptyDOMElement();
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button).toBeEmptyDOMElement();
     });
 
     it("handles undefined children", () => {
-      const { container } = render(<Button>{undefined}</Button>);
+      render(<Button>{undefined}</Button>);
 
-      // Button component returns null when children are undefined
-      expect(container).toBeEmptyDOMElement();
+      const button = screen.getByRole("button");
+      expect(button).toBeInTheDocument();
+      expect(button).toBeEmptyDOMElement();
     });
   });
 
@@ -335,7 +345,7 @@ describe("Button", () => {
     });
 
     it("supports disabled state", () => {
-      render(<Button disabled>Disabled Button</Button>);
+      render(<Button isDisabled>Disabled Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeDisabled();
@@ -417,7 +427,7 @@ describe("Button", () => {
         <Button<{ "data-analytics": string }>
           data-analytics="button-click"
           onClick={vi.fn()}
-          disabled={false}
+          isDisabled={false}
         >
           Button
         </Button>
