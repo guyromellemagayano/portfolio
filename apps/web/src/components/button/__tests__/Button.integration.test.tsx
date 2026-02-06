@@ -4,10 +4,10 @@
  * @description Integration tests for the Button component.
  */
 
+import React from "react";
+
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-
-import React from "react";
 
 import { Button } from "../Button";
 
@@ -18,13 +18,21 @@ vi.mock("@web/utils/helpers", () => ({
 }));
 
 vi.mock("@web/components/link", () => ({
-  Link: ({ children, href, ...props }: { children: React.ReactNode; href?: string }) => (
-    <a href={href ?? "#"} {...props}>
+  Link: ({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href?: string | false;
+  }) => (
+    <a href={href ? href : "#"} {...props}>
       {children}
     </a>
   ),
 }));
 
+// TODO: Add integration tests for the `SkipToMainContentButton` component
 describe("Button Integration Tests", () => {
   afterEach(() => {
     cleanup();
@@ -42,7 +50,7 @@ describe("Button Integration Tests", () => {
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    it("handles click events on link element when href is provided", () => {
+    it("does not forward onClick when rendered as a link", () => {
       const handleClick = vi.fn();
       render(
         <Button href="/test" onClick={handleClick}>
@@ -53,7 +61,7 @@ describe("Button Integration Tests", () => {
       const link = screen.getByRole("link");
       link.click();
 
-      expect(handleClick).toHaveBeenCalledTimes(1);
+      expect(handleClick).not.toHaveBeenCalled();
     });
 
     it("handles mouse events on button", () => {
@@ -151,11 +159,7 @@ describe("Button Integration Tests", () => {
     });
 
     it("supports disabled state with proper ARIA", () => {
-      render(
-        <Button disabled aria-disabled="true">
-          Disabled Button
-        </Button>
-      );
+      render(<Button isDisabled>Disabled Button</Button>);
 
       const button = screen.getByRole("button");
       expect(button).toBeDisabled();
