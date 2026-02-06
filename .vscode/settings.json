@@ -81,7 +81,7 @@
     ".env*": "dotenv",
     "*ignore": "ignore"
   },
-  "i18n-ally.localesPaths": [],
+  "i18n-ally.localesPaths": ["../apps/web/messages"],
   "i18n-ally.keystyle": "nested",
   "i18n-ally.sourceLanguage": "en-US",
   "javascript.preferences.importModuleSpecifier": "non-relative",
@@ -243,5 +243,6 @@
       "code_blocks": false
     },
     "MD041": false
-  }
+  },
+  "i18n-ally.dirStructure": "auto"
 }
