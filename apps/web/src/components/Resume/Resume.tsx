@@ -17,11 +17,7 @@ import {
 import { useTranslations } from "next-intl";
 import Image, { type ImageProps } from "next/image";
 
-import {
-  Button,
-  ButtonElementType,
-  type ButtonProps,
-} from "@web/components/button";
+import { Button, type ButtonProps } from "@web/components/button";
 import { Icon } from "@web/components/icon";
 import {
   List,
@@ -89,36 +85,56 @@ const RESUME_FILE_NAME: string = "/resume.pdf";
 // RESUME DOWNLOAD BUTTON COMPONENT
 // ============================================================================
 
+export type ResumeDownloadButtonElementType = typeof Button;
 export type ResumeDownloadButtonProps<P extends Record<string, unknown> = {}> =
-  ButtonProps<P> & P & {};
+  Omit<ComponentPropsWithRef<ResumeDownloadButtonElementType>, "as"> &
+    P & {
+      as?: ResumeDownloadButtonElementType;
+      className?: ButtonProps<P>["className"];
+      variant?: ButtonProps<P>["variant"];
+      isDisabled?: boolean;
+    };
 
-function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
+export function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
   props: ResumeDownloadButtonProps<P>
 ) {
-  const { as: Component = Button, className, ...rest } = props;
+  const {
+    as: Component = Button,
+    className,
+    isDisabled = false,
+    variant = "primary",
+    ...rest
+  } = props;
 
   // Internationalization
-  const tAria = useTranslations("resume.ariaLabels");
+  const tLabels = useTranslations("resume.labels");
 
   // Resume download button ARIA
   const RESUME_DOWNLOAD_BUTTON_I18N = useMemo(
     () => ({
-      downloadCV: tAria("downloadCV"),
+      downloadCV: tLabels("downloadCV"),
     }),
-    [tAria]
+    [tLabels]
   );
 
   return (
     <Component
-      {...(rest as ComponentPropsWithoutRef<ButtonElementType>)}
+      {...(rest as ComponentPropsWithoutRef<ResumeDownloadButtonElementType>)}
+      variant={variant}
       href={RESUME_FILE_NAME}
-      variant="secondary"
-      className={cn("group mt-6 w-full", className)}
+      isDisabled={isDisabled}
+      className={cn("group mt-6 w-full gap-x-1.5 px-6 py-3", className)}
     >
       {RESUME_DOWNLOAD_BUTTON_I18N.downloadCV}
       <Icon
         name="arrow-down"
-        className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50"
+        className={cn(
+          "h-4 w-4",
+          isDisabled && "opacity-45",
+          variant === "primary"
+            ? "stroke-zinc-50 dark:stroke-zinc-900"
+            : "stroke-zinc-900 dark:stroke-zinc-50"
+        )}
         aria-hidden
       />
     </Component>
@@ -134,7 +150,7 @@ ResumeDownloadButton.displayName = "ResumeDownloadButton";
 export type ResumeRoleListProps<P extends Record<string, unknown> = {}> =
   ListProps<P> & P & {};
 
-function ResumeRoleList<P extends Record<string, unknown> = {}>(
+export function ResumeRoleList<P extends Record<string, unknown> = {}>(
   props: ResumeRoleListProps<P>
 ) {
   const { as: Component = List, className, ...rest } = props;
@@ -165,22 +181,22 @@ export type ResumeRoleListItemProps<P extends Record<string, unknown> = {}> =
       roleData: Role;
     };
 
-function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
+export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
   props: ResumeRoleListItemProps<P>
 ) {
   const { as: Component = ListItem, roleData, className, ...rest } = props;
 
   // Internationalization
-  const tAria = useTranslations("resume.ariaLabels");
+  const tLabels = useTranslations("resume.labels");
 
   // Resume role list item ARIA
   const RESUME_ROLE_LIST_ITEM_I18N = useMemo(
     () => ({
-      company: tAria("company"),
-      role: tAria("role"),
-      date: tAria("date"),
+      company: tLabels("company"),
+      role: tLabels("role"),
+      date: tLabels("date"),
     }),
-    [tAria]
+    [tLabels]
   );
 
   const { label: startLabel, dateTime: startDate } = parseRoleDate(
@@ -193,7 +209,7 @@ function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
       {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       className={cn("flex gap-4", className)}
     >
-      <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
+      <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
         <Image
           src={roleData.logo}
           alt={roleData.company}
@@ -239,20 +255,20 @@ export type ResumeTitleProps<P extends Record<string, unknown> = {}> = Omit<
     as?: ResumeTitleElementType;
   };
 
-function ResumeTitle<P extends Record<string, unknown> = {}>(
+export function ResumeTitle<P extends Record<string, unknown> = {}>(
   props: ResumeTitleProps<P>
 ) {
   const { as: Component = "h2", className, ...rest } = props;
 
   // Internationalization
-  const tAria = useTranslations("resume.ariaLabels");
+  const tLabels = useTranslations("resume.labels");
 
   // Resume title ARIA
   const RESUME_TITLE_I18N = useMemo(
     () => ({
-      work: tAria("work"),
+      work: tLabels("work"),
     }),
-    [tAria]
+    [tLabels]
   );
 
   return (
