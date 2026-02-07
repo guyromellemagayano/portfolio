@@ -207,62 +207,6 @@ export const COMPONENT_I18N = {
 
 ## Testing Standards
 
-### Rantail CSS Obfuscation Testing Rules
-
-**CRITICAL**: When using Rantail for Tailwind CSS obfuscation, tests must NOT expect specific classnames as they are transformed during build.
-
-#### ❌ Forbidden Patterns
-
-```typescript
-// ❌ NEVER test specific classnames with Rantail
-expect(element).toHaveClass("mt-16", "lg:mt-32");
-expect(element).toHaveClass("text-4xl", "font-bold", "tracking-tight");
-expect(element).toHaveClass("md:border-l", "md:border-zinc-100");
-```
-
-#### ✅ Required Patterns
-
-```typescript
-// ✅ Test that class attribute exists (generic)
-expect(element).toHaveAttribute("class");
-
-// ✅ Test specific functionality, not styling
-expect(element).toHaveAttribute("data-testid", "component-root");
-expect(element).toHaveAttribute("aria-label", "Component description");
-expect(element).toHaveAttribute("role", "button");
-
-// ✅ Test component behavior, not CSS classes
-expect(element).toBeInTheDocument();
-expect(element).toHaveTextContent("Expected text");
-expect(element).toHaveAttribute("href", "/expected-path");
-```
-
-#### Implementation Guidelines
-
-1. **Replace all classname expectations** with `toHaveAttribute("class")`
-2. **Focus on functionality** rather than styling in tests
-3. **Test data attributes** for component identification
-4. **Test ARIA attributes** for accessibility
-5. **Test component behavior** and user interactions
-
-#### Example Transformation
-
-```typescript
-// Before (❌ Brittle with Rantail)
-it("applies correct CSS classes", () => {
-  render(<Component className="custom-class" />);
-  const element = screen.getByTestId("component-root");
-  expect(element).toHaveClass("mt-16", "lg:mt-32", "custom-class");
-});
-
-// After (✅ Rantail-compatible)
-it("applies custom className", () => {
-  render(<Component className="custom-class" />);
-  const element = screen.getByTestId("component-root");
-  expect(element).toHaveAttribute("class");
-});
-```
-
 ### Test Coverage Requirements
 
 - **Critical Components** (auth, payments, data mutations): 90%+ coverage, comprehensive edge cases
@@ -533,38 +477,7 @@ createComponentProps: vi.fn(
 - **`data-testid` generation**: Remove `-root` suffix to match actual implementation
 - **Consistent fallback values**: Use `"test-id"` as default component ID
 
-#### 2. Rantail CSS Obfuscation Compliance
-
-**Remove All Classname Expectations:**
-
-```typescript
-// ❌ FORBIDDEN: Specific classname expectations
-expect(element).toHaveClass("mt-16", "lg:mt-32");
-expect(element).toHaveClass("text-4xl", "font-bold");
-
-// ✅ REQUIRED: Generic class attribute checks
-expect(element).toHaveAttribute("class");
-```
-
-**Implementation Pattern:**
-
-```typescript
-// Before (❌ Brittle with Rantail)
-it("applies correct CSS classes", () => {
-  render(<Component className="custom-class" />);
-  const element = screen.getByTestId("component-root");
-  expect(element).toHaveClass("mt-16", "lg:mt-32", "custom-class");
-});
-
-// After (✅ Rantail-compatible)
-it("applies custom className", () => {
-  render(<Component className="custom-class" />);
-  const element = screen.getByTestId("component-root");
-  expect(element).toHaveAttribute("class");
-});
-```
-
-#### 3. Data Attribute Standardization
+#### 2. Data Attribute Standardization
 
 **Standard Test ID Pattern:**
 
@@ -589,7 +502,7 @@ data-debug-mode="true" // when enabled
 data-${componentType}-id="${componentId}-${componentType}"
 ```
 
-#### 4. Test Query Standardization
+#### 3. Test Query Standardization
 
 **Preferred Query Methods (in order):**
 
@@ -642,7 +555,7 @@ describe("ComponentName", () => {
 });
 ```
 
-#### 6. Systematic Test Fixing Process
+#### 5. Systematic Test Fixing Process
 
 **Step-by-Step Workflow:**
 
@@ -660,15 +573,15 @@ describe("ComponentName", () => {
 |----------------|------------|----------|
 | `data-testid="undefined-component"` | `useComponentId` returns wrong structure | Fix mock to return `{ componentId, isDebugMode }` |
 | `data-testid="test-id-component-root-root"` | `createComponentProps` adds extra `-root` | Remove `-root` suffix from mock |
-| `toHaveClass` failures | Rantail obfuscates classnames | Replace with `toHaveAttribute("class")` |
+| `toHaveClass` failures | Brittle styling assertions | Prefer role/attribute/behavior assertions |
 | Missing ARIA tests | Incomplete accessibility coverage | Add comprehensive ARIA testing suite |
 
-#### 7. Replication Guidelines
+#### 6. Replication Guidelines
 
 **For Future Component Test Fixes:**
 
 1. **Copy Standard Mocks**: Use the standardized mock patterns from this documentation
-2. **Apply Rantail Rules**: Remove all classname-specific expectations
+2. **Avoid brittle styling assertions**: Prefer behavior/attribute checks over classnames
 3. **Follow Data Attribute Patterns**: Use consistent `data-testid` and debug attributes
 4. **Implement ARIA Testing**: Add comprehensive accessibility validation
 5. **Use Standard Cleanup**: Include mandatory cleanup in all test files
@@ -678,13 +591,13 @@ describe("ComponentName", () => {
 
 - [ ] All `useComponentId` mocks return `{ componentId, isDebugMode }`
 - [ ] All `createComponentProps` mocks generate correct `data-testid` values
-- [ ] No `toHaveClass` expectations remain (replaced with `toHaveAttribute("class")`)
+- [ ] No brittle classname expectations (prefer behavior/attribute assertions)
 - [ ] All test files include mandatory cleanup
 - [ ] ARIA testing is comprehensive and follows accessibility standards
 - [ ] Data attributes follow standardized patterns
 - [ ] Tests pass consistently across multiple runs
 
-This systematic approach ensures that all component test suites are reliable, maintainable, and compatible with Rantail CSS obfuscation while providing comprehensive coverage of component functionality and accessibility.
+This systematic approach ensures that all component test suites are reliable, maintainable, and resilient to styling changes while providing comprehensive coverage of component functionality and accessibility.
 
 ## Advanced Component Patterns
 
