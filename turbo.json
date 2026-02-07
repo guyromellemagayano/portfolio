@@ -62,8 +62,7 @@
         "next.config.*",
         "vite.config.*",
         "tailwind.config.*",
-        "postcss.config.*",
-        "rantail.config.*"
+        "postcss.config.*"
       ],
       "outputs": [
         "dist/**",
