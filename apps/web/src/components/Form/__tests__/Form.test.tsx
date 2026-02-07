@@ -4,12 +4,42 @@
  * @description Unit tests for the Form component.
  */
 
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Form, NewsletterForm } from "../Form";
 
 import "@testing-library/jest-dom";
+
+const mockUseComponentId = vi.hoisted(() =>
+  vi.fn((options: { internalId?: string; debugMode?: boolean } = {}) => ({
+    id: options.internalId || "test-id",
+    isDebugMode: options.debugMode || false,
+  }))
+);
+
+vi.mock("@guyromellemagayano/hooks", () => ({
+  useComponentId: mockUseComponentId,
+}));
+
+vi.mock("@guyromellemagayano/utils", () => ({
+  hasAnyRenderableContent: vi.fn((children) => {
+    if (children === false || children === null || children === undefined) {
+      return false;
+    }
+    if (typeof children === "string" && children.length === 0) {
+      return false;
+    }
+    return true;
+  }),
+  hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
+  setDisplayName: vi.fn((component, displayName) => {
+    if (component) component.displayName = displayName;
+    return component;
+  }),
+}));
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
@@ -80,20 +110,27 @@ describe("Form", () => {
       expect(screen.getByRole("textbox")).toBeInTheDocument();
     });
 
-    it("returns null when no children", () => {
-      const { container } = render(<Form />);
-      expect(container).toBeEmptyDOMElement();
-    });
-
     it("renders with role form", () => {
       render(
-        <Form>
+        <Form aria-label="Default form">
           <input type="text" />
         </Form>
       );
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Default form" });
       expect(form).toBeInTheDocument();
       expect(form.tagName).toBe("FORM");
+      expect(form).toHaveAttribute("role", "form");
+    });
+  });
+
+  // ============================================================================
+  // CONTENT VALIDATION TESTS
+  // ============================================================================
+
+  describe("Content Validation", () => {
+    it("returns null when no children", () => {
+      const { container } = render(<Form />);
+      expect(container).toBeEmptyDOMElement();
     });
   });
 
@@ -104,22 +141,44 @@ describe("Form", () => {
   describe("Polymorphic as=", () => {
     it("renders as form element by default", () => {
       render(
-        <Form>
+        <Form aria-label="Polymorphic form">
           <input type="text" />
         </Form>
       );
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Polymorphic form" });
       expect(form.tagName).toBe("FORM");
     });
 
     it("applies role form attribute", () => {
       render(
-        <Form>
+        <Form aria-label="Role form">
           <input type="text" />
         </Form>
       );
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Role form" });
       expect(form).toHaveAttribute("role", "form");
+    });
+  });
+
+  // ============================================================================
+  // DEBUG MODE TESTS
+  // ============================================================================
+
+  describe("Debug Mode", () => {
+    it("forwards debug data attributes", () => {
+      render(
+        <Form
+          aria-label="Debug form"
+          data-debug-mode="true"
+          data-form-id="form-debug"
+        >
+          <input type="text" />
+        </Form>
+      );
+
+      const form = screen.getByRole("form", { name: "Debug form" });
+      expect(form).toHaveAttribute("data-debug-mode", "true");
+      expect(form).toHaveAttribute("data-form-id", "form-debug");
     });
   });
 
@@ -130,25 +189,30 @@ describe("Form", () => {
   describe("Form Attributes", () => {
     it("forwards HTML form attributes", () => {
       render(
-        <Form method="post" action="/submit" encType="multipart/form-data">
+        <Form
+          aria-label="Submit form"
+          method="post"
+          action="/submit"
+          encType="multipart/form-data"
+        >
           <input type="text" />
         </Form>
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Submit form" });
       expect(form).toHaveAttribute("method", "post");
       expect(form).toHaveAttribute("action", "/submit");
-      expect(form).toHaveAttribute("encType", "multipart/form-data");
+      expect(form).toHaveAttribute("enctype", "multipart/form-data");
     });
 
     it("passes through custom data attributes", () => {
       render(
-        <Form data-custom="value" data-test="test">
+        <Form aria-label="Data form" data-custom="value" data-test="test">
           <input type="text" />
         </Form>
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Data form" });
       expect(form).toHaveAttribute("data-custom", "value");
       expect(form).toHaveAttribute("data-test", "test");
     });
@@ -156,14 +220,69 @@ describe("Form", () => {
     it("forwards event handlers", () => {
       const onSubmit = vi.fn();
       render(
-        <Form onSubmit={onSubmit}>
+        <Form aria-label="Submit handler form" onSubmit={onSubmit}>
           <input type="text" />
           <button type="submit">Submit</button>
         </Form>
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: "Submit handler form" });
       expect(form).toBeInTheDocument();
+    });
+  });
+
+  // ============================================================================
+  // REF FORWARDING TESTS
+  // ============================================================================
+
+  describe("Ref Forwarding Tests", () => {
+    it("forwards ref to the form element", () => {
+      const ref = React.createRef<HTMLFormElement>();
+      render(
+        <Form aria-label="Ref form" ref={ref}>
+          <input type="text" />
+        </Form>
+      );
+
+      expect(ref.current).toBeInstanceOf(HTMLFormElement);
+      expect(ref.current?.tagName).toBe("FORM");
+    });
+  });
+
+  // ============================================================================
+  // ACCESSIBILITY TESTS
+  // ============================================================================
+
+  describe("Accessibility Tests", () => {
+    it("supports accessible form landmark labels", () => {
+      render(
+        <Form aria-label="Accessible form">
+          <input type="text" />
+        </Form>
+      );
+
+      const form = screen.getByRole("form", { name: "Accessible form" });
+      expect(form).toBeInTheDocument();
+    });
+  });
+
+  // ============================================================================
+  // ARIA ATTRIBUTES TESTS
+  // ============================================================================
+
+  describe("ARIA Attributes Testing", () => {
+    it("forwards ARIA relationships to the form element", () => {
+      render(
+        <>
+          <span id="form-title">Form title</span>
+          <Form aria-labelledby="form-title">
+            <input type="text" />
+          </Form>
+        </>
+      );
+
+      const form = screen.getByRole("form", { name: "Form title" });
+      expect(form).toHaveAttribute("aria-labelledby", "form-title");
     });
   });
 });
@@ -177,7 +296,9 @@ describe("NewsletterForm", () => {
     it("renders newsletter form correctly", () => {
       render(<NewsletterForm />);
 
-      expect(screen.getByRole("form")).toBeInTheDocument();
+      expect(
+        screen.getByRole("form", { name: /stay up to date/i })
+      ).toBeInTheDocument();
       expect(screen.getByText("Stay up to date")).toBeInTheDocument();
       expect(
         screen.getByText(
@@ -193,7 +314,7 @@ describe("NewsletterForm", () => {
     it("renders as form element", () => {
       render(<NewsletterForm />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form.tagName).toBe("FORM");
     });
 
@@ -226,9 +347,9 @@ describe("NewsletterForm", () => {
       const emailInput = screen.getByRole("textbox", { name: "Email address" });
       expect(emailInput).toHaveAttribute("type", "email");
       expect(emailInput).toHaveAttribute("name", "email");
-      expect(emailInput).toHaveAttribute("autoComplete", "email");
-      expect(emailInput).toHaveAttribute("inputMode", "email");
-      expect(emailInput).toHaveAttribute("spellCheck", "false");
+      expect(emailInput).toHaveAttribute("autocomplete", "email");
+      expect(emailInput).toHaveAttribute("inputmode", "email");
+      expect(emailInput).toHaveAttribute("spellcheck", "false");
       expect(emailInput).toHaveAttribute("placeholder", "Email address");
       expect(emailInput).toHaveAttribute("aria-label", "Email address");
       expect(emailInput).toBeRequired();
@@ -253,7 +374,7 @@ describe("NewsletterForm", () => {
     it("sets default action and method attributes", () => {
       render(<NewsletterForm />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveAttribute("action", "/thank-you");
       expect(form).toHaveAttribute("method", "post");
     });
@@ -261,7 +382,7 @@ describe("NewsletterForm", () => {
     it("allows custom action attribute", () => {
       render(<NewsletterForm action="/custom-action" />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveAttribute("action", "/custom-action");
     });
 
@@ -274,9 +395,9 @@ describe("NewsletterForm", () => {
         />
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveAttribute("method", "post");
-      expect(form).toHaveAttribute("encType", "multipart/form-data");
+      expect(form).toHaveAttribute("enctype", "multipart/form-data");
       expect(form).toHaveAttribute("data-custom", "value");
     });
 
@@ -288,7 +409,7 @@ describe("NewsletterForm", () => {
         />
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveAttribute(
         "aria-label",
         "Newsletter subscription form"
@@ -305,7 +426,7 @@ describe("NewsletterForm", () => {
     it("applies base Tailwind CSS classes", () => {
       render(<NewsletterForm />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveClass("rounded-2xl");
       expect(form).toHaveClass("border");
       expect(form).toHaveClass("border-zinc-100");
@@ -315,7 +436,7 @@ describe("NewsletterForm", () => {
     it("merges custom className with base classes", () => {
       render(<NewsletterForm className="custom-form-class" />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveClass("custom-form-class");
       expect(form).toHaveClass("rounded-2xl");
     });
@@ -323,7 +444,7 @@ describe("NewsletterForm", () => {
     it("handles multiple custom classes", () => {
       render(<NewsletterForm className="class1 class2 class3" />);
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveClass("class1");
       expect(form).toHaveClass("class2");
       expect(form).toHaveClass("class3");
@@ -338,7 +459,9 @@ describe("NewsletterForm", () => {
     it("applies correct ARIA roles to form elements", () => {
       render(<NewsletterForm />);
 
-      const formElement = screen.getByRole("form");
+      const formElement = screen.getByRole("form", {
+        name: /stay up to date/i,
+      });
       expect(formElement).toBeInTheDocument();
 
       const headingElement = screen.getByRole("heading", { level: 2 });
@@ -375,7 +498,9 @@ describe("NewsletterForm", () => {
     it("ensures proper form landmark structure", () => {
       render(<NewsletterForm />);
 
-      const formElement = screen.getByRole("form");
+      const formElement = screen.getByRole("form", {
+        name: /stay up to date/i,
+      });
       expect(formElement).toBeInTheDocument();
 
       const heading = screen.getByRole("heading", { level: 2 });
@@ -390,7 +515,9 @@ describe("NewsletterForm", () => {
     it("applies correct ARIA relationships between form elements", () => {
       render(<NewsletterForm />);
 
-      const formElement = screen.getByRole("form");
+      const formElement = screen.getByRole("form", {
+        name: /stay up to date/i,
+      });
       const heading = screen.getByRole("heading", { level: 2 });
       const description = screen.getByText(
         "Get notified when I publish something new, and unsubscribe at any time."
@@ -442,7 +569,9 @@ describe("NewsletterForm", () => {
     it("applies conditional ARIA attributes correctly", () => {
       render(<NewsletterForm aria-label="Custom form label" />);
 
-      const formElement = screen.getByRole("form");
+      const formElement = screen.getByRole("form", {
+        name: /stay up to date/i,
+      });
       expect(formElement).toHaveAttribute("aria-label", "Custom form label");
       // aria-labelledby should still be present (from heading)
       expect(formElement).toHaveAttribute("aria-labelledby");
@@ -462,7 +591,7 @@ describe("NewsletterForm", () => {
         />
       );
 
-      const form = screen.getByRole("form");
+      const form = screen.getByRole("form", { name: /stay up to date/i });
       expect(form).toHaveAttribute("action", "/path?param=value&other=test");
       expect(form).toHaveAttribute("data-special", "special chars: <>&");
     });

@@ -24,14 +24,13 @@ import { Icon } from "../icon";
 // COMMON FORM COMPONENT TYPES
 // ============================================================================
 
-type FormElementType = "form";
+export type FormElementType = "form";
 
 // ============================================================================
 // NEWSLETTER FORM COMPONENT
 // ============================================================================
 
-type NewsletterFormElementType = FormElementType;
-
+export type NewsletterFormElementType = FormElementType;
 export type NewsletterFormProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<NewsletterFormElementType>,
   "as"
@@ -44,7 +43,7 @@ export function NewsletterForm<P extends Record<string, unknown> = {}>(
   props: NewsletterFormProps<P>
 ) {
   const {
-    as: Component = Form,
+    as: Component = "form",
     action = "/thank-you",
     className,
     ...rest
@@ -110,7 +109,7 @@ export function NewsletterForm<P extends Record<string, unknown> = {}>(
             placeholder={FORM_I18N.newsletterFormEmailAddressLabel}
             aria-label={FORM_I18N.newsletterFormEmailAddressLabel}
             aria-required="true"
-            className="w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 py-[calc(--spacing(2)-1px)] shadow-md shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus-visible:ring-4 focus-visible:ring-teal-500/10 focus-visible:outline-teal-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus-visible:ring-teal-400/10 dark:focus-visible:outline-teal-400"
+            className="py-[calc(--spacing(2)-1px)]lg w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus-visible:ring-4 focus-visible:ring-teal-500/10 focus-visible:outline-teal-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus-visible:ring-teal-400/10 dark:focus-visible:outline-teal-400"
             required
           />
         </span>
