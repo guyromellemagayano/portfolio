@@ -94,7 +94,8 @@
   "typescript.suggest.autoImports": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "vitest.disableWorkspaceWarning": true,
+  "typescript.suggest.paths": false,
+  "javascript.suggest.paths": false,
   "markdownlint.run": "onSave",
   "markdownlint.customRules": [],
   "markdownlint.lintWorkspaceGlobs": [
