@@ -9,7 +9,6 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Card } from "../../card/Card";
 import { Article } from "../Article";
 
 import "@testing-library/jest-dom";
@@ -253,7 +252,7 @@ describe("Article Integration Tests", () => {
       // Eyebrow renders (date is present), but formatted date can be empty
       const eyebrow = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrow).toHaveAttribute("dateTime", "invalid-date");
-      expect(eyebrow).toBeEmptyDOMElement();
+      expect(eyebrow.textContent).toBe("");
 
       // CTA renders because title + date (non-empty string) + description exist
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
@@ -371,7 +370,7 @@ describe("Article Integration Tests", () => {
   describe("Article with Custom Props Integration", () => {
     it("integrates custom props with article rendering", () => {
       render(
-        <Article<typeof Card, { "data-analytics": string }>
+        <Article<{ "data-analytics": string }>
           article={mockArticle}
           data-analytics="article-view"
         />
@@ -384,7 +383,7 @@ describe("Article Integration Tests", () => {
 
     it("integrates custom props with ARIA attributes", () => {
       render(
-        <Article<typeof Card, { "data-aria-custom": string }>
+        <Article<{ "data-aria-custom": string }>
           article={mockArticle}
           data-aria-custom="aria-integration"
         />
@@ -400,14 +399,11 @@ describe("Article Integration Tests", () => {
 
     it("handles multiple custom props with article updates", () => {
       const { rerender } = render(
-        <Article<
-          typeof Card,
-          {
-            "data-analytics": string;
-            "data-tracking": string;
-            "data-context": string;
-          }
-        >
+        <Article<{
+          "data-analytics": string;
+          "data-tracking": string;
+          "data-context": string;
+        }>
           article={mockArticle}
           data-analytics="click-event"
           data-tracking="user-action"
@@ -422,14 +418,11 @@ describe("Article Integration Tests", () => {
 
       const updatedArticle = { ...mockArticle, title: "Updated Title" };
       rerender(
-        <Article<
-          typeof Card,
-          {
-            "data-analytics": string;
-            "data-tracking": string;
-            "data-context": string;
-          }
-        >
+        <Article<{
+          "data-analytics": string;
+          "data-tracking": string;
+          "data-context": string;
+        }>
           article={updatedArticle}
           data-analytics="updated-event"
           data-tracking="updated-action"
@@ -445,7 +438,7 @@ describe("Article Integration Tests", () => {
 
     it("preserves custom props when article data changes", () => {
       const { rerender } = render(
-        <Article<typeof Card, { "data-persist": string }>
+        <Article<{ "data-persist": string }>
           article={mockArticle}
           data-persist="persistent-value"
         />
@@ -464,7 +457,7 @@ describe("Article Integration Tests", () => {
       };
 
       rerender(
-        <Article<typeof Card, { "data-persist": string }>
+        <Article<{ "data-persist": string }>
           article={updatedArticle}
           data-persist="persistent-value"
         />
@@ -481,7 +474,7 @@ describe("Article Integration Tests", () => {
 
     it("works with custom props", () => {
       render(
-        <Article<typeof Card, { "data-custom": string }>
+        <Article<{ "data-custom": string }>
           article={mockArticle}
           data-custom="custom-value"
         />
@@ -493,7 +486,7 @@ describe("Article Integration Tests", () => {
 
     it("integrates custom props with Card component structure", () => {
       render(
-        <Article<typeof Card, { "data-structure": string }>
+        <Article<{ "data-structure": string }>
           article={mockArticle}
           data-structure="card-integration"
         />
