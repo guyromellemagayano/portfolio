@@ -1,0 +1,21 @@
+{
+  "avatarLinkHref": "/",
+  "navLinks": [
+    {
+      "labelKey": "about",
+      "href": "/about"
+    },
+    {
+      "labelKey": "articles",
+      "href": "/articles"
+    },
+    {
+      "labelKey": "projects",
+      "href": "/projects"
+    },
+    {
+      "labelKey": "uses",
+      "href": "/uses"
+    }
+  ]
+}
