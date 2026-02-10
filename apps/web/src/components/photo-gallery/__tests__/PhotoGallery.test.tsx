@@ -13,18 +13,13 @@ import "@testing-library/jest-dom";
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, any> = {
-      "photoGallery.labels": {
-        photoGallery: "Photo gallery",
-        photoGalleryImages: "Photo gallery images",
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<string, string> = {
+      photoGallery: "Photo gallery",
+      photoGalleryImages: "Photo gallery images",
     };
 
-    return (key: string) => {
-      const namespaceTranslations = translations[namespace];
-      return namespaceTranslations?.[key] || key;
-    };
+    return (key: string) => translations[key] ?? key;
   }),
 }));
 
@@ -305,7 +300,7 @@ describe("PhotoGallery", () => {
       const wrapper = container.firstChild as HTMLElement;
       expect(wrapper).toBeInTheDocument();
 
-      // Default photos should render (5 photos from component)
+      // Default photos should render (from config)
       const images = container.querySelectorAll("img");
       expect(images.length).toBeGreaterThan(0);
     });
