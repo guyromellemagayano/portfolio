@@ -15,7 +15,7 @@ import {
 } from "react";
 
 import { useTranslations } from "next-intl";
-import Image, { type ImageProps } from "next/image";
+import Image from "next/image";
 
 import { Button, type ButtonProps } from "@web/components/button";
 import { Icon } from "@web/components/icon";
@@ -27,59 +27,12 @@ import {
   type ListItemProps,
   type ListProps,
 } from "@web/components/list";
-import logoAirbnb from "@web/images/logos/airbnb.svg";
-import logoFacebook from "@web/images/logos/facebook.svg";
-import logoPlanetaria from "@web/images/logos/planetaria.svg";
-import logoStarbucks from "@web/images/logos/starbucks.svg";
+import {
+  RESUME_FILE_NAME,
+  RESUME_ROLE_DATA,
+  type ResumeRole,
+} from "@web/config/resume";
 import { cn, getRoleItemKey, parseRoleDate } from "@web/utils/helpers";
-
-// ============================================================================
-// RESUME COMPONENT DATA
-// ============================================================================
-
-interface Role {
-  company: string;
-  title: string;
-  logo: ImageProps["src"];
-  start: string | { label: string; dateTime: string };
-  end: string | { label: string; dateTime: string };
-}
-
-const RESUME_DATA: Array<Role> = [
-  {
-    company: "Planetaria",
-    title: "CEO",
-    logo: logoPlanetaria,
-    start: "2019",
-    end: {
-      label: "Present",
-      dateTime: new Date().getFullYear().toString(),
-    },
-  },
-  {
-    company: "Airbnb",
-    title: "Product Designer",
-    logo: logoAirbnb,
-    start: "2014",
-    end: "2019",
-  },
-  {
-    company: "Facebook",
-    title: "iOS Software Engineer",
-    logo: logoFacebook,
-    start: "2011",
-    end: "2014",
-  },
-  {
-    company: "Starbucks",
-    title: "Shift Supervisor",
-    logo: logoStarbucks,
-    start: "2008",
-    end: "2011",
-  },
-];
-
-const RESUME_FILE_NAME: string = "/resume.pdf";
 
 // ============================================================================
 // RESUME DOWNLOAD BUTTON COMPONENT
@@ -107,14 +60,14 @@ export function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("resume.labels");
+  const resumeI18n = useTranslations("components.resume");
 
   // Resume download button ARIA
   const RESUME_DOWNLOAD_BUTTON_I18N = useMemo(
     () => ({
-      downloadCV: tLabels("downloadCV"),
+      downloadCV: resumeI18n("labels.downloadCV"),
     }),
-    [tLabels]
+    [resumeI18n]
   );
 
   return (
@@ -155,14 +108,14 @@ export function ResumeRoleList<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = List, className, ...rest } = props;
 
-  if (!RESUME_DATA.length) return null;
+  if (!RESUME_ROLE_DATA.length) return null;
 
   return (
     <Component
       {...(rest as ComponentPropsWithoutRef<ListElementType>)}
       className={cn("mt-6 space-y-4", className)}
     >
-      {RESUME_DATA.map((role, index) => (
+      {RESUME_ROLE_DATA.map((role, index) => (
         <ResumeRoleListItem key={getRoleItemKey(role, index)} roleData={role} />
       ))}
     </Component>
@@ -178,7 +131,7 @@ ResumeRoleList.displayName = "ResumeRoleList";
 export type ResumeRoleListItemProps<P extends Record<string, unknown> = {}> =
   ListItemProps<P> &
     P & {
-      roleData: Role;
+      roleData: ResumeRole;
     };
 
 export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
@@ -187,16 +140,16 @@ export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
   const { as: Component = ListItem, roleData, className, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("resume.labels");
+  const resumeI18n = useTranslations("components.resume");
 
   // Resume role list item ARIA
   const RESUME_ROLE_LIST_ITEM_I18N = useMemo(
     () => ({
-      company: tLabels("company"),
-      role: tLabels("role"),
-      date: tLabels("date"),
+      company: resumeI18n("labels.company"),
+      role: resumeI18n("labels.role"),
+      date: resumeI18n("labels.date"),
     }),
-    [tLabels]
+    [resumeI18n]
   );
 
   const { label: startLabel, dateTime: startDate } = parseRoleDate(
@@ -261,14 +214,14 @@ export function ResumeTitle<P extends Record<string, unknown> = {}>(
   const { as: Component = "h2", className, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("resume.labels");
+  const resumeI18n = useTranslations("components.resume");
 
   // Resume title ARIA
   const RESUME_TITLE_I18N = useMemo(
     () => ({
-      work: tLabels("work"),
+      work: resumeI18n("labels.work"),
     }),
-    [tLabels]
+    [resumeI18n]
   );
 
   return (
