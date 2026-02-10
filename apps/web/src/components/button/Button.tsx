@@ -127,12 +127,12 @@ export function SkipToMainContentButton<P extends Record<string, unknown> = {}>(
   const { as: Component = Button, href, className, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("layout.labels");
+  const buttonI18n = useTranslations("components.layout");
 
   // Skip to main content ARIA
   const skipToMainContent = useMemo(
-    () => tLabels("skipToMainContent"),
-    [tLabels]
+    () => buttonI18n("labels.skipToMainContent"),
+    [buttonI18n]
   );
 
   return (
