@@ -10,8 +10,8 @@ alwaysApply: false
 
 ## Component Architecture
 
-- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props
-- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasMeaningfulText` for content validation
+- **Main Components**: For `@packages`, use `setDisplayName` + `forwardRef`. For `@apps` (web/admin/api), do **not** use `setDisplayName` or `forwardRef` (refs flow via props spread in React 19). Extend `React.ComponentProps<typeof ElementType>` + `ComponentProps` for utility props.
+- **Sub-components**: Use `useComponentId` internally, receive `internalId`/`debugMode` props directly. For `@packages`, use `setDisplayName`; for `@apps`, do **not** use `setDisplayName`. Use `hasMeaningfulText` for content validation.
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `ComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `ComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
@@ -39,21 +39,27 @@ components/component/
 │   │   ├── ComponentSub.module.css
 │   │   ├── index.ts
 │   │   └── __tests__/
-└── _data/                     # Data and queries
+└── _data/                     # Component-local data and queries
     ├── index.ts
     ├── Component.data.ts
     ├── Component.queries.ts
     └── Component.types.ts
 ```
 
+## App-Level Content vs Config
+
+- **`apps/web/src/data/`**: Content sources (JSON/TS) meant for editing, CMS integration, or external validation.
+- **`apps/web/src/config/`**: Typed adapters/validators that map `@web/data/*` to runtime-safe structures.
+- **Components** should import **config modules** (`@web/config/*`), not raw data files.
+
 ## Utility Function Standards
 
 - **`useComponentId`**: For ID generation and debug mode in sub-components
-- **`setDisplayName`**: For component naming in all components
+- **`setDisplayName`**: For `@packages` components only
 - **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
 - **`getLinkTargetProps`**: For link target/rel attributes
-- **`cn`**: For className composition from `@web/lib`
+- **`cn`**: For className composition from `@web/utils`
 
 ## TypeScript Standards
 
@@ -154,7 +160,7 @@ vi.mock("@guyromellemagayano/utils", () => ({
   }),
 }));
 
-vi.mock("@web/lib", () => ({
+vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
 
@@ -247,7 +253,7 @@ vi.mock("../constants/Component.i18n", () => ({
 
 ## Styling Standards
 
-- **Tailwind + CSS Modules**: Use `cn()` helper for className composition from `@web/lib`
+- **Tailwind + CSS Modules**: Use `cn()` helper for className composition from `@web/utils/helpers`
 - **No global leaks**: Keep styles scoped to components
 - **CSS Modules**: Co-locate with components
 
@@ -587,7 +593,7 @@ import {
 } from "@guyromellemagayano/utils";
 
 // 3. Internal packages
-import { cn } from "@web/lib";
+import { cn } from "@web/utils/helpers";
 
 // 4. Relative imports (data first, then internal, then parent)
 import { type ComponentData } from "../_data";
