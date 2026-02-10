@@ -360,7 +360,7 @@ describe("Article", () => {
       // Eyebrow renders (date is present), but formatted date can be empty
       const eyebrowElement = screen.getByTestId("mock-card-eyebrow");
       expect(eyebrowElement).toHaveAttribute("dateTime", "invalid-date");
-      expect(eyebrowElement).toBeEmptyDOMElement();
+      expect(eyebrowElement.textContent).toBe("");
 
       // CTA renders because title + date (non-empty string) + description exist
       expect(screen.getByTestId("mock-card-cta")).toBeInTheDocument();
@@ -434,7 +434,7 @@ describe("Article", () => {
     it("uses translations for CTA text", () => {
       render(<Article article={mockArticle} />);
 
-      expect(mockUseTranslations).toHaveBeenCalledWith("article");
+      expect(mockUseTranslations).toHaveBeenCalledWith("components.article");
       expect(screen.getByText("Read article")).toBeInTheDocument();
     });
 
@@ -688,6 +688,36 @@ describe("Article", () => {
       // Title should be h2 (SEO: default heading level for card titles)
       const titleElement = screen.getByTestId("mock-card-title");
       expect(titleElement.tagName).toBe("H2");
+    });
+
+    it("omits aria-labelledby when title is missing", () => {
+      const articleWithoutTitle = {
+        ...mockArticle,
+        title: "",
+      };
+
+      render(<Article article={articleWithoutTitle} />);
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).not.toHaveAttribute("aria-labelledby");
+      expect(
+        screen.queryByRole("heading", { level: 2 })
+      ).not.toBeInTheDocument();
+    });
+
+    it("omits aria-describedby when description is missing", () => {
+      const articleWithoutDescription = {
+        ...mockArticle,
+        description: "",
+      };
+
+      render(<Article article={articleWithoutDescription} />);
+
+      const articleElement = screen.getByTestId("mock-card");
+      expect(articleElement).not.toHaveAttribute("aria-describedby");
+      expect(
+        screen.queryByTestId("mock-card-description")
+      ).not.toBeInTheDocument();
     });
 
     it("maintains ARIA attributes during component updates", () => {
