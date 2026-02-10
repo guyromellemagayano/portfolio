@@ -9,7 +9,6 @@ pnpm-lock.yaml
 .pnpm-store/
 
 # Build outputs
-dist/
 dist-ssr/
 build/
 .next/
@@ -17,6 +16,7 @@ out/
 coverage/
 logs/
 dist/
+storybook-static/
 
 # Turbo/monorepo cache
 .turbo/
@@ -35,6 +35,7 @@ dist/
 
 # TypeScript build info
 *.tsbuildinfo
+.eslintcache
 
 # Vercel
 .vercel/
