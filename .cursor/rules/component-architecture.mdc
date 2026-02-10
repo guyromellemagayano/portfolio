@@ -112,6 +112,13 @@ components/Component/
 - **`_queries/`**: GraphQL queries/mutations (separate from data)
 - **Never**: Business logic, API calls, or complex transformations in `_data/`
 
+## App-Level Content & Config
+
+- **`apps/web/src/data/`**: Content sources (JSON/TS) that should be editable and validated independently of component logic.
+- **`apps/web/src/config/`**: Typed adapters/validators that map `@web/data/*` into runtime-safe shapes (including asset imports).
+- **Do not** store content JSON inside `config/`; `config/` should only normalize/validate.
+- **Components** import from `@web/config/*`, never directly from `@web/data/*`.
+
 ## Internal Component Standards
 
 - **`_internal/` Purpose**: Sub-components used only within their parent component
@@ -124,8 +131,8 @@ components/Component/
 
 ## Component Props Standards
 
-- **Main Components**: Use `setDisplayName` for proper component naming, extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props
-- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly, use `setDisplayName`, `hasAnyRenderableContent` for content validation
+- **Main Components**: For `@packages`, use `setDisplayName` + `forwardRef`. For `@apps` (web/admin/api), do **not** use `setDisplayName` or `forwardRef` (refs flow via props spread in React 19). Extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps`.
+- **Sub-components**: Use `useComponentId` internally, receive `internalId`/`debugMode` props directly. For `@packages`, use `setDisplayName`; for `@apps`, do **not** use `setDisplayName`. Use `hasAnyRenderableContent` for content validation.
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
@@ -359,7 +366,7 @@ data-header-id="test-id-header"
 ## Utility Function Standards
 
 - **`useComponentId`**: For ID generation and debug mode in sub-components
-- **`setDisplayName`**: For component naming in all components
+- **`setDisplayName`**: For `@packages` components only
 - **`hasAnyRenderableContent`**: For content validation in main components
 - **`hasMeaningfulText`**: For content validation in sub-components
 - **`isValidLink`**: For link validation
@@ -915,7 +922,7 @@ export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(publishedAt de
 ```typescript
 // ✅ GOOD: React Query for client-side data fetching
 import { useQuery } from '@tanstack/react-query'
-import { sanityClient } from '@web/lib/sanity'
+import { sanityClient } from '@web/utils/sanity'
 import { ARTICLE_QUERY } from './_queries/Article.queries'
 
 export function useArticle(slug: string, preview: boolean = false) {
