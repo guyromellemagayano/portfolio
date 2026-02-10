@@ -37,15 +37,15 @@ export function Article<P extends Record<string, unknown> = {}>(
   const descriptionId = `${articleId}-description`;
 
   // Internationalization
-  const t = useTranslations("article");
+  const articleI18n = useTranslations("components.article");
 
   // Article labels
   const ARTICLE_I18N = useMemo(
     () => ({
-      articleDate: t("articleDate"),
-      cta: t("cta"),
+      articleDate: articleI18n("articleDate"),
+      cta: articleI18n("cta"),
     }),
-    [t]
+    [articleI18n]
   );
 
   // Article data object
