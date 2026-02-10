@@ -1,5 +1,4 @@
-/* eslint-disable simple-import-sort/imports */
-/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable simple-import-sort/imports, react-hooks/set-state-in-effect */
 
 /**
  * @file Header.tsx
@@ -17,7 +16,6 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import { type Route } from "next";
 import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import Image from "next/image";
@@ -34,58 +32,14 @@ import {
 
 import { Container } from "@web/components/container";
 import { Icon } from "@web/components/icon";
+import {
+  AVATAR_LINK_HREF,
+  HEADER_NAV_LINK_CONFIG,
+  HeaderComponentNavLinks,
+} from "@web/config/header";
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import avatarImage from "@web/images/avatar.jpg";
 import { clamp, cn, isActivePath } from "@web/utils/helpers";
-
-// ============================================================================
-// AVATAR STATIC CONFIG
-// ============================================================================
-
-export const AVATAR_LINK_HREF = "/" as const;
-
-// ============================================================================
-// HEADER LINK TYPES
-// ============================================================================
-
-type InternalHref = Route | (string & {});
-
-export type HeaderLink =
-  | {
-      kind: "internal";
-      label: string;
-      href: InternalHref;
-    }
-  | {
-      kind: "external";
-      label: string;
-      href: string;
-      newTab?: boolean;
-      rel?: string;
-    };
-
-// ============================================================================
-// HEADER NAV LINK CONFIG
-// ============================================================================
-
-export type HeaderNavLabelKey = "about" | "articles" | "projects" | "uses";
-
-export type HeaderNavLinkConfig = Readonly<{
-  kind: "internal";
-  labelKey: HeaderNavLabelKey;
-  href: InternalHref;
-}>;
-
-export type HeaderComponentNavLinks = ReadonlyArray<
-  Extract<HeaderLink, { kind: "internal" }>
->;
-
-export const HEADER_NAV_LINK_CONFIG: ReadonlyArray<HeaderNavLinkConfig> = [
-  { kind: "internal", labelKey: "about", href: "/about" },
-  { kind: "internal", labelKey: "articles", href: "/articles" },
-  { kind: "internal", labelKey: "projects", href: "/projects" },
-  { kind: "internal", labelKey: "uses", href: "/uses" },
-] as const;
 
 // ============================================================================
 // HEADER AVATAR COMPONENT
@@ -120,16 +74,15 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("header.labels");
-  const tHeader = useTranslations("header");
+  const headerI18n = useTranslations("components.header");
 
   // Header avatar ARIA
   const HEADER_AVATAR_I18N = useMemo(
     () => ({
-      home: tLabels("home"),
-      brandName: tHeader("brandName"),
+      home: headerI18n("labels.home"),
+      brandName: headerI18n("brandName"),
     }),
-    [tLabels, tHeader]
+    [headerI18n]
   );
 
   const linkHref = href && isValidLink(href) ? href : AVATAR_LINK_HREF;
@@ -211,20 +164,20 @@ function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
   const { as: Component = "nav", ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("header.labels");
+  const headerI18n = useTranslations("components.header");
 
   // Header desktop navigation ARIA
   const HEADER_DESKTOP_NAV_I18N = useMemo(
     () => ({
-      desktopNavigation: tLabels("desktopNavigation"),
+      desktopNavigation: headerI18n("labels.desktopNavigation"),
     }),
-    [tLabels]
+    [headerI18n]
   );
 
   const navConfig = HEADER_NAV_LINK_CONFIG;
   const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
     kind: "internal" as const,
-    label: tLabels(link.labelKey),
+    label: headerI18n(`labels.${link.labelKey}`),
     href: link.href,
   }));
   const validLinks = filterValidNavigationLinks(navLinksWithLabels);
@@ -326,22 +279,22 @@ function HeaderMobileNav<P extends Record<string, unknown> = {}>(
   const { as: Component = Popover, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("header.labels");
+  const headerI18n = useTranslations("components.header");
 
   // Header mobile navigation ARIA
   const HEADER_MOBILE_NAV_I18N = useMemo(
     () => ({
-      menu: tLabels("menu"),
-      closeMenu: tLabels("closeMenu"),
-      mobileNavigation: tLabels("mobileNavigation"),
+      menu: headerI18n("labels.menu"),
+      closeMenu: headerI18n("labels.closeMenu"),
+      mobileNavigation: headerI18n("labels.mobileNavigation"),
     }),
-    [tLabels]
+    [headerI18n]
   );
 
   const navConfig = HEADER_NAV_LINK_CONFIG;
   const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
     kind: "internal" as const,
-    label: tLabels(link.labelKey),
+    label: headerI18n(`labels.${link.labelKey}`),
     href: link.href,
   }));
   const validLinks = filterValidNavigationLinks(navLinksWithLabels);
@@ -482,16 +435,16 @@ function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
   }, []);
 
   // Internationalization
-  const tLabels = useTranslations("header.labels");
+  const headerI18n = useTranslations("components.header");
 
   // Header theme toggle ARIA
   const HEADER_THEME_TOGGLE_I18N = useMemo(
     () => ({
-      toggleTheme: tLabels("toggleTheme"),
-      darkMode: tLabels("darkMode"),
-      lightMode: tLabels("lightMode"),
+      toggleTheme: headerI18n("labels.toggleTheme"),
+      darkMode: headerI18n("labels.darkMode"),
+      lightMode: headerI18n("labels.lightMode"),
     }),
-    [tLabels]
+    [headerI18n]
   );
 
   const ariaLabel = mounted
@@ -540,14 +493,14 @@ export function Header<P extends Record<string, unknown> = {}>(
   const { as: Component = "header", children, className, ...rest } = props;
 
   // Internationalization
-  const tHeader = useTranslations("header");
+  const headerI18n = useTranslations("components.header");
 
   // Header ARIA
   const HEADER_I18N = useMemo(
     () => ({
-      brandName: tHeader("brandName"),
+      brandName: headerI18n("brandName"),
     }),
-    [tHeader]
+    [headerI18n]
   );
 
   const isHomePage: boolean = usePathname() === AVATAR_LINK_HREF;
