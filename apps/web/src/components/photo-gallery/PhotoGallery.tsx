@@ -8,46 +8,30 @@
 
 "use client";
 
-import { cn } from "@web/utils/helpers";
-import { useTranslations } from "next-intl";
-import Image, { type StaticImageData } from "next/image";
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
   useMemo,
 } from "react";
 
-import image1 from "@web/images/photos/image-1.jpg";
-import image2 from "@web/images/photos/image-2.jpg";
-import image3 from "@web/images/photos/image-3.jpg";
-import image4 from "@web/images/photos/image-4.jpg";
-import image5 from "@web/images/photos/image-5.jpg";
+import { useTranslations } from "next-intl";
+import Image, { type StaticImageData } from "next/image";
 
-// ============================================================================
-// PHOTO GALLERY DATA
-// ============================================================================
-
-const PHOTO_GALLERY_COMPONENT_PHOTOS: StaticImageData[] = [
-  image1,
-  image2,
-  image3,
-  image4,
-  image5,
-];
+import { PHOTO_GALLERY_PHOTOS } from "@web/config/photo-gallery";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
 // PHOTO GALLERY COMPONENT
 // ============================================================================
 
-type PhotoGalleryElementType = "div" | "section";
-
+export type PhotoGalleryElementType = "div" | "section";
 export type PhotoGalleryProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<PhotoGalleryElementType>,
   "as"
 > &
   P & {
     as?: PhotoGalleryElementType;
-    photos?: typeof PHOTO_GALLERY_COMPONENT_PHOTOS;
+    photos?: ReadonlyArray<StaticImageData>;
     "aria-label"?: string;
   };
 
@@ -56,7 +40,7 @@ export function PhotoGallery<P extends Record<string, unknown> = {}>(
 ) {
   const {
     as: Component = "section",
-    photos = PHOTO_GALLERY_COMPONENT_PHOTOS,
+    photos = PHOTO_GALLERY_PHOTOS,
     className,
     "aria-label": ariaLabel,
     role,
@@ -64,15 +48,15 @@ export function PhotoGallery<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("photoGallery.labels");
+  const photoGalleryI18n = useTranslations("components.photoGallery.labels");
 
   // Photo gallery ARIA labels
   const PHOTO_GALLERY_I18N = useMemo(
     () => ({
-      photoGallery: tLabels("photoGallery"),
-      photoGalleryImages: tLabels("photoGalleryImages"),
+      photoGallery: photoGalleryI18n("photoGallery"),
+      photoGalleryImages: photoGalleryI18n("photoGalleryImages"),
     }),
-    [tLabels]
+    [photoGalleryI18n]
   );
 
   const galleryAriaLabel = ariaLabel || PHOTO_GALLERY_I18N.photoGallery;
