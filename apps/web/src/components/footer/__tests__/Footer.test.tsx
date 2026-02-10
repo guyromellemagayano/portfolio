@@ -13,47 +13,25 @@ import "@testing-library/jest-dom";
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, any> = {
-      "footer.navigation": {
-        about: "About",
-        articles: "Articles",
-        projects: "Projects",
-        uses: "Uses",
-      },
-      "footer.ariaLabels": {
-        navigation: "Footer navigation",
-        footer: "Site footer",
-      },
-      footer: {
-        brandName: "Guy Romelle Magayano",
-        legal: {
-          copyright: (params: { year: string; brandName: string }) =>
-            `© ${params.year} ${params.brandName}. All rights reserved.`,
-        },
-        ariaLabels: {
-          footer: "Site footer",
-        },
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<
+      string,
+      string | ((params?: Record<string, string>) => string)
+    > = {
+      "navigation.about": "About",
+      "navigation.articles": "Articles",
+      "navigation.projects": "Projects",
+      "navigation.uses": "Uses",
+      "labels.navigation": "Footer navigation",
+      "labels.footer": "Site footer",
+      brandName: "Guy Romelle Magayano",
+      "legal.copyright": (params) =>
+        `© ${params?.year ?? ""} ${params?.brandName ?? ""}. All rights reserved.`,
     };
 
     return (key: string, params?: Record<string, any>) => {
-      const keys = key.split(".");
-      let value: any = translations[namespace];
-
-      for (const k of keys) {
-        if (value && typeof value === "object" && k in value) {
-          value = value[k];
-        } else {
-          return key;
-        }
-      }
-
-      if (typeof value === "function") {
-        return value(params || {});
-      }
-
-      return value || key;
+      const value = translations[key];
+      return typeof value === "function" ? value(params || {}) : value || key;
     };
   }),
 }));
