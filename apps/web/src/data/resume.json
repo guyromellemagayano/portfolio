@@ -1,0 +1,36 @@
+{
+  "resumeFileName": "/resume.pdf",
+  "roles": [
+    {
+      "company": "Planetaria",
+      "title": "CEO",
+      "logoKey": "planetaria",
+      "start": "2019",
+      "end": {
+        "label": "Present",
+        "dateTime": "present"
+      }
+    },
+    {
+      "company": "Airbnb",
+      "title": "Product Designer",
+      "logoKey": "airbnb",
+      "start": "2014",
+      "end": "2019"
+    },
+    {
+      "company": "Facebook",
+      "title": "iOS Software Engineer",
+      "logoKey": "facebook",
+      "start": "2011",
+      "end": "2014"
+    },
+    {
+      "company": "Starbucks",
+      "title": "Shift Supervisor",
+      "logoKey": "starbucks",
+      "start": "2008",
+      "end": "2011"
+    }
+  ]
+}

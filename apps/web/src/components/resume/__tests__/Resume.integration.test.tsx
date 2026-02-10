@@ -17,20 +17,15 @@ import { Resume } from "../Resume";
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      "resume.labels": {
-        work: "Work",
-        downloadCV: "Download CV",
-        company: "Company",
-        role: "Role",
-        date: "Date",
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<string, string> = {
+      "labels.work": "Work",
+      "labels.downloadCV": "Download CV",
+      "labels.company": "Company",
+      "labels.role": "Role",
+      "labels.date": "Date",
     };
-    return (key: string) => {
-      const translation = translations[namespace];
-      return translation?.[key] || key;
-    };
+    return (key: string) => translations[key] ?? key;
   }),
 }));
 
