@@ -15,7 +15,7 @@ import { cn } from "@web/utils/helpers";
 // COMMON CONTAINER COMPONENT TYPES
 // ============================================================================
 
-type ContainerElementType =
+export type ContainerElementType =
   | "div"
   | "section"
   | "main"
