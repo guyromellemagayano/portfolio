@@ -28,10 +28,10 @@ import { cn } from "@web/utils/helpers";
 
 import { Container } from "@web/components/container";
 import {
-  FOOTER_COMPONENT_NAV_LINKS,
+  FOOTER_NAV_LINK_CONFIG,
   FooterData,
   type FooterLink,
-} from "./Footer.data";
+} from "@web/config/footer";
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT
@@ -50,20 +50,19 @@ function FooterNavigation<P extends Record<string, unknown> = {}>(
   const { as: Component = "nav", className, ...rest } = props;
 
   // Internationalization
-  const t = useTranslations("footer.navigation");
-  const tLabels = useTranslations("footer.labels");
+  const footerI18n = useTranslations("components.footer");
 
   // Footer navigation ARIA label and default nav links
   const FOOTER_I18N = useMemo(
     () => ({
-      footerNavigation: tLabels("navigation"),
-      defaultNavLinks: FOOTER_COMPONENT_NAV_LINKS.map((link) => ({
+      footerNavigation: footerI18n("labels.navigation"),
+      defaultNavLinks: FOOTER_NAV_LINK_CONFIG.map((link) => ({
         kind: link.kind,
-        label: t(link.labelKey),
+        label: footerI18n(`navigation.${link.labelKey}`),
         href: link.href,
       })),
     }),
-    [t, tLabels]
+    [footerI18n]
   );
 
   const linksToUse = FOOTER_I18N.defaultNavLinks;
@@ -132,10 +131,10 @@ function FooterLegal<P extends Record<string, unknown> = {}>(
   const { as: Component = "p", className, ...rest } = props;
 
   // Internationalization
-  const t = useTranslations("footer");
-  const brandName = t("brandName");
+  const footerI18n = useTranslations("components.footer");
+  const brandName = footerI18n("brandName");
   const currentYear = formatDateSafely(new Date(), { year: "numeric" });
-  const legalText = t("legal.copyright", {
+  const legalText = footerI18n("legal.copyright", {
     year: currentYear,
     brandName: brandName.trim(),
   });
@@ -184,14 +183,14 @@ export function Footer<P extends Record<string, unknown> = {}>(
   const { as: Component = "footer", className, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("footer.labels");
+  const footerI18n = useTranslations("components.footer");
 
   // Footer ARIA label and default nav links
   const FOOTER_I18N = useMemo(
     () => ({
-      footerAriaLabel: tLabels("footer"),
+      footerAriaLabel: footerI18n("labels.footer"),
     }),
-    [tLabels]
+    [footerI18n]
   );
 
   return (
