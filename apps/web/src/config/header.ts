@@ -6,11 +6,7 @@
 
 import { type Route } from "next";
 
-// ============================================================================
-// AVATAR STATIC CONFIG
-// ============================================================================
-
-export const AVATAR_LINK_HREF = "/" as const;
+import headerConfig from "@web/data/header.json";
 
 // ============================================================================
 // HEADER LINK TYPES
@@ -46,9 +42,70 @@ export type HeaderComponentNavLinks = ReadonlyArray<
   Extract<HeaderLink, { kind: "internal" }>
 >;
 
-export const HEADER_NAV_LINK_CONFIG: ReadonlyArray<HeaderNavLinkConfig> = [
-  { kind: "internal", labelKey: "about", href: "/about" },
-  { kind: "internal", labelKey: "articles", href: "/articles" },
-  { kind: "internal", labelKey: "projects", href: "/projects" },
-  { kind: "internal", labelKey: "uses", href: "/uses" },
-] as const;
+// ============================================================================
+// HEADER CONFIG DATA
+// ============================================================================
+
+type HeaderConfigData = Readonly<{
+  avatarLinkHref: string;
+  navLinks: ReadonlyArray<{
+    labelKey: HeaderNavLabelKey;
+    href: InternalHref;
+  }>;
+}>;
+
+const HEADER_NAV_LABEL_KEYS: ReadonlyArray<HeaderNavLabelKey> = [
+  "about",
+  "articles",
+  "projects",
+  "uses",
+];
+
+const isHeaderNavLabelKey = (value: string): value is HeaderNavLabelKey =>
+  HEADER_NAV_LABEL_KEYS.includes(value as HeaderNavLabelKey);
+
+const createHeaderConfigData = (): HeaderConfigData => {
+  const avatarLinkHref =
+    typeof headerConfig.avatarLinkHref === "string"
+      ? headerConfig.avatarLinkHref
+      : "/";
+
+  const navLinks: ReadonlyArray<{
+    labelKey: HeaderNavLabelKey;
+    href: InternalHref;
+  }> = headerConfig.navLinks.map((link) => {
+    if (!isHeaderNavLabelKey(link.labelKey)) {
+      throw new Error(`Invalid header nav labelKey: ${link.labelKey}`);
+    }
+
+    return {
+      labelKey: link.labelKey,
+      href: link.href as InternalHref,
+    };
+  });
+
+  return {
+    avatarLinkHref,
+    navLinks,
+  };
+};
+
+const HEADER_CONFIG_DATA = createHeaderConfigData();
+
+// ============================================================================
+// AVATAR STATIC CONFIG
+// ============================================================================
+
+export const AVATAR_LINK_HREF =
+  HEADER_CONFIG_DATA.avatarLinkHref as InternalHref;
+
+// ============================================================================
+// HEADER NAV LINK CONFIG
+// ============================================================================
+
+export const HEADER_NAV_LINK_CONFIG: ReadonlyArray<HeaderNavLinkConfig> =
+  HEADER_CONFIG_DATA.navLinks.map((link) => ({
+    kind: "internal",
+    labelKey: link.labelKey,
+    href: link.href,
+  }));
