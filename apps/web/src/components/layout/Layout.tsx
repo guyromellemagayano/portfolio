@@ -25,7 +25,8 @@ import { Footer } from "@web/components/footer";
 import { NewsletterForm } from "@web/components/form";
 import { Header } from "@web/components/header";
 import { Icon } from "@web/components/icon";
-import { CommonLayoutComponentData } from "@web/components/layout/Layout.data";
+import { type CommonLayoutComponentData } from "@web/data/page";
+
 import { Prose } from "@web/components/prose";
 import { Heading, Lead, SubHeading } from "@web/components/text";
 import { type ArticleWithSlug } from "@web/utils/articles";
@@ -128,16 +129,19 @@ export function SimpleLayout<P extends Record<string, unknown> = {}>(
   );
 }
 
+SimpleLayout.displayName = "SimpleLayout";
+
 // ============================================================================
 // ARTICLE LAYOUT COMPONENT
 // ============================================================================
 
 export type ArticleLayoutElementType = typeof Container;
 export type ArticleLayoutProps<P extends Record<string, unknown> = {}> = Omit<
-  SimpleLayoutProps<P>,
-  "as" | "title" | "intro"
+  LayoutProps<P>,
+  "as"
 > &
-  P & {
+  P &
+  CommonLayoutComponentData & {
     as?: ArticleLayoutElementType;
     article?: ArticleWithSlug;
   };
@@ -158,15 +162,15 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
   let router = useRouter();
 
   // Internationalization
-  const tLabels = useTranslations("layout.labels");
+  const articleLayoutI18n = useTranslations("components.layout");
 
   // Article layout ARIA and labels
   const ARTICLE_LAYOUT_I18N = useMemo(
     () => ({
-      goBackToArticles: tLabels("goBackToArticles"),
-      articleDate: tLabels("articleDate"),
+      goBackToArticles: articleLayoutI18n("labels.goBackToArticles"),
+      articleDate: articleLayoutI18n("labels.articleDate"),
     }),
-    [tLabels]
+    [articleLayoutI18n]
   );
 
   // Generate unique IDs for ARIA relationships
