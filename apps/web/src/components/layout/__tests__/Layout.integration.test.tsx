@@ -18,18 +18,13 @@ import "@testing-library/jest-dom";
 // ============================================================================
 
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      "layout.labels": {
-        skipToMainContent: "Skip to main content",
-        goBackToArticles: "Go back to articles",
-        articleDate: "Published on",
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<string, string> = {
+      "labels.skipToMainContent": "Skip to main content",
+      "labels.goBackToArticles": "Back to articles",
+      "labels.articleDate": "Published on",
     };
-    return (key: string) => {
-      const translation = translations[namespace];
-      return translation?.[key] ?? key;
-    };
+    return (key: string) => translations[key] ?? key;
   }),
 }));
 
@@ -41,6 +36,10 @@ vi.mock("next/navigation", () => ({
 
 vi.mock("@guyromellemagayano/utils", () => ({
   formatDateSafely: vi.fn((date: string) => date || ""),
+}));
+
+vi.mock("@web/utils/datetime", () => ({
+  setCustomDateFormat: vi.fn((date: string) => date || ""),
 }));
 
 vi.mock("@web/components/header", () => ({
@@ -351,7 +350,7 @@ describe("Layout Integration Tests", () => {
       );
 
       const backButton = screen.getByRole("button", {
-        name: "Go back to articles",
+        name: "Back to articles",
       });
       expect(backButton).toBeInTheDocument();
     });
@@ -365,7 +364,7 @@ describe("Layout Integration Tests", () => {
 
       expect(screen.getByRole("article")).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "Go back to articles" })
+        screen.getByRole("button", { name: "Back to articles" })
       ).toBeInTheDocument();
     });
 
