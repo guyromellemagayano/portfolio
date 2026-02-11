@@ -15,8 +15,7 @@ import { cn } from "@web/utils/helpers";
 // PROSE COMPONENT
 // ============================================================================
 
-type ProseElementType = "div";
-
+export type ProseElementType = "div";
 export type ProseProps<P extends Record<string, unknown> = {}> = Omit<
   ComponentPropsWithRef<ProseElementType>,
   "as"
