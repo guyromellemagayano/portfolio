@@ -116,4 +116,9 @@ export const Link = function Link<P extends Record<string, unknown> = {}>(
 };
 
 Link.displayName = "Link";
+
+// ============================================================================
+// LINK COMPONENT EXPORTS
+// ============================================================================
+
 Link.Social = SocialLink;
