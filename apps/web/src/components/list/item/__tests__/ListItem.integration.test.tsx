@@ -15,28 +15,13 @@ import "@testing-library/jest-dom";
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, any> = {
-      "list.labels": {
-        articleDate: "Published on",
-        cta: "Read article",
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<string, string> = {
+      articleDate: "Published on",
+      cta: "Read article",
     };
 
-    return (key: string) => {
-      const keys = key.split(".");
-      let value: any = translations[namespace];
-
-      for (const k of keys) {
-        if (value && typeof value === "object" && k in value) {
-          value = value[k];
-        } else {
-          return key;
-        }
-      }
-
-      return value || key;
-    };
+    return (key: string) => translations[key] ?? key;
   }),
 }));
 
@@ -63,6 +48,10 @@ vi.mock("@guyromellemagayano/utils", () => ({
     return { target } as any;
   }),
   formatDateSafely: vi.fn((date?: string) => date ?? ""),
+}));
+
+vi.mock("@web/utils/datetime", () => ({
+  setCustomDateFormat: vi.fn((date?: string) => date ?? ""),
 }));
 
 // Mock Card component
