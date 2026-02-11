@@ -225,9 +225,6 @@ catalogs:
     prettier-plugin-tailwindcss:
       specifier: 0.7.2
       version: 0.7.2
-    rantail:
-      specifier: 0.0.6
-      version: 0.0.6
     react:
       specifier: 19.2.4
       version: 19.2.4
@@ -641,9 +638,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.8.1
-      rantail:
-        specifier: 'catalog:'
-        version: 0.0.6
       rimraf:
         specifier: 'catalog:'
         version: 6.1.2
@@ -5291,10 +5285,6 @@ packages:
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
-
-  rantail@0.0.6:
-    resolution: {integrity: sha512-AGfqGDQFDguKjApDu3RKKYOgUDvLRQmbPRuoRMzld1OHQPfbSkI8PBczlEpPgXuPOAbQvL74FM5ijcCQqjdkUw==}
-    hasBin: true
 
   raw-body@3.0.2:
     resolution: {integrity: sha512-K5zQjDllxWkf7Z5xJdV0/B0WTNqx6vxG70zJE4N0kBs4LovmEYWJzQGxC9bS9RAKu3bgM40lrd5zoLJ12MQ5BA==}
@@ -10871,13 +10861,6 @@ snapshots:
   queue-microtask@1.2.3: {}
 
   range-parser@1.2.1: {}
-
-  rantail@0.0.6:
-    dependencies:
-      '@paralleldrive/cuid2': 2.3.1
-      fast-glob: 3.3.3
-      lodash: 4.17.23
-      minimist: 1.2.8
 
   raw-body@3.0.2:
     dependencies:
