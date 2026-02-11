@@ -13,30 +13,15 @@ import "@testing-library/jest-dom";
 
 // Mock next-intl
 vi.mock("next-intl", () => ({
-  useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, any> = {
-      "list.labels": {
-        articleList: "Article list",
-        socialList: "Social list",
-        toolsList: "Tools list",
-        articles: "Articles",
-      },
+  useTranslations: vi.fn((_namespace: string) => {
+    const translations: Record<string, string> = {
+      articleList: "Article list",
+      socialList: "Social list",
+      toolsList: "Tools list",
+      articles: "Articles",
     };
 
-    return (key: string) => {
-      const keys = key.split(".");
-      let value: any = translations[namespace];
-
-      for (const k of keys) {
-        if (value && typeof value === "object" && k in value) {
-          value = value[k];
-        } else {
-          return key;
-        }
-      }
-
-      return value || key;
-    };
+    return (key: string) => translations[key] ?? key;
   }),
 }));
 
