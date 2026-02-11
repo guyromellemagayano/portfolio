@@ -20,9 +20,9 @@ import { type LinkProps } from "next/link";
 import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
 
 import { type ArticleWithSlug } from "@web/utils/articles";
+import { setCustomDateFormat } from "@web/utils/datetime";
 import { cn } from "@web/utils/helpers";
 
-import { setCustomDateFormat } from "@web/utils/datetime";
 import { Card } from "../../card";
 
 // ============================================================================
@@ -64,15 +64,15 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("list.labels");
+  const articleListItemI18n = useTranslations("components.listItem.labels");
 
   // Article list ARIA
   const ARTICLE_LIST_ITEM_I18N = useMemo(
     () => ({
-      articleDate: tLabels("articleDate"),
-      cta: tLabels("cta"),
+      articleDate: articleListItemI18n("articleDate"),
+      cta: articleListItemI18n("cta"),
     }),
-    [tLabels]
+    [articleListItemI18n]
   );
 
   // Article data
@@ -230,6 +230,11 @@ export function ListItem<P extends Record<string, unknown> = {}>(
 }
 
 ListItem.displayName = "ListItem";
+
+// ============================================================================
+// LIST ITEM COMPONENT EXPORTS
+// ============================================================================
+
 ListItem.Article = ArticleListItem;
 ListItem.Social = SocialListItem;
 ListItem.Tools = ToolsListItem;

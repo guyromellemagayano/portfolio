@@ -48,15 +48,15 @@ export function ArticleList<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("list.labels");
+  const articleListI18n = useTranslations("components.list.labels");
 
   // Article list ARIA
   const LIST_I18N = useMemo(
     () => ({
-      articleList: tLabels("articleList"),
-      articles: tLabels("articles"),
+      articleList: articleListI18n("articleList"),
+      articles: articleListI18n("articles"),
     }),
-    [tLabels]
+    [articleListI18n]
   );
 
   if (!children) return null;
@@ -94,14 +94,14 @@ export function SocialList<P extends Record<string, unknown> = {}>(
   const { as: Component = "ul", role = "region", children, ...rest } = props;
 
   // Internationalization
-  const tLabels = useTranslations("list.labels");
+  const socialListI18n = useTranslations("components.list.labels");
 
   // Social list ARIA
   const LIST_I18N = useMemo(
     () => ({
-      socialList: tLabels("socialList"),
+      socialList: socialListI18n("socialList"),
     }),
-    [tLabels]
+    [socialListI18n]
   );
 
   if (!children) return null;
@@ -135,14 +135,14 @@ export function ToolsList<P extends Record<string, unknown> = {}>(
   } = props;
 
   // Internationalization
-  const tLabels = useTranslations("list.labels");
+  const toolsListI18n = useTranslations("components.list.labels");
 
   // Tools list ARIA
   const LIST_I18N = useMemo(
     () => ({
-      toolsList: tLabels("toolsList"),
+      toolsList: toolsListI18n("toolsList"),
     }),
-    [tLabels]
+    [toolsListI18n]
   );
 
   if (!children) return null;
@@ -183,6 +183,11 @@ export function List<P extends Record<string, unknown> = {}>(
 }
 
 List.displayName = "List";
+
+// ============================================================================
+// LIST COMPONENT EXPORTS
+// ============================================================================
+
 List.Article = ArticleList;
 List.Social = SocialList;
 List.Tools = ToolsList;
