@@ -56,17 +56,19 @@ export function NewsletterForm<P extends Record<string, unknown> = {}>(
   const emailInputId = `${formId}-email`;
 
   // Internationalization
-  const t = useTranslations("form.newsletterForm");
+  const newsletterFormI18n = useTranslations("components.form.newsletterForm");
 
   // Newsletter form labels
   const FORM_I18N = useMemo(
     () => ({
-      newsletterFormHeading: t("heading"),
-      newsletterFormDescription: t("description"),
-      newsletterFormEmailAddressLabel: t("emailAddressLabel"),
-      newsletterFormJoinButtonTextLabel: t("joinButtonTextLabel"),
+      newsletterFormHeading: newsletterFormI18n("heading"),
+      newsletterFormDescription: newsletterFormI18n("description"),
+      newsletterFormEmailAddressLabel: newsletterFormI18n("emailAddressLabel"),
+      newsletterFormJoinButtonTextLabel: newsletterFormI18n(
+        "joinButtonTextLabel"
+      ),
     }),
-    [t]
+    [newsletterFormI18n]
   );
 
   return (
