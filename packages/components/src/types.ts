@@ -1,6 +1,6 @@
 import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
 
-import type { UseComponentIdOptions } from "@guyromellemagayano/hooks";
+import type { UseComponentIdOptions } from "@portfolio/hooks";
 
 /**
  * Common props shared by all components in the library

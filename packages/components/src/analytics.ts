@@ -1,4 +1,4 @@
-import { logger } from "@guyromellemagayano/logger";
+import { logger } from "@portfolio/logger";
 
 import type { AnalyticsEvent } from "./types";
 

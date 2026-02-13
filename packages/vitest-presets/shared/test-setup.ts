@@ -347,8 +347,8 @@ vi.mock("react-intersection-observer/test-utils", () => ({
   mockAllIsIntersecting: vi.fn(),
 }));
 
-// Global fallback mock for `@guyromellemagayano/components`
-vi.mock("@guyromellemagayano/components", () => {
+// Global fallback mock for `@portfolio/components`
+vi.mock("@portfolio/components", () => {
   // Create mock components with data-testid for testing
   const createMockComponent = (tag: string, testId: string) => {
     return React.forwardRef<any, any>((props, ref) => {
@@ -411,30 +411,21 @@ vi.mock("@web/utils", () => ({
   formatDate: vi.fn((_date) => "Formatted Date"),
 }));
 
-// Use centralized mocks for `@guyromellemagayano/utils`
-vi.mock(
-  "@guyromellemagayano/utils",
-  () => import("../__mocks__/@guyromellemagayano/utils")
-);
+// Use centralized mocks for `@portfolio/utils`
+vi.mock("@portfolio/utils", () => import("../__mocks__/@portfolio/utils"));
 
-// Use centralized mocks for `@guyromellemagayano/hooks`
-vi.mock(
-  "@guyromellemagayano/hooks",
-  () => import("../__mocks__/@guyromellemagayano/hooks")
-);
+// Use centralized mocks for `@portfolio/hooks`
+vi.mock("@portfolio/hooks", () => import("../__mocks__/@portfolio/hooks"));
 
-// Use centralized mocks for `@guyromellemagayano/logger`
-vi.mock(
-  "@guyromellemagayano/logger",
-  () => import("../__mocks__/@guyromellemagayano/logger")
-);
+// Use centralized mocks for `@portfolio/logger`
+vi.mock("@portfolio/logger", () => import("../__mocks__/@portfolio/logger"));
 
 // Import logger after all mocks are declared (vi.mock is hoisted, so this is safe)
-import { logDebug, logInfo } from "@guyromellemagayano/logger";
+import { logDebug, logInfo } from "@portfolio/logger";
 
-logDebug("@guyromellemagayano/utils mocked via centralized mocks");
-logDebug("@guyromellemagayano/hooks mocked via centralized mocks");
-logDebug("@guyromellemagayano/logger mocked via centralized mocks");
+logDebug("@portfolio/utils mocked via centralized mocks");
+logDebug("@portfolio/hooks mocked via centralized mocks");
+logDebug("@portfolio/logger mocked via centralized mocks");
 
 // Final setup completion log
 logInfo("All mocks and configurations initialized successfully");

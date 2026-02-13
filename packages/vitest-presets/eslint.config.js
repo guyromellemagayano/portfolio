@@ -1,4 +1,4 @@
-import { baseEslintConfig } from "@guyromellemagayano/config-eslint";
+import { baseEslintConfig } from "@portfolio/config-eslint";
 import vitestPlugin from "@vitest/eslint-plugin";
 import globals from "globals";
 
