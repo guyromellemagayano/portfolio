@@ -1,5 +1,5 @@
 {
-  "extends": "@guyromellemagayano/config-typescript/src/base.json",
+  "extends": "@portfolio/config-typescript/src/base.json",
   "compilerOptions": {
     "lib": [
       "ES2015",

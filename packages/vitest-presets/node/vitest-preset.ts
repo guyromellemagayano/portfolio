@@ -6,7 +6,7 @@
 const nodePreset = {
   test: {
     environment: "node",
-    setupFiles: ["@guyromellemagayano/vitest-presets/shared/test-setup.ts"],
+    setupFiles: ["@portfolio/vitest-presets/shared/test-setup.ts"],
     globals: true,
     coverage: {
       provider: "v8" as const,

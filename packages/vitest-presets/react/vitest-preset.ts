@@ -6,7 +6,7 @@
 const reactPreset = {
   test: {
     environment: "jsdom",
-    setupFiles: ["@guyromellemagayano/vitest-presets/shared/test-setup.ts"],
+    setupFiles: ["@portfolio/vitest-presets/shared/test-setup.ts"],
     globals: true,
     css: true,
     coverage: {

@@ -11,7 +11,7 @@ vi.mock("react", () => ({
 }));
 
 // Mock the logger
-vi.mock("@guyromellemagayano/logger", () => ({
+vi.mock("@portfolio/logger", () => ({
   logInfo: vi.fn(),
 }));
 

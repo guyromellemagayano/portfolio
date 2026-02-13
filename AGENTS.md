@@ -1110,7 +1110,7 @@ describe("Ref Forwarding", () => {
 });
 
 // ❌ REMOVE: setDisplayName mock
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   setDisplayName: vi.fn(/* ... */), // Not used in @apps/
 }));
 ```
@@ -1134,7 +1134,7 @@ describe("Polymorphic Element Types", () => {
 });
 
 // ✅ CORRECT: No setDisplayName mock for @apps/
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   createComponentProps: vi.fn(/* ... */),
   // NO setDisplayName - not used in @apps/
 }));
@@ -1283,11 +1283,11 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-vi.mock("@guyromellemagayano/hooks", () => ({
+vi.mock("@portfolio/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   createComponentProps: vi.fn(
     (componentId, componentType, isDebugMode, additionalProps = {}) => ({
       [`data-${componentType}-id`]: `${componentId}-${componentType}`,
@@ -1428,11 +1428,11 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-vi.mock("@guyromellemagayano/hooks", () => ({
+vi.mock("@portfolio/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -1488,7 +1488,7 @@ describe("ComponentName", () => {
 // NO createComponentProps mock - not used in @apps/ components
 
 // Mock utility functions (only what's actually used)
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
@@ -1526,12 +1526,12 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-vi.mock("@guyromellemagayano/hooks", () => ({
+vi.mock("@portfolio/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
 // Mock utility functions (setDisplayName REQUIRED for @packages/)
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
       return false;
@@ -2244,7 +2244,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 ### Modularity and Reusability
 
 - Design components to be self-contained with clear interfaces
-- Extract reusable logic to shared utilities (`@guyromellemagayano/utils`)
+- Extract reusable logic to shared utilities (`@portfolio/utils`)
 - Avoid tight coupling between components
 - Use dependency injection for external dependencies
 
@@ -2396,8 +2396,8 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 ```typescript
 import React from "react";
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
+import { type CommonComponentProps } from "@portfolio/components";
+import { useComponentId } from "@portfolio/hooks";
 import { cn } from "@web/utils";
 import styles from "./ComponentName.module.css";
 import { COMPONENT_I18N } from "./constants/Component.i18n";
@@ -2446,9 +2446,9 @@ ComponentName.displayName = "ComponentName"; // Optional
 
 ```typescript
 import React from "react";
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@portfolio/components";
+import { useComponentId } from "@portfolio/hooks";
+import { setDisplayName } from "@portfolio/utils";
 import { cn } from "@web/utils";
 import styles from "./ComponentName.module.css";
 import { COMPONENT_I18N } from "./constants/Component.i18n";
@@ -2537,9 +2537,9 @@ export const ComponentName: ComponentNameComponent = setDisplayName(
 
 ```typescript
 import React from "react";
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { hasMeaningfulText } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@portfolio/components";
+import { useComponentId } from "@portfolio/hooks";
+import { hasMeaningfulText } from "@portfolio/utils";
 import { cn } from "@web/utils";
 import styles from "./SubComponent.module.css";
 
@@ -2590,9 +2590,9 @@ SubComponent.displayName = "SubComponent"; // Optional
 
 ```typescript
 import React from "react";
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName, hasMeaningfulText } from "@guyromellemagayano/utils";
+import { type CommonComponentProps } from "@portfolio/components";
+import { useComponentId } from "@portfolio/hooks";
+import { setDisplayName, hasMeaningfulText } from "@portfolio/utils";
 import { cn } from "@web/utils";
 import styles from "./SubComponent.module.css";
 

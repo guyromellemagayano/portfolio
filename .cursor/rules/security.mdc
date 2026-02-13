@@ -243,7 +243,7 @@ export async function POST(request: Request) {
 
 ```typescript
 // ✅ CORRECT: Security event logging
-import { logger } from '@guyromellemagayano/logger'
+import { logger } from '@portfolio/logger'
 
 export async function handleAuthFailure(email: string, ip: string) {
   logger.warn('Authentication failure', {

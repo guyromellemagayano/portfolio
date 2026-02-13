@@ -52,9 +52,9 @@ describe("Centralized Mocks", () => {
     });
   });
 
-  describe("@guyromellemagayano/utils mocks", () => {
+  describe("@portfolio/utils mocks", () => {
     it("should have utility functions mock defined", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/utils");
+      const mocks = await import("../__mocks__/@portfolio/utils");
 
       expect(mocks.useComponentId).toBeDefined();
       expect(mocks.setDisplayName).toBeDefined();
@@ -73,13 +73,13 @@ describe("Centralized Mocks", () => {
     });
 
     it("should have working cn utility", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/utils");
+      const mocks = await import("../__mocks__/@portfolio/utils");
       const result = mocks.cn("class1", "class2", false && "class3", "class4");
       expect(result).toBe("class1 class2 class4");
     });
 
     it("should have working useComponentId hook", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/utils");
+      const mocks = await import("../__mocks__/@portfolio/utils");
       const result = mocks.useComponentId({
         debugId: "test-id",
         debugMode: true,
@@ -89,9 +89,9 @@ describe("Centralized Mocks", () => {
     });
   });
 
-  describe("@guyromellemagayano/hooks mocks", () => {
+  describe("@portfolio/hooks mocks", () => {
     it("should have hook functions mock defined", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/hooks");
+      const mocks = await import("../__mocks__/@portfolio/hooks");
 
       expect(mocks.useComponentId).toBeDefined();
       expect(mocks.useRouter).toBeDefined();
@@ -102,7 +102,7 @@ describe("Centralized Mocks", () => {
     });
 
     it("should have working useRouter hook", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/hooks");
+      const mocks = await import("../__mocks__/@portfolio/hooks");
       const router = mocks.useRouter();
       expect(router).toBeDefined();
       expect(router.push).toBeDefined();
@@ -114,15 +114,15 @@ describe("Centralized Mocks", () => {
     });
 
     it("should have working usePathname hook", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/hooks");
+      const mocks = await import("../__mocks__/@portfolio/hooks");
       const pathname = mocks.usePathname();
       expect(pathname).toBe("/");
     });
   });
 
-  describe("@guyromellemagayano/logger mocks", () => {
+  describe("@portfolio/logger mocks", () => {
     it("should have logger functions mock defined", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/logger");
+      const mocks = await import("../__mocks__/@portfolio/logger");
 
       expect(mocks.logger).toBeDefined();
       expect(mocks.logInfo).toBeDefined();
@@ -132,7 +132,7 @@ describe("Centralized Mocks", () => {
     });
 
     it("should allow calling logger functions", async () => {
-      const mocks = await import("../__mocks__/@guyromellemagayano/logger");
+      const mocks = await import("../__mocks__/@portfolio/logger");
       expect(() => mocks.logInfo("test")).not.toThrow();
       expect(() => mocks.logDebug("test")).not.toThrow();
     });

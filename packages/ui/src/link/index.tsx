@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ReactNode } from "react";
 
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@portfolio/utils";
 
 type LinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;

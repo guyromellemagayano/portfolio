@@ -1,3 +1,3 @@
-declare module '@guyromellemagayano/config-eslint';
-declare module '@guyromellemagayano/config-eslint/react';
-declare module '@guyromellemagayano/config-eslint/next';
+declare module '@portfolio/config-eslint';
+declare module '@portfolio/config-eslint/react';
+declare module '@portfolio/config-eslint/next';

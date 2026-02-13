@@ -1,5 +1,5 @@
 {
-  "name": "@guyromellemagayano/ui",
+  "name": "@portfolio/ui",
   "version": "1.0.0",
   "description": "Enhanced UI components library with analytics, accessibility, and performance optimizations",
   "keywords": [
@@ -20,7 +20,7 @@
     "directory": "packages/ui"
   },
   "license": "MIT",
-  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
   "sideEffects": true,
   "type": "module",
   "exports": {
@@ -60,13 +60,13 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@guyromellemagayano/logger": "workspace:*"
+    "@portfolio/logger": "workspace:*"
   },
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
-    "@guyromellemagayano/utils": "workspace:*",
-    "@guyromellemagayano/vitest-presets": "workspace:*",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/utils": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
