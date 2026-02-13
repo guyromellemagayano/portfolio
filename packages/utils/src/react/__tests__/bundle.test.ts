@@ -8,7 +8,7 @@ const mockLogger = vi.hoisted(() => ({
   debug: vi.fn(),
 }));
 
-vi.mock("@guyromellemagayano/logger", () => ({
+vi.mock("@portfolio/logger", () => ({
   logger: mockLogger,
 }));
 

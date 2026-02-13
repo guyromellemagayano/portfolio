@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-import logger from "@guyromellemagayano/logger";
+import logger from "@portfolio/logger";
 
 /** Options for the useComponentId hook */
 export interface UseComponentIdOptions {

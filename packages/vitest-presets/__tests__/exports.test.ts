@@ -56,19 +56,19 @@ describe("Barrel Exports", () => {
 
   describe("Package.json exports field compatibility", () => {
     it("should support main barrel export path", async () => {
-      // This simulates: import { browserPreset } from "@guyromellemagayano/vitest-presets"
+      // This simulates: import { browserPreset } from "@portfolio/vitest-presets"
       const exports = await import("..");
       expect(exports.browserPreset).toBeDefined();
     });
 
     it("should support directory export paths", async () => {
-      // This simulates: import { browserPreset } from "@guyromellemagayano/vitest-presets/browser"
+      // This simulates: import { browserPreset } from "@portfolio/vitest-presets/browser"
       const browserExports = await import("../browser");
       expect(browserExports.browserPreset).toBeDefined();
     });
 
     it("should support barrel export pattern", async () => {
-      // This simulates: import { browserPreset } from "@guyromellemagayano/vitest-presets/browser"
+      // This simulates: import { browserPreset } from "@portfolio/vitest-presets/browser"
       const browserExports = await import("../browser");
       expect(browserExports.browserPreset).toBeDefined();
       expect(browserExports.browserPreset.test?.environment).toBe("jsdom");

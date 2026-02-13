@@ -144,7 +144,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ComponentName } from "../ComponentName";
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/components", () => ({
+vi.mock("@portfolio/components", () => ({
   Div: vi.fn(({ children, ...props }) => (
     <div data-testid="grm-div" {...props}>
       {children}
@@ -152,7 +152,7 @@ vi.mock("@guyromellemagayano/components", () => ({
   )),
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   hasMeaningfulText: vi.fn((content) => content != null && content !== ""),
   setDisplayName: vi.fn((component, displayName) => {
     if (component) component.displayName = displayName;
@@ -278,7 +278,7 @@ vi.mock("../constants/Component.i18n", () => ({
 
 - **Component-Specific Types**: Define interfaces directly in the component file
 - **Shared Types**: Place in `_data/Component.types.ts` or root `Component.types.ts`
-- **Utility Types**: Keep in `@guyromellemagayano/utils` or `@guyromellemagayano/hooks`
+- **Utility Types**: Keep in `@portfolio/utils` or `@portfolio/hooks`
 
 ### **Type Composition & Scope Guidelines**
 
@@ -350,7 +350,7 @@ export type ComponentLink = {
 
 ```typescript
 // ✅ GOOD: Utility types in packages
-// @guyromellemagayano/utils
+// @portfolio/utils
 export interface ComponentProps {
   internalId?: string;
   debugMode?: boolean;
@@ -585,12 +585,12 @@ module.exports = {
 import React from "react";
 
 // 2. External packages
-import { useComponentId } from "@guyromellemagayano/hooks";
+import { useComponentId } from "@portfolio/hooks";
 import {
   type ComponentProps,
   hasMeaningfulText,
   setDisplayName,
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 // 3. Internal packages
 import { cn } from "@web/utils/helpers";
@@ -605,11 +605,11 @@ import styles from "./Component.module.css";
 
 ```typescript
 // ✅ GOOD: Use type imports for types
-import { type ComponentProps } from "@guyromellemagayano/utils";
+import { type ComponentProps } from "@portfolio/utils";
 import { type ComponentData } from "../_data";
 
 // ❌ BAD: Don't import types as values
-import { ComponentProps } from "@guyromellemagayano/utils";
+import { ComponentProps } from "@portfolio/utils";
 ```
 
 ## Data Organization

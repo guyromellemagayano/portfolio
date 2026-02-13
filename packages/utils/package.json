@@ -1,5 +1,5 @@
 {
-  "name": "@guyromellemagayano/utils",
+  "name": "@portfolio/utils",
   "version": "1.0.0",
   "private": true,
   "description": "Utility functions for React components and general development",
@@ -18,7 +18,7 @@
     "directory": "packages/utils"
   },
   "license": "MIT",
-  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
   "sideEffects": false,
   "type": "module",
   "exports": {
@@ -50,13 +50,13 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@guyromellemagayano/hooks": "workspace:*",
-    "@guyromellemagayano/logger": "workspace:*"
+    "@portfolio/hooks": "workspace:*",
+    "@portfolio/logger": "workspace:*"
   },
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
-    "@guyromellemagayano/vitest-presets": "workspace:*",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",

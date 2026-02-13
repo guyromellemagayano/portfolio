@@ -9,7 +9,7 @@ system while preserving the specific features and capabilities of each service.
 ## Quick Start
 
 ```typescript
-import { createLogger, integrations } from '@guyromellemagayano/logger';
+import { createLogger, integrations } from '@portfolio/logger';
 
 const logger = createLogger({
   transports: [
@@ -28,7 +28,7 @@ logger.error('Something went wrong', new Error('Details'));
 #### Sentry (Error Tracking)
 
 ```typescript
-import { SentryIntegration } from '@guyromellemagayano/logger';
+import { SentryIntegration } from '@portfolio/logger';
 
 const sentryTransport = new SentryIntegration({
   dsn: 'https://your-sentry-dsn@sentry.io/project-id',
@@ -41,7 +41,7 @@ const sentryTransport = new SentryIntegration({
 #### Datadog (APM & Logging)
 
 ```typescript
-import { DatadogIntegration } from '@guyromellemagayano/logger';
+import { DatadogIntegration } from '@portfolio/logger';
 
 const datadogTransport = new DatadogIntegration({
   apiKey: 'your-datadog-api-key',
@@ -55,7 +55,7 @@ const datadogTransport = new DatadogIntegration({
 #### New Relic (APM)
 
 ```typescript
-import { NewRelicIntegration } from '@guyromellemagayano/logger';
+import { NewRelicIntegration } from '@portfolio/logger';
 
 const newrelicTransport = new NewRelicIntegration({
   licenseKey: 'your-newrelic-license-key',
@@ -67,7 +67,7 @@ const newrelicTransport = new NewRelicIntegration({
 #### LogRocket (Session Replay)
 
 ```typescript
-import { LogRocketIntegration } from '@guyromellemagayano/logger';
+import { LogRocketIntegration } from '@portfolio/logger';
 
 const logrocketTransport = new LogRocketIntegration({
   apiToken: 'your-logrocket-token',
@@ -85,7 +85,7 @@ const logrocketTransport = new LogRocketIntegration({
 #### AWS CloudWatch
 
 ```typescript
-import { CloudWatchIntegration } from '@guyromellemagayano/logger';
+import { CloudWatchIntegration } from '@portfolio/logger';
 
 const cloudwatchTransport = new CloudWatchIntegration({
   accessKeyId: 'your-access-key-id',
@@ -99,7 +99,7 @@ const cloudwatchTransport = new CloudWatchIntegration({
 #### Google Cloud Logging
 
 ```typescript
-import { GoogleCloudIntegration } from '@guyromellemagayano/logger';
+import { GoogleCloudIntegration } from '@portfolio/logger';
 
 const gcpTransport = new GoogleCloudIntegration({
   projectId: 'your-gcp-project-id',
@@ -116,7 +116,7 @@ const gcpTransport = new GoogleCloudIntegration({
 #### Azure Monitor
 
 ```typescript
-import { AzureMonitorIntegration } from '@guyromellemagayano/logger';
+import { AzureMonitorIntegration } from '@portfolio/logger';
 
 const azureTransport = new AzureMonitorIntegration({
   instrumentationKey: 'your-instrumentation-key',
@@ -131,7 +131,7 @@ const azureTransport = new AzureMonitorIntegration({
 #### Elasticsearch
 
 ```typescript
-import { ElasticsearchIntegration } from '@guyromellemagayano/logger';
+import { ElasticsearchIntegration } from '@portfolio/logger';
 
 const elasticTransport = new ElasticsearchIntegration({
   host: 'https://your-elasticsearch-host:9200',
@@ -146,7 +146,7 @@ const elasticTransport = new ElasticsearchIntegration({
 #### Splunk
 
 ```typescript
-import { SplunkIntegration } from '@guyromellemagayano/logger';
+import { SplunkIntegration } from '@portfolio/logger';
 
 const splunkTransport = new SplunkIntegration({
   token: 'your-hec-token',
@@ -162,7 +162,7 @@ const splunkTransport = new SplunkIntegration({
 #### Papertrail
 
 ```typescript
-import { PapertrailIntegration } from '@guyromellemagayano/logger';
+import { PapertrailIntegration } from '@portfolio/logger';
 
 const papertrailTransport = new PapertrailIntegration({
   host: 'logs.papertrailapp.com',
@@ -220,7 +220,7 @@ interface IntegrationConfig {
 You can use multiple integrations simultaneously:
 
 ```typescript
-import { createLogger, integrations, transports, LogLevel } from '@guyromellemagayano/logger';
+import { createLogger, integrations, transports, LogLevel } from '@portfolio/logger';
 
 const logger = createLogger({
   level: LogLevel.INFO,

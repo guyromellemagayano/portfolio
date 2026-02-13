@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -11,9 +11,7 @@ describe("Test Setup Integration", () => {
     it("should import test-setup.ts without errors", async () => {
       // The setup file is already imported via vitest.config.ts setupFiles
       // This test verifies it doesn't throw when imported
-      await expect(
-        import("../shared/test-setup.ts")
-      ).resolves.toBeDefined();
+      await expect(import("../shared/test-setup.ts")).resolves.toBeDefined();
     });
   });
 
@@ -108,15 +106,15 @@ describe("Test Setup Integration", () => {
       const webComponentsMock = await import("../__mocks__/@web/components");
       expect(webComponentsMock).toBeDefined();
 
-      const utilsMock = await import("../__mocks__/@guyromellemagayano/utils");
+      const utilsMock = await import("../__mocks__/@portfolio/utils");
       expect(utilsMock).toBeDefined();
 
-      const hooksMock = await import("../__mocks__/@guyromellemagayano/hooks");
+      const hooksMock = await import("../__mocks__/@portfolio/hooks");
       expect(hooksMock).toBeDefined();
       expect(hooksMock.useComponentId).toBeDefined();
       expect(hooksMock.useRouter).toBeDefined();
 
-      const loggerMock = await import("../__mocks__/@guyromellemagayano/logger");
+      const loggerMock = await import("../__mocks__/@portfolio/logger");
       expect(loggerMock).toBeDefined();
       expect(loggerMock.logInfo).toBeDefined();
       expect(loggerMock.logDebug).toBeDefined();
@@ -125,13 +123,13 @@ describe("Test Setup Integration", () => {
     });
 
     it("should allow calling centralized mock logger functions", async () => {
-      const loggerMock = await import("../__mocks__/@guyromellemagayano/logger");
+      const loggerMock = await import("../__mocks__/@portfolio/logger");
       expect(() => loggerMock.logInfo("test")).not.toThrow();
       expect(() => loggerMock.logDebug("test")).not.toThrow();
     });
 
     it("should have centralized mock hooks callable", async () => {
-      const hooksMock = await import("../__mocks__/@guyromellemagayano/hooks");
+      const hooksMock = await import("../__mocks__/@portfolio/hooks");
       const router = hooksMock.useRouter();
       expect(router).toBeDefined();
       expect(router.push).toBeDefined();

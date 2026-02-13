@@ -4,11 +4,11 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
   transpilePackages: [
-    "@guyromellemagayano/components",
-    "@guyromellemagayano/logger",
-    "@guyromellemagayano/ui",
-    "@guyromellemagayano/hooks",
-    "@guyromellemagayano/utils",
+    "@portfolio/components",
+    "@portfolio/logger",
+    "@portfolio/ui",
+    "@portfolio/hooks",
+    "@portfolio/utils",
   ],
   logging: {
     fetches: {
