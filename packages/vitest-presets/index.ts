@@ -1,5 +1,5 @@
 /**
- * @guyromellemagayano/vitest-presets
+ * @portfolio/vitest-presets
  *
  * Shared Vitest configuration presets for the monorepo.
  */

@@ -22,16 +22,16 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@guyromellemagayano/logger": "workspace:*",
+    "@portfolio/logger": "workspace:*",
     "body-parser": "catalog:",
     "cors": "catalog:",
     "express": "catalog:",
     "morgan": "catalog:"
   },
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
-    "@guyromellemagayano/vitest-presets": "workspace:*",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@types/body-parser": "catalog:",
     "@types/cors": "catalog:",
     "@types/express": "catalog:",

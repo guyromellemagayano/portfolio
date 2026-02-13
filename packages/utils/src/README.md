@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD013 -->
-# @guyromellemagayano/utils
+# @portfolio/utils
 
 A collection of utility functions for React components and general development. This package provides pure utility functions that are RSC-compatible and don't force components to be client-side.
 
@@ -36,7 +36,7 @@ This package follows a **modular structure** with utility functions organized by
 Determines if React children are renderable (avoiding boolean/empty-string quirks):
 
 ```typescript
-import { isRenderableContent } from "@guyromellemagayano/utils";
+import { isRenderableContent } from "@portfolio/utils";
 
 function MyComponent({ children }) {
   const shouldRender = isRenderableContent(children);
@@ -52,7 +52,7 @@ function MyComponent({ children }) {
 Checks if string content has meaningful text (not just whitespace):
 
 ```typescript
-import { hasMeaningfulText } from "@guyromellemagayano/utils";
+import { hasMeaningfulText } from "@portfolio/utils";
 
 function MyComponent({ title, intro }) {
   const hasTitle = hasMeaningfulText(title);
@@ -72,7 +72,7 @@ function MyComponent({ title, intro }) {
 Safely trims whitespace from string content:
 
 ```typescript
-import { trimStringContent } from "@guyromellemagayano/utils";
+import { trimStringContent } from "@portfolio/utils";
 
 function MyComponent({ content }) {
   const trimmed = trimStringContent(content);
@@ -90,7 +90,7 @@ import {
   isRenderableContent, 
   hasMeaningfulText, 
   trimStringContent 
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 function Layout({ title, intro, children }) {
   const hasContent = Boolean(
@@ -174,7 +174,7 @@ This package is part of the monorepo and is automatically available to all apps 
 
 ```bash
 # In any app or package
-import { isRenderableContent } from "@guyromellemagayano/utils";
+import { isRenderableContent } from "@portfolio/utils";
 ```
 
 ## 🔄 Migration from Hooks Package
@@ -183,10 +183,10 @@ If you were previously using these utilities from the hooks package, update your
 
 ```typescript
 // Before
-import { isRenderableContent } from "@guyromellemagayano/hooks";
+import { isRenderableContent } from "@portfolio/hooks";
 
 // After
-import { isRenderableContent } from "@guyromellemagayano/utils";
+import { isRenderableContent } from "@portfolio/utils";
 ```
 
 This separation ensures proper package boundaries and RSC compatibility.

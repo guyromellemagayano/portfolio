@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD051 -->
-# @guyromellemagayano/hooks
+# @portfolio/hooks
 
 A collection of React hooks and utilities for modern React development. This package provides reusable hooks that follow React best practices and integrate seamlessly with the project's ecosystem.
 
@@ -20,7 +20,7 @@ A collection of React hooks and utilities for modern React development. This pac
 - [🔍 Verification Checklist](#verification-checklist)
 - [📊 Expected Outcomes](#expected-outcomes)
 
-<a id="overview"></a>
+<a ID="overview"></a>
 
 ## 🎯 Overview
 
@@ -85,23 +85,23 @@ function MyComponent({ _debugMode, ...props }) {
 }
 ```
 
-<a id="installation"></a>
+<a ID="installation"></a>
 
 ## 📦 Installation
 
 ```bash
-npm install @guyromellemagayano/hooks
+npm install @portfolio/hooks
 ```
 
-<a id="quick-start"></a>
+<a ID="quick-start"></a>
 
 ## 🚀 Quick Start
 
 ### Basic Hook Usage
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { useComponentId } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 function MyComponent() {
   const { id } = useComponentId();
@@ -113,8 +113,8 @@ function MyComponent() {
 ### With Debug Mode
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { useComponentId } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 function MyComponent({ _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
@@ -136,8 +136,8 @@ function MyComponent({ _debugMode, ...props }) {
 ### With setDisplayName Utility
 
 ```typescript
-import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { useComponentId, setDisplayName } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 const MyComponent = setDisplayName(
   React.forwardRef(function MyComponent({ _internalId, _debugMode, ...props }, ref) {
@@ -160,7 +160,7 @@ const MyComponent = setDisplayName(
 );
 ```
 
-<a id="api-reference"></a>
+<a ID="API-reference"></a>
 
 ## 🔧 API Reference
 
@@ -268,16 +268,16 @@ Automatically sets `displayName` for React components.
 - Preserves existing `displayName` assignments
 - Type-safe with TypeScript generics
 
-<a id="examples"></a>
+<a ID="examples"></a>
 
 ## 💡 Examples
 
 ### Form Component with Validation
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Form, Div, Button } from "@guyromellemagayano/components";
-import { logInfo } from "@guyromellemagayano/logger";
+import { useComponentId } from "@portfolio/hooks";
+import { Form, Div, Button } from "@portfolio/components";
+import { logInfo } from "@portfolio/logger";
 
 function ContactForm({ _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
@@ -311,8 +311,8 @@ function ContactForm({ _debugMode, ...props }) {
 ### Modal Component with Accessibility
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Div, Heading, Button } from "@guyromellemagayano/components";
+import { useComponentId } from "@portfolio/hooks";
+import { Div, Heading, Button } from "@portfolio/components";
 
 function Modal({ _internalId, title, children, onClose, ...props }) {
   const { id } = useComponentId({
@@ -344,8 +344,8 @@ function Modal({ _internalId, title, children, onClose, ...props }) {
 ### Data Table with Row IDs
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Table, Tbody, Div } from "@guyromellemagayano/components";
+import { useComponentId } from "@portfolio/hooks";
+import { Table, Tbody, Div } from "@portfolio/components";
 
 function DataTable({ _debugMode, data, ...props }) {
   const { id, isDebugMode } = useComponentId({
@@ -385,8 +385,8 @@ function TableRow({ data, rowId }) {
 ### Navigation Component Example
 
 ```typescript
-import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
-import { Nav, Ul, Li, A } from "@guyromellemagayano/components";
+import { useComponentId, setDisplayName } from "@portfolio/hooks";
+import { Nav, Ul, Li, A } from "@portfolio/components";
 
 const Navigation = setDisplayName(
   React.forwardRef(function Navigation({ items, ...props }, ref) {
@@ -410,8 +410,8 @@ const Navigation = setDisplayName(
 ### Combined with Internal/External Pattern
 
 ```typescript
-import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { useComponentId, setDisplayName } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 // ============================================================================
 // INTERNAL COMPONENT
@@ -474,7 +474,7 @@ export const Component = setDisplayName(
 );
 ```
 
-<a id="best-practices"></a>
+<a ID="best-practices"></a>
 
 ## ✅ Best Practices
 
@@ -560,8 +560,8 @@ Organize components with clear separation of concerns:
 
 ```typescript
 // ✅ Good structure with utilities
-import { useComponentId, setDisplayName } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { useComponentId, setDisplayName } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 const MyComponent = setDisplayName(
   React.forwardRef(function MyComponent({ _internalId, _debugMode, ...props }, ref) {
@@ -600,7 +600,7 @@ if (_debugMode && process.env.NODE_ENV === "development") {
 }
 ```
 
-<a id="troubleshooting"></a>
+<a ID="troubleshooting"></a>
 
 ## 🔍 Troubleshooting
 
@@ -691,7 +691,7 @@ function MyComponent({ _internalId, _debugMode, ...props }) {
 }
 ```
 
-<a id="related-utilities"></a>
+<a ID="related-utilities"></a>
 
 ## 🔗 Related Utilities
 
@@ -700,8 +700,8 @@ function MyComponent({ _internalId, _debugMode, ...props }) {
 Automatically sets `displayName` for React components:
 
 ```typescript
-import { setDisplayName } from "@guyromellemagayano/hooks";
-import { Div } from "@guyromellemagayano/components";
+import { setDisplayName } from "@portfolio/hooks";
+import { Div } from "@portfolio/components";
 
 const MyComponent = setDisplayName(
   React.forwardRef(function MyComponent(props, ref) {
@@ -713,7 +713,7 @@ const MyComponent = setDisplayName(
 
 ### Logger Integration
 
-The hook integrates with `@guyromellemagayano/logger`:
+The hook integrates with `@portfolio/logger`:
 
 ```typescript
 // Debug logs are sent to the logger when debug mode is enabled
@@ -722,25 +722,25 @@ The hook integrates with `@guyromellemagayano/logger`:
 
 ### Component Library Integration
 
-Works seamlessly with `@guyromellemagayano/components`:
+Works seamlessly with `@portfolio/components`:
 
 ```typescript
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { Div, Button, Form } from "@guyromellemagayano/components";
+import { useComponentId } from "@portfolio/hooks";
+import { Div, Button, Form } from "@portfolio/components";
 
 // All components support data-component-id and data-debug-mode attributes
 ```
 
 ### Package Ecosystem
 
-This package is part of the `@guyromellemagayano` ecosystem:
+This package is part of the `@portfolio` ecosystem:
 
-- **@guyromellemagayano/components**: HTML component library
-- **@guyromellemagayano/logger**: Logging utilities
-- **@guyromellemagayano/ui**: UI component library
-- **@guyromellemagayano/utils**: Utility functions
+- **@portfolio/components**: HTML component library
+- **@portfolio/logger**: Logging utilities
+- **@portfolio/UI**: UI component library
+- **@portfolio/utils**: Utility functions
 
-<a id="testing"></a>
+<a ID="testing"></a>
 
 ## 🧪 Testing
 
@@ -816,7 +816,7 @@ describe('useComponentId', () => {
 });
 ```
 
-<a id="migration-guide"></a>
+<a ID="migration-guide"></a>
 
 ## 📈 Migration Guide
 
@@ -825,8 +825,8 @@ describe('useComponentId', () => {
 **Before:**
 
 ```typescript
-import { logInfo } from "@guyromellemagayano/logger";
-import { Div } from "@guyromellemagayano/components";
+import { logInfo } from "@portfolio/logger";
+import { Div } from "@portfolio/components";
 
 function MyComponent({ id, debugMode, ...props }) {
   const componentId = id || useId();
@@ -843,7 +843,7 @@ function MyComponent({ id, debugMode, ...props }) {
 **After:**
 
 ```typescript
-import { Div } from "@guyromellemagayano/components";
+import { Div } from "@portfolio/components";
 
 function MyComponent({ _internalId, _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
@@ -877,7 +877,7 @@ MyComponent.displayName = "MyComponent";
 **After:**
 
 ```typescript
-import { setDisplayName } from "@guyromellemagayano/hooks";
+import { setDisplayName } from "@portfolio/hooks";
 
 const MyComponent = setDisplayName(
   React.forwardRef(function MyComponent(props, ref) {
@@ -893,7 +893,7 @@ const MyComponent = setDisplayName(
 ```typescript
 // ❌ Separate type file (deprecated)
 // components/section/@types/Section.ts
-import type { SectionProps as SectionComponentProps, SectionRef as SectionComponentRef } from '@guyromellemagayano/components'
+import type { SectionProps as SectionComponentProps, SectionRef as SectionComponentRef } from '@portfolio/components'
 import type { CommonWebAppComponentProps } from '@web/@types/components'
 
 export type SectionRef = SectionComponentRef
@@ -914,7 +914,7 @@ import {
   Div,
   Heading,
   Section as SectionComponent,
-} from "@guyromellemagayano/components";
+} from "@portfolio/components";
 import { CommonWebAppComponentProps } from "@web/@types";
 
 // Inline type definitions
@@ -938,7 +938,7 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(
 - [ ] **Remove separate type files** and use inline types
 - [ ] **Update imports** to use new utility functions
 
-<a id="future-enhancements"></a>
+<a ID="future-enhancements"></a>
 
 ## 🚀 Future Enhancements
 
@@ -971,7 +971,7 @@ const { id, isDebugMode, performance } = useComponentId({
 
 ```typescript
 // Planned hooks
-import { useComponentId, useComponentState, useComponentEffects } from "@guyromellemagayano/hooks";
+import { useComponentId, useComponentState, useComponentEffects } from "@portfolio/hooks";
 
 // Component state management
 const { state, setState } = useComponentState(initialState);
@@ -984,7 +984,7 @@ const { effects, addEffect, removeEffect } = useComponentEffects();
 
 ```typescript
 // Planned utilities
-import { setDisplayName, setComponentMetadata, createComponentFactory } from "@guyromellemagayano/hooks";
+import { setDisplayName, setComponentMetadata, createComponentFactory } from "@portfolio/hooks";
 
 // Component metadata
 const Component = setComponentMetadata(
@@ -1008,7 +1008,7 @@ const createComponent = createComponentFactory({
 
 ---
 
-<a id="universal-rules"></a>
+<a ID="universal-rules"></a>
 
 ## 🎯 Universal Rules
 
@@ -1051,7 +1051,7 @@ const createComponent = createComponentFactory({
 3. **Type inference** - Use `typeof` and `React.ComponentProps` when needed
 4. **Controlled exports** - Only export components, not implementation details
 
-<a id="verification-checklist"></a>
+<a ID="verification-checklist"></a>
 
 ## 🔍 Verification Checklist
 
@@ -1112,7 +1112,7 @@ const createComponent = createComponentFactory({
 - [ ] **CSS modules optimized** - Scoped styles working correctly
 - [ ] **No memory leaks** - Proper cleanup in useEffect hooks
 
-<a id="expected-outcomes"></a>
+<a ID="expected-outcomes"></a>
 
 ## 📊 Expected Outcomes
 

@@ -1,5 +1,5 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
-# @guyromellemagayano/Vitest-presets
+# @portfolio/Vitest-presets
 
 Shared Vitest configuration presets for the monorepo with integrated V8 coverage support.
 
@@ -9,8 +9,8 @@ Shared Vitest configuration presets for the monorepo with integrated V8 coverage
 - 📊 **V8 Coverage Integration**: Comprehensive coverage reporting with `@vitest/coverage-v8`
 - 🎯 **Smart Coverage Thresholds**: Environment-specific coverage targets
 - 🔧 **Centralized Test Setup**: Shared test setup with centralized mocks and logger integration
-- 🎭 **Centralized Mocking**: Pre-configured mocks for `@web/components`, `@guyromellemagayano/*` packages
-- 📝 **Logger Integration**: Built-in test setup logging with `@guyromellemagayano/logger`
+- 🎭 **Centralized Mocking**: Pre-configured mocks for `@web/components`, `@portfolio/*` packages
+- 📝 **Logger Integration**: Built-in test setup logging with `@portfolio/logger`
 - 📈 **Multiple Report Formats**: Text, JSON, HTML, LCOV, and Clover formats
 - ⚡ **Performance Optimized**: Fast test execution with proper environment isolation
 
@@ -30,14 +30,14 @@ For DOM testing with JSDOM environment.
 ```typescript
 // Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import { browserPreset } from "@guyromellemagayano/vitest-presets";
+import { browserPreset } from "@portfolio/vitest-presets";
 
 export default defineConfig(browserPreset);
 ```
 
 **Features:**
 
-- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Centralized mocks for `@web/components` and `@portfolio/*` packages
 - Logger integration with test setup logging
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
 - Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
@@ -56,7 +56,7 @@ For server-side testing with Node.js environment.
 ```typescript
 // Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import { nodePreset } from "@guyromellemagayano/vitest-presets";
+import { nodePreset } from "@portfolio/vitest-presets";
 
 export default defineConfig(nodePreset);
 ```
@@ -64,14 +64,14 @@ export default defineConfig(nodePreset);
 ```typescript
 // Option 2: Using directory barrel export
 import { defineConfig } from "vitest/config";
-import { nodePreset } from "@guyromellemagayano/vitest-presets/node";
+import { nodePreset } from "@portfolio/vitest-presets/node";
 
 export default defineConfig(nodePreset);
 ```
 
 **Features:**
 
-- Centralized mocks for `@guyromellemagayano/*` packages
+- Centralized mocks for `@portfolio/*` packages
 - Logger integration with test setup logging
 - Node.js environment optimizations
 
@@ -89,7 +89,7 @@ For React component testing with full Testing Library support.
 ```typescript
 // Option 1: Using barrel export (recommended)
 import { defineConfig } from "vitest/config";
-import { reactPreset } from "@guyromellemagayano/vitest-presets";
+import { reactPreset } from "@portfolio/vitest-presets";
 
 export default defineConfig(reactPreset);
 ```
@@ -97,14 +97,14 @@ export default defineConfig(reactPreset);
 ```typescript
 // Option 2: Using directory barrel export
 import { defineConfig } from "vitest/config";
-import { reactPreset } from "@guyromellemagayano/vitest-presets/react";
+import { reactPreset } from "@portfolio/vitest-presets/react";
 
 export default defineConfig(reactPreset);
 ```
 
 **Features:**
 
-- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Centralized mocks for `@web/components` and `@portfolio/*` packages
 - Logger integration with test setup logging
 - React Testing Library support
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
@@ -112,7 +112,7 @@ export default defineConfig(reactPreset);
 
 ## Centralized Mocking System
 
-The vitest-presets package includes a comprehensive centralized mocking system that provides consistent mocks across all test environments.
+The Vitest-presets package includes a comprehensive centralized mocking system that provides consistent mocks across all test environments.
 
 ### Available Mocks
 
@@ -125,7 +125,7 @@ The vitest-presets package includes a comprehensive centralized mocking system t
 - `Prose`, `Icon.ArrowLeft`, `Icon.ArrowRight`
 - `Div`, `Span`
 
-#### **@guyromellemagayano/utils Mocks**
+#### **@portfolio/utils Mocks**
 
 - `useComponentId`, `setDisplayName`, `createComponentProps`
 - `hasAnyRenderableContent`, `hasMeaningfulText`, `hasValidContent`
@@ -133,12 +133,12 @@ The vitest-presets package includes a comprehensive centralized mocking system t
 - `hasValidNavigationLinks`, `filterValidNavigationLinks`
 - `isValidImageSrc`, `cn`, `formatDate`
 
-#### **@guyromellemagayano/hooks Mocks**
+#### **@portfolio/hooks Mocks**
 
 - `useComponentId`, `useRouter`, `usePathname`, `useSearchParams`
 - `useIntersection`, `useInView`
 
-#### **@guyromellemagayano/logger Mocks**
+#### **@portfolio/logger Mocks**
 
 - `logger`, `logInfo`, `logWarn`, `logError`, `logDebug`
 
@@ -155,7 +155,7 @@ The test setup includes built-in logging that provides visibility into:
 
 ```bash
 🔍 [TEST-SETUP] @web/components mocked via centralized mocks
-🔍 [TEST-SETUP] @guyromellemagayano/utils mocked via centralized mocks
+🔍 [TEST-SETUP] @portfolio/utils mocked via centralized mocks
 🧪 [TEST-SETUP] All mocks and configurations initialized successfully
 ```
 
@@ -243,7 +243,7 @@ Coverage is automatically configured with sensible defaults:
 Install in your package:
 
 ```bash
-pnpm add -D @guyromellemagayano/vitest-presets @vitest/coverage-v8
+pnpm add -D @portfolio/vitest-presets @vitest/coverage-v8
 ```
 
 Add to `package.json` peer dependencies:
@@ -251,15 +251,15 @@ Add to `package.json` peer dependencies:
 ```json
 {
   "peerDependencies": {
-    "@guyromellemagayano/vitest-presets": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@vitest/coverage-v8": "catalog:",
-    "@guyromellemagayano/logger": "workspace:*",
+    "@portfolio/logger": "workspace:*",
     "vitest": "catalog:"
   }
 }
 ```
 
-**Note:** The `@guyromellemagayano/logger` dependency is included for test setup logging functionality.
+**Note:** The `@portfolio/logger` dependency is included for test setup logging functionality.
 
 ## Setup
 
@@ -270,24 +270,24 @@ Create `vitest.config.ts` in your package:
 ```typescript
 // Recommended: Using barrel export
 import { defineConfig } from "vitest/config";
-import { browserPreset } from "@guyromellemagayano/vitest-presets";
+import { browserPreset } from "@portfolio/vitest-presets";
 
 export default defineConfig(browserPreset);
 ```
 
 **Available Presets:**
 
-- `@guyromellemagayano/vitest-presets` - Main barrel export (recommended)
+- `@portfolio/vitest-presets` - Main barrel export (recommended)
   - `browserPreset` - For DOM testing
   - `reactPreset` - For React component testing
   - `nodePreset` - For server-side testing
-- `@guyromellemagayano/vitest-presets/browser` - Browser preset directory export
-- `@guyromellemagayano/vitest-presets/react` - React preset directory export
-- `@guyromellemagayano/vitest-presets/node` - Node preset directory export
+- `@portfolio/vitest-presets/browser` - Browser preset directory export
+- `@portfolio/vitest-presets/react` - React preset directory export
+- `@portfolio/vitest-presets/node` - Node preset directory export
 
 All presets include:
 
-- Centralized mocks for `@web/components` and `@guyromellemagayano/*` packages
+- Centralized mocks for `@web/components` and `@portfolio/*` packages
 - Logger integration with test setup logging
 - V8 coverage provider with environment-specific thresholds
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)

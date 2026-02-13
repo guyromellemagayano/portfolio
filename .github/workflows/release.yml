@@ -53,7 +53,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Build packages
-        run: pnpm build --filter="@guyromellemagayano/*"
+        run: pnpm build --filter="@portfolio/*"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 

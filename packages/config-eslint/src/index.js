@@ -78,10 +78,10 @@ export const baseEslintConfig = [
             ["^react$", "^react-dom$", "^react\\b"],
             [
               "^node:",
-              "^@(?!guyromellemagayano|packages/|admin/|api/|web/).+",
+              "^@(?!portfolio|packages/|admin/|api/|web/).+",
               "^[a-z]",
             ],
-            ["^@guyromellemagayano/", "^~"],
+            ["^@portfolio/", "^~"],
             ["^@admin/"],
             ["^@api/"],
             ["^@web/"],

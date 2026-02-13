@@ -9,7 +9,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "vscode.json-language-features",
     "editor.quickSuggestions": {
       "strings": true
     },

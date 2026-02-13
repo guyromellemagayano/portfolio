@@ -1,4 +1,4 @@
-# @guyromellemagayano/utils
+# @portfolio/utils
 
 A collection of utility functions for common operations across the monorepo.
 
@@ -17,7 +17,7 @@ A collection of utility functions for common operations across the monorepo.
 Validates if navigation links data is valid and usable.
 
 ```typescript
-import { hasValidNavigationLinks } from "@guyromellemagayano/utils";
+import { hasValidNavigationLinks } from "@portfolio/utils";
 
 const isValid = hasValidNavigationLinks(navLinks);
 if (isValid) {
@@ -36,7 +36,7 @@ if (isValid) {
 Validates if a single navigation link item is valid.
 
 ```typescript
-import { isValidNavigationLink } from "@guyromellemagayano/utils";
+import { isValidNavigationLink } from "@portfolio/utils";
 
 const isValid = isValidNavigationLink({ label: "About", href: "/about" });
 // Returns: true
@@ -56,7 +56,7 @@ const isValid = isValidNavigationLink({ label: "", href: "/about" });
 Filters navigation links to only include valid items.
 
 ```typescript
-import { filterValidNavigationLinks } from "@guyromellemagayano/utils";
+import { filterValidNavigationLinks } from "@portfolio/utils";
 
 const validLinks = filterValidNavigationLinks([
   { label: "About", href: "/about" },
@@ -79,7 +79,7 @@ const validLinks = filterValidNavigationLinks([
 Sets `displayName` for React components with improved type safety.
 
 ```typescript
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@portfolio/utils";
 
 const MyComponent = setDisplayName(function MyComponent() {
   return <div>Hello</div>;
@@ -98,7 +98,7 @@ const MyComponent = setDisplayName(function MyComponent() {
 Common props interface used across components.
 
 ```typescript
-import { ComponentProps } from "@guyromellemagayano/utils";
+import { ComponentProps } from "@portfolio/utils";
 
 interface MyComponentProps extends ComponentProps {
   // Component-specific props
@@ -120,7 +120,7 @@ interface MyComponentProps extends ComponentProps {
 Checks if children are renderable in React components.
 
 ```typescript
-import { isRenderableContent } from "@guyromellemagayano/utils";
+import { isRenderableContent } from "@portfolio/utils";
 
 const shouldRender = isRenderableContent("Hello"); // true
 const shouldRender = isRenderableContent(""); // true
@@ -139,7 +139,7 @@ const shouldRender = isRenderableContent(false); // false
 Checks if any of the provided values are renderable content.
 
 ```typescript
-import { hasAnyRenderableContent } from "@guyromellemagayano/utils";
+import { hasAnyRenderableContent } from "@portfolio/utils";
 
 const hasContent = hasAnyRenderableContent("Hello", "", null); // true
 const hasContent = hasAnyRenderableContent("", null, false); // false
@@ -156,7 +156,7 @@ const hasContent = hasAnyRenderableContent("", null, false); // false
 Safely trims whitespace from string content.
 
 ```typescript
-import { trimStringContent } from "@guyromellemagayano/utils";
+import { trimStringContent } from "@portfolio/utils";
 
 const trimmed = trimStringContent("  Hello World  "); // "Hello World"
 const trimmed = trimStringContent(123); // "123"
@@ -174,7 +174,7 @@ const trimmed = trimStringContent(null); // ""
 Checks if string content has meaningful text (non-empty after trimming).
 
 ```typescript
-import { hasMeaningfulText } from "@guyromellemagayano/utils";
+import { hasMeaningfulText } from "@portfolio/utils";
 
 const hasText = hasMeaningfulText("Hello"); // true
 const hasText = hasMeaningfulText("  "); // false
@@ -193,7 +193,7 @@ const hasText = hasMeaningfulText(123); // false
 Checks if content should render based on component type and UX considerations.
 
 ```typescript
-import { shouldRenderComponent } from "@guyromellemagayano/utils";
+import { shouldRenderComponent } from "@portfolio/utils";
 
 // Interactive components (buttons, links) - strict validation
 const shouldRender = shouldRenderComponent("Click me", "interactive"); // true
@@ -224,7 +224,7 @@ const shouldRender = shouldRenderComponent("", "semantic"); // true
 Validates if a URL is valid and not a placeholder.
 
 ```typescript
-import { isValidLink } from "@guyromellemagayano/utils";
+import { isValidLink } from "@portfolio/utils";
 
 const isValid = isValidLink("/about"); // true
 const isValid = isValidLink("https://example.com"); // true
@@ -244,7 +244,7 @@ const isValid = isValidLink(null); // false
 Gets safe link target attributes for external links.
 
 ```typescript
-import { getLinkTargetProps } from "@guyromellemagayano/utils";
+import { getLinkTargetProps } from "@portfolio/utils";
 
 const props = getLinkTargetProps("https://example.com");
 // Returns: { target: "_blank", rel: "noopener noreferrer" }
@@ -268,7 +268,7 @@ const props = getLinkTargetProps("https://example.com", "_self");
 Validates and provides default values for common link props.
 
 ```typescript
-import { getDefaultLinkProps } from "@guyromellemagayano/utils";
+import { getDefaultLinkProps } from "@portfolio/utils";
 
 const props = getDefaultLinkProps({
   href: "/about",
@@ -294,7 +294,7 @@ const props = getDefaultLinkProps({});
 Creates conditional CSS class names with proper fallbacks.
 
 ```typescript
-import { createConditionalClasses } from "@guyromellemagayano/utils";
+import { createConditionalClasses } from "@portfolio/utils";
 
 const classes = createConditionalClasses(
   "button",
@@ -321,7 +321,7 @@ const classes = createConditionalClasses(
 Safely formats a date string with fallback handling.
 
 ```typescript
-import { formatDateSafely } from "@guyromellemagayano/utils";
+import { formatDateSafely } from "@portfolio/utils";
 
 const formatted = formatDateSafely("2023-12-25");
 // Returns: "December 25, 2023"
@@ -356,7 +356,7 @@ import {
   filterValidNavigationLinks,
   shouldRenderComponent,
   isValidLink 
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 function Navigation({ links }) {
   const validLinks = filterValidNavigationLinks(links);
@@ -390,7 +390,7 @@ function Button({ children, href, ...props }) {
 ### API Response Validation
 
 ```typescript
-import { hasValidNavigationLinks } from "@guyromellemagayano/utils";
+import { hasValidNavigationLinks } from "@portfolio/utils";
 
 async function fetchNavigation() {
   const response = await fetch('/api/navigation');
@@ -407,7 +407,7 @@ async function fetchNavigation() {
 ### CMS Data Processing
 
 ```typescript
-import { filterValidNavigationLinks } from "@guyromellemagayano/utils";
+import { filterValidNavigationLinks } from "@portfolio/utils";
 
 function processCMSNavigation(cmsData) {
   // CMS might return mixed valid/invalid data
@@ -424,7 +424,7 @@ function processCMSNavigation(cmsData) {
 ### Link Processing
 
 ```typescript
-import { getLinkTargetProps, getDefaultLinkProps } from "@guyromellemagayano/utils";
+import { getLinkTargetProps, getDefaultLinkProps } from "@portfolio/utils";
 
 function processExternalLinks(links) {
   return links.map(link => {
@@ -450,7 +450,7 @@ import {
   hasMeaningfulText, 
   trimStringContent, 
   shouldRenderComponent 
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 function validateContent(content, componentType = "semantic") {
   const trimmed = trimStringContent(content);

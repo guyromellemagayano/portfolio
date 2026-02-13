@@ -3,11 +3,7 @@ import cors from "cors";
 import express, { type Express, type RequestHandler } from "express";
 import morgan from "morgan";
 
-import {
-  createLogger,
-  generateRequestId,
-  LogLevel,
-} from "@guyromellemagayano/logger";
+import { createLogger, generateRequestId, LogLevel } from "@portfolio/logger";
 
 // Create app-specific logger with context
 const apiLogger = createLogger({

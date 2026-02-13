@@ -20,7 +20,7 @@ describe("Vitest Presets", () => {
     expect(config.test?.environment).toBe("jsdom");
     expect(config.test?.globals).toBe(true);
     expect(config.test?.setupFiles).toContain(
-      "@guyromellemagayano/vitest-presets/shared/test-setup.ts"
+      "@portfolio/vitest-presets/shared/test-setup.ts"
     );
   });
 
@@ -65,7 +65,7 @@ describe("Vitest Presets", () => {
     expect(config.test?.globals).toBe(true);
     expect(config.test?.css).toBe(true);
     expect(config.test?.setupFiles).toContain(
-      "@guyromellemagayano/vitest-presets/shared/test-setup.ts"
+      "@portfolio/vitest-presets/shared/test-setup.ts"
     );
     expect(config.test?.coverage?.thresholds?.statements).toBe(80);
   });
@@ -83,13 +83,13 @@ describe("Vitest Presets", () => {
     const nodePreset = await import("../node/vitest-preset");
 
     expect(browserPreset.default.test?.setupFiles).toContain(
-      "@guyromellemagayano/vitest-presets/shared/test-setup.ts"
+      "@portfolio/vitest-presets/shared/test-setup.ts"
     );
     expect(reactPreset.default.test?.setupFiles).toContain(
-      "@guyromellemagayano/vitest-presets/shared/test-setup.ts"
+      "@portfolio/vitest-presets/shared/test-setup.ts"
     );
     expect(nodePreset.default.test?.setupFiles).toContain(
-      "@guyromellemagayano/vitest-presets/shared/test-setup.ts"
+      "@portfolio/vitest-presets/shared/test-setup.ts"
     );
   });
 

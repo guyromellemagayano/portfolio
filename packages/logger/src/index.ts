@@ -4,7 +4,7 @@
  *
  * @example Basic Usage
  * ```typescript
- * import { logger } from '@guyromellemagayano/logger';
+ * import { logger } from '@portfolio/logger';
  *
  * logger.info('Hello world');
  * logger.error('Something went wrong', new Error('Details'));
@@ -12,7 +12,7 @@
  *
  * @example Advanced Usage
  * ```typescript
- * import { createLogger, LogLevel, formatters, transports } from '@guyromellemagayano/logger';
+ * import { createLogger, LogLevel, formatters, transports } from '@portfolio/logger';
  *
  * const appLogger = createLogger({
  *   level: LogLevel.DEBUG,
@@ -29,7 +29,7 @@
  *
  * @example Integration Usage
  * ```typescript
- * import { createLogger, integrations } from '@guyromellemagayano/logger';
+ * import { createLogger, integrations } from '@portfolio/logger';
  *
  * const logger = createLogger({
  *   transports: [
