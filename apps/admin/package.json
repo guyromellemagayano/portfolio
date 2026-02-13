@@ -21,18 +21,18 @@
     "test:ui": "echo 'No tests configured for admin app'"
   },
   "dependencies": {
-    "@guyromellemagayano/components": "workspace:*",
-    "@guyromellemagayano/hooks": "workspace:*",
-    "@guyromellemagayano/ui": "workspace:*",
-    "@guyromellemagayano/utils": "workspace:*",
+    "@portfolio/components": "workspace:*",
+    "@portfolio/hooks": "workspace:*",
+    "@portfolio/ui": "workspace:*",
+    "@portfolio/utils": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-router": "catalog:"
   },
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
-    "@guyromellemagayano/vitest-presets": "workspace:*",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

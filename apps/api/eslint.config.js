@@ -1,6 +1,6 @@
 import globals from "globals";
 
-import { baseEslintConfig } from "@guyromellemagayano/config-eslint";
+import { baseEslintConfig } from "@portfolio/config-eslint";
 
 /** @type {import("eslint").Linter.Config} */
 export default [

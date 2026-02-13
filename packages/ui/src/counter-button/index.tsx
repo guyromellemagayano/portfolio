@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { setDisplayName } from "@guyromellemagayano/utils";
+import { setDisplayName } from "@portfolio/utils";
 
 type CounterButtonProps = {
   label: string;

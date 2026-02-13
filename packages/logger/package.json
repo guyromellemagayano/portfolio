@@ -1,5 +1,5 @@
 {
-  "name": "@guyromellemagayano/logger",
+  "name": "@portfolio/logger",
   "version": "1.0.0",
   "description": "Comprehensive, robust, scalable, and flexible logging system for Node.js and browser environments with structured logging, multiple transports, formatters, performance monitoring, and enterprise features",
   "keywords": [
@@ -26,7 +26,7 @@
     "directory": "packages/logger"
   },
   "license": "MIT",
-  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.dev)",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
   "sideEffects": true,
   "type": "module",
   "exports": {
@@ -99,8 +99,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",

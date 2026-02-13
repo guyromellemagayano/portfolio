@@ -1,6 +1,6 @@
 import type { ElementType } from "react";
 
-import { logger as sharedLogger } from "@guyromellemagayano/logger";
+import { logger as sharedLogger } from "@portfolio/logger";
 
 import {
   type AnalyticsEvent,
