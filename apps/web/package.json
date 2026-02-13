@@ -22,13 +22,14 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
-    "@guyromellemagayano/components": "workspace:*",
-    "@guyromellemagayano/hooks": "workspace:*",
-    "@guyromellemagayano/ui": "workspace:*",
-    "@guyromellemagayano/utils": "workspace:*",
     "@headlessui/react": "catalog:",
     "@heroicons/react": "catalog:",
     "@mdx-js/react": "catalog:",
+    "@portfolio/components": "workspace:*",
+    "@portfolio/hooks": "workspace:*",
+    "@portfolio/logger": "workspace:*",
+    "@portfolio/ui": "workspace:*",
+    "@portfolio/utils": "workspace:*",
     "clsx": "catalog:",
     "fuse.js": "catalog:",
     "next": "catalog:",
@@ -42,11 +43,11 @@
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
-    "@guyromellemagayano/config-eslint": "workspace:*",
-    "@guyromellemagayano/config-typescript": "workspace:*",
-    "@guyromellemagayano/vitest-presets": "workspace:*",
     "@mdx-js/loader": "catalog:",
     "@next/mdx": "catalog:",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "@testing-library/jest-dom": "catalog:",
