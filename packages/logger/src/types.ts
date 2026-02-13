@@ -1,7 +1,7 @@
 /**
  * Universal logger types with comprehensive logging features
  * Supports structured logging, multiple transports, and enterprise features
- * @author: @guyromellemagayano
+ * @author: @portfolio
  * @since: 2025-06-28
  */
 

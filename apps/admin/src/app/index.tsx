@@ -1,4 +1,4 @@
-import { CounterButton, Link } from "@guyromellemagayano/ui";
+import { CounterButton, Link } from "@portfolio/ui";
 
 import "./styles.css";
 

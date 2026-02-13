@@ -4,7 +4,7 @@
  * @description Utility functions for date and time.
  */
 
-import { formatDateSafely } from "@guyromellemagayano/utils";
+import { formatDateSafely } from "@portfolio/utils";
 
 const CUSTOM_DATE_FORMAT = {
   day: "numeric",

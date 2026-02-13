@@ -1,6 +1,6 @@
 import React from "react";
 
-import logger from "@guyromellemagayano/logger";
+import logger from "@portfolio/logger";
 
 /**
  * Safely trims whitespace from string content. Handles various input types \

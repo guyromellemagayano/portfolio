@@ -1,5 +1,5 @@
 <!-- markdownlint-disable MD024 -->
-# @guyromellemagayano/logger
+# @portfolio/logger
 
 A comprehensive, robust, scalable, and flexible logging system for Node.js
 and browser environments with structured logging, multiple transports,
@@ -56,16 +56,16 @@ Install the logger package using your preferred package manager:
 
 ```bash
 # Using npm
-npm install @guyromellemagayano/logger
+npm install @portfolio/logger
 
 # Using yarn
-yarn add @guyromellemagayano/logger
+yarn add @portfolio/logger
 
 # Using pnpm
-pnpm add @guyromellemagayano/logger
+pnpm add @portfolio/logger
 
 # Using bun
-bun add @guyromellemagayano/logger
+bun add @portfolio/logger
 ```
 
 ## 🚀 Module Support
@@ -76,12 +76,12 @@ This package is **ESM-only** and designed for modern JavaScript environments:
 
 ```typescript
 // Modern ESM import
-import { logger, createLogger, LogLevel } from '@guyromellemagayano/logger';
+import { logger, createLogger, LogLevel } from '@portfolio/logger';
 
 // Individual exports
-import { formatters } from '@guyromellemagayano/logger/formatters';
-import { transports } from '@guyromellemagayano/logger/transports';
-import { utils } from '@guyromellemagayano/logger/utils';
+import { formatters } from '@portfolio/logger/formatters';
+import { transports } from '@portfolio/logger/transports';
+import { utils } from '@portfolio/logger/utils';
 ```
 
 ### Build Output Structure
@@ -125,7 +125,7 @@ automatically generates optimized ESM builds with tree-shaking and minification.
 ### Basic Usage
 
 ```typescript
-import { logger } from '@guyromellemagayano/logger';
+import { logger } from '@portfolio/logger';
 
 // Simple logging
 logger.info('Application started');
@@ -150,7 +150,7 @@ import {
   formatters, 
   ConsoleTransport,
   HttpTransport 
-} from '@guyromellemagayano/logger';
+} from '@portfolio/logger';
 
 const appLogger = createLogger({
   level: LogLevel.DEBUG,
@@ -187,7 +187,7 @@ const appLogger = createLogger({
 ### Timing Operations
 
 ```typescript
-import { logger } from '@guyromellemagayano/logger';
+import { logger } from '@portfolio/logger';
 
 // Measure execution time
 logger.time('database-query');
@@ -249,7 +249,7 @@ logger.info('User authentication', {
 ### JSON Formatter
 
 ```typescript
-import { JsonFormatter } from '@guyromellemagayano/logger';
+import { JsonFormatter } from '@portfolio/logger';
 
 const jsonFormatter = new JsonFormatter({ 
   pretty: true,
@@ -262,7 +262,7 @@ const jsonFormatter = new JsonFormatter({
 ### Console Formatter
 
 ```typescript
-import { ConsoleFormatter } from '@guyromellemagayano/logger';
+import { ConsoleFormatter } from '@portfolio/logger';
 
 const consoleFormatter = new ConsoleFormatter({
   colors: true,
@@ -277,7 +277,7 @@ const consoleFormatter = new ConsoleFormatter({
 ### Development Formatter
 
 ```typescript
-import { DevFormatter } from '@guyromellemagayano/logger';
+import { DevFormatter } from '@portfolio/logger';
 
 const devFormatter = new DevFormatter({
   includeSource: true,
@@ -292,7 +292,7 @@ const devFormatter = new DevFormatter({
 ### Console Transport
 
 ```typescript
-import { ConsoleTransport } from '@guyromellemagayano/logger';
+import { ConsoleTransport } from '@portfolio/logger';
 
 const consoleTransport = new ConsoleTransport({
   formatter: formatters.console,
@@ -303,7 +303,7 @@ const consoleTransport = new ConsoleTransport({
 ### File Transport
 
 ```typescript
-import { FileTransport } from '@guyromellemagayano/logger';
+import { FileTransport } from '@portfolio/logger';
 
 const fileTransport = new FileTransport({
   filename: './logs/app.log',
@@ -316,7 +316,7 @@ const fileTransport = new FileTransport({
 ### HTTP Transport
 
 ```typescript
-import { HttpTransport } from '@guyromellemagayano/logger';
+import { HttpTransport } from '@portfolio/logger';
 
 const httpTransport = new HttpTransport({
   url: 'https://logs.example.com/api/logs',
@@ -333,7 +333,7 @@ const httpTransport = new HttpTransport({
 ### Memory Transport (Testing)
 
 ```typescript
-import { MemoryTransport } from '@guyromellemagayano/logger';
+import { MemoryTransport } from '@portfolio/logger';
 
 const memoryTransport = new MemoryTransport({
   maxLogs: 1000,
@@ -350,7 +350,7 @@ memoryTransport.clear();
 ### Creating Custom Plugins
 
 ```typescript
-import type { LoggerPlugin, LogEntry } from '@guyromellemagayano/logger';
+import type { LoggerPlugin, LogEntry } from '@portfolio/logger';
 
 class MetricsPlugin implements LoggerPlugin {
   name = 'metrics';
@@ -384,7 +384,7 @@ logger.addPlugin(new MetricsPlugin());
 ### Automatic Environment Detection
 
 ```typescript
-import { detectEnvironment, LogLevel } from '@guyromellemagayano/logger';
+import { detectEnvironment, LogLevel } from '@portfolio/logger';
 
 const env = detectEnvironment(); // 'development' | 'production' | 'test' | 'staging'
 
@@ -451,7 +451,7 @@ const logger = createLogger({
 ### Usage in React
 
 ```typescript
-import { logger } from '@guyromellemagayano/logger';
+import { logger } from '@portfolio/logger';
 
 function UserComponent({ userId }: { userId: number }) {
   const componentLogger = logger.child({ component: 'UserComponent', userId });
@@ -476,7 +476,7 @@ function UserComponent({ userId }: { userId: number }) {
 ### Using Memory Transport
 
 ```typescript
-import { createLogger, MemoryTransport, LogLevel } from '@guyromellemagayano/logger';
+import { createLogger, MemoryTransport, LogLevel } from '@portfolio/logger';
 
 describe('Application Logic', () => {
   let logger: Logger;
