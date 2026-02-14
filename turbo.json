@@ -14,25 +14,42 @@
     "tsconfig.json"
   ],
   "globalEnv": [
+    "ANALYZE",
     "AWS_ACCESS_KEY_ID",
     "AWS_REGION",
     "AWS_SECRET_ACCESS_KEY",
     "AZURE_INSTRUMENTATION_KEY",
     "BUNDLE_ANALYZE",
+    "CI",
+    "COOKIE_HTTPONLY",
+    "COOKIE_SAMESITE",
+    "COOKIE_SECURE",
+    "CORS_ORIGINS",
+    "DATABASE_URL",
     "DATADOG_API_KEY",
+    "DEBUG",
     "ELASTICSEARCH_API_KEY",
     "ELASTICSEARCH_URL",
     "ENABLE_EXPERIMENTAL_COREPACK",
+    "ENVIRONMENT",
+    "E2E_BASE_URL",
     "ESLINT_USE_FLAT_CONFIG",
+    "GIT_HASH",
     "GOOGLE_ADSENSE_CLIENT_ID",
     "GOOGLE_ANALYTICS_MEASUREMENT_ID",
     "GOOGLE_CLOUD_KEY_FILE",
     "GOOGLE_CLOUD_PROJECT_ID",
     "GOOGLE_TAG_MANAGER_CONTAINER_ID",
+    "JWT_ACCESS_TOKEN_EXPIRE_MINUTES",
+    "JWT_ALGORITHM",
+    "JWT_REFRESH_TOKEN_EXPIRE_DAYS",
+    "JWT_SECRET_KEY",
     "LOCAL_ELASTICSEARCH",
     "LOGROCKET_APP_ID",
     "LOGROCKET_TOKEN",
     "NEWRELIC_LICENSE_KEY",
+    "NEXT_PUBLIC_API_URL",
+    "NEXT_PUBLIC_GRAPHQL_URL",
     "NEXT_PUBLIC_PORTAL_SITE_GRAPHQL_API_PATHNAME",
     "NEXT_PUBLIC_PORTAL_SITE_URL",
     "NEXT_PUBLIC_SENTRY_DSN",
@@ -40,6 +57,9 @@
     "NPM_TOKEN",
     "PAPERTRAIL_HOST",
     "PAPERTRAIL_PORT",
+    "POSTGRES_PORT",
+    "REDIS_PORT",
+    "REDIS_URL",
     "SENTRY_AUTH_TOKEN",
     "SENTRY_ORG",
     "SENTRY_PROJECT",
@@ -47,6 +67,8 @@
     "SPLUNK_HOST",
     "SPLUNK_PORT",
     "TURBO_REMOTE_CACHE_SIGNATURE_KEY",
+    "TURBO_TEAM",
+    "TURBO_TOKEN",
     "VERCEL_ENV",
     "VERCEL_PROJECT_PRODUCTION_URL",
     "VERCEL_URL"
@@ -57,18 +79,41 @@
         "^build"
       ],
       "inputs": [
-        "$TURBO_DEFAULT$",
         ".env*",
+        "$TURBO_DEFAULT$",
         "next.config.*",
-        "vite.config.*",
+        "package.json",
+        "pnpm-lock.yaml",
+        "postcss.config.*",
         "tailwind.config.*",
-        "postcss.config.*"
+        "tsconfig*.json",
+        "vite.config.*"
       ],
       "outputs": [
-        "dist/**",
+        "!.next/cache/**",
+        "!.next/standalone/**",
         ".next/**",
-        "!.next/cache/**"
+        "dist/**"
       ]
+    },
+    "codegen": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "codegen.*",
+        "codegen.yml",
+        "schema.*",
+        "*.graphql",
+        "*.gql",
+        "package.json"
+      ],
+      "outputs": [
+        "**/generated.ts",
+        "**/__generated__/**",
+        "src/gql/**",
+        "src/__generated__/**"
+      ],
+      "cache": true
     },
     "test": {
       "dependsOn": [],
@@ -162,6 +207,71 @@
       ],
       "cache": true
     },
+    "test:e2e": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "playwright.config.*",
+        "tests/**/*.e2e.ts",
+        "tests/**/*.setup.ts"
+      ],
+      "outputs": [
+        "playwright-report/**",
+        "test-results/**"
+      ],
+      "cache": false
+    },
+    "test:e2e:smoke": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "playwright.config.*",
+        "tests/**/*.e2e.ts",
+        "tests/**/*.setup.ts"
+      ],
+      "outputs": [
+        "playwright-report/**",
+        "test-results/**"
+      ],
+      "cache": false
+    },
+    "test:e2e:ui": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "playwright.config.*",
+        "tests/**/*.e2e.ts",
+        "tests/**/*.setup.ts"
+      ],
+      "outputs": [],
+      "cache": false,
+      "persistent": true
+    },
+    "test:e2e:headed": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "playwright.config.*",
+        "tests/**/*.e2e.ts",
+        "tests/**/*.setup.ts"
+      ],
+      "outputs": [
+        "playwright-report/**",
+        "test-results/**"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "test:e2e:report": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "playwright-report/**"
+      ],
+      "outputs": [],
+      "cache": false,
+      "persistent": true
+    },
     "format": {
       "dependsOn": [],
       "inputs": [
@@ -226,6 +336,28 @@
     "clean": {
       "dependsOn": [
         "^clean"
+      ],
+      "outputs": [],
+      "cache": false
+    },
+    "lint:styles": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "stylelint.config.*",
+        ".stylelintrc*",
+        "**/*.{css,scss}"
+      ],
+      "outputs": [],
+      "cache": true
+    },
+    "lint:styles:fix": {
+      "dependsOn": [],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "stylelint.config.*",
+        ".stylelintrc*",
+        "**/*.{css,scss}"
       ],
       "outputs": [],
       "cache": false

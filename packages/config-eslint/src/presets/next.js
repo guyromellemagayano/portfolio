@@ -1,13 +1,13 @@
 import pluginNext from "@next/eslint-plugin-next";
 
-import { reactBaseEslintConfig } from "./react-base.js";
+import { reactEslintConfig } from "./react.js";
 
 /**
  * Shared `eslint` configuration for apps using `next`.
  * @type {import("eslint").Linter.Config}
  */
 export const nextEslintConfig = [
-  ...reactBaseEslintConfig,
+  ...reactEslintConfig,
   {
     plugins: {
       "@next/next": pluginNext,
