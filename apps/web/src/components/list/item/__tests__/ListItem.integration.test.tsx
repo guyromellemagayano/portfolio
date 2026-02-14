@@ -35,7 +35,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock utils
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href?: string) => Boolean(href && href !== "")),
   getLinkTargetProps: vi.fn((href?: string, target?: string) => {
     if (

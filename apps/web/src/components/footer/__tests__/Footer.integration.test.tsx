@@ -37,7 +37,7 @@ vi.mock("next-intl", () => ({
 }));
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   formatDateSafely: vi.fn((date, options) => {
     if (options?.year === "numeric") {
       return new Date(date).getFullYear().toString();

@@ -20,11 +20,11 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-vi.mock("@guyromellemagayano/hooks", () => ({
+vi.mock("@portfolio/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
       return false;

@@ -12,10 +12,10 @@ import {
   type ReactNode,
 } from "react";
 
+import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 import Link, { LinkProps } from "next/link";
 
-import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
-
+import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import { cn } from "@web/utils/helpers";
 
 import { Icon } from "../icon";
@@ -41,6 +41,7 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
 ) {
   const {
     as: Component = Link,
+    className,
     children,
     href,
     target,
@@ -69,6 +70,7 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
       rel={linkTargetProps?.rel}
       title={title}
       aria-label={ariaLabel}
+      className={cn(className, COMMON_FOCUS_CLASSNAMES)}
     >
       {children}
     </Component>
@@ -284,7 +286,7 @@ function CardLink<P extends Record<string, unknown> = {}>(
 
   return (
     <>
-      <div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50" />
+      <div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:bg-zinc-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl dark:bg-zinc-800/50 dark:group-hover:bg-zinc-700/50" />
       <Component
         {...(rest as ComponentPropsWithoutRef<CardLinkElementType>)}
         href={linkHref}
