@@ -28,7 +28,7 @@ import {
   hasValidNavigationLinks,
   isValidImageSrc,
   isValidLink,
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 import { Container } from "@web/components/container";
 import { Icon } from "@web/components/icon";
@@ -247,7 +247,7 @@ function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
         title={title}
         aria-label={title}
         className={cn(
-          "pointer-events-auto relative mx-1 block cursor-pointer rounded-full px-2",
+          "relative mx-1 block rounded-full px-2",
           COMMON_FOCUS_CLASSNAMES,
           isActive
             ? "text-zinc-500 dark:text-zinc-400"

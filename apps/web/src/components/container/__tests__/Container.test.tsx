@@ -4,8 +4,6 @@
  * @description Unit tests for the Container component.
  */
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -14,7 +12,7 @@ import { Container } from "../Container";
 import "@testing-library/jest-dom";
 
 // Mock the external dependencies
-vi.mock("@guyromellemagayano/components", () => ({
+vi.mock("@portfolio/components", () => ({
   // Mock CommonComponentProps type
 }));
 
@@ -108,9 +106,7 @@ describe("Container", () => {
     });
 
     it("renders as article when as prop is article", () => {
-      const { container } = render(
-        <Container as="article">Content</Container>
-      );
+      const { container } = render(<Container as="article">Content</Container>);
 
       const outerContainer = container.querySelector("article");
       expect(outerContainer?.tagName).toBe("ARTICLE");
@@ -456,7 +452,6 @@ describe("Container", () => {
     });
   });
 
-
   describe("ARIA Attributes Testing", () => {
     it("applies correct ARIA labels to content elements", () => {
       const { container } = render(
@@ -489,10 +484,7 @@ describe("Container", () => {
 
     it("maintains ARIA attributes with additional HTML attributes", () => {
       const { container } = render(
-        <Container
-          aria-expanded="true"
-          aria-controls="container-content"
-        >
+        <Container aria-expanded="true" aria-controls="container-content">
           Container content
         </Container>
       );
@@ -521,7 +513,9 @@ describe("Container", () => {
     });
 
     it("provides implicit ARIA landmark roles with semantic elements", () => {
-      const { container } = render(<Container as="main">Main content</Container>);
+      const { container } = render(
+        <Container as="main">Main content</Container>
+      );
 
       const mainElement = container.querySelector("main");
       expect(mainElement).toBeInTheDocument();
@@ -631,7 +625,10 @@ describe("Container", () => {
       );
 
       const articleElement = container.querySelector("article");
-      expect(articleElement).toHaveAttribute("aria-labelledby", "article-title");
+      expect(articleElement).toHaveAttribute(
+        "aria-labelledby",
+        "article-title"
+      );
       expect(articleElement).toHaveAttribute(
         "aria-describedby",
         "article-description"
@@ -639,7 +636,6 @@ describe("Container", () => {
       // ARIA relationships help search engines understand content structure
     });
   });
-
 
   describe("Custom Props Support", () => {
     it("accepts and passes through custom data attributes", () => {
@@ -650,7 +646,10 @@ describe("Container", () => {
       );
 
       const outerContainer = container.querySelector("div");
-      expect(outerContainer).toHaveAttribute("data-test-custom", "custom-value");
+      expect(outerContainer).toHaveAttribute(
+        "data-test-custom",
+        "custom-value"
+      );
       expect(outerContainer).toHaveAttribute("data-analytics", "track");
     });
 
