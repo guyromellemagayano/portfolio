@@ -23,6 +23,7 @@ const tsProjects = [
   resolve(repoRoot, "tsconfig.json"),
   resolve(repoRoot, "apps", "admin", "tsconfig.json"),
   resolve(repoRoot, "apps", "api", "tsconfig.json"),
+  resolve(repoRoot, "apps", "e2e", "tsconfig.json"),
   resolve(repoRoot, "apps", "web", "tsconfig.json"),
   resolve(repoRoot, "packages", "ui", "tsconfig.json"),
   resolve(repoRoot, "packages", "logger", "tsconfig.json"),

@@ -15,32 +15,38 @@
     "changeset:version": "changeset version",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
-    "commit": "czg gpg",
+    "commit": "NPM_CONFIG_LOGLEVEL=error czg gpg",
+    "commit:retry": "git commit --amend --no-edit",
     "dev": "turbo run dev --parallel --output-logs=full",
     "format": "turbo run format",
     "format:check": "turbo run format:check",
-    "lint": "turbo run lint",
-    "lint:fix": "turbo run lint:fix",
+    "lint": "turbo run lint lint:styles",
+    "lint:fix": "turbo run lint:fix lint:styles:fix",
+    "lint:styles": "turbo run lint:styles",
+    "lint:styles:fix": "turbo run lint:styles:fix",
     "prepare": "husky",
     "release": "pnpm build:packages && pnpm changeset:publish",
+    "sort-package-json": "sort-package-json",
+    "sort-package-json:all": "pnpm -r exec sort-package-json",
     "test": "turbo run test",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
     "test:coverage:apps": "turbo run test:run:coverage --filter='./apps/*'",
     "test:coverage:packages": "turbo run test:run:coverage --filter='./packages/*'",
     "test:coverage:ui": "turbo run test:coverage:ui",
+    "test:e2e": "pnpm --filter e2e test:e2e",
+    "test:e2e:headed": "pnpm --filter e2e test:e2e:headed",
+    "test:e2e:install": "pnpm --filter e2e test:e2e:install",
+    "test:e2e:install:ci": "pnpm --filter e2e test:e2e:install:ci",
+    "test:e2e:report": "pnpm --filter e2e test:e2e:report",
+    "test:e2e:smoke": "pnpm --filter e2e test:e2e:smoke",
+    "test:e2e:ui": "pnpm --filter e2e test:e2e:ui",
     "test:packages": "turbo run test:run --filter='./packages/*'",
     "test:run": "turbo run test:run",
     "test:run:coverage": "turbo run test:run:coverage",
     "test:ui": "turbo run test:ui",
     "test:watch": "turbo run test --parallel",
     "version-packages": "changeset version && pnpm install --lockfile-only"
-  },
-  "lint-staged": {
-    "**/*.{js,cjs,mjs,ts,cts,mts,jsx,tsx}": [
-      "pnpm format",
-      "pnpm test:run"
-    ]
   },
   "config": {
     "commitizen": {
@@ -65,6 +71,7 @@
     "globals": "catalog:",
     "husky": "catalog:",
     "lint-staged": "catalog:",
+    "postcss-scss": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-packagejson": "catalog:",
     "prettier-plugin-pkg": "catalog:",
@@ -72,14 +79,21 @@
     "react": "catalog:",
     "react-dom": "catalog:",
     "sort-package-json": "catalog:",
+    "stylelint": "catalog:",
+    "stylelint-config-standard": "catalog:",
     "tailwindcss": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
     "validate-branch-name": "catalog:"
   },
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc",
   "engines": {
     "node": ">=20",
     "pnpm": ">=10"
+  },
+  "pnpm": {
+    "overrides": {
+      "@csstools/css-calc": "3.1.1"
+    }
   }
 }
