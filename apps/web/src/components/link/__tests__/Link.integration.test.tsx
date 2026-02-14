@@ -10,7 +10,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom";
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   getLinkTargetProps: vi.fn((href, target) => ({
     target: target || (href?.startsWith("http") ? "_blank" : undefined),
     rel: href?.startsWith("http") ? "noopener noreferrer" : undefined,

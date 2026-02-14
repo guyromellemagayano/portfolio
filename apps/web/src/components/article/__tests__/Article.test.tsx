@@ -25,7 +25,7 @@ const mockUseTranslations = vi.hoisted(() =>
 
 // Mock dependencies
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   formatDateSafely: vi.fn((date) => {
     if (!date) return "";
     try {

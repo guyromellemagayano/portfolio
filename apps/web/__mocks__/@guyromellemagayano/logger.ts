@@ -1,4 +1,4 @@
-// Mock for @guyromellemagayano/logger
+// Mock for @portfolio/logger
 import { vi } from "vitest";
 
 // Create a mock logger instance

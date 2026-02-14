@@ -82,7 +82,7 @@ vi.mock("@web/utils/helpers", () => ({
   isActivePath: vi.fn((pathname: string, href: string) => pathname === href),
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href: unknown) => {
     if (!href) return false;
     const s =
