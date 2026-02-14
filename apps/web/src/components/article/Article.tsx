@@ -8,9 +8,8 @@
 
 import { type ComponentPropsWithRef, useId, useMemo } from "react";
 
+import { formatDateSafely } from "@portfolio/utils";
 import { useTranslations } from "next-intl";
-
-import { formatDateSafely } from "@guyromellemagayano/utils";
 
 import { type ArticleWithSlug } from "@web/utils/articles";
 

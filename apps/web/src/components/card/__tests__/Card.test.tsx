@@ -22,7 +22,7 @@ vi.mock("@web/components/icon/Icon", () => ({
   )),
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
