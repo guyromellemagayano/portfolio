@@ -51,6 +51,8 @@
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\"",
+    "lint:styles": "stylelint \"src/**/*.{css,scss}\" --allow-empty-input",
+    "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix --allow-empty-input",
     "storybook": "storybook dev -p 6006",
     "test": "vitest --watch",
     "test:coverage": "vitest --coverage",

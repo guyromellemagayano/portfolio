@@ -1,0 +1,20 @@
+{
+  "extends": "@portfolio/config-typescript/src/base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "node",
+      "@playwright/test"
+    ]
+  },
+  "include": [
+    "playwright.config.ts",
+    "tests/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "playwright-report",
+    "test-results",
+    "dist"
+  ]
+}
