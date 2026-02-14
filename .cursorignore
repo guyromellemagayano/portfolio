@@ -8,14 +8,17 @@ pnpm-lock.yaml
 .npm-cache/
 .pnpm-store/
 
+# Ruff cache
+.ruff_cache/
+
 # Build outputs
+dist/
 dist-ssr/
 build/
 .next/
 out/
 coverage/
 logs/
-dist/
 storybook-static/
 
 # Turbo/monorepo cache
@@ -28,9 +31,7 @@ storybook-static/
 # OS/system/editor files
 .DS_Store
 .env
-.env.local
-.env.*.local
-*.local
+.env.*
 *.log
 
 # TypeScript build info
@@ -44,8 +45,6 @@ storybook-static/
 *.old
 *-old/
 
-# Versioning
-v2/
-
 # Editor Workspaces
 *.code-workspace
+.vscode/
