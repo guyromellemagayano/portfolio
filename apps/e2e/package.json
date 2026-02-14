@@ -1,0 +1,35 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo playwright-report test-results",
+    "format": "prettier --write \"**/*.{js,cjs,mjs,ts,cts,mts,json,md,yaml,yml}\"",
+    "format:check": "prettier --check \"**/*.{js,cjs,mjs,ts,cts,mts,json,md,yaml,yml}\"",
+    "lint": "eslint \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0",
+    "lint:fix": "eslint --fix \"**/*.{js,cjs,mjs,ts,cts,mts}\" --max-warnings 0",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:install": "playwright install chromium",
+    "test:e2e:install:ci": "playwright install --with-deps chromium",
+    "test:e2e:report": "playwright show-report",
+    "test:e2e:smoke": "playwright test --grep @smoke",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@playwright/test": "catalog:",
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}
