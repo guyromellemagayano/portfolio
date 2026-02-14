@@ -34,7 +34,7 @@ export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
     onClick?: () => void;
   };
 
-const COMMON_BUTTON_CLASSNAMES = `inline-flex items-center justify-center gap-x-1.5 rounded-full border ${COMMON_FOCUS_CLASSNAMES[0]} border-transparent px-4 py-2 text-sm font-semibold whitespace-nowrap pointer-events-auto cursor-pointer shadow-lg`;
+const COMMON_BUTTON_CLASSNAMES = `inline-flex items-center justify-center gap-x-1.5 rounded-full border ${COMMON_FOCUS_CLASSNAMES[0]} border-transparent px-4 py-2 text-sm font-semibold whitespace-nowrap shadow-lg`;
 const DISABLED_COMMON_BUTTON_CLASSNAMES =
   "opacity-45 disabled:pointer-events-none disabled:cursor-not-allowed";
 
@@ -139,6 +139,7 @@ export function SkipToMainContentButton<P extends Record<string, unknown> = {}>(
     <Component
       {...(rest as ComponentPropsWithoutRef<SkipToMainContentButtonElementType>)}
       href={href}
+      variant="secondary"
       className={cn(
         "sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2",
         className

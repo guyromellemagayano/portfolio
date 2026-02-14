@@ -22,7 +22,7 @@ import {
   formatDateSafely,
   getLinkTargetProps,
   hasValidNavigationLinks,
-} from "@guyromellemagayano/utils";
+} from "@portfolio/utils";
 
 import { cn } from "@web/utils/helpers";
 

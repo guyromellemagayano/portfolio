@@ -34,7 +34,7 @@ vi.mock("next/navigation", () => ({
   })),
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   formatDateSafely: vi.fn((date: string) => date || ""),
 }));
 

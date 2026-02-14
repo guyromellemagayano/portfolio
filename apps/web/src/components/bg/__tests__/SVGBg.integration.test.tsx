@@ -4,8 +4,6 @@
  * @description Integration tests for the SVGBg component.
  */
 
-import React from "react";
-
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -20,11 +18,11 @@ const mockUseComponentId = vi.hoisted(() =>
   }))
 );
 
-vi.mock("@guyromellemagayano/hooks", () => ({
+vi.mock("@portfolio/hooks", () => ({
   useComponentId: mockUseComponentId,
 }));
 
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   hasAnyRenderableContent: vi.fn((children) => {
     if (children === false || children === null || children === undefined) {
       return false;
