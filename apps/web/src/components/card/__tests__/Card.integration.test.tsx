@@ -21,7 +21,7 @@ vi.mock("next/link", () => ({
 }));
 
 // Mock dependencies
-vi.mock("@guyromellemagayano/utils", () => ({
+vi.mock("@portfolio/utils", () => ({
   isValidLink: vi.fn((href) => {
     return href && href !== "" && href !== "#";
   }),
