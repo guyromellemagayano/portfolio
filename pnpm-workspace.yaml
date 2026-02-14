@@ -1,6 +1,7 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
+
 catalog:
   "@changesets/cli": 2.29.8
   "@commitlint/cli": 20.4.1
@@ -10,6 +11,7 @@ catalog:
   "@eslint/js": ^9.0.0
   "@headlessui/react": 2.2.9
   "@heroicons/react": 2.2.0
+  "@ianvs/prettier-plugin-sort-imports": 4.7.1
   "@mdx-js/loader": 3.1.1
   "@mdx-js/react": 3.1.1
   "@next/eslint-plugin-next": 16.1.6
@@ -97,6 +99,7 @@ catalog:
   vite: 7.3.1
   vite-plugin-devtools-json: 1.0.0
   vitest: 4.0.18
+
 catalogMode: strict
 
 cleanupUnusedCatalogs: true
