@@ -50,6 +50,8 @@
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx}\"",
+    "lint:styles": "stylelint \"src/**/*.{css,scss}\" --allow-empty-input",
+    "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix --allow-empty-input",
     "prepublishOnly": "pnpm run build && pnpm run test:run",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
