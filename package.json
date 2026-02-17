@@ -24,6 +24,10 @@
     "lint:fix": "turbo run lint:fix lint:styles:fix",
     "lint:styles": "turbo run lint:styles",
     "lint:styles:fix": "turbo run lint:styles:fix",
+    "pcu": "pnpm exec pcu",
+    "pcu:security": "pnpm run pcu security",
+    "pcu:security:fix": "pnpm run pcu:security --fix-vulns",
+    "pcu:update": "pnpm run pcu update",
     "prepare": "husky",
     "release": "pnpm build:packages && pnpm changeset:publish",
     "sort-package-json": "sort-package-json",
@@ -48,17 +52,13 @@
     "test:watch": "turbo run test --parallel",
     "version-packages": "changeset version && pnpm install --lockfile-only"
   },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/czg",
-      "useEmoji": true
-    }
+  "dependencies": {
+    "pnpm-catalog-updates": "catalog:"
   },
   "devDependencies": {
     "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
-    "@commitlint/cz-commitlint": "catalog:",
     "@commitlint/types": "catalog:",
     "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "@portfolio/config-eslint": "workspace:*",
@@ -87,7 +87,7 @@
     "typescript": "catalog:",
     "validate-branch-name": "catalog:"
   },
-  "packageManager": "pnpm@10.29.3+sha512.498e1fb4cca5aa06c1dcf2611e6fafc50972ffe7189998c409e90de74566444298ffe43e6cd2acdc775ba1aa7cc5e092a8b7054c811ba8c5770f84693d33d2dc",
+  "packageManager": "pnpm@10.30.0",
   "engines": {
     "node": ">=20",
     "pnpm": ">=10"
