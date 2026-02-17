@@ -1,0 +1,71 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "04:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 10
+    rebase-strategy: auto
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "chore(deps)"
+      include: scope
+    labels:
+      - dependencies
+      - javascript
+      - monorepo
+    exclude-paths:
+      - "**/node_modules/**"
+      - "**/.next/**"
+      - "**/.npm-cache/**"
+      - "**/.pnpm-store/**"
+      - "**/dist/**"
+      - "**/coverage/**"
+    groups:
+      eslint-and-types:
+        patterns:
+          - eslint*
+          - "@eslint/*"
+          - "@typescript-eslint/*"
+          - typescript
+          - typescript-eslint
+      test-stack:
+        patterns:
+          - vitest*
+          - "@vitest/*"
+          - "@testing-library/*"
+          - playwright*
+          - "@playwright/*"
+      next-react:
+        patterns:
+          - next
+          - next-*
+          - react
+          - react-*
+          - "@types/react*"
+      styling:
+        patterns:
+          - tailwind*
+          - "@tailwindcss/*"
+          - postcss*
+          - stylelint*
+          - autoprefixer
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "04:30"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(ci)"
+      include: scope
+    labels:
+      - dependencies
+      - github-actions
