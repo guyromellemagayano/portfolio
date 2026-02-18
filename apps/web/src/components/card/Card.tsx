@@ -12,8 +12,9 @@ import {
   type ReactNode,
 } from "react";
 
-import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 import Link, { LinkProps } from "next/link";
+
+import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import { cn } from "@web/utils/helpers";
@@ -117,7 +118,7 @@ function CardCta<P extends Record<string, unknown> = {}>(
     <Component
       {...(rest as ComponentPropsWithoutRef<CardCtaElementType>)}
       className={cn(
-        "relative z-10 mt-2 flex items-start text-sm font-medium text-teal-500",
+        "relative z-10 mt-2 flex items-start text-sm font-medium text-zinc-500",
         className
       )}
     >

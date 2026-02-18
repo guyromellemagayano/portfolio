@@ -1,8 +1,12 @@
+/**
+ * @file layout.tsx
+ * @author Guy Romelle Magayano
+ * @description Root layout component for the web application.
+ */
+
 import React from "react";
 
 import { NextIntlClientProvider } from "next-intl";
-
-import { setDisplayName } from "@guyromellemagayano/utils";
 
 import { Providers } from "@web/app/providers";
 import { Layout } from "@web/components/layout";
@@ -13,11 +17,7 @@ export type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-// ============================================================================
-// ROOT LAYOUT COMPONENT
-// ============================================================================
-
-const RootLayout = setDisplayName(function RootLayout(props: RootLayoutProps) {
+export default function RootLayout(props: RootLayoutProps) {
   const { children } = props;
 
   return (
@@ -31,6 +31,4 @@ const RootLayout = setDisplayName(function RootLayout(props: RootLayoutProps) {
       </body>
     </html>
   );
-});
-
-export default RootLayout;
+}

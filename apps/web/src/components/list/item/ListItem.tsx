@@ -17,7 +17,7 @@ import {
 import { useTranslations } from "next-intl";
 import { type LinkProps } from "next/link";
 
-import { getLinkTargetProps, isValidLink } from "@guyromellemagayano/utils";
+import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { setCustomDateFormat } from "@web/utils/datetime";
@@ -147,7 +147,13 @@ ArticleListItem.displayName = "ArticleListItem";
 export function SocialListItem<P extends Record<string, unknown> = {}>(
   props: ListItemProps<P>
 ) {
-  const { as: Component = "li", children, role = "listitem", ...rest } = props;
+  const {
+    as: Component = "li",
+    children,
+    role = "listitem",
+    className,
+    ...rest
+  } = props;
 
   if (!children) return null;
 
@@ -155,6 +161,7 @@ export function SocialListItem<P extends Record<string, unknown> = {}>(
     <Component
       {...(rest as ComponentPropsWithoutRef<ListItemElementType>)}
       role={role}
+      className={cn(className)}
     >
       {children}
     </Component>
@@ -230,11 +237,3 @@ export function ListItem<P extends Record<string, unknown> = {}>(
 }
 
 ListItem.displayName = "ListItem";
-
-// ============================================================================
-// LIST ITEM COMPONENT EXPORTS
-// ============================================================================
-
-ListItem.Article = ArticleListItem;
-ListItem.Social = SocialListItem;
-ListItem.Tools = ToolsListItem;
