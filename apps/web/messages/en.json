@@ -1,98 +1,182 @@
 {
-  "layout": {
-    "ariaLabels": {
-      "articleContent": "Article content",
-      "articleLayout": "Article layout",
-      "articleHeader": "Article header",
-      "articleDate": "Published on",
-      "articlePublished": "Publication date",
-      "skipToMainContent": "Skip to main content",
-      "goBackToArticles": "Go back to articles"
-    }
-  },
-  "article": {
-    "cta": "Read article",
-    "articleDate": "Published on"
-  },
-  "button": {
-    "ariaLabels": {
-      "goBackToArticles": "Go back to articles"
-    }
-  },
-  "header": {
-    "brandName": "Guy Romelle Magayano",
-    "ariaLabels": {
-      "home": "Home",
-      "about": "About",
-      "articles": "Articles",
-      "projects": "Projects",
-      "speaking": "Speaking",
-      "uses": "Uses",
-      "menu": "Menu",
-      "closeMenu": "Close menu",
-      "navigation": "Navigation",
-      "toggleTheme": "Toggle theme",
-      "lightMode": "Light mode",
-      "darkMode": "Dark mode",
-      "avatar": "Avatar",
-      "mainNavigation": "Main navigation",
-      "mobileNavigation": "Mobile navigation",
-      "desktopNavigation": "Desktop navigation"
-    }
-  },
-  "footer": {
-    "navigation": {
-      "about": "About",
-      "articles": "Articles",
-      "projects": "Projects",
-      "uses": "Uses"
+  "components": {
+    "layout": {
+      "labels": {
+        "articleContent": "Article content",
+        "articleLayout": "Article layout",
+        "articleHeader": "Article header",
+        "articleDate": "Published on",
+        "articlePublished": "Publication date",
+        "skipToMainContent": "Skip to main content",
+        "goBackToArticles": "Back to articles"
+      }
     },
-    "legal": {
-      "copyright": "© {year} {brandName}. All rights reserved."
-    },
-    "ariaLabels": {
-      "navigation": "Footer navigation",
-      "footer": "Site footer"
-    },
-    "brandName": "Guy Romelle Magayano"
-  },
-  "form": {
-    "newsletterForm": {
-      "heading": "Stay up to date",
-      "description": "Get notified when I publish something new, and unsubscribe at any time.",
-      "emailAddressLabel": "Email address",
-      "joinButtonTextLabel": "Join"
-    }
-  },
-  "list": {
-    "ariaLabels": {
-      "articleList": "Article list",
-      "socialList": "Social list",
-      "toolsList": "Tools list",
-      "articles": "Articles",
-      "articleDate": "Published on",
-      "cta": "Read article"
-    }
-  },
-  "listItem": {
-    "ariaLabels": {
+    "article": {
       "cta": "Read article",
-      "articleDate": "Published on"
+      "articleDate": "Published on",
+      "search": {
+        "labels": {
+          "searchArticles": "Search articles",
+          "noArticlesFound": "No articles found",
+          "tryDifferentSearchTerm": "Try a different search term",
+          "showingAllArticles": "Showing all {count} articles.",
+          "foundResults": "Found {count} articles for \"{query}\".",
+          "searchLandmark": "Search articles",
+          "resultsRegion": "Search results"
+        }
+      }
+    },
+    "button": {
+      "labels": {
+        "goBackToArticles": "Go back to articles"
+      }
+    },
+    "header": {
+      "brandName": "Guy Romelle Magayano",
+      "labels": {
+        "home": "Home",
+        "about": "About",
+        "articles": "Articles",
+        "contact": "Contact",
+        "projects": "Projects",
+        "speaking": "Speaking",
+        "uses": "Uses",
+        "menu": "Menu",
+        "closeMenu": "Close menu",
+        "navigation": "Navigation",
+        "toggleTheme": "Toggle theme",
+        "lightMode": "Light mode",
+        "darkMode": "Dark mode",
+        "avatar": "Avatar",
+        "mainNavigation": "Main navigation",
+        "mobileNavigation": "Mobile navigation",
+        "desktopNavigation": "Desktop navigation"
+      }
+    },
+    "footer": {
+      "navigation": {
+        "about": "About",
+        "articles": "Articles",
+        "projects": "Projects",
+        "uses": "Uses",
+        "contact": "Contact"
+      },
+      "legal": {
+        "copyright": "© {year} {brandName}. All rights reserved."
+      },
+      "labels": {
+        "navigation": "Footer navigation",
+        "footer": "Site footer"
+      },
+      "brandName": "Guy Romelle Magayano"
+    },
+    "form": {
+      "newsletterForm": {
+        "heading": "Stay up to date",
+        "description": "Get notified when I publish something new, and unsubscribe at any time.",
+        "emailAddressLabel": "Email address",
+        "joinButtonTextLabel": "Join"
+      }
+    },
+    "list": {
+      "labels": {
+        "articleList": "Article list",
+        "socialList": "Social list",
+        "toolsList": "Tools list",
+        "articles": "Articles",
+        "articleDate": "Published on",
+        "cta": "Read article"
+      },
+      "social": {
+        "instagram": {
+          "label": "Follow me on Instagram",
+          "icon": "instagram",
+          "href": "https://www.instagram.com/guyromellemagayano",
+          "target": "_blank"
+        },
+        "github": {
+          "label": "Follow me on GitHub",
+          "icon": "github",
+          "href": "https://github.com/guyromellemagayano",
+          "target": "_blank"
+        },
+        "linkedin": {
+          "label": "Follow me on LinkedIn",
+          "icon": "linkedin",
+          "href": "https://www.linkedin.com/in/guyromellemagayano",
+          "target": "_blank"
+        },
+        "mail": {
+          "label": "Send me an email",
+          "icon": "mail",
+          "href": "mailto:aspiredtechie2010@gmail.com",
+          "target": "_blank"
+        }
+      }
+    },
+    "listItem": {
+      "labels": {
+        "cta": "Read article",
+        "articleDate": "Published on"
+      }
+    },
+    "photoGallery": {
+      "labels": {
+        "photoGallery": "Photo gallery",
+        "photoGalleryImages": "Photo gallery images"
+      }
+    },
+    "resume": {
+      "labels": {
+        "work": "Work",
+        "downloadCV": "Download CV",
+        "company": "Company",
+        "role": "Role",
+        "date": "Date"
+      }
     }
   },
-  "photoGallery": {
-    "ariaLabels": {
-      "photoGallery": "Photo gallery",
-      "photoGalleryImages": "Photo gallery images"
-    }
-  },
-  "resume": {
-    "ariaLabels": {
-      "work": "Work",
-      "downloadCV": "Download CV",
-      "company": "Company",
-      "role": "Role",
-      "date": "Date"
+  "page": {
+    "home": {
+      "labels": {
+        "title": "Software designer, founder, and amateur astronaut.",
+        "description": "I’m Spencer, a software designer and entrepreneur based in New York City. I’m the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms."
+      }
+    },
+    "about": {
+      "labels": {
+        "subheading": "About",
+        "title": "I’m Spencer Sharp. I live in New York City, where I design the future.",
+        "description": "Creating technology to empower civilians to explore space on their own terms. From software design to hardware engineering, I'm dedicated to pushing the boundaries of what's possible in the final frontier."
+      }
+    },
+    "contact": {
+      "labels": {
+        "subheading": "Contact",
+        "title": "Let’s connect and make something awesome together.",
+        "description": "Have a question, job offer, or collaboration idea? Drop me a message and I’ll get back to you as soon as possible."
+      }
+    },
+    "projects": {
+      "labels": {
+        "subheading": "Projects",
+        "title": "Things I’ve made trying to put my dent in the universe.",
+        "description": "I’ve worked on tons of little projects over the years but these are the ones that I’m most proud of. Many of them are open-source, so if you see something that piques your interest, check out the code and contribute if you have ideas for how it can be improved."
+      }
+    },
+    "uses": {
+      "labels": {
+        "subheading": "Uses",
+        "title": "Software I use, gadgets I love, and other things I recommend.",
+        "description": "I get asked a lot about the things I use to build software, stay productive, or buy to fool myself into thinking I’m being productive when I’m really just procrastinating. Here’s a big list of all of my favorite stuff."
+      }
+    },
+    "articles": {
+      "labels": {
+        "subheading": "Articles",
+        "title": "Writing on software design, company building, and the aerospace industry.",
+        "description": "All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
+      }
     }
   }
 }

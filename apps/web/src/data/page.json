@@ -1,0 +1,75 @@
+{
+  "socialLinks": [
+    {
+      "label": "Follow me on Instagram",
+      "icon": "instagram",
+      "href": "https://www.instagram.com/guyromellemagayano",
+      "target": "_blank"
+    },
+    {
+      "label": "Follow me on GitHub",
+      "icon": "github",
+      "href": "https://github.com/guyromellemagayano",
+      "target": "_blank"
+    },
+    {
+      "label": "Follow me on LinkedIn",
+      "icon": "linkedin",
+      "href": "https://www.linkedin.com/in/guyromellemagayano",
+      "target": "_blank"
+    },
+    {
+      "label": "Send me an email",
+      "icon": "mail",
+      "href": "mailto:aspiredtechie2010@gmail.com",
+      "target": "_blank"
+    }
+  ],
+  "projectsList": [
+    {
+      "name": "Planetaria",
+      "description": "Creating technology to empower civilians to explore space on their own terms.",
+      "link": {
+        "href": "http://planetaria.tech",
+        "label": "planetaria.tech"
+      },
+      "logoKey": "planetaria"
+    },
+    {
+      "name": "Animaginary",
+      "description": "High performance web animation library, hand-written in optimized WASM.",
+      "link": {
+        "href": "#",
+        "label": "github.com"
+      },
+      "logoKey": "animaginary"
+    },
+    {
+      "name": "HelioStream",
+      "description": "Real-time video streaming library, optimized for interstellar transmission.",
+      "link": {
+        "href": "#",
+        "label": "github.com"
+      },
+      "logoKey": "heliostream"
+    },
+    {
+      "name": "cosmOS",
+      "description": "The operating system that powers our Planetaria space shuttles.",
+      "link": {
+        "href": "#",
+        "label": "github.com"
+      },
+      "logoKey": "cosmos"
+    },
+    {
+      "name": "OpenShuttle",
+      "description": "The schematics for the first rocket I designed that successfully made it to orbit.",
+      "link": {
+        "href": "#",
+        "label": "github.com"
+      },
+      "logoKey": "openshuttle"
+    }
+  ]
+}
