@@ -220,7 +220,7 @@ describe("Card.Cta", () => {
         "items-start",
         "text-sm",
         "font-medium",
-        "text-teal-500"
+        "text-zinc-500"
       );
     });
 
@@ -238,7 +238,7 @@ describe("Card.Cta", () => {
         "items-start",
         "text-sm",
         "font-medium",
-        "text-teal-500",
+        "text-zinc-500",
         "custom-class"
       );
     });

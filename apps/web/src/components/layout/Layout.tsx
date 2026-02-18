@@ -22,7 +22,6 @@ import { SVGBg } from "@web/components/bg";
 import { Button, SkipToMainContentButton } from "@web/components/button";
 import { Container } from "@web/components/container";
 import { Footer } from "@web/components/footer";
-import { NewsletterForm } from "@web/components/form";
 import { Header } from "@web/components/header";
 import { Icon } from "@web/components/icon";
 import { type CommonLayoutComponentData } from "@web/data/page";
@@ -100,8 +99,6 @@ export function SimpleLayout<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
-
   const hasSubheading =
     subheading && subheading.trim() !== "" && subheading.length > 0;
   const hasTitle = title && title.trim() !== "" && title.length > 0;
@@ -110,7 +107,7 @@ export function SimpleLayout<P extends Record<string, unknown> = {}>(
   return (
     <Component
       {...(rest as ComponentPropsWithoutRef<SimpleLayoutElementType>)}
-      className={cn("mt-16 sm:mt-32", className)}
+      className={cn(className)}
     >
       <section className="max-w-3xl">
         {hasSubheading ? <SubHeading>{subheading}</SubHeading> : null}
@@ -119,12 +116,10 @@ export function SimpleLayout<P extends Record<string, unknown> = {}>(
             {title}
           </Heading>
         ) : null}
-        {hasIntro ? <Lead className="mt-6">{intro}</Lead> : null}
+        {hasIntro ? <Lead className="my-6">{intro}</Lead> : null}
       </section>
 
-      {children ? (
-        <section className="mt-16 sm:mt-20">{children}</section>
-      ) : null}
+      {children}
     </Component>
   );
 }
@@ -212,10 +207,10 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
               >
                 <Icon
                   name="arrow-left"
-                  className="h-4 w-4 stroke-zinc-500 transition group-hover:stroke-zinc-700 dark:stroke-zinc-500 dark:group-hover:stroke-zinc-400"
+                  className="h-4 w-4 stroke-zinc-50 dark:stroke-zinc-900"
                   aria-hidden
                 />
-                <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                <span className="text-sm">
                   {ARTICLE_LAYOUT_I18N.goBackToArticles}
                 </span>
               </Button>
@@ -261,9 +256,7 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
               </Prose>
             ) : null}
           </div>
-          <div className="space-y-10 lg:sticky lg:top-12 lg:pl-16 xl:pl-24">
-            <NewsletterForm />
-          </div>
+          <div className="space-y-10 lg:sticky lg:top-12 lg:pl-16 xl:pl-24"></div>
         </div>
       </div>
     </Component>

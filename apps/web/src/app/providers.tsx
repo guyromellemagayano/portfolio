@@ -35,10 +35,6 @@ const ThemeWatcher = function ThemeWatcher(): null {
   return null;
 };
 
-// ============================================================================
-// PROVIDERS COMPONENT
-// ============================================================================
-
 export type ProvidersProps = {
   children: React.ReactNode;
 };
