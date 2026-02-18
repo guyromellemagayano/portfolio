@@ -170,7 +170,7 @@ pnpm release
 - Manual dependency updates:
 
 ```bash
-pnpm pcu check
+pnpm pcu:check
 pnpm pcu:update
 pnpm pcu:security
 pnpm pcu:security:fix
@@ -185,14 +185,6 @@ cp .env.example .env.local
 ```
 
 `turbo.json` also declares `globalEnv` keys for task hashing.
-
-### Troubleshooting
-
-If `pnpm pcu check` reports `Invalid auth token for npm.pkg.github.com`:
-
-1. verify `NPM_TOKEN` is valid for package read access
-2. add/update token in your user-level `~/.npmrc`
-3. for CI publishing, set `NPM_TOKEN` in repository secrets
 
 ## License
 
