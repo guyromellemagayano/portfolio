@@ -61,7 +61,7 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
   const searchResults = results as ArticleWithSlug[];
 
   // Internationalization
-  const t = useTranslations("article");
+  const t = useTranslations("components.article");
 
   const ARTICLE_SEARCH_I18N = useMemo(
     () => ({
@@ -106,7 +106,7 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-describedby={searchStatusId}
             aria-controls={searchResultsId}
-            className="w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 py-[calc(--spacing(2)-1px)] pl-10 shadow-lg shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus:ring-4 focus:ring-teal-500/10 focus:outline-teal-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus:ring-teal-400/10 dark:focus:outline-teal-400"
+            className="w-full appearance-none rounded-[calc(var(--radius-md)-1px)] bg-white px-3 py-[calc(--spacing(2)-1px)] pl-10 shadow-lg shadow-zinc-800/5 outline outline-zinc-900/10 placeholder:text-zinc-400 focus:ring-4 focus:ring-zinc-500/10 focus:outline-zinc-500 sm:text-sm dark:bg-zinc-700/15 dark:text-zinc-200 dark:outline-zinc-700 dark:placeholder:text-zinc-500 dark:focus:ring-zinc-400/10 dark:focus:outline-zinc-400"
           />
         </Form>
 
