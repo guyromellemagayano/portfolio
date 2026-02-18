@@ -94,7 +94,7 @@ export function SVGBg<P extends Record<string, unknown> = {}>(
   return (
     <Component
       {...(rest as ComponentPropsWithoutRef<SVGBgElementType>)}
-      className={cn("fixed inset-0 flex justify-center sm:px-8", className)}
+      className={cn("absolute inset-0 flex justify-center sm:px-8", className)}
     >
       <div className="flex w-full max-w-7xl lg:px-8">
         <div className="absolute inset-0 isolate -z-10 flex justify-center overflow-hidden sm:px-8">
