@@ -25,6 +25,7 @@
     "lint:styles": "turbo run lint:styles",
     "lint:styles:fix": "turbo run lint:styles:fix",
     "pcu": "pnpm exec pcu",
+    "pcu:check": "pnpm run pcu check",
     "pcu:security": "pnpm run pcu security",
     "pcu:security:fix": "pnpm run pcu:security --fix-vulns",
     "pcu:update": "pnpm run pcu update",
