@@ -1,1 +1,1 @@
-export { default as browserPreset } from "./vitest-preset.ts";
+export { default as browserPreset } from "./vitest-preset";
