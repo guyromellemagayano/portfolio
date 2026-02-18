@@ -26,6 +26,7 @@ export const metadata: Metadata = {
   title: CONTACT_PAGE_I18N_FALLBACK.subheading,
   description: CONTACT_PAGE_I18N_FALLBACK.intro,
 };
+export const dynamic = "force-dynamic";
 
 export default async function ContactPage() {
   // Internationalization
@@ -53,17 +54,19 @@ export default async function ContactPage() {
       ),
     }))
     .catch((err) => {
-      logger.error(
-        "Contact page translations failed to load",
-        normalizeError(err),
-        {
-          component: "web.app.contact.page",
-          operation: "getContactPageI18n",
-          metadata: {
-            namespace: CONTACT_PAGE_I18N_NAMESPACE,
-          },
-        }
-      );
+      const normalizedErr = normalizeError(err);
+
+      if (normalizedErr.isDynamicServerUsage) {
+        return CONTACT_PAGE_I18N_FALLBACK;
+      }
+
+      logger.error("Contact page translations failed to load", normalizedErr, {
+        component: "web.app.contact.page",
+        operation: "getContactPageI18n",
+        metadata: {
+          namespace: CONTACT_PAGE_I18N_NAMESPACE,
+        },
+      });
 
       return CONTACT_PAGE_I18N_FALLBACK;
     });
