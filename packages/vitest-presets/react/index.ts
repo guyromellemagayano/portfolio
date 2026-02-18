@@ -1,1 +1,1 @@
-export { default as reactPreset } from "./vitest-preset.ts";
+export { default as reactPreset } from "./vitest-preset";
