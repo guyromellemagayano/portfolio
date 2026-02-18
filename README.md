@@ -2,228 +2,198 @@
 
 # Guy Romelle Magayano | Portfolio
 
-Full stack developer, open-source enthusiast, and a minimalist
+Full stack developer, open-source enthusiast, and a minimalist.
 
-[![commit-check Enabled](https://img.shields.io/badge/commit--check-enabled-brightgreen?logo=Git&logoColor=white)](https://github.com/commit-check/commit-check)
-[![Husky Enabled](https://camo.githubusercontent.com/66c98f2bc36eeb23f21ef9af183727ac272ecf0370c61969808151cffdda640f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2d656e61626c65642d6875736b793f7374796c653d666c6174266c6f676f436f6c6f723d677265656e266c6162656c3d2546302539462539302542364875736b79266c696e6b3d687474707325334125324625324674797069636f64652e6769746875622e696f2532466875736b79253246)](https://typicode.github.io/husky)
+[![Release & Publish](https://github.com/guyromellemagayano/portfolio/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/guyromellemagayano/portfolio/actions/workflows/release.yml)
+[![E2E Tests](https://github.com/guyromellemagayano/portfolio/actions/workflows/e2e.yml/badge.svg?branch=main)](https://github.com/guyromellemagayano/portfolio/actions/workflows/e2e.yml)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/guyromellemagayano/portfolio/security/dependabot)
+[![Changesets](https://img.shields.io/badge/changesets-enabled-5B3DF5?logo=changesets&logoColor=white)](https://github.com/changesets/changesets)
+[![Husky](https://img.shields.io/badge/husky-enabled-4A4A55?logo=git&logoColor=white)](https://typicode.github.io/husky/)
+[![Commitlint](https://img.shields.io/badge/commitlint-conventional-000000?logo=commitlint&logoColor=white)](https://commitlint.js.org/)
+[![pnpm](https://img.shields.io/npm/v/pnpm?label=pnpm&logo=pnpm&color=F69220)](https://pnpm.io/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Turborepo](https://img.shields.io/npm/v/turbo?label=turborepo&logo=turborepo&color=EF4444)](https://turbo.build/repo)
+[![TypeScript](https://img.shields.io/npm/v/typescript?label=typescript&logo=typescript&color=3178C6)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/npm/v/react?label=react&logo=react&color=149ECA)](https://react.dev/)
+[![Next.js](https://img.shields.io/npm/v/next?label=next.js&logo=nextdotjs&color=000000)](https://nextjs.org/)
+[![Vite](https://img.shields.io/npm/v/vite?label=vite&logo=vite&color=646CFF)](https://vite.dev/)
+[![Express](https://img.shields.io/npm/v/express?label=express&logo=express&color=000000)](https://expressjs.com/)
+[![Tailwind CSS](https://img.shields.io/npm/v/tailwindcss?label=tailwindcss&logo=tailwindcss&color=06B6D4)](https://tailwindcss.com/)
+[![Vitest](https://img.shields.io/npm/v/vitest?label=vitest&logo=vitest&color=6E9F18)](https://vitest.dev/)
+[![Playwright](https://img.shields.io/npm/v/%40playwright%2Ftest?label=playwright&logo=playwright&color=2EAD33)](https://playwright.dev/)
+[![ESLint](https://img.shields.io/npm/v/eslint?label=eslint&logo=eslint&color=4B32C3)](https://eslint.org/)
+[![Prettier](https://img.shields.io/npm/v/prettier?label=prettier&logo=prettier&color=F7B93E)](https://prettier.io/)
+[![Stylelint](https://img.shields.io/npm/v/stylelint?label=stylelint&logo=stylelint&color=263238)](https://stylelint.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-22C55E.svg)](./LICENSE)
 
-## 🚀 Quick Start
+## For Readers
+
+This is the monorepo behind my portfolio ecosystem.
+
+It includes:
+
+- `web`: public site built with Next.js
+- `admin`: internal/admin interface built with Vite + React Router
+- `api`: Express service layer
+- `e2e`: Playwright end-to-end tests
+- shared `@portfolio/*` packages (components, hooks, logger, utils, shared configs)
+
+## For Contributors
+
+### Prerequisites
+
+- Node.js `>=20`
+- pnpm `>=10`
 
 ```bash
-# Install dependencies
+corepack enable
+corepack use pnpm@10.30.0
+```
+
+### Quick Start
+
+```bash
 pnpm install
-
-# Start development
 pnpm dev
+```
 
-# Build all packages
+### Workspace Map
+
+| Path                         | Purpose                                  |
+| ---------------------------- | ---------------------------------------- |
+| `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
+| `apps/admin`                 | Vite + React Router app                  |
+| `apps/api`                   | Express API                              |
+| `apps/e2e`                   | Playwright E2E suites                    |
+| `packages/components`        | Shared React components                  |
+| `packages/ui`                | UI primitives/components                 |
+| `packages/hooks`             | Shared hooks                             |
+| `packages/utils`             | Utilities                                |
+| `packages/logger`            | Structured logging                       |
+| `packages/config-eslint`     | ESLint presets                           |
+| `packages/config-typescript` | TypeScript presets                       |
+| `packages/vitest-presets`    | Shared Vitest presets                    |
+
+### Daily Commands
+
+Run from repo root.
+
+```bash
+# Dev + build
+pnpm dev
 pnpm build
+pnpm build:packages
 
-# Run tests across all packages
+# Code quality
+pnpm lint
+pnpm lint:fix
+pnpm format
+pnpm format:check
+pnpm check-types
+
+# Tests
 pnpm test
-
-# Run tests with coverage
+pnpm test:run
 pnpm test:coverage
+pnpm test:packages
+pnpm test:apps
+
+# E2E
+pnpm test:e2e:install
+pnpm test:e2e:smoke
+pnpm test:e2e
+pnpm test:e2e:ui
 ```
 
-## 📦 Packages Structure
-
-- **Apps**:
-  - `admin` - Admin dashboard (Vite + React Router)
-  - `api` - Express.js API server
-  - `web` - Marketing website (Next.js)
-
-- **Packages**:
-  - `components` - Shared React components
-  - `ui` - Base UI components
-  - `logger` - Logging utilities
-  - `vitest-presets` - Shared Vitest configurations with V8 coverage
-  - Config packages: `config-eslint`, `config-typescript`
-
-## 🧪 Testing & Coverage
-
-### Available Test Commands
-
-**Workspace-level commands** (run from root):
+### App-Scoped Commands
 
 ```bash
-# Basic testing
-pnpm test                   # Run tests across all packages
-pnpm test:run               # Run tests once (CI mode)
-pnpm test:ui                # Run tests with UI interface
-
-# Coverage testing
-pnpm test:coverage          # Run tests with coverage
-pnpm test:coverage:ui       # Run coverage with UI interface
-pnpm test:run:coverage      # Run coverage once (CI mode)
-
-# Filtered testing
-pnpm test:packages          # Test only packages/*
-pnpm test:apps              # Test only apps/*
-pnpm test:coverage:packages # Coverage for packages/*
-pnpm test:coverage:apps     # Coverage for apps/*
-
-# Watch mode
-pnpm test:watch             # Run tests in parallel watch mode
+pnpm --filter web dev
+pnpm --filter admin dev
+pnpm --filter api dev
+pnpm --filter e2e test:e2e:ui
 ```
 
-**Package-level commands** (run in any package):
+### Commits and Hooks
+
+Use the commit wizard:
 
 ```bash
-# Interactive testing
-pnpm test                   # Watch mode
-pnpm test:ui               # UI mode
-
-# One-time testing
-pnpm test:run              # Run once
-pnpm test:run:coverage     # Run once with coverage
-
-# Coverage testing
-pnpm test:coverage         # Watch with coverage
-pnpm test:coverage:ui      # UI with coverage
+pnpm commit
 ```
 
-### Coverage Features
+Hooks currently enforced:
 
-- **V8 Provider**: Fast, accurate coverage with `@vitest/coverage-v8`
-- **Multiple Formats**: Text, JSON, HTML, LCOV, Clover
-- **Smart Thresholds**: Different per environment (Node: 85%, React: 80%)
-- **CI Integration**: LCOV format for external coverage tools
-- **HTML Reports**: Interactive coverage reports in `coverage/` directories
+- `pre-commit`: `lint-staged`
+- `commit-msg`: `commitlint`
+- `pre-push`: `validate-branch-name`
 
-### Testing Technologies
+### Testing Model
 
-- **Vitest**: Modern test runner with native TypeScript support
-- **V8 Coverage**: Fast, accurate coverage collection
-- **Jest DOM**: DOM testing utilities (@testing-library/jest-dom)
-- **Testing Library**: React component testing
-- **JSDOM**: Browser environment simulation
+Vitest coverage thresholds come from `packages/vitest-presets`:
 
-## 🛠 Development
+- `react` / `browser`: statements `80`, branches `75`, functions `80`, lines `80`
+- `node`: statements `85`, branches `80`, functions `85`, lines `85`
 
-### Scripts
+Coverage reporters: `text`, `json`, `html`, `lcov`, `clover`.
+
+### Releases and Publishing
+
+Release automation uses Changesets in `.github/workflows/release.yml`.
+
+On `main`:
+
+1. if `NPM_TOKEN` is missing, CI creates/updates a release PR
+2. if `NPM_TOKEN` is present, CI publishes `@portfolio/*` packages to GitHub Packages
+
+Local release commands:
 
 ```bash
-# Development
-pnpm dev                    # Start all apps in development
-pnpm build                  # Build all packages
-pnpm clean                  # Clean all build artifacts
-
-# Code Quality
-pnpm lint                   # Lint all packages
-pnpm lint:fix              # Fix linting issues
-pnpm format                # Format code
-pnpm format:check          # Check formatting
-pnpm check-types           # TypeScript type checking
-
-# Git & Commits
-pnpm commit                # Interactive commit with conventional commits
+pnpm changeset
+pnpm version-packages
+pnpm release
 ```
 
-### Package Manager
+### CI Workflows
 
-This project uses **pnpm** with workspace support:
+- `E2E` (`.github/workflows/e2e.yml`)
+  - runs on PRs to `main`
+  - runs smoke suite by default
+  - supports manual smoke/full dispatch
+- `Release & Publish` (`.github/workflows/release.yml`)
+  - runs on push to `main`
+  - builds packages, runs package tests, then opens release PR or publishes
 
-- Shared dependencies via catalog
-- Efficient disk usage
-- Fast installs
-- Proper hoisting
+### Dependency Updates
 
-### Turborepo
-
-Optimized monorepo builds with:
-
-- Smart caching
-- Parallel execution
-- Dependency graph awareness
-- Remote caching support
-
-## 📊 Coverage Reports
-
-### Current Status
-
-- **Logger**: 100% coverage ✅
-- **Components**: 94% coverage with 25 comprehensive tests ✅
-- **UI**: Basic component tests ✅
-- **Vitest Presets**: Validated shared configurations ✅
-
-### Coverage Thresholds
-
-**Node.js packages** (logger, api):
-
-- Statements: 85%
-- Branches: 80%
-- Functions: 85%
-- Lines: 85%
-
-**React packages** (components, ui):
-
-- Statements: 80%
-- Branches: 75%
-- Functions: 80%
-- Lines: 80%
-
-### HTML Coverage Reports
-
-After running coverage, view interactive reports:
+- Dependabot: `.github/dependabot.yml` (weekly npm + GitHub Actions updates)
+- Manual dependency updates:
 
 ```bash
-# Generate coverage
-pnpm test:coverage:packages
-
-# View reports
-open packages/components/coverage/index.html
-open packages/logger/coverage/index.html
+pnpm pcu check
+pnpm pcu:update
+pnpm pcu:security
+pnpm pcu:security:fix
 ```
 
-## 🔧 Configuration
+### Environment Variables
 
-### Vitest Configuration
+`.env.example` is the baseline template.
 
-Shared presets in `packages/vitest-presets/`:
+```bash
+cp .env.example .env.local
+```
 
-- **Browser Preset**: JSDOM environment for DOM testing
-- **Node Preset**: Node.js environment for server testing
-- **React Preset**: Full React Testing Library setup with Jest DOM matchers
-- **Shared Setup**: Browser API mocks and common utilities
+`turbo.json` also declares `globalEnv` keys for task hashing.
 
-### Turbo Configuration
+### Troubleshooting
 
-Optimized task configuration in `turbo.json`:
+If `pnpm pcu check` reports `Invalid auth token for npm.pkg.github.com`:
 
-- Test caching for `test:run` commands
-- Coverage output caching
-- Parallel execution where possible
-- Proper dependency tracking
+1. verify `NPM_TOKEN` is valid for package read access
+2. add/update token in your user-level `~/.npmrc`
+3. for CI publishing, set `NPM_TOKEN` in repository secrets
 
-## 📝 Contributing
+## License
 
-1. Install dependencies: `pnpm install`
-2. Create feature branch: `git checkout -b feature/my-feature`
-3. Make changes with tests: `pnpm test:coverage`
-4. Ensure quality: `pnpm lint && pnpm check-types`
-5. Commit changes: `pnpm commit`
-6. Push and create PR
-
-### Testing Guidelines
-
-1. **Write tests** for new components and utilities
-2. **Maintain coverage** above thresholds (Node: 85%, React: 80%)
-3. **Use appropriate preset**: Node for utilities, React for components
-4. **Run coverage** before submitting PRs: `pnpm test:coverage`
-5. **Leverage shared presets** from `@portfolio/vitest-presets`
-
-## 🚀 Deployment
-
-Each app has its own deployment configuration:
-
-- **Admin**: Static build
-- **API**: Server deployment
-- **Web**: Next.js deployment
-
-## 📚 Learn More
-
-- [Vitest Documentation](https://vitest.dev/)
-- [Turborepo Documentation](https://turbo.build/repo)
-- [pnpm Workspaces](https://pnpm.io/workspaces)
-- [V8 Coverage](https://v8.dev/blog/javascript-code-coverage)
+MIT. See `LICENSE`.
