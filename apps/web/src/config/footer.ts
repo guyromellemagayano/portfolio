@@ -41,7 +41,12 @@ export type FooterData = {
 // FOOTER NAV LINK CONFIG
 // ============================================================================
 
-export type FooterNavLabelKey = "about" | "articles" | "projects" | "uses";
+export type FooterNavLabelKey =
+  | "about"
+  | "articles"
+  | "projects"
+  | "uses"
+  | "contact";
 export type FooterNavLinkConfig = Readonly<{
   kind: "internal";
   labelKey: FooterNavLabelKey;
@@ -64,6 +69,7 @@ const FOOTER_NAV_LABEL_KEYS: ReadonlyArray<FooterNavLabelKey> = [
   "articles",
   "projects",
   "uses",
+  "contact",
 ];
 
 const isFooterNavLabelKey = (value: string): value is FooterNavLabelKey =>
