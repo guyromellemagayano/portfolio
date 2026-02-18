@@ -1,7 +1,16 @@
 /* eslint-disable react-refresh/only-export-components */
-import { type Metadata } from "next";
 
-import { Layout } from "@web/components";
+/**
+ * @file (blog)/about/page.tsx
+ * @author Guy Romelle Magayano
+ * @description About page component.
+ */
+import { type Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+
+import { Container } from "@web/components/container";
+import { SimpleLayout } from "@web/components/layout";
+import { type CommonLayoutComponentData } from "@web/data/page";
 
 export const metadata: Metadata = {
   title: "About",
@@ -9,8 +18,19 @@ export const metadata: Metadata = {
     "I’m Spencer Sharp. I live in New York City, where I design the future.",
 };
 
-const AboutPage = async function AboutPage() {
-  return <Layout.AboutPage />;
-};
+export default async function AboutPage() {
+  // Internationalization
+  const aboutPageI18n = (await getTranslations("page.about.labels").then(
+    (data) => ({
+      subheading: data?.("subheading"),
+      title: data?.("title"),
+      intro: [data?.("description")].join(""),
+    })
+  )) as CommonLayoutComponentData;
 
-export default AboutPage;
+  return (
+    <SimpleLayout {...aboutPageI18n} className="mt-16 sm:mt-32">
+      <Container></Container>
+    </SimpleLayout>
+  );
+}

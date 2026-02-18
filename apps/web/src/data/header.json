@@ -16,6 +16,10 @@
     {
       "labelKey": "uses",
       "href": "/uses"
+    },
+    {
+      "labelKey": "contact",
+      "href": "/contact"
     }
   ]
 }
