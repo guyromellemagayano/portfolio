@@ -1,0 +1,121 @@
+import { ArticleLayout } from '@web/components/layout'
+
+export const article = {
+  author: 'Guy Romelle Magayano',
+  date: '2024-12-15',
+  title: 'Scaling a Multi-tenant SaaS Platform: Lessons from SiteCrawler',
+  description:
+    'Building a multi-tenant SEO analytics platform taught me valuable lessons about data isolation, scalable architecture, and maintaining performance at scale. Here is what I learned.',
+}
+
+export const metadata = {
+  title: article.title,
+  description: article.description,
+}
+
+export default function Page(props) {
+  return <ArticleLayout article={article} {...props} />
+}
+
+When I set out to build SiteCrawler — a multi-tenant SEO and site-health analytics platform—I knew the architecture would be critical. The platform needed to continuously audit prospect and client site portfolios, handle high-throughput crawling, and provide real-time analytics dashboards, all while maintaining strict data isolation between tenants.
+
+## The Challenge: Multi-tenancy at Scale
+
+Multi-tenant SaaS platforms present unique challenges. Each client needs their own isolated data, branded dashboards, and custom configurations, but you want to share infrastructure efficiently. For SiteCrawler, this meant:
+
+- **Data Isolation**: Ensuring client A never sees client B's data, even in edge cases
+- **Performance**: Maintaining fast query times as the number of tenants grows
+- **Scalability**: Adding new tenants without degrading existing performance
+- **Cost Efficiency**: Sharing compute resources while maintaining isolation
+
+## Architecture Decisions
+
+### Django + Go Microservices
+
+I chose a microservices architecture with Django handling the API layer and Go workers for background processing. This separation allowed us to:
+
+- Scale API and workers independently based on load
+- Use Go's concurrency for high-throughput crawling
+- Keep the Django API focused on business logic and data access
+
+```python
+# Django API - Tenant-aware queries
+class SiteAuditViewSet(viewsets.ModelViewSet):
+    def get_queryset(self):
+        tenant = self.request.user.tenant
+        return SiteAudit.objects.filter(tenant=tenant)
+```
+
+```go
+// Go worker - High-throughput crawling
+func crawlSite(url string, tenantID string) {
+    // Polite rate limiting per tenant
+    // URL de-duplication
+    // Retry with exponential backoff
+}
+```
+
+### Database Design for Multi-tenancy
+
+We used PostgreSQL with a tenant_id column on every table. This approach, combined with row-level security policies, ensured data isolation at the database level:
+
+```sql
+-- Row-level security policy
+CREATE POLICY tenant_isolation ON site_audits
+    FOR ALL
+    USING (tenant_id = current_setting('app.current_tenant')::uuid);
+```
+
+This meant that even if application code had a bug, the database would enforce isolation.
+
+## Performance Optimizations
+
+### Query Optimization
+
+As the number of tenants grew, we needed to ensure queries remained fast. Key optimizations:
+
+1. **Composite Indexes**: Indexes on (tenant_id, created_at) for time-series queries
+2. **Query Batching**: Batch similar queries to reduce database round trips
+3. **Caching Strategy**: Redis cache with tenant-scoped keys
+
+### Background Processing
+
+The Go workers handled the heavy lifting:
+
+- **Rate Limiting**: Polite crawling with per-tenant rate limits
+- **URL De-duplication**: In-memory Bloom filters to avoid re-crawling
+- **Retry Logic**: Exponential backoff for failed requests
+- **Parallel Processing**: Goroutines for concurrent crawling
+
+## Lessons Learned
+
+### 1. Start with Isolation, Optimize Later
+
+It's easier to optimize a correctly isolated system than to add isolation to an optimized one. We built strict isolation from day one, which paid off as we scaled.
+
+### 2. Monitor Per-Tenant Metrics
+
+Not all tenants are equal. Some have more sites, more traffic, or more complex requirements. Monitoring per-tenant metrics helped us:
+
+- Identify resource-heavy tenants
+- Optimize for the common case
+- Plan capacity based on actual usage patterns
+
+### 3. Test Isolation Thoroughly
+
+We created a test suite that simulated multiple tenants accessing the system simultaneously, ensuring no data leakage. This caught several edge cases early.
+
+### 4. Plan for Growth
+
+The architecture we chose allowed us to scale horizontally. When we needed more capacity, we could add more Go workers or Django API instances without architectural changes.
+
+## The Result
+
+SiteCrawler successfully handles multiple enterprise clients, each with their own branded dashboards and isolated data. The platform:
+
+- Maintains sub-second query times even with hundreds of tenants
+- Scales horizontally as we add more clients
+- Provides real-time analytics without performance degradation
+- Ensures complete data isolation at every layer
+
+Building a multi-tenant platform taught me that architecture decisions made early have lasting impact. By prioritizing isolation and scalability from the start, we built a platform that grows with our business.
