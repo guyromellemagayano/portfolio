@@ -183,11 +183,3 @@ export function List<P extends Record<string, unknown> = {}>(
 }
 
 List.displayName = "List";
-
-// ============================================================================
-// LIST COMPONENT EXPORTS
-// ============================================================================
-
-List.Article = ArticleList;
-List.Social = SocialList;
-List.Tools = ToolsList;
