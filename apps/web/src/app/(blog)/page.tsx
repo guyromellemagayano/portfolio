@@ -9,7 +9,7 @@
 import { type Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-import { logError } from "@portfolio/logger";
+import logger from "@portfolio/logger";
 
 import { Container } from "@web/components/container";
 import { SimpleLayout } from "@web/components/layout";
@@ -22,10 +22,18 @@ import {
 } from "@web/components/list";
 import { PhotoGallery } from "@web/components/photo-gallery";
 import {
-  CommonLayoutComponentData,
+  type CommonLayoutComponentData,
   SOCIAL_LIST_COMPONENT_LABELS,
 } from "@web/data/page";
 import { getAllArticles } from "@web/utils/articles";
+import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
+
+const HOME_PAGE_I18N_NAMESPACE = "page.home.labels";
+const HOME_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
+  title: "Software designer, founder, and amateur astronaut.",
+  intro:
+    "I’m Spencer, a software designer and entrepreneur based in New York City. I’m the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms.",
+};
 
 export const metadata: Metadata = {
   title: {
@@ -41,22 +49,56 @@ export const metadata: Metadata = {
     },
   },
 };
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   // Fetch the articles
-  let articles = await getAllArticles()
+  const articles = await getAllArticles()
     .then((data) => data?.slice(0, 3) ?? [])
-    .catch((error) => {
-      logError(error);
+    .catch((err) => {
+      logger.error("Home page failed to load articles", normalizeError(err), {
+        component: "web.app.home.page",
+        operation: "getHomeArticles",
+      });
 
       return [];
     });
 
   // Internationalization
-  const pageI18n = (await getTranslations("page.home.labels").then((data) => ({
-    title: data?.("title"),
-    intro: data?.("description"),
-  }))) as CommonLayoutComponentData;
+  const pageI18n: CommonLayoutComponentData = await getTranslations(
+    HOME_PAGE_I18N_NAMESPACE
+  )
+    .then((data) => ({
+      title: getSafeHeroMessages(
+        HOME_PAGE_I18N_NAMESPACE,
+        data,
+        "title",
+        HOME_PAGE_I18N_FALLBACK.title
+      ),
+      intro: getSafeHeroMessages(
+        HOME_PAGE_I18N_NAMESPACE,
+        data,
+        "description",
+        HOME_PAGE_I18N_FALLBACK.intro
+      ),
+    }))
+    .catch((err) => {
+      const normalizedErr = normalizeError(err);
+
+      if (normalizedErr.isDynamicServerUsage) {
+        return HOME_PAGE_I18N_FALLBACK;
+      }
+
+      logger.error("Home page translations failed to load", normalizedErr, {
+        component: "web.app.home.page",
+        operation: "getHomePageI18n",
+        metadata: {
+          namespace: HOME_PAGE_I18N_NAMESPACE,
+        },
+      });
+
+      return HOME_PAGE_I18N_FALLBACK;
+    });
 
   return (
     <>
