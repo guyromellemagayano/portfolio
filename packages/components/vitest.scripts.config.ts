@@ -10,11 +10,9 @@ export default defineConfig({
 
     // Memory optimization settings
     pool: "threads",
-    poolOptions: {
-      threads: {
-        singleThread: true,
-        isolate: false,
-      },
+    threads: {
+      singleThread: true,
+      isolate: false,
     },
 
     // Faster test timeouts
