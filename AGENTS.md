@@ -9,22 +9,22 @@
 
 ## Golden Rules (follow strictly)
 
-1) No high-level fluff. If I ask for a fix or explanation, provide code (diffs/patches/snippets) or a concrete, step-by-step remedy.
-2) Answer immediately with the solution. Explanations come after the code. If helpful, restate my request in your own words after the solution.
-3) Be terse and casual. No motivational speeches. No "you could" lists without concrete code.
-4) Anticipate needs. Suggest related improvements and edge-case coverage I likely want, with code.
-5) Respect my code comments. Only remove comments if clearly obsolete post-change; otherwise keep them.
-6) Prefer arguments over authorities. Cite sources only if asked or nontrivial—at the end, never inline.
-7) Consider new tech and contrarian ideas; speculative content must be flagged with "[Speculation]".
-8) Discuss safety/security only when crucial and non-obvious; be concise and actionable.
-9) If content policy blocks something, give the closest acceptable answer first; then explain the policy—and only then.
-10) Don't mention being an AI or any knowledge cutoff. Don't apologize unless you broke a rule.
-11) **FOLLOW MY CODE STANDARDIZATION PATTERNS EXACTLY** - Don't deviate from established patterns without explicit permission.
-12) **RESPECT COMPONENT ARCHITECTURE DECISIONS** - If I revert changes, follow the pattern I establish, not what I initially suggested.
-13) **IMPLEMENT COMPREHENSIVE ARIA ATTRIBUTES** - All interactive components must have proper ARIA roles, relationships, and labels.
-14) **TEST ARIA ATTRIBUTES THOROUGHLY** - Use `getByRole` queries and test all ARIA relationships, IDs, and conditional behavior.
-15) **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
-16) **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
+1. No high-level fluff. If I ask for a fix or explanation, provide code (diffs/patches/snippets) or a concrete, step-by-step remedy.
+2. Answer immediately with the solution. Explanations come after the code. If helpful, restate my request in your own words after the solution.
+3. Be terse and casual. No motivational speeches. No "you could" lists without concrete code.
+4. Anticipate needs. Suggest related improvements and edge-case coverage I likely want, with code.
+5. Respect my code comments. Only remove comments if clearly obsolete post-change; otherwise keep them.
+6. Prefer arguments over authorities. Cite sources only if asked or nontrivial—at the end, never inline.
+7. Consider new tech and contrarian ideas; speculative content must be flagged with "[Speculation]".
+8. Discuss safety/security only when crucial and non-obvious; be concise and actionable.
+9. If content policy blocks something, give the closest acceptable answer first; then explain the policy—and only then.
+10. Don't mention being an AI or any knowledge cutoff. Don't apologize unless you broke a rule.
+11. **FOLLOW MY CODE STANDARDIZATION PATTERNS EXACTLY** - Don't deviate from established patterns without explicit permission.
+12. **RESPECT COMPONENT ARCHITECTURE DECISIONS** - If I revert changes, follow the pattern I establish, not what I initially suggested.
+13. **IMPLEMENT COMPREHENSIVE ARIA ATTRIBUTES** - All interactive components must have proper ARIA roles, relationships, and labels.
+14. **TEST ARIA ATTRIBUTES THOROUGHLY** - Use `getByRole` queries and test all ARIA relationships, IDs, and conditional behavior.
+15. **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
+16. **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
 
 ## Standards Reference
 
@@ -109,9 +109,11 @@ export interface ComponentNameProps {
 }
 
 export const ComponentName = setDisplayName(
-  React.forwardRef<ComponentNameRef, ComponentNameProps>(function ComponentName(props, ref) {
-    // Implementation
-  })
+  React.forwardRef<ComponentNameRef, ComponentNameProps>(
+    function ComponentName(props, ref) {
+      // Implementation
+    }
+  )
 );
 ```
 
@@ -254,7 +256,10 @@ expect(titleElement).toHaveAttribute("id", "article-title");
 ```typescript
 // Test descriptive labels
 const dateElement = screen.getByText("January 1, 2023").closest("time");
-expect(dateElement).toHaveAttribute("aria-label", "Published on January 1, 2023");
+expect(dateElement).toHaveAttribute(
+  "aria-label",
+  "Published on January 1, 2023"
+);
 ```
 
 #### **5. Decorative Element Testing**
@@ -387,7 +392,7 @@ type CardEyebrowProps<T extends CardEyebrowElementType> = {
 function CardEyebrow<T extends CardEyebrowElementType>(props: CardEyebrowProps<T>) {
   const { as: Component = "p", dateTime, ...rest } = props;
   const timeProps = Component === "time" && dateTime ? { dateTime } : {};
-  
+
   return (
     <Component {...rest} {...timeProps}>
       {children}
@@ -540,7 +545,7 @@ it("prioritizes visible link text over aria-label", () => {
       Read full article
     </Card.LinkCustom>
   );
-  
+
   const link = screen.getByRole("link", { name: "Read full article" });
   expect(link).toBeInTheDocument();
   expect(link).not.toHaveAttribute("aria-label");
@@ -557,7 +562,7 @@ it("includes dateTime when using time element", () => {
       January 1, 2023
     </Card.Eyebrow>
   );
-  
+
   const time = screen.getByText("January 1, 2023");
   expect(time).toHaveAttribute("dateTime", "2023-01-01");
 });
@@ -1413,7 +1418,7 @@ describe("ComponentName", () => {
 
 #### **For `@packages/` Components**
 
-```typescript
+````typescript
 import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -1512,7 +1517,7 @@ vi.mock("@web/utils/helpers", () => ({
 vi.mock("../ComponentName.module.css", () => ({
   default: { componentName: "componentName" },
 }));
-```
+````
 
 #### **Required Mocks for `@packages/` Components**
 
@@ -1865,9 +1870,12 @@ const processedArticle = useMemo(() => {
 }, [article.publishedAt, article.slug.current]);
 
 // Optimized event handlers
-const handleClick = useCallback((event: React.MouseEvent) => {
-  // Handle click
-}, [article.slug]);
+const handleClick = useCallback(
+  (event: React.MouseEvent) => {
+    // Handle click
+  },
+  [article.slug]
+);
 ```
 
 ### Error Handling Patterns
@@ -1920,22 +1928,27 @@ export function useArticleSEO(article: SanityArticle) {
     // Update meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription && article.excerpt) {
-      metaDescription.setAttribute('content', article.excerpt);
+      metaDescription.setAttribute("content", article.excerpt);
     }
 
     // Update Open Graph tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
-    if (ogTitle) ogTitle.setAttribute('content', article.title);
+    if (ogTitle) ogTitle.setAttribute("content", article.title);
 
-    const ogDescription = document.querySelector('meta[property="og:description"]');
+    const ogDescription = document.querySelector(
+      'meta[property="og:description"]'
+    );
     if (ogDescription && article.excerpt) {
-      ogDescription.setAttribute('content', article.excerpt);
+      ogDescription.setAttribute("content", article.excerpt);
     }
 
     // Update canonical URL
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) {
-      canonical.setAttribute('href', `${window.location.origin}/articles/${article.slug.current}`);
+      canonical.setAttribute(
+        "href",
+        `${window.location.origin}/articles/${article.slug.current}`
+      );
     }
   }, [article]);
 }
@@ -2038,15 +2051,17 @@ export function ArticleProvider({
 ```typescript
 // Discriminated unions for different article states
 export type ArticleState =
-  | { status: 'loading' }
-  | { status: 'error'; error: Error }
-  | { status: 'success'; data: SanityArticle }
-  | { status: 'not-found' };
+  | { status: "loading" }
+  | { status: "error"; error: Error }
+  | { status: "success"; data: SanityArticle }
+  | { status: "not-found" };
 
 // Generic component props with constraints
-export interface ArticleComponentProps<T extends SanityArticle = SanityArticle> {
+export interface ArticleComponentProps<
+  T extends SanityArticle = SanityArticle,
+> {
   article: T;
-  variant?: 'default' | 'compact' | 'featured';
+  variant?: "default" | "compact" | "featured";
   onAction?: (action: ArticleAction, data: T) => void;
 }
 
@@ -2056,10 +2071,9 @@ export type ArticleEventHandler<T = void> = (data: T) => void;
 export type ArticleAsyncHandler<T = void> = (data: T) => Promise<void>;
 
 // Conditional types for dynamic props
-export type ArticlePropsWithActions<T extends boolean = false> =
-  T extends true
-    ? ArticleComponentProps & { actions: ArticleAction[] }
-    : ArticleComponentProps;
+export type ArticlePropsWithActions<T extends boolean = false> = T extends true
+  ? ArticleComponentProps & { actions: ArticleAction[] }
+  : ArticleComponentProps;
 ```
 
 ### Performance Optimization Standards
@@ -2095,7 +2109,7 @@ export function VirtualizedArticleList({
               transform: `translateY(${virtualItem.start}px)`,
             }}
           >
-            <ArticleListItem article={articles[virtualItem.index]} />
+            <ListItem.Article article={articles[virtualItem.index]} />
           </div>
         ))}
       </div>
@@ -2667,18 +2681,18 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 
 - Use plain shell commands. Assume pnpm workspaces + Turborepo.
 - Prefer workspace-aware invocations:
-  - Run all tests:            `pnpm -w -r test`
-  - Type-check all:           `pnpm -w -r typecheck`  # fall back to `pnpm -w tsc -b` if missing
-  - Lint all:                 `pnpm -w -r lint`
-  - Build all via turbo:      `pnpm -w turbo run build`
+  - Run all tests: `pnpm -w -r test`
+  - Type-check all: `pnpm -w -r typecheck` # fall back to `pnpm -w tsc -b` if missing
+  - Lint all: `pnpm -w -r lint`
+  - Build all via turbo: `pnpm -w turbo run build`
   - Dev targets (per app):
-    - web (Next.js):          `pnpm --filter ./apps/web dev`
-    - admin (Vite):           `pnpm --filter ./apps/admin dev`
-    - API (Node/Express):     `pnpm --filter ./apps/api dev`
+    - web (Next.js): `pnpm --filter ./apps/web dev`
+    - admin (Vite): `pnpm --filter ./apps/admin dev`
+    - API (Node/Express): `pnpm --filter ./apps/api dev`
   - Scoped operations:
-    - components pkg tests:   `pnpm --filter ./packages/components test`
-    - utils pkg tests:        `pnpm --filter ./packages/utils test`
-    - logger pkg tests:       `pnpm --filter ./packages/logger test`
+    - components pkg tests: `pnpm --filter ./packages/components test`
+    - utils pkg tests: `pnpm --filter ./packages/utils test`
+    - logger pkg tests: `pnpm --filter ./packages/logger test`
 - If a script is missing, show the exact `package.json` diff to add it (root or package-level).
 - Avoid interactive prompts; add flags (e.g., `-y`, `--yes`, `--force`) where safe and relevant.
 
