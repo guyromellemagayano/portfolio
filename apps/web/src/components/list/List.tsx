@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+
 /**
  * @file List.tsx
  * @author Guy Romelle Magayano
@@ -165,9 +167,7 @@ ToolsList.displayName = "ToolsList";
 // MAIN LIST COMPONENT
 // ============================================================================
 
-export function List<P extends Record<string, unknown> = {}>(
-  props: ListProps<P>
-) {
+function ListBase<P extends Record<string, unknown> = {}>(props: ListProps<P>) {
   const { as: Component = "ul", children, role = "list", ...rest } = props;
 
   if (!children) return null;
@@ -182,4 +182,16 @@ export function List<P extends Record<string, unknown> = {}>(
   );
 }
 
-List.displayName = "List";
+ListBase.displayName = "List";
+
+type ListCompoundComponent = typeof ListBase & {
+  Article: typeof ArticleList;
+  Social: typeof SocialList;
+  Tools: typeof ToolsList;
+};
+
+export const List = Object.assign(ListBase, {
+  Article: ArticleList,
+  Social: SocialList,
+  Tools: ToolsList,
+}) as ListCompoundComponent;

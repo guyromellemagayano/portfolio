@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable simple-import-sort/imports */
 
 /**
@@ -219,7 +220,7 @@ ToolsListItem.displayName = "ToolsListItem";
 // MAIN LIST ITEM COMPONENT
 // ============================================================================
 
-export function ListItem<P extends Record<string, unknown> = {}>(
+function ListItemBase<P extends Record<string, unknown> = {}>(
   props: ListItemProps<P>
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
@@ -236,4 +237,16 @@ export function ListItem<P extends Record<string, unknown> = {}>(
   );
 }
 
-ListItem.displayName = "ListItem";
+ListItemBase.displayName = "ListItem";
+
+type ListItemCompoundComponent = typeof ListItemBase & {
+  Article: typeof ArticleListItem;
+  Social: typeof SocialListItem;
+  Tools: typeof ToolsListItem;
+};
+
+export const ListItem = Object.assign(ListItemBase, {
+  Article: ArticleListItem,
+  Social: SocialListItem,
+  Tools: ToolsListItem,
+}) as ListItemCompoundComponent;
