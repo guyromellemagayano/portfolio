@@ -3,7 +3,7 @@
  * Use this preset for testing components that need a browser environment
  * Includes centralized mocks and logger integration
  */
-const browserPreset = {
+export const browserPreset = {
   test: {
     environment: "jsdom",
     setupFiles: ["@portfolio/vitest-presets/shared/test-setup.ts"],
