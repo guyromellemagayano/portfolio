@@ -12,7 +12,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -68,13 +67,10 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   const articleListItemI18n = useTranslations("components.listItem.labels");
 
   // Article list ARIA
-  const ARTICLE_LIST_ITEM_I18N = useMemo(
-    () => ({
-      articleDate: articleListItemI18n("articleDate"),
-      cta: articleListItemI18n("cta"),
-    }),
-    [articleListItemI18n]
-  );
+  const ARTICLE_LIST_ITEM_I18N = {
+    articleDate: articleListItemI18n("articleDate"),
+    cta: articleListItemI18n("cta"),
+  };
 
   // Article data
   const articleData = {
