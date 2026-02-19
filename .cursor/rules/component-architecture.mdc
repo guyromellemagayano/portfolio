@@ -835,7 +835,7 @@ export function VirtualizedArticleList({
               transform: `translateY(${virtualItem.start}px)`,
             }}
           >
-            <ArticleListItem article={articles[virtualItem.index]} />
+            <ListItem.Article article={articles[virtualItem.index]} />
           </div>
         ))}
       </div>
