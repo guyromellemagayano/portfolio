@@ -92,6 +92,59 @@ import "@testing-library/jest-dom";
 
 // `IntersectionObserver` is already mocked at the top of the file
 
+// JSDOM currently does not fully implement form submission/navigation APIs.
+// Shim these methods to keep tests deterministic and avoid "Not implemented" noise.
+const submitEventInit = { bubbles: true, cancelable: true } as const;
+if (typeof HTMLFormElement !== "undefined") {
+  Object.defineProperty(HTMLFormElement.prototype, "requestSubmit", {
+    configurable: true,
+    writable: true,
+    value: function requestSubmit(this: HTMLFormElement, submitter?: unknown) {
+      if (
+        submitter &&
+        typeof (submitter as { click?: unknown }).click === "function"
+      ) {
+        (submitter as { click: () => void }).click();
+        return;
+      }
+
+      this.dispatchEvent(new Event("submit", submitEventInit));
+    },
+  });
+
+  Object.defineProperty(HTMLFormElement.prototype, "submit", {
+    configurable: true,
+    writable: true,
+    value: function submit(this: HTMLFormElement) {
+      this.dispatchEvent(new Event("submit", submitEventInit));
+    },
+  });
+}
+
+if (typeof window !== "undefined") {
+  window.addEventListener(
+    "submit",
+    (event) => {
+      event.preventDefault();
+    },
+    true
+  );
+
+  window.addEventListener(
+    "click",
+    (event) => {
+      const eventTarget = event.target;
+      if (!(eventTarget instanceof Element)) return;
+
+      const anchorElement = eventTarget.closest("a[href]");
+      if (anchorElement) {
+        event.preventDefault();
+      }
+    },
+    true
+  );
+}
+
 // Extend global interface to avoid TypeScript errors
 declare global {
   interface Global {
@@ -156,12 +209,50 @@ Object.defineProperty(globalThis.window, "getComputedStyle", {
 
 // Mock console methods to reduce noise in tests
 const originalConsole = { ...console };
+const originalStdoutWrite = process.stdout.write.bind(process.stdout);
+const originalStderrWrite = process.stderr.write.bind(process.stderr);
+const JSDOM_NOISE_MESSAGES = [
+  "Not implemented: HTMLFormElement's requestSubmit() method",
+  "Not implemented: navigation to another Document",
+];
 beforeAll(() => {
+  process.stdout.write = ((chunk: unknown, ...args: unknown[]) => {
+    const text =
+      typeof chunk === "string"
+        ? chunk
+        : Buffer.isBuffer(chunk)
+          ? chunk.toString("utf8")
+          : "";
+
+    if (JSDOM_NOISE_MESSAGES.some((message) => text.includes(message))) {
+      return true;
+    }
+
+    return (originalStdoutWrite as any)(chunk, ...args);
+  }) as typeof process.stdout.write;
+
+  process.stderr.write = ((chunk: unknown, ...args: unknown[]) => {
+    const text =
+      typeof chunk === "string"
+        ? chunk
+        : Buffer.isBuffer(chunk)
+          ? chunk.toString("utf8")
+          : "";
+
+    if (JSDOM_NOISE_MESSAGES.some((message) => text.includes(message))) {
+      return true;
+    }
+
+    return (originalStderrWrite as any)(chunk, ...args);
+  }) as typeof process.stderr.write;
+
   globalThis.global.console.warn = vi.fn();
   globalThis.global.console.error = vi.fn();
 });
 
 afterAll(() => {
+  process.stdout.write = originalStdoutWrite as typeof process.stdout.write;
+  process.stderr.write = originalStderrWrite as typeof process.stderr.write;
   globalThis.global.console.warn = originalConsole.warn;
   globalThis.global.console.error = originalConsole.error;
 });
