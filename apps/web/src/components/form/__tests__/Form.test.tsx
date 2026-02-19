@@ -45,7 +45,7 @@ vi.mock("@portfolio/utils", () => ({
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
     const translations: Record<string, any> = {
-      "form.newsletterForm": {
+      "components.form.newsletterForm": {
         heading: "Stay up to date",
         description:
           "Get notified when I publish something new, and unsubscribe at any time.",
@@ -80,7 +80,7 @@ vi.mock("@web/components/button", () => ({
   )),
 }));
 
-vi.mock("@web/components/icon/Icon", () => ({
+vi.mock("@web/components/icon", () => ({
   Icon: vi.fn(({ name, ...props }) => (
     <svg data-testid={`icon-${name}`} {...props} />
   )),
