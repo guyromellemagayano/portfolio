@@ -350,19 +350,20 @@ describe("SimpleLayout", () => {
       expect(screen.getByText("Body")).toBeInTheDocument();
     });
 
-    it("returns null when no children", () => {
-      const { container } = render(<SimpleLayout title="T" intro="I" />);
-      expect(container).toBeEmptyDOMElement();
+    it("renders heading content even when children are not provided", () => {
+      render(<SimpleLayout title="T" intro="I" />);
+      expect(screen.getByRole("heading", { name: "T" })).toBeInTheDocument();
+      expect(screen.getByText("I")).toBeInTheDocument();
     });
 
-    it("renders children in a content section", () => {
+    it("renders children outside the heading section", () => {
       render(
         <SimpleLayout title="T" intro="I">
           <span>Body</span>
         </SimpleLayout>
       );
       const content = screen.getByText("Body");
-      expect(content.closest("section")).toBeInTheDocument();
+      expect(content.closest("section")).toBeNull();
     });
   });
 
@@ -398,9 +399,7 @@ describe("SimpleLayout", () => {
         </SimpleLayout>
       );
       expect(screen.getByText("Body only")).toBeInTheDocument();
-      expect(
-        screen.getByText("Body only").closest("section")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Body only").closest("section")).toBeNull();
     });
   });
 

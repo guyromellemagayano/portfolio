@@ -174,7 +174,7 @@ describe("Footer", () => {
 
       const nav = screen.getByRole("navigation");
       const listItems = nav.querySelectorAll("li");
-      expect(listItems).toHaveLength(4);
+      expect(listItems).toHaveLength(5);
 
       // Verify each link is wrapped in a list item
       const aboutLink = screen.getByRole("link", { name: "About" });

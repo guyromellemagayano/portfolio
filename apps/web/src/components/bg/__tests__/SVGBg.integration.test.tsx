@@ -80,7 +80,7 @@ describe("SVGBg Integration Tests", () => {
 
       const root = container.querySelector("div");
       expect(root).toHaveClass("custom-bg");
-      expect(root).toHaveClass("fixed", "inset-0", "flex", "justify-center");
+      expect(root).toHaveClass("absolute", "inset-0", "flex", "justify-center");
     });
 
     it("keeps isolate wrapper and SVG hidden from accessibility tree", () => {
