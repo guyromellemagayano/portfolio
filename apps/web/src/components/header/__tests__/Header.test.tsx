@@ -18,31 +18,37 @@ import { Header } from "../Header";
 
 vi.mock("next-intl", () => ({
   useTranslations: vi.fn((namespace: string) => {
-    const translations: Record<string, Record<string, string>> = {
-      header: {
+    const translations: Record<string, any> = {
+      "components.header": {
         brandName: "Guy Romelle Magayano",
-      },
-      "header.ariaLabels": {
-        home: "Home",
-        about: "About",
-        articles: "Articles",
-        projects: "Projects",
-        uses: "Uses",
-        menu: "Menu",
-        closeMenu: "Close menu",
-        navigation: "Navigation",
-        toggleTheme: "Toggle theme",
-        lightMode: "Light mode",
-        darkMode: "Dark mode",
-        avatar: "Avatar",
-        mainNavigation: "Main navigation",
-        mobileNavigation: "Mobile navigation",
-        desktopNavigation: "Desktop navigation",
+        labels: {
+          home: "Home",
+          about: "About",
+          articles: "Articles",
+          projects: "Projects",
+          uses: "Uses",
+          contact: "Contact",
+          menu: "Menu",
+          closeMenu: "Close menu",
+          navigation: "Navigation",
+          toggleTheme: "Toggle theme",
+          lightMode: "Light mode",
+          darkMode: "Dark mode",
+          avatar: "Avatar",
+          mainNavigation: "Main navigation",
+          mobileNavigation: "Mobile navigation",
+          desktopNavigation: "Desktop navigation",
+        },
       },
     };
+
     return (key: string) => {
-      const translation = translations[namespace];
-      return translation?.[key] ?? key;
+      const keys = key.split(".");
+      let value: any = translations[namespace];
+      for (const item of keys) {
+        value = value?.[item];
+      }
+      return value ?? key;
     };
   }),
 }));
