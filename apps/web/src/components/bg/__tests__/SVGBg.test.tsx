@@ -287,7 +287,7 @@ describe("SVGBg", () => {
 
       const root = container.querySelector("div");
       expect(root).toHaveClass(
-        "fixed",
+        "absolute",
         "inset-0",
         "flex",
         "justify-center",
