@@ -11,7 +11,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -63,12 +62,9 @@ export function ResumeDownloadButton<P extends Record<string, unknown> = {}>(
   const resumeI18n = useTranslations("components.resume");
 
   // Resume download button ARIA
-  const RESUME_DOWNLOAD_BUTTON_I18N = useMemo(
-    () => ({
-      downloadCV: resumeI18n("labels.downloadCV"),
-    }),
-    [resumeI18n]
-  );
+  const RESUME_DOWNLOAD_BUTTON_I18N = {
+    downloadCV: resumeI18n("labels.downloadCV"),
+  };
 
   return (
     <Component
@@ -143,14 +139,11 @@ export function ResumeRoleListItem<P extends Record<string, unknown> = {}>(
   const resumeI18n = useTranslations("components.resume");
 
   // Resume role list item ARIA
-  const RESUME_ROLE_LIST_ITEM_I18N = useMemo(
-    () => ({
-      company: resumeI18n("labels.company"),
-      role: resumeI18n("labels.role"),
-      date: resumeI18n("labels.date"),
-    }),
-    [resumeI18n]
-  );
+  const RESUME_ROLE_LIST_ITEM_I18N = {
+    company: resumeI18n("labels.company"),
+    role: resumeI18n("labels.role"),
+    date: resumeI18n("labels.date"),
+  };
 
   const { label: startLabel, dateTime: startDate } = parseRoleDate(
     roleData.start
@@ -217,12 +210,9 @@ export function ResumeTitle<P extends Record<string, unknown> = {}>(
   const resumeI18n = useTranslations("components.resume");
 
   // Resume title ARIA
-  const RESUME_TITLE_I18N = useMemo(
-    () => ({
-      work: resumeI18n("labels.work"),
-    }),
-    [resumeI18n]
-  );
+  const RESUME_TITLE_I18N = {
+    work: resumeI18n("labels.work"),
+  };
 
   return (
     <Component

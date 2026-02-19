@@ -6,7 +6,7 @@
 
 "use client";
 
-import { type ComponentPropsWithoutRef, type ReactNode, useMemo } from "react";
+import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 import * as Headless from "@headlessui/react";
 import { useTranslations } from "next-intl";
@@ -130,10 +130,7 @@ export function SkipToMainContentButton<P extends Record<string, unknown> = {}>(
   const buttonI18n = useTranslations("components.layout");
 
   // Skip to main content ARIA
-  const skipToMainContent = useMemo(
-    () => buttonI18n("labels.skipToMainContent"),
-    [buttonI18n]
-  );
+  const skipToMainContent = buttonI18n("labels.skipToMainContent");
 
   return (
     <Component
