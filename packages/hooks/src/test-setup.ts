@@ -1,5 +1,7 @@
 import { beforeEach, vi } from "vitest";
 
+const loggerInfoMock = vi.fn();
+
 // Mock React for testing
 vi.mock("react", () => ({
   default: {
@@ -12,7 +14,10 @@ vi.mock("react", () => ({
 
 // Mock the logger
 vi.mock("@portfolio/logger", () => ({
-  logInfo: vi.fn(),
+  default: {
+    info: loggerInfoMock,
+  },
+  logInfo: loggerInfoMock,
 }));
 
 // Mock environment for debug mode testing
