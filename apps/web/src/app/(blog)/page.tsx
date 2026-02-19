@@ -15,8 +15,8 @@ import { Container } from "@web/components/container";
 import { SimpleLayout } from "@web/components/layout";
 import { SocialLink } from "@web/components/link";
 import {
-  ArticleList,
-  ArticleListItem,
+  List,
+  ListItem,
   SocialList,
   SocialListItem,
 } from "@web/components/list";
@@ -121,14 +121,14 @@ export default async function HomePage() {
       <PhotoGallery />
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <ArticleList className="flex flex-col gap-16 border-none!">
+          <List.Article className="flex flex-col gap-16 border-none!">
             {articles?.map((article, index) => (
-              <ArticleListItem
+              <ListItem.Article
                 key={`${article.slug}-${index}`}
                 article={article}
               />
             ))}
-          </ArticleList>
+          </List.Article>
           <div className="space-y-10 lg:pl-16 xl:pl-24"></div>
         </div>
       </Container>
