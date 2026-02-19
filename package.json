@@ -32,7 +32,6 @@
     "prepare": "husky",
     "release": "pnpm build:packages && pnpm changeset:publish",
     "sort-package-json": "sort-package-json",
-    "sort-package-json:all": "pnpm -r exec sort-package-json",
     "test": "turbo run test",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
