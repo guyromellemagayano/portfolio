@@ -3,7 +3,7 @@
  * Use this preset for testing React components with full DOM and testing library support
  * Includes centralized mocks and logger integration
  */
-const reactPreset = {
+export const reactPreset = {
   test: {
     environment: "jsdom",
     setupFiles: ["@portfolio/vitest-presets/shared/test-setup.ts"],
