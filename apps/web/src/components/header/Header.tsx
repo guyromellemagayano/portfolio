@@ -8,7 +8,7 @@
 
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import {
   Popover,
@@ -77,13 +77,10 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
   const headerI18n = useTranslations("components.header");
 
   // Header avatar ARIA
-  const HEADER_AVATAR_I18N = useMemo(
-    () => ({
-      home: headerI18n("labels.home"),
-      brandName: headerI18n("brandName"),
-    }),
-    [headerI18n]
-  );
+  const HEADER_AVATAR_I18N = {
+    home: headerI18n("labels.home"),
+    brandName: headerI18n("brandName"),
+  };
 
   const linkHref = href && isValidLink(href) ? href : AVATAR_LINK_HREF;
   const linkTitle = title && title.length > 0 ? title : HEADER_AVATAR_I18N.home;
@@ -167,12 +164,9 @@ function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
   const headerI18n = useTranslations("components.header");
 
   // Header desktop navigation ARIA
-  const HEADER_DESKTOP_NAV_I18N = useMemo(
-    () => ({
-      desktopNavigation: headerI18n("labels.desktopNavigation"),
-    }),
-    [headerI18n]
-  );
+  const HEADER_DESKTOP_NAV_I18N = {
+    desktopNavigation: headerI18n("labels.desktopNavigation"),
+  };
 
   const navConfig = HEADER_NAV_LINK_CONFIG;
   const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
@@ -282,14 +276,11 @@ function HeaderMobileNav<P extends Record<string, unknown> = {}>(
   const headerI18n = useTranslations("components.header");
 
   // Header mobile navigation ARIA
-  const HEADER_MOBILE_NAV_I18N = useMemo(
-    () => ({
-      menu: headerI18n("labels.menu"),
-      closeMenu: headerI18n("labels.closeMenu"),
-      mobileNavigation: headerI18n("labels.mobileNavigation"),
-    }),
-    [headerI18n]
-  );
+  const HEADER_MOBILE_NAV_I18N = {
+    menu: headerI18n("labels.menu"),
+    closeMenu: headerI18n("labels.closeMenu"),
+    mobileNavigation: headerI18n("labels.mobileNavigation"),
+  };
 
   const navConfig = HEADER_NAV_LINK_CONFIG;
   const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
@@ -438,14 +429,11 @@ function HeaderThemeToggle<P extends Record<string, unknown> = {}>(
   const headerI18n = useTranslations("components.header");
 
   // Header theme toggle ARIA
-  const HEADER_THEME_TOGGLE_I18N = useMemo(
-    () => ({
-      toggleTheme: headerI18n("labels.toggleTheme"),
-      darkMode: headerI18n("labels.darkMode"),
-      lightMode: headerI18n("labels.lightMode"),
-    }),
-    [headerI18n]
-  );
+  const HEADER_THEME_TOGGLE_I18N = {
+    toggleTheme: headerI18n("labels.toggleTheme"),
+    darkMode: headerI18n("labels.darkMode"),
+    lightMode: headerI18n("labels.lightMode"),
+  };
 
   const ariaLabel = mounted
     ? `Switch to ${otherTheme === "dark" ? HEADER_THEME_TOGGLE_I18N.darkMode : HEADER_THEME_TOGGLE_I18N.lightMode}`
@@ -496,12 +484,9 @@ export function Header<P extends Record<string, unknown> = {}>(
   const headerI18n = useTranslations("components.header");
 
   // Header ARIA
-  const HEADER_I18N = useMemo(
-    () => ({
-      brandName: headerI18n("brandName"),
-    }),
-    [headerI18n]
-  );
+  const HEADER_I18N = {
+    brandName: headerI18n("brandName"),
+  };
 
   const isHomePage: boolean = usePathname() === AVATAR_LINK_HREF;
 
