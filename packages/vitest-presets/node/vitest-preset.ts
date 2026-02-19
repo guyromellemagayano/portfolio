@@ -3,7 +3,7 @@
  * Use this preset for testing Node.js APIs, utilities, and server-side code
  * Includes centralized mocks and logger integration
  */
-const nodePreset = {
+export const nodePreset = {
   test: {
     environment: "node",
     setupFiles: ["@portfolio/vitest-presets/shared/test-setup.ts"],
