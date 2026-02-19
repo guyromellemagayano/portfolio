@@ -63,24 +63,21 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
   // Internationalization
   const t = useTranslations("components.article");
 
-  const ARTICLE_SEARCH_I18N = useMemo(
-    () => ({
-      cta: t("cta"),
-      searchArticles: t("search.labels.searchArticles"),
-      noArticlesFound: t("search.labels.noArticlesFound"),
-      tryDifferentSearchTerm: t("search.labels.tryDifferentSearchTerm"),
-      showingAllArticles: t("search.labels.showingAllArticles", {
-        count: searchResults.length,
-      }),
-      foundResults: t("search.labels.foundResults", {
-        count: results.length,
-        query: searchQuery.trim(),
-      }),
-      searchLandmark: t("search.labels.searchLandmark"),
-      resultsRegion: t("search.labels.resultsRegion"),
+  const ARTICLE_SEARCH_I18N = {
+    cta: t("cta"),
+    searchArticles: t("search.labels.searchArticles"),
+    noArticlesFound: t("search.labels.noArticlesFound"),
+    tryDifferentSearchTerm: t("search.labels.tryDifferentSearchTerm"),
+    showingAllArticles: t("search.labels.showingAllArticles", {
+      count: searchResults.length,
     }),
-    [t, results.length, searchQuery, searchResults.length]
-  );
+    foundResults: t("search.labels.foundResults", {
+      count: results.length,
+      query: searchQuery.trim(),
+    }),
+    searchLandmark: t("search.labels.searchLandmark"),
+    resultsRegion: t("search.labels.resultsRegion"),
+  };
 
   return (
     <Component {...(rest as ComponentPropsWithRef<ArticleSearchElementType>)}>

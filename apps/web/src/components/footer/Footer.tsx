@@ -11,7 +11,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -53,17 +52,14 @@ function FooterNavigation<P extends Record<string, unknown> = {}>(
   const footerI18n = useTranslations("components.footer");
 
   // Footer navigation ARIA label and default nav links
-  const FOOTER_I18N = useMemo(
-    () => ({
-      footerNavigation: footerI18n("labels.navigation"),
-      defaultNavLinks: FOOTER_NAV_LINK_CONFIG.map((link) => ({
-        kind: link.kind,
-        label: footerI18n(`navigation.${link.labelKey}`),
-        href: link.href,
-      })),
-    }),
-    [footerI18n]
-  );
+  const FOOTER_I18N = {
+    footerNavigation: footerI18n("labels.navigation"),
+    defaultNavLinks: FOOTER_NAV_LINK_CONFIG.map((link) => ({
+      kind: link.kind,
+      label: footerI18n(`navigation.${link.labelKey}`),
+      href: link.href,
+    })),
+  };
 
   const linksToUse = FOOTER_I18N.defaultNavLinks;
   const validNavLinks = filterValidNavigationLinks(linksToUse);
@@ -140,12 +136,9 @@ function FooterLegal<P extends Record<string, unknown> = {}>(
   });
 
   // Footer legal text and copyright text
-  const FOOTER_I18N = useMemo(
-    () => ({
-      legalText,
-    }),
-    [legalText]
-  );
+  const FOOTER_I18N = {
+    legalText,
+  };
 
   if (!FOOTER_I18N.legalText) return null;
 
@@ -186,12 +179,9 @@ export function Footer<P extends Record<string, unknown> = {}>(
   const footerI18n = useTranslations("components.footer");
 
   // Footer ARIA label and default nav links
-  const FOOTER_I18N = useMemo(
-    () => ({
-      footerAriaLabel: footerI18n("labels.footer"),
-    }),
-    [footerI18n]
-  );
+  const FOOTER_I18N = {
+    footerAriaLabel: footerI18n("labels.footer"),
+  };
 
   return (
     <Component
