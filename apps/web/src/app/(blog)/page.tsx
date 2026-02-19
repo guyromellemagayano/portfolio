@@ -15,8 +15,8 @@ import { Container } from "@web/components/container";
 import { SimpleLayout } from "@web/components/layout";
 import { SocialLink } from "@web/components/link";
 import {
-  List,
-  ListItem,
+  ArticleList,
+  ArticleListItem,
   SocialList,
   SocialListItem,
 } from "@web/components/list";
@@ -34,6 +34,16 @@ const HOME_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
   intro:
     "I’m Spencer, a software designer and entrepreneur based in New York City. I’m the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms.",
 };
+
+const List = {
+  Article: ArticleList,
+  Social: SocialList,
+} as const;
+
+const ListItem = {
+  Article: ArticleListItem,
+  Social: SocialListItem,
+} as const;
 
 export const metadata: Metadata = {
   title: {
@@ -104,31 +114,31 @@ export default async function HomePage() {
     <>
       <SimpleLayout {...pageI18n} className="mt-9">
         {SOCIAL_LIST_COMPONENT_LABELS?.length > 0 ? (
-          <SocialList className="mt-6 flex gap-6">
+          <List.Social className="mt-6 flex gap-6">
             {SOCIAL_LIST_COMPONENT_LABELS.filter(
               ({ icon }) => icon !== "mail"
             ).map((value, index) => (
-              <SocialListItem
+              <ListItem.Social
                 key={`${value.icon}-${index}`}
                 className="group -m-1 p-1"
               >
                 <SocialLink {...value} />
-              </SocialListItem>
+              </ListItem.Social>
             ))}
-          </SocialList>
+          </List.Social>
         ) : null}
       </SimpleLayout>
       <PhotoGallery />
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <List.Article className="flex flex-col gap-16 border-none!">
+          <ArticleList className="flex flex-col gap-16 border-none!">
             {articles?.map((article, index) => (
-              <ListItem.Article
+              <ArticleListItem
                 key={`${article.slug}-${index}`}
                 article={article}
               />
             ))}
-          </List.Article>
+          </ArticleList>
           <div className="space-y-10 lg:pl-16 xl:pl-24"></div>
         </div>
       </Container>
