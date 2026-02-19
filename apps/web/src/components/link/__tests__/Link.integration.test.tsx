@@ -340,8 +340,7 @@ describe("Link Integration Tests", () => {
         </Link.Social>
       );
       const link = container.querySelector("a");
-      expect(link).toBeInTheDocument();
-      expect(link).toHaveAttribute("href", "#");
+      expect(link).toBeNull();
     });
 
     it("handles social link with all optional props", () => {

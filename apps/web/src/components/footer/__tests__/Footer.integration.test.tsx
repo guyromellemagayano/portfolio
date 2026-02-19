@@ -22,6 +22,7 @@ vi.mock("next-intl", () => ({
       "navigation.articles": "Articles",
       "navigation.projects": "Projects",
       "navigation.uses": "Uses",
+      "navigation.contact": "Contact",
       "labels.navigation": "Footer navigation",
       "labels.footer": "Site footer",
       brandName: "Guy Romelle Magayano",
@@ -171,7 +172,7 @@ describe("Footer Integration Tests", () => {
       expect(navigation).toBeInTheDocument();
 
       const links = navigation.querySelectorAll("a");
-      expect(links).toHaveLength(4);
+      expect(links).toHaveLength(5);
 
       expect(links[0]).toHaveTextContent("About");
       expect(links[0]).toHaveAttribute("href", "/about");
@@ -181,6 +182,8 @@ describe("Footer Integration Tests", () => {
       expect(links[2]).toHaveAttribute("href", "/projects");
       expect(links[3]).toHaveTextContent("Uses");
       expect(links[3]).toHaveAttribute("href", "/uses");
+      expect(links[4]).toHaveTextContent("Contact");
+      expect(links[4]).toHaveAttribute("href", "/contact");
     });
   });
 
