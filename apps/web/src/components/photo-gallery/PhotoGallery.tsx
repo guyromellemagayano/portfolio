@@ -11,7 +11,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -51,13 +50,10 @@ export function PhotoGallery<P extends Record<string, unknown> = {}>(
   const photoGalleryI18n = useTranslations("components.photoGallery.labels");
 
   // Photo gallery ARIA labels
-  const PHOTO_GALLERY_I18N = useMemo(
-    () => ({
-      photoGallery: photoGalleryI18n("photoGallery"),
-      photoGalleryImages: photoGalleryI18n("photoGalleryImages"),
-    }),
-    [photoGalleryI18n]
-  );
+  const PHOTO_GALLERY_I18N = {
+    photoGallery: photoGalleryI18n("photoGallery"),
+    photoGalleryImages: photoGalleryI18n("photoGalleryImages"),
+  };
 
   const galleryAriaLabel = ariaLabel || PHOTO_GALLERY_I18N.photoGallery;
   const imagesAriaLabel = ariaLabel

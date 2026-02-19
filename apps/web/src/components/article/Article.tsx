@@ -8,8 +8,9 @@
 
 import { type ComponentPropsWithRef, useId, useMemo } from "react";
 
-import { formatDateSafely } from "@portfolio/utils";
 import { useTranslations } from "next-intl";
+
+import { formatDateSafely } from "@portfolio/utils";
 
 import { type ArticleWithSlug } from "@web/utils/articles";
 
@@ -39,13 +40,10 @@ export function Article<P extends Record<string, unknown> = {}>(
   const articleI18n = useTranslations("components.article");
 
   // Article labels
-  const ARTICLE_I18N = useMemo(
-    () => ({
-      articleDate: articleI18n("articleDate"),
-      cta: articleI18n("cta"),
-    }),
-    [articleI18n]
-  );
+  const ARTICLE_I18N = {
+    articleDate: articleI18n("articleDate"),
+    cta: articleI18n("cta"),
+  };
 
   // Article data object
   const articleData = useMemo(() => {

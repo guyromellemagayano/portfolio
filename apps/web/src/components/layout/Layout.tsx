@@ -12,7 +12,6 @@ import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
   useId,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -160,13 +159,10 @@ export function ArticleLayout<P extends Record<string, unknown> = {}>(
   const articleLayoutI18n = useTranslations("components.layout");
 
   // Article layout ARIA and labels
-  const ARTICLE_LAYOUT_I18N = useMemo(
-    () => ({
-      goBackToArticles: articleLayoutI18n("labels.goBackToArticles"),
-      articleDate: articleLayoutI18n("labels.articleDate"),
-    }),
-    [articleLayoutI18n]
-  );
+  const ARTICLE_LAYOUT_I18N = {
+    goBackToArticles: articleLayoutI18n("labels.goBackToArticles"),
+    articleDate: articleLayoutI18n("labels.articleDate"),
+  };
 
   // Generate unique IDs for ARIA relationships
   const baseId = useId().replace(/:/g, "");
