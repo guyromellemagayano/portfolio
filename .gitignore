@@ -2,6 +2,7 @@
 node_modules/
 .pnp
 .pnp.js
+.yarn/
 .npm-cache/
 .pnpm-store/
 node_modules/.cache/turbo
