@@ -13,14 +13,12 @@ export default defineConfig({
 
     // Ultra-lightweight settings with enhanced isolation
     pool: "threads",
-    poolOptions: {
-      threads: {
-        singleThread: true,
-        isolate: true, // Enable isolation to prevent test pollution
-        useAtomics: false,
-        minThreads: 1,
-        maxThreads: 1,
-      },
+    threads: {
+      singleThread: true,
+      isolate: true, // Enable isolation to prevent test pollution
+      useAtomics: false,
+      minThreads: 1,
+      maxThreads: 1,
     },
 
     // Minimal concurrency

@@ -9,11 +9,9 @@ export default defineConfig({
 
     // Memory optimization settings
     pool: "threads",
-    poolOptions: {
-      threads: {
-        singleThread: true, // Use single thread to reduce memory usage
-        isolate: false, // Reduce isolation overhead
-      },
+    threads: {
+      singleThread: true, // Use single thread to reduce memory usage
+      isolate: false, // Reduce isolation overhead
     },
 
     // Aggressive memory management
