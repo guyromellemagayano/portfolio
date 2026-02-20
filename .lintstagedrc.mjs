@@ -51,17 +51,24 @@ function lintAndFormatWorkspaceFiles(filenames) {
   ];
 }
 
+function formatNonPackageJsonFiles(filenames) {
+  const nonPackageJsonFiles = filenames.filter(
+    (file) => path.basename(file) !== "package.json"
+  );
+  return buildPrettierCommand(nonPackageJsonFiles);
+}
+
 /** @type {import("lint-staged").Configuration} */
 const config = {
   "{apps,packages}/**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}":
     lintAndFormatWorkspaceFiles,
   "{apps,packages}/**/*.{css,scss}": ["stylelint --fix", "prettier --write"],
   "*.{js,mjs,cjs}": ["prettier --write"],
-  "*.{json,jsonc}": ["prettier --write"],
+  "*.{json,jsonc}": formatNonPackageJsonFiles,
   "*.{yaml,yml}": ["prettier --write"],
   "*.md": ["prettier --write"],
   "*.py": ["ruff check --fix", "ruff format"],
-  "**/package.json": ["sort-package-json"],
+  "{package.json,**/package.json}": ["prettier --write"],
 };
 
 export default config;
