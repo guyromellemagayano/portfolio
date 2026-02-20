@@ -4,10 +4,8 @@
 
 Full stack developer, open-source enthusiast, and a minimalist.
 
-[![Release & Publish](https://github.com/guyromellemagayano/portfolio/actions/workflows/release.yml/badge.svg?branch=main)](https://github.com/guyromellemagayano/portfolio/actions/workflows/release.yml)
 [![E2E Tests](https://github.com/guyromellemagayano/portfolio/actions/workflows/e2e.yml/badge.svg?branch=main)](https://github.com/guyromellemagayano/portfolio/actions/workflows/e2e.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot&logoColor=white)](https://github.com/guyromellemagayano/portfolio/security/dependabot)
-[![Changesets](https://img.shields.io/badge/changesets-enabled-5B3DF5?logo=changesets&logoColor=white)](https://github.com/changesets/changesets)
 [![Husky](https://img.shields.io/badge/husky-enabled-4A4A55?logo=git&logoColor=white)](https://typicode.github.io/husky/)
 [![Commitlint](https://img.shields.io/badge/commitlint-conventional-000000?logo=commitlint&logoColor=white)](https://commitlint.js.org/)
 [![pnpm](https://img.shields.io/npm/v/pnpm?label=pnpm&logo=pnpm&color=F69220)](https://pnpm.io/)
@@ -137,32 +135,12 @@ Vitest coverage thresholds come from `packages/vitest-presets`:
 
 Coverage reporters: `text`, `json`, `html`, `lcov`, `clover`.
 
-### Releases and Publishing
-
-Release automation uses Changesets in `.github/workflows/release.yml`.
-
-On `main`:
-
-1. if `NPM_TOKEN` is missing, CI creates/updates a release PR
-2. if `NPM_TOKEN` is present, CI publishes `@portfolio/*` packages to GitHub Packages
-
-Local release commands:
-
-```bash
-pnpm changeset
-pnpm version-packages
-pnpm release
-```
-
 ### CI Workflows
 
 - `E2E` (`.github/workflows/e2e.yml`)
   - runs on PRs to `main`
   - runs smoke suite by default
   - supports manual smoke/full dispatch
-- `Release & Publish` (`.github/workflows/release.yml`)
-  - runs on push to `main`
-  - builds packages, runs package tests, then opens release PR or publishes
 
 ### Dependency Updates
 
