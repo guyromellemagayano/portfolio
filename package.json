@@ -9,10 +9,6 @@
   "scripts": {
     "build": "turbo run build",
     "build:packages": "pnpm build --filter=\"@portfolio/*\"",
-    "changeset": "changeset",
-    "changeset:publish": "changeset publish",
-    "changeset:status": "changeset status",
-    "changeset:version": "changeset version",
     "check-types": "turbo run check-types",
     "clean": "turbo run clean",
     "commit": "NPM_CONFIG_LOGLEVEL=error czg gpg",
@@ -30,8 +26,6 @@
     "pcu:security:fix": "pnpm run pcu:security --fix-vulns",
     "pcu:update": "pnpm run pcu update",
     "prepare": "husky",
-    "release": "pnpm build:packages && pnpm changeset:publish",
-    "sort-package-json": "sort-package-json",
     "test": "turbo run test",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
@@ -49,18 +43,15 @@
     "test:run": "turbo run test:run",
     "test:run:coverage": "turbo run test:run:coverage",
     "test:ui": "turbo run test:ui",
-    "test:watch": "turbo run test --parallel",
-    "version-packages": "changeset version && pnpm install --lockfile-only"
+    "test:watch": "turbo run test --parallel"
   },
   "dependencies": {
     "pnpm-catalog-updates": "catalog:"
   },
   "devDependencies": {
-    "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@commitlint/types": "catalog:",
-    "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
     "@portfolio/vitest-presets": "workspace:*",
@@ -79,7 +70,6 @@
     "prettier-plugin-tailwindcss": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "sort-package-json": "catalog:",
     "stylelint": "catalog:",
     "stylelint-config-standard": "catalog:",
     "tailwindcss": "catalog:",
