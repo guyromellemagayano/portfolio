@@ -9,9 +9,9 @@
 "use client";
 
 import {
+  useId,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useId,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -23,10 +23,9 @@ import { Container } from "@web/components/container";
 import { Footer } from "@web/components/footer";
 import { Header } from "@web/components/header";
 import { Icon } from "@web/components/icon";
-import { type CommonLayoutComponentData } from "@web/data/page";
-
 import { Prose } from "@web/components/prose";
 import { Heading, Lead, SubHeading } from "@web/components/text";
+import { type CommonLayoutComponentData } from "@web/data/page";
 import { type ArticleWithSlug } from "@web/utils/articles";
 import { setCustomDateFormat } from "@web/utils/datetime";
 import { cn } from "@web/utils/helpers";

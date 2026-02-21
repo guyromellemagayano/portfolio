@@ -54,7 +54,9 @@ describe("Icon Integration Tests", () => {
     });
 
     it("renders GitHub icon with name prop and dimensions", () => {
-      const { container } = render(<Icon name="github" width="32" height="32" />);
+      const { container } = render(
+        <Icon name="github" width="32" height="32" />
+      );
       const icon = container.querySelector("svg");
       expect(icon).toBeInTheDocument();
       expect(icon).toHaveAttribute("width", "32");
