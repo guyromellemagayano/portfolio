@@ -1,103 +1,205 @@
-import React from "react";
+/* eslint-disable simple-import-sort/imports */
 
-import { type CommonComponentProps } from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
-import { setDisplayName } from "@guyromellemagayano/utils";
+/**
+ * @file Footer.tsx
+ * @author Guy Romelle Magayano
+ * @description Footer component for the website.
+ */
 
-import { Container } from "@web/components/container";
-import { cn } from "@web/lib";
+"use client";
 
 import {
-  FOOTER_COMPONENT_LABELS,
-  FOOTER_COMPONENT_NAV_LINKS,
-  FooterComponentLabels,
-} from "./_data";
-import { FooterLegal, FooterNavigation } from "./_internal";
-import styles from "./Footer.module.css";
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
+
+import { useTranslations } from "next-intl";
+import Link from "next/link";
+
+import {
+  filterValidNavigationLinks,
+  formatDateSafely,
+  getLinkTargetProps,
+  hasValidNavigationLinks,
+} from "@portfolio/utils";
+
+import { Container } from "@web/components/container";
+import {
+  FOOTER_NAV_LINK_CONFIG,
+  FooterData,
+  type FooterLink,
+} from "@web/config/footer";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
-// BASE FOOTER COMPONENT
+// FOOTER NAVIGATION COMPONENT
 // ============================================================================
 
-interface FooterProps
-  extends Omit<React.ComponentProps<"footer">, "children">,
-    FooterComponentLabels,
-    CommonComponentProps {}
-type FooterComponent = React.FC<FooterProps>;
+export type FooterNavigationElementType = "nav";
+export type FooterNavigationProps<P extends Record<string, unknown> = {}> =
+  Omit<ComponentPropsWithRef<FooterNavigationElementType>, "as"> &
+    P & {
+      as?: FooterNavigationElementType;
+    };
 
-/** A base footer component (client, minimal effects split out). */
-const BaseFooter: FooterComponent = setDisplayName(function BaseFooter(props) {
-  const {
-    className,
-    internalId,
-    debugMode,
-    navLinks = FOOTER_COMPONENT_NAV_LINKS,
-    legalText = FOOTER_COMPONENT_LABELS.legalText,
-    ...rest
-  } = props;
+function FooterNavigation<P extends Record<string, unknown> = {}>(
+  props: FooterNavigationProps<P>
+) {
+  const { as: Component = "nav", className, ...rest } = props;
 
-  const element = (
-    <footer
-      {...rest}
-      className={cn(styles.footerComponent, className)}
-      data-footer-id={`${internalId}-footer`}
-      data-debug-mode={debugMode ? "true" : undefined}
-      data-testid="footer-root"
+  // Internationalization
+  const footerI18n = useTranslations("components.footer");
+
+  // Footer navigation ARIA label and default nav links
+  const FOOTER_I18N = {
+    footerNavigation: footerI18n("labels.navigation"),
+    defaultNavLinks: FOOTER_NAV_LINK_CONFIG.map((link) => ({
+      kind: link.kind,
+      label: footerI18n(`navigation.${link.labelKey}`),
+      href: link.href,
+    })),
+  };
+
+  const linksToUse = FOOTER_I18N.defaultNavLinks;
+  const validNavLinks = filterValidNavigationLinks(linksToUse);
+
+  if (!hasValidNavigationLinks(validNavLinks)) return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithRef<FooterNavigationElementType>)}
+      aria-label={FOOTER_I18N.footerNavigation}
+      className={cn(
+        "flex list-none flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200",
+        className
+      )}
     >
-      <Container.Outer>
-        <div className={styles.footerContentWrapper}>
-          <Container.Inner>
-            <div className={styles.footerLayout}>
-              <FooterNavigation navLinks={navLinks} />
-              <FooterLegal legalText={legalText} />
-            </div>
-          </Container.Inner>
-        </div>
-      </Container.Outer>
-    </footer>
+      {validNavLinks.map(({ kind, label, href }) => {
+        const isExternal = kind !== "internal";
+        const hrefString = isExternal ? href : href?.toString() || "";
+        const hasLabelandLink =
+          typeof label === "string" &&
+          label.length > 0 &&
+          hrefString.length > 0;
+
+        const targetProps = getLinkTargetProps(
+          hrefString,
+          isExternal ? "_blank" : "_self"
+        );
+
+        if (!hasLabelandLink) return null;
+
+        return (
+          <li key={`${kind}-${label}-${hrefString}`}>
+            <Link
+              {...targetProps}
+              href={hrefString}
+              className="transition hover:text-gray-500 dark:hover:text-gray-400"
+            >
+              {label}
+            </Link>
+          </li>
+        );
+      })}
+    </Component>
   );
+}
 
-  return element;
-});
+FooterNavigation.displayName = "FooterNavigation";
 
 // ============================================================================
-// MEMOIZED FOOTER COMPONENT
+// FOOTER LEGAL COMPONENT
 // ============================================================================
 
-/** A memoized footer component. */
-const MemoizedFooter = React.memo(BaseFooter);
+export type FooterLegalElementType = "p";
+export type FooterLegalProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<FooterLegalElementType>,
+  "as"
+> &
+  P & {
+    as?: FooterLegalElementType;
+  };
+
+function FooterLegal<P extends Record<string, unknown> = {}>(
+  props: FooterLegalProps<P>
+) {
+  const { as: Component = "p", className, ...rest } = props;
+
+  // Internationalization
+  const footerI18n = useTranslations("components.footer");
+  const brandName = footerI18n("brandName");
+  const currentYear = formatDateSafely(new Date(), { year: "numeric" });
+  const legalText = footerI18n("legal.copyright", {
+    year: currentYear,
+    brandName: brandName.trim(),
+  });
+
+  // Footer legal text and copyright text
+  const FOOTER_I18N = {
+    legalText,
+  };
+
+  if (!FOOTER_I18N.legalText) return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithRef<FooterLegalElementType>)}
+      className={cn("text-sm text-zinc-400 dark:text-zinc-500", className)}
+    >
+      {FOOTER_I18N.legalText}
+    </Component>
+  );
+}
+
+FooterLegal.displayName = "FooterLegal";
 
 // ============================================================================
 // MAIN FOOTER COMPONENT
 // ============================================================================
 
-/** The main footer component for the application. */
-const Footer: FooterComponent = setDisplayName(function Footer(props) {
-  const {
-    isMemoized = false,
-    internalId,
-    debugMode,
-    navLinks = FOOTER_COMPONENT_NAV_LINKS,
-    legalText = FOOTER_COMPONENT_LABELS.legalText,
-    ...rest
-  } = props;
-
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
-
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-    navLinks,
-    legalText,
+export type FooterElementType = "footer";
+export type FooterProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<FooterElementType>,
+  "as"
+> &
+  P & {
+    as?: FooterElementType;
+    data?: FooterData;
+    navLinks?: ReadonlyArray<FooterLink>;
+    legalText?: string;
   };
 
-  const Component = isMemoized ? MemoizedFooter : BaseFooter;
-  const element = <Component {...updatedProps} />;
-  return element;
-});
+export function Footer<P extends Record<string, unknown> = {}>(
+  props: FooterProps<P>
+) {
+  const { as: Component = "footer", className, ...rest } = props;
 
-export { Footer };
+  // Internationalization
+  const footerI18n = useTranslations("components.footer");
+
+  // Footer ARIA label and default nav links
+  const FOOTER_I18N = {
+    footerAriaLabel: footerI18n("labels.footer"),
+  };
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<FooterElementType>)}
+      aria-label={FOOTER_I18N.footerAriaLabel}
+      className={cn("mt-32 flex-none", className)}
+    >
+      <Container.Outer>
+        <div className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40">
+          <Container.Inner>
+            <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+              <FooterNavigation />
+              <FooterLegal />
+            </div>
+          </Container.Inner>
+        </div>
+      </Container.Outer>
+    </Component>
+  );
+}
+
+Footer.displayName = "Footer";

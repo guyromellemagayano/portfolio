@@ -1,69 +1,166 @@
-import React from "react";
+/**
+ * @file Section.tsx
+ * @author Guy Romelle Magayano
+ * @description Section component for the web application.
+ */
 
 import {
-  Div,
-  Heading,
-  Section as GRMSectionComponent,
-  type SectionProps as SectionComponentProps,
-  type SectionRef as SectionComponentRef,
-} from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
+  useId,
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils/helpers";
 
-import styles from "./Section.module.css";
+// ============================================================================
+// SECTION TITLE COMPONENT
+// ============================================================================
 
-type SectionRef = SectionComponentRef;
-interface SectionProps
-  extends SectionComponentProps,
-    CommonWebAppComponentProps {}
+export type SectionTitleElementType = "h2" | "h3";
+export type SectionTitleProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<SectionTitleElementType>,
+  "as"
+> &
+  P & {
+    as?: SectionTitleElementType;
+  };
 
-type SectionComponent = React.ForwardRefExoticComponent<
-  SectionProps & React.RefAttributes<SectionRef>
->;
+function SectionTitle<P extends Record<string, unknown> = {}>(
+  props: SectionTitleProps<P>
+) {
+  const { as: Component = "h2", className, children, ...rest } = props;
 
-/** A layout section component with optional title and content, styled for web app usage. */
-export const Section: SectionComponent = React.forwardRef(
-  function Section(props, ref) {
-    const { title, children, className, _internalId, _debugMode, ...rest } =
-      props;
+  if (!children) return null;
 
-    // Use shared hook for ID generation and debug logging
-    // Component name will be auto-detected from export const declaration
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<SectionTitleElementType>)}
+      className={cn(
+        "text-sm font-semibold text-zinc-800 dark:text-zinc-100",
+        className
+      )}
+    >
+      {children}
+    </Component>
+  );
+}
 
-    // If there is no title or children, return null
-    if (!title && !children) return null;
+SectionTitle.displayName = "SectionTitle";
 
-    // Render the section with the provided title and children
-    const element = (
-      <GRMSectionComponent
-        {...rest}
-        ref={ref}
-        aria-labelledby={id}
-        className={cn(styles.section, className)}
-        data-section-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-        data-testid="section-root"
-      >
-        <Div className={styles.sectionGrid}>
-          {title && (
-            <Heading as="h2" id={id} className={styles.sectionTitle}>
-              {title}
-            </Heading>
-          )}
+// ============================================================================
+// SECTION CONTENT COMPONENT
+// ============================================================================
 
-          {children && <Div className={styles.sectionContent}>{children}</Div>}
-        </Div>
-      </GRMSectionComponent>
-    );
+export type SectionContentElementType = "div" | "section" | "article";
+export type SectionContentProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<SectionContentElementType>,
+  "as"
+> &
+  P & {
+    as?: SectionContentElementType;
+  };
 
-    return element;
+function SectionContent<P extends Record<string, unknown> = {}>(
+  props: SectionContentProps<P>
+) {
+  const { as: Component = "div", className, children, ...rest } = props;
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<SectionContentElementType>)}
+      className={cn("md:col-span-3", className)}
+    >
+      {children}
+    </Component>
+  );
+}
+
+SectionContent.displayName = "SectionContent";
+
+// ============================================================================
+// SECTION GRID COMPONENT
+// ============================================================================
+
+export type SectionGridElementType = "div" | "section" | "article";
+export type SectionGridProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<SectionGridElementType>,
+  "as"
+> &
+  P & {
+    as?: SectionGridElementType;
+  };
+
+function SectionGrid<P extends Record<string, unknown> = {}>(
+  props: SectionGridProps<P>
+) {
+  const { as: Component = "div", className, children, ...rest } = props;
+
+  if (!children) return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<SectionGridElementType>)}
+      className={cn(
+        "grid max-w-3xl grid-cols-1 items-baseline gap-y-8 md:grid-cols-4",
+        className
+      )}
+    >
+      {children}
+    </Component>
+  );
+}
+
+SectionGrid.displayName = "SectionGrid";
+
+// ============================================================================
+// MAIN SECTION COMPONENT
+// ============================================================================
+
+export type SectionElementType = "section" | "div" | "article";
+export type SectionProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<SectionElementType>,
+  "as"
+> &
+  P & {
+    as?: SectionElementType;
+    title?: string;
+  };
+
+export function Section<P extends Record<string, unknown> = {}>(
+  props: SectionProps<P>
+) {
+  const {
+    as: Component = "section",
+    title,
+    className,
+    children,
+    ...rest
+  } = props;
+
+  const titleId = useId();
+  const sectionTitleId = `${titleId}-section-title`;
+
+  if (!title?.trim()?.length || !children) {
+    return null;
   }
-);
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<SectionElementType>)}
+      aria-labelledby={sectionTitleId}
+      className={cn(
+        "md:border-l md:border-zinc-100 md:dark:border-zinc-700/40",
+        className
+      )}
+    >
+      <SectionGrid>
+        <SectionTitle id={sectionTitleId}>{title}</SectionTitle>
+        <SectionContent>{children}</SectionContent>
+      </SectionGrid>
+    </Component>
+  );
+}
 
 Section.displayName = "Section";
