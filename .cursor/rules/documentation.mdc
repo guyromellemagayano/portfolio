@@ -23,6 +23,42 @@ Concise, actionable documentation practices for maintainable and discoverable co
 
 ## JSDoc Standards
 
+### Block Length Standard
+
+**Rule**: Use single-line JSDoc when the content is a single sentence.  
+Use multiline JSDoc only when content actually spans multiple lines (e.g., tags like `@param`, `@returns`, `@example`, `@remarks`).
+
+```typescript
+// ✅ GOOD: one-line content uses one-line JSDoc
+/** Polymorphic component ref type. */
+export type PolymorphicRef<T extends React.ElementType> = React.ComponentRef<T>;
+
+// ❌ BAD: one-line content spread across three lines
+/**
+ * Polymorphic component ref type.
+ */
+```
+
+### File Tag Path Standard
+
+**Rule**: `@file` values must use repository-relative paths from workspace root (for example, `apps/...` or `packages/...`).
+
+```typescript
+// ✅ GOOD: repository-relative paths
+/**
+ * @file packages/vitest-presets/__tests__/presets.test.ts
+ */
+
+/**
+ * @file apps/web/src/components/header/Header.tsx
+ */
+
+// ❌ BAD: module-relative path
+/**
+ * @file __tests__/presets.test.ts
+ */
+```
+
 ### Type Documentation (One-Liner)
 
 **Rule**: All exported types get a single-line JSDoc comment.
@@ -455,7 +491,7 @@ export const Default: Story = {
 
 ```typescript
 /**
- * @file ComponentName.tsx
+ * @file packages/ui/src/component-name/ComponentName.tsx
  * @author Guy Romelle Magayano
  * @description [One-line description of what the component does].
  */
@@ -513,6 +549,7 @@ export function functionName(paramName: string, optionalParam?: Options): Return
 ## Documentation Quality Checklist
 
 ### Required (All Files)
+- ✅ `@file` uses repository-relative path from workspace root (`apps/...` or `packages/...`)
 - ✅ All exported types have one-liner JSDoc
 - ✅ All exported components have JSDoc (one-liner minimum)
 - ✅ All exported functions have full JSDoc with `@param`/`@returns`
