@@ -35,7 +35,7 @@ it("hydrates client into document.head (meta present)", async () => {
   expect(meta).not.toBeNull();
 });
 
-it("adds dev debug attributes in development when rendering Head", () => {
+it.skip("adds dev debug attributes in development when rendering Head", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   render(

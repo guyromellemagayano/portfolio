@@ -16,14 +16,11 @@ export type HeadingRef = React.ComponentRef<
 >;
 
 export interface HeadingProps
-  extends React.ComponentPropsWithoutRef<
-      "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
-    >,
+  extends
+    React.ComponentPropsWithoutRef<"h1" | "h2" | "h3" | "h4" | "h5" | "h6">,
     CommonComponentProps {}
 
-/**
- * Render the HTML section heading server component.
- */
+/** Render the HTML section heading server component. */
 export const Heading = React.forwardRef<HeadingRef, HeadingProps>(
   (props, ref) => {
     const {

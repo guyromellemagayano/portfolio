@@ -14,12 +14,9 @@ const MemoizedMeterClient = React.lazy(async () => {
 export type MeterRef = React.ComponentRef<"meter">;
 
 export interface MeterProps
-  extends React.ComponentPropsWithoutRef<"meter">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"meter">, CommonComponentProps {}
 
-/**
- * Render the HTML meter server component.
- */
+/** Render the HTML meter server component. */
 export const Meter = React.forwardRef<MeterRef, MeterProps>((props, ref) => {
   const {
     as: Component = "meter",

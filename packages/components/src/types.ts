@@ -1,10 +1,9 @@
 import React, { type ComponentPropsWithoutRef, type ElementType } from "react";
 
 import type { UseComponentIdOptions } from "@portfolio/hooks";
+import { logWarn } from "@portfolio/logger";
 
-/**
- * Common props shared by all components in the library
- */
+/** Common props shared by all components in the library */
 export interface CommonComponentProps extends UseComponentIdOptions {
   /** Render component as a different element or custom component */
   as?: ElementType;
@@ -28,15 +27,11 @@ export type PolymorphicComponentProps<
   CommonComponentProps &
   (TElement extends TDefaultElement ? TElementSpecificProps : {});
 
-/**
- * Polymorphic component ref type
- */
+/** Polymorphic component ref type */
 export type PolymorphicRef<TElement extends ElementType> =
   React.ComponentRef<TElement>;
 
-/**
- * Element-specific prop validation configuration
- */
+/** Element-specific prop validation configuration */
 export interface ElementSpecificPropsConfig {
   /** Element type this config applies to */
   element: string;
@@ -56,9 +51,7 @@ export interface ElementSpecificPropsConfig {
   defaultVariants?: string[];
 }
 
-/**
- * Element categories for template generation
- */
+/** Element categories for template generation */
 export type ElementCategory =
   | "interactive" // button, a, input, select, textarea
   | "media" // audio, video, img, canvas, svg
@@ -72,9 +65,7 @@ export type ElementCategory =
   | "embed" // iframe, embed, object, param, source, track, area, map
   | "formatting"; // br, hr, pre, blockquote, address, figure, figcaption
 
-/**
- * Development warning utility for polymorphic components
- */
+/** Development warning utility for polymorphic components */
 export const validatePolymorphicProps = (
   componentName: string,
   asElement: string,
@@ -92,7 +83,7 @@ export const validatePolymorphicProps = (
     );
 
     if (invalidProps.length > 0) {
-      console.warn(
+      logWarn(
         `${componentName}: The following props are only valid for <${validElement}> elements: ${invalidProps.join(", ")}.\n` +
           `You're rendering as <${asElement}>. ${description}\n` +
           `Consider using a semantic <${validElement}> element or removing these props.`
@@ -101,9 +92,7 @@ export const validatePolymorphicProps = (
   }
 };
 
-/**
- * Filter out element-specific props when rendering as different element
- */
+/** Filter out element-specific props when rendering as different element */
 export const filterElementSpecificProps = <T extends Record<string, unknown>>(
   props: T,
   asElement: string,
@@ -123,9 +112,7 @@ export const filterElementSpecificProps = <T extends Record<string, unknown>>(
   return filtered;
 };
 
-/**
- * Utility to create element-specific prop configurations
- */
+/** Utility to create element-specific prop configurations */
 export const createElementConfig = (
   element: string,
   specificProps: string[],
@@ -813,9 +800,7 @@ export const ELEMENT_CONFIGS = {
 
 export type ElementConfigKey = keyof typeof ELEMENT_CONFIGS;
 
-/**
- * Get element configuration by name
- */
+/** Get element configuration by name */
 export function getElementConfig(
   elementName: string
 ): ElementSpecificPropsConfig | null {
@@ -823,9 +808,7 @@ export function getElementConfig(
   return ELEMENT_CONFIGS[key] || null;
 }
 
-/**
- * Get all elements by category
- */
+/** Get all elements by category */
 export function getElementsByCategory(
   category: ElementCategory
 ): ElementSpecificPropsConfig[] {
@@ -834,9 +817,7 @@ export function getElementsByCategory(
   );
 }
 
-/**
- * Check if element supports specific features
- */
+/** Check if element supports specific features */
 export function elementSupportsFeature(
   elementName: string,
   feature: "variants" | "states"
@@ -849,9 +830,7 @@ export function elementSupportsFeature(
     : (config.supportsStates ?? true);
 }
 
-/**
- * Analytics event type for tracking user interactions
- */
+/** Analytics event type for tracking user interactions */
 export type AnalyticsEventType =
   | "click"
   | "view"
@@ -864,9 +843,7 @@ export type AnalyticsEventType =
   | "error"
   | "custom";
 
-/**
- * Analytics event interface for tracking user interactions
- */
+/** Analytics event interface for tracking user interactions */
 export interface AnalyticsEvent {
   /** Type of analytics event */
   type: AnalyticsEventType;

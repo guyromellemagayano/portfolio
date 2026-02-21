@@ -14,12 +14,9 @@ const MemoizedPreClient = React.lazy(async () => {
 export type PreRef = React.ComponentRef<"pre">;
 
 export interface PreProps
-  extends React.ComponentPropsWithoutRef<"pre">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"pre">, CommonComponentProps {}
 
-/**
- * Render the preformatted text server component.
- */
+/** Render the preformatted text server component. */
 export const Pre = React.forwardRef<PreRef, PreProps>((props, ref) => {
   const {
     as: Component = "pre",

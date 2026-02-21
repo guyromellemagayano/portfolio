@@ -14,12 +14,9 @@ const MemoizedBClient = React.lazy(async () => {
 export type BRef = React.ComponentRef<"b">;
 
 export interface BProps
-  extends React.ComponentPropsWithoutRef<"b">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"b">, CommonComponentProps {}
 
-/**
- * Render the bring attention server component.
- */
+/** Render the bring attention server component. */
 export const B = React.forwardRef<BRef, BProps>((props, ref) => {
   const {
     as: Component = "b",

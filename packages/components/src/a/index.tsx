@@ -14,12 +14,9 @@ const MemoizedAClient = React.lazy(async () => {
 export type ARef = React.ComponentRef<"a">;
 
 export interface AProps
-  extends React.ComponentPropsWithoutRef<"a">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"a">, CommonComponentProps {}
 
-/**
- * Render the default anchor server component.
- */
+/** Render the default anchor server component. */
 export const A = React.forwardRef<ARef, AProps>((props, ref) => {
   const {
     as: Component = "a",

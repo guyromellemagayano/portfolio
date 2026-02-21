@@ -14,12 +14,9 @@ const MemoizedBdoClient = React.lazy(async () => {
 export type BdoRef = React.ComponentRef<"bdo">;
 
 export interface BdoProps
-  extends React.ComponentPropsWithoutRef<"bdo">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"bdo">, CommonComponentProps {}
 
-/**
- * Render the bidirectional text override server component.
- */
+/** Render the bidirectional text override server component. */
 export const Bdo = React.forwardRef<BdoRef, BdoProps>((props, ref) => {
   const {
     as: Component = "bdo",

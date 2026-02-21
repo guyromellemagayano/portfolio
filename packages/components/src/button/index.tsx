@@ -14,12 +14,9 @@ const MemoizedButtonClient = React.lazy(async () => {
 export type ButtonRef = React.ComponentRef<"button">;
 
 export interface ButtonProps
-  extends React.ComponentPropsWithoutRef<"button">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"button">, CommonComponentProps {}
 
-/**
- * Render the button server component.
- */
+/** Render the button server component. */
 export const Button = React.forwardRef<ButtonRef, ButtonProps>((props, ref) => {
   const {
     as: Component = "button",

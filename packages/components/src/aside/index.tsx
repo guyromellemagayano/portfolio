@@ -14,12 +14,9 @@ const MemoizedAsideClient = React.lazy(async () => {
 export type AsideRef = React.ComponentRef<"aside">;
 
 export interface AsideProps
-  extends React.ComponentPropsWithoutRef<"aside">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"aside">, CommonComponentProps {}
 
-/**
- * Render the aside server component.
- */
+/** Render the aside server component. */
 export const Aside = React.forwardRef<AsideRef, AsideProps>((props, ref) => {
   const {
     as: Component = "aside",

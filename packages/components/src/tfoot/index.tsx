@@ -14,12 +14,9 @@ const MemoizedTfootClient = React.lazy(async () => {
 export type TfootRef = React.ComponentRef<"tfoot">;
 
 export interface TfootProps
-  extends React.ComponentPropsWithoutRef<"tfoot">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"tfoot">, CommonComponentProps {}
 
-/**
- * Render the table foot server component.
- */
+/** Render the table foot server component. */
 export const Tfoot = React.forwardRef<TfootRef, TfootProps>((props, ref) => {
   const {
     as: Component = "tfoot",

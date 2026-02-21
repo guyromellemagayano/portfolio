@@ -14,12 +14,9 @@ const MemoizedPictureClient = React.lazy(async () => {
 export type PictureRef = React.ComponentRef<"picture">;
 
 export interface PictureProps
-  extends React.ComponentPropsWithoutRef<"picture">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"picture">, CommonComponentProps {}
 
-/**
- * Render the picture server component.
- */
+/** Render the picture server component. */
 export const Picture = React.forwardRef<PictureRef, PictureProps>(
   (props, ref) => {
     const {

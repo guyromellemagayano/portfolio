@@ -14,12 +14,9 @@ const MemoizedTableClient = React.lazy(async () => {
 export type TableRef = React.ComponentRef<"table">;
 
 export interface TableProps
-  extends React.ComponentPropsWithoutRef<"table">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"table">, CommonComponentProps {}
 
-/**
- * Render the table server component.
- */
+/** Render the table server component. */
 export const Table = React.forwardRef<TableRef, TableProps>((props, ref) => {
   const {
     as: Component = "table",

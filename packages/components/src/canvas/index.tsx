@@ -14,12 +14,9 @@ const MemoizedCanvasClient = React.lazy(async () => {
 export type CanvasRef = React.ComponentRef<"canvas">;
 
 export interface CanvasProps
-  extends React.ComponentPropsWithoutRef<"canvas">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"canvas">, CommonComponentProps {}
 
-/**
- * Render the canvas server component.
- */
+/** Render the canvas server component. */
 export const Canvas = React.forwardRef<CanvasRef, CanvasProps>((props, ref) => {
   const {
     as: Component = "canvas",

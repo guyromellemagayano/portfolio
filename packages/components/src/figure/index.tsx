@@ -14,12 +14,9 @@ const MemoizedFigureClient = React.lazy(async () => {
 export type FigureRef = React.ComponentRef<"figure">;
 
 export interface FigureProps
-  extends React.ComponentPropsWithoutRef<"figure">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"figure">, CommonComponentProps {}
 
-/**
- * Render the figure with optional caption server component.
- */
+/** Render the figure with optional caption server component. */
 export const Figure = React.forwardRef<FigureRef, FigureProps>((props, ref) => {
   const {
     as: Component = "figure",

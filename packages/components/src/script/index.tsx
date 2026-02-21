@@ -14,12 +14,9 @@ const MemoizedScriptClient = React.lazy(async () => {
 export type ScriptRef = React.ComponentRef<"script">;
 
 export interface ScriptProps
-  extends React.ComponentPropsWithoutRef<"script">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"script">, CommonComponentProps {}
 
-/**
- * Render the script server component.
- */
+/** Render the script server component. */
 export const Script = React.forwardRef<ScriptRef, ScriptProps>((props, ref) => {
   const {
     as: Component = "script",
