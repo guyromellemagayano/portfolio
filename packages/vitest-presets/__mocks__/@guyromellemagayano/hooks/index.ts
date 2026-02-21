@@ -1,21 +1,23 @@
+/**
+ * @file packages/vitest-presets/__mocks__/@guyromellemagayano/hooks/index.ts
+ * @author Guy Romelle Magayano
+ * @description Centralized Vitest mocks for shared hooks and router/navigation helpers.
+ */
+
 import { vi } from "vitest";
 
 // ============================================================================
 // CENTRALIZED HOOK MOCKS
 // ============================================================================
 
-/**
- * Mock `useComponentId` hook with consistent behavior
- */
+/** Mock `useComponentId` hook with consistent behavior */
 export const useComponentId = vi.fn((options = {}) => ({
   componentId: options.debugId || "test-id",
   isDebugMode: options.debugMode || false,
   id: options.debugId || "test-id", // For backward compatibility
 }));
 
-/**
- * Mock `useRouter` hook for Next.js navigation
- */
+/** Mock `useRouter` hook for Next.js navigation */
 export const useRouter: () => {
   push: ReturnType<typeof vi.fn>;
   back: ReturnType<typeof vi.fn>;
