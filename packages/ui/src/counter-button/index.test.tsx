@@ -446,7 +446,7 @@ describe("CounterButton", () => {
         />
       );
 
-      const wrapper = container.firstChild;
+      const wrapper = container.firstElementChild as HTMLDivElement | null;
       expect(wrapper).toBeInTheDocument();
       expect(wrapper?.tagName).toBe("DIV");
 

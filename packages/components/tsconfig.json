@@ -3,12 +3,13 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": [
-      "dom",
-      "ES2015"
+      "DOM",
+      "ES2017"
     ],
     "sourceMap": true,
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "node"
     ]
   },
   "include": [
@@ -21,6 +22,7 @@
   "exclude": [
     "dist",
     "build",
-    "node_modules"
+    "node_modules",
+    "src/__coverage__/**"
   ]
 }

@@ -13,7 +13,7 @@ if (typeof globalThis.process === "undefined") {
     env: {
       NODE_ENV: "test",
     },
-  } as typeof process;
+  } as unknown as typeof process;
 }
 
 // Global test setup

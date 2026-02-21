@@ -9,7 +9,16 @@ const App = function () {
         Admin <br />
         <span>Kitchen Sink</span>
       </h1>
-      <CounterButton />
+      <CounterButton
+        label="Counter"
+        initialValue={0}
+        min={0}
+        max={100}
+        step={1}
+        variant="primary"
+        size="medium"
+        onCountChange={() => {}}
+      />
       <p className="description">
         Built With{" "}
         <Link href="https://turbo.build/repo" newTab>
