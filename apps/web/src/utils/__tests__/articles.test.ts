@@ -1,5 +1,5 @@
 /**
- * @file utils/__tests__/articles.test.ts
+ * @file apps/web/src/utils/__tests__/articles.test.ts
  * @author Guy Romelle Magayano
  * @description Unit tests for article source mode resolution and hybrid merge behavior.
  */

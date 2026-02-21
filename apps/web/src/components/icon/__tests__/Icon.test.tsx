@@ -1,5 +1,5 @@
 /**
- * @file Icon.test.tsx
+ * @file apps/web/src/components/icon/__tests__/Icon.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Icon component.
  */

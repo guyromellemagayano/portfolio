@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 
 /**
- * @file (blog)/uses/page.tsx
+ * @file apps/web/src/app/(blog)/uses/page.tsx
  * @author Guy Romelle Magayano
- * @description Uses page component.
+ * @description Implementation for page.
  */
 import { type Metadata } from "next";
 import { getTranslations } from "next-intl/server";

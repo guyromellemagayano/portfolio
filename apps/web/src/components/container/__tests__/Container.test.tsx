@@ -1,5 +1,5 @@
 /**
- * @file Container.test.tsx
+ * @file apps/web/src/components/container/__tests__/Container.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Container component.
  */

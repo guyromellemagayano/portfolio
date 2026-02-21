@@ -1,7 +1,7 @@
 /**
- * @file datetime.ts
+ * @file apps/web/src/utils/datetime.ts
  * @author Guy Romelle Magayano
- * @description Utility functions for date and time.
+ * @description Utilities for datetime.
  */
 
 import { formatDateSafely } from "@portfolio/utils";

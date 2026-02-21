@@ -1,5 +1,5 @@
 /**
- * @file Container.integration.test.tsx
+ * @file apps/web/src/components/container/__tests__/Container.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Container component.
  */

@@ -1,7 +1,7 @@
 /**
- * @file layout.tsx
+ * @file apps/web/src/app/layout.tsx
  * @author Guy Romelle Magayano
- * @description Root layout component for the web application.
+ * @description Implementation for layout.
  */
 
 import React from "react";

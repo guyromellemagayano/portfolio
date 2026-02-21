@@ -1,5 +1,5 @@
 /**
- * @file PhotoGallery.test.tsx
+ * @file apps/web/src/components/photo-gallery/__tests__/PhotoGallery.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the PhotoGallery component.
  */

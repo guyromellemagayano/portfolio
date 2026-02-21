@@ -1,7 +1,7 @@
 /**
- * @file photo-gallery.ts
+ * @file apps/web/src/config/photo-gallery.ts
  * @author Guy Romelle Magayano
- * @description Photo gallery configuration for the web application.
+ * @description Static configuration for photo gallery content and settings.
  */
 
 import { type StaticImageData } from "next/image";

@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file PhotoGallery.tsx
+ * @file apps/web/src/components/photo-gallery/PhotoGallery.tsx
  * @author Guy Romelle Magayano
- * @description Photo gallery component.
+ * @description Main PhotoGallery component implementation.
  */
 
 "use client";

@@ -1,7 +1,7 @@
 /**
- * @file Form.tsx
+ * @file apps/web/src/components/form/Form.tsx
  * @author Guy Romelle Magayano
- * @description Compound components for the form component.
+ * @description Main Form component implementation.
  */
 
 "use client";

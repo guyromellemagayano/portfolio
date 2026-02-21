@@ -1,7 +1,7 @@
 /**
- * @file search.ts
+ * @file apps/web/src/utils/search.ts
  * @author Guy Romelle Magayano
- * @description Utility functions for search.
+ * @description Utilities for search.
  */
 
 import { useMemo, useState } from "react";

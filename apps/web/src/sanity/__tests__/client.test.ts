@@ -1,7 +1,7 @@
 /**
- * @file sanity/__tests__/client.test.ts
+ * @file apps/web/src/sanity/__tests__/client.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for Sanity client configuration and query fetching.
+ * @description Unit tests for client behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

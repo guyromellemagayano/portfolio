@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports, react-hooks/set-state-in-effect */
 
 /**
- * @file Header.tsx
+ * @file apps/web/src/components/header/Header.tsx
  * @author Guy Romelle Magayano
- * @description Header component for the web application.
+ * @description Main Header component implementation.
  */
 
 "use client";

@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 
 /**
- * @file List.tsx
+ * @file apps/web/src/components/list/List.tsx
  * @author Guy Romelle Magayano
- * @description List component for the web application.
+ * @description Main List component implementation.
  */
 
 "use client";

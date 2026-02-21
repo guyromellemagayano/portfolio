@@ -2,9 +2,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file ListItem.tsx
+ * @file apps/web/src/components/list/item/ListItem.tsx
  * @author Guy Romelle Magayano
- * @description List item component for the web application.
+ * @description Main ListItem component implementation.
  */
 
 "use client";

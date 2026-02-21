@@ -1,5 +1,5 @@
 /**
- * @file Card.integration.test.tsx
+ * @file apps/web/src/components/card/__tests__/Card.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Card component.
  */

@@ -1,7 +1,7 @@
 /**
- * @file Card.tsx
+ * @file apps/web/src/components/card/Card.tsx
  * @author Guy Romelle Magayano
- * @description Card component for the web application.
+ * @description Main Card component implementation.
  */
 
 import {

@@ -1,5 +1,5 @@
 /**
- * @file Button.integration.test.tsx
+ * @file apps/web/src/components/button/__tests__/Button.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Button component.
  */

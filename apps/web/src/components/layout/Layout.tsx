@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file Layout.tsx
+ * @file apps/web/src/components/layout/Layout.tsx
  * @author Guy Romelle Magayano
- * @description Layout component for the web application.
+ * @description Main Layout component implementation.
  */
 
 "use client";

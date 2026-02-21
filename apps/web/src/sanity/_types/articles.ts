@@ -1,7 +1,7 @@
 /**
- * @file sanity/_types/articles.ts
+ * @file apps/web/src/sanity/_types/articles.ts
  * @author Guy Romelle Magayano
- * @description Types for Sanity article query responses.
+ * @description Type definitions for Sanity article documents and query results.
  */
 
 export type SanityArticleTag = string | { title?: string | null } | null;

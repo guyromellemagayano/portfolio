@@ -1,5 +1,5 @@
 /**
- * @file Header.integration.test.tsx
+ * @file apps/web/src/components/header/__tests__/Header.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Header component.
  */

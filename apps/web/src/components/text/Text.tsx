@@ -1,7 +1,7 @@
 /**
- * @file Text.tsx
+ * @file apps/web/src/components/text/Text.tsx
  * @author Guy Romelle Magayano
- * @description Text components including headings, paragraphs, and spans for the web application.
+ * @description Main Text component implementation.
  */
 
 import { type ComponentPropsWithRef } from "react";

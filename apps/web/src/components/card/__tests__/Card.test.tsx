@@ -1,5 +1,5 @@
 /**
- * @file Card.test.tsx
+ * @file apps/web/src/components/card/__tests__/Card.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Card component.
  */

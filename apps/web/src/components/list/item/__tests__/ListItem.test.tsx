@@ -1,5 +1,5 @@
 /**
- * @file ListItem.test.tsx
+ * @file apps/web/src/components/list/item/__tests__/ListItem.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the ListItem component.
  */

@@ -1,7 +1,7 @@
 /**
- * @file sanity/client.ts
+ * @file apps/web/src/sanity/client.ts
  * @author Guy Romelle Magayano
- * @description Lightweight Sanity query client using Sanity HTTP query API.
+ * @description Sanity client utilities for configuration checks and query execution.
  */
 
 const DEFAULT_SANITY_API_VERSION = "2025-02-19";

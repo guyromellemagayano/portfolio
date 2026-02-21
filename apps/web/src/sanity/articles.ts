@@ -1,7 +1,7 @@
 /**
- * @file sanity/articles.ts
+ * @file apps/web/src/sanity/articles.ts
  * @author Guy Romelle Magayano
- * @description Sanity article data source and mappers.
+ * @description Sanity article mapping and retrieval utilities for web content.
  */
 
 import { SANITY_ARTICLES_QUERY } from "@web/sanity/_queries/articles.queries";

@@ -1,5 +1,5 @@
 /**
- * @file Footer.test.tsx
+ * @file apps/web/src/components/footer/__tests__/Footer.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Footer component.
  */

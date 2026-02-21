@@ -1,5 +1,5 @@
 /**
- * @file ArticleSearch.integration.test.tsx
+ * @file apps/web/src/components/article/__tests__/ArticleSearch.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the ArticleSearch component.
  */

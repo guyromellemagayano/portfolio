@@ -1,7 +1,7 @@
 /**
- * @file Icon.tsx
+ * @file apps/web/src/components/icon/Icon.tsx
  * @author Guy Romelle Magayano
- * @description Icon component for the web application.
+ * @description Main Icon component implementation.
  */
 
 import {

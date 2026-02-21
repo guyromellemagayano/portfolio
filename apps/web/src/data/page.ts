@@ -1,7 +1,7 @@
 /**
- * @file page.ts
+ * @file apps/web/src/data/page.ts
  * @author Guy Romelle Magayano
- * @description Data for the pages layouts.
+ * @description Static data and typed constants for page.
  */
 
 import { type ImageProps } from "next/image";

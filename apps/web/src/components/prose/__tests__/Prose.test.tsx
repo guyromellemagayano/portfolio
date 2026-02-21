@@ -1,5 +1,5 @@
 /**
- * @file Prose.test.tsx
+ * @file apps/web/src/components/prose/__tests__/Prose.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Prose component.
  */

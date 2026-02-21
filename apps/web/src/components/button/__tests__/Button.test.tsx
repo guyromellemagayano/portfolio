@@ -1,5 +1,5 @@
 /**
- * @file Button.test.tsx
+ * @file apps/web/src/components/button/__tests__/Button.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Button component.
  */
