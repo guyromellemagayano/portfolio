@@ -11,13 +11,13 @@ import {
   generateId,
   JsonFormatter,
   log,
-  type Logger,
   LogLevel,
   MemoryTransport,
   parseLogLevel,
   sanitizeData,
   shouldLog,
   SimpleFormatter,
+  type Logger,
 } from "..";
 
 describe("Logger System", () => {
