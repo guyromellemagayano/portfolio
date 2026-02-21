@@ -350,8 +350,24 @@ describe("Container Integration Tests", () => {
 
     it("supports all semantic HTML5 elements for SEO optimization", () => {
       const semanticElements: Array<
-        "div" | "section" | "main" | "article" | "nav" | "header" | "footer" | "aside"
-      > = ["div", "section", "main", "article", "nav", "header", "footer", "aside"];
+        | "div"
+        | "section"
+        | "main"
+        | "article"
+        | "nav"
+        | "header"
+        | "footer"
+        | "aside"
+      > = [
+        "div",
+        "section",
+        "main",
+        "article",
+        "nav",
+        "header",
+        "footer",
+        "aside",
+      ];
 
       semanticElements.forEach((elementType) => {
         const { container, unmount } = render(
@@ -513,7 +529,17 @@ describe("Container Integration Tests", () => {
       semanticTests.forEach(({ as, expectedRole }) => {
         const { container, unmount } = render(
           <Container
-            as={as as "div" | "section" | "main" | "article" | "nav" | "header" | "footer" | "aside"}
+            as={
+              as as
+                | "div"
+                | "section"
+                | "main"
+                | "article"
+                | "nav"
+                | "header"
+                | "footer"
+                | "aside"
+            }
             aria-label="Test"
           >
             Content

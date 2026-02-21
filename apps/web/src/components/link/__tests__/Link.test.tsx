@@ -9,6 +9,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import "@testing-library/jest-dom";
 
+// Import the component after all mocks are set up
+import { Link } from "../Link";
+
 // Mock dependencies
 vi.mock("@portfolio/utils", () => ({
   getLinkTargetProps: vi.fn((href, target) => ({
@@ -39,9 +42,6 @@ vi.mock("@web/components/icon/Icon", () => ({
 vi.mock("@web/utils/helpers", () => ({
   cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
 }));
-
-// Import the component after all mocks are set up
-import { Link } from "../Link";
 
 describe("Link", () => {
   afterEach(() => {
