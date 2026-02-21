@@ -309,8 +309,8 @@ catalogs:
 
 overrides:
   "@csstools/css-calc": 3.1.1
+  ajv@<6.14.0: 6.12.6
   minimatch@<10.2.1: ">=10.2.1"
-  ajv@<6.14.0: ">=6.14.0"
 
 importers:
   .:
@@ -742,9 +742,6 @@ importers:
       "@portfolio/hooks":
         specifier: workspace:*
         version: link:../hooks
-      "@portfolio/logger":
-        specifier: workspace:*
-        version: link:../logger
       react:
         specifier: "catalog:"
         version: 19.2.4
@@ -758,6 +755,9 @@ importers:
       "@portfolio/config-typescript":
         specifier: workspace:*
         version: link:../config-typescript
+      "@portfolio/logger":
+        specifier: workspace:*
+        version: link:../logger
       "@portfolio/vitest-presets":
         specifier: workspace:*
         version: link:../vitest-presets
@@ -6426,6 +6426,12 @@ packages:
       }
     engines: { node: ">= 14" }
 
+  ajv@6.12.6:
+    resolution:
+      {
+        integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==,
+      }
+
   ajv@8.18.0:
     resolution:
       {
@@ -8631,6 +8637,12 @@ packages:
       }
     engines: { node: ">=8.6.0" }
 
+  fast-json-stable-stringify@2.1.0:
+    resolution:
+      {
+        integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==,
+      }
+
   fast-levenshtein@2.0.6:
     resolution:
       {
@@ -10207,6 +10219,12 @@ packages:
     resolution:
       {
         integrity: sha512-zvnhEvwhqTOxBIcXnxvHvhqtubdwFRp+FascmCaL56BT9jdttRU8IFc+Ilh2HPJ0AtioF8mFPxmReuJKLW0Iyw==,
+      }
+
+  json-schema-traverse@0.4.1:
+    resolution:
+      {
+        integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==,
       }
 
   json-schema-traverse@1.0.0:
@@ -14389,6 +14407,12 @@ packages:
     peerDependencies:
       browserslist: ">= 4.21.0"
 
+  uri-js@4.4.1:
+    resolution:
+      {
+        integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==,
+      }
+
   urlpattern-polyfill@10.1.0:
     resolution:
       {
@@ -16287,7 +16311,7 @@ snapshots:
 
   "@eslint/eslintrc@3.3.3":
     dependencies:
-      ajv: 8.18.0
+      ajv: 6.12.6
       debug: 4.4.3(supports-color@5.5.0)
       espree: 10.4.0
       globals: 14.0.0
@@ -18782,6 +18806,13 @@ snapshots:
 
   agent-base@7.1.4: {}
 
+  ajv@6.12.6:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      fast-json-stable-stringify: 2.1.0
+      json-schema-traverse: 0.4.1
+      uri-js: 4.4.1
+
   ajv@8.18.0:
     dependencies:
       fast-deep-equal: 3.1.3
@@ -20100,7 +20131,7 @@ snapshots:
       "@humanwhocodes/module-importer": 1.0.1
       "@humanwhocodes/retry": 0.4.3
       "@types/estree": 1.0.8
-      ajv: 8.18.0
+      ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
       debug: 4.4.3(supports-color@5.5.0)
@@ -20286,6 +20317,8 @@ snapshots:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.8
+
+  fast-json-stable-stringify@2.1.0: {}
 
   fast-levenshtein@2.0.6: {}
 
@@ -21259,6 +21292,8 @@ snapshots:
   json-parse-even-better-errors@5.0.0: {}
 
   json-reduce@3.0.0: {}
+
+  json-schema-traverse@0.4.1: {}
 
   json-schema-traverse@1.0.0: {}
 
@@ -24295,6 +24330,10 @@ snapshots:
       browserslist: 4.28.1
       escalade: 3.2.0
       picocolors: 1.1.1
+
+  uri-js@4.4.1:
+    dependencies:
+      punycode: 2.3.1
 
   urlpattern-polyfill@10.1.0: {}
 
