@@ -2,10 +2,10 @@ import { memo } from "react";
 
 import { describe, expect, it, vi } from "vitest";
 
+import { setDisplayName } from "../component";
+
 // Unlock `react` to get the real implementation for the memo
 vi.unmock("react");
-
-import { setDisplayName } from "../component";
 
 describe("setDisplayName", () => {
   it("should set displayName for a simple function component", () => {
