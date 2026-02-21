@@ -53,5 +53,3 @@ export const browserPreset = {
     ],
   },
 };
-
-export default browserPreset;

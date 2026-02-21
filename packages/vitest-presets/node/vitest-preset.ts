@@ -54,5 +54,3 @@ export const nodePreset = {
     exclude: ["node_modules", "dist", ".idea", ".git", ".cache", "**/*.d.ts"],
   },
 };
-
-export default nodePreset;

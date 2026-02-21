@@ -1,3 +1,9 @@
+/**
+ * @file packages/vitest-presets/__tests__/browser-apis.test.ts
+ * @author Guy Romelle Magayano
+ * @description Verifies browser API shims configured by the shared Vitest test setup.
+ */
+
 import { describe, expect, it } from "vitest";
 
 describe("Browser API Mocks", () => {

@@ -5,9 +5,9 @@
  */
 
 // Presets
-export { default as browserPreset } from "./browser/vitest-preset";
-export { default as nodePreset } from "./node/vitest-preset";
-export { default as reactPreset } from "./react/vitest-preset";
+export { browserPreset } from "./browser/vitest-preset.ts";
+export { nodePreset } from "./node/vitest-preset.ts";
+export { reactPreset } from "./react/vitest-preset.ts";
 
 // Note: test-setup.ts should be imported directly in vitest.config.ts setupFiles
 // Do not import it here as it will execute during config loading

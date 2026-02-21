@@ -1,3 +1,9 @@
+/**
+ * @file packages/vitest-presets/__tests__/mocks.test.ts
+ * @author Guy Romelle Magayano
+ * @description Validates centralized mock modules and their core mocked behaviors.
+ */
+
 import { describe, expect, it } from "vitest";
 
 describe("Centralized Mocks", () => {
