@@ -1,7 +1,7 @@
 /**
- * @file providers.tsx
+ * @file apps/web/src/app/providers.tsx
  * @author Guy Romelle Magayano
- * @description Providers component for the web application.
+ * @description Implementation for providers.
  */
 
 "use client";
