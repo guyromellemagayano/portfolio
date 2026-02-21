@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD051 -->
+
 # @portfolio/hooks
 
 A collection of React hooks and utilities for modern React development. This package provides reusable hooks that follow React best practices and integrate seamlessly with the project's ecosystem.
@@ -47,21 +48,21 @@ This package provides a curated collection of React hooks and utilities designed
 
 ### 📊 Package Statistics
 
-| Metric | Value |
-|--------|-------|
-| **Total Hooks** | 2 |
-| **Total Utilities** | 1 |
-| **Test Coverage** | 95%+ |
-| **Bundle Size** | < 5KB gzipped |
-| **Zero Dependencies** | ✅ Yes |
-| **TypeScript Support** | ✅ Full |
+| Metric                 | Value         |
+| ---------------------- | ------------- |
+| **Total Hooks**        | 2             |
+| **Total Utilities**    | 1             |
+| **Test Coverage**      | 95%+          |
+| **Bundle Size**        | < 5KB gzipped |
+| **Zero Dependencies**  | ✅ Yes        |
+| **TypeScript Support** | ✅ Full       |
 
 ### 🎯 Primary Hook: useComponentId
 
 The `useComponentId` hook is the **core utility** that every component should use for:
 
 - **🆔 Automatic ID Generation**: Provides stable, unique IDs for components
-- **🐛 Debug Logging**: Optional logging for development debugging  
+- **🐛 Debug Logging**: Optional logging for development debugging
 - **🔍 Component Name Detection**: Automatically detects component names from call stack
 - **🛡️ Cross-Environment Safety**: Works safely in both development and production
 
@@ -73,9 +74,9 @@ function MyComponent({ _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
     debugMode: _debugMode,
   });
-  
+
   return (
-    <div 
+    <div
       data-component-id={id}
       data-debug-mode={isDebugMode ? "true" : undefined}
     >
@@ -105,7 +106,7 @@ import { Div } from "@portfolio/components";
 
 function MyComponent() {
   const { id } = useComponentId();
-  
+
   return <Div data-component-id={id}>Content</Div>;
 }
 ```
@@ -120,9 +121,9 @@ function MyComponent({ _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
     debugMode: _debugMode,
   });
-  
+
   return (
-    <Div 
+    <Div
       {...props}
       data-component-id={id}
       data-debug-mode={isDebugMode ? "true" : undefined}
@@ -145,9 +146,9 @@ const MyComponent = setDisplayName(
       internalId: _internalId,
       debugMode: _debugMode,
     });
-    
+
     return (
-      <Div 
+      <Div
         {...props}
         ref={ref}
         data-component-id={id}
@@ -174,16 +175,16 @@ A hook for automatic component ID generation and debug logging.
 
 **Parameters:**
 
-| Parameter | Type | Required | Default | Description |
-|-----------|------|----------|---------|-------------|
-| `options` | `UseComponentIdOptions` | ❌ | `{}` | Configuration options |
+| Parameter | Type                    | Required | Default | Description           |
+| --------- | ----------------------- | -------- | ------- | --------------------- |
+| `options` | `UseComponentIdOptions` | ❌       | `{}`    | Configuration options |
 
 **Returns:**
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `id` | `string` | The component ID (custom or auto-generated) |
-| `isDebugMode` | `boolean` | Whether debug mode is active |
+| Property      | Type      | Description                                 |
+| ------------- | --------- | ------------------------------------------- |
+| `id`          | `string`  | The component ID (custom or auto-generated) |
+| `isDebugMode` | `boolean` | Whether debug mode is active                |
 
 **Type Definitions:**
 
@@ -222,12 +223,12 @@ const { id } = useComponentId();
 const { id, isDebugMode } = useComponentId({ debugMode: true });
 
 // ✅ With custom ID
-const { id } = useComponentId({ internalId: 'custom-id' });
+const { id } = useComponentId({ internalId: "custom-id" });
 
 // ✅ With both options
 const { id, isDebugMode } = useComponentId({
-  internalId: 'custom-id',
-  debugMode: process.env.NODE_ENV === 'development'
+  internalId: "custom-id",
+  debugMode: process.env.NODE_ENV === "development",
 });
 ```
 
@@ -251,15 +252,15 @@ Automatically sets `displayName` for React components.
 
 **Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `component` | `React.ComponentType` | ✅ | The React component to set displayName for |
-| `displayName` | `string` | ✅ | The display name to assign |
+| Parameter     | Type                  | Required | Description                                |
+| ------------- | --------------------- | -------- | ------------------------------------------ |
+| `component`   | `React.ComponentType` | ✅       | The React component to set displayName for |
+| `displayName` | `string`              | ✅       | The display name to assign                 |
 
 **Returns:**
 
-| Type | Description |
-|------|-------------|
+| Type                  | Description                        |
+| --------------------- | ---------------------------------- |
 | `React.ComponentType` | The component with displayName set |
 
 **Features:**
@@ -283,16 +284,16 @@ function ContactForm({ _debugMode, ...props }) {
   const { id, isDebugMode } = useComponentId({
     debugMode: _debugMode,
   });
-  
+
   const handleSubmit = (event) => {
     if (isDebugMode) {
       logInfo(`Form ${id} submitted`);
     }
     // Form submission logic
   };
-  
+
   return (
-    <Form 
+    <Form
       {...props}
       data-component-id={id}
       data-debug-mode={isDebugMode ? "true" : undefined}
@@ -318,9 +319,9 @@ function Modal({ _internalId, title, children, onClose, ...props }) {
   const { id } = useComponentId({
     internalId: _internalId,
   });
-  
+
   return (
-    <Div 
+    <Div
       {...props}
       role="dialog"
       aria-labelledby={`${id}-title`}
@@ -330,7 +331,7 @@ function Modal({ _internalId, title, children, onClose, ...props }) {
     >
       <Heading as="h2" id={`${id}-title`}>{title}</Heading>
       <Div id={`${id}-content`}>{children}</Div>
-      <Button 
+      <Button
         onClick={onClose}
         aria-label="Close modal"
       >
@@ -351,16 +352,16 @@ function DataTable({ _debugMode, data, ...props }) {
   const { id, isDebugMode } = useComponentId({
     debugMode: _debugMode,
   });
-  
+
   return (
-    <Table 
+    <Table
       {...props}
       data-component-id={id}
       data-debug-mode={isDebugMode ? "true" : undefined}
     >
       <Tbody>
         {data.map((row, index) => (
-          <TableRow 
+          <TableRow
             key={`${id}-row-${index}`}
             data={row}
             rowId={`${id}-row-${index}`}
@@ -373,7 +374,7 @@ function DataTable({ _debugMode, data, ...props }) {
 
 function TableRow({ data, rowId }) {
   const { id } = useComponentId();
-  
+
   return (
     <Div data-component-id={id} data-row-id={rowId}>
       {/* Row content */}
@@ -391,7 +392,7 @@ import { Nav, Ul, Li, A } from "@portfolio/components";
 const Navigation = setDisplayName(
   React.forwardRef(function Navigation({ items, ...props }, ref) {
     const { id } = useComponentId();
-    
+
     return (
       <Nav {...props} ref={ref} data-component-id={id}>
         <Ul>
@@ -426,9 +427,9 @@ interface InternalComponentProps {
 const InternalComponent = setDisplayName(
   React.forwardRef(function InternalComponent(props, ref) {
     const { children, componentId, isDebugMode, ...rest } = props;
-    
+
     if (!children) return null;
-    
+
     const element = (
       <Div
         {...rest}
@@ -453,12 +454,12 @@ const InternalComponent = setDisplayName(
 export const Component = setDisplayName(
   React.forwardRef(function Component(props, ref) {
     const { _internalId, _debugMode, ...rest } = props;
-    
+
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
-    
+
     const element = (
       <InternalComponent
         {...rest}
@@ -569,9 +570,9 @@ const MyComponent = setDisplayName(
       internalId: _internalId,
       debugMode: _debugMode,
     });
-    
+
     return (
-      <Div 
+      <Div
         {...props}
         ref={ref}
         data-component-id={id}
@@ -676,16 +677,18 @@ export const MyComponent = setDisplayName(
 
 ```typescript
 // ✅ Proper error handling
+import { logError } from "@portfolio/logger";
+
 function MyComponent({ _internalId, _debugMode, ...props }) {
   try {
     const { id, isDebugMode } = useComponentId({
       internalId: _internalId,
       debugMode: _debugMode,
     });
-    
+
     return <div data-component-id={id}>{props.children}</div>;
   } catch (error) {
-    console.error('useComponentId error:', error);
+    logError("useComponentId error:", error);
     return <div>Error: Component ID generation failed</div>;
   }
 }
@@ -725,8 +728,8 @@ The hook integrates with `@portfolio/logger`:
 Works seamlessly with `@portfolio/components`:
 
 ```typescript
+import { Button, Div, Form } from "@portfolio/components";
 import { useComponentId } from "@portfolio/hooks";
-import { Div, Button, Form } from "@portfolio/components";
 
 // All components support data-component-id and data-debug-mode attributes
 ```
@@ -788,29 +791,31 @@ All hooks and utilities should achieve:
 ### Example Test
 
 ```typescript
-import { renderHook } from '@testing-library/react';
-import { useComponentId } from '../useComponentId';
+import { renderHook } from "@testing-library/react";
+import { useComponentId } from "../useComponentId";
 
-describe('useComponentId', () => {
-  it('generates unique IDs', () => {
+describe("useComponentId", () => {
+  it("generates unique IDs", () => {
     const { result: result1 } = renderHook(() => useComponentId());
     const { result: result2 } = renderHook(() => useComponentId());
-    
+
     expect(result1.current.id).toBeDefined();
     expect(result2.current.id).toBeDefined();
     expect(result1.current.id).not.toBe(result2.current.id);
   });
-  
-  it('uses custom ID when provided', () => {
-    const customId = 'custom-id';
-    const { result } = renderHook(() => useComponentId({ internalId: customId }));
-    
+
+  it("uses custom ID when provided", () => {
+    const customId = "custom-id";
+    const { result } = renderHook(() =>
+      useComponentId({ internalId: customId })
+    );
+
     expect(result.current.id).toBe(customId);
   });
-  
-  it('enables debug mode when requested', () => {
+
+  it("enables debug mode when requested", () => {
     const { result } = renderHook(() => useComponentId({ debugMode: true }));
-    
+
     expect(result.current.isDebugMode).toBe(true);
   });
 });
@@ -831,11 +836,11 @@ import { Div } from "@portfolio/components";
 function MyComponent({ id, debugMode, ...props }) {
   const componentId = id || useId();
   const isDebug = debugMode && process.env.NODE_ENV === "development";
-  
+
   if (isDebug) {
     logInfo(`MyComponent rendered with ID: ${componentId}`);
   }
-  
+
   return <Div data-id={componentId}>{props.children}</Div>;
 }
 ```
@@ -850,9 +855,9 @@ function MyComponent({ _internalId, _debugMode, ...props }) {
     internalId: _internalId,
     debugMode: _debugMode,
   });
-  
+
   return (
-    <Div 
+    <Div
       data-component-id={id}
       data-debug-mode={isDebugMode ? "true" : undefined}
     >
@@ -909,17 +914,20 @@ export const Section = React.forwardRef<SectionRef, SectionProps>(...)
 ```typescript
 // ✅ Inline types (recommended)
 // components/section/Section.tsx
-import React, { useId } from "react";
 import {
   Div,
   Heading,
   Section as SectionComponent,
 } from "@portfolio/components";
 import { CommonWebAppComponentProps } from "@web/@types";
+import React, { useId } from "react";
 
 // Inline type definitions
 type SectionRef = React.ComponentRef<typeof SectionComponent>;
-interface SectionProps extends React.ComponentProps<typeof SectionComponent>, CommonWebAppComponentProps {}
+interface SectionProps
+  extends
+    React.ComponentProps<typeof SectionComponent>,
+    CommonWebAppComponentProps {}
 
 export const Section = React.forwardRef<SectionRef, SectionProps>(
   function Section(props, ref) {
@@ -971,7 +979,11 @@ const { id, isDebugMode, performance } = useComponentId({
 
 ```typescript
 // Planned hooks
-import { useComponentId, useComponentState, useComponentEffects } from "@portfolio/hooks";
+import {
+  useComponentEffects,
+  useComponentId,
+  useComponentState,
+} from "@portfolio/hooks";
 
 // Component state management
 const { state, setState } = useComponentState(initialState);
@@ -984,7 +996,11 @@ const { effects, addEffect, removeEffect } = useComponentEffects();
 
 ```typescript
 // Planned utilities
-import { setDisplayName, setComponentMetadata, createComponentFactory } from "@portfolio/hooks";
+import {
+  createComponentFactory,
+  setComponentMetadata,
+  setDisplayName,
+} from "@portfolio/hooks";
 
 // Component metadata
 const Component = setComponentMetadata(
@@ -995,14 +1011,14 @@ const Component = setComponentMetadata(
     displayName: "Component",
     version: "1.0.0",
     category: "UI",
-    tags: ["form", "input"]
+    tags: ["form", "input"],
   }
 );
 
 // Component factory
 const createComponent = createComponentFactory({
   baseProps: { className: "base-component" },
-  defaultDisplayName: "GeneratedComponent"
+  defaultDisplayName: "GeneratedComponent",
 });
 ```
 
