@@ -1,6 +1,6 @@
 import React from "react";
 
-import { render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { expect, it, vi } from "vitest";
 
 import { Body } from ".";
@@ -35,7 +35,9 @@ it("renders with data-testid and as prop", () => {
     </Body>
   );
 
-  const divElement = container.querySelector('[data-testid="test-body"]');
+  const divElement = container.querySelector<HTMLDivElement>(
+    '[data-testid="test-body"]'
+  );
   expect(divElement).toBeInTheDocument();
   expect(divElement?.tagName).toBe("DIV");
   expect(divElement).toHaveTextContent("Body content");
@@ -55,7 +57,9 @@ it("handles CommonComponentProps correctly", () => {
     </Body>
   );
 
-  const divElement = container.querySelector('[data-testid="test-body"]');
+  const divElement = container.querySelector<HTMLDivElement>(
+    '[data-testid="test-body"]'
+  );
   expect(divElement).toBeInTheDocument();
   expect(divElement).toHaveClass("test-class");
   expect(divElement).toHaveTextContent("Test content");
@@ -227,7 +231,9 @@ it("renders with event handlers", () => {
 
   const divElement = container.querySelector('[data-testid="test-body"]');
   expect(divElement).toBeInTheDocument();
-  divElement?.click();
+  if (divElement) {
+    fireEvent.click(divElement);
+  }
   expect(handleClick).toHaveBeenCalledTimes(1);
 });
 
@@ -556,7 +562,7 @@ it("renders with draggable attribute", () => {
 
 // Test ref forwarding
 it("forwards ref correctly", () => {
-  const ref = React.createRef<HTMLDivElement>();
+  const ref = React.createRef<HTMLBodyElement>();
   render(
     <Body as="div" ref={ref} data-testid="test-body">
       Ref test content

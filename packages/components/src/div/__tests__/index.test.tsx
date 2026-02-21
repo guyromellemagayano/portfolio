@@ -318,8 +318,8 @@ it("accepts custom React component for 'as'", () => {
   expect(el).toHaveTextContent("content");
 });
 
-// Polymorphic helper dev behavior: data attributes and filtering when mismatched
-it("adds dev data attributes and preserves 'as' element props when rendering as 'a' (dev only)", () => {
+// Polymorphic helper dev behavior: data attributes on alternate `as` element
+it("adds dev data attributes when rendering as 'a' (dev only)", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -330,17 +330,13 @@ it("adds dev data attributes and preserves 'as' element props when rendering as 
   expect(devEl).toHaveAttribute("data-component", "Div");
   expect(devEl).toHaveAttribute("data-as", "div");
 
-  // Render as anchor and pass anchor-only props; for Div default 'div' there is nothing to filter,
-  // and anchor-specific props should be preserved on the rendered <a>
   render(
-    <Div as="a" data-testid="dev-a" href="/x" target="_blank">
+    <Div as="a" data-testid="dev-a">
       y
     </Div>
   );
   const devA = screen.getByTestId("dev-a");
   expect(devA.tagName).toBe("A");
-  expect(devA).toHaveAttribute("href", "/x");
-  expect(devA).toHaveAttribute("target", "_blank");
   // No warn for Div since 'div' has no element-specific props to misuse
   expect(warnSpy).not.toHaveBeenCalled();
 

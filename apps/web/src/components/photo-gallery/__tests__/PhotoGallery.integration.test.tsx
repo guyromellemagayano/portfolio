@@ -110,7 +110,7 @@ describe("PhotoGallery (Integration)", () => {
     const images = container.querySelectorAll("img");
     expect(images).toHaveLength(mockPhotos.length);
 
-    mockPhotos.forEach((photo, index) => {
+    mockPhotos.forEach((photo: { src: string }, index: number) => {
       expect(images[index]).toHaveAttribute("src", photo.src);
       expect(images[index]).toHaveAttribute("alt", "");
       expect(images[index]).toHaveAttribute("aria-hidden", "true");

@@ -35,7 +35,7 @@ const mockUseTranslations = vi.hoisted(() =>
     };
 
     const entry = translations[key];
-    return typeof entry === "function" ? entry(values) : entry ?? key;
+    return typeof entry === "function" ? entry(values) : (entry ?? key);
   })
 );
 
@@ -72,7 +72,7 @@ vi.mock("next-intl", () => ({
 }));
 
 vi.mock("@web/utils/search", () => ({
-  useFuzzySearch: (...args: unknown[]) => mockUseFuzzySearch(...args),
+  useFuzzySearch: (data: any[]) => mockUseFuzzySearch(data),
 }));
 
 vi.mock("@web/utils/datetime", () => ({

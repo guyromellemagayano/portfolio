@@ -144,7 +144,7 @@ describe("List Integration Tests", () => {
       );
 
       const region = screen.getByRole("region", { name: "Article list" });
-      const container = region.querySelector("div.flex");
+      const container = region.querySelector<HTMLDivElement>("div.flex");
       const articles = container?.querySelectorAll("article") || [];
 
       expect(region).toContainElement(container);

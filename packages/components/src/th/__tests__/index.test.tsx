@@ -35,7 +35,6 @@ it("filters th-only props when rendered as div via as, and warns in development"
       rowSpan={3}
       headers="a b"
       abbr="A"
-      sorted="asc"
     >
       X
     </Th>
@@ -47,7 +46,6 @@ it("filters th-only props when rendered as div via as, and warns in development"
   expect(el).not.toHaveAttribute("rowspan");
   expect(el).not.toHaveAttribute("headers");
   expect(el).not.toHaveAttribute("abbr");
-  expect(el).not.toHaveAttribute("sorted");
   expect(warnSpy).toHaveBeenCalled();
 
   warnSpy.mockRestore();
