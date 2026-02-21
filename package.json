@@ -52,6 +52,7 @@
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@commitlint/types": "catalog:",
+    "@ianvs/prettier-plugin-sort-imports": "catalog:",
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
     "@portfolio/vitest-presets": "workspace:*",
