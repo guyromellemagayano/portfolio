@@ -26,7 +26,7 @@
     "pcu:security:fix": "pnpm run pcu:security --fix-vulns",
     "pcu:update": "pnpm run pcu update",
     "prepare": "husky",
-    "test": "turbo run test",
+    "test": "turbo run test:run",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
     "test:coverage:apps": "turbo run test:run:coverage --filter='./apps/*'",
@@ -80,13 +80,13 @@
   },
   "packageManager": "pnpm@10.30.0",
   "engines": {
-    "node": ">=20",
+    "node": ">=22",
     "pnpm": ">=10"
   },
   "pnpm": {
     "overrides": {
       "@csstools/css-calc": "3.1.1",
-      "ajv@<6.14.0": ">=6.14.0",
+      "ajv@<6.14.0": "6.12.6",
       "minimatch@<10.2.1": ">=10.2.1"
     }
   }
