@@ -1,3 +1,9 @@
+/**
+ * @file packages/vitest-presets/__mocks__/@guyromellemagayano/logger/index.ts
+ * @author Guy Romelle Magayano
+ * @description Centralized Vitest logger mocks exposing default and named logging utilities.
+ */
+
 import { vi } from "vitest";
 
 // ============================================================================

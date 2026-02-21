@@ -1,6 +1,6 @@
 import { defineConfig } from "vitest/config";
 
-import browserPreset from "./browser/vitest-preset.ts";
+import { browserPreset } from "./browser/vitest-preset.ts";
 
 // Use browser preset for testing vitest-presets itself
 // This allows us to test browser APIs and mocks

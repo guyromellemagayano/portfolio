@@ -1,5 +1,6 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
-# @portfolio/Vitest-presets
+
+# @portfolio/vitest-presets
 
 Shared Vitest configuration presets for the monorepo with integrated V8 coverage support.
 
@@ -16,7 +17,7 @@ Shared Vitest configuration presets for the monorepo with integrated V8 coverage
 
 ## Presets
 
-### Browser Preset (`browser/vitest-preset.ts`)
+### Browser Preset
 
 For DOM testing with JSDOM environment.
 
@@ -29,8 +30,8 @@ For DOM testing with JSDOM environment.
 
 ```typescript
 // Option 1: Using barrel export (recommended)
-import { defineConfig } from "vitest/config";
 import { browserPreset } from "@portfolio/vitest-presets";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig(browserPreset);
 ```
@@ -42,7 +43,7 @@ export default defineConfig(browserPreset);
 - Browser API mocks (IntersectionObserver, ResizeObserver, etc.)
 - Next.js component mocks (`next/image`, `next/link`, `next/navigation`)
 
-### Node Preset (`node/vitest-preset.ts`)
+### Node Preset
 
 For server-side testing with Node.js environment.
 
@@ -55,16 +56,8 @@ For server-side testing with Node.js environment.
 
 ```typescript
 // Option 1: Using barrel export (recommended)
-import { defineConfig } from "vitest/config";
 import { nodePreset } from "@portfolio/vitest-presets";
-
-export default defineConfig(nodePreset);
-```
-
-```typescript
-// Option 2: Using directory barrel export
 import { defineConfig } from "vitest/config";
-import { nodePreset } from "@portfolio/vitest-presets/node";
 
 export default defineConfig(nodePreset);
 ```
@@ -75,7 +68,7 @@ export default defineConfig(nodePreset);
 - Logger integration with test setup logging
 - Node.js environment optimizations
 
-### React Preset (`react/vitest-preset.ts`)
+### React Preset
 
 For React component testing with full Testing Library support.
 
@@ -88,16 +81,8 @@ For React component testing with full Testing Library support.
 
 ```typescript
 // Option 1: Using barrel export (recommended)
-import { defineConfig } from "vitest/config";
 import { reactPreset } from "@portfolio/vitest-presets";
-
-export default defineConfig(reactPreset);
-```
-
-```typescript
-// Option 2: Using directory barrel export
 import { defineConfig } from "vitest/config";
-import { reactPreset } from "@portfolio/vitest-presets/react";
 
 export default defineConfig(reactPreset);
 ```
@@ -144,19 +129,25 @@ The Vitest-presets package includes a comprehensive centralized mocking system t
 
 ### Logger Integration
 
-The test setup includes built-in logging that provides visibility into:
+The shared setup calls `logDebug` and `logInfo` from `@portfolio/logger` to
+mark centralized mock initialization. In tests, these are mocked functions, so
+they are best validated via assertions rather than terminal output.
 
-- Test environment initialization and cleanup
-- Mock setup confirmation
-- Module reset tracking
-- Setup completion status
+```typescript
+import { logDebug, logInfo } from "@portfolio/logger";
 
-**Example Output:**
-
-```bash
-🔍 [TEST-SETUP] @web/components mocked via centralized mocks
-🔍 [TEST-SETUP] @portfolio/utils mocked via centralized mocks
-🧪 [TEST-SETUP] All mocks and configurations initialized successfully
+expect(logDebug).toHaveBeenCalledWith(
+  "@portfolio/utils mocked via centralized mocks"
+);
+expect(logDebug).toHaveBeenCalledWith(
+  "@portfolio/hooks mocked via centralized mocks"
+);
+expect(logDebug).toHaveBeenCalledWith(
+  "@portfolio/logger mocked via centralized mocks"
+);
+expect(logInfo).toHaveBeenCalledWith(
+  "All mocks and configurations initialized successfully"
+);
 ```
 
 ## Coverage Features
@@ -269,8 +260,8 @@ Create `vitest.config.ts` in your package:
 
 ```typescript
 // Recommended: Using barrel export
-import { defineConfig } from "vitest/config";
 import { browserPreset } from "@portfolio/vitest-presets";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig(browserPreset);
 ```
@@ -281,9 +272,6 @@ export default defineConfig(browserPreset);
   - `browserPreset` - For DOM testing
   - `reactPreset` - For React component testing
   - `nodePreset` - For server-side testing
-- `@portfolio/vitest-presets/browser` - Browser preset directory export
-- `@portfolio/vitest-presets/react` - React preset directory export
-- `@portfolio/vitest-presets/node` - Node preset directory export
 
 All presets include:
 
@@ -374,7 +362,7 @@ coverage: {
     "src/index.tsx", // Re-export files
     "**/*.stories.*", // Storybook files
     "**/types/**", // Type definitions
-  ]
+  ];
 }
 ```
 
@@ -407,7 +395,7 @@ Exclude re-export files:
 
 ```javascript
 coverage: {
-  exclude: ["src/index.tsx", "src/index.client.tsx"]
+  exclude: ["src/index.tsx", "src/index.client.tsx"];
 }
 ```
 

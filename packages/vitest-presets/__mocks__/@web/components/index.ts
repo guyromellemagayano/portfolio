@@ -1,12 +1,16 @@
+/**
+ * @file packages/vitest-presets/__mocks__/@web/components/index.ts
+ * @author Guy Romelle Magayano
+ * @description Centralized React component mocks used by Vitest presets for consistent UI test behavior.
+ */
+
 import React from "react";
 
 // ============================================================================
 // CENTRALIZED COMPONENT MOCKS
 // ============================================================================
 
-/**
- * Creates a mock component with consistent behavior
- */
+/** Creates a mock component with consistent behavior */
 const createMockComponent = (componentName: string) => {
   return React.forwardRef<HTMLElement, any>(function MockComponent(props, ref) {
     const {

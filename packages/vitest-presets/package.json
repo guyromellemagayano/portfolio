@@ -10,34 +10,17 @@
       "types": "./index.ts",
       "default": "./index.ts"
     },
-    "./browser": {
-      "types": "./browser/vitest-preset.ts",
-      "default": "./browser/vitest-preset.ts"
-    },
-    "./node": {
-      "types": "./node/vitest-preset.ts",
-      "default": "./node/vitest-preset.ts"
-    },
-    "./react": {
-      "types": "./react/vitest-preset.ts",
-      "default": "./react/vitest-preset.ts"
-    },
-    "./shared": {
-      "types": "./shared/index.ts",
-      "default": "./shared/index.ts"
-    },
     "./shared/test-setup.ts": {
       "types": "./shared/test-setup.ts",
       "default": "./shared/test-setup.ts"
     }
   },
-  "main": "./index",
   "files": [
     "index.ts",
     "browser/**/*.ts",
     "node/**/*.ts",
     "react/**/*.ts",
-    "shared/**/*",
+    "shared/**/*.ts",
     "__mocks__/**/*"
   ],
   "scripts": {

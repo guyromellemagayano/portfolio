@@ -1,3 +1,9 @@
+/**
+ * @file packages/vitest-presets/__tests__/exports.test.ts
+ * @author Guy Romelle Magayano
+ * @description Verifies main barrel exports and shared setup entry point for the vitest-presets package.
+ */
+
 import { describe, expect, it } from "vitest";
 
 describe("Barrel Exports", () => {
@@ -34,26 +40,6 @@ describe("Barrel Exports", () => {
     });
   });
 
-  describe("Directory barrel exports", () => {
-    it("should export browser preset from browser/index", async () => {
-      const browserExports = await import("../browser");
-      expect(browserExports.browserPreset).toBeDefined();
-      expect(browserExports.browserPreset.test?.environment).toBe("jsdom");
-    });
-
-    it("should export node preset from node/index", async () => {
-      const nodeExports = await import("../node");
-      expect(nodeExports.nodePreset).toBeDefined();
-      expect(nodeExports.nodePreset.test?.environment).toBe("node");
-    });
-
-    it("should export react preset from react/index", async () => {
-      const reactExports = await import("../react");
-      expect(reactExports.reactPreset).toBeDefined();
-      expect(reactExports.reactPreset.test?.environment).toBe("jsdom");
-    });
-  });
-
   describe("Package.json exports field compatibility", () => {
     it("should support main barrel export path", async () => {
       // This simulates: import { browserPreset } from "@portfolio/vitest-presets"
@@ -61,17 +47,10 @@ describe("Barrel Exports", () => {
       expect(exports.browserPreset).toBeDefined();
     });
 
-    it("should support directory export paths", async () => {
-      // This simulates: import { browserPreset } from "@portfolio/vitest-presets/browser"
-      const browserExports = await import("../browser");
-      expect(browserExports.browserPreset).toBeDefined();
-    });
-
-    it("should support barrel export pattern", async () => {
-      // This simulates: import { browserPreset } from "@portfolio/vitest-presets/browser"
-      const browserExports = await import("../browser");
-      expect(browserExports.browserPreset).toBeDefined();
-      expect(browserExports.browserPreset.test?.environment).toBe("jsdom");
+    it("should support shared test setup entry point", async () => {
+      // This simulates: import "@portfolio/vitest-presets/shared/test-setup.ts"
+      const setupModule = await import("../shared/test-setup.ts");
+      expect(setupModule).toBeDefined();
     });
   });
 });

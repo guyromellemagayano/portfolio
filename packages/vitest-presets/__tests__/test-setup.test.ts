@@ -1,5 +1,12 @@
-import { cleanup, render } from "@testing-library/react";
+/**
+ * @file packages/vitest-presets/__tests__/test-setup.test.ts
+ * @author Guy Romelle Magayano
+ * @description Verifies shared test setup initialization, global environment wiring, and centralized mocks.
+ */
+
 import React from "react";
+
+import { cleanup, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("Test Setup Integration", () => {
@@ -36,23 +43,17 @@ describe("Test Setup Integration", () => {
 
   describe("Console Mocks", () => {
     it("should have console methods mocked", () => {
-      expect(() => console.warn("test")).not.toThrow();
-      expect(() => console.error("test")).not.toThrow();
+      expect(vi.isMockFunction(console.warn)).toBe(true);
+      expect(vi.isMockFunction(console.error)).toBe(true);
     });
 
-    it("should mock console.warn and console.error", () => {
-      const warnSpy = vi.spyOn(console, "warn");
-      const errorSpy = vi.spyOn(console, "error");
+    it("should allow logger warning and error calls without console usage", async () => {
+      const loggerMock = await import("../__mocks__/@portfolio/logger");
 
-      console.warn("test warn");
-      console.error("test error");
-
-      // Mocks should be callable without throwing
-      expect(warnSpy).toHaveBeenCalled();
-      expect(errorSpy).toHaveBeenCalled();
-
-      warnSpy.mockRestore();
-      errorSpy.mockRestore();
+      expect(() => loggerMock.logWarn("test warn")).not.toThrow();
+      expect(() => loggerMock.logError("test error")).not.toThrow();
+      expect(loggerMock.logWarn).toHaveBeenCalledWith("test warn");
+      expect(loggerMock.logError).toHaveBeenCalledWith("test error");
     });
   });
 
