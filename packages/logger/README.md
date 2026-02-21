@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD024 -->
+
 # @portfolio/logger
 
 A comprehensive, robust, scalable, and flexible logging system for Node.js
@@ -70,115 +71,129 @@ bun add @portfolio/logger
 
 ## 🚀 Module Support
 
-This package is **ESM-only** and designed for modern JavaScript environments:
+This package ships **dual-module builds** (ESM + CommonJS).
 
 ### ESM Import
 
 ```typescript
-// Modern ESM import
-import { logger, createLogger, LogLevel } from '@portfolio/logger';
+import { createLogger, logger, LogLevel } from "@portfolio/logger";
+import { formatters } from "@portfolio/logger/formatters";
+import { transports } from "@portfolio/logger/transports";
+import { utils } from "@portfolio/logger/utils";
+```
 
-// Individual exports
-import { formatters } from '@portfolio/logger/formatters';
-import { transports } from '@portfolio/logger/transports';
-import { utils } from '@portfolio/logger/utils';
+### CommonJS Require
+
+```javascript
+const { logger, createLogger, LogLevel } = require("@portfolio/logger");
+const { formatters } = require("@portfolio/logger/formatters");
 ```
 
 ### Build Output Structure
 
-`bunchee` automatically generates optimized builds based on the `exports`
-field in `package.json`:
+`bunchee` generates module-specific outputs:
 
 ```text
 dist/
-├── index.js              # Main ESM bundle
-├── index.d.ts            # Type definitions
-└── ...
+├── es/
+│   ├── index.mjs
+│   ├── index.d.mts
+│   ├── formatters.mjs
+│   ├── transports.mjs
+│   └── utils.mjs
+└── cjs/
+    ├── index.cjs
+    ├── index.d.cts
+    ├── formatters.cjs
+    ├── transports.cjs
+    └── utils.cjs
 ```
 
 ### Build Configuration
 
-This package is **ESM-only** and configured entirely through `package.json`:
+Module resolution is configured in `package.json` via conditional exports:
 
 ```json
 {
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./formatters": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/es/index.d.mts",
+        "default": "./dist/es/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
     }
-    // ... other exports
   }
 }
 ```
-
-No separate config file is needed - `bunchee` reads the package configuration and
-automatically generates optimized ESM builds with tree-shaking and minification.
 
 ## 🚀 Quick Start
 
 ### Basic Usage
 
 ```typescript
-import { logger } from '@portfolio/logger';
+import { logger } from "@portfolio/logger";
 
 // Simple logging
-logger.info('Application started');
-logger.error('Something went wrong', new Error('Details'));
+logger.info("Application started");
+logger.error("Something went wrong", new Error("Details"));
 
 // With additional data
-logger.info('User logged in', { userId: 123, method: 'oauth' });
+logger.info("User logged in", { userId: 123, method: "oauth" });
 
 // With context
-logger.info('Processing request', { orderId: 456 }, { 
-  requestId: 'req-789',
-  component: 'order-service' 
-});
+logger.info(
+  "Processing request",
+  { orderId: 456 },
+  {
+    requestId: "req-789",
+    component: "order-service",
+  }
+);
 ```
 
 ### Advanced Configuration
 
 ```typescript
-import { 
-  createLogger, 
-  LogLevel, 
-  formatters, 
+import {
   ConsoleTransport,
-  HttpTransport 
-} from '@portfolio/logger';
+  createLogger,
+  formatters,
+  HttpTransport,
+  LogLevel,
+} from "@portfolio/logger";
 
 const appLogger = createLogger({
   level: LogLevel.DEBUG,
-  environment: 'production',
+  environment: "production",
   transports: [
-    new ConsoleTransport({ 
+    new ConsoleTransport({
       formatter: formatters.console,
-      useColors: true 
+      useColors: true,
     }),
-    new HttpTransport({ 
-      url: 'https://logs.example.com/api/logs',
+    new HttpTransport({
+      url: "https://logs.example.com/api/logs",
       batchSize: 50,
-      flushInterval: 5000 
-    })
+      flushInterval: 5000,
+    }),
   ],
   performance: {
     enabled: true,
-    sampleRate: 0.1 // 10% sampling
+    sampleRate: 0.1, // 10% sampling
   },
   rateLimit: {
     max: 1000,
-    windowMs: 60000 // 1000 logs per minute
+    windowMs: 60000, // 1000 logs per minute
   },
   errorHandling: {
     handleExceptions: true,
     handleRejections: true,
-    exitOnError: false
-  }
+    exitOnError: false,
+  },
 });
 ```
 
@@ -187,12 +202,12 @@ const appLogger = createLogger({
 ### Timing Operations
 
 ```typescript
-import { logger } from '@portfolio/logger';
+import { logger } from "@portfolio/logger";
 
 // Measure execution time
-logger.time('database-query');
+logger.time("database-query");
 await performDatabaseQuery();
-logger.timeEnd('database-query');
+logger.timeEnd("database-query");
 // Logs: Timer 'database-query' completed (150.25ms, mem: +2.1MB)
 ```
 
@@ -200,13 +215,13 @@ logger.timeEnd('database-query');
 
 ```typescript
 // Counter - count occurrences
-logger.counter('user.login', 1, { method: 'oauth', region: 'us-east' });
+logger.counter("user.login", 1, { method: "oauth", region: "us-east" });
 
 // Gauge - current value
-logger.gauge('memory.usage', 85.5, { service: 'api' });
+logger.gauge("memory.usage", 85.5, { service: "api" });
 
 // Histogram - value distribution
-logger.histogram('response.time', 150, { endpoint: '/api/users' });
+logger.histogram("response.time", 150, { endpoint: "/api/users" });
 ```
 
 ## 🏗️ Structured Logging
@@ -215,19 +230,19 @@ logger.histogram('response.time', 150, { endpoint: '/api/users' });
 
 ```typescript
 // Set global context
-logger.setContext({ 
-  service: 'user-api',
-  version: '1.2.3',
-  environment: 'production'
+logger.setContext({
+  service: "user-api",
+  version: "1.2.3",
+  environment: "production",
 });
 
 // Create child logger with additional context
-const requestLogger = logger.child({ 
-  requestId: 'req-123',
-  userId: 456 
+const requestLogger = logger.child({
+  requestId: "req-123",
+  userId: 456,
 });
 
-requestLogger.info('Processing user request'); 
+requestLogger.info("Processing user request");
 // Includes both global and request-specific context
 ```
 
@@ -235,12 +250,12 @@ requestLogger.info('Processing user request');
 
 ```typescript
 // Automatically redacts sensitive data
-logger.info('User authentication', {
-  username: 'john.doe',
-  password: 'secret123',    // → [REDACTED]
-  apiKey: 'key_abc123',     // → [REDACTED]
-  token: 'bearer_xyz789',   // → [REDACTED]
-  email: 'john@example.com' // → preserved
+logger.info("User authentication", {
+  username: "john.doe",
+  password: "secret123", // → [REDACTED]
+  apiKey: "key_abc123", // → [REDACTED]
+  token: "bearer_xyz789", // → [REDACTED]
+  email: "john@example.com", // → preserved
 });
 ```
 
@@ -249,11 +264,11 @@ logger.info('User authentication', {
 ### JSON Formatter
 
 ```typescript
-import { JsonFormatter } from '@portfolio/logger';
+import { JsonFormatter } from "@portfolio/logger";
 
-const jsonFormatter = new JsonFormatter({ 
+const jsonFormatter = new JsonFormatter({
   pretty: true,
-  includeStack: true 
+  includeStack: true,
 });
 
 // Output: Structured JSON with full context
@@ -262,12 +277,12 @@ const jsonFormatter = new JsonFormatter({
 ### Console Formatter
 
 ```typescript
-import { ConsoleFormatter } from '@portfolio/logger';
+import { ConsoleFormatter } from "@portfolio/logger";
 
 const consoleFormatter = new ConsoleFormatter({
   colors: true,
   includeContext: true,
-  includePerformance: true
+  includePerformance: true,
 });
 
 // Output: [2024-01-01T00:00:00.000Z] [INFO   ] [user-service] (req-abc123)
@@ -277,11 +292,11 @@ const consoleFormatter = new ConsoleFormatter({
 ### Development Formatter
 
 ```typescript
-import { DevFormatter } from '@portfolio/logger';
+import { DevFormatter } from "@portfolio/logger";
 
 const devFormatter = new DevFormatter({
   includeSource: true,
-  includeMetadata: true
+  includeMetadata: true,
 });
 
 // Output: Enhanced console output with source location and metadata
@@ -292,52 +307,52 @@ const devFormatter = new DevFormatter({
 ### Console Transport
 
 ```typescript
-import { ConsoleTransport } from '@portfolio/logger';
+import { ConsoleTransport } from "@portfolio/logger";
 
 const consoleTransport = new ConsoleTransport({
   formatter: formatters.console,
-  useColors: true
+  useColors: true,
 });
 ```
 
 ### File Transport
 
 ```typescript
-import { FileTransport } from '@portfolio/logger';
+import { FileTransport } from "@portfolio/logger";
 
 const fileTransport = new FileTransport({
-  filename: './logs/app.log',
+  filename: "./logs/app.log",
   maxSize: 10 * 1024 * 1024, // 10MB
   maxFiles: 5,
-  formatter: formatters.json
+  formatter: formatters.json,
 });
 ```
 
 ### HTTP Transport
 
 ```typescript
-import { HttpTransport } from '@portfolio/logger';
+import { HttpTransport } from "@portfolio/logger";
 
 const httpTransport = new HttpTransport({
-  url: 'https://logs.example.com/api/logs',
+  url: "https://logs.example.com/api/logs",
   headers: {
-    'Authorization': 'Bearer token123',
-    'X-API-Key': 'key456'
+    Authorization: "Bearer token123",
+    "X-API-Key": "key456",
   },
   batchSize: 25,
   flushInterval: 5000,
-  formatter: formatters.json
+  formatter: formatters.json,
 });
 ```
 
 ### Memory Transport (Testing)
 
 ```typescript
-import { MemoryTransport } from '@portfolio/logger';
+import { MemoryTransport } from "@portfolio/logger";
 
 const memoryTransport = new MemoryTransport({
   maxLogs: 1000,
-  formatter: formatters.simple
+  formatter: formatters.simple,
 });
 
 // Access logs for testing
@@ -350,10 +365,10 @@ memoryTransport.clear();
 ### Creating Custom Plugins
 
 ```typescript
-import type { LoggerPlugin, LogEntry } from '@portfolio/logger';
+import type { LogEntry, LoggerPlugin } from "@portfolio/logger";
 
 class MetricsPlugin implements LoggerPlugin {
-  name = 'metrics';
+  name = "metrics";
 
   beforeTransport(entry: LogEntry): LogEntry | null {
     // Collect metrics before logging
@@ -384,18 +399,15 @@ logger.addPlugin(new MetricsPlugin());
 ### Automatic Environment Detection
 
 ```typescript
-import { detectEnvironment, LogLevel } from '@portfolio/logger';
+import { detectEnvironment, LogLevel } from "@portfolio/logger";
 
 const env = detectEnvironment(); // 'development' | 'production' | 'test' | 'staging'
 
 const config = {
-  level: env === 'production' ? LogLevel.INFO : LogLevel.DEBUG,
-  transports: env === 'production' 
-    ? [httpTransport, fileTransport]
-    : [consoleTransport],
-  formatter: env === 'production' 
-    ? formatters.production 
-    : formatters.dev
+  level: env === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+  transports:
+    env === "production" ? [httpTransport, fileTransport] : [consoleTransport],
+  formatter: env === "production" ? formatters.production : formatters.dev,
 };
 ```
 
@@ -405,13 +417,13 @@ const config = {
 // Development: Enhanced console output with source info
 const devLogger = createLogger({
   formatter: formatters.dev,
-  transports: [consoleTransport]
+  transports: [consoleTransport],
 });
 
 // Production: JSON output with sanitized data
 const prodLogger = createLogger({
   formatter: formatters.production,
-  transports: [httpTransport, fileTransport]
+  transports: [httpTransport, fileTransport],
 });
 ```
 
@@ -431,9 +443,9 @@ Automatically redacts sensitive fields:
 ```typescript
 const logger = createLogger({
   rateLimit: {
-    max: 1000,        // Maximum logs
-    windowMs: 60000   // Per time window (1 minute)
-  }
+    max: 1000, // Maximum logs
+    windowMs: 60000, // Per time window (1 minute)
+  },
 });
 ```
 
@@ -455,7 +467,7 @@ import { logger } from '@portfolio/logger';
 
 function UserComponent({ userId }: { userId: number }) {
   const componentLogger = logger.child({ component: 'UserComponent', userId });
-  
+
   useEffect(() => {
     componentLogger.info('Component mounted');
     return () => componentLogger.info('Component unmounted');
@@ -476,9 +488,9 @@ function UserComponent({ userId }: { userId: number }) {
 ### Using Memory Transport
 
 ```typescript
-import { createLogger, MemoryTransport, LogLevel } from '@portfolio/logger';
+import { createLogger, LogLevel, MemoryTransport } from "@portfolio/logger";
 
-describe('Application Logic', () => {
+describe("Application Logic", () => {
   let logger: Logger;
   let memoryTransport: MemoryTransport;
 
@@ -486,16 +498,16 @@ describe('Application Logic', () => {
     memoryTransport = new MemoryTransport();
     logger = createLogger({
       level: LogLevel.DEBUG,
-      transports: [memoryTransport]
+      transports: [memoryTransport],
     });
   });
 
-  it('logs user actions', () => {
-    logger.info('User action', { action: 'click', element: 'button' });
-    
+  it("logs user actions", () => {
+    logger.info("User action", { action: "click", element: "button" });
+
     const logs = memoryTransport.getLogs();
     expect(logs).toHaveLength(1);
-    expect(logs[0]).toContain('User action');
+    expect(logs[0]).toContain("User action");
   });
 });
 ```
@@ -505,13 +517,13 @@ describe('Application Logic', () => {
 ### 1. Use Appropriate Log Levels
 
 ```typescript
-logger.error('Critical system failure', error);    // System errors
-logger.warn('Deprecated API usage');               // Warnings  
-logger.info('User logged in', { userId });         // Business events
-logger.http('GET /api/users', { responseTime });   // HTTP requests
-logger.verbose('Cache hit', { key, ttl });         // Detailed info
-logger.debug('Variable state', { variables });     // Debug info
-logger.silly('Function entry', { args });          // Trace info
+logger.error("Critical system failure", error); // System errors
+logger.warn("Deprecated API usage"); // Warnings
+logger.info("User logged in", { userId }); // Business events
+logger.http("GET /api/users", { responseTime }); // HTTP requests
+logger.verbose("Cache hit", { key, ttl }); // Detailed info
+logger.debug("Variable state", { variables }); // Debug info
+logger.silly("Function entry", { args }); // Trace info
 
 // SILENT level (0) - disables all logging
 const silentLogger = createLogger({ level: LogLevel.SILENT });
@@ -521,15 +533,15 @@ const silentLogger = createLogger({ level: LogLevel.SILENT });
 
 ```typescript
 // Good: Structured context
-const userLogger = logger.child({ 
-  component: 'user-service',
-  version: '1.0.0'
+const userLogger = logger.child({
+  component: "user-service",
+  version: "1.0.0",
 });
 
-userLogger.info('User action', { 
-  userId: 123, 
-  action: 'login',
-  timestamp: new Date().toISOString()
+userLogger.info("User action", {
+  userId: 123,
+  action: "login",
+  timestamp: new Date().toISOString(),
 });
 
 // Avoid: String concatenation
@@ -540,14 +552,14 @@ logger.info(`User 123 performed login at ${new Date()}`);
 
 ```typescript
 // Measure important operations
-logger.time('database-query');
-const result = await database.query('SELECT * FROM users');
-logger.timeEnd('database-query');
+logger.time("database-query");
+const result = await database.query("SELECT * FROM users");
+logger.timeEnd("database-query");
 
 // Track business metrics
-logger.counter('user.signup', 1, { source: 'web' });
-logger.gauge('active.connections', connectionCount);
-logger.histogram('request.duration', processingTime);
+logger.counter("user.signup", 1, { source: "web" });
+logger.gauge("active.connections", connectionCount);
+logger.histogram("request.duration", processingTime);
 ```
 
 ### 4. Error Handling
@@ -556,10 +568,10 @@ logger.histogram('request.duration', processingTime);
 try {
   await riskyOperation();
 } catch (error) {
-  logger.error('Operation failed', error, {
-    operation: 'user-update',
+  logger.error("Operation failed", error, {
+    operation: "user-update",
     userId: user.id,
-    metadata: { retryCount, lastAttempt }
+    metadata: { retryCount, lastAttempt },
   });
   throw error; // Re-throw if needed
 }

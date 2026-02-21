@@ -80,7 +80,8 @@
   ],
   "scripts": {
     "build": "bunchee",
-    "check-types": "tsc --noEmit",
+    "check-types": "tsc --noEmit && tsc -p tsconfig.scripts.json",
+    "check-types:scripts": "tsc -p tsconfig.scripts.json",
     "clean": "rimraf node_modules .turbo dist coverage",
     "dev": "bunchee --watch",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
@@ -89,7 +90,7 @@
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
     "prepublishOnly": "pnpm run build && pnpm run test:run",
     "test": "vitest",
-    "test:build": "node scripts/test-build.mjs",
+    "test:build": "node scripts/test-build.ts",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
     "test:run": "vitest run",

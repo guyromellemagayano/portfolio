@@ -3,7 +3,7 @@
  * Search and analytics engine integration
  */
 
-import { type LogEntry, LogLevel } from "../types";
+import { LogLevel, type LogEntry } from "../types";
 import { BaseIntegration, type IntegrationConfig } from "./base";
 
 /**
