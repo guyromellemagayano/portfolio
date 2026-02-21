@@ -1,5 +1,5 @@
 /**
- * @file PhotoGallery.integration.test.tsx
+ * @file apps/web/src/components/photo-gallery/__tests__/PhotoGallery.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the PhotoGallery component.
  */

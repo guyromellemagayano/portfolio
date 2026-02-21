@@ -1,7 +1,7 @@
 /**
- * @file error.ts
+ * @file apps/web/src/utils/error.ts
  * @author Guy Romelle Magayano
- * @description Utility functions for error handling.
+ * @description Error normalization and safe translation fallback utilities.
  */
 
 import { getTranslations } from "next-intl/server";
@@ -37,10 +37,7 @@ export function normalizeError(err: unknown): NormalizedError {
   return normalizedError;
 }
 
-/**
- * Safely retrieves a hero message (title, subheading, or description) for a given namespace.
- * Falls back to a provided value if translation fails or is missing, and logs translation errors.
- */
+/** Safely resolves hero translation messages and falls back when translation fails. */
 export function getSafeHeroMessages(
   namespace: string,
   translate: Awaited<ReturnType<typeof getTranslations>>,

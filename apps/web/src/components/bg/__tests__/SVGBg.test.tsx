@@ -1,5 +1,5 @@
 /**
- * @file SVGBg.test.tsx
+ * @file apps/web/src/components/bg/__tests__/SVGBg.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the SVGBg component.
  */

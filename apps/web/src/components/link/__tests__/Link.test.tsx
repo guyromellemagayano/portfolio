@@ -1,5 +1,5 @@
 /**
- * @file Link.test.tsx
+ * @file apps/web/src/components/link/__tests__/Link.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Link component.
  */

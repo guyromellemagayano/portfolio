@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file Footer.tsx
+ * @file apps/web/src/components/footer/Footer.tsx
  * @author Guy Romelle Magayano
- * @description Footer component for the website.
+ * @description Main Footer component implementation.
  */
 
 "use client";

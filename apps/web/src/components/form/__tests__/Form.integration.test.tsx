@@ -1,5 +1,5 @@
 /**
- * @file Form.integration.test.tsx
+ * @file apps/web/src/components/form/__tests__/Form.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Form component.
  */

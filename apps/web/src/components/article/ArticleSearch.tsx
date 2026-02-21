@@ -1,7 +1,7 @@
 /**
- * @file ArticleSearch.tsx
+ * @file apps/web/src/components/article/ArticleSearch.tsx
  * @author Guy Romelle Magayano
- * @description Article search component.
+ * @description Main ArticleSearch component implementation.
  */
 
 "use client";

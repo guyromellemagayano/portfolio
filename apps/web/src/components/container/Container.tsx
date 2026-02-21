@@ -1,7 +1,7 @@
 /**
- * @file Container.tsx
+ * @file apps/web/src/components/container/Container.tsx
  * @author Guy Romelle Magayano
- * @description Container component for the web application.
+ * @description Main Container component implementation.
  */
 
 import {

@@ -1,5 +1,5 @@
 /**
- * @file Icon.integration.test.tsx
+ * @file apps/web/src/components/icon/__tests__/Icon.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Icon component.
  */

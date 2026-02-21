@@ -1,7 +1,7 @@
 /**
- * @file resume.ts
+ * @file apps/web/src/config/resume.ts
  * @author Guy Romelle Magayano
- * @description Resume configuration for the web application.
+ * @description Static configuration for resume content and settings.
  */
 
 import { type ImageProps } from "next/image";

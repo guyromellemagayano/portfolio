@@ -1,5 +1,5 @@
 /**
- * @file Resume.test.tsx
+ * @file apps/web/src/components/resume/__tests__/Resume.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Resume component.
  */
