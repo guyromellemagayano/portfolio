@@ -6,7 +6,6 @@
  * Test script to verify dual module builds (ESM and CommonJS)
  * This script tests both import and require functionality with comprehensive validation
  */
-
 import { exec } from "child_process";
 import { existsSync } from "fs";
 import { dirname, join } from "path";
@@ -17,6 +16,10 @@ const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const packageRoot = join(__dirname, "..");
+
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 // Test results tracking
 const results = {
@@ -29,9 +32,7 @@ const results = {
 
 console.log("🧪 Testing dual module build...\n");
 
-/**
- * Test ESM build functionality
- */
+/** Test ESM build functionality */
 async function testESMBuild() {
   console.log("📦 Testing ESM build...");
 
@@ -96,16 +97,14 @@ async function testESMBuild() {
 
     results.esm = true;
   } catch (error) {
-    console.error("❌ ESM build failed:", error.message);
+    console.error("❌ ESM build failed:", getErrorMessage(error));
     return false;
   }
 
   return true;
 }
 
-/**
- * Test CommonJS build functionality
- */
+/** Test CommonJS build functionality */
 async function testCommonJSBuild() {
   console.log("\n📦 Testing CommonJS build...");
 
@@ -176,16 +175,14 @@ async function testCommonJSBuild() {
     console.log(stdout.trim());
     results.cjs = true;
   } catch (error) {
-    console.error("❌ CommonJS build failed:", error.message);
+    console.error("❌ CommonJS build failed:", getErrorMessage(error));
     return false;
   }
 
   return true;
 }
 
-/**
- * Test individual export files
- */
+/** Test individual export files */
 async function testIndividualExports() {
   console.log("\n📋 Testing individual exports...");
 
@@ -213,7 +210,7 @@ async function testIndividualExports() {
 
       testResults.push(`✅ ${exportName}: ESM & CJS exports valid`);
     } catch (error) {
-      testResults.push(`❌ ${exportName}: ${error.message}`);
+      testResults.push(`❌ ${exportName}: ${getErrorMessage(error)}`);
       return false;
     }
   }
@@ -223,21 +220,19 @@ async function testIndividualExports() {
   return true;
 }
 
-/**
- * Test type declarations
- */
+/** Test type declarations */
 async function testTypeDeclarations() {
   console.log("\n📋 Testing type declarations...");
 
   const typeFiles = [
     "dist/es/index.d.mts",
-    "dist/cjs/index.d.ts",
+    "dist/cjs/index.d.cts",
     "dist/es/formatters.d.mts",
-    "dist/cjs/formatters.d.ts",
+    "dist/cjs/formatters.d.cts",
     "dist/es/transports.d.mts",
-    "dist/cjs/transports.d.ts",
+    "dist/cjs/transports.d.cts",
     "dist/es/utils.d.mts",
-    "dist/cjs/utils.d.ts",
+    "dist/cjs/utils.d.cts",
   ];
 
   const missing = [];
@@ -265,9 +260,7 @@ async function testTypeDeclarations() {
   return true;
 }
 
-/**
- * Test functional logger behavior
- */
+/** Test functional logger behavior */
 async function testFunctionalBehavior() {
   console.log("\n🔧 Testing functional behavior...");
 
@@ -316,16 +309,17 @@ async function testFunctionalBehavior() {
 
     results.functional = true;
   } catch (error) {
-    console.error("❌ Functional behavior test failed:", error.message);
+    console.error(
+      "❌ Functional behavior test failed:",
+      getErrorMessage(error)
+    );
     return false;
   }
 
   return true;
 }
 
-/**
- * Main test runner
- */
+/** Main test runner */
 async function runTests() {
   const tests = [
     testESMBuild,
@@ -351,7 +345,7 @@ async function runTests() {
     console.log("🎉 All dual module tests passed!");
     console.log("\n📝 Build summary:");
     console.log("   ✅ ESM build: dist/es/ (*.mjs, *.d.mts)");
-    console.log("   ✅ CommonJS build: dist/cjs/ (*.cjs, *.d.ts)");
+    console.log("   ✅ CommonJS build: dist/cjs/ (*.cjs, *.d.cts)");
     console.log("   ✅ Individual exports working");
     console.log("   ✅ Type declarations complete");
     console.log("   ✅ Functional behavior verified");
@@ -370,6 +364,6 @@ async function runTests() {
 
 // Run the tests
 runTests().catch((error) => {
-  console.error("❌ Test runner failed:", error.message);
+  console.error("❌ Test runner failed:", getErrorMessage(error));
   process.exit(1);
 });
