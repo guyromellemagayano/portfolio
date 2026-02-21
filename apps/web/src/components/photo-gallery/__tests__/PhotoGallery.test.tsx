@@ -241,7 +241,7 @@ describe("PhotoGallery", () => {
       const images = container.querySelectorAll("img");
       expect(images).toHaveLength(mockPhotos.length);
 
-      mockPhotos.forEach((photo, index) => {
+      mockPhotos.forEach((photo: { src: string }, index: number) => {
         expect(images[index]).toHaveAttribute("src", photo.src);
       });
     });
@@ -329,7 +329,7 @@ describe("PhotoGallery", () => {
       const images = container.querySelectorAll("img");
       expect(images).toHaveLength(mixedPhotos.length);
 
-      mixedPhotos.forEach((photo, index) => {
+      mixedPhotos.forEach((photo: { src: string }, index: number) => {
         expect(images[index]).toHaveAttribute("src", photo.src);
       });
     });

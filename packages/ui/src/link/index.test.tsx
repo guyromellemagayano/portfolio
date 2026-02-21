@@ -134,7 +134,11 @@ describe("Link", () => {
   describe("HTML Attributes", () => {
     it("passes through additional HTML attributes", () => {
       render(
-        <Link href="https://example.com" id="custom-id" className="custom-class">
+        <Link
+          href="https://example.com"
+          id="custom-id"
+          className="custom-class"
+        >
           Link
         </Link>
       );
@@ -220,7 +224,7 @@ describe("Link", () => {
 
   describe("Edge Cases", () => {
     it("handles empty children", () => {
-      render(<Link href="https://example.com"></Link>);
+      render(<Link href="https://example.com">{null}</Link>);
       const link = screen.getByRole("link");
       expect(link).toBeInTheDocument();
       expect(link).toBeEmptyDOMElement();
@@ -254,9 +258,7 @@ describe("Link", () => {
 
   describe("Component Updates", () => {
     it("updates href when prop changes", () => {
-      const { rerender } = render(
-        <Link href="https://example.com">Link</Link>
-      );
+      const { rerender } = render(<Link href="https://example.com">Link</Link>);
       let link = screen.getByRole("link");
       expect(link).toHaveAttribute("href", "https://example.com");
 
@@ -266,9 +268,7 @@ describe("Link", () => {
     });
 
     it("updates newTab when prop changes", () => {
-      const { rerender } = render(
-        <Link href="https://example.com">Link</Link>
-      );
+      const { rerender } = render(<Link href="https://example.com">Link</Link>);
       let link = screen.getByRole("link");
       expect(link).not.toHaveAttribute("target");
 
