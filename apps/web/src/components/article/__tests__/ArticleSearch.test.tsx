@@ -32,7 +32,7 @@ const mockUseTranslations = vi.hoisted(() =>
     };
 
     const entry = translations[key];
-    return typeof entry === "function" ? entry(values) : entry ?? key;
+    return typeof entry === "function" ? entry(values) : (entry ?? key);
   })
 );
 
