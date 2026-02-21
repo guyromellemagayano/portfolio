@@ -14,12 +14,9 @@ const MemoizedIClient = React.lazy(async () => {
 export type IRef = React.ComponentRef<"i">;
 
 export interface IProps
-  extends React.ComponentPropsWithoutRef<"i">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"i">, CommonComponentProps {}
 
-/**
- * Render the idiomatic text server component.
- */
+/** Render the idiomatic text server component. */
 export const I = React.forwardRef<IRef, IProps>((props, ref) => {
   const {
     as: Component = "i",

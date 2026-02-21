@@ -14,12 +14,9 @@ const MemoizedWbrClient = React.lazy(async () => {
 export type WbrRef = React.ComponentRef<"wbr">;
 
 export interface WbrProps
-  extends React.ComponentPropsWithoutRef<"wbr">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"wbr">, CommonComponentProps {}
 
-/**
- * Render the word break opportunity server component.
- */
+/** Render the word break opportunity server component. */
 export const Wbr = React.forwardRef<WbrRef, WbrProps>((props, ref) => {
   const {
     as: Component = "wbr",

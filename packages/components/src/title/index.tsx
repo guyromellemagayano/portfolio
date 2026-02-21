@@ -14,12 +14,9 @@ const MemoizedTitleClient = React.lazy(async () => {
 export type TitleRef = React.ComponentRef<"title">;
 
 export interface TitleProps
-  extends React.ComponentPropsWithoutRef<"title">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"title">, CommonComponentProps {}
 
-/**
- * Render the document title server component.
- */
+/** Render the document title server component. */
 export const Title = React.forwardRef<TitleRef, TitleProps>((props, ref) => {
   const {
     as: Component = "title",

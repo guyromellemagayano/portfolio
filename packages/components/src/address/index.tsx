@@ -14,12 +14,9 @@ export const MemoizedAddressClient = React.lazy(async () => {
 export type AddressRef = React.ComponentRef<"address">;
 
 export interface AddressProps
-  extends React.ComponentPropsWithoutRef<"address">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"address">, CommonComponentProps {}
 
-/**
- * Render the address server component.
- */
+/** Render the address server component. */
 export const Address = React.forwardRef<AddressRef, AddressProps>(
   (props, ref) => {
     const {

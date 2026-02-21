@@ -14,12 +14,9 @@ const MemoizedHrClient = React.lazy(async () => {
 export type HrRef = React.ComponentRef<"hr">;
 
 export interface HrProps
-  extends React.ComponentPropsWithoutRef<"hr">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"hr">, CommonComponentProps {}
 
-/**
- * Render the thematic break (horizontal rule) server component.
- */
+/** Render the thematic break (horizontal rule) server component. */
 export const Hr = React.forwardRef<HrRef, HrProps>((props, ref) => {
   const {
     as: Component = "hr",

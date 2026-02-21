@@ -14,12 +14,9 @@ const MemoizedSClient = React.lazy(async () => {
 export type SRef = React.ComponentRef<"s">;
 
 export interface SProps
-  extends React.ComponentPropsWithoutRef<"s">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"s">, CommonComponentProps {}
 
-/**
- * Render the strikethrough server component.
- */
+/** Render the strikethrough server component. */
 export const S = React.forwardRef<SRef, SProps>((props, ref) => {
   const {
     as: Component = "s",

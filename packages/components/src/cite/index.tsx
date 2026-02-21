@@ -14,12 +14,9 @@ const MemoizedCiteClient = React.lazy(async () => {
 export type CiteRef = React.ComponentRef<"cite">;
 
 export interface CiteProps
-  extends React.ComponentPropsWithoutRef<"cite">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"cite">, CommonComponentProps {}
 
-/**
- * Render the cite server component.
- */
+/** Render the cite server component. */
 export const Cite = React.forwardRef<CiteRef, CiteProps>((props, ref) => {
   const {
     as: Component = "cite",

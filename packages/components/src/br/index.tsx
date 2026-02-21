@@ -14,12 +14,9 @@ const MemoizedBrClient = React.lazy(async () => {
 export type BrRef = React.ComponentRef<"br">;
 
 export interface BrProps
-  extends React.ComponentPropsWithoutRef<"br">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"br">, CommonComponentProps {}
 
-/**
- * Render the line break server component.
- */
+/** Render the line break server component. */
 export const Br = React.forwardRef<BrRef, BrProps>((props, ref) => {
   const {
     as: Component = "br",

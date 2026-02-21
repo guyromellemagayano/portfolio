@@ -6,14 +6,14 @@ import { Pre } from "..";
 it("renders a pre element with code text", () => {
   render(
     <Pre data-testid="el" className="block">
-      {`const x = 1;\nconsole.log(x);`}
+      {`const x = 1;\nlogger.info(x);`}
     </Pre>
   );
   const el = screen.getByTestId("el");
   expect(el.tagName).toBe("PRE");
   expect(el).toHaveClass("block");
   expect(el.textContent).toContain("const x = 1;");
-  expect(el.textContent).toContain("console.log(x);");
+  expect(el.textContent).toContain("logger.info(x);");
 });
 
 it("toggles class and children across rerenders", () => {

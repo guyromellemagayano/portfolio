@@ -14,12 +14,9 @@ export const MemoizedAbbrClient = React.lazy(async () => {
 export type AbbrRef = React.ComponentRef<"abbr">;
 
 export interface AbbrProps
-  extends React.ComponentPropsWithoutRef<"abbr">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"abbr">, CommonComponentProps {}
 
-/**
- * Render the abbreviation server component.
- */
+/** Render the abbreviation server component. */
 export const Abbr = React.forwardRef<AbbrRef, AbbrProps>((props, ref) => {
   const {
     as: Component = "abbr",

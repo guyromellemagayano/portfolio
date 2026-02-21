@@ -14,12 +14,9 @@ const MemoizedSpanClient = React.lazy(async () => {
 export type SpanRef = React.ComponentRef<"span">;
 
 export interface SpanProps
-  extends React.ComponentPropsWithoutRef<"span">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"span">, CommonComponentProps {}
 
-/**
- * Render the content span server component.
- */
+/** Render the content span server component. */
 export const Span = React.forwardRef<SpanRef, SpanProps>((props, ref) => {
   const {
     as: Component = "span",

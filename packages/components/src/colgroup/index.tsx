@@ -14,12 +14,9 @@ const MemoizedColgroupClient = React.lazy(async () => {
 export type ColgroupRef = React.ComponentRef<"colgroup">;
 
 export interface ColgroupProps
-  extends React.ComponentPropsWithoutRef<"colgroup">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"colgroup">, CommonComponentProps {}
 
-/**
- * Render the table column group server component.
- */
+/** Render the table column group server component. */
 export const Colgroup = React.forwardRef<ColgroupRef, ColgroupProps>(
   (props, ref) => {
     const {

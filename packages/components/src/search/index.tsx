@@ -14,12 +14,9 @@ const MemoizedSearchClient = React.lazy(async () => {
 export type SearchRef = React.ComponentRef<"search">;
 
 export interface SearchProps
-  extends React.ComponentPropsWithoutRef<"search">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"search">, CommonComponentProps {}
 
-/**
- * Render the generic search server component.
- */
+/** Render the generic search server component. */
 export const Search = React.forwardRef<SearchRef, SearchProps>((props, ref) => {
   const {
     as: Component = "search",

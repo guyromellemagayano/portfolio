@@ -14,12 +14,9 @@ const MemoizedDataClient = React.lazy(async () => {
 export type DataRef = React.ComponentRef<"data">;
 
 export interface DataProps
-  extends React.ComponentPropsWithoutRef<"data">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"data">, CommonComponentProps {}
 
-/**
- * Render the data server component.
- */
+/** Render the data server component. */
 export const Data = React.forwardRef<DataRef, DataProps>((props, ref) => {
   const {
     as: Component = "data",

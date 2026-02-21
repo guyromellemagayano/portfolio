@@ -14,12 +14,9 @@ const MemoizedBodyClient = React.lazy(async () => {
 export type BodyRef = React.ComponentRef<"body">;
 
 export interface BodyProps
-  extends React.ComponentPropsWithoutRef<"body">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"body">, CommonComponentProps {}
 
-/**
- * Render the default body server component.
- */
+/** Render the default body server component. */
 export const Body = React.forwardRef<BodyRef, BodyProps>((props, ref) => {
   const {
     as: Component = "body",

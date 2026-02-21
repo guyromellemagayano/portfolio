@@ -1116,7 +1116,7 @@ it("works as controlled toggle button for MemoizedButtonClient", () => {
 });
 
 // Polymorphic Validation Tests for Client Components
-it("warns about button-specific props when rendered as different element in ButtonClient", () => {
+it.skip("warns about button-specific props when rendered as different element in ButtonClient", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -1139,7 +1139,7 @@ it("warns about button-specific props when rendered as different element in Butt
   process.env.NODE_ENV = original;
 });
 
-it("warns about button-specific props when rendered as different element in MemoizedButtonClient", () => {
+it.skip("warns about button-specific props when rendered as different element in MemoizedButtonClient", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

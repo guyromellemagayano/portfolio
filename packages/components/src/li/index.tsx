@@ -14,12 +14,9 @@ const MemoizedLiClient = React.lazy(async () => {
 export type LiRef = React.ComponentRef<"li">;
 
 export interface LiProps
-  extends React.ComponentPropsWithoutRef<"li">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"li">, CommonComponentProps {}
 
-/**
- * Render the list item server component.
- */
+/** Render the list item server component. */
 export const Li = React.forwardRef<LiRef, LiProps>((props, ref) => {
   const {
     as: Component = "li",

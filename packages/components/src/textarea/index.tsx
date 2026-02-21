@@ -14,12 +14,9 @@ const MemoizedTextareaClient = React.lazy(async () => {
 export type TextareaRef = React.ComponentRef<"textarea">;
 
 export interface TextareaProps
-  extends React.ComponentPropsWithoutRef<"textarea">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"textarea">, CommonComponentProps {}
 
-/**
- * Render the textarea server component.
- */
+/** Render the textarea server component. */
 export const Textarea = React.forwardRef<TextareaRef, TextareaProps>(
   (props, ref) => {
     const {

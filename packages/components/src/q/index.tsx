@@ -14,12 +14,9 @@ const MemoizedQClient = React.lazy(async () => {
 export type QRef = React.ComponentRef<"q">;
 
 export interface QProps
-  extends React.ComponentPropsWithoutRef<"q">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"q">, CommonComponentProps {}
 
-/**
- * Render the inline quotation server component.
- */
+/** Render the inline quotation server component. */
 export const Q = React.forwardRef<QRef, QProps>((props, ref) => {
   const {
     as: Component = "q",

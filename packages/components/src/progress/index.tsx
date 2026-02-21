@@ -14,12 +14,9 @@ const MemoizedProgressClient = React.lazy(async () => {
 export type ProgressRef = React.ComponentRef<"progress">;
 
 export interface ProgressProps
-  extends React.ComponentPropsWithoutRef<"progress">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"progress">, CommonComponentProps {}
 
-/**
- * Render the progress indicator server component.
- */
+/** Render the progress indicator server component. */
 export const Progress = React.forwardRef<ProgressRef, ProgressProps>(
   (props, ref) => {
     const {
