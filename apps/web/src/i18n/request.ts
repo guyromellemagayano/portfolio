@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file request.ts
+ * @file apps/web/src/i18n/request.ts
  * @author Guy Romelle Magayano
- * @description Request configuration for the react-intl internationalization library.
+ * @description Implementation for request.
  */
 
 import { getRequestConfig } from "next-intl/server";

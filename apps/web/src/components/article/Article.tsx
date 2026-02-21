@@ -1,7 +1,7 @@
 /**
- * @file Article.tsx
+ * @file apps/web/src/components/article/Article.tsx
  * @author Guy Romelle Magayano
- * @description Presentational component for displaying article cards using the Card compound component.
+ * @description Main Article component implementation.
  */
 
 "use client";

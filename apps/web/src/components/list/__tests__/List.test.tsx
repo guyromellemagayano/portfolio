@@ -1,5 +1,5 @@
 /**
- * @file List.test.tsx
+ * @file apps/web/src/components/list/__tests__/List.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the List component.
  */

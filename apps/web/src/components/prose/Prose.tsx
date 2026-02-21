@@ -1,7 +1,7 @@
 /**
- * @file Prose.tsx
+ * @file apps/web/src/components/prose/Prose.tsx
  * @author Guy Romelle Magayano
- * @description Prose component for the web application.
+ * @description Main Prose component implementation.
  */
 
 import {

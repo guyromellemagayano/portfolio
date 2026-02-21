@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file Resume.tsx
+ * @file apps/web/src/components/resume/Resume.tsx
  * @author Guy Romelle Magayano
- * @description Resume component for the web application.
+ * @description Main Resume component implementation.
  */
 
 "use client";

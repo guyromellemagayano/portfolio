@@ -1,7 +1,7 @@
 /**
- * @file Button.tsx
+ * @file apps/web/src/components/button/Button.tsx
  * @author Guy Romelle Magayano
- * @description Button component for the web application.
+ * @description Main Button component implementation.
  */
 
 "use client";

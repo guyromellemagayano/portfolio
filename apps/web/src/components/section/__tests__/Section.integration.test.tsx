@@ -1,5 +1,5 @@
 /**
- * @file Section.integration.test.tsx
+ * @file apps/web/src/components/section/__tests__/Section.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Section component.
  */
