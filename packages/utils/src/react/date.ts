@@ -20,7 +20,7 @@ export const formatDateSafely = (
     // Format the date using Intl.DateTimeFormat
     const formatter = new Intl.DateTimeFormat("en-US", options);
     return formatter.format(dateObj);
-  } catch (error) {
+  } catch {
     // Return empty string for any formatting errors
     return "";
   }
