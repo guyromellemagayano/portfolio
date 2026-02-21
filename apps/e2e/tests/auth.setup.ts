@@ -1,5 +1,6 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
+
 import { test } from "@playwright/test";
 
 const authDirectory = path.resolve(process.cwd(), "playwright/.auth");

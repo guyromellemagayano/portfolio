@@ -23,14 +23,13 @@ import {
   hasValidNavigationLinks,
 } from "@portfolio/utils";
 
-import { cn } from "@web/utils/helpers";
-
 import { Container } from "@web/components/container";
 import {
   FOOTER_NAV_LINK_CONFIG,
   FooterData,
   type FooterLink,
 } from "@web/config/footer";
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT
