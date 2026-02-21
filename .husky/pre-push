@@ -5,6 +5,7 @@ pnpm exec validate-branch-name
 # Prevent pushing commits that are not GPG-verified locally.
 zero_hash="0000000000000000000000000000000000000000"
 has_invalid_signature=0
+remote_name="${1:-origin}"
 
 while read -r local_ref local_sha remote_ref remote_sha; do
   if [ -z "$local_ref" ]; then
@@ -17,15 +18,50 @@ while read -r local_ref local_sha remote_ref remote_sha; do
   fi
 
   if [ "$remote_sha" = "$zero_hash" ]; then
-    range="$local_sha"
+    local_branch="${local_ref#refs/heads/}"
+    base_ref=""
+    base_sha=""
+    range=""
+    range_debug=""
+
+    tracking_ref="refs/remotes/${remote_name}/${local_branch}"
+    if [ "$local_branch" != "$local_ref" ] && git show-ref --verify --quiet "$tracking_ref"; then
+      base_ref="$tracking_ref"
+    else
+      default_remote_ref="$(git symbolic-ref -q "refs/remotes/${remote_name}/HEAD" 2>/dev/null || true)"
+      if [ -n "$default_remote_ref" ] && git show-ref --verify --quiet "$default_remote_ref"; then
+        base_ref="$default_remote_ref"
+      fi
+    fi
+
+    if [ -n "$base_ref" ]; then
+      base_tip_sha="$(git rev-parse "$base_ref" 2>/dev/null || true)"
+      if [ -n "$base_tip_sha" ]; then
+        base_sha="$(git merge-base "$base_tip_sha" "$local_sha" 2>/dev/null || true)"
+      fi
+    fi
+
+    if [ -n "$base_sha" ]; then
+      range="$base_sha..$local_sha"
+      range_debug="$range (base: $base_ref)"
+    else
+      range="$local_sha"
+      if [ -n "$base_ref" ]; then
+        range_debug="$range (fallback: no merge-base from $base_ref)"
+      else
+        range_debug="$range (fallback: no remote base ref for $remote_name)"
+      fi
+    fi
   else
     range="$remote_sha..$local_sha"
+    range_debug="$range"
   fi
 
   invalid_commits="$(git log --format='%H %G?' "$range" | awk '$2 != "G" { print $1 " (" $2 ")" }')"
 
   if [ -n "$invalid_commits" ]; then
     echo "❌ Push blocked: found unsigned/unverified commits for $local_ref -> $remote_ref"
+    echo "Range checked: $range_debug"
     echo "$invalid_commits" | sed -n '1,20p'
     has_invalid_signature=1
   fi
