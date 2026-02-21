@@ -24,6 +24,9 @@ catalogs:
     "@heroicons/react":
       specifier: 2.2.0
       version: 2.2.0
+    "@ianvs/prettier-plugin-sort-imports":
+      specifier: 4.7.1
+      version: 4.7.1
     "@mdx-js/loader":
       specifier: 3.1.1
       version: 3.1.1
@@ -305,6 +308,9 @@ importers:
       "@commitlint/types":
         specifier: "catalog:"
         version: 20.4.0
+      "@ianvs/prettier-plugin-sort-imports":
+        specifier: "catalog:"
+        version: 4.7.1(prettier@3.8.1)
       "@portfolio/config-eslint":
         specifier: workspace:*
         version: link:packages/config-eslint
@@ -10995,7 +11001,6 @@ snapshots:
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
-    optional: true
 
   "@img/colour@1.0.0": {}
 
