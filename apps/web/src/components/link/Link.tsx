@@ -6,8 +6,9 @@
 
 import { type ComponentPropsWithRef } from "react";
 
-import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 import { default as NextLink } from "next/link";
+
+import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
 import { COMMON_FOCUS_CLASSNAMES } from "@web/data/common";
 import { cn } from "@web/utils/helpers";
