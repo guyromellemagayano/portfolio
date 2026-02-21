@@ -9,7 +9,7 @@ Full stack developer, open-source enthusiast, and a minimalist.
 [![Husky](https://img.shields.io/badge/husky-enabled-4A4A55?logo=git&logoColor=white)](https://typicode.github.io/husky/)
 [![Commitlint](https://img.shields.io/badge/commitlint-conventional-000000?logo=commitlint&logoColor=white)](https://commitlint.js.org/)
 [![pnpm](https://img.shields.io/npm/v/pnpm?label=pnpm&logo=pnpm&color=F69220)](https://pnpm.io/)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D22-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Turborepo](https://img.shields.io/npm/v/turbo?label=turborepo&logo=turborepo&color=EF4444)](https://turbo.build/repo)
 [![TypeScript](https://img.shields.io/npm/v/typescript?label=typescript&logo=typescript&color=3178C6)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/npm/v/react?label=react&logo=react&color=149ECA)](https://react.dev/)
@@ -40,7 +40,7 @@ It includes:
 
 ### Prerequisites
 
-- Node.js `>=20`
+- Node.js `>=22`
 - pnpm `>=10`
 
 ```bash
@@ -170,7 +170,8 @@ Sanity keys used by `apps/web`:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION` (defaults to `2025-02-19`)
 - `SANITY_API_READ_TOKEN` (optional for private datasets)
-- `SANITY_ENABLED` (`true` to switch article list source from MDX to Sanity)
+- `SANITY_ENABLED` (`true` enables Sanity-backed article mode when source is not explicitly set)
+- `SANITY_ARTICLES_SOURCE` (optional: `mdx`, `sanity`, or `hybrid` for phased migration)
 
 ## License
 

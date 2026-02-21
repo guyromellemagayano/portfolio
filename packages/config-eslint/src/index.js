@@ -1,4 +1,7 @@
 /* eslint-disable simple-import-sort/imports */
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
@@ -13,8 +16,6 @@ import simpleImportSort from "eslint-plugin-simple-import-sort";
 import testingLibrary from "eslint-plugin-testing-library";
 import turboPlugin from "eslint-plugin-turbo";
 import unusedImports from "eslint-plugin-unused-imports";
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
 
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
