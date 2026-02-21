@@ -74,6 +74,7 @@ components/component/
 - **Discriminated Unions**: Use discriminated unions for component states
 - **Utility Types**: Leverage TypeScript utility types for complex type transformations
 - **Type Guards**: Implement type guards for runtime type checking
+- **JSDoc Length**: Use one-line JSDoc (`/** ... */`) for single-line descriptions; reserve multiline JSDoc for genuinely multiline docs/tags
 
 ## Testing Standards
 

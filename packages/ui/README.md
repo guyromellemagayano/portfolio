@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 MD044 -->
+
 # @portfolio/ui
 
 High-quality React UI components engineered for optimal performance, accessibility, and developer experience. This library adheres to industry best practices, featuring tree-shakeable imports and comprehensive testing.
@@ -72,14 +73,14 @@ This library only supports individual component imports, which is the recommende
 
 ```typescript
 // ✅ Tree-shakeable individual imports
-import { CounterButton } from "@portfolio/ui/counter-button";
-import { Link } from "@portfolio/ui/link";
-
 // ✅ Memoized versions can also be imported
-import { MemoizedCounterButton } from "@portfolio/ui/counter-button";
-
+import {
+  CounterButton,
+  MemoizedCounterButton,
+} from "@portfolio/ui/counter-button";
 // ✅ Types are available from the same module path
 import type { CounterButtonProps } from "@portfolio/ui/counter-button";
+import { Link } from "@portfolio/ui/link";
 ```
 
 ## 📦 Import Patterns
@@ -88,10 +89,10 @@ import type { CounterButtonProps } from "@portfolio/ui/counter-button";
 
 To maintain optimal bundle size and perfect tree-shaking, this library does not provide a main barrel export. Components must be imported individually.
 
-| Import Method | Bundle Size | Tree Shaking | Status |
-|---------------|-------------|--------------|---------|
-| **Individual** | ~3.1KB (single component) | ✅ Perfect | ✅ Available |
-| **Convenience** | N/A | N/A | ❌ Not Available |
+| Import Method   | Bundle Size               | Tree Shaking | Status           |
+| --------------- | ------------------------- | ------------ | ---------------- |
+| **Individual**  | ~3.1KB (single component) | ✅ Perfect   | ✅ Available     |
+| **Convenience** | N/A                       | N/A          | ❌ Not Available |
 
 ```typescript
 // ✅ The only way to import components for optimal bundle size
@@ -110,12 +111,14 @@ For advanced code splitting, you can use dynamic imports to lazy load individual
 import { lazy } from "react";
 
 // ✅ Lazy loading individual components for performance
-const CounterButton = lazy(() => 
-  import("@portfolio/ui/counter-button").then(m => ({ default: m.CounterButton }))
+const CounterButton = lazy(() =>
+  import("@portfolio/ui/counter-button").then((m) => ({
+    default: m.CounterButton,
+  }))
 );
 
-const Link = lazy(() => 
-  import("@portfolio/ui/link").then(m => ({ default: m.Link }))
+const Link = lazy(() =>
+  import("@portfolio/ui/link").then((m) => ({ default: m.Link }))
 );
 ```
 
@@ -124,12 +127,15 @@ const Link = lazy(() =>
 If you prefer a centralized import for your application, you can create your own barrel export within your app's codebase.
 
 ```typescript
-// src/components/ui/index.ts - Example of creating your own barrel export
-export { CounterButton, MemoizedCounterButton } from "@portfolio/ui/counter-button";
-export { Link, MemoizedLink } from "@portfolio/ui/link";
-
 // Then import from your custom barrel in your application
 import { CounterButton, Link } from "@/components/ui";
+
+// src/components/ui/index.ts - Example of creating your own barrel export
+export {
+  CounterButton,
+  MemoizedCounterButton,
+} from "@portfolio/ui/counter-button";
+export { Link, MemoizedLink } from "@portfolio/ui/link";
 ```
 
 ## 🎯 Available Components
@@ -140,6 +146,7 @@ An enhanced counter button with configurable `min`/`max` constraints, `step` inc
 
 ```typescript
 import { CounterButton } from "@portfolio/ui/counter-button";
+import { logInfo } from "@portfolio/logger";
 
 <CounterButton
   label="Vote Count"
@@ -149,7 +156,7 @@ import { CounterButton } from "@portfolio/ui/counter-button";
   step={1}
   variant="primary"
   size="medium"
-  onCountChange={(count) => console.log(count)}
+  onCountChange={(count) => logInfo(count)}
 />
 ```
 
@@ -159,13 +166,14 @@ A secure link component that automatically detects external links, applies secur
 
 ```typescript
 import { Link } from "@portfolio/ui/link";
+import { logInfo } from "@portfolio/logger";
 
 <Link
   href="https://example.com"
   variant="primary"
   size="medium"
   trackingId="external-link"
-  onLinkClick={(href, event) => console.log(href)}
+  onLinkClick={(href, event) => logInfo(href)}
 >
   Visit Example
 </Link>
