@@ -1,5 +1,5 @@
 /**
- * @file Layout.integration.test.tsx
+ * @file apps/web/src/components/layout/__tests__/Layout.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Layout component.
  */

@@ -1,7 +1,7 @@
 /**
- * @file Section.tsx
+ * @file apps/web/src/components/section/Section.tsx
  * @author Guy Romelle Magayano
- * @description Section component for the web application.
+ * @description Main Section component implementation.
  */
 
 import {

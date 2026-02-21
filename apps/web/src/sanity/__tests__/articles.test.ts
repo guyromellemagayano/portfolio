@@ -1,7 +1,7 @@
 /**
- * @file sanity/__tests__/articles.test.ts
+ * @file apps/web/src/sanity/__tests__/articles.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for Sanity article mapping and data source behavior.
+ * @description Unit tests for article source mode resolution and hybrid merge behavior.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";

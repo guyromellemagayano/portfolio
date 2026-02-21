@@ -1,9 +1,9 @@
 /* eslint-disable simple-import-sort/imports */
 
 /**
- * @file utils/articles.ts
+ * @file apps/web/src/utils/articles.ts
  * @author Guy Romelle Magayano
- * @description Utility functions for articles.
+ * @description Utilities for articles.
  */
 
 import { existsSync } from "node:fs";

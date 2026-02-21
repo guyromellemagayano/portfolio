@@ -1,5 +1,5 @@
 /**
- * @file ListItem.integration.test.tsx
+ * @file apps/web/src/components/list/item/__tests__/ListItem.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the ListItem component.
  */

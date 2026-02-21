@@ -1,5 +1,5 @@
 /**
- * @file Layout.test.tsx
+ * @file apps/web/src/components/layout/__tests__/Layout.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Layout component.
  */

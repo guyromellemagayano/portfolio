@@ -1,7 +1,7 @@
 /**
- * @file helpers.ts
+ * @file apps/web/src/utils/helpers.ts
  * @author Guy Romelle Magayano
- * @description Utility functions for the web application.
+ * @description Utilities for helpers.
  */
 
 import { type ComponentPropsWithoutRef } from "react";

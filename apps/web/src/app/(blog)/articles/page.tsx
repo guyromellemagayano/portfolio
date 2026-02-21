@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 
 /**
- * @file articles/page.tsx
+ * @file apps/web/src/app/(blog)/articles/page.tsx
  * @author Guy Romelle Magayano
- * @description Articles page component.
+ * @description Implementation for page.
  */
 
 import { type Metadata } from "next";
