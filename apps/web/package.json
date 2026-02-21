@@ -32,15 +32,20 @@
     "@portfolio/logger": "workspace:*",
     "@portfolio/ui": "workspace:*",
     "@portfolio/utils": "workspace:*",
+    "@sanity/client": "catalog:",
+    "@sanity/image-url": "catalog:",
+    "@sanity/uuid": "catalog:",
     "clsx": "catalog:",
     "fuse.js": "catalog:",
     "next": "catalog:",
     "next-intl": "catalog:",
+    "next-sanity": "catalog:",
     "next-themes": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-intersection-observer": "catalog:",
+    "sanity": "catalog:",
     "sharp": "catalog:",
     "tailwind-merge": "catalog:"
   },
@@ -50,6 +55,7 @@
     "@portfolio/config-eslint": "workspace:*",
     "@portfolio/config-typescript": "workspace:*",
     "@portfolio/vitest-presets": "workspace:*",
+    "@sanity/prettier-config": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@tailwindcss/typography": "catalog:",
     "@testing-library/jest-dom": "catalog:",
@@ -74,7 +80,5 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  },
-  "peerDependencies": {},
-  "optionalDependencies": {}
+  }
 }

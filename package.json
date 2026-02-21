@@ -85,7 +85,9 @@
   },
   "pnpm": {
     "overrides": {
-      "@csstools/css-calc": "3.1.1"
+      "@csstools/css-calc": "3.1.1",
+      "ajv@<6.14.0": ">=6.14.0",
+      "minimatch@<10.2.1": ">=10.2.1"
     }
   }
 }
