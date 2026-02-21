@@ -19,10 +19,10 @@ export const isValidNavigationLink = <
 ): link is T & { label: string; href: string } => {
   return Boolean(
     link &&
-      typeof link.label === "string" &&
-      link.label.length > 0 &&
-      typeof link.href === "string" &&
-      link.href.length > 0
+    typeof link.label === "string" &&
+    link.label.length > 0 &&
+    typeof link.href === "string" &&
+    link.href.length > 0
   );
 };
 
@@ -47,10 +47,10 @@ export const filterValidNavigationLinks = <
     (link): link is T & { label: string; href: string } => {
       return Boolean(
         link &&
-          typeof link.label === "string" &&
-          link.label.length > 0 &&
-          typeof link.href === "string" &&
-          link.href.length > 0
+        typeof link.label === "string" &&
+        link.label.length > 0 &&
+        typeof link.href === "string" &&
+        link.href.length > 0
       );
     }
   );

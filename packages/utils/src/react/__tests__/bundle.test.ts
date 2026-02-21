@@ -1,5 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import {
+  getBundleSize,
+  getEnvironmentInfo,
+  isReactComponentTreeShakeable,
+  isTreeShakeable,
+  logBundleSize,
+  logTreeShakingVerification,
+  verifyImports,
+  verifyTreeShaking,
+} from "../bundle";
+
 // Mock logger
 const mockLogger = vi.hoisted(() => ({
   info: vi.fn(),
@@ -11,17 +22,6 @@ const mockLogger = vi.hoisted(() => ({
 vi.mock("@portfolio/logger", () => ({
   logger: mockLogger,
 }));
-
-import {
-  getBundleSize,
-  getEnvironmentInfo,
-  isReactComponentTreeShakeable,
-  isTreeShakeable,
-  logBundleSize,
-  logTreeShakingVerification,
-  verifyImports,
-  verifyTreeShaking,
-} from "../bundle";
 
 describe("getBundleSize", () => {
   it("returns bundle size info with default values", () => {

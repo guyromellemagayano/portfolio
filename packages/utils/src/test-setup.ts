@@ -9,11 +9,13 @@ vi.mock("react", () => ({
 
 // Mock process.env for browser-like test environments (jsdom)
 if (typeof globalThis.process === "undefined") {
-  globalThis.process = {
+  const mockProcess = {
     env: {
       NODE_ENV: "test",
     },
-  } as unknown as typeof process;
+  } as unknown as typeof globalThis.process;
+
+  globalThis.process = mockProcess;
 }
 
 // Global test setup
