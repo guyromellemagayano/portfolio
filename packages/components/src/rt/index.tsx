@@ -14,12 +14,9 @@ const MemoizedRtClient = React.lazy(async () => {
 export type RtRef = React.ComponentRef<"rt">;
 
 export interface RtProps
-  extends React.ComponentPropsWithoutRef<"rt">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"rt">, CommonComponentProps {}
 
-/**
- * Render the ruby text server component.
- */
+/** Render the ruby text server component. */
 export const Rt = React.forwardRef<RtRef, RtProps>((props, ref) => {
   const {
     as: Component = "rt",

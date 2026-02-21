@@ -14,12 +14,9 @@ const MemoizedVarClient = React.lazy(async () => {
 export type VarRef = React.ComponentRef<"var">;
 
 export interface VarProps
-  extends React.ComponentPropsWithoutRef<"var">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"var">, CommonComponentProps {}
 
-/**
- * Render the variable server component.
- */
+/** Render the variable server component. */
 export const Var = React.forwardRef<VarRef, VarProps>((props, ref) => {
   const {
     as: Component = "var",

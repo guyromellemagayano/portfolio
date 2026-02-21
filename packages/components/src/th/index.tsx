@@ -14,12 +14,9 @@ const MemoizedThClient = React.lazy(async () => {
 export type ThRef = React.ComponentRef<"th">;
 
 export interface ThProps
-  extends React.ComponentPropsWithoutRef<"th">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"th">, CommonComponentProps {}
 
-/**
- * Render the table header server component.
- */
+/** Render the table header server component. */
 export const Th = React.forwardRef<ThRef, ThProps>((props, ref) => {
   const {
     as: Component = "th",

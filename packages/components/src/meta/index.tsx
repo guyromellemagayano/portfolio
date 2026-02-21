@@ -14,12 +14,11 @@ const MemoizedMetaClient = React.lazy(async () => {
 export type MetaRef = React.ComponentRef<"meta">;
 
 export interface MetaProps
-  extends Omit<React.ComponentPropsWithoutRef<"meta">, "as">,
+  extends
+    Omit<React.ComponentPropsWithoutRef<"meta">, "as">,
     CommonComponentProps {}
 
-/**
- * Render the metadata server component.
- */
+/** Render the metadata server component. */
 export const Meta = React.forwardRef<MetaRef, MetaProps>((props, ref) => {
   const {
     as: Component = "meta",

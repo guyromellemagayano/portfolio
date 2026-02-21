@@ -14,12 +14,9 @@ const MemoizedCaptionClient = React.lazy(async () => {
 export type CaptionRef = React.ComponentRef<"caption">;
 
 export interface CaptionProps
-  extends React.ComponentPropsWithoutRef<"caption">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"caption">, CommonComponentProps {}
 
-/**
- * Render the caption server component.
- */
+/** Render the caption server component. */
 export const Caption = React.forwardRef<CaptionRef, CaptionProps>(
   (props, ref) => {
     const {

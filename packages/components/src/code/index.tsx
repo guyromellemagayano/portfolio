@@ -14,12 +14,9 @@ const MemoizedCodeClient = React.lazy(async () => {
 export type CodeRef = React.ComponentRef<"code">;
 
 export interface CodeProps
-  extends React.ComponentPropsWithoutRef<"code">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"code">, CommonComponentProps {}
 
-/**
- * Render the code server component.
- */
+/** Render the code server component. */
 export const Code = React.forwardRef<CodeRef, CodeProps>((props, ref) => {
   const {
     as: Component = "code",

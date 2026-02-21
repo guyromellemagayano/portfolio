@@ -14,12 +14,9 @@ const MemoizedFigcaptionClient = React.lazy(async () => {
 export type FigcaptionRef = React.ComponentRef<"figcaption">;
 
 export interface FigcaptionProps
-  extends React.ComponentPropsWithoutRef<"figcaption">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"figcaption">, CommonComponentProps {}
 
-/**
- * Render the figure caption server component.
- */
+/** Render the figure caption server component. */
 export const Figcaption = React.forwardRef<FigcaptionRef, FigcaptionProps>(
   (props, ref) => {
     const {

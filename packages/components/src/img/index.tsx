@@ -14,12 +14,9 @@ const MemoizedImgClient = React.lazy(async () => {
 export type ImgRef = React.ComponentRef<"img">;
 
 export interface ImgProps
-  extends React.ComponentPropsWithoutRef<"img">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"img">, CommonComponentProps {}
 
-/**
- * Render the image embed server component.
- */
+/** Render the image embed server component. */
 export const Img = React.forwardRef<ImgRef, ImgProps>((props, ref) => {
   const {
     as: Component = "img",

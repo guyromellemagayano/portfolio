@@ -14,12 +14,9 @@ const MemoizedSlotClient = React.lazy(async () => {
 export type SlotRef = React.ComponentRef<"slot">;
 
 export interface SlotProps
-  extends React.ComponentPropsWithoutRef<"slot">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"slot">, CommonComponentProps {}
 
-/**
- * Render the web component slot server component.
- */
+/** Render the web component slot server component. */
 export const Slot = React.forwardRef<SlotRef, SlotProps>((props, ref) => {
   const {
     as: Component = "slot",

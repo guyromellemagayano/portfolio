@@ -14,12 +14,9 @@ const MemoizedEmClient = React.lazy(async () => {
 export type EmRef = React.ComponentRef<"em">;
 
 export interface EmProps
-  extends React.ComponentPropsWithoutRef<"em">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"em">, CommonComponentProps {}
 
-/**
- * Render the emphasis server component.
- */
+/** Render the emphasis server component. */
 export const Em = React.forwardRef<EmRef, EmProps>((props, ref) => {
   const {
     as: Component = "em",

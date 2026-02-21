@@ -14,12 +14,9 @@ const MemoizedDetailsClient = React.lazy(async () => {
 export type DetailsRef = React.ComponentRef<"details">;
 
 export interface DetailsProps
-  extends React.ComponentPropsWithoutRef<"details">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"details">, CommonComponentProps {}
 
-/**
- * Render the details disclosure server component.
- */
+/** Render the details disclosure server component. */
 export const Details = React.forwardRef<DetailsRef, DetailsProps>(
   (props, ref) => {
     const {

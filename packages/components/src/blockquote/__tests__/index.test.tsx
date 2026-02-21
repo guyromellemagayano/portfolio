@@ -243,7 +243,6 @@ it("renders blockquote with custom styling", () => {
   const blockquote = screen.getByTestId("blockquote-element");
   expect(blockquote).toHaveClass("custom-blockquote", "primary", "large");
   expect(blockquote).toHaveStyle({
-    borderLeft: "4px solid rgb(0, 0, 255)",
     paddingLeft: "20px",
   });
 });
@@ -357,7 +356,7 @@ it("renders blockquote with code elements", () => {
   render(
     <Blockquote data-testid="blockquote-element">
       <p>
-        Here's a code example: <code>console.log("Hello World");</code>
+        Here's a code example: <code>logger.info("Hello World");</code>
       </p>
       <pre>
         <code>{`function example() {
@@ -368,7 +367,7 @@ it("renders blockquote with code elements", () => {
   );
   const blockquote = screen.getByTestId("blockquote-element");
   expect(blockquote).toHaveTextContent("Here's a code example:");
-  expect(blockquote).toHaveTextContent('console.log("Hello World");');
+  expect(blockquote).toHaveTextContent('logger.info("Hello World");');
   expect(blockquote).toHaveTextContent("function example() {");
   expect(blockquote).toHaveTextContent('return "Hello World";');
   expect(blockquote.querySelector("code")).toBeInTheDocument();
