@@ -14,12 +14,9 @@ const MemoizedOlClient = React.lazy(async () => {
 export type OlRef = React.ComponentRef<"ol">;
 
 export interface OlProps
-  extends React.ComponentPropsWithoutRef<"ol">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"ol">, CommonComponentProps {}
 
-/**
- * Render the ordered list server component.
- */
+/** Render the ordered list server component. */
 export const Ol = React.forwardRef<OlRef, OlProps>((props, ref) => {
   const {
     as: Component = "ol",

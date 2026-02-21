@@ -14,12 +14,9 @@ const MemoizedDfnClient = React.lazy(async () => {
 export type DfnRef = React.ComponentRef<"dfn">;
 
 export interface DfnProps
-  extends React.ComponentPropsWithoutRef<"dfn">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"dfn">, CommonComponentProps {}
 
-/**
- * Render the definition element server component.
- */
+/** Render the definition element server component. */
 export const Dfn = React.forwardRef<DfnRef, DfnProps>((props, ref) => {
   const {
     as: Component = "dfn",

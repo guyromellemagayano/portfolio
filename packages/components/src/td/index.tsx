@@ -14,12 +14,9 @@ const MemoizedTdClient = React.lazy(async () => {
 export type TdRef = React.ComponentRef<"td">;
 
 export interface TdProps
-  extends React.ComponentPropsWithoutRef<"td">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"td">, CommonComponentProps {}
 
-/**
- * Render the table data cell server component.
- */
+/** Render the table data cell server component. */
 export const Td = React.forwardRef<TdRef, TdProps>((props, ref) => {
   const {
     as: Component = "td",

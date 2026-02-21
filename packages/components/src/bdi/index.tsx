@@ -14,12 +14,9 @@ const MemoizedBdiClient = React.lazy(async () => {
 export type BdiRef = React.ComponentRef<"bdi">;
 
 export interface BdiProps
-  extends React.ComponentPropsWithoutRef<"bdi">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"bdi">, CommonComponentProps {}
 
-/**
- * Render the bidirectional isolate server component.
- */
+/** Render the bidirectional isolate server component. */
 export const Bdi = React.forwardRef<BdiRef, BdiProps>((props, ref) => {
   const {
     as: Component = "bdi",

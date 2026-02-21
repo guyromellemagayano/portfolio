@@ -14,12 +14,9 @@ const MemoizedVideoClient = React.lazy(async () => {
 export type VideoRef = React.ComponentRef<"video">;
 
 export interface VideoProps
-  extends React.ComponentPropsWithoutRef<"video">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"video">, CommonComponentProps {}
 
-/**
- * Render the video embed server component.
- */
+/** Render the video embed server component. */
 export const Video = React.forwardRef<VideoRef, VideoProps>((props, ref) => {
   const {
     as: Component = "video",

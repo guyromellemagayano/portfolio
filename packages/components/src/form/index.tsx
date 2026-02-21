@@ -14,12 +14,9 @@ const MemoizedFormClient = React.lazy(async () => {
 export type FormRef = React.ComponentRef<"form">;
 
 export interface FormProps
-  extends React.ComponentPropsWithoutRef<"form">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"form">, CommonComponentProps {}
 
-/**
- * Render the form server component.
- */
+/** Render the form server component. */
 export const Form = React.forwardRef<FormRef, FormProps>((props, ref) => {
   const {
     as: Component = "form",

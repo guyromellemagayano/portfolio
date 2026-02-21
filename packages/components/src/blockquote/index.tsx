@@ -14,12 +14,9 @@ const MemoizedBlockquoteClient = React.lazy(async () => {
 export type BlockquoteRef = React.ComponentRef<"blockquote">;
 
 export interface BlockquoteProps
-  extends React.ComponentPropsWithoutRef<"blockquote">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"blockquote">, CommonComponentProps {}
 
-/**
- * Render the blockquote server component.
- */
+/** Render the blockquote server component. */
 export const Blockquote = React.forwardRef<BlockquoteRef, BlockquoteProps>(
   (props, ref) => {
     const {

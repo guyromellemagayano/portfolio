@@ -14,12 +14,9 @@ const MemoizedOutputClient = React.lazy(async () => {
 export type OutputRef = React.ComponentRef<"output">;
 
 export interface OutputProps
-  extends React.ComponentPropsWithoutRef<"output">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"output">, CommonComponentProps {}
 
-/**
- * Render the output server component.
- */
+/** Render the output server component. */
 export const Output = React.forwardRef<OutputRef, OutputProps>((props, ref) => {
   const {
     as: Component = "output",

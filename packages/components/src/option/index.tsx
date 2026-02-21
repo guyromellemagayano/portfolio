@@ -14,12 +14,9 @@ const MemoizedOptionClient = React.lazy(async () => {
 export type OptionRef = React.ComponentRef<"option">;
 
 export interface OptionProps
-  extends React.ComponentPropsWithoutRef<"option">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"option">, CommonComponentProps {}
 
-/**
- * Render the HTML option server component.
- */
+/** Render the HTML option server component. */
 export const Option = React.forwardRef<OptionRef, OptionProps>((props, ref) => {
   const {
     as: Component = "option",

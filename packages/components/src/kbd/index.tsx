@@ -14,12 +14,9 @@ const MemoizedKbdClient = React.lazy(async () => {
 export type KbdRef = React.ComponentRef<"kbd">;
 
 export interface KbdProps
-  extends React.ComponentPropsWithoutRef<"kbd">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"kbd">, CommonComponentProps {}
 
-/**
- * Render the keyboard input server component.
- */
+/** Render the keyboard input server component. */
 export const Kbd = React.forwardRef<KbdRef, KbdProps>((props, ref) => {
   const {
     as: Component = "kbd",

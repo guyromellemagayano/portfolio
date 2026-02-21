@@ -14,12 +14,11 @@ const MemoizedLinkClient = React.lazy(async () => {
 export type LinkRef = React.ComponentRef<"link">;
 
 export interface LinkProps
-  extends Omit<React.ComponentPropsWithoutRef<"link">, "as">,
+  extends
+    Omit<React.ComponentPropsWithoutRef<"link">, "as">,
     CommonComponentProps {}
 
-/**
- * Render the external resource link server component.
- */
+/** Render the external resource link server component. */
 export const Link = React.forwardRef<LinkRef, LinkProps>((props, ref) => {
   const {
     as: Component = "link",

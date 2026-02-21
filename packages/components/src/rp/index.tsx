@@ -14,12 +14,9 @@ const MemoizedRpClient = React.lazy(async () => {
 export type RpRef = React.ComponentRef<"rp">;
 
 export interface RpProps
-  extends React.ComponentPropsWithoutRef<"rp">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"rp">, CommonComponentProps {}
 
-/**
- * Render the ruby fallback parenthesis server component.
- */
+/** Render the ruby fallback parenthesis server component. */
 export const Rp = React.forwardRef<RpRef, RpProps>((props, ref) => {
   const {
     as: Component = "rp",

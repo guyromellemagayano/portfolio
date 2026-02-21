@@ -14,12 +14,9 @@ const MemoizedSvgClient = React.lazy(async () => {
 export type SvgRef = React.ComponentRef<"svg">;
 
 export interface SvgProps
-  extends React.ComponentPropsWithoutRef<"svg">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"svg">, CommonComponentProps {}
 
-/**
- * Render the scalable vector graphics server component.
- */
+/** Render the scalable vector graphics server component. */
 export const Svg = React.forwardRef<SvgRef, SvgProps>((props, ref) => {
   const {
     as: Component = "svg",

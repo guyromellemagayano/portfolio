@@ -14,12 +14,9 @@ export const MemoizedAreaClient = React.lazy(async () => {
 export type AreaRef = React.ComponentRef<"area">;
 
 export interface AreaProps
-  extends React.ComponentPropsWithoutRef<"area">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"area">, CommonComponentProps {}
 
-/**
- * Render the area server component.
- */
+/** Render the area server component. */
 export const Area = React.forwardRef<AreaRef, AreaProps>((props, ref) => {
   const {
     as: Component = "area",

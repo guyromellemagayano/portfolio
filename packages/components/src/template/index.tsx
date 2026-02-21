@@ -14,12 +14,9 @@ const MemoizedTemplateClient = React.lazy(async () => {
 export type TemplateRef = React.ComponentRef<"template">;
 
 export interface TemplateProps
-  extends React.ComponentPropsWithoutRef<"template">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"template">, CommonComponentProps {}
 
-/**
- * Render the content template server component.
- */
+/** Render the content template server component. */
 export const Template = React.forwardRef<TemplateRef, TemplateProps>(
   (props, ref) => {
     const {

@@ -14,12 +14,9 @@ const MemoizedInsClient = React.lazy(async () => {
 export type InsRef = React.ComponentRef<"ins">;
 
 export interface InsProps
-  extends React.ComponentPropsWithoutRef<"ins">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"ins">, CommonComponentProps {}
 
-/**
- * Render the inserted text server component.
- */
+/** Render the inserted text server component. */
 export const Ins = React.forwardRef<InsRef, InsProps>((props, ref) => {
   const {
     as: Component = "ins",

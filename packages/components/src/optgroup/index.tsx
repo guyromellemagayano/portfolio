@@ -14,12 +14,9 @@ const MemoizedOptgroupClient = React.lazy(async () => {
 export type OptgroupRef = React.ComponentRef<"optgroup">;
 
 export interface OptgroupProps
-  extends React.ComponentPropsWithoutRef<"optgroup">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"optgroup">, CommonComponentProps {}
 
-/**
- * Render the option group server component.
- */
+/** Render the option group server component. */
 export const Optgroup = React.forwardRef<OptgroupRef, OptgroupProps>(
   (props, ref) => {
     const {

@@ -14,12 +14,9 @@ const MemoizedTbodyClient = React.lazy(async () => {
 export type TbodyRef = React.ComponentRef<"tbody">;
 
 export interface TbodyProps
-  extends React.ComponentPropsWithoutRef<"tbody">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"tbody">, CommonComponentProps {}
 
-/**
- * Render the table body server component.
- */
+/** Render the table body server component. */
 export const Tbody = React.forwardRef<TbodyRef, TbodyProps>((props, ref) => {
   const {
     as: Component = "tbody",

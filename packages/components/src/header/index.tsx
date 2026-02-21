@@ -14,12 +14,9 @@ const MemoizedHeaderClient = React.lazy(async () => {
 export type HeaderRef = React.ComponentRef<"header">;
 
 export interface HeaderProps
-  extends React.ComponentPropsWithoutRef<"header">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"header">, CommonComponentProps {}
 
-/**
- * Render the header server component.
- */
+/** Render the header server component. */
 export const Header = React.forwardRef<HeaderRef, HeaderProps>((props, ref) => {
   const {
     as: Component = "header",

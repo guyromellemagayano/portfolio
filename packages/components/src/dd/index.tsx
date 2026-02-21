@@ -14,12 +14,9 @@ const MemoizedDdClient = React.lazy(async () => {
 export type DdRef = React.ComponentRef<"dd">;
 
 export interface DdProps
-  extends React.ComponentPropsWithoutRef<"dd">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"dd">, CommonComponentProps {}
 
-/**
- * Render the description details server component.
- */
+/** Render the description details server component. */
 export const Dd = React.forwardRef<DdRef, DdProps>((props, ref) => {
   const {
     as: Component = "dd",

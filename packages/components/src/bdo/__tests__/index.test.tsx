@@ -683,7 +683,7 @@ it("renders bdo with code elements", () => {
       </p>
       <pre>
         <code>{`function init() {
-  console.log("Hello, World!");
+  logger.info("Hello, World!");
 }`}</code>
       </pre>
     </Bdo>

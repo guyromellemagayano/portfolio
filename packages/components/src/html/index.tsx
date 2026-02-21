@@ -14,12 +14,9 @@ const MemoizedHtmlClient = React.lazy(async () => {
 export type HtmlRef = React.ComponentRef<"html">;
 
 export interface HtmlProps
-  extends React.ComponentPropsWithoutRef<"html">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"html">, CommonComponentProps {}
 
-/**
- * Render the HTML document/root server component.
- */
+/** Render the HTML document/root server component. */
 export const Html = React.forwardRef<HtmlRef, HtmlProps>((props, ref) => {
   const {
     as: Component = "html",

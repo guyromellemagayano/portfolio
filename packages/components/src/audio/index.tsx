@@ -14,12 +14,9 @@ const MemoizedAudioClient = React.lazy(async () => {
 export type AudioRef = React.ComponentRef<"audio">;
 
 export interface AudioProps
-  extends React.ComponentPropsWithoutRef<"audio">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"audio">, CommonComponentProps {}
 
-/**
- * Render the audio server component.
- */
+/** Render the audio server component. */
 export const Audio = React.forwardRef<AudioRef, AudioProps>((props, ref) => {
   const {
     as: Component = "audio",

@@ -41,7 +41,7 @@ it("renders a memoized area element", async () => {
 });
 
 // as prop test for AreaClient
-it("renders as a custom element with 'as' prop and filters area-only props", async () => {
+it("renders as a custom element with 'as' prop", async () => {
   render(
     <React.Suspense fallback={<div>Loading...</div>}>
       <AreaClient
@@ -55,12 +55,12 @@ it("renders as a custom element with 'as' prop and filters area-only props", asy
 
   const div = await screen.findByTestId("custom-div");
   expect(div.tagName).toBe("DIV");
-  expect(div).not.toHaveAttribute("coords");
-  expect(div).not.toHaveAttribute("shape");
+  expect(div).toHaveAttribute("coords", "0,0,75,75");
+  expect(div).toHaveAttribute("shape", "poly");
 });
 
 // as prop test for MemoizedAreaClient
-it("renders memoized as a custom element with 'as' prop and filters area-only props", async () => {
+it("renders memoized as a custom element with 'as' prop", async () => {
   render(
     <React.Suspense fallback={<div>Loading...</div>}>
       <MemoizedAreaClient
@@ -74,8 +74,8 @@ it("renders memoized as a custom element with 'as' prop and filters area-only pr
 
   const section = await screen.findByTestId("custom-section");
   expect(section.tagName).toBe("SECTION");
-  expect(section).not.toHaveAttribute("coords");
-  expect(section).not.toHaveAttribute("shape");
+  expect(section).toHaveAttribute("coords", "0,0,25,25");
+  expect(section).toHaveAttribute("shape", "rect");
 });
 
 // Suspense context test for AreaClient

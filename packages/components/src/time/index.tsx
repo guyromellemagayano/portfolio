@@ -14,12 +14,9 @@ const MemoizedTimeClient = React.lazy(async () => {
 export type TimeRef = React.ComponentRef<"time">;
 
 export interface TimeProps
-  extends React.ComponentPropsWithoutRef<"time">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"time">, CommonComponentProps {}
 
-/**
- * Render the (date) time server component.
- */
+/** Render the (date) time server component. */
 export const Time = React.forwardRef<TimeRef, TimeProps>((props, ref) => {
   const {
     as: Component = "time",

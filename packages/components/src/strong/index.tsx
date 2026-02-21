@@ -14,12 +14,9 @@ const MemoizedStrongClient = React.lazy(async () => {
 export type StrongRef = React.ComponentRef<"strong">;
 
 export interface StrongProps
-  extends React.ComponentPropsWithoutRef<"strong">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"strong">, CommonComponentProps {}
 
-/**
- * Render the strong importance server component.
- */
+/** Render the strong importance server component. */
 export const Strong = React.forwardRef<StrongRef, StrongProps>((props, ref) => {
   const {
     as: Component = "strong",

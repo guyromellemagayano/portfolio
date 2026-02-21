@@ -3,12 +3,12 @@ import { describe, expect, it, vi } from "vitest";
 import {
   createElementConfig,
   ELEMENT_CONFIGS,
-  type ElementCategory,
   elementSupportsFeature,
   filterElementSpecificProps,
   getElementConfig,
   getElementsByCategory,
   validatePolymorphicProps,
+  type ElementCategory,
 } from "../types";
 
 describe("types utilities coverage", () => {

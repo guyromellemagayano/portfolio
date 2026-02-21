@@ -14,12 +14,9 @@ const MemoizedDelClient = React.lazy(async () => {
 export type DelRef = React.ComponentRef<"del">;
 
 export interface DelProps
-  extends React.ComponentPropsWithoutRef<"del">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"del">, CommonComponentProps {}
 
-/**
- * Render the deleted text server component.
- */
+/** Render the deleted text server component. */
 export const Del = React.forwardRef<DelRef, DelProps>((props, ref) => {
   const {
     as: Component = "del",

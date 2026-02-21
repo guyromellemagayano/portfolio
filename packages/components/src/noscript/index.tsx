@@ -14,12 +14,9 @@ const MemoizedNoscriptClient = React.lazy(async () => {
 export type NoscriptRef = React.ComponentRef<"noscript">;
 
 export interface NoscriptProps
-  extends React.ComponentPropsWithoutRef<"noscript">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"noscript">, CommonComponentProps {}
 
-/**
- * Render the noscript server component.
- */
+/** Render the noscript server component. */
 export const Noscript = React.forwardRef<NoscriptRef, NoscriptProps>(
   (props, ref) => {
     const {

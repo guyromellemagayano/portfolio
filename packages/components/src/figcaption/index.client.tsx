@@ -4,9 +4,7 @@ import React, { memo } from "react";
 
 import { Figcaption, type FigcaptionProps, type FigcaptionRef } from ".";
 
-/**
- * Render the figure caption client component.
- */
+/** Render the figure caption client component. */
 export const FigcaptionClient = React.forwardRef<
   FigcaptionRef,
   FigcaptionProps
@@ -14,7 +12,5 @@ export const FigcaptionClient = React.forwardRef<
 
 FigcaptionClient.displayName = "FigcaptionClient";
 
-/**
- * Memoized version of `FigcaptionClient` for performance optimization.
- */
+/** Memoized version of `FigcaptionClient` for performance optimization. */
 export const MemoizedFigcaptionClient = memo(FigcaptionClient);

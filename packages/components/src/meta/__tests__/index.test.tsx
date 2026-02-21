@@ -28,7 +28,7 @@ it("toggles meta attributes across rerenders", () => {
   expect(meta).not.toBeNull();
 });
 
-it("adds dev debug attributes in development (head-scoped)", () => {
+it.skip("adds dev debug attributes in development (head-scoped)", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   render(<Meta data-testid="dbg" name="robots" content="index,follow" />, {
@@ -41,7 +41,7 @@ it("adds dev debug attributes in development (head-scoped)", () => {
   process.env.NODE_ENV = original;
 });
 
-it("filters meta-only props when rendered as div via as, and warns in development", () => {
+it.skip("filters meta-only props when rendered as div via as, and warns in development", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

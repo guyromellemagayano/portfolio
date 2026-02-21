@@ -14,12 +14,9 @@ const MemoizedHgroupClient = React.lazy(async () => {
 export type HgroupRef = React.ComponentRef<"hgroup">;
 
 export interface HgroupProps
-  extends React.ComponentPropsWithoutRef<"hgroup">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"hgroup">, CommonComponentProps {}
 
-/**
- * Render the heading group server component.
- */
+/** Render the heading group server component. */
 export const Hgroup = React.forwardRef<HgroupRef, HgroupProps>((props, ref) => {
   const {
     as: Component = "hgroup",

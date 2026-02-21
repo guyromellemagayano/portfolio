@@ -14,12 +14,9 @@ const MemoizedDatalistClient = React.lazy(async () => {
 export type DatalistRef = React.ComponentRef<"datalist">;
 
 export interface DatalistProps
-  extends React.ComponentPropsWithoutRef<"datalist">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"datalist">, CommonComponentProps {}
 
-/**
- * Render the datalist server component.
- */
+/** Render the datalist server component. */
 export const Datalist = React.forwardRef<DatalistRef, DatalistProps>(
   (props, ref) => {
     const {

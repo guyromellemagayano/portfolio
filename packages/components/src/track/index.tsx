@@ -14,12 +14,9 @@ const MemoizedTrackClient = React.lazy(async () => {
 export type TrackRef = React.ComponentRef<"track">;
 
 export interface TrackProps
-  extends React.ComponentPropsWithoutRef<"track">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"track">, CommonComponentProps {}
 
-/**
- * Render the embed text track server component.
- */
+/** Render the embed text track server component. */
 export const Track = React.forwardRef<TrackRef, TrackProps>((props, ref) => {
   const {
     as: Component = "track",

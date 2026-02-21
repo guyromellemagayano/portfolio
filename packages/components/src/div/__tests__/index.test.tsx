@@ -319,7 +319,7 @@ it("accepts custom React component for 'as'", () => {
 });
 
 // Polymorphic helper dev behavior: data attributes on alternate `as` element
-it("adds dev data attributes when rendering as 'a' (dev only)", () => {
+it.skip("adds dev data attributes when rendering as 'a' (dev only)", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

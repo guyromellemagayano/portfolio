@@ -14,12 +14,9 @@ const MemoizedUClient = React.lazy(async () => {
 export type URef = React.ComponentRef<"u">;
 
 export interface UProps
-  extends React.ComponentPropsWithoutRef<"u">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"u">, CommonComponentProps {}
 
-/**
- * Render the unarticulated annotation (underline) server component.
- */
+/** Render the unarticulated annotation (underline) server component. */
 export const U = React.forwardRef<URef, UProps>((props, ref) => {
   const {
     as: Component = "u",

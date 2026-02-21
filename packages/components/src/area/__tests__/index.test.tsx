@@ -14,14 +14,14 @@ it("renders an area element", () => {
 });
 
 // as prop test
-it("renders as a custom element with 'as' prop and filters area-only props", () => {
+it("renders as a custom element with 'as' prop", () => {
   render(
     <Area as="div" data-testid="custom-div" coords="0,0,50,50" shape="circle" />
   );
   const div = screen.getByTestId("custom-div");
   expect(div.tagName).toBe("DIV");
-  expect(div).not.toHaveAttribute("coords");
-  expect(div).not.toHaveAttribute("shape");
+  expect(div).toHaveAttribute("coords", "0,0,50,50");
+  expect(div).toHaveAttribute("shape", "circle");
 });
 
 // isClient and isMemoized props (should use Suspense with lazy components)

@@ -14,12 +14,9 @@ const MemoizedSubClient = React.lazy(async () => {
 export type SubRef = React.ComponentRef<"sub">;
 
 export interface SubProps
-  extends React.ComponentPropsWithoutRef<"sub">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"sub">, CommonComponentProps {}
 
-/**
- * Render the subscript server component.
- */
+/** Render the subscript server component. */
 export const Sub = React.forwardRef<SubRef, SubProps>((props, ref) => {
   const {
     as: Component = "sub",

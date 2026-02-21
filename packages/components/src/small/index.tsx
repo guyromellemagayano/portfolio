@@ -14,12 +14,9 @@ const MemoizedSmallClient = React.lazy(async () => {
 export type SmallRef = React.ComponentRef<"small">;
 
 export interface SmallProps
-  extends React.ComponentPropsWithoutRef<"small">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"small">, CommonComponentProps {}
 
-/**
- * Render the side comment server component.
- */
+/** Render the side comment server component. */
 export const Small = React.forwardRef<SmallRef, SmallProps>((props, ref) => {
   const {
     as: Component = "small",

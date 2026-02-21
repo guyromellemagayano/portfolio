@@ -14,12 +14,9 @@ const MemoizedMapClient = React.lazy(async () => {
 export type MapRef = React.ComponentRef<"map">;
 
 export interface MapProps
-  extends React.ComponentPropsWithoutRef<"map">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"map">, CommonComponentProps {}
 
-/**
- * Render the image map server component.
- */
+/** Render the image map server component. */
 export const Map = React.forwardRef<MapRef, MapProps>((props, ref) => {
   const {
     as: Component = "map",

@@ -14,12 +14,9 @@ const MemoizedLabelClient = React.lazy(async () => {
 export type LabelRef = React.ComponentRef<"label">;
 
 export interface LabelProps
-  extends React.ComponentPropsWithoutRef<"label">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"label">, CommonComponentProps {}
 
-/**
- * Render the label server component.
- */
+/** Render the label server component. */
 export const Label = React.forwardRef<LabelRef, LabelProps>((props, ref) => {
   const {
     as: Component = "label",

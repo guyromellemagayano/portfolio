@@ -14,12 +14,9 @@ const MemoizedMarkClient = React.lazy(async () => {
 export type MarkRef = React.ComponentRef<"mark">;
 
 export interface MarkProps
-  extends React.ComponentPropsWithoutRef<"mark">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"mark">, CommonComponentProps {}
 
-/**
- * Render the mark text server component.
- */
+/** Render the mark text server component. */
 export const Mark = React.forwardRef<MarkRef, MarkProps>((props, ref) => {
   const {
     as: Component = "mark",

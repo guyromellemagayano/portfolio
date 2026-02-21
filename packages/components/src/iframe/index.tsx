@@ -14,12 +14,9 @@ const MemoizedIframeClient = React.lazy(async () => {
 export type IframeRef = React.ComponentRef<"iframe">;
 
 export interface IframeProps
-  extends React.ComponentPropsWithoutRef<"iframe">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"iframe">, CommonComponentProps {}
 
-/**
- * Render the inline frame server component.
- */
+/** Render the inline frame server component. */
 export const Iframe = React.forwardRef<IframeRef, IframeProps>((props, ref) => {
   const {
     as: Component = "iframe",

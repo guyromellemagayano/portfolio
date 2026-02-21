@@ -14,12 +14,9 @@ const MemoizedUlClient = React.lazy(async () => {
 export type UlRef = React.ComponentRef<"ul">;
 
 export interface UlProps
-  extends React.ComponentPropsWithoutRef<"ul">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"ul">, CommonComponentProps {}
 
-/**
- * Render the unordered list server component.
- */
+/** Render the unordered list server component. */
 export const Ul = React.forwardRef<UlRef, UlProps>((props, ref) => {
   const {
     as: Component = "ul",

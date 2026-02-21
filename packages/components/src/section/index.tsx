@@ -14,12 +14,9 @@ const MemoizedSectionClient = React.lazy(async () => {
 export type SectionRef = React.ComponentRef<"section">;
 
 export interface SectionProps
-  extends React.ComponentPropsWithoutRef<"section">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"section">, CommonComponentProps {}
 
-/**
- * Render the generic section server component.
- */
+/** Render the generic section server component. */
 export const Section = React.forwardRef<SectionRef, SectionProps>(
   (props, ref) => {
     const {

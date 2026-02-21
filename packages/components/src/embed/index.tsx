@@ -14,12 +14,9 @@ const MemoizedEmbedClient = React.lazy(async () => {
 export type EmbedRef = React.ComponentRef<"embed">;
 
 export interface EmbedProps
-  extends React.ComponentPropsWithoutRef<"embed">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"embed">, CommonComponentProps {}
 
-/**
- * Render the embed external content server component.
- */
+/** Render the embed external content server component. */
 export const Embed = React.forwardRef<EmbedRef, EmbedProps>((props, ref) => {
   const {
     as: Component = "embed",

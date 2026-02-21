@@ -14,12 +14,9 @@ const MemoizedMenuClient = React.lazy(async () => {
 export type MenuRef = React.ComponentRef<"menu">;
 
 export interface MenuProps
-  extends React.ComponentPropsWithoutRef<"menu">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"menu">, CommonComponentProps {}
 
-/**
- * Render the menu server component.
- */
+/** Render the menu server component. */
 export const Menu = React.forwardRef<MenuRef, MenuProps>((props, ref) => {
   const {
     as: Component = "menu",

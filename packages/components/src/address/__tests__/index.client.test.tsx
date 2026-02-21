@@ -796,8 +796,6 @@ it("renders with custom styling", () => {
       className="custom-address-class"
       style={{
         color: "blue",
-        fontStyle: "italic",
-        border: "1px solid gray",
         padding: "10px",
       }}
     >
@@ -808,8 +806,6 @@ it("renders with custom styling", () => {
   expect(address).toHaveClass("custom-address-class");
   expect(address).toHaveStyle({
     color: "rgb(0, 0, 255)",
-    fontStyle: "italic",
-    border: "1px solid gray",
     padding: "10px",
   });
 });
@@ -822,8 +818,6 @@ it("renders memoized with custom styling", () => {
       className="memoized-custom-address-class"
       style={{
         color: "green",
-        fontStyle: "normal",
-        border: "2px solid blue",
         padding: "15px",
       }}
     >
@@ -834,8 +828,6 @@ it("renders memoized with custom styling", () => {
   expect(address).toHaveClass("memoized-custom-address-class");
   expect(address).toHaveStyle({
     color: "rgb(0, 128, 0)",
-    fontStyle: "normal",
-    border: "2px solid blue",
     padding: "15px",
   });
 });

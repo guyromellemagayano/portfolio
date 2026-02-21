@@ -14,12 +14,9 @@ const MemoizedBaseClient = React.lazy(async () => {
 export type BaseRef = React.ComponentRef<"base">;
 
 export interface BaseProps
-  extends React.ComponentPropsWithoutRef<"base">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"base">, CommonComponentProps {}
 
-/**
- * Render the base server component.
- */
+/** Render the base server component. */
 export const Base = React.forwardRef<BaseRef, BaseProps>((props, ref) => {
   const {
     as: Component = "base",

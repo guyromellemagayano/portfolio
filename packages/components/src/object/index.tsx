@@ -14,12 +14,9 @@ const MemoizedObjectClient = React.lazy(async () => {
 export type ObjectRef = React.ComponentRef<"object">;
 
 export interface ObjectProps
-  extends React.ComponentPropsWithoutRef<"object">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"object">, CommonComponentProps {}
 
-/**
- * Render the object server component.
- */
+/** Render the object server component. */
 export const Object = React.forwardRef<ObjectRef, ObjectProps>((props, ref) => {
   const {
     as: Component = "object",

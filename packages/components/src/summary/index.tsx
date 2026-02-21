@@ -14,12 +14,9 @@ const MemoizedSummaryClient = React.lazy(async () => {
 export type SummaryRef = React.ComponentRef<"summary">;
 
 export interface SummaryProps
-  extends React.ComponentPropsWithoutRef<"summary">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"summary">, CommonComponentProps {}
 
-/**
- * Render the disclosure summary server component.
- */
+/** Render the disclosure summary server component. */
 export const Summary = React.forwardRef<SummaryRef, SummaryProps>(
   (props, ref) => {
     const {

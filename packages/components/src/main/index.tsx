@@ -14,12 +14,9 @@ const MemoizedMainClient = React.lazy(async () => {
 export type MainRef = React.ComponentRef<"main">;
 
 export interface MainProps
-  extends React.ComponentPropsWithoutRef<"main">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"main">, CommonComponentProps {}
 
-/**
- * Render the main server component.
- */
+/** Render the main server component. */
 export const Main = React.forwardRef<MainRef, MainProps>((props, ref) => {
   const {
     as: Component = "main",

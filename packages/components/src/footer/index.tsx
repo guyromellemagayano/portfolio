@@ -14,12 +14,9 @@ const MemoizedFooterClient = React.lazy(async () => {
 export type FooterRef = React.ComponentRef<"footer">;
 
 export interface FooterProps
-  extends React.ComponentPropsWithoutRef<"footer">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"footer">, CommonComponentProps {}
 
-/**
- * Render the footer server component.
- */
+/** Render the footer server component. */
 export const Footer = React.forwardRef<FooterRef, FooterProps>((props, ref) => {
   const {
     as: Component = "footer",

@@ -14,12 +14,9 @@ const MemoizedFieldsetClient = React.lazy(async () => {
 export type FieldsetRef = React.ComponentRef<"fieldset">;
 
 export interface FieldsetProps
-  extends React.ComponentPropsWithoutRef<"fieldset">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"fieldset">, CommonComponentProps {}
 
-/**
- * Render the field set server component.
- */
+/** Render the field set server component. */
 export const Fieldset = React.forwardRef<FieldsetRef, FieldsetProps>(
   (props, ref) => {
     const {

@@ -14,12 +14,9 @@ const MemoizedDivClient = React.lazy(async () => {
 export type DivRef = React.ComponentRef<"div">;
 
 export interface DivProps
-  extends React.ComponentPropsWithoutRef<"div">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"div">, CommonComponentProps {}
 
-/**
- * Render the content division server component.
- */
+/** Render the content division server component. */
 export const Div = React.forwardRef<DivRef, DivProps>((props, ref) => {
   const {
     as: Component = "div",

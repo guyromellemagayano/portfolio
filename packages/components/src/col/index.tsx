@@ -14,12 +14,9 @@ const MemoizedColClient = React.lazy(async () => {
 export type ColRef = React.ComponentRef<"col">;
 
 export interface ColProps
-  extends React.ComponentPropsWithoutRef<"col">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"col">, CommonComponentProps {}
 
-/**
- * Render the column server component.
- */
+/** Render the column server component. */
 export const Col = React.forwardRef<ColRef, ColProps>((props, ref) => {
   const {
     as: Component = "col",

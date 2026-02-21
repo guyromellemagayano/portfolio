@@ -14,12 +14,9 @@ const MemoizedStyleClient = React.lazy(async () => {
 export type StyleRef = React.ComponentRef<"style">;
 
 export interface StyleProps
-  extends React.ComponentPropsWithoutRef<"style">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"style">, CommonComponentProps {}
 
-/**
- * Render the style information server component.
- */
+/** Render the style information server component. */
 export const Style = React.forwardRef<StyleRef, StyleProps>((props, ref) => {
   const {
     as: Component = "style",

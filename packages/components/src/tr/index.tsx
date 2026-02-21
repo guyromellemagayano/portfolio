@@ -14,12 +14,9 @@ const MemoizedTrClient = React.lazy(async () => {
 export type TrRef = React.ComponentRef<"tr">;
 
 export interface TrProps
-  extends React.ComponentPropsWithoutRef<"tr">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"tr">, CommonComponentProps {}
 
-/**
- * Render the table row server component.
- */
+/** Render the table row server component. */
 export const Tr = React.forwardRef<TrRef, TrProps>((props, ref) => {
   const {
     as: Component = "tr",

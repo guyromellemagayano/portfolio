@@ -77,7 +77,7 @@ it("supports className and inline styles", () => {
       className="code-snippet language-ts"
       style={{ color: "purple", backgroundColor: "#f5f2f0" }}
     >
-      console.log('hello');
+      logger.info('hello');
     </Code>
   );
   const code = screen.getByTestId("code-element");

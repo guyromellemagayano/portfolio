@@ -14,12 +14,9 @@ const MemoizedPClient = React.lazy(async () => {
 export type PRef = React.ComponentRef<"p">;
 
 export interface PProps
-  extends React.ComponentPropsWithoutRef<"p">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"p">, CommonComponentProps {}
 
-/**
- * Render the paragraph server component.
- */
+/** Render the paragraph server component. */
 export const P = React.forwardRef<PRef, PProps>((props, ref) => {
   const {
     as: Component = "p",

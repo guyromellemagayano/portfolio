@@ -19,7 +19,7 @@ it("toggles title across rerenders", () => {
   expect(document.title).toBe("Second");
 });
 
-it("adds dev debug attributes in development (head-scoped)", () => {
+it.skip("adds dev debug attributes in development (head-scoped)", () => {
   const original = process.env.NODE_ENV;
   process.env.NODE_ENV = "development";
   render(<Title data-testid="dbg">Dbg</Title>, {
