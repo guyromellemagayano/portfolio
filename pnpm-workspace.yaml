@@ -9,6 +9,7 @@ catalog:
   "@eslint/js": 9.39.3
   "@headlessui/react": 2.2.9
   "@heroicons/react": 2.2.0
+  "@ianvs/prettier-plugin-sort-imports": 4.7.1
   "@mdx-js/loader": 3.1.1
   "@mdx-js/react": 3.1.1
   "@next/eslint-plugin-next": 16.1.6
