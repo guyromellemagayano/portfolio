@@ -6,7 +6,7 @@
 
 import { type ComponentPropsWithoutRef } from "react";
 
-import { type ClassValue, clsx } from "clsx";
+import { clsx, type ClassValue } from "clsx";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
