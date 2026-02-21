@@ -722,7 +722,7 @@ it("renders article with code elements", () => {
       </p>
       <pre>
         <code>{`function hello() {
-  console.log("Hello, World!");
+  logger.info("Hello, World!");
 }`}</code>
       </pre>
     </ArticleClient>
@@ -748,7 +748,7 @@ it("renders memoized article with code elements", () => {
       </p>
       <pre>
         <code>{`function memoizedHello() {
-  console.log("Hello, Memoized World!");
+  logger.info("Hello, Memoized World!");
 }`}</code>
       </pre>
     </MemoizedArticleClient>
