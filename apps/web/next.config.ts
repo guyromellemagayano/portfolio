@@ -17,7 +17,18 @@ const nextConfig: NextConfig = {
   },
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   outputFileTracingIncludes: {
-    "/articles/*": ["./src/app/articles/**/*.mdx"],
+    "/": [
+      "./src/app/(blog)/articles/**/*.mdx",
+      "./src/app/(blog)/articles/**/*.{png,jpg,jpeg,gif,webp,avif,svg}",
+    ],
+    "/articles": [
+      "./src/app/(blog)/articles/**/*.mdx",
+      "./src/app/(blog)/articles/**/*.{png,jpg,jpeg,gif,webp,avif,svg}",
+    ],
+    "/articles/*": [
+      "./src/app/(blog)/articles/**/*.mdx",
+      "./src/app/(blog)/articles/**/*.{png,jpg,jpeg,gif,webp,avif,svg}",
+    ],
   },
 };
 
