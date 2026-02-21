@@ -64,5 +64,3 @@ export const reactPreset = {
     ],
   },
 };
-
-export default reactPreset;
