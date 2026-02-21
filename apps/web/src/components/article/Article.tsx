@@ -6,7 +6,7 @@
 
 "use client";
 
-import { type ComponentPropsWithRef, useId, useMemo } from "react";
+import { useId, useMemo, type ComponentPropsWithRef } from "react";
 
 import { useTranslations } from "next-intl";
 

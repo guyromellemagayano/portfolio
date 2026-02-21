@@ -22,8 +22,8 @@ import {
 } from "@web/components/list";
 import { PhotoGallery } from "@web/components/photo-gallery";
 import {
-  type CommonLayoutComponentData,
   SOCIAL_LIST_COMPONENT_LABELS,
+  type CommonLayoutComponentData,
 } from "@web/data/page";
 import { getAllArticles } from "@web/utils/articles";
 import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
