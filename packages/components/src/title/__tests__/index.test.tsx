@@ -15,9 +15,7 @@ it("toggles title across rerenders", () => {
     container: document.head as unknown as HTMLElement,
   });
   expect(document.title).toBe("First");
-  rerender(<Title>Second</Title>, {
-    container: document.head as unknown as HTMLElement,
-  });
+  rerender(<Title>Second</Title>);
   expect(document.title).toBe("Second");
 });
 

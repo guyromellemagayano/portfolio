@@ -3,11 +3,11 @@ import type { ElementType } from "react";
 import { logger as sharedLogger } from "@portfolio/logger";
 
 import {
-  type AnalyticsEvent,
-  type AnalyticsEventType,
   filterElementSpecificProps,
   getElementConfig,
   validatePolymorphicProps,
+  type AnalyticsEvent,
+  type AnalyticsEventType,
 } from "./types";
 
 type AnyProps = Record<string, unknown>;
@@ -79,14 +79,22 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
     | Record<string, unknown>
     | undefined;
 
-  const emit = (type: AnalyticsEventType) => {
+  const emit = (
+    type: AnalyticsEventType,
+    name: string,
+    properties?: Record<string, unknown>
+  ) => {
     if (!onAnalytics) return;
     const payload: AnalyticsEvent = {
       type,
-      component: componentName,
-      as: asTag,
-      id: analyticsId,
-      meta: analyticsMeta,
+      name,
+      properties: {
+        component: componentName,
+        as: asTag,
+        id: analyticsId,
+        ...analyticsMeta,
+        ...properties,
+      },
       timestamp: Date.now(),
     };
     try {
@@ -116,14 +124,22 @@ export function preparePolymorphicProps<TProps extends AnyProps>(
   // Only add bridges if a consumer provided analytics callback
   if (onAnalytics) {
     // Common interactive events
-    bridge("onClick", () => emit("click"));
-    bridge("onFocus", () => emit("focus"));
-    bridge("onBlur", () => emit("blur"));
-    bridge("onChange", () => emit("change"));
-    bridge("onInput", () => emit("input"));
-    bridge("onKeyDown", () => emit("keydown"));
-    bridge("onKeyUp", () => emit("keyup"));
-    bridge("onSubmit", () => emit("submit"));
+    bridge("onClick", () => emit("click", "click"));
+    bridge("onFocus", () => emit("focus", "focus"));
+    bridge("onBlur", () => emit("blur", "blur"));
+    bridge("onChange", () =>
+      emit("custom", "change", { interactionType: "change" })
+    );
+    bridge("onInput", () =>
+      emit("custom", "input", { interactionType: "input" })
+    );
+    bridge("onKeyDown", () =>
+      emit("custom", "keydown", { interactionType: "keydown" })
+    );
+    bridge("onKeyUp", () =>
+      emit("custom", "keyup", { interactionType: "keyup" })
+    );
+    bridge("onSubmit", () => emit("submit", "submit"));
   }
 
   // Add debug and analytics attributes in development for inspection
