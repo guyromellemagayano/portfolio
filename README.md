@@ -57,20 +57,20 @@ pnpm dev
 
 ### Workspace Map
 
-| Path                         | Purpose                                  |
-| ---------------------------- | ---------------------------------------- |
-| `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
-| `apps/admin`                 | Vite + React Router app                  |
-| `apps/api`                   | Express API                              |
-| `apps/e2e`                   | Playwright E2E suites                    |
-| `packages/components`        | Shared React components                  |
-| `packages/ui`                | UI primitives/components                 |
-| `packages/hooks`             | Shared hooks                             |
-| `packages/utils`             | Utilities                                |
-| `packages/logger`            | Structured logging                       |
-| `packages/config-eslint`     | ESLint presets                           |
-| `packages/config-typescript` | TypeScript presets                       |
-| `packages/vitest-presets`    | Shared Vitest presets                    |
+| Path                         | Purpose                                          |
+| ---------------------------- | ------------------------------------------------ |
+| `apps/web`                   | Next.js app (`next-intl`, MDX, Sanity, Tailwind) |
+| `apps/admin`                 | Vite + React Router app                          |
+| `apps/api`                   | Express API                                      |
+| `apps/e2e`                   | Playwright E2E suites                            |
+| `packages/components`        | Shared React components                          |
+| `packages/ui`                | UI primitives/components                         |
+| `packages/hooks`             | Shared hooks                                     |
+| `packages/utils`             | Utilities                                        |
+| `packages/logger`            | Structured logging                               |
+| `packages/config-eslint`     | ESLint presets                                   |
+| `packages/config-typescript` | TypeScript presets                               |
+| `packages/vitest-presets`    | Shared Vitest presets                            |
 
 ### Daily Commands
 
@@ -163,6 +163,14 @@ cp .env.example .env.local
 ```
 
 `turbo.json` also declares `globalEnv` keys for task hashing.
+
+Sanity keys used by `apps/web`:
+
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`
+- `NEXT_PUBLIC_SANITY_DATASET`
+- `NEXT_PUBLIC_SANITY_API_VERSION` (defaults to `2025-02-19`)
+- `SANITY_API_READ_TOKEN` (optional for private datasets)
+- `SANITY_ENABLED` (`true` to switch article list source from MDX to Sanity)
 
 ## License
 
