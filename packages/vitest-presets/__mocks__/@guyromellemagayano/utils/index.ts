@@ -1,3 +1,9 @@
+/**
+ * @file packages/vitest-presets/__mocks__/@guyromellemagayano/utils/index.ts
+ * @author Guy Romelle Magayano
+ * @description Centralized Vitest utility mocks for shared component, content, link, and date helpers.
+ */
+
 import { vi } from "vitest";
 
 // ============================================================================
