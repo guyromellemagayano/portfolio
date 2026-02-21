@@ -399,7 +399,7 @@ it("renders article with code elements", () => {
       </p>
       <pre>
         <code>{`function hello() {
-  console.log("Hello, World!");
+  logger.info("Hello, World!");
 }`}</code>
       </pre>
     </Article>

@@ -14,12 +14,9 @@ export const MemoizedArticleClient = React.lazy(async () => {
 export type ArticleRef = React.ComponentRef<"article">;
 
 export interface ArticleProps
-  extends React.ComponentPropsWithoutRef<"article">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"article">, CommonComponentProps {}
 
-/**
- * Render the article server component.
- */
+/** Render the article server component. */
 export const Article = React.forwardRef<ArticleRef, ArticleProps>(
   (props, ref) => {
     const {
