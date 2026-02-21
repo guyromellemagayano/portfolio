@@ -1,5 +1,5 @@
 /**
- * @file ArticleSearch.test.tsx
+ * @file apps/web/src/components/article/__tests__/ArticleSearch.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the ArticleSearch component.
  */

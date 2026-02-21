@@ -1,5 +1,5 @@
 /**
- * @file Text.test.tsx
+ * @file apps/web/src/components/text/__tests__/Text.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Text component.
  */

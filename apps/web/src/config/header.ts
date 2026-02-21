@@ -1,7 +1,7 @@
 /**
- * @file header.ts
+ * @file apps/web/src/config/header.ts
  * @author Guy Romelle Magayano
- * @description Header configuration for the web application.
+ * @description Static configuration for header content and settings.
  */
 
 import { type Route } from "next";

@@ -1,5 +1,5 @@
 /**
- * @file Header.test.tsx
+ * @file apps/web/src/components/header/__tests__/Header.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the Header component.
  */

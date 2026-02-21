@@ -1,5 +1,5 @@
 /**
- * @file List.integration.test.tsx
+ * @file apps/web/src/components/list/__tests__/List.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the List component.
  */

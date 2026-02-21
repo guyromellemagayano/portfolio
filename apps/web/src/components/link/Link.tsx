@@ -1,7 +1,7 @@
 /**
- * @file Link.tsx
+ * @file apps/web/src/components/link/Link.tsx
  * @author Guy Romelle Magayano
- * @description Link component for the web application.
+ * @description Main Link component implementation.
  */
 
 import { type ComponentPropsWithRef } from "react";

@@ -1,7 +1,7 @@
 /**
- * @file sanity/_queries/articles.queries.ts
+ * @file apps/web/src/sanity/_queries/articles.queries.ts
  * @author Guy Romelle Magayano
- * @description GROQ queries for article documents.
+ * @description Sanity GROQ queries for article content retrieval.
  */
 
 export const SANITY_ARTICLES_QUERY = `

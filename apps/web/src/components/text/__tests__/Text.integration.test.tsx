@@ -1,5 +1,5 @@
 /**
- * @file Text.integration.test.tsx
+ * @file apps/web/src/components/text/__tests__/Text.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the Text component.
  */

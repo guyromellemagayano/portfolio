@@ -1,7 +1,7 @@
 /**
- * @file SVGBg.tsx
+ * @file apps/web/src/components/bg/SVGBg.tsx
  * @author Guy Romelle Magayano
- * @description SVG background component for the web application.
+ * @description Main SVGBg component implementation.
  */
 
 import {

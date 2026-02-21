@@ -1,7 +1,7 @@
 /**
- * @file footer.ts
+ * @file apps/web/src/config/footer.ts
  * @author Guy Romelle Magayano
- * @description Footer configuration for the web application.
+ * @description Static configuration for footer content and settings.
  */
 
 import { type ComponentPropsWithoutRef } from "react";

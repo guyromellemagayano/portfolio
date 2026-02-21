@@ -1,7 +1,7 @@
 /**
- * @file index.test.tsx
+ * @file packages/ui/src/link/index.test.tsx
  * @author Guy Romelle Magayano
- * @description Unit tests for the Link component.
+ * @description Unit tests for index behavior.
  */
 
 import { cleanup, render, screen } from "@testing-library/react";
