@@ -25,6 +25,7 @@
 14. **TEST ARIA ATTRIBUTES THOROUGHLY** - Use `getByRole` queries and test all ARIA relationships, IDs, and conditional behavior.
 15. **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
 16. **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
+17. **STANDARDIZE JSDOC LENGTH** - Use one-line JSDoc (`/** ... */`) for single-line documentation; use multiline JSDoc only when content genuinely spans multiple lines.
 
 ## Standards Reference
 
@@ -54,9 +55,12 @@
 ### Documentation Levels
 
 - **Components**: File-level JSDoc with `@file`, `@author`, `@description`
+- **`@file` Path Format**: Use repository-relative paths from workspace root (for example, `apps/web/src/components/header/Header.tsx`, `packages/vitest-presets/__tests__/presets.test.ts`, `packages/vitest-presets/__mocks__/@portfolio/utils/index.ts`)
 - **Types**: For `@packages/` components, use one-liner JSDoc (`/** Ref type for Component. */`). For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - **Functions**: Full JSDoc with `@param`/`@returns`/`@example` (when needed)
 - **Memoized Components**: Brief explanation of memoization behavior
+- **Single-Line JSDoc Format**: If the JSDoc body is one line, it must be `/** ... */` (never a three-line block)
+- **Multiline JSDoc Format**: Use multiline JSDoc only when content has multiple lines/tags
 
 ### Documentation Template
 
@@ -64,12 +68,13 @@
 
 ```typescript
 /**
- * @file ComponentName.tsx
+ * @file apps/web/src/components/component-name/ComponentName.tsx
  * @author Guy Romelle Magayano
  * @description [One-line description of what the component does].
  */
 
 import React from "react";
+
 // ... other imports
 
 export type ComponentNameRef = React.ComponentRef<typeof ComponentElementType>;
@@ -91,12 +96,13 @@ ComponentName.displayName = "ComponentName"; // Optional: manual assignment or o
 
 ```typescript
 /**
- * @file ComponentName.tsx
+ * @file packages/ui/src/component-name/ComponentName.tsx
  * @author Guy Romelle Magayano
  * @description [One-line description of what the component does].
  */
 
 import React from "react";
+
 // ... other imports
 
 /** Ref type for the ComponentName component. */
@@ -1002,7 +1008,7 @@ All test files must include JSDoc at the top:
 
 ```typescript
 /**
- * @file ComponentName.test.tsx
+ * @file apps/web/src/components/component-name/__tests__/ComponentName.test.tsx
  * @author Guy Romelle Magayano
  * @description Unit tests for the ComponentName component.
  */
@@ -1012,7 +1018,7 @@ For integration tests:
 
 ```typescript
 /**
- * @file ComponentName.integration.test.tsx
+ * @file apps/web/src/components/component-name/__tests__/ComponentName.integration.test.tsx
  * @author Guy Romelle Magayano
  * @description Integration tests for the ComponentName component.
  */
@@ -1818,15 +1824,17 @@ export interface SanityAuthor {
 
 ```typescript
 // Component.tsx
+
+// For real-time updates with Sanity
+import { useDocument } from "@sanity/react-hooks";
+// For client-side fetching with React Query
+import { useQuery } from "@tanstack/react-query";
 import { sanityClient } from "@web/lib/sanity";
 import { ARTICLE_QUERY } from "./_queries/Article.queries";
 
 export async function getArticle(slug: string) {
   return await sanityClient.fetch(ARTICLE_QUERY, { slug });
 }
-
-// For client-side fetching with React Query
-import { useQuery } from "@tanstack/react-query";
 
 export function useArticle(slug: string, preview: boolean = false) {
   return useQuery({
@@ -1836,9 +1844,6 @@ export function useArticle(slug: string, preview: boolean = false) {
     enabled: !!slug,
   });
 }
-
-// For real-time updates with Sanity
-import { useDocument } from "@sanity/react-hooks";
 
 export function useArticleRealtime(slug: string) {
   return useDocument({
