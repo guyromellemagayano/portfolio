@@ -14,12 +14,9 @@ const MemoizedSampClient = React.lazy(async () => {
 export type SampRef = React.ComponentRef<"samp">;
 
 export interface SampProps
-  extends React.ComponentPropsWithoutRef<"samp">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"samp">, CommonComponentProps {}
 
-/**
- * Render the sample output server component.
- */
+/** Render the sample output server component. */
 export const Samp = React.forwardRef<SampRef, SampProps>((props, ref) => {
   const {
     as: Component = "samp",

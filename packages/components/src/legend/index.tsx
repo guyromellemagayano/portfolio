@@ -14,12 +14,9 @@ const MemoizedLegendClient = React.lazy(async () => {
 export type LegendRef = React.ComponentRef<"legend">;
 
 export interface LegendProps
-  extends React.ComponentPropsWithoutRef<"legend">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"legend">, CommonComponentProps {}
 
-/**
- * Render the field set legend server component.
- */
+/** Render the field set legend server component. */
 export const Legend = React.forwardRef<LegendRef, LegendProps>((props, ref) => {
   const {
     as: Component = "legend",

@@ -14,12 +14,9 @@ const MemoizedSupClient = React.lazy(async () => {
 export type SupRef = React.ComponentRef<"sup">;
 
 export interface SupProps
-  extends React.ComponentPropsWithoutRef<"sup">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"sup">, CommonComponentProps {}
 
-/**
- * Render the superscript server component.
- */
+/** Render the superscript server component. */
 export const Sup = React.forwardRef<SupRef, SupProps>((props, ref) => {
   const {
     as: Component = "sup",

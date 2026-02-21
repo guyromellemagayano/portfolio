@@ -14,12 +14,9 @@ const MemoizedNavClient = React.lazy(async () => {
 export type NavRef = React.ComponentRef<"nav">;
 
 export interface NavProps
-  extends React.ComponentPropsWithoutRef<"nav">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"nav">, CommonComponentProps {}
 
-/**
- * Render the navigation section server component.
- */
+/** Render the navigation section server component. */
 export const Nav = React.forwardRef<NavRef, NavProps>((props, ref) => {
   const {
     as: Component = "nav",

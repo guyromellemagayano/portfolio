@@ -14,12 +14,9 @@ const MemoizedSelectClient = React.lazy(async () => {
 export type SelectRef = React.ComponentRef<"select">;
 
 export interface SelectProps
-  extends React.ComponentPropsWithoutRef<"select">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"select">, CommonComponentProps {}
 
-/**
- * Render the HTML select server component.
- */
+/** Render the HTML select server component. */
 export const Select = React.forwardRef<SelectRef, SelectProps>((props, ref) => {
   const {
     as: Component = "select",

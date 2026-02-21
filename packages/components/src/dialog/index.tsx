@@ -14,12 +14,9 @@ const MemoizedDialogClient = React.lazy(async () => {
 export type DialogRef = React.ComponentRef<"dialog">;
 
 export interface DialogProps
-  extends React.ComponentPropsWithoutRef<"dialog">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"dialog">, CommonComponentProps {}
 
-/**
- * Render the dialog server component.
- */
+/** Render the dialog server component. */
 export const Dialog = React.forwardRef<DialogRef, DialogProps>((props, ref) => {
   const {
     as: Component = "dialog",

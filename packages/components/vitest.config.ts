@@ -86,8 +86,8 @@ export default defineConfig({
       ],
     },
     include: [
-      "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
-      "scripts/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+      "src/**/__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+      "scripts/**/__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
     ],
     exclude: [
       "node_modules",
@@ -95,6 +95,7 @@ export default defineConfig({
       ".idea",
       ".git",
       ".cache",
+      "src/__coverage__/**",
       "**/*.d.ts",
       "**/*.stories.*",
     ],

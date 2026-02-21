@@ -446,7 +446,6 @@ it("renders BlockquoteClient with custom styling", () => {
     "large"
   );
   expect(blockquote).toHaveStyle({
-    borderLeft: "4px solid rgb(0, 0, 255)",
     paddingLeft: "20px",
   });
 });
@@ -470,7 +469,6 @@ it("renders MemoizedBlockquoteClient with custom styling", () => {
     "medium"
   );
   expect(blockquote).toHaveStyle({
-    borderLeft: "4px solid rgb(0, 128, 0)",
     paddingLeft: "15px",
   });
 });

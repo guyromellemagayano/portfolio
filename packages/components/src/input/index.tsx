@@ -14,12 +14,9 @@ const MemoizedInputClient = React.lazy(async () => {
 export type InputRef = React.ComponentRef<"input">;
 
 export interface InputProps
-  extends React.ComponentPropsWithoutRef<"input">,
-    CommonComponentProps {}
+  extends React.ComponentPropsWithoutRef<"input">, CommonComponentProps {}
 
-/**
- * Render the HTML input server component.
- */
+/** Render the HTML input server component. */
 export const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   const {
     as: Component = "input",
