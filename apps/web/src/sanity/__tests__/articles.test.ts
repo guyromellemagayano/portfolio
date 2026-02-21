@@ -65,25 +65,11 @@ describe("sanity articles", () => {
     expect(mockFetchSanityQuery).not.toHaveBeenCalled();
   });
 
-  it("returns empty array when feature flag is disabled", async () => {
-    const mockHasSanityConfig = vi.mocked(hasSanityConfig);
-    const mockFetchSanityQuery = vi.mocked(fetchSanityQuery);
-
-    mockHasSanityConfig.mockReturnValue(true);
-    vi.stubEnv("SANITY_ENABLED", "false");
-
-    const articles = await getAllSanityArticles();
-
-    expect(articles).toEqual([]);
-    expect(mockFetchSanityQuery).not.toHaveBeenCalled();
-  });
-
   it("fetches and normalizes Sanity articles when config exists", async () => {
     const mockHasSanityConfig = vi.mocked(hasSanityConfig);
     const mockFetchSanityQuery = vi.mocked(fetchSanityQuery);
 
     mockHasSanityConfig.mockReturnValue(true);
-    vi.stubEnv("SANITY_ENABLED", "true");
     mockFetchSanityQuery.mockResolvedValue([
       {
         _id: "article-b",

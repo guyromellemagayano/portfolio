@@ -20,12 +20,6 @@ export type SanityArticleWithSlug = {
   tags?: string[];
 };
 
-/** Checks if the Sanity articles feature is enabled via the `SANITY_ENABLED` env variable. */
-function isSanityArticlesFeatureEnabled(): boolean {
-  const flag = globalThis?.process?.env?.SANITY_ENABLED?.trim().toLowerCase();
-  return flag === "1" || flag === "true" || flag === "yes";
-}
-
 /** Extracts and trims the tag name from a `SanityArticleTag` (string or object). */
 function extractSanityTagName(tag: SanityArticleTag): string | null {
   if (typeof tag === "string") {
@@ -86,7 +80,7 @@ export async function getAllSanityArticles(): Promise<SanityArticleWithSlug[]> {
   return mappedArticles.sort((a, z) => +new Date(z.date) - +new Date(a.date));
 }
 
-/** Returns `true` if Sanity is configured and articles feature is enabled. */
+/** Returns `true` when required Sanity configuration exists. */
 export function isSanityConfigured(): boolean {
-  return hasSanityConfig() && isSanityArticlesFeatureEnabled();
+  return hasSanityConfig();
 }
