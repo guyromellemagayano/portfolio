@@ -1,95 +1,162 @@
 /**
  * @file apps/web/src/utils/__tests__/articles.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for article source mode resolution and hybrid merge behavior.
+ * @description Unit tests for Sanity-backed article utility behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-  mergeArticlesBySlug,
-  resolveArticleSourceMode,
-  type ArticleWithSlug,
-} from "@web/utils/articles";
+  getAllGatewayArticles,
+  getGatewayArticleBySlug,
+} from "@web/gateway/content";
+import { getAllArticles, getArticleBySlug } from "@web/utils/articles";
 
-describe("resolveArticleSourceMode", () => {
+vi.mock("@web/gateway/content", () => ({
+  getAllGatewayArticles: vi.fn(),
+  getGatewayArticleBySlug: vi.fn(),
+}));
+
+describe("getAllArticles", () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
+    vi.restoreAllMocks();
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.restoreAllMocks();
   });
 
-  it("defaults to mdx when no Sanity env toggles are set", () => {
-    expect(resolveArticleSourceMode()).toBe("mdx");
+  it("normalizes and sorts articles returned from the API gateway", async () => {
+    vi.mocked(getAllGatewayArticles).mockResolvedValue([
+      {
+        id: "article-older",
+        title: "Older",
+        slug: "older",
+        publishedAt: "2025-01-01",
+        excerpt: "Older summary",
+        imageUrl: undefined,
+        imageWidth: undefined,
+        imageHeight: undefined,
+        tags: ["engineering", " "],
+      },
+      {
+        id: "article-newer",
+        title: "Newer",
+        slug: "newer",
+        publishedAt: "2025-02-01",
+        excerpt: "Newer summary",
+        imageUrl: "https://cdn.example.com/newer.jpg",
+        imageWidth: 1400,
+        imageHeight: 900,
+        tags: [],
+      },
+      {
+        id: "invalid",
+        title: "",
+        slug: "invalid",
+        publishedAt: "2025-03-01",
+        excerpt: "Should be filtered",
+        imageUrl: undefined,
+        imageWidth: undefined,
+        imageHeight: undefined,
+        tags: [],
+      },
+    ]);
+
+    await expect(getAllArticles()).resolves.toEqual([
+      {
+        slug: "newer",
+        title: "Newer",
+        date: "2025-02-01",
+        description: "Newer summary",
+        image: "https://cdn.example.com/newer.jpg",
+        imageWidth: 1400,
+        imageHeight: 900,
+      },
+      {
+        slug: "older",
+        title: "Older",
+        date: "2025-01-01",
+        description: "Older summary",
+        tags: ["engineering"],
+      },
+    ]);
   });
 
-  it("uses sanity mode when SANITY_ENABLED is true and no explicit source mode is set", () => {
-    vi.stubEnv("SANITY_ENABLED", "true");
-    expect(resolveArticleSourceMode()).toBe("sanity");
-  });
+  it("throws when the gateway request fails", async () => {
+    vi.mocked(getAllGatewayArticles).mockRejectedValue(
+      new Error("Gateway unavailable")
+    );
 
-  it("respects explicit SANITY_ARTICLES_SOURCE value over SANITY_ENABLED", () => {
-    vi.stubEnv("SANITY_ENABLED", "true");
-    vi.stubEnv("SANITY_ARTICLES_SOURCE", "hybrid");
-    expect(resolveArticleSourceMode()).toBe("hybrid");
-  });
-
-  it("falls back to SANITY_ENABLED-based behavior when source mode is invalid", () => {
-    vi.stubEnv("SANITY_ENABLED", "true");
-    vi.stubEnv("SANITY_ARTICLES_SOURCE", "invalid-value");
-    expect(resolveArticleSourceMode()).toBe("sanity");
+    await expect(getAllArticles()).rejects.toThrow("Gateway unavailable");
   });
 });
 
-describe("mergeArticlesBySlug", () => {
-  const mdxArticles: ArticleWithSlug[] = [
-    {
-      slug: "launch-log",
-      title: "MDX Launch Log",
-      date: "2024-05-01",
-      description: "From MDX",
-    },
-    {
-      slug: "legacy-post",
-      title: "Legacy Post",
-      date: "2023-10-01",
-      description: "From MDX",
-    },
-  ];
-
-  const sanityArticles: ArticleWithSlug[] = [
-    {
-      slug: "launch-log",
-      title: "Sanity Launch Log",
-      date: "2025-01-15",
-      description: "From Sanity",
-    },
-    {
-      slug: "new-cms-post",
-      title: "New CMS Post",
-      date: "2025-03-01",
-      description: "From Sanity",
-    },
-  ];
-
-  it("dedupes by slug and prefers entries from the first list", () => {
-    const merged = mergeArticlesBySlug(sanityArticles, mdxArticles);
-
-    expect(merged).toHaveLength(3);
-    expect(merged.find((article) => article.slug === "launch-log")?.title).toBe(
-      "Sanity Launch Log"
-    );
+describe("getArticleBySlug", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it("returns merged results sorted by date descending", () => {
-    const merged = mergeArticlesBySlug(sanityArticles, mdxArticles);
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
-    expect(merged.map((article) => article.slug)).toEqual([
-      "new-cms-post",
-      "launch-log",
-      "legacy-post",
-    ]);
+  it("returns null when the gateway article detail is not found", async () => {
+    vi.mocked(getGatewayArticleBySlug).mockResolvedValue(null);
+
+    await expect(getArticleBySlug("missing-article")).resolves.toBeNull();
+  });
+
+  it("normalizes article detail payloads returned from the gateway", async () => {
+    vi.mocked(getGatewayArticleBySlug).mockResolvedValue({
+      id: "article-1",
+      title: "Article 1",
+      slug: "article-1",
+      publishedAt: "2026-02-24T00:00:00.000Z",
+      excerpt: "Summary",
+      seoDescription: "SEO Summary",
+      imageUrl: "https://cdn.example.com/cover.jpg",
+      imageWidth: 1600,
+      imageHeight: 900,
+      imageAlt: "Cover image",
+      tags: ["engineering", " "],
+      body: [
+        {
+          _type: "block",
+          children: [
+            {
+              _type: "span",
+              text: "Hello world",
+            },
+          ],
+        },
+      ],
+    });
+
+    await expect(getArticleBySlug("article-1")).resolves.toEqual({
+      slug: "article-1",
+      title: "Article 1",
+      date: "2026-02-24T00:00:00.000Z",
+      description: "Summary",
+      image: "https://cdn.example.com/cover.jpg",
+      imageWidth: 1600,
+      imageHeight: 900,
+      imageAlt: "Cover image",
+      seoDescription: "SEO Summary",
+      tags: ["engineering"],
+      body: [
+        {
+          _type: "block",
+          children: [
+            {
+              _type: "span",
+              text: "Hello world",
+            },
+          ],
+        },
+      ],
+    });
   });
 });

@@ -1,24 +1,28 @@
-/* eslint-disable simple-import-sort/imports */
-
 /**
  * @file apps/web/src/utils/articles.ts
  * @author Guy Romelle Magayano
- * @description Utilities for articles.
+ * @description Utilities for Sanity-backed article normalization in the web app.
  */
 
-import { existsSync } from "node:fs";
-import path from "node:path";
-import { type ComponentType } from "react";
+import type {
+  ContentArticle,
+  ContentArticleDetailResponseData,
+  ContentPortableTextBlock,
+  ContentPortableTextImageBlock,
+} from "@portfolio/api-contracts/content";
 
-import glob from "fast-glob";
-
-import { getAllSanityArticles, isSanityConfigured } from "@web/sanity/articles";
+import {
+  getAllGatewayArticles,
+  getGatewayArticleBySlug,
+} from "@web/gateway/content";
 
 export type Article = {
   title: string;
   date: string;
   description: string;
   image?: string;
+  imageWidth?: number;
+  imageHeight?: number;
   tags?: string[];
 };
 
@@ -26,10 +30,11 @@ export type ArticleWithSlug = Article & {
   slug: string;
 };
 
-export type ArticleSourceMode = "mdx" | "sanity" | "hybrid";
-
-const MDX_ARTICLES_DIRECTORY = path.join("src", "app", "(blog)", "articles");
-const SANITY_ARTICLES_SOURCE_ENV_KEY = "SANITY_ARTICLES_SOURCE";
+export type ArticleDetail = ArticleWithSlug & {
+  seoDescription?: string;
+  imageAlt?: string;
+  body: Array<ContentPortableTextBlock | ContentPortableTextImageBlock>;
+};
 
 function sortArticlesByDateDesc(
   articles: ArticleWithSlug[]
@@ -37,119 +42,84 @@ function sortArticlesByDateDesc(
   return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date));
 }
 
-function isSanityEnabledFlagSet(): boolean {
-  const flag = globalThis?.process?.env?.SANITY_ENABLED?.trim().toLowerCase();
-  return flag === "1" || flag === "true" || flag === "yes";
-}
-
-/** Resolves which article source mode to use for the web app. */
-export function resolveArticleSourceMode(): ArticleSourceMode {
-  const sourceMode =
-    globalThis?.process?.env?.[
-      SANITY_ARTICLES_SOURCE_ENV_KEY
-    ]?.trim().toLowerCase();
-
-  if (
-    sourceMode === "mdx" ||
-    sourceMode === "sanity" ||
-    sourceMode === "hybrid"
-  ) {
-    return sourceMode;
+function getOptionalPositiveImageDimension(value: unknown): number | undefined {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
+    return undefined;
   }
 
-  return isSanityEnabledFlagSet() ? "sanity" : "mdx";
+  return Math.round(value);
 }
 
-/** Merges two article lists and prefers entries from the first list when slugs collide. */
-export function mergeArticlesBySlug(
-  preferredArticles: ArticleWithSlug[],
-  fallbackArticles: ArticleWithSlug[]
-): ArticleWithSlug[] {
-  const articleBySlug = new Map<string, ArticleWithSlug>();
+function mapGatewayArticleToArticleWithSlug(
+  gatewayArticle: ContentArticle
+): ArticleWithSlug | null {
+  const title = gatewayArticle.title?.trim();
+  const slug = gatewayArticle.slug?.trim();
+  const date = gatewayArticle.publishedAt?.trim();
 
-  for (const article of fallbackArticles) {
-    articleBySlug.set(article.slug, article);
+  if (!title || !slug || !date) {
+    return null;
   }
 
-  for (const article of preferredArticles) {
-    articleBySlug.set(article.slug, article);
-  }
-
-  return sortArticlesByDateDesc([...articleBySlug.values()]);
-}
-
-function resolveMdxArticlesDirectory(): string | null {
-  const candidateDirectories = [
-    path.join(process.cwd(), MDX_ARTICLES_DIRECTORY),
-    path.join(process.cwd(), "apps", "web", MDX_ARTICLES_DIRECTORY),
-  ];
-
-  return (
-    candidateDirectories.find((directory) => existsSync(directory)) ?? null
+  const description = gatewayArticle.excerpt?.trim() ?? "";
+  const image = gatewayArticle.imageUrl?.trim() || undefined;
+  const imageWidth = getOptionalPositiveImageDimension(
+    gatewayArticle.imageWidth
   );
-}
-
-/** Import an article from the articles directory and return it with a slug */
-async function importArticle(
-  articleFilename: string
-): Promise<ArticleWithSlug> {
-  let { article } = (await import(
-    `@web/app/(blog)/articles/${articleFilename}`
-  )) as {
-    default: ComponentType;
-    article: Article;
-  };
+  const imageHeight = getOptionalPositiveImageDimension(
+    gatewayArticle.imageHeight
+  );
+  const tags = gatewayArticle.tags
+    .map((tag) => tag.trim())
+    .filter((tag) => tag.length > 0);
 
   return {
-    slug: articleFilename.replace(/(\/page)?\.mdx$/, ""),
-    ...article,
+    title,
+    slug,
+    date,
+    description,
+    image,
+    imageWidth,
+    imageHeight,
+    tags: tags.length > 0 ? tags : undefined,
   };
 }
 
-/** Get all articles from the articles directory */
-async function getAllMdxArticles(): Promise<ArticleWithSlug[]> {
-  const mdxArticlesDirectory = resolveMdxArticlesDirectory();
+function mapGatewayArticleDetailToArticleDetail(
+  gatewayArticle: ContentArticleDetailResponseData
+): ArticleDetail | null {
+  const article = mapGatewayArticleToArticleWithSlug(gatewayArticle);
 
-  if (!mdxArticlesDirectory) {
-    return [];
+  if (!article) {
+    return null;
   }
 
-  let articleFilenames = await glob("*/page.mdx", {
-    cwd: mdxArticlesDirectory,
-  });
-
-  let articles = await Promise.all(articleFilenames.map(importArticle));
-
-  return sortArticlesByDateDesc(articles);
+  return {
+    ...article,
+    seoDescription: gatewayArticle.seoDescription?.trim() || undefined,
+    imageAlt: gatewayArticle.imageAlt?.trim() || undefined,
+    body: Array.isArray(gatewayArticle.body) ? gatewayArticle.body : [],
+  };
 }
 
-/** Get all articles based on configured source mode, with resilient fallback behavior. */
+/** Gets all articles from the API gateway and normalizes them for web components. */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
-  const sourceMode = resolveArticleSourceMode();
+  const gatewayArticles = (await getAllGatewayArticles())
+    .map(mapGatewayArticleToArticleWithSlug)
+    .filter((article): article is ArticleWithSlug => article !== null);
 
-  if (sourceMode === "mdx") {
-    return getAllMdxArticles();
+  return sortArticlesByDateDesc(gatewayArticles);
+}
+
+/** Gets a single article detail payload from the API gateway by slug. */
+export async function getArticleBySlug(
+  slug: string
+): Promise<ArticleDetail | null> {
+  const gatewayArticle = await getGatewayArticleBySlug(slug);
+
+  if (!gatewayArticle) {
+    return null;
   }
 
-  const mdxArticles = await getAllMdxArticles();
-
-  if (!isSanityConfigured()) {
-    return mdxArticles;
-  }
-
-  try {
-    const sanityArticles = await getAllSanityArticles();
-
-    if (sourceMode === "hybrid") {
-      return mergeArticlesBySlug(sanityArticles, mdxArticles);
-    }
-
-    if (sanityArticles.length > 0) {
-      return sanityArticles;
-    }
-  } catch {
-    // Fall through to MDX when Sanity is temporarily unavailable.
-  }
-
-  return mdxArticles;
+  return mapGatewayArticleDetailToArticleDetail(gatewayArticle);
 }

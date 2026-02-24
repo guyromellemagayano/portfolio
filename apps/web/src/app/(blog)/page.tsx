@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+/* eslint-disable simple-import-sort/imports */
 
 /**
  * @file apps/web/src/app/(blog)/page.tsx
