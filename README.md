@@ -63,11 +63,14 @@ pnpm dev
 | `apps/admin`                 | Vite + React Router app                          |
 | `apps/api`                   | Express API                                      |
 | `apps/e2e`                   | Playwright E2E suites                            |
+| `docs`                       | Centralized project documentation                |
 | `packages/components`        | Shared React components                          |
+| `packages/api-contracts`     | Canonical API payload contracts                  |
 | `packages/ui`                | UI primitives/components                         |
 | `packages/hooks`             | Shared hooks                                     |
 | `packages/utils`             | Utilities                                        |
 | `packages/logger`            | Structured logging                               |
+| `packages/sanity-studio`     | Shared Sanity Studio config and schema           |
 | `packages/config-eslint`     | ESLint presets                                   |
 | `packages/config-typescript` | TypeScript presets                               |
 | `packages/vitest-presets`    | Shared Vitest presets                            |
@@ -107,6 +110,7 @@ pnpm test:e2e:ui
 
 ```bash
 pnpm --filter web dev
+pnpm --filter web sanity
 pnpm --filter admin dev
 pnpm --filter api dev
 pnpm --filter e2e test:e2e:ui
@@ -170,8 +174,32 @@ Sanity keys used by `apps/web`:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION` (defaults to `2025-02-19`)
 - `SANITY_API_READ_TOKEN` (optional for private datasets)
-- `SANITY_ENABLED` (`true` enables Sanity-backed article mode when source is not explicitly set)
-- `SANITY_ARTICLES_SOURCE` (optional: `mdx`, `sanity`, or `hybrid` for phased migration)
+- Article data in `apps/web` is retrieved from `apps/api` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
+- `API_GATEWAY_URL` (server-side base URL for `apps/api` article/content APIs)
+- `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
+
+Gateway keys used by `apps/api`:
+
+- `API_PORT` (fallback `PORT`, default `5001`)
+- `API_GATEWAY_CORS_ORIGINS` (comma-separated allowlist)
+- `API_GATEWAY_CONTENT_PROVIDER` (`sanity` or `static`)
+- `SANITY_PROJECT_ID` / `SANITY_DATASET` / `SANITY_API_VERSION` (fallbacks to `NEXT_PUBLIC_SANITY_*`)
+- `SANITY_API_READ_TOKEN`
+- `SANITY_USE_CDN`
+
+Gateway architecture and extension conventions:
+
+- `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
+
+Embedded Studio route in `apps/web`:
+
+- `GET /studio` (Sanity Studio)
+- `GET /api/draft-mode/enable` (enable Draft Mode via Presentation Tool)
+- `GET /api/draft-mode/disable` (disable Draft Mode)
+
+Article data flow:
+
+- `apps/web` -> `apps/api` (`/v1/content/articles`) -> provider (`sanity` or `static`)
 
 ## License
 
