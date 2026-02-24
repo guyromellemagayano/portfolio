@@ -1,0 +1,82 @@
+{
+  "name": "@portfolio/sanity-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reusable Sanity Studio configuration and schema package",
+  "keywords": [
+    "sanity",
+    "studio",
+    "cms",
+    "typescript"
+  ],
+  "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/sanity-studio",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyromellemagayano/portfolio.git",
+    "directory": "packages/sanity-studio"
+  },
+  "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./config/cli": {
+      "types": "./dist/config/cli.d.ts",
+      "import": "./dist/config/cli.js"
+    },
+    "./config/studio": {
+      "types": "./dist/config/studio.d.ts",
+      "import": "./dist/config/studio.js"
+    },
+    "./schema-types": {
+      "types": "./dist/schema-types/index.d.ts",
+      "import": "./dist/schema-types/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "test": "echo 'No tests configured for sanity-studio package'",
+    "test:coverage": "echo 'No tests configured for sanity-studio package'",
+    "test:coverage:ui": "echo 'No tests configured for sanity-studio package'",
+    "test:run": "echo 'No tests configured for sanity-studio package'",
+    "test:run:coverage": "echo 'No tests configured for sanity-studio package'",
+    "test:ui": "echo 'No tests configured for sanity-studio package'"
+  },
+  "dependencies": {
+    "sanity": "catalog:"
+  },
+  "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
+    "@types/node": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}
