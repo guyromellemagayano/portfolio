@@ -1,0 +1,28 @@
+/**
+ * @file apps/api/src/modules/content/content.service.ts
+ * @author Guy Romelle Magayano
+ * @description Content service orchestrating provider-level article retrieval.
+ */
+
+import type {
+  GatewayArticle,
+  GatewayArticleDetail,
+} from "@api/contracts/articles";
+import type { ContentProvider } from "@api/providers/content/content.provider";
+
+export type ContentService = {
+  providerName: ContentProvider["name"];
+  getArticles: () => Promise<GatewayArticle[]>;
+  getArticleBySlug: (slug: string) => Promise<GatewayArticleDetail | null>;
+};
+
+/** Creates content service bound to a specific provider implementation. */
+export function createContentService(
+  contentProvider: ContentProvider
+): ContentService {
+  return {
+    providerName: contentProvider.name,
+    getArticles: () => contentProvider.getArticles(),
+    getArticleBySlug: (slug: string) => contentProvider.getArticleBySlug(slug),
+  };
+}
