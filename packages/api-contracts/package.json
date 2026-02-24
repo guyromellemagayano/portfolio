@@ -1,0 +1,75 @@
+{
+  "name": "@portfolio/api-contracts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Canonical API contracts shared across apps and services",
+  "keywords": [
+    "api",
+    "contracts",
+    "typescript"
+  ],
+  "homepage": "https://github.com/guyromellemagayano/portfolio/tree/main/packages/api-contracts",
+  "bugs": {
+    "url": "https://github.com/guyromellemagayano/portfolio/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guyromellemagayano/portfolio.git",
+    "directory": "packages/api-contracts"
+  },
+  "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./content": {
+      "types": "./dist/content/index.d.ts",
+      "import": "./dist/content/index.js"
+    },
+    "./http": {
+      "types": "./dist/http/index.d.ts",
+      "import": "./dist/http/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "test": "echo 'No tests configured for api-contracts package'",
+    "test:coverage": "echo 'No tests configured for api-contracts package'",
+    "test:coverage:ui": "echo 'No tests configured for api-contracts package'",
+    "test:run": "echo 'No tests configured for api-contracts package'",
+    "test:run:coverage": "echo 'No tests configured for api-contracts package'",
+    "test:ui": "echo 'No tests configured for api-contracts package'"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
+    "@types/node": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}
