@@ -9,7 +9,7 @@ import React from "react";
 import { NextIntlClientProvider } from "next-intl";
 
 import { Providers } from "@web/app/providers";
-import { Layout } from "@web/components/layout";
+import { RouteShell } from "@web/components/route-shell";
 
 import "@web/styles/tailwind.css";
 
@@ -25,7 +25,7 @@ export default function RootLayout(props: RootLayoutProps) {
       <body className="flex h-full bg-zinc-50 dark:bg-black">
         <NextIntlClientProvider>
           <Providers>
-            <Layout>{children}</Layout>
+            <RouteShell>{children}</RouteShell>
           </Providers>
         </NextIntlClientProvider>
       </body>
