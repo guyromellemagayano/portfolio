@@ -1,57 +1,24 @@
 /**
  * @file apps/web/src/sanity/client.ts
  * @author Guy Romelle Magayano
- * @description Sanity client utilities for configuration checks and query execution.
+ * @description Sanity client utilities for Studio and Draft Mode integration.
  */
 
-const DEFAULT_SANITY_API_VERSION = "2025-02-19";
+import { createClient } from "next-sanity";
 
-type SanityQueryResponse<T> = {
-  result?: T;
-  error?: {
-    description?: string;
-  };
-};
+import { getSanityConfig as getConfig } from "@web/sanity/env";
 
-type SanityClientConfig = {
-  projectId: string;
-  dataset: string;
-  apiVersion: string;
-  token?: string;
-};
-
-function getSanityEnvVar(key: string): string {
-  return globalThis?.process?.env?.[key]?.trim() ?? "";
+/** Returns the Sanity configuration from environment variables. */
+export function getSanityConfig() {
+  return getConfig();
 }
 
-export function getSanityConfig(): SanityClientConfig | null {
-  const projectId = getSanityEnvVar("NEXT_PUBLIC_SANITY_PROJECT_ID");
-  const dataset = getSanityEnvVar("NEXT_PUBLIC_SANITY_DATASET");
-  const apiVersion =
-    getSanityEnvVar("NEXT_PUBLIC_SANITY_API_VERSION") ||
-    DEFAULT_SANITY_API_VERSION;
-  const token = getSanityEnvVar("SANITY_API_READ_TOKEN");
-
-  if (!projectId || !dataset) {
-    return null;
-  }
-
-  return {
-    projectId,
-    dataset,
-    apiVersion,
-    token: token || undefined,
-  };
-}
-
+/** Returns `true` when required Sanity configuration exists. */
 export function hasSanityConfig(): boolean {
   return getSanityConfig() !== null;
 }
 
-export async function fetchSanityQuery<T>(
-  query: string,
-  params: Record<string, unknown> = {}
-): Promise<T> {
+function createSanityClient() {
   const config = getSanityConfig();
 
   if (!config) {
@@ -60,38 +27,14 @@ export async function fetchSanityQuery<T>(
     );
   }
 
-  const { projectId, dataset, apiVersion, token } = config;
-
-  const queryUrl = new URL(
-    `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}`
-  );
-
-  queryUrl.searchParams.set("query", query);
-  queryUrl.searchParams.set("perspective", "published");
-
-  if (Object.keys(params).length > 0) {
-    queryUrl.searchParams.set("params", JSON.stringify(params));
-  }
-
-  const response = await fetch(queryUrl.toString(), {
-    method: "GET",
-    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-    cache: "no-store",
+  return createClient({
+    projectId: config.projectId,
+    dataset: config.dataset,
+    apiVersion: config.apiVersion,
+    useCdn: true,
   });
+}
 
-  if (!response.ok) {
-    throw new Error(`Sanity query failed with status ${response.status}.`);
-  }
-
-  const json = (await response.json()) as SanityQueryResponse<T>;
-
-  if (json.error) {
-    throw new Error(json.error.description || "Sanity query failed.");
-  }
-
-  if (json.result === undefined) {
-    throw new Error("Sanity query response is missing result.");
-  }
-
-  return json.result;
+export function getSanityClient() {
+  return createSanityClient();
 }
