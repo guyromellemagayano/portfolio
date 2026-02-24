@@ -13,10 +13,20 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "noEmit": true,
+    "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@portfolio/sanity-studio/config/cli": [
+        "../../packages/sanity-studio/src/config/cli.ts"
+      ],
+      "@portfolio/sanity-studio/config/studio": [
+        "../../packages/sanity-studio/src/config/studio.ts"
+      ],
+      "@portfolio/sanity-studio/schema-types": [
+        "../../packages/sanity-studio/src/schema-types/index.ts"
+      ],
       "@web/*": [
         "./src/*"
       ]

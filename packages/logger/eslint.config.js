@@ -6,6 +6,12 @@ import { baseEslintConfig } from "@portfolio/config-eslint";
 export default [
   ...baseEslintConfig,
   {
+    files: ["src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}"],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
     files: ["**/__tests__/**/*.{js,ts}", "**/*.{test,spec}.{js,ts}"],
     languageOptions: {
       globals: {
