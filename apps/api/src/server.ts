@@ -1,113 +1,73 @@
+/**
+ * @file apps/api/src/server.ts
+ * @author Guy Romelle Magayano
+ * @description Express server composition for the API gateway.
+ */
+
 import { json, urlencoded } from "body-parser";
-import cors from "cors";
-import express, { type Express, type RequestHandler } from "express";
-import morgan from "morgan";
+import cors, { type CorsOptions } from "cors";
+import express, { type Express } from "express";
 
-import { createLogger, generateRequestId, LogLevel } from "@portfolio/logger";
+import { getApiConfig, type ApiRuntimeConfig } from "@api/config/env";
+import { createApiLogger } from "@api/config/logger";
+import { createProviderRegistry } from "@api/gateway/provider-registry";
+import { createErrorHandler } from "@api/middleware/error-handler";
+import { createHttpLoggerMiddleware } from "@api/middleware/http-logger";
+import { notFoundHandler } from "@api/middleware/not-found";
+import { createRequestContextMiddleware } from "@api/middleware/request-context";
+import { createContentRouter } from "@api/modules/content/content.routes";
+import { createContentService } from "@api/modules/content/content.service";
+import { createHealthRouter } from "@api/modules/health/health.routes";
+import { createMessageRouter } from "@api/modules/message/message.routes";
 
-// Create app-specific logger with context
-const apiLogger = createLogger({
-  level: process.env.NODE_ENV === "production" ? LogLevel.INFO : LogLevel.DEBUG,
-  defaultContext: {
-    component: "api-server",
-    metadata: {
-      service: "express",
-    },
-  },
-});
+export function resolveCorsOrigin(
+  config: ApiRuntimeConfig
+): CorsOptions["origin"] {
+  if (config.corsOrigins.length > 0) {
+    return config.corsOrigins;
+  }
 
-// Enhanced Morgan integration with custom logger
-const createMorganStream = () => ({
-  write: (message: string) => {
-    // Remove trailing newline and log as HTTP level
-    apiLogger.http(message.trim());
-  },
-});
+  if (config.nodeEnv === "production") {
+    return false;
+  }
 
-// Custom Morgan format with request correlation
-morgan.token("id", (req: any) => req.id);
-morgan.token("correlation-id", (req: any) => req.correlationId);
-
-const morganFormat =
-  process.env.NODE_ENV === "production"
-    ? ":id :correlation-id :method :url :status :res[content-length] - :response-time ms"
-    : ':id :correlation-id :method :url :status :res[content-length] - :response-time ms ":user-agent"';
+  return true;
+}
 
 export const createServer = (): Express => {
+  const config = getApiConfig();
+  const logger = createApiLogger(config.nodeEnv);
+  const providers = createProviderRegistry(config, logger);
+  const contentService = createContentService(providers.content);
+  const corsOrigin = resolveCorsOrigin(config);
+
   const app = express();
 
-  app
-    .disable("x-powered-by")
-    // Add request correlation middleware
+  app.disable("x-powered-by");
 
-    .use((req: any, res, next) => {
-      req.id = generateRequestId();
-      req.correlationId = req.headers["x-correlation-id"] || req.id;
-
-      // Add correlation ID to response headers
-      res.setHeader("x-correlation-id", req.correlationId);
-
-      // Create request-scoped logger
-      req.logger = apiLogger.child({
-        requestId: req.id,
-        metadata: {
-          correlationId: req.correlationId,
-          method: req.method,
-          url: req.originalUrl,
-        },
-      });
-
-      next();
+  app.use(createRequestContextMiddleware(logger));
+  app.use(createHttpLoggerMiddleware(logger));
+  app.use(urlencoded({ extended: true }));
+  app.use(json());
+  app.use(
+    cors({
+      origin: corsOrigin,
+      credentials: corsOrigin !== false,
     })
-    // Enhanced Morgan with custom stream
-    .use(
-      morgan(morganFormat, {
-        stream: createMorganStream(),
-        // eslint-disable-next-line unused-imports/no-unused-vars
-        skip: (req, res) => {
-          // Skip health checks in production
-          return (
-            process.env.NODE_ENV === "production" &&
-            req.originalUrl === "/status"
-          );
-        },
-      })
-    )
-    .use(urlencoded({ extended: true }))
-    .use(json())
-    .use(cors());
+  );
 
-  const messageHandler: RequestHandler = (req: any, res) => {
-    req.logger.info("Processing message request", {
-      name: req.params.name,
-      userAgent: req.get("User-Agent"),
-    });
+  if (corsOrigin === false) {
+    logger.warn(
+      "CORS allowlist is empty in production. Cross-origin browser requests are disabled."
+    );
+  }
 
-    res.json({ message: `hello ${req.params.name}` });
-  };
+  app.use(createHealthRouter());
+  app.use(createMessageRouter());
+  app.use("/v1/content", createContentRouter(contentService));
 
-  const statusHandler: RequestHandler = (req: any, res) => {
-    req.logger.debug("Health check requested");
-    res.json({ ok: true });
-  };
-
-  // Error handling middleware
-  // eslint-disable-next-line unused-imports/no-unused-vars
-  app.use((error: Error, req: any, res: any, next: any) => {
-    req.logger.error("Unhandled error in request", error, {
-      stack: error.stack,
-      path: req.path,
-      method: req.method,
-    });
-
-    res.status(500).json({
-      error: "Internal Server Error",
-      correlationId: req.correlationId,
-    });
-  });
-
-  app.get("/message/:name", messageHandler);
-  app.get("/status", statusHandler);
+  app.use(notFoundHandler);
+  app.use(createErrorHandler(logger));
 
   return app;
 };
