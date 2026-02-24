@@ -67,6 +67,7 @@ export const baseEslintConfig = [
         { considerQueryString: true, "prefer-inline": true },
       ],
       "import/no-unresolved": "error",
+      "no-console": "error",
       "no-unused-vars": "off",
       "react-refresh/only-export-components": [
         "warn",
@@ -141,6 +142,21 @@ export const baseEslintConfig = [
               message:
                 "Do not import from another component's queries/ folder. Use the component's barrel export or relative imports within the same component.",
             },
+            {
+              group: [
+                "morgan",
+                "winston",
+                "pino",
+                "bunyan",
+                "log4js",
+                "npmlog",
+                "consola",
+                "signale",
+                "debug",
+              ],
+              message:
+                "Use @portfolio/logger for application logging. Third-party logger packages are restricted in this monorepo.",
+            },
           ],
         },
       ],
@@ -191,6 +207,7 @@ export const baseEslintConfig = [
     },
     rules: {
       ...vitestPlugin.configs.recommended.rules,
+      "no-console": "off",
       "no-restricted-imports": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "import/no-extraneous-dependencies": "off",
@@ -216,6 +233,12 @@ export const baseEslintConfig = [
       vitest: {
         typecheck: true,
       },
+    },
+  },
+  {
+    files: ["**/test-setup.{js,cjs,mjs,ts,cts,mts,tsx,jsx}"],
+    rules: {
+      "no-console": "off",
     },
   },
   {
