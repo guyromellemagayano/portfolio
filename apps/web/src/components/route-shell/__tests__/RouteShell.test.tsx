@@ -49,6 +49,15 @@ describe("RouteShell", () => {
     expect(screen.queryByTestId("layout-shell")).not.toBeInTheDocument();
   });
 
+  it("preserves falsy renderable children on /studio routes", () => {
+    usePathnameMock.mockReturnValue("/studio");
+
+    render(<RouteShell>{0}</RouteShell>);
+
+    expect(screen.getByText("0")).toBeInTheDocument();
+    expect(screen.queryByTestId("layout-shell")).not.toBeInTheDocument();
+  });
+
   it("wraps non-studio routes with Layout", () => {
     usePathnameMock.mockReturnValue("/articles");
 
