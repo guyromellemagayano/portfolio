@@ -4,6 +4,8 @@
  * @description Renders Sanity Portable Text article body content with shared renderers.
  */
 
+import React from "react";
+
 import { PortableText } from "next-sanity";
 
 import {
@@ -11,18 +13,42 @@ import {
   type PortableTextContentValue,
 } from "./PortableTextContent.renderers";
 
-type PortableTextContentProps = {
-  value: PortableTextContentValue;
-  fallbackImageAlt?: string;
-};
+export type PortableTextContentType = typeof PortableText;
+export type PortableTextContentProps<P extends Record<string, unknown> = {}> =
+  Omit<
+    React.ComponentPropsWithRef<PortableTextContentType>,
+    "as" | "value" | "components"
+  > &
+    P & {
+      as?: PortableTextContentType;
+      value: PortableTextContentValue;
+      fallbackImageAlt?: string;
+    };
 
-export function PortableTextContent(props: PortableTextContentProps) {
-  const { value, fallbackImageAlt } = props;
+export function PortableTextContent<P extends Record<string, unknown> = {}>(
+  props: PortableTextContentProps<P>
+) {
+  const {
+    as: Component = PortableText,
+    value,
+    fallbackImageAlt,
+    ...rest
+  } = props;
+
   const components = createPortableTextContentComponents({
     fallbackImageAlt,
   });
 
-  return <PortableText value={value} components={components} />;
+  return (
+    <Component
+      {...(rest as Omit<
+        React.ComponentPropsWithoutRef<PortableTextContentType>,
+        "value" | "components"
+      >)}
+      value={value}
+      components={components}
+    />
+  );
 }
 
 PortableTextContent.displayName = "PortableTextContent";
