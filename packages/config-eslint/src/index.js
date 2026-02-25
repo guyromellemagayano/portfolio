@@ -1,7 +1,5 @@
-/* eslint-disable simple-import-sort/imports */
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-
 import js from "@eslint/js";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";

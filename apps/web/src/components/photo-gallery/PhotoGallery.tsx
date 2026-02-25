@@ -1,5 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-
 /**
  * @file apps/web/src/components/photo-gallery/PhotoGallery.tsx
  * @author Guy Romelle Magayano
@@ -13,8 +11,8 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import { useTranslations } from "next-intl";
 import Image, { type StaticImageData } from "next/image";
+import { useTranslations } from "next-intl";
 
 import { PHOTO_GALLERY_PHOTOS } from "@web/config/photo-gallery";
 import { cn } from "@web/utils/helpers";

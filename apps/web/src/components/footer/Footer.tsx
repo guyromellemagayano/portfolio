@@ -1,5 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-
 /**
  * @file apps/web/src/components/footer/Footer.tsx
  * @author Guy Romelle Magayano
@@ -13,8 +11,8 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import {
   filterValidNavigationLinks,

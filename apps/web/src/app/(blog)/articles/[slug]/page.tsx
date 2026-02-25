@@ -1,4 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
 /* eslint-disable react-refresh/only-export-components */
 
 /**
@@ -17,7 +16,7 @@ import logger from "@portfolio/logger";
 
 import { ArticleLayout } from "@web/components/layout";
 import { PortableTextContent } from "@web/components/portable-text-content";
-import { getArticleBySlug, type ArticleDetail } from "@web/utils/articles";
+import { type ArticleDetail, getArticleBySlug } from "@web/utils/articles";
 import { normalizeError } from "@web/utils/error";
 
 type ArticleDetailPageParams = {

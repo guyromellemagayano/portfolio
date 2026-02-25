@@ -1,5 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-
 /**
  * @file apps/web/src/components/layout/Layout.tsx
  * @author Guy Romelle Magayano
@@ -9,13 +7,13 @@
 "use client";
 
 import {
-  useId,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
+  useId,
 } from "react";
 
-import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 import { SVGBg } from "@web/components/bg";
 import { Button, SkipToMainContentButton } from "@web/components/button";

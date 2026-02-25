@@ -4,8 +4,8 @@
  * @description Enables Next.js Draft Mode for Sanity Presentation Tool previews.
  */
 
-import { defineEnableDraftMode } from "next-sanity/draft-mode";
 import { NextResponse } from "next/server";
+import { defineEnableDraftMode } from "next-sanity/draft-mode";
 
 import { getSanityClient, hasSanityConfig } from "@web/sanity/client";
 import { getSanityReadToken } from "@web/sanity/env";
