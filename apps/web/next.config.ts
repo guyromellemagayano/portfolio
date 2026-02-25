@@ -1,3 +1,9 @@
+/**
+ * @file apps/web/next.config.ts
+ * @author Guy Romelle Magayano
+ * @description Next.js configuration for the web app, including shared package transpilation and Sanity image hosts.
+ */
+
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 

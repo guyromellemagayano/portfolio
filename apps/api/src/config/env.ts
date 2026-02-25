@@ -39,6 +39,7 @@ function getEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
+/** Parses the API port with a safe fallback when the value is missing or invalid. */
 function parsePort(rawPort: string): number {
   const port = Number.parseInt(rawPort, 10);
 
@@ -49,6 +50,7 @@ function parsePort(rawPort: string): number {
   return port;
 }
 
+/** Normalizes `NODE_ENV` into the gateway runtime environment union. */
 function parseNodeEnv(rawNodeEnv: string): ApiRuntimeEnvironment {
   if (rawNodeEnv === "production") {
     return "production";
@@ -61,6 +63,7 @@ function parseNodeEnv(rawNodeEnv: string): ApiRuntimeEnvironment {
   return "development";
 }
 
+/** Parses common boolean env formats while preserving a fallback default. */
 function parseBoolean(rawValue: string, fallback: boolean): boolean {
   if (!rawValue) {
     return fallback;
@@ -70,6 +73,7 @@ function parseBoolean(rawValue: string, fallback: boolean): boolean {
   return normalizedValue === "true" || normalizedValue === "1";
 }
 
+/** Parses an integer env value with optional bounds validation. */
 function parseInteger(
   rawValue: string,
   fallback: number,
@@ -99,6 +103,7 @@ function parseInteger(
   return parsedValue;
 }
 
+/** Parses a comma-delimited CORS origin allowlist. */
 function parseCorsOrigins(rawCorsOrigins: string): string[] {
   if (!rawCorsOrigins) {
     return [];
@@ -110,6 +115,7 @@ function parseCorsOrigins(rawCorsOrigins: string): string[] {
     .filter((origin) => origin.length > 0);
 }
 
+/** Resolves the content provider kind with `sanity` as the default. */
 function parseContentProvider(rawProvider: string): ContentProviderKind {
   const normalizedProvider = rawProvider.toLowerCase();
 
@@ -120,6 +126,7 @@ function parseContentProvider(rawProvider: string): ContentProviderKind {
   return "sanity";
 }
 
+/** Prefers a server-only env var and optionally falls back to a public env var outside production. */
 function resolveServerFirstEnvVar(
   nodeEnv: ApiRuntimeEnvironment,
   serverKey: string,
@@ -139,6 +146,7 @@ function resolveServerFirstEnvVar(
   return publicValue || undefined;
 }
 
+/** Resolves the Sanity project id with production-safe server-first behavior. */
 function resolveSanityProjectId(
   nodeEnv: ApiRuntimeEnvironment
 ): string | undefined {
@@ -149,6 +157,7 @@ function resolveSanityProjectId(
   );
 }
 
+/** Resolves the Sanity dataset with production-safe server-first behavior. */
 function resolveSanityDataset(
   nodeEnv: ApiRuntimeEnvironment
 ): string | undefined {
@@ -159,6 +168,7 @@ function resolveSanityDataset(
   );
 }
 
+/** Resolves the Sanity API version with a deterministic fallback. */
 function resolveSanityApiVersion(nodeEnv: ApiRuntimeEnvironment): string {
   const serverApiVersion = getEnvVar("SANITY_API_VERSION");
 
@@ -177,6 +187,11 @@ function resolveSanityApiVersion(nodeEnv: ApiRuntimeEnvironment): string {
   return DEFAULT_SANITY_API_VERSION;
 }
 
+/**
+ * Builds and validates the API gateway runtime configuration from process env.
+ *
+ * @returns Normalized runtime configuration consumed by server/bootstrap code.
+ */
 export function getApiConfig(): ApiRuntimeConfig {
   const nodeEnv = parseNodeEnv(getEnvVar("NODE_ENV"));
   const port = parsePort(getEnvVar("PORT") || getEnvVar("API_PORT"));

@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/app/layout.tsx
  * @author Guy Romelle Magayano
- * @description Implementation for layout.
+ * @description Root layout wiring global providers, styles, and the route shell for the web app.
  */
 
 import React from "react";
@@ -17,6 +17,12 @@ export type RootLayoutProps = {
   children: React.ReactNode;
 };
 
+/**
+ * Renders the root HTML layout and global providers for the web app.
+ *
+ * @param props Layout props containing routed children.
+ * @returns Root document layout for the application.
+ */
 export default function RootLayout(props: RootLayoutProps) {
   const { children } = props;
 
