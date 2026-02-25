@@ -80,7 +80,7 @@ it("renders with standard HTML attributes", () => {
   );
 
   const caption = screen.getByTestId("caption-element");
-  expect(caption).toHaveAttribute("class", "table-caption");
+  expect(caption).toHaveClass("table-caption", { exact: true });
   expect(caption).toHaveAttribute("id", "main-caption");
   expect(caption).toHaveAttribute("style");
   expect(caption).toHaveTextContent("Table Caption");

@@ -89,7 +89,7 @@ it("renders BlockquoteClient with blockquote-specific attributes", () => {
   );
 
   const blockquote = screen.getByTestId("blockquote-client-element");
-  expect(blockquote).toHaveAttribute("class", "quote-container");
+  expect(blockquote).toHaveClass("quote-container", { exact: true });
   expect(blockquote).toHaveAttribute("id", "main-quote-client");
   expect(blockquote).toHaveAttribute("cite", "https://example.com/source");
   expect(blockquote).toHaveTextContent("Quote content with cite");
@@ -109,7 +109,7 @@ it("renders MemoizedBlockquoteClient with blockquote-specific attributes", () =>
   );
 
   const blockquote = screen.getByTestId("memoized-blockquote-client-element");
-  expect(blockquote).toHaveAttribute("class", "memoized-quote-container");
+  expect(blockquote).toHaveClass("memoized-quote-container", { exact: true });
   expect(blockquote).toHaveAttribute("id", "main-memoized-quote-client");
   expect(blockquote).toHaveAttribute(
     "cite",

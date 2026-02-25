@@ -49,7 +49,7 @@ it("renders br with br-specific attributes", () => {
   );
 
   const br = screen.getByTestId("br-element");
-  expect(br).toHaveAttribute("class", "line-break");
+  expect(br).toHaveClass("line-break", { exact: true });
   expect(br).toHaveAttribute("id", "main-break");
 });
 

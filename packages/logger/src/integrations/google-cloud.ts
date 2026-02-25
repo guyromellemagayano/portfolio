@@ -3,7 +3,7 @@
  * Google Cloud Platform logging service integration
  */
 
-import { LogLevel, type LogEntry } from "../types";
+import { type LogEntry, LogLevel } from "../types";
 import { BaseIntegration, type IntegrationConfig } from "./base";
 
 /**

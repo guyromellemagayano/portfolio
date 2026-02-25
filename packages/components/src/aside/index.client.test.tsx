@@ -144,7 +144,7 @@ it("renders with aside-specific attributes", async () => {
   );
 
   const aside = await screen.findByTestId("aside-element");
-  expect(aside).toHaveAttribute("class", "sidebar");
+  expect(aside).toHaveClass("sidebar", { exact: true });
   expect(aside).toHaveAttribute("id", "main-sidebar");
   expect(aside).toHaveAttribute("aria-label", "Main navigation");
   expect(aside).toHaveAttribute("role", "complementary");
@@ -170,7 +170,7 @@ it("renders memoized with aside-specific attributes", async () => {
   );
 
   const aside = await screen.findByTestId("aside-element");
-  expect(aside).toHaveAttribute("class", "memoized-sidebar");
+  expect(aside).toHaveClass("memoized-sidebar", { exact: true });
   expect(aside).toHaveAttribute("id", "memoized-sidebar");
   expect(aside).toHaveAttribute("aria-label", "Memoized navigation");
   expect(aside).toHaveAttribute("role", "complementary");
