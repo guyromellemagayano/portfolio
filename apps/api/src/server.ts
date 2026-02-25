@@ -8,7 +8,7 @@ import { json, urlencoded } from "body-parser";
 import cors, { type CorsOptions } from "cors";
 import express, { type Express } from "express";
 
-import { getApiConfig, type ApiRuntimeConfig } from "@api/config/env";
+import { type ApiRuntimeConfig, getApiConfig } from "@api/config/env";
 import { createApiLogger } from "@api/config/logger";
 import { createProviderRegistry } from "@api/gateway/provider-registry";
 import { createErrorHandler } from "@api/middleware/error-handler";

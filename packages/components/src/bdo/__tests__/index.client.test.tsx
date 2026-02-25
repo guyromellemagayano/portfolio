@@ -87,7 +87,7 @@ it("renders BdoClient with bdo-specific attributes", () => {
   );
 
   const bdo = screen.getByTestId("bdo-client-element");
-  expect(bdo).toHaveAttribute("class", "bidirectional-override");
+  expect(bdo).toHaveClass("bidirectional-override", { exact: true });
   expect(bdo).toHaveAttribute("id", "main-bdo-client");
   expect(bdo).toHaveAttribute("dir", "ltr");
   expect(bdo).toHaveTextContent("Bidirectional override content");
@@ -107,7 +107,7 @@ it("renders MemoizedBdoClient with bdo-specific attributes", () => {
   );
 
   const bdo = screen.getByTestId("memoized-bdo-client-element");
-  expect(bdo).toHaveAttribute("class", "memoized-bidirectional-override");
+  expect(bdo).toHaveClass("memoized-bidirectional-override", { exact: true });
   expect(bdo).toHaveAttribute("id", "main-memoized-bdo-client");
   expect(bdo).toHaveAttribute("dir", "rtl");
   expect(bdo).toHaveTextContent("Memoized bidirectional override content");

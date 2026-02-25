@@ -45,7 +45,7 @@ it.skip("adds dev debug attributes in development when rendering Head", () => {
     { container: document.head as unknown as HTMLElement }
   );
   const headEl = document.head!;
-  expect(headEl.getAttribute("data-component")).toBe("Head");
-  expect(headEl.getAttribute("data-as")).toBe("head");
+  expect(headEl).toHaveAttribute("data-component", "Head");
+  expect(headEl).toHaveAttribute("data-as", "head");
   process.env.NODE_ENV = original;
 });

@@ -7,12 +7,12 @@ it("renders html with lang (client)", () => {
   render(<HtmlClient lang="fr" />, {
     container: document.documentElement as unknown as HTMLElement,
   });
-  expect(document.documentElement.getAttribute("lang")).toBe("fr");
+  expect(document.documentElement).toHaveAttribute("lang", "fr");
 });
 
 it("renders memoized html with lang (client)", () => {
   render(<MemoizedHtmlClient lang="de" />, {
     container: document.documentElement as unknown as HTMLElement,
   });
-  expect(document.documentElement.getAttribute("lang")).toBe("de");
+  expect(document.documentElement).toHaveAttribute("lang", "de");
 });

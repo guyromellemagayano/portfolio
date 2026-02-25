@@ -3,11 +3,11 @@ import type { ElementType } from "react";
 import { logger as sharedLogger } from "@portfolio/logger";
 
 import {
+  type AnalyticsEvent,
+  type AnalyticsEventType,
   filterElementSpecificProps,
   getElementConfig,
   validatePolymorphicProps,
-  type AnalyticsEvent,
-  type AnalyticsEventType,
 } from "./types";
 
 type AnyProps = Record<string, unknown>;

@@ -82,7 +82,7 @@ it("renders with aside-specific attributes", () => {
   );
 
   const aside = screen.getByTestId("aside-element");
-  expect(aside).toHaveAttribute("class", "sidebar");
+  expect(aside).toHaveClass("sidebar", { exact: true });
   expect(aside).toHaveAttribute("id", "main-sidebar");
   expect(aside).toHaveAttribute("aria-label", "Main navigation");
   expect(aside).toHaveAttribute("role", "complementary");
