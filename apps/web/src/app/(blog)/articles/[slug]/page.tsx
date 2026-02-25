@@ -1,3 +1,4 @@
+/* eslint-disable simple-import-sort/imports */
 /* eslint-disable react-refresh/only-export-components */
 
 /**
@@ -34,6 +35,7 @@ const DEFAULT_ARTICLE_IMAGE_WIDTH = 1600;
 const DEFAULT_ARTICLE_IMAGE_HEIGHT = 900;
 const DEFAULT_ARTICLE_IMAGE_SIZES = "(max-width: 1024px) 100vw, 896px";
 
+/** Resolves the best description string for metadata and social previews. */
 function getArticleDescription(article: ArticleDetail): string {
   return (
     article.seoDescription?.trim() ||
@@ -42,6 +44,7 @@ function getArticleDescription(article: ArticleDetail): string {
   );
 }
 
+/** Normalizes optional positive dimensions for safe image rendering. */
 function getOptionalPositiveDimension(value: unknown): number | undefined {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
     return undefined;
@@ -50,6 +53,7 @@ function getOptionalPositiveDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
+/** Resolves lead image dimensions with stable fallbacks to avoid layout shift. */
 function getArticleLeadImageDimensions(article: ArticleDetail): {
   width: number;
   height: number;
@@ -63,6 +67,7 @@ function getArticleLeadImageDimensions(article: ArticleDetail): {
   };
 }
 
+/** Renders the optional article lead image. */
 function renderArticleLeadImage(article: ArticleDetail) {
   if (!article.image || article.image.trim().length === 0) {
     return null;
@@ -85,6 +90,7 @@ function renderArticleLeadImage(article: ArticleDetail) {
   );
 }
 
+/** Resolves the route params and returns the normalized article detail payload. */
 async function resolveArticleFromParams(
   params: Promise<ArticleDetailPageParams>
 ): Promise<ArticleDetail | null> {
@@ -98,6 +104,12 @@ async function resolveArticleFromParams(
   return getCachedArticleBySlug(normalizedSlug);
 }
 
+/**
+ * Generates metadata for the article detail page from gateway-backed article content.
+ *
+ * @param props Route props containing async slug params.
+ * @returns Next.js metadata with article values or fallback metadata on failure.
+ */
 export async function generateMetadata(
   props: ArticleDetailPageProps
 ): Promise<Metadata> {
@@ -149,6 +161,12 @@ export async function generateMetadata(
 
 export const dynamic = "force-dynamic";
 
+/**
+ * Renders the article detail route using the API gateway article detail endpoint.
+ *
+ * @param props Route props containing async slug params.
+ * @returns Article detail page markup or triggers `notFound()` when no article exists.
+ */
 export default async function ArticleDetailPage(props: ArticleDetailPageProps) {
   const article = await resolveArticleFromParams(props.params).catch(
     (error) => {

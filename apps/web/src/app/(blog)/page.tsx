@@ -4,7 +4,7 @@
 /**
  * @file apps/web/src/app/(blog)/page.tsx
  * @author Guy Romelle Magayano
- * @description Implementation for page.
+ * @description Home page route that renders hero content and recent articles from the API gateway.
  */
 
 import { type Metadata } from "next";

@@ -25,10 +25,12 @@ type ContentArticleDetailEnvelope =
   | ApiSuccessEnvelope<ContentArticleDetailResponseData>
   | ApiErrorEnvelope;
 
+/** Reads and trims an env var value from the current server runtime. */
 function getEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
+/** Removes a trailing slash from a configured gateway URL. */
 function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
 }
@@ -54,6 +56,7 @@ export function resolveApiGatewayBaseUrl(): string | null {
   return `http://localhost:${port}`;
 }
 
+/** Validates the expected success envelope shape for article list responses. */
 function isContentArticlesSuccessEnvelope(
   payload: unknown
 ): payload is ApiSuccessEnvelope<ContentArticlesResponseData> {
@@ -66,6 +69,7 @@ function isContentArticlesSuccessEnvelope(
   return envelope.success === true && Array.isArray(envelope.data);
 }
 
+/** Validates the expected success envelope shape for article detail responses. */
 function isContentArticleDetailSuccessEnvelope(
   payload: unknown
 ): payload is ApiSuccessEnvelope<ContentArticleDetailResponseData> {
@@ -83,7 +87,11 @@ function isContentArticleDetailSuccessEnvelope(
   );
 }
 
-/** Fetches articles from the API gateway content endpoint. */
+/**
+ * Fetches article summaries from the API gateway and validates the response envelope.
+ *
+ * @returns Article summary payloads from the gateway.
+ */
 export async function getAllGatewayArticles(): Promise<ContentArticlesResponseData> {
   const gatewayBaseUrl = resolveApiGatewayBaseUrl();
 
@@ -124,7 +132,12 @@ export async function getAllGatewayArticles(): Promise<ContentArticlesResponseDa
   return envelope.data;
 }
 
-/** Fetches a single article detail payload from the API gateway by slug. */
+/**
+ * Fetches a single article detail payload from the API gateway by slug.
+ *
+ * @param slug Article slug to request from the gateway.
+ * @returns Article detail payload or `null` when the gateway returns `404`.
+ */
 export async function getGatewayArticleBySlug(
   slug: string
 ): Promise<ContentArticleDetailResponseData | null> {

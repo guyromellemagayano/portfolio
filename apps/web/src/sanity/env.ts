@@ -17,6 +17,7 @@ function getSanityEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
+/** Reads and normalizes the Sanity runtime configuration used by the web app. */
 export function getSanityConfig(): SanityConfig | null {
   const projectId = getSanityEnvVar("NEXT_PUBLIC_SANITY_PROJECT_ID");
   const dataset = getSanityEnvVar("NEXT_PUBLIC_SANITY_DATASET");
@@ -37,20 +38,24 @@ export function getSanityConfig(): SanityConfig | null {
   };
 }
 
+/** Indicates whether the web app has the minimum Sanity config required for runtime features. */
 export function hasSanityConfig(): boolean {
   return getSanityConfig() !== null;
 }
 
+/** Returns the optional Sanity read token from the resolved config. */
 export function getSanityReadToken(): string | undefined {
   return getSanityConfig()?.token;
 }
 
+/** Returns the shared secret used to authorize Sanity webhook revalidation requests. */
 export function getSanityWebhookSecret(): string | undefined {
   const webhookSecret = getSanityEnvVar("SANITY_WEBHOOK_SECRET");
 
   return webhookSecret || undefined;
 }
 
+/** Returns the required Sanity config or throws when required identifiers are missing. */
 export function requireSanityConfig(): SanityConfig {
   const config = getSanityConfig();
 

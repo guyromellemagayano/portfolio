@@ -18,13 +18,13 @@ const DEFAULT_PORTABLE_TEXT_IMAGE_HEIGHT = 900;
 const DEFAULT_PORTABLE_TEXT_IMAGE_SIZES = "(max-width: 1024px) 100vw, 896px";
 
 type PortableTextImageValue = ContentPortableTextImageBlock;
-
 type PortableTextUnknownRecord = Record<string, unknown>;
 
 export type PortableTextContentRendererOptions = {
   fallbackImageAlt?: string;
 };
 
+/** Reads a property from an unknown record-like value. */
 function getRecordValue(source: unknown, key: string): unknown {
   if (!source || typeof source !== "object" || Array.isArray(source)) {
     return undefined;
@@ -33,6 +33,7 @@ function getRecordValue(source: unknown, key: string): unknown {
   return (source as PortableTextUnknownRecord)[key];
 }
 
+/** Reads and trims a string property from an unknown object value. */
 function getStringRecordValue(
   source: unknown,
   key: string
@@ -48,6 +49,7 @@ function getStringRecordValue(
   return normalizedValue.length > 0 ? normalizedValue : undefined;
 }
 
+/** Normalizes image dimension values into positive rounded integers. */
 function getOptionalPositiveDimension(value: unknown): number | undefined {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
     return undefined;
@@ -56,6 +58,7 @@ function getOptionalPositiveDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
+/** Resolves render-safe image dimensions for Portable Text image blocks. */
 function getPortableTextImageDimensions(image: PortableTextImageValue): {
   width: number;
   height: number;
@@ -69,6 +72,7 @@ function getPortableTextImageDimensions(image: PortableTextImageValue): {
   };
 }
 
+/** Narrows an unknown Portable Text node into an image block value. */
 function isPortableTextImageValue(
   value: unknown
 ): value is PortableTextImageValue {
@@ -79,6 +83,7 @@ function isPortableTextImageValue(
   return (value as { _type?: unknown })._type === "image";
 }
 
+/** Validates allowed `href` protocols for Portable Text links and embeds. */
 function isSafePortableTextHref(href: string): boolean {
   if (href.startsWith("/") || href.startsWith("#")) {
     return true;
@@ -98,6 +103,7 @@ function isSafePortableTextHref(href: string): boolean {
   }
 }
 
+/** Detects external HTTP(S) links to apply hardened anchor attributes. */
 function isExternalPortableTextHref(href: string): boolean {
   if (href.startsWith("/") || href.startsWith("#")) {
     return false;
@@ -111,10 +117,12 @@ function isExternalPortableTextHref(href: string): boolean {
   }
 }
 
+/** Normalizes mark children to a renderable React node. */
 function getPortableTextLinkChildren(children: ReactNode): ReactNode {
   return children ?? null;
 }
 
+/** Extracts an internal reference document type from mixed Sanity mark/block shapes. */
 function getInternalReferenceDocumentType(value: unknown): string | undefined {
   return (
     getStringRecordValue(value, "documentType") ||
@@ -124,6 +132,7 @@ function getInternalReferenceDocumentType(value: unknown): string | undefined {
   );
 }
 
+/** Extracts an internal reference slug from mixed Sanity mark/block shapes. */
 function getInternalReferenceSlug(value: unknown): string | undefined {
   return (
     getStringRecordValue(getRecordValue(value, "slug"), "current") ||
@@ -139,6 +148,7 @@ function getInternalReferenceSlug(value: unknown): string | undefined {
   );
 }
 
+/** Builds an internal app `href` from a Sanity internal reference mark or block. */
 function getInternalReferenceHref(value: unknown): string | undefined {
   const directHref = getStringRecordValue(value, "href");
 
@@ -165,6 +175,7 @@ function getInternalReferenceHref(value: unknown): string | undefined {
   return `/${normalizedSlug}`;
 }
 
+/** Renders a styled anchor with optional external-link hardening attributes. */
 function renderPortableTextAnchor(
   href: string,
   children: ReactNode,
@@ -186,6 +197,7 @@ function renderPortableTextAnchor(
   );
 }
 
+/** Extracts code block fields from flexible Sanity code-like block shapes. */
 function getPortableTextCodeBlockFields(value: unknown): {
   code?: string;
   language?: string;
@@ -200,6 +212,7 @@ function getPortableTextCodeBlockFields(value: unknown): {
   };
 }
 
+/** Extracts callout fields from common note/admonition block variants. */
 function getPortableTextCalloutFields(value: unknown): {
   title?: string;
   body?: string;
@@ -223,6 +236,7 @@ function getPortableTextCalloutFields(value: unknown): {
   };
 }
 
+/** Resolves utility classes for callout tone variants. */
 function getCalloutToneClasses(tone?: string): string {
   switch (tone?.toLowerCase()) {
     case "success":
@@ -238,6 +252,7 @@ function getCalloutToneClasses(tone?: string): string {
   }
 }
 
+/** Extracts an embed URL from common Sanity embed block field names. */
 function getPortableTextEmbedUrl(value: unknown): string | undefined {
   return (
     getStringRecordValue(value, "url") ||
@@ -246,6 +261,7 @@ function getPortableTextEmbedUrl(value: unknown): string | undefined {
   );
 }
 
+/** Resolves a stable title for embed blocks and link fallbacks. */
 function getPortableTextEmbedTitle(value: unknown): string {
   return (
     getStringRecordValue(value, "title") ||
@@ -254,6 +270,7 @@ function getPortableTextEmbedTitle(value: unknown): string {
   );
 }
 
+/** Converts supported public video URLs into embeddable iframe URLs. */
 function toEmbeddableIframeUrl(rawUrl: string): string | undefined {
   try {
     const parsedUrl = new URL(rawUrl);
@@ -300,6 +317,7 @@ function toEmbeddableIframeUrl(rawUrl: string): string | undefined {
   return undefined;
 }
 
+/** Renders a Portable Text image block using `next/image` with safe dimension fallbacks. */
 function renderPortableTextImage(
   imageValue: unknown,
   fallbackImageAlt?: string
@@ -338,6 +356,7 @@ function renderPortableTextImage(
   );
 }
 
+/** Renders a code-like Portable Text block with optional filename and language metadata. */
 function renderPortableTextCodeBlock(value: unknown): ReactNode {
   const fields = getPortableTextCodeBlockFields(value);
 
@@ -360,6 +379,7 @@ function renderPortableTextCodeBlock(value: unknown): ReactNode {
   );
 }
 
+/** Renders a callout/note/admonition-like Portable Text block. */
 function renderPortableTextCallout(value: unknown): ReactNode {
   const fields = getPortableTextCalloutFields(value);
 
@@ -389,6 +409,7 @@ function renderPortableTextCallout(value: unknown): ReactNode {
   );
 }
 
+/** Renders an embed block as a safe iframe or a hardened external link fallback. */
 function renderPortableTextEmbed(value: unknown): ReactNode {
   const embedUrl = getPortableTextEmbedUrl(value);
 
@@ -426,6 +447,7 @@ function renderPortableTextEmbed(value: unknown): ReactNode {
   );
 }
 
+/** Renders an internal reference block as a styled inline card link. */
 function renderPortableTextReferenceBlock(value: unknown): ReactNode {
   const href = getInternalReferenceHref(value);
 
@@ -446,6 +468,12 @@ function renderPortableTextReferenceBlock(value: unknown): ReactNode {
   );
 }
 
+/**
+ * Creates the Portable Text renderer map used by `next-sanity` for article content.
+ *
+ * @param options Renderer options used to fill content-level fallbacks.
+ * @returns `marks` and `types` renderer maps for the Portable Text component.
+ */
 export function createPortableTextContentComponents(
   options: PortableTextContentRendererOptions
 ): {
