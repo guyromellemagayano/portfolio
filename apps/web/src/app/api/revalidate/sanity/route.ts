@@ -25,6 +25,7 @@ type UnknownRecord = Record<string, unknown>;
 
 export const runtime = "nodejs";
 
+/** Reads a property from an unknown record-like webhook payload object. */
 function getRecordValue(source: unknown, key: string): unknown {
   if (!source || typeof source !== "object" || Array.isArray(source)) {
     return undefined;
@@ -33,6 +34,7 @@ function getRecordValue(source: unknown, key: string): unknown {
   return (source as UnknownRecord)[key];
 }
 
+/** Reads and trims a string property from an unknown webhook payload object. */
 function getStringValue(source: unknown, key: string): string | undefined {
   const value = getRecordValue(source, key);
 
@@ -45,6 +47,7 @@ function getStringValue(source: unknown, key: string): string | undefined {
   return normalizedValue.length > 0 ? normalizedValue : undefined;
 }
 
+/** Normalizes Sanity slug payload variants (`string` or `{ current }`). */
 function getSlugFromValue(value: unknown): string | undefined {
   if (typeof value === "string") {
     const normalizedSlug = value.trim();
@@ -54,6 +57,7 @@ function getSlugFromValue(value: unknown): string | undefined {
   return getStringValue(value, "current");
 }
 
+/** Collects unique article slugs from common Sanity webhook payload shapes. */
 function collectArticleSlugs(payload: unknown): string[] {
   const slugCandidates = [
     getRecordValue(payload, "slug"),
@@ -95,6 +99,7 @@ function collectArticleSlugs(payload: unknown): string[] {
   return [...slugs];
 }
 
+/** Resolves the document type from common Sanity webhook payload shapes. */
 function getWebhookDocumentType(payload: unknown): string | undefined {
   return (
     getStringValue(payload, "_type") ||
@@ -104,6 +109,7 @@ function getWebhookDocumentType(payload: unknown): string | undefined {
   );
 }
 
+/** Extracts a bearer token from the `Authorization` header when present. */
 function getBearerToken(request: Request): string | undefined {
   const authorizationHeader = request.headers.get(WEBHOOK_AUTH_HEADER)?.trim();
 
@@ -122,6 +128,7 @@ function getBearerToken(request: Request): string | undefined {
   return normalizedToken.length > 0 ? normalizedToken : undefined;
 }
 
+/** Compares webhook secrets using a timing-safe equality check. */
 function safeCompareSecret(
   actualSecret: string,
   expectedSecret: string
@@ -136,6 +143,7 @@ function safeCompareSecret(
   return timingSafeEqual(actualBuffer, expectedBuffer);
 }
 
+/** Validates webhook credentials against the configured shared secret. */
 function isAuthorizedWebhookRequest(
   request: Request,
   configuredSecret: string
@@ -153,6 +161,7 @@ function isAuthorizedWebhookRequest(
   return safeCompareSecret(providedSecret, configuredSecret);
 }
 
+/** Builds the set of article cache tags to invalidate. */
 function getArticleRevalidationTags(slugs: string[]): string[] {
   const tags = new Set<string>([ARTICLE_LIST_TAG]);
 
@@ -163,6 +172,7 @@ function getArticleRevalidationTags(slugs: string[]): string[] {
   return [...tags];
 }
 
+/** Builds the set of article paths to invalidate. */
 function getArticleRevalidationPaths(slugs: string[]): string[] {
   const paths = new Set<string>([ARTICLE_LIST_PATH]);
 
@@ -173,6 +183,12 @@ function getArticleRevalidationPaths(slugs: string[]): string[] {
   return [...paths];
 }
 
+/**
+ * Handles a Sanity webhook request and triggers article cache invalidation.
+ *
+ * @param request Next.js route request.
+ * @returns JSON response describing authorization and revalidation outcomes.
+ */
 export async function POST(request: NextRequest) {
   const webhookSecret = getSanityWebhookSecret();
 
