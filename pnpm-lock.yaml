@@ -24,9 +24,6 @@ catalogs:
     "@heroicons/react":
       specifier: 2.2.0
       version: 2.2.0
-    "@ianvs/prettier-plugin-sort-imports":
-      specifier: 4.7.1
-      version: 4.7.1
     "@next/eslint-plugin-next":
       specifier: 16.1.6
       version: 16.1.6
@@ -310,9 +307,6 @@ importers:
       "@commitlint/types":
         specifier: "catalog:"
         version: 20.4.0
-      "@ianvs/prettier-plugin-sort-imports":
-        specifier: "catalog:"
-        version: 4.7.1(prettier@3.8.1)
       "@portfolio/config-eslint":
         specifier: workspace:*
         version: link:packages/config-eslint
@@ -5991,13 +5985,6 @@ packages:
     peerDependencies:
       typescript: ">=4.8.4 <6.0.0"
 
-  "@typescript-eslint/scope-manager@8.56.0":
-    resolution:
-      {
-        integrity: sha512-7UiO/XwMHquH+ZzfVCfUNkIXlp/yQjjnlYUyYz7pfvlK3/EyyN6BK+emDmGNyQLBtLGaYrTAI6KOw8tFucWL2w==,
-      }
-    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
-
   "@typescript-eslint/scope-manager@8.56.1":
     resolution:
       {
@@ -6024,13 +6011,6 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: ">=4.8.4 <6.0.0"
 
-  "@typescript-eslint/types@8.56.0":
-    resolution:
-      {
-        integrity: sha512-DBsLPs3GsWhX5HylbP9HNG15U0bnwut55Lx12bHB9MpXxQ+R5GC8MwQe+N1UFXxAeQDvEsEDY6ZYwX03K7Z6HQ==,
-      }
-    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
-
   "@typescript-eslint/types@8.56.1":
     resolution:
       {
@@ -6056,13 +6036,6 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: ">=4.8.4 <6.0.0"
-
-  "@typescript-eslint/visitor-keys@8.56.0":
-    resolution:
-      {
-        integrity: sha512-q+SL+b+05Ud6LbEE35qe4A99P+htKTKVbyiNEe45eCbJFyh/HVK9QXwlrbz+Q4L8SOW4roxSVwXYj4DMBT7Ieg==,
-      }
-    engines: { node: ^18.18.0 || ^20.9.0 || >=21.1.0 }
 
   "@typescript-eslint/visitor-keys@8.56.1":
     resolution:
@@ -10750,13 +10723,6 @@ packages:
       }
     engines: { node: ">=4" }
 
-  minimatch@10.2.1:
-    resolution:
-      {
-        integrity: sha512-MClCe8IL5nRRmawL6ib/eT4oLyeKMGCghibcDWK+J0hh0Q8kqSdia6BvbRMVk6mPa6WqUa5uR2oxt6C5jd533A==,
-      }
-    engines: { node: 20 || >=22 }
-
   minimatch@10.2.2:
     resolution:
       {
@@ -14204,6 +14170,7 @@ packages:
         integrity: sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==,
       }
     engines: { node: ">=18" }
+    deprecated: Use @exodus/bytes instead for a more spec-conformant and faster implementation
 
   whatwg-mimetype@4.0.0:
     resolution:
@@ -15764,7 +15731,7 @@ snapshots:
     dependencies:
       "@eslint/object-schema": 2.1.7
       debug: 4.4.3(supports-color@5.5.0)
-      minimatch: 10.2.1
+      minimatch: 10.2.2
     transitivePeerDependencies:
       - supports-color
 
@@ -15785,7 +15752,7 @@ snapshots:
       ignore: 5.3.2
       import-fresh: 3.3.1
       js-yaml: 4.1.1
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       strip-json-comments: 3.1.1
     transitivePeerDependencies:
       - supports-color
@@ -15892,6 +15859,7 @@ snapshots:
       semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   "@img/colour@1.0.0": {}
 
@@ -16458,7 +16426,7 @@ snapshots:
       indent-string: 4.0.0
       is-wsl: 2.2.0
       lilconfig: 3.1.3
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       semver: 7.7.4
       string-width: 4.2.3
       supports-color: 8.1.1
@@ -17769,7 +17737,7 @@ snapshots:
   "@tufjs/models@4.1.0":
     dependencies:
       "@tufjs/canonical-json": 2.0.0
-      minimatch: 10.2.1
+      minimatch: 10.2.2
 
   "@tybys/wasm-util@0.10.1":
     dependencies:
@@ -17963,11 +17931,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@typescript-eslint/scope-manager@8.56.0":
-    dependencies:
-      "@typescript-eslint/types": 8.56.0
-      "@typescript-eslint/visitor-keys": 8.56.0
-
   "@typescript-eslint/scope-manager@8.56.1":
     dependencies:
       "@typescript-eslint/types": 8.56.1
@@ -17988,8 +17951,6 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
-
-  "@typescript-eslint/types@8.56.0": {}
 
   "@typescript-eslint/types@8.56.1": {}
 
@@ -18018,11 +17979,6 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - supports-color
-
-  "@typescript-eslint/visitor-keys@8.56.0":
-    dependencies:
-      "@typescript-eslint/types": 8.56.0
-      eslint-visitor-keys: 5.0.0
 
   "@typescript-eslint/visitor-keys@8.56.1":
     dependencies:
@@ -18120,7 +18076,7 @@ snapshots:
 
   "@vitest/eslint-plugin@1.6.9(eslint@9.39.3(jiti@2.6.1))(typescript@5.9.3)(vitest@4.0.18)":
     dependencies:
-      "@typescript-eslint/scope-manager": 8.56.0
+      "@typescript-eslint/scope-manager": 8.56.1
       "@typescript-eslint/utils": 8.56.1(eslint@9.39.3(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.3(jiti@2.6.1)
     optionalDependencies:
@@ -19383,7 +19339,7 @@ snapshots:
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       object.fromentries: 2.0.8
       object.groupby: 1.0.3
       object.values: 1.2.1
@@ -19443,7 +19399,7 @@ snapshots:
       estraverse: 5.3.0
       hasown: 2.0.2
       jsx-ast-utils: 3.3.5
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       object.entries: 1.1.9
       object.fromentries: 2.0.8
       object.values: 1.2.1
@@ -19459,7 +19415,7 @@ snapshots:
 
   eslint-plugin-testing-library@7.16.0(eslint@9.39.3(jiti@2.6.1))(typescript@5.9.3):
     dependencies:
-      "@typescript-eslint/scope-manager": 8.56.0
+      "@typescript-eslint/scope-manager": 8.56.1
       "@typescript-eslint/utils": 8.56.1(eslint@9.39.3(jiti@2.6.1))(typescript@5.9.3)
       eslint: 9.39.3(jiti@2.6.1)
     transitivePeerDependencies:
@@ -19522,7 +19478,7 @@ snapshots:
       is-glob: 4.0.3
       json-stable-stringify-without-jsonify: 1.0.1
       lodash.merge: 4.6.2
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       natural-compare: 1.4.0
       optionator: 0.9.4
     optionalDependencies:
@@ -19703,7 +19659,7 @@ snapshots:
 
   filelist@1.0.4:
     dependencies:
-      minimatch: 10.2.1
+      minimatch: 10.2.2
 
   fill-range@7.1.1:
     dependencies:
@@ -19936,7 +19892,7 @@ snapshots:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 3.4.3
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
@@ -19945,14 +19901,14 @@ snapshots:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 4.2.3
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.1
 
   glob@13.0.5:
     dependencies:
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       minipass: 7.1.2
       path-scurry: 2.0.1
 
@@ -20175,7 +20131,7 @@ snapshots:
 
   ignore-walk@8.0.0:
     dependencies:
-      minimatch: 10.2.1
+      minimatch: 10.2.2
 
   ignore@5.3.2: {}
 
@@ -20949,10 +20905,6 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  minimatch@10.2.1:
-    dependencies:
-      brace-expansion: 5.0.2
-
   minimatch@10.2.2:
     dependencies:
       brace-expansion: 5.0.2
@@ -21166,7 +21118,7 @@ snapshots:
       chokidar: 3.6.0
       debug: 4.4.3(supports-color@5.5.0)
       ignore-by-default: 1.0.1
-      minimatch: 10.2.1
+      minimatch: 10.2.2
       pstree.remy: 1.1.8
       semver: 7.7.4
       simple-update-notifier: 2.0.0
@@ -21874,7 +21826,7 @@ snapshots:
 
   readdir-glob@1.1.3:
     dependencies:
-      minimatch: 10.2.1
+      minimatch: 10.2.2
 
   readdirp@3.6.0:
     dependencies:
