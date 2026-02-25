@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable simple-import-sort/imports */
 
 /**
  * @file apps/web/src/components/list/item/ListItem.tsx
@@ -15,8 +14,8 @@ import {
   useMemo,
 } from "react";
 
-import { useTranslations } from "next-intl";
 import { type LinkProps } from "next/link";
+import { useTranslations } from "next-intl";
 
 import { getLinkTargetProps, isValidLink } from "@portfolio/utils";
 
