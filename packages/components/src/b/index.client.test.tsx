@@ -117,7 +117,7 @@ it("renders with bold-specific attributes", () => {
   );
 
   const bold = screen.getByTestId("bold-element");
-  expect(bold).toHaveAttribute("class", "important-text");
+  expect(bold).toHaveClass("important-text", { exact: true });
   expect(bold).toHaveAttribute("id", "main-bold");
   expect(bold).toHaveStyle({ fontWeight: "bold" });
   expect(bold).toHaveTextContent("Important Text");
@@ -137,7 +137,7 @@ it("renders memoized with bold-specific attributes", () => {
   );
 
   const bold = screen.getByTestId("bold-element");
-  expect(bold).toHaveAttribute("class", "memoized-important-text");
+  expect(bold).toHaveClass("memoized-important-text", { exact: true });
   expect(bold).toHaveAttribute("id", "memoized-main-bold");
   expect(bold).toHaveStyle({ fontWeight: "700" });
   expect(bold).toHaveTextContent("Memoized Important Text");

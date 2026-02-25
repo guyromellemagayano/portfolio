@@ -6,13 +6,13 @@
 import { formatters } from "./formatters.js";
 import { transports } from "./transports.js";
 import {
-  LogLevel as LogLevelEnum,
   type ILogger,
   type LogContext,
   type LogEntry,
   type LoggerConfig,
   type LoggerPlugin,
   type LogLevel,
+  LogLevel as LogLevelEnum,
   type LogLevelString,
   type MetricEntry,
   type MetricType,

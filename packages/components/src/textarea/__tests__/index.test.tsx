@@ -18,11 +18,11 @@ it("toggles attributes across rerenders", () => {
   );
   let el = screen.getByTestId("el");
   expect(el).not.toHaveAttribute("readonly");
-  expect(el).not.toHaveAttribute("disabled");
+  expect(el).toBeEnabled();
   rerender(<Textarea data-testid="el" readOnly disabled />);
   el = screen.getByTestId("el");
   expect(el).toHaveAttribute("readonly");
-  expect(el).toHaveAttribute("disabled");
+  expect(el).toBeDisabled();
 });
 
 it.skip("filters textarea-only props when rendered as div via as, and warns in development", () => {
@@ -47,7 +47,7 @@ it.skip("filters textarea-only props when rendered as div via as, and warns in d
   expect(el).not.toHaveAttribute("placeholder");
   expect(el).not.toHaveAttribute("rows");
   expect(el).not.toHaveAttribute("cols");
-  expect(el).not.toHaveAttribute("required");
+  expect(el).not.toBeRequired();
   expect(el).not.toHaveAttribute("readonly");
   expect(warnSpy).toHaveBeenCalled();
 

@@ -142,7 +142,7 @@ it("renders with link-specific attributes", () => {
   expect(link).toHaveAttribute("ping", "https://analytics.com/ping");
   expect(link).toHaveAttribute("rel", "noopener noreferrer");
   expect(link).toHaveAttribute("referrerpolicy", "no-referrer");
-  expect(link).toHaveAttribute("class", "external-link");
+  expect(link).toHaveClass("external-link", { exact: true });
   expect(link).toHaveAttribute("id", "main-link");
   expect(link).toHaveTextContent("External Link");
 });
@@ -174,7 +174,7 @@ it("renders memoized with link-specific attributes", () => {
   expect(link).toHaveAttribute("ping", "https://memoized-analytics.com/ping");
   expect(link).toHaveAttribute("rel", "nofollow");
   expect(link).toHaveAttribute("referrerpolicy", "origin");
-  expect(link).toHaveAttribute("class", "memoized-external-link");
+  expect(link).toHaveClass("memoized-external-link", { exact: true });
   expect(link).toHaveAttribute("id", "memoized-main-link");
   expect(link).toHaveTextContent("Memoized External Link");
 });

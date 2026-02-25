@@ -6,9 +6,9 @@
 
 import {
   CONTENT_ARTICLES_ROUTE,
-  getContentArticleRoute,
   type ContentArticleDetailResponseData,
   type ContentArticlesResponseData,
+  getContentArticleRoute,
 } from "@portfolio/api-contracts/content";
 import {
   type ApiErrorEnvelope,

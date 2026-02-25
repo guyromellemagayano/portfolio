@@ -4,7 +4,7 @@
  * @description Logger factory for API gateway runtime.
  */
 
-import { createLogger, LogLevel, type ILogger } from "@portfolio/logger";
+import { createLogger, type ILogger, LogLevel } from "@portfolio/logger";
 
 import type { ApiRuntimeEnvironment } from "@api/config/env";
 
