@@ -77,7 +77,7 @@ it("renders with standard HTML attributes", () => {
   );
 
   const caption = screen.getByTestId("caption-element");
-  expect(caption).toHaveAttribute("class", "table-caption");
+  expect(caption).toHaveClass("table-caption", { exact: true });
   expect(caption).toHaveAttribute("id", "main-caption");
   expect(caption).toHaveAttribute("style");
   expect(caption).toHaveTextContent("Table Caption");
@@ -97,7 +97,7 @@ it("renders memoized with standard HTML attributes", () => {
   );
 
   const caption = screen.getByTestId("caption-element");
-  expect(caption).toHaveAttribute("class", "memoized-caption");
+  expect(caption).toHaveClass("memoized-caption", { exact: true });
   expect(caption).toHaveAttribute("id", "memoized-caption");
   expect(caption).toHaveAttribute("style");
   expect(caption).toHaveTextContent("Memoized Table Caption");

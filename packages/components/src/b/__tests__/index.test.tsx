@@ -81,7 +81,7 @@ it("renders with bold-specific attributes", () => {
   );
 
   const bold = screen.getByTestId("bold-element");
-  expect(bold).toHaveAttribute("class", "important-text");
+  expect(bold).toHaveClass("important-text", { exact: true });
   expect(bold).toHaveAttribute("id", "main-bold");
   expect(bold).toHaveStyle({ fontWeight: "bold" });
   expect(bold).toHaveTextContent("Important Text");

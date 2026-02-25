@@ -124,7 +124,7 @@ it("renders with article-specific attributes", () => {
   );
 
   const article = screen.getByTestId("article-element");
-  expect(article).toHaveAttribute("class", "article-content");
+  expect(article).toHaveClass("article-content", { exact: true });
   expect(article).toHaveAttribute("id", "main-article");
   expect(article).toHaveAttribute("data-article-type", "blog-post");
   expect(article).toHaveTextContent("Article content");
@@ -144,7 +144,7 @@ it("renders memoized with article-specific attributes", () => {
   );
 
   const article = screen.getByTestId("article-element");
-  expect(article).toHaveAttribute("class", "memoized-article-content");
+  expect(article).toHaveClass("memoized-article-content", { exact: true });
   expect(article).toHaveAttribute("id", "memoized-article");
   expect(article).toHaveAttribute("data-article-type", "news-article");
   expect(article).toHaveTextContent("Memoized article content");
@@ -574,7 +574,7 @@ it("renders with article-specific attributes", () => {
   );
 
   const article = screen.getByTestId("article-element");
-  expect(article).toHaveAttribute("class", "article-content");
+  expect(article).toHaveClass("article-content", { exact: true });
   expect(article).toHaveAttribute("id", "main-article");
   expect(article).toHaveAttribute("data-article-type", "blog-post");
   expect(article).toHaveAttribute("data-variant", "featured");
@@ -603,7 +603,7 @@ it("renders memoized with article-specific attributes", () => {
   );
 
   const article = screen.getByTestId("article-element");
-  expect(article).toHaveAttribute("class", "memoized-article-content");
+  expect(article).toHaveClass("memoized-article-content", { exact: true });
   expect(article).toHaveAttribute("id", "memoized-article");
   expect(article).toHaveAttribute("data-article-type", "news-article");
   expect(article).toHaveAttribute("data-variant", "minimal");

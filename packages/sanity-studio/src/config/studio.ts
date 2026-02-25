@@ -5,8 +5,8 @@
  */
 
 import {
-  defineConfig,
   type Config as SanityStudioConfig,
+  defineConfig,
   type SchemaTypeDefinition,
 } from "sanity";
 import { presentationTool } from "sanity/presentation";

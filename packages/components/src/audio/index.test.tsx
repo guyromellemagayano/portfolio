@@ -95,7 +95,7 @@ it("renders with audio-specific attributes", () => {
   expect(audio).toHaveAttribute("loop");
   // JSDOM quirk: muted may not appear as attribute, but .muted property should be true
   expect((audio as HTMLAudioElement).muted).toBe(true);
-  expect(audio).toHaveAttribute("class", "audio-player");
+  expect(audio).toHaveClass("audio-player", { exact: true });
   expect(audio).toHaveAttribute("id", "main-audio");
   expect(audio).toHaveTextContent("Audio content");
 });

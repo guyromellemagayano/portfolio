@@ -81,7 +81,7 @@ it("renders with bdo-specific attributes", () => {
   );
 
   const bdo = screen.getByTestId("bdo-element");
-  expect(bdo).toHaveAttribute("class", "bidirectional-override");
+  expect(bdo).toHaveClass("bidirectional-override", { exact: true });
   expect(bdo).toHaveAttribute("id", "main-bdo");
   expect(bdo).toHaveAttribute("dir", "ltr");
   expect(bdo).toHaveTextContent("Bidirectional override content");

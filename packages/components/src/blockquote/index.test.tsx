@@ -74,7 +74,7 @@ it("renders blockquote with blockquote-specific attributes", () => {
   );
 
   const blockquote = screen.getByTestId("blockquote-element");
-  expect(blockquote).toHaveAttribute("class", "quote-container");
+  expect(blockquote).toHaveClass("quote-container", { exact: true });
   expect(blockquote).toHaveAttribute("id", "main-quote");
   expect(blockquote).toHaveAttribute("cite", "https://example.com/source");
   expect(blockquote).toHaveTextContent("Quote content with cite");

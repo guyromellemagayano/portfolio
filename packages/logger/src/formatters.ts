@@ -3,7 +3,7 @@
  * Supports JSON, text, colored console, and custom formatting
  */
 
-import { LogLevel, type Formatter, type LogEntry } from "./types";
+import { type Formatter, type LogEntry, LogLevel } from "./types";
 
 /** ANSI color codes for console output */
 const COLORS = {

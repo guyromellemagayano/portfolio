@@ -144,7 +144,7 @@ describe("Link", () => {
       );
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("id", "custom-id");
-      expect(link).toHaveAttribute("class", "custom-class");
+      expect(link).toHaveClass("custom-class", { exact: true });
     });
 
     it("passes through aria attributes", () => {

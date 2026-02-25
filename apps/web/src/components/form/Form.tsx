@@ -7,9 +7,9 @@
 "use client";
 
 import {
-  useId,
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
+  useId,
 } from "react";
 
 import { useTranslations } from "next-intl";

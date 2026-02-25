@@ -119,7 +119,7 @@ it("renders with base-specific attributes", () => {
   const base = screen.getByTestId("base-element");
   expect(base).toHaveAttribute("href", "https://example.com/base/");
   expect(base).toHaveAttribute("target", "_blank");
-  expect(base).toHaveAttribute("class", "base-url");
+  expect(base).toHaveClass("base-url", { exact: true });
   expect(base).toHaveAttribute("id", "main-base");
 });
 
@@ -138,7 +138,7 @@ it("renders memoized with base-specific attributes", () => {
   const base = screen.getByTestId("base-element");
   expect(base).toHaveAttribute("href", "https://memoized-example.com/base/");
   expect(base).toHaveAttribute("target", "_self");
-  expect(base).toHaveAttribute("class", "memoized-base-url");
+  expect(base).toHaveClass("memoized-base-url", { exact: true });
   expect(base).toHaveAttribute("id", "memoized-main-base");
 });
 
@@ -658,7 +658,7 @@ it("renders with empty href", () => {
   render(<BaseClient data-testid="base-element" href="" />);
   const base = screen.getByTestId("base-element");
   // React converts empty string to null, so we check for null
-  expect(base.getAttribute("href")).toBeNull();
+  expect(base).not.toHaveAttribute("href");
 });
 
 // Base with empty href test for MemoizedBaseClient
@@ -666,7 +666,7 @@ it("renders memoized with empty href", () => {
   render(<MemoizedBaseClient data-testid="base-element" href="" />);
   const base = screen.getByTestId("base-element");
   // React converts empty string to null, so we check for null
-  expect(base.getAttribute("href")).toBeNull();
+  expect(base).not.toHaveAttribute("href");
 });
 
 // Base with relative path test for BaseClient

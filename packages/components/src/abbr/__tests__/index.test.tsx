@@ -93,7 +93,7 @@ it("renders with abbreviation-specific attributes", () => {
 
   const abbr = screen.getByTestId("abbr-element");
   expect(abbr).toHaveAttribute("title", "HyperText Markup Language");
-  expect(abbr).toHaveAttribute("class", "technical-term");
+  expect(abbr).toHaveClass("technical-term", { exact: true });
   expect(abbr).toHaveAttribute("id", "html-abbr");
   expect(abbr).toHaveTextContent("HTML");
 });

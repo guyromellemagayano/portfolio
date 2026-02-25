@@ -81,7 +81,7 @@ it("renders with bdi-specific attributes", () => {
   );
 
   const bdi = screen.getByTestId("bdi-element");
-  expect(bdi).toHaveAttribute("class", "bidirectional-text");
+  expect(bdi).toHaveClass("bidirectional-text", { exact: true });
   expect(bdi).toHaveAttribute("id", "main-bdi");
   expect(bdi).toHaveAttribute("dir", "ltr");
   expect(bdi).toHaveTextContent("Bidirectional content");

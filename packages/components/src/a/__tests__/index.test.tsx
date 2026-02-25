@@ -101,7 +101,7 @@ it("renders with link-specific attributes", () => {
   expect(link).toHaveAttribute("ping", "https://analytics.com/ping");
   expect(link).toHaveAttribute("rel", "noopener noreferrer");
   expect(link).toHaveAttribute("referrerpolicy", "no-referrer");
-  expect(link).toHaveAttribute("class", "external-link");
+  expect(link).toHaveClass("external-link", { exact: true });
   expect(link).toHaveAttribute("id", "main-link");
   expect(link).toHaveTextContent("External Link");
 });

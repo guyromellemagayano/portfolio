@@ -83,7 +83,7 @@ it("renders with canvas-specific attributes", () => {
   const canvas = screen.getByTestId("canvas-element");
   expect(canvas).toHaveAttribute("width", "800");
   expect(canvas).toHaveAttribute("height", "600");
-  expect(canvas).toHaveAttribute("class", "game-canvas");
+  expect(canvas).toHaveClass("game-canvas", { exact: true });
   expect(canvas).toHaveAttribute("id", "game-canvas");
   expect(canvas).toHaveTextContent("Game Canvas");
 });

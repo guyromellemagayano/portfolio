@@ -7,18 +7,18 @@ it("renders into document.documentElement (lang attr set)", () => {
   render(<Html lang="en" />, {
     container: document.documentElement as unknown as HTMLElement,
   });
-  expect(document.documentElement.getAttribute("lang")).toBe("en");
+  expect(document.documentElement).toHaveAttribute("lang", "en");
 });
 
 it("toggles lang and dir across rerenders", () => {
   const { rerender } = render(<Html lang="en" dir="ltr" />, {
     container: document.documentElement as unknown as HTMLElement,
   });
-  expect(document.documentElement.getAttribute("lang")).toBe("en");
-  expect(document.documentElement.getAttribute("dir")).toBe("ltr");
+  expect(document.documentElement).toHaveAttribute("lang", "en");
+  expect(document.documentElement).toHaveAttribute("dir", "ltr");
   rerender(<Html lang="fr" dir="rtl" />);
-  expect(document.documentElement.getAttribute("lang")).toBe("fr");
-  expect(document.documentElement.getAttribute("dir")).toBe("rtl");
+  expect(document.documentElement).toHaveAttribute("lang", "fr");
+  expect(document.documentElement).toHaveAttribute("dir", "rtl");
 });
 
 it("supports 'as' to render alternative root (div)", () => {
@@ -32,7 +32,7 @@ it.skip("adds dev debug attributes in development (documentElement)", () => {
   render(<Html data-testid="dbg" />, {
     container: document.documentElement as unknown as HTMLElement,
   });
-  expect(document.documentElement.getAttribute("data-component")).toBe("Html");
-  expect(document.documentElement.getAttribute("data-as")).toBe("html");
+  expect(document.documentElement).toHaveAttribute("data-component", "Html");
+  expect(document.documentElement).toHaveAttribute("data-as", "html");
   process.env.NODE_ENV = original;
 });

@@ -7,8 +7,8 @@ import {
   createLogger,
   integrations,
   LogLevel,
-  transports,
   type Transport,
+  transports,
 } from ".";
 
 // Example: Production Logger with Multiple Integrations

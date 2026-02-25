@@ -5,10 +5,10 @@
  */
 
 import {
-  LogLevel as LogLevelEnum,
   type Environment,
   type LogContext,
   type LogLevel,
+  LogLevel as LogLevelEnum,
   type LogLevelString,
 } from "./types";
 

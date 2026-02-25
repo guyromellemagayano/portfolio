@@ -21,7 +21,7 @@ it.skip("filters input-only props when rendered as span via as, and warns in dev
   const el = screen.getByTestId("inp-as-span");
   expect(el.tagName).toBe("SPAN");
   expect(el).not.toHaveAttribute("type");
-  expect(el).not.toHaveAttribute("required");
+  expect(el).not.toBeRequired();
   expect(el).not.toHaveAttribute("readonly");
   expect(el).not.toHaveAttribute("value");
   expect(warnSpy).toHaveBeenCalled();
@@ -61,7 +61,7 @@ it("respects type prop and toggles attributes", () => {
   rerender(<Input data-testid="el" type="email" required />);
   el = screen.getByTestId("el") as HTMLInputElement;
   expect(el.type).toBe("email");
-  expect(el).toHaveAttribute("required");
+  expect(el).toBeRequired();
 });
 
 it("passes through invalid type to input without crashing (documented behavior)", () => {

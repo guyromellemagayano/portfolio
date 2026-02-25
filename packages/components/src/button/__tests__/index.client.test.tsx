@@ -133,14 +133,14 @@ it("renders with button-specific attributes", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("type", "submit");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("form", "test-form");
   expect(button).toHaveAttribute("formaction", "/submit");
   expect(button).toHaveAttribute("formenctype", "multipart/form-data");
   expect(button).toHaveAttribute("formmethod", "post");
   expect(button).toHaveAttribute("formnovalidate");
   expect(button).toHaveAttribute("formtarget", "_blank");
-  expect(button).toHaveAttribute("class", "primary-button");
+  expect(button).toHaveClass("primary-button", { exact: true });
   expect(button).toHaveAttribute("id", "submit-btn");
   expect(button).toHaveTextContent("Submit Form");
 });
@@ -167,7 +167,7 @@ it("renders memoized with button-specific attributes", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("type", "reset");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("form", "memoized-form");
   expect(button).toHaveAttribute("formaction", "/reset");
   expect(button).toHaveAttribute(
@@ -177,7 +177,7 @@ it("renders memoized with button-specific attributes", () => {
   expect(button).toHaveAttribute("formmethod", "get");
   expect(button).toHaveAttribute("formnovalidate");
   expect(button).toHaveAttribute("formtarget", "_self");
-  expect(button).toHaveAttribute("class", "memoized-button");
+  expect(button).toHaveClass("memoized-button", { exact: true });
   expect(button).toHaveAttribute("id", "memoized-btn");
   expect(button).toHaveTextContent("Reset Form");
 });
@@ -344,7 +344,7 @@ it("renders with different button states", () => {
     </ButtonClient>
   );
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toBeDisabled();
 });
 
@@ -356,7 +356,7 @@ it("renders memoized with different button states", () => {
     </MemoizedButtonClient>
   );
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toBeDisabled();
 });
 
@@ -483,7 +483,7 @@ it("renders button with loading state", () => {
   );
 
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveTextContent("⏳");
   expect(button).toHaveTextContent("Loading...");
   expect(button.querySelector(".spinner")).toBeInTheDocument();
@@ -499,7 +499,7 @@ it("renders memoized button with loading state", () => {
   );
 
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveTextContent("🔄");
   expect(button).toHaveTextContent("Memoized Loading...");
   expect(button.querySelector(".memoized-spinner")).toBeInTheDocument();
@@ -823,7 +823,7 @@ it("supports controlled checked prop in ButtonClient", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("role", "checkbox");
-  expect(button).toHaveAttribute("aria-checked", "true");
+  expect(button).toBeChecked();
   expect(button).toHaveTextContent("Client Toggle Button");
 });
 
@@ -841,7 +841,7 @@ it("supports controlled checked prop in MemoizedButtonClient", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("role", "checkbox");
-  expect(button).toHaveAttribute("aria-checked", "false");
+  expect(button).not.toBeChecked();
   expect(button).toHaveTextContent("Memoized Toggle Button");
 });
 
@@ -854,7 +854,7 @@ it("supports controlled disabled state in ButtonClient", () => {
   );
 
   let button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toBeDisabled();
 
   // Change to enabled
@@ -865,8 +865,8 @@ it("supports controlled disabled state in ButtonClient", () => {
   );
 
   button = screen.getByTestId("button-element");
-  expect(button).not.toHaveAttribute("disabled");
-  expect(button).not.toBeDisabled();
+  expect(button).toBeEnabled();
+  expect(button).toBeEnabled();
 });
 
 // Controlled disabled state test for MemoizedButtonClient
@@ -878,7 +878,7 @@ it("supports controlled disabled state in MemoizedButtonClient", () => {
   );
 
   let button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toBeDisabled();
 
   // Change to enabled
@@ -889,8 +889,8 @@ it("supports controlled disabled state in MemoizedButtonClient", () => {
   );
 
   button = screen.getByTestId("button-element");
-  expect(button).not.toHaveAttribute("disabled");
-  expect(button).not.toBeDisabled();
+  expect(button).toBeEnabled();
+  expect(button).toBeEnabled();
 });
 
 // Controlled loading state test for ButtonClient
@@ -903,7 +903,7 @@ it("supports controlled loading state in ButtonClient", () => {
   );
 
   let button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("aria-busy", "true");
   expect(button).toHaveTextContent("Client Loading...");
   expect(button.querySelector(".spinner")).toBeInTheDocument();
@@ -916,7 +916,7 @@ it("supports controlled loading state in ButtonClient", () => {
   );
 
   button = screen.getByTestId("button-element");
-  expect(button).not.toHaveAttribute("disabled");
+  expect(button).toBeEnabled();
   expect(button).not.toHaveAttribute("aria-busy");
   expect(button).toHaveTextContent("Client Ready Button");
   expect(button.querySelector(".spinner")).not.toBeInTheDocument();
@@ -936,7 +936,7 @@ it("supports controlled loading state in MemoizedButtonClient", () => {
   );
 
   let button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("aria-busy", "true");
   expect(button).toHaveTextContent("Memoized Loading...");
   expect(button.querySelector(".memoized-spinner")).toBeInTheDocument();
@@ -949,7 +949,7 @@ it("supports controlled loading state in MemoizedButtonClient", () => {
   );
 
   button = screen.getByTestId("button-element");
-  expect(button).not.toHaveAttribute("disabled");
+  expect(button).toBeEnabled();
   expect(button).not.toHaveAttribute("aria-busy");
   expect(button).toHaveTextContent("Memoized Ready Button");
   expect(button.querySelector(".memoized-spinner")).not.toBeInTheDocument();
@@ -1090,7 +1090,7 @@ it("works as controlled toggle button for ButtonClient", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("role", "checkbox");
-  expect(button).toHaveAttribute("aria-checked", "true");
+  expect(button).toBeChecked();
   expect(button).toHaveAttribute("aria-label", "Toggle client notifications");
   expect(button).toHaveTextContent("Client Notifications On");
 });
@@ -1110,7 +1110,7 @@ it("works as controlled toggle button for MemoizedButtonClient", () => {
 
   const button = screen.getByTestId("button-element");
   expect(button).toHaveAttribute("role", "checkbox");
-  expect(button).toHaveAttribute("aria-checked", "false");
+  expect(button).not.toBeChecked();
   expect(button).toHaveAttribute("aria-label", "Toggle memoized notifications");
   expect(button).toHaveTextContent("Memoized Notifications Off");
 });
@@ -1455,7 +1455,7 @@ it("maintains state during client-side hydration in ButtonClient", () => {
   );
 
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("aria-busy", "true");
   expect(button).toHaveTextContent("Hydrated Client Button");
 });
@@ -1472,7 +1472,7 @@ it("maintains state during client-side hydration in MemoizedButtonClient", () =>
   );
 
   const button = screen.getByTestId("button-element");
-  expect(button).toHaveAttribute("disabled");
+  expect(button).toBeDisabled();
   expect(button).toHaveAttribute("aria-busy", "true");
   expect(button).toHaveTextContent("Hydrated Memoized Button");
 });

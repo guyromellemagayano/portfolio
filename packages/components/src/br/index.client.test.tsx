@@ -62,7 +62,7 @@ it("renders BrClient with br-specific attributes", () => {
   );
 
   const br = screen.getByTestId("br-client-element");
-  expect(br).toHaveAttribute("class", "line-break-client");
+  expect(br).toHaveClass("line-break-client", { exact: true });
   expect(br).toHaveAttribute("id", "main-break-client");
 });
 
@@ -77,7 +77,7 @@ it("renders MemoizedBrClient with br-specific attributes", () => {
   );
 
   const br = screen.getByTestId("memoized-br-client-element");
-  expect(br).toHaveAttribute("class", "line-break-memoized");
+  expect(br).toHaveClass("line-break-memoized", { exact: true });
   expect(br).toHaveAttribute("id", "main-break-memoized");
 });
 
