@@ -42,7 +42,7 @@ function ContainerOuter<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -73,7 +73,7 @@ function ContainerInner<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -99,7 +99,7 @@ export function Container<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = ContainerOuter, children, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}>

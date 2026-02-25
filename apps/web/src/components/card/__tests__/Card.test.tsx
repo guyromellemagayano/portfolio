@@ -308,7 +308,7 @@ describe("Card.Cta", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Cta>{0}</Card.Cta>);
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
   });
 
@@ -396,7 +396,7 @@ describe("Card.Description", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Description>{0}</Card.Description>);
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
 
     it("renders with valid children", () => {
@@ -573,8 +573,7 @@ describe("Card.Eyebrow", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Eyebrow>{0}</Card.Eyebrow>);
-      // Component returns null for falsy children like 0
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
   });
 
@@ -1014,8 +1013,7 @@ describe("Card.Link", () => {
 
     it("handles number children", () => {
       const { container } = render(<Card.Link href="/test">{0}</Card.Link>);
-      // Component returns null for falsy children like 0
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
   });
 
@@ -1470,8 +1468,7 @@ describe("Card.LinkCustom", () => {
         <Card.LinkCustom href="/test-link">{0}</Card.LinkCustom>
       );
 
-      // Component returns null for falsy children like 0
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
 
     it("handles multiple props together", () => {
@@ -1993,7 +1990,7 @@ describe("Card", () => {
 
     it("handles zero children", () => {
       const { container } = render(<Card>{0}</Card>);
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
 
     it("handles mixed valid and invalid children", () => {

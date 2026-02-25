@@ -30,7 +30,7 @@ function SectionTitle<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "h2", className, children, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -65,7 +65,7 @@ function SectionContent<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", className, children, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -97,7 +97,7 @@ function SectionGrid<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", className, children, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

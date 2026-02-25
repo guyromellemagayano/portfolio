@@ -26,7 +26,7 @@ export function Heading<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "h1", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -58,7 +58,7 @@ export function SubHeading<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "p", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -93,7 +93,7 @@ export function Lead<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "p", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

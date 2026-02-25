@@ -227,7 +227,7 @@ function HeaderDesktopNavItem<P extends Record<string, unknown> = {}>(
   const linkTargetProps = getLinkTargetProps(href?.toString(), target);
   const linkHref = href && isValidLink(href) ? href : "#";
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -376,7 +376,7 @@ function HeaderMobileNavItem<P extends Record<string, unknown> = {}>(
   const linkTargetProps = getLinkTargetProps(href?.toString(), target);
   const linkHref = href && isValidLink(href) ? href : "#";
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

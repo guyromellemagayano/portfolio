@@ -50,7 +50,7 @@ function CardLinkCustom<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
@@ -107,7 +107,7 @@ function CardCta<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
@@ -160,7 +160,7 @@ function CardDescription<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "p", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -214,7 +214,7 @@ function CardEyebrow<P extends Record<string, unknown> = {}>(
     className?: string;
   };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   const Element = Component as ElementType;
 
@@ -278,7 +278,7 @@ function CardLink<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
@@ -331,7 +331,7 @@ function CardTitle<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   const linkHref = href && isValidLink(href) ? href : "#";
   const linkTargetProps = linkHref
@@ -382,7 +382,7 @@ export function Card<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

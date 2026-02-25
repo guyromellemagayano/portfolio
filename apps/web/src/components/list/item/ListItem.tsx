@@ -152,7 +152,7 @@ export function SocialListItem<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -221,7 +221,7 @@ function ListItemBase<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
