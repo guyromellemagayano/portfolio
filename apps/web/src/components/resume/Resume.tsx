@@ -1,5 +1,3 @@
-/* eslint-disable simple-import-sort/imports */
-
 /**
  * @file apps/web/src/components/resume/Resume.tsx
  * @author Guy Romelle Magayano
@@ -13,8 +11,8 @@ import {
   type ComponentPropsWithRef,
 } from "react";
 
-import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import { Button, type ButtonProps } from "@web/components/button";
 import { Icon } from "@web/components/icon";

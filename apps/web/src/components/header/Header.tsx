@@ -1,4 +1,4 @@
-/* eslint-disable simple-import-sort/imports, react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/set-state-in-effect */
 
 /**
  * @file apps/web/src/components/header/Header.tsx
@@ -16,11 +16,11 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import { useTranslations } from "next-intl";
-import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
 import {
   filterValidNavigationLinks,

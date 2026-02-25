@@ -8,7 +8,6 @@ module.exports = {
   plugins: [
     "prettier-plugin-pkg",
     "prettier-plugin-packagejson",
-    "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],
   overrides: [
@@ -16,27 +15,6 @@ module.exports = {
       files: ["**/*.{mjs,cjs,mts,cts,js,ts,jsx,tsx}"],
       options: {
         parser: "typescript",
-        importOrder: [
-          "^react$",
-          "^react-dom$",
-          "^react\\b",
-          "",
-          "^node:",
-          "^@(?!portfolio|packages/|admin/|api/|web/).+",
-          "^[a-z]",
-          "",
-          "^@portfolio/",
-          "^~",
-          "",
-          "^@admin/",
-          "",
-          "^@api/",
-          "",
-          "^@web/",
-          "",
-          "^\\.",
-        ],
-        importOrderCaseSensitive: false,
       },
     },
     {
