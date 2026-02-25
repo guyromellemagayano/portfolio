@@ -79,7 +79,7 @@ describe("Container", () => {
 
     it("handles zero children", () => {
       const { container } = render(<Container>{0}</Container>);
-      expect(container).toBeEmptyDOMElement();
+      expect(container).toHaveTextContent("0");
     });
   });
 
