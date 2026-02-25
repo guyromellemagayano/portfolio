@@ -24,7 +24,7 @@ it.skip("filters select-only props when rendered as div via as, and warns in dev
   expect(el.tagName).toBe("DIV");
   expect(el).not.toHaveAttribute("multiple");
   expect(el).not.toHaveAttribute("size");
-  expect(el).not.toHaveAttribute("required");
+  expect(el).not.toBeRequired();
   expect(el).not.toHaveAttribute("value");
   expect(warnSpy).toHaveBeenCalled();
 
@@ -87,7 +87,7 @@ it("supports the as prop and disabled/required toggles", () => {
   );
   let el = screen.getByTestId("el");
   expect(el.tagName).toBe("DIV");
-  expect(el).not.toHaveAttribute("disabled");
+  expect(el).toBeEnabled();
   rerender(
     <Select data-testid="el" disabled required>
       <option>a</option>
@@ -95,6 +95,6 @@ it("supports the as prop and disabled/required toggles", () => {
   );
   el = screen.getByTestId("el");
   expect(el.tagName).toBe("SELECT");
-  expect(el).toHaveAttribute("disabled");
-  expect(el).toHaveAttribute("required");
+  expect(el).toBeDisabled();
+  expect(el).toBeRequired();
 });

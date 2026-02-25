@@ -89,23 +89,22 @@ export {
 } from "./transports";
 
 // Export types and enums
-// eslint-disable-next-line simple-import-sort/exports
-export {
-  LogLevel,
-  type Environment,
-  type Formatter,
-  type ILogger,
-  type LogContext,
-  type LogEntry,
-  type LoggerConfig,
-  type LoggerPlugin,
-  type LogLevelString,
-  type MetricEntry,
-  type MetricType,
-  type PerformanceEntry,
-  type TimerMap,
-  type Transport,
+export type {
+  Environment,
+  Formatter,
+  ILogger,
+  LogContext,
+  LogEntry,
+  LoggerConfig,
+  LoggerPlugin,
+  LogLevelString,
+  MetricEntry,
+  MetricType,
+  PerformanceEntry,
+  TimerMap,
+  Transport,
 } from "./types";
+export { LogLevel } from "./types";
 
 // Export utilities
 export {
