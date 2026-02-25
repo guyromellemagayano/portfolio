@@ -1,5 +1,4 @@
 /* eslint-disable react-refresh/only-export-components */
-/* eslint-disable simple-import-sort/imports */
 
 /**
  * @file apps/web/src/app/(blog)/page.tsx
@@ -23,8 +22,8 @@ import {
 } from "@web/components/list";
 import { PhotoGallery } from "@web/components/photo-gallery";
 import {
-  SOCIAL_LIST_COMPONENT_LABELS,
   type CommonLayoutComponentData,
+  SOCIAL_LIST_COMPONENT_LABELS,
 } from "@web/data/page";
 import { getAllArticles } from "@web/utils/articles";
 import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
