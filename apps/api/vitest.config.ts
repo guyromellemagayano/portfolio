@@ -1,3 +1,9 @@
+/**
+ * @file apps/api/vitest.config.ts
+ * @author Guy Romelle Magayano
+ * @description Vitest configuration for the API gateway application.
+ */
+
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({

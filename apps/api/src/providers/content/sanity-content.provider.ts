@@ -111,6 +111,7 @@ function createSanityQueryUrl(
   return `https://${options.projectId}.${baseHost}/v${options.apiVersion}/data/query/${options.dataset}?${queryParameters.toString()}`;
 }
 
+/** Normalizes Sanity numeric dimensions into positive rounded integers. */
 function toOptionalPositiveNumber(value: unknown): number | undefined {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
     return undefined;
@@ -119,6 +120,7 @@ function toOptionalPositiveNumber(value: unknown): number | undefined {
   return Math.round(value);
 }
 
+/** Maps a Sanity article summary document into the gateway article contract. */
 function mapSanityArticle(
   payload: SanityArticlePayload
 ): GatewayArticle | null {
@@ -145,6 +147,7 @@ function mapSanityArticle(
   };
 }
 
+/** Normalizes a Sanity Portable Text block into a gateway-safe block or image block shape. */
 function normalizePortableTextBlock(
   rawBlock: unknown
 ): ContentPortableTextBlock | ContentPortableTextImageBlock | null {
@@ -228,6 +231,7 @@ function normalizePortableTextBlock(
   } as ContentPortableTextBlock;
 }
 
+/** Normalizes a Sanity Portable Text body array into the gateway detail contract body payload. */
 function normalizePortableTextBody(
   rawBody: unknown
 ): GatewayArticleDetail["body"] {
@@ -245,6 +249,7 @@ function normalizePortableTextBody(
     );
 }
 
+/** Maps a Sanity article detail document into the gateway article detail contract. */
 function mapSanityArticleDetail(
   payload: SanityArticleDetailPayload
 ): GatewayArticleDetail | null {
@@ -262,14 +267,17 @@ function mapSanityArticleDetail(
   };
 }
 
+/** Detects abort-controller timeout errors from the Sanity fetch pipeline. */
 function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === "AbortError";
 }
 
+/** Determines whether an upstream status code should be retried. */
 function isRetryableStatus(statusCode: number): boolean {
   return RETRYABLE_STATUS_CODES.has(statusCode);
 }
 
+/** Waits between retry attempts using linear backoff. */
 function sleep(delayMs: number): Promise<void> {
   if (delayMs <= 0) {
     return Promise.resolve();
@@ -280,6 +288,7 @@ function sleep(delayMs: number): Promise<void> {
   });
 }
 
+/** Creates an abort signal that automatically cancels after the configured timeout. */
 function createTimeoutSignal(timeoutMs: number): {
   signal: AbortSignal;
   cancel: () => void;
@@ -297,6 +306,14 @@ function createTimeoutSignal(timeoutMs: number): {
   };
 }
 
+/**
+ * Fetches a Sanity query URL with timeout and retry behavior for transient upstream failures.
+ *
+ * @param queryUrl Fully resolved Sanity query URL.
+ * @param options Provider configuration used for auth and retry controls.
+ * @param logger Logger instance used for retry diagnostics.
+ * @returns Successful upstream response.
+ */
 async function fetchSanityApiResponse(
   queryUrl: string,
   options: CreateSanityContentProviderOptions,
@@ -402,6 +419,7 @@ async function fetchSanityApiResponse(
   });
 }
 
+/** Parses a Sanity query response payload and normalizes invalid JSON into gateway errors. */
 async function parseSanityQueryPayload<T>(
   response: Response
 ): Promise<SanityQueryResponse<T>> {
@@ -416,6 +434,7 @@ async function parseSanityQueryPayload<T>(
   }
 }
 
+/** Fetches and normalizes article summaries from Sanity. */
 async function fetchSanityArticles(
   options: CreateSanityContentProviderOptions,
   logger: ILogger
@@ -435,6 +454,7 @@ async function fetchSanityArticles(
     .filter((article): article is GatewayArticle => article !== null);
 }
 
+/** Fetches and normalizes a single article detail document from Sanity by slug. */
 async function fetchSanityArticleBySlug(
   slug: string,
   options: CreateSanityContentProviderOptions,
@@ -465,7 +485,13 @@ async function fetchSanityArticleBySlug(
   return article;
 }
 
-/** Creates a content provider that retrieves article data from Sanity. */
+/**
+ * Creates a content provider that retrieves article data from Sanity.
+ *
+ * @param options Sanity connectivity and retry configuration.
+ * @param logger Logger instance used for provider diagnostics and retry logs.
+ * @returns Content provider implementation backed by Sanity queries.
+ */
 export function createSanityContentProvider(
   options: CreateSanityContentProviderOptions,
   logger: ILogger
