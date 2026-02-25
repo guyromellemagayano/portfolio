@@ -42,6 +42,7 @@ function sortArticlesByDateDesc(
   return articles.sort((a, z) => +new Date(z.date) - +new Date(a.date));
 }
 
+/** Normalizes an optional positive image dimension for safe image rendering. */
 function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
     return undefined;
@@ -50,6 +51,7 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
+/** Maps a gateway article summary payload into the web article list shape. */
 function mapGatewayArticleToArticleWithSlug(
   gatewayArticle: ContentArticle
 ): ArticleWithSlug | null {
@@ -85,6 +87,7 @@ function mapGatewayArticleToArticleWithSlug(
   };
 }
 
+/** Maps a gateway article detail payload into the web article detail shape. */
 function mapGatewayArticleDetailToArticleDetail(
   gatewayArticle: ContentArticleDetailResponseData
 ): ArticleDetail | null {
@@ -102,7 +105,11 @@ function mapGatewayArticleDetailToArticleDetail(
   };
 }
 
-/** Gets all articles from the API gateway and normalizes them for web components. */
+/**
+ * Gets all articles from the API gateway and normalizes them for web components.
+ *
+ * @returns Sorted article list for list/card rendering.
+ */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
   const gatewayArticles = (await getAllGatewayArticles())
     .map(mapGatewayArticleToArticleWithSlug)
@@ -111,7 +118,12 @@ export async function getAllArticles(): Promise<ArticleWithSlug[]> {
   return sortArticlesByDateDesc(gatewayArticles);
 }
 
-/** Gets a single article detail payload from the API gateway by slug. */
+/**
+ * Gets a single article detail payload from the API gateway by slug.
+ *
+ * @param slug Article slug from the route segment.
+ * @returns Normalized article detail payload or `null` when not found.
+ */
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleDetail | null> {
