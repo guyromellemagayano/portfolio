@@ -57,7 +57,7 @@ export function ArticleList<P extends Record<string, unknown> = {}>(
     articles: articleListI18n("articles"),
   };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -99,7 +99,7 @@ export function SocialList<P extends Record<string, unknown> = {}>(
     socialList: socialListI18n("socialList"),
   };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -137,7 +137,7 @@ export function ToolsList<P extends Record<string, unknown> = {}>(
     toolsList: toolsListI18n("toolsList"),
   };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -160,7 +160,7 @@ ToolsList.displayName = "ToolsList";
 function ListBase<P extends Record<string, unknown> = {}>(props: ListProps<P>) {
   const { as: Component = "ul", children, role = "list", ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

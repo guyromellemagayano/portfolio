@@ -48,7 +48,7 @@ export function Layout<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "div", children, className, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
