@@ -7,7 +7,7 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { type Express } from "express";
 
-import { createServer } from "@api/server";
+import { createServer } from "../server.js";
 
 let cachedServer: Express | null = null;
 
