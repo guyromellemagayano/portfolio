@@ -25,6 +25,26 @@ Current references:
 - For local development, `apps/api` may read `NEXT_PUBLIC_SANITY_*` values when server-side `SANITY_*` values are absent.
 - In production, `apps/api` only accepts server-side `SANITY_*` values for Sanity provider resolution.
 
+## Local Development (Recommended)
+
+- Use a non-production dataset locally (recommended: `development`):
+  - `NEXT_PUBLIC_SANITY_DATASET="development"`
+  - `SANITY_DATASET="development"`
+- Use the local edge root domain for metadata/canonical testing:
+  - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
+- Embedded Studio local URL (production-like path, same origin as the site):
+  - `http://guyromellemagayano.test/studio`
+- In Sanity project settings, add the Studio URL as a development host:
+  - `http://guyromellemagayano.test/studio`
+- In Sanity API CORS origins, allow the local web/studio origin:
+  - `http://guyromellemagayano.test`
+- If you switch to the `.localhost` fallback mode, add the `.localhost` equivalents for the Studio development host and CORS origin.
+- After changing local env or domain settings, restart the edge stack:
+  ```bash
+  make down-edge
+  make up-edge-watch
+  ```
+
 ## Cache Revalidation (Web)
 
 - `apps/web` exposes `POST /api/revalidate/sanity` to process Sanity webhook events and invalidate Next.js content cache tags and paths.
