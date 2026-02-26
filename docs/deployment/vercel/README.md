@@ -70,7 +70,16 @@ This keeps Preview Studio disabled while allowing Preview content pages to read 
 - Framework Preset: Other / Node
 - Install Command: default
 - Build Command: default (Vercel function transpilation) or `pnpm build` if your Vercel project requires it
-- Output Directory: not applicable (Node Function project)
+- Output Directory: `public` (or leave empty and let `apps/api/vercel.json` apply)
+
+### `apps/api` dashboard setting gotcha (important)
+
+- `apps/api/vercel.json` uses rewrites to route requests into the Vercel function and sets `outputDirectory` to `public`.
+- The `public/` folder is intentionally empty and exists only to satisfy Vercel when a project expects an output directory.
+- If the dashboard is still set to `dist`, Vercel can serve `dist/index.js` at `https://api.../` instead of invoking the API function.
+- If you see raw compiled JavaScript in the browser at the API domain root:
+  - change the project Output Directory to `public` (or clear it so repo config applies)
+  - redeploy the `apps/api` project
 
 ### `apps/api` Production envs (required)
 
