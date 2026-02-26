@@ -15,6 +15,8 @@ import {
   type ApiSuccessEnvelope,
 } from "@portfolio/api-contracts/http";
 
+import { isLocalOnlyHostname } from "@web/utils/site-url";
+
 const DEFAULT_API_GATEWAY_PORT = "5001";
 const DEFAULT_GATEWAY_REVALIDATE_SECONDS = 60;
 
@@ -33,6 +35,21 @@ function getEnvVar(key: string): string {
 /** Removes a trailing slash from a configured gateway URL. */
 function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
+}
+
+/** Indicates whether a configured gateway URL is local-only and unsafe for production runtimes. */
+function isLocalOnlyGatewayUrlInProduction(value: string): boolean {
+  if (getEnvVar("NODE_ENV") !== "production") {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(value);
+
+    return isLocalOnlyHostname(parsed.hostname);
+  } catch {
+    return false;
+  }
 }
 
 /** Builds a more actionable gateway error message for failed content requests. */
@@ -59,6 +76,10 @@ export function resolveApiGatewayBaseUrl(): string | null {
     getEnvVar("API_GATEWAY_URL") || getEnvVar("NEXT_PUBLIC_API_URL");
 
   if (explicitGatewayUrl) {
+    if (isLocalOnlyGatewayUrlInProduction(explicitGatewayUrl)) {
+      return null;
+    }
+
     return trimTrailingSlash(explicitGatewayUrl);
   }
 

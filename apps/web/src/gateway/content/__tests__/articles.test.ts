@@ -42,6 +42,20 @@ describe("gateway content articles client", () => {
     expect(resolveApiGatewayBaseUrl()).toBeNull();
   });
 
+  it("returns null in production when the configured API URL points to a local-only host", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("API_GATEWAY_URL", "http://127.0.0.1:5001");
+
+    expect(resolveApiGatewayBaseUrl()).toBeNull();
+  });
+
+  it("returns null in production when the configured public API URL uses a .test host", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.guyromellemagayano.test");
+
+    expect(resolveApiGatewayBaseUrl()).toBeNull();
+  });
+
   it("fetches and returns gateway article data", async () => {
     vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
 
