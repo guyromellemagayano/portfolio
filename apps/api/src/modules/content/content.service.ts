@@ -7,9 +7,9 @@
 import type {
   GatewayArticle,
   GatewayArticleDetail,
-} from "@api/contracts/articles";
-import type { GatewayPage, GatewayPageDetail } from "@api/contracts/pages";
-import type { ContentProvider } from "@api/providers/content/content.provider";
+} from "../../contracts/articles.js";
+import type { GatewayPage, GatewayPageDetail } from "../../contracts/pages.js";
+import type { ContentProvider } from "../../providers/content/content.provider.js";
 
 export type ContentService = {
   providerName: ContentProvider["name"];
