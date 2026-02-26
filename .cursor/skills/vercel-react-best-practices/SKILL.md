@@ -125,7 +125,7 @@ Each rule file contains:
 ## Repository Documentation Convention
 
 - Use one-line JSDoc (`/** ... */`) when the documentation content is one line.
-- Use multiline JSDoc only when content is genuinely multiline (multiple lines or tags like `@param`/`@returns`/`@example`).
+- Use multiline JSDoc only when content is genuinely multiline (multiple lines, caveats, or optional tags like `@example`/`@throws`). Avoid `@param`/`@returns`; rely on clear names + types.
 
 ## Full Compiled Document
 
