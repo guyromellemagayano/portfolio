@@ -18,6 +18,7 @@ import { ArticleLayout } from "@web/components/layout";
 import { PortableTextContent } from "@web/components/portable-text-content";
 import { type ArticleDetail, getArticleBySlug } from "@web/utils/articles";
 import { normalizeError } from "@web/utils/error";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 type ArticleDetailPageParams = {
   slug: string;
@@ -91,44 +92,6 @@ function getArticleSocialTitle(article: ArticleDetail): string {
   );
 }
 
-/** Resolves a normalized site URL base from runtime env for canonical metadata URLs. */
-function getSiteUrlBase(): string | undefined {
-  const siteUrl = globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim();
-
-  if (!siteUrl) {
-    return undefined;
-  }
-
-  try {
-    const parsed = new URL(siteUrl);
-
-    return parsed.toString().replace(/\/+$/, "");
-  } catch {
-    return undefined;
-  }
-}
-
-/** Builds an absolute metadata URL from a relative path when a site URL base is configured. */
-function toAbsoluteMetadataUrl(pathOrUrl: string): string | undefined {
-  const normalizedValue = pathOrUrl.trim();
-
-  if (!normalizedValue) {
-    return undefined;
-  }
-
-  if (/^https?:\/\//i.test(normalizedValue)) {
-    return normalizedValue;
-  }
-
-  if (!normalizedValue.startsWith("/")) {
-    return undefined;
-  }
-
-  const siteUrlBase = getSiteUrlBase();
-
-  return siteUrlBase ? `${siteUrlBase}${normalizedValue}` : undefined;
-}
-
 type ArticleSocialImage = {
   alt?: string;
   height?: number;
@@ -170,7 +133,7 @@ function getArticleCanonicalUrl(article: ArticleDetail): string | undefined {
   const fallbackPath = `/articles/${article.slug}`;
   const canonicalPath = getTrimmedNonEmptyString(article.seoCanonicalPath);
 
-  return toAbsoluteMetadataUrl(canonicalPath ?? fallbackPath);
+  return toAbsoluteSiteUrl(canonicalPath ?? fallbackPath);
 }
 
 /** Normalizes optional positive dimensions for safe image rendering. */
@@ -254,7 +217,7 @@ export async function generateMetadata(
     const socialImage = getArticleSocialImage(article);
     const canonicalUrl = getArticleCanonicalUrl(article);
     const articleUrl =
-      canonicalUrl ?? toAbsoluteMetadataUrl(`/articles/${article.slug}`);
+      canonicalUrl ?? toAbsoluteSiteUrl(`/articles/${article.slug}`);
     const twitterCard =
       article.seoTwitterCard ??
       (socialImage ? "summary_large_image" : "summary");
