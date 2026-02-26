@@ -18,6 +18,7 @@ import { PortableTextContent } from "@web/components/portable-text-content";
 import { Prose } from "@web/components/prose";
 import { normalizeError } from "@web/utils/error";
 import { type CmsPageDetail, getPageBySlug } from "@web/utils/pages";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 type CmsPageRouteParams = {
   slug: string;
@@ -83,44 +84,6 @@ function getPageSocialTitle(page: CmsPageDetail): string {
   return page.seoOgTitle?.trim() || page.seoTitle?.trim() || page.title;
 }
 
-/** Resolves a normalized site URL base from runtime env for canonical metadata URLs. */
-function getSiteUrlBase(): string | undefined {
-  const siteUrl = globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim();
-
-  if (!siteUrl) {
-    return undefined;
-  }
-
-  try {
-    const parsed = new URL(siteUrl);
-
-    return parsed.toString().replace(/\/+$/, "");
-  } catch {
-    return undefined;
-  }
-}
-
-/** Builds an absolute metadata URL from a relative path when a site URL base is configured. */
-function toAbsoluteMetadataUrl(pathOrUrl: string): string | undefined {
-  const normalizedValue = pathOrUrl.trim();
-
-  if (!normalizedValue) {
-    return undefined;
-  }
-
-  if (/^https?:\/\//i.test(normalizedValue)) {
-    return normalizedValue;
-  }
-
-  if (!normalizedValue.startsWith("/")) {
-    return undefined;
-  }
-
-  const siteUrlBase = getSiteUrlBase();
-
-  return siteUrlBase ? `${siteUrlBase}${normalizedValue}` : undefined;
-}
-
 /** Normalizes optional positive dimensions for safe image metadata rendering. */
 function getOptionalPositiveDimension(value: unknown): number | undefined {
   if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) {
@@ -158,7 +121,7 @@ function getPageCanonicalUrl(page: CmsPageDetail): string | undefined {
   const fallbackPath = `/${page.slug}`;
   const canonicalPath = getTrimmedNonEmptyString(page.seoCanonicalPath);
 
-  return toAbsoluteMetadataUrl(canonicalPath ?? fallbackPath);
+  return toAbsoluteSiteUrl(canonicalPath ?? fallbackPath);
 }
 
 /** Resolves the route params and returns the normalized CMS page payload. */
@@ -195,7 +158,7 @@ export async function generateMetadata(
     const socialDescription = getPageSocialDescription(page);
     const socialImage = getPageSocialImage(page);
     const canonicalUrl = getPageCanonicalUrl(page);
-    const pageUrl = canonicalUrl ?? toAbsoluteMetadataUrl(`/${page.slug}`);
+    const pageUrl = canonicalUrl ?? toAbsoluteSiteUrl(`/${page.slug}`);
     const twitterCard =
       page.seoTwitterCard ?? (socialImage ? "summary_large_image" : "summary");
 
