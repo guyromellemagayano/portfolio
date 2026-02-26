@@ -1,0 +1,38 @@
+services:
+  traefik:
+    image: traefik:v3.6.2
+    container_name: portfolio-traefik-local
+    init: true
+    command:
+      - --api.dashboard=true
+      - --log.level=${TRAEFIK_LOG_LEVEL:-ERROR}
+      - --providers.file.directory=/etc/traefik/dynamic-http
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "${TRAEFIK_HTTP_PORT:-80}:80"
+    volumes:
+      - ../traefik/dynamic/http:/etc/traefik/dynamic-http:ro
+    networks:
+      - edge
+
+  api:
+    environment:
+      API_GATEWAY_CORS_ORIGINS: ${API_GATEWAY_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},http://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},https://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}}
+    networks:
+      - edge
+
+  web:
+    environment:
+      NEXT_PUBLIC_API_URL: http://api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      NEXT_PUBLIC_SITE_URL: http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+    networks:
+      - edge
+
+  admin:
+    networks:
+      - edge
+
+networks:
+  edge:
+    name: portfolio-edge-local

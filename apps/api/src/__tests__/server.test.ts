@@ -31,6 +31,57 @@ describe("API gateway server", () => {
     expect(typeof app.listen).toBe("function");
   });
 
+  it("redirects the root route to the latest versioned health endpoint", async () => {
+    const app = createServer();
+    const redirect = vi.fn();
+    const next = vi.fn();
+
+    type AppRouteLayer = {
+      route?: {
+        path?: string;
+        stack?: Array<{
+          handle: (
+            request: unknown,
+            response: {
+              redirect: (statusCode: number, location: string) => unknown;
+            },
+            next: (error?: unknown) => void
+          ) => unknown;
+        }>;
+      };
+    };
+
+    const routeStack =
+      (
+        app as unknown as {
+          _router?: {
+            stack?: AppRouteLayer[];
+          };
+          router?: {
+            stack?: AppRouteLayer[];
+          };
+        }
+      )._router?.stack ??
+      (
+        app as unknown as {
+          router?: {
+            stack?: AppRouteLayer[];
+          };
+        }
+      ).router?.stack ??
+      [];
+
+    const routeLayer = routeStack.find((layer) => layer.route?.path === "/");
+    const routeHandler = routeLayer?.route?.stack?.[0]?.handle;
+
+    expect(routeHandler).toBeTypeOf("function");
+
+    routeHandler?.({}, { redirect }, next);
+
+    expect(redirect).toHaveBeenCalledWith(308, "/v1/status");
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it("parses API gateway environment values", () => {
     vi.stubEnv("API_PORT", "7001");
     vi.stubEnv(
