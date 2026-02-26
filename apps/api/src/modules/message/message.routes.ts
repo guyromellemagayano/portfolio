@@ -6,7 +6,7 @@
 
 import { Router } from "express";
 
-import { sendSuccess } from "@api/contracts/http";
+import { sendSuccess } from "../../contracts/http.js";
 
 /** Creates demo message routes. */
 export function createMessageRouter(): Router {
