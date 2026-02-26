@@ -17,13 +17,26 @@ function getSanityEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
+function getPublicSanityProjectId(): string {
+  // eslint-disable-next-line no-undef -- Next.js inlines NEXT_PUBLIC_* in client bundles only with direct process.env access
+  return process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim() ?? "";
+}
+
+function getPublicSanityDataset(): string {
+  // eslint-disable-next-line no-undef -- Next.js inlines NEXT_PUBLIC_* in client bundles only with direct process.env access
+  return process.env.NEXT_PUBLIC_SANITY_DATASET?.trim() ?? "";
+}
+
+function getPublicSanityApiVersion(): string {
+  // eslint-disable-next-line no-undef -- Next.js inlines NEXT_PUBLIC_* in client bundles only with direct process.env access
+  return process.env.NEXT_PUBLIC_SANITY_API_VERSION?.trim() ?? "";
+}
+
 /** Reads and normalizes the Sanity runtime configuration used by the web app. */
 export function getSanityConfig(): SanityConfig | null {
-  const projectId = getSanityEnvVar("NEXT_PUBLIC_SANITY_PROJECT_ID");
-  const dataset = getSanityEnvVar("NEXT_PUBLIC_SANITY_DATASET");
-  const apiVersion =
-    getSanityEnvVar("NEXT_PUBLIC_SANITY_API_VERSION") ||
-    DEFAULT_SANITY_API_VERSION;
+  const projectId = getPublicSanityProjectId();
+  const dataset = getPublicSanityDataset();
+  const apiVersion = getPublicSanityApiVersion() || DEFAULT_SANITY_API_VERSION;
   const token = getSanityEnvVar("SANITY_API_READ_TOKEN");
 
   if (!projectId || !dataset) {

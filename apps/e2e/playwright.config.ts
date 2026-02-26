@@ -1,6 +1,37 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig, devices } from "@playwright/test";
 
+const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
+const workspaceRootDirectory = path.resolve(currentDirectory, "../..");
+const workspaceRootEnvLocalFile = path.join(
+  workspaceRootDirectory,
+  ".env.local"
+);
+
+if (existsSync(workspaceRootEnvLocalFile)) {
+  globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);
+}
+
 const isCI = Boolean(process.env.CI);
+const useExternalServers = process.env.E2E_USE_EXTERNAL_SERVERS?.trim() === "1";
+const configuredWebServers = useExternalServers
+  ? undefined
+  : [
+      {
+        command: "pnpm --filter api run build && pnpm --filter api start",
+        port: 5001,
+        reuseExistingServer: !isCI,
+        timeout: 120_000,
+      },
+      {
+        command: isCI ? "pnpm --filter web start" : "pnpm --filter web dev",
+        port: 3000,
+        reuseExistingServer: !isCI,
+        timeout: 120_000,
+      },
+    ];
 
 export default defineConfig({
   testDir: "./tests",
@@ -44,10 +75,5 @@ export default defineConfig({
       dependencies: ["setup"],
     },
   ],
-  webServer: {
-    command: isCI ? "pnpm --filter web start" : "pnpm --filter web dev",
-    port: 3000,
-    reuseExistingServer: !isCI,
-    timeout: 120_000,
-  },
+  webServer: configuredWebServers,
 });

@@ -1,7 +1,7 @@
 /**
  * @file apps/api/src/modules/message/message.routes.ts
  * @author Guy Romelle Magayano
- * @description Message demo routes preserving legacy behavior plus versioned envelope responses.
+ * @description Message demo routes with legacy route redirects and versioned envelope responses.
  */
 
 import { Router } from "express";
@@ -13,16 +13,17 @@ export function createMessageRouter(): Router {
   const router = Router();
 
   router.get("/message/:name", (request, response) => {
-    const name = request.params.name;
+    const name = request.params.name?.trim() ?? "";
 
-    request.logger.info("Processing legacy message request", {
-      name,
-      userAgent: request.get("User-Agent"),
-    });
+    request.logger.info(
+      "Redirecting legacy message request to versioned route",
+      {
+        name,
+        userAgent: request.get("User-Agent"),
+      }
+    );
 
-    response.json({
-      message: `hello ${name}`,
-    });
+    return response.redirect(308, `/v1/message/${encodeURIComponent(name)}`);
   });
 
   router.get("/v1/message/:name", (request, response) => {
