@@ -6,7 +6,6 @@
 
 "use client";
 
-import logger from "@portfolio/logger";
 import { createSanityStudioConfig } from "@portfolio/sanity-studio/config/studio";
 import { defaultSanitySchemaTypes } from "@portfolio/sanity-studio/schema-types";
 
@@ -18,7 +17,8 @@ const dataset = sanityConfig?.dataset ?? "missing-dataset";
 
 // eslint-disable-next-line no-undef -- Next.js inlines process.env.NODE_ENV in client bundles
 if (process.env.NODE_ENV !== "production") {
-  logger.info("[sanity.studio.config] Resolved Sanity project config", {
+  // eslint-disable-next-line no-console -- Avoid importing the shared logger into the client Studio bundle.
+  console.info("[sanity.studio.config] Resolved Sanity project config", {
     projectId,
     dataset,
   });
