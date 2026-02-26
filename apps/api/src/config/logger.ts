@@ -6,7 +6,7 @@
 
 import { createLogger, type ILogger, LogLevel } from "@portfolio/logger";
 
-import type { ApiRuntimeEnvironment } from "@api/config/env";
+import type { ApiRuntimeEnvironment } from "./env.js";
 
 /** Creates the base logger for the API gateway process. */
 export function createApiLogger(nodeEnv: ApiRuntimeEnvironment): ILogger {
