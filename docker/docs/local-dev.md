@@ -107,6 +107,25 @@ Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guy
 - Admin app: `http://admin.guyromellemagayano.test`
 - Traefik dashboard: `http://traefik.guyromellemagayano.test` (root redirects to `/dashboard/`)
 
+## Sanity Local Dev (Embedded Studio)
+
+- Use the root-domain Studio path (matches production routing more closely):
+  - `http://guyromellemagayano.test/studio`
+- Recommended local `.env.local` values:
+  - `NEXT_PUBLIC_SANITY_DATASET="development"`
+  - `SANITY_DATASET="development"`
+  - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
+- In Sanity project settings:
+  - Add development host: `http://guyromellemagayano.test/studio`
+  - Add API CORS origin: `http://guyromellemagayano.test`
+- If you use the `.localhost` fallback mode, add the matching `.localhost` Studio URL and CORS origin too.
+- Restart after env/domain changes:
+
+```bash
+make down-edge
+make up-edge-watch
+```
+
 ## Notes
 
 - On first boot, each service runs `pnpm install --frozen-lockfile` if the container-managed workspace `node_modules` volume is empty.
