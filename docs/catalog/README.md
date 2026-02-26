@@ -13,6 +13,8 @@ This catalog is for discovery only. README files should remain close to the code
 - `docs/README.md`
 - `docs/architecture/README.md`
 - `docs/catalog/README.md`
+- `docs/deployment/README.md`
+- `docs/deployment/vercel/README.md`
 - `docs/integrations/README.md`
 - `docs/integrations/sanity/README.md`
 - `docs/services/README.md`

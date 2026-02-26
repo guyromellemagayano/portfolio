@@ -5,6 +5,7 @@ Project-level documentation is centralized under `docs/`.
 ## Sections
 
 - `docs/architecture/`: system topology, boundaries, and data-flow docs
+- `docs/deployment/`: deployment and hosting configuration docs
 - `docs/services/`: service/app documentation grouped by service
 - `docs/integrations/`: external integrations (Sanity, third-party APIs, etc.)
 - `docs/standards/`: conventions, standards, and implementation rules
@@ -13,6 +14,7 @@ Project-level documentation is centralized under `docs/`.
 ## Primary Entry Points
 
 - API Gateway overview: `docs/services/api-gateway/README.md`
+- Vercel deployment guide: `docs/deployment/vercel/README.md`
 - Sanity integration: `docs/integrations/sanity/README.md`
 - API Gateway standards: `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
 - Logging standards: `docs/standards/logging/LOGGING_STANDARDS.md`

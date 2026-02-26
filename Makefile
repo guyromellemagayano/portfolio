@@ -24,6 +24,11 @@ TRAEFIK_HTTP_PORT ?= 80
 TRAEFIK_HTTPS_PORT ?= 443
 PROD_WEB_PORT ?= 3000
 PROD_API_PORT ?= 5001
+PROD_SMOKE_WEB_URL ?= https://guyromellemagayano.com
+PROD_SMOKE_API_URL ?= https://api.guyromellemagayano.com
+PROD_SMOKE_ADMIN_URL ?= https://admin.guyromellemagayano.com
+PROD_SMOKE_ARTICLE_PATH ?=
+PROD_SMOKE_PAGE_PATH ?=
 SKIP_DNS_SETUP ?= 0
 
 COMPOSE := docker compose
@@ -51,6 +56,7 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	config \
 	validate \
 	validate-prod \
+	prod-smoke \
 	validate-edge \
 	validate-edge-debug \
 	validate-edge-tls \
@@ -141,6 +147,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n📚 More\n'
 	@printf '%-42s %s\n' "make help-all" "Full target catalog + full variable list."
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
+	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin endpoints."
 	@printf '%-42s %s\n' "make docs-catalog-check" "Verify docs/catalog/README.md matches repo READMEs."
 	@printf '%-42s %s\n' "make docs-catalog-update" "Regenerate docs/catalog/README.md from repo READMEs."
 	@printf '\n'
@@ -163,6 +170,9 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_DOCKER_API_VERSION" "Docker API version (debug overlay)" "$(TRAEFIK_DOCKER_API_VERSION)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_ENABLE_DOCKER_PROVIDER" "Legacy toggle (prefer up-edge-debug* targets)" "$(TRAEFIK_ENABLE_DOCKER_PROVIDER)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_LOG_LEVEL" "Traefik log level (ERROR/INFO/DEBUG)" "$(TRAEFIK_LOG_LEVEL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_WEB_URL" "Production web URL for `make prod-smoke`" "$(PROD_SMOKE_WEB_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_API_URL" "Production API URL for `make prod-smoke`" "$(PROD_SMOKE_API_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_ADMIN_URL" "Production admin URL for `make prod-smoke`" "$(PROD_SMOKE_ADMIN_URL)"
 	@printf '%-32s %s (current: %s)\n' "WATCH_SERVICES" 'Services passed to `docker compose watch`' "$(WATCH_SERVICES)"
 	@printf '%-32s %s (current: %s)\n' "LOG_TAIL" 'Default tail lines for `make logs*`' "$(LOG_TAIL)"
 	@printf '%-32s %s (current: %s)\n' "FORCE_PNPM_INSTALL" "1 forces pnpm reinstall in containers" "$(FORCE_PNPM_INSTALL)"
@@ -186,6 +196,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + .localhost fallback guidance."
 	@printf '%-44s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local-tls.yml."
 	@printf '%-44s %s\n' "make up-edge-debug-watch" "Docker-provider debug mode (socket-proxy-backed)."
+	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin + sitemap."
 	@printf '\n💡 Examples\n'
 	@printf 'make bootstrap-watch\n'
 	@printf 'make edge-smoke\n'
@@ -195,6 +206,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make use-localhost-domain\n'
 	@printf 'make tls-local-setup && make up-edge-tls-watch\n'
 	@printf 'make up-edge-debug-watch  # debug Docker-provider routing\n'
+	@printf 'make prod-smoke\n'
 	@printf '\n'
 
 info: ## Print the effective Docker/Compose settings used by this Makefile.
@@ -219,6 +231,11 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'TRAEFIK_LOG_LEVEL=%s\n' "$(TRAEFIK_LOG_LEVEL)"
 	@printf 'PROD_WEB_PORT=%s\n' "$(PROD_WEB_PORT)"
 	@printf 'PROD_API_PORT=%s\n' "$(PROD_API_PORT)"
+	@printf 'PROD_SMOKE_WEB_URL=%s\n' "$(PROD_SMOKE_WEB_URL)"
+	@printf 'PROD_SMOKE_API_URL=%s\n' "$(PROD_SMOKE_API_URL)"
+	@printf 'PROD_SMOKE_ADMIN_URL=%s\n' "$(PROD_SMOKE_ADMIN_URL)"
+	@printf 'PROD_SMOKE_ARTICLE_PATH=%s\n' "$(PROD_SMOKE_ARTICLE_PATH)"
+	@printf 'PROD_SMOKE_PAGE_PATH=%s\n' "$(PROD_SMOKE_PAGE_PATH)"
 doctor: ## Show Docker/Compose versions and validate the compose file.
 	@$(COMPOSE) version
 	@$(COMPOSE_BASE) config >/dev/null
@@ -270,6 +287,9 @@ ps-edge: ## Show status of the edge stack (Traefik + app services, including pro
 
 build-prod: ## Build production Docker images for api + web (no containers started).
 	@$(COMPOSE_PROD_NO_FORCE) build
+
+prod-smoke: ## Smoke-check deployed production `web`, `api`, `admin`, and `sitemap.xml` endpoints (Vercel-only topology).
+	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_ADMIN_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
 
 bootstrap: ## First-run setup (local DNS + edge stack) in foreground; macOS/Homebrew dnsmasq auto-setup when available.
 	@sh docker/scripts/bootstrap-local.sh foreground

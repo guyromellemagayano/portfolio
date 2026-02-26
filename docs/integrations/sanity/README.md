@@ -45,6 +45,17 @@ Current references:
   make up-edge-watch
   ```
 
+## Production (Vercel `apps/web`)
+
+- Embedded Studio remains on the same web origin at `/studio` (for example `https://guyromellemagayano.com/studio`).
+- The `apps/web` Vercel project does not deploy `apps/api`; deploy `apps/api` separately and point the web app to it.
+- Set production web env vars to deployed URLs (not `localhost` / `.test`):
+  - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.com"`
+  - `NEXT_PUBLIC_API_URL="https://<your-api-domain>"`
+  - `API_GATEWAY_URL="https://<your-api-domain>"`
+- Add the production web origin to Sanity API CORS origins:
+  - `https://guyromellemagayano.com`
+
 ## Cache Revalidation (Web)
 
 - `apps/web` exposes `POST /api/revalidate/sanity` to process Sanity webhook events and invalidate Next.js content cache tags and paths.
