@@ -8,6 +8,7 @@ import type { RequestHandler } from "express";
 
 import type { ILogger } from "@portfolio/logger";
 
+/** Formats the HTTP access log message emitted by the shared logger transport. */
 function formatHttpAccessLogMessage(
   requestId: string,
   correlationId: string,

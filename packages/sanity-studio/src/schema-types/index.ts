@@ -5,7 +5,9 @@
  */
 
 import { articleSchema } from "./article";
+import { pageSchema } from "./page";
 
-export const defaultSanitySchemaTypes = [articleSchema];
+export const defaultSanitySchemaTypes = [articleSchema, pageSchema];
 
 export { articleSchema };
+export { pageSchema };

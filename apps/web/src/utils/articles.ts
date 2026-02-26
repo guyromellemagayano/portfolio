@@ -9,6 +9,7 @@ import type {
   ContentArticleDetailResponseData,
   ContentPortableTextBlock,
   ContentPortableTextImageBlock,
+  ContentTwitterCard,
 } from "@portfolio/api-contracts/content";
 
 import {
@@ -20,6 +21,8 @@ export type Article = {
   title: string;
   date: string;
   description: string;
+  hideFromSitemap?: boolean;
+  seoNoIndex?: boolean;
   image?: string;
   imageWidth?: number;
   imageHeight?: number;
@@ -31,7 +34,18 @@ export type ArticleWithSlug = Article & {
 };
 
 export type ArticleDetail = ArticleWithSlug & {
+  seoTitle?: string;
   seoDescription?: string;
+  seoCanonicalPath?: string;
+  seoNoIndex?: boolean;
+  seoNoFollow?: boolean;
+  seoOgTitle?: string;
+  seoOgDescription?: string;
+  seoOgImage?: string;
+  seoOgImageWidth?: number;
+  seoOgImageHeight?: number;
+  seoOgImageAlt?: string;
+  seoTwitterCard?: ContentTwitterCard;
   imageAlt?: string;
   body: Array<ContentPortableTextBlock | ContentPortableTextImageBlock>;
 };
@@ -80,6 +94,14 @@ function mapGatewayArticleToArticleWithSlug(
     slug,
     date,
     description,
+    hideFromSitemap:
+      typeof gatewayArticle.hideFromSitemap === "boolean"
+        ? gatewayArticle.hideFromSitemap
+        : undefined,
+    seoNoIndex:
+      typeof gatewayArticle.seoNoIndex === "boolean"
+        ? gatewayArticle.seoNoIndex
+        : undefined,
     image,
     imageWidth,
     imageHeight,
@@ -99,17 +121,34 @@ function mapGatewayArticleDetailToArticleDetail(
 
   return {
     ...article,
+    seoTitle: gatewayArticle.seoTitle?.trim() || undefined,
     seoDescription: gatewayArticle.seoDescription?.trim() || undefined,
+    seoCanonicalPath: gatewayArticle.seoCanonicalPath?.trim() || undefined,
+    seoNoIndex:
+      typeof gatewayArticle.seoNoIndex === "boolean"
+        ? gatewayArticle.seoNoIndex
+        : undefined,
+    seoNoFollow:
+      typeof gatewayArticle.seoNoFollow === "boolean"
+        ? gatewayArticle.seoNoFollow
+        : undefined,
+    seoOgTitle: gatewayArticle.seoOgTitle?.trim() || undefined,
+    seoOgDescription: gatewayArticle.seoOgDescription?.trim() || undefined,
+    seoOgImage: gatewayArticle.seoOgImageUrl?.trim() || undefined,
+    seoOgImageWidth: getOptionalPositiveImageDimension(
+      gatewayArticle.seoOgImageWidth
+    ),
+    seoOgImageHeight: getOptionalPositiveImageDimension(
+      gatewayArticle.seoOgImageHeight
+    ),
+    seoOgImageAlt: gatewayArticle.seoOgImageAlt?.trim() || undefined,
+    seoTwitterCard: gatewayArticle.seoTwitterCard,
     imageAlt: gatewayArticle.imageAlt?.trim() || undefined,
     body: Array.isArray(gatewayArticle.body) ? gatewayArticle.body : [],
   };
 }
 
-/**
- * Gets all articles from the API gateway and normalizes them for web components.
- *
- * @returns Sorted article list for list/card rendering.
- */
+/** Gets all articles from the API gateway and normalizes them for web components. */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
   const gatewayArticles = (await getAllGatewayArticles())
     .map(mapGatewayArticleToArticleWithSlug)
@@ -118,12 +157,7 @@ export async function getAllArticles(): Promise<ArticleWithSlug[]> {
   return sortArticlesByDateDesc(gatewayArticles);
 }
 
-/**
- * Gets a single article detail payload from the API gateway by slug.
- *
- * @param slug Article slug from the route segment.
- * @returns Normalized article detail payload or `null` when not found.
- */
+/** Gets a single article detail payload from the API gateway by slug. */
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleDetail | null> {

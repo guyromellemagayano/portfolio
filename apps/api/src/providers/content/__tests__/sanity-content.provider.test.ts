@@ -36,6 +36,8 @@ describe("sanity content provider", () => {
               slug: "article-1",
               publishedAt: "2026-02-24",
               excerpt: "Summary",
+              hideFromSitemap: false,
+              seoNoIndex: false,
               imageUrl: "https://cdn.example.com/image.jpg",
               imageWidth: 1200,
               imageHeight: 800,
@@ -66,6 +68,8 @@ describe("sanity content provider", () => {
         slug: "article-1",
         publishedAt: "2026-02-24",
         excerpt: "Summary",
+        hideFromSitemap: false,
+        seoNoIndex: false,
         imageUrl: "https://cdn.example.com/image.jpg",
         imageWidth: 1200,
         imageHeight: 800,
@@ -113,7 +117,19 @@ describe("sanity content provider", () => {
           slug: "article-1",
           publishedAt: "2026-02-24T00:00:00.000Z",
           excerpt: "Summary",
+          hideFromSitemap: false,
+          seoTitle: "Article 1 | SEO",
           seoDescription: "SEO Summary",
+          seoCanonicalPath: "/articles/article-1",
+          seoNoIndex: false,
+          seoNoFollow: true,
+          seoOgTitle: "Article 1 OG",
+          seoOgDescription: "OG Summary",
+          seoOgImageUrl: "https://cdn.example.com/og-cover.jpg",
+          seoOgImageWidth: 1200,
+          seoOgImageHeight: 630,
+          seoOgImageAlt: "OG cover alt text",
+          seoTwitterCard: "summary_large_image",
           imageUrl: "https://cdn.example.com/cover.jpg",
           imageWidth: 1600,
           imageHeight: 900,
@@ -176,7 +192,19 @@ describe("sanity content provider", () => {
       slug: "article-1",
       publishedAt: "2026-02-24T00:00:00.000Z",
       excerpt: "Summary",
+      hideFromSitemap: false,
+      seoTitle: "Article 1 | SEO",
       seoDescription: "SEO Summary",
+      seoCanonicalPath: "/articles/article-1",
+      seoNoIndex: false,
+      seoNoFollow: true,
+      seoOgTitle: "Article 1 OG",
+      seoOgDescription: "OG Summary",
+      seoOgImageUrl: "https://cdn.example.com/og-cover.jpg",
+      seoOgImageWidth: 1200,
+      seoOgImageHeight: 630,
+      seoOgImageAlt: "OG cover alt text",
+      seoTwitterCard: "summary_large_image",
       imageUrl: "https://cdn.example.com/cover.jpg",
       imageWidth: 1600,
       imageHeight: 900,
@@ -235,5 +263,150 @@ describe("sanity content provider", () => {
     await expect(
       provider.getArticleBySlug("missing-article")
     ).resolves.toBeNull();
+  });
+
+  it("returns normalized standalone page summaries", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({
+        result: [
+          {
+            _id: "page-1",
+            title: "Now",
+            slug: "now",
+            subheading: "Now",
+            intro: "Current focus and priorities",
+            updatedAt: "2026-02-25T00:00:00.000Z",
+            hideFromSitemap: false,
+            seoNoIndex: false,
+          },
+          {
+            _id: "invalid-page",
+            title: "",
+            slug: "invalid",
+          },
+        ],
+      }),
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const provider = createSanityContentProvider(
+      {
+        projectId: "demo-project",
+        dataset: "production",
+        apiVersion: "2025-02-19",
+        useCdn: true,
+      },
+      createApiLogger("test")
+    );
+
+    await expect(provider.getPages()).resolves.toEqual([
+      {
+        id: "page-1",
+        slug: "now",
+        title: "Now",
+        subheading: "Now",
+        intro: "Current focus and priorities",
+        updatedAt: "2026-02-25T00:00:00.000Z",
+        hideFromSitemap: false,
+        seoNoIndex: false,
+      },
+    ]);
+  });
+
+  it("returns a normalized standalone page detail payload by slug", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: vi.fn().mockResolvedValue({
+        result: {
+          _id: "page-1",
+          title: "Now",
+          slug: "now",
+          subheading: "Now",
+          intro: "Current focus and priorities",
+          updatedAt: "2026-02-25T00:00:00.000Z",
+          hideFromSitemap: true,
+          seoTitle: "Now | SEO",
+          seoDescription: "What I am working on now.",
+          seoCanonicalPath: "/now",
+          seoNoIndex: true,
+          seoNoFollow: true,
+          seoOgTitle: "Now OG",
+          seoOgDescription: "Now OG Description",
+          seoOgImageUrl: "https://cdn.example.com/now-og.jpg",
+          seoOgImageWidth: 1200,
+          seoOgImageHeight: 630,
+          seoOgImageAlt: "Now OG image alt",
+          seoTwitterCard: "summary",
+          body: [
+            {
+              _key: "block-1",
+              _type: "block",
+              style: "normal",
+              children: [
+                {
+                  _key: "span-1",
+                  _type: "span",
+                  text: "Building standalone pages in Sanity.",
+                },
+              ],
+              markDefs: [],
+            },
+          ],
+        },
+      }),
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const provider = createSanityContentProvider(
+      {
+        projectId: "demo-project",
+        dataset: "production",
+        apiVersion: "2025-02-19",
+        useCdn: true,
+      },
+      createApiLogger("test")
+    );
+
+    await expect(provider.getPageBySlug("now")).resolves.toEqual({
+      id: "page-1",
+      slug: "now",
+      title: "Now",
+      subheading: "Now",
+      intro: "Current focus and priorities",
+      updatedAt: "2026-02-25T00:00:00.000Z",
+      hideFromSitemap: true,
+      seoTitle: "Now | SEO",
+      seoDescription: "What I am working on now.",
+      seoCanonicalPath: "/now",
+      seoNoIndex: true,
+      seoNoFollow: true,
+      seoOgTitle: "Now OG",
+      seoOgDescription: "Now OG Description",
+      seoOgImageUrl: "https://cdn.example.com/now-og.jpg",
+      seoOgImageWidth: 1200,
+      seoOgImageHeight: 630,
+      seoOgImageAlt: "Now OG image alt",
+      seoTwitterCard: "summary",
+      body: [
+        {
+          _key: "block-1",
+          _type: "block",
+          style: "normal",
+          children: [
+            {
+              _key: "span-1",
+              _type: "span",
+              text: "Building standalone pages in Sanity.",
+            },
+          ],
+          markDefs: [],
+        },
+      ],
+    });
   });
 });

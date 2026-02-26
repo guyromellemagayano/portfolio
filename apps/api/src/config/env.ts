@@ -35,6 +35,7 @@ export type ApiRuntimeConfig = {
   };
 };
 
+/** Reads and trims an environment variable value, returning an empty string when missing. */
 function getEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
@@ -187,11 +188,7 @@ function resolveSanityApiVersion(nodeEnv: ApiRuntimeEnvironment): string {
   return DEFAULT_SANITY_API_VERSION;
 }
 
-/**
- * Builds and validates the API gateway runtime configuration from process env.
- *
- * @returns Normalized runtime configuration consumed by server/bootstrap code.
- */
+/** Builds and validates the API gateway runtime configuration from process env. */
 export function getApiConfig(): ApiRuntimeConfig {
   const nodeEnv = parseNodeEnv(getEnvVar("NODE_ENV"));
   const port = parsePort(getEnvVar("PORT") || getEnvVar("API_PORT"));

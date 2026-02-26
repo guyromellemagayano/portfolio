@@ -14,10 +14,11 @@ Reusable Sanity Studio configuration and schema package for the monorepo.
   - `createSanityStudioConfig(options)`
   - `defaultSanitySchemaTypes`
   - `articleSchema`
+  - `pageSchema`
 - Subpaths
   - `@portfolio/sanity-studio/config/cli` -> `createSanityCliConfig(options)`
   - `@portfolio/sanity-studio/config/studio` -> `createSanityStudioConfig(options)`
-  - `@portfolio/sanity-studio/schema-types` -> `defaultSanitySchemaTypes`, `articleSchema`
+  - `@portfolio/sanity-studio/schema-types` -> `defaultSanitySchemaTypes`, `articleSchema`, `pageSchema`
 
 ## Usage
 

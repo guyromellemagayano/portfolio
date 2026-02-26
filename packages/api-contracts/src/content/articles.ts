@@ -22,11 +22,16 @@ export type ContentArticle = {
   slug: string;
   publishedAt: string;
   excerpt: string;
+  hideFromSitemap?: boolean;
+  seoNoIndex?: boolean;
   imageUrl?: string;
   imageWidth?: number;
   imageHeight?: number;
   tags: string[];
 };
+
+/** Supported Twitter card values for article metadata. */
+export type ContentTwitterCard = "summary" | "summary_large_image";
 
 /** Canonical list payload returned by the articles endpoint. */
 export type ContentArticlesResponseData = ContentArticle[];
@@ -74,7 +79,19 @@ export type ContentPortableTextBlock = {
 
 /** Canonical detail payload returned by the article detail endpoint. */
 export type ContentArticleDetail = ContentArticle & {
+  seoTitle?: string;
   seoDescription?: string;
+  seoCanonicalPath?: string;
+  seoNoIndex?: boolean;
+  seoNoFollow?: boolean;
+  seoOgTitle?: string;
+  seoOgDescription?: string;
+  seoOgImageUrl?: string;
+  seoOgImageWidth?: number;
+  seoOgImageHeight?: number;
+  seoOgImageAlt?: string;
+  seoTwitterCard?: ContentTwitterCard;
+  hideFromSitemap?: boolean;
   imageAlt?: string;
   body: Array<ContentPortableTextBlock | ContentPortableTextImageBlock>;
 };

@@ -78,5 +78,70 @@ export function createContentRouter(contentService: ContentService): Router {
     }
   });
 
+  router.get("/pages", async (request, response, next) => {
+    try {
+      const pages = await contentService.getPages();
+
+      request.logger.info("Serving content pages", {
+        provider: contentService.providerName,
+        count: pages.length,
+      });
+
+      return sendSuccess(request, response, pages, {
+        meta: {
+          provider: contentService.providerName,
+          count: pages.length,
+          module: "content",
+          resource: "page",
+        },
+      });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  router.get("/pages/:slug", async (request, response, next) => {
+    try {
+      const pageSlug = request.params.slug?.trim();
+
+      if (!pageSlug) {
+        throw new GatewayError({
+          statusCode: 400,
+          code: "CONTENT_PAGE_SLUG_REQUIRED",
+          message: "Page slug is required.",
+        });
+      }
+
+      const page = await contentService.getPageBySlug(pageSlug);
+
+      if (!page) {
+        throw new GatewayError({
+          statusCode: 404,
+          code: "CONTENT_PAGE_NOT_FOUND",
+          message: "Page not found.",
+          details: {
+            slug: pageSlug,
+          },
+        });
+      }
+
+      request.logger.info("Serving content page detail", {
+        provider: contentService.providerName,
+        slug: page.slug,
+      });
+
+      return sendSuccess(request, response, page, {
+        meta: {
+          provider: contentService.providerName,
+          slug: page.slug,
+          module: "content",
+          resource: "page",
+        },
+      });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
   return router;
 }

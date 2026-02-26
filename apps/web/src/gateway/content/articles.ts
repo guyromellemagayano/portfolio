@@ -35,6 +35,24 @@ function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
+/** Builds a more actionable gateway error message for failed content requests. */
+function createGatewayRequestErrorMessage(
+  endpointUrl: string,
+  status: number
+): string {
+  const baseMessage = `API gateway content request failed with status ${status} for ${endpointUrl}.`;
+
+  if (
+    status === 404 &&
+    endpointUrl.startsWith("http://localhost:5001/") &&
+    getEnvVar("NODE_ENV") !== "production"
+  ) {
+    return `${baseMessage} Local API gateway may not be running. Start the API app (port 5001 by default) before loading web pages that fetch content.`;
+  }
+
+  return baseMessage;
+}
+
 /** Resolves the API gateway base URL for server-side fetches in `apps/web`. */
 export function resolveApiGatewayBaseUrl(): string | null {
   const explicitGatewayUrl =
@@ -87,11 +105,7 @@ function isContentArticleDetailSuccessEnvelope(
   );
 }
 
-/**
- * Fetches article summaries from the API gateway and validates the response envelope.
- *
- * @returns Article summary payloads from the gateway.
- */
+/** Fetches article summaries from the API gateway and validates the response envelope. */
 export async function getAllGatewayArticles(): Promise<ContentArticlesResponseData> {
   const gatewayBaseUrl = resolveApiGatewayBaseUrl();
 
@@ -113,7 +127,7 @@ export async function getAllGatewayArticles(): Promise<ContentArticlesResponseDa
 
   if (!response.ok) {
     throw new Error(
-      `API gateway content request failed with status ${response.status}.`
+      createGatewayRequestErrorMessage(endpointUrl, response.status)
     );
   }
 
@@ -132,12 +146,7 @@ export async function getAllGatewayArticles(): Promise<ContentArticlesResponseDa
   return envelope.data;
 }
 
-/**
- * Fetches a single article detail payload from the API gateway by slug.
- *
- * @param slug Article slug to request from the gateway.
- * @returns Article detail payload or `null` when the gateway returns `404`.
- */
+/** Fetches a single article detail payload from the API gateway by slug. */
 export async function getGatewayArticleBySlug(
   slug: string
 ): Promise<ContentArticleDetailResponseData | null> {
@@ -171,7 +180,7 @@ export async function getGatewayArticleBySlug(
 
   if (!response.ok) {
     throw new Error(
-      `API gateway content request failed with status ${response.status}.`
+      createGatewayRequestErrorMessage(endpointUrl, response.status)
     );
   }
 

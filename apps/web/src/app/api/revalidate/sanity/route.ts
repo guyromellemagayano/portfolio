@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/app/api/revalidate/sanity/route.ts
  * @author Guy Romelle Magayano
- * @description Handles Sanity webhook requests and revalidates article cache tags and paths in the web app.
+ * @description Handles Sanity webhook requests and revalidates content cache tags and paths in the web app.
  */
 
 import { Buffer } from "node:buffer";
@@ -19,6 +19,8 @@ const SANITY_WEBHOOK_SECRET_HEADER = "x-sanity-webhook-secret";
 const ARTICLE_LIST_TAG = "articles";
 const ARTICLE_DETAIL_TAG_PREFIX = "article:";
 const ARTICLE_LIST_PATH = "/articles";
+const PAGE_LIST_TAG = "pages";
+const PAGE_DETAIL_TAG_PREFIX = "page:";
 
 type UnknownRecord = Record<string, unknown>;
 
@@ -56,8 +58,8 @@ function getSlugFromValue(value: unknown): string | undefined {
   return getStringValue(value, "current");
 }
 
-/** Collects unique article slugs from common Sanity webhook payload shapes. */
-function collectArticleSlugs(payload: unknown): string[] {
+/** Collects unique document slugs from common Sanity webhook payload shapes. */
+function collectDocumentSlugs(payload: unknown): string[] {
   const slugCandidates = [
     getRecordValue(payload, "slug"),
     getRecordValue(getRecordValue(payload, "document"), "slug"),
@@ -182,12 +184,26 @@ function getArticleRevalidationPaths(slugs: string[]): string[] {
   return [...paths];
 }
 
-/**
- * Handles a Sanity webhook request and triggers article cache invalidation.
- *
- * @param request Next.js route request.
- * @returns JSON response describing authorization and revalidation outcomes.
- */
+/** Builds the set of page cache tags to invalidate. */
+function getPageRevalidationTags(slugs: string[]): string[] {
+  const tags = new Set<string>([PAGE_LIST_TAG]);
+
+  for (const slug of slugs) {
+    tags.add(`${PAGE_DETAIL_TAG_PREFIX}${slug}`);
+  }
+
+  return [...tags];
+}
+
+/** Builds the set of page paths to invalidate. */
+function getPageRevalidationPaths(slugs: string[]): string[] {
+  return slugs
+    .map((slug) => slug.trim())
+    .filter((slug) => slug.length > 0)
+    .map((slug) => `/${encodeURIComponent(slug)}`);
+}
+
+/** Handles a Sanity webhook request and triggers content cache invalidation. */
 export async function POST(request: NextRequest) {
   const webhookSecret = getSanityWebhookSecret();
 
@@ -246,11 +262,29 @@ export async function POST(request: NextRequest) {
 
   try {
     const documentType = getWebhookDocumentType(payload);
-    const articleSlugs = collectArticleSlugs(payload);
-    const shouldRevalidateArticleContent =
-      documentType === "article" || articleSlugs.length > 0;
+    const documentSlugs = collectDocumentSlugs(payload);
+    const normalizedDocumentType = documentType?.trim().toLowerCase();
 
-    if (!shouldRevalidateArticleContent) {
+    let tagsToRevalidate: string[] = [];
+    let pathsToRevalidate: string[] = [];
+    let revalidatedResource: "article" | "page" | null = null;
+
+    if (normalizedDocumentType === "article") {
+      tagsToRevalidate = getArticleRevalidationTags(documentSlugs);
+      pathsToRevalidate = getArticleRevalidationPaths(documentSlugs);
+      revalidatedResource = "article";
+    } else if (normalizedDocumentType === "page") {
+      tagsToRevalidate = getPageRevalidationTags(documentSlugs);
+      pathsToRevalidate = getPageRevalidationPaths(documentSlugs);
+      revalidatedResource = "page";
+    } else if (!normalizedDocumentType && documentSlugs.length > 0) {
+      // Preserve backwards-compatible behavior for older article webhook payloads that only send a slug.
+      tagsToRevalidate = getArticleRevalidationTags(documentSlugs);
+      pathsToRevalidate = getArticleRevalidationPaths(documentSlugs);
+      revalidatedResource = "article";
+    }
+
+    if (!revalidatedResource) {
       return NextResponse.json(
         {
           success: true,
@@ -262,9 +296,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const tagsToRevalidate = getArticleRevalidationTags(articleSlugs);
-    const pathsToRevalidate = getArticleRevalidationPaths(articleSlugs);
-
     for (const tag of tagsToRevalidate) {
       revalidateTag(tag, "max");
     }
@@ -273,11 +304,12 @@ export async function POST(request: NextRequest) {
       revalidatePath(path);
     }
 
-    logger.info("Revalidated article cache tags from Sanity webhook", {
+    logger.info("Revalidated content cache tags from Sanity webhook", {
       component: "web.api.revalidate.sanity",
       operation: "POST",
       metadata: {
         documentType: documentType ?? "unknown",
+        resource: revalidatedResource,
         tags: tagsToRevalidate,
         paths: pathsToRevalidate,
       },
@@ -287,9 +319,10 @@ export async function POST(request: NextRequest) {
       success: true,
       revalidated: true,
       documentType: documentType ?? null,
+      resource: revalidatedResource,
       tags: tagsToRevalidate,
       paths: pathsToRevalidate,
-      slugs: articleSlugs,
+      slugs: documentSlugs,
     });
   } catch (error) {
     logger.error("Sanity webhook revalidation failed", normalizeError(error), {

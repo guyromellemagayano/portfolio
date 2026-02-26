@@ -1,7 +1,7 @@
 /**
  * @file apps/api/src/providers/content/sanity-content.provider.ts
  * @author Guy Romelle Magayano
- * @description Sanity-backed content provider for gateway article endpoints.
+ * @description Sanity-backed content provider for gateway article and page endpoints.
  */
 
 import type {
@@ -15,6 +15,7 @@ import type {
   GatewayArticleDetail,
 } from "@api/contracts/articles";
 import { GatewayError } from "@api/contracts/errors";
+import type { GatewayPage, GatewayPageDetail } from "@api/contracts/pages";
 import type { ContentProvider } from "@api/providers/content/content.provider";
 
 export type CreateSanityContentProviderOptions = {
@@ -38,6 +39,8 @@ type SanityArticlePayload = {
   slug?: string | null;
   publishedAt?: string | null;
   excerpt?: string | null;
+  hideFromSitemap?: boolean | null;
+  seoNoIndex?: boolean | null;
   imageUrl?: string | null;
   imageWidth?: number | null;
   imageHeight?: number | null;
@@ -45,8 +48,46 @@ type SanityArticlePayload = {
 };
 
 type SanityArticleDetailPayload = SanityArticlePayload & {
+  seoTitle?: string | null;
   seoDescription?: string | null;
+  seoCanonicalPath?: string | null;
+  seoNoIndex?: boolean | null;
+  seoNoFollow?: boolean | null;
+  seoOgTitle?: string | null;
+  seoOgDescription?: string | null;
+  seoOgImageUrl?: string | null;
+  seoOgImageWidth?: number | null;
+  seoOgImageHeight?: number | null;
+  seoOgImageAlt?: string | null;
+  seoTwitterCard?: string | null;
   imageAlt?: string | null;
+  body?: unknown[] | null;
+};
+
+type SanityPagePayload = {
+  _id: string;
+  title?: string | null;
+  slug?: string | null;
+  subheading?: string | null;
+  intro?: string | null;
+  updatedAt?: string | null;
+  hideFromSitemap?: boolean | null;
+  seoNoIndex?: boolean | null;
+};
+
+type SanityPageDetailPayload = SanityPagePayload & {
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoCanonicalPath?: string | null;
+  seoNoIndex?: boolean | null;
+  seoNoFollow?: boolean | null;
+  seoOgTitle?: string | null;
+  seoOgDescription?: string | null;
+  seoOgImageUrl?: string | null;
+  seoOgImageWidth?: number | null;
+  seoOgImageHeight?: number | null;
+  seoOgImageAlt?: string | null;
+  seoTwitterCard?: string | null;
   body?: unknown[] | null;
 };
 
@@ -56,6 +97,8 @@ const SANITY_ARTICLES_GROQ = `*[_type == "article" && defined(slug.current)] | o
   "slug": slug.current,
   "publishedAt": coalesce(publishedAt, _createdAt),
   "excerpt": coalesce(excerpt, seo.description, ""),
+  "hideFromSitemap": seo.hideFromSitemap,
+  "seoNoIndex": seo.noIndex,
   "imageUrl": mainImage.asset->url,
   "imageWidth": mainImage.asset->metadata.dimensions.width,
   "imageHeight": mainImage.asset->metadata.dimensions.height,
@@ -68,7 +111,19 @@ const SANITY_ARTICLE_BY_SLUG_GROQ = `*[_type == "article" && slug.current == $sl
   "slug": slug.current,
   "publishedAt": coalesce(publishedAt, _createdAt),
   "excerpt": coalesce(excerpt, seo.description, ""),
+  "hideFromSitemap": seo.hideFromSitemap,
+  "seoTitle": seo.title,
   "seoDescription": seo.description,
+  "seoCanonicalPath": seo.canonicalPath,
+  "seoNoIndex": seo.noIndex,
+  "seoNoFollow": seo.noFollow,
+  "seoOgTitle": seo.ogTitle,
+  "seoOgDescription": seo.ogDescription,
+  "seoOgImageUrl": seo.ogImage.asset->url,
+  "seoOgImageWidth": seo.ogImage.asset->metadata.dimensions.width,
+  "seoOgImageHeight": seo.ogImage.asset->metadata.dimensions.height,
+  "seoOgImageAlt": seo.ogImage.alt,
+  "seoTwitterCard": seo.twitterCard,
   "imageUrl": mainImage.asset->url,
   "imageWidth": mainImage.asset->metadata.dimensions.width,
   "imageHeight": mainImage.asset->metadata.dimensions.height,
@@ -87,11 +142,56 @@ const SANITY_ARTICLE_BY_SLUG_GROQ = `*[_type == "article" && slug.current == $sl
   }
 }`;
 
+const SANITY_PAGES_GROQ = `*[_type == "page" && defined(slug.current)] | order(_updatedAt desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  subheading,
+  intro,
+  "updatedAt": _updatedAt,
+  "hideFromSitemap": seo.hideFromSitemap,
+  "seoNoIndex": seo.noIndex
+}`;
+
+const SANITY_PAGE_BY_SLUG_GROQ = `*[_type == "page" && slug.current == $slug][0]{
+  _id,
+  title,
+  "slug": slug.current,
+  subheading,
+  intro,
+  "updatedAt": _updatedAt,
+  "hideFromSitemap": seo.hideFromSitemap,
+  "seoTitle": seo.title,
+  "seoDescription": seo.description,
+  "seoCanonicalPath": seo.canonicalPath,
+  "seoNoIndex": seo.noIndex,
+  "seoNoFollow": seo.noFollow,
+  "seoOgTitle": seo.ogTitle,
+  "seoOgDescription": seo.ogDescription,
+  "seoOgImageUrl": seo.ogImage.asset->url,
+  "seoOgImageWidth": seo.ogImage.asset->metadata.dimensions.width,
+  "seoOgImageHeight": seo.ogImage.asset->metadata.dimensions.height,
+  "seoOgImageAlt": seo.ogImage.alt,
+  "seoTwitterCard": seo.twitterCard,
+  "body": coalesce(body, [])[]{
+    ...,
+    _type == "image" => {
+      ...,
+      "asset": {
+        "url": asset->url,
+        "width": asset->metadata.dimensions.width,
+        "height": asset->metadata.dimensions.height
+      }
+    }
+  }
+}`;
+
 const DEFAULT_SANITY_REQUEST_TIMEOUT_MS = 8_000;
 const DEFAULT_SANITY_REQUEST_MAX_RETRIES = 1;
 const DEFAULT_SANITY_REQUEST_RETRY_DELAY_MS = 250;
 const RETRYABLE_STATUS_CODES = new Set([408, 429, 500, 502, 503, 504]);
 
+/** Builds a Sanity Data API query URL for a GROQ request with optional parameters. */
 function createSanityQueryUrl(
   options: CreateSanityContentProviderOptions,
   query: string,
@@ -120,6 +220,33 @@ function toOptionalPositiveNumber(value: unknown): number | undefined {
   return Math.round(value);
 }
 
+/** Normalizes optional non-empty strings for gateway-safe payload fields. */
+function toOptionalNonEmptyString(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+/** Normalizes optional booleans for gateway-safe payload fields. */
+function toOptionalBoolean(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
+}
+
+/** Normalizes supported Twitter card values. */
+function toOptionalTwitterCard(
+  value: unknown
+): GatewayArticleDetail["seoTwitterCard"] {
+  if (value === "summary" || value === "summary_large_image") {
+    return value;
+  }
+
+  return undefined;
+}
+
 /** Maps a Sanity article summary document into the gateway article contract. */
 function mapSanityArticle(
   payload: SanityArticlePayload
@@ -138,6 +265,8 @@ function mapSanityArticle(
     slug,
     publishedAt,
     excerpt: payload.excerpt?.trim() ?? "",
+    hideFromSitemap: toOptionalBoolean(payload.hideFromSitemap),
+    seoNoIndex: toOptionalBoolean(payload.seoNoIndex),
     imageUrl: payload.imageUrl?.trim() || undefined,
     imageWidth: toOptionalPositiveNumber(payload.imageWidth),
     imageHeight: toOptionalPositiveNumber(payload.imageHeight),
@@ -261,8 +390,68 @@ function mapSanityArticleDetail(
 
   return {
     ...article,
-    seoDescription: payload.seoDescription?.trim() || undefined,
-    imageAlt: payload.imageAlt?.trim() || undefined,
+    seoTitle: toOptionalNonEmptyString(payload.seoTitle),
+    seoDescription: toOptionalNonEmptyString(payload.seoDescription),
+    seoCanonicalPath: toOptionalNonEmptyString(payload.seoCanonicalPath),
+    seoNoIndex: toOptionalBoolean(payload.seoNoIndex),
+    seoNoFollow: toOptionalBoolean(payload.seoNoFollow),
+    seoOgTitle: toOptionalNonEmptyString(payload.seoOgTitle),
+    seoOgDescription: toOptionalNonEmptyString(payload.seoOgDescription),
+    seoOgImageUrl: toOptionalNonEmptyString(payload.seoOgImageUrl),
+    seoOgImageWidth: toOptionalPositiveNumber(payload.seoOgImageWidth),
+    seoOgImageHeight: toOptionalPositiveNumber(payload.seoOgImageHeight),
+    seoOgImageAlt: toOptionalNonEmptyString(payload.seoOgImageAlt),
+    seoTwitterCard: toOptionalTwitterCard(payload.seoTwitterCard),
+    imageAlt: toOptionalNonEmptyString(payload.imageAlt),
+    body: normalizePortableTextBody(payload.body),
+  };
+}
+
+/** Maps a Sanity standalone page summary document into the gateway page contract. */
+function mapSanityPage(payload: SanityPagePayload): GatewayPage | null {
+  const title = payload.title?.trim();
+  const slug = payload.slug?.trim();
+
+  if (!title || !slug) {
+    return null;
+  }
+
+  return {
+    id: payload._id,
+    slug,
+    title,
+    subheading: payload.subheading?.trim() || undefined,
+    intro: payload.intro?.trim() || undefined,
+    updatedAt: payload.updatedAt?.trim() || undefined,
+    hideFromSitemap: toOptionalBoolean(payload.hideFromSitemap),
+    seoNoIndex: toOptionalBoolean(payload.seoNoIndex),
+  };
+}
+
+/** Maps a Sanity standalone page detail document into the gateway page detail contract. */
+function mapSanityPageDetail(
+  payload: SanityPageDetailPayload
+): GatewayPageDetail | null {
+  const page = mapSanityPage(payload);
+
+  if (!page) {
+    return null;
+  }
+
+  return {
+    ...page,
+    seoTitle: toOptionalNonEmptyString(payload.seoTitle),
+    seoDescription: toOptionalNonEmptyString(payload.seoDescription),
+    seoCanonicalPath: toOptionalNonEmptyString(payload.seoCanonicalPath),
+    seoNoIndex: toOptionalBoolean(payload.seoNoIndex),
+    seoNoFollow: toOptionalBoolean(payload.seoNoFollow),
+    seoOgTitle: toOptionalNonEmptyString(payload.seoOgTitle),
+    seoOgDescription: toOptionalNonEmptyString(payload.seoOgDescription),
+    seoOgImageUrl: toOptionalNonEmptyString(payload.seoOgImageUrl),
+    seoOgImageWidth: toOptionalPositiveNumber(payload.seoOgImageWidth),
+    seoOgImageHeight: toOptionalPositiveNumber(payload.seoOgImageHeight),
+    seoOgImageAlt: toOptionalNonEmptyString(payload.seoOgImageAlt),
+    seoTwitterCard: toOptionalTwitterCard(payload.seoTwitterCard),
     body: normalizePortableTextBody(payload.body),
   };
 }
@@ -306,18 +495,12 @@ function createTimeoutSignal(timeoutMs: number): {
   };
 }
 
-/**
- * Fetches a Sanity query URL with timeout and retry behavior for transient upstream failures.
- *
- * @param queryUrl Fully resolved Sanity query URL.
- * @param options Provider configuration used for auth and retry controls.
- * @param logger Logger instance used for retry diagnostics.
- * @returns Successful upstream response.
- */
+/** Fetches a Sanity query URL with timeout and retry behavior for transient upstream failures. */
 async function fetchSanityApiResponse(
   queryUrl: string,
   options: CreateSanityContentProviderOptions,
-  logger: ILogger
+  logger: ILogger,
+  resourceLabel: "articles" | "pages" = "articles"
 ): Promise<Response> {
   const requestTimeoutMs =
     options.requestTimeoutMs ?? DEFAULT_SANITY_REQUEST_TIMEOUT_MS;
@@ -351,13 +534,14 @@ async function fetchSanityApiResponse(
       const isTimeout = isAbortError(error);
 
       if (shouldRetry) {
-        logger.warn("Retrying Sanity article request after transport error", {
+        logger.warn("Retrying Sanity content request after transport error", {
           component: "api.providers.content.sanity",
           metadata: {
             attempt,
             maxAttempts,
             requestTimeoutMs,
             reason: isTimeout ? "timeout" : "network",
+            resource: resourceLabel,
           },
         });
 
@@ -371,8 +555,8 @@ async function fetchSanityApiResponse(
           ? "SANITY_UPSTREAM_TIMEOUT"
           : "SANITY_UPSTREAM_NETWORK_ERROR",
         message: isTimeout
-          ? "Sanity request timed out while fetching articles."
-          : "Failed to reach Sanity while fetching articles.",
+          ? `Sanity request timed out while fetching ${resourceLabel}.`
+          : `Failed to reach Sanity while fetching ${resourceLabel}.`,
       });
     }
 
@@ -387,13 +571,14 @@ async function fetchSanityApiResponse(
 
     if (shouldRetryStatus) {
       logger.warn(
-        "Retrying Sanity article request after upstream response error",
+        "Retrying Sanity content request after upstream response error",
         {
           component: "api.providers.content.sanity",
           metadata: {
             attempt,
             maxAttempts,
             status: response.status,
+            resource: resourceLabel,
           },
         }
       );
@@ -405,7 +590,7 @@ async function fetchSanityApiResponse(
     throw new GatewayError({
       statusCode: 502,
       code: "SANITY_UPSTREAM_ERROR",
-      message: "Failed to fetch articles from Sanity.",
+      message: `Failed to fetch ${resourceLabel} from Sanity.`,
       details: {
         status: response.status,
       },
@@ -415,7 +600,7 @@ async function fetchSanityApiResponse(
   throw new GatewayError({
     statusCode: 502,
     code: "SANITY_UPSTREAM_ERROR",
-    message: "Failed to fetch articles from Sanity.",
+    message: `Failed to fetch ${resourceLabel} from Sanity.`,
   });
 }
 
@@ -440,7 +625,12 @@ async function fetchSanityArticles(
   logger: ILogger
 ): Promise<GatewayArticle[]> {
   const queryUrl = createSanityQueryUrl(options, SANITY_ARTICLES_GROQ);
-  const response = await fetchSanityApiResponse(queryUrl, options, logger);
+  const response = await fetchSanityApiResponse(
+    queryUrl,
+    options,
+    logger,
+    "articles"
+  );
   const payload =
     await parseSanityQueryPayload<SanityArticlePayload[]>(response);
   const documents = payload.result ?? [];
@@ -463,7 +653,12 @@ async function fetchSanityArticleBySlug(
   const queryUrl = createSanityQueryUrl(options, SANITY_ARTICLE_BY_SLUG_GROQ, {
     slug,
   });
-  const response = await fetchSanityApiResponse(queryUrl, options, logger);
+  const response = await fetchSanityApiResponse(
+    queryUrl,
+    options,
+    logger,
+    "articles"
+  );
   const payload =
     await parseSanityQueryPayload<SanityArticleDetailPayload | null>(response);
   const document = payload.result ?? null;
@@ -485,13 +680,68 @@ async function fetchSanityArticleBySlug(
   return article;
 }
 
-/**
- * Creates a content provider that retrieves article data from Sanity.
- *
- * @param options Sanity connectivity and retry configuration.
- * @param logger Logger instance used for provider diagnostics and retry logs.
- * @returns Content provider implementation backed by Sanity queries.
- */
+/** Fetches and normalizes standalone page summaries from Sanity. */
+async function fetchSanityPages(
+  options: CreateSanityContentProviderOptions,
+  logger: ILogger
+): Promise<GatewayPage[]> {
+  const queryUrl = createSanityQueryUrl(options, SANITY_PAGES_GROQ);
+  const response = await fetchSanityApiResponse(
+    queryUrl,
+    options,
+    logger,
+    "pages"
+  );
+  const payload = await parseSanityQueryPayload<SanityPagePayload[]>(response);
+  const documents = payload.result ?? [];
+
+  logger.debug("Fetched pages from Sanity provider", {
+    count: documents.length,
+  });
+
+  return documents
+    .map(mapSanityPage)
+    .filter((page): page is GatewayPage => page !== null);
+}
+
+/** Fetches and normalizes a single standalone page document from Sanity by slug. */
+async function fetchSanityPageBySlug(
+  slug: string,
+  options: CreateSanityContentProviderOptions,
+  logger: ILogger
+): Promise<GatewayPageDetail | null> {
+  const queryUrl = createSanityQueryUrl(options, SANITY_PAGE_BY_SLUG_GROQ, {
+    slug,
+  });
+  const response = await fetchSanityApiResponse(
+    queryUrl,
+    options,
+    logger,
+    "pages"
+  );
+  const payload = await parseSanityQueryPayload<SanityPageDetailPayload | null>(
+    response
+  );
+  const document = payload.result ?? null;
+
+  if (!document) {
+    logger.debug("Sanity page detail not found", {
+      slug,
+    });
+    return null;
+  }
+
+  const page = mapSanityPageDetail(document);
+
+  logger.debug("Fetched page detail from Sanity provider", {
+    slug,
+    found: page !== null,
+  });
+
+  return page;
+}
+
+/** Creates a content provider that retrieves article and page data from Sanity. */
 export function createSanityContentProvider(
   options: CreateSanityContentProviderOptions,
   logger: ILogger
@@ -503,6 +753,12 @@ export function createSanityContentProvider(
     },
     async getArticleBySlug(slug: string) {
       return fetchSanityArticleBySlug(slug, options, logger);
+    },
+    async getPages() {
+      return fetchSanityPages(options, logger);
+    },
+    async getPageBySlug(slug: string) {
+      return fetchSanityPageBySlug(slug, options, logger);
     },
   };
 }

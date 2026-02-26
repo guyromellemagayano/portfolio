@@ -157,6 +157,7 @@ describe("POST /api/revalidate/sanity", () => {
       success: true,
       revalidated: true,
       documentType: "article",
+      resource: "article",
       tags: ["articles", "article:example-article", "article:previous-article"],
       paths: [
         "/articles",
@@ -187,6 +188,41 @@ describe("POST /api/revalidate/sanity", () => {
       3,
       "/articles/previous-article"
     );
+  });
+
+  it("revalidates standalone page tags and paths for page payloads", async () => {
+    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+
+    const response = await POST(
+      createWebhookRequest(
+        {
+          _type: "page",
+          slug: {
+            current: "now",
+          },
+        },
+        {
+          authorization: "Bearer expected-secret",
+          contentType: "application/json",
+        }
+      ) as never
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      success: true,
+      revalidated: true,
+      documentType: "page",
+      resource: "page",
+      tags: ["pages", "page:now"],
+      paths: ["/now"],
+      slugs: ["now"],
+    });
+    expect(revalidateTag).toHaveBeenCalledTimes(2);
+    expect(revalidateTag).toHaveBeenNthCalledWith(1, "pages", "max");
+    expect(revalidateTag).toHaveBeenNthCalledWith(2, "page:now", "max");
+    expect(revalidatePath).toHaveBeenCalledTimes(1);
+    expect(revalidatePath).toHaveBeenNthCalledWith(1, "/now");
   });
 
   it("returns 202 without revalidating for unsupported payload types", async () => {

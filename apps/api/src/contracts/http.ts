@@ -27,6 +27,7 @@ type ErrorResponseOptions = {
   meta?: Record<string, unknown>;
 };
 
+/** Builds the standard response metadata envelope for API responses. */
 function createResponseMeta(
   request: Request,
   extraMeta?: Record<string, unknown>
