@@ -10,6 +10,7 @@ import logger from "@portfolio/logger";
 
 import { getAllArticles } from "@web/utils/articles";
 import { getAllPages } from "@web/utils/pages";
+import { resolveSiteUrlBaseOrDefault } from "@web/utils/site-url";
 
 const DEFAULT_SITE_URL = "http://localhost:3000";
 const STATIC_SITEMAP_PATHS = [
@@ -23,17 +24,7 @@ const STATIC_SITEMAP_PATHS = [
 
 /** Resolves a normalized absolute site URL base for sitemap entry generation. */
 function getSiteUrlBase(): string {
-  const siteUrl = globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim();
-
-  if (!siteUrl) {
-    return DEFAULT_SITE_URL;
-  }
-
-  try {
-    return new URL(siteUrl).toString().replace(/\/+$/, "");
-  } catch {
-    return DEFAULT_SITE_URL;
-  }
+  return resolveSiteUrlBaseOrDefault(DEFAULT_SITE_URL);
 }
 
 /** Builds an absolute URL string for sitemap entries from a route path. */
