@@ -4,4 +4,4 @@
  * @description Vercel catch-all function entrypoint for the API gateway.
  */
 
-export { default } from "../src/platform/vercel";
+export { default } from "../src/platform/vercel.js";
