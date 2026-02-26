@@ -6,6 +6,8 @@
 
 import type { MetadataRoute } from "next";
 
+import logger from "@portfolio/logger";
+
 import { getAllArticles } from "@web/utils/articles";
 import { getAllPages } from "@web/utils/pages";
 
@@ -39,18 +41,40 @@ function toAbsoluteUrl(path: string): string {
   return `${getSiteUrlBase()}${path}`;
 }
 
+/** Builds sitemap entries for the static routes that do not depend on the API gateway. */
+function createStaticSitemapEntries(): MetadataRoute.Sitemap {
+  return STATIC_SITEMAP_PATHS.map((path) => ({
+    url: toAbsoluteUrl(path),
+  }));
+}
+
 /** Generates the app sitemap from static routes and Sanity-backed article/page routes. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [articles, pages] = await Promise.all([
-    getAllArticles(),
-    getAllPages(),
-  ]);
+  const staticEntries = createStaticSitemapEntries();
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_SITEMAP_PATHS.map(
-    (path) => ({
-      url: toAbsoluteUrl(path),
-    })
-  );
+  let articles = [] as Awaited<ReturnType<typeof getAllArticles>>;
+  let pages = [] as Awaited<ReturnType<typeof getAllPages>>;
+
+  try {
+    [articles, pages] = await Promise.all([getAllArticles(), getAllPages()]);
+  } catch (error) {
+    logger.warn(
+      "Sitemap content fetch failed; falling back to static routes only",
+      {
+        route: "/sitemap.xml",
+        siteUrl: getSiteUrlBase(),
+        error:
+          error instanceof Error
+            ? {
+                name: error.name,
+                message: error.message,
+              }
+            : {
+                message: String(error),
+              },
+      }
+    );
+  }
 
   const articleEntries: MetadataRoute.Sitemap = articles
     .filter(
