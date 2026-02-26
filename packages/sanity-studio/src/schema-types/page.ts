@@ -1,62 +1,80 @@
 /**
- * @file packages/sanity-studio/src/schema-types/article.ts
+ * @file packages/sanity-studio/src/schema-types/page.ts
  * @author Guy Romelle Magayano
- * @description Sanity schema definition for article documents shared across apps.
+ * @description Sanity schema definition for standalone page documents shared across apps.
  */
 
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-export const articleSchema = defineType({
-  name: "article",
-  title: "Article",
+const RESERVED_ROOT_PAGE_SLUGS = new Set([
+  "about",
+  "api",
+  "articles",
+  "contact",
+  "feed.xml",
+  "projects",
+  "studio",
+  "uses",
+]);
+
+function getNormalizedSlugCurrentValue(value: unknown): string | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return null;
+  }
+
+  const currentValue = (value as { current?: unknown }).current;
+
+  if (typeof currentValue !== "string") {
+    return null;
+  }
+
+  const normalizedSlug = currentValue.trim().toLowerCase();
+
+  return normalizedSlug.length > 0 ? normalizedSlug : null;
+}
+
+export const pageSchema = defineType({
+  name: "page",
+  title: "Page",
   type: "document",
   fields: [
     defineField({
       name: "title",
       title: "Title",
       type: "string",
-      validation: (rule) => rule.required().min(3).max(120),
+      validation: (rule) => rule.required().min(2).max(120),
     }),
     defineField({
       name: "slug",
       title: "Slug",
       type: "slug",
       options: { source: "title", maxLength: 96 },
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "publishedAt",
-      title: "Published at",
-      type: "datetime",
-      initialValue: () => new Date().toISOString(),
-      validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: "excerpt",
-      title: "Excerpt",
-      type: "text",
-      rows: 3,
-      validation: (rule) => rule.max(220),
-    }),
-    defineField({
-      name: "mainImage",
-      title: "Main image",
-      type: "image",
-      options: { hotspot: true },
-      fields: [
-        defineField({
-          name: "alt",
-          title: "Alternative text",
-          type: "string",
-          validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().custom((value) => {
+          const normalizedSlug = getNormalizedSlugCurrentValue(value);
+
+          if (
+            !normalizedSlug ||
+            !RESERVED_ROOT_PAGE_SLUGS.has(normalizedSlug)
+          ) {
+            return true;
+          }
+
+          return `Slug "${normalizedSlug}" is reserved by the app router. Choose another slug.`;
         }),
-      ],
     }),
     defineField({
-      name: "tags",
-      title: "Tags",
-      type: "array",
-      of: [defineArrayMember({ type: "string" })],
+      name: "subheading",
+      title: "Subheading",
+      type: "string",
+      validation: (rule) => rule.max(80),
+    }),
+    defineField({
+      name: "intro",
+      title: "Intro",
+      type: "text",
+      rows: 4,
+      validation: (rule) => rule.max(320),
     }),
     defineField({
       name: "seo",
@@ -85,7 +103,7 @@ export const articleSchema = defineType({
           name: "canonicalPath",
           title: "Canonical path",
           description:
-            "Optional canonical path (for example /articles/my-article). Must start with /.",
+            "Optional canonical path (for example /about-me). Must start with /.",
           type: "string",
           validation: (rule) =>
             rule.custom((value) => {
@@ -101,14 +119,14 @@ export const articleSchema = defineType({
         defineField({
           name: "noIndex",
           title: "No index",
-          description: "Adds a noindex robots directive for this article.",
+          description: "Adds a noindex robots directive for this page.",
           type: "boolean",
           initialValue: false,
         }),
         defineField({
           name: "noFollow",
           title: "No follow",
-          description: "Adds a nofollow robots directive for this article.",
+          description: "Adds a nofollow robots directive for this page.",
           type: "boolean",
           initialValue: false,
         }),
@@ -163,7 +181,7 @@ export const articleSchema = defineType({
           name: "hideFromSitemap",
           title: "Hide from sitemap",
           description:
-            "Excludes this article from the generated sitemap.xml output.",
+            "Excludes this page from the generated sitemap.xml output.",
           type: "boolean",
           initialValue: false,
         }),
@@ -183,7 +201,6 @@ export const articleSchema = defineType({
               name: "alt",
               title: "Alternative text",
               type: "string",
-              validation: (rule) => rule.required(),
             }),
           ],
         }),
@@ -193,21 +210,17 @@ export const articleSchema = defineType({
   preview: {
     select: {
       title: "title",
-      subtitle: "publishedAt",
-      media: "mainImage",
+      subtitle: "slug.current",
     },
     prepare(selection) {
-      const subtitle = selection.subtitle
-        ? new Date(selection.subtitle).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })
-        : "No publish date";
+      const slug =
+        typeof selection.subtitle === "string" && selection.subtitle.trim()
+          ? `/${selection.subtitle.trim()}`
+          : "No slug";
 
       return {
         ...selection,
-        subtitle,
+        subtitle: slug,
       };
     },
   },

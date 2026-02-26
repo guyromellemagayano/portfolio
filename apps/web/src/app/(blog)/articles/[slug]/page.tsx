@@ -30,17 +30,147 @@ type ArticleDetailPageProps = {
 const getCachedArticleBySlug = cache(async (slug: string) =>
   getArticleBySlug(slug)
 );
+const SITE_NAME = "Guy Romelle Magayano";
+const MAX_METADATA_DESCRIPTION_LENGTH = 160;
 const DEFAULT_ARTICLE_IMAGE_WIDTH = 1600;
 const DEFAULT_ARTICLE_IMAGE_HEIGHT = 900;
 const DEFAULT_ARTICLE_IMAGE_SIZES = "(max-width: 1024px) 100vw, 896px";
 
+/** Normalizes optional text values into trimmed non-empty strings. */
+function getTrimmedNonEmptyString(
+  value: string | undefined
+): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+
+  return normalized.length > 0 ? normalized : undefined;
+}
+
+/** Clamps metadata descriptions to a SERP-friendly maximum length. */
+function clampMetadataDescription(value: string): string {
+  const normalized = value.trim();
+
+  if (normalized.length <= MAX_METADATA_DESCRIPTION_LENGTH) {
+    return normalized;
+  }
+
+  return `${normalized.slice(0, MAX_METADATA_DESCRIPTION_LENGTH - 1).trimEnd()}…`;
+}
+
 /** Resolves the best description string for metadata and social previews. */
 function getArticleDescription(article: ArticleDetail): string {
-  return (
+  return clampMetadataDescription(
     article.seoDescription?.trim() ||
-    article.description?.trim() ||
-    article.title
+      article.description?.trim() ||
+      article.title
   );
+}
+
+/** Resolves the best social description string for Open Graph and Twitter previews. */
+function getArticleSocialDescription(article: ArticleDetail): string {
+  return clampMetadataDescription(
+    article.seoOgDescription?.trim() ||
+      article.seoDescription?.trim() ||
+      article.description?.trim() ||
+      article.title
+  );
+}
+
+/** Resolves the best title string for `<title>` metadata. */
+function getArticleSeoTitle(article: ArticleDetail): string {
+  return article.seoTitle?.trim() || article.title;
+}
+
+/** Resolves the best social preview title string. */
+function getArticleSocialTitle(article: ArticleDetail): string {
+  return (
+    article.seoOgTitle?.trim() || article.seoTitle?.trim() || article.title
+  );
+}
+
+/** Resolves a normalized site URL base from runtime env for canonical metadata URLs. */
+function getSiteUrlBase(): string | undefined {
+  const siteUrl = globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim();
+
+  if (!siteUrl) {
+    return undefined;
+  }
+
+  try {
+    const parsed = new URL(siteUrl);
+
+    return parsed.toString().replace(/\/+$/, "");
+  } catch {
+    return undefined;
+  }
+}
+
+/** Builds an absolute metadata URL from a relative path when a site URL base is configured. */
+function toAbsoluteMetadataUrl(pathOrUrl: string): string | undefined {
+  const normalizedValue = pathOrUrl.trim();
+
+  if (!normalizedValue) {
+    return undefined;
+  }
+
+  if (/^https?:\/\//i.test(normalizedValue)) {
+    return normalizedValue;
+  }
+
+  if (!normalizedValue.startsWith("/")) {
+    return undefined;
+  }
+
+  const siteUrlBase = getSiteUrlBase();
+
+  return siteUrlBase ? `${siteUrlBase}${normalizedValue}` : undefined;
+}
+
+type ArticleSocialImage = {
+  alt?: string;
+  height?: number;
+  url: string;
+  width?: number;
+};
+
+/** Resolves the best social image (SEO OG image override first, then lead image). */
+function getArticleSocialImage(
+  article: ArticleDetail
+): ArticleSocialImage | null {
+  const seoOgImage = getTrimmedNonEmptyString(article.seoOgImage);
+
+  if (seoOgImage) {
+    return {
+      url: seoOgImage,
+      alt: getTrimmedNonEmptyString(article.seoOgImageAlt) ?? article.title,
+      width: getOptionalPositiveDimension(article.seoOgImageWidth),
+      height: getOptionalPositiveDimension(article.seoOgImageHeight),
+    };
+  }
+
+  const leadImage = getTrimmedNonEmptyString(article.image);
+
+  if (!leadImage) {
+    return null;
+  }
+
+  return {
+    url: leadImage,
+    alt: getTrimmedNonEmptyString(article.imageAlt) ?? article.title,
+    width: getOptionalPositiveDimension(article.imageWidth),
+    height: getOptionalPositiveDimension(article.imageHeight),
+  };
+}
+
+/** Resolves the canonical metadata URL for an article, honoring an optional SEO override path. */
+function getArticleCanonicalUrl(article: ArticleDetail): string | undefined {
+  const fallbackPath = `/articles/${article.slug}`;
+  const canonicalPath = getTrimmedNonEmptyString(article.seoCanonicalPath);
+
+  return toAbsoluteMetadataUrl(canonicalPath ?? fallbackPath);
 }
 
 /** Normalizes optional positive dimensions for safe image rendering. */
@@ -103,12 +233,7 @@ async function resolveArticleFromParams(
   return getCachedArticleBySlug(normalizedSlug);
 }
 
-/**
- * Generates metadata for the article detail page from gateway-backed article content.
- *
- * @param props Route props containing async slug params.
- * @returns Next.js metadata with article values or fallback metadata on failure.
- */
+/** Generates metadata for the article detail page from gateway-backed article content. */
 export async function generateMetadata(
   props: ArticleDetailPageProps
 ): Promise<Metadata> {
@@ -122,23 +247,52 @@ export async function generateMetadata(
       };
     }
 
+    const pageTitle = getArticleSeoTitle(article);
     const description = getArticleDescription(article);
+    const socialTitle = getArticleSocialTitle(article);
+    const socialDescription = getArticleSocialDescription(article);
+    const socialImage = getArticleSocialImage(article);
+    const canonicalUrl = getArticleCanonicalUrl(article);
+    const articleUrl =
+      canonicalUrl ?? toAbsoluteMetadataUrl(`/articles/${article.slug}`);
+    const twitterCard =
+      article.seoTwitterCard ??
+      (socialImage ? "summary_large_image" : "summary");
 
     return {
-      title: `${article.title} - Guy Romelle Magayano`,
+      title: `${pageTitle} - ${SITE_NAME}`,
       description,
+      alternates: canonicalUrl
+        ? {
+            canonical: canonicalUrl,
+          }
+        : undefined,
+      robots: {
+        index: article.seoNoIndex === true ? false : true,
+        follow: article.seoNoFollow === true ? false : true,
+      },
       openGraph: {
-        title: article.title,
-        description,
-        images: article.image
-          ? [{ url: article.image, alt: article.imageAlt }]
+        type: "article",
+        title: socialTitle,
+        description: socialDescription,
+        url: articleUrl,
+        publishedTime: article.date,
+        images: socialImage
+          ? [
+              {
+                url: socialImage.url,
+                alt: socialImage.alt,
+                width: socialImage.width,
+                height: socialImage.height,
+              },
+            ]
           : undefined,
       },
       twitter: {
-        card: article.image ? "summary_large_image" : "summary",
-        title: article.title,
-        description,
-        images: article.image ? [article.image] : undefined,
+        card: twitterCard,
+        title: socialTitle,
+        description: socialDescription,
+        images: socialImage ? [socialImage.url] : undefined,
       },
     };
   } catch (error) {
@@ -152,7 +306,7 @@ export async function generateMetadata(
     );
 
     return {
-      title: "Article - Guy Romelle Magayano",
+      title: `Article - ${SITE_NAME}`,
       description: "Article detail page.",
     };
   }
@@ -160,12 +314,7 @@ export async function generateMetadata(
 
 export const dynamic = "force-dynamic";
 
-/**
- * Renders the article detail route using the API gateway article detail endpoint.
- *
- * @param props Route props containing async slug params.
- * @returns Article detail page markup or triggers `notFound()` when no article exists.
- */
+/** Renders the article detail route using the API gateway article detail endpoint. */
 export default async function ArticleDetailPage(props: ArticleDetailPageProps) {
   const article = await resolveArticleFromParams(props.params).catch(
     (error) => {

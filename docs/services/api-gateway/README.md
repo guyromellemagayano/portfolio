@@ -2,16 +2,23 @@
 
 `apps/api` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume external and internal backend services through a unified API surface.
 
-Current primary data flow for articles:
+Current primary data flow for content:
 
-`apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`) -> configured content provider (`sanity` or `static`)
+`apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`sanity` or `static`)
 
 ## Current Modules
 
-- `health`: `/status`, `/v1/status`
-- `message`: `/message/:name`, `/v1/message/:name`
+- `health`: `/v1/status` (legacy `/status` redirects to `/v1/status`)
+- `message`: `/v1/message/:name` (legacy `/message/:name` redirects to `/v1/message/:name`)
 - `content`: `/v1/content/articles` (provider-backed list)
 - `content`: `/v1/content/articles/:slug` (provider-backed detail)
+- `content`: `/v1/content/pages` (provider-backed standalone page list)
+- `content`: `/v1/content/pages/:slug` (provider-backed standalone page detail)
+
+## Versioning and Redirects
+
+- `GET /` redirects to `GET /v1/status` for a friendly browser entry point.
+- Unversioned legacy routes remain browser-safe via redirects to the latest versioned routes.
 
 ## Provider Pattern
 
@@ -29,7 +36,7 @@ Current primary data flow for articles:
 
 ## Sanity Provider Configuration
 
-- `API_GATEWAY_CONTENT_PROVIDER=sanity` uses the Sanity content provider for `/v1/content/articles` and `/v1/content/articles/:slug`.
+- `API_GATEWAY_CONTENT_PROVIDER=sanity` uses the Sanity content provider for article and standalone page content routes.
 - In `production`, missing `SANITY_PROJECT_ID` or `SANITY_DATASET` fails provider initialization (no silent fallback).
 - In local development/test, incomplete Sanity config falls back to the static provider for DX.
 

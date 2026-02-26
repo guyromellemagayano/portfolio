@@ -71,13 +71,7 @@ function resolveContentProvider(
   );
 }
 
-/**
- * Builds the provider registry consumed by feature modules.
- *
- * @param config Normalized API runtime configuration.
- * @param logger Logger instance used during provider selection.
- * @returns Provider registry with resolved integration implementations.
- */
+/** Builds the provider registry consumed by feature modules. */
 export function createProviderRegistry(
   config: ApiRuntimeConfig,
   logger: ILogger
