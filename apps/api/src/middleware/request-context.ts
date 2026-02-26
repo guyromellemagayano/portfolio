@@ -8,6 +8,7 @@ import type { RequestHandler } from "express";
 
 import { generateRequestId, type ILogger } from "@portfolio/logger";
 
+/** Normalizes the incoming correlation header into a single usable correlation ID. */
 function resolveCorrelationId(
   correlationHeader: string | string[] | undefined
 ): string | null {
