@@ -26,6 +26,7 @@
 15. **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
 16. **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
 17. **STANDARDIZE JSDOC LENGTH** - Use one-line JSDoc (`/** ... */`) for single-line documentation; use multiline JSDoc only when content genuinely spans multiple lines.
+18. **STANDARDIZE COMMIT MESSAGES** - Use conventional commit subjects plus a bullet body for non-trivial commits. Keep bullets single-spaced (no blank lines between bullets) and wrap code identifiers (paths, env vars, commands, routes, package names, task names) in backticks.
 
 ## Standards Reference
 
@@ -57,10 +58,17 @@
 - **Components**: File-level JSDoc with `@file`, `@author`, `@description`
 - **`@file` Path Format**: Use repository-relative paths from workspace root (for example, `apps/web/src/components/header/Header.tsx`, `packages/vitest-presets/__tests__/presets.test.ts`, `packages/vitest-presets/__mocks__/@portfolio/utils/index.ts`)
 - **Types**: For `@packages/` components, use one-liner JSDoc (`/** Ref type for Component. */`). For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
-- **Functions**: Full JSDoc with `@param`/`@returns`/`@example` (when needed)
+- **Functions**: Concise JSDoc focused on intent/behavior only. Do not use `@param` or `@returns`; rely on clear names + TypeScript types. Add `@example` or `@throws` only when non-obvious behavior needs it.
 - **Memoized Components**: Brief explanation of memoization behavior
 - **Single-Line JSDoc Format**: If the JSDoc body is one line, it must be `/** ... */` (never a three-line block)
-- **Multiline JSDoc Format**: Use multiline JSDoc only when content has multiple lines/tags
+- **Multiline JSDoc Format**: Use multiline JSDoc only when content genuinely needs multiple lines (edge cases, side effects, caveats, or optional tags like `@example` / `@throws`)
+
+## Commit Message Standards (Quick Reference)
+
+- **Subject Format**: Use conventional commits (for example, `feat(scope): ...`, `fix(scope): ...`, `chore(scope): ...`)
+- **Body Format**: For non-trivial commits, add a bullet body using `- ` lines with no blank line between bullets
+- **Backticks**: Wrap code identifiers in backticks (`API_GATEWAY_URL`, `apps/web/next.config.ts`, `/api/revalidate/sanity`, `turbo.json`, `pnpm --filter web check-types`)
+- **Writing Method**: Prefer a commit message file (`git commit -F <file>` / `git commit --amend -F <file>`) or a single body block to avoid accidental blank lines from multiple `-m` flags
 
 ### Documentation Template
 
@@ -2194,7 +2202,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Documentation**:
 
-- ✅ JSDoc for all exported functions (both `@apps/` and `@packages/`)
+- ✅ Concise JSDoc for exported functions (both `@apps/` and `@packages/`) when behavior is not obvious from the name/signature
 - ✅ For `@packages/` only: JSDoc for all exported types (concise, one-liner for types). For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - ✅ Component documentation with `@example` when helpful
 - ✅ README for each package
@@ -2391,7 +2399,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Industry Best Practices**:
 
-- **JSDoc**: All exported functions and components (follow TypeScript JSDoc standards). For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
+- **JSDoc**: Keep exported function/component docs concise and behavior-focused; avoid `@param`/`@returns` and rely on clear names + TypeScript types. For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
 - **README**: Each package in monorepo with usage examples, API documentation
 - **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
 - **Storybook**: All reusable UI components with interactive examples and accessibility notes
