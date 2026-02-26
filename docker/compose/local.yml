@@ -1,0 +1,273 @@
+x-node-workspace-service: &node_workspace_service
+  build:
+    context: ../..
+    dockerfile: docker/images/dev/Dockerfile
+  working_dir: /workspace
+  init: true
+  entrypoint:
+    - sh
+    - docker/scripts/dev-entrypoint.sh
+  volumes:
+    - ../..:/workspace
+    - pnpm-store:/pnpm/store
+    - workspace-node-modules:/workspace/node_modules
+    - turbo-cache:/workspace/.turbo
+
+x-node-env-common: &node_env_common
+  FORCE_PNPM_INSTALL: ${FORCE_PNPM_INSTALL:-0}
+
+x-node-watch-env: &node_watch_env
+  <<: *node_env_common
+  CHOKIDAR_USEPOLLING: "true"
+  WATCHPACK_POLLING: "true"
+
+services:
+  api:
+    <<: *node_workspace_service
+    container_name: portfolio-api-local
+    environment:
+      <<: *node_watch_env
+      NODE_ENV: development
+      API_GATEWAY_CONTENT_PROVIDER: ${API_GATEWAY_CONTENT_PROVIDER:-sanity}
+      API_PORT: "5001"
+      PORT: "5001"
+      SANITY_PROJECT_ID: ${SANITY_PROJECT_ID:-}
+      SANITY_DATASET: ${SANITY_DATASET:-}
+      SANITY_API_VERSION: ${SANITY_API_VERSION:-}
+      SANITY_API_READ_TOKEN: ${SANITY_API_READ_TOKEN:-}
+      SANITY_USE_CDN: ${SANITY_USE_CDN:-true}
+      SANITY_REQUEST_TIMEOUT_MS: ${SANITY_REQUEST_TIMEOUT_MS:-}
+      SANITY_REQUEST_MAX_RETRIES: ${SANITY_REQUEST_MAX_RETRIES:-}
+      SANITY_REQUEST_RETRY_DELAY_MS: ${SANITY_REQUEST_RETRY_DELAY_MS:-}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-}
+      NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET:-}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${NEXT_PUBLIC_SANITY_API_VERSION:-}
+    command:
+      - pnpm
+      - --filter
+      - api
+      - dev
+    ports:
+      - "5001:5001"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:5001/v1/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    develop:
+      watch:
+        - action: rebuild
+          path: ../../docker/images/dev/Dockerfile
+        - action: rebuild
+          path: ../../pnpm-lock.yaml
+        - action: rebuild
+          path: ../../package.json
+        - action: rebuild
+          path: ../../apps/api/package.json
+
+  web:
+    <<: *node_workspace_service
+    container_name: portfolio-web-local
+    environment:
+      <<: *node_watch_env
+      NODE_ENV: development
+      DOCKER_LOCAL_DEV: "1"
+      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      API_GATEWAY_URL: http://api:5001
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5001}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-}
+      NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET:-}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${NEXT_PUBLIC_SANITY_API_VERSION:-}
+      SANITY_PROJECT_ID: ${SANITY_PROJECT_ID:-}
+      SANITY_DATASET: ${SANITY_DATASET:-}
+      SANITY_API_VERSION: ${SANITY_API_VERSION:-}
+      SANITY_API_READ_TOKEN: ${SANITY_API_READ_TOKEN:-}
+      SANITY_USE_CDN: ${SANITY_USE_CDN:-true}
+      SANITY_WEBHOOK_SECRET: ${SANITY_WEBHOOK_SECRET:-}
+      NEXT_WEB_DOCKER_DIST_DIR: ${NEXT_WEB_DOCKER_DIST_DIR:-.next-docker}
+      RESET_NEXT_WEB_CACHE_ON_START: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+    command:
+      - pnpm
+      - --filter
+      - web
+      - exec
+      - next
+      - dev
+      - --hostname
+      - 0.0.0.0
+      - --port
+      - "3000"
+      - --turbopack
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:3000/').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    develop:
+      watch:
+        - action: rebuild
+          path: ../../docker/images/dev/Dockerfile
+        - action: rebuild
+          path: ../../pnpm-lock.yaml
+        - action: rebuild
+          path: ../../package.json
+        - action: rebuild
+          path: ../../apps/web/package.json
+
+  admin:
+    <<: *node_workspace_service
+    container_name: portfolio-admin-local
+    environment:
+      <<: *node_watch_env
+      NODE_ENV: development
+      DOCKER_LOCAL_DEV: "1"
+      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      NEXT_TELEMETRY_DISABLED: "1"
+    command:
+      - pnpm
+      - --filter
+      - admin
+      - dev
+    ports:
+      - "3001:3001"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:3001/').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    develop:
+      watch:
+        - action: rebuild
+          path: ../../docker/images/dev/Dockerfile
+        - action: rebuild
+          path: ../../pnpm-lock.yaml
+        - action: rebuild
+          path: ../../package.json
+        - action: rebuild
+          path: ../../apps/admin/package.json
+
+  tooling:
+    profiles: ["tooling"]
+    <<: *node_workspace_service
+    container_name: portfolio-tooling-local
+    environment:
+      <<: *node_env_common
+      NODE_ENV: development
+      API_GATEWAY_URL: http://api:5001
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5001}
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-}
+      NEXT_PUBLIC_SANITY_DATASET: ${NEXT_PUBLIC_SANITY_DATASET:-}
+      NEXT_PUBLIC_SANITY_API_VERSION: ${NEXT_PUBLIC_SANITY_API_VERSION:-}
+      SANITY_PROJECT_ID: ${SANITY_PROJECT_ID:-}
+      SANITY_DATASET: ${SANITY_DATASET:-}
+      SANITY_API_VERSION: ${SANITY_API_VERSION:-}
+      SANITY_API_READ_TOKEN: ${SANITY_API_READ_TOKEN:-}
+      SANITY_USE_CDN: ${SANITY_USE_CDN:-true}
+      SANITY_WEBHOOK_SECRET: ${SANITY_WEBHOOK_SECRET:-}
+      E2E_BASE_URL: ${E2E_BASE_URL:-http://localhost:3000}
+      E2E_SANITY_ARTICLE_SLUG: ${E2E_SANITY_ARTICLE_SLUG:-}
+      E2E_SANITY_PAGE_SLUG: ${E2E_SANITY_PAGE_SLUG:-}
+    command:
+      - sleep
+      - infinity
+
+  e2e:
+    profiles: ["e2e"]
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    container_name: portfolio-e2e-local
+    working_dir: /workspace
+    init: true
+    ipc: host
+    shm_size: 2gb
+    environment:
+      NODE_ENV: development
+      E2E_USE_EXTERNAL_SERVERS: "1"
+      E2E_BASE_URL: http://web:3000
+      API_GATEWAY_URL: http://api:5001
+      SANITY_WEBHOOK_SECRET: ${SANITY_WEBHOOK_SECRET:-}
+      E2E_SANITY_ARTICLE_SLUG: ${E2E_SANITY_ARTICLE_SLUG:-}
+      E2E_SANITY_PAGE_SLUG: ${E2E_SANITY_PAGE_SLUG:-}
+      FORCE_PNPM_INSTALL: ${FORCE_PNPM_INSTALL:-0}
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    entrypoint:
+      - sh
+      - docker/scripts/dev-entrypoint.sh
+    command:
+      - pnpm
+      - --filter
+      - e2e
+      - test:e2e
+    volumes:
+      - ../..:/workspace
+      - pnpm-store:/pnpm/store
+      - workspace-node-modules:/workspace/node_modules
+      - turbo-cache:/workspace/.turbo
+
+  e2e-sanity-smoke:
+    profiles: ["e2e"]
+    image: mcr.microsoft.com/playwright:v1.58.2-noble
+    container_name: portfolio-e2e-sanity-smoke-local
+    working_dir: /workspace
+    init: true
+    ipc: host
+    shm_size: 2gb
+    environment:
+      NODE_ENV: development
+      E2E_USE_EXTERNAL_SERVERS: "1"
+      E2E_BASE_URL: http://web:3000
+      API_GATEWAY_URL: http://api:5001
+      SANITY_WEBHOOK_SECRET: ${SANITY_WEBHOOK_SECRET:-}
+      E2E_SANITY_ARTICLE_SLUG: ${E2E_SANITY_ARTICLE_SLUG:-}
+      E2E_SANITY_PAGE_SLUG: ${E2E_SANITY_PAGE_SLUG:-}
+      FORCE_PNPM_INSTALL: ${FORCE_PNPM_INSTALL:-0}
+    depends_on:
+      api:
+        condition: service_healthy
+      web:
+        condition: service_healthy
+    entrypoint:
+      - sh
+      - docker/scripts/dev-entrypoint.sh
+    command:
+      - pnpm
+      - --filter
+      - e2e
+      - exec
+      - playwright
+      - test
+      - --project
+      - chromium
+      - --grep
+      - "@sanity"
+    volumes:
+      - ../..:/workspace
+      - pnpm-store:/pnpm/store
+      - workspace-node-modules:/workspace/node_modules
+      - turbo-cache:/workspace/.turbo
+
+volumes:
+  pnpm-store:
+  workspace-node-modules:
+  turbo-cache:

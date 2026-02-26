@@ -15,6 +15,14 @@ const sanityConfig = getSanityConfig();
 const projectId = sanityConfig?.projectId ?? "missing-project-id";
 const dataset = sanityConfig?.dataset ?? "missing-dataset";
 
+if (globalThis?.process?.env?.NODE_ENV !== "production") {
+  // eslint-disable-next-line no-console -- Dev-only visibility for resolved Studio target during local setup/troubleshooting
+  console.info("[sanity.studio.config] Resolved Sanity project config", {
+    projectId,
+    dataset,
+  });
+}
+
 export default createSanityStudioConfig({
   projectId,
   dataset,
