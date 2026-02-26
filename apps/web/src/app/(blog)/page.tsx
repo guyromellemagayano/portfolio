@@ -27,6 +27,7 @@ import {
 } from "@web/data/page";
 import { getAllArticles } from "@web/utils/articles";
 import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
+import { toAbsoluteSiteUrl } from "@web/utils/site-url";
 
 const HOME_PAGE_I18N_NAMESPACE = "page.home.labels";
 const HOME_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
@@ -45,6 +46,8 @@ const ListItem = {
   Social: SocialListItem,
 } as const;
 
+const homeRssFeedUrl = toAbsoluteSiteUrl("/feed.xml");
+
 export const metadata: Metadata = {
   title: {
     template: "%s - Guy Romelle Magayano",
@@ -53,11 +56,13 @@ export const metadata: Metadata = {
   },
   description:
     "I’m Guy Romelle Magayano, a software designer and entrepreneur based in New York City. I’m the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms.",
-  alternates: {
-    types: {
-      "application/rss+xml": `${globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL}/feed.xml`,
-    },
-  },
+  alternates: homeRssFeedUrl
+    ? {
+        types: {
+          "application/rss+xml": homeRssFeedUrl,
+        },
+      }
+    : undefined,
 };
 export const dynamic = "force-dynamic";
 
