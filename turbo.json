@@ -15,6 +15,7 @@
   ],
   "globalEnv": [
     "ANALYZE",
+    "API_GATEWAY_URL",
     "AWS_ACCESS_KEY_ID",
     "AWS_REGION",
     "AWS_SECRET_ACCESS_KEY",
@@ -30,6 +31,9 @@
     "DATADOG_API_KEY",
     "DEBUG",
     "E2E_BASE_URL",
+    "E2E_USE_EXTERNAL_SERVERS",
+    "E2E_SANITY_ARTICLE_SLUG",
+    "E2E_SANITY_PAGE_SLUG",
     "ELASTICSEARCH_API_KEY",
     "ELASTICSEARCH_URL",
     "ENABLE_EXPERIMENTAL_COREPACK",
@@ -70,6 +74,7 @@
     "SANITY_DATASET",
     "SANITY_PROJECT_ID",
     "SANITY_USE_CDN",
+    "SANITY_WEBHOOK_SECRET",
     "SENTRY_AUTH_TOKEN",
     "SENTRY_ORG",
     "SENTRY_PROJECT",
@@ -105,25 +110,6 @@
         ".next/**",
         "dist/**"
       ]
-    },
-    "codegen": {
-      "dependsOn": [],
-      "inputs": [
-        "$TURBO_DEFAULT$",
-        "codegen.*",
-        "codegen.yml",
-        "schema.*",
-        "*.graphql",
-        "*.gql",
-        "package.json"
-      ],
-      "outputs": [
-        "**/generated.ts",
-        "**/__generated__/**",
-        "src/gql/**",
-        "src/__generated__/**"
-      ],
-      "cache": true
     },
     "test": {
       "dependsOn": [],

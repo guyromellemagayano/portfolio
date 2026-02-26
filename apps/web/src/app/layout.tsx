@@ -17,18 +17,13 @@ export type RootLayoutProps = {
   children: React.ReactNode;
 };
 
-/**
- * Renders the root HTML layout and global providers for the web app.
- *
- * @param props Layout props containing routed children.
- * @returns Root document layout for the application.
- */
+/** Renders the root HTML layout and global providers for the web app. */
 export default function RootLayout(props: RootLayoutProps) {
   const { children } = props;
 
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="flex h-full bg-zinc-50 dark:bg-black">
+      <body className="flex h-full flex-col bg-zinc-50 dark:bg-black">
         <NextIntlClientProvider>
           <Providers>
             <RouteShell>{children}</RouteShell>

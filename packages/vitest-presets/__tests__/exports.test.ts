@@ -49,7 +49,7 @@ describe("Barrel Exports", () => {
 
     it("should support shared test setup entry point", async () => {
       // This simulates: import "@portfolio/vitest-presets/shared/test-setup.ts"
-      const setupModule = await import("../shared/test-setup.ts.ts");
+      const setupModule = await import("../shared/test-setup.ts");
       expect(setupModule).toBeDefined();
     });
   });

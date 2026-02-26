@@ -38,7 +38,6 @@ export const reactPreset = {
         "**/vite.config.*",
         "**/vitest.config.*",
         "**/jest.config.*",
-        "**/webpack.config.*",
         "**/rollup.config.*",
         "**/tailwind.config.*",
         "**/postcss.config.*",

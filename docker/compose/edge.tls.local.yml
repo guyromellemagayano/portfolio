@@ -1,0 +1,49 @@
+services:
+  traefik:
+    command:
+      - --api.dashboard=true
+      - --log.level=${TRAEFIK_LOG_LEVEL:-ERROR}
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+    ports:
+      - "${TRAEFIK_HTTPS_PORT:-443}:443"
+    volumes:
+      - ../traefik/dynamic:/etc/traefik/dynamic:ro
+      - ../traefik/certs:/certs:ro
+    labels:
+      traefik.http.middlewares.traefik-dashboard-root-redirect-secure.redirectregex.regex: ^https://([^/]+)/?$
+      traefik.http.middlewares.traefik-dashboard-root-redirect-secure.redirectregex.replacement: https://$${1}/dashboard/
+      traefik.http.middlewares.traefik-dashboard-root-redirect-secure.redirectregex.permanent: "false"
+      traefik.http.routers.traefik-root-secure.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`) && Path(`/`)
+      traefik.http.routers.traefik-root-secure.entrypoints: websecure
+      traefik.http.routers.traefik-root-secure.priority: "100"
+      traefik.http.routers.traefik-root-secure.middlewares: traefik-dashboard-root-redirect-secure
+      traefik.http.routers.traefik-root-secure.tls: "true"
+      traefik.http.routers.traefik-root-secure.service: api@internal
+      traefik.http.routers.traefik-secure.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.traefik-secure.entrypoints: websecure
+      traefik.http.routers.traefik-secure.tls: "true"
+      traefik.http.routers.traefik-secure.service: api@internal
+
+  api:
+    labels:
+      traefik.http.routers.portfolio-api-secure.rule: Host(`api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-api-secure.entrypoints: websecure
+      traefik.http.routers.portfolio-api-secure.tls: "true"
+      traefik.http.routers.portfolio-api-secure.service: portfolio-api
+
+  web:
+    labels:
+      traefik.http.routers.portfolio-web-secure.rule: Host(`${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-web-secure.entrypoints: websecure
+      traefik.http.routers.portfolio-web-secure.tls: "true"
+      traefik.http.routers.portfolio-web-secure.service: portfolio-web
+
+  admin:
+    labels:
+      traefik.http.routers.portfolio-admin-secure.rule: Host(`admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-admin-secure.entrypoints: websecure
+      traefik.http.routers.portfolio-admin-secure.tls: "true"
+      traefik.http.routers.portfolio-admin-secure.service: portfolio-admin

@@ -1,0 +1,49 @@
+http:
+  middlewares:
+    traefik-dashboard-root-redirect:
+      redirectRegex:
+        regex: "^http://([^/]+)/?$"
+        replacement: "http://${1}/dashboard/"
+        permanent: false
+  routers:
+    traefik-root:
+      rule: "Host(`traefik.guyromellemagayano.test`) && Path(`/`)"
+      entryPoints:
+        - web
+      priority: 100
+      middlewares:
+        - traefik-dashboard-root-redirect
+      service: api@internal
+    traefik:
+      rule: "Host(`traefik.guyromellemagayano.test`)"
+      entryPoints:
+        - web
+      service: api@internal
+    portfolio-api:
+      rule: "Host(`api.guyromellemagayano.test`)"
+      entryPoints:
+        - web
+      service: portfolio-api
+    portfolio-web:
+      rule: "Host(`guyromellemagayano.test`)"
+      entryPoints:
+        - web
+      service: portfolio-web
+    portfolio-admin:
+      rule: "Host(`admin.guyromellemagayano.test`)"
+      entryPoints:
+        - web
+      service: portfolio-admin
+  services:
+    portfolio-api:
+      loadBalancer:
+        servers:
+          - url: "http://api:5001"
+    portfolio-web:
+      loadBalancer:
+        servers:
+          - url: "http://web:3000"
+    portfolio-admin:
+      loadBalancer:
+        servers:
+          - url: "http://admin:3001"

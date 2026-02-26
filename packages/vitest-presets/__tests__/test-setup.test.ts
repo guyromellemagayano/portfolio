@@ -18,7 +18,7 @@ describe("Test Setup Integration", () => {
     it("should import test-setup.ts without errors", async () => {
       // The setup file is already imported via vitest.config.ts setupFiles
       // This test verifies it doesn't throw when imported
-      await expect(import("../shared/test-setup.ts.ts")).resolves.toBeDefined();
+      await expect(import("../shared/test-setup.ts")).resolves.toBeDefined();
     });
   });
 

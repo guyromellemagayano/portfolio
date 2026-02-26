@@ -20,7 +20,7 @@
     "build": "bunchee",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo dist coverage",
-    "dev": "bunchee --watch",
+    "dev": "node scripts/dev-runner.mjs",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
     "lint": "eslint src/ --max-warnings 0",

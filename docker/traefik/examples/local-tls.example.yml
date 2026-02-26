@@ -1,0 +1,6 @@
+tls:
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /certs/guyromellemagayano.test.pem
+        keyFile: /certs/guyromellemagayano.test-key.pem

@@ -9,9 +9,9 @@ import { describe, expect, it } from "vitest";
 describe("Vitest Presets", () => {
   it("should be able to import presets", async () => {
     // Test that presets can be imported (using .ts files as they are the source)
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
-    const nodePreset = await import("../node/vitest-preset.ts.ts");
-    const reactPreset = await import("../react/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
+    const nodePreset = await import("../node/vitest-preset.ts");
+    const reactPreset = await import("../react/vitest-preset.ts");
 
     expect(browserPreset.browserPreset).toBeDefined();
     expect(nodePreset.nodePreset).toBeDefined();
@@ -19,7 +19,7 @@ describe("Vitest Presets", () => {
   });
 
   it("should have correct test configuration", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
     const config = browserPreset.browserPreset;
 
     expect(config.test).toBeDefined();
@@ -31,7 +31,7 @@ describe("Vitest Presets", () => {
   });
 
   it("should have coverage thresholds configured", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
     const config = browserPreset.browserPreset;
 
     expect(config.test?.coverage?.thresholds).toBeDefined();
@@ -42,7 +42,7 @@ describe("Vitest Presets", () => {
   });
 
   it("should have all coverage reporters configured", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
     const config = browserPreset.browserPreset;
 
     expect(config.test?.coverage?.reporter).toContain("text");
@@ -53,7 +53,7 @@ describe("Vitest Presets", () => {
   });
 
   it("should have node preset with correct environment", async () => {
-    const nodePreset = await import("../node/vitest-preset.ts.ts");
+    const nodePreset = await import("../node/vitest-preset.ts");
     const config = nodePreset.nodePreset;
 
     expect(config.test?.environment).toBe("node");
@@ -64,7 +64,7 @@ describe("Vitest Presets", () => {
   });
 
   it("should have react preset with correct configuration", async () => {
-    const reactPreset = await import("../react/vitest-preset.ts.ts");
+    const reactPreset = await import("../react/vitest-preset.ts");
     const config = reactPreset.reactPreset;
 
     expect(config.test?.environment).toBe("jsdom");
@@ -77,16 +77,16 @@ describe("Vitest Presets", () => {
   });
 
   it("should have browser preset with css enabled", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
     const config = browserPreset.browserPreset;
 
     expect(config.test?.css).toBe(true);
   });
 
   it("should have all presets with setupFiles configured", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
-    const reactPreset = await import("../react/vitest-preset.ts.ts");
-    const nodePreset = await import("../node/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
+    const reactPreset = await import("../react/vitest-preset.ts");
+    const nodePreset = await import("../node/vitest-preset.ts");
 
     expect(browserPreset.browserPreset.test?.setupFiles).toContain(
       "@portfolio/vitest-presets/shared/test-setup.ts"
@@ -100,9 +100,9 @@ describe("Vitest Presets", () => {
   });
 
   it("should have all presets with reportOnFailure enabled", async () => {
-    const browserPreset = await import("../browser/vitest-preset.ts.ts");
-    const reactPreset = await import("../react/vitest-preset.ts.ts");
-    const nodePreset = await import("../node/vitest-preset.ts.ts");
+    const browserPreset = await import("../browser/vitest-preset.ts");
+    const reactPreset = await import("../react/vitest-preset.ts");
+    const nodePreset = await import("../node/vitest-preset.ts");
 
     expect(browserPreset.browserPreset.test?.coverage?.reportOnFailure).toBe(
       true

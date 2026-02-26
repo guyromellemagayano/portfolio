@@ -4,7 +4,7 @@
  * @description Express server composition for the API gateway.
  */
 
-import { json, urlencoded } from "body-parser";
+import bodyParser from "body-parser";
 import cors, { type CorsOptions } from "cors";
 import express, { type Express } from "express";
 
@@ -20,12 +20,7 @@ import { createContentService } from "@api/modules/content/content.service";
 import { createHealthRouter } from "@api/modules/health/health.routes";
 import { createMessageRouter } from "@api/modules/message/message.routes";
 
-/**
- * Resolves the CORS `origin` configuration based on environment and allowlist settings.
- *
- * @param config API runtime configuration.
- * @returns CORS origin configuration for the Express `cors` middleware.
- */
+/** Resolves the CORS `origin` configuration based on environment and allowlist settings. */
 export function resolveCorsOrigin(
   config: ApiRuntimeConfig
 ): CorsOptions["origin"] {
@@ -40,12 +35,9 @@ export function resolveCorsOrigin(
   return true;
 }
 
-/**
- * Creates the composed Express server instance for the API gateway runtime.
- *
- * @returns Configured Express application with middleware and versioned routes.
- */
+/** Creates the composed Express server instance for the API gateway runtime. */
 export const createServer = (): Express => {
+  const { json, urlencoded } = bodyParser;
   const config = getApiConfig();
   const logger = createApiLogger(config.nodeEnv);
   const providers = createProviderRegistry(config, logger);
@@ -72,6 +64,10 @@ export const createServer = (): Express => {
       "CORS allowlist is empty in production. Cross-origin browser requests are disabled."
     );
   }
+
+  app.get("/", (_request, response) => {
+    response.redirect(308, "/v1/status");
+  });
 
   app.use(createHealthRouter());
   app.use(createMessageRouter());
