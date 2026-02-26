@@ -125,6 +125,7 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
   - Header: `Authorization: Bearer <SANITY_WEBHOOK_SECRET>`
   - Filter: `_type in ["article", "page"]`
   - Projection:
+
     ```groq
     {
       "_type": _type,
@@ -185,7 +186,7 @@ make prod-smoke \
 
 ```bash
 make prod-smoke \
-  PROD_SMOKE_WEB_URL="https://guyromellemagayano.com" \
+  PROD_SMOKE_WEB_URL="https://www.guyromellemagayano.com" \
   PROD_SMOKE_API_URL="https://api.guyromellemagayano.com" \
   PROD_SMOKE_ADMIN_URL="https://admin.guyromellemagayano.com"
 ```
