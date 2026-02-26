@@ -42,4 +42,4 @@ If no files specified, ask the user which files to review.
 ## Repository Documentation Convention
 
 - Use one-line JSDoc (`/** ... */`) for single-line documentation text.
-- Use multiline JSDoc only when the comment content spans multiple lines/tags.
+- Use multiline JSDoc only when the comment content genuinely needs multiple lines (caveats, side effects, or optional tags like `@example`/`@throws`). Avoid `@param`/`@returns`; rely on clear names + types.
