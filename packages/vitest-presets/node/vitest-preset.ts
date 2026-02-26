@@ -36,7 +36,6 @@ export const nodePreset = {
         "**/vite.config.*",
         "**/vitest.config.*",
         "**/jest.config.*",
-        "**/webpack.config.*",
         "**/rollup.config.*",
         "**/tailwind.config.*",
         "**/postcss.config.*",
