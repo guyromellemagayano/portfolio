@@ -6,9 +6,9 @@
 
 import { Router } from "express";
 
-import { GatewayError } from "@api/contracts/errors";
-import { sendSuccess } from "@api/contracts/http";
-import type { ContentService } from "@api/modules/content/content.service";
+import { GatewayError } from "../../contracts/errors.js";
+import { sendSuccess } from "../../contracts/http.js";
+import type { ContentService } from "./content.service.js";
 
 /** Creates routes for content retrieval via the configured provider. */
 export function createContentRouter(contentService: ContentService): Router {
