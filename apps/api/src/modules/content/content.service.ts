@@ -8,12 +8,15 @@ import type {
   GatewayArticle,
   GatewayArticleDetail,
 } from "@api/contracts/articles";
+import type { GatewayPage, GatewayPageDetail } from "@api/contracts/pages";
 import type { ContentProvider } from "@api/providers/content/content.provider";
 
 export type ContentService = {
   providerName: ContentProvider["name"];
   getArticles: () => Promise<GatewayArticle[]>;
   getArticleBySlug: (slug: string) => Promise<GatewayArticleDetail | null>;
+  getPages: () => Promise<GatewayPage[]>;
+  getPageBySlug: (slug: string) => Promise<GatewayPageDetail | null>;
 };
 
 /** Creates content service bound to a specific provider implementation. */
@@ -24,5 +27,7 @@ export function createContentService(
     providerName: contentProvider.name,
     getArticles: () => contentProvider.getArticles(),
     getArticleBySlug: (slug: string) => contentProvider.getArticleBySlug(slug),
+    getPages: () => contentProvider.getPages(),
+    getPageBySlug: (slug: string) => contentProvider.getPageBySlug(slug),
   };
 }
