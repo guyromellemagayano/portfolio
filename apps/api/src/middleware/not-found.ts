@@ -6,7 +6,7 @@
 
 import type { RequestHandler } from "express";
 
-import { sendError } from "@api/contracts/http";
+import { sendError } from "../contracts/http.js";
 
 export const notFoundHandler: RequestHandler = (request, response) => {
   return sendError(request, response, {

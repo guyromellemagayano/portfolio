@@ -7,8 +7,8 @@
 import type {
   GatewayArticle,
   GatewayArticleDetail,
-} from "@api/contracts/articles";
-import type { GatewayPage, GatewayPageDetail } from "@api/contracts/pages";
+} from "../../contracts/articles.js";
+import type { GatewayPage, GatewayPageDetail } from "../../contracts/pages.js";
 
 export type ContentProviderName = "sanity" | "static";
 

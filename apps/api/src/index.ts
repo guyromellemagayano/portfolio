@@ -8,9 +8,9 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { getApiConfig } from "@api/config/env";
-import { createApiLogger } from "@api/config/logger";
-import { createServer } from "@api/server";
+import { getApiConfig } from "./config/env.js";
+import { createApiLogger } from "./config/logger.js";
+import { createServer } from "./server.js";
 
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRootDirectory = path.resolve(currentDirectory, "../../..");

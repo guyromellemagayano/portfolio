@@ -8,17 +8,17 @@ import bodyParser from "body-parser";
 import cors, { type CorsOptions } from "cors";
 import express, { type Express } from "express";
 
-import { type ApiRuntimeConfig, getApiConfig } from "@api/config/env";
-import { createApiLogger } from "@api/config/logger";
-import { createProviderRegistry } from "@api/gateway/provider-registry";
-import { createErrorHandler } from "@api/middleware/error-handler";
-import { createHttpLoggerMiddleware } from "@api/middleware/http-logger";
-import { notFoundHandler } from "@api/middleware/not-found";
-import { createRequestContextMiddleware } from "@api/middleware/request-context";
-import { createContentRouter } from "@api/modules/content/content.routes";
-import { createContentService } from "@api/modules/content/content.service";
-import { createHealthRouter } from "@api/modules/health/health.routes";
-import { createMessageRouter } from "@api/modules/message/message.routes";
+import { type ApiRuntimeConfig, getApiConfig } from "./config/env.js";
+import { createApiLogger } from "./config/logger.js";
+import { createProviderRegistry } from "./gateway/provider-registry.js";
+import { createErrorHandler } from "./middleware/error-handler.js";
+import { createHttpLoggerMiddleware } from "./middleware/http-logger.js";
+import { notFoundHandler } from "./middleware/not-found.js";
+import { createRequestContextMiddleware } from "./middleware/request-context.js";
+import { createContentRouter } from "./modules/content/content.routes.js";
+import { createContentService } from "./modules/content/content.service.js";
+import { createHealthRouter } from "./modules/health/health.routes.js";
+import { createMessageRouter } from "./modules/message/message.routes.js";
 
 /** Resolves the CORS `origin` configuration based on environment and allowlist settings. */
 export function resolveCorsOrigin(

@@ -6,10 +6,10 @@
 
 import type { ILogger } from "@portfolio/logger";
 
-import type { ApiRuntimeConfig } from "@api/config/env";
-import type { ContentProvider } from "@api/providers/content/content.provider";
-import { createSanityContentProvider } from "@api/providers/content/sanity-content.provider";
-import { createStaticContentProvider } from "@api/providers/content/static-content.provider";
+import type { ApiRuntimeConfig } from "../config/env.js";
+import type { ContentProvider } from "../providers/content/content.provider.js";
+import { createSanityContentProvider } from "../providers/content/sanity-content.provider.js";
+import { createStaticContentProvider } from "../providers/content/static-content.provider.js";
 
 export type ProviderRegistry = {
   content: ContentProvider;

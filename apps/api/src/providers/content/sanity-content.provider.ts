@@ -13,10 +13,10 @@ import type { ILogger } from "@portfolio/logger";
 import type {
   GatewayArticle,
   GatewayArticleDetail,
-} from "@api/contracts/articles";
-import { GatewayError } from "@api/contracts/errors";
-import type { GatewayPage, GatewayPageDetail } from "@api/contracts/pages";
-import type { ContentProvider } from "@api/providers/content/content.provider";
+} from "../../contracts/articles.js";
+import { GatewayError } from "../../contracts/errors.js";
+import type { GatewayPage, GatewayPageDetail } from "../../contracts/pages.js";
+import type { ContentProvider } from "./content.provider.js";
 
 export type CreateSanityContentProviderOptions = {
   projectId: string;

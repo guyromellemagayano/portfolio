@@ -8,8 +8,8 @@ import type { ErrorRequestHandler } from "express";
 
 import type { ILogger } from "@portfolio/logger";
 
-import { toGatewayError } from "@api/contracts/errors";
-import { sendError } from "@api/contracts/http";
+import { toGatewayError } from "../contracts/errors.js";
+import { sendError } from "../contracts/http.js";
 
 /** Creates an error middleware that normalizes and logs all request failures. */
 export function createErrorHandler(baseLogger: ILogger): ErrorRequestHandler {
