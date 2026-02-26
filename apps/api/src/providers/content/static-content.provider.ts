@@ -16,5 +16,11 @@ export function createStaticContentProvider(): ContentProvider {
     async getArticleBySlug() {
       return null;
     },
+    async getPages() {
+      return [];
+    },
+    async getPageBySlug() {
+      return null;
+    },
   };
 }

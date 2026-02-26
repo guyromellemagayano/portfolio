@@ -173,6 +173,8 @@ describe("GET /v1/content/articles contract", () => {
         providerName: "static",
         getArticles: vi.fn().mockResolvedValue([]),
         getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
       },
       "/articles"
     );
@@ -227,6 +229,8 @@ describe("GET /v1/content/articles contract", () => {
           })
         ),
         getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
       },
       "/articles"
     );
@@ -318,6 +322,8 @@ describe("GET /v1/content/articles/:slug contract", () => {
             },
           ],
         }),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
       },
       "/articles/:slug"
     );
@@ -356,6 +362,8 @@ describe("GET /v1/content/articles/:slug contract", () => {
         providerName: "sanity",
         getArticles: vi.fn().mockResolvedValue([]),
         getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
       },
       "/articles/:slug"
     );
@@ -384,6 +392,204 @@ describe("GET /v1/content/articles/:slug contract", () => {
       },
       meta: {
         correlationId: "corr-test-article-detail-missing",
+      },
+    });
+  });
+});
+
+describe("GET /v1/content/pages contract", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("returns the standard success envelope with page list metadata", async () => {
+    const request = createMockRequest({
+      path: "/v1/content/pages",
+      correlationId: "corr-test-pages-success",
+    });
+    const response = createMockResponse();
+    const handler = getContentRouteHandler(
+      {
+        providerName: "sanity",
+        getArticles: vi.fn().mockResolvedValue([]),
+        getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([
+          {
+            id: "page-1",
+            slug: "now",
+            title: "Now",
+            subheading: "Now",
+            intro: "What I am focused on right now.",
+            updatedAt: "2026-02-25T00:00:00.000Z",
+            hideFromSitemap: false,
+            seoNoIndex: false,
+          },
+        ]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
+      },
+      "/pages"
+    );
+
+    await runRequestContext(request, response);
+    await invokeRoute(handler, request, response);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      success: true,
+      data: [
+        {
+          slug: "now",
+          title: "Now",
+          hideFromSitemap: false,
+          seoNoIndex: false,
+        },
+      ],
+      meta: {
+        correlationId: "corr-test-pages-success",
+        provider: "sanity",
+        count: 1,
+        module: "content",
+        resource: "page",
+      },
+    });
+  });
+});
+
+describe("GET /v1/content/pages/:slug contract", () => {
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("returns the standard success envelope for page detail", async () => {
+    const request = createMockRequest({
+      path: "/v1/content/pages/now",
+      correlationId: "corr-test-page-detail-success",
+      params: {
+        slug: "now",
+      },
+    });
+    const response = createMockResponse();
+    const handler = getContentRouteHandler(
+      {
+        providerName: "sanity",
+        getArticles: vi.fn().mockResolvedValue([]),
+        getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue({
+          id: "page-1",
+          slug: "now",
+          title: "Now",
+          subheading: "Now",
+          intro: "What I am focused on right now.",
+          updatedAt: "2026-02-25T00:00:00.000Z",
+          hideFromSitemap: true,
+          seoTitle: "Now | SEO",
+          seoDescription: "Current focus areas and priorities.",
+          seoCanonicalPath: "/now",
+          seoNoIndex: true,
+          seoNoFollow: true,
+          seoOgTitle: "Now OG",
+          seoOgDescription: "Now Open Graph Description",
+          seoOgImageUrl: "https://cdn.example.com/pages/now-og.jpg",
+          seoOgImageWidth: 1200,
+          seoOgImageHeight: 630,
+          seoOgImageAlt: "Now OG image alt text",
+          seoTwitterCard: "summary_large_image",
+          body: [
+            {
+              _type: "block",
+              style: "normal",
+              children: [
+                {
+                  _type: "span",
+                  text: "Shipping Sanity-backed pages.",
+                },
+              ],
+            },
+          ],
+        }),
+      },
+      "/pages/:slug"
+    );
+
+    await runRequestContext(request, response);
+    await invokeRoute(handler, request, response);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toMatchObject({
+      success: true,
+      data: {
+        slug: "now",
+        hideFromSitemap: true,
+        seoTitle: "Now | SEO",
+        seoCanonicalPath: "/now",
+        seoNoIndex: true,
+        seoNoFollow: true,
+        seoTwitterCard: "summary_large_image",
+        body: expect.any(Array),
+      },
+      meta: {
+        correlationId: "corr-test-page-detail-success",
+        provider: "sanity",
+        slug: "now",
+        module: "content",
+        resource: "page",
+      },
+    });
+  });
+
+  it("returns the standard error envelope for a missing page slug", async () => {
+    const request = createMockRequest({
+      path: "/v1/content/pages/missing-page",
+      correlationId: "corr-test-page-detail-missing",
+      params: {
+        slug: "missing-page",
+      },
+    });
+    const response = createMockResponse();
+    const handler = getContentRouteHandler(
+      {
+        providerName: "sanity",
+        getArticles: vi.fn().mockResolvedValue([]),
+        getArticleBySlug: vi.fn().mockResolvedValue(null),
+        getPages: vi.fn().mockResolvedValue([]),
+        getPageBySlug: vi.fn().mockResolvedValue(null),
+      },
+      "/pages/:slug"
+    );
+
+    await runRequestContext(request, response);
+
+    let routeError: unknown;
+
+    try {
+      await invokeRoute(handler, request, response);
+    } catch (error) {
+      routeError = error;
+    }
+
+    runErrorHandler(routeError, request, response);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toMatchObject({
+      success: false,
+      error: {
+        code: "CONTENT_PAGE_NOT_FOUND",
+        message: "Page not found.",
+        details: {
+          slug: "missing-page",
+        },
+      },
+      meta: {
+        correlationId: "corr-test-page-detail-missing",
       },
     });
   });
