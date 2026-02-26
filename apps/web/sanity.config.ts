@@ -6,6 +6,7 @@
 
 "use client";
 
+import logger from "@portfolio/logger";
 import { createSanityStudioConfig } from "@portfolio/sanity-studio/config/studio";
 import { defaultSanitySchemaTypes } from "@portfolio/sanity-studio/schema-types";
 
@@ -15,9 +16,9 @@ const sanityConfig = getSanityConfig();
 const projectId = sanityConfig?.projectId ?? "missing-project-id";
 const dataset = sanityConfig?.dataset ?? "missing-dataset";
 
-if (globalThis?.process?.env?.NODE_ENV !== "production") {
-  // eslint-disable-next-line no-console -- Dev-only visibility for resolved Studio target during local setup/troubleshooting
-  console.info("[sanity.studio.config] Resolved Sanity project config", {
+// eslint-disable-next-line no-undef -- Next.js inlines process.env.NODE_ENV in client bundles
+if (process.env.NODE_ENV !== "production") {
+  logger.info("[sanity.studio.config] Resolved Sanity project config", {
     projectId,
     dataset,
   });

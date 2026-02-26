@@ -28,8 +28,8 @@ export const getEnvironmentInfo = (): {
 } => {
   return {
     isDevelopment: globalThis?.process?.env?.NODE_ENV === "development",
-    isProduction: globalThis?.process.env.NODE_ENV === "production",
-    isTest: globalThis?.process.env.NODE_ENV === "test",
+    isProduction: globalThis?.process?.env?.NODE_ENV === "production",
+    isTest: globalThis?.process?.env?.NODE_ENV === "test",
   };
 };
 
