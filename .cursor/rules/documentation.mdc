@@ -18,7 +18,7 @@ Concise, actionable documentation practices for maintainable and discoverable co
 | **Simple Components** | One-liner | Presentational/Utility components |
 | **Standard Components** | One-liner + `@example` | Most components |
 | **Complex Components** | Full JSDoc + `@remarks` | Compound/Orchestrator with complex behavior |
-| **Functions** | Full JSDoc with `@param`/`@returns` | Utility functions, hooks |
+| **Functions** | Concise behavior-focused JSDoc (no `@param`/`@returns`) | Utility functions, hooks |
 | **Memoized Components** | Brief explanation | When custom comparison exists |
 
 ## JSDoc Standards
@@ -26,7 +26,7 @@ Concise, actionable documentation practices for maintainable and discoverable co
 ### Block Length Standard
 
 **Rule**: Use single-line JSDoc when the content is a single sentence.  
-Use multiline JSDoc only when content actually spans multiple lines (e.g., tags like `@param`, `@returns`, `@example`, `@remarks`).
+Use multiline JSDoc only when content actually spans multiple lines (e.g., caveats, edge cases, `@example`, `@remarks`, `@throws`).
 
 ```typescript
 // ✅ GOOD: one-line content uses one-line JSDoc
@@ -121,40 +121,32 @@ export const Article = ...
 
 ### Function Documentation
 
-**Rule**: Full JSDoc for exported utility functions and hooks.
+**Rule**: Use concise JSDoc for exported utility functions and hooks. Document intent/behavior only, and avoid `@param`/`@returns` because clear names + TypeScript types should carry the API shape.
 
 ```typescript
 /**
- * Formats a date string according to the specified locale and options.
+ * Formats a date value for display using a locale and optional Intl formatting overrides.
  *
- * @param date - The date to format (string, Date, or timestamp)
- * @param locale - The locale to use for formatting (default: 'en-US')
- * @param options - Intl.DateTimeFormat options
- * @returns Formatted date string
- * @throws {Error} If date is invalid or cannot be parsed
+ * Throws when the input cannot be parsed into a valid date.
  *
  * @example
  * ```typescript
  * formatDateSafely('2023-01-01', 'en-US', { year: 'numeric', month: 'long' })
- * // Returns: "January 2023"
+ * // "January 2023"
  * ```
  */
 export function formatDateSafely(...)
 
 ```typescript
 /**
- * Formats a date string according to the specified locale and options.
+ * Formats a date value for display using a locale and optional Intl formatting overrides.
  *
- * @param date - The date to format (string, Date, or timestamp)
- * @param locale - The locale to use for formatting (default: 'en-US')
- * @param options - Intl.DateTimeFormat options
- * @returns Formatted date string
- * @throws {Error} If date is invalid or cannot be parsed
+ * Throws when the input cannot be parsed into a valid date.
  *
  * @example
  * ```typescript
  * formatDateSafely('2023-01-01', 'en-US', { year: 'numeric', month: 'long' })
- * // Returns: "January 2023"
+ * // "January 2023"
  * ```
  */
 export function formatDateSafely(
@@ -191,8 +183,7 @@ export const MemoizedArticle = React.memo(Article, ...)
 
 ### JSDoc Tags Reference
 
-- `@param {Type} name - Description`
-- `@returns {Type} Description`
+- `@param` / `@returns` — Do not use in this repository; prefer self-explanatory names and TypeScript types
 - `@throws {ErrorType} Description`
 - `@example Code example`
 - `@remarks Additional notes`
@@ -530,15 +521,14 @@ export const MemoizedComponentName = React.memo(ComponentName, ...)
 /**
  * [One-line description of what the function does].
  *
- * @param paramName - Parameter description
- * @param optionalParam - Optional parameter description
- * @returns Return value description
+ * [Optional second line for non-obvious behavior, side effects, or caveats.]
+ *
  * @throws {ErrorType} When this error occurs
  *
  * @example
  * ```typescript
  * functionName('value', { option: true })
- * // Returns: result
+ * // result
  * ```
  */
 export function functionName(paramName: string, optionalParam?: Options): ReturnType {
@@ -552,7 +542,7 @@ export function functionName(paramName: string, optionalParam?: Options): Return
 - ✅ `@file` uses repository-relative path from workspace root (`apps/...` or `packages/...`)
 - ✅ All exported types have one-liner JSDoc
 - ✅ All exported components have JSDoc (one-liner minimum)
-- ✅ All exported functions have full JSDoc with `@param`/`@returns`
+- ✅ Exported functions use concise behavior-focused JSDoc (no `@param`/`@returns`)
 - ✅ All interface properties have inline `/** */` comments
 
 ### Recommended (When Applicable)

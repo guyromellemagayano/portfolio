@@ -19,7 +19,7 @@ Comprehensive performance optimization guide for React and Next.js applications,
 ## Documentation Formatting Convention
 
 - Use one-line JSDoc (`/** ... */`) when the description is a single line.
-- Use multiline JSDoc only when the content is genuinely multiline (e.g., includes tags like `@param`, `@returns`, `@example`, or multiple sentences/lines).
+- Use multiline JSDoc only when the content is genuinely multiline (e.g., multiple sentences/lines, caveats, or optional tags like `@example`/`@throws`). Avoid `@param`/`@returns`; rely on clear names + types.
 
 ---
 
