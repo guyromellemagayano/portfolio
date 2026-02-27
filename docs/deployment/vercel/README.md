@@ -2,7 +2,7 @@
 
 This monorepo deploys to Vercel as **three separate projects**:
 
-- `apps/web` -> `guyromellemagayano.com` (main site + embedded Sanity Studio at `/studio`)
+- `apps/web` -> `guyromellemagayano.com` (main site)
 - `apps/api` -> `api.guyromellemagayano.com` (REST API gateway)
 - `apps/admin` -> `admin.guyromellemagayano.com` (Vite admin app)
 
@@ -19,9 +19,38 @@ This keeps the existing app boundaries intact and avoids moving API gateway logi
 - Web: `https://guyromellemagayano.com`
 - API: `https://api.guyromellemagayano.com`
 - Admin: `https://admin.guyromellemagayano.com`
-- Studio (embedded): `https://guyromellemagayano.com/studio`
+- Studio (Sanity-hosted): `https://<your-studio>.sanity.studio`
 
 ## Vercel Project Setup
+
+### Local Env Pull Automation
+
+- Pull env vars from linked Vercel projects into app-level `.env.local` files:
+
+  ```bash
+  make vercel-env-pull VERCEL_ENV_TARGET=development
+  ```
+
+- Pull and then regenerate root `.env.local` from app-level env files:
+
+  ```bash
+  make vercel-env-sync-local VERCEL_ENV_TARGET=development
+  ```
+
+  This keeps app-level `.env.local` files in place.
+
+- For preview branch env pulls, set `VERCEL_GIT_BRANCH`:
+
+  ```bash
+  make vercel-env-pull VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration
+  ```
+
+- Run arbitrary Vercel CLI commands on host:
+
+  ```bash
+  make vercel VERCEL_ARGS="whoami"
+  make vercel VERCEL_ARGS="link --cwd apps/web"
+  ```
 
 ## `apps/web`
 
@@ -44,6 +73,7 @@ NEXT_PUBLIC_SANITY_API_VERSION=2025-02-19
 
 SANITY_API_READ_TOKEN=...
 SANITY_WEBHOOK_SECRET=...
+SANITY_STUDIO_PREVIEW_ORIGIN=https://guyromellemagayano.com
 ```
 
 Optional sitemap behavior envs (only if you want overrides):
@@ -74,7 +104,7 @@ Do **not** set in Preview:
 - `NEXT_PUBLIC_SANITY_API_VERSION`
 - `NEXT_PUBLIC_SITE_URL`
 
-This keeps Preview Studio disabled while allowing Preview content pages to read from the production API.
+This keeps preview deploys stable while allowing content pages to read from the production API.
 
 ## `apps/api`
 
@@ -137,8 +167,12 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
 
 ## Sanity Production Setup
 
-- Register Studio host at:
-  - `https://guyromellemagayano.com/studio`
+- Deploy Studio to Sanity-hosted infrastructure from `apps/web`:
+  - `pnpm --filter web sanity:deploy`
+- Configure Studio preview origin:
+  - `SANITY_STUDIO_PREVIEW_ORIGIN=https://guyromellemagayano.com`
+- In Sanity project settings, register hosted Studio URL:
+  - `https://<your-studio>.sanity.studio`
 - Add Sanity API CORS origin:
   - `https://guyromellemagayano.com`
 - Configure webhook:
@@ -154,6 +188,24 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
     }
     ```
 
+### Vercel Sanity Integration
+
+- Install the Sanity integration in Vercel for the `apps/web` project.
+- Use the integration to sync `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, and `NEXT_PUBLIC_SANITY_API_VERSION`.
+- Keep `SANITY_API_READ_TOKEN` and `SANITY_WEBHOOK_SECRET` configured in Vercel `apps/web` envs.
+- Verify the integration webhook target remains `https://guyromellemagayano.com/api/revalidate/sanity`.
+- Important boundary: this integration configures Vercel project env/runtime behavior and webhook wiring for `apps/web`; it does not inject env vars into `sanity deploy` executions for Sanity-hosted Studio.
+
+### Hosted Studio Deploy Env Requirements
+
+- When deploying Studio (`pnpm --filter web sanity:deploy`), provide these vars in the deploy context (`apps/web/.env.local`, shell exports, or CI env):
+  - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET` (preferred)
+  - `SANITY_STUDIO_API_PROJECT_ID` + `SANITY_STUDIO_API_DATASET` (alternative)
+  - `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET` (fallback)
+  - `SANITY_PROJECT_ID` + `SANITY_DATASET` (fallback)
+  - `SANITY_STUDIO_PREVIEW_ORIGIN`
+- Studio config is strict env-driven (no hardcoded project/dataset defaults). Missing required envs now fail fast with a clear error before deploy/build completes.
+
 ## Verification Checklist
 
 ### API
@@ -166,7 +218,6 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
 ### Web
 
 - `https://guyromellemagayano.com`
-- `https://guyromellemagayano.com/studio`
 - `https://guyromellemagayano.com/sitemap.xml`
 - Article and page routes render with correct metadata and canonical URLs
 
@@ -186,7 +237,6 @@ make prod-smoke
 This verifies:
 
 - `web` home
-- `web` Studio path (`/studio`)
 - `web` `sitemap.xml`
 - `api` root redirect target (via `curl -L`)
 - `api` `/v1/status`

@@ -46,6 +46,7 @@ logs/
 .vercel
 .turbo/
 .cache/
+apps/web/.sanity/
 
 # TypeScript
 *.tsbuildinfo

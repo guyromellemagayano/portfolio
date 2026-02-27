@@ -42,7 +42,11 @@ pick_env_value() {
   printf '%s' "$fallback"
 }
 
-SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE"
+if [ "${PREFER_APP_ENV_FILES:-0}" = "1" ]; then
+  SOURCE_FILES="$WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE $ROOT_ENV_FILE"
+else
+  SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE"
+fi
 
 local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.test\"" $SOURCE_FILES)
 # Keep host-side defaults local-safe. Edge compose overlays override these for hostname routing.
