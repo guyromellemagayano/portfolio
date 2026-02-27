@@ -50,6 +50,7 @@
     "react-intersection-observer": "catalog:",
     "sanity": "catalog:",
     "sharp": "catalog:",
+    "styled-components": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
@@ -80,7 +81,5 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  },
-  "peerDependencies": {},
-  "optionalDependencies": {}
+  }
 }
