@@ -25,6 +25,7 @@ make up
 ## Start (Traefik + Local Hostnames, Recommended First Run)
 
 ```bash
+make env-local-normalize
 make bootstrap-watch
 ```
 
@@ -32,6 +33,8 @@ This foreground first-run command validates the edge Compose stack, attempts loc
 
 - `docker/compose/local.yml`
 - `docker/compose/edge.local.yml`
+
+`make env-local-normalize` keeps root `.env.local` as the single local Docker source of truth and removes app-level `.env.local` files created by `vercel link`.
 
 `docker/compose/edge.local.yml` is the default file-provider Traefik overlay (stable local routing path on Docker Desktop/macOS).
 
@@ -235,7 +238,7 @@ TLS overlay files:
 
 Recommended flow:
 
-1. Run the helper (recommended):
+- Run the helper (recommended):
 
 ```bash
 make tls-local-setup
@@ -243,7 +246,7 @@ make tls-local-setup
 
 This runs `mkcert`, writes certs to `docker/traefik/certs/`, and creates `docker/traefik/dynamic/local-tls.yml` for the current `LOCAL_DEV_DOMAIN`.
 
-2. Start the TLS edge stack:
+- Start the TLS edge stack:
 
 ```bash
 make up-edge-tls-watch
