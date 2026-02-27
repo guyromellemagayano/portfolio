@@ -104,6 +104,7 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	tls-local-setup \
 	use-test-domain \
 	use-localhost-domain \
+	env-local-normalize \
 	render-edge-routes \
 	check-types \
 	lint \
@@ -134,6 +135,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make dnsmasq-local" ".test wildcard DNS (default path)."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
 	@printf '%-42s %s\n' "make edge-dns-doctor" "Diagnose browser DNS_PROBE_* / DoH issues."
+	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local for Docker and remove app-level .env.local."
 	@printf '%-42s %s\n' "make use-localhost-domain" "Switch to .localhost fallback mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
 	@printf '\n🐞 Debug\n'
@@ -472,6 +474,9 @@ use-test-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.test` to ENV_FILE
 use-localhost-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.localhost` to ENV_FILE (browser DoH fallback path).
 	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.localhost
 	@printf 'Next: make down-edge && make up-edge-watch\n'
+
+env-local-normalize: ## Normalize root `.env.local` for local Docker and remove app-level `.env.local` files from Vercel link.
+	@sh docker/scripts/normalize-local-env.sh "$(ENV_FILE)"
 
 up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in foreground.
 	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
