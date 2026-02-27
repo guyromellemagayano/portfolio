@@ -36,6 +36,23 @@ This foreground first-run command validates the edge Compose stack, attempts loc
 
 `make env-local-normalize` keeps root `.env.local` as the single local Docker source of truth and removes app-level `.env.local` files created by `vercel link`.
 
+If you want to refresh linked Vercel project env vars before normalization:
+
+```bash
+make vercel-env-sync-local VERCEL_ENV_TARGET=development
+```
+
+This pulls env vars for `apps/web`, `apps/api`, and `apps/admin`, then regenerates root `.env.local`.
+The command keeps app-level `.env.local` files after sync.
+
+Host-side Vercel CLI commands:
+
+```bash
+make vercel VERCEL_ARGS="whoami"
+make vercel VERCEL_ARGS="link --cwd apps/web"
+make vercel-env-pull VERCEL_ENV_TARGET=development
+```
+
 `docker/compose/edge.local.yml` is the default file-provider Traefik overlay (stable local routing path on Docker Desktop/macOS).
 
 If you prefer the same first-run flow without Compose watch:
@@ -100,28 +117,27 @@ Localhost ports:
 - Web app: `http://localhost:3000`
 - API gateway: `http://localhost:5001`
 - Admin app: `http://localhost:3001`
-- Sanity Studio (embedded): `http://localhost:3000/studio`
+- Sanity-hosted Studio: `https://<your-studio>.sanity.studio`
 
 Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.test`:
 
 - Web app: `http://guyromellemagayano.test`
-- Sanity Studio (embedded): `http://guyromellemagayano.test/studio`
 - API gateway: `http://api.guyromellemagayano.test`
 - Admin app: `http://admin.guyromellemagayano.test`
 - Traefik dashboard: `http://traefik.guyromellemagayano.test` (root redirects to `/dashboard/`)
 
-## Sanity Local Dev (Embedded Studio)
+## Sanity Local Dev (Hosted Studio)
 
-- Use the root-domain Studio path (matches production routing more closely):
-  - `http://guyromellemagayano.test/studio`
+- Use hosted Studio and point preview links to local web:
+  - `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.test"`
 - Recommended local `.env.local` values:
   - `NEXT_PUBLIC_SANITY_DATASET="development"`
   - `SANITY_DATASET="development"`
   - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
 - In Sanity project settings:
-  - Add development host: `http://guyromellemagayano.test/studio`
+  - Add development host: `https://<your-studio>.sanity.studio`
   - Add API CORS origin: `http://guyromellemagayano.test`
-- If you use the `.localhost` fallback mode, add the matching `.localhost` Studio URL and CORS origin too.
+- If you use the `.localhost` fallback mode, use `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.localhost"` and matching CORS origin.
 - Restart after env/domain changes:
 
 ```bash
@@ -168,7 +184,7 @@ make logs-edge
 # Optional local TLS overlay in foreground with Compose watch
 make up-edge-tls-watch
 
-# Run a GET-based edge routing smoke check (Traefik dashboard + web + /studio + api + admin)
+# Run a GET-based edge routing smoke check (Traefik dashboard + web + api + admin)
 make edge-smoke
 
 # Optional: container rebuild/restart watch in another terminal
