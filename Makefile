@@ -30,6 +30,10 @@ PROD_SMOKE_ADMIN_URL ?= https://admin.guyromellemagayano.com
 PROD_SMOKE_ARTICLE_PATH ?=
 PROD_SMOKE_PAGE_PATH ?=
 SKIP_DNS_SETUP ?= 0
+VERCEL_ENV_TARGET ?= development
+VERCEL_GIT_BRANCH ?=
+VERCEL_PULL_ENV_FILE ?= .env.local
+VERCEL_ARGS ?= whoami
 
 COMPOSE := docker compose
 COMPOSE_BASE := FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
@@ -105,6 +109,13 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	use-test-domain \
 	use-localhost-domain \
 	env-local-normalize \
+	vercel-env-pull \
+	vercel-env-pull-web \
+	vercel-env-pull-api \
+	vercel-env-pull-admin \
+	vercel-env-sync-local \
+	vercel-host-check \
+	vercel \
 	render-edge-routes \
 	check-types \
 	lint \
@@ -125,7 +136,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n🚦 Golden Path\n'
 	@printf '%-42s %s\n' "make doctor" "Validate Docker + Compose."
 	@printf '%-42s %s\n' "make bootstrap-watch" "First run: DNS setup + edge stack + watch."
-	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/studio/api/admin)."
+	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api/admin)."
 	@printf '\n🎯 Daily Use\n'
 	@printf '%-42s %s\n' "make up-edge-watch" "Foreground dev with local hostnames."
 	@printf '%-42s %s\n' "make up-edge-detached" "Background dev stack."
@@ -152,6 +163,8 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin endpoints."
 	@printf '%-42s %s\n' "make docs-catalog-check" "Verify docs/catalog/README.md matches repo READMEs."
 	@printf '%-42s %s\n' "make docs-catalog-update" "Regenerate docs/catalog/README.md from repo READMEs."
+	@printf '%-42s %s\n' "make vercel-host-check" "Validate host Vercel CLI availability/fallback."
+	@printf '%-42s %s\n' "make vercel-env-pull" "Pull app envs from linked Vercel projects."
 	@printf '\n'
 
 help-all: ## Show the full target catalog, variables, and examples.
@@ -172,9 +185,13 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_DOCKER_API_VERSION" "Docker API version (debug overlay)" "$(TRAEFIK_DOCKER_API_VERSION)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_ENABLE_DOCKER_PROVIDER" "Legacy toggle (prefer up-edge-debug* targets)" "$(TRAEFIK_ENABLE_DOCKER_PROVIDER)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_LOG_LEVEL" "Traefik log level (ERROR/INFO/DEBUG)" "$(TRAEFIK_LOG_LEVEL)"
-	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_WEB_URL" "Production web URL for `make prod-smoke`" "$(PROD_SMOKE_WEB_URL)"
-	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_API_URL" "Production API URL for `make prod-smoke`" "$(PROD_SMOKE_API_URL)"
-	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_ADMIN_URL" "Production admin URL for `make prod-smoke`" "$(PROD_SMOKE_ADMIN_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_WEB_URL" "Production web URL for make prod-smoke" "$(PROD_SMOKE_WEB_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_API_URL" "Production API URL for make prod-smoke" "$(PROD_SMOKE_API_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_ADMIN_URL" "Production admin URL for make prod-smoke" "$(PROD_SMOKE_ADMIN_URL)"
+	@printf '%-32s %s (current: %s)\n' "VERCEL_ENV_TARGET" "Vercel env target for make vercel-env*" "$(VERCEL_ENV_TARGET)"
+	@printf '%-32s %s (current: %s)\n' "VERCEL_GIT_BRANCH" "Optional preview branch for make vercel-env*" "$(VERCEL_GIT_BRANCH)"
+	@printf '%-32s %s (current: %s)\n' "VERCEL_PULL_ENV_FILE" "Output filename per app for make vercel-env*" "$(VERCEL_PULL_ENV_FILE)"
+	@printf '%-32s %s (current: %s)\n' "VERCEL_ARGS" "Arguments for make vercel" "$(VERCEL_ARGS)"
 	@printf '%-32s %s (current: %s)\n' "WATCH_SERVICES" 'Services passed to `docker compose watch`' "$(WATCH_SERVICES)"
 	@printf '%-32s %s (current: %s)\n' "LOG_TAIL" 'Default tail lines for `make logs*`' "$(LOG_TAIL)"
 	@printf '%-32s %s (current: %s)\n' "FORCE_PNPM_INSTALL" "1 forces pnpm reinstall in containers" "$(FORCE_PNPM_INSTALL)"
@@ -191,11 +208,15 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make ps-edge" "Inspect edge stack service status."
 	@printf '%-44s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-44s %s\n' "make watch-edge" 'Run Compose watch (best with `make up-edge-detached`).'
-	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/studio/api/admin)."
+	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/api/admin)."
 	@printf '\n🐞 Debug / Troubleshooting\n'
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
 	@printf '%-44s %s\n' "make dnsmasq-status" "Advisory Homebrew dnsmasq status only."
 	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + .localhost fallback guidance."
+	@printf '%-44s %s\n' "make vercel-host-check" "Check host Vercel CLI install and fallback readiness."
+	@printf '%-44s %s\n' "make vercel" "Run Vercel CLI on host."
+	@printf '%-44s %s\n' "make vercel-env-pull" "Pull app-level envs from linked Vercel projects."
+	@printf '%-44s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env.local."
 	@printf '%-44s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local-tls.yml."
 	@printf '%-44s %s\n' "make up-edge-debug-watch" "Docker-provider debug mode (socket-proxy-backed)."
 	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin + sitemap."
@@ -205,6 +226,11 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make up-edge-detached && make logs-edge\n'
 	@printf 'make dnsmasq-local && make edge-smoke\n'
 	@printf 'make edge-dns-doctor\n'
+	@printf 'make vercel-host-check\n'
+	@printf 'make vercel VERCEL_ARGS="whoami"\n'
+	@printf 'make vercel VERCEL_ARGS="link --cwd apps/web"\n'
+	@printf 'make vercel-env-pull VERCEL_ENV_TARGET=development\n'
+	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration\n'
 	@printf 'make use-localhost-domain\n'
 	@printf 'make tls-local-setup && make up-edge-tls-watch\n'
 	@printf 'make up-edge-debug-watch  # debug Docker-provider routing\n'
@@ -344,7 +370,7 @@ edge-hosts: ## Print /etc/hosts entries for the configured local hostname domain
 	@printf '127.0.0.1 admin.%s\n' "$(LOCAL_DEV_DOMAIN)"
 	@printf '127.0.0.1 traefik.%s\n' "$(LOCAL_DEV_DOMAIN)"
 
-edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, /studio, api, admin).
+edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, api, admin).
 	@status=0; \
 	check_code() { \
 		label="$$1"; \
@@ -367,12 +393,11 @@ edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web
 	}; \
 	check_code "traefik-dashboard" "http://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "web-home" "http://$(LOCAL_DEV_DOMAIN)/" "200"; \
-	check_code "web-studio-path" "http://$(LOCAL_DEV_DOMAIN)/studio" "200"; \
 	check_code "api-status" "http://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
 	check_code "admin-home" "http://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
-edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashboard, web, /studio, api, admin).
+edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashboard, web, api, admin).
 	@status=0; \
 	check_code() { \
 		label="$$1"; \
@@ -395,7 +420,6 @@ edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashbo
 	}; \
 	check_code "traefik-dashboard-tls" "https://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "web-home-tls" "https://$(LOCAL_DEV_DOMAIN)/" "200"; \
-	check_code "web-studio-path-tls" "https://$(LOCAL_DEV_DOMAIN)/studio" "200"; \
 	check_code "api-status-tls" "https://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
 	check_code "admin-home-tls" "https://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
@@ -477,6 +501,53 @@ use-localhost-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.localhost` t
 
 env-local-normalize: ## Normalize root `.env.local` for local Docker and remove app-level `.env.local` files from Vercel link.
 	@sh docker/scripts/normalize-local-env.sh "$(ENV_FILE)"
+
+##@ ☁️ Vercel
+
+vercel-host-check: ## Check host Vercel CLI install and fallback readiness (`vercel` or `pnpm`).
+	@if command -v vercel >/dev/null 2>&1; then \
+		vercel_path="$$(command -v vercel)"; \
+		if vercel --version >/dev/null 2>&1; then \
+			printf 'vercel-host-check: found `vercel` at %s\n' "$$vercel_path"; \
+		else \
+			printf 'vercel-host-check: `vercel` exists at %s but failed to execute.\n' "$$vercel_path" >&2; \
+			printf 'Reinstall with `npm i -g vercel`.\n' >&2; \
+			exit 127; \
+		fi; \
+	elif command -v pnpm >/dev/null 2>&1; then \
+		printf 'vercel-host-check: global `vercel` was not found on host.\n'; \
+		printf 'vercel-host-check: fallback available via `pnpm dlx vercel@37.12.0`.\n'; \
+	else \
+		printf 'vercel-host-check: neither `vercel` nor `pnpm` is installed on host.\n' >&2; \
+		printf 'Install one of them before running Vercel make targets.\n' >&2; \
+		exit 127; \
+	fi
+
+vercel: ## Run Vercel CLI on host (`VERCEL_ARGS`).
+	@$(MAKE) vercel-host-check
+	@if command -v vercel >/dev/null 2>&1; then \
+		vercel $(VERCEL_ARGS); \
+	else \
+		pnpm dlx vercel@37.12.0 $(VERCEL_ARGS); \
+	fi
+
+vercel-env-pull-web: ## Pull Vercel env vars for `apps/web` into `apps/web/$(VERCEL_PULL_ENV_FILE)` (requires `apps/web/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/web" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull-api: ## Pull Vercel env vars for `apps/api` into `apps/api/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/api" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull-admin: ## Pull Vercel env vars for `apps/admin` into `apps/admin/$(VERCEL_PULL_ENV_FILE)` (requires `apps/admin/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/admin" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `admin`).
+	@$(MAKE) vercel-env-pull-web
+	@$(MAKE) vercel-env-pull-api
+	@$(MAKE) vercel-env-pull-admin
+
+vercel-env-sync-local: ## Pull app env vars from Vercel and regenerate root `.env.local` from app-level files.
+	@$(MAKE) vercel-env-pull
+	@PREFER_APP_ENV_FILES=1 KEEP_APP_ENV_FILES=1 $(MAKE) env-local-normalize
 
 up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in foreground.
 	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
