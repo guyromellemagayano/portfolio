@@ -1,7 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm build",
+  "buildCommand": "pnpm --filter api... build",
   "outputDirectory": "public",
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "../../packages/logger/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
