@@ -46,6 +46,18 @@ SANITY_API_READ_TOKEN=...
 SANITY_WEBHOOK_SECRET=...
 ```
 
+Optional sitemap behavior envs (only if you want overrides):
+
+```env
+SITEMAP_SITE_URL=https://www.guyromellemagayano.com
+SITEMAP_INCLUDE_CMS_CONTENT=true
+SITEMAP_FAIL_ON_CMS_FETCH_ERROR=false
+```
+
+- `SITEMAP_SITE_URL` overrides the sitemap host only (otherwise `apps/web` uses `NEXT_PUBLIC_SITE_URL` / Vercel host envs).
+- `SITEMAP_INCLUDE_CMS_CONTENT=false` forces `sitemap.xml` to publish static routes only.
+- `SITEMAP_FAIL_ON_CMS_FETCH_ERROR=true` makes sitemap generation fail instead of falling back when API/CMS fetches fail.
+
 ### `apps/web` Preview envs (decision-locked)
 
 Set:
