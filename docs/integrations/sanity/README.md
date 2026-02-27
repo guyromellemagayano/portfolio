@@ -5,7 +5,7 @@ Sanity-related integration docs are grouped here.
 Current references:
 
 - Shared Studio package: `packages/sanity-studio/README.md`
-- Web app embedded Studio config: `apps/web/sanity.config.ts`
+- Web app Studio deploy config: `apps/web/sanity.config.ts`
 - Web app Sanity CLI config: `apps/web/sanity.cli.ts`
 - API gateway Sanity provider: `apps/api/src/providers/content/sanity-content.provider.ts`
 
@@ -13,7 +13,7 @@ Current references:
 
 - `apps/api` owns runtime Sanity content retrieval for article and standalone page APIs.
 - `apps/web` consumes content data from `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`), not directly from Sanity.
-- `apps/web` still hosts embedded Studio and draft-mode routes for content administration.
+- Sanity Studio is deployed to Sanity-hosted infrastructure (`*.sanity.studio`) and uses `apps/web` preview/revalidation APIs.
 - `apps/web` article pages and Sanity-backed standalone pages rely on the API gateway/Sanity path and do not auto-fallback to MDX on gateway errors.
 
 ## Consumer Contract
@@ -25,6 +25,31 @@ Current references:
 - For local development, `apps/api` may read `NEXT_PUBLIC_SANITY_*` values when server-side `SANITY_*` values are absent.
 - In production, `apps/api` only accepts server-side `SANITY_*` values for Sanity provider resolution.
 
+## Studio Hosting Model
+
+- Studio is not served by `apps/web` routes.
+- Studio deploys from monorepo config to Sanity-hosted infra:
+  ```bash
+  pnpm --filter web sanity:deploy
+  ```
+- Hosted Studio must target web preview API through `SANITY_STUDIO_PREVIEW_ORIGIN`:
+  - `https://guyromellemagayano.com` (production)
+  - `http://guyromellemagayano.test` (local edge)
+- `sanity deploy` resolves env values from the deploy execution context (for example `apps/web/.env.local`, shell exports, or CI env vars).
+- Vercel project envs and the Vercel Sanity integration do not automatically populate envs for a Sanity-hosted Studio deploy.
+
+### Troubleshooting: `missing-project-id.api.sanity.io`
+
+- Cause: Studio was deployed without Sanity project env vars in the deploy/runtime context.
+- Fix:
+  - Ensure at least one of these pairs is present where `pnpm --filter web sanity:deploy` runs:
+    - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET` (preferred)
+    - `SANITY_STUDIO_API_PROJECT_ID` + `SANITY_STUDIO_API_DATASET`
+    - `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET`
+    - `SANITY_PROJECT_ID` + `SANITY_DATASET`
+  - Studio deploy/build is strict env-driven (no hardcoded project/dataset defaults) and now fails fast with a clear error when these vars are missing.
+  - Redeploy Studio after envs are set.
+
 ## Local Development (Recommended)
 
 - Use a non-production dataset locally (recommended: `development`):
@@ -32,13 +57,11 @@ Current references:
   - `SANITY_DATASET="development"`
 - Use the local edge root domain for metadata/canonical testing:
   - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
-- Embedded Studio local URL (production-like path, same origin as the site):
-  - `http://guyromellemagayano.test/studio`
-- In Sanity project settings, add the Studio URL as a development host:
-  - `http://guyromellemagayano.test/studio`
-- In Sanity API CORS origins, allow the local web/studio origin:
+- For Studio preview links from hosted Studio to local web, set:
+  - `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.test"`
+- In Sanity API CORS origins, allow the local web origin:
   - `http://guyromellemagayano.test`
-- If you switch to the `.localhost` fallback mode, add the `.localhost` equivalents for the Studio development host and CORS origin.
+- If you switch to the `.localhost` fallback mode, use the `.localhost` value for `SANITY_STUDIO_PREVIEW_ORIGIN` and CORS origin.
 - After changing local env or domain settings, restart the edge stack:
   ```bash
   make down-edge
@@ -47,12 +70,13 @@ Current references:
 
 ## Production (Vercel `apps/web`)
 
-- Embedded Studio remains on the same web origin at `/studio` (for example `https://guyromellemagayano.com/studio`).
+- Studio is hosted on Sanity infrastructure (for example `https://<your-studio>.sanity.studio`).
 - The `apps/web` Vercel project does not deploy `apps/api`; deploy `apps/api` separately and point the web app to it.
 - Set production web env vars to deployed URLs (not `localhost` / `.test`):
   - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.com"`
   - `NEXT_PUBLIC_API_URL="https://<your-api-domain>"`
   - `API_GATEWAY_URL="https://<your-api-domain>"`
+- Set `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.com"` in the Studio deployment environment.
 - Add the production web origin to Sanity API CORS origins:
   - `https://guyromellemagayano.com`
 

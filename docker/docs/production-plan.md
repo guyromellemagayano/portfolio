@@ -26,7 +26,7 @@ Use **Traefik**.
 Why it fits this repo:
 
 - Docker-native service discovery via labels (works well with Compose)
-- Easy subdomain routing (`web`, `api`, `admin`, `studio`)
+- Easy subdomain routing (`web`, `api`, `admin`)
 - Good local TLS story with `mkcert`
 - Smooth path from local Compose -> self-hosted Compose/Swarm/Kubernetes ingress patterns
 
@@ -150,7 +150,7 @@ Implemented locally:
 1. `traefik` service in `docker/compose/edge.local.yml`
 2. Shared `edge` network for `web`, `api`, `admin`, and `traefik`
 3. Host-based routing labels for `web`, `api`, `admin`, and Traefik dashboard
-4. Embedded Studio served on the same `web` host at `/studio` (mirrors production path shape)
+4. Sanity Studio hosted on Sanity infrastructure (`*.sanity.studio`) with preview targeting `apps/web`
 5. `allowedDevOrigins` configured in `apps/web/next.config.ts` for the local custom host domain
 6. Local DNS setup guidance documented (`/etc/hosts` and `dnsmasq`) in `docker/docs/local-dev.md`
 7. Optional local TLS scaffold with `mkcert`-ready overlay (`docker/compose/edge.tls.local.yml`) and Traefik dynamic config example (`docker/traefik/examples/local-tls.example.yml`)
