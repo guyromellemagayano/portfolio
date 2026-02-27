@@ -1,7 +1,7 @@
 /**
- * @file apps/api/api/[...path].ts
+ * @file apps/api/api/[...path].js
  * @author Guy Romelle Magayano
  * @description Vercel catch-all function entrypoint for the API gateway.
  */
 
-export { default } from "../src/platform/vercel.js";
+export { vercelApiGatewayHandler as default } from "../dist/index.js";
