@@ -174,6 +174,7 @@ Sanity keys used by `apps/web`:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - `NEXT_PUBLIC_SANITY_API_VERSION` (defaults to `2025-02-19`)
 - `SANITY_API_READ_TOKEN` (optional for private datasets)
+- `SANITY_STUDIO_PREVIEW_ORIGIN` (optional absolute web origin used by hosted Studio preview links)
 - Article data in `apps/web` is retrieved from `apps/api` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
 - `API_GATEWAY_URL` (server-side base URL for `apps/api` article/content APIs)
 - `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
@@ -191,9 +192,8 @@ Gateway architecture and extension conventions:
 
 - `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
 
-Embedded Studio route in `apps/web`:
+Sanity preview routes in `apps/web`:
 
-- `GET /studio` (Sanity Studio)
 - `GET /api/draft-mode/enable` (enable Draft Mode via Presentation Tool)
 - `GET /api/draft-mode/disable` (disable Draft Mode)
 

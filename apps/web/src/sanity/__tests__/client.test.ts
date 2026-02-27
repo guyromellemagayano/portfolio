@@ -11,6 +11,10 @@ import {
   getSanityConfig,
   hasSanityConfig,
 } from "@web/sanity/client";
+import {
+  getSanityStudioConfig,
+  requireSanityStudioConfig,
+} from "@web/sanity/env";
 
 const { createClientMock } = vi.hoisted(() => {
   const hoistedCreateClientMock = vi.fn(() => ({
@@ -51,6 +55,57 @@ describe("sanity client", () => {
       projectId: "demo-project",
       dataset: "production",
       apiVersion: "2025-02-19",
+      token: undefined,
+    });
+    expect(hasSanityConfig()).toBe(true);
+  });
+
+  it("returns config when SANITY_STUDIO_* env vars are provided", () => {
+    vi.stubEnv("SANITY_STUDIO_PROJECT_ID", "studio-project");
+    vi.stubEnv("SANITY_STUDIO_DATASET", "production");
+    vi.stubEnv("SANITY_STUDIO_API_VERSION", "2026-02-01");
+
+    expect(getSanityConfig()).toEqual({
+      projectId: "studio-project",
+      dataset: "production",
+      apiVersion: "2026-02-01",
+      token: undefined,
+    });
+    expect(hasSanityConfig()).toBe(true);
+  });
+
+  it("returns null studio config when required env vars are missing", () => {
+    expect(getSanityStudioConfig()).toBeNull();
+  });
+
+  it("throws when required studio config is missing", () => {
+    expect(() => requireSanityStudioConfig()).toThrow(
+      "Sanity Studio configuration is missing"
+    );
+  });
+
+  it("falls back to SANITY_STUDIO_API_* env vars when SANITY_STUDIO_* is unset", () => {
+    vi.stubEnv("SANITY_STUDIO_API_PROJECT_ID", "studio-api-project");
+    vi.stubEnv("SANITY_STUDIO_API_DATASET", "staging");
+
+    expect(getSanityConfig()).toEqual({
+      projectId: "studio-api-project",
+      dataset: "staging",
+      apiVersion: "2025-02-19",
+      token: undefined,
+    });
+    expect(hasSanityConfig()).toBe(true);
+  });
+
+  it("falls back to SANITY_* env vars when NEXT_PUBLIC_SANITY_* is unset", () => {
+    vi.stubEnv("SANITY_PROJECT_ID", "server-project");
+    vi.stubEnv("SANITY_DATASET", "development");
+    vi.stubEnv("SANITY_API_VERSION", "2026-01-01");
+
+    expect(getSanityConfig()).toEqual({
+      projectId: "server-project",
+      dataset: "development",
+      apiVersion: "2026-01-01",
       token: undefined,
     });
     expect(hasSanityConfig()).toBe(true);
