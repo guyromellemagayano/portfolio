@@ -1,7 +1,7 @@
 /**
- * @file apps/api/api/index.ts
+ * @file apps/api/api/index.js
  * @author Guy Romelle Magayano
  * @description Vercel root function entrypoint for the API gateway.
  */
 
-export { default } from "../src/platform/vercel.js";
+export { vercelApiGatewayHandler as default } from "../dist/index.js";

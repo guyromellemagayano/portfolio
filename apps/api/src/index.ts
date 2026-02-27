@@ -6,7 +6,7 @@
 
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import { getApiConfig } from "./config/env.js";
 import { createApiLogger } from "./config/logger.js";
@@ -23,13 +23,38 @@ if (existsSync(workspaceRootEnvLocalFile)) {
   globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);
 }
 
-const config = getApiConfig();
-const logger = createApiLogger(config.nodeEnv);
-const server = createServer();
+/** Starts the API gateway Node server for local and non-serverless runtimes. */
+export function startApiServer(): void {
+  const config = getApiConfig();
+  const logger = createApiLogger(config.nodeEnv);
+  const server = createServer();
 
-server.listen(config.port, () => {
-  logger.info("API gateway started", {
-    port: config.port,
-    nodeEnv: config.nodeEnv,
+  server.listen(config.port, () => {
+    logger.info("API gateway started", {
+      port: config.port,
+      nodeEnv: config.nodeEnv,
+    });
   });
-});
+}
+
+/** Indicates whether this module is running as the process entrypoint. */
+function isDirectExecution(): boolean {
+  const entryFilePath = globalThis?.process?.argv?.[1];
+
+  if (!entryFilePath) {
+    return false;
+  }
+
+  try {
+    return import.meta.url === pathToFileURL(entryFilePath).href;
+  } catch {
+    return false;
+  }
+}
+
+export { default as vercelApiGatewayHandler } from "./platform/vercel.js";
+export { createServer } from "./server.js";
+
+if (isDirectExecution()) {
+  startApiServer();
+}
