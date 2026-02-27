@@ -4,11 +4,7 @@
  * @description Orchestrates route-aware shell composition for web app pages.
  */
 
-"use client";
-
 import React from "react";
-
-import { usePathname } from "next/navigation";
 
 import { Layout, type LayoutProps } from "@web/components/layout";
 
@@ -26,15 +22,7 @@ export function RouteShell<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = Layout, children, ...rest } = props;
 
-  const pathname = usePathname();
-  const isStudioRoute =
-    pathname === "/studio" || pathname?.startsWith("/studio/");
-
   if (children == null) return null;
-
-  if (isStudioRoute) {
-    return <>{children}</>;
-  }
 
   return (
     <Component

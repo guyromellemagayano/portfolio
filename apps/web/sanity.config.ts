@@ -10,17 +10,30 @@ import logger from "@portfolio/logger";
 import { createSanityStudioConfig } from "@portfolio/sanity-studio/config/studio";
 import { defaultSanitySchemaTypes } from "@portfolio/sanity-studio/schema-types";
 
-import { getSanityConfig } from "./src/sanity/env";
+import { requireSanityStudioConfig } from "./src/sanity/env";
 
-const sanityConfig = getSanityConfig();
-const projectId = sanityConfig?.projectId ?? "missing-project-id";
-const dataset = sanityConfig?.dataset ?? "missing-dataset";
+const sanityConfig = requireSanityStudioConfig();
+const projectId = sanityConfig.projectId;
+const dataset = sanityConfig.dataset;
+const previewOrigin =
+  globalThis?.process?.env?.SANITY_STUDIO_PREVIEW_ORIGIN?.trim() ||
+  globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim() ||
+  globalThis?.process?.env?.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
+  "";
+const normalizedPreviewOrigin = previewOrigin
+  ? /^https?:\/\//.test(previewOrigin)
+    ? previewOrigin.replace(/\/+$/, "")
+    : `https://${previewOrigin.replace(/\/+$/, "")}`
+  : "";
+const previewEnablePath = normalizedPreviewOrigin
+  ? `${normalizedPreviewOrigin}/api/draft-mode/enable`
+  : "/api/draft-mode/enable";
 
-// eslint-disable-next-line no-undef -- Next.js inlines process.env.NODE_ENV in client bundles
-if (process.env.NODE_ENV !== "production") {
+if (globalThis?.process?.env?.NODE_ENV !== "production") {
   logger.info("[sanity.studio.config] Resolved Sanity project config", {
     projectId,
     dataset,
+    previewEnablePath,
   });
 }
 
@@ -29,7 +42,7 @@ export default createSanityStudioConfig({
   dataset,
   title: "Portfolio Studio",
   name: "default",
-  basePath: "/studio",
-  previewEnablePath: "/api/draft-mode/enable",
+  basePath: "/",
+  previewEnablePath,
   schemaTypes: defaultSanitySchemaTypes,
 });

@@ -34,7 +34,7 @@ export function createSanityStudioConfig(
     dataset,
     title = "Portfolio Studio",
     name = "default",
-    basePath = "/studio",
+    basePath = "/",
     previewEnablePath = "/api/draft-mode/enable",
     schemaTypes = defaultSanitySchemaTypes,
   } = options;

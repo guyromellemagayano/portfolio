@@ -52,7 +52,7 @@ if make --no-print-directory -C "$REPO_ROOT" dnsmasq-verify LOCAL_DEV_DOMAIN="$D
   printf '  2. Clear host cache: chrome://net-internals/#dns\n'
   printf '  3. Flush sockets: chrome://net-internals/#sockets\n'
   printf '  4. Restart the browser (or use chrome://restart)\n'
-  printf '  5. Retry the URL (web root, /studio, api, traefik)\n'
+  printf '  5. Retry the URL (web root, api, traefik)\n'
   printf '\nFallback option (no dnsmasq):\n'
   printf '  make use-localhost-domain && make down-edge && make up-edge-watch\n'
   exit 0

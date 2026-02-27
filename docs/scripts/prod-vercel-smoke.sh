@@ -51,7 +51,6 @@ printf 'prod-smoke: web=%s api=%s admin=%s\n' "$WEB_URL" "$API_URL" "$ADMIN_URL"
 printf '\n'
 
 check_http "web-home" "$WEB_URL/" "200"
-check_http "web-studio" "$WEB_URL/studio" "200"
 check_http "web-sitemap" "$WEB_URL/sitemap.xml" "200"
 
 check_http "api-root" "$API_URL/" "200"

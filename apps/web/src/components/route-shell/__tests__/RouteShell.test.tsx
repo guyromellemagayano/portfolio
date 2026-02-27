@@ -13,12 +13,6 @@ import { RouteShell } from "../RouteShell";
 
 import "@testing-library/jest-dom";
 
-const usePathnameMock = vi.fn();
-
-vi.mock("next/navigation", () => ({
-  usePathname: () => usePathnameMock(),
-}));
-
 vi.mock("@web/components/layout", () => ({
   Layout: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="layout-shell">{children}</div>
@@ -31,39 +25,23 @@ describe("RouteShell", () => {
     vi.clearAllMocks();
   });
 
-  it("renders raw children on /studio root route", () => {
-    usePathnameMock.mockReturnValue("/studio");
-
-    render(<RouteShell>Studio Content</RouteShell>);
-
-    expect(screen.getByText("Studio Content")).toBeInTheDocument();
-    expect(screen.queryByTestId("layout-shell")).not.toBeInTheDocument();
-  });
-
-  it("renders raw children on nested /studio routes", () => {
-    usePathnameMock.mockReturnValue("/studio/structure");
-
-    render(<RouteShell>Studio Tool</RouteShell>);
-
-    expect(screen.getByText("Studio Tool")).toBeInTheDocument();
-    expect(screen.queryByTestId("layout-shell")).not.toBeInTheDocument();
-  });
-
-  it("preserves falsy renderable children on /studio routes", () => {
-    usePathnameMock.mockReturnValue("/studio");
-
-    render(<RouteShell>{0}</RouteShell>);
-
-    expect(screen.getByText("0")).toBeInTheDocument();
-    expect(screen.queryByTestId("layout-shell")).not.toBeInTheDocument();
-  });
-
-  it("wraps non-studio routes with Layout", () => {
-    usePathnameMock.mockReturnValue("/articles");
-
+  it("wraps routes with Layout", () => {
     render(<RouteShell>Site Content</RouteShell>);
 
     expect(screen.getByTestId("layout-shell")).toBeInTheDocument();
     expect(screen.getByText("Site Content")).toBeInTheDocument();
+  });
+
+  it("preserves falsy renderable children", () => {
+    render(<RouteShell>{0}</RouteShell>);
+
+    expect(screen.getByTestId("layout-shell")).toBeInTheDocument();
+    expect(screen.getByText("0")).toBeInTheDocument();
+  });
+
+  it("returns null when children are null", () => {
+    const { container } = render(<RouteShell>{null}</RouteShell>);
+
+    expect(container).toBeEmptyDOMElement();
   });
 });
