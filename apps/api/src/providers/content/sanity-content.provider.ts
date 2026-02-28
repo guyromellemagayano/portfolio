@@ -516,10 +516,9 @@ async function fetchSanityApiResponse(
     options.retryDelayMs ?? DEFAULT_SANITY_REQUEST_RETRY_DELAY_MS;
   const maxAttempts = Math.max(1, maxRetries + 1);
 
-  let response: Response | null = null;
-
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const { signal, cancel } = createTimeoutSignal(requestTimeoutMs);
+    let response: Response;
 
     try {
       response = await fetch(queryUrl, {
