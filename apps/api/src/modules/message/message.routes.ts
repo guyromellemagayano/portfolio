@@ -18,7 +18,7 @@ export function createMessageRouter(): Router {
     request.logger.info(
       "Redirecting legacy message request to versioned route",
       {
-        name,
+        hasName: !!name,
         userAgent: request.get("User-Agent"),
       }
     );
@@ -30,7 +30,7 @@ export function createMessageRouter(): Router {
     const name = request.params.name;
 
     request.logger.info("Processing versioned message request", {
-      name,
+      hasName: !!name,
       userAgent: request.get("User-Agent"),
     });
 
