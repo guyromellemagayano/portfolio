@@ -13,4 +13,4 @@ RUN corepack enable
 RUN apt-get update \
   && apt-get install -y --no-install-recommends ca-certificates curl unzip \
   && rm -rf /var/lib/apt/lists/* \
-  && curl -fsSL https://bun.sh/install | bash
+  && curl -fsSL https://bun.sh/install | BUN_VERSION=1.3.10 bash
