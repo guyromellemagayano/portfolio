@@ -4,15 +4,28 @@
  * @description Standard API gateway response envelopes.
  */
 
-import type { Request, Response } from "express";
-
-import type {
-  ApiErrorEnvelope,
-  ApiResponseMeta,
-  ApiSuccessEnvelope,
+import {
+  type ApiErrorCode,
+  type ApiErrorEnvelope,
+  type ApiResponseMeta,
+  type ApiSuccessEnvelope,
+  CORRELATION_ID_HEADER,
 } from "@portfolio/api-contracts/http";
 
 export type { ApiErrorEnvelope, ApiResponseMeta, ApiSuccessEnvelope };
+
+export type GatewayRequestContext = {
+  requestId: string;
+  correlationId: string;
+};
+
+export type GatewayResponseContext = {
+  set: {
+    status?: number | string;
+    headers: Record<string, string | number>;
+  };
+  requestContext?: GatewayRequestContext;
+};
 
 type SuccessResponseOptions = {
   statusCode?: number;
@@ -21,7 +34,7 @@ type SuccessResponseOptions = {
 
 type ErrorResponseOptions = {
   statusCode: number;
-  code: string;
+  code: ApiErrorCode;
   message: string;
   details?: unknown;
   meta?: Record<string, unknown>;
@@ -29,12 +42,23 @@ type ErrorResponseOptions = {
 
 /** Builds the standard response metadata envelope for API responses. */
 function createResponseMeta(
-  request: Request,
+  context: GatewayResponseContext,
   extraMeta?: Record<string, unknown>
 ): ApiResponseMeta {
+  const correlationHeader = context.set.headers[CORRELATION_ID_HEADER];
+  const correlationIdFromHeaders =
+    typeof correlationHeader === "string" ||
+    typeof correlationHeader === "number"
+      ? String(correlationHeader).trim()
+      : "";
+  const correlationId =
+    context.requestContext?.correlationId ??
+    (correlationIdFromHeaders || "unknown");
+  const requestId = context.requestContext?.requestId ?? correlationId;
+
   return {
-    correlationId: request.correlationId,
-    requestId: request.id,
+    correlationId,
+    requestId,
     timestamp: new Date().toISOString(),
     ...extraMeta,
   };
@@ -42,33 +66,35 @@ function createResponseMeta(
 
 /** Sends a success response envelope. */
 export function sendSuccess<T>(
-  request: Request,
-  response: Response,
+  context: GatewayResponseContext,
   data: T,
   options: SuccessResponseOptions = {}
-): Response<ApiSuccessEnvelope<T>> {
+): ApiSuccessEnvelope<T> {
   const { statusCode = 200, meta } = options;
 
-  return response.status(statusCode).json({
+  context.set.status = statusCode;
+
+  return {
     success: true,
     data,
-    meta: createResponseMeta(request, meta),
-  });
+    meta: createResponseMeta(context, meta),
+  };
 }
 
 /** Sends an error response envelope. */
 export function sendError(
-  request: Request,
-  response: Response,
+  context: GatewayResponseContext,
   options: ErrorResponseOptions
-): Response<ApiErrorEnvelope> {
-  return response.status(options.statusCode).json({
+): ApiErrorEnvelope {
+  context.set.status = options.statusCode;
+
+  return {
     success: false,
     error: {
       code: options.code,
       message: options.message,
       details: options.details,
     },
-    meta: createResponseMeta(request, options.meta),
-  });
+    meta: createResponseMeta(context, options.meta),
+  };
 }

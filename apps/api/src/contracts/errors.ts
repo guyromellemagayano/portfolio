@@ -4,16 +4,22 @@
  * @description Normalized API gateway error types and helpers.
  */
 
+import {
+  API_ERROR_CODES,
+  API_ERROR_MESSAGES,
+  type ApiErrorCode,
+} from "@portfolio/api-contracts/http";
+
 export type GatewayErrorOptions = {
   statusCode: number;
-  code: string;
+  code: ApiErrorCode;
   message: string;
   details?: unknown;
 };
 
 export class GatewayError extends Error {
   statusCode: number;
-  code: string;
+  code: ApiErrorCode;
   details?: unknown;
 
   constructor(options: GatewayErrorOptions) {
@@ -34,17 +40,18 @@ export function toGatewayError(error: unknown): GatewayError {
   if (error instanceof Error) {
     return new GatewayError({
       statusCode: 500,
-      code: "INTERNAL_SERVER_ERROR",
-      message: "An unexpected internal error occurred.",
+      code: API_ERROR_CODES.INTERNAL_SERVER_ERROR,
+      message: API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
       details: {
         name: error.name,
+        message: error.message,
       },
     });
   }
 
   return new GatewayError({
     statusCode: 500,
-    code: "INTERNAL_SERVER_ERROR",
-    message: "An unexpected internal error occurred.",
+    code: API_ERROR_CODES.INTERNAL_SERVER_ERROR,
+    message: API_ERROR_MESSAGES.INTERNAL_SERVER_ERROR,
   });
 }

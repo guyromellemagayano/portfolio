@@ -4,14 +4,29 @@
  * @description Catch-all handler for unknown API routes.
  */
 
-import type { RequestHandler } from "express";
+import { Elysia } from "elysia";
+
+import {
+  API_ERROR_CODES,
+  getRouteNotFoundMessage,
+} from "@portfolio/api-contracts/http";
 
 import { sendError } from "../contracts/http.js";
 
-export const notFoundHandler: RequestHandler = (request, response) => {
-  return sendError(request, response, {
-    statusCode: 404,
-    code: "ROUTE_NOT_FOUND",
-    message: `No route matches ${request.method} ${request.originalUrl}.`,
+/** Creates a catch-all route for unknown API paths. */
+export function createNotFoundHandler() {
+  return new Elysia({
+    name: "api-not-found",
+  }).all("*", (context) => {
+    const requestPath = (() => {
+      const url = new URL(context.request.url);
+      return `${url.pathname}${url.search}`;
+    })();
+
+    return sendError(context, {
+      statusCode: 404,
+      code: API_ERROR_CODES.ROUTE_NOT_FOUND,
+      message: getRouteNotFoundMessage(context.request.method, requestPath),
+    });
   });
-};
+}
