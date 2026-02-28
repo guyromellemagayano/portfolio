@@ -54,7 +54,8 @@ function createResponseMeta(
   const correlationId =
     context.requestContext?.correlationId ??
     (correlationIdFromHeaders || "unknown");
-  const requestId = context.requestContext?.requestId ?? correlationId;
+  // Keep `requestId` distinct from `correlationId` even when request context is unavailable.
+  const requestId = context.requestContext?.requestId ?? "unknown";
 
   return {
     correlationId,
