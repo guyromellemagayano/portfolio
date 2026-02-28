@@ -28,6 +28,7 @@ should_install_pnpm_dependencies=0
 pnpm_install_reason=""
 pnpm_modules_manifest="node_modules/.modules.yaml"
 pnpm_install_lock_dir=".pnpm-install.lock"
+pnpm_install_lock_timeout_seconds="${PNPM_INSTALL_LOCK_TIMEOUT_SECONDS:-120}"
 
 evaluate_pnpm_install_need() {
   should_install_pnpm_dependencies=0
@@ -69,7 +70,17 @@ release_pnpm_install_lock() {
 evaluate_pnpm_install_need
 
 if [ "${should_install_pnpm_dependencies}" = "1" ]; then
+  pnpm_install_lock_wait_started_at="$(date +%s)"
+
   while ! mkdir "${pnpm_install_lock_dir}" >/dev/null 2>&1; do
+    current_timestamp="$(date +%s)"
+    elapsed_seconds=$((current_timestamp - pnpm_install_lock_wait_started_at))
+
+    if [ "${elapsed_seconds}" -ge "${pnpm_install_lock_timeout_seconds}" ]; then
+      echo "[docker-local] ERROR: Timed out after ${pnpm_install_lock_timeout_seconds}s waiting for ${pnpm_install_lock_dir}. Remove stale lock and retry." >&2
+      exit 1
+    fi
+
     echo "[docker-local] Waiting for another container to finish pnpm install..."
     sleep 1
   done
