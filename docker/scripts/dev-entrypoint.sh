@@ -45,9 +45,9 @@ evaluate_pnpm_install_need() {
     return
   fi
 
-  if [ pnpm-lock.yaml -nt "${pnpm_modules_manifest}" ]; then
+  if [ "pnpm-lock.yaml" -nt "${pnpm_modules_manifest}" ]; then
     should_install_pnpm_dependencies=1
-    pnpm_install_reason="pnpm-lock.yaml is newer than ${pnpm_modules_manifest}"
+    pnpm_install_reason="\"pnpm-lock.yaml\" is newer than ${pnpm_modules_manifest}"
     return
   fi
 
