@@ -26,6 +26,19 @@ resolve_host() {
 printf 'edge-dns-doctor: LOCAL_DEV_DOMAIN=%s\n' "$DOMAIN"
 
 case "$DOMAIN" in
+  *.local)
+    printf '\n'
+    printf 'Using OrbStack custom-domain mode. If this fails, verify OrbStack Settings > Network > Container domains is enabled.\n'
+    printf 'Then restart the edge stack:\n'
+    printf '  - make down-edge && make up-edge-watch\n'
+    printf '  - make edge-smoke\n'
+    printf '\nCheck these OrbStack hostnames:\n'
+    printf '  - https://traefik.%s\n' "$DOMAIN"
+    printf '  - https://%s\n' "$DOMAIN"
+    printf '  - https://api.%s/v1/status\n' "$DOMAIN"
+    printf '  - https://admin.%s\n' "$DOMAIN"
+    exit 0
+    ;;
   *.localhost)
     printf '\n'
     printf 'Using .localhost fallback mode. dnsmasq is typically unnecessary for this domain.\n'

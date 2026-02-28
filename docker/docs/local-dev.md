@@ -10,6 +10,58 @@ This local Docker setup runs the monorepo workflow through Docker Compose for da
 
 It uses your checked-out source tree as a bind mount.
 
+## Start Here (Recommended)
+
+If you are running local development in Docker, follow this exact path.
+
+### First-Time Setup
+
+1. Normalize env files once:
+
+```bash
+make env-local-normalize
+```
+
+2. Set the local domain mode (`.local`, default):
+
+```bash
+make use-orbstack-domain
+```
+
+Optional fallback mode (`.localhost`) if your browser/local DNS setup requires it:
+
+```bash
+make use-localhost-domain
+```
+
+3. Start the first-run flow:
+
+```bash
+make bootstrap-watch
+```
+
+4. Verify routes:
+
+```bash
+make edge-smoke
+```
+
+### Daily Commands
+
+```bash
+# Foreground daily dev
+make up-edge-watch
+
+# Background daily dev
+make up-edge-detached
+make logs-edge
+
+# Stop stack
+make down-edge
+```
+
+Use `make help` for the compact command guide and `make help-all` for the full catalog.
+
 ## Start (Localhost Ports)
 
 ```bash
@@ -29,7 +81,7 @@ make env-local-normalize
 make bootstrap-watch
 ```
 
-This foreground first-run command validates the edge Compose stack, attempts local DNS setup (macOS + Homebrew `dnsmasq`), and then starts the same app stack plus a local Traefik edge proxy and Docker Compose watch using:
+This foreground first-run command validates the edge Compose stack, applies local domain setup behavior based on `LOCAL_DEV_DOMAIN`, and then starts the same app stack plus a local Traefik edge proxy and Docker Compose watch using:
 
 - `docker/compose/local.yml`
 - `docker/compose/edge.local.yml`
@@ -79,7 +131,7 @@ Manual DNS fallback (if `bootstrap` prints the fallback message on non-macOS or 
 make edge-hosts
 ```
 
-Or use the macOS/Homebrew `dnsmasq` helper (recommended for the default wildcard `.test` domain setup):
+Optional: macOS/Homebrew `dnsmasq` helper (typically unnecessary for OrbStack `.local` mode):
 
 ```bash
 make dnsmasq-local
@@ -101,13 +153,25 @@ make down-edge
 make up-edge-watch
 ```
 
-Example `/etc/hosts` entries (default `.test` domain, if you choose manual hosts instead of `dnsmasq`):
+OrbStack custom-domain mode (skip `dnsmasq` and use `.local`):
+
+```bash
+make use-orbstack-domain
+make down-edge
+make up-edge-watch
+```
+
+OrbStack overlay file:
+
+- `docker/compose/edge.orbstack.local.yml`
+
+Example `/etc/hosts` entries (if you choose manual hosts instead of OrbStack DNS):
 
 ```txt
-127.0.0.1 guyromellemagayano.test
-127.0.0.1 api.guyromellemagayano.test
-127.0.0.1 admin.guyromellemagayano.test
-127.0.0.1 traefik.guyromellemagayano.test
+127.0.0.1 guyromellemagayano.local
+127.0.0.1 api.guyromellemagayano.local
+127.0.0.1 admin.guyromellemagayano.local
+127.0.0.1 traefik.guyromellemagayano.local
 ```
 
 ## URLs
@@ -119,24 +183,32 @@ Localhost ports:
 - Admin app: `http://localhost:3001`
 - Sanity-hosted Studio: `https://<your-studio>.sanity.studio`
 
-Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.test`:
+Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.local`:
 
-- Web app: `http://guyromellemagayano.test`
-- API gateway: `http://api.guyromellemagayano.test`
-- Admin app: `http://admin.guyromellemagayano.test`
-- Traefik dashboard: `http://traefik.guyromellemagayano.test` (root redirects to `/dashboard/`)
+- Web app: `https://guyromellemagayano.local`
+- API gateway: `https://api.guyromellemagayano.local`
+- Admin app: `https://admin.guyromellemagayano.local`
+- Traefik dashboard: `https://traefik.guyromellemagayano.local` (root redirects to `/dashboard/`)
+
+OrbStack custom-domain routing (`make up-edge-watch` with `LOCAL_DEV_DOMAIN=guyromellemagayano.local`):
+
+- Web app: `https://guyromellemagayano.local`
+- API gateway: `https://api.guyromellemagayano.local`
+- Admin app: `https://admin.guyromellemagayano.local`
+- Traefik dashboard: `https://traefik.guyromellemagayano.local`
+- Default OrbStack service domains are still available (for example `http://web.portfolio.orb.local`, `http://api.portfolio.orb.local`, `http://traefik.portfolio.orb.local`) but the repo standard uses `guyromellemagayano.local` + subdomains.
 
 ## Sanity Local Dev (Hosted Studio)
 
 - Use hosted Studio and point preview links to local web:
-  - `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.test"`
+  - `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.local"`
 - Recommended local `.env.local` values:
   - `NEXT_PUBLIC_SANITY_DATASET="development"`
   - `SANITY_DATASET="development"`
-  - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
+  - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.local"`
 - In Sanity project settings:
   - Add development host: `https://<your-studio>.sanity.studio`
-  - Add API CORS origin: `http://guyromellemagayano.test`
+  - Add API CORS origin: `https://guyromellemagayano.local`
 - If you use the `.localhost` fallback mode, use `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.localhost"` and matching CORS origin.
 - Restart after env/domain changes:
 
@@ -152,7 +224,8 @@ make up-edge-watch
 - `apps/api/dist` and `apps/web/.next` are left on the bind-mounted workspace (not named volumes) because the build tools delete/recreate those directories and Docker mountpoints can cause `EBUSY` errors.
 - The Docker `web` service runs Turbopack only (no Webpack fallback path).
 - `apps/web/next.config.ts` disables Turbopack filesystem cache for Docker `next dev` and uses a Docker-specific `distDir` (`.next-docker`) to reduce bind-mount cache corruption risk.
-- `apps/web/next.config.ts` configures `allowedDevOrigins` for the local edge domain (`*.guyromellemagayano.test` by default) for Next 16 dev-origin behavior.
+- `apps/web/next.config.ts` configures `allowedDevOrigins` for the local edge domain (`guyromellemagayano.local` + `*.guyromellemagayano.local` by default) for Next 16 dev-origin behavior.
+- OrbStack mode uses `dev.orbstack.domains` labels on Traefik to bind `.local` custom domains directly to the edge proxy.
 - The Docker entrypoint clears the Docker web dist Turbopack cache (`<distDir>/dev/cache`) on startup.
 - File watching uses polling (`CHOKIDAR_USEPOLLING`, `WATCHPACK_POLLING`) for better Docker Desktop compatibility.
 - App source file watching/HMR is handled by the running dev servers inside containers (`api`, `web`, `admin`).
@@ -175,6 +248,10 @@ make help
 make bootstrap-watch
 
 # Daily dev (foreground)
+make up-edge-watch
+
+# Daily dev with OrbStack custom domains (foreground, no dnsmasq)
+make use-orbstack-domain
 make up-edge-watch
 
 # Daily dev (detached)
@@ -220,10 +297,10 @@ make sanity SANITY_ARGS="projects list"
 
 ## Local DNS (Better Than `/etc/hosts`)
 
-If you want wildcard local domains (`*.guyromellemagayano.test`) instead of editing `/etc/hosts` repeatedly:
+If you want manual wildcard local DNS instead of relying on OrbStack custom domains:
 
 1. Install `dnsmasq`
-2. Configure `address=/.guyromellemagayano.test/127.0.0.1`
+2. Configure `address=/.guyromellemagayano.local/127.0.0.1`
 3. Point your system resolver to the local `dnsmasq` instance
 
 This is optional but more maintainable if you add more local subdomains later.
@@ -235,7 +312,7 @@ Convenience targets:
 - `make dnsmasq-health` runs functional health checks (resolver file, port `53` listener, system-resolver hostname checks)
 - `make dnsmasq-status` shows Homebrew `dnsmasq` service status (advisory only; functional health is the source of truth)
 - `make dnsmasq-verify` checks the expected subdomains using the system resolver (`dscacheutil` on macOS, `getent` on Linux, `dig` fallback)
-- `make edge-dns-doctor` diagnoses browser DNS issues and prints the `.localhost` fallback workflow if needed
+- `make edge-dns-doctor` diagnoses browser DNS issues and prints `.localhost` fallback or OrbStack checks when relevant
 
 If Homebrew reports `dnsmasq` with `error 78` but `make dnsmasq-health` / `make dnsmasq-verify` pass, treat the setup as working. Homebrew service status can be misleading when `dnsmasq` is functionally healthy.
 
@@ -289,7 +366,7 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `TURBO_DOCKER_CONCURRENCY` (optional, default `2`): Turbo task concurrency for Dockerized `check-types` / `lint` / `test`
 - `LOG_TAIL` (optional, default `100`): line count used by `make logs` and `make logs-edge` before follow mode
 - `WATCH_SERVICES` (optional, default `api web admin`): service list passed to Compose `watch` targets
-- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.test`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`*.test` is the recommended wildcard `dnsmasq` path; `*.localhost` is the fallback for browser Secure DNS / DoH friction)
+- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `admin.<domain>`, `traefik.<domain>`; `.localhost` remains a fallback mode)
 - `TRAEFIK_HTTP_PORT` (optional, default `80`): host HTTP port for local Traefik
 - `TRAEFIK_HTTPS_PORT` (optional, default `443`): host HTTPS port for the optional TLS overlay
 - `TRAEFIK_DOCKER_SOCKET_PATH` (optional): host Docker socket path mounted into the Docker socket-proxy sidecar (auto-detects Docker Desktop macOS user socket when present; otherwise defaults to `/var/run/docker.sock`)
@@ -304,7 +381,7 @@ Local edge routing now uses a generated Traefik file-provider config (`make rend
 
 Recommended local setup:
 
-- Keep the default `LOCAL_DEV_DOMAIN=...test` with `dnsmasq` for wildcard subdomains and a production-like local hostname setup
+- Keep the default `LOCAL_DEV_DOMAIN=...local` with OrbStack custom domains
 - Use `*.localhost` only as a fallback mode if your browser’s Secure DNS / DoH keeps bypassing your local resolver
 
 If you want to debug or experiment with label-based routing, use the dedicated Docker-provider debug path:
@@ -333,10 +410,10 @@ TRAEFIK_DOCKER_API_VERSION="1.53"
 
 ## Domain Mode Helpers
 
-Switch between the recommended `.test` mode and the `.localhost` fallback mode without manually editing `.env.local`:
+Switch between `.local` and `.localhost` modes without manually editing `.env.local`:
 
 ```bash
-make use-test-domain
+make use-orbstack-domain
 make use-localhost-domain
 ```
 
@@ -346,3 +423,5 @@ After switching:
 make down-edge
 make up-edge-watch
 ```
+
+OrbStack `.local` mode uses the same `make up-edge*` commands; the OrbStack overlay is included automatically when `LOCAL_DEV_DOMAIN` ends with `.local`.
