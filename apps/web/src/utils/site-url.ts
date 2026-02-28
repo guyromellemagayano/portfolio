@@ -4,7 +4,7 @@
  * @description Runtime helpers for resolving a production-safe site URL base across local and Vercel environments.
  */
 
-const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".localhost", ".test"] as const;
+const LOCAL_ONLY_HOSTNAME_SUFFIXES = [".localhost", ".local"] as const;
 const LOCAL_ONLY_HOSTNAMES = new Set([
   "localhost",
   "127.0.0.1",
