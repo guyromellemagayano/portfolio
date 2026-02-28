@@ -1,3 +1,5 @@
+/* global process */
+
 /**
  * @file apps/web/src/sanity/env.ts
  * @author Guy Romelle Magayano
@@ -18,7 +20,7 @@ export type SanityConfig = {
 };
 
 function getServerSanityEnvVar(key: string): string {
-  return globalThis?.process?.env?.[key]?.trim() ?? "";
+  return process.env[key]?.trim() ?? "";
 }
 
 function getStudioSanityProjectId(): string {

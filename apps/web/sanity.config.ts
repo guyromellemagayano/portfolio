@@ -1,3 +1,5 @@
+/* global process */
+
 /**
  * @file apps/web/sanity.config.ts
  * @author Guy Romelle Magayano
@@ -16,9 +18,9 @@ const sanityConfig = requireSanityStudioConfig();
 const projectId = sanityConfig.projectId;
 const dataset = sanityConfig.dataset;
 const previewOrigin =
-  globalThis?.process?.env?.SANITY_STUDIO_PREVIEW_ORIGIN?.trim() ||
-  globalThis?.process?.env?.NEXT_PUBLIC_SITE_URL?.trim() ||
-  globalThis?.process?.env?.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
+  process.env.SANITY_STUDIO_PREVIEW_ORIGIN?.trim() ||
+  process.env.NEXT_PUBLIC_SITE_URL?.trim() ||
+  process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim() ||
   "";
 const normalizedPreviewOrigin = previewOrigin
   ? /^https?:\/\//.test(previewOrigin)
@@ -29,7 +31,7 @@ const previewEnablePath = normalizedPreviewOrigin
   ? `${normalizedPreviewOrigin}/api/draft-mode/enable`
   : "/api/draft-mode/enable";
 
-if (globalThis?.process?.env?.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production") {
   logger.info("[sanity.studio.config] Resolved Sanity project config", {
     projectId,
     dataset,
