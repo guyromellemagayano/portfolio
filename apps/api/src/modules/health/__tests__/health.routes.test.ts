@@ -4,67 +4,59 @@
  * @description Unit tests for health route redirect and versioned route registration behavior.
  */
 
-import { describe, expect, it, vi } from "vitest";
+import { Elysia } from "elysia";
+import { describe, expect, it } from "vitest";
 
+import {
+  CORRELATION_ID_HEADER,
+  HEALTH_ROUTE_LEGACY,
+  HEALTH_ROUTE_STATUS,
+} from "@portfolio/api-contracts/http";
+
+import { createApiLogger } from "@api/config/logger";
+import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
+import { createRequestContextPlugin } from "@api/middleware/request-context";
 import { createHealthRouter } from "@api/modules/health/health.routes";
 
-type RouteHandler = (
-  request: {
-    logger: {
-      debug: ReturnType<typeof vi.fn>;
-    };
-  },
-  response: {
-    redirect: ReturnType<typeof vi.fn>;
-  }
-) => unknown;
+function createHealthTestApp() {
+  const logger = createApiLogger("test");
 
-function getRouteHandler(routePath: string): RouteHandler {
-  const router = createHealthRouter() as {
-    stack: Array<{
-      route?: {
-        path?: string;
-        stack?: Array<{
-          handle: RouteHandler;
-        }>;
-      };
-    }>;
-  };
-
-  const routeLayer = router.stack.find(
-    (layer) => layer.route?.path === routePath
-  );
-  const routeHandler = routeLayer?.route?.stack?.[0]?.handle;
-
-  if (!routeHandler) {
-    throw new Error(
-      `Health route handler could not be resolved for ${routePath}.`
-    );
-  }
-
-  return routeHandler;
+  return new Elysia()
+    .use(createRequestContextPlugin(logger))
+    .use(createErrorHandlerPlugin(logger))
+    .use(createHealthRouter());
 }
 
 describe("health routes", () => {
-  it("redirects the legacy /status route to /v1/status", () => {
-    const handler = getRouteHandler("/status");
-    const debug = vi.fn();
-    const redirect = vi.fn();
-
-    handler(
-      {
-        logger: {
-          debug,
-        },
-      },
-      {
-        redirect,
-      }
+  it("redirects the legacy /status route to /v1/status", async () => {
+    const app = createHealthTestApp();
+    const response = await app.handle(
+      new Request(`http://localhost${HEALTH_ROUTE_LEGACY}`)
     );
 
-    expect(debug).toHaveBeenCalledWith(
-      "Redirecting legacy health check route to versioned endpoint"
+    expect(response.status).toBe(308);
+    expect(response.headers.get("location")).toBe(HEALTH_ROUTE_STATUS);
+  });
+
+  it("returns success envelope for /v1/status", async () => {
+    const app = createHealthTestApp();
+    const response = await app.handle(
+      new Request(`http://localhost${HEALTH_ROUTE_STATUS}`)
     );
-    expect(redirect).toHaveBeenCalledWith(308, "/v1/status");
+    const payload = (await response.json()) as {
+      success: boolean;
+      data: {
+        ok: boolean;
+      };
+      meta: {
+        service: string;
+      };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.success).toBe(true);
+    expect(payload.data.ok).toBe(true);
+    expect(payload.meta.service).toBe("api-gateway");
+    expect(response.headers.get(CORRELATION_ID_HEADER)).toBeTruthy();
   });
 });
