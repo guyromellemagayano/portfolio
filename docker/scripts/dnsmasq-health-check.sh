@@ -89,7 +89,7 @@ RESOLVE_LOOPBACK_PASS_COUNT=0
 for HOST in "$DOMAIN" "api.$DOMAIN" "admin.$DOMAIN" "traefik.$DOMAIN"; do
   case "$HOST" in
     "$DOMAIN")
-      LABEL='resolve:root'
+      LABEL='resolve:web'
       ;;
     api.*)
       LABEL='resolve:api'

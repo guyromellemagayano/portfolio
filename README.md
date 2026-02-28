@@ -55,6 +55,22 @@ pnpm install
 pnpm dev
 ```
 
+### Docker Local Workflow (Recommended For Full Stack)
+
+Primary guide: `docker/docs/local-dev.md`
+
+```bash
+# First-time setup
+make env-local-normalize
+make use-orbstack-domain   # default: guyromellemagayano.local (or: make use-localhost-domain)
+make bootstrap-watch
+make edge-smoke
+
+# Daily development
+make up-edge-watch
+make down-edge
+```
+
 ### Workspace Map
 
 | Path                         | Purpose                                          |

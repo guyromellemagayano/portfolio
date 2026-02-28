@@ -43,9 +43,9 @@ describe("site URL helpers", () => {
     );
   });
 
-  it("ignores local-only site URLs in production and uses the Vercel production URL fallback", () => {
+  it("ignores .local site URLs in production and uses the Vercel production URL fallback", () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://guyromellemagayano.test");
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://guyromellemagayano.local");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");
 
     expect(resolveSiteUrlBase()).toBe("https://guyromellemagayano.com");
@@ -71,7 +71,7 @@ describe("site URL helpers", () => {
 
   it("recognizes local-only hostnames", () => {
     expect(isLocalOnlyHostname("localhost")).toBe(true);
-    expect(isLocalOnlyHostname("api.guyromellemagayano.test")).toBe(true);
+    expect(isLocalOnlyHostname("api.guyromellemagayano.local")).toBe(true);
     expect(isLocalOnlyHostname("guyromellemagayano.localhost")).toBe(true);
     expect(isLocalOnlyHostname("guyromellemagayano.com")).toBe(false);
   });

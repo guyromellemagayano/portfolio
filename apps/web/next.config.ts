@@ -29,7 +29,7 @@ const dockerWebDistDirectory = isDockerLocalDevelopment
   ? globalThis.process.env.NEXT_WEB_DOCKER_DIST_DIR?.trim()
   : undefined;
 const localDevelopmentDomain =
-  globalThis.process.env.LOCAL_DEV_DOMAIN?.trim() || "guyromellemagayano.test";
+  globalThis.process.env.LOCAL_DEV_DOMAIN?.trim() || "guyromellemagayano.local";
 const shouldUseStandaloneOutput =
   globalThis.process.env.NEXT_WEB_OUTPUT_STANDALONE?.trim() === "1";
 

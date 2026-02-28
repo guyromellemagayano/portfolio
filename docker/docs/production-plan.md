@@ -32,18 +32,14 @@ Why it fits this repo:
 
 ## Local Domain Strategy
 
-Prefer `.test` (for example `guyromellemagayano.test`) instead of `.local`.
-
-Reason:
-
-- `.local` commonly conflicts with mDNS / Bonjour on macOS
+Use `.local` (for example `guyromellemagayano.local`) for the local edge domain strategy in this repo.
 
 Suggested hostnames:
 
-- `guyromellemagayano.test` -> `apps/web`
-- `api.guyromellemagayano.test` -> `apps/api`
-- `admin.guyromellemagayano.test` -> `apps/admin`
-- `traefik.guyromellemagayano.test` -> Traefik dashboard (optional, local only)
+- `guyromellemagayano.local` -> `apps/web`
+- `api.guyromellemagayano.local` -> `apps/api`
+- `admin.guyromellemagayano.local` -> `apps/admin`
+- `traefik.guyromellemagayano.local` -> Traefik dashboard (optional, local only)
 
 ## Proposed Docker Layout (Future Additions)
 
