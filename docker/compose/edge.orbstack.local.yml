@@ -1,0 +1,5 @@
+services:
+  traefik:
+    labels:
+      dev.orbstack.domains: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
+      dev.orbstack.http-port: "80"

@@ -49,9 +49,9 @@ describe("gateway content articles client", () => {
     expect(resolveApiGatewayBaseUrl()).toBeNull();
   });
 
-  it("returns null in production when the configured public API URL uses a .test host", () => {
+  it("returns null in production when the configured public API URL uses a .local host", () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.guyromellemagayano.test");
+    vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.guyromellemagayano.local");
 
     expect(resolveApiGatewayBaseUrl()).toBeNull();
   });

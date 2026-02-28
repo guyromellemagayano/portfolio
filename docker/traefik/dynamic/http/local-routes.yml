@@ -7,7 +7,7 @@ http:
         permanent: false
   routers:
     traefik-root:
-      rule: "Host(`traefik.guyromellemagayano.test`) && Path(`/`)"
+      rule: "Host(`traefik.guyromellemagayano.local`) && Path(`/`)"
       entryPoints:
         - web
       priority: 100
@@ -15,22 +15,22 @@ http:
         - traefik-dashboard-root-redirect
       service: api@internal
     traefik:
-      rule: "Host(`traefik.guyromellemagayano.test`)"
+      rule: "Host(`traefik.guyromellemagayano.local`)"
       entryPoints:
         - web
       service: api@internal
     portfolio-api:
-      rule: "Host(`api.guyromellemagayano.test`)"
+      rule: "Host(`api.guyromellemagayano.local`)"
       entryPoints:
         - web
       service: portfolio-api
     portfolio-web:
-      rule: "Host(`guyromellemagayano.test`)"
+      rule: "Host(`guyromellemagayano.local`)"
       entryPoints:
         - web
       service: portfolio-web
     portfolio-admin:
-      rule: "Host(`admin.guyromellemagayano.test`)"
+      rule: "Host(`admin.guyromellemagayano.local`)"
       entryPoints:
         - web
       service: portfolio-admin

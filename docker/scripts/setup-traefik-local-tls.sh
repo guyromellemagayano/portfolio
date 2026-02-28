@@ -2,7 +2,7 @@
 
 set -eu
 
-LOCAL_DEV_DOMAIN="${1:-guyromellemagayano.test}"
+LOCAL_DEV_DOMAIN="${1:-guyromellemagayano.local}"
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)

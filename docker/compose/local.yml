@@ -76,7 +76,7 @@ services:
       <<: *node_watch_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
-      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
       API_GATEWAY_URL: http://api:5001
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5001}
       NEXT_PUBLIC_SANITY_PROJECT_ID: ${NEXT_PUBLIC_SANITY_PROJECT_ID:-}
@@ -136,7 +136,7 @@ services:
       <<: *node_watch_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
-      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
       NEXT_TELEMETRY_DISABLED: "1"
     command:
       - pnpm

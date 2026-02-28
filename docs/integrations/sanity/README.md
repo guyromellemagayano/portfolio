@@ -34,7 +34,7 @@ Current references:
   ```
 - Hosted Studio must target web preview API through `SANITY_STUDIO_PREVIEW_ORIGIN`:
   - `https://guyromellemagayano.com` (production)
-  - `http://guyromellemagayano.test` (local edge)
+  - `https://guyromellemagayano.local` (local edge)
 - `sanity deploy` resolves env values from the deploy execution context (for example `apps/web/.env.local`, shell exports, or CI env vars).
 - Vercel project envs and the Vercel Sanity integration do not automatically populate envs for a Sanity-hosted Studio deploy.
 
@@ -55,12 +55,12 @@ Current references:
 - Use a non-production dataset locally (recommended: `development`):
   - `NEXT_PUBLIC_SANITY_DATASET="development"`
   - `SANITY_DATASET="development"`
-- Use the local edge root domain for metadata/canonical testing:
-  - `NEXT_PUBLIC_SITE_URL="http://guyromellemagayano.test"`
+- Use the local edge web domain for metadata/canonical testing:
+  - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.local"`
 - For Studio preview links from hosted Studio to local web, set:
-  - `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.test"`
+  - `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.local"`
 - In Sanity API CORS origins, allow the local web origin:
-  - `http://guyromellemagayano.test`
+  - `https://guyromellemagayano.local`
 - If you switch to the `.localhost` fallback mode, use the `.localhost` value for `SANITY_STUDIO_PREVIEW_ORIGIN` and CORS origin.
 - After changing local env or domain settings, restart the edge stack:
   ```bash
@@ -72,7 +72,7 @@ Current references:
 
 - Studio is hosted on Sanity infrastructure (for example `https://<your-studio>.sanity.studio`).
 - The `apps/web` Vercel project does not deploy `apps/api`; deploy `apps/api` separately and point the web app to it.
-- Set production web env vars to deployed URLs (not `localhost` / `.test`):
+- Set production web env vars to deployed URLs (not `localhost` / `.local`):
   - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.com"`
   - `NEXT_PUBLIC_API_URL="https://<your-api-domain>"`
   - `API_GATEWAY_URL="https://<your-api-domain>"`

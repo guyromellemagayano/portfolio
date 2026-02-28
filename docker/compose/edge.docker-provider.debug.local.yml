@@ -40,12 +40,12 @@ services:
       traefik.http.middlewares.traefik-dashboard-root-redirect.redirectregex.regex: ^http://([^/]+)/?$
       traefik.http.middlewares.traefik-dashboard-root-redirect.redirectregex.replacement: http://$${1}/dashboard/
       traefik.http.middlewares.traefik-dashboard-root-redirect.redirectregex.permanent: "false"
-      traefik.http.routers.traefik-root.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`) && Path(`/`)
+      traefik.http.routers.traefik-root.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`) && Path(`/`)
       traefik.http.routers.traefik-root.entrypoints: web
       traefik.http.routers.traefik-root.priority: "100"
       traefik.http.routers.traefik-root.middlewares: traefik-dashboard-root-redirect
       traefik.http.routers.traefik-root.service: api@internal
-      traefik.http.routers.traefik.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.traefik.rule: Host(`traefik.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
       traefik.http.routers.traefik.entrypoints: web
       traefik.http.routers.traefik.service: api@internal
 
@@ -53,7 +53,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: portfolio-edge-local
-      traefik.http.routers.portfolio-api.rule: Host(`api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-api.rule: Host(`api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
       traefik.http.routers.portfolio-api.entrypoints: web
       traefik.http.routers.portfolio-api.service: portfolio-api
       traefik.http.services.portfolio-api.loadbalancer.server.port: "5001"
@@ -62,7 +62,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: portfolio-edge-local
-      traefik.http.routers.portfolio-web.rule: Host(`${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-web.rule: Host(`${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
       traefik.http.routers.portfolio-web.entrypoints: web
       traefik.http.routers.portfolio-web.service: portfolio-web
       traefik.http.services.portfolio-web.loadbalancer.server.port: "3000"
@@ -71,7 +71,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: portfolio-edge-local
-      traefik.http.routers.portfolio-admin.rule: Host(`admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}`)
+      traefik.http.routers.portfolio-admin.rule: Host(`admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
       traefik.http.routers.portfolio-admin.entrypoints: web
       traefik.http.routers.portfolio-admin.service: portfolio-admin
       traefik.http.services.portfolio-admin.loadbalancer.server.port: "3001"

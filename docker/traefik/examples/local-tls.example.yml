@@ -2,5 +2,5 @@ tls:
   stores:
     default:
       defaultCertificate:
-        certFile: /certs/guyromellemagayano.test.pem
-        keyFile: /certs/guyromellemagayano.test-key.pem
+        certFile: /certs/guyromellemagayano.local.pem
+        keyFile: /certs/guyromellemagayano.local-key.pem

@@ -48,11 +48,17 @@ else
   SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE"
 fi
 
-local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.test\"" $SOURCE_FILES)
-# Keep host-side defaults local-safe. Edge compose overlays override these for hostname routing.
-api_gateway_url="\"http://localhost:5001\""
-next_public_api_url="\"http://localhost:5001\""
-next_public_site_url="\"http://localhost:3000\""
+local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local\"" $SOURCE_FILES)
+local_dev_domain_plain=$(printf '%s' "$local_dev_domain" | sed 's/^"//; s/"$//')
+local_url_scheme="https"
+case "$local_dev_domain_plain" in
+  *.localhost|localhost|127.0.0.1|0.0.0.0|::1)
+    local_url_scheme="http"
+    ;;
+esac
+api_gateway_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
+next_public_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
+next_public_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
 api_gateway_content_provider=$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"sanity\"" $SOURCE_FILES)
 api_gateway_cors_origins=$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" $SOURCE_FILES)
 
@@ -69,7 +75,7 @@ sanity_request_timeout_ms=$(pick_env_value "SANITY_REQUEST_TIMEOUT_MS" "\"\"" $S
 sanity_request_max_retries=$(pick_env_value "SANITY_REQUEST_MAX_RETRIES" "\"\"" $SOURCE_FILES)
 sanity_request_retry_delay_ms=$(pick_env_value "SANITY_REQUEST_RETRY_DELAY_MS" "\"\"" $SOURCE_FILES)
 
-sitemap_site_url="\"http://localhost:3000\""
+sitemap_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
 sitemap_include_cms_content=$(pick_env_value "SITEMAP_INCLUDE_CMS_CONTENT" "\"true\"" $SOURCE_FILES)
 sitemap_fail_on_cms_fetch_error=$(pick_env_value "SITEMAP_FAIL_ON_CMS_FETCH_ERROR" "\"false\"" $SOURCE_FILES)
 

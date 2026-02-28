@@ -22,8 +22,8 @@ Manual `mkcert` flow (default domain):
 
 ```bash
 mkcert \
-  guyromellemagayano.test \
-  "*.guyromellemagayano.test"
+  guyromellemagayano.local \
+  "*.guyromellemagayano.local"
 ```
 
 Then place the generated files in `docker/traefik/certs/` and copy:

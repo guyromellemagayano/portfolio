@@ -264,5 +264,5 @@ make prod-smoke \
 
 ## Notes
 
-- Do not use `localhost`, `127.0.0.1`, `*.test`, or `*.localhost` for production Vercel envs such as `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, or `API_GATEWAY_URL`.
+- Do not use `localhost`, `127.0.0.1`, `*.local`, or `*.localhost` for production Vercel envs such as `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, or `API_GATEWAY_URL`.
 - Local Docker + Traefik remains the local development platform and is not replaced by this deployment setup.

@@ -18,14 +18,14 @@ services:
 
   api:
     environment:
-      API_GATEWAY_CORS_ORIGINS: ${API_GATEWAY_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},http://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test},https://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}}
+      API_GATEWAY_CORS_ORIGINS: ${API_GATEWAY_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},http://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}}
     networks:
       - edge
 
   web:
     environment:
-      NEXT_PUBLIC_API_URL: http://api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
-      NEXT_PUBLIC_SITE_URL: http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.test}
+      NEXT_PUBLIC_API_URL: ${EDGE_PUBLIC_SCHEME:-https}://api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
+      NEXT_PUBLIC_SITE_URL: ${EDGE_PUBLIC_SCHEME:-https}://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
     networks:
       - edge
 

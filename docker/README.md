@@ -12,6 +12,7 @@ Current local development entry points:
 
 - Compose file: `docker/compose/local.yml`
 - Edge overlay (Traefik + host routing): `docker/compose/edge.local.yml`
+- OrbStack custom-domain overlay (`*.local`): `docker/compose/edge.orbstack.local.yml`
 - Optional TLS overlay (mkcert-ready): `docker/compose/edge.tls.local.yml`
 - Dev image Dockerfile: `docker/images/dev/Dockerfile`
 - Dev entrypoint: `docker/scripts/dev-entrypoint.sh`
