@@ -81,5 +81,7 @@
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }
