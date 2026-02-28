@@ -11,12 +11,14 @@ import {
   MESSAGE_ROUTE_LEGACY_PATTERN,
   MESSAGE_ROUTE_PATTERN,
 } from "@portfolio/api-contracts/http";
-import type { ILogger } from "@portfolio/logger";
 
 import { sendSuccess } from "../../contracts/http.js";
+import { getLoggerFromContext } from "../../utils/request-logger.js";
+
+type AnyElysiaInstance = Elysia<any, any, any, any, any, any, any>;
 
 /** Creates demo message routes. */
-export function createMessageRouter(): Elysia {
+export function createMessageRouter(): AnyElysiaInstance {
   return new Elysia({
     name: "api-message-routes",
   })
@@ -26,8 +28,7 @@ export function createMessageRouter(): Elysia {
         const { params, request } = context;
         const name = params.name?.trim() ?? "";
         const userAgent = request.headers.get("user-agent");
-        const requestLogger =
-          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const requestLogger = getLoggerFromContext(context);
 
         requestLogger?.info(
           "Redirecting legacy message request to versioned route",
@@ -36,7 +37,6 @@ export function createMessageRouter(): Elysia {
             userAgent,
           }
         );
-        context.set.status = 308;
 
         return new Response(null, {
           status: 308,
@@ -60,10 +60,9 @@ export function createMessageRouter(): Elysia {
     .get(
       MESSAGE_ROUTE_PATTERN,
       (context) => {
-        const name = context.params.name;
+        const name = context.params.name?.trim() ?? "";
         const userAgent = context.request.headers.get("user-agent");
-        const requestLogger =
-          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const requestLogger = getLoggerFromContext(context);
 
         requestLogger?.info("Processing versioned message request", {
           name,

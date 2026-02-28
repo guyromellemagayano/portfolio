@@ -29,6 +29,7 @@ import { createHealthRouter } from "./modules/health/health.routes.js";
 import { createMessageRouter } from "./modules/message/message.routes.js";
 
 type CorsOriginConfig = string[] | true | false;
+type AnyElysiaInstance = Elysia<any, any, any, any, any, any, any>;
 
 /** Detects whether the gateway is running in a Bun runtime. */
 function isBunRuntime(): boolean {
@@ -49,7 +50,7 @@ export function resolveCorsOrigin(config: ApiRuntimeConfig): CorsOriginConfig {
 }
 
 /** Creates the composed Elysia server instance for the API gateway runtime. */
-export const createServer = (): any => {
+export const createServer = (): AnyElysiaInstance => {
   const config = getApiConfig();
   const logger = createApiLogger(config.nodeEnv);
   const providers = createProviderRegistry(config, logger);
@@ -110,9 +111,7 @@ export const createServer = (): any => {
     .use(createRequestContextPlugin(logger))
     .use(createHttpLoggerPlugin(logger))
     .use(createErrorHandlerPlugin(logger))
-    .get(API_ROOT_ROUTE, ({ set }) => {
-      set.status = 308;
-
+    .get(API_ROOT_ROUTE, () => {
       return new Response(null, {
         status: 308,
         headers: {

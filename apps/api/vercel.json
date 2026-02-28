@@ -6,10 +6,7 @@
   "outputDirectory": "public",
   "functions": {
     "api/**/*.js": {
-      "includeFiles": [
-        "../../packages/logger/**",
-        "../../packages/api-contracts/**"
-      ]
+      "includeFiles": "../../packages/{logger,api-contracts}/**"
     }
   },
   "rewrites": [
