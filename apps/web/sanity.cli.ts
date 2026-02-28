@@ -1,3 +1,5 @@
+/* global process */
+
 /**
  * @file apps/web/sanity.cli.ts
  * @author Guy Romelle Magayano
@@ -12,7 +14,7 @@ import {
   requireSanityStudioConfig,
 } from "./src/sanity/env";
 
-const cliArgs = (globalThis?.process?.argv ?? []).slice(2);
+const cliArgs = process.argv.slice(2);
 const hasHelpFlag = cliArgs.some(
   (arg) => arg === "--help" || arg === "-h" || arg === "help"
 );
