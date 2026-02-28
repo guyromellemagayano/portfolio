@@ -294,6 +294,60 @@ describe("GET /v1/content/articles/:slug contract", () => {
       },
     });
   });
+
+  it("returns the standard error envelope when article detail lookup fails upstream", async () => {
+    const slug = "some-slug";
+    const app = createContentTestApp(
+      createContentServiceMock({
+        providerName: "sanity",
+        getArticleBySlug: vi.fn().mockRejectedValue(
+          new GatewayError({
+            statusCode: 502,
+            code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
+            message: getSanityUpstreamFailureMessage("articles"),
+            details: {
+              slug,
+            },
+          })
+        ),
+      })
+    );
+    const response = await app.handle(
+      new Request(`http://localhost${getContentArticleRoute(slug)}`, {
+        headers: {
+          [CORRELATION_ID_HEADER]: "corr-test-article-detail-upstream-error",
+        },
+      })
+    );
+    const body = await parseJsonResponse<{
+      success: boolean;
+      error: {
+        code: string;
+        message: string;
+        details: {
+          slug: string;
+        };
+      };
+      meta: {
+        correlationId: string;
+      };
+    }>(response);
+
+    expect(response.status).toBe(502);
+    expect(body).toMatchObject({
+      success: false,
+      error: {
+        code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
+        message: getSanityUpstreamFailureMessage("articles"),
+        details: {
+          slug,
+        },
+      },
+      meta: {
+        correlationId: "corr-test-article-detail-upstream-error",
+      },
+    });
+  });
 });
 
 describe("GET /v1/content/pages contract", () => {
