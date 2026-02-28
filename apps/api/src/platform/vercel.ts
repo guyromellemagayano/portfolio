@@ -12,6 +12,7 @@ import {
   API_ROOT_ROUTE,
   VERCEL_API_ROUTE_PREFIX,
 } from "@portfolio/api-contracts/http";
+import logger from "@portfolio/logger";
 
 import { createServer } from "../server.js";
 
@@ -100,6 +101,11 @@ function resolveRequestOrigin(request: VercelNodeRequest): string {
     request.headers["x-forwarded-host"]
   );
   const host = forwardedHost || getFirstHeaderValue(request.headers.host);
+
+  if (!host)
+    logger.warn(
+      "No host header found in Vercel request, falling back to localhost"
+    );
 
   return `${protocol}://${host || "localhost"}`;
 }
