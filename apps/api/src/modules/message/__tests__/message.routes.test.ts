@@ -4,84 +4,66 @@
  * @description Unit tests for message route redirect behavior.
  */
 
-import { describe, expect, it, vi } from "vitest";
+import { Elysia } from "elysia";
+import { describe, expect, it } from "vitest";
 
+import {
+  CORRELATION_ID_HEADER,
+  getMessageRoute,
+  MESSAGE_ROUTE_LEGACY_PATTERN,
+} from "@portfolio/api-contracts/http";
+
+import { createApiLogger } from "@api/config/logger";
+import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
+import { createRequestContextPlugin } from "@api/middleware/request-context";
 import { createMessageRouter } from "@api/modules/message/message.routes";
 
-type RouteHandler = (
-  request: {
-    params: {
-      name?: string;
-    };
-    get: ReturnType<typeof vi.fn>;
-    logger: {
-      info: ReturnType<typeof vi.fn>;
-    };
-  },
-  response: {
-    redirect: ReturnType<typeof vi.fn>;
-  }
-) => unknown;
+function createMessageTestApp() {
+  const logger = createApiLogger("test");
 
-function getRouteHandler(routePath: string): RouteHandler {
-  const router = createMessageRouter() as {
-    stack: Array<{
-      route?: {
-        path?: string;
-        stack?: Array<{
-          handle: RouteHandler;
-        }>;
-      };
-    }>;
-  };
-
-  const routeLayer = router.stack.find(
-    (layer) => layer.route?.path === routePath
-  );
-  const routeHandler = routeLayer?.route?.stack?.[0]?.handle;
-
-  if (!routeHandler) {
-    throw new Error(
-      `Message route handler could not be resolved for ${routePath}.`
-    );
-  }
-
-  return routeHandler;
+  return new Elysia()
+    .use(createRequestContextPlugin(logger))
+    .use(createErrorHandlerPlugin(logger))
+    .use(createMessageRouter());
 }
 
 describe("message routes", () => {
-  it("redirects the legacy /message/:name route to the versioned route", () => {
-    const handler = getRouteHandler("/message/:name");
-    const info = vi.fn();
-    const getHeader = vi.fn().mockReturnValue("vitest");
-    const redirect = vi.fn();
-
-    handler(
-      {
-        params: {
-          name: "Guy Romelle",
-        },
-        get: getHeader,
-        logger: {
-          info,
-        },
-      },
-      {
-        redirect,
-      }
+  it("redirects the legacy /message/:name route to the versioned route", async () => {
+    const app = createMessageTestApp();
+    const response = await app.handle(
+      new Request(
+        `http://localhost${MESSAGE_ROUTE_LEGACY_PATTERN.replace(
+          ":name",
+          encodeURIComponent("Guy Romelle")
+        )}`
+      )
     );
 
-    expect(info).toHaveBeenCalledWith(
-      "Redirecting legacy message request to versioned route",
-      {
-        name: "Guy Romelle",
-        userAgent: "vitest",
-      }
+    expect(response.status).toBe(308);
+    expect(response.headers.get("location")).toBe(
+      getMessageRoute("Guy Romelle")
     );
-    expect(getHeader).toHaveBeenCalledWith("User-Agent");
-    expect(redirect).toHaveBeenCalledWith(
-      308,
-      `/v1/message/${encodeURIComponent("Guy Romelle")}`
+  });
+
+  it("returns message envelope for /v1/message/:name", async () => {
+    const app = createMessageTestApp();
+    const response = await app.handle(
+      new Request(`http://localhost${getMessageRoute("Guy")}`)
     );
+    const payload = (await response.json()) as {
+      success: boolean;
+      data: {
+        message: string;
+      };
+      meta: {
+        module: string;
+      };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.success).toBe(true);
+    expect(payload.data.message).toBe("hello Guy");
+    expect(payload.meta.module).toBe("message");
+    expect(response.headers.get(CORRELATION_ID_HEADER)).toBeTruthy();
   });
 });

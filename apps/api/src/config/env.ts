@@ -4,6 +4,8 @@
  * @description Runtime environment parsing for API gateway configuration.
  */
 
+import { API_ENV_KEYS, type ApiEnvKey } from "./env-keys.js";
+
 const DEFAULT_API_PORT = 5001;
 const DEFAULT_SANITY_API_VERSION = "2025-02-19";
 const DEFAULT_CONTENT_PROVIDER = "sanity";
@@ -36,7 +38,7 @@ export type ApiRuntimeConfig = {
 };
 
 /** Reads and trims an environment variable value, returning an empty string when missing. */
-function getEnvVar(key: string): string {
+function getEnvVar(key: ApiEnvKey): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
@@ -130,8 +132,8 @@ function parseContentProvider(rawProvider: string): ContentProviderKind {
 /** Prefers a server-only env var and optionally falls back to a public env var outside production. */
 function resolveServerFirstEnvVar(
   nodeEnv: ApiRuntimeEnvironment,
-  serverKey: string,
-  publicKey: string
+  serverKey: ApiEnvKey,
+  publicKey: ApiEnvKey
 ): string | undefined {
   const serverValue = getEnvVar(serverKey);
 
@@ -153,8 +155,8 @@ function resolveSanityProjectId(
 ): string | undefined {
   return resolveServerFirstEnvVar(
     nodeEnv,
-    "SANITY_PROJECT_ID",
-    "NEXT_PUBLIC_SANITY_PROJECT_ID"
+    API_ENV_KEYS.SANITY_PROJECT_ID,
+    API_ENV_KEYS.NEXT_PUBLIC_SANITY_PROJECT_ID
   );
 }
 
@@ -164,21 +166,23 @@ function resolveSanityDataset(
 ): string | undefined {
   return resolveServerFirstEnvVar(
     nodeEnv,
-    "SANITY_DATASET",
-    "NEXT_PUBLIC_SANITY_DATASET"
+    API_ENV_KEYS.SANITY_DATASET,
+    API_ENV_KEYS.NEXT_PUBLIC_SANITY_DATASET
   );
 }
 
 /** Resolves the Sanity API version with a deterministic fallback. */
 function resolveSanityApiVersion(nodeEnv: ApiRuntimeEnvironment): string {
-  const serverApiVersion = getEnvVar("SANITY_API_VERSION");
+  const serverApiVersion = getEnvVar(API_ENV_KEYS.SANITY_API_VERSION);
 
   if (serverApiVersion) {
     return serverApiVersion;
   }
 
   if (nodeEnv !== "production") {
-    const publicApiVersion = getEnvVar("NEXT_PUBLIC_SANITY_API_VERSION");
+    const publicApiVersion = getEnvVar(
+      API_ENV_KEYS.NEXT_PUBLIC_SANITY_API_VERSION
+    );
 
     if (publicApiVersion) {
       return publicApiVersion;
@@ -190,11 +194,16 @@ function resolveSanityApiVersion(nodeEnv: ApiRuntimeEnvironment): string {
 
 /** Builds and validates the API gateway runtime configuration from process env. */
 export function getApiConfig(): ApiRuntimeConfig {
-  const nodeEnv = parseNodeEnv(getEnvVar("NODE_ENV"));
-  const port = parsePort(getEnvVar("PORT") || getEnvVar("API_PORT"));
-  const corsOrigins = parseCorsOrigins(getEnvVar("API_GATEWAY_CORS_ORIGINS"));
+  const nodeEnv = parseNodeEnv(getEnvVar(API_ENV_KEYS.NODE_ENV));
+  const port = parsePort(
+    getEnvVar(API_ENV_KEYS.PORT) || getEnvVar(API_ENV_KEYS.API_PORT)
+  );
+  const corsOrigins = parseCorsOrigins(
+    getEnvVar(API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS)
+  );
   const contentProvider = parseContentProvider(
-    getEnvVar("API_GATEWAY_CONTENT_PROVIDER") || DEFAULT_CONTENT_PROVIDER
+    getEnvVar(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER) ||
+      DEFAULT_CONTENT_PROVIDER
   );
 
   return {
@@ -207,10 +216,10 @@ export function getApiConfig(): ApiRuntimeConfig {
         projectId: resolveSanityProjectId(nodeEnv),
         dataset: resolveSanityDataset(nodeEnv),
         apiVersion: resolveSanityApiVersion(nodeEnv),
-        readToken: getEnvVar("SANITY_API_READ_TOKEN") || undefined,
-        useCdn: parseBoolean(getEnvVar("SANITY_USE_CDN"), true),
+        readToken: getEnvVar(API_ENV_KEYS.SANITY_API_READ_TOKEN) || undefined,
+        useCdn: parseBoolean(getEnvVar(API_ENV_KEYS.SANITY_USE_CDN), true),
         requestTimeoutMs: parseInteger(
-          getEnvVar("SANITY_REQUEST_TIMEOUT_MS"),
+          getEnvVar(API_ENV_KEYS.SANITY_REQUEST_TIMEOUT_MS),
           DEFAULT_SANITY_REQUEST_TIMEOUT_MS,
           {
             min: 100,
@@ -218,7 +227,7 @@ export function getApiConfig(): ApiRuntimeConfig {
           }
         ),
         maxRetries: parseInteger(
-          getEnvVar("SANITY_REQUEST_MAX_RETRIES"),
+          getEnvVar(API_ENV_KEYS.SANITY_REQUEST_MAX_RETRIES),
           DEFAULT_SANITY_REQUEST_MAX_RETRIES,
           {
             min: 0,
@@ -226,7 +235,7 @@ export function getApiConfig(): ApiRuntimeConfig {
           }
         ),
         retryDelayMs: parseInteger(
-          getEnvVar("SANITY_REQUEST_RETRY_DELAY_MS"),
+          getEnvVar(API_ENV_KEYS.SANITY_REQUEST_RETRY_DELAY_MS),
           DEFAULT_SANITY_REQUEST_RETRY_DELAY_MS,
           {
             min: 0,

@@ -6,6 +6,8 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { API_ERROR_CODES } from "@portfolio/api-contracts/http";
+
 import { createApiLogger } from "@api/config/logger";
 import { createSanityContentProvider } from "@api/providers/content/sanity-content.provider";
 
@@ -100,7 +102,7 @@ describe("sanity content provider", () => {
     );
 
     await expect(provider.getArticles()).rejects.toMatchObject({
-      code: "SANITY_UPSTREAM_TIMEOUT",
+      code: API_ERROR_CODES.SANITY_UPSTREAM_TIMEOUT,
       statusCode: 504,
     });
     expect(fetchMock).toHaveBeenCalledTimes(2);
