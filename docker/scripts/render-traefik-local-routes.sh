@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-domain="${1:-guyromellemagayano.test}"
+domain="${1:-guyromellemagayano.local}"
 enable_docker_provider="${TRAEFIK_ENABLE_DOCKER_PROVIDER:-0}"
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)"
 dynamic_dir="$repo_root/docker/traefik/dynamic"

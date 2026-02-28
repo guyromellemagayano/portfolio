@@ -8,6 +8,7 @@ PROD_COMPOSE_FILE ?= docker/compose/prod.yml
 EDGE_COMPOSE_FILE ?= docker/compose/edge.local.yml
 EDGE_DEBUG_COMPOSE_FILE ?= docker/compose/edge.docker-provider.debug.local.yml
 EDGE_TLS_COMPOSE_FILE ?= docker/compose/edge.tls.local.yml
+EDGE_ORBSTACK_COMPOSE_FILE ?= docker/compose/edge.orbstack.local.yml
 FORCE_PNPM_INSTALL ?= 0
 SANITY_ARGS ?= projects list
 TOOLING_CMD ?= pnpm check-types
@@ -19,7 +20,8 @@ TRAEFIK_DOCKER_API_VERSION ?= 1.53
 TRAEFIK_ENABLE_DOCKER_PROVIDER ?= 0
 TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL = $(if $(filter 1 true TRUE yes YES on ON,$(TRAEFIK_ENABLE_DOCKER_PROVIDER)),true,false)
 TRAEFIK_LOG_LEVEL ?= ERROR
-LOCAL_DEV_DOMAIN ?= guyromellemagayano.test
+LOCAL_DEV_DOMAIN ?= guyromellemagayano.local
+EDGE_PUBLIC_SCHEME := $(if $(filter %.local,$(LOCAL_DEV_DOMAIN)),https,http)
 TRAEFIK_HTTP_PORT ?= 80
 TRAEFIK_HTTPS_PORT ?= 443
 PROD_WEB_PORT ?= 3000
@@ -40,16 +42,17 @@ COMPOSE_BASE := FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $
 COMPOSE_NO_FORCE := $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE)
 COMPOSE_ALL_PROFILES := $(COMPOSE_NO_FORCE) --profile tooling --profile e2e
 COMPOSE_PROD_NO_FORCE := PROD_WEB_PORT=$(PROD_WEB_PORT) PROD_API_PORT=$(PROD_API_PORT) $(COMPOSE) --env-file $(ENV_FILE) -f $(PROD_COMPOSE_FILE)
-COMPOSE_EDGE_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE)
-COMPOSE_EDGE_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE)
+EDGE_ORBSTACK_OVERLAY := $(if $(filter %.local,$(LOCAL_DEV_DOMAIN)),-f $(EDGE_ORBSTACK_COMPOSE_FILE),)
+COMPOSE_EDGE_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY)
+COMPOSE_EDGE_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY)
 COMPOSE_EDGE_ALL_PROFILES := $(COMPOSE_EDGE_NO_FORCE) --profile tooling --profile e2e
-COMPOSE_EDGE_DEBUG_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) -f $(EDGE_DEBUG_COMPOSE_FILE)
-COMPOSE_EDGE_DEBUG_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) -f $(EDGE_DEBUG_COMPOSE_FILE)
+COMPOSE_EDGE_DEBUG_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY) -f $(EDGE_DEBUG_COMPOSE_FILE)
+COMPOSE_EDGE_DEBUG_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY) -f $(EDGE_DEBUG_COMPOSE_FILE)
 COMPOSE_EDGE_DEBUG_ALL_PROFILES := $(COMPOSE_EDGE_DEBUG_NO_FORCE) --profile tooling --profile e2e
-COMPOSE_EDGE_TLS_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) -f $(EDGE_TLS_COMPOSE_FILE)
-COMPOSE_EDGE_TLS_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) -f $(EDGE_TLS_COMPOSE_FILE)
+COMPOSE_EDGE_TLS_BASE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) FORCE_PNPM_INSTALL=$(FORCE_PNPM_INSTALL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY) -f $(EDGE_TLS_COMPOSE_FILE)
+COMPOSE_EDGE_TLS_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY) -f $(EDGE_TLS_COMPOSE_FILE)
 COMPOSE_EDGE_TLS_ALL_PROFILES := $(COMPOSE_EDGE_TLS_NO_FORCE) --profile tooling --profile e2e
-COMPOSE_EDGE_ANY_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) -f $(EDGE_DEBUG_COMPOSE_FILE) -f $(EDGE_TLS_COMPOSE_FILE)
+COMPOSE_EDGE_ANY_NO_FORCE := LOCAL_DEV_DOMAIN=$(LOCAL_DEV_DOMAIN) EDGE_PUBLIC_SCHEME=$(EDGE_PUBLIC_SCHEME) TRAEFIK_HTTP_PORT=$(TRAEFIK_HTTP_PORT) TRAEFIK_HTTPS_PORT=$(TRAEFIK_HTTPS_PORT) TRAEFIK_DOCKER_SOCKET_PATH=$(TRAEFIK_DOCKER_SOCKET_PATH) TRAEFIK_DOCKER_API_VERSION=$(TRAEFIK_DOCKER_API_VERSION) TRAEFIK_LOG_LEVEL=$(TRAEFIK_LOG_LEVEL) $(COMPOSE) --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -f $(EDGE_COMPOSE_FILE) $(EDGE_ORBSTACK_OVERLAY) -f $(EDGE_DEBUG_COMPOSE_FILE) -f $(EDGE_TLS_COMPOSE_FILE)
 COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling --profile e2e
 
 .PHONY: \
@@ -106,8 +109,8 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	dnsmasq-status \
 	dnsmasq-verify \
 	tls-local-setup \
-	use-test-domain \
 	use-localhost-domain \
+	use-orbstack-domain \
 	env-local-normalize \
 	vercel-env-pull \
 	vercel-env-pull-web \
@@ -135,6 +138,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n🐳 Local Docker Workflow (Quick Help)\n'
 	@printf '\n🚦 Golden Path\n'
 	@printf '%-42s %s\n' "make doctor" "Validate Docker + Compose."
+	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
 	@printf '%-42s %s\n' "make bootstrap-watch" "First run: DNS setup + edge stack + watch."
 	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api/admin)."
 	@printf '\n🎯 Daily Use\n'
@@ -143,21 +147,22 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-42s %s\n' "make down-edge" "Stop edge stack."
 	@printf '\n🌐 DNS Modes\n'
-	@printf '%-42s %s\n' "make dnsmasq-local" ".test wildcard DNS (default path)."
+	@printf '%-42s %s\n' "make dnsmasq-local" "Manual local DNS helper for current LOCAL_DEV_DOMAIN."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
 	@printf '%-42s %s\n' "make edge-dns-doctor" "Diagnose browser DNS_PROBE_* / DoH issues."
 	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local for Docker and remove app-level .env.local."
 	@printf '%-42s %s\n' "make use-localhost-domain" "Switch to .localhost fallback mode."
+	@printf '%-42s %s\n' "make use-orbstack-domain" "Switch to OrbStack native guyromellemagayano.local mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
 	@printf '\n🐞 Debug\n'
 	@printf '%-42s %s\n' "make up-edge-debug-watch" "Docker-provider debug mode (socket-proxy)."
 	@printf '%-42s %s\n' "make validate-edge-debug" "Validate debug overlay compose config."
-	@printf '\n⚙️ Key Variables\n'
+	@printf '\n⚙️  Key Variables\n'
 	@printf '%-26s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge domain" "$(LOCAL_DEV_DOMAIN)"
 	@printf '%-26s %s (current: %s)\n' "ENV_FILE" "Compose env file" "$(ENV_FILE)"
 	@printf '%-26s %s (current: %s)\n' "LOG_TAIL" "Default tail lines for logs" "$(LOG_TAIL)"
 	@printf '%-26s %s (current: %s)\n' "WATCH_SERVICES" "Services passed to compose watch" "$(WATCH_SERVICES)"
-	@printf '\n📚 More\n'
+	@printf '\n📚 Miscellaneous\n'
 	@printf '%-42s %s\n' "make help-all" "Full target catalog + full variable list."
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
 	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin endpoints."
@@ -172,13 +177,15 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@awk 'BEGIN {FS = ":.*##"; section="";} \
 		/^##@/ {section = $$0; sub(/^##@ /, "", section); printf "\n%s\n", section; next} \
 		/^[a-zA-Z0-9_.-]+:.*##/ {printf "%-28s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
-	@printf '\n⚙️ Variables\n'
+	@printf '\n⚙️  Variables\n'
 	@printf '%-32s %s (current: %s)\n' "ENV_FILE" "Compose env file" "$(ENV_FILE)"
 	@printf '%-32s %s (current: %s)\n' "COMPOSE_FILE" "Base compose file" "$(COMPOSE_FILE)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_COMPOSE_FILE" "Edge file-provider overlay" "$(EDGE_COMPOSE_FILE)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_DEBUG_COMPOSE_FILE" "Edge Docker-provider debug overlay" "$(EDGE_DEBUG_COMPOSE_FILE)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_TLS_COMPOSE_FILE" "Optional TLS overlay (mkcert-ready)" "$(EDGE_TLS_COMPOSE_FILE)"
-	@printf '%-32s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge domain (.test default; .localhost fallback)" "$(LOCAL_DEV_DOMAIN)"
+	@printf '%-32s %s (current: %s)\n' "EDGE_ORBSTACK_COMPOSE_FILE" "OrbStack custom-domain overlay" "$(EDGE_ORBSTACK_COMPOSE_FILE)"
+	@printf '%-32s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge base domain (guyromellemagayano.local default; .localhost fallback)" "$(LOCAL_DEV_DOMAIN)"
+	@printf '%-32s %s (current: %s)\n' "EDGE_PUBLIC_SCHEME" "Public edge URL scheme derived from LOCAL_DEV_DOMAIN" "$(EDGE_PUBLIC_SCHEME)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_HTTP_PORT" "Traefik HTTP port" "$(TRAEFIK_HTTP_PORT)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_HTTPS_PORT" "Traefik HTTPS port (TLS overlay)" "$(TRAEFIK_HTTPS_PORT)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_DOCKER_SOCKET_PATH" "Docker socket path (debug overlay)" "$(TRAEFIK_DOCKER_SOCKET_PATH)"
@@ -198,13 +205,14 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap*`' "$(SKIP_DNS_SETUP)"
 	@printf '\n🚦 First Run (Recommended)\n'
 	@printf '%-44s %s\n' "make doctor" "Validate Docker/Compose setup."
+	@printf '%-44s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
 	@printf '%-44s %s\n' "make bootstrap-watch" "Golden path: DNS setup + edge stack + watch (foreground)."
 	@printf '%-44s %s\n' "make bootstrap-detached" "Golden path (background) + use make logs-edge."
 	@printf '%-44s %s\n' "make bootstrap-watch SKIP_DNS_SETUP=1" "Skip DNS bootstrap if already configured."
 	@printf '\n🎯 Run Modes (Recommended)\n'
 	@printf '%-44s %s\n' "make up-edge-watch" "Foreground (active coding)." 
 	@printf '%-44s %s\n' "make up-edge-detached" "Background services (pair with make logs-edge)."
-	@printf '\n🪟 Separate Terminal (Optional Monitoring)\n'
+	@printf '\n🪟  Separate Terminal (Optional Monitoring)\n'
 	@printf '%-44s %s\n' "make ps-edge" "Inspect edge stack service status."
 	@printf '%-44s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-44s %s\n' "make watch-edge" 'Run Compose watch (best with `make up-edge-detached`).'
@@ -212,7 +220,8 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '\n🐞 Debug / Troubleshooting\n'
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
 	@printf '%-44s %s\n' "make dnsmasq-status" "Advisory Homebrew dnsmasq status only."
-	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + .localhost fallback guidance."
+	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + .localhost/OrbStack guidance."
+	@printf '%-44s %s\n' "make use-orbstack-domain" "Switch LOCAL_DEV_DOMAIN to guyromellemagayano.local."
 	@printf '%-44s %s\n' "make vercel-host-check" "Check host Vercel CLI install and fallback readiness."
 	@printf '%-44s %s\n' "make vercel" "Run Vercel CLI on host."
 	@printf '%-44s %s\n' "make vercel-env-pull" "Pull app-level envs from linked Vercel projects."
@@ -232,6 +241,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make vercel-env-pull VERCEL_ENV_TARGET=development\n'
 	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration\n'
 	@printf 'make use-localhost-domain\n'
+	@printf 'make use-orbstack-domain && make up-edge-watch\n'
 	@printf 'make tls-local-setup && make up-edge-tls-watch\n'
 	@printf 'make up-edge-debug-watch  # debug Docker-provider routing\n'
 	@printf 'make prod-smoke\n'
@@ -244,6 +254,7 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'EDGE_COMPOSE_FILE=%s\n' "$(EDGE_COMPOSE_FILE)"
 	@printf 'EDGE_DEBUG_COMPOSE_FILE=%s\n' "$(EDGE_DEBUG_COMPOSE_FILE)"
 	@printf 'EDGE_TLS_COMPOSE_FILE=%s\n' "$(EDGE_TLS_COMPOSE_FILE)"
+	@printf 'EDGE_ORBSTACK_COMPOSE_FILE=%s\n' "$(EDGE_ORBSTACK_COMPOSE_FILE)"
 	@printf 'FORCE_PNPM_INSTALL=%s\n' "$(FORCE_PNPM_INSTALL)"
 	@printf 'SANITY_ARGS=%s\n' "$(SANITY_ARGS)"
 	@printf 'TOOLING_CMD=%s\n' "$(TOOLING_CMD)"
@@ -251,6 +262,7 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'LOG_TAIL=%s\n' "$(LOG_TAIL)"
 	@printf 'WATCH_SERVICES=%s\n' "$(WATCH_SERVICES)"
 	@printf 'LOCAL_DEV_DOMAIN=%s\n' "$(LOCAL_DEV_DOMAIN)"
+	@printf 'EDGE_PUBLIC_SCHEME=%s\n' "$(EDGE_PUBLIC_SCHEME)"
 	@printf 'TRAEFIK_HTTP_PORT=%s\n' "$(TRAEFIK_HTTP_PORT)"
 	@printf 'TRAEFIK_HTTPS_PORT=%s\n' "$(TRAEFIK_HTTPS_PORT)"
 	@printf 'TRAEFIK_DOCKER_SOCKET_PATH=%s\n' "$(TRAEFIK_DOCKER_SOCKET_PATH)"
@@ -370,7 +382,7 @@ edge-hosts: ## Print /etc/hosts entries for the configured local hostname domain
 	@printf '127.0.0.1 admin.%s\n' "$(LOCAL_DEV_DOMAIN)"
 	@printf '127.0.0.1 traefik.%s\n' "$(LOCAL_DEV_DOMAIN)"
 
-edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, api, admin).
+edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, api, admin) using EDGE_PUBLIC_SCHEME.
 	@status=0; \
 	check_code() { \
 		label="$$1"; \
@@ -391,10 +403,10 @@ edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web
 			status=1; \
 		fi; \
 	}; \
-	check_code "traefik-dashboard" "http://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
-	check_code "web-home" "http://$(LOCAL_DEV_DOMAIN)/" "200"; \
-	check_code "api-status" "http://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
-	check_code "admin-home" "http://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
+	check_code "traefik-dashboard" "$(EDGE_PUBLIC_SCHEME)://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
+	check_code "web-home" "$(EDGE_PUBLIC_SCHEME)://$(LOCAL_DEV_DOMAIN)/" "200"; \
+	check_code "api-status" "$(EDGE_PUBLIC_SCHEME)://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
+	check_code "admin-home" "$(EDGE_PUBLIC_SCHEME)://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
 edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashboard, web, api, admin).
@@ -424,7 +436,7 @@ edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashbo
 	check_code "admin-home-tls" "https://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
-edge-dns-doctor: ## Diagnose local edge DNS issues (.test + dnsmasq vs Chromium Secure DNS / DoH) and suggest the right next step.
+edge-dns-doctor: ## Diagnose local edge DNS issues (.local/.localhost with browser DNS caching/DoH) and suggest the right next step.
 	@sh docker/scripts/edge-dns-doctor.sh "$(LOCAL_DEV_DOMAIN)"
 
 dnsmasq-local-print: ## Print the dnsmasq and resolver file contents for the local edge domain (macOS/Homebrew).
@@ -491,63 +503,18 @@ tls-local-setup: ## Generate mkcert local TLS cert/key + Traefik `docker/traefik
 render-edge-routes: ## Generate local Traefik file-provider routes from LOCAL_DEV_DOMAIN.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) sh docker/scripts/render-traefik-local-routes.sh "$(LOCAL_DEV_DOMAIN)"
 
-use-test-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.test` to ENV_FILE (default dnsmasq path).
-	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.test
-	@printf 'Next: make down-edge && make up-edge-watch\n'
-
 use-localhost-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.localhost` to ENV_FILE (browser DoH fallback path).
 	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.localhost
+	@printf 'Next: make down-edge && make up-edge-watch\n'
+
+use-orbstack-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.local` to ENV_FILE (OrbStack native path).
+	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.local
 	@printf 'Next: make down-edge && make up-edge-watch\n'
 
 env-local-normalize: ## Normalize root `.env.local` for local Docker and remove app-level `.env.local` files from Vercel link.
 	@sh docker/scripts/normalize-local-env.sh "$(ENV_FILE)"
 
-##@ ☁️ Vercel
-
-vercel-host-check: ## Check host Vercel CLI install and fallback readiness (`vercel` or `pnpm`).
-	@if command -v vercel >/dev/null 2>&1; then \
-		vercel_path="$$(command -v vercel)"; \
-		if vercel --version >/dev/null 2>&1; then \
-			printf 'vercel-host-check: found `vercel` at %s\n' "$$vercel_path"; \
-		else \
-			printf 'vercel-host-check: `vercel` exists at %s but failed to execute.\n' "$$vercel_path" >&2; \
-			printf 'Reinstall with `npm i -g vercel`.\n' >&2; \
-			exit 127; \
-		fi; \
-	elif command -v pnpm >/dev/null 2>&1; then \
-		printf 'vercel-host-check: global `vercel` was not found on host.\n'; \
-		printf 'vercel-host-check: fallback available via `pnpm dlx vercel@37.12.0`.\n'; \
-	else \
-		printf 'vercel-host-check: neither `vercel` nor `pnpm` is installed on host.\n' >&2; \
-		printf 'Install one of them before running Vercel make targets.\n' >&2; \
-		exit 127; \
-	fi
-
-vercel: ## Run Vercel CLI on host (`VERCEL_ARGS`).
-	@$(MAKE) vercel-host-check
-	@if command -v vercel >/dev/null 2>&1; then \
-		vercel $(VERCEL_ARGS); \
-	else \
-		pnpm dlx vercel@37.12.0 $(VERCEL_ARGS); \
-	fi
-
-vercel-env-pull-web: ## Pull Vercel env vars for `apps/web` into `apps/web/$(VERCEL_PULL_ENV_FILE)` (requires `apps/web/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/web" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
-
-vercel-env-pull-api: ## Pull Vercel env vars for `apps/api` into `apps/api/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/api" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
-
-vercel-env-pull-admin: ## Pull Vercel env vars for `apps/admin` into `apps/admin/$(VERCEL_PULL_ENV_FILE)` (requires `apps/admin/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/admin" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
-
-vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `admin`).
-	@$(MAKE) vercel-env-pull-web
-	@$(MAKE) vercel-env-pull-api
-	@$(MAKE) vercel-env-pull-admin
-
-vercel-env-sync-local: ## Pull app env vars from Vercel and regenerate root `.env.local` from app-level files.
-	@$(MAKE) vercel-env-pull
-	@PREFER_APP_ENV_FILES=1 KEEP_APP_ENV_FILES=1 $(MAKE) env-local-normalize
+##@ 🌐 Edge Runtime (Traefik + App Services)
 
 up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in foreground.
 	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
@@ -606,6 +573,8 @@ down-edge: ## Stop the edge stack (base + Traefik overlays) and remove profiled/
 logs-edge: ## Follow Traefik + api + web + admin logs (tails the last `LOG_TAIL` lines first).
 	@$(COMPOSE_EDGE_ANY_NO_FORCE) logs --tail=$(LOG_TAIL) -f traefik web api admin docker-socket-proxy
 
+##@ 👀 Compose Watch
+
 watch: ## Run Docker Compose watch for base stack services (use with `make up-detached`; source HMR remains app-level).
 	@$(COMPOSE_BASE) watch $(WATCH_SERVICES)
 
@@ -615,7 +584,54 @@ watch-edge: ## Run Docker Compose watch for edge stack app services (use with `m
 watch-edge-tls: ## Run Docker Compose watch for edge TLS stack app services (use with `make up-edge-tls-detached`).
 	@$(COMPOSE_EDGE_TLS_BASE) watch $(WATCH_SERVICES)
 
-##@ 🛠 Tooling
+##@ ☁️  Vercel
+
+vercel-host-check: ## Check host Vercel CLI install and fallback readiness (`vercel` or `pnpm`).
+	@if command -v vercel >/dev/null 2>&1; then \
+		vercel_path="$$(command -v vercel)"; \
+		if vercel --version >/dev/null 2>&1; then \
+			printf 'vercel-host-check: found `vercel` at %s\n' "$$vercel_path"; \
+		else \
+			printf 'vercel-host-check: `vercel` exists at %s but failed to execute.\n' "$$vercel_path" >&2; \
+			printf 'Reinstall with `npm i -g vercel`.\n' >&2; \
+			exit 127; \
+		fi; \
+	elif command -v pnpm >/dev/null 2>&1; then \
+		printf 'vercel-host-check: global `vercel` was not found on host.\n'; \
+		printf 'vercel-host-check: fallback available via `pnpm dlx vercel@37.12.0`.\n'; \
+	else \
+		printf 'vercel-host-check: neither `vercel` nor `pnpm` is installed on host.\n' >&2; \
+		printf 'Install one of them before running Vercel make targets.\n' >&2; \
+		exit 127; \
+	fi
+
+vercel: ## Run Vercel CLI on host (`VERCEL_ARGS`).
+	@$(MAKE) vercel-host-check
+	@if command -v vercel >/dev/null 2>&1; then \
+		vercel $(VERCEL_ARGS); \
+	else \
+		pnpm dlx vercel@37.12.0 $(VERCEL_ARGS); \
+	fi
+
+vercel-env-pull-web: ## Pull Vercel env vars for `apps/web` into `apps/web/$(VERCEL_PULL_ENV_FILE)` (requires `apps/web/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/web" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull-api: ## Pull Vercel env vars for `apps/api` into `apps/api/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/api" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull-admin: ## Pull Vercel env vars for `apps/admin` into `apps/admin/$(VERCEL_PULL_ENV_FILE)` (requires `apps/admin/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/admin" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+
+vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `admin`).
+	@$(MAKE) vercel-env-pull-web
+	@$(MAKE) vercel-env-pull-api
+	@$(MAKE) vercel-env-pull-admin
+
+vercel-env-sync-local: ## Pull app env vars from Vercel and regenerate root `.env.local` from app-level files.
+	@$(MAKE) vercel-env-pull
+	@PREFER_APP_ENV_FILES=1 KEEP_APP_ENV_FILES=1 $(MAKE) env-local-normalize
+
+##@ 🛠  Tooling
 
 check-types: ## Run `check-types` in the tooling container (Turbo concurrency tuned for Docker bind mounts).
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling pnpm exec turbo run check-types --concurrency=$(TURBO_DOCKER_CONCURRENCY)
