@@ -7,6 +7,7 @@
 import type { ILogger } from "@portfolio/logger";
 
 import type { ApiRuntimeConfig } from "../config/env.js";
+import { API_ENV_KEYS } from "../config/env-keys.js";
 import type { ContentProvider } from "../providers/content/content.provider.js";
 import { createSanityContentProvider } from "../providers/content/sanity-content.provider.js";
 import { createStaticContentProvider } from "../providers/content/static-content.provider.js";
@@ -14,6 +15,10 @@ import { createStaticContentProvider } from "../providers/content/static-content
 export type ProviderRegistry = {
   content: ContentProvider;
 };
+
+export const SANITY_PROVIDER_MISSING_SERVER_ENV_PRODUCTION_MESSAGE = `Sanity content provider is configured but ${API_ENV_KEYS.SANITY_PROJECT_ID}/${API_ENV_KEYS.SANITY_DATASET} are missing in production.`;
+
+export const SANITY_PROVIDER_FALLBACK_TO_STATIC_MESSAGE = `Sanity provider requested but ${API_ENV_KEYS.SANITY_PROJECT_ID}/${API_ENV_KEYS.SANITY_DATASET} are missing. Falling back to static provider.`;
 
 /** Resolves the configured content provider and applies non-production fallback behavior when Sanity is unavailable. */
 function resolveContentProvider(
@@ -34,17 +39,12 @@ function resolveContentProvider(
 
   if (!sanityConfig.projectId || !sanityConfig.dataset) {
     if (config.nodeEnv === "production") {
-      throw new Error(
-        "Sanity content provider is configured but SANITY_PROJECT_ID/SANITY_DATASET are missing in production."
-      );
+      throw new Error(SANITY_PROVIDER_MISSING_SERVER_ENV_PRODUCTION_MESSAGE);
     }
 
-    logger.warn(
-      "Sanity provider requested but SANITY_PROJECT_ID/SANITY_DATASET are missing. Falling back to static provider.",
-      {
-        provider: "sanity",
-      }
-    );
+    logger.warn(SANITY_PROVIDER_FALLBACK_TO_STATIC_MESSAGE, {
+      provider: "sanity",
+    });
 
     return createStaticContentProvider();
   }
