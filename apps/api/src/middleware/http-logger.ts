@@ -4,9 +4,26 @@
  * @description HTTP access logging middleware powered by the shared logger.
  */
 
-import type { RequestHandler } from "express";
+import { Elysia } from "elysia";
 
+import {
+  HEALTH_ROUTE_LEGACY,
+  HEALTH_ROUTE_STATUS,
+} from "@portfolio/api-contracts/http";
 import type { ILogger } from "@portfolio/logger";
+
+import { API_ENV_KEYS } from "../config/env-keys.js";
+import type { ApiRequestContext } from "./request-context.js";
+
+type HttpLoggerContext = {
+  request: Request;
+  set: {
+    status?: number | string;
+    headers: Record<string, string>;
+  };
+  logger?: ILogger;
+  requestContext?: ApiRequestContext;
+};
 
 /** Formats the HTTP access log message emitted by the shared logger transport. */
 function formatHttpAccessLogMessage(
@@ -28,57 +45,67 @@ function formatHttpAccessLogMessage(
   return `${baseMessage} "${userAgent}"`;
 }
 
-/** Creates an HTTP access log middleware wired to the shared logger. */
-export function createHttpLoggerMiddleware(logger: ILogger): RequestHandler {
-  const isProduction = process.env.NODE_ENV === "production";
+/** Creates an HTTP access log plugin wired to the shared logger. */
+export function createHttpLoggerPlugin(logger: ILogger) {
+  const isProduction = process.env[API_ENV_KEYS.NODE_ENV] === "production";
 
-  return function httpLoggerMiddleware(request, response, next) {
-    const shouldSkip =
-      isProduction &&
-      (request.originalUrl === "/status" ||
-        request.originalUrl === "/v1/status");
+  return new Elysia({
+    name: "api-http-logger",
+  })
+    .onAfterResponse((context) => {
+      const typedContext = context as HttpLoggerContext;
+      const requestContext = typedContext.requestContext;
 
-    if (shouldSkip) {
-      next();
-      return;
-    }
+      if (!requestContext) {
+        return;
+      }
 
-    const startedAt = process.hrtime.bigint();
+      const requestPathname = new URL(typedContext.request.url).pathname;
+      const shouldSkip =
+        isProduction &&
+        (requestPathname === HEALTH_ROUTE_LEGACY ||
+          requestPathname === HEALTH_ROUTE_STATUS);
 
-    response.on("finish", () => {
-      const requestLogger = request.logger ?? logger;
-      const elapsedMs = Number(process.hrtime.bigint() - startedAt) / 1_000_000;
-      const contentLength = response.getHeader("content-length");
+      if (shouldSkip) {
+        return;
+      }
+
+      const requestLogger = typedContext.logger ?? logger;
+      const elapsedMs = Math.max(
+        0,
+        performance.now() - requestContext.startedAt
+      );
+      const statusCode =
+        typeof typedContext.set.status === "number"
+          ? typedContext.set.status
+          : 200;
+      const contentLength = typedContext.set.headers["content-length"];
       const contentLengthText =
-        typeof contentLength === "number"
-          ? String(contentLength)
-          : typeof contentLength === "string"
-            ? contentLength
-            : "-";
-      const userAgent = request.get("User-Agent");
+        typeof contentLength === "string" && contentLength.trim()
+          ? contentLength
+          : "-";
+      const userAgent = typedContext.request.headers.get("user-agent");
 
       requestLogger.http(
         formatHttpAccessLogMessage(
-          request.id,
-          request.correlationId,
-          request.method,
-          request.originalUrl,
-          response.statusCode,
+          requestContext.requestId,
+          requestContext.correlationId,
+          requestContext.method,
+          requestContext.path,
+          statusCode,
           contentLengthText,
           elapsedMs,
           isProduction ? undefined : (userAgent ?? "-")
         ),
         {
-          statusCode: response.statusCode,
-          method: request.method,
-          path: request.originalUrl,
+          statusCode,
+          method: requestContext.method,
+          path: requestContext.path,
           contentLength: contentLengthText,
           responseTimeMs: elapsedMs,
           userAgent: userAgent ?? null,
         }
       );
-    });
-
-    next();
-  };
+    })
+    .as("global");
 }

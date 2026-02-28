@@ -4,36 +4,74 @@
  * @description Health-check routes for gateway liveness/readiness, with legacy route redirects to the latest versioned endpoint.
  */
 
-import { Router } from "express";
+import { Elysia, t } from "elysia";
+
+import {
+  HEALTH_ROUTE_LEGACY,
+  HEALTH_ROUTE_STATUS,
+} from "@portfolio/api-contracts/http";
+import type { ILogger } from "@portfolio/logger";
 
 import { sendSuccess } from "../../contracts/http.js";
 
 /** Creates health-check routes. */
-export function createHealthRouter(): Router {
-  const router = Router();
+export function createHealthRouter(): Elysia {
+  return new Elysia({
+    name: "api-health-routes",
+  })
+    .get(
+      HEALTH_ROUTE_LEGACY,
+      (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
 
-  router.get("/status", (request, response) => {
-    request.logger.debug(
-      "Redirecting legacy health check route to versioned endpoint"
-    );
+        requestLogger?.debug(
+          "Redirecting legacy health check route to versioned endpoint"
+        );
+        context.set.status = 308;
 
-    return response.redirect(308, "/v1/status");
-  });
-
-  router.get("/v1/status", (request, response) => {
-    request.logger.debug("Versioned health check requested");
-
-    return sendSuccess(
-      request,
-      response,
-      { ok: true },
+        return new Response(null, {
+          status: 308,
+          headers: {
+            location: HEALTH_ROUTE_STATUS,
+          },
+        });
+      },
       {
-        meta: {
-          service: "api-gateway",
+        detail: {
+          tags: ["Health"],
+          summary: "Legacy health redirect",
+          description: "Redirects legacy health checks to the versioned route.",
+        },
+      }
+    )
+    .get(
+      HEALTH_ROUTE_STATUS,
+      (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+
+        requestLogger?.debug("Versioned health check requested");
+
+        return sendSuccess(
+          context,
+          { ok: true },
+          {
+            meta: {
+              service: "api-gateway",
+            },
+          }
+        );
+      },
+      {
+        detail: {
+          tags: ["Health"],
+          summary: "Gateway health status",
+          description: "Returns the API gateway liveness status.",
+        },
+        response: {
+          200: t.Any(),
         },
       }
     );
-  });
-
-  return router;
 }

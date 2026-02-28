@@ -10,13 +10,25 @@ import type { ApiRuntimeEnvironment } from "./env.js";
 
 /** Creates the base logger for the API gateway process. */
 export function createApiLogger(nodeEnv: ApiRuntimeEnvironment): ILogger {
+  const level =
+    nodeEnv === "test"
+      ? LogLevel.SILENT
+      : nodeEnv === "production"
+        ? LogLevel.INFO
+        : LogLevel.DEBUG;
+
   return createLogger({
-    level: nodeEnv === "production" ? LogLevel.INFO : LogLevel.DEBUG,
+    level,
     defaultContext: {
       component: "api-gateway",
       metadata: {
         service: "apps/api",
       },
+    },
+    errorHandling: {
+      handleExceptions: false,
+      handleRejections: false,
+      exitOnError: false,
     },
   });
 }

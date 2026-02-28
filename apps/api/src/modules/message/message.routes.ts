@@ -4,49 +4,96 @@
  * @description Message demo routes with legacy route redirects and versioned envelope responses.
  */
 
-import { Router } from "express";
+import { Elysia, t } from "elysia";
+
+import {
+  getMessageRoute,
+  MESSAGE_ROUTE_LEGACY_PATTERN,
+  MESSAGE_ROUTE_PATTERN,
+} from "@portfolio/api-contracts/http";
+import type { ILogger } from "@portfolio/logger";
 
 import { sendSuccess } from "../../contracts/http.js";
 
 /** Creates demo message routes. */
-export function createMessageRouter(): Router {
-  const router = Router();
+export function createMessageRouter(): Elysia {
+  return new Elysia({
+    name: "api-message-routes",
+  })
+    .get(
+      MESSAGE_ROUTE_LEGACY_PATTERN,
+      (context) => {
+        const { params, request } = context;
+        const name = params.name?.trim() ?? "";
+        const userAgent = request.headers.get("user-agent");
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
 
-  router.get("/message/:name", (request, response) => {
-    const name = request.params.name?.trim() ?? "";
+        requestLogger?.info(
+          "Redirecting legacy message request to versioned route",
+          {
+            name,
+            userAgent,
+          }
+        );
+        context.set.status = 308;
 
-    request.logger.info(
-      "Redirecting legacy message request to versioned route",
-      {
-        hasName: !!name,
-        userAgent: request.get("User-Agent"),
-      }
-    );
-
-    return response.redirect(308, `/v1/message/${encodeURIComponent(name)}`);
-  });
-
-  router.get("/v1/message/:name", (request, response) => {
-    const name = request.params.name;
-
-    request.logger.info("Processing versioned message request", {
-      hasName: !!name,
-      userAgent: request.get("User-Agent"),
-    });
-
-    return sendSuccess(
-      request,
-      response,
-      {
-        message: `hello ${name}`,
+        return new Response(null, {
+          status: 308,
+          headers: {
+            location: getMessageRoute(name),
+          },
+        });
       },
       {
-        meta: {
-          module: "message",
+        params: t.Object({
+          name: t.String(),
+        }),
+        detail: {
+          tags: ["Message"],
+          summary: "Legacy message redirect",
+          description:
+            "Redirects legacy message requests to the versioned message route.",
+        },
+      }
+    )
+    .get(
+      MESSAGE_ROUTE_PATTERN,
+      (context) => {
+        const name = context.params.name;
+        const userAgent = context.request.headers.get("user-agent");
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+
+        requestLogger?.info("Processing versioned message request", {
+          name,
+          userAgent,
+        });
+
+        return sendSuccess(
+          context,
+          {
+            message: `hello ${name}`,
+          },
+          {
+            meta: {
+              module: "message",
+            },
+          }
+        );
+      },
+      {
+        params: t.Object({
+          name: t.String(),
+        }),
+        detail: {
+          tags: ["Message"],
+          summary: "Versioned message endpoint",
+          description: "Returns a greeting message for the provided name.",
+        },
+        response: {
+          200: t.Any(),
         },
       }
     );
-  });
-
-  return router;
 }

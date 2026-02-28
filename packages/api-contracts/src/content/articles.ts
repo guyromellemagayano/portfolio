@@ -4,11 +4,16 @@
  * @description Canonical content contracts for article resources.
  */
 
+import { API_VERSION_PREFIX } from "../http/routes";
+
+/** Route prefix for content resources in the API gateway. */
+export const CONTENT_ROUTE_PREFIX = `${API_VERSION_PREFIX}/content`;
+
 /** Route path for content articles in the API gateway. */
-export const CONTENT_ARTICLES_ROUTE = "/v1/content/articles";
+export const CONTENT_ARTICLES_ROUTE = `${CONTENT_ROUTE_PREFIX}/articles`;
 
 /** Route pattern for a single content article in the API gateway. */
-export const CONTENT_ARTICLE_ROUTE_PATTERN = "/v1/content/articles/:slug";
+export const CONTENT_ARTICLE_ROUTE_PATTERN = `${CONTENT_ARTICLES_ROUTE}/:slug`;
 
 /** Builds the canonical API gateway route for a content article slug. */
 export function getContentArticleRoute(slug: string): string {
