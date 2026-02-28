@@ -20,6 +20,13 @@ Current primary data flow for content:
 - `GET /` redirects to `GET /v1/status` for a friendly browser entry point.
 - Unversioned legacy routes remain browser-safe via redirects to the latest versioned routes.
 
+## Runtime and API Docs
+
+- Runtime framework: Elysia (`apps/api/src/server.ts`).
+- OpenAPI UI: `GET /openapi`
+- OpenAPI JSON: `GET /openapi/json`
+- Local app runtime script: `bun --watch src/index.ts` (`pnpm --filter api dev` delegates to Bun)
+
 ## Provider Pattern
 
 - Provider interfaces live under `src/providers/<domain>/`.

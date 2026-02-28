@@ -4,144 +4,241 @@
  * @description Versioned content routes exposed by the API gateway.
  */
 
-import { Router } from "express";
+import { Elysia, t } from "elysia";
+
+import { CONTENT_ROUTE_PREFIX } from "@portfolio/api-contracts/content";
+import {
+  API_ERROR_CODES,
+  API_ERROR_MESSAGES,
+} from "@portfolio/api-contracts/http";
+import type { ILogger } from "@portfolio/logger";
 
 import { GatewayError } from "../../contracts/errors.js";
 import { sendSuccess } from "../../contracts/http.js";
 import type { ContentService } from "./content.service.js";
 
+const responseMetaSchema = t.Object(
+  {
+    correlationId: t.String(),
+    requestId: t.String(),
+    timestamp: t.String(),
+  },
+  {
+    additionalProperties: true,
+  }
+);
+
+const successEnvelopeSchema = t.Object({
+  success: t.Literal(true),
+  data: t.Any(),
+  meta: responseMetaSchema,
+});
+
+const errorEnvelopeSchema = t.Object({
+  success: t.Literal(false),
+  error: t.Object({
+    code: t.String(),
+    message: t.String(),
+    details: t.Optional(t.Any()),
+  }),
+  meta: responseMetaSchema,
+});
+
 /** Creates routes for content retrieval via the configured provider. */
-export function createContentRouter(contentService: ContentService): Router {
-  const router = Router();
+export function createContentRouter(contentService: ContentService) {
+  return new Elysia({
+    name: "api-content-routes",
+    prefix: CONTENT_ROUTE_PREFIX,
+  })
+    .get(
+      "/articles",
+      async (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const articles = await contentService.getArticles();
 
-  router.get("/articles", async (request, response, next) => {
-    try {
-      const articles = await contentService.getArticles();
-
-      request.logger.info("Serving content articles", {
-        provider: contentService.providerName,
-        count: articles.length,
-      });
-
-      return sendSuccess(request, response, articles, {
-        meta: {
+        requestLogger?.info("Serving content articles", {
           provider: contentService.providerName,
           count: articles.length,
-          module: "content",
-        },
-      });
-    } catch (error) {
-      return next(error);
-    }
-  });
-
-  router.get("/articles/:slug", async (request, response, next) => {
-    try {
-      const articleSlug = request.params.slug?.trim();
-
-      if (!articleSlug) {
-        throw new GatewayError({
-          statusCode: 400,
-          code: "CONTENT_ARTICLE_SLUG_REQUIRED",
-          message: "Article slug is required.",
         });
-      }
 
-      const article = await contentService.getArticleBySlug(articleSlug);
-
-      if (!article) {
-        throw new GatewayError({
-          statusCode: 404,
-          code: "CONTENT_ARTICLE_NOT_FOUND",
-          message: "Article not found.",
-          details: {
-            slug: articleSlug,
+        return sendSuccess(context, articles, {
+          meta: {
+            provider: contentService.providerName,
+            count: articles.length,
+            module: "content",
           },
         });
+      },
+      {
+        detail: {
+          tags: ["Content"],
+          summary: "List articles",
+          description:
+            "Returns canonical article list data from the configured content provider.",
+        },
+        response: {
+          200: successEnvelopeSchema,
+          502: errorEnvelopeSchema,
+          500: errorEnvelopeSchema,
+        },
       }
+    )
+    .get(
+      "/articles/:slug",
+      async (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const articleSlug = context.params.slug?.trim();
 
-      request.logger.info("Serving content article detail", {
-        provider: contentService.providerName,
-        slug: article.slug,
-      });
+        if (!articleSlug) {
+          throw new GatewayError({
+            statusCode: 400,
+            code: API_ERROR_CODES.CONTENT_ARTICLE_SLUG_REQUIRED,
+            message: API_ERROR_MESSAGES.CONTENT_ARTICLE_SLUG_REQUIRED,
+          });
+        }
 
-      return sendSuccess(request, response, article, {
-        meta: {
+        const article = await contentService.getArticleBySlug(articleSlug);
+
+        if (!article) {
+          throw new GatewayError({
+            statusCode: 404,
+            code: API_ERROR_CODES.CONTENT_ARTICLE_NOT_FOUND,
+            message: API_ERROR_MESSAGES.CONTENT_ARTICLE_NOT_FOUND,
+            details: {
+              slug: articleSlug,
+            },
+          });
+        }
+
+        requestLogger?.info("Serving content article detail", {
           provider: contentService.providerName,
           slug: article.slug,
-          module: "content",
-          resource: "article",
-        },
-      });
-    } catch (error) {
-      return next(error);
-    }
-  });
-
-  router.get("/pages", async (request, response, next) => {
-    try {
-      const pages = await contentService.getPages();
-
-      request.logger.info("Serving content pages", {
-        provider: contentService.providerName,
-        count: pages.length,
-      });
-
-      return sendSuccess(request, response, pages, {
-        meta: {
-          provider: contentService.providerName,
-          count: pages.length,
-          module: "content",
-          resource: "page",
-        },
-      });
-    } catch (error) {
-      return next(error);
-    }
-  });
-
-  router.get("/pages/:slug", async (request, response, next) => {
-    try {
-      const pageSlug = request.params.slug?.trim();
-
-      if (!pageSlug) {
-        throw new GatewayError({
-          statusCode: 400,
-          code: "CONTENT_PAGE_SLUG_REQUIRED",
-          message: "Page slug is required.",
         });
-      }
 
-      const page = await contentService.getPageBySlug(pageSlug);
-
-      if (!page) {
-        throw new GatewayError({
-          statusCode: 404,
-          code: "CONTENT_PAGE_NOT_FOUND",
-          message: "Page not found.",
-          details: {
-            slug: pageSlug,
+        return sendSuccess(context, article, {
+          meta: {
+            provider: contentService.providerName,
+            slug: article.slug,
+            module: "content",
+            resource: "article",
           },
         });
+      },
+      {
+        params: t.Object({
+          slug: t.String(),
+        }),
+        detail: {
+          tags: ["Content"],
+          summary: "Get article by slug",
+          description:
+            "Returns canonical article detail data for a specific article slug.",
+        },
+        response: {
+          200: successEnvelopeSchema,
+          400: errorEnvelopeSchema,
+          404: errorEnvelopeSchema,
+          502: errorEnvelopeSchema,
+          500: errorEnvelopeSchema,
+        },
       }
+    )
+    .get(
+      "/pages",
+      async (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const pages = await contentService.getPages();
 
-      request.logger.info("Serving content page detail", {
-        provider: contentService.providerName,
-        slug: page.slug,
-      });
+        requestLogger?.info("Serving content pages", {
+          provider: contentService.providerName,
+          count: pages.length,
+        });
 
-      return sendSuccess(request, response, page, {
-        meta: {
+        return sendSuccess(context, pages, {
+          meta: {
+            provider: contentService.providerName,
+            count: pages.length,
+            module: "content",
+            resource: "page",
+          },
+        });
+      },
+      {
+        detail: {
+          tags: ["Content"],
+          summary: "List pages",
+          description:
+            "Returns canonical standalone page list data from the configured content provider.",
+        },
+        response: {
+          200: successEnvelopeSchema,
+          502: errorEnvelopeSchema,
+          500: errorEnvelopeSchema,
+        },
+      }
+    )
+    .get(
+      "/pages/:slug",
+      async (context) => {
+        const requestLogger =
+          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const pageSlug = context.params.slug?.trim();
+
+        if (!pageSlug) {
+          throw new GatewayError({
+            statusCode: 400,
+            code: API_ERROR_CODES.CONTENT_PAGE_SLUG_REQUIRED,
+            message: API_ERROR_MESSAGES.CONTENT_PAGE_SLUG_REQUIRED,
+          });
+        }
+
+        const page = await contentService.getPageBySlug(pageSlug);
+
+        if (!page) {
+          throw new GatewayError({
+            statusCode: 404,
+            code: API_ERROR_CODES.CONTENT_PAGE_NOT_FOUND,
+            message: API_ERROR_MESSAGES.CONTENT_PAGE_NOT_FOUND,
+            details: {
+              slug: pageSlug,
+            },
+          });
+        }
+
+        requestLogger?.info("Serving content page detail", {
           provider: contentService.providerName,
           slug: page.slug,
-          module: "content",
-          resource: "page",
-        },
-      });
-    } catch (error) {
-      return next(error);
-    }
-  });
+        });
 
-  return router;
+        return sendSuccess(context, page, {
+          meta: {
+            provider: contentService.providerName,
+            slug: page.slug,
+            module: "content",
+            resource: "page",
+          },
+        });
+      },
+      {
+        params: t.Object({
+          slug: t.String(),
+        }),
+        detail: {
+          tags: ["Content"],
+          summary: "Get page by slug",
+          description:
+            "Returns canonical standalone page detail data for a specific page slug.",
+        },
+        response: {
+          200: successEnvelopeSchema,
+          400: errorEnvelopeSchema,
+          404: errorEnvelopeSchema,
+          502: errorEnvelopeSchema,
+          500: errorEnvelopeSchema,
+        },
+      }
+    );
 }

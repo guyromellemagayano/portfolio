@@ -68,7 +68,7 @@ Use `make help` for the compact command guide and `make help-all` for the full c
 make up
 ```
 
-- `api` runs `pnpm --filter api dev` (the dev runner that builds + restarts the API runtime)
+- `api` runs `pnpm --filter api dev` (Bun watch mode for the Elysia API runtime)
 - `web` runs `next dev --turbopack` in Docker
 - `admin` runs `pnpm --filter admin dev`
 - `web` resolves the API gateway through Docker networking (`http://api:5001`)

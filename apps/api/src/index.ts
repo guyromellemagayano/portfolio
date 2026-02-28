@@ -20,20 +20,27 @@ const workspaceRootEnvLocalFile = path.join(
 );
 
 if (existsSync(workspaceRootEnvLocalFile)) {
-  globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);
+  const loadEnvFile = globalThis.process?.loadEnvFile;
+
+  if (typeof loadEnvFile === "function") {
+    loadEnvFile(workspaceRootEnvLocalFile);
+  }
 }
 
 /** Starts the API gateway Node server for local and non-serverless runtimes. */
 export function startApiServer(): void {
   const config = getApiConfig();
   const logger = createApiLogger(config.nodeEnv);
-  const server = createServer();
+  const app = createServer();
 
-  server.listen(config.port, () => {
-    logger.info("API gateway started", {
-      port: config.port,
-      nodeEnv: config.nodeEnv,
-    });
+  app.listen({
+    port: config.port,
+    hostname: "0.0.0.0",
+  });
+
+  logger.info("API gateway started", {
+    port: config.port,
+    nodeEnv: config.nodeEnv,
   });
 }
 

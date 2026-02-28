@@ -8,6 +8,13 @@ import type {
   ContentPortableTextBlock,
   ContentPortableTextImageBlock,
 } from "@portfolio/api-contracts/content";
+import {
+  API_ERROR_CODES,
+  API_ERROR_MESSAGES,
+  getSanityNetworkFailureMessage,
+  getSanityTimeoutMessage,
+  getSanityUpstreamFailureMessage,
+} from "@portfolio/api-contracts/http";
 import type { ILogger } from "@portfolio/logger";
 
 import type {
@@ -552,11 +559,11 @@ async function fetchSanityApiResponse(
       throw new GatewayError({
         statusCode: isTimeout ? 504 : 502,
         code: isTimeout
-          ? "SANITY_UPSTREAM_TIMEOUT"
-          : "SANITY_UPSTREAM_NETWORK_ERROR",
+          ? API_ERROR_CODES.SANITY_UPSTREAM_TIMEOUT
+          : API_ERROR_CODES.SANITY_UPSTREAM_NETWORK_ERROR,
         message: isTimeout
-          ? `Sanity request timed out while fetching ${resourceLabel}.`
-          : `Failed to reach Sanity while fetching ${resourceLabel}.`,
+          ? getSanityTimeoutMessage(resourceLabel)
+          : getSanityNetworkFailureMessage(resourceLabel),
       });
     }
 
@@ -589,8 +596,8 @@ async function fetchSanityApiResponse(
 
     throw new GatewayError({
       statusCode: 502,
-      code: "SANITY_UPSTREAM_ERROR",
-      message: `Failed to fetch ${resourceLabel} from Sanity.`,
+      code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
+      message: getSanityUpstreamFailureMessage(resourceLabel),
       details: {
         status: response.status,
       },
@@ -599,8 +606,8 @@ async function fetchSanityApiResponse(
 
   throw new GatewayError({
     statusCode: 502,
-    code: "SANITY_UPSTREAM_ERROR",
-    message: `Failed to fetch ${resourceLabel} from Sanity.`,
+    code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
+    message: getSanityUpstreamFailureMessage(resourceLabel),
   });
 }
 
@@ -613,8 +620,8 @@ async function parseSanityQueryPayload<T>(
   } catch {
     throw new GatewayError({
       statusCode: 502,
-      code: "SANITY_INVALID_RESPONSE",
-      message: "Received an invalid response from Sanity.",
+      code: API_ERROR_CODES.SANITY_INVALID_RESPONSE,
+      message: API_ERROR_MESSAGES.SANITY_INVALID_RESPONSE,
     });
   }
 }

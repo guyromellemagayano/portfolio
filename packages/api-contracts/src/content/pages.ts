@@ -9,12 +9,13 @@ import type {
   ContentPortableTextImageBlock,
   ContentTwitterCard,
 } from "./articles";
+import { CONTENT_ROUTE_PREFIX } from "./articles";
 
 /** Route path for content pages in the API gateway. */
-export const CONTENT_PAGES_ROUTE = "/v1/content/pages";
+export const CONTENT_PAGES_ROUTE = `${CONTENT_ROUTE_PREFIX}/pages`;
 
 /** Route pattern for a single content page in the API gateway. */
-export const CONTENT_PAGE_ROUTE_PATTERN = "/v1/content/pages/:slug";
+export const CONTENT_PAGE_ROUTE_PATTERN = `${CONTENT_PAGES_ROUTE}/:slug`;
 
 /** Builds the canonical API gateway route for a content page slug. */
 export function getContentPageRoute(slug: string): string {
