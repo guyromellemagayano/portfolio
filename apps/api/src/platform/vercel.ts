@@ -4,7 +4,9 @@
  * @description Vercel Node Function adapter for the API gateway Elysia app.
  */
 
+import { Buffer } from "node:buffer";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { Readable } from "node:stream";
 
 import {
   API_ROOT_ROUTE,
@@ -51,20 +53,123 @@ type VercelNodeRequest = IncomingMessage & {
 };
 type VercelNodeResponse = ServerResponse;
 
-/** Handles Vercel Node Function requests by delegating to the Elysia API gateway app. */
-export default function vercelApiGatewayHandler(
+/** Resolves the first string value from a Node header field shape. */
+function getFirstHeaderValue(
+  value: string | string[] | undefined
+): string | undefined {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (Array.isArray(value) && value.length > 0) {
+    return value[0];
+  }
+
+  return undefined;
+}
+
+/** Maps Node request headers to a Fetch API `Headers` instance. */
+function toFetchHeaders(request: VercelNodeRequest): Headers {
+  const headers = new Headers();
+
+  for (const [headerName, headerValue] of Object.entries(request.headers)) {
+    if (typeof headerValue === "undefined") {
+      continue;
+    }
+
+    if (Array.isArray(headerValue)) {
+      for (const value of headerValue) {
+        headers.append(headerName, value);
+      }
+      continue;
+    }
+
+    headers.set(headerName, headerValue);
+  }
+
+  return headers;
+}
+
+/** Resolves the absolute origin for a Vercel Node request. */
+function resolveRequestOrigin(request: VercelNodeRequest): string {
+  const forwardedProtocol = getFirstHeaderValue(
+    request.headers["x-forwarded-proto"]
+  );
+  const protocol = forwardedProtocol?.split(",")[0]?.trim() || "https";
+  const forwardedHost = getFirstHeaderValue(
+    request.headers["x-forwarded-host"]
+  );
+  const host = forwardedHost || getFirstHeaderValue(request.headers.host);
+
+  return `${protocol}://${host || "localhost"}`;
+}
+
+/** Reads a Node request body into a single buffer for Fetch API interop. */
+async function readRequestBody(
   request: VercelNodeRequest,
-  response: VercelNodeResponse
-): void {
-  request.url = normalizeVercelApiGatewayRequestUrl(
-    request.url ?? API_ROOT_ROUTE
+  requestMethod: string
+): Promise<Buffer | undefined> {
+  if (requestMethod === "GET" || requestMethod === "HEAD") {
+    return undefined;
+  }
+
+  const bodyChunks: Buffer[] = [];
+
+  for await (const chunk of request) {
+    bodyChunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
+  }
+
+  return bodyChunks.length > 0 ? Buffer.concat(bodyChunks) : undefined;
+}
+
+/** Streams a Fetch API response back through the Node response object. */
+async function writeFetchResponse(
+  appResponse: Response,
+  response: VercelNodeResponse,
+  requestMethod: string
+): Promise<void> {
+  response.statusCode = appResponse.status;
+
+  for (const [headerName, headerValue] of appResponse.headers.entries()) {
+    response.setHeader(headerName, headerValue);
+  }
+
+  if (!appResponse.body || requestMethod === "HEAD") {
+    response.end();
+    return;
+  }
+
+  const responseStream = Readable.fromWeb(
+    appResponse.body as unknown as ReadableStream<Uint8Array>
   );
 
-  const app = getCachedServer();
-  const requestHandler = app.handle as unknown as (
-    req: IncomingMessage,
-    res: ServerResponse
-  ) => void;
+  await new Promise<void>((resolve, reject) => {
+    responseStream.on("error", reject);
+    response.on("error", reject);
+    response.on("finish", resolve);
+    responseStream.pipe(response);
+  });
+}
 
-  requestHandler(request, response);
+/** Handles Vercel Node Function requests by delegating to the Elysia Web handler. */
+export default async function vercelApiGatewayHandler(
+  request: VercelNodeRequest,
+  response: VercelNodeResponse
+): Promise<void> {
+  const normalizedPath = normalizeVercelApiGatewayRequestUrl(
+    request.url ?? API_ROOT_ROUTE
+  );
+  const requestMethod = (request.method || "GET").toUpperCase();
+  const requestUrl = new URL(normalizedPath, resolveRequestOrigin(request));
+
+  const app = getCachedServer();
+  const requestBody = await readRequestBody(request, requestMethod);
+  const appRequest = new Request(requestUrl, {
+    method: requestMethod,
+    headers: toFetchHeaders(request),
+    body: requestBody,
+  });
+
+  const appResponse = await app.handle(appRequest);
+  await writeFetchResponse(appResponse, response, requestMethod);
 }

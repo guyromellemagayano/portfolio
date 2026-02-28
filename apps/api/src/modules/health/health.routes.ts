@@ -10,25 +10,25 @@ import {
   HEALTH_ROUTE_LEGACY,
   HEALTH_ROUTE_STATUS,
 } from "@portfolio/api-contracts/http";
-import type { ILogger } from "@portfolio/logger";
 
 import { sendSuccess } from "../../contracts/http.js";
+import { getLoggerFromContext } from "../../utils/request-logger.js";
+
+type AnyElysiaInstance = Elysia<any, any, any, any, any, any, any>;
 
 /** Creates health-check routes. */
-export function createHealthRouter(): Elysia {
+export function createHealthRouter(): AnyElysiaInstance {
   return new Elysia({
     name: "api-health-routes",
   })
     .get(
       HEALTH_ROUTE_LEGACY,
       (context) => {
-        const requestLogger =
-          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const requestLogger = getLoggerFromContext(context);
 
         requestLogger?.debug(
           "Redirecting legacy health check route to versioned endpoint"
         );
-        context.set.status = 308;
 
         return new Response(null, {
           status: 308,
@@ -48,8 +48,7 @@ export function createHealthRouter(): Elysia {
     .get(
       HEALTH_ROUTE_STATUS,
       (context) => {
-        const requestLogger =
-          "logger" in context ? (context as { logger?: ILogger }).logger : null;
+        const requestLogger = getLoggerFromContext(context);
 
         requestLogger?.debug("Versioned health check requested");
 

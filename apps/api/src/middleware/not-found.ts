@@ -18,10 +18,8 @@ export function createNotFoundHandler() {
   return new Elysia({
     name: "api-not-found",
   }).all("*", (context) => {
-    const requestPath = (() => {
-      const url = new URL(context.request.url);
-      return `${url.pathname}${url.search}`;
-    })();
+    const requestUrl = new URL(context.request.url);
+    const requestPath = `${requestUrl.pathname}${requestUrl.search}`;
 
     return sendError(context, {
       statusCode: 404,
