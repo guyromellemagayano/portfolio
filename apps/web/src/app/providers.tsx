@@ -6,7 +6,7 @@
 
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 
 import { ThemeProvider, useTheme } from "next-themes";
 
@@ -14,7 +14,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 const ThemeWatcher = function ThemeWatcher(): null {
   let { resolvedTheme, setTheme } = useTheme();
 
-  useEffect(() => {
+  React.useEffect(() => {
     let media = window.matchMedia("(prefers-color-scheme: dark)");
 
     const onMediaChange = (): void => {

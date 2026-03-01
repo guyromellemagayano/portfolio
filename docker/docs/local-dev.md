@@ -22,7 +22,7 @@ If you are running local development in Docker, follow this exact path.
 make env-local-normalize
 ```
 
-2. Set the local domain mode (`.local`, default):
+1. Set the local domain mode (`.local`, default):
 
 ```bash
 make use-orbstack-domain
@@ -34,13 +34,13 @@ Optional fallback mode (`.localhost`) if your browser/local DNS setup requires i
 make use-localhost-domain
 ```
 
-3. Start the first-run flow:
+1. Start the first-run flow:
 
 ```bash
 make bootstrap-watch
 ```
 
-4. Verify routes:
+1. Verify routes:
 
 ```bash
 make edge-smoke
@@ -204,7 +204,7 @@ OrbStack custom-domain routing (`make up-edge-watch` with `LOCAL_DEV_DOMAIN=guyr
   - `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.local"`
 - Recommended local `.env.local` values:
   - `NEXT_PUBLIC_SANITY_DATASET="development"`
-  - `SANITY_DATASET="development"`
+  - `SANITY_STUDIO_DATASET="development"`
   - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.local"`
 - In Sanity project settings:
   - Add development host: `https://<your-studio>.sanity.studio`
