@@ -8,9 +8,9 @@
 
 const DEFAULT_SANITY_API_VERSION = "2025-02-19";
 const SANITY_CONFIG_MISSING_ERROR =
-  "Sanity configuration is missing. Set SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET, NEXT_PUBLIC_SANITY_PROJECT_ID/NEXT_PUBLIC_SANITY_DATASET, or SANITY_PROJECT_ID/SANITY_DATASET.";
+  "Sanity configuration is missing. Set SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET, NEXT_PUBLIC_SANITY_PROJECT_ID/NEXT_PUBLIC_SANITY_DATASET, or SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET.";
 const SANITY_STUDIO_CONFIG_MISSING_ERROR =
-  "Sanity Studio configuration is missing. Set SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET, SANITY_STUDIO_API_PROJECT_ID/SANITY_STUDIO_API_DATASET, NEXT_PUBLIC_SANITY_PROJECT_ID/NEXT_PUBLIC_SANITY_DATASET, or SANITY_PROJECT_ID/SANITY_DATASET.";
+  "Sanity Studio configuration is missing. Set SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET, SANITY_STUDIO_API_PROJECT_ID/SANITY_STUDIO_API_DATASET, NEXT_PUBLIC_SANITY_PROJECT_ID/NEXT_PUBLIC_SANITY_DATASET, or SANITY_STUDIO_PROJECT_ID/SANITY_STUDIO_DATASET.";
 
 export type SanityConfig = {
   projectId: string;
@@ -61,12 +61,12 @@ export function getSanityConfig(): SanityConfig | null {
     getStudioSanityProjectId() ||
     getStudioSanityApiProjectId() ||
     getPublicSanityProjectId() ||
-    getServerSanityEnvVar("SANITY_PROJECT_ID");
+    getServerSanityEnvVar("SANITY_STUDIO_PROJECT_ID");
   const dataset =
     getStudioSanityDataset() ||
     getStudioSanityApiDataset() ||
     getPublicSanityDataset() ||
-    getServerSanityEnvVar("SANITY_DATASET");
+    getServerSanityEnvVar("SANITY_STUDIO_DATASET");
   const apiVersion =
     getStudioSanityApiVersion() ||
     getPublicSanityApiVersion() ||
@@ -92,12 +92,12 @@ export function getSanityStudioConfig(): SanityConfig | null {
     getStudioSanityProjectId() ||
     getStudioSanityApiProjectId() ||
     getPublicSanityProjectId() ||
-    getServerSanityEnvVar("SANITY_PROJECT_ID");
+    getServerSanityEnvVar("SANITY_STUDIO_PROJECT_ID");
   const dataset =
     getStudioSanityDataset() ||
     getStudioSanityApiDataset() ||
     getPublicSanityDataset() ||
-    getServerSanityEnvVar("SANITY_DATASET");
+    getServerSanityEnvVar("SANITY_STUDIO_DATASET");
   const apiVersion =
     getStudioSanityApiVersion() ||
     getPublicSanityApiVersion() ||
