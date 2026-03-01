@@ -640,7 +640,7 @@ lint: ## Run `lint` in the tooling container (Turbo concurrency tuned for Docker
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling pnpm exec turbo run lint lint:styles --concurrency=$(TURBO_DOCKER_CONCURRENCY)
 
 test: ## Run `test:run` in the tooling container with a sanitized env (avoids `.env.local` leaking into unit tests).
-	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'unset API_GATEWAY_URL NEXT_PUBLIC_API_URL API_GATEWAY_CONTENT_PROVIDER SANITY_PROJECT_ID SANITY_DATASET SANITY_API_VERSION SANITY_API_READ_TOKEN NEXT_PUBLIC_SANITY_PROJECT_ID NEXT_PUBLIC_SANITY_DATASET NEXT_PUBLIC_SANITY_API_VERSION; pnpm exec turbo run test:run --concurrency=$(TURBO_DOCKER_CONCURRENCY)'
+	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'unset API_GATEWAY_URL NEXT_PUBLIC_API_URL API_GATEWAY_CONTENT_PROVIDER SANITY_STUDIO_PROJECT_ID SANITY_STUDIO_DATASET SANITY_API_VERSION SANITY_API_READ_TOKEN NEXT_PUBLIC_SANITY_PROJECT_ID NEXT_PUBLIC_SANITY_DATASET NEXT_PUBLIC_SANITY_API_VERSION; pnpm exec turbo run test:run --concurrency=$(TURBO_DOCKER_CONCURRENCY)'
 
 tooling: ## Run an arbitrary tooling command via `TOOLING_CMD`.
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc '$(TOOLING_CMD)'

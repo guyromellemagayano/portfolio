@@ -44,7 +44,7 @@ Current primary data flow for content:
 ## Sanity Provider Configuration
 
 - `API_GATEWAY_CONTENT_PROVIDER=sanity` uses the Sanity content provider for article and standalone page content routes.
-- In `production`, missing `SANITY_PROJECT_ID` or `SANITY_DATASET` fails provider initialization (no silent fallback).
+- In `production`, missing `SANITY_STUDIO_PROJECT_ID` or `SANITY_STUDIO_DATASET` fails provider initialization (no silent fallback).
 - In local development/test, incomplete Sanity config falls back to the static provider for DX.
 
 ## Standards
