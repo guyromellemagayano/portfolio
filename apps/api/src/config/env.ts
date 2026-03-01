@@ -155,7 +155,7 @@ function resolveSanityProjectId(
 ): string | undefined {
   return resolveServerFirstEnvVar(
     nodeEnv,
-    API_ENV_KEYS.SANITY_PROJECT_ID,
+    API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID,
     API_ENV_KEYS.NEXT_PUBLIC_SANITY_PROJECT_ID
   );
 }
@@ -166,7 +166,7 @@ function resolveSanityDataset(
 ): string | undefined {
   return resolveServerFirstEnvVar(
     nodeEnv,
-    API_ENV_KEYS.SANITY_DATASET,
+    API_ENV_KEYS.SANITY_STUDIO_DATASET,
     API_ENV_KEYS.NEXT_PUBLIC_SANITY_DATASET
   );
 }

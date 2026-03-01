@@ -63,8 +63,8 @@ apps/api/src/
    - `production`: strict allowlist-only. Empty allowlist disables cross-origin browser requests.
    - `development` and `test`: empty allowlist defaults to permissive CORS.
 5. Sanity provider config is resolved from:
-   - `SANITY_PROJECT_ID` (fallback: `NEXT_PUBLIC_SANITY_PROJECT_ID`)
-   - `SANITY_DATASET` (fallback: `NEXT_PUBLIC_SANITY_DATASET`)
+   - `SANITY_STUDIO_PROJECT_ID` (fallback: `NEXT_PUBLIC_SANITY_PROJECT_ID`)
+   - `SANITY_STUDIO_DATASET` (fallback: `NEXT_PUBLIC_SANITY_DATASET`)
    - `SANITY_API_VERSION` (fallback: `NEXT_PUBLIC_SANITY_API_VERSION`)
    - `SANITY_API_READ_TOKEN`
    - `SANITY_USE_CDN`

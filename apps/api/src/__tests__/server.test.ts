@@ -87,8 +87,8 @@ describe("API gateway server", () => {
 
   it("allows NEXT_PUBLIC_SANITY_* fallback in non-production environments", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "development");
-    vi.stubEnv(API_ENV_KEYS.SANITY_PROJECT_ID, "");
-    vi.stubEnv(API_ENV_KEYS.SANITY_DATASET, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_DATASET, "");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_PROJECT_ID, "public-project");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_DATASET, "public-dataset");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_API_VERSION, "2026-01-01");
@@ -102,8 +102,8 @@ describe("API gateway server", () => {
 
   it("ignores NEXT_PUBLIC_SANITY_* fallback in production", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "production");
-    vi.stubEnv(API_ENV_KEYS.SANITY_PROJECT_ID, "");
-    vi.stubEnv(API_ENV_KEYS.SANITY_DATASET, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_DATASET, "");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_PROJECT_ID, "public-project");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_DATASET, "public-dataset");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_API_VERSION, "2026-01-01");
@@ -127,8 +127,8 @@ describe("API gateway server", () => {
 
   it("falls back to static provider when sanity config is incomplete", () => {
     vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "sanity");
-    vi.stubEnv(API_ENV_KEYS.SANITY_PROJECT_ID, "");
-    vi.stubEnv(API_ENV_KEYS.SANITY_DATASET, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_DATASET, "");
 
     const config = getApiConfig();
     const logger = createApiLogger(config.nodeEnv);
@@ -139,8 +139,8 @@ describe("API gateway server", () => {
 
   it("uses sanity provider when sanity config is complete", () => {
     vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "sanity");
-    vi.stubEnv(API_ENV_KEYS.SANITY_PROJECT_ID, "demo-project");
-    vi.stubEnv(API_ENV_KEYS.SANITY_DATASET, "production");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID, "demo-project");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_DATASET, "production");
 
     const config = getApiConfig();
     const logger = createApiLogger(config.nodeEnv);
@@ -152,8 +152,8 @@ describe("API gateway server", () => {
   it("fails fast in production when sanity provider is configured without server-side sanity env", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "production");
     vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "sanity");
-    vi.stubEnv(API_ENV_KEYS.SANITY_PROJECT_ID, "");
-    vi.stubEnv(API_ENV_KEYS.SANITY_DATASET, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID, "");
+    vi.stubEnv(API_ENV_KEYS.SANITY_STUDIO_DATASET, "");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_PROJECT_ID, "public-project");
     vi.stubEnv(API_ENV_KEYS.NEXT_PUBLIC_SANITY_DATASET, "public-dataset");
 

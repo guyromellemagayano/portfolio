@@ -48,7 +48,7 @@ else
   SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE"
 fi
 
-local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local\"" $SOURCE_FILES)
+local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local\"" "$SOURCE_FILES")
 local_dev_domain_plain=$(printf '%s' "$local_dev_domain" | sed 's/^"//; s/"$//')
 local_url_scheme="https"
 case "$local_dev_domain_plain" in
@@ -59,36 +59,36 @@ esac
 api_gateway_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
 next_public_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
 next_public_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
-api_gateway_content_provider=$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"sanity\"" $SOURCE_FILES)
-api_gateway_cors_origins=$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" $SOURCE_FILES)
+api_gateway_content_provider=$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"sanity\"" "$SOURCE_FILES")
+api_gateway_cors_origins=$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" "$SOURCE_FILES")
 
-next_public_sanity_project_id=$(pick_env_value "NEXT_PUBLIC_SANITY_PROJECT_ID" "\"\"" $SOURCE_FILES)
-next_public_sanity_dataset=$(pick_env_value "NEXT_PUBLIC_SANITY_DATASET" "\"production\"" $SOURCE_FILES)
-next_public_sanity_api_version=$(pick_env_value "NEXT_PUBLIC_SANITY_API_VERSION" "\"2025-02-19\"" $SOURCE_FILES)
-sanity_project_id=$(pick_env_value "SANITY_PROJECT_ID" "\"\"" $SOURCE_FILES)
-sanity_dataset=$(pick_env_value "SANITY_DATASET" "\"production\"" $SOURCE_FILES)
-sanity_api_version=$(pick_env_value "SANITY_API_VERSION" "\"2025-02-19\"" $SOURCE_FILES)
-sanity_use_cdn=$(pick_env_value "SANITY_USE_CDN" "\"true\"" $SOURCE_FILES)
-sanity_api_read_token=$(pick_env_value "SANITY_API_READ_TOKEN" "\"\"" $SOURCE_FILES)
-sanity_webhook_secret=$(pick_env_value "SANITY_WEBHOOK_SECRET" "\"\"" $SOURCE_FILES)
-sanity_request_timeout_ms=$(pick_env_value "SANITY_REQUEST_TIMEOUT_MS" "\"\"" $SOURCE_FILES)
-sanity_request_max_retries=$(pick_env_value "SANITY_REQUEST_MAX_RETRIES" "\"\"" $SOURCE_FILES)
-sanity_request_retry_delay_ms=$(pick_env_value "SANITY_REQUEST_RETRY_DELAY_MS" "\"\"" $SOURCE_FILES)
+next_public_sanity_project_id=$(pick_env_value "NEXT_PUBLIC_SANITY_PROJECT_ID" "\"\"" "$SOURCE_FILES")
+next_public_sanity_dataset=$(pick_env_value "NEXT_PUBLIC_SANITY_DATASET" "\"production\"" "$SOURCE_FILES")
+next_public_sanity_api_version=$(pick_env_value "NEXT_PUBLIC_SANITY_API_VERSION" "\"2025-02-19\"" "$SOURCE_FILES")
+sanity_project_id=$(pick_env_value "SANITY_STUDIO_PROJECT_ID" "\"\"" "$SOURCE_FILES")
+sanity_dataset=$(pick_env_value "SANITY_STUDIO_DATASET" "\"production\"" "$SOURCE_FILES")
+sanity_api_version=$(pick_env_value "SANITY_API_VERSION" "\"2025-02-19\"" "$SOURCE_FILES")
+sanity_use_cdn=$(pick_env_value "SANITY_USE_CDN" "\"true\"" "$SOURCE_FILES")
+sanity_api_read_token=$(pick_env_value "SANITY_API_READ_TOKEN" "\"\"" "$SOURCE_FILES")
+sanity_webhook_secret=$(pick_env_value "SANITY_WEBHOOK_SECRET" "\"\"" "$SOURCE_FILES")
+sanity_request_timeout_ms=$(pick_env_value "SANITY_REQUEST_TIMEOUT_MS" "\"\"" "$SOURCE_FILES")
+sanity_request_max_retries=$(pick_env_value "SANITY_REQUEST_MAX_RETRIES" "\"\"" "$SOURCE_FILES")
+sanity_request_retry_delay_ms=$(pick_env_value "SANITY_REQUEST_RETRY_DELAY_MS" "\"\"" "$SOURCE_FILES")
 
 sitemap_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
-sitemap_include_cms_content=$(pick_env_value "SITEMAP_INCLUDE_CMS_CONTENT" "\"true\"" $SOURCE_FILES)
-sitemap_fail_on_cms_fetch_error=$(pick_env_value "SITEMAP_FAIL_ON_CMS_FETCH_ERROR" "\"false\"" $SOURCE_FILES)
+sitemap_include_cms_content=$(pick_env_value "SITEMAP_INCLUDE_CMS_CONTENT" "\"true\"" "$SOURCE_FILES")
+sitemap_fail_on_cms_fetch_error=$(pick_env_value "SITEMAP_FAIL_ON_CMS_FETCH_ERROR" "\"false\"" "$SOURCE_FILES")
 
-e2e_base_url=$(pick_env_value "E2E_BASE_URL" "\"http://127.0.0.1:3000\"" $SOURCE_FILES)
-e2e_use_external_servers=$(pick_env_value "E2E_USE_EXTERNAL_SERVERS" "\"\"" $SOURCE_FILES)
-e2e_sanity_article_slug=$(pick_env_value "E2E_SANITY_ARTICLE_SLUG" "\"\"" $SOURCE_FILES)
-e2e_sanity_page_slug=$(pick_env_value "E2E_SANITY_PAGE_SLUG" "\"\"" $SOURCE_FILES)
+e2e_base_url=$(pick_env_value "E2E_BASE_URL" "\"http://127.0.0.1:3000\"" "$SOURCE_FILES")
+e2e_use_external_servers=$(pick_env_value "E2E_USE_EXTERNAL_SERVERS" "\"\"" "$SOURCE_FILES")
+e2e_sanity_article_slug=$(pick_env_value "E2E_SANITY_ARTICLE_SLUG" "\"\"" "$SOURCE_FILES")
+e2e_sanity_page_slug=$(pick_env_value "E2E_SANITY_PAGE_SLUG" "\"\"" "$SOURCE_FILES")
 
-enable_experimental_corepack=$(pick_env_value "ENABLE_EXPERIMENTAL_COREPACK" "\"1\"" $SOURCE_FILES)
-eslint_use_flat_config=$(pick_env_value "ESLINT_USE_FLAT_CONFIG" "\"true\"" $SOURCE_FILES)
-bundle_analyze=$(pick_env_value "BUNDLE_ANALYZE" "\"false\"" $SOURCE_FILES)
-npm_token=$(pick_env_value "NPM_TOKEN" "\"\"" $SOURCE_FILES)
-turbo_remote_cache_signature_key=$(pick_env_value "TURBO_REMOTE_CACHE_SIGNATURE_KEY" "\"\"" $SOURCE_FILES)
+enable_experimental_corepack=$(pick_env_value "ENABLE_EXPERIMENTAL_COREPACK" "\"1\"" "$SOURCE_FILES")
+eslint_use_flat_config=$(pick_env_value "ESLINT_USE_FLAT_CONFIG" "\"true\"" "$SOURCE_FILES")
+bundle_analyze=$(pick_env_value "BUNDLE_ANALYZE" "\"false\"" "$SOURCE_FILES")
+npm_token=$(pick_env_value "NPM_TOKEN" "\"\"" "$SOURCE_FILES")
+turbo_remote_cache_signature_key=$(pick_env_value "TURBO_REMOTE_CACHE_SIGNATURE_KEY" "\"\"" "$SOURCE_FILES")
 
 tmp_env_file=$(mktemp)
 trap 'rm -f "$tmp_env_file"' EXIT
@@ -111,8 +111,8 @@ API_GATEWAY_CORS_ORIGINS=$api_gateway_cors_origins
 NEXT_PUBLIC_SANITY_PROJECT_ID=$next_public_sanity_project_id
 NEXT_PUBLIC_SANITY_DATASET=$next_public_sanity_dataset
 NEXT_PUBLIC_SANITY_API_VERSION=$next_public_sanity_api_version
-SANITY_PROJECT_ID=$sanity_project_id
-SANITY_DATASET=$sanity_dataset
+SANITY_STUDIO_PROJECT_ID=$sanity_project_id
+SANITY_STUDIO_DATASET=$sanity_dataset
 SANITY_API_VERSION=$sanity_api_version
 SANITY_USE_CDN=$sanity_use_cdn
 SANITY_API_READ_TOKEN=$sanity_api_read_token

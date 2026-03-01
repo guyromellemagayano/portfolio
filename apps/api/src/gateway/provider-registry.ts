@@ -16,9 +16,9 @@ export type ProviderRegistry = {
   content: ContentProvider;
 };
 
-export const SANITY_PROVIDER_MISSING_SERVER_ENV_PRODUCTION_MESSAGE = `Sanity content provider is configured but ${API_ENV_KEYS.SANITY_PROJECT_ID}/${API_ENV_KEYS.SANITY_DATASET} are missing in production.`;
+export const SANITY_PROVIDER_MISSING_SERVER_ENV_PRODUCTION_MESSAGE = `Sanity content provider is configured but ${API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID}/${API_ENV_KEYS.SANITY_STUDIO_DATASET} are missing in production.`;
 
-export const SANITY_PROVIDER_FALLBACK_TO_STATIC_MESSAGE = `Sanity provider requested but ${API_ENV_KEYS.SANITY_PROJECT_ID}/${API_ENV_KEYS.SANITY_DATASET} are missing. Falling back to static provider.`;
+export const SANITY_PROVIDER_FALLBACK_TO_STATIC_MESSAGE = `Sanity provider requested but ${API_ENV_KEYS.SANITY_STUDIO_PROJECT_ID}/${API_ENV_KEYS.SANITY_STUDIO_DATASET} are missing. Falling back to static provider.`;
 
 /** Resolves the configured content provider and applies non-production fallback behavior when Sanity is unavailable. */
 function resolveContentProvider(
