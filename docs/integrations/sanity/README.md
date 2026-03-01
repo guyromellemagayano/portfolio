@@ -29,9 +29,11 @@ Current references:
 
 - Studio is not served by `apps/web` routes.
 - Studio deploys from monorepo config to Sanity-hosted infra:
+
   ```bash
   pnpm --filter web sanity:deploy
   ```
+
 - Hosted Studio must target web preview API through `SANITY_STUDIO_PREVIEW_ORIGIN`:
   - `https://guyromellemagayano.com` (production)
   - `https://guyromellemagayano.local` (local edge)
@@ -46,7 +48,7 @@ Current references:
     - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET` (preferred)
     - `SANITY_STUDIO_API_PROJECT_ID` + `SANITY_STUDIO_API_DATASET`
     - `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET`
-    - `SANITY_PROJECT_ID` + `SANITY_DATASET`
+    - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET`
   - Studio deploy/build is strict env-driven (no hardcoded project/dataset defaults) and now fails fast with a clear error when these vars are missing.
   - Redeploy Studio after envs are set.
 
@@ -54,7 +56,7 @@ Current references:
 
 - Use a non-production dataset locally (recommended: `development`):
   - `NEXT_PUBLIC_SANITY_DATASET="development"`
-  - `SANITY_DATASET="development"`
+  - `SANITY_STUDIO_DATASET="development"`
 - Use the local edge web domain for metadata/canonical testing:
   - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.local"`
 - For Studio preview links from hosted Studio to local web, set:
@@ -63,6 +65,7 @@ Current references:
   - `https://guyromellemagayano.local`
 - If you switch to the `.localhost` fallback mode, use the `.localhost` value for `SANITY_STUDIO_PREVIEW_ORIGIN` and CORS origin.
 - After changing local env or domain settings, restart the edge stack:
+
   ```bash
   make down-edge
   make up-edge-watch
@@ -87,12 +90,14 @@ Current references:
 - Configure `SANITY_WEBHOOK_SECRET` in `apps/web` and send it as `Authorization: Bearer <secret>` (or `x-sanity-webhook-secret`).
 - Recommended Sanity webhook filter: `_type in ["article", "page"]`
 - Recommended webhook projection payload:
+
   ```groq
   {
     "_type": _type,
     "slug": slug.current
   }
   ```
+
 - Article webhooks revalidate:
   - `articles`
   - `article:<slug>` for current and previous slugs when present
@@ -113,6 +118,7 @@ Current references:
   - `E2E_SANITY_PAGE_SLUG`
 - `SANITY_WEBHOOK_SECRET` is required for webhook assertions.
 - Run:
+
   ```bash
   pnpm --filter e2e exec playwright test --project chromium --grep "@sanity"
   ```
