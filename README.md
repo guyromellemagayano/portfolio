@@ -200,7 +200,7 @@ Gateway keys used by `apps/api`:
 - `API_PORT` (fallback `PORT`, default `5001`)
 - `API_GATEWAY_CORS_ORIGINS` (comma-separated allowlist)
 - `API_GATEWAY_CONTENT_PROVIDER` (`sanity` or `static`)
-- `SANITY_PROJECT_ID` / `SANITY_DATASET` / `SANITY_API_VERSION` (fallbacks to `NEXT_PUBLIC_SANITY_*`)
+- `SANITY_STUDIO_PROJECT_ID` / `SANITY_STUDIO_DATASET` / `SANITY_API_VERSION` (fallbacks to `NEXT_PUBLIC_SANITY_*`)
 - `SANITY_API_READ_TOKEN`
 - `SANITY_USE_CDN`
 

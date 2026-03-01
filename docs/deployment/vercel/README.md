@@ -129,8 +129,8 @@ This keeps preview deploys stable while allowing content pages to read from the 
 NODE_ENV=production
 API_GATEWAY_CONTENT_PROVIDER=sanity
 
-SANITY_PROJECT_ID=...
-SANITY_DATASET=production
+SANITY_STUDIO_PROJECT_ID=...
+SANITY_STUDIO_DATASET=production
 SANITY_API_VERSION=2025-02-19
 SANITY_API_READ_TOKEN=...
 SANITY_USE_CDN=true
@@ -202,7 +202,7 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
   - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET` (preferred)
   - `SANITY_STUDIO_API_PROJECT_ID` + `SANITY_STUDIO_API_DATASET` (alternative)
   - `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET` (fallback)
-  - `SANITY_PROJECT_ID` + `SANITY_DATASET` (fallback)
+  - `SANITY_STUDIO_PROJECT_ID` + `SANITY_STUDIO_DATASET` (fallback)
   - `SANITY_STUDIO_PREVIEW_ORIGIN`
 - Studio config is strict env-driven (no hardcoded project/dataset defaults). Missing required envs now fail fast with a clear error before deploy/build completes.
 

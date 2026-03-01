@@ -98,8 +98,8 @@ describe("sanity client", () => {
   });
 
   it("falls back to SANITY_* env vars when NEXT_PUBLIC_SANITY_* is unset", () => {
-    vi.stubEnv("SANITY_PROJECT_ID", "server-project");
-    vi.stubEnv("SANITY_DATASET", "development");
+    vi.stubEnv("SANITY_STUDIO_PROJECT_ID", "server-project");
+    vi.stubEnv("SANITY_STUDIO_DATASET", "development");
     vi.stubEnv("SANITY_API_VERSION", "2026-01-01");
 
     expect(getSanityConfig()).toEqual({
