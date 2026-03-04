@@ -13,7 +13,9 @@ import {
   VERCEL_API_ROUTE_PREFIX,
 } from "@portfolio/api-contracts/http";
 
-import { normalizeVercelApiGatewayRequestUrl } from "@api/platform/vercel";
+import vercelApiGatewayHandler, {
+  normalizeVercelApiGatewayRequestUrl,
+} from "@api/platform/vercel";
 
 describe("normalizeVercelApiGatewayRequestUrl", () => {
   it("returns the root path for the rewritten function root path", () => {
@@ -56,5 +58,30 @@ describe("normalizeVercelApiGatewayRequestUrl", () => {
     expect(normalizeVercelApiGatewayRequestUrl("/apix/test")).toBe(
       "/apix/test"
     );
+  });
+
+  it("handles rewritten /api root requests via the bun fetch handler", async () => {
+    const response = await vercelApiGatewayHandler(
+      new Request("https://api.example.com/api")
+    );
+
+    expect(response.status).toBe(308);
+    expect(response.headers.get("location")).toBe(HEALTH_ROUTE_STATUS);
+  });
+
+  it("handles rewritten /api versioned routes via the bun fetch handler", async () => {
+    const response = await vercelApiGatewayHandler(
+      new Request("https://api.example.com/api/v1/status")
+    );
+    const payload = (await response.json()) as {
+      success: boolean;
+      data: {
+        ok: boolean;
+      };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.success).toBe(true);
+    expect(payload.data.ok).toBe(true);
   });
 });
