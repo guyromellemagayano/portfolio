@@ -9,7 +9,7 @@ This monorepo deploys to Vercel as **three separate projects**:
 ## Why Three Projects
 
 - `apps/web` is a Next.js app and is already Vercel-native.
-- `apps/api` is an Express server and is adapted to a Vercel Node Function.
+- `apps/api` is an Elysia service and is adapted to a Vercel Bun Function.
 - `apps/admin` is a Vite static app and deploys cleanly as its own site.
 
 This keeps the existing app boundaries intact and avoids moving API gateway logic into `apps/web`.
@@ -109,7 +109,7 @@ This keeps preview deploys stable while allowing content pages to read from the 
 ## `apps/api`
 
 - Root Directory: `apps/api`
-- Framework Preset: Other / Node
+- Framework Preset: Other
 - Install Command: default
 - Build Command: default (Vercel function transpilation) or `pnpm build` if your Vercel project requires it
 - Output Directory: `public` (or leave empty and let `apps/api/vercel.json` apply)
@@ -118,6 +118,7 @@ This keeps preview deploys stable while allowing content pages to read from the 
 
 - `apps/api/vercel.json` uses rewrites to route requests into the Vercel function and sets `outputDirectory` to `public`.
 - The `public/` folder is intentionally empty and exists only to satisfy Vercel when a project expects an output directory.
+- `apps/api/vercel.json` pins `bunVersion`, so Vercel runs the API as Bun Functions (Fetch API invocation model).
 - If the dashboard is still set to `dist`, Vercel can serve `dist/index.js` at `https://api.../` instead of invoking the API function.
 - If you see raw compiled JavaScript in the browser at the API domain root:
   - change the project Output Directory to `public` (or clear it so repo config applies)
@@ -139,17 +140,27 @@ SANITY_USE_CDN=true
 ### `apps/api` Recommended envs
 
 ```env
-API_GATEWAY_CORS_ORIGINS=https://guyromellemagayano.com,https://admin.guyromellemagayano.com
+API_GATEWAY_CORS_ORIGINS=https://guyromellemagayano.com
 SANITY_REQUEST_TIMEOUT_MS=...
 SANITY_REQUEST_MAX_RETRIES=...
 SANITY_REQUEST_RETRY_DELAY_MS=...
 ```
 
+### `apps/api` Content caching profile
+
+- Success responses from:
+  - `/v1/content/articles`
+  - `/v1/content/articles/:slug`
+  - `/v1/content/pages`
+  - `/v1/content/pages/:slug`
+- Return:
+  - `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
+
 ### `apps/api` Vercel adapter behavior
 
 - Public API routes remain rooted at `/v1/*` (no public `/api` prefix).
 - `apps/api/vercel.json` rewrites requests to the Vercel function entrypoint.
-- The function handler strips the internal `/api` rewrite prefix before delegating to Express.
+- The Bun function handler strips the internal `/api` rewrite prefix before delegating to Elysia.
 
 ## `apps/admin`
 
@@ -220,6 +231,7 @@ SANITY_REQUEST_RETRY_DELAY_MS=...
 - `https://guyromellemagayano.com`
 - `https://guyromellemagayano.com/sitemap.xml`
 - Article and page routes render with correct metadata and canonical URLs
+- `POST /api/revalidate/sanity` revalidates route content and `/sitemap.xml`
 
 ### Admin
 
@@ -264,5 +276,5 @@ make prod-smoke \
 
 ## Notes
 
-- Do not use `localhost`, `127.0.0.1`, `*.local`, or `*.localhost` for production Vercel envs such as `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, or `API_GATEWAY_URL`.
+- Do not use local development hostnames (for example `localhost`, `127.0.0.1`, or `*.local`) for production Vercel envs such as `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL`, or `API_GATEWAY_URL`.
 - Local Docker + Traefik remains the local development platform and is not replaced by this deployment setup.
