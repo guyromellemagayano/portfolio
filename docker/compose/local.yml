@@ -16,7 +16,7 @@ x-node-workspace-service: &node_workspace_service
 x-node-env-common: &node_env_common
   FORCE_PNPM_INSTALL: ${FORCE_PNPM_INSTALL:-0}
 
-x-node-watch-env: &node_watch_env
+x-node-dev-env: &node_dev_env
   <<: *node_env_common
   CHOKIDAR_USEPOLLING: "true"
   WATCHPACK_POLLING: "true"
@@ -26,7 +26,7 @@ services:
     <<: *node_workspace_service
     container_name: portfolio-api-local
     environment:
-      <<: *node_watch_env
+      <<: *node_dev_env
       NODE_ENV: development
       API_GATEWAY_CONTENT_PROVIDER: ${API_GATEWAY_CONTENT_PROVIDER:-sanity}
       API_PORT: "5001"
@@ -58,22 +58,11 @@ services:
       timeout: 5s
       retries: 10
       start_period: 20s
-    develop:
-      watch:
-        - action: rebuild
-          path: ../../docker/images/dev/Dockerfile
-        - action: rebuild
-          path: ../../pnpm-lock.yaml
-        - action: rebuild
-          path: ../../package.json
-        - action: rebuild
-          path: ../../apps/api/package.json
-
   web:
     <<: *node_workspace_service
     container_name: portfolio-web-local
     environment:
-      <<: *node_watch_env
+      <<: *node_dev_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
       LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
@@ -118,22 +107,11 @@ services:
       timeout: 5s
       retries: 20
       start_period: 60s
-    develop:
-      watch:
-        - action: rebuild
-          path: ../../docker/images/dev/Dockerfile
-        - action: rebuild
-          path: ../../pnpm-lock.yaml
-        - action: rebuild
-          path: ../../package.json
-        - action: rebuild
-          path: ../../apps/web/package.json
-
   admin:
     <<: *node_workspace_service
     container_name: portfolio-admin-local
     environment:
-      <<: *node_watch_env
+      <<: *node_dev_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
       LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
@@ -154,17 +132,6 @@ services:
       timeout: 5s
       retries: 20
       start_period: 30s
-    develop:
-      watch:
-        - action: rebuild
-          path: ../../docker/images/dev/Dockerfile
-        - action: rebuild
-          path: ../../pnpm-lock.yaml
-        - action: rebuild
-          path: ../../package.json
-        - action: rebuild
-          path: ../../apps/admin/package.json
-
   tooling:
     profiles: ["tooling"]
     <<: *node_workspace_service

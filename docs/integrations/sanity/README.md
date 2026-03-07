@@ -67,7 +67,7 @@ Current references:
 
   ```bash
   make down-edge
-  make up-edge-watch
+  make up-edge
   ```
 
 ## Production (Vercel `apps/web`)
