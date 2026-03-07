@@ -6,7 +6,7 @@ MODE="${1:-}"
 REPO_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)"
 
 if [ -z "$MODE" ]; then
-  echo "usage: $0 <foreground|watch|detached>" >&2
+  echo "usage: $0 <detached>" >&2
   exit 1
 fi
 
@@ -18,11 +18,9 @@ run_make() {
 }
 
 case "$MODE" in
-  foreground) START_TARGET="up-edge" ;;
-  watch) START_TARGET="up-edge-watch" ;;
   detached) START_TARGET="up-edge-detached" ;;
   *)
-    echo "invalid mode: $MODE (expected foreground|watch|detached)" >&2
+    echo "invalid mode: $MODE (expected detached)" >&2
     exit 1
     ;;
 esac

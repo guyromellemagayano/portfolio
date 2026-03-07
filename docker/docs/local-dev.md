@@ -31,7 +31,7 @@ make use-orbstack-domain
 1. Start the first-run flow:
 
 ```bash
-make bootstrap-watch
+make bootstrap
 ```
 
 1. Verify routes:
@@ -43,11 +43,8 @@ make edge-smoke
 ### Daily Commands
 
 ```bash
-# Foreground daily dev
-make up-edge-watch
-
-# Background daily dev
-make up-edge-detached
+# Daily dev
+make up-edge
 make logs-edge
 
 # Stop stack
@@ -72,10 +69,10 @@ make up
 
 ```bash
 make env-local-normalize
-make bootstrap-watch
+make bootstrap
 ```
 
-This foreground first-run command validates the edge Compose stack, applies local domain setup behavior based on `LOCAL_DEV_DOMAIN`, and then starts the same app stack plus a local Traefik edge proxy and Docker Compose watch using:
+This detached first-run command validates the edge Compose stack, applies local domain setup behavior based on `LOCAL_DEV_DOMAIN`, and then starts the same app stack plus a local Traefik edge proxy using:
 
 - `docker/compose/local.yml`
 - `docker/compose/edge.local.yml`
@@ -101,12 +98,6 @@ make vercel-env-pull VERCEL_ENV_TARGET=development
 
 `docker/compose/edge.local.yml` is the default file-provider Traefik overlay (stable local routing path on Docker Desktop/macOS).
 
-If you prefer the same first-run flow without Compose watch:
-
-```bash
-make bootstrap
-```
-
 Background mode:
 
 ```bash
@@ -116,7 +107,7 @@ make bootstrap-detached
 If you want to skip DNS setup explicitly (for example, you already configured `dnsmasq` or prefer `/etc/hosts` manually):
 
 ```bash
-make bootstrap-watch SKIP_DNS_SETUP=1
+make bootstrap SKIP_DNS_SETUP=1
 ```
 
 Manual DNS fallback (if `bootstrap` prints the fallback message on non-macOS or non-Homebrew setups):
@@ -144,7 +135,7 @@ OrbStack custom-domain mode (skip `dnsmasq` and use `.local`):
 ```bash
 make use-orbstack-domain
 make down-edge
-make up-edge-watch
+make up-edge
 ```
 
 OrbStack overlay file:
@@ -176,7 +167,7 @@ Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guy
 - Admin app: `https://admin.guyromellemagayano.local`
 - Traefik dashboard: `https://traefik.guyromellemagayano.local` (root redirects to `/dashboard/`)
 
-OrbStack custom-domain routing (`make up-edge-watch` with `LOCAL_DEV_DOMAIN=guyromellemagayano.local`):
+OrbStack custom-domain routing (`make up-edge` with `LOCAL_DEV_DOMAIN=guyromellemagayano.local`):
 
 - Web app: `https://guyromellemagayano.local`
 - API gateway: `https://api.guyromellemagayano.local`
@@ -200,7 +191,7 @@ OrbStack custom-domain routing (`make up-edge-watch` with `LOCAL_DEV_DOMAIN=guyr
 
 ```bash
 make down-edge
-make up-edge-watch
+make up-edge
 ```
 
 ## Notes
@@ -215,8 +206,7 @@ make up-edge-watch
 - The Docker entrypoint clears the Docker web dist Turbopack cache (`<distDir>/dev/cache`) on startup.
 - File watching uses polling (`CHOKIDAR_USEPOLLING`, `WATCHPACK_POLLING`) for better Docker Desktop compatibility.
 - App source file watching/HMR is handled by the running dev servers inside containers (`api`, `web`, `admin`).
-- Optional `make watch` / `make watch-edge` uses Docker Compose watch for container-level rebuilds when Dockerfiles or package manifests change.
-- `make up-watch`, `make up-edge-watch`, and `make up-edge-tls-watch` combine `up` + Compose watch into a single foreground command.
+- Container image rebuilds happen explicitly through `make up*` restarts instead of Docker Compose watch.
 - The Playwright containers use `E2E_USE_EXTERNAL_SERVERS=1`, so `apps/e2e/playwright.config.ts` targets the already-running Compose `api` and `web` services instead of starting its own `webServer`s.
 
 ## Related Docs
@@ -231,30 +221,26 @@ make up-edge-watch
 make help
 
 # First run (recommended)
-make bootstrap-watch
+make bootstrap
 
-# Daily dev (foreground)
-make up-edge-watch
-
-# Daily dev with OrbStack custom domains (foreground, no dnsmasq)
-make use-orbstack-domain
-make up-edge-watch
-
-# Daily dev (detached)
-make up-edge-detached
+# Daily dev
+make up-edge
 make logs-edge
 
-# Optional local TLS overlay in foreground with Compose watch
-make up-edge-tls-watch
+# Daily dev with OrbStack custom domains
+make use-orbstack-domain
+make up-edge
+
+# Optional local TLS overlay
+make up-edge-tls
+make logs-edge
 
 # Run a GET-based edge routing smoke check (Traefik dashboard + web + api + admin)
 make edge-smoke
 
-# Optional: container rebuild/restart watch in another terminal
-make watch-edge
-
 # Debug Docker-provider routing (socket-proxy-backed)
-make up-edge-debug-watch
+make up-edge-debug
+make logs-edge
 
 # Stop edge stack
 make down-edge
@@ -277,9 +263,7 @@ make sanity SANITY_ARGS="projects list"
 - Override if needed (for example on a higher-memory machine): `make lint TURBO_DOCKER_CONCURRENCY=4`
 - `make test` sanitizes Sanity-related env vars before running tests so unit tests don't inherit `.env.local` behavior.
 - `make logs` and `make logs-edge` tail the last `100` lines by default before following; override with `LOG_TAIL` (for example `make logs-edge LOG_TAIL=250`).
-- `make watch`, `make watch-edge`, and `make watch-edge-tls` are best run in a separate terminal after a detached stack start (`make up-detached`, `make up-edge-detached`, `make up-edge-tls-detached`).
-- Override watched services with `WATCH_SERVICES` (for example `make watch-edge WATCH_SERVICES="web api"`).
-- If you prefer a single foreground command, use `make up-watch`, `make up-edge-watch`, or `make up-edge-tls-watch`.
+- Detached starts plus `make logs*` are the standard workflow for local Docker development.
 
 ## Local DNS (Better Than `/etc/hosts`)
 
@@ -328,7 +312,7 @@ This runs `mkcert`, writes certs to `docker/traefik/certs/`, and creates `docker
 - Start the TLS edge stack:
 
 ```bash
-make up-edge-tls-watch
+make up-edge-tls
 ```
 
 Manual flow (if you want full control):
@@ -351,7 +335,6 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `FORCE_PNPM_INSTALL=1` (optional, shell env): force dependency reinstall inside containers on next run
 - `TURBO_DOCKER_CONCURRENCY` (optional, default `2`): Turbo task concurrency for Dockerized `check-types` / `lint` / `test`
 - `LOG_TAIL` (optional, default `100`): line count used by `make logs` and `make logs-edge` before follow mode
-- `WATCH_SERVICES` (optional, default `api web admin`): service list passed to Compose `watch` targets
 - `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `admin.<domain>`, `traefik.<domain>`)
 - `TRAEFIK_HTTP_PORT` (optional, default `80`): host HTTP port for local Traefik
 - `TRAEFIK_HTTPS_PORT` (optional, default `443`): host HTTPS port for the optional TLS overlay
@@ -372,7 +355,7 @@ Recommended local setup:
 If you want to debug or experiment with label-based routing, use the dedicated Docker-provider debug path:
 
 ```bash
-make up-edge-debug-watch
+make up-edge-debug
 ```
 
 This combines:
@@ -405,7 +388,7 @@ After switching:
 
 ```bash
 make down-edge
-make up-edge-watch
+make up-edge
 ```
 
 OrbStack `.local` mode uses the same `make up-edge*` commands; the OrbStack overlay is included automatically when `LOCAL_DEV_DOMAIN` ends with `.local`.
