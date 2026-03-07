@@ -140,6 +140,7 @@ export async function getAllGatewayArticles(): Promise<ContentArticlesResponseDa
 
   const response = await fetch(endpointUrl, {
     method: "GET",
+    cache: "force-cache",
     next: {
       revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
       tags: ["articles"],
@@ -189,6 +190,7 @@ export async function getGatewayArticleBySlug(
 
   const response = await fetch(endpointUrl, {
     method: "GET",
+    cache: "force-cache",
     next: {
       revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
       tags: ["articles", `article:${normalizedSlug}`],
