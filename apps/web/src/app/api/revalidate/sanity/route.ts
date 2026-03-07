@@ -19,6 +19,7 @@ const SANITY_WEBHOOK_SECRET_HEADER = "x-sanity-webhook-secret";
 const ARTICLE_LIST_TAG = "articles";
 const ARTICLE_DETAIL_TAG_PREFIX = "article:";
 const ARTICLE_LIST_PATH = "/articles";
+const SITEMAP_PATH = "/sitemap.xml";
 const PAGE_LIST_TAG = "pages";
 const PAGE_DETAIL_TAG_PREFIX = "page:";
 
@@ -175,7 +176,7 @@ function getArticleRevalidationTags(slugs: string[]): string[] {
 
 /** Builds the set of article paths to invalidate. */
 function getArticleRevalidationPaths(slugs: string[]): string[] {
-  const paths = new Set<string>([ARTICLE_LIST_PATH]);
+  const paths = new Set<string>([ARTICLE_LIST_PATH, SITEMAP_PATH]);
 
   for (const slug of slugs) {
     paths.add(`${ARTICLE_LIST_PATH}/${encodeURIComponent(slug)}`);
@@ -197,10 +198,19 @@ function getPageRevalidationTags(slugs: string[]): string[] {
 
 /** Builds the set of page paths to invalidate. */
 function getPageRevalidationPaths(slugs: string[]): string[] {
-  return slugs
-    .map((slug) => slug.trim())
-    .filter((slug) => slug.length > 0)
-    .map((slug) => `/${encodeURIComponent(slug)}`);
+  const paths = new Set<string>([SITEMAP_PATH]);
+
+  for (const slug of slugs) {
+    const normalizedSlug = slug.trim();
+
+    if (!normalizedSlug) {
+      continue;
+    }
+
+    paths.add(`/${encodeURIComponent(normalizedSlug)}`);
+  }
+
+  return [...paths];
 }
 
 /** Handles a Sanity webhook request and triggers content cache invalidation. */

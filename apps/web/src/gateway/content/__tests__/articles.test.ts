@@ -101,6 +101,7 @@ describe("gateway content articles client", () => {
       "https://api.example.com/v1/content/articles",
       {
         method: "GET",
+        cache: "force-cache",
         next: {
           revalidate: 60,
           tags: ["articles"],
@@ -185,6 +186,7 @@ describe("gateway content articles client", () => {
       "https://api.example.com/v1/content/articles/article-1",
       {
         method: "GET",
+        cache: "force-cache",
         next: {
           revalidate: 60,
           tags: ["articles", "article:article-1"],

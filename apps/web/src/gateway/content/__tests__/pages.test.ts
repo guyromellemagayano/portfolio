@@ -65,6 +65,7 @@ describe("gateway content pages client", () => {
       "https://api.example.com/v1/content/pages",
       {
         method: "GET",
+        cache: "force-cache",
         next: {
           revalidate: 60,
           tags: ["pages"],
@@ -121,6 +122,7 @@ describe("gateway content pages client", () => {
       "https://api.example.com/v1/content/pages/now",
       {
         method: "GET",
+        cache: "force-cache",
         next: {
           revalidate: 60,
           tags: ["pages", "page:now"],

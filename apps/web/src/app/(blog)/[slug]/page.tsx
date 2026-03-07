@@ -210,8 +210,6 @@ export async function generateMetadata(
   }
 }
 
-export const dynamic = "force-dynamic";
-
 /** Renders a standalone CMS page route using the API gateway page detail endpoint. */
 export default async function CmsPageRoute(props: CmsPageRouteProps) {
   const page = await resolvePageFromParams(props.params).catch((error) => {

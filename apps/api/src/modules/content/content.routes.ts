@@ -43,6 +43,9 @@ const errorEnvelopeSchema = t.Object({
   }),
   meta: responseMetaSchema,
 });
+const CONTENT_CACHE_CONTROL_HEADER = "cache-control";
+const CONTENT_CACHE_CONTROL_VALUE =
+  "public, s-maxage=60, stale-while-revalidate=300";
 
 /** Creates routes for content retrieval via the configured provider. */
 export function createContentRouter(contentService: ContentService) {
@@ -61,6 +64,8 @@ export function createContentRouter(contentService: ContentService) {
           provider: contentService.providerName,
           count: articles.length,
         });
+        context.set.headers[CONTENT_CACHE_CONTROL_HEADER] =
+          CONTENT_CACHE_CONTROL_VALUE;
 
         return sendSuccess(context, articles, {
           meta: {
@@ -116,6 +121,8 @@ export function createContentRouter(contentService: ContentService) {
           provider: contentService.providerName,
           slug: article.slug,
         });
+        context.set.headers[CONTENT_CACHE_CONTROL_HEADER] =
+          CONTENT_CACHE_CONTROL_VALUE;
 
         return sendSuccess(context, article, {
           meta: {
@@ -156,6 +163,8 @@ export function createContentRouter(contentService: ContentService) {
           provider: contentService.providerName,
           count: pages.length,
         });
+        context.set.headers[CONTENT_CACHE_CONTROL_HEADER] =
+          CONTENT_CACHE_CONTROL_VALUE;
 
         return sendSuccess(context, pages, {
           meta: {
@@ -212,6 +221,8 @@ export function createContentRouter(contentService: ContentService) {
           provider: contentService.providerName,
           slug: page.slug,
         });
+        context.set.headers[CONTENT_CACHE_CONTROL_HEADER] =
+          CONTENT_CACHE_CONTROL_VALUE;
 
         return sendSuccess(context, page, {
           meta: {
