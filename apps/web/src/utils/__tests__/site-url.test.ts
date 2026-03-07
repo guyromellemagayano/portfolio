@@ -72,7 +72,7 @@ describe("site URL helpers", () => {
   it("recognizes local-only hostnames", () => {
     expect(isLocalOnlyHostname("localhost")).toBe(true);
     expect(isLocalOnlyHostname("api.guyromellemagayano.local")).toBe(true);
-    expect(isLocalOnlyHostname("guyromellemagayano.localhost")).toBe(true);
+    expect(isLocalOnlyHostname("guyromellemagayano.internal")).toBe(false);
     expect(isLocalOnlyHostname("guyromellemagayano.com")).toBe(false);
   });
 });

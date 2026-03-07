@@ -9,13 +9,6 @@ if [ -z "$DOMAIN" ]; then
   exit 1
 fi
 
-case "$DOMAIN" in
-  *.localhost)
-    printf 'dnsmasq-health: skipped for %s (.localhost fallback mode usually does not require dnsmasq).\n' "$DOMAIN"
-    exit 0
-    ;;
-esac
-
 OS_NAME="$(uname -s 2>/dev/null || printf 'unknown')"
 STATUS=0
 
