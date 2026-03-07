@@ -26,7 +26,10 @@
 15. **FOLLOW INDUSTRY STANDARDS** - Adhere to WCAG 2.1, OWASP Top 10, Core Web Vitals, and Vercel React Best Practices.
 16. **MAINTAIN COMPLIANCE** - Ensure all code meets security, accessibility, performance, and code quality benchmarks.
 17. **STANDARDIZE JSDOC LENGTH** - Use one-line JSDoc (`/** ... */`) for single-line documentation; use multiline JSDoc only when content genuinely spans multiple lines.
-18. **STANDARDIZE COMMIT MESSAGES** - Use conventional commit subjects plus a bullet body for non-trivial commits. Keep bullets single-spaced (no blank lines between bullets) and wrap code identifiers (paths, env vars, commands, routes, package names, task names) in backticks.
+18. **STANDARDIZE COMMIT MESSAGES** - Use conventional commit subjects plus a
+    bullet body for non-trivial commits. Keep bullets single-spaced (no blank
+    lines between bullets) and wrap code identifiers (paths, env vars,
+    commands, routes, package names, task names) in backticks.
 
 ## Standards Reference
 
@@ -66,7 +69,7 @@
 ## Commit Message Standards (Quick Reference)
 
 - **Subject Format**: Use conventional commits (for example, `feat(scope): ...`, `fix(scope): ...`, `chore(scope): ...`)
-- **Body Format**: For non-trivial commits, add a bullet body using `- ` lines with no blank line between bullets
+- **Body Format**: For non-trivial commits, add a bullet body using `-` lines with no blank line between bullets
 - **Backticks**: Wrap code identifiers in backticks (`API_GATEWAY_URL`, `apps/web/next.config.ts`, `/api/revalidate/sanity`, `turbo.json`, `pnpm --filter web check-types`)
 - **Writing Method**: Prefer a commit message file (`git commit -F <file>` / `git commit --amend -F <file>`) or a single body block to avoid accidental blank lines from multiple `-m` flags
 
@@ -135,8 +138,17 @@ export const ComponentName = setDisplayName(
 
 **Reference**: See `.cursor/rules/component-architecture.mdc` and `.cursor/rules/react-typescript.mdc` for detailed standards.
 
-- **Main Components**: For `@packages/` components, use `setDisplayName` for proper component naming. For `@apps/` components (web, admin, API), `setDisplayName` is NOT ALLOWED - use manual `displayName` assignment or omit it entirely. Extend `React.ComponentProps<typeof ElementType>` + `CommonComponentProps` for utility props. For `@apps/` components, refs work via props spread in `rest` (React 19 pattern), so `forwardRef` is NOT ALLOWED. For `@packages/` components, `forwardRef` is REQUIRED.
-- **Sub-components**: Use `useComponentId` hook internally, receive `internalId`/`debugMode` props directly. For `@packages/` sub-components, use `setDisplayName`. For `@apps/` sub-components, `setDisplayName` is NOT ALLOWED. Use `hasAnyRenderableContent` for content validation
+- **Main Components**: For `@packages/` components, use `setDisplayName` for
+  proper component naming. For `@apps/` components (web, admin, API),
+  `setDisplayName` is NOT ALLOWED - use manual `displayName` assignment or omit
+  it entirely. Extend `React.ComponentProps<typeof ElementType>` +
+  `CommonComponentProps` for utility props. For `@apps/` components, refs work
+  via props spread in `rest` (React 19 pattern), so `forwardRef` is NOT
+  ALLOWED. For `@packages/` components, `forwardRef` is REQUIRED.
+- **Sub-components**: Use `useComponentId` hook internally, receive
+  `internalId`/`debugMode` props directly. For `@packages/` sub-components, use
+  `setDisplayName`. For `@apps/` sub-components, `setDisplayName` is NOT
+  ALLOWED. Use `hasAnyRenderableContent` for content validation
 - **Component Props**: Extend `React.ComponentProps<typeof BaseComponent>` + `CommonComponentProps` for utility props
 - **Consistent Prop Names**: All components use `internalId`/`debugMode` (external props) from `CommonComponentProps`
 - **Compound Components**: Manually attach sub-components as properties to main component
@@ -652,7 +664,10 @@ it("includes dateTime when using time element", () => {
 
 ### Scalable Folder Structure
 
-**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+**Component Folder Naming Convention**: Use **kebab-case** for component folder
+names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for
+component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`).
+This pattern applies to all components in `apps/` and `packages/` folders.
 
 #### For Compound Components (with sub-components)
 
@@ -731,7 +746,10 @@ For `@web/` components using Sanity CMS:
 
 ## File Structure Standards
 
-**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+**Component Folder Naming Convention**: Use **kebab-case** for component folder
+names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for
+component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`).
+This pattern applies to all components in `apps/` and `packages/` folders.
 
 ```bash
 components/component-name/
@@ -1059,7 +1077,10 @@ For integration tests:
 
 ### Test Organization
 
-**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+**Component Folder Naming Convention**: Use **kebab-case** for component folder
+names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for
+component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`).
+This pattern applies to all components in `apps/` and `packages/` folders.
 
 ```bash
 components/component-name/
@@ -1742,7 +1763,10 @@ describe("Edge Cases", () => {
 
 For components that fetch Sanity data:
 
-**Component Folder Naming Convention**: Use **kebab-case** for component folder names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`). This pattern applies to all components in `apps/` and `packages/` folders.
+**Component Folder Naming Convention**: Use **kebab-case** for component folder
+names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for
+component file names (e.g., `Article.tsx`, `CardTitle.tsx`, `ListItem.tsx`).
+This pattern applies to all components in `apps/` and `packages/` folders.
 
 ```bash
 components/component-name/
@@ -2399,7 +2423,11 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 
 **Industry Best Practices**:
 
-- **JSDoc**: Keep exported function/component docs concise and behavior-focused; avoid `@param`/`@returns` and rely on clear names + TypeScript types. For `@packages/` only: All exported types must have JSDoc comments. For `@apps/` components (web, admin, API), type documentation is NOT ALLOWED.
+- **JSDoc**: Keep exported function/component docs concise and
+  behavior-focused; avoid `@param`/`@returns` and rely on clear names +
+  TypeScript types. For `@packages/` only: All exported types must have JSDoc
+  comments. For `@apps/` components (web, admin, API), type documentation is
+  NOT ALLOWED.
 - **README**: Each package in monorepo with usage examples, API documentation
 - **Inline comments**: Complex logic only (not obvious code), explain "why" not "what"
 - **Storybook**: All reusable UI components with interactive examples and accessibility notes
