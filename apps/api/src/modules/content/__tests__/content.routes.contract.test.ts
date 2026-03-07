@@ -92,6 +92,9 @@ describe("GET /v1/content/articles contract", () => {
     expect(response.headers.get(CORRELATION_ID_HEADER)).toBe(
       "corr-test-articles-success"
     );
+    expect(response.headers.get("cache-control")).toBe(
+      "public, s-maxage=60, stale-while-revalidate=300"
+    );
     expect(body).toMatchObject({
       success: true,
       data: [],
@@ -232,6 +235,9 @@ describe("GET /v1/content/articles/:slug contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe(
+      "public, s-maxage=60, stale-while-revalidate=300"
+    );
     expect(body).toMatchObject({
       success: true,
       data: {
@@ -402,6 +408,9 @@ describe("GET /v1/content/pages contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe(
+      "public, s-maxage=60, stale-while-revalidate=300"
+    );
     expect(body).toMatchObject({
       success: true,
       data: [
@@ -500,6 +509,9 @@ describe("GET /v1/content/pages/:slug contract", () => {
     }>(response);
 
     expect(response.status).toBe(200);
+    expect(response.headers.get("cache-control")).toBe(
+      "public, s-maxage=60, stale-while-revalidate=300"
+    );
     expect(body).toMatchObject({
       success: true,
       data: {
