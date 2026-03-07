@@ -14,7 +14,6 @@ SANITY_ARGS ?= projects list
 TOOLING_CMD ?= pnpm check-types
 TURBO_DOCKER_CONCURRENCY ?= 2
 LOG_TAIL ?= 100
-WATCH_SERVICES ?= api web admin
 TRAEFIK_DOCKER_SOCKET_PATH ?= $(if $(wildcard $(HOME)/.docker/run/docker.sock),$(HOME)/.docker/run/docker.sock,/var/run/docker.sock)
 TRAEFIK_DOCKER_API_VERSION ?= 1.53
 TRAEFIK_ENABLE_DOCKER_PROVIDER ?= 0
@@ -72,19 +71,14 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	ps-edge \
 	build-prod \
 	bootstrap \
-	bootstrap-watch \
 	bootstrap-detached \
 	up \
-	up-watch \
 	up-detached \
 	up-edge \
-	up-edge-watch \
 	up-edge-detached \
 	up-edge-debug \
-	up-edge-debug-watch \
 	up-edge-debug-detached \
 	up-edge-tls \
-	up-edge-tls-watch \
 	up-edge-tls-detached \
 	up-prod \
 	up-prod-detached \
@@ -94,9 +88,6 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	logs \
 	logs-prod \
 	logs-edge \
-	watch \
-	watch-edge \
-	watch-edge-tls \
 	restart \
 	reinstall \
 	edge-hosts \
@@ -138,11 +129,10 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n🚦 Golden Path\n'
 	@printf '%-42s %s\n' "make doctor" "Validate Docker + Compose."
 	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
-	@printf '%-42s %s\n' "make bootstrap-watch" "First run: DNS setup + edge stack + watch."
+	@printf '%-42s %s\n' "make bootstrap" "First run: DNS setup + edge stack in background."
 	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api/admin)."
 	@printf '\n🎯 Daily Use\n'
-	@printf '%-42s %s\n' "make up-edge-watch" "Foreground dev with local hostnames."
-	@printf '%-42s %s\n' "make up-edge-detached" "Background dev stack."
+	@printf '%-42s %s\n' "make up-edge" "Background dev stack with local hostnames."
 	@printf '%-42s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-42s %s\n' "make down-edge" "Stop edge stack."
 	@printf '\n🌐 DNS Modes\n'
@@ -153,13 +143,12 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make use-orbstack-domain" "Switch to OrbStack native guyromellemagayano.local mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
 	@printf '\n🐞 Debug\n'
-	@printf '%-42s %s\n' "make up-edge-debug-watch" "Docker-provider debug mode (socket-proxy)."
+	@printf '%-42s %s\n' "make up-edge-debug" "Background debug mode (socket-proxy)."
 	@printf '%-42s %s\n' "make validate-edge-debug" "Validate debug overlay compose config."
 	@printf '\n⚙️  Key Variables\n'
 	@printf '%-26s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge domain" "$(LOCAL_DEV_DOMAIN)"
 	@printf '%-26s %s (current: %s)\n' "ENV_FILE" "Compose env file" "$(ENV_FILE)"
 	@printf '%-26s %s (current: %s)\n' "LOG_TAIL" "Default tail lines for logs" "$(LOG_TAIL)"
-	@printf '%-26s %s (current: %s)\n' "WATCH_SERVICES" "Services passed to compose watch" "$(WATCH_SERVICES)"
 	@printf '\n📚 Miscellaneous\n'
 	@printf '%-42s %s\n' "make help-all" "Full target catalog + full variable list."
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
@@ -197,23 +186,24 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "VERCEL_GIT_BRANCH" "Optional preview branch for make vercel-env*" "$(VERCEL_GIT_BRANCH)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_PULL_ENV_FILE" "Output filename per app for make vercel-env*" "$(VERCEL_PULL_ENV_FILE)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_ARGS" "Arguments for make vercel" "$(VERCEL_ARGS)"
-	@printf '%-32s %s (current: %s)\n' "WATCH_SERVICES" 'Services passed to `docker compose watch`' "$(WATCH_SERVICES)"
 	@printf '%-32s %s (current: %s)\n' "LOG_TAIL" 'Default tail lines for `make logs*`' "$(LOG_TAIL)"
 	@printf '%-32s %s (current: %s)\n' "FORCE_PNPM_INSTALL" "1 forces pnpm reinstall in containers" "$(FORCE_PNPM_INSTALL)"
 	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap*`' "$(SKIP_DNS_SETUP)"
 	@printf '\n🚦 First Run (Recommended)\n'
 	@printf '%-44s %s\n' "make doctor" "Validate Docker/Compose setup."
 	@printf '%-44s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
-	@printf '%-44s %s\n' "make bootstrap-watch" "Golden path: DNS setup + edge stack + watch (foreground)."
-	@printf '%-44s %s\n' "make bootstrap-detached" "Golden path (background) + use make logs-edge."
-	@printf '%-44s %s\n' "make bootstrap-watch SKIP_DNS_SETUP=1" "Skip DNS bootstrap if already configured."
+	@printf '%-44s %s\n' "make bootstrap" "Golden path: DNS setup + edge stack in background."
+	@printf '%-44s %s\n' "make bootstrap SKIP_DNS_SETUP=1" "Skip DNS bootstrap if already configured."
+	@printf '%-44s %s\n' "make bootstrap-detached" "Alias for the detached bootstrap flow."
 	@printf '\n🎯 Run Modes (Recommended)\n'
-	@printf '%-44s %s\n' "make up-edge-watch" "Foreground (active coding)." 
-	@printf '%-44s %s\n' "make up-edge-detached" "Background services (pair with make logs-edge)."
+	@printf '%-44s %s\n' "make up-edge" "Background services (pair with make logs-edge)."
+	@printf '%-44s %s\n' "make up-edge-detached" "Alias for the detached edge start."
+	@printf '%-44s %s\n' "make up-edge-tls" "Background edge stack with the TLS overlay."
 	@printf '\n🪟  Separate Terminal (Optional Monitoring)\n'
 	@printf '%-44s %s\n' "make ps-edge" "Inspect edge stack service status."
 	@printf '%-44s %s\n' "make logs-edge" "Follow Traefik + app logs."
-	@printf '%-44s %s\n' "make watch-edge" 'Run Compose watch (best with `make up-edge-detached`).'
+	@printf '%-44s %s\n' "make logs" "Follow api + web + admin logs for the base stack."
+	@printf '%-44s %s\n' "make logs-prod" "Follow production compose logs."
 	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/api/admin)."
 	@printf '\n🐞 Debug / Troubleshooting\n'
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
@@ -225,12 +215,12 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make vercel-env-pull" "Pull app-level envs from linked Vercel projects."
 	@printf '%-44s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env.local."
 	@printf '%-44s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local-tls.yml."
-	@printf '%-44s %s\n' "make up-edge-debug-watch" "Docker-provider debug mode (socket-proxy-backed)."
+	@printf '%-44s %s\n' "make up-edge-debug" "Docker-provider debug mode (socket-proxy-backed)."
 	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin + sitemap."
 	@printf '\n💡 Examples\n'
-	@printf 'make bootstrap-watch\n'
+	@printf 'make bootstrap\n'
 	@printf 'make edge-smoke\n'
-	@printf 'make up-edge-detached && make logs-edge\n'
+	@printf 'make up-edge && make logs-edge\n'
 	@printf 'make dnsmasq-local && make edge-smoke\n'
 	@printf 'make edge-dns-doctor\n'
 	@printf 'make vercel-host-check\n'
@@ -238,9 +228,9 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make vercel VERCEL_ARGS="link --cwd apps/web"\n'
 	@printf 'make vercel-env-pull VERCEL_ENV_TARGET=development\n'
 	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration\n'
-	@printf 'make use-orbstack-domain && make up-edge-watch\n'
-	@printf 'make tls-local-setup && make up-edge-tls-watch\n'
-	@printf 'make up-edge-debug-watch  # debug Docker-provider routing\n'
+	@printf 'make use-orbstack-domain && make up-edge\n'
+	@printf 'make tls-local-setup && make up-edge-tls\n'
+	@printf 'make up-edge-debug  # debug Docker-provider routing\n'
 	@printf 'make prod-smoke\n'
 	@printf '\n'
 
@@ -257,7 +247,6 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'TOOLING_CMD=%s\n' "$(TOOLING_CMD)"
 	@printf 'TURBO_DOCKER_CONCURRENCY=%s\n' "$(TURBO_DOCKER_CONCURRENCY)"
 	@printf 'LOG_TAIL=%s\n' "$(LOG_TAIL)"
-	@printf 'WATCH_SERVICES=%s\n' "$(WATCH_SERVICES)"
 	@printf 'LOCAL_DEV_DOMAIN=%s\n' "$(LOCAL_DEV_DOMAIN)"
 	@printf 'EDGE_PUBLIC_SCHEME=%s\n' "$(EDGE_PUBLIC_SCHEME)"
 	@printf 'TRAEFIK_HTTP_PORT=%s\n' "$(TRAEFIK_HTTP_PORT)"
@@ -328,20 +317,14 @@ build-prod: ## Build production Docker images for api + web (no containers start
 prod-smoke: ## Smoke-check deployed production `web`, `api`, `admin`, and `sitemap.xml` endpoints (Vercel-only topology).
 	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_ADMIN_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
 
-bootstrap: ## First-run setup (local DNS + edge stack) in foreground; macOS/Homebrew dnsmasq auto-setup when available.
-	@sh docker/scripts/bootstrap-local.sh foreground
-
-bootstrap-watch: ## First-run setup (local DNS + edge stack + Compose watch) in foreground; macOS/Homebrew dnsmasq auto-setup when available.
-	@sh docker/scripts/bootstrap-local.sh watch
+bootstrap: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
+	@sh docker/scripts/bootstrap-local.sh detached
 
 bootstrap-detached: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
 	@sh docker/scripts/bootstrap-local.sh detached
 
-up: ## Start api + web + admin in foreground (equivalent to `pnpm dev:docker` + admin).
-	@$(COMPOSE_BASE) up --build
-
-up-watch: ## Start api + web + admin in foreground with Compose watch (`docker compose up --watch`).
-	@$(COMPOSE_BASE) up --build --watch
+up: ## Start api + web + admin in background.
+	@$(COMPOSE_BASE) up --build -d
 
 up-detached: ## Start api + web + admin in background.
 	@$(COMPOSE_BASE) up --build -d
@@ -349,8 +332,8 @@ up-detached: ## Start api + web + admin in background.
 down: ## Stop the local docker stack and remove profiled/orphaned compose containers.
 	@$(COMPOSE_ALL_PROFILES) down --remove-orphans
 
-up-prod: ## Start production compose services (api + web) in foreground.
-	@$(COMPOSE_PROD_NO_FORCE) up --build
+up-prod: ## Start production compose services (api + web) in background.
+	@$(COMPOSE_PROD_NO_FORCE) up --build -d
 
 up-prod-detached: ## Start production compose services (api + web) in background.
 	@$(COMPOSE_PROD_NO_FORCE) up --build -d
@@ -502,29 +485,20 @@ render-edge-routes: ## Generate local Traefik file-provider routes from LOCAL_DE
 
 use-orbstack-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.local` to ENV_FILE (OrbStack native path).
 	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.local
-	@printf 'Next: make down-edge && make up-edge-watch\n'
+	@printf 'Next: make down-edge && make up-edge\n'
 
 env-local-normalize: ## Normalize root `.env.local` for local Docker and remove app-level `.env.local` files from Vercel link.
 	@sh docker/scripts/normalize-local-env.sh "$(ENV_FILE)"
 
 ##@ 🌐 Edge Runtime (Traefik + App Services)
 
-up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in foreground.
+up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in background.
 	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
 		printf 'up-edge: TRAEFIK_ENABLE_DOCKER_PROVIDER=1 is deprecated for the default path; using up-edge-debug instead.\n'; \
 		$(MAKE) up-edge-debug; \
 	else \
 		TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes; \
-		$(COMPOSE_EDGE_BASE) up --build; \
-	fi
-
-up-edge-watch: ## Start Traefik + app stack over local hostnames (HTTP only) in foreground with Compose watch.
-	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
-		printf 'up-edge-watch: TRAEFIK_ENABLE_DOCKER_PROVIDER=1 is deprecated for the default path; using up-edge-debug-watch instead.\n'; \
-		$(MAKE) up-edge-debug-watch; \
-	else \
-		TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes; \
-		$(COMPOSE_EDGE_BASE) up --build --watch; \
+		$(COMPOSE_EDGE_BASE) up --build -d; \
 	fi
 
 up-edge-detached: ## Start Traefik + app stack over local hostnames (HTTP only) in background.
@@ -536,25 +510,17 @@ up-edge-detached: ## Start Traefik + app stack over local hostnames (HTTP only) 
 		$(COMPOSE_EDGE_BASE) up --build -d; \
 	fi
 
-up-edge-debug: ## Start Traefik + app stack in Docker-provider debug mode (socket-proxy-backed) in foreground.
+up-edge-debug: ## Start Traefik + app stack in Docker-provider debug mode (socket-proxy-backed) in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=1 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_DEBUG_BASE) up --build
-
-up-edge-debug-watch: ## Start Traefik + app stack in Docker-provider debug mode with Compose watch.
-	@TRAEFIK_ENABLE_DOCKER_PROVIDER=1 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_DEBUG_BASE) up --build --watch
+	@$(COMPOSE_EDGE_DEBUG_BASE) up --build -d
 
 up-edge-debug-detached: ## Start Traefik + app stack in Docker-provider debug mode in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=1 $(MAKE) render-edge-routes
 	@$(COMPOSE_EDGE_DEBUG_BASE) up --build -d
 
-up-edge-tls: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in foreground.
+up-edge-tls: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_TLS_BASE) up --build
-
-up-edge-tls-watch: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in foreground with Compose watch.
-	@TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_TLS_BASE) up --build --watch
+	@$(COMPOSE_EDGE_TLS_BASE) up --build -d
 
 up-edge-tls-detached: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes
@@ -565,17 +531,6 @@ down-edge: ## Stop the edge stack (base + Traefik overlays) and remove profiled/
 
 logs-edge: ## Follow Traefik + api + web + admin logs (tails the last `LOG_TAIL` lines first).
 	@$(COMPOSE_EDGE_ANY_NO_FORCE) logs --tail=$(LOG_TAIL) -f traefik web api admin docker-socket-proxy
-
-##@ 👀 Compose Watch
-
-watch: ## Run Docker Compose watch for base stack services (use with `make up-detached`; source HMR remains app-level).
-	@$(COMPOSE_BASE) watch $(WATCH_SERVICES)
-
-watch-edge: ## Run Docker Compose watch for edge stack app services (use with `make up-edge-detached`).
-	@$(COMPOSE_EDGE_BASE) watch $(WATCH_SERVICES)
-
-watch-edge-tls: ## Run Docker Compose watch for edge TLS stack app services (use with `make up-edge-tls-detached`).
-	@$(COMPOSE_EDGE_TLS_BASE) watch $(WATCH_SERVICES)
 
 ##@ ☁️  Vercel
 
