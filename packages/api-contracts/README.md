@@ -1,4 +1,4 @@
-# @portfolio/api-contracts
+# `@portfolio/api-contracts`
 
 Canonical API contracts shared across apps and services in this monorepo.
 
@@ -11,7 +11,7 @@ Canonical API contracts shared across apps and services in this monorepo.
 ## Exports
 
 - Root (`@portfolio/api-contracts`)
-  - content + http contract exports
+  - content + HTTP contract exports
 - Subpaths
   - `@portfolio/api-contracts/content`
   - `@portfolio/api-contracts/http`
