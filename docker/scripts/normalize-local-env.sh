@@ -52,7 +52,7 @@ local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local
 local_dev_domain_plain=$(printf '%s' "$local_dev_domain" | sed 's/^"//; s/"$//')
 local_url_scheme="https"
 case "$local_dev_domain_plain" in
-  *.localhost|localhost|127.0.0.1|0.0.0.0|::1)
+  localhost|127.0.0.1|0.0.0.0|::1)
     local_url_scheme="http"
     ;;
 esac
