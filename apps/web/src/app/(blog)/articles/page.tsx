@@ -41,7 +41,6 @@ export const metadata: Metadata = {
       "Long-form thoughts on programming, leadership, product design, and more.",
   },
 };
-export const dynamic = "force-dynamic";
 
 export default async function ArticlesPage() {
   const articles = await getAllArticles().catch((err) => {

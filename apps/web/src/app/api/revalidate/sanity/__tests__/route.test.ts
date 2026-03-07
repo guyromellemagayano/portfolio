@@ -161,6 +161,7 @@ describe("POST /api/revalidate/sanity", () => {
       tags: ["articles", "article:example-article", "article:previous-article"],
       paths: [
         "/articles",
+        "/sitemap.xml",
         "/articles/example-article",
         "/articles/previous-article",
       ],
@@ -178,14 +179,15 @@ describe("POST /api/revalidate/sanity", () => {
       "article:previous-article",
       "max"
     );
-    expect(revalidatePath).toHaveBeenCalledTimes(3);
+    expect(revalidatePath).toHaveBeenCalledTimes(4);
     expect(revalidatePath).toHaveBeenNthCalledWith(1, "/articles");
+    expect(revalidatePath).toHaveBeenNthCalledWith(2, "/sitemap.xml");
     expect(revalidatePath).toHaveBeenNthCalledWith(
-      2,
+      3,
       "/articles/example-article"
     );
     expect(revalidatePath).toHaveBeenNthCalledWith(
-      3,
+      4,
       "/articles/previous-article"
     );
   });
@@ -215,14 +217,15 @@ describe("POST /api/revalidate/sanity", () => {
       documentType: "page",
       resource: "page",
       tags: ["pages", "page:now"],
-      paths: ["/now"],
+      paths: ["/sitemap.xml", "/now"],
       slugs: ["now"],
     });
     expect(revalidateTag).toHaveBeenCalledTimes(2);
     expect(revalidateTag).toHaveBeenNthCalledWith(1, "pages", "max");
     expect(revalidateTag).toHaveBeenNthCalledWith(2, "page:now", "max");
-    expect(revalidatePath).toHaveBeenCalledTimes(1);
-    expect(revalidatePath).toHaveBeenNthCalledWith(1, "/now");
+    expect(revalidatePath).toHaveBeenCalledTimes(2);
+    expect(revalidatePath).toHaveBeenNthCalledWith(1, "/sitemap.xml");
+    expect(revalidatePath).toHaveBeenNthCalledWith(2, "/now");
   });
 
   it("returns 202 without revalidating for unsupported payload types", async () => {

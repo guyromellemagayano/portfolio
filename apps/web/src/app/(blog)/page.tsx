@@ -64,7 +64,6 @@ export const metadata: Metadata = {
       }
     : undefined,
 };
-export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   // Fetch the articles

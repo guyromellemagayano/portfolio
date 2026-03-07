@@ -62,7 +62,7 @@ Primary guide: `docker/docs/local-dev.md`
 ```bash
 # First-time setup
 make env-local-normalize
-make use-orbstack-domain   # default: guyromellemagayano.local (or: make use-localhost-domain)
+make use-orbstack-domain   # default: guyromellemagayano.local
 make bootstrap-watch
 make edge-smoke
 
@@ -192,6 +192,7 @@ Sanity keys used by `apps/web`:
 - `SANITY_API_READ_TOKEN` (optional for private datasets)
 - `SANITY_STUDIO_PREVIEW_ORIGIN` (optional absolute web origin used by hosted Studio preview links)
 - Article data in `apps/web` is retrieved from `apps/api` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
+- Standalone page data in `apps/web` is retrieved from `apps/api` (`/v1/content/pages`) and normalized in `apps/web/src/utils/pages.ts`
 - `API_GATEWAY_URL` (server-side base URL for `apps/api` article/content APIs)
 - `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
 
@@ -203,6 +204,7 @@ Gateway keys used by `apps/api`:
 - `SANITY_STUDIO_PROJECT_ID` / `SANITY_STUDIO_DATASET` / `SANITY_API_VERSION` (fallbacks to `NEXT_PUBLIC_SANITY_*`)
 - `SANITY_API_READ_TOKEN`
 - `SANITY_USE_CDN`
+- Content routes (`/v1/content/articles*`, `/v1/content/pages*`) return `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
 
 Gateway architecture and extension conventions:
 
@@ -216,6 +218,11 @@ Sanity preview routes in `apps/web`:
 Article data flow:
 
 - `apps/web` -> `apps/api` (`/v1/content/articles`) -> provider (`sanity` or `static`)
+- `apps/web` -> `apps/api` (`/v1/content/pages`) -> provider (`sanity` or `static`)
+
+Sanity webhook cache revalidation:
+
+- `POST /api/revalidate/sanity` revalidates content tags and paths, including `/sitemap.xml`
 
 ## License
 

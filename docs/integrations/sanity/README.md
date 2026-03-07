@@ -63,7 +63,6 @@ Current references:
   - `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.local"`
 - In Sanity API CORS origins, allow the local web origin:
   - `https://guyromellemagayano.local`
-- If you switch to the `.localhost` fallback mode, use the `.localhost` value for `SANITY_STUDIO_PREVIEW_ORIGIN` and CORS origin.
 - After changing local env or domain settings, restart the edge stack:
 
   ```bash
@@ -79,9 +78,23 @@ Current references:
   - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.com"`
   - `NEXT_PUBLIC_API_URL="https://<your-api-domain>"`
   - `API_GATEWAY_URL="https://<your-api-domain>"`
+- For preview `apps/web` deployments, pin:
+  - `NEXT_PUBLIC_API_URL="https://api.guyromellemagayano.com"`
+  - `API_GATEWAY_URL="https://api.guyromellemagayano.com"`
 - Set `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.com"` in the Studio deployment environment.
 - Add the production web origin to Sanity API CORS origins:
   - `https://guyromellemagayano.com`
+
+## Content caching profile (`apps/api`)
+
+- Public content routes:
+  - `/v1/content/articles`
+  - `/v1/content/articles/:slug`
+  - `/v1/content/pages`
+  - `/v1/content/pages/:slug`
+- Return:
+  - `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
+- `apps/web` fetches these routes with cache tags and `revalidate: 60`.
 
 ## Cache Revalidation (Web)
 
@@ -101,10 +114,12 @@ Current references:
 - Article webhooks revalidate:
   - `articles`
   - `article:<slug>` for current and previous slugs when present
+  - `/sitemap.xml`
 - Standalone page webhooks revalidate:
   - `pages`
   - `page:<slug>`
   - `/<slug>`
+  - `/sitemap.xml`
 
 ## Local Smoke Testing (Playwright)
 
