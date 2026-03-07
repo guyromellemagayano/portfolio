@@ -1,6 +1,6 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
 
-# @portfolio/vitest-presets
+# `@portfolio/vitest-presets`
 
 Shared Vitest configuration presets for the monorepo with integrated V8 coverage support.
 

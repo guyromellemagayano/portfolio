@@ -49,6 +49,8 @@
       "sql",
       "python",
       "py",
+      "env",
+      "groq",
       "java",
       "c",
       "cpp",
@@ -88,7 +90,7 @@
     "style": "dash"
   },
   "MD029": {
-    "style": "one_or_ordered"
+    "style": "ordered"
   },
   "MD005": true,
   "MD006": true,
