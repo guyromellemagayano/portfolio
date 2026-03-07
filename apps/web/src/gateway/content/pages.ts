@@ -71,6 +71,7 @@ export async function getAllGatewayPages(): Promise<ContentPagesResponseData> {
 
   const response = await fetch(endpointUrl, {
     method: "GET",
+    cache: "force-cache",
     next: {
       revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
       tags: ["pages"],
@@ -120,6 +121,7 @@ export async function getGatewayPageBySlug(
 
   const response = await fetch(endpointUrl, {
     method: "GET",
+    cache: "force-cache",
     next: {
       revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
       tags: ["pages", `page:${normalizedSlug}`],
