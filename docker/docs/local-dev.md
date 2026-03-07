@@ -28,12 +28,6 @@ make env-local-normalize
 make use-orbstack-domain
 ```
 
-Optional fallback mode (`.localhost`) if your browser/local DNS setup requires it:
-
-```bash
-make use-localhost-domain
-```
-
 1. Start the first-run flow:
 
 ```bash
@@ -145,14 +139,6 @@ If browsers (especially Chromium-based) show `DNS_PROBE_*` while `curl` works, r
 make edge-dns-doctor
 ```
 
-Fallback (skip `dnsmasq` and use `.localhost`):
-
-```bash
-make use-localhost-domain
-make down-edge
-make up-edge-watch
-```
-
 OrbStack custom-domain mode (skip `dnsmasq` and use `.local`):
 
 ```bash
@@ -209,7 +195,7 @@ OrbStack custom-domain routing (`make up-edge-watch` with `LOCAL_DEV_DOMAIN=guyr
 - In Sanity project settings:
   - Add development host: `https://<your-studio>.sanity.studio`
   - Add API CORS origin: `https://guyromellemagayano.local`
-- If you use the `.localhost` fallback mode, use `SANITY_STUDIO_PREVIEW_ORIGIN="http://guyromellemagayano.localhost"` and matching CORS origin.
+- The edge overlay defaults `API_GATEWAY_CORS_ORIGINS` to both web and `admin.*` origins; override `API_GATEWAY_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
 - Restart after env/domain changes:
 
 ```bash
@@ -312,7 +298,7 @@ Convenience targets:
 - `make dnsmasq-health` runs functional health checks (resolver file, port `53` listener, system-resolver hostname checks)
 - `make dnsmasq-status` shows Homebrew `dnsmasq` service status (advisory only; functional health is the source of truth)
 - `make dnsmasq-verify` checks the expected subdomains using the system resolver (`dscacheutil` on macOS, `getent` on Linux, `dig` fallback)
-- `make edge-dns-doctor` diagnoses browser DNS issues and prints `.localhost` fallback or OrbStack checks when relevant
+- `make edge-dns-doctor` diagnoses browser DNS issues and prints OrbStack and DNS diagnostics
 
 If Homebrew reports `dnsmasq` with `error 78` but `make dnsmasq-health` / `make dnsmasq-verify` pass, treat the setup as working. Homebrew service status can be misleading when `dnsmasq` is functionally healthy.
 
@@ -366,7 +352,7 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `TURBO_DOCKER_CONCURRENCY` (optional, default `2`): Turbo task concurrency for Dockerized `check-types` / `lint` / `test`
 - `LOG_TAIL` (optional, default `100`): line count used by `make logs` and `make logs-edge` before follow mode
 - `WATCH_SERVICES` (optional, default `api web admin`): service list passed to Compose `watch` targets
-- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `admin.<domain>`, `traefik.<domain>`; `.localhost` remains a fallback mode)
+- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `admin.<domain>`, `traefik.<domain>`)
 - `TRAEFIK_HTTP_PORT` (optional, default `80`): host HTTP port for local Traefik
 - `TRAEFIK_HTTPS_PORT` (optional, default `443`): host HTTPS port for the optional TLS overlay
 - `TRAEFIK_DOCKER_SOCKET_PATH` (optional): host Docker socket path mounted into the Docker socket-proxy sidecar (auto-detects Docker Desktop macOS user socket when present; otherwise defaults to `/var/run/docker.sock`)
@@ -382,7 +368,6 @@ Local edge routing now uses a generated Traefik file-provider config (`make rend
 Recommended local setup:
 
 - Keep the default `LOCAL_DEV_DOMAIN=...local` with OrbStack custom domains
-- Use `*.localhost` only as a fallback mode if your browser’s Secure DNS / DoH keeps bypassing your local resolver
 
 If you want to debug or experiment with label-based routing, use the dedicated Docker-provider debug path:
 
@@ -408,13 +393,12 @@ TRAEFIK_DOCKER_SOCKET_PATH="/Users/<you>/.docker/run/docker.sock"
 TRAEFIK_DOCKER_API_VERSION="1.53"
 ```
 
-## Domain Mode Helpers
+## Domain Helper
 
-Switch between `.local` and `.localhost` modes without manually editing `.env.local`:
+Set the standard local edge domain mode without manually editing `.env.local`:
 
 ```bash
 make use-orbstack-domain
-make use-localhost-domain
 ```
 
 After switching:
