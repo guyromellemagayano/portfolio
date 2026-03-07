@@ -275,8 +275,6 @@ export async function generateMetadata(
   }
 }
 
-export const dynamic = "force-dynamic";
-
 /** Renders the article detail route using the API gateway article detail endpoint. */
 export default async function ArticleDetailPage(props: ArticleDetailPageProps) {
   const article = await resolveArticleFromParams(props.params).catch(
