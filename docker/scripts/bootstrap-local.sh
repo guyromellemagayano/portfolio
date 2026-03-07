@@ -31,8 +31,6 @@ run_make validate-edge
 
 if [ "$SKIP_DNS_SETUP" = "1" ]; then
   printf 'Skipping local DNS setup (SKIP_DNS_SETUP=1)\n'
-elif printf '%s' "$LOCAL_DEV_DOMAIN" | grep -Eq '\.localhost$$'; then
-  printf 'Skipping local DNS setup for %s (.localhost fallback mode)\n' "$LOCAL_DEV_DOMAIN"
 elif printf '%s' "$LOCAL_DEV_DOMAIN" | grep -Eq '\.local$$'; then
   printf 'Skipping local DNS setup for %s (OrbStack custom-domain mode)\n' "$LOCAL_DEV_DOMAIN"
 elif [ "$(uname -s)" = "Darwin" ] && command -v brew >/dev/null 2>&1; then
@@ -42,9 +40,7 @@ else
   run_make edge-hosts
 fi
 
-if printf '%s' "$LOCAL_DEV_DOMAIN" | grep -Eq '\.localhost$$'; then
-  printf 'DNS setup skipped by design for %s (.localhost fallback mode).\n' "$LOCAL_DEV_DOMAIN"
-elif printf '%s' "$LOCAL_DEV_DOMAIN" | grep -Eq '\.local$$'; then
+if printf '%s' "$LOCAL_DEV_DOMAIN" | grep -Eq '\.local$$'; then
   printf 'DNS setup skipped by design for %s (OrbStack custom-domain mode).\n' "$LOCAL_DEV_DOMAIN"
 else
   printf 'If the browser shows DNS_PROBE_* while curl works, run `make edge-dns-doctor`.\n'

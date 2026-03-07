@@ -109,7 +109,6 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	dnsmasq-status \
 	dnsmasq-verify \
 	tls-local-setup \
-	use-localhost-domain \
 	use-orbstack-domain \
 	env-local-normalize \
 	vercel-env-pull \
@@ -151,7 +150,6 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
 	@printf '%-42s %s\n' "make edge-dns-doctor" "Diagnose browser DNS_PROBE_* / DoH issues."
 	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local for Docker and remove app-level .env.local."
-	@printf '%-42s %s\n' "make use-localhost-domain" "Switch to .localhost fallback mode."
 	@printf '%-42s %s\n' "make use-orbstack-domain" "Switch to OrbStack native guyromellemagayano.local mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
 	@printf '\n🐞 Debug\n'
@@ -184,7 +182,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "EDGE_DEBUG_COMPOSE_FILE" "Edge Docker-provider debug overlay" "$(EDGE_DEBUG_COMPOSE_FILE)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_TLS_COMPOSE_FILE" "Optional TLS overlay (mkcert-ready)" "$(EDGE_TLS_COMPOSE_FILE)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_ORBSTACK_COMPOSE_FILE" "OrbStack custom-domain overlay" "$(EDGE_ORBSTACK_COMPOSE_FILE)"
-	@printf '%-32s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge base domain (guyromellemagayano.local default; .localhost fallback)" "$(LOCAL_DEV_DOMAIN)"
+	@printf '%-32s %s (current: %s)\n' "LOCAL_DEV_DOMAIN" "Local edge base domain (guyromellemagayano.local default)" "$(LOCAL_DEV_DOMAIN)"
 	@printf '%-32s %s (current: %s)\n' "EDGE_PUBLIC_SCHEME" "Public edge URL scheme derived from LOCAL_DEV_DOMAIN" "$(EDGE_PUBLIC_SCHEME)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_HTTP_PORT" "Traefik HTTP port" "$(TRAEFIK_HTTP_PORT)"
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_HTTPS_PORT" "Traefik HTTPS port (TLS overlay)" "$(TRAEFIK_HTTPS_PORT)"
@@ -220,7 +218,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '\n🐞 Debug / Troubleshooting\n'
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
 	@printf '%-44s %s\n' "make dnsmasq-status" "Advisory Homebrew dnsmasq status only."
-	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + .localhost/OrbStack guidance."
+	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + OrbStack guidance."
 	@printf '%-44s %s\n' "make use-orbstack-domain" "Switch LOCAL_DEV_DOMAIN to guyromellemagayano.local."
 	@printf '%-44s %s\n' "make vercel-host-check" "Check host Vercel CLI install and fallback readiness."
 	@printf '%-44s %s\n' "make vercel" "Run Vercel CLI on host."
@@ -240,7 +238,6 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make vercel VERCEL_ARGS="link --cwd apps/web"\n'
 	@printf 'make vercel-env-pull VERCEL_ENV_TARGET=development\n'
 	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration\n'
-	@printf 'make use-localhost-domain\n'
 	@printf 'make use-orbstack-domain && make up-edge-watch\n'
 	@printf 'make tls-local-setup && make up-edge-tls-watch\n'
 	@printf 'make up-edge-debug-watch  # debug Docker-provider routing\n'
@@ -436,7 +433,7 @@ edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashbo
 	check_code "admin-home-tls" "https://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
-edge-dns-doctor: ## Diagnose local edge DNS issues (.local/.localhost with browser DNS caching/DoH) and suggest the right next step.
+edge-dns-doctor: ## Diagnose local edge DNS issues (.local with browser DNS caching/DoH) and suggest the right next step.
 	@sh docker/scripts/edge-dns-doctor.sh "$(LOCAL_DEV_DOMAIN)"
 
 dnsmasq-local-print: ## Print the dnsmasq and resolver file contents for the local edge domain (macOS/Homebrew).
@@ -502,10 +499,6 @@ tls-local-setup: ## Generate mkcert local TLS cert/key + Traefik `docker/traefik
 
 render-edge-routes: ## Generate local Traefik file-provider routes from LOCAL_DEV_DOMAIN.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL) sh docker/scripts/render-traefik-local-routes.sh "$(LOCAL_DEV_DOMAIN)"
-
-use-localhost-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.localhost` to ENV_FILE (browser DoH fallback path).
-	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.localhost
-	@printf 'Next: make down-edge && make up-edge-watch\n'
 
 use-orbstack-domain: ## Write `LOCAL_DEV_DOMAIN=guyromellemagayano.local` to ENV_FILE (OrbStack native path).
 	@sh docker/scripts/set-env-file-var.sh "$(ENV_FILE)" LOCAL_DEV_DOMAIN guyromellemagayano.local

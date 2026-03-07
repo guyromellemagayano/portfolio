@@ -39,15 +39,6 @@ case "$DOMAIN" in
     printf '  - https://admin.%s\n' "$DOMAIN"
     exit 0
     ;;
-  *.localhost)
-    printf '\n'
-    printf 'Using .localhost fallback mode. dnsmasq is typically unnecessary for this domain.\n'
-    printf 'If a browser still fails, check:\n'
-    printf '  - make down-edge && make up-edge-watch\n'
-    printf '  - make edge-smoke\n'
-    printf '  - browser DNS cache / extensions / VPN\n'
-    exit 0
-    ;;
 esac
 
 printf '\nRunning hostname resolution check (system resolver)...\n'
@@ -66,8 +57,6 @@ if make --no-print-directory -C "$REPO_ROOT" dnsmasq-verify LOCAL_DEV_DOMAIN="$D
   printf '  3. Flush sockets: chrome://net-internals/#sockets\n'
   printf '  4. Restart the browser (or use chrome://restart)\n'
   printf '  5. Retry the URL (web root, api, traefik)\n'
-  printf '\nFallback option (no dnsmasq):\n'
-  printf '  make use-localhost-domain && make down-edge && make up-edge-watch\n'
   exit 0
 fi
 
@@ -77,6 +66,4 @@ printf '  1. make dnsmasq-local\n' >&2
 printf '  2. make dnsmasq-health\n' >&2
 printf '  3. make dnsmasq-status  # advisory only\n' >&2
 printf '  4. make up-edge-watch\n' >&2
-printf '\nFallback (skip dnsmasq entirely):\n' >&2
-printf '  make use-localhost-domain && make down-edge && make up-edge-watch\n' >&2
 exit 1
