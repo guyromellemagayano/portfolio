@@ -63,11 +63,12 @@ Primary guide: `docker/docs/local-dev.md`
 # First-time setup
 make env-local-normalize
 make use-orbstack-domain   # default: guyromellemagayano.local
-make bootstrap-watch
+make bootstrap
 make edge-smoke
 
 # Daily development
-make up-edge-watch
+make up-edge
+make logs-edge
 make down-edge
 ```
 

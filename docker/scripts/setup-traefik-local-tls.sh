@@ -46,4 +46,4 @@ printf 'Traefik local TLS configured for %s\n' "$LOCAL_DEV_DOMAIN"
 printf 'cert: %s\n' "$CERT_PATH"
 printf 'key:  %s\n' "$KEY_PATH"
 printf 'tls config: %s\n' "$ACTIVE_TLS_CONFIG"
-printf 'Next: make up-edge-tls-watch\n'
+printf 'Next: make up-edge-tls\n'

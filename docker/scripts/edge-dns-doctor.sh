@@ -30,7 +30,7 @@ case "$DOMAIN" in
     printf '\n'
     printf 'Using OrbStack custom-domain mode. If this fails, verify OrbStack Settings > Network > Container domains is enabled.\n'
     printf 'Then restart the edge stack:\n'
-    printf '  - make down-edge && make up-edge-watch\n'
+    printf '  - make down-edge && make up-edge\n'
     printf '  - make edge-smoke\n'
     printf '\nCheck these OrbStack hostnames:\n'
     printf '  - https://traefik.%s\n' "$DOMAIN"
@@ -65,5 +65,5 @@ printf 'Recommended fixes:\n' >&2
 printf '  1. make dnsmasq-local\n' >&2
 printf '  2. make dnsmasq-health\n' >&2
 printf '  3. make dnsmasq-status  # advisory only\n' >&2
-printf '  4. make up-edge-watch\n' >&2
+printf '  4. make up-edge\n' >&2
 exit 1
