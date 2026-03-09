@@ -4,7 +4,7 @@ packages:
 catalog:
   "@commitlint/cli": 20.4.2
   "@commitlint/config-conventional": 20.4.2
-  "@commitlint/types": 20.4.0
+  "@commitlint/types": 20.4.3
   "@elysiajs/cors": 1.4.1
   "@elysiajs/node": 1.4.5
   "@elysiajs/openapi": 1.4.14
