@@ -3,7 +3,7 @@ packages:
   - "packages/*"
 catalog:
   "@commitlint/cli": 20.4.2
-  "@commitlint/config-conventional": 20.4.2
+  "@commitlint/config-conventional": 20.4.3
   "@commitlint/types": 20.4.0
   "@elysiajs/cors": 1.4.1
   "@elysiajs/node": 1.4.5
