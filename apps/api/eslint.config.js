@@ -12,16 +12,5 @@ export default [
         ...globals.node,
       },
     },
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: ["./tsconfig.json"],
-        },
-        alias: {
-          map: [["@api", "./"]],
-          extensions: [".js", ".ts", ".tsx"],
-        },
-      },
-    },
   },
 ];

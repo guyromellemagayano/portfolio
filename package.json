@@ -21,6 +21,7 @@
     "format": "turbo run format",
     "format:check": "turbo run format:check",
     "lint": "turbo run lint lint:styles",
+    "lint:ci": "turbo run lint lint:styles check-types",
     "lint:docker": "docker compose --env-file .env.local -f docker/compose/local.yml --profile tooling run --rm tooling pnpm lint",
     "lint:fix": "turbo run lint:fix lint:styles:fix",
     "lint:styles": "turbo run lint:styles",
