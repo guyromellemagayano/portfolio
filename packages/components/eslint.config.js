@@ -33,20 +33,4 @@ export default [
       "no-undef": "off",
     },
   },
-  {
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: ["./tsconfig.json"],
-        },
-        alias: {
-          map: [
-            ["@components", "./src"],
-            ["@components/scripts", "./scripts"],
-          ],
-          extensions: [".js", ".ts", ".tsx"],
-        },
-      },
-    },
-  },
 ];

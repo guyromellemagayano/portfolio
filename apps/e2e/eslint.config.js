@@ -12,14 +12,6 @@ export default [
         ...globals.node,
       },
     },
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: ["./tsconfig.json"],
-          alwaysTryTypes: true,
-        },
-      },
-    },
   },
   {
     ignores: ["playwright-report/**", "test-results/**", "playwright/.auth/**"],
