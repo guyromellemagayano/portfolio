@@ -10,3 +10,6 @@
 [submodule "packages/utils"]
 	path = packages/utils
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-utils.git
+[submodule "packages/hooks"]
+	path = packages/hooks
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-hooks.git
