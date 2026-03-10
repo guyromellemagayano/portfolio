@@ -7,3 +7,6 @@
 [submodule "packages/config-eslint"]
 	path = packages/config-eslint
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-config-eslint.git
+[submodule "packages/utils"]
+	path = packages/utils
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-utils.git
