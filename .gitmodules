@@ -4,3 +4,6 @@
 [submodule "packages/config-typescript"]
 	path = packages/config-typescript
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-config-typescript.git
+[submodule "packages/config-eslint"]
+	path = packages/config-eslint
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-config-eslint.git
