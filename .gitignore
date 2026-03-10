@@ -5,7 +5,6 @@ node_modules/
 .yarn/
 .npm-cache/
 .pnpm-store/
-node_modules/.cache/turbo
 
 # Testing
 coverage/
