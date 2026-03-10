@@ -104,6 +104,7 @@ pnpm build:packages
 
 # Code quality
 pnpm lint
+pnpm lint:ci
 pnpm lint:fix
 pnpm format
 pnpm format:check
@@ -122,6 +123,8 @@ pnpm test:e2e:smoke
 pnpm test:e2e
 pnpm test:e2e:ui
 ```
+
+TypeScript unresolved imports are enforced by `pnpm check-types` (and included in `pnpm lint:ci`).
 
 ### App-Scoped Commands
 

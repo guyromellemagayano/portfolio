@@ -1,5 +1,5 @@
-import reactPlugin from "eslint-plugin-react";
 import reactHooks from "eslint-plugin-react-hooks";
+import reactXPlugin from "eslint-plugin-react-x";
 import globals from "globals";
 
 import { baseEslintConfig } from "../index.js";
@@ -10,26 +10,21 @@ import { baseEslintConfig } from "../index.js";
  */
 export const reactEslintConfig = [
   ...baseEslintConfig,
-  reactPlugin.configs.flat.recommended,
+  reactXPlugin.configs.recommended,
   {
     plugins: {
-      react: reactPlugin,
       "react-hooks": reactHooks,
     },
     languageOptions: {
-      ...reactPlugin.configs.flat.recommended.languageOptions,
+      ...(reactXPlugin.configs.recommended.languageOptions ?? {}),
       globals: {
+        ...(reactXPlugin.configs.recommended.languageOptions?.globals ?? {}),
         ...globals.serviceworker,
         ...globals.browser,
       },
     },
-    settings: {
-      react: { version: "detect" },
-    },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      "react/prop-types": "off",
-      "react/react-in-jsx-scope": "off",
     },
   },
 ];

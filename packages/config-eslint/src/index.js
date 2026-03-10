@@ -5,8 +5,7 @@ import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
 import vitestPlugin from "@vitest/eslint-plugin";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
-import importPlugin from "eslint-plugin-import";
-import jestDom from "eslint-plugin-jest-dom";
+import nPlugin from "eslint-plugin-n";
 import onlyWarn from "eslint-plugin-only-warn";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -41,37 +40,22 @@ export const baseEslintConfig = [
       onlyWarn,
       turbo: turboPlugin,
       prettier: prettierPlugin,
-      import: importPlugin,
+      n: nPlugin,
       "@typescript-eslint": typescriptEslintPlugin,
       vitest: vitestPlugin,
       "react-refresh": reactRefresh,
       "simple-import-sort": simpleImportSort,
       "unused-imports": unusedImports,
       "testing-library": testingLibrary,
-      "jest-dom": jestDom,
-    },
-    settings: {
-      "import/resolver": {
-        typescript: {
-          project: tsProjects,
-          alwaysTryTypes: true,
-          noWarnOnMultipleProjects: true,
-        },
-      },
     },
     rules: {
-      "import/no-duplicates": [
-        "error",
-        { considerQueryString: true, "prefer-inline": true },
-      ],
-      "import/no-unresolved": "error",
+      "no-duplicate-imports": ["error", { allowSeparateTypeImports: true }],
       "no-console": "error",
       "no-unused-vars": "off",
       "react-refresh/only-export-components": [
         "warn",
         { allowConstantExport: true },
       ],
-      "import/order": "off",
       "simple-import-sort/imports": [
         "error",
         {
@@ -184,6 +168,22 @@ export const baseEslintConfig = [
         ecmaVersion: "latest",
       },
     },
+    rules: {
+      "n/no-missing-import": [
+        "error",
+        {
+          tryExtensions: [
+            ".js",
+            ".cjs",
+            ".mjs",
+            ".ts",
+            ".tsx",
+            ".d.ts",
+            ".json",
+          ],
+        },
+      ],
+    },
   },
   {
     files: [
@@ -208,7 +208,6 @@ export const baseEslintConfig = [
       "no-console": "off",
       "no-restricted-imports": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "import/no-extraneous-dependencies": "off",
       "vitest/no-focused-tests": "error",
       "vitest/no-disabled-tests": "warn",
       "testing-library/await-async-queries": "error",
@@ -219,13 +218,6 @@ export const baseEslintConfig = [
       "testing-library/prefer-find-by": "warn",
       "testing-library/prefer-screen-queries": "warn",
       "testing-library/render-result-naming-convention": "warn",
-      "jest-dom/prefer-checked": "warn",
-      "jest-dom/prefer-enabled-disabled": "warn",
-      "jest-dom/prefer-in-document": "warn",
-      "jest-dom/prefer-required": "warn",
-      "jest-dom/prefer-to-have-attribute": "warn",
-      "jest-dom/prefer-to-have-class": "warn",
-      "jest-dom/prefer-empty": "warn",
     },
     settings: {
       vitest: {
