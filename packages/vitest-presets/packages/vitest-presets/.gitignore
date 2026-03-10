@@ -1,0 +1,95 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+.npm-cache/
+.pnpm-store/
+
+# Testing
+coverage/
+.nyc_output
+test-results/
+playwright-report/
+playwright/.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Next.js and build outputs
+.next/
+.next-docker/
+out/
+build/
+dist/
+dist-ssr/
+
+# Production and debug logs
+*.log
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+# Local env files
+.env
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel and Turbo
+.vercel
+.turbo/
+.cache/
+apps/web/.sanity/
+
+# TypeScript
+*.tsbuildinfo
+
+# Linters
+.stylelintcache
+.eslintcache
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Security
+*.pem
+
+# Database
+*.db
+*.sqlite
+
+# Old files/folders
+*-old/
+*.old
+
+# Turborepo
+.turbo
