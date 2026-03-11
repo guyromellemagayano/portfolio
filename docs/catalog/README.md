@@ -34,6 +34,7 @@ This catalog is for discovery only. README files should remain close to the code
 ## Packages (`packages/`)
 
 - `packages/api-contracts/README.md`
+- `packages/components/README.md`
 - `packages/config-eslint/README.md`
 - `packages/config-typescript/README.md`
 - `packages/hooks/README.md`
