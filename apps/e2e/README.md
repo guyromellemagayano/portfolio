@@ -1,30 +1,38 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
 
-# `e2e`
+# `@portfolio/e2e`
 
 Playwright end-to-end testing workspace for the portfolio monorepo.
 
 ## Features
 
 - 🚀 **Playwright Runner**: Full-browser E2E coverage with Chromium-first workflows
-- 🎯 **Smoke Suite**: Fast PR-gated checks with `@smoke` tagging
-- 📱 **Mobile Smoke Project**: Dedicated `mobile-chrome` project for smoke coverage
-- 🧱 **Dual Service Startup**: Playwright-managed API and web startup via `webServer`
-- 🔌 **External Server Mode**: Supports Docker or pre-provisioned targets with `E2E_USE_EXTERNAL_SERVERS=1`
-- 🧪 **Sanity Pipeline Coverage**: Smoke checks for content publication + revalidation behavior
-- 🔁 **Workspace Tooling**: Shared lint, typecheck, and formatting standards
+- 🎯 **Smoke Suite**: Fast PR-gated checks using `@smoke` tags
+- 📱 **Mobile Coverage Project**: Dedicated `mobile-chrome` run target for smoke validation
+- 🧱 **Managed Service Startup**: Playwright `webServer` orchestration for API + web services
+- 🔌 **External Server Mode**: Support for Docker/pre-provisioned hosts via `E2E_USE_EXTERNAL_SERVERS=1`
+- 🧪 **Sanity Pipeline Checks**: Content and webhook smoke coverage for CMS integration paths
+- 🔁 **Workspace Tooling Alignment**: Shared linting, typechecking, and formatting scripts
+
+## Projects
+
+Defined Playwright projects from `playwright.config.ts`:
+
+- `setup` - Bootstraps auth/session state before test projects
+- `chromium` - Main desktop suite (`Desktop Chrome`) with setup dependency
+- `mobile-chrome` - Mobile smoke suite (`Pixel 7`) filtered by `@smoke`
 
 ## Scripts
 
 Run from repo root with `pnpm --filter e2e <script>`.
 
-- `test:e2e` - Run the full Playwright suite
+- `test:e2e` - Run full Playwright suite
 - `test:e2e:smoke` - Run tests tagged with `@smoke`
 - `test:e2e:ui` - Open Playwright UI mode
 - `test:e2e:headed` - Run tests in headed mode
 - `test:e2e:report` - Open generated Playwright report
 - `test:e2e:install` - Install Chromium browser binary
-- `test:e2e:install:ci` - Install browser binary + Linux dependencies for CI
+- `test:e2e:install:ci` - Install browser binary and Linux dependencies for CI
 - `lint` / `lint:fix` - ESLint checks/fixes
 - `check-types` - TypeScript checks
 - `format` / `format:check` - Prettier formatting checks
@@ -38,7 +46,7 @@ Install workspace dependencies from repo root:
 pnpm install
 ```
 
-Install Playwright browser dependencies:
+Install Playwright browser binaries:
 
 ```bash
 pnpm --filter e2e test:e2e:install
@@ -108,7 +116,7 @@ pnpm --filter e2e test:e2e:ui
 
 ## Environment Notes
 
-Sanity pipeline tests are defined in `tests/sanity-content-pipeline.smoke.e2e.ts`.
+Sanity pipeline smoke checks are defined in `tests/sanity-content-pipeline.smoke.e2e.ts`.
 
 - Loads env vars from workspace root `.env.local` when present
 - Requires `SANITY_WEBHOOK_SECRET` for webhook revalidation checks (tests skip when missing)
@@ -152,7 +160,7 @@ pnpm --filter e2e test:e2e:install
 
 **CI fails on missing system dependencies**
 
-Use the CI install script:
+Use CI install script:
 
 ```bash
 pnpm --filter e2e test:e2e:install:ci
@@ -160,7 +168,7 @@ pnpm --filter e2e test:e2e:install:ci
 
 **Sanity webhook tests are skipped**
 
-Ensure `SANITY_WEBHOOK_SECRET` is available in the environment.
+Ensure `SANITY_WEBHOOK_SECRET` is available in environment.
 
 **Tests target wrong hosts or ports**
 
