@@ -10,15 +10,15 @@ This catalog is for discovery only. README files should remain close to the code
 
 ## Docs (`docs/`)
 
+- `docs/README.md`
 - `docs/architecture/README.md`
 - `docs/catalog/README.md`
 - `docs/deployment/README.md`
 - `docs/deployment/vercel/README.md`
 - `docs/integrations/README.md`
 - `docs/integrations/sanity/README.md`
-- `docs/README.md`
-- `docs/services/api-gateway/README.md`
 - `docs/services/README.md`
+- `docs/services/api-gateway/README.md`
 - `docs/standards/README.md`
 
 ## Docker Workspace (`docker/`)
@@ -34,6 +34,8 @@ This catalog is for discovery only. README files should remain close to the code
 ## Packages (`packages/`)
 
 - `packages/api-contracts/README.md`
+- `packages/config-eslint/README.md`
+- `packages/config-typescript/README.md`
 - `packages/hooks/README.md`
 - `packages/logger/README.md`
 - `packages/sanity-studio/README.md`
