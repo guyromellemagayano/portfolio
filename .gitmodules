@@ -16,6 +16,9 @@
 [submodule "packages/components"]
 	path = packages/components
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-components.git
+[submodule "apps/admin"]
+	path = apps/admin
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-admin.git
 [submodule "apps/e2e"]
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
