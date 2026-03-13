@@ -1,9 +1,9 @@
-# Dockerized E2E and Sanity Smoke
+# Dockerized E2E and Content Smoke
 
 This guide covers the Playwright runners in `docker/compose/local.yml`:
 
 - `e2e` (full Playwright suite)
-- `e2e-sanity-smoke` (Sanity pipeline smoke subset)
+- `e2e-content-smoke` (content pipeline smoke subset)
 
 These services run as Compose profile services (`e2e`) and depend on healthy `api` + `web` containers.
 
@@ -13,11 +13,11 @@ These services run as Compose profile services (`e2e`) and depend on healthy `ap
 # Full Playwright suite (starts api + web + e2e runner)
 make e2e
 
-# Sanity pipeline smoke only
-make e2e-sanity
+# Content pipeline smoke only
+make e2e-content
 
-# List @sanity tests without running them
-make e2e-list-sanity
+# List @content tests without running them
+make e2e-list-content
 ```
 
 ## How It Works
@@ -32,8 +32,8 @@ make e2e-list-sanity
 # 1) Start app stack in background
 make up-detached
 
-# 2) Run only the Sanity smoke suite
-make e2e-sanity
+# 2) Run only the content smoke suite
+make e2e-content
 
 # 3) Inspect app logs if something fails
 make logs
@@ -41,35 +41,35 @@ make logs
 
 You can also run `make up-edge-detached` first if you want to inspect the app through Traefik hostnames while the e2e runners execute.
 
-You can run `make e2e` / `make e2e-sanity` directly without starting the app stack first; Compose will start required services.
+You can run `make e2e` / `make e2e-content` directly without starting the app stack first; Compose will start required services.
 
-## Sanity Smoke Env Vars
+## Content Smoke Env Vars
 
-- `SANITY_WEBHOOK_SECRET` (required for webhook assertion portions of the Sanity smoke flow)
-- `E2E_SANITY_ARTICLE_SLUG` (optional): pin the article smoke test to a known article slug
-- `E2E_SANITY_PAGE_SLUG` (optional): pin the page smoke test to a known page slug (must not collide with static routes)
+- `CONTENT_REVALIDATE_SECRET` (required for content revalidation endpoint assertions)
+- `E2E_CONTENT_ARTICLE_SLUG` (optional): pin the article smoke test to a known article slug
+- `E2E_CONTENT_PAGE_SLUG` (optional): pin the page smoke test to a known page slug (must not collide with static routes)
 
 Examples:
 
 ```bash
-make e2e-sanity \
-  SANITY_WEBHOOK_SECRET=your-secret
+make e2e-content \
+  CONTENT_REVALIDATE_SECRET=your-secret
 ```
 
 ```bash
-make e2e-sanity \
-  SANITY_WEBHOOK_SECRET=your-secret \
-  E2E_SANITY_ARTICLE_SLUG=my-article \
-  E2E_SANITY_PAGE_SLUG=now
+make e2e-content \
+  CONTENT_REVALIDATE_SECRET=your-secret \
+  E2E_CONTENT_ARTICLE_SLUG=my-article \
+  E2E_CONTENT_PAGE_SLUG=now
 ```
 
 ## Notes
 
 - `E2E_BASE_URL` is set internally in the Compose e2e services (`http://web:3000`); you usually do not need to set it manually for Docker e2e runs.
-- Local webhook callbacks from Sanity still require a public HTTPS tunnel if you are testing real Sanity webhooks against your local stack.
+- Local webhook callbacks are only needed if you test external systems calling `/api/revalidate/content`.
 
 ## Related Docs
 
 - Local app stack + tooling commands: `docker/docs/local-dev.md`
-- Sanity integration details: `docs/integrations/sanity/README.md`
+- Content integration details: `docs/integrations/content/README.md`
 - Production/self-hosting plan: `docker/docs/production-plan.md`

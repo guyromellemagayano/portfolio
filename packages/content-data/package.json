@@ -1,0 +1,56 @@
+{
+  "name": "@portfolio/content-data",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Typed local content snapshot data for portfolio apps",
+  "license": "MIT",
+  "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "bunchee --watch",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
+    "snapshot:export:sanity": "node ./scripts/export-sanity-snapshot.mjs",
+    "test": "echo 'No tests configured for content-data package'",
+    "test:coverage": "echo 'No tests configured for content-data package'",
+    "test:coverage:ui": "echo 'No tests configured for content-data package'",
+    "test:run": "echo 'No tests configured for content-data package'",
+    "test:run:coverage": "echo 'No tests configured for content-data package'",
+    "test:ui": "echo 'No tests configured for content-data package'"
+  },
+  "dependencies": {
+    "@portfolio/api-contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@portfolio/vitest-presets": "workspace:*",
+    "@types/node": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "postcss": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
+}

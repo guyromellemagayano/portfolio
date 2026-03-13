@@ -129,7 +129,7 @@ Included:
 - Production `api` and `web` service definitions
 - Multi-stage Docker builds
 - Health checks
-- Runtime env wiring for Sanity and API gateway connectivity
+- Runtime env wiring for local content provider and API gateway connectivity
 - Writable Next.js runtime cache volume (`/app/.next/cache`) for self-hosted operation
 
 Not included yet:
@@ -146,7 +146,7 @@ Implemented locally:
 1. `traefik` service in `docker/compose/edge.local.yml`
 2. Shared `edge` network for `web`, `api`, `admin`, and `traefik`
 3. Host-based routing labels for `web`, `api`, `admin`, and Traefik dashboard
-4. Sanity Studio hosted on Sanity infrastructure (`*.sanity.studio`) with preview targeting `apps/web`
+4. Content revalidation endpoint (`/api/revalidate/content`) wired through `CONTENT_REVALIDATE_SECRET`
 5. `allowedDevOrigins` configured in `apps/web/next.config.ts` for the local custom host domain
 6. Local DNS setup guidance documented (`/etc/hosts` and `dnsmasq`) in `docker/docs/local-dev.md`
 7. Optional local TLS scaffold with `mkcert`-ready overlay (`docker/compose/edge.tls.local.yml`) and Traefik dynamic config example (`docker/traefik/examples/local-tls.example.yml`)
@@ -159,7 +159,7 @@ Remaining work (when needed):
 
 ## Operational Topics to Plan Before Migration
 
-- Secrets management (Sanity tokens, webhook secrets, API keys)
+- Secrets management (`CONTENT_REVALIDATE_SECRET`, API keys)
 - Persistent storage/logging strategy
 - Health checks and restart policies
 - Build cache strategy in CI

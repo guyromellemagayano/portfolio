@@ -29,114 +29,13 @@ vi.mock("next/image", () => ({
   },
 }));
 
-vi.mock("next-sanity", async () => {
-  const ReactModule = await import("react");
-
-  return {
-    PortableText: function MockPortableText({
-      value,
-      components,
-    }: {
-      value: unknown[];
-      components?: {
-        marks?: Record<
-          string,
-          (props: {
-            children?: React.ReactNode;
-            value?: unknown;
-          }) => React.ReactNode
-        >;
-        types?: Record<string, (props: { value: unknown }) => React.ReactNode>;
-      };
-    }) {
-      return (
-        <div data-testid="portable-text">
-          {value.map((block, blockIndex) => {
-            if (!block || typeof block !== "object" || Array.isArray(block)) {
-              return null;
-            }
-
-            const typedBlock = block as {
-              _type?: string;
-              _key?: string;
-              children?: Array<{
-                _key?: string;
-                _type?: string;
-                text?: string;
-                marks?: string[];
-              }>;
-              markDefs?: Array<{
-                _key?: string;
-                _type?: string;
-                href?: string;
-                [key: string]: unknown;
-              }>;
-              [key: string]: unknown;
-            };
-            const key = typedBlock._key ?? `block-${blockIndex}`;
-
-            const typeRenderer = typedBlock._type
-              ? components?.types?.[typedBlock._type]
-              : undefined;
-
-            if (typeRenderer) {
-              return (
-                <ReactModule.Fragment key={key}>
-                  {typeRenderer({ value: typedBlock })}
-                </ReactModule.Fragment>
-              );
-            }
-
-            if (typedBlock._type !== "block") {
-              return null;
-            }
-
-            return (
-              <p key={key}>
-                {typedBlock.children?.map((child, childIndex) => {
-                  let content: React.ReactNode = child.text ?? null;
-
-                  for (const mark of child.marks ?? []) {
-                    const markDef = typedBlock.markDefs?.find(
-                      (definition) => definition._key === mark
-                    );
-
-                    const markRenderer = markDef?._type
-                      ? components?.marks?.[markDef._type]
-                      : undefined;
-
-                    if (markRenderer) {
-                      content = markRenderer({
-                        children: content,
-                        value: markDef,
-                      });
-                    }
-                  }
-
-                  return (
-                    <ReactModule.Fragment
-                      key={child._key ?? `${key}-child-${childIndex}`}
-                    >
-                      {content}
-                    </ReactModule.Fragment>
-                  );
-                }) ?? null}
-              </p>
-            );
-          })}
-        </div>
-      );
-    },
-  };
-});
-
 describe("PortableTextContent", () => {
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
   });
 
-  it("renders Sanity image blocks with normalized dimensions and caption", () => {
+  it("renders image blocks with normalized dimensions and caption", () => {
     render(
       <PortableTextContent
         value={[
@@ -336,7 +235,7 @@ describe("PortableTextContent", () => {
               {
                 _key: "link-1",
                 _type: "link",
-                href: "javascript:alert(1)",
+                href: "javascript:alert('xss')",
               },
             ],
           },
@@ -344,9 +243,7 @@ describe("PortableTextContent", () => {
       />
     );
 
-    expect(
-      screen.queryByRole("link", { name: "Unsafe link" })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Unsafe link" })).toBeNull();
     expect(screen.getByText("Unsafe link")).toBeInTheDocument();
   });
 });

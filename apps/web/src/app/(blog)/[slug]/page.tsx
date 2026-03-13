@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/[slug]/page.tsx
  * @author Guy Romelle Magayano
- * @description Sanity-backed standalone page route rendered through the API gateway.
+ * @description Gateway-backed standalone page route rendered through the API gateway.
  */
 
 import { cache } from "react";
@@ -138,7 +138,7 @@ async function resolvePageFromParams(
   return getCachedPageBySlug(normalizedSlug);
 }
 
-/** Generates metadata for standalone CMS pages from gateway-backed Sanity content. */
+/** Generates metadata for standalone CMS pages from gateway-backed content. */
 export async function generateMetadata(
   props: CmsPageRouteProps
 ): Promise<Metadata> {

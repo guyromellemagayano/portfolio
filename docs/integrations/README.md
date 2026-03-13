@@ -12,4 +12,4 @@ Examples:
 
 Current integration docs:
 
-- `sanity/README.md`
+- `content/README.md`
