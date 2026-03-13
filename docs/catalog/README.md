@@ -16,7 +16,7 @@ This catalog is for discovery only. README files should remain close to the code
 - `docs/deployment/README.md`
 - `docs/deployment/vercel/README.md`
 - `docs/integrations/README.md`
-- `docs/integrations/sanity/README.md`
+- `docs/integrations/content/README.md`
 - `docs/services/README.md`
 - `docs/services/api-gateway/README.md`
 - `docs/standards/README.md`
@@ -28,6 +28,7 @@ This catalog is for discovery only. README files should remain close to the code
 
 ## Apps (`apps/`)
 
+- `apps/admin/README.md`
 - `apps/api/README.md`
 - `apps/e2e/README.md`
 
@@ -37,6 +38,7 @@ This catalog is for discovery only. README files should remain close to the code
 - `packages/components/README.md`
 - `packages/config-eslint/README.md`
 - `packages/config-typescript/README.md`
+- `packages/content-data/README.md`
 - `packages/hooks/README.md`
 - `packages/logger/README.md`
 - `packages/sanity-studio/README.md`
@@ -44,6 +46,10 @@ This catalog is for discovery only. README files should remain close to the code
 - `packages/utils/README.md`
 - `packages/utils/src/README.md`
 - `packages/vitest-presets/README.md`
+
+## Other
+
+- `ossph.org/README.md`
 
 ## Related Non-README Entry Points (Frequently Used)
 

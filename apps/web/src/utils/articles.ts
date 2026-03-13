@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/articles.ts
  * @author Guy Romelle Magayano
- * @description Utilities for Sanity-backed article normalization in the web app.
+ * @description Utilities for gateway-backed article normalization in the web app.
  */
 
 import type {

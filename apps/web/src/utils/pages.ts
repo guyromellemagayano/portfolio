@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/pages.ts
  * @author Guy Romelle Magayano
- * @description Utilities for Sanity-backed standalone page normalization in the web app.
+ * @description Utilities for gateway-backed standalone page normalization in the web app.
  */
 
 import type {

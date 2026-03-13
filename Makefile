@@ -10,7 +10,6 @@ EDGE_DEBUG_COMPOSE_FILE ?= docker/compose/edge.docker-provider.debug.local.yml
 EDGE_TLS_COMPOSE_FILE ?= docker/compose/edge.tls.local.yml
 EDGE_ORBSTACK_COMPOSE_FILE ?= docker/compose/edge.orbstack.local.yml
 FORCE_PNPM_INSTALL ?= 0
-SANITY_ARGS ?= projects list
 TOOLING_CMD ?= pnpm check-types
 TURBO_DOCKER_CONCURRENCY ?= 2
 LOG_TAIL ?= 100
@@ -115,10 +114,9 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	test \
 	tooling \
 	tooling-shell \
-	sanity \
 	e2e \
-	e2e-sanity \
-	e2e-list-sanity \
+	e2e-content \
+	e2e-list-content \
 	docs-catalog-check \
 	docs-catalog-update
 
@@ -227,7 +225,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf 'make vercel VERCEL_ARGS="whoami"\n'
 	@printf 'make vercel VERCEL_ARGS="link --cwd apps/web"\n'
 	@printf 'make vercel-env-pull VERCEL_ENV_TARGET=development\n'
-	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/sanity-integration\n'
+	@printf 'make vercel-env-sync-local VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/content-data-migration\n'
 	@printf 'make use-orbstack-domain && make up-edge\n'
 	@printf 'make tls-local-setup && make up-edge-tls\n'
 	@printf 'make up-edge-debug  # debug Docker-provider routing\n'
@@ -243,7 +241,6 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'EDGE_TLS_COMPOSE_FILE=%s\n' "$(EDGE_TLS_COMPOSE_FILE)"
 	@printf 'EDGE_ORBSTACK_COMPOSE_FILE=%s\n' "$(EDGE_ORBSTACK_COMPOSE_FILE)"
 	@printf 'FORCE_PNPM_INSTALL=%s\n' "$(FORCE_PNPM_INSTALL)"
-	@printf 'SANITY_ARGS=%s\n' "$(SANITY_ARGS)"
 	@printf 'TOOLING_CMD=%s\n' "$(TOOLING_CMD)"
 	@printf 'TURBO_DOCKER_CONCURRENCY=%s\n' "$(TURBO_DOCKER_CONCURRENCY)"
 	@printf 'LOG_TAIL=%s\n' "$(LOG_TAIL)"
@@ -588,7 +585,7 @@ lint: ## Run `lint` in the tooling container (Turbo concurrency tuned for Docker
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling pnpm exec turbo run lint lint:styles --concurrency=$(TURBO_DOCKER_CONCURRENCY)
 
 test: ## Run `test:run` in the tooling container with a sanitized env (avoids `.env.local` leaking into unit tests).
-	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'unset API_GATEWAY_URL NEXT_PUBLIC_API_URL API_GATEWAY_CONTENT_PROVIDER SANITY_STUDIO_PROJECT_ID SANITY_STUDIO_DATASET SANITY_API_VERSION SANITY_API_READ_TOKEN NEXT_PUBLIC_SANITY_PROJECT_ID NEXT_PUBLIC_SANITY_DATASET NEXT_PUBLIC_SANITY_API_VERSION; pnpm exec turbo run test:run --concurrency=$(TURBO_DOCKER_CONCURRENCY)'
+	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'unset API_GATEWAY_URL NEXT_PUBLIC_API_URL API_GATEWAY_CONTENT_PROVIDER CONTENT_REVALIDATE_SECRET E2E_CONTENT_ARTICLE_SLUG E2E_CONTENT_PAGE_SLUG; pnpm exec turbo run test:run --concurrency=$(TURBO_DOCKER_CONCURRENCY)'
 
 tooling: ## Run an arbitrary tooling command via `TOOLING_CMD`.
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc '$(TOOLING_CMD)'
@@ -596,19 +593,16 @@ tooling: ## Run an arbitrary tooling command via `TOOLING_CMD`.
 tooling-shell: ## Open an interactive shell in the tooling container.
 	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh
 
-sanity: ## Run Sanity CLI via web workspace (`SANITY_ARGS`, e.g. `projects list`).
-	@$(COMPOSE_BASE) --profile tooling run --rm tooling sh -lc 'pnpm --filter web sanity $(SANITY_ARGS)'
-
 ##@ 🧪 Playwright E2E
 
 e2e: ## Run full Playwright e2e suite in Docker (`e2e` service).
 	@$(COMPOSE_BASE) --profile e2e up --build --abort-on-container-exit --exit-code-from e2e e2e
 
-e2e-sanity: ## Run the Sanity pipeline smoke suite in Docker (`e2e-sanity-smoke` service).
-	@$(COMPOSE_BASE) --profile e2e up --build --abort-on-container-exit --exit-code-from e2e-sanity-smoke e2e-sanity-smoke
+e2e-content: ## Run the content pipeline smoke suite in Docker (`e2e-content-smoke` service).
+	@$(COMPOSE_BASE) --profile e2e up --build --abort-on-container-exit --exit-code-from e2e-content-smoke e2e-content-smoke
 
-e2e-list-sanity: ## List the `@sanity` Playwright tests in Docker without executing them.
-	@$(COMPOSE_BASE) --profile e2e run --rm e2e-sanity-smoke pnpm --filter e2e exec playwright test --project chromium --grep '@sanity' --list
+e2e-list-content: ## List the `@content` Playwright tests in Docker without executing them.
+	@$(COMPOSE_BASE) --profile e2e run --rm e2e-content-smoke pnpm --filter e2e exec playwright test --project chromium --grep '@content' --list
 
 ##@ 📚 Docs
 

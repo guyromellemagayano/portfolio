@@ -1,7 +1,7 @@
 /**
  * @file apps/web/next.config.ts
  * @author Guy Romelle Magayano
- * @description Next.js configuration for the web app, including shared package transpilation and Sanity image hosts.
+ * @description Next.js configuration for the web app, including shared package transpilation and external image hosts.
  */
 
 import { existsSync } from "node:fs";
@@ -59,7 +59,6 @@ const nextConfig: NextConfig = {
     "@portfolio/api-contracts",
     "@portfolio/components",
     "@portfolio/logger",
-    "@portfolio/sanity-studio",
     "@portfolio/ui",
     "@portfolio/hooks",
     "@portfolio/utils",

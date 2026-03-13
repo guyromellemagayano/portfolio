@@ -93,3 +93,6 @@ Thumbs.db
 
 # Turborepo
 .turbo
+
+# Temporary folders
+ossph.org/
