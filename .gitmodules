@@ -16,6 +16,9 @@
 [submodule "packages/components"]
 	path = packages/components
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-components.git
+[submodule "packages/ui"]
+	path = packages/ui
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-ui.git
 [submodule "packages/api-contracts"]
 	path = packages/api-contracts
 	url = git@github.com-guyromellemagayano:guyromellemagayano/porfolio-api-contracts.git
