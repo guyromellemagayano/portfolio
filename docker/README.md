@@ -29,7 +29,7 @@ Production scaffolding (self-hosting readiness):
 Docker docs:
 
 - `docker/docs/local-dev.md`: app stack + tooling workflow
-- `docker/docs/e2e.md`: Playwright + Sanity smoke runners in Docker
+- `docker/docs/e2e.md`: Playwright + content-pipeline smoke runners in Docker
 - `docker/docs/production-plan.md`: future self-hosting / Traefik / production image plan
 
 Traefik docs/assets:
