@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/articles/[slug]/page.tsx
  * @author Guy Romelle Magayano
- * @description Sanity-backed article detail page rendered through the API gateway.
+ * @description Gateway-backed article detail page rendered through the API gateway.
  */
 
 import { cache } from "react";
