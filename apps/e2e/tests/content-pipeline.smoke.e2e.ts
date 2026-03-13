@@ -3,7 +3,7 @@ import { type APIRequestContext, expect, test } from "@playwright/test";
 const DEFAULT_API_BASE_URL = "http://127.0.0.1:5001";
 const ARTICLE_LIST_ROUTE = "/v1/content/articles";
 const PAGE_LIST_ROUTE = "/v1/content/pages";
-const SANITY_WEBHOOK_REVALIDATE_ROUTE = "/api/revalidate/sanity";
+const CONTENT_REVALIDATE_ROUTE = "/api/revalidate/content";
 const RESERVED_ROOT_PAGE_SLUGS = new Set([
   "about",
   "api",
@@ -11,7 +11,6 @@ const RESERVED_ROOT_PAGE_SLUGS = new Set([
   "contact",
   "feed.xml",
   "projects",
-  "studio",
   "uses",
 ]);
 
@@ -40,16 +39,16 @@ function getApiBaseUrl(): string {
   return DEFAULT_API_BASE_URL;
 }
 
-function getWebhookSecret(): string {
-  return process.env.SANITY_WEBHOOK_SECRET?.trim() ?? "";
+function getRevalidateSecret(): string {
+  return process.env.CONTENT_REVALIDATE_SECRET?.trim() ?? "";
 }
 
 function getSeededArticleSlug(): string | null {
-  return getSafeSlug(process.env.E2E_SANITY_ARTICLE_SLUG);
+  return getSafeSlug(process.env.E2E_CONTENT_ARTICLE_SLUG);
 }
 
 function getSeededPageSlug(): string | null {
-  return getSafeSlug(process.env.E2E_SANITY_PAGE_SLUG);
+  return getSafeSlug(process.env.E2E_CONTENT_PAGE_SLUG);
 }
 
 function getSafeSlug(value: unknown): string | null {
@@ -118,7 +117,7 @@ function getPageSlugFromPayload(payload: unknown): string | null {
     ).toContain(seededPageSlug);
     expect(
       RESERVED_ROOT_PAGE_SLUGS.has(seededPageSlug),
-      `Seeded page slug "${seededPageSlug}" conflicts with a static App Router route and cannot be validated by this Sanity page smoke test.`
+      `Seeded page slug "${seededPageSlug}" conflicts with a static App Router route and cannot be validated by this content page smoke test.`
     ).toBe(false);
 
     return seededPageSlug;
@@ -136,16 +135,16 @@ async function expectGatewayListOk(request: APIRequestContext, route: string) {
   return response.json();
 }
 
-test.describe("@smoke @sanity sanity content pipeline", () => {
-  test("article list/detail route + webhook revalidation route", async ({
+test.describe("@smoke @content content pipeline", () => {
+  test("article list/detail route + content revalidation route", async ({
     page,
     request,
   }) => {
-    const webhookSecret = getWebhookSecret();
+    const revalidateSecret = getRevalidateSecret();
 
     test.skip(
-      !webhookSecret,
-      "SANITY_WEBHOOK_SECRET is required for webhook smoke checks."
+      !revalidateSecret,
+      "CONTENT_REVALIDATE_SECRET is required for revalidation smoke checks."
     );
 
     const articlesPayload = await expectGatewayListOk(
@@ -166,19 +165,16 @@ test.describe("@smoke @sanity sanity content pipeline", () => {
     expect(articlePageResponse?.ok()).toBeTruthy();
     await expect(page.locator("body")).toBeVisible();
 
-    const revalidateResponse = await request.post(
-      SANITY_WEBHOOK_REVALIDATE_ROUTE,
-      {
-        headers: {
-          authorization: `Bearer ${webhookSecret}`,
-          "content-type": "application/json",
-        },
-        data: {
-          _type: "article",
-          slug: articleSlug,
-        },
-      }
-    );
+    const revalidateResponse = await request.post(CONTENT_REVALIDATE_ROUTE, {
+      headers: {
+        authorization: `Bearer ${revalidateSecret}`,
+        "content-type": "application/json",
+      },
+      data: {
+        resource: "article",
+        slug: articleSlug,
+      },
+    });
 
     expect(revalidateResponse.ok()).toBeTruthy();
 
@@ -197,15 +193,15 @@ test.describe("@smoke @sanity sanity content pipeline", () => {
     );
   });
 
-  test("page list/detail route + webhook revalidation route", async ({
+  test("page list/detail route + content revalidation route", async ({
     page,
     request,
   }) => {
-    const webhookSecret = getWebhookSecret();
+    const revalidateSecret = getRevalidateSecret();
 
     test.skip(
-      !webhookSecret,
-      "SANITY_WEBHOOK_SECRET is required for webhook smoke checks."
+      !revalidateSecret,
+      "CONTENT_REVALIDATE_SECRET is required for revalidation smoke checks."
     );
 
     const pagesPayload = await expectGatewayListOk(request, PAGE_LIST_ROUTE);
@@ -213,7 +209,7 @@ test.describe("@smoke @sanity sanity content pipeline", () => {
 
     test.skip(
       !pageSlug,
-      "No Sanity page slug available (or all page slugs conflict with static app routes)."
+      "No content page slug available (or all page slugs conflict with static app routes)."
     );
 
     const contentPageResponse = await page.goto(
@@ -226,19 +222,16 @@ test.describe("@smoke @sanity sanity content pipeline", () => {
     expect(contentPageResponse?.ok()).toBeTruthy();
     await expect(page.locator("body")).toBeVisible();
 
-    const revalidateResponse = await request.post(
-      SANITY_WEBHOOK_REVALIDATE_ROUTE,
-      {
-        headers: {
-          authorization: `Bearer ${webhookSecret}`,
-          "content-type": "application/json",
-        },
-        data: {
-          _type: "page",
-          slug: pageSlug,
-        },
-      }
-    );
+    const revalidateResponse = await request.post(CONTENT_REVALIDATE_ROUTE, {
+      headers: {
+        authorization: `Bearer ${revalidateSecret}`,
+        "content-type": "application/json",
+      },
+      data: {
+        resource: "page",
+        slug: pageSlug,
+      },
+    });
 
     expect(revalidateResponse.ok()).toBeTruthy();
 

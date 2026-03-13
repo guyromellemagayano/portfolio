@@ -11,7 +11,7 @@ Playwright end-to-end testing workspace for the portfolio monorepo.
 - 📱 **Mobile Coverage Project**: Dedicated `mobile-chrome` run target for smoke validation
 - 🧱 **Managed Service Startup**: Playwright `webServer` orchestration for API + web services
 - 🔌 **External Server Mode**: Support for Docker/pre-provisioned hosts via `E2E_USE_EXTERNAL_SERVERS=1`
-- 🧪 **Sanity Pipeline Checks**: Content and webhook smoke coverage for CMS integration paths
+- 🧪 **Content Pipeline Checks**: Content and webhook smoke coverage for local data integration paths
 - 🔁 **Workspace Tooling Alignment**: Shared linting, typechecking, and formatting scripts
 
 ## Projects
@@ -96,10 +96,10 @@ E2E_USE_EXTERNAL_SERVERS=1 pnpm --filter e2e test:e2e
 
 ## Integration Examples
 
-### Run only Sanity pipeline tests
+### Run only content pipeline tests
 
 ```bash
-pnpm --filter e2e exec playwright test --project chromium --grep "@sanity"
+pnpm --filter e2e exec playwright test --project chromium --grep "@content"
 ```
 
 ### Run only mobile smoke project
@@ -116,13 +116,13 @@ pnpm --filter e2e test:e2e:ui
 
 ## Environment Notes
 
-Sanity pipeline smoke checks are defined in `tests/sanity-content-pipeline.smoke.e2e.ts`.
+Content pipeline smoke checks are defined in `tests/content-pipeline.smoke.e2e.ts`.
 
 - Loads env vars from workspace root `.env.local` when present
-- Requires `SANITY_WEBHOOK_SECRET` for webhook revalidation checks (tests skip when missing)
-- Supports seeded slugs with `E2E_SANITY_ARTICLE_SLUG` and `E2E_SANITY_PAGE_SLUG`
+- Requires `CONTENT_REVALIDATE_SECRET` for webhook revalidation checks (tests skip when missing)
+- Supports seeded slugs with `E2E_CONTENT_ARTICLE_SLUG` and `E2E_CONTENT_PAGE_SLUG`
 
-`E2E_SANITY_PAGE_SLUG` should not conflict with static routes such as `about`, `articles`, `contact`, `projects`, `uses`, `api`, or `studio`.
+`E2E_CONTENT_PAGE_SLUG` should not conflict with static routes such as `about`, `articles`, `contact`, `projects`, `uses`, or `api`.
 
 ## Best Practices
 
@@ -138,7 +138,7 @@ Sanity pipeline smoke checks are defined in `tests/sanity-content-pipeline.smoke
 
 ### 3. **Prefer Deterministic Inputs**
 
-- Use seeded slugs and stable data contracts for Sanity checks.
+- Use seeded slugs and stable data contracts for content checks.
 - Avoid hidden runtime dependencies in test setup.
 
 ### 4. **Separate Runtime Modes Clearly**
@@ -166,9 +166,9 @@ Use CI install script:
 pnpm --filter e2e test:e2e:install:ci
 ```
 
-**Sanity webhook tests are skipped**
+**Content webhook tests are skipped**
 
-Ensure `SANITY_WEBHOOK_SECRET` is available in environment.
+Ensure `CONTENT_REVALIDATE_SECRET` is available in environment.
 
 **Tests target wrong hosts or ports**
 
