@@ -31,3 +31,6 @@
 [submodule "apps/e2e"]
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
+[submodule "apps/api"]
+	path = apps/api
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api.git
