@@ -1,7 +1,7 @@
 /**
- * @file apps/web/src/app/api/revalidate/sanity/__tests__/route.test.ts
+ * @file apps/web/src/app/api/revalidate/content/__tests__/route.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for the Sanity webhook revalidation route handler.
+ * @description Unit tests for the content revalidation route handler.
  */
 
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -22,14 +22,14 @@ vi.mock("@portfolio/logger", () => ({
   },
 }));
 
-function createWebhookRequest(
+function createRevalidationRequest(
   body: unknown,
   options?: {
     authorization?: string;
     contentType?: string;
   }
 ): Request {
-  return new Request("http://localhost:3000/api/revalidate/sanity", {
+  return new Request("http://localhost:3000/api/revalidate/content", {
     method: "POST",
     headers: {
       ...(options?.contentType ? { "content-type": options.contentType } : {}),
@@ -43,7 +43,7 @@ function createWebhookRequest(
   });
 }
 
-describe("POST /api/revalidate/sanity", () => {
+describe("POST /api/revalidate/content", () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.clearAllMocks();
@@ -54,11 +54,11 @@ describe("POST /api/revalidate/sanity", () => {
     vi.clearAllMocks();
   });
 
-  it("returns 500 when the Sanity webhook secret is not configured", async () => {
+  it("returns 500 when the content revalidation secret is not configured", async () => {
     const response = await POST(
-      createWebhookRequest(
+      createRevalidationRequest(
         {
-          _type: "article",
+          resource: "article",
           slug: {
             current: "example-article",
           },
@@ -74,20 +74,20 @@ describe("POST /api/revalidate/sanity", () => {
     await expect(response.json()).resolves.toMatchObject({
       success: false,
       error: {
-        code: "SANITY_WEBHOOK_SECRET_MISSING",
+        code: "CONTENT_REVALIDATE_SECRET_MISSING",
       },
     });
     expect(revalidateTag).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
-  it("returns 401 when the webhook authorization is invalid", async () => {
-    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+  it("returns 401 when the revalidation authorization is invalid", async () => {
+    vi.stubEnv("CONTENT_REVALIDATE_SECRET", "expected-secret");
 
     const response = await POST(
-      createWebhookRequest(
+      createRevalidationRequest(
         {
-          _type: "article",
+          resource: "article",
           slug: {
             current: "example-article",
           },
@@ -110,11 +110,11 @@ describe("POST /api/revalidate/sanity", () => {
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
-  it("returns 400 when the webhook payload is invalid JSON", async () => {
-    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+  it("returns 400 when the request payload is invalid JSON", async () => {
+    vi.stubEnv("CONTENT_REVALIDATE_SECRET", "expected-secret");
 
     const response = await POST(
-      createWebhookRequest("{ invalid", {
+      createRevalidationRequest("{ invalid", {
         authorization: "Bearer expected-secret",
         contentType: "application/json",
       }) as never
@@ -132,12 +132,12 @@ describe("POST /api/revalidate/sanity", () => {
   });
 
   it("revalidates article list and detail tags for article payloads", async () => {
-    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+    vi.stubEnv("CONTENT_REVALIDATE_SECRET", "expected-secret");
 
     const response = await POST(
-      createWebhookRequest(
+      createRevalidationRequest(
         {
-          _type: "article",
+          resource: "article",
           slug: {
             current: "example-article",
           },
@@ -156,7 +156,6 @@ describe("POST /api/revalidate/sanity", () => {
     await expect(response.json()).resolves.toMatchObject({
       success: true,
       revalidated: true,
-      documentType: "article",
       resource: "article",
       tags: ["articles", "article:example-article", "article:previous-article"],
       paths: [
@@ -193,12 +192,12 @@ describe("POST /api/revalidate/sanity", () => {
   });
 
   it("revalidates standalone page tags and paths for page payloads", async () => {
-    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+    vi.stubEnv("CONTENT_REVALIDATE_SECRET", "expected-secret");
 
     const response = await POST(
-      createWebhookRequest(
+      createRevalidationRequest(
         {
-          _type: "page",
+          resource: "page",
           slug: {
             current: "now",
           },
@@ -214,7 +213,6 @@ describe("POST /api/revalidate/sanity", () => {
     await expect(response.json()).resolves.toMatchObject({
       success: true,
       revalidated: true,
-      documentType: "page",
       resource: "page",
       tags: ["pages", "page:now"],
       paths: ["/sitemap.xml", "/now"],
@@ -229,12 +227,12 @@ describe("POST /api/revalidate/sanity", () => {
   });
 
   it("returns 202 without revalidating for unsupported payload types", async () => {
-    vi.stubEnv("SANITY_WEBHOOK_SECRET", "expected-secret");
+    vi.stubEnv("CONTENT_REVALIDATE_SECRET", "expected-secret");
 
     const response = await POST(
-      createWebhookRequest(
+      createRevalidationRequest(
         {
-          _type: "author",
+          resource: "author",
           name: "Example Author",
         },
         {
@@ -248,8 +246,8 @@ describe("POST /api/revalidate/sanity", () => {
     await expect(response.json()).resolves.toMatchObject({
       success: true,
       revalidated: false,
-      reason: "unsupported_document_type",
-      documentType: "author",
+      reason: "unsupported_resource_type",
+      resource: "author",
     });
     expect(revalidateTag).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();

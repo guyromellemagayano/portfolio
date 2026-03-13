@@ -3,10 +3,10 @@
 This local Docker setup runs the monorepo workflow through Docker Compose for day-to-day development:
 
 - `api` (gateway dev runner)
-- `web` (Next.js dev server + embedded Sanity Studio)
+- `web` (Next.js dev server)
 - `admin` (Vite admin app on port `3001`)
-- `tooling` (one-off lint/typecheck/test/Sanity CLI commands)
-- `e2e` / `e2e-sanity-smoke` (Playwright runners via Compose profiles, documented in `docker/docs/e2e.md`)
+- `tooling` (one-off lint/typecheck/test commands)
+- `e2e` / `e2e-content-smoke` (Playwright runners via Compose profiles, documented in `docker/docs/e2e.md`)
 
 It uses your checked-out source tree as a bind mount.
 
@@ -158,7 +158,6 @@ Localhost ports:
 - Web app: `http://localhost:3000`
 - API gateway: `http://localhost:5001`
 - Admin app: `http://localhost:3001`
-- Sanity-hosted Studio: `https://<your-studio>.sanity.studio`
 
 Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.local`:
 
@@ -175,18 +174,10 @@ OrbStack custom-domain routing (`make up-edge` with `LOCAL_DEV_DOMAIN=guyromelle
 - Traefik dashboard: `https://traefik.guyromellemagayano.local`
 - Default OrbStack service domains are still available (for example `http://web.portfolio.orb.local`, `http://api.portfolio.orb.local`, `http://traefik.portfolio.orb.local`) but the repo standard uses `guyromellemagayano.local` + subdomains.
 
-## Sanity Local Dev (Hosted Studio)
+## Content Pipeline Local Dev
 
-- Use hosted Studio and point preview links to local web:
-  - `SANITY_STUDIO_PREVIEW_ORIGIN="https://guyromellemagayano.local"`
-- Recommended local `.env.local` values:
-  - `NEXT_PUBLIC_SANITY_DATASET="development"`
-  - `SANITY_STUDIO_DATASET="development"`
-  - `NEXT_PUBLIC_SITE_URL="https://guyromellemagayano.local"`
-- In Sanity project settings:
-  - Add development host: `https://<your-studio>.sanity.studio`
-  - Add API CORS origin: `https://guyromellemagayano.local`
 - The edge overlay defaults `API_GATEWAY_CORS_ORIGINS` to both web and `admin.*` origins; override `API_GATEWAY_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
+- Set `CONTENT_REVALIDATE_SECRET` in `.env.local` when testing `POST /api/revalidate/content`.
 - Restart after env/domain changes:
 
 ```bash
@@ -254,14 +245,11 @@ These run monorepo commands in the `tooling` container instead of on your host:
 make check-types
 make lint
 make test
-
-# Run Sanity CLI through the web workspace
-make sanity SANITY_ARGS="projects list"
 ```
 
 - `make check-types`, `make lint`, and `make test` use a lower Turbo concurrency by default (`TURBO_DOCKER_CONCURRENCY=2`) for Docker Desktop stability.
 - Override if needed (for example on a higher-memory machine): `make lint TURBO_DOCKER_CONCURRENCY=4`
-- `make test` sanitizes Sanity-related env vars before running tests so unit tests don't inherit `.env.local` behavior.
+- `make test` sanitizes content-related env vars before running tests so unit tests don't inherit `.env.local` behavior.
 - `make logs` and `make logs-edge` tail the last `100` lines by default before following; override with `LOG_TAIL` (for example `make logs-edge LOG_TAIL=250`).
 - Detached starts plus `make logs*` are the standard workflow for local Docker development.
 
@@ -342,7 +330,7 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `TRAEFIK_DOCKER_API_VERSION` (optional, default `1.53`): Docker API version Traefik uses if the Docker provider is enabled (useful on newer Docker Desktop releases)
 - `TRAEFIK_ENABLE_DOCKER_PROVIDER` (optional, default `0`): legacy compatibility toggle for Docker-provider routing; prefer `make up-edge-debug*` targets instead
 - `SKIP_DNS_SETUP` (optional, default `0`): skip the `dnsmasq`/hosts step in `make bootstrap` and `make bootstrap-detached`
-- For E2E-specific envs (`SANITY_WEBHOOK_SECRET`, `E2E_SANITY_*`), see `docker/docs/e2e.md`
+- For E2E-specific envs (`CONTENT_REVALIDATE_SECRET`, `E2E_CONTENT_*`), see `docker/docs/e2e.md`
 
 ## Traefik Routing Provider Notes
 

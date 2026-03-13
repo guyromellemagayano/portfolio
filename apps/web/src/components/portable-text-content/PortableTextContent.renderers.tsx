@@ -468,7 +468,7 @@ function renderPortableTextReferenceBlock(value: unknown): ReactNode {
   );
 }
 
-/** Creates the Portable Text renderer map used by `next-sanity` for article content. */
+/** Creates the Portable Text renderer map used by local portable content rendering. */
 export function createPortableTextContentComponents(
   options: PortableTextContentRendererOptions
 ): {

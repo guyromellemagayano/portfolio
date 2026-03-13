@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/app/sitemap.ts
  * @author Guy Romelle Magayano
- * @description Generates sitemap.xml entries for static routes and Sanity-backed article/page routes.
+ * @description Generates sitemap.xml entries for static routes and gateway-backed article/page routes.
  */
 
 import type { MetadataRoute } from "next";
@@ -114,7 +114,7 @@ function createStaticSitemapEntries(
   }));
 }
 
-/** Generates the app sitemap from static routes and Sanity-backed article/page routes. */
+/** Generates the app sitemap from static routes and gateway-backed article/page routes. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrlBase = getSiteUrlBase();
   const staticEntries = createStaticSitemapEntries(siteUrlBase);

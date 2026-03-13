@@ -1,10 +1,10 @@
 # API Gateway (`apps/api`)
 
-`apps/api` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume external and internal backend services through a unified API surface.
+`apps/api` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume backend services through a unified API surface.
 
 Current primary data flow for content:
 
-`apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`sanity` or `static`)
+`apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`local` or `static`)
 
 ## Current Modules
 
@@ -33,7 +33,7 @@ Current primary data flow for content:
 - Provider selection is centralized in `src/gateway/provider-registry.ts`.
 - Routes call services; services call providers.
 - Canonical payload contracts are shared through `@portfolio/api-contracts`.
-- Sanity provider requests support timeout/retry controls via `SANITY_REQUEST_TIMEOUT_MS`, `SANITY_REQUEST_MAX_RETRIES`, and `SANITY_REQUEST_RETRY_DELAY_MS`.
+- Local content provider data is sourced from `@portfolio/content-data`.
 
 ## CORS Policy
 
@@ -41,11 +41,10 @@ Current primary data flow for content:
 - If the allowlist is empty in `production`, cross-origin browser requests are disabled.
 - In local development/test, empty allowlist defaults to permissive behavior for DX.
 
-## Sanity Provider Configuration
+## Content Provider Configuration
 
-- `API_GATEWAY_CONTENT_PROVIDER=sanity` uses the Sanity content provider for article and standalone page content routes.
-- In `production`, missing `SANITY_STUDIO_PROJECT_ID` or `SANITY_STUDIO_DATASET` fails provider initialization (no silent fallback).
-- In local development/test, incomplete Sanity config falls back to the static provider for DX.
+- `API_GATEWAY_CONTENT_PROVIDER=local` uses the local typed content provider.
+- `API_GATEWAY_CONTENT_PROVIDER=static` uses the empty static fallback provider.
 
 ## Standards
 

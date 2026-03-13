@@ -74,23 +74,23 @@ make down-edge
 
 ### Workspace Map
 
-| Path                         | Purpose                                          |
-| ---------------------------- | ------------------------------------------------ |
-| `apps/web`                   | Next.js app (`next-intl`, MDX, Sanity, Tailwind) |
-| `apps/admin`                 | Vite + React Router app                          |
-| `apps/api`                   | Express API                                      |
-| `apps/e2e`                   | Playwright E2E suites                            |
-| `docs`                       | Centralized project documentation                |
-| `packages/components`        | Shared React components                          |
-| `packages/api-contracts`     | Canonical API payload contracts                  |
-| `packages/ui`                | UI primitives/components                         |
-| `packages/hooks`             | Shared hooks                                     |
-| `packages/utils`             | Utilities                                        |
-| `packages/logger`            | Structured logging                               |
-| `packages/sanity-studio`     | Shared Sanity Studio config and schema           |
-| `packages/config-eslint`     | ESLint presets                                   |
-| `packages/config-typescript` | TypeScript presets                               |
-| `packages/vitest-presets`    | Shared Vitest presets                            |
+| Path                         | Purpose                                  |
+| ---------------------------- | ---------------------------------------- |
+| `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
+| `apps/admin`                 | Vite + React Router app                  |
+| `apps/api`                   | Express API                              |
+| `apps/e2e`                   | Playwright E2E suites                    |
+| `docs`                       | Centralized project documentation        |
+| `packages/components`        | Shared React components                  |
+| `packages/api-contracts`     | Canonical API payload contracts          |
+| `packages/ui`                | UI primitives/components                 |
+| `packages/hooks`             | Shared hooks                             |
+| `packages/utils`             | Utilities                                |
+| `packages/logger`            | Structured logging                       |
+| `packages/content-data`      | Typed local content snapshot data        |
+| `packages/config-eslint`     | ESLint presets                           |
+| `packages/config-typescript` | TypeScript presets                       |
+| `packages/vitest-presets`    | Shared Vitest presets                    |
 
 ### Daily Commands
 
@@ -130,7 +130,6 @@ TypeScript unresolved imports are enforced by `pnpm check-types` (and included i
 
 ```bash
 pnpm --filter web dev
-pnpm --filter web sanity
 pnpm --filter admin dev
 pnpm --filter api dev
 pnpm --filter e2e test:e2e:ui
@@ -188,45 +187,33 @@ cp .env.example .env.local
 
 `turbo.json` also declares `globalEnv` keys for task hashing.
 
-Sanity keys used by `apps/web`:
+Content keys used by `apps/web`:
 
-- `NEXT_PUBLIC_SANITY_PROJECT_ID`
-- `NEXT_PUBLIC_SANITY_DATASET`
-- `NEXT_PUBLIC_SANITY_API_VERSION` (defaults to `2025-02-19`)
-- `SANITY_API_READ_TOKEN` (optional for private datasets)
-- `SANITY_STUDIO_PREVIEW_ORIGIN` (optional absolute web origin used by hosted Studio preview links)
+- `CONTENT_REVALIDATE_SECRET` (shared secret for `POST /api/revalidate/content`)
+- `API_GATEWAY_URL` (server-side base URL for `apps/api` content APIs)
+- `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
 - Article data in `apps/web` is retrieved from `apps/api` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
 - Standalone page data in `apps/web` is retrieved from `apps/api` (`/v1/content/pages`) and normalized in `apps/web/src/utils/pages.ts`
-- `API_GATEWAY_URL` (server-side base URL for `apps/api` article/content APIs)
-- `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
 
 Gateway keys used by `apps/api`:
 
 - `API_PORT` (fallback `PORT`, default `5001`)
 - `API_GATEWAY_CORS_ORIGINS` (comma-separated allowlist)
-- `API_GATEWAY_CONTENT_PROVIDER` (`sanity` or `static`)
-- `SANITY_STUDIO_PROJECT_ID` / `SANITY_STUDIO_DATASET` / `SANITY_API_VERSION` (fallbacks to `NEXT_PUBLIC_SANITY_*`)
-- `SANITY_API_READ_TOKEN`
-- `SANITY_USE_CDN`
+- `API_GATEWAY_CONTENT_PROVIDER` (`local` or `static`)
 - Content routes (`/v1/content/articles*`, `/v1/content/pages*`) return `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
 
 Gateway architecture and extension conventions:
 
 - `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
 
-Sanity preview routes in `apps/web`:
-
-- `GET /api/draft-mode/enable` (enable Draft Mode via Presentation Tool)
-- `GET /api/draft-mode/disable` (disable Draft Mode)
-
 Article data flow:
 
-- `apps/web` -> `apps/api` (`/v1/content/articles`) -> provider (`sanity` or `static`)
-- `apps/web` -> `apps/api` (`/v1/content/pages`) -> provider (`sanity` or `static`)
+- `apps/web` -> `apps/api` (`/v1/content/articles`) -> provider (`local` or `static`)
+- `apps/web` -> `apps/api` (`/v1/content/pages`) -> provider (`local` or `static`)
 
-Sanity webhook cache revalidation:
+Content cache revalidation:
 
-- `POST /api/revalidate/sanity` revalidates content tags and paths, including `/sitemap.xml`
+- `POST /api/revalidate/content` revalidates content tags and paths, including `/sitemap.xml`
 
 ## License
 

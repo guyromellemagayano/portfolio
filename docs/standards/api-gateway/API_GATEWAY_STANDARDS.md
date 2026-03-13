@@ -7,7 +7,7 @@ This document defines standards for `apps/api` as the central integration bounda
 1. Provide a stable API surface for `apps/web`, `apps/admin`, and future apps.
 2. Keep third-party/custom backend integrations behind provider adapters.
 3. Avoid deeply nested cross-app dependencies.
-4. Keep Sanity and other external systems replaceable without breaking consumers.
+4. Keep content providers replaceable without breaking consumers.
 
 ## Architecture
 
@@ -56,18 +56,13 @@ apps/api/src/
 
 ## Environment Conventions
 
-1. `API_GATEWAY_CONTENT_PROVIDER` controls provider selection (`sanity` or `static`).
+1. `API_GATEWAY_CONTENT_PROVIDER` controls provider selection (`local` or `static`).
 2. `API_GATEWAY_CORS_ORIGINS` uses comma-separated origins.
 3. `API_PORT` or `PORT` controls API listen port.
 4. CORS defaults:
    - `production`: strict allowlist-only. Empty allowlist disables cross-origin browser requests.
    - `development` and `test`: empty allowlist defaults to permissive CORS.
-5. Sanity provider config is resolved from:
-   - `SANITY_STUDIO_PROJECT_ID` (fallback: `NEXT_PUBLIC_SANITY_PROJECT_ID`)
-   - `SANITY_STUDIO_DATASET` (fallback: `NEXT_PUBLIC_SANITY_DATASET`)
-   - `SANITY_API_VERSION` (fallback: `NEXT_PUBLIC_SANITY_API_VERSION`)
-   - `SANITY_API_READ_TOKEN`
-   - `SANITY_USE_CDN`
+5. Local content provider reads typed snapshots from `@portfolio/content-data` by default.
 
 ## Adding a New Integration
 
