@@ -9,6 +9,7 @@
 import { type ComponentPropsWithoutRef, type ReactNode } from "react";
 
 import * as Headless from "@headlessui/react";
+import { cva, type VariantProps } from "class-variance-authority";
 import { useTranslations } from "next-intl";
 
 import { Link } from "@web/components/link";
@@ -19,8 +20,46 @@ import { cn } from "@web/utils/helpers";
 // BUTTON COMPONENT
 // ============================================================================
 
-export type ButtonVariant = "primary" | "secondary";
 export type ButtonElementType = typeof Headless.Button;
+const buttonVariants = cva(
+  `inline-flex items-center justify-center gap-x-1.5 rounded-full border ${COMMON_FOCUS_CLASSNAMES[0]} border-transparent px-4 py-2 text-sm font-semibold whitespace-nowrap shadow-lg`,
+  {
+    variants: {
+      variant: {
+        primary:
+          "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 dark:shadow-none",
+        secondary:
+          "bg-transparent text-zinc-900 ring-1 ring-zinc-900/10 dark:text-zinc-50 dark:shadow-none dark:ring-zinc-50/10",
+      },
+      isDisabled: {
+        true: "opacity-45 disabled:pointer-events-none disabled:cursor-not-allowed",
+        false: "",
+      },
+    },
+    compoundVariants: [
+      {
+        variant: "primary",
+        isDisabled: false,
+        className:
+          "hover:bg-zinc-800 focus-visible:outline-zinc-800 active:bg-zinc-900 dark:hover:bg-zinc-200 dark:focus-visible:outline-zinc-200 dark:active:bg-zinc-300",
+      },
+      {
+        variant: "secondary",
+        isDisabled: false,
+        className:
+          "hover:bg-zinc-900/10 focus-visible:outline-zinc-600 dark:hover:bg-zinc-50/10 dark:hover:text-zinc-50 dark:focus-visible:outline-zinc-500 dark:active:outline-zinc-400",
+      },
+    ],
+    defaultVariants: {
+      variant: "primary",
+      isDisabled: false,
+    },
+  }
+);
+
+export type ButtonVariant = NonNullable<
+  VariantProps<typeof buttonVariants>["variant"]
+>;
 export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
   Headless.ButtonProps,
   "children" | "as" | "href"
@@ -33,30 +72,6 @@ export type ButtonProps<P extends Record<string, unknown> = {}> = Omit<
     isDisabled?: boolean;
     onClick?: () => void;
   };
-
-const COMMON_BUTTON_CLASSNAMES = `inline-flex items-center justify-center gap-x-1.5 rounded-full border ${COMMON_FOCUS_CLASSNAMES[0]} border-transparent px-4 py-2 text-sm font-semibold whitespace-nowrap shadow-lg`;
-const DISABLED_COMMON_BUTTON_CLASSNAMES =
-  "opacity-45 disabled:pointer-events-none disabled:cursor-not-allowed";
-
-const BUTTON_VARIANT = ({
-  isDisabled,
-  className,
-}: Pick<ButtonProps, "isDisabled" | "className">) => ({
-  primary: cn(
-    "bg-zinc-900 text-zinc-50 dark:bg-zinc-50 dark:text-zinc-900 dark:shadow-none",
-    isDisabled
-      ? DISABLED_COMMON_BUTTON_CLASSNAMES
-      : "hover:bg-zinc-800 focus-visible:outline-zinc-800 active:bg-zinc-900 dark:hover:bg-zinc-200 dark:focus-visible:outline-zinc-200 dark:active:bg-zinc-300",
-    className
-  ),
-  secondary: cn(
-    "bg-transparent text-zinc-900 ring-1 ring-zinc-900/10 dark:text-zinc-50 dark:shadow-none dark:ring-zinc-50/10",
-    isDisabled
-      ? DISABLED_COMMON_BUTTON_CLASSNAMES
-      : "hover:bg-zinc-900/10 focus-visible:outline-zinc-600 dark:hover:bg-zinc-50/10 dark:hover:text-zinc-50 dark:focus-visible:outline-zinc-500 dark:active:outline-zinc-400",
-    className
-  ),
-});
 
 export function Button<P extends Record<string, unknown> = {}>(
   props: ButtonProps<P>
@@ -73,8 +88,8 @@ export function Button<P extends Record<string, unknown> = {}>(
   } = props;
 
   const buttonClassNames = cn(
-    COMMON_BUTTON_CLASSNAMES,
-    BUTTON_VARIANT({ isDisabled, className })[variant]
+    buttonVariants({ variant, isDisabled }),
+    className
   );
 
   // If href is provided, render a link component instead of a button

@@ -60,6 +60,7 @@ components/component/
 - **`isValidLink`**: For link validation
 - **`getLinkTargetProps`**: For link target/rel attributes
 - **`cn`**: For className composition from `@web/utils`
+- **`cva` + `cn`**: In `apps/web`, use `cva(...)` with `cn()` for stable variant APIs such as `variant`, `size`, `tone`, `intent`, and `state`
 
 ## TypeScript Standards
 
@@ -255,6 +256,9 @@ vi.mock("../constants/Component.i18n", () => ({
 ## Styling Standards
 
 - **Tailwind + CSS Modules**: Use `cn()` helper for className composition from `@web/utils/helpers`
+- **Variant-bearing app components**: In `apps/web`, prefer `cva(...)` plus `cn()` for stable variant-bearing components
+- **Static components**: Keep using plain `cn()` for layout primitives and one-off conditional classes where CVA adds no clarity
+- **Workspace scope**: Do not retrofit `packages/*` with CVA unless the change explicitly expands the styling contract beyond `apps/web`
 - **No global leaks**: Keep styles scoped to components
 - **CSS Modules**: Co-locate with components
 

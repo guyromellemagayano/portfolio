@@ -9,7 +9,7 @@ import React from "react";
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { Button } from "../Button";
+import { Button, type ButtonVariant } from "../Button";
 
 import "@testing-library/jest-dom";
 
@@ -32,6 +32,23 @@ vi.mock("@web/components/link", () => ({
   ),
 }));
 
+type IsEqual<A, B> =
+  (<Value>() => Value extends A ? 1 : 2) extends <Value>() => Value extends B
+    ? 1
+    : 2
+    ? true
+    : false;
+type Assert<T extends true> = T;
+type ButtonVariantProp = NonNullable<
+  React.ComponentProps<typeof Button>["variant"]
+>;
+type _ButtonVariantTypeAssertion = Assert<
+  IsEqual<ButtonVariant, "primary" | "secondary">
+>;
+type _ButtonVariantPropAssertion = Assert<
+  IsEqual<ButtonVariantProp, "primary" | "secondary">
+>;
+
 // TODO: Add unit tests for the `SkipToMainContentButton` component
 describe("Button", () => {
   afterEach(() => {
@@ -50,7 +67,7 @@ describe("Button", () => {
       render(<Button className="custom-class">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("class");
+      expect(button).toHaveClass("custom-class");
     });
 
     it("passes through HTML attributes", () => {
@@ -117,7 +134,12 @@ describe("Button", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("class");
+      expect(button).toHaveClass(
+        "inline-flex",
+        "rounded-full",
+        "bg-zinc-900",
+        "text-zinc-50"
+      );
     });
   });
 
@@ -214,21 +236,33 @@ describe("Button", () => {
       render(<Button>Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(button).toHaveClass("bg-zinc-900", "text-zinc-50");
     });
 
     it("renders with primary variant explicitly", () => {
       render(<Button variant="primary">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(button).toHaveClass("bg-zinc-900", "text-zinc-50");
     });
 
     it("renders with secondary variant", () => {
       render(<Button variant="secondary">Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(button).toHaveClass("bg-transparent", "text-zinc-900");
+      expect(button).not.toHaveClass("bg-zinc-900");
+    });
+
+    it("applies disabled styling for button elements", () => {
+      render(<Button isDisabled>Disabled Button</Button>);
+
+      const button = screen.getByRole("button");
+      expect(button).toHaveClass(
+        "opacity-45",
+        "disabled:pointer-events-none",
+        "disabled:cursor-not-allowed"
+      );
     });
   });
 
@@ -251,6 +285,24 @@ describe("Button", () => {
 
       const link = screen.getByRole("link");
       expect(link).toHaveAttribute("aria-label", "Test link");
+    });
+
+    it("applies disabled state semantics when rendered as a link", () => {
+      render(
+        <Button href="/test" isDisabled>
+          Disabled Link Button
+        </Button>
+      );
+
+      const link = screen.getByRole("link");
+      expect(link).toHaveAttribute("href", "#");
+      expect(link).toHaveAttribute("tabIndex", "-1");
+      expect(link).toHaveAttribute("aria-disabled", "true");
+      expect(link).toHaveClass(
+        "opacity-45",
+        "disabled:pointer-events-none",
+        "disabled:cursor-not-allowed"
+      );
     });
 
     it("renders as button when href is not provided", () => {
@@ -331,7 +383,7 @@ describe("Button", () => {
       render(<Button variant="secondary">Secondary Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toBeInTheDocument();
+      expect(button).toHaveClass("bg-transparent", "text-zinc-900");
     });
 
     it("handles button click events", () => {

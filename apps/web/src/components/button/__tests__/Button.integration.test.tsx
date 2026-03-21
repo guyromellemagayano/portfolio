@@ -225,14 +225,14 @@ describe("Button Integration Tests", () => {
       render(<Button className="custom-button">Custom Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("class");
+      expect(button).toHaveClass("custom-button", "inline-flex", "bg-zinc-900");
     });
 
     it("applies variant styles correctly", () => {
       render(<Button variant="secondary">Secondary Button</Button>);
 
       const button = screen.getByRole("button");
-      expect(button).toHaveAttribute("class");
+      expect(button).toHaveClass("bg-transparent", "text-zinc-900");
     });
 
     it("applies styles to link when href is provided", () => {
@@ -243,7 +243,21 @@ describe("Button Integration Tests", () => {
       );
 
       const link = screen.getByRole("link");
-      expect(link).toHaveAttribute("class");
+      expect(link).toHaveClass("custom-link", "inline-flex", "bg-zinc-900");
+    });
+
+    it("preserves override ordering through cn()", () => {
+      render(
+        <Button className="bg-emerald-500 text-black">Overridden Button</Button>
+      );
+
+      const button = screen.getByRole("button");
+      const className = button.getAttribute("class") ?? "";
+
+      expect(className).toContain("bg-zinc-900");
+      expect(className).toContain("bg-emerald-500");
+      expect(className).toContain("text-zinc-50");
+      expect(className).toContain("text-black");
     });
 
     it("handles style prop integration", () => {
