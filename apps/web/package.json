@@ -32,6 +32,7 @@
     "@portfolio/logger": "workspace:*",
     "@portfolio/ui": "workspace:*",
     "@portfolio/utils": "workspace:*",
+    "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "fuse.js": "catalog:",
     "next": "catalog:",
