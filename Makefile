@@ -95,6 +95,7 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	edge-smoke \
 	edge-smoke-tls \
 	edge-dns-doctor \
+	orbstack-refresh \
 	dnsmasq-local \
 	dnsmasq-local-print \
 	dnsmasq-health \
@@ -139,6 +140,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make dnsmasq-local" "Manual local DNS helper for current LOCAL_DEV_DOMAIN."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
 	@printf '%-42s %s\n' "make edge-dns-doctor" "Diagnose browser DNS_PROBE_* / DoH issues."
+	@printf '%-42s %s\n' "make orbstack-refresh" "Restart the edge stack and rerun OrbStack smoke checks."
 	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local for Docker and remove app-level .env.local."
 	@printf '%-42s %s\n' "make use-orbstack-domain" "Switch to OrbStack native guyromellemagayano.local mode."
 	@printf '%-42s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local TLS config."
@@ -212,6 +214,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
 	@printf '%-44s %s\n' "make dnsmasq-status" "Advisory Homebrew dnsmasq status only."
 	@printf '%-44s %s\n' "make edge-dns-doctor" "Browser DNS_PROBE_* diagnosis + OrbStack guidance."
+	@printf '%-44s %s\n' "make orbstack-refresh" "Restart the edge stack and rerun the local route smoke checks."
 	@printf '%-44s %s\n' "make use-orbstack-domain" "Switch LOCAL_DEV_DOMAIN to guyromellemagayano.local."
 	@printf '%-44s %s\n' "make vercel-host-check" "Check host Vercel CLI install and fallback readiness."
 	@printf '%-44s %s\n' "make vercel" "Run Vercel CLI on host."
@@ -428,6 +431,15 @@ edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashbo
 
 edge-dns-doctor: ## Diagnose local edge DNS issues (.local with browser DNS caching/DoH) and suggest the right next step.
 	@sh docker/scripts/edge-dns-doctor.sh "$(LOCAL_DEV_DOMAIN)"
+
+orbstack-refresh: ## Restart the edge stack for OrbStack custom-domain mode and rerun the local route smoke checks.
+	@printf 'Refreshing OrbStack edge stack for %s\n' "$(LOCAL_DEV_DOMAIN)"
+	@$(MAKE) down-edge
+	@$(MAKE) up-edge
+	@$(MAKE) edge-smoke || { \
+		printf '\nOrbStack refresh smoke check failed. Run `make edge-dns-doctor` for targeted next steps.\n'; \
+		exit 1; \
+	}
 
 dnsmasq-local-print: ## Print the dnsmasq and resolver file contents for the local edge domain (macOS/Homebrew).
 	@printf '# %s/etc/dnsmasq.d/portfolio-local.conf\n' "$$(brew --prefix)"
