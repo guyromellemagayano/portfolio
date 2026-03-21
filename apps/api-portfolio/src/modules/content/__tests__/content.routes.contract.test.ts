@@ -17,7 +17,7 @@ import {
   API_ERROR_CODES,
   API_ERROR_MESSAGES,
   CORRELATION_ID_HEADER,
-  getSanityUpstreamFailureMessage,
+  getContentUpstreamFailureMessage,
 } from "@portfolio/api-contracts/http";
 
 import { createApiLogger } from "@api/config/logger";
@@ -117,8 +117,8 @@ describe("GET /v1/content/articles contract", () => {
         getArticles: vi.fn().mockRejectedValue(
           new GatewayError({
             statusCode: 502,
-            code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
-            message: getSanityUpstreamFailureMessage("articles"),
+            code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
+            message: getContentUpstreamFailureMessage("articles"),
             details: {
               status: 503,
             },
@@ -156,8 +156,8 @@ describe("GET /v1/content/articles contract", () => {
     expect(body).toMatchObject({
       success: false,
       error: {
-        code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
-        message: getSanityUpstreamFailureMessage("articles"),
+        code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
+        message: getContentUpstreamFailureMessage("articles"),
         details: {
           status: 503,
         },
@@ -309,8 +309,8 @@ describe("GET /v1/content/articles/:slug contract", () => {
         getArticleBySlug: vi.fn().mockRejectedValue(
           new GatewayError({
             statusCode: 502,
-            code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
-            message: getSanityUpstreamFailureMessage("articles"),
+            code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
+            message: getContentUpstreamFailureMessage("articles"),
             details: {
               slug,
             },
@@ -343,8 +343,8 @@ describe("GET /v1/content/articles/:slug contract", () => {
     expect(body).toMatchObject({
       success: false,
       error: {
-        code: API_ERROR_CODES.SANITY_UPSTREAM_ERROR,
-        message: getSanityUpstreamFailureMessage("articles"),
+        code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
+        message: getContentUpstreamFailureMessage("articles"),
         details: {
           slug,
         },
@@ -472,7 +472,7 @@ describe("GET /v1/content/pages/:slug contract", () => {
               children: [
                 {
                   _type: "span",
-                  text: "Shipping Sanity-backed pages.",
+                  text: "Shipping content-backed pages.",
                 },
               ],
             },
