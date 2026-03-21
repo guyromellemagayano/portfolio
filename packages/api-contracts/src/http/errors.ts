@@ -12,10 +12,10 @@ export const API_ERROR_CODES = {
   CONTENT_ARTICLE_NOT_FOUND: "CONTENT_ARTICLE_NOT_FOUND",
   CONTENT_PAGE_SLUG_REQUIRED: "CONTENT_PAGE_SLUG_REQUIRED",
   CONTENT_PAGE_NOT_FOUND: "CONTENT_PAGE_NOT_FOUND",
-  SANITY_UPSTREAM_TIMEOUT: "SANITY_UPSTREAM_TIMEOUT",
-  SANITY_UPSTREAM_NETWORK_ERROR: "SANITY_UPSTREAM_NETWORK_ERROR",
-  SANITY_UPSTREAM_ERROR: "SANITY_UPSTREAM_ERROR",
-  SANITY_INVALID_RESPONSE: "SANITY_INVALID_RESPONSE",
+  CONTENT_UPSTREAM_TIMEOUT: "CONTENT_UPSTREAM_TIMEOUT",
+  CONTENT_UPSTREAM_NETWORK_ERROR: "CONTENT_UPSTREAM_NETWORK_ERROR",
+  CONTENT_UPSTREAM_ERROR: "CONTENT_UPSTREAM_ERROR",
+  CONTENT_INVALID_RESPONSE: "CONTENT_INVALID_RESPONSE",
 } as const;
 
 /** Union type of all canonical API error code identifiers. */
@@ -29,7 +29,7 @@ export const API_ERROR_MESSAGES = {
   CONTENT_ARTICLE_NOT_FOUND: "Article not found.",
   CONTENT_PAGE_SLUG_REQUIRED: "Page slug is required.",
   CONTENT_PAGE_NOT_FOUND: "Page not found.",
-  SANITY_INVALID_RESPONSE: "Received an invalid response from Sanity.",
+  CONTENT_INVALID_RESPONSE: "Received an invalid response from the content upstream.",
 } as const;
 
 /** Builds a route-not-found error message for an incoming request. */
@@ -40,17 +40,17 @@ export function getRouteNotFoundMessage(
   return `No route matches ${method} ${requestPath}.`;
 }
 
-/** Builds a timeout message for failed Sanity upstream requests. */
-export function getSanityTimeoutMessage(resourceLabel: string): string {
-  return `Sanity request timed out while fetching ${resourceLabel}.`;
+/** Builds a timeout message for failed content upstream requests. */
+export function getContentTimeoutMessage(resourceLabel: string): string {
+  return `Content request timed out while fetching ${resourceLabel}.`;
 }
 
-/** Builds a network failure message for failed Sanity upstream requests. */
-export function getSanityNetworkFailureMessage(resourceLabel: string): string {
-  return `Failed to reach Sanity while fetching ${resourceLabel}.`;
+/** Builds a network failure message for failed content upstream requests. */
+export function getContentNetworkFailureMessage(resourceLabel: string): string {
+  return `Failed to reach the content upstream while fetching ${resourceLabel}.`;
 }
 
-/** Builds an upstream failure message for non-success Sanity responses. */
-export function getSanityUpstreamFailureMessage(resourceLabel: string): string {
-  return `Failed to fetch ${resourceLabel} from Sanity.`;
+/** Builds an upstream failure message for non-success content responses. */
+export function getContentUpstreamFailureMessage(resourceLabel: string): string {
+  return `Failed to fetch ${resourceLabel} from the content upstream.`;
 }
