@@ -159,6 +159,7 @@ export const ComponentName = setDisplayName(
 - **Export Patterns**: Use `export { ComponentInternal as Component }` for internal components
 - **Internal Components**: Only export from `_internal/index.ts` for internal use, never from main `index.ts`
 - **CSS Modules**: Use `cn()` helper for className composition, co-locate with components
+- **Variant APIs in `apps/web`**: Prefer `cva(...)` with `cn()` for stable style variants; keep plain `cn()` for static/layout components and one-off conditionals
 - **Test Structure**: Vitest + RTL, mock dependencies, use `afterEach` cleanup, import globals explicitly
 - **Process Mocking**: Mock `process` object for logger compatibility in browser tests
 - **Component Mocking**: Mock `@web/components`, `@web/utils`, and internal components in tests
@@ -793,6 +794,7 @@ components/component-name/
 - **`getLinkTargetProps`**: For link target/rel attributes
 - **`createComponentProps`**: For component data attributes
 - **`cn`**: For className composition from `@web/utils`
+- **`cva` + `cn`**: For `@web/` components with stable variant props (`variant`, `size`, `tone`, `intent`, `state`); do not retrofit `packages/*` unless explicitly requested
 
 ## TypeScript Standards
 
