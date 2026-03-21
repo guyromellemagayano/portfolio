@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/__tests__/pages.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for Sanity-backed standalone page utility behavior.
+ * @description Unit tests for content-backed standalone page utility behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";

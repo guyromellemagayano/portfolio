@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/__tests__/articles.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for Sanity-backed article utility behavior.
+ * @description Unit tests for content-backed article utility behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
