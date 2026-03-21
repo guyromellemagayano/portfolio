@@ -43,7 +43,7 @@ All component files must include:
 // - Testing: Unit + Integration tests (both required) / Unit tests only / Basic unit tests
 // - Structure: _internal/ folder with sub-components / Flat, imports other components / Single file + tests + constants/Component.i18n.ts / Single file
 // - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases) / Tier 2 (80%+ coverage, key paths + edges) / Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching) / Sanity CMS (GROQ queries) / External API / GraphQL
+// - Data Source: Static data (no external data fetching) / CMS (GROQ queries) / External API / GraphQL
 // ============================================================================
 ```
 
@@ -167,7 +167,7 @@ components/Component/
 - **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
 - **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
 - **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
-- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+- **Future-ready**: Perfect for CMS + third-party i18n package integration
 
 ### i18n File Structure
 
@@ -615,7 +615,7 @@ This systematic approach ensures that all component test suites are reliable, ma
 ```typescript
 // ✅ GOOD: HOC for common functionality
 export function withArticleData<P extends object>(
-  Component: React.ComponentType<P & { article: SanityArticle }>
+  Component: React.ComponentType<P & { article: ContentArticle }>
 ) {
   return function WrappedComponent(props: P & { slug: string }) {
     const { data: article, isLoading, error } = useArticle(props.slug)
@@ -690,14 +690,14 @@ Card.Title = CardTitle
 
 ```typescript
 // ✅ GOOD: Custom hook for component state management
-export function useArticleState(initialArticle?: SanityArticle) {
-  const [article, setArticle] = useState<SanityArticle | null>(
+export function useArticleState(initialArticle?: ContentArticle) {
+  const [article, setArticle] = useState<ContentArticle | null>(
     initialArticle || null
   )
   const [isEditing, setIsEditing] = useState(false)
   const [isPreview, setIsPreview] = useState(false)
 
-  const updateArticle = useCallback((updates: Partial<SanityArticle>) => {
+  const updateArticle = useCallback((updates: Partial<ContentArticle>) => {
     setArticle((prev) => (prev ? { ...prev, ...updates } : null))
   }, [])
 
@@ -726,7 +726,7 @@ export function useArticleState(initialArticle?: SanityArticle) {
 export type ArticleState =
   | { status: 'loading' }
   | { status: 'error'; error: Error }
-  | { status: 'success'; data: SanityArticle }
+  | { status: 'success'; data: ContentArticle }
   | { status: 'not-found' }
 
 export function ArticleComponent({ slug }: { slug: string }) {
@@ -803,7 +803,7 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 export function VirtualizedArticleList({
   articles
 }: {
-  articles: SanityArticleListItem[]
+  articles: ContentArticleListItem[]
 }) {
   const parentRef = useRef<HTMLDivElement>(null)
 
@@ -866,7 +866,7 @@ export function useArticleVisibility(ref: React.RefObject<HTMLElement>) {
 }
 
 // Usage
-function Article({ article }: { article: SanityArticle }) {
+function Article({ article }: { article: ContentArticle }) {
   const ref = useRef<HTMLElement>(null)
   const isVisible = useArticleVisibility(ref)
 
@@ -878,7 +878,7 @@ function Article({ article }: { article: SanityArticle }) {
 }
 ```
 
-### Sanity CMS Integration Patterns
+### CMS Integration Patterns
 
 #### GROQ Query Organization
 
@@ -922,13 +922,13 @@ export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(publishedAt de
 ```typescript
 // ✅ GOOD: React Query for client-side data fetching
 import { useQuery } from '@tanstack/react-query'
-import { sanityClient } from '@web/utils/sanity'
+import { contentClient } from '@web/utils/content'
 import { ARTICLE_QUERY } from './_queries/Article.queries'
 
 export function useArticle(slug: string, preview: boolean = false) {
   return useQuery({
     queryKey: ['article', slug, preview],
-    queryFn: () => sanityClient.fetch(ARTICLE_QUERY, { slug }),
+    queryFn: () => contentClient.fetch(ARTICLE_QUERY, { slug }),
     staleTime: 5 * 60 * 1000, // 5 minutes
     enabled: !!slug,
   })
@@ -941,7 +941,7 @@ export function useArticle(slug: string, preview: boolean = false) {
 
 ```typescript
 // ✅ GOOD: Generic component props with constraints
-export interface ArticleComponentProps<T extends SanityArticle = SanityArticle> {
+export interface ArticleComponentProps<T extends ContentArticle = ContentArticle> {
   article: T
   variant?: 'default' | 'compact' | 'featured'
   onAction?: (action: ArticleAction, data: T) => void

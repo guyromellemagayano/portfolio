@@ -9,7 +9,7 @@ import type { ContentPageDetail } from "@portfolio/api-contracts/content";
 /** Typed local page records used by the content data snapshot. */
 export type LocalPageRecord = ContentPageDetail;
 
-/** Seed page snapshot; replace via `snapshot:export:sanity` during migration. */
+/** Seed page snapshot; update this list directly when local content changes. */
 export const pagesSnapshot: ReadonlyArray<LocalPageRecord> = [
   {
     id: "local-page-now",
@@ -17,7 +17,7 @@ export const pagesSnapshot: ReadonlyArray<LocalPageRecord> = [
     title: "Now",
     subheading: "What I am focused on",
     intro:
-      "A local content snapshot page used to validate the Sanity migration pipeline.",
+      "A local content snapshot page used to validate the content migration pipeline.",
     updatedAt: "2026-03-13T00:00:00.000Z",
     hideFromSitemap: false,
     seoNoIndex: false,
@@ -31,7 +31,7 @@ export const pagesSnapshot: ReadonlyArray<LocalPageRecord> = [
           {
             _key: "now-page-span-1",
             _type: "span",
-            text: "This page is served from local typed content data instead of Sanity.",
+            text: "This page is served from local typed content data instead of an external CMS.",
             marks: [],
           },
         ],

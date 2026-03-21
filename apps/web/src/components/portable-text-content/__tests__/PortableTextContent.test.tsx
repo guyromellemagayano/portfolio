@@ -44,7 +44,7 @@ describe("PortableTextContent", () => {
             _type: "image",
             alt: "Inline image caption",
             asset: {
-              url: "https://cdn.sanity.io/images/demo/production/example.jpg",
+              url: "https://cdn.example.com/images/demo/production/example.jpg",
               width: 1200,
               height: 800,
             },
@@ -56,7 +56,7 @@ describe("PortableTextContent", () => {
     const image = screen.getByRole("img", { name: "Inline image caption" });
     expect(image).toHaveAttribute(
       "src",
-      "https://cdn.sanity.io/images/demo/production/example.jpg"
+      "https://cdn.example.com/images/demo/production/example.jpg"
     );
     expect(image).toHaveAttribute("width", "1200");
     expect(image).toHaveAttribute("height", "800");
@@ -72,7 +72,7 @@ describe("PortableTextContent", () => {
             _key: "image-1",
             _type: "image",
             asset: {
-              url: "https://cdn.sanity.io/images/demo/production/example.jpg",
+              url: "https://cdn.example.com/images/demo/production/example.jpg",
             },
           },
         ]}
