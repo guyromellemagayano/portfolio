@@ -3,7 +3,7 @@
 - Treat the user as a senior software architect who knows the direction and wants surgical help executing.
 - Assume deep experience with: TypeScript/React/Next.js/Remix, Node/Express, Python/Django, Go, PostgreSQL, Redis,
   Docker/Compose, AWS (ECS/Fargate/Lambda/RDS/S3/CloudFront/SQS/Step Functions), Terraform, Nx/Turborepo/pnpm,
-  Tailwind, Storybook, Vitest/Jest/RTL/Cypress/Playwright, Sentry/LogRocket, Sanity.
+  Tailwind, Storybook, Vitest/Jest/RTL/Cypress/Playwright, Sentry/LogRocket, headless CMS workflows.
 - Default to modern patterns and strong typing; prefer boring, reliable solutions unless a contrarian idea clearly wins.
 - **Industry Standards**: Follow WCAG 2.1 (AA/AAA), OWASP Top 10, W3C ARIA Authoring Practices, Core Web Vitals, and Vercel React Best Practices.
 
@@ -70,7 +70,7 @@
 
 - **Subject Format**: Use conventional commits (for example, `feat(scope): ...`, `fix(scope): ...`, `chore(scope): ...`)
 - **Body Format**: For non-trivial commits, add a bullet body using `-` lines with no blank line between bullets
-- **Backticks**: Wrap code identifiers in backticks (`API_GATEWAY_URL`, `apps/web/next.config.ts`, `/api/revalidate/sanity`, `turbo.json`, `pnpm --filter web check-types`)
+- **Backticks**: Wrap code identifiers in backticks (`API_GATEWAY_URL`, `apps/web/next.config.ts`, `/api/revalidate/content`, `turbo.json`, `pnpm --filter web check-types`)
 - **Writing Method**: Prefer a commit message file (`git commit -F <file>` / `git commit --amend -F <file>`) or a single body block to avoid accidental blank lines from multiple `-m` flags
 
 ### Documentation Template
@@ -658,7 +658,7 @@ it("includes dateTime when using time element", () => {
 // - Testing: Unit + Integration tests (both required) / Unit tests only / Basic unit tests
 // - Structure: _internal/ folder with sub-components / Flat, imports other components / Single file + tests + constants/Component.i18n.ts / Single file
 // - Risk Tier: Tier 1 (90%+ coverage, comprehensive edge cases) / Tier 2 (80%+ coverage, key paths + edges) / Tier 3 (60%+ coverage, happy path + basic validation)
-// - Data Source: Static data (no external data fetching) / Sanity CMS (GROQ queries) / External API / GraphQL
+// - Data Source: Static data (no external data fetching) / CMS (GROQ queries) / External API / GraphQL
 // ============================================================================
 ```
 
@@ -732,14 +732,14 @@ components/component-name/
 - **`_queries/`**: GraphQL queries/mutations (separate from data)
 - **Never**: Business logic, API calls, or complex transformations in `_data/`
 
-### Web App Specific Data Organization (Sanity CMS)
+### Web App Specific Data Organization (CMS)
 
-For `@web/` components using Sanity CMS:
+For `@web/` components using CMS:
 
-- **`_queries/Component.queries.ts`**: GROQ queries for Sanity data fetching
+- **`_queries/Component.queries.ts`**: GROQ queries for Content data fetching
 - **`_queries/Component.fragments.ts`**: Reusable GROQ fragments
-- **`_queries/Component.mutations.ts`**: Sanity mutations (if needed)
-- **`_types/Component.types.ts`**: Sanity document types and component interfaces
+- **`_queries/Component.mutations.ts`**: Content mutations (if needed)
+- **`_types/Component.types.ts`**: Content document types and component interfaces
 - **`_data/Component.data.ts`**: Static constants, labels, defaults
 - **`_data/Component.i18n.ts`**: Internationalization labels (use dot notation: `Component.i18n.ts`)
 - **Never**: GROQ queries in component files - always in `_queries/`
@@ -897,7 +897,7 @@ components/component-name/
 - **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
 - **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
 - **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
-- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+- **Future-ready**: Perfect for CMS + third-party i18n package integration
 
 ### i18n File Structure
 
@@ -956,12 +956,12 @@ vi.mock("../constants/Component.i18n", () => ({
 }));
 ```
 
-### Future Sanity + i18n Integration
+### Future Content + i18n Integration
 
-- **Sanity integration**: Labels can be fetched from Sanity CMS for dynamic content
+- **Content integration**: Labels can be fetched from CMS for dynamic content
 - **Third-party i18n**: Compatible with libraries like `react-i18next`, `next-intl`
 - **Fallback strategy**: Static labels as fallback when dynamic content unavailable
-- **Type generation**: Generate TypeScript types from Sanity i18n schemas
+- **Type generation**: Generate TypeScript types from Content i18n schemas
 
 ## Internal Component Standards
 
@@ -1747,21 +1747,21 @@ describe("Edge Cases", () => {
 });
 ```
 
-## Web App Specific Patterns (Sanity CMS)
+## Web App Specific Patterns (CMS)
 
-### Sanity CMS Integration Standards
+### CMS Integration Standards
 
 - **GROQ Queries**: Always use GROQ for data fetching, never GraphQL
 - **Query Organization**: Place all GROQ queries in `_queries/` folder
-- **Type Safety**: Generate TypeScript types from Sanity schemas
-- **Data Fetching**: Use `next-sanity` client for server-side rendering
-- **Client-Side**: Use `@sanity/client` for client-side data fetching
-- **Image Optimization**: Use `next-sanity/image` for optimized images
+- **Type Safety**: Generate TypeScript types from Content schemas
+- **Data Fetching**: Use a shared content client for server-side rendering
+- **Client-Side**: Use React Query with the shared content client
+- **Image Optimization**: Use `next/image` with approved remote image hosts
 - **Preview Mode**: Implement draft content preview for editors
 
-### Sanity Component Structure
+### Content Component Structure
 
-For components that fetch Sanity data:
+For components that fetch Content data:
 
 **Component Folder Naming Convention**: Use **kebab-case** for component folder
 names (e.g., `article`, `card-title`, `list-item`), with **PascalCase** for
@@ -1775,15 +1775,15 @@ components/component-name/
 ├── __tests__/
 │   ├── ComponentName.test.tsx
 │   └── ComponentName.integration.test.tsx
-├── _types/                    # Sanity types + component interfaces
+├── _types/                    # Content types + component interfaces
 │   ├── index.ts
-│   ├── ComponentName.types.ts     # Component props + Sanity document types
-│   └── Sanity.types.ts        # Generated Sanity schema types
+│   ├── ComponentName.types.ts     # Component props + Content document types
+│   └── Content.types.ts        # Generated Content schema types
 ├── _queries/                  # GROQ queries
 │   ├── index.ts
 │   ├── ComponentName.queries.ts   # Main GROQ queries
 │   ├── ComponentName.fragments.ts # Reusable GROQ fragments
-│   └── ComponentName.mutations.ts # Sanity mutations (if needed)
+│   └── ComponentName.mutations.ts # Content mutations (if needed)
 ├── _data/                     # Static data
 │   ├── index.ts
 │   ├── ComponentName.data.ts      # Constants, defaults
@@ -1830,25 +1830,25 @@ export const ARTICLES_LIST_QUERY = `*[_type == "article"] | order(publishedAt de
 }`;
 ```
 
-### Sanity Type Generation
+### Content Type Generation
 
 ```typescript
-// _types/Sanity.types.ts
-export interface SanityArticle {
+// _types/Content.types.ts
+export interface ContentArticle {
   _id: string;
   _type: "article";
   title: string;
   slug: { current: string };
   publishedAt: string;
   content: any[]; // Portable Text
-  author: SanityAuthor;
-  mainImage: SanityImage;
+  author: ContentAuthor;
+  mainImage: ContentImage;
 }
 
-export interface SanityAuthor {
+export interface ContentAuthor {
   _id: string;
   name: string;
-  image: SanityImage;
+  image: ContentImage;
 }
 ```
 
@@ -1857,15 +1857,15 @@ export interface SanityAuthor {
 ```typescript
 // Component.tsx
 
-// For real-time updates with Sanity
-import { useDocument } from "@sanity/react-hooks";
+// For real-time updates with content documents
+import { useDocument } from "@web/hooks/use-document";
 // For client-side fetching with React Query
 import { useQuery } from "@tanstack/react-query";
-import { sanityClient } from "@web/lib/sanity";
+import { contentClient } from "@web/lib/content";
 import { ARTICLE_QUERY } from "./_queries/Article.queries";
 
 export async function getArticle(slug: string) {
-  return await sanityClient.fetch(ARTICLE_QUERY, { slug });
+  return await contentClient.fetch(ARTICLE_QUERY, { slug });
 }
 
 export function useArticle(slug: string, preview: boolean = false) {
@@ -1955,7 +1955,7 @@ export function useArticleWithStates(slug: string) {
 
 ```typescript
 // SEO optimization for articles
-export function useArticleSEO(article: SanityArticle) {
+export function useArticleSEO(article: ContentArticle) {
   useEffect(() => {
     if (!article) return;
 
@@ -2006,7 +2006,7 @@ export interface ArticleCompoundComponent extends React.FC<ArticleProps> {
 
 // Higher-order component for common functionality
 export function withArticleData<P extends object>(
-  Component: React.ComponentType<P & { article: SanityArticle }>
+  Component: React.ComponentType<P & { article: ContentArticle }>
 ) {
   return function WrappedComponent(props: P & { slug: string }) {
     const { data: article, isLoading, error } = useArticle(props.slug);
@@ -2037,12 +2037,12 @@ export function ArticleDataProvider({
 
 ```typescript
 // Custom hook for article state management
-export function useArticleState(initialArticle?: SanityArticle) {
-  const [article, setArticle] = useState<SanityArticle | null>(initialArticle || null);
+export function useArticleState(initialArticle?: ContentArticle) {
+  const [article, setArticle] = useState<ContentArticle | null>(initialArticle || null);
   const [isEditing, setIsEditing] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
 
-  const updateArticle = useCallback((updates: Partial<SanityArticle>) => {
+  const updateArticle = useCallback((updates: Partial<ContentArticle>) => {
     setArticle(prev => prev ? { ...prev, ...updates } : null);
   }, []);
 
@@ -2071,7 +2071,7 @@ export function ArticleProvider({
   article
 }: {
   children: React.ReactNode;
-  article: SanityArticle;
+  article: ContentArticle;
 }) {
   const value = useArticleState(article);
 
@@ -2090,12 +2090,12 @@ export function ArticleProvider({
 export type ArticleState =
   | { status: "loading" }
   | { status: "error"; error: Error }
-  | { status: "success"; data: SanityArticle }
+  | { status: "success"; data: ContentArticle }
   | { status: "not-found" };
 
 // Generic component props with constraints
 export interface ArticleComponentProps<
-  T extends SanityArticle = SanityArticle,
+  T extends ContentArticle = ContentArticle,
 > {
   article: T;
   variant?: "default" | "compact" | "featured";
@@ -2120,7 +2120,7 @@ export type ArticlePropsWithActions<T extends boolean = false> = T extends true
 export function VirtualizedArticleList({
   articles
 }: {
-  articles: SanityArticleListItem[];
+  articles: ContentArticleListItem[];
 }) {
   const [containerRef, { width, height }] = useResizeObserver();
 

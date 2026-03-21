@@ -336,8 +336,8 @@ it('should be accessible', async () => {
 ```typescript
 // ✅ GOOD: Factory pattern for test data
 export function createMockArticle(
-  overrides?: Partial<SanityArticle>
-): SanityArticle {
+  overrides?: Partial<ContentArticle>
+): ContentArticle {
   return {
     _id: 'test-id',
     _type: 'article',

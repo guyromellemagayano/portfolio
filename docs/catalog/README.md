@@ -41,7 +41,6 @@ This catalog is for discovery only. README files should remain close to the code
 - `packages/content-data/README.md`
 - `packages/hooks/README.md`
 - `packages/logger/README.md`
-- `packages/sanity-studio/README.md`
 - `packages/ui/README.md`
 - `packages/utils/README.md`
 - `packages/utils/src/README.md`

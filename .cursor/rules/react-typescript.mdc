@@ -193,7 +193,7 @@ describe("ComponentName", () => {
 - **Use dot notation**: `Component.i18n.ts` (not `ComponentLabels.ts` or `ComponentLabels.i18n.ts`)
 - **Consistent naming**: All i18n files follow the pattern `{ComponentName}.i18n.ts`
 - **Clear intent**: The `.i18n.ts` extension immediately indicates internationalization purpose
-- **Future-ready**: Perfect for Sanity CMS + third-party i18n package integration
+- **Future-ready**: Perfect for CMS + third-party i18n package integration
 
 ### i18n File Structure
 
