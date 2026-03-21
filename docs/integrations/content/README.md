@@ -38,10 +38,23 @@ Current ownership model:
 pnpm --filter e2e exec playwright test --project chromium --grep "@content"
 ```
 
-## One-Time Snapshot Export
+## Snapshot Maintenance
 
-Use the migration script from `@portfolio/content-data` to export Sanity data into local typed modules:
+`@portfolio/content-data` is the canonical local snapshot source. Update `src/articles.ts` and `src/pages.ts` directly when content seed data changes.
 
-```bash
-pnpm --filter @portfolio/content-data snapshot:export:sanity
-```
+## Portfolio-Style Data Model
+
+`@portfolio/content-data/src/portfolio.ts` includes a Portfolio-style content graph compatible with custom CMS backends:
+
+- `profile`, `navigation`, `socialLinks`
+- `projects`, `speakingAppearances`, `useCategories`, `workExperience`, `photos`
+- `pages` composed with typed section blocks (`hero`, `richText`, `projects`, `speaking`, `uses`, `experience`, `photoGallery`, `ctaList`)
+
+## Django/Wagtail Fit
+
+Wagtail is a good fit for this model:
+
+- Use snippets for reusable entities (projects, speaking appearances, social links, uses categories)
+- Use page models for route documents (`home`, `about`, `projects`, `speaking`, `uses`, `contact`)
+- Use `StreamField` blocks to model page sections and reference snippet records by slug/id
+- Expose headless APIs (Wagtail API v2 or custom DRF endpoints) matching `@portfolio/api-contracts/content/portfolio`

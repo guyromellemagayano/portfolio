@@ -11,10 +11,16 @@ import type {
 
 import { articlesSnapshot } from "./articles";
 import { pagesSnapshot } from "./pages";
-import { validateArticleSnapshot, validatePageSnapshot } from "./validation";
+import { portfolioSnapshot } from "./portfolio";
+import {
+  validateArticleSnapshot,
+  validatePageSnapshot,
+  validatePortfolioSnapshot,
+} from "./validation";
 
 validateArticleSnapshot(articlesSnapshot);
 validatePageSnapshot(pagesSnapshot);
+validatePortfolioSnapshot(portfolioSnapshot);
 
 function cloneArticleSummaryFields(
   article: (typeof articlesSnapshot)[number]
@@ -66,4 +72,5 @@ export const contentSnapshot = {
     sortedArticleDetails.map((article) => [article.slug, article])
   ),
   pageBySlug: new Map(sortedPageDetails.map((page) => [page.slug, page])),
+  portfolio: portfolioSnapshot,
 } as const;

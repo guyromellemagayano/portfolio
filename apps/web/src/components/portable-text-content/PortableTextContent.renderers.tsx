@@ -122,7 +122,7 @@ function getPortableTextLinkChildren(children: ReactNode): ReactNode {
   return children ?? null;
 }
 
-/** Extracts an internal reference document type from mixed Sanity mark/block shapes. */
+/** Extracts an internal reference document type from mixed portable text mark/block shapes. */
 function getInternalReferenceDocumentType(value: unknown): string | undefined {
   return (
     getStringRecordValue(value, "documentType") ||
@@ -132,7 +132,7 @@ function getInternalReferenceDocumentType(value: unknown): string | undefined {
   );
 }
 
-/** Extracts an internal reference slug from mixed Sanity mark/block shapes. */
+/** Extracts an internal reference slug from mixed portable text mark/block shapes. */
 function getInternalReferenceSlug(value: unknown): string | undefined {
   return (
     getStringRecordValue(getRecordValue(value, "slug"), "current") ||
@@ -148,7 +148,7 @@ function getInternalReferenceSlug(value: unknown): string | undefined {
   );
 }
 
-/** Builds an internal app `href` from a Sanity internal reference mark or block. */
+/** Builds an internal app `href` from a portable text internal reference mark or block. */
 function getInternalReferenceHref(value: unknown): string | undefined {
   const directHref = getStringRecordValue(value, "href");
 
@@ -197,7 +197,7 @@ function renderPortableTextAnchor(
   );
 }
 
-/** Extracts code block fields from flexible Sanity code-like block shapes. */
+/** Extracts code block fields from flexible portable text code-like block shapes. */
 function getPortableTextCodeBlockFields(value: unknown): {
   code?: string;
   language?: string;
@@ -252,7 +252,7 @@ function getCalloutToneClasses(tone?: string): string {
   }
 }
 
-/** Extracts an embed URL from common Sanity embed block field names. */
+/** Extracts an embed URL from common portable text embed block field names. */
 function getPortableTextEmbedUrl(value: unknown): string | undefined {
   return (
     getStringRecordValue(value, "url") ||
