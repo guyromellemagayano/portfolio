@@ -122,7 +122,7 @@ it("handles null and undefined children (client)", () => {
   expect(code).toBeEmptyDOMElement();
 });
 
-// Performance sanity
+// Performance smoke
 it("renders within reasonable time (client)", () => {
   const start = performance.now();
   render(<CodeClient data-testid="code-element">p</CodeClient>);

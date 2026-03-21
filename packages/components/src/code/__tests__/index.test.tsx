@@ -141,7 +141,7 @@ it("does not warn currently when rendered as different element with hypothetical
   consoleSpy.mockRestore();
 });
 
-// Performance sanity check
+// Performance smoke check
 it("renders within reasonable time", () => {
   const start = performance.now();
   render(<Code data-testid="code-element">perf</Code>);
