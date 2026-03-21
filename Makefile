@@ -89,6 +89,8 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	logs-edge \
 	restart \
 	reinstall \
+	git-changes \
+	git-changes-push \
 	edge-hosts \
 	edge-smoke \
 	edge-smoke-tls \
@@ -153,6 +155,8 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin endpoints."
 	@printf '%-42s %s\n' "make docs-catalog-check" "Verify docs/catalog/README.md matches repo READMEs."
 	@printf '%-42s %s\n' "make docs-catalog-update" "Regenerate docs/catalog/README.md from repo READMEs."
+	@printf '%-42s %s\n' "make git-changes" "Inspect root + submodule git changes and ahead/behind state."
+	@printf '%-42s %s\n' "make git-changes-push" "Push ahead repos in submodules first, then root."
 	@printf '%-42s %s\n' "make vercel-host-check" "Validate host Vercel CLI availability/fallback."
 	@printf '%-42s %s\n' "make vercel-env-pull" "Pull app envs from linked Vercel projects."
 	@printf '\n'
@@ -184,6 +188,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "VERCEL_GIT_BRANCH" "Optional preview branch for make vercel-env*" "$(VERCEL_GIT_BRANCH)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_PULL_ENV_FILE" "Output filename per app for make vercel-env*" "$(VERCEL_PULL_ENV_FILE)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_ARGS" "Arguments for make vercel" "$(VERCEL_ARGS)"
+	@printf '%-32s %s (current: %s)\n' "GIT_PUSH_ARGS" "Optional extra args passed to \`git push\` by make git-changes-push" "$(GIT_PUSH_ARGS)"
 	@printf '%-32s %s (current: %s)\n' "LOG_TAIL" 'Default tail lines for `make logs*`' "$(LOG_TAIL)"
 	@printf '%-32s %s (current: %s)\n' "FORCE_PNPM_INSTALL" "1 forces pnpm reinstall in containers" "$(FORCE_PNPM_INSTALL)"
 	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap*`' "$(SKIP_DNS_SETUP)"
@@ -263,6 +268,14 @@ doctor: ## Show Docker/Compose versions and validate the compose file.
 	@$(COMPOSE) version
 	@$(COMPOSE_BASE) config >/dev/null
 	@printf 'docker compose config validation: OK\n'
+
+##@ 🌿 Git
+
+git-changes: ## Inspect root + recursive submodule git changes and ahead/behind status.
+	@sh scripts/git-changes.sh status
+
+git-changes-push: ## Push recursive submodules first, then root, after validating that all repos are clean and tracked.
+	@sh scripts/git-changes.sh push
 
 ##@ 🐳 Compose
 
