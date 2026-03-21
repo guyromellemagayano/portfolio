@@ -41,7 +41,7 @@ export type ContentTwitterCard = "summary" | "summary_large_image";
 /** Canonical list payload returned by the articles endpoint. */
 export type ContentArticlesResponseData = ContentArticle[];
 
-/** Portable Text mark definition object used by Sanity block content. */
+/** Portable Text mark definition object used by portable text block content. */
 export type ContentPortableTextMarkDef = {
   _key?: string;
   _type?: string;

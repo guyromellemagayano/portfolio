@@ -6,3 +6,4 @@
 
 export * from "./articles";
 export * from "./pages";
+export * from "./portfolio";
