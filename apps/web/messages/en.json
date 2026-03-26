@@ -35,12 +35,10 @@
       "brandName": "Guy Romelle Magayano",
       "labels": {
         "home": "Home",
-        "about": "About",
-        "articles": "Articles",
+        "services": "Services",
+        "blog": "Blog",
         "contact": "Contact",
         "projects": "Projects",
-        "speaking": "Speaking",
-        "uses": "Uses",
         "menu": "Menu",
         "closeMenu": "Close menu",
         "navigation": "Navigation",
@@ -55,10 +53,9 @@
     },
     "footer": {
       "navigation": {
-        "about": "About",
-        "articles": "Articles",
+        "services": "Services",
+        "blog": "Blog",
         "projects": "Projects",
-        "uses": "Uses",
         "contact": "Contact"
       },
       "legal": {
@@ -139,43 +136,57 @@
   "page": {
     "home": {
       "labels": {
-        "title": "Software designer, founder, and amateur astronaut.",
-        "description": "I’m Spencer, a software designer and entrepreneur based in New York City. I’m the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms."
+        "title": "I build reusable product systems for the web.",
+        "description": "This portfolio is the public shell of a product-focused monorepo: shared platform packages, production-style demos, and case studies across admin, SaaS, commerce, operations, and content workflows."
       }
     },
     "about": {
       "labels": {
         "subheading": "About",
-        "title": "I’m Spencer Sharp. I live in New York City, where I design the future.",
-        "description": "Creating technology to empower civilians to explore space on their own terms. From software design to hardware engineering, I'm dedicated to pushing the boundaries of what's possible in the final frontier."
+        "title": "I build software like a product engineer, not a page assembler.",
+        "description": "My work sits at the intersection of frontend architecture, design systems, platform foundations, and pragmatic backend delivery. I care most about software that stays coherent as the product surface grows."
       }
     },
     "contact": {
       "labels": {
         "subheading": "Contact",
-        "title": "Let’s connect and make something awesome together.",
-        "description": "Have a question, job offer, or collaboration idea? Drop me a message and I’ll get back to you as soon as possible."
+        "title": "Bring me in when the product needs stronger systems.",
+        "description": "I’m interested in work that benefits from clear frontend architecture, reusable platform foundations, and pragmatic full-stack product thinking."
       }
     },
     "projects": {
       "labels": {
         "subheading": "Projects",
-        "title": "Things I’ve made trying to put my dent in the universe.",
-        "description": "I’ve worked on tons of little projects over the years but these are the ones that I’m most proud of. Many of them are open-source, so if you see something that piques your interest, check out the code and contribute if you have ideas for how it can be improved."
+        "title": "A monorepo of products, not a shelf of disconnected demos.",
+        "description": "Each app proves a different slice of product engineering: public storytelling, CRUD maturity, multi-tenant SaaS design, commerce flows, operational visibility, and structured content workflows."
+      }
+    },
+    "services": {
+      "labels": {
+        "subheading": "Services",
+        "title": "Architecture, advisory, and delivery for product systems.",
+        "description": "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work."
+      }
+    },
+    "book": {
+      "labels": {
+        "subheading": "Book",
+        "title": "Choose the best way to start the conversation.",
+        "description": "If you're not sure whether you need a review, advisory, or hands-on implementation, this page gives you a clean starting point."
       }
     },
     "uses": {
       "labels": {
         "subheading": "Uses",
-        "title": "Software I use, gadgets I love, and other things I recommend.",
-        "description": "I get asked a lot about the things I use to build software, stay productive, or buy to fool myself into thinking I’m being productive when I’m really just procrastinating. Here’s a big list of all of my favorite stuff."
+        "title": "The stack behind my product and platform work.",
+        "description": "The tools here are less about novelty and more about leverage: the hardware, frameworks, and workflow pieces I rely on to ship maintainable products with good developer ergonomics."
       }
     },
     "articles": {
       "labels": {
         "subheading": "Articles",
-        "title": "Writing on software design, company building, and the aerospace industry.",
-        "description": "All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
+        "title": "Notes on frontend architecture, product systems, and delivery.",
+        "description": "Writing on the mechanics behind good product engineering: architecture, delivery systems, reusable UI, content modeling, and the tradeoffs that show up in real teams."
       }
     }
   }

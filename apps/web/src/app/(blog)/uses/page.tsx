@@ -17,9 +17,9 @@ import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
 const USES_PAGE_I18N_NAMESPACE = "page.uses.labels";
 const USES_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
   subheading: "Uses",
-  title: "Software I use, gadgets I love, and other things I recommend.",
+  title: "The stack behind my product and platform work.",
   intro:
-    "I get asked a lot about the things I use to build software, stay productive, or buy to fool myself into thinking I’m being productive when I’m really just procrastinating. Here’s a big list of all of my favorite stuff.",
+    "The tools here are less about novelty and more about leverage: the hardware, frameworks, and workflow pieces I rely on to ship maintainable products with good developer ergonomics.",
 };
 
 export const metadata: Metadata = {
