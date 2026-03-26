@@ -33,6 +33,10 @@
     "./http": {
       "types": "./dist/http/index.d.ts",
       "import": "./dist/http/index.js"
+    },
+    "./opsdesk": {
+      "types": "./dist/opsdesk/index.d.ts",
+      "import": "./dist/opsdesk/index.js"
     }
   },
   "main": "./dist/index.js",
