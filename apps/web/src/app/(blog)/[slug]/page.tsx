@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/[slug]/page.tsx
  * @author Guy Romelle Magayano
- * @description Gateway-backed standalone page route rendered through the API gateway.
+ * @description Portfolio-API-backed standalone page route rendered through the portfolio API.
  */
 
 import { cache } from "react";
@@ -138,7 +138,7 @@ async function resolvePageFromParams(
   return getCachedPageBySlug(normalizedSlug);
 }
 
-/** Generates metadata for standalone CMS pages from gateway-backed content. */
+/** Generates metadata for standalone CMS pages from portfolio-API-backed content. */
 export async function generateMetadata(
   props: CmsPageRouteProps
 ): Promise<Metadata> {
@@ -210,7 +210,7 @@ export async function generateMetadata(
   }
 }
 
-/** Renders a standalone CMS page route using the API gateway page detail endpoint. */
+/** Renders a standalone CMS page route using the portfolio API page detail endpoint. */
 export default async function CmsPageRoute(props: CmsPageRouteProps) {
   const page = await resolvePageFromParams(props.params).catch((error) => {
     logger.error("CMS page route failed to load page", normalizeError(error), {
