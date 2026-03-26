@@ -36,7 +36,7 @@ case "$DOMAIN" in
     printf '  - https://traefik.%s\n' "$DOMAIN"
     printf '  - https://%s\n' "$DOMAIN"
     printf '  - https://api.%s/v1/status\n' "$DOMAIN"
-    printf '  - https://admin.%s\n' "$DOMAIN"
+    printf '  - https://opsdesk.%s\n' "$DOMAIN"
     exit 0
     ;;
 esac

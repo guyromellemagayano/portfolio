@@ -67,7 +67,7 @@ services:
       traefik.http.routers.portfolio-web.service: portfolio-web
       traefik.http.services.portfolio-web.loadbalancer.server.port: "3000"
 
-  admin:
+  opsdesk:
     labels:
       traefik.enable: "true"
       traefik.docker.network: portfolio-edge-local

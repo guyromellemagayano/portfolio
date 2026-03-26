@@ -26,7 +26,7 @@ Use **Traefik**.
 Why it fits this repo:
 
 - Docker-native service discovery via labels (works well with Compose)
-- Easy subdomain routing (`web`, `api`, `admin`)
+- Easy subdomain routing (`web`, `api`, `opsdesk`)
 - Good local TLS story with `mkcert`
 - Smooth path from local Compose -> self-hosted Compose/Swarm/Kubernetes ingress patterns
 
@@ -54,7 +54,7 @@ The current Docker layout is already organized for this:
   - `dev/` (current)
   - `web/production.Dockerfile` (current)
   - `api/production.Dockerfile` (current)
-  - `admin/production.Dockerfile` (optional, if containerized admin is desired)
+  - `opsdesk/production.Dockerfile` (optional, if containerized OpsDesk is desired)
 - `docker/scripts/`
   - startup/health helper scripts shared by environments
 
@@ -89,7 +89,7 @@ Use a multi-stage Dockerfile:
 Implemented in scaffold:
 
 - `docker/images/api-portfolio/production.Dockerfile`
-- Uses `pnpm deploy --filter api --prod` in the builder stage to create a lean runtime filesystem
+- Uses `pnpm deploy --filter api-portfolio --prod` in the builder stage to create a lean runtime filesystem
 
 ## Production Scaffold Commands (Local Validation / Dry Run)
 
@@ -137,15 +137,15 @@ Not included yet:
 - Production Traefik / TLS / redirects / HSTS / metrics
 - CI build/push pipelines for container registries
 - Production secrets manager integration
-- `admin` production image/service
+- `opsdesk` production image/service
 
 ## Traefik Local Rollout Status
 
 Implemented locally:
 
 1. `traefik` service in `docker/compose/edge.local.yml`
-2. Shared `edge` network for `web`, `api`, `admin`, and `traefik`
-3. Host-based routing labels for `web`, `api`, `admin`, and Traefik dashboard
+2. Shared `edge` network for `web`, `api`, `opsdesk`, and `traefik`
+3. Host-based routing labels for `web`, `api`, `opsdesk`, and Traefik dashboard
 4. Content revalidation endpoint (`/api/revalidate/content`) wired through `CONTENT_REVALIDATE_SECRET`
 5. `allowedDevOrigins` configured in `apps/web/next.config.ts` for the local custom host domain
 6. Local DNS setup guidance documented (`/etc/hosts` and `dnsmasq`) in `docker/docs/local-dev.md`
