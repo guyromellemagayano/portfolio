@@ -9,7 +9,7 @@ ARTICLE_PATH="${4:-}"
 PAGE_PATH="${5:-}"
 
 if [ -z "$WEB_URL" ] || [ -z "$API_URL" ] || [ -z "$ADMIN_URL" ]; then
-  printf 'usage: %s <web-url> <api-url> <admin-url> [article-path] [page-path]\n' "$0" >&2
+  printf 'usage: %s <web-url> <api-url> <opsdesk-url> [article-path] [page-path]\n' "$0" >&2
   exit 1
 fi
 
@@ -47,7 +47,7 @@ check_http() {
   return 1
 }
 
-printf 'prod-smoke: web=%s api=%s admin=%s\n' "$WEB_URL" "$API_URL" "$ADMIN_URL"
+printf 'prod-smoke: web=%s api=%s opsdesk=%s\n' "$WEB_URL" "$API_URL" "$ADMIN_URL"
 printf '\n'
 
 check_http "web-home" "$WEB_URL/" "200"
@@ -58,7 +58,7 @@ check_http "api-status" "$API_URL/v1/status" "200"
 check_http "api-articles" "$API_URL/v1/content/articles" "200"
 check_http "api-pages" "$API_URL/v1/content/pages" "200"
 
-check_http "admin-home" "$ADMIN_URL/" "200"
+check_http "opsdesk-home" "$ADMIN_URL/" "200"
 
 if [ -n "$ARTICLE_PATH" ]; then
   case "$ARTICLE_PATH" in

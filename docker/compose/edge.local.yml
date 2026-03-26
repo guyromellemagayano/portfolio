@@ -29,7 +29,7 @@ services:
     networks:
       - edge
 
-  admin:
+  opsdesk:
     networks:
       - edge
 
