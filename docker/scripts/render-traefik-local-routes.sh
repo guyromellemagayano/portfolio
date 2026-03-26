@@ -63,7 +63,7 @@ http:
         - web
       service: portfolio-web
     portfolio-opsdesk:
-      rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
+      rule: "Host(`opsdesk.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - web
       service: portfolio-opsdesk
@@ -79,7 +79,7 @@ http:
     portfolio-opsdesk:
       loadBalancer:
         servers:
-          - url: "http://admin:3001"
+          - url: "http://opsdesk:3001"
 EOF
 
 cat >"$tmp_full" <<'EOF'
@@ -147,12 +147,12 @@ http:
       tls: {}
       service: portfolio-web
     portfolio-opsdesk:
-      rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
+      rule: "Host(`opsdesk.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - web
       service: portfolio-opsdesk
     portfolio-opsdesk-secure:
-      rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
+      rule: "Host(`opsdesk.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - websecure
       tls: {}
@@ -169,7 +169,7 @@ http:
     portfolio-opsdesk:
       loadBalancer:
         servers:
-          - url: "http://admin:3001"
+          - url: "http://opsdesk:3001"
 EOF
 
 sed "s/__LOCAL_DEV_DOMAIN__/${domain}/g" "$tmp_http" >"$http_only_dir/local-routes.yml"

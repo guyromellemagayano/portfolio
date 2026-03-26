@@ -68,6 +68,7 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	ps \
 	ps-prod \
 	ps-edge \
+	ps-opsdesk \
 	build-prod \
 	bootstrap \
 	bootstrap-detached \
@@ -81,12 +82,15 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	up-edge-tls-detached \
 	up-prod \
 	up-prod-detached \
+	up-opsdesk \
 	down \
 	down-prod \
 	down-edge \
+	down-opsdesk \
 	logs \
 	logs-prod \
 	logs-edge \
+	logs-opsdesk \
 	restart \
 	reinstall \
 	git-changes \
@@ -131,11 +135,13 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make doctor" "Validate Docker + Compose."
 	@printf '%-42s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
 	@printf '%-42s %s\n' "make bootstrap" "First run: DNS setup + edge stack in background."
-	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api/admin)."
+	@printf '%-42s %s\n' "make edge-smoke" "Verify Traefik routes (web/api/opsdesk)."
 	@printf '\n🎯 Daily Use\n'
 	@printf '%-42s %s\n' "make up-edge" "Background dev stack with local hostnames."
 	@printf '%-42s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-42s %s\n' "make down-edge" "Stop edge stack."
+	@printf '%-42s %s\n' "make up-opsdesk" "Start local `api-opsdesk` + PostgreSQL only."
+	@printf '%-42s %s\n' "make logs-opsdesk" "Follow local `api-opsdesk` + PostgreSQL logs."
 	@printf '\n🌐 DNS Modes\n'
 	@printf '%-42s %s\n' "make dnsmasq-local" "Manual local DNS helper for current LOCAL_DEV_DOMAIN."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
@@ -154,7 +160,7 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '\n📚 Miscellaneous\n'
 	@printf '%-42s %s\n' "make help-all" "Full target catalog + full variable list."
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
-	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin endpoints."
+	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/opsdesk endpoints."
 	@printf '%-42s %s\n' "make docs-catalog-check" "Verify docs/catalog/README.md matches repo READMEs."
 	@printf '%-42s %s\n' "make docs-catalog-update" "Regenerate docs/catalog/README.md from repo READMEs."
 	@printf '%-42s %s\n' "make git-changes" "Inspect root + submodule git changes and ahead/behind state."
@@ -185,7 +191,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_LOG_LEVEL" "Traefik log level (ERROR/INFO/DEBUG)" "$(TRAEFIK_LOG_LEVEL)"
 	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_WEB_URL" "Production web URL for make prod-smoke" "$(PROD_SMOKE_WEB_URL)"
 	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_API_URL" "Production API URL for make prod-smoke" "$(PROD_SMOKE_API_URL)"
-	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_OPSDESK_URL" "Production admin URL for make prod-smoke" "$(PROD_SMOKE_OPSDESK_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_OPSDESK_URL" "Production OpsDesk URL for make prod-smoke" "$(PROD_SMOKE_OPSDESK_URL)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_ENV_TARGET" "Vercel env target for make vercel-env*" "$(VERCEL_ENV_TARGET)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_GIT_BRANCH" "Optional preview branch for make vercel-env*" "$(VERCEL_GIT_BRANCH)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_PULL_ENV_FILE" "Output filename per app for make vercel-env*" "$(VERCEL_PULL_ENV_FILE)"
@@ -204,12 +210,15 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make up-edge" "Background services (pair with make logs-edge)."
 	@printf '%-44s %s\n' "make up-edge-detached" "Alias for the detached edge start."
 	@printf '%-44s %s\n' "make up-edge-tls" "Background edge stack with the TLS overlay."
+	@printf '%-44s %s\n' "make up-opsdesk" "Background local `api-opsdesk` + PostgreSQL profile."
 	@printf '\n🪟  Separate Terminal (Optional Monitoring)\n'
 	@printf '%-44s %s\n' "make ps-edge" "Inspect edge stack service status."
+	@printf '%-44s %s\n' "make ps-opsdesk" "Inspect local `api-opsdesk` profile status."
 	@printf '%-44s %s\n' "make logs-edge" "Follow Traefik + app logs."
-	@printf '%-44s %s\n' "make logs" "Follow api + web + admin logs for the base stack."
+	@printf '%-44s %s\n' "make logs" "Follow api + web + opsdesk logs for the base stack."
+	@printf '%-44s %s\n' "make logs-opsdesk" "Follow local `api-opsdesk` + PostgreSQL logs."
 	@printf '%-44s %s\n' "make logs-prod" "Follow production compose logs."
-	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/api/admin)."
+	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/api/opsdesk)."
 	@printf '\n🐞 Debug / Troubleshooting\n'
 	@printf '%-44s %s\n' "make dnsmasq-health" "Functional dnsmasq checks (truth source)."
 	@printf '%-44s %s\n' "make dnsmasq-status" "Advisory Homebrew dnsmasq status only."
@@ -222,7 +231,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-44s %s\n' "make vercel-env-sync-local" "Pull app envs and regenerate root .env.local."
 	@printf '%-44s %s\n' "make tls-local-setup" "Generate mkcert certs + Traefik local-tls.yml."
 	@printf '%-44s %s\n' "make up-edge-debug" "Docker-provider debug mode (socket-proxy-backed)."
-	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/admin + sitemap."
+	@printf '%-44s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/opsdesk + sitemap."
 	@printf '\n💡 Examples\n'
 	@printf 'make bootstrap\n'
 	@printf 'make edge-smoke\n'
@@ -322,12 +331,15 @@ ps-prod: ## Show status of production compose services.
 ps-edge: ## Show status of the edge stack (Traefik + app services, including profiled services if present).
 	@$(COMPOSE_EDGE_ANY_ALL_PROFILES) ps
 
+ps-opsdesk: ## Show status of the local `api-opsdesk` profile services.
+	@$(COMPOSE_NO_FORCE) --profile opsdesk ps opsdesk-api opsdesk-db
+
 ##@ 🚀 App Stack
 
 build-prod: ## Build production Docker images for api + web (no containers started).
 	@$(COMPOSE_PROD_NO_FORCE) build
 
-prod-smoke: ## Smoke-check deployed production `web`, `api`, `admin`, and `sitemap.xml` endpoints (Vercel-only topology).
+prod-smoke: ## Smoke-check deployed production `web`, `api`, `opsdesk`, and `sitemap.xml` endpoints (Vercel-only topology).
 	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_OPSDESK_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
 
 bootstrap: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
@@ -336,14 +348,20 @@ bootstrap: ## First-run setup (local DNS + edge stack) in background; macOS/Home
 bootstrap-detached: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
 	@sh docker/scripts/bootstrap-local.sh detached
 
-up: ## Start api + web + admin in background.
+up: ## Start api + web + opsdesk in background.
 	@$(COMPOSE_BASE) up --build -d
 
-up-detached: ## Start api + web + admin in background.
+up-detached: ## Start api + web + opsdesk in background.
 	@$(COMPOSE_BASE) up --build -d
+
+up-opsdesk: ## Start local `api-opsdesk` and PostgreSQL in background.
+	@$(COMPOSE_BASE) --profile opsdesk up --build -d opsdesk-db opsdesk-api
 
 down: ## Stop the local docker stack and remove profiled/orphaned compose containers.
 	@$(COMPOSE_ALL_PROFILES) down --remove-orphans
+
+down-opsdesk: ## Stop local `api-opsdesk` profile services.
+	@$(COMPOSE_NO_FORCE) --profile opsdesk down --remove-orphans
 
 up-prod: ## Start production compose services (api + web) in background.
 	@$(COMPOSE_PROD_NO_FORCE) up --build -d
@@ -354,8 +372,11 @@ up-prod-detached: ## Start production compose services (api + web) in background
 down-prod: ## Stop production compose services and remove orphans.
 	@$(COMPOSE_PROD_NO_FORCE) down --remove-orphans
 
-logs: ## Follow api + web + admin logs (tails the last `LOG_TAIL` lines first; default 100).
-	@$(COMPOSE_NO_FORCE) logs --tail=$(LOG_TAIL) -f web api admin
+logs: ## Follow api + web + opsdesk logs (tails the last `LOG_TAIL` lines first; default 100).
+	@$(COMPOSE_NO_FORCE) logs --tail=$(LOG_TAIL) -f web api opsdesk
+
+logs-opsdesk: ## Follow local `api-opsdesk` + PostgreSQL logs.
+	@$(COMPOSE_NO_FORCE) --profile opsdesk logs --tail=$(LOG_TAIL) -f opsdesk-api opsdesk-db
 
 logs-prod: ## Follow production api + web logs (tails the last `LOG_TAIL` lines first).
 	@$(COMPOSE_PROD_NO_FORCE) logs --tail=$(LOG_TAIL) -f web api
@@ -372,10 +393,10 @@ reinstall: ## Start the stack and force pnpm reinstall in containers (`FORCE_PNP
 edge-hosts: ## Print /etc/hosts entries for the configured local hostname domain.
 	@printf '127.0.0.1 %s\n' "$(LOCAL_DEV_DOMAIN)"
 	@printf '127.0.0.1 api.%s\n' "$(LOCAL_DEV_DOMAIN)"
-	@printf '127.0.0.1 admin.%s\n' "$(LOCAL_DEV_DOMAIN)"
+	@printf '127.0.0.1 opsdesk.%s\n' "$(LOCAL_DEV_DOMAIN)"
 	@printf '127.0.0.1 traefik.%s\n' "$(LOCAL_DEV_DOMAIN)"
 
-edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, api, admin) using EDGE_PUBLIC_SCHEME.
+edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web, api, opsdesk) using EDGE_PUBLIC_SCHEME.
 	@status=0; \
 	check_code() { \
 		label="$$1"; \
@@ -399,10 +420,10 @@ edge-smoke: ## Smoke-check Traefik edge routes with GET requests (dashboard, web
 	check_code "traefik-dashboard" "$(EDGE_PUBLIC_SCHEME)://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "web-home" "$(EDGE_PUBLIC_SCHEME)://$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "api-status" "$(EDGE_PUBLIC_SCHEME)://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
-	check_code "admin-home" "$(EDGE_PUBLIC_SCHEME)://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
+	check_code "opsdesk-home" "$(EDGE_PUBLIC_SCHEME)://opsdesk.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
-edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashboard, web, api, admin).
+edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashboard, web, api, opsdesk).
 	@status=0; \
 	check_code() { \
 		label="$$1"; \
@@ -426,7 +447,7 @@ edge-smoke-tls: ## Smoke-check Traefik TLS edge routes with GET requests (dashbo
 	check_code "traefik-dashboard-tls" "https://traefik.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "web-home-tls" "https://$(LOCAL_DEV_DOMAIN)/" "200"; \
 	check_code "api-status-tls" "https://api.$(LOCAL_DEV_DOMAIN)/v1/status" "200"; \
-	check_code "admin-home-tls" "https://admin.$(LOCAL_DEV_DOMAIN)/" "200"; \
+	check_code "opsdesk-home-tls" "https://opsdesk.$(LOCAL_DEV_DOMAIN)/" "200"; \
 	exit $$status
 
 edge-dns-doctor: ## Diagnose local edge DNS issues (.local with browser DNS caching/DoH) and suggest the right next step.
@@ -488,7 +509,7 @@ dnsmasq-verify: ## Verify dnsmasq wildcard resolution for the local edge domain 
 			dig +short "$$1"; \
 		fi; \
 	}; \
-	for host in "$(LOCAL_DEV_DOMAIN)" "api.$(LOCAL_DEV_DOMAIN)" "admin.$(LOCAL_DEV_DOMAIN)" "traefik.$(LOCAL_DEV_DOMAIN)"; do \
+	for host in "$(LOCAL_DEV_DOMAIN)" "api.$(LOCAL_DEV_DOMAIN)" "opsdesk.$(LOCAL_DEV_DOMAIN)" "traefik.$(LOCAL_DEV_DOMAIN)"; do \
 		result="$$(resolve_host "$$host" | tr '\n' ' ' | sed 's/[[:space:]]$$//')"; \
 		if [ -n "$$result" ]; then \
 			printf '%-44s %s\n' "$$host" "$$result"; \
@@ -551,8 +572,8 @@ up-edge-tls-detached: ## Start Traefik + app stack with optional local TLS overl
 down-edge: ## Stop the edge stack (base + Traefik overlays) and remove profiled/orphaned containers.
 	@$(COMPOSE_EDGE_ANY_ALL_PROFILES) down --remove-orphans
 
-logs-edge: ## Follow Traefik + api + web + admin logs (tails the last `LOG_TAIL` lines first).
-	@$(COMPOSE_EDGE_ANY_NO_FORCE) logs --tail=$(LOG_TAIL) -f traefik web api admin docker-socket-proxy
+logs-edge: ## Follow Traefik + api + web + opsdesk logs (tails the last `LOG_TAIL` lines first).
+	@$(COMPOSE_EDGE_ANY_NO_FORCE) logs --tail=$(LOG_TAIL) -f traefik web api opsdesk docker-socket-proxy
 
 ##@ ☁️  Vercel
 
@@ -592,7 +613,7 @@ vercel-env-pull-api: ## Pull Vercel env vars for `apps/api-portfolio` into `apps
 vercel-env-pull-admin: ## Pull Vercel env vars for `apps/opsdesk` into `apps/opsdesk/$(VERCEL_PULL_ENV_FILE)` (requires `apps/opsdesk/.vercel/project.json`).
 	@sh docker/scripts/vercel-env-pull.sh "apps/opsdesk" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
-vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `admin`).
+vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `opsdesk`).
 	@$(MAKE) vercel-env-pull-web
 	@$(MAKE) vercel-env-pull-api
 	@$(MAKE) vercel-env-pull-admin
