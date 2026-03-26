@@ -11,18 +11,18 @@ import type {
 } from "./articles";
 import { CONTENT_ROUTE_PREFIX } from "./articles";
 
-/** Route path for content pages in the API gateway. */
+/** Route path for content pages in the portfolio API. */
 export const CONTENT_PAGES_ROUTE = `${CONTENT_ROUTE_PREFIX}/pages`;
 
-/** Route pattern for a single content page in the API gateway. */
+/** Route pattern for a single content page in the portfolio API. */
 export const CONTENT_PAGE_ROUTE_PATTERN = `${CONTENT_PAGES_ROUTE}/:slug`;
 
-/** Builds the canonical API gateway route for a content page slug. */
+/** Builds the canonical portfolio API route for a content page slug. */
 export function getContentPageRoute(slug: string): string {
   return `${CONTENT_PAGES_ROUTE}/${encodeURIComponent(slug)}`;
 }
 
-/** Canonical standalone page payload returned by the API gateway. */
+/** Canonical standalone page payload returned by the portfolio API. */
 export type ContentPage = {
   id: string;
   slug: string;
@@ -37,7 +37,7 @@ export type ContentPage = {
 /** Canonical list payload returned by the pages endpoint. */
 export type ContentPagesResponseData = ContentPage[];
 
-/** Canonical standalone page detail payload returned by the API gateway. */
+/** Canonical standalone page detail payload returned by the portfolio API. */
 export type ContentPageDetail = ContentPage & {
   seoTitle?: string;
   seoDescription?: string;

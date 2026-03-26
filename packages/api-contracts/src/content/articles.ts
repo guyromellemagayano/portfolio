@@ -6,21 +6,21 @@
 
 import { API_VERSION_PREFIX } from "../http/routes";
 
-/** Route prefix for content resources in the API gateway. */
+/** Route prefix for content resources in the portfolio API. */
 export const CONTENT_ROUTE_PREFIX = `${API_VERSION_PREFIX}/content`;
 
-/** Route path for content articles in the API gateway. */
+/** Route path for content articles in the portfolio API. */
 export const CONTENT_ARTICLES_ROUTE = `${CONTENT_ROUTE_PREFIX}/articles`;
 
-/** Route pattern for a single content article in the API gateway. */
+/** Route pattern for a single content article in the portfolio API. */
 export const CONTENT_ARTICLE_ROUTE_PATTERN = `${CONTENT_ARTICLES_ROUTE}/:slug`;
 
-/** Builds the canonical API gateway route for a content article slug. */
+/** Builds the canonical portfolio API route for a content article slug. */
 export function getContentArticleRoute(slug: string): string {
   return `${CONTENT_ARTICLES_ROUTE}/${encodeURIComponent(slug)}`;
 }
 
-/** Canonical article payload returned by the API gateway. */
+/** Canonical article payload returned by the portfolio API. */
 export type ContentArticle = {
   id: string;
   title: string;

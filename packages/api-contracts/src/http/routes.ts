@@ -1,13 +1,13 @@
 /**
  * @file packages/api-contracts/src/http/routes.ts
  * @author Guy Romelle Magayano
- * @description Canonical route constants for API gateway HTTP endpoints.
+ * @description Canonical route constants for portfolio API HTTP endpoints.
  */
 
-/** Root route for API gateway runtime health redirection. */
+/** Root route for portfolio API runtime health redirection. */
 export const API_ROOT_ROUTE = "/";
 
-/** Version prefix for stable API gateway routes. */
+/** Version prefix for stable portfolio API routes. */
 export const API_VERSION_PREFIX = "/v1";
 
 /** Legacy health endpoint path preserved for backwards compatibility. */
