@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/modules/content/content.routes.ts
+ * @file apps/api-portfolio/src/modules/content/content.routes.ts
  * @author Guy Romelle Magayano
- * @description Versioned content routes exposed by the API gateway.
+ * @description Versioned content routes exposed by the portfolio API.
  */
 
 import { Elysia, t } from "elysia";
@@ -13,7 +13,7 @@ import {
 } from "@portfolio/api-contracts/http";
 import type { ILogger } from "@portfolio/logger";
 
-import { GatewayError } from "../../contracts/errors.js";
+import { ApiError } from "../../contracts/errors.js";
 import { sendSuccess } from "../../contracts/http.js";
 import type { ContentService } from "./content.service.js";
 
@@ -97,7 +97,7 @@ export function createContentRouter(contentService: ContentService) {
         const articleSlug = context.params.slug?.trim();
 
         if (!articleSlug) {
-          throw new GatewayError({
+          throw new ApiError({
             statusCode: 400,
             code: API_ERROR_CODES.CONTENT_ARTICLE_SLUG_REQUIRED,
             message: API_ERROR_MESSAGES.CONTENT_ARTICLE_SLUG_REQUIRED,
@@ -107,7 +107,7 @@ export function createContentRouter(contentService: ContentService) {
         const article = await contentService.getArticleBySlug(articleSlug);
 
         if (!article) {
-          throw new GatewayError({
+          throw new ApiError({
             statusCode: 404,
             code: API_ERROR_CODES.CONTENT_ARTICLE_NOT_FOUND,
             message: API_ERROR_MESSAGES.CONTENT_ARTICLE_NOT_FOUND,
@@ -197,7 +197,7 @@ export function createContentRouter(contentService: ContentService) {
         const pageSlug = context.params.slug?.trim();
 
         if (!pageSlug) {
-          throw new GatewayError({
+          throw new ApiError({
             statusCode: 400,
             code: API_ERROR_CODES.CONTENT_PAGE_SLUG_REQUIRED,
             message: API_ERROR_MESSAGES.CONTENT_PAGE_SLUG_REQUIRED,
@@ -207,7 +207,7 @@ export function createContentRouter(contentService: ContentService) {
         const page = await contentService.getPageBySlug(pageSlug);
 
         if (!page) {
-          throw new GatewayError({
+          throw new ApiError({
             statusCode: 404,
             code: API_ERROR_CODES.CONTENT_PAGE_NOT_FOUND,
             message: API_ERROR_MESSAGES.CONTENT_PAGE_NOT_FOUND,

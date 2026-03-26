@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/__tests__/server.test.ts
+ * @file apps/api-portfolio/src/__tests__/server.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for API gateway composition and provider resolution.
+ * @description Unit tests for portfolio API composition and provider resolution.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -12,13 +12,13 @@ import {
   OPENAPI_JSON_ROUTE,
 } from "@portfolio/api-contracts/http";
 
-import { getApiConfig } from "@api/config/env";
-import { API_ENV_KEYS } from "@api/config/env-keys";
-import { createApiLogger } from "@api/config/logger";
-import { createProviderRegistry } from "@api/gateway/provider-registry";
-import { createServer, resolveCorsOrigin } from "@api/server";
+import { getApiConfig } from "@api-portfolio/config/env";
+import { API_ENV_KEYS } from "@api-portfolio/config/env-keys";
+import { createApiLogger } from "@api-portfolio/config/logger";
+import { createProviderRegistry } from "@api-portfolio/providers/provider-registry";
+import { createServer, resolveCorsOrigin } from "@api-portfolio/server";
 
-describe("API gateway server", () => {
+describe("portfolio API server", () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.restoreAllMocks();
@@ -58,13 +58,13 @@ describe("API gateway server", () => {
     expect(response.headers.get("content-type")).toContain("application/json");
   });
 
-  it("parses API gateway environment values", () => {
+  it("parses portfolio API environment values", () => {
     vi.stubEnv(API_ENV_KEYS.API_PORT, "7001");
     vi.stubEnv(
-      API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS,
+      API_ENV_KEYS.PORTFOLIO_API_CORS_ORIGINS,
       "http://localhost:3000,https://admin.example.com"
     );
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "static");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CONTENT_PROVIDER, "static");
 
     const config = getApiConfig();
 
@@ -77,7 +77,7 @@ describe("API gateway server", () => {
   });
 
   it("uses local content provider by default", () => {
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CONTENT_PROVIDER, "");
 
     const config = getApiConfig();
     const logger = createApiLogger(config.nodeEnv);
@@ -87,7 +87,7 @@ describe("API gateway server", () => {
   });
 
   it("uses static content provider when explicitly configured", () => {
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "static");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CONTENT_PROVIDER, "static");
 
     const config = getApiConfig();
     const logger = createApiLogger(config.nodeEnv);
@@ -97,7 +97,7 @@ describe("API gateway server", () => {
   });
 
   it("falls back to local provider for unknown provider values", () => {
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER, "unknown-provider");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CONTENT_PROVIDER, "unknown-provider");
 
     const config = getApiConfig();
     const logger = createApiLogger(config.nodeEnv);
@@ -108,7 +108,7 @@ describe("API gateway server", () => {
 
   it("allows CORS in development when allowlist is not configured", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "development");
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS, "");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CORS_ORIGINS, "");
 
     const config = getApiConfig();
     expect(resolveCorsOrigin(config)).toBe(true);
@@ -116,7 +116,7 @@ describe("API gateway server", () => {
 
   it("disables CORS in production when allowlist is empty", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "production");
-    vi.stubEnv(API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS, "");
+    vi.stubEnv(API_ENV_KEYS.PORTFOLIO_API_CORS_ORIGINS, "");
 
     const config = getApiConfig();
     expect(resolveCorsOrigin(config)).toBe(false);
@@ -125,7 +125,7 @@ describe("API gateway server", () => {
   it("allows only configured CORS origins in production", () => {
     vi.stubEnv(API_ENV_KEYS.NODE_ENV, "production");
     vi.stubEnv(
-      API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS,
+      API_ENV_KEYS.PORTFOLIO_API_CORS_ORIGINS,
       "https://web.example.com"
     );
 

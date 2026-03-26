@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/platform/__tests__/vercel.test.ts
+ * @file apps/api-portfolio/src/platform/__tests__/vercel.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for Vercel API gateway URL normalization.
+ * @description Unit tests for Vercel portfolio API URL normalization.
  */
 
 import { describe, expect, it } from "vitest";
@@ -13,28 +13,28 @@ import {
   VERCEL_API_ROUTE_PREFIX,
 } from "@portfolio/api-contracts/http";
 
-import vercelApiGatewayHandler, {
-  normalizeVercelApiGatewayRequestUrl,
-} from "@api/platform/vercel";
+import vercelPortfolioApiHandler, {
+  normalizeVercelPortfolioApiRequestUrl,
+} from "@api-portfolio/platform/vercel";
 
-describe("normalizeVercelApiGatewayRequestUrl", () => {
+describe("normalizeVercelPortfolioApiRequestUrl", () => {
   it("returns the root path for the rewritten function root path", () => {
-    expect(normalizeVercelApiGatewayRequestUrl(VERCEL_API_ROUTE_PREFIX)).toBe(
+    expect(normalizeVercelPortfolioApiRequestUrl(VERCEL_API_ROUTE_PREFIX)).toBe(
       API_ROOT_ROUTE
     );
     expect(
-      normalizeVercelApiGatewayRequestUrl(`${VERCEL_API_ROUTE_PREFIX}/`)
+      normalizeVercelPortfolioApiRequestUrl(`${VERCEL_API_ROUTE_PREFIX}/`)
     ).toBe(API_ROOT_ROUTE);
   });
 
   it("strips the /api prefix from rewritten versioned API paths", () => {
     expect(
-      normalizeVercelApiGatewayRequestUrl(
+      normalizeVercelPortfolioApiRequestUrl(
         `${VERCEL_API_ROUTE_PREFIX}${HEALTH_ROUTE_STATUS}`
       )
     ).toBe(HEALTH_ROUTE_STATUS);
     expect(
-      normalizeVercelApiGatewayRequestUrl(
+      normalizeVercelPortfolioApiRequestUrl(
         `${VERCEL_API_ROUTE_PREFIX}${CONTENT_ARTICLES_ROUTE}`
       )
     ).toBe(CONTENT_ARTICLES_ROUTE);
@@ -42,26 +42,26 @@ describe("normalizeVercelApiGatewayRequestUrl", () => {
 
   it("preserves query strings when stripping the rewritten /api prefix", () => {
     expect(
-      normalizeVercelApiGatewayRequestUrl(`${VERCEL_API_ROUTE_PREFIX}?v=1`)
+      normalizeVercelPortfolioApiRequestUrl(`${VERCEL_API_ROUTE_PREFIX}?v=1`)
     ).toBe(`${API_ROOT_ROUTE}?v=1`);
     expect(
-      normalizeVercelApiGatewayRequestUrl(
+      normalizeVercelPortfolioApiRequestUrl(
         `${VERCEL_API_ROUTE_PREFIX}${HEALTH_ROUTE_STATUS}?debug=1`
       )
     ).toBe(`${HEALTH_ROUTE_STATUS}?debug=1`);
   });
 
   it("does not modify paths that do not match the rewritten /api prefix", () => {
-    expect(normalizeVercelApiGatewayRequestUrl(HEALTH_ROUTE_STATUS)).toBe(
+    expect(normalizeVercelPortfolioApiRequestUrl(HEALTH_ROUTE_STATUS)).toBe(
       HEALTH_ROUTE_STATUS
     );
-    expect(normalizeVercelApiGatewayRequestUrl("/apix/test")).toBe(
+    expect(normalizeVercelPortfolioApiRequestUrl("/apix/test")).toBe(
       "/apix/test"
     );
   });
 
   it("handles rewritten /api root requests via the bun fetch handler", async () => {
-    const response = await vercelApiGatewayHandler(
+    const response = await vercelPortfolioApiHandler(
       new Request("https://api.example.com/api")
     );
 
@@ -70,7 +70,7 @@ describe("normalizeVercelApiGatewayRequestUrl", () => {
   });
 
   it("handles rewritten /api versioned routes via the bun fetch handler", async () => {
-    const response = await vercelApiGatewayHandler(
+    const response = await vercelPortfolioApiHandler(
       new Request("https://api.example.com/api/v1/status")
     );
     const payload = (await response.json()) as {

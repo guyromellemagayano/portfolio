@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/modules/health/__tests__/health.routes.test.ts
+ * @file apps/api-portfolio/src/modules/health/__tests__/health.routes.test.ts
  * @author Guy Romelle Magayano
  * @description Unit tests for health route redirect and versioned route registration behavior.
  */
@@ -13,10 +13,10 @@ import {
   HEALTH_ROUTE_STATUS,
 } from "@portfolio/api-contracts/http";
 
-import { createApiLogger } from "@api/config/logger";
-import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
-import { createRequestContextPlugin } from "@api/middleware/request-context";
-import { createHealthRouter } from "@api/modules/health/health.routes";
+import { createApiLogger } from "@api-portfolio/config/logger";
+import { createErrorHandlerPlugin } from "@api-portfolio/middleware/error-handler";
+import { createRequestContextPlugin } from "@api-portfolio/middleware/request-context";
+import { createHealthRouter } from "@api-portfolio/modules/health/health.routes";
 
 function createHealthTestApp() {
   const logger = createApiLogger("test");
@@ -56,7 +56,7 @@ describe("health routes", () => {
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
     expect(payload.data.ok).toBe(true);
-    expect(payload.meta.service).toBe("api-gateway");
+    expect(payload.meta.service).toBe("api-portfolio");
     expect(response.headers.get(CORRELATION_ID_HEADER)).toBeTruthy();
   });
 });

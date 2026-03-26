@@ -1,6 +1,6 @@
 # API Docs
 
-API gateway documentation has been centralized under `docs/`:
+portfolio API documentation has been centralized under `docs/`:
 
-- Overview: `docs/services/api-gateway/README.md`
-- Standards: `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
+- Overview: `docs/services/api-portfolio/README.md`
+- Standards: `docs/standards/api-portfolio/API_PORTFOLIO_STANDARDS.md`

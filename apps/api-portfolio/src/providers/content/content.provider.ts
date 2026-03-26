@@ -1,21 +1,21 @@
 /**
- * @file apps/api/src/providers/content/content.provider.ts
+ * @file apps/api-portfolio/src/providers/content/content.provider.ts
  * @author Guy Romelle Magayano
  * @description Provider contract for content integrations.
  */
 
 import type {
-  GatewayArticle,
-  GatewayArticleDetail,
+  ApiArticle,
+  ApiArticleDetail,
 } from "../../contracts/articles.js";
-import type { GatewayPage, GatewayPageDetail } from "../../contracts/pages.js";
+import type { ApiPage, ApiPageDetail } from "../../contracts/pages.js";
 
 export type ContentProviderName = "local" | "static";
 
 export interface ContentProvider {
   readonly name: ContentProviderName;
-  getArticles(): Promise<GatewayArticle[]>;
-  getArticleBySlug(slug: string): Promise<GatewayArticleDetail | null>;
-  getPages(): Promise<GatewayPage[]>;
-  getPageBySlug(slug: string): Promise<GatewayPageDetail | null>;
+  getArticles(): Promise<ApiArticle[]>;
+  getArticleBySlug(slug: string): Promise<ApiArticleDetail | null>;
+  getPages(): Promise<ApiPage[]>;
+  getPageBySlug(slug: string): Promise<ApiPageDetail | null>;
 }

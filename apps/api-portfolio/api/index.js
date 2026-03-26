@@ -1,11 +1,11 @@
 /**
- * @file apps/api/api/index.js
+ * @file apps/api-portfolio/api/index.js
  * @author Guy Romelle Magayano
- * @description Vercel Bun root function entrypoint for the API gateway.
+ * @description Vercel Bun root function entrypoint for the portfolio API.
  */
 
-import { vercelApiGatewayHandler } from "../dist/index.js";
+import { vercelPortfolioApiHandler } from "../dist/index.js";
 
 export default {
-  fetch: vercelApiGatewayHandler,
+  fetch: vercelPortfolioApiHandler,
 };

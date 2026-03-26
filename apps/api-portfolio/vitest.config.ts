@@ -1,7 +1,7 @@
 /**
- * @file apps/api/vitest.config.ts
+ * @file apps/api-portfolio/vitest.config.ts
  * @author Guy Romelle Magayano
- * @description Vitest configuration for the API gateway application.
+ * @description Vitest configuration for the portfolio API application.
  */
 
 import { defineConfig } from "vitest/config";

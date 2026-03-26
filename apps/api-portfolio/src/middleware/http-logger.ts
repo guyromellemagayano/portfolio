@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/middleware/http-logger.ts
+ * @file apps/api-portfolio/src/middleware/http-logger.ts
  * @author Guy Romelle Magayano
  * @description HTTP access logging middleware powered by the shared logger.
  */

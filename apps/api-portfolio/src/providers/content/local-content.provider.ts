@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/providers/content/local-content.provider.ts
+ * @file apps/api-portfolio/src/providers/content/local-content.provider.ts
  * @author Guy Romelle Magayano
  * @description Local typed content provider backed by `@portfolio/content-data` snapshots.
  */

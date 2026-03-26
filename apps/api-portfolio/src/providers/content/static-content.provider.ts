@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/providers/content/static-content.provider.ts
+ * @file apps/api-portfolio/src/providers/content/static-content.provider.ts
  * @author Guy Romelle Magayano
  * @description Static fallback provider for content module.
  */

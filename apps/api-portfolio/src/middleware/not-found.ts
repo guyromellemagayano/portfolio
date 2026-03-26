@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/middleware/not-found.ts
+ * @file apps/api-portfolio/src/middleware/not-found.ts
  * @author Guy Romelle Magayano
  * @description Catch-all handler for unknown API routes.
  */

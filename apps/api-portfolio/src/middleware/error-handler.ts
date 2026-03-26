@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/middleware/error-handler.ts
+ * @file apps/api-portfolio/src/middleware/error-handler.ts
  * @author Guy Romelle Magayano
- * @description Centralized error middleware for normalized API gateway responses.
+ * @description Centralized error middleware for normalized portfolio API responses.
  */
 
 import { Elysia } from "elysia";
@@ -12,7 +12,7 @@ import {
 } from "@portfolio/api-contracts/http";
 import type { ILogger } from "@portfolio/logger";
 
-import { toGatewayError } from "../contracts/errors.js";
+import { toApiError } from "../contracts/errors.js";
 import { sendError } from "../contracts/http.js";
 import type { ApiRequestContext } from "./request-context.js";
 
@@ -34,16 +34,16 @@ export function createErrorHandlerPlugin(baseLogger: ILogger) {
   })
     .onError((context) => {
       const typedContext = context as ErrorHandlerContext;
-      const gatewayError = toGatewayError(typedContext.error);
+      const apiError = toApiError(typedContext.error);
       const requestLogger = typedContext.logger ?? baseLogger;
       const requestPathname = new URL(typedContext.request.url).pathname;
       const requestMethod = typedContext.request.method;
 
-      requestLogger.error("Unhandled API gateway error", gatewayError, {
+      requestLogger.error("Unhandled portfolio API error", apiError, {
         component: "error-handler",
         metadata: {
-          code: gatewayError.code,
-          statusCode: gatewayError.statusCode,
+          code: apiError.code,
+          statusCode: apiError.statusCode,
           path: requestPathname,
           method: requestMethod,
         },
@@ -72,10 +72,10 @@ export function createErrorHandlerPlugin(baseLogger: ILogger) {
           requestContext,
         },
         {
-          statusCode: gatewayError.statusCode,
-          code: gatewayError.code,
-          message: gatewayError.message,
-          details: gatewayError.details,
+          statusCode: apiError.statusCode,
+          code: apiError.code,
+          message: apiError.message,
+          details: apiError.details,
         }
       );
     })

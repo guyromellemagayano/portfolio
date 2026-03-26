@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/contracts/pages.ts
+ * @file apps/api-portfolio/src/contracts/pages.ts
  * @author Guy Romelle Magayano
- * @description Gateway contract for normalized standalone page payloads.
+ * @description Portfolio API contract for normalized standalone page payloads.
  */
 
 import type {
@@ -10,7 +10,7 @@ import type {
 } from "@portfolio/api-contracts/content";
 
 /** Local alias used by API modules for canonical content page contracts. */
-export type GatewayPage = ContentPage;
+export type ApiPage = ContentPage;
 
 /** Local alias used by API modules for canonical page detail contracts. */
-export type GatewayPageDetail = ContentPageDetail;
+export type ApiPageDetail = ContentPageDetail;

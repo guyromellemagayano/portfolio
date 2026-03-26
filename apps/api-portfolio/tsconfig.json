@@ -10,7 +10,7 @@
       "@portfolio/content-data": [
         "../../packages/content-data/src/index.ts"
       ],
-      "@api/*": [
+      "@api-portfolio/*": [
         "./src/*"
       ]
     }

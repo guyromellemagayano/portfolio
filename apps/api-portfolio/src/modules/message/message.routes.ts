@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/modules/message/message.routes.ts
+ * @file apps/api-portfolio/src/modules/message/message.routes.ts
  * @author Guy Romelle Magayano
  * @description Message demo routes with legacy route redirects and versioned envelope responses.
  */

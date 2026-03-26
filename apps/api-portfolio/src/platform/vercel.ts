@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/platform/vercel.ts
+ * @file apps/api-portfolio/src/platform/vercel.ts
  * @author Guy Romelle Magayano
- * @description Vercel Bun Function adapter for the API gateway Elysia app.
+ * @description Vercel Bun Function adapter for the portfolio API Elysia app.
  */
 
 import {
@@ -23,7 +23,7 @@ function getCachedServer(): ReturnType<typeof createServer> {
 }
 
 /** Normalizes rewritten Vercel function URLs so Elysia receives root-domain API routes. */
-export function normalizeVercelApiGatewayRequestUrl(url: string): string {
+export function normalizeVercelPortfolioApiRequestUrl(url: string): string {
   const normalizedUrl = url.trim() || API_ROOT_ROUTE;
   const hasApiPrefix =
     normalizedUrl === VERCEL_API_ROUTE_PREFIX ||
@@ -45,11 +45,11 @@ export function normalizeVercelApiGatewayRequestUrl(url: string): string {
 }
 
 /** Handles Vercel Bun Function requests by delegating to the Elysia Web handler. */
-export default async function vercelApiGatewayHandler(
+export default async function vercelPortfolioApiHandler(
   request: Request
 ): Promise<Response> {
   const requestUrl = new URL(request.url);
-  const normalizedPath = normalizeVercelApiGatewayRequestUrl(
+  const normalizedPath = normalizeVercelPortfolioApiRequestUrl(
     `${requestUrl.pathname}${requestUrl.search}` || API_ROOT_ROUTE
   );
   const normalizedRequestUrl = new URL(normalizedPath, requestUrl.origin);

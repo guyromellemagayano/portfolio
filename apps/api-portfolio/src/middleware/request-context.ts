@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/middleware/request-context.ts
+ * @file apps/api-portfolio/src/middleware/request-context.ts
  * @author Guy Romelle Magayano
  * @description Middleware attaching request ID, correlation ID, and request-scoped logger.
  */

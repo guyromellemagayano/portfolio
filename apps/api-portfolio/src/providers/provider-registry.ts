@@ -1,15 +1,15 @@
 /**
- * @file apps/api/src/gateway/provider-registry.ts
+ * @file apps/api-portfolio/src/providers/provider-registry.ts
  * @author Guy Romelle Magayano
- * @description Provider registry for resolving gateway integrations.
+ * @description Provider registry for resolving portfolio API integrations.
  */
 
 import type { ILogger } from "@portfolio/logger";
 
 import type { ApiRuntimeConfig } from "../config/env.js";
-import type { ContentProvider } from "../providers/content/content.provider.js";
-import { createLocalContentProvider } from "../providers/content/local-content.provider.js";
-import { createStaticContentProvider } from "../providers/content/static-content.provider.js";
+import type { ContentProvider } from "./content/content.provider.js";
+import { createLocalContentProvider } from "./content/local-content.provider.js";
+import { createStaticContentProvider } from "./content/static-content.provider.js";
 
 export type ProviderRegistry = {
   content: ContentProvider;

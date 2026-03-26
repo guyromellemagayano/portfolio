@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/modules/content/__tests__/content.routes.contract.test.ts
+ * @file apps/api-portfolio/src/modules/content/__tests__/content.routes.contract.test.ts
  * @author Guy Romelle Magayano
  * @description Contract tests for content routes using Elysia runtime request handling.
  */
@@ -20,12 +20,12 @@ import {
   getContentUpstreamFailureMessage,
 } from "@portfolio/api-contracts/http";
 
-import { createApiLogger } from "@api/config/logger";
-import { GatewayError } from "@api/contracts/errors";
-import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
-import { createRequestContextPlugin } from "@api/middleware/request-context";
-import { createContentRouter } from "@api/modules/content/content.routes";
-import type { ContentService } from "@api/modules/content/content.service";
+import { createApiLogger } from "@api-portfolio/config/logger";
+import { ApiError } from "@api-portfolio/contracts/errors";
+import { createErrorHandlerPlugin } from "@api-portfolio/middleware/error-handler";
+import { createRequestContextPlugin } from "@api-portfolio/middleware/request-context";
+import { createContentRouter } from "@api-portfolio/modules/content/content.routes";
+import type { ContentService } from "@api-portfolio/modules/content/content.service";
 
 function createContentServiceMock(
   overrides: Partial<ContentService> = {}
@@ -115,7 +115,7 @@ describe("GET /v1/content/articles contract", () => {
       createContentServiceMock({
         providerName: "local",
         getArticles: vi.fn().mockRejectedValue(
-          new GatewayError({
+          new ApiError({
             statusCode: 502,
             code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
             message: getContentUpstreamFailureMessage("articles"),
@@ -307,7 +307,7 @@ describe("GET /v1/content/articles/:slug contract", () => {
       createContentServiceMock({
         providerName: "local",
         getArticleBySlug: vi.fn().mockRejectedValue(
-          new GatewayError({
+          new ApiError({
             statusCode: 502,
             code: API_ERROR_CODES.CONTENT_UPSTREAM_ERROR,
             message: getContentUpstreamFailureMessage("articles"),

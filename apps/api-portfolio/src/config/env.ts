@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/config/env.ts
+ * @file apps/api-portfolio/src/config/env.ts
  * @author Guy Romelle Magayano
- * @description Runtime environment parsing for API gateway configuration.
+ * @description Runtime environment parsing for portfolio API configuration.
  */
 
 import { API_ENV_KEYS, type ApiEnvKey } from "./env-keys.js";
@@ -37,7 +37,7 @@ function parsePort(rawPort: string): number {
   return port;
 }
 
-/** Normalizes `NODE_ENV` into the gateway runtime environment union. */
+/** Normalizes `NODE_ENV` into the portfolio API runtime environment union. */
 function parseNodeEnv(rawNodeEnv: string): ApiRuntimeEnvironment {
   if (rawNodeEnv === "production") {
     return "production";
@@ -73,17 +73,19 @@ function parseContentProvider(rawProvider: string): ContentProviderKind {
   return "local";
 }
 
-/** Builds and validates the API gateway runtime configuration from process env. */
+/** Builds and validates the portfolio API runtime configuration from process env. */
 export function getApiConfig(): ApiRuntimeConfig {
   const nodeEnv = parseNodeEnv(getEnvVar(API_ENV_KEYS.NODE_ENV));
   const port = parsePort(
     getEnvVar(API_ENV_KEYS.PORT) || getEnvVar(API_ENV_KEYS.API_PORT)
   );
   const corsOrigins = parseCorsOrigins(
-    getEnvVar(API_ENV_KEYS.API_GATEWAY_CORS_ORIGINS)
+    getEnvVar(API_ENV_KEYS.PORTFOLIO_API_CORS_ORIGINS) ||
+      getEnvVar(API_ENV_KEYS.LEGACY_API_GATEWAY_CORS_ORIGINS)
   );
   const contentProvider = parseContentProvider(
-    getEnvVar(API_ENV_KEYS.API_GATEWAY_CONTENT_PROVIDER) ||
+    getEnvVar(API_ENV_KEYS.PORTFOLIO_API_CONTENT_PROVIDER) ||
+      getEnvVar(API_ENV_KEYS.LEGACY_API_GATEWAY_CONTENT_PROVIDER) ||
       DEFAULT_CONTENT_PROVIDER
   );
 

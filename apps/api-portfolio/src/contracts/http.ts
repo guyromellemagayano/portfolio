@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/contracts/http.ts
+ * @file apps/api-portfolio/src/contracts/http.ts
  * @author Guy Romelle Magayano
- * @description Standard API gateway response envelopes.
+ * @description Standard portfolio API response envelopes.
  */
 
 import {
@@ -14,17 +14,17 @@ import {
 
 export type { ApiErrorEnvelope, ApiResponseMeta, ApiSuccessEnvelope };
 
-export type GatewayRequestContext = {
+export type ApiRequestContext = {
   requestId: string;
   correlationId: string;
 };
 
-export type GatewayResponseContext = {
+export type ApiResponseContext = {
   set: {
     status?: number | string;
     headers: Record<string, string | number>;
   };
-  requestContext?: GatewayRequestContext;
+  requestContext?: ApiRequestContext;
 };
 
 type SuccessResponseOptions = {
@@ -42,7 +42,7 @@ type ErrorResponseOptions = {
 
 /** Builds the standard response metadata envelope for API responses. */
 function createResponseMeta(
-  context: GatewayResponseContext,
+  context: ApiResponseContext,
   extraMeta?: Record<string, unknown>
 ): ApiResponseMeta {
   const correlationHeader = context.set.headers[CORRELATION_ID_HEADER];
@@ -67,7 +67,7 @@ function createResponseMeta(
 
 /** Sends a success response envelope. */
 export function sendSuccess<T>(
-  context: GatewayResponseContext,
+  context: ApiResponseContext,
   data: T,
   options: SuccessResponseOptions = {}
 ): ApiSuccessEnvelope<T> {
@@ -84,7 +84,7 @@ export function sendSuccess<T>(
 
 /** Sends an error response envelope. */
 export function sendError(
-  context: GatewayResponseContext,
+  context: ApiResponseContext,
   options: ErrorResponseOptions
 ): ApiErrorEnvelope {
   context.set.status = options.statusCode;

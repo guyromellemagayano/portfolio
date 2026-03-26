@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/modules/health/health.routes.ts
+ * @file apps/api-portfolio/src/modules/health/health.routes.ts
  * @author Guy Romelle Magayano
- * @description Health-check routes for gateway liveness/readiness, with legacy route redirects to the latest versioned endpoint.
+ * @description Health-check routes for portfolio API liveness and readiness, with legacy route redirects to the latest versioned endpoint.
  */
 
 import { Elysia, t } from "elysia";
@@ -57,7 +57,7 @@ export function createHealthRouter(): AnyElysiaInstance {
           { ok: true },
           {
             meta: {
-              service: "api-gateway",
+              service: "api-portfolio",
             },
           }
         );
@@ -65,8 +65,8 @@ export function createHealthRouter(): AnyElysiaInstance {
       {
         detail: {
           tags: ["Health"],
-          summary: "Gateway health status",
-          description: "Returns the API gateway liveness status.",
+          summary: "Portfolio API health status",
+          description: "Returns the portfolio API liveness status.",
         },
         response: {
           200: t.Any(),

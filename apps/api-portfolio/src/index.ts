@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/index.ts
+ * @file apps/api-portfolio/src/index.ts
  * @author Guy Romelle Magayano
- * @description API gateway bootstrap entrypoint.
+ * @description Portfolio API bootstrap entrypoint.
  */
 
 import { existsSync } from "node:fs";
@@ -27,7 +27,7 @@ if (existsSync(workspaceRootEnvLocalFile)) {
   }
 }
 
-/** Starts the API gateway Node server for local and non-serverless runtimes. */
+/** Starts the portfolio API Node server for local and non-serverless runtimes. */
 export function startApiServer(): void {
   const config = getApiConfig();
   const logger = createApiLogger(config.nodeEnv);
@@ -38,7 +38,7 @@ export function startApiServer(): void {
     hostname: "0.0.0.0",
   });
 
-  logger.info("API gateway started", {
+  logger.info("Portfolio API started", {
     port: config.port,
     nodeEnv: config.nodeEnv,
   });
@@ -59,7 +59,7 @@ function isDirectExecution(): boolean {
   }
 }
 
-export { default as vercelApiGatewayHandler } from "./platform/vercel.js";
+export { default as vercelPortfolioApiHandler } from "./platform/vercel.js";
 export { createServer } from "./server.js";
 
 if (isDirectExecution()) {

@@ -1,14 +1,14 @@
 /**
- * @file apps/api/src/config/logger.ts
+ * @file apps/api-portfolio/src/config/logger.ts
  * @author Guy Romelle Magayano
- * @description Logger factory for API gateway runtime.
+ * @description Logger factory for portfolio API runtime.
  */
 
 import { createLogger, type ILogger, LogLevel } from "@portfolio/logger";
 
 import type { ApiRuntimeEnvironment } from "./env.js";
 
-/** Creates the base logger for the API gateway process. */
+/** Creates the base logger for the portfolio API process. */
 export function createApiLogger(nodeEnv: ApiRuntimeEnvironment): ILogger {
   const level =
     nodeEnv === "test"
@@ -20,9 +20,9 @@ export function createApiLogger(nodeEnv: ApiRuntimeEnvironment): ILogger {
   return createLogger({
     level,
     defaultContext: {
-      component: "api-gateway",
+      component: "api-portfolio",
       metadata: {
-        service: "apps/api",
+        service: "apps/api-portfolio",
       },
     },
     errorHandling: {

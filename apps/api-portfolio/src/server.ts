@@ -1,7 +1,7 @@
 /**
- * @file apps/api/src/server.ts
+ * @file apps/api-portfolio/src/server.ts
  * @author Guy Romelle Magayano
- * @description Elysia server composition for the API gateway.
+ * @description Elysia server composition for the portfolio API.
  */
 
 import { cors } from "@elysiajs/cors";
@@ -18,7 +18,6 @@ import {
 
 import { type ApiRuntimeConfig, getApiConfig } from "./config/env.js";
 import { createApiLogger } from "./config/logger.js";
-import { createProviderRegistry } from "./gateway/provider-registry.js";
 import { createErrorHandlerPlugin } from "./middleware/error-handler.js";
 import { createHttpLoggerPlugin } from "./middleware/http-logger.js";
 import { createNotFoundHandler } from "./middleware/not-found.js";
@@ -27,11 +26,14 @@ import { createContentRouter } from "./modules/content/content.routes.js";
 import { createContentService } from "./modules/content/content.service.js";
 import { createHealthRouter } from "./modules/health/health.routes.js";
 import { createMessageRouter } from "./modules/message/message.routes.js";
+import { createOpsDeskRouter } from "./modules/opsdesk/opsdesk.routes.js";
+import { createOpsDeskService } from "./modules/opsdesk/opsdesk.service.js";
+import { createProviderRegistry } from "./providers/provider-registry.js";
 
 type CorsOriginConfig = string[] | true | false;
 type AnyElysiaInstance = Elysia<any, any, any, any, any, any, any>;
 
-/** Detects whether the gateway is running in a Bun runtime. */
+/** Detects whether the portfolio API is running in a Bun runtime. */
 function isBunRuntime(): boolean {
   return typeof (globalThis as { Bun?: unknown }).Bun !== "undefined";
 }
@@ -49,17 +51,18 @@ export function resolveCorsOrigin(config: ApiRuntimeConfig): CorsOriginConfig {
   return true;
 }
 
-/** Creates the composed Elysia server instance for the API gateway runtime. */
+/** Creates the composed Elysia server instance for the portfolio API runtime. */
 export const createServer = (): AnyElysiaInstance => {
   const config = getApiConfig();
   const logger = createApiLogger(config.nodeEnv);
   const providers = createProviderRegistry(config, logger);
   const contentService = createContentService(providers.content);
+  const opsDeskService = createOpsDeskService();
   const corsOrigin = resolveCorsOrigin(config);
   const shouldUseNodeAdapter = !isBunRuntime();
 
   const app = new Elysia({
-    name: "api-gateway",
+    name: "api-portfolio",
     ...(shouldUseNodeAdapter
       ? {
           adapter: node(),
@@ -71,10 +74,10 @@ export const createServer = (): AnyElysiaInstance => {
         path: OPENAPI_ROUTE,
         documentation: {
           info: {
-            title: "Portfolio API Gateway",
+            title: "Portfolio API",
             version: "1.0.0",
             description:
-              "Gateway API for web/admin clients with standardized response envelopes.",
+              "Portfolio API for web clients with standardized response envelopes.",
           },
           tags: [
             {
@@ -89,6 +92,11 @@ export const createServer = (): AnyElysiaInstance => {
               name: "Content",
               description:
                 "Content retrieval endpoints backed by configured providers.",
+            },
+            {
+              name: "OpsDesk",
+              description:
+                "Operational admin endpoints for requests, approvals, teams, incidents, and audit trails.",
             },
           ],
         },
@@ -122,6 +130,7 @@ export const createServer = (): AnyElysiaInstance => {
     .use(createHealthRouter())
     .use(createMessageRouter())
     .use(createContentRouter(contentService))
+    .use(createOpsDeskRouter(opsDeskService))
     .use(createNotFoundHandler());
 
   if (corsOrigin === false && config.nodeEnv === "production") {

@@ -1,5 +1,5 @@
 /**
- * @file apps/api/src/modules/message/__tests__/message.routes.test.ts
+ * @file apps/api-portfolio/src/modules/message/__tests__/message.routes.test.ts
  * @author Guy Romelle Magayano
  * @description Unit tests for message route redirect behavior.
  */
@@ -13,10 +13,10 @@ import {
   MESSAGE_ROUTE_LEGACY_PATTERN,
 } from "@portfolio/api-contracts/http";
 
-import { createApiLogger } from "@api/config/logger";
-import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
-import { createRequestContextPlugin } from "@api/middleware/request-context";
-import { createMessageRouter } from "@api/modules/message/message.routes";
+import { createApiLogger } from "@api-portfolio/config/logger";
+import { createErrorHandlerPlugin } from "@api-portfolio/middleware/error-handler";
+import { createRequestContextPlugin } from "@api-portfolio/middleware/request-context";
+import { createMessageRouter } from "@api-portfolio/modules/message/message.routes";
 
 function createMessageTestApp() {
   const logger = createApiLogger("test");
