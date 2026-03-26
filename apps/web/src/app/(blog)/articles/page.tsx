@@ -20,10 +20,9 @@ import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
 const ARTICLES_PAGE_I18N_NAMESPACE = "page.articles.labels";
 const ARTICLES_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
   subheading: "Articles",
-  title:
-    "Writing on software design, company building, and the aerospace industry.",
+  title: "Notes on frontend architecture, product systems, and delivery.",
   intro:
-    "All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order.",
+    "Writing on the mechanics behind good product engineering: architecture, delivery systems, reusable UI, content modeling, and the tradeoffs that show up in real teams.",
 };
 
 export const metadata: Metadata = {
@@ -100,6 +99,36 @@ export default async function ArticlesPage() {
 
   return (
     <SimpleLayout {...articlesPageI18n} className="mt-16 sm:mt-32">
+      <section
+        aria-labelledby="articles-categories-heading"
+        className="mt-16"
+        role="region"
+      >
+        <h2 id="articles-categories-heading" className="sr-only">
+          Writing categories
+        </h2>
+        <div
+          className="flex flex-wrap gap-3"
+          role="list"
+          aria-label="Primary writing categories"
+        >
+          {Array.from(
+            new Set(
+              articles.flatMap((article) => article.tags?.slice(0, 2) ?? [])
+            )
+          )
+            .slice(0, 6)
+            .map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-zinc-200 px-4 py-2 text-sm text-zinc-600 dark:border-zinc-800 dark:text-zinc-400"
+                role="listitem"
+              >
+                {tag}
+              </span>
+            ))}
+        </div>
+      </section>
       <ArticleSearch articles={articles} />
     </SimpleLayout>
   );

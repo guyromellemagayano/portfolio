@@ -27,49 +27,58 @@
   ],
   "projectsList": [
     {
-      "name": "Planetaria",
-      "description": "Creating technology to empower civilians to explore space on their own terms.",
+      "name": "Guy OS",
+      "description": "The public portfolio app that frames the monorepo as a coherent product platform.",
       "link": {
-        "href": "http://planetaria.tech",
-        "label": "planetaria.tech"
+        "href": "https://www.guyromellemagayano.com",
+        "label": "guyromellemagayano.com"
       },
       "logoKey": "planetaria"
     },
     {
-      "name": "Animaginary",
-      "description": "High performance web animation library, hand-written in optimized WASM.",
+      "name": "OpsDesk",
+      "description": "An internal-tool style admin product for CRUD, permissions, tables, forms, and auditability.",
       "link": {
-        "href": "#",
+        "href": "https://github.com/guyromellemagayano",
         "label": "github.com"
       },
       "logoKey": "animaginary"
     },
     {
-      "name": "HelioStream",
-      "description": "Real-time video streaming library, optimized for interstellar transmission.",
+      "name": "TaskFlow",
+      "description": "A multi-tenant SaaS product designed around teams, projects, tasks, billing, events, and automation.",
       "link": {
-        "href": "#",
+        "href": "https://github.com/guyromellemagayano",
         "label": "github.com"
       },
       "logoKey": "heliostream"
     },
     {
-      "name": "cosmOS",
-      "description": "The operating system that powers our Planetaria space shuttles.",
+      "name": "CartForge",
+      "description": "A commerce demo focused on catalog, cart, checkout, order state, and fulfillment flows.",
       "link": {
-        "href": "#",
+        "href": "https://github.com/guyromellemagayano",
         "label": "github.com"
       },
       "logoKey": "cosmos"
     },
     {
-      "name": "OpenShuttle",
-      "description": "The schematics for the first rocket I designed that successfully made it to orbit.",
+      "name": "PulseOps",
+      "description": "An operations console for queues, retries, incidents, and the workflows around system recovery.",
       "link": {
-        "href": "#",
+        "href": "https://github.com/guyromellemagayano",
         "label": "github.com"
       },
       "logoKey": "openshuttle"
+    },
+    {
+      "name": "ContentForge",
+      "description": "A structured content workflow demo for editorial modeling, approvals, preview, and versioning.",
+      "link": {
+        "href": "https://github.com/guyromellemagayano",
+        "label": "github.com"
+      },
+      "logoKey": "planetaria"
     }
   ]
 }

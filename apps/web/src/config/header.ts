@@ -32,12 +32,7 @@ export type HeaderLink =
 // HEADER NAV LINK CONFIG
 // ============================================================================
 
-export type HeaderNavLabelKey =
-  | "about"
-  | "articles"
-  | "projects"
-  | "uses"
-  | "contact";
+export type HeaderNavLabelKey = "services" | "blog" | "projects" | "contact";
 export type HeaderNavLinkConfig = Readonly<{
   kind: "internal";
   labelKey: HeaderNavLabelKey;
@@ -60,10 +55,9 @@ type HeaderConfigData = Readonly<{
 }>;
 
 const HEADER_NAV_LABEL_KEYS: ReadonlyArray<HeaderNavLabelKey> = [
-  "about",
-  "articles",
+  "services",
+  "blog",
   "projects",
-  "uses",
   "contact",
 ];
 
