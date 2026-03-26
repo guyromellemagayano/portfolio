@@ -76,7 +76,7 @@ pnpm --filter e2e test:e2e:smoke
 
 In CI, `playwright.config.ts` starts both services with `webServer`:
 
-- API: `pnpm --filter api run build && pnpm --filter api start`
+- API: `pnpm --filter api-portfolio run build && pnpm --filter api-portfolio start`
 - Web: `pnpm --filter web start`
 
 Recommended CI order:

@@ -20,7 +20,7 @@ const configuredWebServers = useExternalServers
   ? undefined
   : [
       {
-        command: "pnpm --filter api run build && pnpm --filter api start",
+        command: "pnpm --filter api-portfolio run build && pnpm --filter api-portfolio start",
         port: 5001,
         reuseExistingServer: !isCI,
         timeout: 120_000,
