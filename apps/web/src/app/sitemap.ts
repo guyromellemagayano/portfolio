@@ -22,8 +22,10 @@ const STATIC_SITEMAP_PATHS = [
   "/",
   "/about",
   "/articles",
+  "/book",
   "/contact",
   "/projects",
+  "/services",
   "/uses",
 ] as const;
 
