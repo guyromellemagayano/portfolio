@@ -4,7 +4,7 @@
  * @description OpsDesk admin workspace shell for requests, approvals, teams, and audit visibility.
  */
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import {
   OPS_DESK_APPROVALS,
@@ -12,7 +12,6 @@ import {
   OPS_DESK_INCIDENTS,
   OPS_DESK_METRICS,
   OPS_DESK_NAV_ITEMS,
-  OPS_DESK_REQUESTS,
   OPS_DESK_TEAMS,
   type OpsDeskApproval,
   type OpsDeskIncident,
@@ -21,8 +20,14 @@ import {
   type OpsDeskTone,
   type OpsDeskView,
 } from "./_data/opsdesk.data";
+import { fetchOpsDeskHealth, fetchOpsDeskRequests } from "./_services/opsdesk-api";
 
 import "./styles.css";
+
+type RequestQueueStatus = "idle" | "loading" | "ready" | "error";
+type BackendConnectionStatus = "checking" | "online" | "offline";
+
+const DEFAULT_REQUEST_LIMIT = 25;
 
 /** Returns the tone class name for metric and status surfaces. */
 function getToneClassName(tone: OpsDeskTone) {
@@ -88,12 +93,106 @@ function getRiskClassName(risk: OpsDeskApproval["risk"]) {
 
 const App = function () {
   const [activeView, setActiveView] = useState<OpsDeskView>("overview");
+  const [requestQueue, setRequestQueue] = useState<ReadonlyArray<OpsDeskRequest>>([]);
+  const [requestQueueStatus, setRequestQueueStatus] = useState<RequestQueueStatus>("idle");
+  const [requestQueueError, setRequestQueueError] = useState<string | null>(null);
+  const [backendConnectionStatus, setBackendConnectionStatus] =
+    useState<BackendConnectionStatus>("checking");
+  const [backendConnectionDetail, setBackendConnectionDetail] = useState(
+    "Checking local backend"
+  );
+  const [refreshKey, setRefreshKey] = useState(0);
   const viewId = useId();
+  const navigationItems = OPS_DESK_NAV_ITEMS.map((item) =>
+    item.id === "requests" && requestQueueStatus === "ready"
+      ? { ...item, badge: String(requestQueue.length) }
+      : item
+  );
 
   const activeItem =
-    OPS_DESK_NAV_ITEMS.find((item) => item.id === activeView) ?? OPS_DESK_NAV_ITEMS[0];
+    navigationItems.find((item) => item.id === activeView) ?? navigationItems[0];
   const activeTabId = `${viewId}-${activeView}-tab`;
   const activePanelId = `${viewId}-${activeView}-panel`;
+  const environmentClassName =
+    backendConnectionStatus === "online"
+      ? "opsdesk-environment is-positive"
+      : backendConnectionStatus === "offline"
+        ? "opsdesk-environment is-critical"
+        : "opsdesk-environment is-neutral";
+
+  function queueRequestRefresh() {
+    setRequestQueueStatus("loading");
+    setRequestQueueError(null);
+    setRefreshKey((value) => value + 1);
+  }
+
+  function handleViewChange(view: OpsDeskView) {
+    if (view === "requests") {
+      setRequestQueueStatus("loading");
+      setRequestQueueError(null);
+    }
+
+    setActiveView(view);
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    void (async () => {
+      try {
+        const payload = await fetchOpsDeskHealth(controller.signal);
+        setBackendConnectionStatus(payload.status === "ok" ? "online" : "offline");
+        setBackendConnectionDetail(
+          payload.status === "ok"
+            ? `Local backend ready · Database ${payload.database}`
+            : `Local backend degraded · Database ${payload.database}`
+        );
+      } catch {
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setBackendConnectionStatus("offline");
+        setBackendConnectionDetail("Local backend offline");
+      }
+    })();
+
+    return () => {
+      controller.abort();
+    };
+  }, [refreshKey]);
+
+  useEffect(() => {
+    if (activeView !== "requests") {
+      return;
+    }
+
+    const controller = new AbortController();
+
+    void (async () => {
+      try {
+        const records = await fetchOpsDeskRequests(DEFAULT_REQUEST_LIMIT, controller.signal);
+        setRequestQueue(records);
+        setRequestQueueStatus("ready");
+        setBackendConnectionStatus("online");
+      } catch {
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        setRequestQueue([]);
+        setRequestQueueStatus("error");
+        setRequestQueueError(
+          "The local OpsDesk backend is unavailable. Start `make up-opsdesk` and retry."
+        );
+        setBackendConnectionStatus("offline");
+      }
+    })();
+
+    return () => {
+      controller.abort();
+    };
+  }, [activeView, refreshKey]);
 
   return (
     <div className="opsdesk-shell">
@@ -114,7 +213,7 @@ const App = function () {
             className="opsdesk-nav-list"
             role="tablist"
           >
-            {OPS_DESK_NAV_ITEMS.map((item) => {
+            {navigationItems.map((item) => {
               const isActive = item.id === activeView;
               const tabId = `${viewId}-${item.id}-tab`;
               const panelId = `${viewId}-${item.id}-panel`;
@@ -126,7 +225,7 @@ const App = function () {
                   aria-selected={isActive}
                   className={`opsdesk-nav-item${isActive ? " is-active" : ""}`}
                   id={tabId}
-                  onClick={() => setActiveView(item.id)}
+                  onClick={() => handleViewChange(item.id)}
                   role="tab"
                   tabIndex={isActive ? 0 : -1}
                   type="button"
@@ -166,10 +265,12 @@ const App = function () {
           <div className="opsdesk-topbar-actions">
             <div
               aria-label="Current environment"
-              className="opsdesk-environment"
+              aria-live="polite"
+              className={environmentClassName}
               role="status"
+              title={backendConnectionDetail}
             >
-              Production mirror
+              {backendConnectionDetail}
             </div>
             <button className="opsdesk-ghost-button" type="button">
               Export snapshot
@@ -321,49 +422,101 @@ const App = function () {
                     visibility, and operating friction.
                   </p>
                 </div>
+                <div className="opsdesk-topbar-actions">
+                  <div
+                    aria-live="polite"
+                    className="opsdesk-table-status"
+                    role="status"
+                  >
+                    {requestQueueStatus === "loading"
+                      ? "Refreshing queue"
+                      : requestQueueStatus === "ready"
+                        ? `${requestQueue.length} live requests`
+                        : requestQueueError ?? "Queue unavailable"}
+                  </div>
+                  <button
+                    className="opsdesk-ghost-button"
+                    onClick={queueRequestRefresh}
+                    type="button"
+                  >
+                    Refresh queue
+                  </button>
+                </div>
               </div>
 
-              <div className="opsdesk-table-wrap">
-                <table className="opsdesk-table">
-                  <caption className="sr-only">OpsDesk request queue</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">Request</th>
-                      <th scope="col">Owner</th>
-                      <th scope="col">Priority</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">SLA</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {OPS_DESK_REQUESTS.map((request) => (
-                      <tr key={request.id}>
-                        <td>
-                          <div className="opsdesk-table-primary">
-                            <span className="opsdesk-table-id">{request.id}</span>
-                            <span className="opsdesk-row-title">{request.title}</span>
-                            <span className="opsdesk-row-meta">
-                              {request.requester} · {request.team} · Age {request.age}
-                            </span>
-                          </div>
-                        </td>
-                        <td>{request.owner}</td>
-                        <td>
-                          <span className={`opsdesk-badge ${getPriorityClassName(request.priority)}`}>
-                            {request.priority}
-                          </span>
-                        </td>
-                        <td>{request.status}</td>
-                        <td>
-                          <span className={`opsdesk-badge ${getHealthClassName(request.sla)}`}>
-                            {request.sla}
-                          </span>
-                        </td>
+              {requestQueueStatus === "error" ? (
+                <div className="opsdesk-inline-notice" role="alert">
+                  <p className="opsdesk-row-title">Request queue unavailable</p>
+                  <p className="opsdesk-card-copy">
+                    {requestQueueError}
+                  </p>
+                </div>
+              ) : null}
+
+              {requestQueueStatus === "loading" ? (
+                <div className="opsdesk-inline-notice" role="status">
+                  <p className="opsdesk-row-title">Loading live request queue</p>
+                  <p className="opsdesk-card-copy">
+                    Pulling the current Postgres-backed queue from the local OpsDesk backend.
+                  </p>
+                </div>
+              ) : null}
+
+              {requestQueueStatus === "ready" && requestQueue.length === 0 ? (
+                <div className="opsdesk-inline-notice" role="status">
+                  <p className="opsdesk-row-title">No queued requests</p>
+                  <p className="opsdesk-card-copy">
+                    The local backend responded successfully, but there are no request rows to
+                    review yet.
+                  </p>
+                </div>
+              ) : null}
+
+              {requestQueueStatus !== "error" && requestQueue.length > 0 ? (
+                <div className="opsdesk-table-wrap">
+                  <table className="opsdesk-table">
+                    <caption className="sr-only">OpsDesk request queue</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Request</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">SLA</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {requestQueue.map((request) => (
+                        <tr key={request.id}>
+                          <td>
+                            <div className="opsdesk-table-primary">
+                              <span className="opsdesk-table-id">{request.requestNumber}</span>
+                              <span className="opsdesk-row-title">{request.title}</span>
+                              <span className="opsdesk-row-meta">
+                                {request.requester} · {request.team} · Age {request.age}
+                              </span>
+                            </div>
+                          </td>
+                          <td>{request.owner}</td>
+                          <td>
+                            <span
+                              className={`opsdesk-badge ${getPriorityClassName(request.priority)}`}
+                            >
+                              {request.priority}
+                            </span>
+                          </td>
+                          <td>{request.status}</td>
+                          <td>
+                            <span className={`opsdesk-badge ${getHealthClassName(request.sla)}`}>
+                              {request.sla}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
             </section>
           ) : null}
 

@@ -116,7 +116,8 @@
 .opsdesk-table-id,
 .opsdesk-environment,
 .opsdesk-chip,
-.opsdesk-badge {
+.opsdesk-badge,
+.opsdesk-table-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -130,11 +131,30 @@
 .opsdesk-nav-badge,
 .opsdesk-table-id,
 .opsdesk-environment,
-.opsdesk-chip {
+.opsdesk-chip,
+.opsdesk-table-status {
   border: 1px solid rgba(228, 217, 198, 0.12);
   background: rgba(255, 255, 255, 0.04);
   color: #e6d8c2;
   padding: 5px 10px;
+}
+
+.opsdesk-environment.is-positive {
+  border-color: rgba(97, 216, 164, 0.28);
+  background: rgba(97, 216, 164, 0.12);
+  color: #90f0c4;
+}
+
+.opsdesk-environment.is-critical {
+  border-color: rgba(255, 107, 107, 0.28);
+  background: rgba(255, 107, 107, 0.12);
+  color: #ff9c91;
+}
+
+.opsdesk-environment.is-neutral {
+  border-color: rgba(181, 197, 216, 0.24);
+  background: rgba(181, 197, 216, 0.12);
+  color: #d6e0ec;
 }
 
 .opsdesk-nav-description {
@@ -362,6 +382,14 @@
 
 .opsdesk-table-wrap {
   overflow-x: auto;
+}
+
+.opsdesk-inline-notice {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid rgba(228, 217, 198, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .opsdesk-table {

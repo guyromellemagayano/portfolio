@@ -26,6 +26,7 @@ export type OpsDeskNavItem = Readonly<{
 
 export type OpsDeskRequest = Readonly<{
   id: string;
+  requestNumber: string;
   title: string;
   requester: string;
   team: string;
@@ -140,64 +141,6 @@ export const OPS_DESK_METRICS: ReadonlyArray<OpsDeskMetric> = [
     delta: "-1.3%",
     detail: "Two cross-team requests are close to breach and need reassignment.",
     tone: "warning",
-  },
-];
-
-export const OPS_DESK_REQUESTS: ReadonlyArray<OpsDeskRequest> = [
-  {
-    id: "REQ-2481",
-    title: "Split admin roles for fulfillment escalations",
-    requester: "Nina Ortega",
-    team: "Platform",
-    priority: "Critical",
-    status: "Blocked",
-    age: "3d",
-    sla: "Breached",
-    owner: "Kai Ramos",
-  },
-  {
-    id: "REQ-2478",
-    title: "Add release visibility to the marketing content queue",
-    requester: "Mira Santos",
-    team: "Content",
-    priority: "High",
-    status: "In Progress",
-    age: "1d",
-    sla: "Watch",
-    owner: "Jules Tan",
-  },
-  {
-    id: "REQ-2472",
-    title: "Consolidate merchant health alerts into one operating view",
-    requester: "David Cruz",
-    team: "Operations",
-    priority: "High",
-    status: "Queued",
-    age: "9h",
-    sla: "Healthy",
-    owner: "Ina Reyes",
-  },
-  {
-    id: "REQ-2466",
-    title: "Expose audit snapshots for bulk approval actions",
-    requester: "Sami Navarro",
-    team: "Security",
-    priority: "Medium",
-    status: "Ready for Release",
-    age: "4d",
-    sla: "Healthy",
-    owner: "Miko Valdez",
-  },
-  {
-    id: "REQ-2459",
-    title: "Backfill missing warehouse retry reasons",
-    requester: "Aria Lim",
-    team: "Logistics",
-    priority: "Low",
-    status: "In Progress",
-    age: "2d",
-    sla: "Healthy",
-    owner: "Paolo Dizon",
   },
 ];
 
