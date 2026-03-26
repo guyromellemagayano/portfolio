@@ -7,7 +7,7 @@ Current state:
 - Local development is Dockerized (`docker/compose/local.yml`)
 - Local hostname routing via Traefik is available (`docker/compose/edge.local.yml`)
 - Optional local TLS overlay is scaffolded (`docker/compose/edge.tls.local.yml`)
-- `apps/web`, `apps/api`, and `apps/admin` are available behind local Compose networking / Traefik edge routing
+- `apps/web`, `apps/api-portfolio`, and `apps/opsdesk` are available behind local Compose networking / Traefik edge routing
 - Production compose scaffold exists (`docker/compose/prod.yml`)
 - Production multi-stage Dockerfiles exist for `web` and `api`
 - Production is still on Vercel
@@ -37,8 +37,8 @@ Use `.local` (for example `guyromellemagayano.local`) for the local edge domain 
 Suggested hostnames:
 
 - `guyromellemagayano.local` -> `apps/web`
-- `api.guyromellemagayano.local` -> `apps/api`
-- `admin.guyromellemagayano.local` -> `apps/admin`
+- `api.guyromellemagayano.local` -> `apps/api-portfolio`
+- `opsdesk.guyromellemagayano.local` -> `apps/opsdesk`
 - `traefik.guyromellemagayano.local` -> Traefik dashboard (optional, local only)
 
 ## Proposed Docker Layout (Future Additions)
@@ -77,18 +77,18 @@ Recommendation:
   - `apps/web/next.config.ts` supports Docker production standalone builds via `NEXT_WEB_OUTPUT_STANDALONE=1`
   - `outputFileTracingRoot` is set for monorepo-safe standalone tracing during the Docker build
 
-### `apps/api` (Express)
+### `apps/api-portfolio` (Express)
 
 Use a multi-stage Dockerfile:
 
 1. `base`
 2. `deps`
-3. `builder` (`pnpm --filter api build`)
+3. `builder` (`pnpm --filter api-portfolio build`)
 4. `runner` (copy `dist` + runtime deps only)
 
 Implemented in scaffold:
 
-- `docker/images/api/production.Dockerfile`
+- `docker/images/api-portfolio/production.Dockerfile`
 - Uses `pnpm deploy --filter api --prod` in the builder stage to create a lean runtime filesystem
 
 ## Production Scaffold Commands (Local Validation / Dry Run)
@@ -129,7 +129,7 @@ Included:
 - Production `api` and `web` service definitions
 - Multi-stage Docker builds
 - Health checks
-- Runtime env wiring for local content provider and API gateway connectivity
+- Runtime env wiring for local content provider and portfolio API connectivity
 - Writable Next.js runtime cache volume (`/app/.next/cache`) for self-hosted operation
 
 Not included yet:

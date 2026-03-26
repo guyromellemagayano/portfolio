@@ -4,8 +4,8 @@ set -eu
 
 ROOT_ENV_FILE="${1:-.env.local}"
 WEB_ENV_FILE="${2:-apps/web/.env.local}"
-API_ENV_FILE="${3:-apps/api/.env.local}"
-ADMIN_ENV_FILE="${4:-apps/admin/.env.local}"
+API_ENV_FILE="${3:-apps/api-portfolio/.env.local}"
+ADMIN_ENV_FILE="${4:-apps/opsdesk/.env.local}"
 
 pick_env_value() {
   key="$1"
@@ -56,11 +56,11 @@ case "$local_dev_domain_plain" in
     local_url_scheme="http"
     ;;
 esac
-api_gateway_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
+portfolio_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
 next_public_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
 next_public_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
-api_gateway_content_provider=$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"local\"" "$SOURCE_FILES")
-api_gateway_cors_origins=$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" "$SOURCE_FILES")
+portfolio_api_content_provider=$(pick_env_value "PORTFOLIO_API_CONTENT_PROVIDER" "$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"local\"" "$SOURCE_FILES")" "$SOURCE_FILES")
+portfolio_api_cors_origins=$(pick_env_value "PORTFOLIO_API_CORS_ORIGINS" "$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" "$SOURCE_FILES")" "$SOURCE_FILES")
 content_revalidate_secret=$(pick_env_value "CONTENT_REVALIDATE_SECRET" "\"\"" "$SOURCE_FILES")
 
 sitemap_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
@@ -89,11 +89,11 @@ ESLINT_USE_FLAT_CONFIG=$eslint_use_flat_config
 BUNDLE_ANALYZE=$bundle_analyze
 
 # Local app URLs (used by host-side runs and Dockerized tooling)
-API_GATEWAY_URL=$api_gateway_url
+PORTFOLIO_API_URL=$portfolio_api_url
 NEXT_PUBLIC_API_URL=$next_public_api_url
 NEXT_PUBLIC_SITE_URL=$next_public_site_url
-API_GATEWAY_CONTENT_PROVIDER=$api_gateway_content_provider
-API_GATEWAY_CORS_ORIGINS=$api_gateway_cors_origins
+PORTFOLIO_API_CONTENT_PROVIDER=$portfolio_api_content_provider
+PORTFOLIO_API_CORS_ORIGINS=$portfolio_api_cors_origins
 
 # Content revalidation auth
 CONTENT_REVALIDATE_SECRET=$content_revalidate_secret

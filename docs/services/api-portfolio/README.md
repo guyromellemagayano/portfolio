@@ -1,10 +1,10 @@
-# API Gateway (`apps/api`)
+# Portfolio API (`apps/api-portfolio`)
 
-`apps/api` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume backend services through a unified API surface.
+`apps/api-portfolio` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume backend services through a unified API surface.
 
 Current primary data flow for content:
 
-`apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`local` or `static`)
+`apps/web` -> `apps/api-portfolio` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`local` or `static`)
 
 ## Current Modules
 
@@ -22,30 +22,30 @@ Current primary data flow for content:
 
 ## Runtime and API Docs
 
-- Runtime framework: Elysia (`apps/api/src/server.ts`).
+- Runtime framework: Elysia (`apps/api-portfolio/src/server.ts`).
 - OpenAPI UI: `GET /openapi`
 - OpenAPI JSON: `GET /openapi/json`
-- Local app runtime script: `bun --watch src/index.ts` (`pnpm --filter api dev` delegates to Bun)
+- Local app runtime script: `bun --watch src/index.ts` (`pnpm --filter api-portfolio dev` delegates to Bun)
 
 ## Provider Pattern
 
 - Provider interfaces live under `src/providers/<domain>/`.
-- Provider selection is centralized in `src/gateway/provider-registry.ts`.
+- Provider selection is centralized in `src/providers/provider-registry.ts`.
 - Routes call services; services call providers.
 - Canonical payload contracts are shared through `@portfolio/api-contracts`.
 - Local content provider data is sourced from `@portfolio/content-data`.
 
 ## CORS Policy
 
-- In `production`, CORS is allowlist-only via `API_GATEWAY_CORS_ORIGINS`.
+- In `production`, CORS is allowlist-only via `PORTFOLIO_API_CORS_ORIGINS`.
 - If the allowlist is empty in `production`, cross-origin browser requests are disabled.
 - In local development/test, empty allowlist defaults to permissive behavior for DX.
 
 ## Content Provider Configuration
 
-- `API_GATEWAY_CONTENT_PROVIDER=local` uses the local typed content provider.
-- `API_GATEWAY_CONTENT_PROVIDER=static` uses the empty static fallback provider.
+- `PORTFOLIO_API_CONTENT_PROVIDER=local` uses the local typed content provider.
+- `PORTFOLIO_API_CONTENT_PROVIDER=static` uses the empty static fallback provider.
 
 ## Standards
 
-See `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md` for folder conventions, response contracts, and integration checklist.
+See `docs/standards/api-portfolio/API_PORTFOLIO_STANDARDS.md` for folder conventions, response contracts, and integration checklist.

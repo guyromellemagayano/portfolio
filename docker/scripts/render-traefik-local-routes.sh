@@ -62,11 +62,11 @@ http:
       entryPoints:
         - web
       service: portfolio-web
-    portfolio-admin:
+    portfolio-opsdesk:
       rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - web
-      service: portfolio-admin
+      service: portfolio-opsdesk
   services:
     portfolio-api:
       loadBalancer:
@@ -76,7 +76,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://web:3000"
-    portfolio-admin:
+    portfolio-opsdesk:
       loadBalancer:
         servers:
           - url: "http://admin:3001"
@@ -146,17 +146,17 @@ http:
         - websecure
       tls: {}
       service: portfolio-web
-    portfolio-admin:
+    portfolio-opsdesk:
       rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - web
-      service: portfolio-admin
-    portfolio-admin-secure:
+      service: portfolio-opsdesk
+    portfolio-opsdesk-secure:
       rule: "Host(`admin.__LOCAL_DEV_DOMAIN__`)"
       entryPoints:
         - websecure
       tls: {}
-      service: portfolio-admin
+      service: portfolio-opsdesk
   services:
     portfolio-api:
       loadBalancer:
@@ -166,7 +166,7 @@ http:
       loadBalancer:
         servers:
           - url: "http://web:3000"
-    portfolio-admin:
+    portfolio-opsdesk:
       loadBalancer:
         servers:
           - url: "http://admin:3001"
