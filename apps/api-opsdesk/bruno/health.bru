@@ -1,0 +1,29 @@
+meta {
+  name: Health
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/v1/health
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("returns 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("returns success=true", function() {
+    expect(res.body.success).to.equal(true);
+  });
+
+  test("reports local-postgresql mode", function() {
+    expect(res.body.data.mode).to.equal("local-postgresql");
+  });
+}

@@ -1,0 +1,33 @@
+meta {
+  name: Requests
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/v1/requests?limit={{requestLimit}}
+  body: none
+  auth: none
+}
+
+headers {
+  Accept: application/json
+}
+
+tests {
+  test("returns 200", function() {
+    expect(res.status).to.equal(200);
+  });
+
+  test("returns success=true", function() {
+    expect(res.body.success).to.equal(true);
+  });
+
+  test("returns a request array", function() {
+    expect(Array.isArray(res.body.data)).to.equal(true);
+  });
+
+  test("respects the configured limit", function() {
+    expect(res.body.meta.limit).to.equal(Number(bru.getEnvVar("requestLimit")));
+  });
+}

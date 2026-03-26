@@ -51,3 +51,10 @@ This first pass includes:
 - same-origin proxy support for `apps/opsdesk` local development
 
 The next step is adding authenticated mutation flows for assignment, approval actions, and audit writes.
+
+## API Testing
+
+For local endpoint testing, use:
+
+- FastAPI docs: `http://localhost:8010/docs`
+- Bruno collection: `apps/api-opsdesk/bruno`
