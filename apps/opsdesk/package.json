@@ -1,5 +1,5 @@
 {
-  "name": "admin",
+  "name": "opsdesk",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",
@@ -15,12 +15,12 @@
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx,tsx}\" --max-warnings 0",
     "lint:styles": "stylelint \"src/**/*.{css,scss}\" --allow-empty-input",
     "lint:styles:fix": "stylelint \"src/**/*.{css,scss}\" --fix --allow-empty-input",
-    "test": "echo 'No tests configured for admin app'",
-    "test:coverage": "echo 'No tests configured for admin app'",
-    "test:coverage:ui": "echo 'No tests configured for admin app'",
-    "test:run": "echo 'No tests configured for admin app'",
-    "test:run:coverage": "echo 'No tests configured for admin app'",
-    "test:ui": "echo 'No tests configured for admin app'"
+    "test": "echo 'No tests configured for opsdesk app'",
+    "test:coverage": "echo 'No tests configured for opsdesk app'",
+    "test:coverage:ui": "echo 'No tests configured for opsdesk app'",
+    "test:run": "echo 'No tests configured for opsdesk app'",
+    "test:run:coverage": "echo 'No tests configured for opsdesk app'",
+    "test:ui": "echo 'No tests configured for opsdesk app'"
   },
   "dependencies": {
     "@portfolio/components": "workspace:*",

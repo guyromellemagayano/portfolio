@@ -1,5 +1,5 @@
 /**
- * @file apps/admin/src/app/_data/opsdesk.data.ts
+ * @file apps/opsdesk/src/app/_data/opsdesk.data.ts
  * @author Guy Romelle Magayano
  * @description Typed mock data and navigation configuration for the OpsDesk admin workspace.
  */
@@ -297,7 +297,7 @@ export const OPS_DESK_INCIDENTS: ReadonlyArray<OpsDeskIncident> = [
     id: "INC-139",
     name: "Editorial preview token drift",
     status: "Resolved",
-    service: "Content Gateway",
+    service: "Portfolio API",
     owner: "Jules Tan",
     nextCheckpoint: "Postmortem queued",
   },

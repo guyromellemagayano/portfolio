@@ -1,5 +1,5 @@
 /**
- * @file apps/admin/src/app/index.tsx
+ * @file apps/opsdesk/src/app/index.tsx
  * @author Guy Romelle Magayano
  * @description OpsDesk admin workspace shell for requests, approvals, teams, and audit visibility.
  */

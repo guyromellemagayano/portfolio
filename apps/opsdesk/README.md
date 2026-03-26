@@ -1,6 +1,6 @@
 <!-- markdownlint-disable no-emphasis-as-heading line-length -->
 
-# `@portfolio/admin`
+# `@portfolio/opsdesk`
 
 Internal admin UI workspace for the portfolio monorepo, built with Vite + React and shared `@portfolio/*` packages.
 
@@ -8,13 +8,13 @@ Internal admin UI workspace for the portfolio monorepo, built with Vite + React 
 
 - 🚀 **Vite + React Runtime**: Fast local development with Vite and React 19 entrypoint setup
 - 🧩 **Shared Workspace UI Stack**: Uses `@portfolio/ui`, `@portfolio/components`, `@portfolio/hooks`, and `@portfolio/utils`
-- 🎛️ **Kitchen Sink Surface**: Reference screen with shared UI primitives (`CounterButton`, `Link`) for integration checks
+- 🎛️ **OpsDesk Workspace Surface**: Reference screen with shared UI primitives (`CounterButton`, `Link`) for integration checks
 - 🌐 **Local Domain Support**: `LOCAL_DEV_DOMAIN`-aware host allowlist in `vite.config.ts`
 - 🔁 **Workspace Tooling Alignment**: Shared linting, typechecking, formatting, and stylelint scripts
 
 ## Scripts
 
-Run from repo root with `pnpm --filter admin <script>`.
+Run from repo root with `pnpm --filter opsdesk <script>`.
 
 - `dev` - Start Vite dev server (`0.0.0.0:3001`)
 - `build` - Build production bundle with Vite
@@ -38,7 +38,7 @@ pnpm install
 ### 1. Run Local Development Server
 
 ```bash
-pnpm --filter admin dev
+pnpm --filter opsdesk dev
 ```
 
 Default local URL:
@@ -50,15 +50,15 @@ http://localhost:3001
 ### 2. Build for Production
 
 ```bash
-pnpm --filter admin build
+pnpm --filter opsdesk build
 ```
 
 ### 3. Validate Tooling
 
 ```bash
-pnpm --filter admin check-types
-pnpm --filter admin lint
-pnpm --filter admin lint:styles
+pnpm --filter opsdesk check-types
+pnpm --filter opsdesk lint
+pnpm --filter opsdesk lint:styles
 ```
 
 ## Environment Notes
@@ -69,14 +69,14 @@ pnpm --filter admin lint:styles
 - Default local domain fallback: `guyromellemagayano.local`
 - Allowed hosts include both:
   - `<effective-domain>`
-  - `admin.<effective-domain>`
+  - `opsdesk.<effective-domain>`
 
 ## Development
 
 Current app entrypoints:
 
 - `src/main.tsx` - React root bootstrap and strict-mode render
-- `src/app/index.tsx` - Admin kitchen sink view
+- `src/app/index.tsx` - Admin OpsDesk workspace view
 - `src/styles.css` and `src/app/styles.css` - Global/app-level styles
 
 ## Testing
@@ -106,8 +106,8 @@ pnpm install
 Run auto-fix and re-check:
 
 ```bash
-pnpm --filter admin lint:styles:fix
-pnpm --filter admin lint:styles
+pnpm --filter opsdesk lint:styles:fix
+pnpm --filter opsdesk lint:styles
 ```
 
 ## Dependencies
