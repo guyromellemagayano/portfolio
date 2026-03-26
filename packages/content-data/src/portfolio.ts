@@ -12,11 +12,11 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
   profile: {
     id: "profile-guy-romelle",
     name: "Guy Romelle Magayano",
-    role: "Software designer, founder, and engineer",
+    role: "Product engineer, platform builder, and systems thinker",
     location: "New York City, NY",
-    heroTitle: "Software designer, founder, and amateur astronaut.",
+    heroTitle: "I build reusable product systems for the web.",
     heroIntro:
-      "I build products, write about engineering, and share practical lessons from design systems, platform work, and developer tooling.",
+      "This portfolio frames a product-focused monorepo built around shared platform foundations, production-style demos, and practical engineering case studies.",
     avatar: {
       id: "image-avatar-guy-romelle",
       src: "https://cdn.example.com/images/avatar-guy-romelle.jpg",
@@ -112,7 +112,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       slug: "",
       title: "Home",
       intro:
-        "Recent writing, projects, and snapshots from product and engineering work.",
+        "The public shell for a reusable product platform spanning admin, SaaS, commerce, operations, and content workflows.",
       template: "home",
       sections: [
         {
@@ -128,8 +128,8 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
         {
           type: "projects",
           title: "Featured projects",
-          intro: "Things I’ve built and maintained over the years.",
-          projectSlugs: ["planetaria", "animaginary", "heliostream"],
+          intro: "The highest-signal apps in the portfolio monorepo.",
+          projectSlugs: ["guy-os", "opsdesk", "taskflow"],
         },
         {
           type: "speaking",
@@ -150,7 +150,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       ],
       seoTitle: "Guy Romelle Magayano",
       seoDescription:
-        "Software designer, founder, and engineer writing about product and platform systems.",
+        "Product engineer and platform builder writing about systems, delivery, and reusable software foundations.",
       seoCanonicalPath: "/",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -162,13 +162,14 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       id: "page-about",
       slug: "about",
       title: "About",
-      intro: "A quick overview of who I am and what I build.",
+      intro:
+        "How I think about product engineering, reusable systems, and maintainable delivery.",
       template: "about",
       sections: [
         {
           type: "richText",
           title: "Hi, I’m Guy.",
-          body: "I design and ship software systems that stay maintainable as products scale. My work spans design systems, DX tooling, API platforms, and frontend architecture.",
+          body: "I design and ship software systems that stay coherent as product scope grows. My work sits at the intersection of frontend architecture, platform foundations, design systems, and pragmatic backend delivery.",
         },
         {
           type: "experience",
@@ -184,7 +185,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       ],
       seoTitle: "About - Guy Romelle Magayano",
       seoDescription:
-        "Background, experience, and guiding principles for how I build products.",
+        "Background, priorities, and engineering principles behind the way I build software systems.",
       seoCanonicalPath: "/about",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -197,7 +198,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       slug: "articles",
       title: "Articles",
       intro:
-        "Long-form writing on engineering, architecture, and team process.",
+        "Writing on architecture, delivery, reusable UI systems, and the mechanics behind good product engineering.",
       template: "articles",
       sections: [
         {
@@ -207,7 +208,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       ],
       seoTitle: "Articles - Guy Romelle Magayano",
       seoDescription:
-        "Essays and notes on frontend architecture, backend systems, and product engineering.",
+        "Essays and notes on frontend architecture, platform systems, and pragmatic product engineering.",
       seoCanonicalPath: "/articles",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -219,24 +220,26 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       id: "page-projects",
       slug: "projects",
       title: "Projects",
-      intro: "Products, tools, and experiments I’ve shipped.",
+      intro:
+        "A lineup of domain-specific apps built on one shared platform foundation.",
       template: "projects",
       sections: [
         {
           type: "projects",
           title: "Projects",
           projectSlugs: [
-            "planetaria",
-            "animaginary",
-            "heliostream",
-            "cosmos",
-            "openshuttle",
+            "guy-os",
+            "opsdesk",
+            "taskflow",
+            "cartforge",
+            "pulseops",
+            "contentforge",
           ],
         },
       ],
       seoTitle: "Projects - Guy Romelle Magayano",
       seoDescription:
-        "A catalog of products, libraries, and experiments across design and engineering.",
+        "A catalog of reusable, product-style applications across admin, SaaS, commerce, operations, and content workflows.",
       seoCanonicalPath: "/projects",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -275,7 +278,8 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       id: "page-uses",
       slug: "uses",
       title: "Uses",
-      intro: "Software, hardware, and workflow tools I rely on.",
+      intro:
+        "Software, hardware, and workflow tools I use to ship maintainable product systems.",
       template: "uses",
       sections: [
         {
@@ -291,7 +295,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       ],
       seoTitle: "Uses - Guy Romelle Magayano",
       seoDescription:
-        "Recommended tools, setup details, and daily workflow choices.",
+        "Recommended tools, setup details, and workflow choices for product and platform engineering.",
       seoCanonicalPath: "/uses",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -303,7 +307,8 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       id: "page-contact",
       slug: "contact",
       title: "Contact",
-      intro: "Open to consulting, collaboration, and speaking invitations.",
+      intro:
+        "Open to work that benefits from stronger frontend architecture and reusable platform systems.",
       template: "contact",
       sections: [
         {
@@ -325,7 +330,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       ],
       seoTitle: "Contact - Guy Romelle Magayano",
       seoDescription:
-        "Contact information for consulting, collaborations, and speaking engagements.",
+        "Contact information for consulting, collaborations, and product engineering work.",
       seoCanonicalPath: "/contact",
       hideFromSitemap: false,
       seoNoIndex: false,
@@ -336,81 +341,98 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
   ],
   projects: [
     {
-      id: "project-planetaria",
-      slug: "planetaria",
-      name: "Planetaria",
+      id: "project-guy-os",
+      slug: "guy-os",
+      name: "Guy OS",
       summary:
-        "Creating technology to empower civilians to explore space on their own terms.",
+        "The public portfolio app that frames the monorepo as a coherent product platform.",
       description:
-        "A platform and product ecosystem focused on approachable space exploration experiences.",
+        "A portfolio surface built to explain reusable systems, case studies, and shared engineering foundations.",
       website: {
-        label: "planetaria.tech",
-        href: "https://planetaria.tech",
+        label: "guyromellemagayano.com",
+        href: "https://www.guyromellemagayano.com",
         target: "_blank",
       },
-      tags: ["product", "space", "platform"],
+      tags: ["portfolio", "branding", "platform"],
       featured: true,
       order: 1,
       status: "published",
     },
     {
-      id: "project-animaginary",
-      slug: "animaginary",
-      name: "Animaginary",
+      id: "project-opsdesk",
+      slug: "opsdesk",
+      name: "OpsDesk",
       summary:
-        "High-performance web animation library, hand-written in optimized WASM.",
+        "An internal-tool style admin product for CRUD, permissions, tables, forms, and auditability.",
       repository: {
         label: "github.com",
         href: "https://github.com/guyromellemagayano",
         target: "_blank",
       },
-      tags: ["animation", "wasm", "frontend"],
+      tags: ["admin", "rbac", "workflow"],
       featured: true,
       order: 2,
       status: "published",
     },
     {
-      id: "project-heliostream",
-      slug: "heliostream",
-      name: "HelioStream",
+      id: "project-taskflow",
+      slug: "taskflow",
+      name: "TaskFlow",
       summary:
-        "Real-time video streaming library optimized for low-latency delivery.",
+        "A multi-tenant SaaS product designed around teams, projects, tasks, billing, events, and automation.",
       repository: {
         label: "github.com",
         href: "https://github.com/guyromellemagayano",
         target: "_blank",
       },
-      tags: ["video", "streaming", "realtime"],
+      tags: ["saas", "multi-tenant", "product"],
       featured: true,
       order: 3,
       status: "published",
     },
     {
-      id: "project-cosmos",
-      slug: "cosmos",
-      name: "cosmOS",
-      summary: "The operating system that powers Planetaria space shuttles.",
+      id: "project-cartforge",
+      slug: "cartforge",
+      name: "CartForge",
+      summary:
+        "A commerce demo focused on catalog, cart, checkout, order state, and fulfillment flows.",
       repository: {
         label: "github.com",
         href: "https://github.com/guyromellemagayano",
         target: "_blank",
       },
-      tags: ["os", "embedded", "systems"],
+      tags: ["commerce", "checkout", "transactions"],
       order: 4,
       status: "published",
     },
     {
-      id: "project-openshuttle",
-      slug: "openshuttle",
-      name: "OpenShuttle",
-      summary: "Open schematics for an early rocket design that reached orbit.",
+      id: "project-pulseops",
+      slug: "pulseops",
+      name: "PulseOps",
+      summary:
+        "An operations console for queues, retries, incidents, and the workflows around system recovery.",
       repository: {
         label: "github.com",
         href: "https://github.com/guyromellemagayano",
         target: "_blank",
       },
-      tags: ["hardware", "open-source", "aerospace"],
+      tags: ["ops", "observability", "reliability"],
       order: 5,
+      status: "published",
+    },
+    {
+      id: "project-contentforge",
+      slug: "contentforge",
+      name: "ContentForge",
+      summary:
+        "A structured content workflow demo for editorial modeling, approvals, preview, and versioning.",
+      repository: {
+        label: "github.com",
+        href: "https://github.com/guyromellemagayano",
+        target: "_blank",
+      },
+      tags: ["cms", "editorial", "content"],
+      order: 6,
       status: "published",
     },
   ],

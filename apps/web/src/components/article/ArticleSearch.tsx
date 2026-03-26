@@ -148,7 +148,12 @@ export function ArticleSearch<P extends Record<string, unknown> = {}>(
                         {formattedDate}
                       </Card.Eyebrow>
                       <Card.Description>{article.description}</Card.Description>
-                      <Card.Cta>{ARTICLE_SEARCH_I18N.cta}</Card.Cta>
+                      <Card.Cta
+                        href={`/articles/${article.slug}`}
+                        title={`${ARTICLE_SEARCH_I18N.cta}: ${article.title}`}
+                      >
+                        {ARTICLE_SEARCH_I18N.cta}
+                      </Card.Cta>
                     </Card>
                     <Card.Eyebrow
                       as="time"
