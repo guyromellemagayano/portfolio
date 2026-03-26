@@ -18,7 +18,7 @@ services:
 
   api:
     environment:
-      API_GATEWAY_CORS_ORIGINS: ${API_GATEWAY_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},http://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}}
+      PORTFOLIO_API_CORS_ORIGINS: ${PORTFOLIO_API_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},http://opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}}
     networks:
       - edge
 

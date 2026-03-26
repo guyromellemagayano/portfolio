@@ -2,9 +2,9 @@
 
 This local Docker setup runs the monorepo workflow through Docker Compose for day-to-day development:
 
-- `api` (gateway dev runner)
+- `api` (portfolio API dev runner)
 - `web` (Next.js dev server)
-- `admin` (Vite admin app on port `3001`)
+- `admin` (Vite opsdesk app on port `3001`)
 - `tooling` (one-off lint/typecheck/test commands)
 - `e2e` / `e2e-content-smoke` (Playwright runners via Compose profiles, documented in `docker/docs/e2e.md`)
 
@@ -59,10 +59,10 @@ Use `make help` for the compact command guide and `make help-all` for the full c
 make up
 ```
 
-- `api` runs `pnpm --filter api dev` (Bun watch mode for the Elysia API runtime)
+- `api` runs `pnpm --filter api-portfolio dev` (Bun watch mode for the Elysia API runtime)
 - `web` runs `next dev --turbopack` in Docker
-- `admin` runs `pnpm --filter admin dev`
-- `web` resolves the API gateway through Docker networking (`http://api:5001`)
+- `admin` runs `pnpm --filter opsdesk dev`
+- `web` resolves the portfolio API through Docker networking (`http://api:5001`)
 - `make up` runs the base Compose command defined in the root `Makefile` (`docker/compose/local.yml`)
 
 ## Start (Traefik + Local Hostnames, Recommended First Run)
@@ -85,7 +85,7 @@ If you want to refresh linked Vercel project env vars before normalization:
 make vercel-env-sync-local VERCEL_ENV_TARGET=development
 ```
 
-This pulls env vars for `apps/web`, `apps/api`, and `apps/admin`, then regenerates root `.env.local`.
+This pulls env vars for `apps/web`, `apps/api-portfolio`, and `apps/opsdesk`, then regenerates root `.env.local`.
 The command keeps app-level `.env.local` files after sync.
 
 Host-side Vercel CLI commands:
@@ -147,7 +147,7 @@ Example `/etc/hosts` entries (if you choose manual hosts instead of OrbStack DNS
 ```txt
 127.0.0.1 guyromellemagayano.local
 127.0.0.1 api.guyromellemagayano.local
-127.0.0.1 admin.guyromellemagayano.local
+127.0.0.1 opsdesk.guyromellemagayano.local
 127.0.0.1 traefik.guyromellemagayano.local
 ```
 
@@ -156,27 +156,27 @@ Example `/etc/hosts` entries (if you choose manual hosts instead of OrbStack DNS
 Localhost ports:
 
 - Web app: `http://localhost:3000`
-- API gateway: `http://localhost:5001`
-- Admin app: `http://localhost:3001`
+- portfolio API: `http://localhost:5001`
+- OpsDesk app: `http://localhost:3001`
 
 Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.local`:
 
 - Web app: `https://guyromellemagayano.local`
-- API gateway: `https://api.guyromellemagayano.local`
-- Admin app: `https://admin.guyromellemagayano.local`
+- portfolio API: `https://api.guyromellemagayano.local`
+- OpsDesk app: `https://opsdesk.guyromellemagayano.local`
 - Traefik dashboard: `https://traefik.guyromellemagayano.local` (root redirects to `/dashboard/`)
 
 OrbStack custom-domain routing (`make up-edge` with `LOCAL_DEV_DOMAIN=guyromellemagayano.local`):
 
 - Web app: `https://guyromellemagayano.local`
-- API gateway: `https://api.guyromellemagayano.local`
-- Admin app: `https://admin.guyromellemagayano.local`
+- portfolio API: `https://api.guyromellemagayano.local`
+- OpsDesk app: `https://opsdesk.guyromellemagayano.local`
 - Traefik dashboard: `https://traefik.guyromellemagayano.local`
 - Default OrbStack service domains are still available (for example `http://web.portfolio.orb.local`, `http://api.portfolio.orb.local`, `http://traefik.portfolio.orb.local`) but the repo standard uses `guyromellemagayano.local` + subdomains.
 
 ## Content Pipeline Local Dev
 
-- The edge overlay defaults `API_GATEWAY_CORS_ORIGINS` to both web and `admin.*` origins; override `API_GATEWAY_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
+- The edge overlay defaults `PORTFOLIO_API_CORS_ORIGINS` to both web and `admin.*` origins; override `PORTFOLIO_API_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
 - Set `CONTENT_REVALIDATE_SECRET` in `.env.local` when testing `POST /api/revalidate/content`.
 - Restart after env/domain changes:
 
@@ -189,7 +189,7 @@ make up-edge
 
 - On first boot, each service runs `pnpm install --frozen-lockfile` if the container-managed workspace `node_modules` volume is empty.
 - Dependencies and Turbo cache are persisted in Docker volumes for faster restarts.
-- `apps/api/dist` and `apps/web/.next` are left on the bind-mounted workspace (not named volumes) because the build tools delete/recreate those directories and Docker mountpoints can cause `EBUSY` errors.
+- `apps/api-portfolio/dist` and `apps/web/.next` are left on the bind-mounted workspace (not named volumes) because the build tools delete/recreate those directories and Docker mountpoints can cause `EBUSY` errors.
 - The Docker `web` service runs Turbopack only (no Webpack fallback path).
 - `apps/web/next.config.ts` disables Turbopack filesystem cache for Docker `next dev` and uses a Docker-specific `distDir` (`.next-docker`) to reduce bind-mount cache corruption risk.
 - `apps/web/next.config.ts` configures `allowedDevOrigins` for the local edge domain (`guyromellemagayano.local` + `*.guyromellemagayano.local` by default) for Next 16 dev-origin behavior.

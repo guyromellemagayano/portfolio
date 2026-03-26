@@ -1,17 +1,17 @@
 /**
- * @file apps/web/src/gateway/content/__tests__/pages.test.ts
+ * @file apps/web/src/portfolio-api/content/__tests__/pages.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for API gateway content page client behavior.
+ * @description Unit tests for portfolio API content page client behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-  getAllGatewayPages,
-  getGatewayPageBySlug,
-} from "@web/gateway/content/pages";
+  getAllPortfolioPages,
+  getPortfolioPageBySlug,
+} from "@web/portfolio-api/content/pages";
 
-describe("gateway content pages client", () => {
+describe("portfolio API content pages client", () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.restoreAllMocks();
@@ -22,8 +22,8 @@ describe("gateway content pages client", () => {
     vi.restoreAllMocks();
   });
 
-  it("fetches and returns gateway page data", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+  it("fetches and returns portfolio API page data", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -49,7 +49,7 @@ describe("gateway content pages client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    const pages = await getAllGatewayPages();
+    const pages = await getAllPortfolioPages();
 
     expect(pages).toEqual([
       {
@@ -75,7 +75,7 @@ describe("gateway content pages client", () => {
   });
 
   it("fetches and returns a single page detail payload", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -112,7 +112,7 @@ describe("gateway content pages client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    const page = await getGatewayPageBySlug("now");
+    const page = await getPortfolioPageBySlug("now");
 
     expect(page).toMatchObject({
       slug: "now",
@@ -132,7 +132,7 @@ describe("gateway content pages client", () => {
   });
 
   it("returns null when the page detail endpoint responds with 404", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: false,
@@ -141,6 +141,6 @@ describe("gateway content pages client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(getGatewayPageBySlug("missing-page")).resolves.toBeNull();
+    await expect(getPortfolioPageBySlug("missing-page")).resolves.toBeNull();
   });
 });

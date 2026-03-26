@@ -51,7 +51,7 @@ export const PORTFOLIO_SHOWCASE_APPS: ReadonlyArray<PortfolioShowcaseApp> = [
     anchor: "opsdesk",
     href: "/projects#opsdesk",
     name: "OpsDesk",
-    path: "apps/admin-demo",
+    path: "apps/opsdesk-demo",
     summary:
       "An internal-tool style product built to demonstrate mature CRUD, permissions, forms, tables, auditability, and everyday admin ergonomics.",
     proofPoints: [
@@ -228,7 +228,7 @@ export const PORTFOLIO_BUILD_SEQUENCE: ReadonlyArray<PortfolioShowcaseStep> = [
   {
     title: "Strongest Signal",
     detail:
-      "Prioritize `apps/admin-demo` and `apps/saas-demo` because they prove the highest-value day-to-day engineering work.",
+      "Prioritize `apps/opsdesk-demo` and `apps/saas-demo` because they prove the highest-value day-to-day engineering work.",
   },
   {
     title: "Specialization",

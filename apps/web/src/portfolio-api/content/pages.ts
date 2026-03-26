@@ -1,7 +1,7 @@
 /**
- * @file apps/web/src/gateway/content/pages.ts
+ * @file apps/web/src/portfolio-api/content/pages.ts
  * @author Guy Romelle Magayano
- * @description API gateway client for standalone content page retrieval in the web app.
+ * @description Portfolio API client for standalone content page retrieval in the web app.
  */
 
 import {
@@ -15,9 +15,9 @@ import {
   type ApiSuccessEnvelope,
 } from "@portfolio/api-contracts/http";
 
-import { resolveApiGatewayBaseUrl } from "./articles";
+import { resolvePortfolioApiBaseUrl } from "./articles";
 
-const DEFAULT_GATEWAY_REVALIDATE_SECONDS = 60;
+const DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS = 60;
 
 type ContentPagesEnvelope =
   | ApiSuccessEnvelope<ContentPagesResponseData>
@@ -57,30 +57,30 @@ function isContentPageDetailSuccessEnvelope(
   );
 }
 
-/** Fetches standalone page summaries from the API gateway and validates the response envelope. */
-export async function getAllGatewayPages(): Promise<ContentPagesResponseData> {
-  const gatewayBaseUrl = resolveApiGatewayBaseUrl();
+/** Fetches standalone page summaries from the portfolio API and validates the response envelope. */
+export async function getAllPortfolioPages(): Promise<ContentPagesResponseData> {
+  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!gatewayBaseUrl) {
+  if (!portfolioApiBaseUrl) {
     throw new Error(
-      "API gateway URL is not configured. Set API_GATEWAY_URL or NEXT_PUBLIC_API_URL in production."
+      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
     );
   }
 
-  const endpointUrl = `${gatewayBaseUrl}${CONTENT_PAGES_ROUTE}`;
+  const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_PAGES_ROUTE}`;
 
   const response = await fetch(endpointUrl, {
     method: "GET",
     cache: "force-cache",
     next: {
-      revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
+      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
       tags: ["pages"],
     },
   });
 
   if (!response.ok) {
     throw new Error(
-      `API gateway content request failed with status ${response.status}.`
+      `Portfolio API content request failed with status ${response.status}.`
     );
   }
 
@@ -89,18 +89,18 @@ export async function getAllGatewayPages(): Promise<ContentPagesResponseData> {
   try {
     envelope = (await response.json()) as ContentPagesEnvelope;
   } catch {
-    throw new Error("API gateway returned an invalid JSON response.");
+    throw new Error("Portfolio API returned an invalid JSON response.");
   }
 
   if (!isContentPagesSuccessEnvelope(envelope)) {
-    throw new Error("API gateway returned an unexpected response envelope.");
+    throw new Error("Portfolio API returned an unexpected response envelope.");
   }
 
   return envelope.data;
 }
 
-/** Fetches a single standalone page detail payload from the API gateway by slug. */
-export async function getGatewayPageBySlug(
+/** Fetches a single standalone page detail payload from the portfolio API by slug. */
+export async function getPortfolioPageBySlug(
   slug: string
 ): Promise<ContentPageDetailResponseData | null> {
   const normalizedSlug = slug.trim();
@@ -109,21 +109,21 @@ export async function getGatewayPageBySlug(
     return null;
   }
 
-  const gatewayBaseUrl = resolveApiGatewayBaseUrl();
+  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!gatewayBaseUrl) {
+  if (!portfolioApiBaseUrl) {
     throw new Error(
-      "API gateway URL is not configured. Set API_GATEWAY_URL or NEXT_PUBLIC_API_URL in production."
+      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
     );
   }
 
-  const endpointUrl = `${gatewayBaseUrl}${getContentPageRoute(normalizedSlug)}`;
+  const endpointUrl = `${portfolioApiBaseUrl}${getContentPageRoute(normalizedSlug)}`;
 
   const response = await fetch(endpointUrl, {
     method: "GET",
     cache: "force-cache",
     next: {
-      revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
+      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
       tags: ["pages", `page:${normalizedSlug}`],
     },
   });
@@ -134,7 +134,7 @@ export async function getGatewayPageBySlug(
 
   if (!response.ok) {
     throw new Error(
-      `API gateway content request failed with status ${response.status}.`
+      `Portfolio API content request failed with status ${response.status}.`
     );
   }
 
@@ -143,11 +143,11 @@ export async function getGatewayPageBySlug(
   try {
     envelope = (await response.json()) as ContentPageDetailEnvelope;
   } catch {
-    throw new Error("API gateway returned an invalid JSON response.");
+    throw new Error("Portfolio API returned an invalid JSON response.");
   }
 
   if (!isContentPageDetailSuccessEnvelope(envelope)) {
-    throw new Error("API gateway returned an unexpected response envelope.");
+    throw new Error("Portfolio API returned an unexpected response envelope.");
   }
 
   return envelope.data;

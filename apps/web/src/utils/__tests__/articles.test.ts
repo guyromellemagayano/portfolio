@@ -7,14 +7,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-  getAllGatewayArticles,
-  getGatewayArticleBySlug,
-} from "@web/gateway/content";
+  getAllPortfolioArticles,
+  getPortfolioArticleBySlug,
+} from "@web/portfolio-api/content";
 import { getAllArticles, getArticleBySlug } from "@web/utils/articles";
 
-vi.mock("@web/gateway/content", () => ({
-  getAllGatewayArticles: vi.fn(),
-  getGatewayArticleBySlug: vi.fn(),
+vi.mock("@web/portfolio-api/content", () => ({
+  getAllPortfolioArticles: vi.fn(),
+  getPortfolioArticleBySlug: vi.fn(),
 }));
 
 describe("getAllArticles", () => {
@@ -28,8 +28,8 @@ describe("getAllArticles", () => {
     vi.restoreAllMocks();
   });
 
-  it("normalizes and sorts articles returned from the API gateway", async () => {
-    vi.mocked(getAllGatewayArticles).mockResolvedValue([
+  it("normalizes and sorts articles returned from the portfolio API", async () => {
+    vi.mocked(getAllPortfolioArticles).mockResolvedValue([
       {
         id: "article-older",
         title: "Older",
@@ -85,8 +85,8 @@ describe("getAllArticles", () => {
     ]);
   });
 
-  it("throws when the gateway request fails", async () => {
-    vi.mocked(getAllGatewayArticles).mockRejectedValue(
+  it("throws when the portfolio API request fails", async () => {
+    vi.mocked(getAllPortfolioArticles).mockRejectedValue(
       new Error("Gateway unavailable")
     );
 
@@ -103,14 +103,14 @@ describe("getArticleBySlug", () => {
     vi.restoreAllMocks();
   });
 
-  it("returns null when the gateway article detail is not found", async () => {
-    vi.mocked(getGatewayArticleBySlug).mockResolvedValue(null);
+  it("returns null when the portfolio API article detail is not found", async () => {
+    vi.mocked(getPortfolioArticleBySlug).mockResolvedValue(null);
 
     await expect(getArticleBySlug("missing-article")).resolves.toBeNull();
   });
 
-  it("normalizes article detail payloads returned from the gateway", async () => {
-    vi.mocked(getGatewayArticleBySlug).mockResolvedValue({
+  it("normalizes article detail payloads returned from the portfolio API", async () => {
+    vi.mocked(getPortfolioArticleBySlug).mockResolvedValue({
       id: "article-1",
       title: "Article 1",
       slug: "article-1",

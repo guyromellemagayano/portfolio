@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/app/sitemap.ts
  * @author Guy Romelle Magayano
- * @description Generates sitemap.xml entries for static routes and gateway-backed article/page routes.
+ * @description Generates sitemap.xml entries for static routes and portfolio-API-backed article/page routes.
  */
 
 import type { MetadataRoute } from "next";
@@ -91,7 +91,7 @@ function toAbsoluteUrl(path: string, siteUrlBase: string): string {
   return `${siteUrlBase}${path}`;
 }
 
-/** Indicates whether the sitemap should include CMS-backed routes from the API gateway. */
+/** Indicates whether the sitemap should include CMS-backed routes from the portfolio API. */
 function shouldIncludeCmsSitemapEntries(): boolean {
   return parseBooleanEnv(
     getEnvVar("SITEMAP_INCLUDE_CMS_CONTENT"),
@@ -107,7 +107,7 @@ function shouldFailOnCmsFetchError(): boolean {
   );
 }
 
-/** Builds sitemap entries for the static routes that do not depend on the API gateway. */
+/** Builds sitemap entries for the static routes that do not depend on the portfolio API. */
 function createStaticSitemapEntries(
   siteUrlBase: string
 ): MetadataRoute.Sitemap {
@@ -116,7 +116,7 @@ function createStaticSitemapEntries(
   }));
 }
 
-/** Generates the app sitemap from static routes and gateway-backed article/page routes. */
+/** Generates the app sitemap from static routes and portfolio-API-backed article/page routes. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrlBase = getSiteUrlBase();
   const staticEntries = createStaticSitemapEntries(siteUrlBase);
@@ -154,7 +154,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             getEnvVar("SITEMAP_INCLUDE_CMS_CONTENT") || null,
           sitemapFailOnCmsFetchError:
             getEnvVar("SITEMAP_FAIL_ON_CMS_FETCH_ERROR") || null,
-          apiGatewayUrl: getEnvVar("API_GATEWAY_URL") || null,
+          apiGatewayUrl: getEnvVar("PORTFOLIO_API_URL") || null,
           nextPublicApiUrl: getEnvVar("NEXT_PUBLIC_API_URL") || null,
         },
         error:

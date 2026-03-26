@@ -3,20 +3,20 @@
 This monorepo deploys to Vercel as three separate projects:
 
 - `apps/web` -> `guyromellemagayano.com`
-- `apps/api` -> `api.guyromellemagayano.com`
-- `apps/admin` -> `admin.guyromellemagayano.com`
+- `apps/api-portfolio` -> `api.guyromellemagayano.com`
+- `apps/opsdesk` -> `opsdesk.guyromellemagayano.com`
 
 ## Why Three Projects
 
 - `apps/web` is a Next.js app and is Vercel-native.
-- `apps/api` is an Elysia service adapted to a Vercel Bun Function.
-- `apps/admin` is a Vite static app.
+- `apps/api-portfolio` is an Elysia service adapted to a Vercel Bun Function.
+- `apps/opsdesk` is a Vite static app.
 
 ## Production Domains
 
 - Web: `https://guyromellemagayano.com`
 - API: `https://api.guyromellemagayano.com`
-- Admin: `https://admin.guyromellemagayano.com`
+- Admin: `https://opsdesk.guyromellemagayano.com`
 
 ## Vercel Project Setup
 
@@ -44,7 +44,7 @@ make vercel-env-pull VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/content
 ```env
 NEXT_PUBLIC_SITE_URL=https://guyromellemagayano.com
 NEXT_PUBLIC_API_URL=https://api.guyromellemagayano.com
-API_GATEWAY_URL=https://api.guyromellemagayano.com
+PORTFOLIO_API_URL=https://api.guyromellemagayano.com
 CONTENT_REVALIDATE_SECRET=...
 ```
 
@@ -60,29 +60,29 @@ SITEMAP_FAIL_ON_CMS_FETCH_ERROR=false
 
 ```env
 NEXT_PUBLIC_API_URL=https://api.guyromellemagayano.com
-API_GATEWAY_URL=https://api.guyromellemagayano.com
+PORTFOLIO_API_URL=https://api.guyromellemagayano.com
 ```
 
-## `apps/api`
+## `apps/api-portfolio`
 
-- Root Directory: `apps/api`
+- Root Directory: `apps/api-portfolio`
 - Framework Preset: Other
-- Output Directory: `public` (or empty so `apps/api/vercel.json` applies)
+- Output Directory: `public` (or empty so `apps/api-portfolio/vercel.json` applies)
 
-### `apps/api` Production envs (required)
+### `apps/api-portfolio` Production envs (required)
 
 ```env
 NODE_ENV=production
-API_GATEWAY_CONTENT_PROVIDER=local
+PORTFOLIO_API_CONTENT_PROVIDER=local
 ```
 
-### `apps/api` Recommended envs
+### `apps/api-portfolio` Recommended envs
 
 ```env
-API_GATEWAY_CORS_ORIGINS=https://guyromellemagayano.com
+PORTFOLIO_API_CORS_ORIGINS=https://guyromellemagayano.com
 ```
 
-### `apps/api` Content caching profile
+### `apps/api-portfolio` Content caching profile
 
 - `/v1/content/articles`
 - `/v1/content/articles/:slug`
@@ -93,9 +93,9 @@ Return headers:
 
 - `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
 
-## `apps/admin`
+## `apps/opsdesk`
 
-- Root Directory: `apps/admin`
+- Root Directory: `apps/opsdesk`
 - Framework Preset: Vite
 - Build Command: `pnpm build`
 - Output Directory: `dist`
@@ -117,7 +117,7 @@ Return headers:
 
 ### Admin
 
-- `https://admin.guyromellemagayano.com`
+- `https://opsdesk.guyromellemagayano.com`
 
 ## Repo Smoke Check (Post-Deploy)
 

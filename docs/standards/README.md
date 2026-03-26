@@ -4,5 +4,5 @@ Use this folder for coding standards, integration conventions, and operational g
 
 Current standards docs:
 
-- `api-gateway/API_GATEWAY_STANDARDS.md`
+- `api-portfolio/API_PORTFOLIO_STANDARDS.md`
 - `logging/LOGGING_STANDARDS.md`
