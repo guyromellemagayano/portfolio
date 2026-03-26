@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/page.tsx
  * @author Guy Romelle Magayano
- * @description Home page route that renders hero content and recent articles from the API gateway.
+ * @description Home page route that renders hero content and recent articles from the portfolio API.
  */
 
 import { type Metadata } from "next";

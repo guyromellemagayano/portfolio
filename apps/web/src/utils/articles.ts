@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/articles.ts
  * @author Guy Romelle Magayano
- * @description Utilities for gateway-backed article normalization in the web app.
+ * @description Utilities for portfolio-API-backed article normalization in the web app.
  */
 
 import type {
@@ -13,9 +13,9 @@ import type {
 } from "@portfolio/api-contracts/content";
 
 import {
-  getAllGatewayArticles,
-  getGatewayArticleBySlug,
-} from "@web/gateway/content";
+  getAllPortfolioArticles,
+  getPortfolioArticleBySlug,
+} from "@web/portfolio-api/content";
 
 export type Article = {
   title: string;
@@ -65,8 +65,8 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
-/** Maps a gateway article summary payload into the web article list shape. */
-function mapGatewayArticleToArticleWithSlug(
+/** Maps a portfolio API article summary payload into the web article list shape. */
+function mapApiArticleToArticleWithSlug(
   gatewayArticle: ContentArticle
 ): ArticleWithSlug | null {
   const title = gatewayArticle.title?.trim();
@@ -109,11 +109,11 @@ function mapGatewayArticleToArticleWithSlug(
   };
 }
 
-/** Maps a gateway article detail payload into the web article detail shape. */
-function mapGatewayArticleDetailToArticleDetail(
+/** Maps a portfolio API article detail payload into the web article detail shape. */
+function mapApiArticleDetailToArticleDetail(
   gatewayArticle: ContentArticleDetailResponseData
 ): ArticleDetail | null {
-  const article = mapGatewayArticleToArticleWithSlug(gatewayArticle);
+  const article = mapApiArticleToArticleWithSlug(gatewayArticle);
 
   if (!article) {
     return null;
@@ -148,24 +148,24 @@ function mapGatewayArticleDetailToArticleDetail(
   };
 }
 
-/** Gets all articles from the API gateway and normalizes them for web components. */
+/** Gets all articles from the portfolio API and normalizes them for web components. */
 export async function getAllArticles(): Promise<ArticleWithSlug[]> {
-  const gatewayArticles = (await getAllGatewayArticles())
-    .map(mapGatewayArticleToArticleWithSlug)
+  const gatewayArticles = (await getAllPortfolioArticles())
+    .map(mapApiArticleToArticleWithSlug)
     .filter((article): article is ArticleWithSlug => article !== null);
 
   return sortArticlesByDateDesc(gatewayArticles);
 }
 
-/** Gets a single article detail payload from the API gateway by slug. */
+/** Gets a single article detail payload from the portfolio API by slug. */
 export async function getArticleBySlug(
   slug: string
 ): Promise<ArticleDetail | null> {
-  const gatewayArticle = await getGatewayArticleBySlug(slug);
+  const gatewayArticle = await getPortfolioArticleBySlug(slug);
 
   if (!gatewayArticle) {
     return null;
   }
 
-  return mapGatewayArticleDetailToArticleDetail(gatewayArticle);
+  return mapApiArticleDetailToArticleDetail(gatewayArticle);
 }

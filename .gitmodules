@@ -25,12 +25,12 @@
 [submodule "packages/logger"]
 	path = packages/logger
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-logger.git
-[submodule "apps/admin"]
-	path = apps/admin
+[submodule "apps/opsdesk"]
+	path = apps/opsdesk
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-admin.git
 [submodule "apps/e2e"]
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
-[submodule "apps/api"]
-	path = apps/api
+[submodule "apps/api-portfolio"]
+	path = apps/api-portfolio
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api.git

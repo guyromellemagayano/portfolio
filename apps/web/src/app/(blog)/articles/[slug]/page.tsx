@@ -3,7 +3,7 @@
 /**
  * @file apps/web/src/app/(blog)/articles/[slug]/page.tsx
  * @author Guy Romelle Magayano
- * @description Gateway-backed article detail page rendered through the API gateway.
+ * @description Portfolio-API-backed article detail page rendered through the portfolio API.
  */
 
 import { cache } from "react";
@@ -196,7 +196,7 @@ async function resolveArticleFromParams(
   return getCachedArticleBySlug(normalizedSlug);
 }
 
-/** Generates metadata for the article detail page from gateway-backed article content. */
+/** Generates metadata for the article detail page from portfolio-API-backed article content. */
 export async function generateMetadata(
   props: ArticleDetailPageProps
 ): Promise<Metadata> {
@@ -275,7 +275,7 @@ export async function generateMetadata(
   }
 }
 
-/** Renders the article detail route using the API gateway article detail endpoint. */
+/** Renders the article detail route using the portfolio API article detail endpoint. */
 export default async function ArticleDetailPage(props: ArticleDetailPageProps) {
   const article = await resolveArticleFromParams(props.params).catch(
     (error) => {

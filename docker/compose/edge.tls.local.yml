@@ -43,7 +43,7 @@ services:
 
   admin:
     labels:
-      traefik.http.routers.portfolio-admin-secure.rule: Host(`admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
-      traefik.http.routers.portfolio-admin-secure.entrypoints: websecure
-      traefik.http.routers.portfolio-admin-secure.tls: "true"
-      traefik.http.routers.portfolio-admin-secure.service: portfolio-admin
+      traefik.http.routers.portfolio-opsdesk-secure.rule: Host(`opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
+      traefik.http.routers.portfolio-opsdesk-secure.entrypoints: websecure
+      traefik.http.routers.portfolio-opsdesk-secure.tls: "true"
+      traefik.http.routers.portfolio-opsdesk-secure.service: portfolio-opsdesk

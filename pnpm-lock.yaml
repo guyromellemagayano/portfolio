@@ -350,7 +350,7 @@ importers:
         specifier: "catalog:"
         version: 1.3.2(typescript@5.9.3)
 
-  apps/admin:
+  apps/opsdesk:
     dependencies:
       "@portfolio/components":
         specifier: workspace:*
@@ -417,7 +417,7 @@ importers:
         specifier: "catalog:"
         version: 1.0.0(vite@8.0.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.2))
 
-  apps/api:
+  apps/api-portfolio:
     dependencies:
       "@elysiajs/cors":
         specifier: "catalog:"

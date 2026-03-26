@@ -1,7 +1,7 @@
 /**
- * @file apps/web/src/gateway/content/articles.ts
+ * @file apps/web/src/portfolio-api/content/articles.ts
  * @author Guy Romelle Magayano
- * @description API gateway client for content article retrieval in the web app.
+ * @description Portfolio API client for content article retrieval in the web app.
  */
 
 import {
@@ -17,8 +17,8 @@ import {
 
 import { isLocalOnlyHostname } from "@web/utils/site-url";
 
-const DEFAULT_API_GATEWAY_PORT = "5001";
-const DEFAULT_GATEWAY_REVALIDATE_SECONDS = 60;
+const DEFAULT_PORTFOLIO_API_PORT = "5001";
+const DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS = 60;
 
 type ContentArticlesEnvelope =
   | ApiSuccessEnvelope<ContentArticlesResponseData>
@@ -32,13 +32,13 @@ function getEnvVar(key: string): string {
   return globalThis?.process?.env?.[key]?.trim() ?? "";
 }
 
-/** Removes a trailing slash from a configured gateway URL. */
+/** Removes a trailing slash from a configured portfolio API URL. */
 function trimTrailingSlash(value: string): string {
   return value.replace(/\/+$/, "");
 }
 
-/** Indicates whether a configured gateway URL is local-only and unsafe for production runtimes. */
-function isLocalOnlyGatewayUrlInProduction(value: string): boolean {
+/** Indicates whether a configured portfolio API URL is local-only and unsafe for production runtimes. */
+function isLocalOnlyPortfolioApiUrlInProduction(value: string): boolean {
   if (getEnvVar("NODE_ENV") !== "production") {
     return false;
   }
@@ -52,35 +52,37 @@ function isLocalOnlyGatewayUrlInProduction(value: string): boolean {
   }
 }
 
-/** Builds a more actionable gateway error message for failed content requests. */
-function createGatewayRequestErrorMessage(
+/** Builds a more actionable portfolio API error message for failed content requests. */
+function createPortfolioApiRequestErrorMessage(
   endpointUrl: string,
   status: number
 ): string {
-  const baseMessage = `API gateway content request failed with status ${status} for ${endpointUrl}.`;
+  const baseMessage = `Portfolio API content request failed with status ${status} for ${endpointUrl}.`;
 
   if (
     status === 404 &&
     endpointUrl.startsWith("http://localhost:5001/") &&
     getEnvVar("NODE_ENV") !== "production"
   ) {
-    return `${baseMessage} Local API gateway may not be running. Start the API app (port 5001 by default) before loading web pages that fetch content.`;
+    return `${baseMessage} Local portfolio API may not be running. Start the portfolio API app (port 5001 by default) before loading web pages that fetch content.`;
   }
 
   return baseMessage;
 }
 
-/** Resolves the API gateway base URL for server-side fetches in `apps/web`. */
-export function resolveApiGatewayBaseUrl(): string | null {
-  const explicitGatewayUrl =
-    getEnvVar("API_GATEWAY_URL") || getEnvVar("NEXT_PUBLIC_API_URL");
+/** Resolves the portfolio API base URL for server-side fetches in `apps/web`. */
+export function resolvePortfolioApiBaseUrl(): string | null {
+  const explicitPortfolioApiUrl =
+    getEnvVar("PORTFOLIO_API_URL") ||
+    getEnvVar("API_GATEWAY_URL") ||
+    getEnvVar("NEXT_PUBLIC_API_URL");
 
-  if (explicitGatewayUrl) {
-    if (isLocalOnlyGatewayUrlInProduction(explicitGatewayUrl)) {
+  if (explicitPortfolioApiUrl) {
+    if (isLocalOnlyPortfolioApiUrlInProduction(explicitPortfolioApiUrl)) {
       return null;
     }
 
-    return trimTrailingSlash(explicitGatewayUrl);
+    return trimTrailingSlash(explicitPortfolioApiUrl);
   }
 
   const nodeEnv = getEnvVar("NODE_ENV");
@@ -90,7 +92,7 @@ export function resolveApiGatewayBaseUrl(): string | null {
   }
 
   const port =
-    getEnvVar("API_PORT") || getEnvVar("PORT") || DEFAULT_API_GATEWAY_PORT;
+    getEnvVar("API_PORT") || getEnvVar("PORT") || DEFAULT_PORTFOLIO_API_PORT;
 
   return `http://localhost:${port}`;
 }
@@ -126,30 +128,30 @@ function isContentArticleDetailSuccessEnvelope(
   );
 }
 
-/** Fetches article summaries from the API gateway and validates the response envelope. */
-export async function getAllGatewayArticles(): Promise<ContentArticlesResponseData> {
-  const gatewayBaseUrl = resolveApiGatewayBaseUrl();
+/** Fetches article summaries from the portfolio API and validates the response envelope. */
+export async function getAllPortfolioArticles(): Promise<ContentArticlesResponseData> {
+  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!gatewayBaseUrl) {
+  if (!portfolioApiBaseUrl) {
     throw new Error(
-      "API gateway URL is not configured. Set API_GATEWAY_URL or NEXT_PUBLIC_API_URL in production."
+      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
     );
   }
 
-  const endpointUrl = `${gatewayBaseUrl}${CONTENT_ARTICLES_ROUTE}`;
+  const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_ARTICLES_ROUTE}`;
 
   const response = await fetch(endpointUrl, {
     method: "GET",
     cache: "force-cache",
     next: {
-      revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
+      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
       tags: ["articles"],
     },
   });
 
   if (!response.ok) {
     throw new Error(
-      createGatewayRequestErrorMessage(endpointUrl, response.status)
+      createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
     );
   }
 
@@ -158,18 +160,18 @@ export async function getAllGatewayArticles(): Promise<ContentArticlesResponseDa
   try {
     envelope = (await response.json()) as ContentArticlesEnvelope;
   } catch {
-    throw new Error("API gateway returned an invalid JSON response.");
+    throw new Error("Portfolio API returned an invalid JSON response.");
   }
 
   if (!isContentArticlesSuccessEnvelope(envelope)) {
-    throw new Error("API gateway returned an unexpected response envelope.");
+    throw new Error("Portfolio API returned an unexpected response envelope.");
   }
 
   return envelope.data;
 }
 
-/** Fetches a single article detail payload from the API gateway by slug. */
-export async function getGatewayArticleBySlug(
+/** Fetches a single article detail payload from the portfolio API by slug. */
+export async function getPortfolioArticleBySlug(
   slug: string
 ): Promise<ContentArticleDetailResponseData | null> {
   const normalizedSlug = slug.trim();
@@ -178,21 +180,21 @@ export async function getGatewayArticleBySlug(
     return null;
   }
 
-  const gatewayBaseUrl = resolveApiGatewayBaseUrl();
+  const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
-  if (!gatewayBaseUrl) {
+  if (!portfolioApiBaseUrl) {
     throw new Error(
-      "API gateway URL is not configured. Set API_GATEWAY_URL or NEXT_PUBLIC_API_URL in production."
+      "Portfolio API URL is not configured. Set `PORTFOLIO_API_URL` or `NEXT_PUBLIC_API_URL` in production."
     );
   }
 
-  const endpointUrl = `${gatewayBaseUrl}${getContentArticleRoute(normalizedSlug)}`;
+  const endpointUrl = `${portfolioApiBaseUrl}${getContentArticleRoute(normalizedSlug)}`;
 
   const response = await fetch(endpointUrl, {
     method: "GET",
     cache: "force-cache",
     next: {
-      revalidate: DEFAULT_GATEWAY_REVALIDATE_SECONDS,
+      revalidate: DEFAULT_PORTFOLIO_API_REVALIDATE_SECONDS,
       tags: ["articles", `article:${normalizedSlug}`],
     },
   });
@@ -203,7 +205,7 @@ export async function getGatewayArticleBySlug(
 
   if (!response.ok) {
     throw new Error(
-      createGatewayRequestErrorMessage(endpointUrl, response.status)
+      createPortfolioApiRequestErrorMessage(endpointUrl, response.status)
     );
   }
 
@@ -212,11 +214,11 @@ export async function getGatewayArticleBySlug(
   try {
     envelope = (await response.json()) as ContentArticleDetailEnvelope;
   } catch {
-    throw new Error("API gateway returned an invalid JSON response.");
+    throw new Error("Portfolio API returned an invalid JSON response.");
   }
 
   if (!isContentArticleDetailSuccessEnvelope(envelope)) {
-    throw new Error("API gateway returned an unexpected response envelope.");
+    throw new Error("Portfolio API returned an unexpected response envelope.");
   }
 
   return envelope.data;

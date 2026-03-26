@@ -26,7 +26,7 @@ PROD_WEB_PORT ?= 3000
 PROD_API_PORT ?= 5001
 PROD_SMOKE_WEB_URL ?= https://www.guyromellemagayano.com
 PROD_SMOKE_API_URL ?= https://api.guyromellemagayano.com
-PROD_SMOKE_ADMIN_URL ?= https://admin.guyromellemagayano.com
+PROD_SMOKE_OPSDESK_URL ?= https://opsdesk.guyromellemagayano.com
 PROD_SMOKE_ARTICLE_PATH ?=
 PROD_SMOKE_PAGE_PATH ?=
 SKIP_DNS_SETUP ?= 0
@@ -185,7 +185,7 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "TRAEFIK_LOG_LEVEL" "Traefik log level (ERROR/INFO/DEBUG)" "$(TRAEFIK_LOG_LEVEL)"
 	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_WEB_URL" "Production web URL for make prod-smoke" "$(PROD_SMOKE_WEB_URL)"
 	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_API_URL" "Production API URL for make prod-smoke" "$(PROD_SMOKE_API_URL)"
-	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_ADMIN_URL" "Production admin URL for make prod-smoke" "$(PROD_SMOKE_ADMIN_URL)"
+	@printf '%-32s %s (current: %s)\n' "PROD_SMOKE_OPSDESK_URL" "Production admin URL for make prod-smoke" "$(PROD_SMOKE_OPSDESK_URL)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_ENV_TARGET" "Vercel env target for make vercel-env*" "$(VERCEL_ENV_TARGET)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_GIT_BRANCH" "Optional preview branch for make vercel-env*" "$(VERCEL_GIT_BRANCH)"
 	@printf '%-32s %s (current: %s)\n' "VERCEL_PULL_ENV_FILE" "Output filename per app for make vercel-env*" "$(VERCEL_PULL_ENV_FILE)"
@@ -264,7 +264,7 @@ info: ## Print the effective Docker/Compose settings used by this Makefile.
 	@printf 'PROD_API_PORT=%s\n' "$(PROD_API_PORT)"
 	@printf 'PROD_SMOKE_WEB_URL=%s\n' "$(PROD_SMOKE_WEB_URL)"
 	@printf 'PROD_SMOKE_API_URL=%s\n' "$(PROD_SMOKE_API_URL)"
-	@printf 'PROD_SMOKE_ADMIN_URL=%s\n' "$(PROD_SMOKE_ADMIN_URL)"
+	@printf 'PROD_SMOKE_OPSDESK_URL=%s\n' "$(PROD_SMOKE_OPSDESK_URL)"
 	@printf 'PROD_SMOKE_ARTICLE_PATH=%s\n' "$(PROD_SMOKE_ARTICLE_PATH)"
 	@printf 'PROD_SMOKE_PAGE_PATH=%s\n' "$(PROD_SMOKE_PAGE_PATH)"
 doctor: ## Show Docker/Compose versions and validate the compose file.
@@ -328,7 +328,7 @@ build-prod: ## Build production Docker images for api + web (no containers start
 	@$(COMPOSE_PROD_NO_FORCE) build
 
 prod-smoke: ## Smoke-check deployed production `web`, `api`, `admin`, and `sitemap.xml` endpoints (Vercel-only topology).
-	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_ADMIN_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
+	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_OPSDESK_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
 
 bootstrap: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
 	@sh docker/scripts/bootstrap-local.sh detached
@@ -586,11 +586,11 @@ vercel: ## Run Vercel CLI on host (`VERCEL_ARGS`).
 vercel-env-pull-web: ## Pull Vercel env vars for `apps/web` into `apps/web/$(VERCEL_PULL_ENV_FILE)` (requires `apps/web/.vercel/project.json`).
 	@sh docker/scripts/vercel-env-pull.sh "apps/web" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
-vercel-env-pull-api: ## Pull Vercel env vars for `apps/api` into `apps/api/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/api" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+vercel-env-pull-api: ## Pull Vercel env vars for `apps/api-portfolio` into `apps/api-portfolio/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api-portfolio/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/api-portfolio" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
-vercel-env-pull-admin: ## Pull Vercel env vars for `apps/admin` into `apps/admin/$(VERCEL_PULL_ENV_FILE)` (requires `apps/admin/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/admin" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+vercel-env-pull-admin: ## Pull Vercel env vars for `apps/opsdesk` into `apps/opsdesk/$(VERCEL_PULL_ENV_FILE)` (requires `apps/opsdesk/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/opsdesk" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
 vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`, `admin`).
 	@$(MAKE) vercel-env-pull-web
