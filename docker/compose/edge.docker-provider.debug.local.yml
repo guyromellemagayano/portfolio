@@ -71,7 +71,7 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: portfolio-edge-local
-      traefik.http.routers.portfolio-admin.rule: Host(`admin.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
-      traefik.http.routers.portfolio-admin.entrypoints: web
-      traefik.http.routers.portfolio-admin.service: portfolio-admin
-      traefik.http.services.portfolio-admin.loadbalancer.server.port: "3001"
+      traefik.http.routers.portfolio-opsdesk.rule: Host(`opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
+      traefik.http.routers.portfolio-opsdesk.entrypoints: web
+      traefik.http.routers.portfolio-opsdesk.service: portfolio-opsdesk
+      traefik.http.services.portfolio-opsdesk.loadbalancer.server.port: "3001"

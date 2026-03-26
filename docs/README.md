@@ -13,10 +13,10 @@ Project-level documentation is centralized under `docs/`.
 
 ## Primary Entry Points
 
-- API Gateway overview: `docs/services/api-gateway/README.md`
+- Portfolio API overview: `docs/services/api-portfolio/README.md`
 - Vercel deployment guide: `docs/deployment/vercel/README.md`
 - Content integration: `docs/integrations/content/README.md`
-- API Gateway standards: `docs/standards/api-gateway/API_GATEWAY_STANDARDS.md`
+- Portfolio API standards: `docs/standards/api-portfolio/API_PORTFOLIO_STANDARDS.md`
 - Logging standards: `docs/standards/logging/LOGGING_STANDARDS.md`
 - Docker workspace index: `docker/README.md`
 - Docker local dev guide: `docker/docs/local-dev.md`

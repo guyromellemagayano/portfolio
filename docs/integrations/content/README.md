@@ -4,14 +4,14 @@ Content integration docs are grouped here.
 
 Current ownership model:
 
-- `apps/api` owns runtime content retrieval for article and standalone page APIs.
-- `apps/web` consumes content data from `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`).
+- `apps/api-portfolio` owns runtime content retrieval for article and standalone page APIs.
+- `apps/web` consumes content data from `apps/api-portfolio` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`).
 - Local content snapshots are sourced from `@portfolio/content-data`.
 
 ## Runtime Notes
 
-- `API_GATEWAY_CONTENT_PROVIDER=local` uses typed local content snapshots.
-- `API_GATEWAY_CONTENT_PROVIDER=static` uses the empty static fallback provider.
+- `PORTFOLIO_API_CONTENT_PROVIDER=local` uses typed local content snapshots.
+- `PORTFOLIO_API_CONTENT_PROVIDER=static` uses the empty static fallback provider.
 - `apps/web` exposes `POST /api/revalidate/content` to invalidate cache tags and paths.
 
 ## Content Revalidation API
@@ -26,7 +26,7 @@ Current ownership model:
 ## Local Smoke Testing (Playwright)
 
 - `apps/e2e` includes a content pipeline smoke suite (`@content`) that verifies:
-  - API gateway content list routes
+  - portfolio API content list routes
   - Web route rendering
   - `POST /api/revalidate/content`
 - Optional seeded slug env vars:

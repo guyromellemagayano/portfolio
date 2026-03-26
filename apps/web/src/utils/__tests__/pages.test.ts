@@ -6,12 +6,15 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getAllGatewayPages, getGatewayPageBySlug } from "@web/gateway/content";
+import {
+  getAllPortfolioPages,
+  getPortfolioPageBySlug,
+} from "@web/portfolio-api/content";
 import { getAllPages, getPageBySlug } from "@web/utils/pages";
 
-vi.mock("@web/gateway/content", () => ({
-  getAllGatewayPages: vi.fn(),
-  getGatewayPageBySlug: vi.fn(),
+vi.mock("@web/portfolio-api/content", () => ({
+  getAllPortfolioPages: vi.fn(),
+  getPortfolioPageBySlug: vi.fn(),
 }));
 
 describe("getAllPages", () => {
@@ -23,8 +26,8 @@ describe("getAllPages", () => {
     vi.restoreAllMocks();
   });
 
-  it("normalizes pages returned from the API gateway", async () => {
-    vi.mocked(getAllGatewayPages).mockResolvedValue([
+  it("normalizes pages returned from the portfolio API", async () => {
+    vi.mocked(getAllPortfolioPages).mockResolvedValue([
       {
         id: "page-1",
         slug: "now",
@@ -62,14 +65,14 @@ describe("getPageBySlug", () => {
     vi.restoreAllMocks();
   });
 
-  it("returns null when the gateway page detail is not found", async () => {
-    vi.mocked(getGatewayPageBySlug).mockResolvedValue(null);
+  it("returns null when the portfolio API page detail is not found", async () => {
+    vi.mocked(getPortfolioPageBySlug).mockResolvedValue(null);
 
     await expect(getPageBySlug("missing-page")).resolves.toBeNull();
   });
 
-  it("normalizes standalone page detail payloads returned from the gateway", async () => {
-    vi.mocked(getGatewayPageBySlug).mockResolvedValue({
+  it("normalizes standalone page detail payloads returned from the portfolio API", async () => {
+    vi.mocked(getPortfolioPageBySlug).mockResolvedValue({
       id: "page-1",
       slug: "now",
       title: "Now",

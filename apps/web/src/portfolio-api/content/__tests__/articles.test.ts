@@ -1,18 +1,18 @@
 /**
- * @file apps/web/src/gateway/content/__tests__/articles.test.ts
+ * @file apps/web/src/portfolio-api/content/__tests__/articles.test.ts
  * @author Guy Romelle Magayano
- * @description Unit tests for API gateway content article client behavior.
+ * @description Unit tests for portfolio API content article client behavior.
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-  getAllGatewayArticles,
-  getGatewayArticleBySlug,
-  resolveApiGatewayBaseUrl,
-} from "@web/gateway/content/articles";
+  getAllPortfolioArticles,
+  getPortfolioArticleBySlug,
+  resolvePortfolioApiBaseUrl,
+} from "@web/portfolio-api/content/articles";
 
-describe("gateway content articles client", () => {
+describe("portfolio API content articles client", () => {
   beforeEach(() => {
     vi.unstubAllEnvs();
     vi.restoreAllMocks();
@@ -23,41 +23,41 @@ describe("gateway content articles client", () => {
     vi.restoreAllMocks();
   });
 
-  it("uses explicit API gateway URL when configured", () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com/");
+  it("uses explicit portfolio API URL when configured", () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com/");
 
-    expect(resolveApiGatewayBaseUrl()).toBe("https://api.example.com");
+    expect(resolvePortfolioApiBaseUrl()).toBe("https://api.example.com");
   });
 
   it("falls back to local API URL in development when no explicit URL is set", () => {
     vi.stubEnv("NODE_ENV", "development");
     vi.stubEnv("API_PORT", "5001");
 
-    expect(resolveApiGatewayBaseUrl()).toBe("http://localhost:5001");
+    expect(resolvePortfolioApiBaseUrl()).toBe("http://localhost:5001");
   });
 
   it("returns null in production when explicit API URL is missing", () => {
     vi.stubEnv("NODE_ENV", "production");
 
-    expect(resolveApiGatewayBaseUrl()).toBeNull();
+    expect(resolvePortfolioApiBaseUrl()).toBeNull();
   });
 
   it("returns null in production when the configured API URL points to a local-only host", () => {
     vi.stubEnv("NODE_ENV", "production");
-    vi.stubEnv("API_GATEWAY_URL", "http://127.0.0.1:5001");
+    vi.stubEnv("PORTFOLIO_API_URL", "http://127.0.0.1:5001");
 
-    expect(resolveApiGatewayBaseUrl()).toBeNull();
+    expect(resolvePortfolioApiBaseUrl()).toBeNull();
   });
 
   it("returns null in production when the configured public API URL uses a .local host", () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("NEXT_PUBLIC_API_URL", "https://api.guyromellemagayano.local");
 
-    expect(resolveApiGatewayBaseUrl()).toBeNull();
+    expect(resolvePortfolioApiBaseUrl()).toBeNull();
   });
 
-  it("fetches and returns gateway article data", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+  it("fetches and returns portfolio API article data", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -84,7 +84,7 @@ describe("gateway content articles client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    const articles = await getAllGatewayArticles();
+    const articles = await getAllPortfolioArticles();
 
     expect(articles).toEqual([
       {
@@ -110,8 +110,8 @@ describe("gateway content articles client", () => {
     );
   });
 
-  it("throws when gateway returns an error envelope", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+  it("throws when the portfolio API returns an error envelope", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -131,13 +131,13 @@ describe("gateway content articles client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(getAllGatewayArticles()).rejects.toThrow(
+    await expect(getAllPortfolioArticles()).rejects.toThrow(
       "unexpected response envelope"
     );
   });
 
   it("fetches and returns a single article detail payload", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
@@ -176,7 +176,7 @@ describe("gateway content articles client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    const article = await getGatewayArticleBySlug("article-1");
+    const article = await getPortfolioArticleBySlug("article-1");
 
     expect(article).toMatchObject({
       slug: "article-1",
@@ -196,7 +196,7 @@ describe("gateway content articles client", () => {
   });
 
   it("returns null when the article detail endpoint responds with 404", async () => {
-    vi.stubEnv("API_GATEWAY_URL", "https://api.example.com");
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
       ok: false,
@@ -206,7 +206,7 @@ describe("gateway content articles client", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(
-      getGatewayArticleBySlug("missing-article")
+      getPortfolioArticleBySlug("missing-article")
     ).resolves.toBeNull();
   });
 });

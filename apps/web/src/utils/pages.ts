@@ -1,7 +1,7 @@
 /**
  * @file apps/web/src/utils/pages.ts
  * @author Guy Romelle Magayano
- * @description Utilities for gateway-backed standalone page normalization in the web app.
+ * @description Utilities for portfolio-API-backed standalone page normalization in the web app.
  */
 
 import type {
@@ -12,7 +12,10 @@ import type {
   ContentTwitterCard,
 } from "@portfolio/api-contracts/content";
 
-import { getAllGatewayPages, getGatewayPageBySlug } from "@web/gateway/content";
+import {
+  getAllPortfolioPages,
+  getPortfolioPageBySlug,
+} from "@web/portfolio-api/content";
 
 export type CmsPage = {
   slug: string;
@@ -49,8 +52,8 @@ function getOptionalPositiveImageDimension(value: unknown): number | undefined {
   return Math.round(value);
 }
 
-/** Maps a gateway page summary payload into the web CMS page shape. */
-function mapGatewayPageToCmsPage(gatewayPage: ContentPage): CmsPage | null {
+/** Maps a portfolio API page summary payload into the web CMS page shape. */
+function mapApiPageToCmsPage(gatewayPage: ContentPage): CmsPage | null {
   const title = gatewayPage.title?.trim();
   const slug = gatewayPage.slug?.trim();
 
@@ -75,11 +78,11 @@ function mapGatewayPageToCmsPage(gatewayPage: ContentPage): CmsPage | null {
   };
 }
 
-/** Maps a gateway page detail payload into the web CMS page detail shape. */
-function mapGatewayPageDetailToCmsPageDetail(
+/** Maps a portfolio API page detail payload into the web CMS page detail shape. */
+function mapApiPageDetailToCmsPageDetail(
   gatewayPage: ContentPageDetailResponseData
 ): CmsPageDetail | null {
-  const page = mapGatewayPageToCmsPage(gatewayPage);
+  const page = mapApiPageToCmsPage(gatewayPage);
 
   if (!page) {
     return null;
@@ -113,22 +116,22 @@ function mapGatewayPageDetailToCmsPageDetail(
   };
 }
 
-/** Gets all standalone pages from the API gateway and normalizes them for web routes. */
+/** Gets all standalone pages from the portfolio API and normalizes them for web routes. */
 export async function getAllPages(): Promise<CmsPage[]> {
-  return (await getAllGatewayPages())
-    .map(mapGatewayPageToCmsPage)
+  return (await getAllPortfolioPages())
+    .map(mapApiPageToCmsPage)
     .filter((page): page is CmsPage => page !== null);
 }
 
-/** Gets a single standalone page detail payload from the API gateway by slug. */
+/** Gets a single standalone page detail payload from the portfolio API by slug. */
 export async function getPageBySlug(
   slug: string
 ): Promise<CmsPageDetail | null> {
-  const gatewayPage = await getGatewayPageBySlug(slug);
+  const gatewayPage = await getPortfolioPageBySlug(slug);
 
   if (!gatewayPage) {
     return null;
   }
 
-  return mapGatewayPageDetailToCmsPageDetail(gatewayPage);
+  return mapApiPageDetailToCmsPageDetail(gatewayPage);
 }

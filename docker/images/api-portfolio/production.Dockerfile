@@ -20,8 +20,8 @@ ENV NODE_ENV=production
 
 COPY --from=deps /workspace /workspace
 
-RUN pnpm --filter api... build
-RUN pnpm --filter api --prod deploy /prod/api
+RUN pnpm --filter api-portfolio... build
+RUN pnpm --filter api-portfolio --prod deploy /prod/api
 
 FROM node:22-bookworm-slim AS runner
 
