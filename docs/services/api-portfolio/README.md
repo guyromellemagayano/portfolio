@@ -1,6 +1,6 @@
 # Portfolio API (`apps/api-portfolio`)
 
-`apps/api-portfolio` is the monorepo integration boundary used by app clients (`web`, future `admin`) to consume backend services through a unified API surface.
+`apps/api-portfolio` is the monorepo integration boundary used by public app clients such as `web` to consume portfolio-facing backend services through a stable API surface.
 
 Current primary data flow for content:
 
