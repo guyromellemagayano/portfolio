@@ -30,7 +30,7 @@ make e2e-list-content
 
 ```bash
 # 1) Start app stack in background
-make up-detached
+make up
 
 # 2) Run only the content smoke suite
 make e2e-content
@@ -39,7 +39,7 @@ make e2e-content
 make logs
 ```
 
-You can also run `make up-edge-detached` first if you want to inspect the app through Traefik hostnames while the e2e runners execute.
+You can also run `make up-edge` first if you want to inspect the app through Traefik hostnames while the e2e runners execute.
 
 You can run `make e2e` / `make e2e-content` directly without starting the app stack first; Compose will start required services.
 
