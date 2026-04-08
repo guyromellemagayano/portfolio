@@ -104,7 +104,6 @@ make build-prod
 
 # Run production scaffold locally (foreground/background)
 make up-prod
-make up-prod-detached
 
 # Inspect logs / stop services
 make logs-prod
@@ -119,7 +118,7 @@ Useful variables:
 Example:
 
 ```bash
-make up-prod-detached PROD_WEB_PORT=3300 PROD_API_PORT=5501
+make up-prod PROD_WEB_PORT=3300 PROD_API_PORT=5501
 ```
 
 ## Scope of the Current Production Scaffold
