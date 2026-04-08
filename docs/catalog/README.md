@@ -12,6 +12,7 @@ This catalog is for discovery only. README files should remain close to the code
 
 - `docs/README.md`
 - `docs/architecture/README.md`
+- `docs/architecture/w3x/README.md`
 - `docs/catalog/README.md`
 - `docs/deployment/README.md`
 - `docs/deployment/vercel/README.md`
@@ -28,9 +29,11 @@ This catalog is for discovery only. README files should remain close to the code
 
 ## Apps (`apps/`)
 
-- `apps/opsdesk/README.md`
+- `apps/api-opsdesk/README.md`
+- `apps/api-opsdesk/bruno/README.md`
 - `apps/api-portfolio/README.md`
 - `apps/e2e/README.md`
+- `apps/opsdesk/README.md`
 
 ## Packages (`packages/`)
 
@@ -45,10 +48,10 @@ This catalog is for discovery only. README files should remain close to the code
 - `packages/utils/README.md`
 - `packages/utils/src/README.md`
 - `packages/vitest-presets/README.md`
-
-## Other
-
-- `ossph.org/README.md`
+- `packages/w3x/README.md`
+- `packages/w3x/dom/README.md`
+- `packages/w3x/primitives/README.md`
+- `packages/w3x/ui/README.md`
 
 ## Related Non-README Entry Points (Frequently Used)
 
