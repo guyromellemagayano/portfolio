@@ -1,2 +1,49 @@
-# File-provider routes intentionally disabled because TRAEFIK_ENABLE_DOCKER_PROVIDER=1.
-# This avoids duplicate routers across file + Docker providers.
+http:
+  middlewares:
+    traefik-dashboard-root-redirect:
+      redirectRegex:
+        regex: "^http://([^/]+)/?$"
+        replacement: "http://${1}/dashboard/"
+        permanent: false
+  routers:
+    traefik-root:
+      rule: "Host(`traefik.guyromellemagayano.local`) && Path(`/`)"
+      entryPoints:
+        - web
+      priority: 100
+      middlewares:
+        - traefik-dashboard-root-redirect
+      service: api@internal
+    traefik:
+      rule: "Host(`traefik.guyromellemagayano.local`)"
+      entryPoints:
+        - web
+      service: api@internal
+    portfolio-api:
+      rule: "Host(`api.guyromellemagayano.local`)"
+      entryPoints:
+        - web
+      service: portfolio-api
+    portfolio-web:
+      rule: "Host(`guyromellemagayano.local`)"
+      entryPoints:
+        - web
+      service: portfolio-web
+    portfolio-opsdesk:
+      rule: "Host(`opsdesk.guyromellemagayano.local`)"
+      entryPoints:
+        - web
+      service: portfolio-opsdesk
+  services:
+    portfolio-api:
+      loadBalancer:
+        servers:
+          - url: "http://api:5001"
+    portfolio-web:
+      loadBalancer:
+        servers:
+          - url: "http://web:3000"
+    portfolio-opsdesk:
+      loadBalancer:
+        servers:
+          - url: "http://opsdesk:3001"
