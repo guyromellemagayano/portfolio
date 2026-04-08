@@ -14,6 +14,7 @@ Project-level documentation is centralized under `docs/`.
 ## Primary Entry Points
 
 - Portfolio API overview: `docs/services/api-portfolio/README.md`
+- W3X framework definition: `docs/architecture/w3x/README.md`
 - Vercel deployment guide: `docs/deployment/vercel/README.md`
 - Content integration: `docs/integrations/content/README.md`
 - Portfolio API standards: `docs/standards/api-portfolio/API_PORTFOLIO_STANDARDS.md`
