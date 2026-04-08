@@ -109,7 +109,7 @@ make vercel-env-pull VERCEL_ENV_TARGET=development
 Background mode:
 
 ```bash
-make bootstrap-detached
+make bootstrap
 ```
 
 If you want to skip DNS setup explicitly (for example, you already configured `dnsmasq` or prefer `/etc/hosts` manually):
@@ -339,7 +339,7 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `TRAEFIK_DOCKER_SOCKET_PATH` (optional): host Docker socket path mounted into the Docker socket-proxy sidecar (auto-detects Docker Desktop macOS user socket when present; otherwise defaults to `/var/run/docker.sock`)
 - `TRAEFIK_DOCKER_API_VERSION` (optional, default `1.53`): Docker API version Traefik uses if the Docker provider is enabled (useful on newer Docker Desktop releases)
 - `TRAEFIK_ENABLE_DOCKER_PROVIDER` (optional, default `0`): legacy compatibility toggle for Docker-provider routing; prefer `make up-edge-debug*` targets instead
-- `SKIP_DNS_SETUP` (optional, default `0`): skip the `dnsmasq`/hosts step in `make bootstrap` and `make bootstrap-detached`
+- `SKIP_DNS_SETUP` (optional, default `0`): skip the `dnsmasq`/hosts step in `make bootstrap`
 - For E2E-specific envs (`CONTENT_REVALIDATE_SECRET`, `E2E_CONTENT_*`), see `docker/docs/e2e.md`
 
 ## Traefik Routing Provider Notes

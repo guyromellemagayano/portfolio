@@ -2,13 +2,7 @@
 
 set -eu
 
-MODE="${1:-}"
 REPO_ROOT="$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)"
-
-if [ -z "$MODE" ]; then
-  echo "usage: $0 <detached>" >&2
-  exit 1
-fi
 
 LOCAL_DEV_DOMAIN="${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}"
 SKIP_DNS_SETUP="${SKIP_DNS_SETUP:-0}"
@@ -16,14 +10,6 @@ SKIP_DNS_SETUP="${SKIP_DNS_SETUP:-0}"
 run_make() {
   make --no-print-directory -C "$REPO_ROOT" "$@"
 }
-
-case "$MODE" in
-  detached) START_TARGET="up-edge-detached" ;;
-  *)
-    echo "invalid mode: $MODE (expected detached)" >&2
-    exit 1
-    ;;
-esac
 
 run_make validate-edge
 
@@ -44,4 +30,4 @@ else
   printf 'If the browser shows DNS_PROBE_* while curl works, run `make edge-dns-doctor`.\n'
 fi
 
-run_make "$START_TARGET"
+run_make up-edge

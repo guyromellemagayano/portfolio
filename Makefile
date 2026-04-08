@@ -71,17 +71,11 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	ps-opsdesk \
 	build-prod \
 	bootstrap \
-	bootstrap-detached \
 	up \
-	up-detached \
 	up-edge \
-	up-edge-detached \
 	up-edge-debug \
-	up-edge-debug-detached \
 	up-edge-tls \
-	up-edge-tls-detached \
 	up-prod \
-	up-prod-detached \
 	up-opsdesk \
 	down \
 	down-prod \
@@ -140,8 +134,8 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make up-edge" "Background dev stack with local hostnames."
 	@printf '%-42s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-42s %s\n' "make down-edge" "Stop edge stack."
-	@printf '%-42s %s\n' "make up-opsdesk" "Start local `api-opsdesk` + PostgreSQL only."
-	@printf '%-42s %s\n' "make logs-opsdesk" "Follow local `api-opsdesk` + PostgreSQL logs."
+	@printf '%-42s %s\n' "make up-opsdesk" 'Start local `api-opsdesk` + PostgreSQL only.'
+	@printf '%-42s %s\n' "make logs-opsdesk" 'Follow local `api-opsdesk` + PostgreSQL logs.'
 	@printf '\n🌐 DNS Modes\n'
 	@printf '%-42s %s\n' "make dnsmasq-local" "Manual local DNS helper for current LOCAL_DEV_DOMAIN."
 	@printf '%-42s %s\n' "make dnsmasq-health" "Functional dnsmasq checks."
@@ -199,24 +193,22 @@ help-all: ## Show the full target catalog, variables, and examples.
 	@printf '%-32s %s (current: %s)\n' "GIT_PUSH_ARGS" "Optional extra args passed to \`git push\` by make git-changes-push" "$(GIT_PUSH_ARGS)"
 	@printf '%-32s %s (current: %s)\n' "LOG_TAIL" 'Default tail lines for `make logs*`' "$(LOG_TAIL)"
 	@printf '%-32s %s (current: %s)\n' "FORCE_PNPM_INSTALL" "1 forces pnpm reinstall in containers" "$(FORCE_PNPM_INSTALL)"
-	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap*`' "$(SKIP_DNS_SETUP)"
+	@printf '%-32s %s (current: %s)\n' "SKIP_DNS_SETUP" 'Skip dnsmasq/hosts step in `make bootstrap`' "$(SKIP_DNS_SETUP)"
 	@printf '\n🚦 First Run (Recommended)\n'
 	@printf '%-44s %s\n' "make doctor" "Validate Docker/Compose setup."
 	@printf '%-44s %s\n' "make env-local-normalize" "Normalize root .env.local before first Docker run."
 	@printf '%-44s %s\n' "make bootstrap" "Golden path: DNS setup + edge stack in background."
 	@printf '%-44s %s\n' "make bootstrap SKIP_DNS_SETUP=1" "Skip DNS bootstrap if already configured."
-	@printf '%-44s %s\n' "make bootstrap-detached" "Alias for the detached bootstrap flow."
 	@printf '\n🎯 Run Modes (Recommended)\n'
 	@printf '%-44s %s\n' "make up-edge" "Background services (pair with make logs-edge)."
-	@printf '%-44s %s\n' "make up-edge-detached" "Alias for the detached edge start."
 	@printf '%-44s %s\n' "make up-edge-tls" "Background edge stack with the TLS overlay."
-	@printf '%-44s %s\n' "make up-opsdesk" "Background local `api-opsdesk` + PostgreSQL profile."
+	@printf '%-44s %s\n' "make up-opsdesk" 'Background local `api-opsdesk` + PostgreSQL profile.'
 	@printf '\n🪟  Separate Terminal (Optional Monitoring)\n'
 	@printf '%-44s %s\n' "make ps-edge" "Inspect edge stack service status."
-	@printf '%-44s %s\n' "make ps-opsdesk" "Inspect local `api-opsdesk` profile status."
+	@printf '%-44s %s\n' "make ps-opsdesk" 'Inspect local `api-opsdesk` profile status.'
 	@printf '%-44s %s\n' "make logs-edge" "Follow Traefik + app logs."
 	@printf '%-44s %s\n' "make logs" "Follow api + web + opsdesk logs for the base stack."
-	@printf '%-44s %s\n' "make logs-opsdesk" "Follow local `api-opsdesk` + PostgreSQL logs."
+	@printf '%-44s %s\n' "make logs-opsdesk" 'Follow local `api-opsdesk` + PostgreSQL logs.'
 	@printf '%-44s %s\n' "make logs-prod" "Follow production compose logs."
 	@printf '%-44s %s\n' "make edge-smoke" "HTTP routing smoke check (dashboard/web/api/opsdesk)."
 	@printf '\n🐞 Debug / Troubleshooting\n'
@@ -343,15 +335,9 @@ prod-smoke: ## Smoke-check deployed production `web`, `api`, `opsdesk`, and `sit
 	@sh docs/scripts/prod-vercel-smoke.sh "$(PROD_SMOKE_WEB_URL)" "$(PROD_SMOKE_API_URL)" "$(PROD_SMOKE_OPSDESK_URL)" "$(PROD_SMOKE_ARTICLE_PATH)" "$(PROD_SMOKE_PAGE_PATH)"
 
 bootstrap: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
-	@sh docker/scripts/bootstrap-local.sh detached
-
-bootstrap-detached: ## First-run setup (local DNS + edge stack) in background; macOS/Homebrew dnsmasq auto-setup when available.
-	@sh docker/scripts/bootstrap-local.sh detached
+	@sh docker/scripts/bootstrap-local.sh
 
 up: ## Start api + web + opsdesk in background.
-	@$(COMPOSE_BASE) up --build -d
-
-up-detached: ## Start api + web + opsdesk in background.
 	@$(COMPOSE_BASE) up --build -d
 
 up-opsdesk: ## Start local `api-opsdesk` and PostgreSQL in background.
@@ -366,9 +352,6 @@ down-opsdesk: ## Stop local `api-opsdesk` profile services.
 up-prod: ## Start production compose services (api + web) in background.
 	@$(COMPOSE_PROD_NO_FORCE) up --build -d
 
-up-prod-detached: ## Start production compose services (api + web) in background.
-	@$(COMPOSE_PROD_NO_FORCE) up --build -d
-
 down-prod: ## Stop production compose services and remove orphans.
 	@$(COMPOSE_PROD_NO_FORCE) down --remove-orphans
 
@@ -381,9 +364,9 @@ logs-opsdesk: ## Follow local `api-opsdesk` + PostgreSQL logs.
 logs-prod: ## Follow production api + web logs (tails the last `LOG_TAIL` lines first).
 	@$(COMPOSE_PROD_NO_FORCE) logs --tail=$(LOG_TAIL) -f web api
 
-restart: ## Restart the local docker stack (down then detached up).
+restart: ## Restart the local docker stack (down then up).
 	@$(MAKE) down
-	@$(MAKE) up-detached
+	@$(MAKE) up
 
 reinstall: ## Start the stack and force pnpm reinstall in containers (`FORCE_PNPM_INSTALL=1`).
 	@$(MAKE) up FORCE_PNPM_INSTALL=1
@@ -544,28 +527,11 @@ up-edge: ## Start Traefik + app stack over local hostnames (HTTP only) in backgr
 		$(COMPOSE_EDGE_BASE) up --build -d; \
 	fi
 
-up-edge-detached: ## Start Traefik + app stack over local hostnames (HTTP only) in background.
-	@if [ "$(TRAEFIK_ENABLE_DOCKER_PROVIDER_BOOL)" = "true" ]; then \
-		printf 'up-edge-detached: TRAEFIK_ENABLE_DOCKER_PROVIDER=1 is deprecated for the default path; using up-edge-debug-detached instead.\n'; \
-		$(MAKE) up-edge-debug-detached; \
-	else \
-		TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes; \
-		$(COMPOSE_EDGE_BASE) up --build -d; \
-	fi
-
 up-edge-debug: ## Start Traefik + app stack in Docker-provider debug mode (socket-proxy-backed) in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=1 $(MAKE) render-edge-routes
 	@$(COMPOSE_EDGE_DEBUG_BASE) up --build -d
 
-up-edge-debug-detached: ## Start Traefik + app stack in Docker-provider debug mode in background.
-	@TRAEFIK_ENABLE_DOCKER_PROVIDER=1 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_DEBUG_BASE) up --build -d
-
 up-edge-tls: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in background.
-	@TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes
-	@$(COMPOSE_EDGE_TLS_BASE) up --build -d
-
-up-edge-tls-detached: ## Start Traefik + app stack with optional local TLS overlay (mkcert-ready) in background.
 	@TRAEFIK_ENABLE_DOCKER_PROVIDER=0 $(MAKE) render-edge-routes
 	@$(COMPOSE_EDGE_TLS_BASE) up --build -d
 
