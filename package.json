@@ -17,7 +17,7 @@
     "dev": "turbo run dev --parallel --output-logs=full",
     "dev:docker": "docker compose --env-file .env.local -f docker/compose/local.yml up --build -d",
     "dev:docker:down": "docker compose -f docker/compose/local.yml down",
-    "dev:docker:logs": "docker compose --env-file .env.local -f docker/compose/local.yml logs -f web api admin",
+    "dev:docker:logs": "docker compose --env-file .env.local -f docker/compose/local.yml logs -f web api jobs jobs-api jobs-worker",
     "format": "turbo run format",
     "format:check": "turbo run format:check",
     "lint": "turbo run lint lint:styles",

@@ -1,0 +1,46 @@
+{
+  "name": "jobs-worker",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "bunchee",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist",
+    "dev": "bun --watch src/index.ts",
+    "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
+    "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts}\"",
+    "lint": "eslint src/ --max-warnings 0",
+    "lint:fix": "eslint --fix src/ --max-warnings 0",
+    "start": "bun dist/index.js"
+  },
+  "dependencies": {
+    "@portfolio/api-contracts": "workspace:*",
+    "@portfolio/jobs-connectors": "workspace:*",
+    "@portfolio/jobs-domain": "workspace:*",
+    "postgres": "catalog:"
+  },
+  "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
+    "@portfolio/config-typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "bunchee": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:"
+  }
+}
