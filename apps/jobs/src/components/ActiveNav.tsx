@@ -4,10 +4,7 @@
  * @description Client-side primary navigation with active route styling.
  */
 
-"use client";
-
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { NavLink } from "react-router";
 
 type NavItem = {
   href: string;
@@ -38,10 +35,8 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-/** Renders the jobs app navigation using Next.js client-side links. */
+/** Renders the jobs app navigation using SPA route links. */
 export function ActiveNav() {
-  const pathname = usePathname();
-
   return (
     <nav
       aria-label="Jobs platform sections"
@@ -49,26 +44,21 @@ export function ActiveNav() {
       role="navigation"
     >
       {NAV_ITEMS.map((item) => {
-        const isActive =
-          item.href === "/"
-            ? pathname === "/"
-            : pathname === item.href || pathname.startsWith(`${item.href}/`);
-
         return (
-          <Link
+          <NavLink
             key={item.href}
-            aria-current={isActive ? "page" : undefined}
-            className={`rounded-full border px-4 py-2 text-sm transition ${
-              isActive
-                ? "border-zinc-900 bg-zinc-900 text-zinc-50"
-                : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-500 hover:text-zinc-950"
-            }`}
-            href={item.href}
-            prefetch={false}
+            className={({ isActive }) =>
+              `rounded-full border px-4 py-2 text-sm transition ${
+                isActive
+                  ? "border-zinc-900 bg-zinc-900 text-zinc-50"
+                  : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-500 hover:text-zinc-950"
+              }`
+            }
+            to={item.href}
             title={item.description}
           >
             {item.label}
-          </Link>
+          </NavLink>
         );
       })}
     </nav>
