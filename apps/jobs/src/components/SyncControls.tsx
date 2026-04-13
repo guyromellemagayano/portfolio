@@ -1,19 +1,15 @@
 /**
  * @file apps/jobs/src/components/SyncControls.tsx
  * @author Guy Romelle Magayano
- * @description Client-side controls for source verification and manual sync runs.
+ * @description Controls for source verification and manual sync runs.
  */
 
-"use client";
-
-import { useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
 
 import { triggerSync, verifySources } from "@jobs/lib/api";
 
 /** Renders buttons for manual verification and sync orchestration. */
-export function SyncControls() {
-  const router = useRouter();
+export function SyncControls(props: { onCompleted?: () => void }) {
   const [pendingAction, setPendingAction] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -24,7 +20,7 @@ export function SyncControls() {
     startTransition(() => {
       void action()
         .then(() => {
-          router.refresh();
+          props.onCompleted?.();
         })
         .catch((error) => {
           setErrorMessage(

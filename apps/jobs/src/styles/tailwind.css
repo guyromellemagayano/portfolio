@@ -4,12 +4,19 @@
   --font-sans: "Manrope", "Avenir Next", "Segoe UI", sans-serif;
 }
 
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 html {
   scroll-padding-top: 24px;
 }
 
 body {
   min-height: 100vh;
+  margin: 0;
 }
 
 a,
