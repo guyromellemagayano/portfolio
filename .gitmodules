@@ -48,5 +48,5 @@
 	ignore = all
 [submodule "packages/w3x"]
 	path = packages/w3x
-	url = git@github.com-guyromellemagayano:guyromellemagayano/porfolio-w3x.git
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-w3x.git
 	ignore = all
