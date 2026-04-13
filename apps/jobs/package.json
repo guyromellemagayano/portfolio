@@ -5,15 +5,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "next build --turbopack",
-    "check-types": "next typegen && tsc --noEmit",
-    "clean": "rimraf node_modules .turbo .next coverage",
-    "dev": "next dev --hostname 0.0.0.0 --port 3002 --turbopack",
+    "build": "vite build",
+    "check-types": "tsc --noEmit",
+    "clean": "rimraf node_modules .turbo dist coverage",
+    "dev": "vite --host 0.0.0.0 --port 3002 --clearScreen false",
     "format": "prettier --write \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\" --max-warnings 0",
-    "start": "next start",
+    "start": "vite preview --host 0.0.0.0 --port 3002",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
@@ -24,9 +24,9 @@
   "dependencies": {
     "@portfolio/api-contracts": "workspace:*",
     "clsx": "catalog:",
-    "next": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-router": "catalog:",
     "tailwind-merge": "catalog:"
   },
   "devDependencies": {
@@ -45,11 +45,11 @@
     "@vitest/ui": "catalog:",
     "eslint": "catalog:",
     "jsdom": "catalog:",
-    "postcss": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   }
 }

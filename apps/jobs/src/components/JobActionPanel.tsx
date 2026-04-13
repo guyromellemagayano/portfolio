@@ -1,25 +1,22 @@
 /**
  * @file apps/jobs/src/components/JobActionPanel.tsx
  * @author Guy Romelle Magayano
- * @description Client-side tracker controls for ignore, save, apply, and reset actions.
+ * @description Tracker controls for ignore, save, apply, and reset actions.
  */
 
-"use client";
-
-import { useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
-
-import type { NormalizedJob } from "@portfolio/api-contracts";
 
 import { resetJobState, updateJobState } from "@jobs/lib/api";
 
+import type { NormalizedJob } from "@portfolio/api-contracts";
+
 type JobActionPanelProps = {
   job: NormalizedJob;
+  onUpdated?: () => void;
 };
 
 /** Renders single-user tracker actions for a normalized job record. */
-export function JobActionPanel({ job }: JobActionPanelProps) {
-  const router = useRouter();
+export function JobActionPanel({ job, onUpdated }: JobActionPanelProps) {
   const [pendingLabel, setPendingLabel] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -32,7 +29,7 @@ export function JobActionPanel({ job }: JobActionPanelProps) {
     startTransition(() => {
       void action()
         .then(() => {
-          router.refresh();
+          onUpdated?.();
         })
         .catch((error) => {
           setErrorMessage(
@@ -72,7 +69,9 @@ export function JobActionPanel({ job }: JobActionPanelProps) {
               : "Save"}
         </button>
         <button
-          aria-label={job.userState.applied ? "Mark as not applied" : "Mark as applied"}
+          aria-label={
+            job.userState.applied ? "Mark as not applied" : "Mark as applied"
+          }
           className="rounded-full border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-800 hover:border-zinc-500"
           disabled={isPending}
           onClick={() =>
@@ -94,7 +93,9 @@ export function JobActionPanel({ job }: JobActionPanelProps) {
               : "Mark Applied"}
         </button>
         <button
-          aria-label={job.userState.ignored ? "Restore ignored job" : "Ignore job"}
+          aria-label={
+            job.userState.ignored ? "Restore ignored job" : "Ignore job"
+          }
           className="rounded-full border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-800 hover:border-zinc-500"
           disabled={isPending}
           onClick={() =>
@@ -123,7 +124,7 @@ export function JobActionPanel({ job }: JobActionPanelProps) {
         </button>
       </div>
       <div aria-live="polite" className="text-xs text-zinc-600" role="status">
-        Status: {job.userState.applicationStatus.replaceAll("_", " ")}
+        Status: {job.userState.applicationStatus.replace(/_/g, " ")}
       </div>
       {errorMessage ? (
         <p className="text-sm text-rose-700" role="alert">

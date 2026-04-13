@@ -1,56 +1,96 @@
 /**
- * @file apps/jobs/src/app/jobs/[id]/page.tsx
+ * @file apps/jobs/src/pages/JobDetailPage.tsx
  * @author Guy Romelle Magayano
- * @description Detail page for a normalized ATS job and its lifecycle history.
+ * @description Job detail page for one normalized ATS posting.
  */
 
-import type { Metadata } from "next";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
 
 import { JobActionPanel } from "@jobs/components/JobActionPanel";
 import { fetchJobDetail } from "@jobs/lib/api";
 
+import type { JobDetail } from "@portfolio/api-contracts";
+
 type JobDetailPageProps = {
-  params: Promise<{
-    id: string;
-  }>;
+  onRefreshRequested: () => void;
+  refreshToken: number;
 };
 
-export async function generateMetadata(
-  props: JobDetailPageProps
-): Promise<Metadata> {
-  const { id } = await props.params;
+/** Renders the job detail route with lifecycle history and latest snapshot. */
+export function JobDetailPage({
+  onRefreshRequested,
+  refreshToken,
+}: JobDetailPageProps) {
+  const { id } = useParams();
+  const [detail, setDetail] = useState<JobDetail | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  try {
-    const detail = await fetchJobDetail(id);
+  useEffect(() => {
+    if (!id) {
+      setErrorMessage("Job id is required.");
+      setIsLoading(false);
+      return;
+    }
 
-    return {
-      title: `${detail.job.title} · ${detail.job.company}`,
-      description: `Normalized direct ATS record for ${detail.job.title} at ${detail.job.company}.`,
+    let isActive = true;
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    void fetchJobDetail(id)
+      .then((response) => {
+        if (isActive) {
+          setDetail(response);
+        }
+      })
+      .catch((error) => {
+        if (isActive) {
+          setErrorMessage(
+            error instanceof Error
+              ? error.message
+              : "Failed to load job detail."
+          );
+        }
+      })
+      .finally(() => {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isActive = false;
     };
-  } catch {
-    return {
-      title: "Job detail",
-    };
+  }, [id, refreshToken]);
+
+  if (isLoading) {
+    return (
+      <div className="rounded-[2rem] border border-zinc-200 bg-white p-10 text-center text-sm text-zinc-600">
+        Loading job detail...
+      </div>
+    );
   }
-}
 
-export default async function JobDetailPage(props: JobDetailPageProps) {
-  const { id } = await props.params;
-  const detail = await fetchJobDetail(id);
+  if (errorMessage || !detail) {
+    return (
+      <div className="rounded-[2rem] border border-rose-200 bg-white p-10 text-center text-sm text-rose-700">
+        {errorMessage ?? "Job detail is unavailable."}
+      </div>
+    );
+  }
 
   return (
     <section aria-label="Job detail" className="grid gap-8" role="region">
       <div className="grid gap-4 rounded-[2rem] border border-zinc-200 bg-white p-6">
         <Link
           className="text-sm text-zinc-600 underline decoration-zinc-300 underline-offset-4"
-          href="/"
-          prefetch={false}
+          to="/"
         >
           Back to search
         </Link>
         <div className="grid gap-3">
-          <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.2em] text-zinc-500">
+          <div className="flex flex-wrap items-center gap-2 text-xs tracking-[0.2em] text-zinc-500 uppercase">
             <span>{detail.source?.ats ?? "unknown"}</span>
             <span aria-hidden="true">/</span>
             <span>{detail.job.lifecycleState}</span>
@@ -61,7 +101,8 @@ export default async function JobDetailPage(props: JobDetailPageProps) {
             {detail.job.title}
           </h1>
           <p className="text-base text-zinc-600">
-            {detail.job.company} · {detail.job.location || "Location unspecified"}
+            {detail.job.company} ·{" "}
+            {detail.job.location || "Location unspecified"}
           </p>
         </div>
         <div className="flex flex-wrap gap-3 text-sm text-zinc-700">
@@ -85,7 +126,7 @@ export default async function JobDetailPage(props: JobDetailPageProps) {
           ) : null}
         </div>
       </div>
-      <JobActionPanel job={detail.job} />
+      <JobActionPanel job={detail.job} onUpdated={onRefreshRequested} />
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
         <section
           aria-label="Job lifecycle history"
@@ -102,7 +143,7 @@ export default async function JobDetailPage(props: JobDetailPageProps) {
                 key={event.id}
               >
                 <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-zinc-900">
-                  <span>{event.eventType.replaceAll("_", " ")}</span>
+                  <span>{event.eventType.replace(/_/g, " ")}</span>
                   {event.previousState ? (
                     <>
                       <span aria-hidden="true">:</span>
@@ -133,28 +174,28 @@ export default async function JobDetailPage(props: JobDetailPageProps) {
           </h2>
           <dl className="grid gap-3 text-sm text-zinc-700">
             <div>
-              <dt className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              <dt className="text-xs tracking-[0.2em] text-zinc-500 uppercase">
                 Source verification
               </dt>
               <dd>{detail.source?.verificationStatus ?? "unknown"}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              <dt className="text-xs tracking-[0.2em] text-zinc-500 uppercase">
                 First seen
               </dt>
               <dd>{new Date(detail.job.firstSeenAt).toLocaleString()}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              <dt className="text-xs tracking-[0.2em] text-zinc-500 uppercase">
                 Last seen
               </dt>
               <dd>{new Date(detail.job.lastSeenAt).toLocaleString()}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase tracking-[0.2em] text-zinc-500">
+              <dt className="text-xs tracking-[0.2em] text-zinc-500 uppercase">
                 Snapshot payload hash
               </dt>
-              <dd className="break-all text-xs text-zinc-600">
+              <dd className="text-xs break-all text-zinc-600">
                 {detail.latestSnapshot?.payloadHash ?? "Unavailable"}
               </dd>
             </div>

@@ -79,23 +79,13 @@ services:
       <<: *node_dev_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
-      NEXT_PUBLIC_JOBS_API_URL: ${NEXT_PUBLIC_JOBS_API_URL:-http://localhost:5002}
+      VITE_JOBS_API_URL: ${VITE_JOBS_API_URL:-http://localhost:5002}
       JOBS_API_URL: ${JOBS_API_URL:-http://jobs-api:5002}
-      NEXT_JOBS_DOCKER_DIST_DIR: ${NEXT_JOBS_DOCKER_DIST_DIR:-.next-jobs-docker}
-      RESET_NEXT_WEB_CACHE_ON_START: "1"
-      NEXT_TELEMETRY_DISABLED: "1"
     command:
       - pnpm
       - --filter
       - jobs
-      - exec
-      - next
       - dev
-      - --hostname
-      - 0.0.0.0
-      - --port
-      - "3002"
-      - --turbopack
     ports:
       - "3002:3002"
     depends_on:
