@@ -1,0 +1,27 @@
+{
+  "extends": "@portfolio/config-typescript/src/base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2015"
+    ],
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@jobs-worker/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
