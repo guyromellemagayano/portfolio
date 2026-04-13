@@ -22,6 +22,110 @@ x-node-dev-env: &node_dev_env
   WATCHPACK_POLLING: "true"
 
 services:
+  jobs-db:
+    image: postgres:16-alpine
+    container_name: portfolio-jobs-db-local
+    environment:
+      POSTGRES_DB: ${JOBS_POSTGRES_DB:-jobs}
+      POSTGRES_USER: ${JOBS_POSTGRES_USER:-jobs}
+      POSTGRES_PASSWORD: ${JOBS_POSTGRES_PASSWORD:-jobs}
+    ports:
+      - "5433:5432"
+    volumes:
+      - jobs-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          pg_isready -U ${JOBS_POSTGRES_USER:-jobs} -d ${JOBS_POSTGRES_DB:-jobs}
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+  jobs-api:
+    <<: *node_workspace_service
+    container_name: portfolio-jobs-api-local
+    environment:
+      <<: *node_dev_env
+      NODE_ENV: development
+      JOBS_API_PORT: "5002"
+      PORT: "5002"
+      JOBS_API_CORS_ORIGINS: ${JOBS_API_CORS_ORIGINS:-http://localhost:3002}
+      JOBS_DATABASE_URL: ${JOBS_DATABASE_URL:-postgres://jobs:jobs@jobs-db:5432/jobs}
+      JOBS_SYNC_INTERVAL_MS: ${JOBS_SYNC_INTERVAL_MS:-3600000}
+    command:
+      - pnpm
+      - --filter
+      - api-jobs
+      - dev
+    ports:
+      - "5002:5002"
+    depends_on:
+      jobs-db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:5002/v1/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+  jobs:
+    <<: *node_workspace_service
+    container_name: portfolio-jobs-local
+    environment:
+      <<: *node_dev_env
+      NODE_ENV: development
+      DOCKER_LOCAL_DEV: "1"
+      NEXT_PUBLIC_JOBS_API_URL: ${NEXT_PUBLIC_JOBS_API_URL:-http://localhost:5002}
+      JOBS_API_URL: ${JOBS_API_URL:-http://jobs-api:5002}
+      NEXT_JOBS_DOCKER_DIST_DIR: ${NEXT_JOBS_DOCKER_DIST_DIR:-.next-jobs-docker}
+      RESET_NEXT_WEB_CACHE_ON_START: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+    command:
+      - pnpm
+      - --filter
+      - jobs
+      - exec
+      - next
+      - dev
+      - --hostname
+      - 0.0.0.0
+      - --port
+      - "3002"
+      - --turbopack
+    ports:
+      - "3002:3002"
+    depends_on:
+      jobs-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "fetch('http://127.0.0.1:3002/').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+  jobs-worker:
+    <<: *node_workspace_service
+    container_name: portfolio-jobs-worker-local
+    environment:
+      <<: *node_dev_env
+      NODE_ENV: development
+      JOBS_DATABASE_URL: ${JOBS_DATABASE_URL:-postgres://jobs:jobs@jobs-db:5432/jobs}
+      JOBS_SYNC_INTERVAL_MS: ${JOBS_SYNC_INTERVAL_MS:-3600000}
+    command:
+      - pnpm
+      - --filter
+      - jobs-worker
+      - dev
+    depends_on:
+      jobs-db:
+        condition: service_healthy
   api:
     <<: *node_workspace_service
     container_name: portfolio-api-local
@@ -273,4 +377,5 @@ volumes:
   pnpm-store:
   workspace-node-modules:
   turbo-cache:
+  jobs-postgres-data:
   opsdesk-postgres-data:
