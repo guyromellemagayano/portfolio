@@ -89,11 +89,6 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	reinstall \
 	git-changes \
 	git-changes-push \
-	bootstrap-workspace \
-	sync-submodules \
-	validate-silos \
-	promote-silo \
-	resolve-affected-silo \
 	edge-hosts \
 	edge-smoke \
 	edge-smoke-tls \
@@ -285,30 +280,6 @@ git-changes: ## Inspect root + recursive submodule git changes and ahead/behind 
 
 git-changes-push: ## Push recursive submodules first, then root, after validating that all repos are clean and tracked.
 	@sh scripts/git-changes.sh push
-
-bootstrap-workspace: ## Sync/init quiet submodules and install workspace dependencies.
-	@sh scripts/bootstrap-workspace.sh
-
-sync-submodules: ## Sync and initialize recursive submodules without reinstalling dependencies.
-	@git submodule sync --recursive
-	@git submodule update --init --recursive
-
-validate-silos: ## Validate the root quiet-submodule control plane and ownership model.
-	@pnpm exec node scripts/validate-silo-manifest.mjs
-
-promote-silo: ## Stage one child-repo SHA/tag into the root repo (`SILO=<id|path> REF=<sha|tag|branch>`).
-	@if [ -z "$(SILO)" ] || [ -z "$(REF)" ]; then \
-		printf 'promote-silo: provide SILO=<id|path> and REF=<sha|tag|branch>\n' >&2; \
-		exit 1; \
-	fi
-	@pnpm exec node scripts/update-submodule-pointer.mjs --silo "$(SILO)" --ref "$(REF)"
-
-resolve-affected-silo: ## Print manifest-driven promotion metadata for one silo (`SILO=<id|path>`).
-	@if [ -z "$(SILO)" ]; then \
-		printf 'resolve-affected-silo: provide SILO=<id|path>\n' >&2; \
-		exit 1; \
-	fi
-	@pnpm exec node scripts/resolve-affected-targets.mjs "$(SILO)"
 
 ##@ 🐳 Compose
 
