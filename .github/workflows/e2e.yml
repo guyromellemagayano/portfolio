@@ -27,6 +27,9 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          ssh-key: ${{ secrets.PORTFOLIO_SUBMODULE_SSH_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
