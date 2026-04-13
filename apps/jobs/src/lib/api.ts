@@ -21,11 +21,10 @@ const DEFAULT_JOBS_API_URL = "http://127.0.0.1:5002";
 
 /** Resolves the jobs API base URL for the current runtime. */
 export function getJobsApiUrl(): string {
-  return (
-    process.env.JOBS_API_URL ||
-    process.env.NEXT_PUBLIC_JOBS_API_URL ||
-    DEFAULT_JOBS_API_URL
-  ).replace(/\/$/, "");
+  return (import.meta.env.VITE_JOBS_API_URL || DEFAULT_JOBS_API_URL).replace(
+    /\/$/,
+    ""
+  );
 }
 
 /** Serializes jobs search filters into a query string. */
@@ -99,14 +98,11 @@ async function fetchEnvelope<T>(
   const envelope = (await response.json()) as ApiEnvelope<T>;
 
   if (!response.ok || !envelope.success) {
-    const message =
-      !envelope.success
-        ? envelope.error.message
-        : `Jobs API request failed with status ${response.status}.`;
+    const message = !envelope.success
+      ? envelope.error.message
+      : `Jobs API request failed with status ${response.status}.`;
 
-    throw new Error(
-      message
-    );
+    throw new Error(message);
   }
 
   return envelope.data;

@@ -4,18 +4,19 @@
  * @description Presentational job card for normalized ATS listings.
  */
 
-import Link from "next/link";
-
-import type { NormalizedJob } from "@portfolio/api-contracts";
+import { Link } from "react-router";
 
 import { JobActionPanel } from "@jobs/components/JobActionPanel";
 
+import type { NormalizedJob } from "@portfolio/api-contracts";
+
 type JobCardProps = {
   job: NormalizedJob;
+  onUpdated?: () => void;
 };
 
 /** Renders a normalized job listing with metadata, link, and tracker controls. */
-export function JobCard({ job }: JobCardProps) {
+export function JobCard({ job, onUpdated }: JobCardProps) {
   return (
     <article
       aria-describedby={`job-${job.id}-meta`}
@@ -24,20 +25,18 @@ export function JobCard({ job }: JobCardProps) {
       role="article"
     >
       <div className="grid gap-2">
-        <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.2em] text-zinc-500">
+        <div className="flex flex-wrap items-center gap-2 text-xs tracking-[0.2em] text-zinc-500 uppercase">
           <span>{job.lifecycleState}</span>
           <span aria-hidden="true">/</span>
           <span>{job.remoteMode}</span>
           <span aria-hidden="true">/</span>
-          <span>{job.employmentType.replaceAll("_", " ")}</span>
+          <span>{job.employmentType.replace(/_/g, " ")}</span>
         </div>
         <h2
           className="text-2xl font-semibold tracking-tight text-zinc-950"
           id={`job-${job.id}-title`}
         >
-          <Link href={`/jobs/${job.id}`} prefetch={false}>
-            {job.title}
-          </Link>
+          <Link to={`/jobs/${job.id}`}>{job.title}</Link>
         </h2>
         <p className="text-sm text-zinc-600" id={`job-${job.id}-meta`}>
           {job.company} · {job.location || "Location unspecified"} · last seen{" "}
@@ -55,13 +54,12 @@ export function JobCard({ job }: JobCardProps) {
         </a>
         <Link
           className="rounded-full border border-zinc-300 px-3 py-2 hover:border-zinc-500"
-          href={`/jobs/${job.id}`}
-          prefetch={false}
+          to={`/jobs/${job.id}`}
         >
           Inspect normalized detail
         </Link>
       </div>
-      <JobActionPanel job={job} />
+      <JobActionPanel job={job} onUpdated={onUpdated} />
     </article>
   );
 }

@@ -1,25 +1,25 @@
 /**
  * @file apps/jobs/src/components/PreferencesForm.tsx
  * @author Guy Romelle Magayano
- * @description Client-side single-user preferences editor for saved search defaults.
+ * @description Single-user preferences editor for saved search defaults.
  */
 
-"use client";
-
-import { useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
-
-import type { JobUserPreferences } from "@portfolio/api-contracts";
 
 import { updatePreferences } from "@jobs/lib/api";
 
+import type { JobUserPreferences } from "@portfolio/api-contracts";
+
 type PreferencesFormProps = {
+  onSaved?: () => void;
   preferences: JobUserPreferences;
 };
 
 /** Renders a local-first preferences form backed by the jobs API. */
-export function PreferencesForm({ preferences }: PreferencesFormProps) {
-  const router = useRouter();
+export function PreferencesForm({
+  onSaved,
+  preferences,
+}: PreferencesFormProps) {
   const [keywords, setKeywords] = useState(preferences.keywords.join(", "));
   const [preferredLocations, setPreferredLocations] = useState(
     preferences.preferredLocations.join(", ")
@@ -62,7 +62,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
               .filter(Boolean) as JobUserPreferences["employmentTypes"],
           })
             .then(() => {
-              router.refresh();
+              onSaved?.();
             })
             .catch((error) => {
               setErrorMessage(
@@ -84,7 +84,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
         <span className="text-sm font-medium text-zinc-900">Keywords</span>
         <input
           aria-label="Preferred keywords"
-          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 outline-none ring-0 focus:border-zinc-600"
+          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 ring-0 outline-none focus:border-zinc-600"
           onChange={(event) => setKeywords(event.target.value)}
           type="text"
           value={keywords}
@@ -96,7 +96,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
         </span>
         <input
           aria-label="Preferred locations"
-          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 outline-none ring-0 focus:border-zinc-600"
+          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 ring-0 outline-none focus:border-zinc-600"
           onChange={(event) => setPreferredLocations(event.target.value)}
           type="text"
           value={preferredLocations}
@@ -106,7 +106,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
         <span className="text-sm font-medium text-zinc-900">Remote modes</span>
         <input
           aria-label="Preferred remote modes"
-          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 outline-none ring-0 focus:border-zinc-600"
+          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 ring-0 outline-none focus:border-zinc-600"
           onChange={(event) => setRemoteModes(event.target.value)}
           type="text"
           value={remoteModes}
@@ -118,7 +118,7 @@ export function PreferencesForm({ preferences }: PreferencesFormProps) {
         </span>
         <input
           aria-label="Preferred employment types"
-          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 outline-none ring-0 focus:border-zinc-600"
+          className="rounded-2xl border border-zinc-300 px-4 py-3 text-sm text-zinc-900 ring-0 outline-none focus:border-zinc-600"
           onChange={(event) => setEmploymentTypes(event.target.value)}
           type="text"
           value={employmentTypes}
