@@ -7,6 +7,7 @@
   "author": "Guy Romelle Magayano <aspiredtechie2010@gmail.com> (https://www.guyromellemagayano.com)",
   "type": "module",
   "scripts": {
+    "bootstrap:workspace": "sh scripts/bootstrap-workspace.sh",
     "build": "turbo run build",
     "build:packages": "pnpm build --filter=\"@portfolio/*\"",
     "check-types": "turbo run check-types",
@@ -32,6 +33,8 @@
     "pcu:security:fix": "pnpm run pcu:security --fix-vulns",
     "pcu:update": "pnpm run pcu update",
     "prepare": "husky",
+    "promote:silo": "pnpm exec node scripts/update-submodule-pointer.mjs",
+    "resolve:affected-silo": "pnpm exec node scripts/resolve-affected-targets.mjs",
     "test": "turbo run test:run",
     "test:apps": "turbo run test:run --filter='./apps/*'",
     "test:coverage": "turbo run test:coverage",
@@ -52,7 +55,11 @@
     "test:run": "turbo run test:run",
     "test:run:coverage": "turbo run test:run:coverage",
     "test:ui": "turbo run test:ui",
-    "test:watch": "turbo run test --parallel"
+    "test:watch": "turbo run test --parallel",
+    "validate:catalog-protocols": "pnpm exec node scripts/assert-no-catalog-protocols.mjs",
+    "validate:silo-manifest": "pnpm exec node scripts/validate-silo-manifest.mjs",
+    "validate:silos": "pnpm validate:silo-manifest",
+    "validate:workspace-protocols": "pnpm exec node scripts/assert-no-workspace-protocols.mjs"
   },
   "dependencies": {
     "pnpm-catalog-updates": "catalog:"
