@@ -2743,7 +2743,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 
 - Monorepo layout:
   - Apps: `./apps/web` (Next.js), `./apps/opsdesk` (Vite), `./apps/api-portfolio` (Node/Express).
-  - Packages: `./packages/{components,ui,utils,hooks,logger,config-eslint,config-typescript,vitest-presets}`.
+  - Packages: `./packages/{components,utils,hooks,logger,config-eslint,config-typescript,vitest-presets,w3x}`.
 - Testing: Vitest everywhere; use `vitest-presets/{browser,node,react}` when applicable.
 - TypeScript: strict; prefer `satisfies`, exhaustive switches, and `never` checks; keep ambient types in `global.d.ts` minimal.
 - React: function components, hooks, RSC where applicable (Next 13+), suspense-ready, a11y-first.

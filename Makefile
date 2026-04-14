@@ -117,9 +117,7 @@ COMPOSE_EDGE_ANY_ALL_PROFILES := $(COMPOSE_EDGE_ANY_NO_FORCE) --profile tooling 
 	tooling-shell \
 	e2e \
 	e2e-content \
-	e2e-list-content \
-	docs-catalog-check \
-	docs-catalog-update
+	e2e-list-content
 
 ##@ 🧭 Help
 
@@ -155,8 +153,6 @@ help: ## Show a concise local Docker DX help menu (golden path + common commands
 	@printf '%-42s %s\n' "make help-all" "Full target catalog + full variable list."
 	@printf '%-42s %s\n' "make info" "Print effective compose settings."
 	@printf '%-42s %s\n' "make prod-smoke" "Smoke-check deployed Vercel web/api/opsdesk endpoints."
-	@printf '%-42s %s\n' "make docs-catalog-check" "Verify docs/catalog/README.md matches repo READMEs."
-	@printf '%-42s %s\n' "make docs-catalog-update" "Regenerate docs/catalog/README.md from repo READMEs."
 	@printf '%-42s %s\n' "make git-changes" "Inspect root + submodule git changes and ahead/behind state."
 	@printf '%-42s %s\n' "make git-changes-push" "Push ahead repos in submodules first, then root."
 	@printf '%-42s %s\n' "make vercel-host-check" "Validate host Vercel CLI availability/fallback."
@@ -615,11 +611,3 @@ e2e-content: ## Run the content pipeline smoke suite in Docker (`e2e-content-smo
 
 e2e-list-content: ## List the `@content` Playwright tests in Docker without executing them.
 	@$(COMPOSE_BASE) --profile e2e run --rm e2e-content-smoke pnpm --filter e2e exec playwright test --project chromium --grep '@content' --list
-
-##@ 📚 Docs
-
-docs-catalog-check: ## Verify `docs/catalog/README.md` is in sync with repo `README.md` files.
-	@sh docs/scripts/check-readme-catalog.sh
-
-docs-catalog-update: ## Regenerate `docs/catalog/README.md` from repo `README.md` files.
-	@sh docs/scripts/update-readme-catalog.sh
