@@ -21,6 +21,12 @@ class Settings(BaseSettings):
     correlation_id_header: str = Field(
         default="x-correlation-id", alias="OPSDESK_CORRELATION_ID_HEADER"
     )
+    opsdesk_actor_header: str = Field(
+        default="x-opsdesk-actor", alias="OPSDESK_ACTOR_HEADER"
+    )
+    idempotency_key_header: str = Field(
+        default="idempotency-key", alias="OPSDESK_IDEMPOTENCY_KEY_HEADER"
+    )
     cors_origins: str = Field(
         default="http://localhost:3001,https://opsdesk.guyromellemagayano.local",
         alias="OPSDESK_CORS_ORIGINS",

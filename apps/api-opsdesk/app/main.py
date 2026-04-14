@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.router import api_router
 from app.core.config import get_cors_origins, get_settings
-from app.core.errors import DependencyUnavailableError
+from app.core.errors import DependencyUnavailableError, OpsDeskApiError
 from app.core.logging import configure_logging, get_logger
 from app.db.engine import create_database_engine, dispose_database_engine
 
@@ -85,24 +85,34 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
     )
 
 
-@app.exception_handler(DependencyUnavailableError)
-async def dependency_unavailable_handler(
-    request: Request, exc: DependencyUnavailableError
-):
-    """Return a normalized upstream dependency failure payload."""
+@app.exception_handler(OpsDeskApiError)
+async def opsdesk_api_error_handler(request: Request, exc: OpsDeskApiError):
+    """Return normalized API error payloads for expected failures."""
     correlation_id = getattr(request.state, "correlation_id", "unknown")
-    logger.warning(
-        "OpsDesk dependency unavailable",
-        extra={"correlation_id": correlation_id, "dependency": exc.dependency},
-    )
+
+    if isinstance(exc, DependencyUnavailableError):
+        logger.warning(
+            "OpsDesk dependency unavailable",
+            extra={"correlation_id": correlation_id, "dependency": exc.dependency},
+        )
+    else:
+        logger.info(
+            "OpsDesk request rejected",
+            extra={
+                "correlation_id": correlation_id,
+                "code": exc.code,
+                "status_code": exc.status_code,
+            },
+        )
 
     return JSONResponse(
-        status_code=503,
+        status_code=exc.status_code,
         content={
             "success": False,
             "error": {
-                "code": "DEPENDENCY_UNAVAILABLE",
-                "message": f"{exc.dependency} is temporarily unavailable.",
+                "code": exc.code,
+                "message": exc.message,
+                "details": exc.details,
             },
             "meta": {
                 "correlationId": correlation_id,
