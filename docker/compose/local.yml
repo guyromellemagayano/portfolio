@@ -79,7 +79,6 @@ services:
       <<: *node_dev_env
       NODE_ENV: development
       DOCKER_LOCAL_DEV: "1"
-      VITE_JOBS_API_URL: ${VITE_JOBS_API_URL:-http://localhost:5002}
       JOBS_API_URL: ${JOBS_API_URL:-http://jobs-api:5002}
     command:
       - pnpm
@@ -297,6 +296,7 @@ services:
       NODE_ENV: development
       E2E_USE_EXTERNAL_SERVERS: "1"
       E2E_BASE_URL: http://web:3000
+      E2E_JOBS_BASE_URL: http://jobs:3002
       PORTFOLIO_API_URL: http://api:5001
       CONTENT_REVALIDATE_SECRET: ${CONTENT_REVALIDATE_SECRET:-}
       E2E_CONTENT_ARTICLE_SLUG: ${E2E_CONTENT_ARTICLE_SLUG:-}
@@ -306,6 +306,10 @@ services:
       api:
         condition: service_healthy
       web:
+        condition: service_healthy
+      jobs-api:
+        condition: service_healthy
+      jobs:
         condition: service_healthy
     entrypoint:
       - sh

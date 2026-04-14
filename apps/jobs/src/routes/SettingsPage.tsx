@@ -1,5 +1,5 @@
 /**
- * @file apps/jobs/src/pages/SettingsPage.tsx
+ * @file apps/jobs/src/routes/SettingsPage.tsx
  * @author Guy Romelle Magayano
  * @description Local single-user settings page for saved search defaults.
  */
@@ -7,6 +7,13 @@
 import { useEffect, useState } from "react";
 
 import { PreferencesForm } from "@jobs/components/PreferencesForm";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@jobs/components/ui/card";
 import { fetchPreferences } from "@jobs/lib/api";
 
 import type { JobUserPreferences } from "@portfolio/api-contracts";
@@ -68,18 +75,33 @@ export function SettingsPage({
         </p>
       </div>
       {isLoading ? (
-        <div className="rounded-[2rem] border border-zinc-200 bg-white p-10 text-center text-sm text-zinc-600">
-          Loading settings...
-        </div>
+        <Card>
+          <CardContent className="p-10 text-center text-sm text-zinc-600">
+            Loading settings...
+          </CardContent>
+        </Card>
       ) : errorMessage || !preferences ? (
-        <div className="rounded-[2rem] border border-rose-200 bg-white p-10 text-center text-sm text-rose-700">
-          {errorMessage ?? "Preferences are unavailable."}
-        </div>
+        <Card className="border-rose-200">
+          <CardContent className="p-10 text-center text-sm text-rose-700">
+            {errorMessage ?? "Preferences are unavailable."}
+          </CardContent>
+        </Card>
       ) : (
-        <PreferencesForm
-          onSaved={onRefreshRequested}
-          preferences={preferences}
-        />
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle>Single-user defaults</CardTitle>
+              <CardDescription>
+                Tune the search surface around the roles, locations, and work
+                modes that actually matter.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <PreferencesForm
+            onSaved={onRefreshRequested}
+            preferences={preferences}
+          />
+        </>
       )}
     </section>
   );
