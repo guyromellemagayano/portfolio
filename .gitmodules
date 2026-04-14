@@ -38,6 +38,10 @@
 	path = apps/api-portfolio
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api.git
 	ignore = all
+[submodule "apps/api-opsdesk"]
+	path = apps/api-opsdesk
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api-opsdesk.git
+	ignore = all
 [submodule "apps/web"]
 	path = apps/web
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-web.git
