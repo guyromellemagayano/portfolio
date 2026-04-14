@@ -482,7 +482,7 @@ export const Default: Story = {
 
 ```typescript
 /**
- * @file packages/ui/src/component-name/ComponentName.tsx
+ * @file packages/w3x/ui/src/component-name/ComponentName.tsx
  * @author Guy Romelle Magayano
  * @description [One-line description of what the component does].
  */
