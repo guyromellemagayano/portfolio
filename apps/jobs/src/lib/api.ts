@@ -1,7 +1,7 @@
 /**
  * @file apps/jobs/src/lib/api.ts
  * @author Guy Romelle Magayano
- * @description Jobs API client helpers for the Vite-powered jobs application.
+ * @description Jobs API client helpers for the jobs application.
  */
 
 import type {
@@ -15,7 +15,7 @@ import type {
   UpdateUserJobStateInput,
   UserJobState,
 } from "@portfolio/api-contracts";
-import type { ApiEnvelope } from "@portfolio/api-contracts/http";
+import { type ApiEnvelope } from "@portfolio/api-contracts/http";
 
 const DEFAULT_JOBS_API_URL = "/api-jobs";
 

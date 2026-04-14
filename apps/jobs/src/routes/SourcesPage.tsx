@@ -6,14 +6,14 @@
 
 import { useEffect, useState } from "react";
 
-import { Badge } from "@jobs/components/ui/badge";
+import { Badge } from "@jobs/components/ui/Badge";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
+} from "@jobs/components/ui/Card";
 import { fetchJobSources, fetchSyncStatus } from "@jobs/lib/api";
 
 import type { JobSource, JobSyncRunSummary } from "@portfolio/api-contracts";

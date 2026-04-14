@@ -1,12 +1,12 @@
 /**
  * @file apps/jobs/src/components/ActiveNav.tsx
  * @author Guy Romelle Magayano
- * @description Primary jobs navigation using shadcn-style button variants.
+ * @description Primary jobs navigation with button variants.
  */
 
 import { NavLink } from "react-router";
 
-import { buttonVariants } from "@jobs/components/ui/button";
+import { buttonVariants } from "@jobs/components/ui/Button";
 import { cn } from "@jobs/lib/utils";
 
 type NavItem = {
@@ -38,7 +38,6 @@ const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-/** Renders the jobs app navigation using SPA route links. */
 export function ActiveNav() {
   return (
     <nav

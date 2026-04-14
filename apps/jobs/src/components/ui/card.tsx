@@ -1,16 +1,15 @@
 /**
- * @file apps/jobs/src/components/ui/card.tsx
+ * @file apps/jobs/src/components/ui/Card.tsx
  * @author Guy Romelle Magayano
- * @description Shadcn-style card primitives for page sections and job records.
+ * @description Card primitives for page sections and job records.
  */
 
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 import { cn } from "@jobs/lib/utils";
 
 export type CardProps = ComponentProps<"div">;
 
-/** Renders the base card container. */
 export function Card(props: CardProps) {
   const { className, ...rest } = props;
 
@@ -26,7 +25,6 @@ export function Card(props: CardProps) {
   );
 }
 
-/** Renders the card header section. */
 export function CardHeader(props: ComponentProps<"div">) {
   const { className, ...rest } = props;
 
@@ -39,7 +37,6 @@ export function CardHeader(props: ComponentProps<"div">) {
   );
 }
 
-/** Renders the card title. */
 export function CardTitle(props: ComponentProps<"h2">) {
   const { className, ...rest } = props;
 
@@ -55,7 +52,6 @@ export function CardTitle(props: ComponentProps<"h2">) {
   );
 }
 
-/** Renders the card description. */
 export function CardDescription(props: ComponentProps<"p">) {
   const { className, ...rest } = props;
 
@@ -68,7 +64,6 @@ export function CardDescription(props: ComponentProps<"p">) {
   );
 }
 
-/** Renders the card content section. */
 export function CardContent(props: ComponentProps<"div">) {
   const { className, ...rest } = props;
 
@@ -81,7 +76,6 @@ export function CardContent(props: ComponentProps<"div">) {
   );
 }
 
-/** Renders the card footer section. */
 export function CardFooter(props: ComponentProps<"div">) {
   const { className, ...rest } = props;
 

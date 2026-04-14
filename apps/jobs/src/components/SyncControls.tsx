@@ -6,7 +6,7 @@
 
 import { startTransition, useState } from "react";
 
-import { Button } from "@jobs/components/ui/button";
+import { Button } from "@jobs/components/ui/Button";
 import { triggerSync, verifySources } from "@jobs/lib/api";
 
 /** Renders buttons for manual verification and sync orchestration. */

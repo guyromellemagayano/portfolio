@@ -27,6 +27,7 @@
     "clsx": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "react-hook-form": "catalog:",
     "react-router": "catalog:",
     "tailwind-merge": "catalog:"
   },
@@ -52,5 +53,7 @@
     "typescript": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
-  }
+  },
+  "peerDependencies": {},
+  "optionalDependencies": {}
 }

@@ -1,10 +1,10 @@
 /**
- * @file apps/jobs/src/components/ui/button.tsx
+ * @file apps/jobs/src/components/ui/Button.tsx
  * @author Guy Romelle Magayano
- * @description Shadcn-style button primitive for actions across the jobs app.
+ * @description Button primitive for actions across the jobs app.
  */
 
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 import { cn } from "@jobs/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -40,7 +40,6 @@ export const buttonVariants = cva(
 export type ButtonProps = ComponentProps<"button"> &
   VariantProps<typeof buttonVariants>;
 
-/** Renders a button using the jobs app shadcn-style variant system. */
 export function Button(props: ButtonProps) {
   const { className, size, type = "button", variant, ...rest } = props;
 

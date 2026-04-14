@@ -7,8 +7,8 @@
 import { Link } from "react-router";
 
 import { JobActionPanel } from "@jobs/components/JobActionPanel";
-import { Badge } from "@jobs/components/ui/badge";
-import { buttonVariants } from "@jobs/components/ui/button";
+import { Badge } from "@jobs/components/ui/Badge";
+import { buttonVariants } from "@jobs/components/ui/Button";
 import {
   Card,
   CardContent,
@@ -16,10 +16,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
+} from "@jobs/components/ui/Card";
 import { cn } from "@jobs/lib/utils";
 
-import type { NormalizedJob } from "@portfolio/api-contracts";
+import { type NormalizedJob } from "@portfolio/api-contracts";
 
 type JobCardProps = {
   job: NormalizedJob;
@@ -43,7 +43,6 @@ function resolveLifecycleVariant(
   }
 }
 
-/** Renders a normalized job listing with metadata, link, and tracker controls. */
 export function JobCard({ job, onUpdated }: JobCardProps) {
   return (
     <Card

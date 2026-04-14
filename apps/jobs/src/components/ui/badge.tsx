@@ -1,10 +1,10 @@
 /**
- * @file apps/jobs/src/components/ui/badge.tsx
+ * @file apps/jobs/src/components/ui/Badge.tsx
  * @author Guy Romelle Magayano
- * @description Shadcn-style badge primitive for compact jobs metadata labels.
+ * @description Badge primitive for compact jobs metadata labels.
  */
 
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 import { cn } from "@jobs/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -31,7 +31,6 @@ const badgeVariants = cva(
 export type BadgeProps = ComponentProps<"span"> &
   VariantProps<typeof badgeVariants>;
 
-/** Renders a compact badge with shadcn-style variants. */
 export function Badge(props: BadgeProps) {
   const { className, variant, ...rest } = props;
 
