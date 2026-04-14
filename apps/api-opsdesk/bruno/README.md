@@ -12,7 +12,7 @@ Local Bruno collection for testing the `api-opsdesk` service without relying on 
 1. Start the local backend:
 
 ```bash
-make up-opsdesk
+docker compose --env-file .env.local -f docker/compose/local.yml --profile opsdesk up --build -d opsdesk-db opsdesk-api
 ```
 
 1. Open Bruno and choose `Open Collection`.
