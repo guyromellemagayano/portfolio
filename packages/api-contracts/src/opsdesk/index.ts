@@ -14,9 +14,17 @@ export const OPSDESK_OVERVIEW_ROUTE = `${OPSDESK_ROUTE_PREFIX}/overview`;
 
 /** Route path for the OpsDesk requests resource. */
 export const OPSDESK_REQUESTS_ROUTE = `${OPSDESK_ROUTE_PREFIX}/requests`;
+/** Route path template for an individual OpsDesk request resource. */
+export const OPSDESK_REQUEST_DETAIL_ROUTE = `${OPSDESK_REQUESTS_ROUTE}/:requestId`;
+/** Route path template for an OpsDesk request assignment mutation. */
+export const OPSDESK_REQUEST_ASSIGNMENT_ROUTE = `${OPSDESK_REQUEST_DETAIL_ROUTE}/assignment`;
+/** Route path template for an OpsDesk request escalation mutation. */
+export const OPSDESK_REQUEST_ESCALATION_ROUTE = `${OPSDESK_REQUEST_DETAIL_ROUTE}/escalation`;
 
 /** Route path for the OpsDesk approvals resource. */
 export const OPSDESK_APPROVALS_ROUTE = `${OPSDESK_ROUTE_PREFIX}/approvals`;
+/** Route path template for an OpsDesk approval decision mutation. */
+export const OPSDESK_APPROVAL_DECISION_ROUTE = `${OPSDESK_APPROVALS_ROUTE}/:approvalId/decision`;
 
 /** Route path for the OpsDesk teams resource. */
 export const OPSDESK_TEAMS_ROUTE = `${OPSDESK_ROUTE_PREFIX}/teams`;
@@ -40,6 +48,8 @@ export type OpsDeskRequestStatus =
 export type OpsDeskSlaStatus = "Healthy" | "Watch" | "Breached";
 
 export type OpsDeskApprovalRisk = "Low" | "Medium" | "High";
+export type OpsDeskApprovalDecision = "approve" | "reject";
+export type OpsDeskApprovalStatus = "Pending" | "Approved" | "Rejected";
 
 export type OpsDeskTeamQueueHealth = "Stable" | "Busy" | "Overloaded";
 
@@ -61,6 +71,7 @@ export type OpsDeskMetric = {
 /** Canonical request queue item returned by OpsDesk endpoints. */
 export type OpsDeskRequest = {
   id: string;
+  requestNumber: string;
   title: string;
   requester: string;
   team: string;
@@ -69,6 +80,7 @@ export type OpsDeskRequest = {
   age: string;
   sla: OpsDeskSlaStatus;
   owner: string;
+  version: number;
 };
 
 /** Canonical approval queue item returned by OpsDesk endpoints. */
@@ -81,6 +93,8 @@ export type OpsDeskApproval = {
   dueBy: string;
   risk: OpsDeskApprovalRisk;
   summary: string;
+  status: OpsDeskApprovalStatus;
+  version: number;
 };
 
 /** Canonical team workload item returned by OpsDesk endpoints. */
@@ -114,6 +128,15 @@ export type OpsDeskAuditEvent = {
   timestamp: string;
 };
 
+/** Canonical request detail payload returned by OpsDesk. */
+export type OpsDeskRequestDetailResponseData = {
+  request: OpsDeskRequest & {
+    notes: string;
+    updatedAt: string;
+  };
+  auditTrail: OpsDeskAuditEvent[];
+};
+
 /** Canonical overview payload returned by the OpsDesk overview endpoint. */
 export type OpsDeskOverviewResponseData = {
   metrics: OpsDeskMetric[];
@@ -124,8 +147,34 @@ export type OpsDeskOverviewResponseData = {
 /** Canonical request collection payload returned by OpsDesk. */
 export type OpsDeskRequestsResponseData = OpsDeskRequest[];
 
+/** Canonical request assignment payload accepted by OpsDesk. */
+export type OpsDeskAssignRequestOwnerRequest = {
+  owner: string;
+  version: number;
+};
+
+/** Canonical request assignment payload returned by OpsDesk. */
+export type OpsDeskAssignRequestOwnerResponseData = OpsDeskRequest;
+
+/** Canonical request escalation payload accepted by OpsDesk. */
+export type OpsDeskEscalateRequestRequest = {
+  version: number;
+};
+
+/** Canonical request escalation payload returned by OpsDesk. */
+export type OpsDeskEscalateRequestResponseData = OpsDeskRequest;
+
 /** Canonical approval collection payload returned by OpsDesk. */
 export type OpsDeskApprovalsResponseData = OpsDeskApproval[];
+
+/** Canonical approval decision payload accepted by OpsDesk. */
+export type OpsDeskApprovalDecisionRequest = {
+  decision: OpsDeskApprovalDecision;
+  version: number;
+};
+
+/** Canonical approval decision payload returned by OpsDesk. */
+export type OpsDeskApprovalDecisionResponseData = OpsDeskApproval;
 
 /** Canonical team collection payload returned by OpsDesk. */
 export type OpsDeskTeamsResponseData = OpsDeskTeam[];
