@@ -28,8 +28,16 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          persist-credentials: false
+          submodules: false
           ssh-key: ${{ secrets.PORTFOLIO_SUBMODULE_SSH_KEY }}
+
+      - name: Checkout submodules
+        shell: bash
+        run: |
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          git submodule sync --recursive
+          git submodule update --init --force --depth=1 --recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

@@ -1,48 +1,48 @@
 [submodule "packages/vitest-presets"]
 	path = packages/vitest-presets
-	url = git@github.com:guyromellemagayano/portfolio-vitest-presets.git
+	url = https://github.com/guyromellemagayano/portfolio-vitest-presets.git
 	ignore = all
 [submodule "packages/config-typescript"]
 	path = packages/config-typescript
-	url = git@github.com:guyromellemagayano/portfolio-config-typescript.git
+	url = https://github.com/guyromellemagayano/portfolio-config-typescript.git
 	ignore = all
 [submodule "packages/config-eslint"]
 	path = packages/config-eslint
-	url = git@github.com:guyromellemagayano/portfolio-config-eslint.git
+	url = https://github.com/guyromellemagayano/portfolio-config-eslint.git
 	ignore = all
 [submodule "packages/utils"]
 	path = packages/utils
-	url = git@github.com:guyromellemagayano/portfolio-utils.git
+	url = https://github.com/guyromellemagayano/portfolio-utils.git
 	ignore = all
 [submodule "packages/hooks"]
 	path = packages/hooks
-	url = git@github.com:guyromellemagayano/portfolio-hooks.git
+	url = https://github.com/guyromellemagayano/portfolio-hooks.git
 	ignore = all
 [submodule "packages/components"]
 	path = packages/components
-	url = git@github.com:guyromellemagayano/portfolio-components.git
+	url = https://github.com/guyromellemagayano/portfolio-components.git
 	ignore = all
 [submodule "packages/logger"]
 	path = packages/logger
-	url = git@github.com:guyromellemagayano/portfolio-logger.git
+	url = https://github.com/guyromellemagayano/portfolio-logger.git
 	ignore = all
 [submodule "apps/opsdesk"]
 	path = apps/opsdesk
-	url = git@github.com:guyromellemagayano/portfolio-admin.git
+	url = https://github.com/guyromellemagayano/portfolio-admin.git
 	ignore = all
 [submodule "apps/e2e"]
 	path = apps/e2e
-	url = git@github.com:guyromellemagayano/portfolio-e2e.git
+	url = https://github.com/guyromellemagayano/portfolio-e2e.git
 	ignore = all
 [submodule "apps/api-portfolio"]
 	path = apps/api-portfolio
-	url = git@github.com:guyromellemagayano/portfolio-api.git
+	url = https://github.com/guyromellemagayano/portfolio-api.git
 	ignore = all
 [submodule "apps/web"]
 	path = apps/web
-	url = git@github.com:guyromellemagayano/portfolio-web.git
+	url = https://github.com/guyromellemagayano/portfolio-web.git
 	ignore = all
 [submodule "packages/w3x"]
 	path = packages/w3x
-	url = git@github.com:guyromellemagayano/portfolio-w3x.git
+	url = https://github.com/guyromellemagayano/portfolio-w3x.git
 	ignore = all
