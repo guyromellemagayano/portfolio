@@ -1,7 +1,7 @@
 /**
  * @file apps/jobs/src/lib/api.ts
  * @author Guy Romelle Magayano
- * @description Jobs API client helpers for server and client components.
+ * @description Jobs API client helpers for the Vite-powered jobs application.
  */
 
 import type {
@@ -17,7 +17,7 @@ import type {
 } from "@portfolio/api-contracts";
 import type { ApiEnvelope } from "@portfolio/api-contracts/http";
 
-const DEFAULT_JOBS_API_URL = "http://127.0.0.1:5002";
+const DEFAULT_JOBS_API_URL = "/api-jobs";
 
 /** Resolves the jobs API base URL for the current runtime. */
 export function getJobsApiUrl(): string {

@@ -6,6 +6,9 @@
 
 import { startTransition, useState } from "react";
 
+import { Badge } from "@jobs/components/ui/badge";
+import { Button } from "@jobs/components/ui/button";
+import { Card, CardContent } from "@jobs/components/ui/card";
 import { resetJobState, updateJobState } from "@jobs/lib/api";
 
 import type { NormalizedJob } from "@portfolio/api-contracts";
@@ -43,94 +46,110 @@ export function JobActionPanel({ job, onUpdated }: JobActionPanelProps) {
   };
 
   return (
-    <div
+    <Card
       aria-label={`Tracker actions for ${job.title} at ${job.company}`}
-      className="flex flex-col gap-3 rounded-2xl border border-zinc-200 bg-zinc-50 p-4"
+      className="border-zinc-200 bg-zinc-50/80"
       role="group"
     >
-      <div className="flex flex-wrap gap-2">
-        <button
-          aria-label={job.userState.saved ? "Unsave job" : "Save job"}
-          className="rounded-full border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-800 hover:border-zinc-500"
-          disabled={isPending}
-          onClick={() =>
-            runAction("save", () =>
-              updateJobState(job.id, {
-                saved: !job.userState.saved,
-              })
-            )
-          }
-          type="button"
-        >
-          {pendingLabel === "save"
-            ? "Saving..."
-            : job.userState.saved
-              ? "Saved"
-              : "Save"}
-        </button>
-        <button
-          aria-label={
-            job.userState.applied ? "Mark as not applied" : "Mark as applied"
-          }
-          className="rounded-full border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-800 hover:border-zinc-500"
-          disabled={isPending}
-          onClick={() =>
-            runAction("apply", () =>
-              updateJobState(job.id, {
-                applied: !job.userState.applied,
-                applicationStatus: !job.userState.applied
-                  ? "applied"
-                  : "not_started",
-              })
-            )
-          }
-          type="button"
-        >
-          {pendingLabel === "apply"
-            ? "Updating..."
-            : job.userState.applied
-              ? "Applied"
-              : "Mark Applied"}
-        </button>
-        <button
-          aria-label={
-            job.userState.ignored ? "Restore ignored job" : "Ignore job"
-          }
-          className="rounded-full border border-zinc-300 px-3 py-2 text-sm font-medium text-zinc-800 hover:border-zinc-500"
-          disabled={isPending}
-          onClick={() =>
-            runAction("ignore", () =>
-              updateJobState(job.id, {
-                ignored: !job.userState.ignored,
-              })
-            )
-          }
-          type="button"
-        >
-          {pendingLabel === "ignore"
-            ? "Updating..."
-            : job.userState.ignored
-              ? "Ignored"
-              : "Ignore"}
-        </button>
-        <button
-          aria-label="Reset job tracker state"
-          className="rounded-full border border-rose-200 px-3 py-2 text-sm font-medium text-rose-700 hover:border-rose-400"
-          disabled={isPending}
-          onClick={() => runAction("reset", () => resetJobState(job.id))}
-          type="button"
-        >
-          {pendingLabel === "reset" ? "Resetting..." : "Reset"}
-        </button>
-      </div>
-      <div aria-live="polite" className="text-xs text-zinc-600" role="status">
-        Status: {job.userState.applicationStatus.replace(/_/g, " ")}
-      </div>
-      {errorMessage ? (
-        <p className="text-sm text-rose-700" role="alert">
-          {errorMessage}
-        </p>
-      ) : null}
-    </div>
+      <CardContent className="grid gap-4 pt-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant={job.userState.saved ? "success" : "secondary"}>
+            {job.userState.saved ? "saved" : "not saved"}
+          </Badge>
+          <Badge variant={job.userState.applied ? "success" : "secondary"}>
+            {job.userState.applied ? "applied" : "not applied"}
+          </Badge>
+          {job.userState.ignored ? (
+            <Badge variant="warning">ignored</Badge>
+          ) : null}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            aria-label={job.userState.saved ? "Unsave job" : "Save job"}
+            disabled={isPending}
+            onClick={() =>
+              runAction("save", () =>
+                updateJobState(job.id, {
+                  saved: !job.userState.saved,
+                  applicationStatus: !job.userState.saved
+                    ? "saved"
+                    : "not_started",
+                })
+              )
+            }
+            size="sm"
+            variant="secondary"
+          >
+            {pendingLabel === "save"
+              ? "Saving..."
+              : job.userState.saved
+                ? "Saved"
+                : "Save"}
+          </Button>
+          <Button
+            aria-label={
+              job.userState.applied ? "Mark as not applied" : "Mark as applied"
+            }
+            disabled={isPending}
+            onClick={() =>
+              runAction("apply", () =>
+                updateJobState(job.id, {
+                  applied: !job.userState.applied,
+                  applicationStatus: !job.userState.applied
+                    ? "applied"
+                    : "not_started",
+                })
+              )
+            }
+            size="sm"
+            variant="secondary"
+          >
+            {pendingLabel === "apply"
+              ? "Updating..."
+              : job.userState.applied
+                ? "Applied"
+                : "Mark Applied"}
+          </Button>
+          <Button
+            aria-label={
+              job.userState.ignored ? "Restore ignored job" : "Ignore job"
+            }
+            disabled={isPending}
+            onClick={() =>
+              runAction("ignore", () =>
+                updateJobState(job.id, {
+                  ignored: !job.userState.ignored,
+                })
+              )
+            }
+            size="sm"
+            variant="outline"
+          >
+            {pendingLabel === "ignore"
+              ? "Updating..."
+              : job.userState.ignored
+                ? "Ignored"
+                : "Ignore"}
+          </Button>
+          <Button
+            aria-label="Reset job tracker state"
+            disabled={isPending}
+            onClick={() => runAction("reset", () => resetJobState(job.id))}
+            size="sm"
+            variant="danger"
+          >
+            {pendingLabel === "reset" ? "Resetting..." : "Reset"}
+          </Button>
+        </div>
+        <div aria-live="polite" className="text-xs text-zinc-600" role="status">
+          Status: {job.userState.applicationStatus.replace(/_/g, " ")}
+        </div>
+        {errorMessage ? (
+          <p className="text-sm text-rose-700" role="alert">
+            {errorMessage}
+          </p>
+        ) : null}
+      </CardContent>
+    </Card>
   );
 }
