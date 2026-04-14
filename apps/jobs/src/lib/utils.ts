@@ -1,7 +1,7 @@
 /**
  * @file apps/jobs/src/lib/utils.ts
  * @author Guy Romelle Magayano
- * @description Shared utility helpers for shadcn-style component composition in the jobs app.
+ * @description Shared utility helpers for component composition.
  */
 
 import { type ClassValue, clsx } from "clsx";

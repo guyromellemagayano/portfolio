@@ -20,8 +20,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
-import { Separator } from "@jobs/components/ui/separator";
+} from "@jobs/components/ui/Card";
+import { Separator } from "@jobs/components/ui/Separator";
 import { JobDetailPage } from "@jobs/routes/JobDetailPage";
 import { JobsDashboardPage } from "@jobs/routes/JobsDashboardPage";
 import { SettingsPage } from "@jobs/routes/SettingsPage";

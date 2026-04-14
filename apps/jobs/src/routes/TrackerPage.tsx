@@ -13,7 +13,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
+} from "@jobs/components/ui/Card";
 import { fetchJobs } from "@jobs/lib/api";
 
 import type { JobSearchResponseData } from "@portfolio/api-contracts";

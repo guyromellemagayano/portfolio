@@ -6,19 +6,18 @@
 
 import { startTransition, useState } from "react";
 
-import { Badge } from "@jobs/components/ui/badge";
-import { Button } from "@jobs/components/ui/button";
-import { Card, CardContent } from "@jobs/components/ui/card";
+import { Badge } from "@jobs/components/ui/Badge";
+import { Button } from "@jobs/components/ui/Button";
+import { Card, CardContent } from "@jobs/components/ui/Card";
 import { resetJobState, updateJobState } from "@jobs/lib/api";
 
-import type { NormalizedJob } from "@portfolio/api-contracts";
+import { type NormalizedJob } from "@portfolio/api-contracts";
 
 type JobActionPanelProps = {
   job: NormalizedJob;
   onUpdated?: () => void;
 };
 
-/** Renders single-user tracker actions for a normalized job record. */
 export function JobActionPanel({ job, onUpdated }: JobActionPanelProps) {
   const [pendingLabel, setPendingLabel] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);

@@ -31,7 +31,10 @@ This is the monorepo behind my portfolio ecosystem.
 It includes:
 
 - `web`: public site built with Next.js
-- `admin`: internal/admin interface built with Vite + React Router
+- `opsdesk`: internal/admin interface built with Vite + React Router
+- `jobs`: direct ATS jobs platform built with Vite + React Router
+- `api-jobs`: Bun + Elysia jobs API
+- `jobs-worker`: background sync worker for ATS ingestion
 - `api`: Express service layer
 - `e2e`: Playwright end-to-end tests
 - shared `@portfolio/*` packages (components, hooks, logger, utils, shared configs)
@@ -60,16 +63,15 @@ pnpm dev
 Primary guide: `docker/docs/local-dev.md`
 
 ```bash
-# First-time setup
-make env-local-normalize
-make use-orbstack-domain   # default: guyromellemagayano.local
-make bootstrap
-make edge-smoke
+# Full stack
+make up
+make logs
+make down
 
-# Daily development
-make up-edge
-make logs-edge
-make down-edge
+# Jobs only
+make jobs-up
+make jobs-logs
+make jobs-down
 ```
 
 ### Workspace Map
@@ -78,7 +80,10 @@ make down-edge
 | ---------------------------- | ---------------------------------------- |
 | `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
 | `apps/opsdesk`               | Vite + React Router app                  |
+| `apps/jobs`                  | Vite + React Router jobs app             |
 | `apps/api-portfolio`         | Express API                              |
+| `apps/api-jobs`              | Bun + Elysia jobs API                    |
+| `apps/jobs-worker`           | Jobs sync worker                         |
 | `apps/e2e`                   | Playwright E2E suites                    |
 | `docs`                       | Centralized project documentation        |
 | `packages/components`        | Shared React components                  |
@@ -130,7 +135,9 @@ TypeScript unresolved imports are enforced by `pnpm check-types` (and included i
 ```bash
 pnpm --filter web dev
 pnpm --filter opsdesk dev
+pnpm --filter jobs dev
 pnpm --filter api-portfolio dev
+pnpm --filter api-jobs dev
 pnpm --filter e2e test:e2e:ui
 ```
 

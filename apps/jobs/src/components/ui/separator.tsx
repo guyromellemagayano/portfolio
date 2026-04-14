@@ -1,10 +1,10 @@
 /**
- * @file apps/jobs/src/components/ui/separator.tsx
+ * @file apps/jobs/src/components/ui/Separator.tsx
  * @author Guy Romelle Magayano
- * @description Shadcn-style separator primitive for visual grouping in the jobs app.
+ * @description Separator primitive for visual grouping.
  */
 
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 import { cn } from "@jobs/lib/utils";
 
@@ -12,7 +12,6 @@ type SeparatorProps = ComponentProps<"div"> & {
   orientation?: "horizontal" | "vertical";
 };
 
-/** Renders a simple horizontal or vertical separator. */
 export function Separator(props: SeparatorProps) {
   const {
     className,

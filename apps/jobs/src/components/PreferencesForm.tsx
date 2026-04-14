@@ -4,43 +4,72 @@
  * @description Single-user preferences editor for saved search defaults.
  */
 
-import { startTransition, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { Button } from "@jobs/components/ui/button";
+import { Button } from "@jobs/components/ui/Button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
-import { Input } from "@jobs/components/ui/input";
+} from "@jobs/components/ui/Card";
+import { Input } from "@jobs/components/ui/Input";
 import { updatePreferences } from "@jobs/lib/api";
 
-import type { JobUserPreferences } from "@portfolio/api-contracts";
+import { type JobUserPreferences } from "@portfolio/api-contracts";
 
 type PreferencesFormProps = {
   onSaved?: () => void;
   preferences: JobUserPreferences;
 };
 
-/** Renders a local-first preferences form backed by the jobs API. */
+type PreferencesFormValues = {
+  employmentTypes: string;
+  keywords: string;
+  preferredLocations: string;
+  remoteModes: string;
+};
+
+function toDelimitedValue(values: string[]) {
+  return values.join(", ");
+}
+
+function normalizeDelimitedValue(value: string) {
+  return value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
 export function PreferencesForm({
   onSaved,
   preferences,
 }: PreferencesFormProps) {
-  const [keywords, setKeywords] = useState(preferences.keywords.join(", "));
-  const [preferredLocations, setPreferredLocations] = useState(
-    preferences.preferredLocations.join(", ")
-  );
-  const [remoteModes, setRemoteModes] = useState(
-    preferences.remoteModes.join(", ")
-  );
-  const [employmentTypes, setEmploymentTypes] = useState(
-    preferences.employmentTypes.join(", ")
-  );
-  const [pending, setPending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const {
+    formState: { isSubmitting },
+    handleSubmit,
+    register,
+    reset,
+  } = useForm<PreferencesFormValues>({
+    defaultValues: {
+      employmentTypes: toDelimitedValue(preferences.employmentTypes),
+      keywords: toDelimitedValue(preferences.keywords),
+      preferredLocations: toDelimitedValue(preferences.preferredLocations),
+      remoteModes: toDelimitedValue(preferences.remoteModes),
+    },
+  });
+
+  useEffect(() => {
+    reset({
+      employmentTypes: toDelimitedValue(preferences.employmentTypes),
+      keywords: toDelimitedValue(preferences.keywords),
+      preferredLocations: toDelimitedValue(preferences.preferredLocations),
+      remoteModes: toDelimitedValue(preferences.remoteModes),
+    });
+  }, [preferences, reset]);
 
   return (
     <Card>
@@ -55,52 +84,38 @@ export function PreferencesForm({
         <form
           aria-describedby="preferences-help"
           className="grid gap-5"
-          onSubmit={(event) => {
-            event.preventDefault();
-            setPending(true);
+          onSubmit={handleSubmit(async (values: PreferencesFormValues) => {
             setErrorMessage(null);
 
-            startTransition(() => {
-              void updatePreferences({
-                keywords: keywords
-                  .split(",")
-                  .map((entry) => entry.trim())
-                  .filter(Boolean),
-                preferredLocations: preferredLocations
-                  .split(",")
-                  .map((entry) => entry.trim())
-                  .filter(Boolean),
-                remoteModes: remoteModes
-                  .split(",")
-                  .map((entry) => entry.trim())
-                  .filter(Boolean) as JobUserPreferences["remoteModes"],
-                employmentTypes: employmentTypes
-                  .split(",")
-                  .map((entry) => entry.trim())
-                  .filter(Boolean) as JobUserPreferences["employmentTypes"],
-              })
-                .then(() => {
-                  onSaved?.();
-                })
-                .catch((error) => {
-                  setErrorMessage(
-                    error instanceof Error ? error.message : "Request failed."
-                  );
-                })
-                .finally(() => {
-                  setPending(false);
-                });
-            });
-          }}
+            try {
+              await updatePreferences({
+                employmentTypes: normalizeDelimitedValue(
+                  values.employmentTypes
+                ) as JobUserPreferences["employmentTypes"],
+                keywords: normalizeDelimitedValue(values.keywords),
+                preferredLocations: normalizeDelimitedValue(
+                  values.preferredLocations
+                ),
+                remoteModes: normalizeDelimitedValue(
+                  values.remoteModes
+                ) as JobUserPreferences["remoteModes"],
+              });
+
+              onSaved?.();
+            } catch (error) {
+              setErrorMessage(
+                error instanceof Error ? error.message : "Request failed."
+              );
+            }
+          })}
           role="form"
         >
           <label className="grid gap-2">
             <span className="text-sm font-medium text-zinc-900">Keywords</span>
             <Input
               aria-label="Preferred keywords"
-              onChange={(event) => setKeywords(event.target.value)}
+              {...register("keywords")}
               type="text"
-              value={keywords}
             />
           </label>
           <label className="grid gap-2">
@@ -109,9 +124,8 @@ export function PreferencesForm({
             </span>
             <Input
               aria-label="Preferred locations"
-              onChange={(event) => setPreferredLocations(event.target.value)}
+              {...register("preferredLocations")}
               type="text"
-              value={preferredLocations}
             />
           </label>
           <label className="grid gap-2">
@@ -120,9 +134,8 @@ export function PreferencesForm({
             </span>
             <Input
               aria-label="Preferred remote modes"
-              onChange={(event) => setRemoteModes(event.target.value)}
+              {...register("remoteModes")}
               type="text"
-              value={remoteModes}
             />
           </label>
           <label className="grid gap-2">
@@ -131,14 +144,13 @@ export function PreferencesForm({
             </span>
             <Input
               aria-label="Preferred employment types"
-              onChange={(event) => setEmploymentTypes(event.target.value)}
+              {...register("employmentTypes")}
               type="text"
-              value={employmentTypes}
             />
           </label>
           <div className="flex items-center gap-3">
-            <Button disabled={pending} type="submit">
-              {pending ? "Saving..." : "Save Preferences"}
+            <Button disabled={isSubmitting} type="submit">
+              {isSubmitting ? "Saving..." : "Save Preferences"}
             </Button>
             {errorMessage ? (
               <p className="text-sm text-rose-700" role="alert">

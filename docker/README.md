@@ -11,13 +11,10 @@ Docker-related assets are organized by concern:
 Current local development entry points:
 
 - Compose file: `docker/compose/local.yml`
-- Edge overlay (Traefik + host routing): `docker/compose/edge.local.yml`
-- OrbStack custom-domain overlay (`*.local`): `docker/compose/edge.orbstack.local.yml`
-- Optional TLS overlay (mkcert-ready): `docker/compose/edge.tls.local.yml`
 - Dev image Dockerfile: `docker/images/dev/Dockerfile`
 - Dev entrypoint: `docker/scripts/dev-entrypoint.sh`
 - Local dev guide: `docker/docs/local-dev.md`
-- Recommended first-run command: `make bootstrap` (auto DNS setup on macOS/Homebrew + Traefik edge stack)
+- Recommended first-run commands: `make up` or `make jobs-up`
 
 Production scaffolding (self-hosting readiness):
 
@@ -29,7 +26,7 @@ Production scaffolding (self-hosting readiness):
 Docker docs:
 
 - `docker/docs/local-dev.md`: app stack + tooling workflow
-- `docker/docs/e2e.md`: Playwright + content-pipeline smoke runners in Docker
+- `docker/docs/e2e.md`: Playwright runners in Docker
 - `docker/docs/production-plan.md`: future self-hosting / Traefik / production image plan
 
 Traefik docs/assets:

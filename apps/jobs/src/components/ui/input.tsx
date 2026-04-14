@@ -1,16 +1,15 @@
 /**
- * @file apps/jobs/src/components/ui/input.tsx
+ * @file apps/jobs/src/components/ui/Input.tsx
  * @author Guy Romelle Magayano
- * @description Shadcn-style input primitive for forms across the jobs app.
+ * @description Input primitive for forms across the jobs app.
  */
 
-import type { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 import { cn } from "@jobs/lib/utils";
 
 export type InputProps = ComponentProps<"input">;
 
-/** Renders a text input using the jobs app shadcn-style field styling. */
 export function Input(props: InputProps) {
   const { className, ...rest } = props;
 

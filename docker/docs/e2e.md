@@ -1,75 +1,47 @@
-# Dockerized E2E and Content Smoke
+# Dockerized E2E
 
-This guide covers the Playwright runners in `docker/compose/local.yml`:
+Playwright lives in `apps/e2e` and is grouped into two folder families:
 
-- `e2e` (full Playwright suite)
-- `e2e-content-smoke` (content pipeline smoke subset)
+- `portfolio-e2e`
+- `jobs-e2e`
 
-These services run as Compose profile services (`e2e`) and depend on healthy `api` + `web` containers.
+The Compose runner uses the `e2e` profile from `docker/compose/local.yml`.
 
 ## Commands
 
 ```bash
-# Full Playwright suite (starts api + web + e2e runner)
+# full suite
 make e2e
 
-# Content pipeline smoke only
-make e2e-content
+# list every discovered Playwright test
+make e2e-list
 
-# List @content tests without running them
-make e2e-list-content
+# jobs project only
+make jobs-e2e
+make jobs-e2e-list
 ```
 
 ## How It Works
 
-- The Playwright containers use `E2E_USE_EXTERNAL_SERVERS=1`.
-- `apps/e2e/playwright.config.ts` targets the already-running Compose `api` + `web` services.
-- Compose healthchecks gate the e2e runners so tests do not start until `api` and `web` are ready.
+- The Playwright container runs with `E2E_USE_EXTERNAL_SERVERS=1`.
+- The `e2e` service targets the already-running Compose services.
+- `jobs-chromium` points at the jobs app on `http://jobs:3002`.
+- The default `chromium` and `mobile-chrome` projects continue to target the portfolio web app on `http://web:3000`.
 
 ## Recommended Workflow
 
 ```bash
-# 1) Start app stack in background
+# full app stack
 make up
 
-# 2) Run only the content smoke suite
-make e2e-content
+# jobs-only browser checks
+make jobs-e2e
 
-# 3) Inspect app logs if something fails
-make logs
-```
-
-You can also run `make up-edge` first if you want to inspect the app through Traefik hostnames while the e2e runners execute.
-
-You can run `make e2e` / `make e2e-content` directly without starting the app stack first; Compose will start required services.
-
-## Content Smoke Env Vars
-
-- `CONTENT_REVALIDATE_SECRET` (required for content revalidation endpoint assertions)
-- `E2E_CONTENT_ARTICLE_SLUG` (optional): pin the article smoke test to a known article slug
-- `E2E_CONTENT_PAGE_SLUG` (optional): pin the page smoke test to a known page slug (must not collide with static routes)
-
-Examples:
-
-```bash
-make e2e-content \
-  CONTENT_REVALIDATE_SECRET=your-secret
-```
-
-```bash
-make e2e-content \
-  CONTENT_REVALIDATE_SECRET=your-secret \
-  E2E_CONTENT_ARTICLE_SLUG=my-article \
-  E2E_CONTENT_PAGE_SLUG=now
+# or everything
+make e2e
 ```
 
 ## Notes
 
-- `E2E_BASE_URL` is set internally in the Compose e2e services (`http://web:3000`); you usually do not need to set it manually for Docker e2e runs.
-- Local webhook callbacks are only needed if you test external systems calling `/api/revalidate/content`.
-
-## Related Docs
-
-- Local app stack + tooling commands: `docker/docs/local-dev.md`
-- Content integration details: `docs/integrations/content/README.md`
-- Production/self-hosting plan: `docker/docs/production-plan.md`
+- You can run `make e2e` or `make jobs-e2e` directly; Compose will start what it needs for the runner.
+- The jobs Playwright project is intentionally separate so browser checks for the jobs platform do not share `baseURL` assumptions with the portfolio site.

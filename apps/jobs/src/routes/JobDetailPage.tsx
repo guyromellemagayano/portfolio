@@ -8,19 +8,19 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
 
 import { JobActionPanel } from "@jobs/components/JobActionPanel";
-import { Badge } from "@jobs/components/ui/badge";
-import { buttonVariants } from "@jobs/components/ui/button";
+import { Badge } from "@jobs/components/ui/Badge";
+import { buttonVariants } from "@jobs/components/ui/Button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
+} from "@jobs/components/ui/Card";
 import { fetchJobDetail } from "@jobs/lib/api";
 import { cn } from "@jobs/lib/utils";
 
-import type { JobDetail } from "@portfolio/api-contracts";
+import { type JobDetail } from "@portfolio/api-contracts";
 
 type JobDetailPageProps = {
   onRefreshRequested: () => void;

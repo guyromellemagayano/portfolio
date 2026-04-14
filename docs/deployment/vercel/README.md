@@ -23,14 +23,15 @@ This monorepo deploys to Vercel as three separate projects:
 ### Local Env Pull Automation
 
 ```bash
-make vercel-env-pull VERCEL_ENV_TARGET=development
-make vercel-env-sync-local VERCEL_ENV_TARGET=development
+sh docker/scripts/vercel-env-pull.sh apps/web .env.local development ""
+sh docker/scripts/vercel-env-pull.sh apps/api-portfolio .env.local development ""
+sh docker/scripts/vercel-env-pull.sh apps/opsdesk .env.local development ""
 ```
 
 For preview branch env pulls:
 
 ```bash
-make vercel-env-pull VERCEL_ENV_TARGET=preview VERCEL_GIT_BRANCH=feature/content-migration
+sh docker/scripts/vercel-env-pull.sh apps/web .env.local preview feature/content-migration
 ```
 
 ## `apps/web`
@@ -122,10 +123,15 @@ Return headers:
 ## Repo Smoke Check (Post-Deploy)
 
 ```bash
-make prod-smoke
+sh docs/scripts/prod-vercel-smoke.sh \
+  "https://www.guyromellemagayano.com" \
+  "https://api.guyromellemagayano.com" \
+  "https://opsdesk.guyromellemagayano.com" \
+  "" \
+  ""
 ```
 
 ## Notes
 
 - Do not use local hostnames (`localhost`, `127.0.0.1`, `*.local`) for production env values.
-- Local Docker + Traefik remains the local development platform.
+- Local Docker Compose remains the local development platform.

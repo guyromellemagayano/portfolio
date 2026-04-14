@@ -8,15 +8,15 @@ import { type FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import { JobCard } from "@jobs/components/JobCard";
-import { Button } from "@jobs/components/ui/button";
+import { Button } from "@jobs/components/ui/Button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@jobs/components/ui/card";
-import { Input } from "@jobs/components/ui/input";
+} from "@jobs/components/ui/Card";
+import { Input } from "@jobs/components/ui/Input";
 import { fetchJobs, fetchSyncStatus } from "@jobs/lib/api";
 
 import type {
