@@ -1,7 +1,7 @@
 /**
  * @file apps/jobs/src/app/index.tsx
  * @author Guy Romelle Magayano
- * @description Vite-powered jobs platform shell and route composition.
+ * @description Main jobs platform shell and route composition.
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -15,11 +15,18 @@ import {
 
 import { ActiveNav } from "@jobs/components/ActiveNav";
 import { SyncControls } from "@jobs/components/SyncControls";
-import { JobDetailPage } from "@jobs/pages/JobDetailPage";
-import { JobsDashboardPage } from "@jobs/pages/JobsDashboardPage";
-import { SettingsPage } from "@jobs/pages/SettingsPage";
-import { SourcesPage } from "@jobs/pages/SourcesPage";
-import { TrackerPage } from "@jobs/pages/TrackerPage";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@jobs/components/ui/card";
+import { Separator } from "@jobs/components/ui/separator";
+import { JobDetailPage } from "@jobs/routes/JobDetailPage";
+import { JobsDashboardPage } from "@jobs/routes/JobsDashboardPage";
+import { SettingsPage } from "@jobs/routes/SettingsPage";
+import { SourcesPage } from "@jobs/routes/SourcesPage";
+import { TrackerPage } from "@jobs/routes/TrackerPage";
 
 const PAGE_TITLES: Record<string, string> = {
   "/": "Direct ATS Jobs",
@@ -59,30 +66,32 @@ function JobsApplicationShell() {
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(245,158,11,0.16),_transparent_28%),linear-gradient(180deg,_#f8fafc_0%,_#ffffff_45%,_#f4f4f5_100%)] font-sans text-zinc-950 antialiased">
       <DocumentTitleSync />
       <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col gap-10 px-5 py-8 lg:px-8">
-        <header
-          aria-label="Jobs platform header"
-          className="grid gap-6 rounded-[2rem] border border-zinc-200/80 bg-white/80 p-6 shadow-[0_24px_80px_-48px_rgba(15,23,42,0.35)] backdrop-blur"
-          role="banner"
-        >
-          <div className="grid gap-3">
-            <p className="text-xs tracking-[0.3em] text-amber-700 uppercase">
-              Direct ATS intelligence
-            </p>
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl">
-                <h1 className="text-4xl font-semibold tracking-tight text-zinc-950 lg:text-5xl">
-                  Cut out the middleman. Pull the boards directly.
-                </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-600 lg:text-base">
-                  This bounded context is built for one serious operator:
-                  discover company-owned ATS sources, validate them, keep the
-                  feed fresh, and run your own saved/applied workflow locally.
+        <header aria-label="Jobs platform header" role="banner">
+          <Card className="border-zinc-200/80 bg-white/85 backdrop-blur">
+            <CardHeader className="gap-6">
+              <div className="grid gap-3">
+                <p className="text-xs font-medium tracking-[0.3em] text-amber-700 uppercase">
+                  Direct ATS intelligence
                 </p>
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                  <div className="max-w-3xl">
+                    <CardTitle className="text-4xl lg:text-5xl">
+                      Cut out the middleman. Pull the boards directly.
+                    </CardTitle>
+                    <CardDescription className="mt-3 max-w-2xl text-sm leading-6 lg:text-base">
+                      This bounded context is built for one serious operator:
+                      discover company-owned ATS sources, validate them, keep
+                      the feed fresh, and run your own saved/applied workflow
+                      locally.
+                    </CardDescription>
+                  </div>
+                  <SyncControls onCompleted={refreshHandlers.requestRefresh} />
+                </div>
               </div>
-              <SyncControls onCompleted={refreshHandlers.requestRefresh} />
-            </div>
-          </div>
-          <ActiveNav />
+              <Separator />
+              <ActiveNav />
+            </CardHeader>
+          </Card>
         </header>
         <main aria-label="Jobs platform content" className="pb-10" role="main">
           <Routes>
