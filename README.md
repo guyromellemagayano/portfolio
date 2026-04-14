@@ -83,7 +83,6 @@ make down-edge
 | `docs`                       | Centralized project documentation        |
 | `packages/components`        | Shared React components                  |
 | `packages/api-contracts`     | Canonical API payload contracts          |
-| `packages/ui`                | UI primitives/components                 |
 | `packages/hooks`             | Shared hooks                             |
 | `packages/utils`             | Utilities                                |
 | `packages/logger`            | Structured logging                       |

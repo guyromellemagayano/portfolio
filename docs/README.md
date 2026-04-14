@@ -9,7 +9,6 @@ Project-level documentation is centralized under `docs/`.
 - `docs/services/`: service/app documentation grouped by service
 - `docs/integrations/`: external integrations (content pipeline, third-party APIs, etc.)
 - `docs/standards/`: conventions, standards, and implementation rules
-- `docs/catalog/`: indexes and discovery docs (including the repo README catalog)
 
 ## Primary Entry Points
 
@@ -24,24 +23,7 @@ Project-level documentation is centralized under `docs/`.
 - Docker e2e guide: `docker/docs/e2e.md`
 - Docker production plan: `docker/docs/production-plan.md`
 
-## Repository README Catalog
-
-Use `docs/catalog/README.md` for a centralized index of every `README.md` in the monorepo (apps, packages, docker, docs, and root).
-
-Validate it from the repo root with:
-
-```bash
-make docs-catalog-check
-```
-
-Regenerate it when new README files are added:
-
-```bash
-make docs-catalog-update
-make docs-catalog-check
-```
-
 ## Documentation Placement Rule
 
 - Project-level docs go in `docs/` under the closest section above.
-- Local README files stay next to the code they describe (for example `apps/*/README.md`, `packages/*/README.md`) and are indexed in `docs/catalog/README.md`.
+- Local README files stay next to the code they describe (for example `apps/*/README.md`, `packages/*/README.md`).

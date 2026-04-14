@@ -22,10 +22,6 @@
 	path = packages/components
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-components.git
 	ignore = all
-[submodule "packages/ui"]
-	path = packages/ui
-	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-ui.git
-	ignore = all
 [submodule "packages/logger"]
 	path = packages/logger
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-logger.git
