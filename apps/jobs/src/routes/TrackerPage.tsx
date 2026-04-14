@@ -1,5 +1,5 @@
 /**
- * @file apps/jobs/src/pages/TrackerPage.tsx
+ * @file apps/jobs/src/routes/TrackerPage.tsx
  * @author Guy Romelle Magayano
  * @description Tracker page for saved and applied direct ATS jobs.
  */
@@ -7,6 +7,13 @@
 import { useEffect, useState } from "react";
 
 import { JobCard } from "@jobs/components/JobCard";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@jobs/components/ui/card";
 import { fetchJobs } from "@jobs/lib/api";
 
 import type { JobSearchResponseData } from "@portfolio/api-contracts";
@@ -90,19 +97,28 @@ export function TrackerPage({
         </p>
       </div>
       {isLoading ? (
-        <div className="rounded-[2rem] border border-zinc-200 bg-white p-10 text-center text-sm text-zinc-600">
-          Loading tracker...
-        </div>
+        <Card>
+          <CardContent className="p-10 text-center text-sm text-zinc-600">
+            Loading tracker...
+          </CardContent>
+        </Card>
       ) : errorMessage ? (
-        <div className="rounded-[2rem] border border-rose-200 bg-white p-10 text-center text-sm text-rose-700">
-          {errorMessage}
-        </div>
+        <Card className="border-rose-200">
+          <CardContent className="p-10 text-center text-sm text-rose-700">
+            {errorMessage}
+          </CardContent>
+        </Card>
       ) : (
         <div className="grid gap-8 lg:grid-cols-2">
           <section aria-label="Saved jobs" className="grid gap-4" role="region">
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
-              Saved
-            </h2>
+            <Card>
+              <CardHeader>
+                <CardTitle>Saved</CardTitle>
+                <CardDescription>
+                  Roles you want to keep in active consideration.
+                </CardDescription>
+              </CardHeader>
+            </Card>
             {savedJobs && savedJobs.items.length > 0 ? (
               savedJobs.items.map((job) => (
                 <JobCard
@@ -112,9 +128,11 @@ export function TrackerPage({
                 />
               ))
             ) : (
-              <div className="rounded-[2rem] border border-dashed border-zinc-300 bg-white p-8 text-sm text-zinc-600">
-                No saved jobs yet.
-              </div>
+              <Card className="border-dashed">
+                <CardContent className="p-8 text-sm text-zinc-600">
+                  No saved jobs yet.
+                </CardContent>
+              </Card>
             )}
           </section>
           <section
@@ -122,9 +140,14 @@ export function TrackerPage({
             className="grid gap-4"
             role="region"
           >
-            <h2 className="text-2xl font-semibold tracking-tight text-zinc-950">
-              Applied
-            </h2>
+            <Card>
+              <CardHeader>
+                <CardTitle>Applied</CardTitle>
+                <CardDescription>
+                  Jobs already pushed into your active funnel.
+                </CardDescription>
+              </CardHeader>
+            </Card>
             {appliedJobs && appliedJobs.items.length > 0 ? (
               appliedJobs.items.map((job) => (
                 <JobCard
@@ -134,9 +157,11 @@ export function TrackerPage({
                 />
               ))
             ) : (
-              <div className="rounded-[2rem] border border-dashed border-zinc-300 bg-white p-8 text-sm text-zinc-600">
-                No applied jobs yet.
-              </div>
+              <Card className="border-dashed">
+                <CardContent className="p-8 text-sm text-zinc-600">
+                  No applied jobs yet.
+                </CardContent>
+              </Card>
             )}
           </section>
         </div>

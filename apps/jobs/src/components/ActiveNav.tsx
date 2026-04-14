@@ -1,10 +1,13 @@
 /**
  * @file apps/jobs/src/components/ActiveNav.tsx
  * @author Guy Romelle Magayano
- * @description Client-side primary navigation with active route styling.
+ * @description Primary jobs navigation using shadcn-style button variants.
  */
 
 import { NavLink } from "react-router";
+
+import { buttonVariants } from "@jobs/components/ui/button";
+import { cn } from "@jobs/lib/utils";
 
 type NavItem = {
   href: string;
@@ -48,11 +51,13 @@ export function ActiveNav() {
           <NavLink
             key={item.href}
             className={({ isActive }) =>
-              `rounded-full border px-4 py-2 text-sm transition ${
-                isActive
-                  ? "border-zinc-900 bg-zinc-900 text-zinc-50"
-                  : "border-zinc-300 bg-white text-zinc-700 hover:border-zinc-500 hover:text-zinc-950"
-              }`
+              cn(
+                buttonVariants({
+                  size: "sm",
+                  variant: isActive ? "default" : "secondary",
+                }),
+                "rounded-full"
+              )
             }
             to={item.href}
             title={item.description}
