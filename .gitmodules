@@ -38,6 +38,10 @@
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
 	ignore = all
+[submodule "apps/api-jobs"]
+	path = apps/api-jobs
+	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api-jobs.git
+	ignore = all
 [submodule "apps/api-portfolio"]
 	path = apps/api-portfolio
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api.git
