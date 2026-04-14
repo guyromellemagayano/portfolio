@@ -148,13 +148,6 @@ Current thin exports such as `dialog`, `menu`, or other behavior-adjacent wrappe
 
 W3X primitives should be rebuilt as headless behavior contracts rather than migrated as simple HTML-aligned wrappers.
 
-### Current `@portfolio/ui` package
-
-The current `@portfolio/ui` package is minimal and should be evaluated case by case.
-
-- its `Link` is closer to `dom` than to the long-term `ui` layer
-- its `CounterButton` looks like a demo or local UI component, not a required shared W3X export
-
 ## Immediate Migration Priorities
 
 - Create `dom` first and keep the API intentionally small.
