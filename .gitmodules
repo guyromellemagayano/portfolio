@@ -30,10 +30,6 @@
 	path = packages/logger
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-logger.git
 	ignore = all
-[submodule "packages/api-contracts"]
-	path = packages/api-contracts
-	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api-contracts.git
-	ignore = all
 [submodule "apps/opsdesk"]
 	path = apps/opsdesk
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-admin.git
@@ -42,17 +38,9 @@
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
 	ignore = all
-[submodule "apps/api-jobs"]
-	path = apps/api-jobs
-	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api-jobs.git
-	ignore = all
 [submodule "apps/api-portfolio"]
 	path = apps/api-portfolio
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api.git
-	ignore = all
-[submodule "apps/api-opsdesk"]
-	path = apps/api-opsdesk
-	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-api-opsdesk.git
 	ignore = all
 [submodule "apps/web"]
 	path = apps/web
