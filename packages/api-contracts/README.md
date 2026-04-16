@@ -5,7 +5,7 @@ Canonical API contracts shared across apps and services in this monorepo.
 ## Purpose
 
 - Keep API request/response shapes in one package.
-- Avoid contract drift between `apps/api-portfolio`, `apps/web`, and future `apps/opsdesk`.
+- Avoid contract drift between `apps/api-portfolio` and `apps/web`.
 - Make portfolio API integrations strongly typed and replaceable.
 
 ## Exports

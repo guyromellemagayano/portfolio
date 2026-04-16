@@ -6,5 +6,3 @@
 
 export * from "./content";
 export * from "./http";
-export * from "./jobs";
-export * from "./opsdesk";
