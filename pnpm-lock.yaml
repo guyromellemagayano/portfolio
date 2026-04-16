@@ -341,7 +341,7 @@ importers:
         specifier: "catalog:"
         version: 1.3.2(typescript@6.0.2)
 
-  apps/api-portfolio:
+  apps/api:
     dependencies:
       "@elysiajs/cors":
         specifier: "catalog:"

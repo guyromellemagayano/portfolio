@@ -76,7 +76,7 @@ make down-edge
 | Path                         | Purpose                                  |
 | ---------------------------- | ---------------------------------------- |
 | `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
-| `apps/api-portfolio`         | Express API                              |
+| `apps/api`                   | Express API                              |
 | `apps/e2e`                   | Playwright E2E suites                    |
 | `docs`                       | Centralized project documentation        |
 | `packages/components`        | Shared React components                  |
@@ -128,7 +128,7 @@ TypeScript unresolved imports are enforced by `pnpm check-types` (and included i
 
 ```bash
 pnpm --filter web dev
-pnpm --filter api-portfolio dev
+pnpm --filter api dev
 pnpm --filter e2e test:e2e:ui
 ```
 
@@ -187,12 +187,12 @@ cp .env.example .env.local
 Content keys used by `apps/web`:
 
 - `CONTENT_REVALIDATE_SECRET` (shared secret for `POST /api/revalidate/content`)
-- `API_GATEWAY_URL` (server-side base URL for `apps/api-portfolio` content APIs)
+- `API_GATEWAY_URL` (server-side base URL for `apps/api` content APIs)
 - `NEXT_PUBLIC_API_URL` (fallback API base URL when `API_GATEWAY_URL` is not set)
-- Article data in `apps/web` is retrieved from `apps/api-portfolio` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
-- Standalone page data in `apps/web` is retrieved from `apps/api-portfolio` (`/v1/content/pages`) and normalized in `apps/web/src/utils/pages.ts`
+- Article data in `apps/web` is retrieved from `apps/api` (`/v1/content/articles`) and normalized in `apps/web/src/utils/articles.ts`
+- Standalone page data in `apps/web` is retrieved from `apps/api` (`/v1/content/pages`) and normalized in `apps/web/src/utils/pages.ts`
 
-Gateway keys used by `apps/api-portfolio`:
+Gateway keys used by `apps/api`:
 
 - `API_PORT` (fallback `PORT`, default `5001`)
 - `API_GATEWAY_CORS_ORIGINS` (comma-separated allowlist)
@@ -201,12 +201,12 @@ Gateway keys used by `apps/api-portfolio`:
 
 Gateway architecture and extension conventions:
 
-- `docs/standards/api-portfolio/API_PORTFOLIO_STANDARDS.md`
+- `docs/standards/api/API_PORTFOLIO_STANDARDS.md`
 
 Article data flow:
 
-- `apps/web` -> `apps/api-portfolio` (`/v1/content/articles`) -> provider (`local` or `static`)
-- `apps/web` -> `apps/api-portfolio` (`/v1/content/pages`) -> provider (`local` or `static`)
+- `apps/web` -> `apps/api` (`/v1/content/articles`) -> provider (`local` or `static`)
+- `apps/web` -> `apps/api` (`/v1/content/pages`) -> provider (`local` or `static`)
 
 Content cache revalidation:
 

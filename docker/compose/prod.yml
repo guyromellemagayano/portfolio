@@ -2,7 +2,7 @@ services:
   api:
     build:
       context: ../..
-      dockerfile: docker/images/api-portfolio/production.Dockerfile
+      dockerfile: docker/images/api/production.Dockerfile
     image: portfolio-api:production
     container_name: portfolio-api-prod
     init: true

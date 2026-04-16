@@ -58,7 +58,7 @@ Use `make help` for the compact command guide and `make help-all` for the full c
 make up
 ```
 
-- `api` runs `pnpm --filter api-portfolio dev` (Bun watch mode for the Elysia API runtime)
+- `api` runs `pnpm --filter api dev` (Bun watch mode for the Elysia API runtime)
 - `web` runs `next dev --turbopack` in Docker
 - `web` resolves the portfolio API through Docker networking (`http://api:5001`)
 - `make up` runs the base Compose command defined in the root `Makefile` (`docker/compose/local.yml`)
@@ -83,7 +83,7 @@ If you want to refresh linked Vercel project env vars before normalization:
 make vercel-env-sync-local VERCEL_ENV_TARGET=development
 ```
 
-This pulls env vars for `apps/web` and `apps/api-portfolio`, then regenerates root `.env.local`.
+This pulls env vars for `apps/web` and `apps/api`, then regenerates root `.env.local`.
 The command keeps app-level `.env.local` files after sync.
 
 Host-side Vercel CLI commands:
@@ -183,7 +183,7 @@ make up-edge
 
 - On first boot, each service runs `pnpm install --frozen-lockfile` if the container-managed workspace `node_modules` volume is empty.
 - Dependencies and Turbo cache are persisted in Docker volumes for faster restarts.
-- `apps/api-portfolio/dist` and `apps/web/.next` are left on the bind-mounted workspace (not named volumes) because the build tools delete/recreate those directories and Docker mountpoints can cause `EBUSY` errors.
+- `apps/api/dist` and `apps/web/.next` are left on the bind-mounted workspace (not named volumes) because the build tools delete/recreate those directories and Docker mountpoints can cause `EBUSY` errors.
 - The Docker `web` service runs Turbopack only (no Webpack fallback path).
 - `apps/web/next.config.ts` disables Turbopack filesystem cache for Docker `next dev` and uses a Docker-specific `distDir` (`.next-docker`) to reduce bind-mount cache corruption risk.
 - `apps/web/next.config.ts` configures `allowedDevOrigins` for the local edge domain (`guyromellemagayano.local` + `*.guyromellemagayano.local` by default) for Next 16 dev-origin behavior.

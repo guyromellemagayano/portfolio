@@ -4,4 +4,4 @@ Use this folder for service/app-specific documentation.
 
 Current service docs:
 
-- `api-portfolio/`
+- `api/`

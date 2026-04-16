@@ -99,7 +99,7 @@ const appLogger = createLogger({
 ```typescript
 const requestLogger = appLogger.child({
   requestId: "req-123",
-  component: "api-portfolio",
+  component: "api",
 });
 
 requestLogger.info("Request received");

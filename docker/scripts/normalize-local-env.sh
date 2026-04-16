@@ -4,7 +4,7 @@ set -eu
 
 ROOT_ENV_FILE="${1:-.env.local}"
 WEB_ENV_FILE="${2:-apps/web/.env.local}"
-API_ENV_FILE="${3:-apps/api-portfolio/.env.local}"
+API_ENV_FILE="${3:-apps/api/.env.local}"
 
 pick_env_value() {
   key="$1"

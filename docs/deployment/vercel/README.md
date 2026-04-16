@@ -3,12 +3,12 @@
 This monorepo deploys to Vercel as two separate projects:
 
 - `apps/web` -> `guyromellemagayano.com`
-- `apps/api-portfolio` -> `api.guyromellemagayano.com`
+- `apps/api` -> `api.guyromellemagayano.com`
 
 ## Why Three Projects
 
 - `apps/web` is a Next.js app and is Vercel-native.
-- `apps/api-portfolio` is an Elysia service adapted to a Vercel Bun Function.
+- `apps/api` is an Elysia service adapted to a Vercel Bun Function.
 
 ## Production Domains
 
@@ -60,26 +60,26 @@ NEXT_PUBLIC_API_URL=https://api.guyromellemagayano.com
 PORTFOLIO_API_URL=https://api.guyromellemagayano.com
 ```
 
-## `apps/api-portfolio`
+## `apps/api`
 
-- Root Directory: `apps/api-portfolio`
+- Root Directory: `apps/api`
 - Framework Preset: Other
-- Output Directory: `public` (or empty so `apps/api-portfolio/vercel.json` applies)
+- Output Directory: `public` (or empty so `apps/api/vercel.json` applies)
 
-### `apps/api-portfolio` Production envs (required)
+### `apps/api` Production envs (required)
 
 ```env
 NODE_ENV=production
 PORTFOLIO_API_CONTENT_PROVIDER=local
 ```
 
-### `apps/api-portfolio` Recommended envs
+### `apps/api` Recommended envs
 
 ```env
 PORTFOLIO_API_CORS_ORIGINS=https://guyromellemagayano.com
 ```
 
-### `apps/api-portfolio` Content caching profile
+### `apps/api` Content caching profile
 
 - `/v1/content/articles`
 - `/v1/content/articles/:slug`

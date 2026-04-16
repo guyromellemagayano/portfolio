@@ -2730,7 +2730,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
   - Build all via turbo: `pnpm -w turbo run build`
   - Dev targets (per app):
     - web (Next.js): `pnpm --filter ./apps/web dev`
-    - API (Node/Express): `pnpm --filter ./apps/api-portfolio dev`
+    - API (Node/Express): `pnpm --filter ./apps/api dev`
   - Scoped operations:
     - components pkg tests: `pnpm --filter ./packages/components test`
     - utils pkg tests: `pnpm --filter ./packages/utils test`
@@ -2741,7 +2741,7 @@ export const SubComponent: SubComponentComponent = setDisplayName(
 ## Project Defaults & Assumptions (tailored to this repo)
 
 - Monorepo layout:
-  - Apps: `./apps/web` (Next.js), `./apps/api-portfolio` (Node/Express).
+  - Apps: `./apps/web` (Next.js), `./apps/api` (Node/Express).
   - Packages: `./packages/{components,ui,utils,hooks,logger,config-eslint,config-typescript,vitest-presets}`.
 - Testing: Vitest everywhere; use `vitest-presets/{browser,node,react}` when applicable.
 - TypeScript: strict; prefer `satisfies`, exhaustive switches, and `never` checks; keep ambient types in `global.d.ts` minimal.

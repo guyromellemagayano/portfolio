@@ -23,7 +23,7 @@ Production scaffolding (self-hosting readiness):
 
 - Production compose scaffold: `docker/compose/prod.yml`
 - Web production image Dockerfile: `docker/images/web/production.Dockerfile`
-- API production image Dockerfile: `docker/images/api-portfolio/production.Dockerfile`
+- API production image Dockerfile: `docker/images/api/production.Dockerfile`
 - Production migration plan: `docker/docs/production-plan.md`
 
 Docker docs:

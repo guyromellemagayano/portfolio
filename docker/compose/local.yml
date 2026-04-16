@@ -34,7 +34,7 @@ services:
     command:
       - pnpm
       - --filter
-      - api-portfolio
+      - api
       - dev
     ports:
       - "5001:5001"

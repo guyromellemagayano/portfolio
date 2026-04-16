@@ -16,4 +16,4 @@ This monorepo uses `@portfolio/logger` as the single logging interface for appli
 
 ## Portfolio API
 
-- HTTP access logs are emitted via `apps/api-portfolio/src/middleware/http-logger.ts` using `@portfolio/logger`.
+- HTTP access logs are emitted via `apps/api/src/middleware/http-logger.ts` using `@portfolio/logger`.

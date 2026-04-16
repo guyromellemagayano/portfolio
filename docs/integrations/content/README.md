@@ -4,8 +4,8 @@ Content integration docs are grouped here.
 
 Current ownership model:
 
-- `apps/api-portfolio` owns runtime content retrieval for article and standalone page APIs.
-- `apps/web` consumes content data from `apps/api-portfolio` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`).
+- `apps/api` owns runtime content retrieval for article and standalone page APIs.
+- `apps/web` consumes content data from `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`).
 - Local content snapshots are sourced from `@portfolio/content-data`.
 
 ## Runtime Notes

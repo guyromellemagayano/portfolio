@@ -545,8 +545,8 @@ vercel: ## Run Vercel CLI on host (`VERCEL_ARGS`).
 vercel-env-pull-web: ## Pull Vercel env vars for `apps/web` into `apps/web/$(VERCEL_PULL_ENV_FILE)` (requires `apps/web/.vercel/project.json`).
 	@sh docker/scripts/vercel-env-pull.sh "apps/web" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
-vercel-env-pull-api: ## Pull Vercel env vars for `apps/api-portfolio` into `apps/api-portfolio/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api-portfolio/.vercel/project.json`).
-	@sh docker/scripts/vercel-env-pull.sh "apps/api-portfolio" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
+vercel-env-pull-api: ## Pull Vercel env vars for `apps/api` into `apps/api/$(VERCEL_PULL_ENV_FILE)` (requires `apps/api/.vercel/project.json`).
+	@sh docker/scripts/vercel-env-pull.sh "apps/api" "$(VERCEL_PULL_ENV_FILE)" "$(VERCEL_ENV_TARGET)" "$(VERCEL_GIT_BRANCH)"
 
 vercel-env-pull: ## Pull Vercel env vars for all linked app projects (`web`, `api`).
 	@$(MAKE) vercel-env-pull-web

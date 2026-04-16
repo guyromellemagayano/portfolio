@@ -1,0 +1,37 @@
+{
+  "extends": "@portfolio/config-typescript/src/base.json",
+  "compilerOptions": {
+    "lib": [
+      "ES2015"
+    ],
+    "outDir": "./dist",
+    "rootDir": "../..",
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@portfolio/*": [
+        "../../packages/*/src/index.ts"
+      ],
+      "@portfolio/api-contracts/*": [
+        "../../packages/api-contracts/src/*/index.ts"
+      ],
+      "@portfolio/content-data": [
+        "../../packages/content-data/src/index.ts"
+      ],
+      "@api/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "**/dist/**",
+    "../../packages/**/dist/**"
+  ]
+}

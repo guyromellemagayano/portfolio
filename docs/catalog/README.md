@@ -19,7 +19,7 @@ This catalog is for discovery only. README files should remain close to the code
 - `docs/integrations/README.md`
 - `docs/integrations/content/README.md`
 - `docs/services/README.md`
-- `docs/services/api-portfolio/README.md`
+- `docs/services/api/README.md`
 - `docs/standards/README.md`
 
 ## Docker Workspace (`docker/`)
@@ -29,7 +29,7 @@ This catalog is for discovery only. README files should remain close to the code
 
 ## Apps (`apps/`)
 
-- `apps/api-portfolio/README.md`
+- `apps/api/README.md`
 - `apps/e2e/README.md`
 
 ## Packages (`packages/`)
