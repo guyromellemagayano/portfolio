@@ -29,11 +29,6 @@ http:
       entryPoints:
         - web
       service: portfolio-web
-    portfolio-opsdesk:
-      rule: "Host(`opsdesk.guyromellemagayano.local`)"
-      entryPoints:
-        - web
-      service: portfolio-opsdesk
   services:
     portfolio-api:
       loadBalancer:
@@ -43,7 +38,3 @@ http:
       loadBalancer:
         servers:
           - url: "http://web:3000"
-    portfolio-opsdesk:
-      loadBalancer:
-        servers:
-          - url: "http://opsdesk:3001"

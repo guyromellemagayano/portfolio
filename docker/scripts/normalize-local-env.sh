@@ -5,7 +5,6 @@ set -eu
 ROOT_ENV_FILE="${1:-.env.local}"
 WEB_ENV_FILE="${2:-apps/web/.env.local}"
 API_ENV_FILE="${3:-apps/api-portfolio/.env.local}"
-ADMIN_ENV_FILE="${4:-apps/opsdesk/.env.local}"
 
 pick_env_value() {
   key="$1"
@@ -43,9 +42,9 @@ pick_env_value() {
 }
 
 if [ "${PREFER_APP_ENV_FILES:-0}" = "1" ]; then
-  SOURCE_FILES="$WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE $ROOT_ENV_FILE"
+  SOURCE_FILES="$WEB_ENV_FILE $API_ENV_FILE $ROOT_ENV_FILE"
 else
-  SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE $ADMIN_ENV_FILE"
+  SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE"
 fi
 
 local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local\"" "$SOURCE_FILES")
@@ -117,7 +116,7 @@ EOF
 mv "$tmp_env_file" "$ROOT_ENV_FILE"
 
 if [ "${KEEP_APP_ENV_FILES:-0}" != "1" ]; then
-  rm -f "$WEB_ENV_FILE" "$API_ENV_FILE" "$ADMIN_ENV_FILE"
+  rm -f "$WEB_ENV_FILE" "$API_ENV_FILE"
   printf 'Removed app-level .env.local files to keep root env as the single local source of truth.\n'
 fi
 

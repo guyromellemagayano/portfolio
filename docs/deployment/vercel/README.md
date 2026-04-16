@@ -1,22 +1,19 @@
 # Vercel Deployment (Monorepo)
 
-This monorepo deploys to Vercel as three separate projects:
+This monorepo deploys to Vercel as two separate projects:
 
 - `apps/web` -> `guyromellemagayano.com`
 - `apps/api-portfolio` -> `api.guyromellemagayano.com`
-- `apps/opsdesk` -> `opsdesk.guyromellemagayano.com`
 
 ## Why Three Projects
 
 - `apps/web` is a Next.js app and is Vercel-native.
 - `apps/api-portfolio` is an Elysia service adapted to a Vercel Bun Function.
-- `apps/opsdesk` is a Vite static app.
 
 ## Production Domains
 
 - Web: `https://guyromellemagayano.com`
 - API: `https://api.guyromellemagayano.com`
-- Admin: `https://opsdesk.guyromellemagayano.com`
 
 ## Vercel Project Setup
 
@@ -93,13 +90,6 @@ Return headers:
 
 - `Cache-Control: public, s-maxage=60, stale-while-revalidate=300`
 
-## `apps/opsdesk`
-
-- Root Directory: `apps/opsdesk`
-- Framework Preset: Vite
-- Build Command: `pnpm build`
-- Output Directory: `dist`
-
 ## Verification Checklist
 
 ### API
@@ -114,10 +104,6 @@ Return headers:
 - `https://guyromellemagayano.com`
 - `https://guyromellemagayano.com/sitemap.xml`
 - `POST /api/revalidate/content` revalidates route content and `/sitemap.xml`
-
-### Admin
-
-- `https://opsdesk.guyromellemagayano.com`
 
 ## Repo Smoke Check (Post-Deploy)
 

@@ -22,99 +22,6 @@ x-node-dev-env: &node_dev_env
   WATCHPACK_POLLING: "true"
 
 services:
-  jobs-db:
-    image: postgres:16-alpine
-    container_name: portfolio-jobs-db-local
-    environment:
-      POSTGRES_DB: ${JOBS_POSTGRES_DB:-jobs}
-      POSTGRES_USER: ${JOBS_POSTGRES_USER:-jobs}
-      POSTGRES_PASSWORD: ${JOBS_POSTGRES_PASSWORD:-jobs}
-    ports:
-      - "5433:5432"
-    volumes:
-      - jobs-postgres-data:/var/lib/postgresql/data
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          pg_isready -U ${JOBS_POSTGRES_USER:-jobs} -d ${JOBS_POSTGRES_DB:-jobs}
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-  jobs-api:
-    <<: *node_workspace_service
-    container_name: portfolio-jobs-api-local
-    environment:
-      <<: *node_dev_env
-      NODE_ENV: development
-      JOBS_API_PORT: "5002"
-      PORT: "5002"
-      JOBS_API_CORS_ORIGINS: ${JOBS_API_CORS_ORIGINS:-http://localhost:3002}
-      JOBS_DATABASE_URL: ${JOBS_DATABASE_URL:-postgres://jobs:jobs@jobs-db:5432/jobs}
-      JOBS_SYNC_INTERVAL_MS: ${JOBS_SYNC_INTERVAL_MS:-3600000}
-    command:
-      - pnpm
-      - --filter
-      - api-jobs
-      - dev
-    ports:
-      - "5002:5002"
-    depends_on:
-      jobs-db:
-        condition: service_healthy
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          node -e "fetch('http://127.0.0.1:5002/v1/status').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 20s
-  jobs:
-    <<: *node_workspace_service
-    container_name: portfolio-jobs-local
-    environment:
-      <<: *node_dev_env
-      NODE_ENV: development
-      DOCKER_LOCAL_DEV: "1"
-      JOBS_API_URL: ${JOBS_API_URL:-http://jobs-api:5002}
-    command:
-      - pnpm
-      - --filter
-      - jobs
-      - dev
-    ports:
-      - "3002:3002"
-    depends_on:
-      jobs-api:
-        condition: service_healthy
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          node -e "fetch('http://127.0.0.1:3002/').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 60s
-  jobs-worker:
-    <<: *node_workspace_service
-    container_name: portfolio-jobs-worker-local
-    environment:
-      <<: *node_dev_env
-      NODE_ENV: development
-      JOBS_DATABASE_URL: ${JOBS_DATABASE_URL:-postgres://jobs:jobs@jobs-db:5432/jobs}
-      JOBS_SYNC_INTERVAL_MS: ${JOBS_SYNC_INTERVAL_MS:-3600000}
-    command:
-      - pnpm
-      - --filter
-      - jobs-worker
-      - dev
-    depends_on:
-      jobs-db:
-        condition: service_healthy
   api:
     <<: *node_workspace_service
     container_name: portfolio-api-local
@@ -180,93 +87,6 @@ services:
       timeout: 5s
       retries: 20
       start_period: 60s
-  opsdesk:
-    <<: *node_workspace_service
-    container_name: portfolio-opsdesk-local
-    environment:
-      <<: *node_dev_env
-      NODE_ENV: development
-      DOCKER_LOCAL_DEV: "1"
-      LOCAL_DEV_DOMAIN: ${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
-      OPSDESK_API_PROXY_TARGET: ${OPSDESK_API_PROXY_TARGET:-http://opsdesk-api:8010}
-      NEXT_TELEMETRY_DISABLED: "1"
-    command:
-      - pnpm
-      - --filter
-      - opsdesk
-      - dev
-    ports:
-      - "3001:3001"
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          node -e "fetch('http://127.0.0.1:3001/').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-      interval: 10s
-      timeout: 5s
-      retries: 20
-      start_period: 30s
-  opsdesk-db:
-    profiles: ["opsdesk"]
-    image: postgres:16-alpine
-    container_name: portfolio-opsdesk-db-local
-    environment:
-      POSTGRES_DB: ${OPSDESK_POSTGRES_DB:-opsdesk}
-      POSTGRES_USER: ${OPSDESK_POSTGRES_USER:-opsdesk}
-      POSTGRES_PASSWORD: ${OPSDESK_POSTGRES_PASSWORD:-opsdesk}
-    ports:
-      - "5432:5432"
-    volumes:
-      - opsdesk-postgres-data:/var/lib/postgresql/data
-      - ../../apps/api-opsdesk/app/db/schema.sql:/docker-entrypoint-initdb.d/001-schema.sql:ro
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          pg_isready -U ${OPSDESK_POSTGRES_USER:-opsdesk} -d ${OPSDESK_POSTGRES_DB:-opsdesk}
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 10s
-  opsdesk-api:
-    profiles: ["opsdesk"]
-    build:
-      context: ../..
-      dockerfile: docker/images/api-opsdesk/dev.Dockerfile
-    container_name: portfolio-api-opsdesk-local
-    working_dir: /workspace/apps/api-opsdesk
-    init: true
-    environment:
-      APP_ENV: development
-      OPSDESK_API_HOST: "0.0.0.0"
-      OPSDESK_API_PORT: "8010"
-      OPSDESK_LOG_LEVEL: ${OPSDESK_LOG_LEVEL:-INFO}
-      OPSDESK_CORS_ORIGINS: ${OPSDESK_CORS_ORIGINS:-http://localhost:3001,https://opsdesk.guyromellemagayano.local}
-      OPSDESK_DATABASE_URL: ${OPSDESK_DATABASE_URL:-postgresql+asyncpg://opsdesk:opsdesk@opsdesk-db:5432/opsdesk}
-    command:
-      - uvicorn
-      - app.main:app
-      - --host
-      - 0.0.0.0
-      - --port
-      - "8010"
-      - --reload
-    ports:
-      - "8010:8010"
-    volumes:
-      - ../..:/workspace
-    depends_on:
-      opsdesk-db:
-        condition: service_healthy
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - >-
-          python -c "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8010/v1/health').status == 200 else 1)"
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 15s
   tooling:
     profiles: ["tooling"]
     <<: *node_workspace_service
@@ -296,7 +116,6 @@ services:
       NODE_ENV: development
       E2E_USE_EXTERNAL_SERVERS: "1"
       E2E_BASE_URL: http://web:3000
-      E2E_JOBS_BASE_URL: http://jobs:3002
       PORTFOLIO_API_URL: http://api:5001
       CONTENT_REVALIDATE_SECRET: ${CONTENT_REVALIDATE_SECRET:-}
       E2E_CONTENT_ARTICLE_SLUG: ${E2E_CONTENT_ARTICLE_SLUG:-}
@@ -306,10 +125,6 @@ services:
       api:
         condition: service_healthy
       web:
-        condition: service_healthy
-      jobs-api:
-        condition: service_healthy
-      jobs:
         condition: service_healthy
     entrypoint:
       - sh
@@ -371,5 +186,3 @@ volumes:
   pnpm-store:
   workspace-node-modules:
   turbo-cache:
-  jobs-postgres-data:
-  opsdesk-postgres-data:

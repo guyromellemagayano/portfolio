@@ -30,10 +30,6 @@
 	path = packages/logger
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-logger.git
 	ignore = all
-[submodule "apps/opsdesk"]
-	path = apps/opsdesk
-	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-admin.git
-	ignore = all
 [submodule "apps/e2e"]
 	path = apps/e2e
 	url = git@github.com-guyromellemagayano:guyromellemagayano/portfolio-e2e.git
