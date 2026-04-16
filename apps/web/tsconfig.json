@@ -16,6 +16,7 @@
     "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@web/*": [

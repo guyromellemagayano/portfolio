@@ -129,7 +129,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
           type: "projects",
           title: "Featured projects",
           intro: "The highest-signal apps in the portfolio monorepo.",
-          projectSlugs: ["guy-os", "opsdesk", "taskflow"],
+          projectSlugs: ["guy-os", "taskflow"],
         },
         {
           type: "speaking",
@@ -229,7 +229,6 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
           title: "Projects",
           projectSlugs: [
             "guy-os",
-            "opsdesk",
             "taskflow",
             "cartforge",
             "pulseops",
@@ -359,22 +358,6 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       status: "published",
     },
     {
-      id: "project-opsdesk",
-      slug: "opsdesk",
-      name: "OpsDesk",
-      summary:
-        "An internal-tool style admin product for CRUD, permissions, tables, forms, and auditability.",
-      repository: {
-        label: "github.com",
-        href: "https://github.com/guyromellemagayano",
-        target: "_blank",
-      },
-      tags: ["admin", "rbac", "workflow"],
-      featured: true,
-      order: 2,
-      status: "published",
-    },
-    {
       id: "project-taskflow",
       slug: "taskflow",
       name: "TaskFlow",
@@ -387,7 +370,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       },
       tags: ["saas", "multi-tenant", "product"],
       featured: true,
-      order: 3,
+      order: 2,
       status: "published",
     },
     {
@@ -402,7 +385,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
         target: "_blank",
       },
       tags: ["commerce", "checkout", "transactions"],
-      order: 4,
+      order: 3,
       status: "published",
     },
     {
@@ -417,7 +400,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
         target: "_blank",
       },
       tags: ["ops", "observability", "reliability"],
-      order: 5,
+      order: 4,
       status: "published",
     },
     {

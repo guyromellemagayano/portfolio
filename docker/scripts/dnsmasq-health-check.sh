@@ -79,16 +79,13 @@ if [ "$LISTENER_OK" -eq 0 ] && command -v nc >/dev/null 2>&1; then
 fi
 RESOLVE_LOOPBACK_PASS_COUNT=0
 
-for HOST in "$DOMAIN" "api.$DOMAIN" "opsdesk.$DOMAIN" "traefik.$DOMAIN"; do
+for HOST in "$DOMAIN" "api.$DOMAIN" "traefik.$DOMAIN"; do
   case "$HOST" in
     "$DOMAIN")
       LABEL='resolve:web'
       ;;
     api.*)
       LABEL='resolve:api'
-      ;;
-    opsdesk.*)
-      LABEL='resolve:opsdesk'
       ;;
     traefik.*)
       LABEL='resolve:traefik'

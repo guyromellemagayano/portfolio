@@ -23,6 +23,7 @@ out/
 build/
 dist/
 dist-ssr/
+.vite/
 
 # Production and debug logs
 *.log

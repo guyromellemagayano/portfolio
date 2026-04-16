@@ -66,12 +66,3 @@ services:
       traefik.http.routers.portfolio-web.entrypoints: web
       traefik.http.routers.portfolio-web.service: portfolio-web
       traefik.http.services.portfolio-web.loadbalancer.server.port: "3000"
-
-  opsdesk:
-    labels:
-      traefik.enable: "true"
-      traefik.docker.network: portfolio-edge-local
-      traefik.http.routers.portfolio-opsdesk.rule: Host(`opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
-      traefik.http.routers.portfolio-opsdesk.entrypoints: web
-      traefik.http.routers.portfolio-opsdesk.service: portfolio-opsdesk
-      traefik.http.services.portfolio-opsdesk.loadbalancer.server.port: "3001"

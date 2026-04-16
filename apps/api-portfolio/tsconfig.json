@@ -5,6 +5,7 @@
       "ES2015"
     ],
     "outDir": "./dist",
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@portfolio/content-data": [

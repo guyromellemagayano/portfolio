@@ -18,7 +18,7 @@ services:
 
   api:
     environment:
-      PORTFOLIO_API_CORS_ORIGINS: ${PORTFOLIO_API_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},http://opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}}
+      PORTFOLIO_API_CORS_ORIGINS: ${PORTFOLIO_API_CORS_ORIGINS:-http://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local},https://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}}
     networks:
       - edge
 
@@ -26,10 +26,6 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: ${EDGE_PUBLIC_SCHEME:-https}://api.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
       NEXT_PUBLIC_SITE_URL: ${EDGE_PUBLIC_SCHEME:-https}://${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}
-    networks:
-      - edge
-
-  opsdesk:
     networks:
       - edge
 

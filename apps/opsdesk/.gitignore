@@ -1,8 +1,0 @@
-.vercel
-.env*.local
-node_modules
-dist
-.turbo
-.npm-cache
-coverage
-*.tsbuildinfo

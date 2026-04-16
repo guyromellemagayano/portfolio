@@ -31,7 +31,6 @@ This is the monorepo behind my portfolio ecosystem.
 It includes:
 
 - `web`: public site built with Next.js
-- `admin`: internal/admin interface built with Vite + React Router
 - `api`: Express service layer
 - `e2e`: Playwright end-to-end tests
 - shared `@portfolio/*` packages (components, hooks, logger, utils, shared configs)
@@ -77,7 +76,6 @@ make down-edge
 | Path                         | Purpose                                  |
 | ---------------------------- | ---------------------------------------- |
 | `apps/web`                   | Next.js app (`next-intl`, MDX, Tailwind) |
-| `apps/opsdesk`               | Vite + React Router app                  |
 | `apps/api-portfolio`         | Express API                              |
 | `apps/e2e`                   | Playwright E2E suites                    |
 | `docs`                       | Centralized project documentation        |
@@ -130,7 +128,6 @@ TypeScript unresolved imports are enforced by `pnpm check-types` (and included i
 
 ```bash
 pnpm --filter web dev
-pnpm --filter opsdesk dev
 pnpm --filter api-portfolio dev
 pnpm --filter e2e test:e2e:ui
 ```

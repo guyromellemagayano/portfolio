@@ -26,8 +26,6 @@ import { createContentRouter } from "./modules/content/content.routes.js";
 import { createContentService } from "./modules/content/content.service.js";
 import { createHealthRouter } from "./modules/health/health.routes.js";
 import { createMessageRouter } from "./modules/message/message.routes.js";
-import { createOpsDeskRouter } from "./modules/opsdesk/opsdesk.routes.js";
-import { createOpsDeskService } from "./modules/opsdesk/opsdesk.service.js";
 import { createProviderRegistry } from "./providers/provider-registry.js";
 
 type CorsOriginConfig = string[] | true | false;
@@ -57,7 +55,6 @@ export const createServer = (): AnyElysiaInstance => {
   const logger = createApiLogger(config.nodeEnv);
   const providers = createProviderRegistry(config, logger);
   const contentService = createContentService(providers.content);
-  const opsDeskService = createOpsDeskService();
   const corsOrigin = resolveCorsOrigin(config);
   const shouldUseNodeAdapter = !isBunRuntime();
 
@@ -93,11 +90,6 @@ export const createServer = (): AnyElysiaInstance => {
               description:
                 "Content retrieval endpoints backed by configured providers.",
             },
-            {
-              name: "OpsDesk",
-              description:
-                "Operational admin endpoints for requests, approvals, teams, incidents, and audit trails.",
-            },
           ],
         },
       })
@@ -130,7 +122,6 @@ export const createServer = (): AnyElysiaInstance => {
     .use(createHealthRouter())
     .use(createMessageRouter())
     .use(createContentRouter(contentService))
-    .use(createOpsDeskRouter(opsDeskService))
     .use(createNotFoundHandler());
 
   if (corsOrigin === false && config.nodeEnv === "production") {

@@ -40,10 +40,3 @@ services:
       traefik.http.routers.portfolio-web-secure.entrypoints: websecure
       traefik.http.routers.portfolio-web-secure.tls: "true"
       traefik.http.routers.portfolio-web-secure.service: portfolio-web
-
-  opsdesk:
-    labels:
-      traefik.http.routers.portfolio-opsdesk-secure.rule: Host(`opsdesk.${LOCAL_DEV_DOMAIN:-guyromellemagayano.local}`)
-      traefik.http.routers.portfolio-opsdesk-secure.entrypoints: websecure
-      traefik.http.routers.portfolio-opsdesk-secure.tls: "true"
-      traefik.http.routers.portfolio-opsdesk-secure.service: portfolio-opsdesk

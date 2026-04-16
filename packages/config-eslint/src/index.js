@@ -19,7 +19,6 @@ const dirName = dirname(fileName);
 const repoRoot = resolve(dirName, "..", "..", "..");
 const tsProjects = [
   resolve(repoRoot, "tsconfig.json"),
-  resolve(repoRoot, "apps", "opsdesk", "tsconfig.json"),
   resolve(repoRoot, "apps", "api-portfolio", "tsconfig.json"),
   resolve(repoRoot, "apps", "e2e", "tsconfig.json"),
   resolve(repoRoot, "apps", "web", "tsconfig.json"),
@@ -63,11 +62,10 @@ export const baseEslintConfig = [
             ["^react$", "^react-dom$", "^react\\b"],
             [
               "^node:",
-              "^@(?!portfolio|packages/|opsdesk/|api-portfolio/|web/).+",
+              "^@(?!portfolio|packages/|api-portfolio/|web/).+",
               "^[a-z]",
             ],
             ["^@portfolio/", "^~"],
-            ["^@opsdesk/"],
             ["^@api-portfolio/"],
             ["^@web/"],
             ["^\\."],

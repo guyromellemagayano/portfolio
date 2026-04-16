@@ -29,11 +29,8 @@ This catalog is for discovery only. README files should remain close to the code
 
 ## Apps (`apps/`)
 
-- `apps/api-opsdesk/README.md`
-- `apps/api-opsdesk/bruno/README.md`
 - `apps/api-portfolio/README.md`
 - `apps/e2e/README.md`
-- `apps/opsdesk/README.md`
 
 ## Packages (`packages/`)
 

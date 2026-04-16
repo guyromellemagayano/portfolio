@@ -4,8 +4,6 @@ This local Docker setup runs the monorepo workflow through Docker Compose for da
 
 - `api` (portfolio API dev runner)
 - `web` (Next.js dev server)
-- `opsdesk` (Vite OpsDesk app on port `3001`)
-- `opsdesk-api` / `opsdesk-db` (optional local-only profile for the FastAPI + PostgreSQL backend)
 - `tooling` (one-off lint/typecheck/test commands)
 - `e2e` / `e2e-content-smoke` (Playwright runners via Compose profiles, documented in `docker/docs/e2e.md`)
 
@@ -62,16 +60,8 @@ make up
 
 - `api` runs `pnpm --filter api-portfolio dev` (Bun watch mode for the Elysia API runtime)
 - `web` runs `next dev --turbopack` in Docker
-- `opsdesk` runs `pnpm --filter opsdesk dev`
 - `web` resolves the portfolio API through Docker networking (`http://api:5001`)
 - `make up` runs the base Compose command defined in the root `Makefile` (`docker/compose/local.yml`)
-
-Bring up the local-only OpsDesk backend separately:
-
-```bash
-make up-opsdesk
-make logs-opsdesk
-```
 
 ## Start (Traefik + Local Hostnames, Recommended First Run)
 
@@ -93,7 +83,7 @@ If you want to refresh linked Vercel project env vars before normalization:
 make vercel-env-sync-local VERCEL_ENV_TARGET=development
 ```
 
-This pulls env vars for `apps/web`, `apps/api-portfolio`, and `apps/opsdesk`, then regenerates root `.env.local`.
+This pulls env vars for `apps/web` and `apps/api-portfolio`, then regenerates root `.env.local`.
 The command keeps app-level `.env.local` files after sync.
 
 Host-side Vercel CLI commands:
@@ -155,7 +145,6 @@ Example `/etc/hosts` entries (if you choose manual hosts instead of OrbStack DNS
 ```txt
 127.0.0.1 guyromellemagayano.local
 127.0.0.1 api.guyromellemagayano.local
-127.0.0.1 opsdesk.guyromellemagayano.local
 127.0.0.1 traefik.guyromellemagayano.local
 ```
 
@@ -165,27 +154,23 @@ Localhost ports:
 
 - Web app: `http://localhost:3000`
 - portfolio API: `http://localhost:5001`
-- OpsDesk app: `http://localhost:3001`
-- OpsDesk backend API: `http://localhost:8010`
 
 Traefik hostname routing (`make up-edge`) with the default `LOCAL_DEV_DOMAIN=guyromellemagayano.local`:
 
 - Web app: `https://guyromellemagayano.local`
 - portfolio API: `https://api.guyromellemagayano.local`
-- OpsDesk app: `https://opsdesk.guyromellemagayano.local`
 - Traefik dashboard: `https://traefik.guyromellemagayano.local` (root redirects to `/dashboard/`)
 
 OrbStack custom-domain routing (`make up-edge` with `LOCAL_DEV_DOMAIN=guyromellemagayano.local`):
 
 - Web app: `https://guyromellemagayano.local`
 - portfolio API: `https://api.guyromellemagayano.local`
-- OpsDesk app: `https://opsdesk.guyromellemagayano.local`
 - Traefik dashboard: `https://traefik.guyromellemagayano.local`
 - Default OrbStack service domains are still available (for example `http://web.portfolio.orb.local`, `http://api.portfolio.orb.local`, `http://traefik.portfolio.orb.local`) but the repo standard uses `guyromellemagayano.local` + subdomains.
 
 ## Content Pipeline Local Dev
 
-- The edge overlay defaults `PORTFOLIO_API_CORS_ORIGINS` to both web and `opsdesk.*` origins; override `PORTFOLIO_API_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
+- The edge overlay defaults `PORTFOLIO_API_CORS_ORIGINS` to the web origin; override `PORTFOLIO_API_CORS_ORIGINS` in `.env.local` if you need a stricter local policy.
 - Set `CONTENT_REVALIDATE_SECRET` in `.env.local` when testing `POST /api/revalidate/content`.
 - Restart after env/domain changes:
 
@@ -205,8 +190,7 @@ make up-edge
 - OrbStack mode uses `dev.orbstack.domains` labels on Traefik to bind `.local` custom domains directly to the edge proxy.
 - The Docker entrypoint clears the Docker web dist Turbopack cache (`<distDir>/dev/cache`) on startup.
 - File watching uses polling (`CHOKIDAR_USEPOLLING`, `WATCHPACK_POLLING`) for better Docker Desktop compatibility.
-- App source file watching/HMR is handled by the running dev servers inside containers (`api`, `web`, `opsdesk`, and the optional `opsdesk-api` profile).
-- `apps/opsdesk` talks to the local FastAPI service through the Vite same-origin proxy at `/api-opsdesk/*`, which avoids CORS and local HTTPS mixed-content problems while the backend stays local-only.
+- App source file watching/HMR is handled by the running dev servers inside containers (`api` and `web`).
 - Container image rebuilds happen explicitly through `make up*` restarts instead of Docker Compose watch.
 - The Playwright containers use `E2E_USE_EXTERNAL_SERVERS=1`, so `apps/e2e/playwright.config.ts` targets the already-running Compose `api` and `web` services instead of starting its own `webServer`s.
 
@@ -236,7 +220,7 @@ make up-edge
 make up-edge-tls
 make logs-edge
 
-# Run a GET-based edge routing smoke check (Traefik dashboard + web + api + opsdesk)
+# Run a GET-based edge routing smoke check (Traefik dashboard + web + api)
 make edge-smoke
 
 # Debug Docker-provider routing (socket-proxy-backed)
@@ -333,7 +317,7 @@ The root `package.json` still includes `pnpm ...:docker` shortcuts, but the conc
 - `FORCE_PNPM_INSTALL=1` (optional, shell env): force dependency reinstall inside containers on next run
 - `TURBO_DOCKER_CONCURRENCY` (optional, default `2`): Turbo task concurrency for Dockerized `check-types` / `lint` / `test`
 - `LOG_TAIL` (optional, default `100`): line count used by `make logs` and `make logs-edge` before follow mode
-- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `opsdesk.<domain>`, `traefik.<domain>`)
+- `LOCAL_DEV_DOMAIN` (optional, default `guyromellemagayano.local`): base local domain used by Traefik edge routing + Next/Vite host allowlists (`<domain>`, `api.<domain>`, `traefik.<domain>`)
 - `TRAEFIK_HTTP_PORT` (optional, default `80`): host HTTP port for local Traefik
 - `TRAEFIK_HTTPS_PORT` (optional, default `443`): host HTTPS port for the optional TLS overlay
 - `TRAEFIK_DOCKER_SOCKET_PATH` (optional): host Docker socket path mounted into the Docker socket-proxy sidecar (auto-detects Docker Desktop macOS user socket when present; otherwise defaults to `/var/run/docker.sock`)
