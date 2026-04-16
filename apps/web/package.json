@@ -26,6 +26,7 @@
   "dependencies": {
     "@headlessui/react": "catalog:",
     "@heroicons/react": "catalog:",
+    "@next/mdx": "16.2.3",
     "@portfolio/api-contracts": "workspace:*",
     "@portfolio/components": "workspace:*",
     "@portfolio/hooks": "workspace:*",
