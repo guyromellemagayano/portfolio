@@ -3,7 +3,7 @@
  * Supports console, file, stream, HTTP, and custom transports
  */
 
-import { formatters } from "./formatters.js";
+import { formatters } from "./formatters";
 import type { Formatter, LogEntry, Transport } from "./types";
 
 /** Base transport class with common functionality */

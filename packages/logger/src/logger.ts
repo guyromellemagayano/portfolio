@@ -3,8 +3,8 @@
  * Comprehensive, robust, scalable, and flexible logging system
  */
 
-import { formatters } from "./formatters.js";
-import { transports } from "./transports.js";
+import { formatters } from "./formatters";
+import { transports } from "./transports";
 import {
   type ILogger,
   type LogContext,
@@ -29,7 +29,7 @@ import {
   RateLimiter,
   sanitizeData,
   shouldLog,
-} from "./utils.js";
+} from "./utils";
 
 /** Default logger configuration */
 const DEFAULT_CONFIG: LoggerConfig = {
