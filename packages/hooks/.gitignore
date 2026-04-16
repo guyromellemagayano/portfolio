@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+.npm-cache/
+.pnpm-store/
+
+# Testing
+coverage/
+.nyc_output
+test-results/
+playwright-report/
+playwright/.cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build outputs
+build/
+dist/
+dist-ssr/
+
+# Local caches
+.turbo/
+.cache/
+
+# TypeScript
+*.tsbuildinfo

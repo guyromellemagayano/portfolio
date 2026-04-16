@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Local caches
+.npm-cache/
+.turbo/
+
+# Build outputs
+dist/
+coverage/
+
+# OS files
+.DS_Store
