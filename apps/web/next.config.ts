@@ -38,7 +38,11 @@ const allowedDevOrigins = [
   `*.${localDevelopmentDomain}`,
 ];
 
-const experimentalNextConfig: NonNullable<NextConfig["experimental"]> = {};
+type ExperimentalNextConfig = NonNullable<NextConfig["experimental"]> & {
+  isolatedDevBuild?: boolean;
+};
+
+const experimentalNextConfig: ExperimentalNextConfig = {};
 
 if (isDockerLocalDevelopment) {
   experimentalNextConfig.isolatedDevBuild = true;

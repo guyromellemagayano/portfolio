@@ -13,12 +13,19 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "noEmit": true,
+    "rootDir": "../..",
     "allowImportingTsExtensions": true,
     "jsx": "preserve",
     "skipDefaultLibCheck": true,
     "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
+      "@portfolio/*": [
+        "../../packages/*/src/index.ts"
+      ],
+      "@portfolio/api-contracts/*": [
+        "../../packages/api-contracts/src/*/index.ts"
+      ],
       "@web/*": [
         "./src/*"
       ]
@@ -35,6 +42,7 @@
   "exclude": [
     "node_modules",
     "dist",
-    "**/dist/**"
+    "**/dist/**",
+    "../../packages/**/dist/**"
   ]
 }
