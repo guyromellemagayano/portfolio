@@ -2,8 +2,8 @@
 
 import type { Metadata } from "next";
 
-import { Div, Heading, P, Span } from "@guyromellemagayano/components";
-import { logInfo } from "@guyromellemagayano/logger";
+import { Div, Heading, P, Span } from "@portfolio/components";
+import { logInfo } from "@portfolio/logger";
 
 export const metadata: Metadata = {
   title: "Web | Kitchen Sink",

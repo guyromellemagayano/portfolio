@@ -11,7 +11,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { useTranslations } from "next-intl";
@@ -53,15 +52,12 @@ export function ArticleList<P extends Record<string, unknown> = {}>(
   const articleListI18n = useTranslations("components.list.labels");
 
   // Article list ARIA
-  const LIST_I18N = useMemo(
-    () => ({
-      articleList: articleListI18n("articleList"),
-      articles: articleListI18n("articles"),
-    }),
-    [articleListI18n]
-  );
+  const LIST_I18N = {
+    articleList: articleListI18n("articleList"),
+    articles: articleListI18n("articles"),
+  };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -99,14 +95,11 @@ export function SocialList<P extends Record<string, unknown> = {}>(
   const socialListI18n = useTranslations("components.list.labels");
 
   // Social list ARIA
-  const LIST_I18N = useMemo(
-    () => ({
-      socialList: socialListI18n("socialList"),
-    }),
-    [socialListI18n]
-  );
+  const LIST_I18N = {
+    socialList: socialListI18n("socialList"),
+  };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -140,14 +133,11 @@ export function ToolsList<P extends Record<string, unknown> = {}>(
   const toolsListI18n = useTranslations("components.list.labels");
 
   // Tools list ARIA
-  const LIST_I18N = useMemo(
-    () => ({
-      toolsList: toolsListI18n("toolsList"),
-    }),
-    [toolsListI18n]
-  );
+  const LIST_I18N = {
+    toolsList: toolsListI18n("toolsList"),
+  };
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -170,7 +160,7 @@ ToolsList.displayName = "ToolsList";
 function ListBase<P extends Record<string, unknown> = {}>(props: ListProps<P>) {
   const { as: Component = "ul", children, role = "list", ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

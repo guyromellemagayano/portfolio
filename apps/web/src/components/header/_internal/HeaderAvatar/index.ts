@@ -1,1 +1,0 @@
-export { HeaderAvatar } from "./HeaderAvatar";

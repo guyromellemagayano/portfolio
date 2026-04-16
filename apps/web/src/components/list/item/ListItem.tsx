@@ -11,7 +11,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
-  useMemo,
 } from "react";
 
 import { type LinkProps } from "next/link";
@@ -67,13 +66,10 @@ export function ArticleListItem<P extends Record<string, unknown> = {}>(
   const articleListItemI18n = useTranslations("components.listItem.labels");
 
   // Article list ARIA
-  const ARTICLE_LIST_ITEM_I18N = useMemo(
-    () => ({
-      articleDate: articleListItemI18n("articleDate"),
-      cta: articleListItemI18n("cta"),
-    }),
-    [articleListItemI18n]
-  );
+  const ARTICLE_LIST_ITEM_I18N = {
+    articleDate: articleListItemI18n("articleDate"),
+    cta: articleListItemI18n("cta"),
+  };
 
   // Article data
   const articleData = {
@@ -155,7 +151,7 @@ export function SocialListItem<P extends Record<string, unknown> = {}>(
     ...rest
   } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component
@@ -224,7 +220,7 @@ function ListItemBase<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "li", children, role = "listitem", ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

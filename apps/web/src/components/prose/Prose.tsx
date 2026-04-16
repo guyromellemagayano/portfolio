@@ -1,44 +1,40 @@
-import React from "react";
+/**
+ * @file apps/web/src/components/prose/Prose.tsx
+ * @author Guy Romelle Magayano
+ * @description Main Prose component implementation.
+ */
 
 import {
-  Div,
-  type DivProps,
-  type DivRef,
-} from "@guyromellemagayano/components";
-import { useComponentId } from "@guyromellemagayano/hooks";
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
-import type { CommonWebAppComponentProps } from "@web/@types/components";
-import { cn } from "@web/lib";
+import { cn } from "@web/utils/helpers";
 
-import styles from "./Prose.module.css";
+// ============================================================================
+// PROSE COMPONENT
+// ============================================================================
 
-type ProseRef = DivRef;
-interface ProseProps extends DivProps, CommonWebAppComponentProps {}
+export type ProseElementType = "div";
+export type ProseProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<ProseElementType>,
+  "as"
+> &
+  P & {
+    as?: ProseElementType;
+  };
 
-type ProseComponent = React.ForwardRefExoticComponent<
-  ProseProps & React.RefAttributes<ProseRef>
->;
+export function Prose<P extends Record<string, unknown> = {}>(
+  props: ProseProps<P>
+) {
+  const { as: Component = "div", className, ...rest } = props;
 
-/** Renders rich text content with consistent prose styling. */
-export const Prose: ProseComponent = React.forwardRef(
-  function Prose(props, ref) {
-    const { className, _internalId, _debugMode, ...rest } = props;
-
-    const { id, isDebugMode } = useComponentId({
-      internalId: _internalId,
-      debugMode: _debugMode,
-    });
-
-    return (
-      <Div
-        {...rest}
-        ref={ref}
-        className={cn(styles.proseContainer, className)}
-        data-prose-id={id}
-        data-debug-mode={isDebugMode ? "true" : undefined}
-      />
-    );
-  }
-);
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<ProseElementType>)}
+      className={cn("prose dark:prose-invert", className)}
+    />
+  );
+}
 
 Prose.displayName = "Prose";

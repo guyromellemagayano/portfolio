@@ -142,7 +142,7 @@ export function Form<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = "form", children, ...rest } = props;
 
-  if (!children) return null;
+  if (children == null || children === false || children === "") return null;
 
   return (
     <Component

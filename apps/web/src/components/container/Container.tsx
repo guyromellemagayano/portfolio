@@ -1,92 +1,118 @@
-import React from "react";
+/**
+ * @file apps/web/src/components/container/Container.tsx
+ * @author Guy Romelle Magayano
+ * @description Main Container component implementation.
+ */
 
-import { useComponentId } from "@guyromellemagayano/hooks";
 import {
-  type ComponentProps,
-  isRenderableContent,
-  setDisplayName,
-} from "@guyromellemagayano/utils";
+  type ComponentPropsWithoutRef,
+  type ComponentPropsWithRef,
+} from "react";
 
-import { ContainerInner, ContainerOuter } from "./_internal";
-
-// ============================================================================
-// BASE CONTAINER COMPONENT
-// ============================================================================
-
-interface ContainerProps extends React.ComponentProps<"div">, ComponentProps {}
-type ContainerComponent = React.FC<ContainerProps>;
-
-/** A flexible layout container component for consistent page structure. */
-const BaseContainer: ContainerComponent = setDisplayName(
-  function BaseContainer(props) {
-    const { children, internalId, debugMode, ...rest } = props;
-
-    const element = (
-      <div
-        {...rest}
-        data-container-id={internalId}
-        data-debug-mode={debugMode ? "true" : undefined}
-        data-testid="container-root"
-      >
-        {children}
-      </div>
-    );
-
-    return element;
-  }
-);
+import { cn } from "@web/utils/helpers";
 
 // ============================================================================
-// MEMOIZED CONTAINER COMPONENT
+// COMMON CONTAINER COMPONENT TYPES
 // ============================================================================
 
-const MemoizedContainer = React.memo(BaseContainer);
+export type ContainerElementType =
+  | "div"
+  | "section"
+  | "main"
+  | "article"
+  | "nav"
+  | "header"
+  | "footer"
+  | "aside";
+
+// ============================================================================
+// OUTER CONTAINER COMPONENT
+// ============================================================================
+
+export type ContainerOuterProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<ContainerElementType>,
+  "as"
+> &
+  P & {
+    as?: ContainerElementType;
+  };
+
+function ContainerOuter<P extends Record<string, unknown> = {}>(
+  props: ContainerOuterProps<P>
+) {
+  const { as: Component = "div", children, className, ...rest } = props;
+
+  if (children == null || children === false || children === "") return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}
+      className={cn("sm:px-8", className)}
+    >
+      <div className="mx-auto w-full max-w-7xl lg:px-8">{children}</div>
+    </Component>
+  );
+}
+
+ContainerOuter.displayName = "ContainerOuter";
+
+// ============================================================================
+// INNER CONTAINER COMPONENT
+// ============================================================================
+
+type ContainerInnerProps<P extends Record<string, unknown> = {}> = Omit<
+  ComponentPropsWithRef<ContainerElementType>,
+  "as"
+> &
+  P & {
+    as?: ContainerElementType;
+  };
+
+function ContainerInner<P extends Record<string, unknown> = {}>(
+  props: ContainerInnerProps<P>
+) {
+  const { as: Component = "div", children, className, ...rest } = props;
+
+  if (children == null || children === false || children === "") return null;
+
+  return (
+    <Component
+      {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}
+      className={cn("relative px-4 sm:px-8 lg:px-12", className)}
+    >
+      <div className="mx-auto max-w-2xl lg:max-w-5xl">{children}</div>
+    </Component>
+  );
+}
+
+ContainerInner.displayName = "ContainerInner";
 
 // ============================================================================
 // MAIN CONTAINER COMPONENT
 // ============================================================================
 
-type ContainerCompoundComponent = React.FC<ContainerProps> & {
-  /** A container inner component that provides consistent inner structure for page content. */
-  Inner: typeof ContainerInner;
-  /** A container outer component that provides consistent outer structure for page content. */
-  Outer: typeof ContainerOuter;
-};
+export type ContainerProps<P extends Record<string, unknown> = {}> =
+  ContainerOuterProps<P>;
 
-/** Top-level layout container that provides consistent outer and inner structure for page content. */
-const Container = setDisplayName(function Container(props) {
-  const {
-    children,
-    isMemoized = false,
-    internalId,
-    debugMode,
-    ...rest
-  } = props;
+export function Container<P extends Record<string, unknown> = {}>(
+  props: ContainerProps<P>
+) {
+  const { as: Component = ContainerOuter, children, ...rest } = props;
 
-  const { id, isDebugMode } = useComponentId({
-    internalId,
-    debugMode,
-  });
+  if (children == null || children === false || children === "") return null;
 
-  if (!isRenderableContent(children)) return null;
+  return (
+    <Component {...(rest as ComponentPropsWithoutRef<ContainerElementType>)}>
+      <ContainerInner>{children}</ContainerInner>
+    </Component>
+  );
+}
 
-  const updatedProps = {
-    ...rest,
-    internalId: id,
-    debugMode: isDebugMode,
-    children,
-  };
-
-  const Component = isMemoized ? MemoizedContainer : BaseContainer;
-  const element = <Component {...updatedProps} />;
-  return element;
-} as ContainerCompoundComponent);
+Container.displayName = "Container";
 
 // ============================================================================
-// CONTAINER COMPOUND COMPONENTS
+// CONTAINER COMPOUND COMPONENT
 // ============================================================================
 
-Container.Outer = ContainerOuter;
 Container.Inner = ContainerInner;
-
-export { Container };
+Container.Outer = ContainerOuter;

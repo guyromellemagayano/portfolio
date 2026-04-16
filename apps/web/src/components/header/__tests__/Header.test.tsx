@@ -1,353 +1,467 @@
+/**
+ * @file apps/web/src/components/header/__tests__/Header.test.tsx
+ * @author Guy Romelle Magayano
+ * @description Unit tests for the Header component.
+ */
+
+import React from "react";
+
 import { cleanup, render, screen } from "@testing-library/react";
 import { usePathname } from "next/navigation";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "../Header";
 
-// Mock Next.js router
+// ============================================================================
+// MOCKS
+// ============================================================================
+
+vi.mock("next-intl", () => ({
+  useTranslations: vi.fn((namespace: string) => {
+    const translations: Record<string, any> = {
+      "components.header": {
+        brandName: "Guy Romelle Magayano",
+        labels: {
+          home: "Home",
+          about: "About",
+          articles: "Articles",
+          projects: "Projects",
+          uses: "Uses",
+          contact: "Contact",
+          menu: "Menu",
+          closeMenu: "Close menu",
+          navigation: "Navigation",
+          toggleTheme: "Toggle theme",
+          lightMode: "Light mode",
+          darkMode: "Dark mode",
+          avatar: "Avatar",
+          mainNavigation: "Main navigation",
+          mobileNavigation: "Mobile navigation",
+          desktopNavigation: "Desktop navigation",
+        },
+      },
+    };
+
+    return (key: string) => {
+      const keys = key.split(".");
+      let value: any = translations[namespace];
+      for (const item of keys) {
+        value = value?.[item];
+      }
+      return value ?? key;
+    };
+  }),
+}));
+
+const mockIntersectionObserver = vi.fn();
+mockIntersectionObserver.mockReturnValue({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+});
+Object.defineProperty(globalThis, "IntersectionObserver", {
+  writable: true,
+  configurable: true,
+  value: mockIntersectionObserver,
+});
+
 vi.mock("next/navigation", () => ({
   usePathname: vi.fn(() => "/"),
 }));
 
-// Mock the useComponentId hook
-vi.mock("@guyromellemagayano/hooks", () => ({
-  useComponentId: vi.fn((options = {}) => ({
-    id: options.internalId || "test-id",
-    isDebugMode: options.debugMode || false,
+vi.mock("next-themes", () => ({
+  useTheme: vi.fn(() => ({
+    resolvedTheme: "light",
+    setTheme: vi.fn(),
   })),
 }));
 
-// Mock the utils
-vi.mock("@guyromellemagayano/utils", () => ({
-  setDisplayName: vi.fn((component, displayName) => {
-    if (component) component.displayName = displayName;
-    return component;
+vi.mock("@web/utils/helpers", () => ({
+  cn: vi.fn((...classes: (string | undefined)[]) =>
+    classes.filter(Boolean).join(" ")
+  ),
+  clamp: vi.fn((value: number, min: number, max: number) =>
+    Math.min(Math.max(value, min), max)
+  ),
+  isActivePath: vi.fn((pathname: string, href: string) => pathname === href),
+}));
+
+vi.mock("@portfolio/utils", () => ({
+  isValidLink: vi.fn((href: unknown) => {
+    if (!href) return false;
+    const s =
+      typeof href === "string"
+        ? href
+        : (href as { toString(): string }).toString();
+    return s !== "" && s !== "#";
+  }),
+  getLinkTargetProps: vi.fn((href: unknown, target?: string) => {
+    if (!href) return { target: "_self" as const };
+    const s =
+      typeof href === "string"
+        ? href
+        : (href as { toString(): string }).toString();
+    const isExternal = s.startsWith("http");
+    const openNewTab =
+      target === "_blank" || (isExternal && target !== "_self");
+    return {
+      target: (openNewTab ? "_blank" : "_self") as " _self" | "_blank",
+      rel: openNewTab ? "noopener noreferrer" : undefined,
+    };
+  }),
+  isValidImageSrc: vi.fn((src: unknown) => src != null && src !== ""),
+  filterValidNavigationLinks: vi.fn((links: unknown[]) => {
+    if (!Array.isArray(links)) return [];
+    return links.filter(
+      (link) =>
+        link &&
+        typeof link === "object" &&
+        typeof (link as { href?: string }).href === "string" &&
+        typeof (link as { label?: string }).label === "string"
+    );
+  }),
+  hasValidNavigationLinks: vi.fn((links: unknown[]) => {
+    if (!Array.isArray(links)) return false;
+    return links.length > 0;
   }),
 }));
 
-// Mock the cn helper
-vi.mock("@web/lib", () => ({
-  cn: vi.fn((...classes) => classes.filter(Boolean).join(" ")),
-}));
-
-// Mock the Container component
-vi.mock("@web/components", () => ({
-  Container: vi.fn(({ children, ...props }) => (
-    <div data-testid="container" {...props}>
-      {children}
-    </div>
-  )),
-}));
-
-// Mock the Header data
-vi.mock("../_data", () => ({
-  AVATAR_COMPONENT_LABELS: {
-    home: "Home",
-    link: "/",
-    alt: "Guy Romelle Magayano",
-    src: "/avatar.jpg",
+vi.mock("next/link", () => ({
+  __esModule: true,
+  default: function NextLink({
+    children,
+    href,
+    ...props
+  }: {
+    children: React.ReactNode;
+    href: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <a href={href} {...props}>
+        {children}
+      </a>
+    );
   },
 }));
 
-// Mock internal components
-vi.mock("../_internal/HeaderAvatar", () => ({
-  HeaderAvatar: vi.fn(({ children, ...props }) => (
-    <div data-testid="header-avatar" {...props}>
-      {children}
-    </div>
-  )),
-}));
-
-vi.mock("../_internal/HeaderAvatarContainer", () => ({
-  HeaderAvatarContainer: vi.fn(({ children, ...props }) => (
-    <div data-testid="header-avatar-container" {...props}>
-      {children}
-    </div>
-  )),
-}));
-
-vi.mock("../_internal/HeaderDesktopNav", () => ({
-  HeaderDesktopNav: vi.fn(({ children, ...props }) => (
-    <nav data-testid="header-desktop-nav" {...props}>
-      {children}
-    </nav>
-  )),
-}));
-
-vi.mock("../_internal/HeaderMobileNav", () => ({
-  HeaderMobileNav: vi.fn(({ children, ...props }) => (
-    <nav data-testid="header-mobile-nav" {...props}>
-      {children}
-    </nav>
-  )),
-}));
-
-vi.mock("../_internal/HeaderThemeToggle", () => ({
-  HeaderThemeToggle: vi.fn(({ children, ...props }) => (
-    <button data-testid="header-theme-toggle" {...props}>
-      {children}
-    </button>
-  )),
-}));
-
-vi.mock("../_internal/HeaderEffects", () => ({
-  HeaderEffects: vi.fn(() => null),
-}));
-
-// Mock the CSS module
-vi.mock("../Header.module.css", () => ({
-  default: {
-    headerComponent: "header-component",
-    headerSection: "header-section",
-    headerContainer: "header-container",
-    headerContent: "header-content",
-    headerLeftSection: "header-left-section",
-    headerCenterSection: "header-center-section",
-    headerRightSection: "header-right-section",
-    mobileNavigation: "mobile-navigation",
-    desktopNavigation: "desktop-navigation",
-    themeToggleWrapper: "theme-toggle-wrapper",
-    contentOffset: "content-offset",
-    avatarSection: "avatar-section",
-    avatarContainer: "avatar-container",
-    avatarPositioningWrapper: "avatar-positioning-wrapper",
-    avatarRelativeContainer: "avatar-relative-container",
-    avatarBorderContainer: "avatar-border-container",
-    avatarImage: "avatar-image",
+vi.mock("next/image", () => ({
+  default: function Image({
+    src,
+    alt,
+    ...props
+  }: {
+    src: unknown;
+    alt: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <img src={typeof src === "string" ? src : ""} alt={alt} {...props} />
+    );
   },
 }));
+
+vi.mock("@web/components/container", () => ({
+  Container: function Container({
+    children,
+    className,
+    ...props
+  }: {
+    children: React.ReactNode;
+    className?: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <div data-testid="container" className={className} {...props}>
+        {children}
+      </div>
+    );
+  },
+}));
+
+vi.mock("@web/components/button", () => ({
+  Button: React.forwardRef<
+    HTMLButtonElement,
+    React.ComponentProps<"button"> & { [key: string]: unknown }
+  >(function Button(
+    {
+      children,
+      ...props
+    }: { children?: React.ReactNode; [key: string]: unknown },
+    ref
+  ) {
+    return (
+      <button ref={ref} type="button" {...props}>
+        {children}
+      </button>
+    );
+  }),
+}));
+
+vi.mock("@web/components/icon", () => ({
+  Icon: function Icon({
+    name,
+    className,
+    "aria-hidden": ariaHidden,
+    ...props
+  }: {
+    name: string;
+    className?: string;
+    "aria-hidden"?: boolean;
+    [key: string]: unknown;
+  }) {
+    return (
+      <svg
+        data-testid={`icon-${name}`}
+        className={className}
+        aria-hidden={ariaHidden}
+        {...props}
+      >
+        {name}
+      </svg>
+    );
+  },
+}));
+
+// Headless UI Popover: render as a wrapper with button + panel so structure is testable
+vi.mock("@headlessui/react", () => ({
+  Popover: function Popover({ children }: { children: React.ReactNode }) {
+    return <div data-testid="popover">{children}</div>;
+  },
+  PopoverButton: React.forwardRef<
+    HTMLButtonElement,
+    React.ComponentProps<"button"> & { [key: string]: unknown }
+  >(function PopoverButton(
+    {
+      children,
+      ...props
+    }: { children?: React.ReactNode; [key: string]: unknown },
+    ref
+  ) {
+    return (
+      <button ref={ref} type="button" {...props}>
+        {children}
+      </button>
+    );
+  }),
+  PopoverBackdrop: function PopoverBackdrop({
+    className,
+    ...props
+  }: {
+    className?: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <div data-testid="popover-backdrop" className={className} {...props} />
+    );
+  },
+  PopoverPanel: function PopoverPanel({
+    children,
+    className,
+    ...props
+  }: {
+    children: React.ReactNode;
+    className?: string;
+    [key: string]: unknown;
+  }) {
+    return (
+      <div data-testid="popover-panel" className={className} {...props}>
+        {children}
+      </div>
+    );
+  },
+}));
+
+// ============================================================================
+// TESTS
+// ============================================================================
 
 describe("Header", () => {
   beforeEach(() => {
-    cleanup();
-    vi.clearAllMocks();
+    vi.mocked(usePathname).mockReturnValue("/");
   });
 
   afterEach(() => {
     cleanup();
+    vi.clearAllMocks();
   });
 
   describe("Basic Rendering", () => {
     it("renders without crashing", () => {
       render(<Header />);
-      expect(screen.getByTestId("header-root")).toBeInTheDocument();
+      expect(screen.getByRole("banner")).toBeInTheDocument();
     });
 
     it("renders with default props", () => {
       render(<Header />);
-      const header = screen.getByTestId("header-root");
-      expect(header).toBeInTheDocument();
+      const banner = screen.getByRole("banner");
+      expect(banner).toBeInTheDocument();
     });
 
     it("renders with custom className", () => {
       render(<Header className="custom-class" />);
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveClass("custom-class");
-    });
-  });
-
-  describe("Component ID and Debug Mode", () => {
-    it("uses provided internalId when available", () => {
-      render(<Header internalId="custom-id" />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "custom-id");
-    });
-
-    it("generates ID when internalId is not provided", () => {
-      render(<Header />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-header-id", "test-id");
-    });
-
-    it("applies data-debug-mode when debugMode is true", () => {
-      render(<Header debugMode={true} />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("data-debug-mode", "true");
-    });
-
-    it("does not apply data-debug-mode when debugMode is false", () => {
-      render(<Header debugMode={false} />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).not.toHaveAttribute("data-debug-mode");
-    });
-
-    it("does not apply data-debug-mode when debugMode is undefined", () => {
-      render(<Header />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).not.toHaveAttribute("data-debug-mode");
+      const banner = screen.getByRole("banner");
+      expect(banner).toHaveAttribute("class");
+      expect(banner).toHaveClass("custom-class");
     });
   });
 
   describe("Component Structure", () => {
-    it("renders correct HTML structure", () => {
+    it("renders as header element", () => {
       render(<Header />);
-
-      expect(screen.getByTestId("header-root")).toBeInTheDocument();
-      expect(screen.getAllByTestId("container")).toHaveLength(2);
-      expect(screen.getByTestId("header-mobile-nav")).toBeInTheDocument();
-      expect(screen.getByTestId("header-desktop-nav")).toBeInTheDocument();
-      expect(screen.getByTestId("header-theme-toggle")).toBeInTheDocument();
+      const banner = screen.getByRole("banner");
+      expect(banner.tagName).toBe("HEADER");
     });
 
-    it("renders with proper semantic structure", () => {
+    it("renders main navigation and theme toggle", () => {
       render(<Header />);
+      const navs = screen.getAllByRole("navigation", {
+        name: /desktop navigation|mobile navigation|navigation/i,
+      });
+      expect(navs.length).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getByRole("button", {
+          name: /toggle theme|switch to (light|dark) mode/i,
+        })
+      ).toBeInTheDocument();
+    });
 
-      const header = screen.getByTestId("header-root");
-      expect(header.tagName).toBe("HEADER");
+    it("renders navigation links", () => {
+      render(<Header />);
+      expect(
+        screen.getAllByRole("link", { name: /about/i }).length
+      ).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getAllByRole("link", { name: /articles/i }).length
+      ).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getAllByRole("link", { name: /projects/i }).length
+      ).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getAllByRole("link", { name: /uses/i }).length
+      ).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe("ARIA and Accessibility", () => {
+    it("has banner role and aria-label for site header", () => {
+      render(<Header />);
+      const banner = screen.getByRole("banner", {
+        name: /Guy Romelle Magayano/i,
+      });
+      expect(banner).toBeInTheDocument();
+      expect(banner).toHaveAttribute("aria-label", "Guy Romelle Magayano");
+      expect(banner).toHaveAttribute("role", "banner");
+    });
+
+    it("nav elements have accessible navigation label", () => {
+      render(<Header />);
+      const navs = screen.getAllByRole("navigation", {
+        name: /desktop navigation|mobile navigation|navigation/i,
+      });
+      expect(navs.length).toBeGreaterThanOrEqual(1);
+      const validLabels = ["Desktop navigation", "Mobile navigation"];
+      navs.forEach((nav) => {
+        const label = nav.getAttribute("aria-label");
+        expect(label).toBeTruthy();
+        expect(validLabels).toContain(label);
+      });
+    });
+
+    it("avatar link has accessible label", () => {
+      render(<Header />);
+      const homeLink = screen.getByRole("link", { name: /home/i });
+      expect(homeLink).toBeInTheDocument();
+      expect(homeLink).toHaveAttribute("aria-label", "Home");
+    });
+
+    it("theme toggle button has accessible label", () => {
+      render(<Header />);
+      const toggle = screen.getByRole("button", {
+        name: /toggle theme|switch to (light|dark) mode/i,
+      });
+      expect(toggle).toHaveAttribute("aria-label");
+    });
+
+    it("passes through custom aria attributes", () => {
+      render(
+        <Header aria-label="Custom header" aria-describedby="header-desc" />
+      );
+      const banner = screen.getByRole("banner", { name: /custom header/i });
+      expect(banner).toHaveAttribute("aria-label", "Custom header");
+      expect(banner).toHaveAttribute("aria-describedby", "header-desc");
+    });
+  });
+
+  describe("SEO and Semantics", () => {
+    it("uses semantic header element", () => {
+      render(<Header />);
+      const header = document.querySelector("header");
+      expect(header).toBeInTheDocument();
+      expect(header).toHaveAttribute("role", "banner");
+    });
+
+    it("uses semantic nav for main navigation", () => {
+      render(<Header />);
+      const navs = screen.getAllByRole("navigation", {
+        name: /desktop navigation|mobile navigation|navigation/i,
+      });
+      expect(navs.length).toBeGreaterThanOrEqual(1);
+      const firstNav = navs[0];
+      expect(firstNav).toBeInTheDocument();
+      expect(firstNav!.tagName).toBe("NAV");
+    });
+
+    it("avatar image has descriptive alt text", () => {
+      render(<Header />);
+      const img = screen.getByRole("img", { name: /Guy Romelle Magayano/i });
+      expect(img).toHaveAttribute("alt", "Guy Romelle Magayano");
     });
   });
 
   describe("Homepage Behavior", () => {
-    it("renders avatar section on homepage", () => {
+    it("renders avatar and containers on homepage", () => {
+      vi.mocked(usePathname).mockReturnValue("/");
       render(<Header />);
-
-      expect(screen.getByTestId("header-avatar")).toBeInTheDocument();
-      expect(screen.getByTestId("header-avatar-container")).toBeInTheDocument();
-    });
-
-    it("renders content offset on homepage", () => {
-      render(<Header />);
-
-      const contentOffset = screen.getAllByTestId("container")[0];
-      expect(contentOffset).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
+      const containers = screen.getAllByTestId("container");
+      expect(containers.length).toBeGreaterThanOrEqual(1);
     });
   });
 
   describe("Non-Homepage Behavior", () => {
-    beforeEach(() => {
-      vi.mocked(usePathname).mockReturnValue("/about");
-    });
-
     it("renders avatar in left section on non-homepage", () => {
+      vi.mocked(usePathname).mockReturnValue("/about");
       render(<Header />);
-
-      expect(screen.getByTestId("header-avatar-container")).toBeInTheDocument();
-    });
-
-    it("does not render large avatar on non-homepage", () => {
-      render(<Header />);
-
-      const avatar = screen.getByTestId("header-avatar");
-      expect(avatar).toBeInTheDocument();
-    });
-  });
-
-  describe("Ref Forwarding", () => {
-    it("forwards ref to the header component", () => {
-      const ref = vi.fn();
-      render(<Header ref={ref} />);
-
-      expect(ref).toHaveBeenCalled();
-    });
-
-    it("forwards ref with correct element", () => {
-      const ref = vi.fn();
-      render(<Header ref={ref} />);
-
-      const header = screen.getByTestId("header-root");
-      expect(ref).toHaveBeenCalledWith(header);
-    });
-  });
-
-  describe("Accessibility", () => {
-    it("renders with proper accessibility attributes", () => {
-      render(<Header />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toBeInTheDocument();
-    });
-
-    it("passes through aria attributes", () => {
-      render(<Header aria-label="Main navigation" role="banner" />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveAttribute("aria-label", "Main navigation");
-      expect(header).toHaveAttribute("role", "banner");
-    });
-  });
-
-  describe("CSS Module Integration", () => {
-    it("applies CSS module classes correctly", () => {
-      render(<Header />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveClass("header-component");
-    });
-
-    it("combines custom className with CSS module classes", () => {
-      render(<Header className="custom-class" />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveClass("header-component", "custom-class");
-    });
-  });
-
-  describe("Performance and Optimization", () => {
-    it("renders without unnecessary re-renders", () => {
-      const { rerender } = render(<Header />);
-
-      const initialHeader = screen.getByTestId("header-root");
-
-      rerender(<Header />);
-
-      const updatedHeader = screen.getByTestId("header-root");
-      expect(updatedHeader).toBe(initialHeader);
-    });
-
-    it("handles prop changes efficiently", () => {
-      const { rerender } = render(<Header />);
-
-      rerender(<Header className="new-class" />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toHaveClass("new-class");
-    });
-  });
-
-  describe("Memoization", () => {
-    it("renders with memoization when isMemoized is true", () => {
-      render(<Header isMemoized={true} />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toBeInTheDocument();
-    });
-
-    it("renders without memoization when isMemoized is false", () => {
-      render(<Header isMemoized={false} />);
-
-      const header = screen.getByTestId("header-root");
-      expect(header).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
+      expect(screen.getByRole("banner")).toBeInTheDocument();
     });
   });
 
   describe("Compound Component Integration", () => {
-    it("allows access to sub-components individually", () => {
+    it("renders header with all sub-components", () => {
       render(<Header />);
-      expect(screen.getByTestId("header-root")).toBeInTheDocument();
+      expect(screen.getByRole("banner")).toBeInTheDocument();
+      const navs = screen.getAllByRole("navigation", {
+        name: /desktop navigation|mobile navigation|navigation/i,
+      });
+      expect(navs.length).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getByRole("button", {
+          name: /toggle theme|switch to (light|dark) mode/i,
+        })
+      ).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
     });
   });
 
   describe("Edge Cases", () => {
-    it("handles complex prop combinations", () => {
-      render(
-        <Header
-          className="custom-class"
-          internalId="custom-id"
-          debugMode={true}
-          aria-label="Test header"
-        />
-      );
-      const header = screen.getByTestId("header-root");
-      expect(header).toBeInTheDocument();
-      expect(header).toHaveClass("custom-class");
-      expect(header).toHaveAttribute("data-header-id", "custom-id");
-      expect(header).toHaveAttribute("data-debug-mode", "true");
-      expect(header).toHaveAttribute("aria-label", "Test header");
+    it("handles custom className and aria props", () => {
+      render(<Header className="edge-class" aria-label="Edge header" />);
+      const banner = screen.getByRole("banner", { name: /edge header/i });
+      expect(banner).toHaveAttribute("class");
+      expect(banner).toHaveClass("edge-class");
+      expect(banner).toHaveAttribute("aria-label", "Edge header");
     });
   });
 });
