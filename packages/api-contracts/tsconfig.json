@@ -4,6 +4,7 @@
     "lib": [
       "ES2015"
     ],
+    "rootDir": "./src",
     "outDir": "./dist"
   },
   "include": [
