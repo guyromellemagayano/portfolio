@@ -58,7 +58,7 @@ describe("Link Integration Tests", () => {
       render(
         <div>
           <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
+          <Link href="/hire">Hire</Link>
           <Link href="/blog">Blog</Link>
         </div>
       );
@@ -101,7 +101,7 @@ describe("Link Integration Tests", () => {
           <Link.Social href="https://github.com" icon="github" title="GitHub">
             Test
           </Link.Social>
-          <Link href="/contact">Contact</Link>
+          <Link href="/hire">Hire</Link>
         </div>
       );
 
@@ -244,7 +244,7 @@ describe("Link Integration Tests", () => {
       render(
         <div>
           <Link href="/about">Internal Default</Link>
-          <Link.Social href="/contact" icon="github" title="GitHub">
+          <Link.Social href="/hire" icon="github" title="GitHub">
             Test
           </Link.Social>
         </div>

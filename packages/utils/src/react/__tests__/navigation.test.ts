@@ -212,7 +212,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "About", href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(3);
@@ -268,7 +268,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
@@ -280,7 +280,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "About" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
@@ -292,7 +292,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "", href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
@@ -304,7 +304,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "About", href: "" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
@@ -317,7 +317,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "   ", href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(3);
@@ -331,7 +331,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "About", href: "   " },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(3);
@@ -344,7 +344,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: 123, href: "/about" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
@@ -356,7 +356,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         { label: "About", href: 123 },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
@@ -368,7 +368,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "Home", href: "/" },
         null,
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
@@ -381,7 +381,7 @@ describe("filterValidNavigationLinks", () => {
         { label: "Home", href: "/" },
         { label: "", href: "/about" },
         { label: "About", href: "" },
-        { label: "Contact", href: "/contact" },
+        { label: "Hire", href: "/hire" },
         { href: "/missing-label" },
         { label: "Missing href" },
       ];
@@ -454,7 +454,7 @@ describe("filterValidNavigationLinks", () => {
     it("handles links with special characters in label and href", () => {
       const links = [
         { label: "Home & About", href: "/home-about" },
-        { label: "Contact Us!", href: "/contact?ref=home" },
+        { label: "Hire Me!", href: "/hire?ref=home" },
         { label: "FAQ's", href: "/faqs#section" },
       ];
       const result = filterValidNavigationLinks(links);
@@ -468,7 +468,7 @@ describe("filterValidNavigationLinks", () => {
       const links = [
         { label: "首页", href: "/home" },
         { label: "À propos", href: "/about" },
-        { label: "Kontakt", href: "/contact" },
+        { label: "Beauftragen", href: "/hire" },
       ];
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(3);
