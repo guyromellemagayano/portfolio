@@ -20,6 +20,11 @@ type PortfolioSnapshotEnvelope =
   | ApiSuccessEnvelope<ContentPortfolioSnapshotResponseData>
   | ApiErrorEnvelope;
 
+/** Returns a cloned local portfolio snapshot for static-first fallback behavior. */
+function getLocalPortfolioSnapshot(): ContentPortfolioSnapshotResponseData {
+  return structuredClone(contentSnapshot.portfolio);
+}
+
 /** Validates the expected success envelope shape for portfolio snapshot responses. */
 function isPortfolioSnapshotSuccessEnvelope(
   payload: unknown
@@ -45,35 +50,37 @@ export async function getPortfolioSnapshot(): Promise<ContentPortfolioSnapshotRe
   const portfolioApiBaseUrl = resolvePortfolioApiBaseUrl();
 
   if (!portfolioApiBaseUrl) {
-    return structuredClone(contentSnapshot.portfolio);
+    return getLocalPortfolioSnapshot();
   }
 
   const endpointUrl = `${portfolioApiBaseUrl}${PORTFOLIO_ROUTE}`;
-  const response = await fetch(endpointUrl, {
-    method: "GET",
-    cache: "force-cache",
-    next: {
-      tags: ["portfolio"],
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Portfolio API snapshot request failed with status ${response.status}.`
-    );
-  }
-
-  let envelope: PortfolioSnapshotEnvelope;
-
   try {
-    envelope = (await response.json()) as PortfolioSnapshotEnvelope;
+    const response = await fetch(endpointUrl, {
+      method: "GET",
+      cache: "force-cache",
+      next: {
+        tags: ["portfolio"],
+      },
+    });
+
+    if (!response.ok) {
+      return getLocalPortfolioSnapshot();
+    }
+
+    let envelope: PortfolioSnapshotEnvelope;
+
+    try {
+      envelope = (await response.json()) as PortfolioSnapshotEnvelope;
+    } catch {
+      return getLocalPortfolioSnapshot();
+    }
+
+    if (!isPortfolioSnapshotSuccessEnvelope(envelope)) {
+      return getLocalPortfolioSnapshot();
+    }
+
+    return envelope.data;
   } catch {
-    throw new Error("Portfolio API returned an invalid JSON response.");
+    return getLocalPortfolioSnapshot();
   }
-
-  if (!isPortfolioSnapshotSuccessEnvelope(envelope)) {
-    throw new Error("Portfolio API returned an unexpected response envelope.");
-  }
-
-  return envelope.data;
 }

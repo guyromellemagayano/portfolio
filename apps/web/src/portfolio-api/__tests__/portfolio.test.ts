@@ -6,6 +6,7 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { contentSnapshot } from "@portfolio/content-data";
 import { getPortfolioSnapshot } from "@web/portfolio-api/portfolio";
 
 describe("portfolio snapshot API client", () => {
@@ -83,7 +84,7 @@ describe("portfolio snapshot API client", () => {
     );
   });
 
-  it("throws when the API responds with an unexpected envelope", async () => {
+  it("falls back to the local snapshot when the API responds with an unexpected envelope", async () => {
     vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
 
     const fetchMock = vi.fn().mockResolvedValue({
@@ -96,8 +97,23 @@ describe("portfolio snapshot API client", () => {
 
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(getPortfolioSnapshot()).rejects.toThrow(
-      "Portfolio API returned an unexpected response envelope."
-    );
+    const snapshot = await getPortfolioSnapshot();
+
+    expect(snapshot).toEqual(contentSnapshot.portfolio);
+  });
+
+  it("falls back to the local snapshot when the API responds with a non-success status", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
+
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: false,
+      status: 404,
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const snapshot = await getPortfolioSnapshot();
+
+    expect(snapshot).toEqual(contentSnapshot.portfolio);
   });
 });
