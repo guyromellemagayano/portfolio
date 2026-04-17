@@ -9,7 +9,9 @@ import { type ComponentPropsWithoutRef } from "react";
 import { type Route } from "next";
 import Link from "next/link";
 
-import footerConfig from "@web/data/footer.json";
+import { contentSnapshot } from "@portfolio/content-data";
+
+import { getPortfolioNavigationLinks } from "@web/utils/portfolio";
 
 // ============================================================================
 // FOOTER LINK TYPES
@@ -41,48 +43,27 @@ export type FooterData = {
 // FOOTER NAV LINK CONFIG
 // ============================================================================
 
-export type FooterNavLabelKey = "services" | "blog" | "projects" | "contact";
-export type FooterNavLinkConfig = Readonly<{
-  kind: "internal";
-  labelKey: FooterNavLabelKey;
-  href: InternalHref;
-}>;
+export type FooterNavLinkConfig = Readonly<
+  Extract<FooterLink, { kind: "internal" }>
+>;
 
 // ============================================================================
 // FOOTER CONFIG DATA
 // ============================================================================
 
 type FooterConfigData = Readonly<{
-  navLinks: ReadonlyArray<{
-    labelKey: FooterNavLabelKey;
-    href: InternalHref;
-  }>;
+  navLinks: ReadonlyArray<Extract<FooterLink, { kind: "internal" }>>;
 }>;
 
-const FOOTER_NAV_LABEL_KEYS: ReadonlyArray<FooterNavLabelKey> = [
-  "services",
-  "blog",
-  "projects",
-  "contact",
-];
-
-const isFooterNavLabelKey = (value: string): value is FooterNavLabelKey =>
-  FOOTER_NAV_LABEL_KEYS.includes(value as FooterNavLabelKey);
-
 const createFooterConfigData = (): FooterConfigData => {
-  const navLinks: ReadonlyArray<{
-    labelKey: FooterNavLabelKey;
-    href: InternalHref;
-  }> = footerConfig.navLinks.map((link) => {
-    if (!isFooterNavLabelKey(link.labelKey)) {
-      throw new Error(`Invalid footer nav labelKey: ${link.labelKey}`);
-    }
-
-    return {
-      labelKey: link.labelKey,
-      href: link.href as InternalHref,
-    };
-  });
+  const navLinks = getPortfolioNavigationLinks(
+    contentSnapshot.portfolio,
+    "footer"
+  ).map((link) => ({
+    kind: "internal" as const,
+    label: link.label,
+    href: link.href as InternalHref,
+  }));
 
   return { navLinks };
 };
@@ -96,6 +77,6 @@ const FOOTER_CONFIG_DATA = createFooterConfigData();
 export const FOOTER_NAV_LINK_CONFIG: ReadonlyArray<FooterNavLinkConfig> =
   FOOTER_CONFIG_DATA.navLinks.map((link) => ({
     kind: "internal",
-    labelKey: link.labelKey,
+    label: link.label,
     href: link.href,
   }));

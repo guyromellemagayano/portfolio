@@ -32,6 +32,11 @@ const localDevelopmentDomain =
   globalThis.process.env.LOCAL_DEV_DOMAIN?.trim() || "guyromellemagayano.local";
 const shouldUseStandaloneOutput =
   globalThis.process.env.NEXT_WEB_OUTPUT_STANDALONE?.trim() === "1";
+const portfolioPublicApiProxyTarget =
+  globalThis.process.env.PORTFOLIO_PUBLIC_API_PROXY_TARGET?.trim()?.replace(
+    /\/+$/,
+    ""
+  ) || "";
 
 const allowedDevOrigins = [
   localDevelopmentDomain,
@@ -62,6 +67,7 @@ const nextConfig: NextConfig = {
   transpilePackages: [
     "@portfolio/api-contracts",
     "@portfolio/components",
+    "@portfolio/content-data",
     "@portfolio/logger",
     "@portfolio/ui",
     "@portfolio/hooks",
@@ -87,6 +93,18 @@ const nextConfig: NextConfig = {
     Object.keys(experimentalNextConfig).length > 0
       ? experimentalNextConfig
       : undefined,
+  async rewrites() {
+    if (!portfolioPublicApiProxyTarget) {
+      return [];
+    }
+
+    return [
+      {
+        source: "/api/public/:path*",
+        destination: `${portfolioPublicApiProxyTarget}/:path*`,
+      },
+    ];
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();

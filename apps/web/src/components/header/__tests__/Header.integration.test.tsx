@@ -24,11 +24,10 @@ vi.mock("next-intl", () => ({
         brandName: "Guy Romelle Magayano",
         labels: {
           home: "Home",
-          about: "About",
-          articles: "Articles",
+          services: "Services",
+          blog: "Blog",
           projects: "Projects",
-          uses: "Uses",
-          contact: "Contact",
+          hire: "Hire",
           menu: "Menu",
           closeMenu: "Close menu",
           navigation: "Navigation",
@@ -327,14 +326,14 @@ describe("Header Integration", () => {
     it("navigation links have correct hrefs", () => {
       render(<Header />);
 
-      const aboutLinks = screen.getAllByRole("link", { name: /about/i });
+      const servicesLinks = screen.getAllByRole("link", { name: /services/i });
       expect(
-        aboutLinks.some((el) => el.getAttribute("href") === "/about")
+        servicesLinks.some((el) => el.getAttribute("href") === "/services")
       ).toBe(true);
 
-      const articlesLinks = screen.getAllByRole("link", { name: /articles/i });
+      const blogLinks = screen.getAllByRole("link", { name: /blog/i });
       expect(
-        articlesLinks.some((el) => el.getAttribute("href") === "/articles")
+        blogLinks.some((el) => el.getAttribute("href") === "/articles")
       ).toBe(true);
     });
   });

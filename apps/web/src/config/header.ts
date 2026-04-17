@@ -6,7 +6,9 @@
 
 import { type Route } from "next";
 
-import headerConfig from "@web/data/header.json";
+import { contentSnapshot } from "@portfolio/content-data";
+
+import { getPortfolioNavigationLinks } from "@web/utils/portfolio";
 
 // ============================================================================
 // HEADER LINK TYPES
@@ -32,12 +34,9 @@ export type HeaderLink =
 // HEADER NAV LINK CONFIG
 // ============================================================================
 
-export type HeaderNavLabelKey = "services" | "blog" | "projects" | "contact";
-export type HeaderNavLinkConfig = Readonly<{
-  kind: "internal";
-  labelKey: HeaderNavLabelKey;
-  href: InternalHref;
-}>;
+export type HeaderNavLinkConfig = Readonly<
+  Extract<HeaderLink, { kind: "internal" }>
+>;
 export type HeaderComponentNavLinks = ReadonlyArray<
   Extract<HeaderLink, { kind: "internal" }>
 >;
@@ -48,41 +47,19 @@ export type HeaderComponentNavLinks = ReadonlyArray<
 
 type HeaderConfigData = Readonly<{
   avatarLinkHref: string;
-  navLinks: ReadonlyArray<{
-    labelKey: HeaderNavLabelKey;
-    href: InternalHref;
-  }>;
+  navLinks: HeaderComponentNavLinks;
 }>;
 
-const HEADER_NAV_LABEL_KEYS: ReadonlyArray<HeaderNavLabelKey> = [
-  "services",
-  "blog",
-  "projects",
-  "contact",
-];
-
-const isHeaderNavLabelKey = (value: string): value is HeaderNavLabelKey =>
-  HEADER_NAV_LABEL_KEYS.includes(value as HeaderNavLabelKey);
-
 const createHeaderConfigData = (): HeaderConfigData => {
-  const avatarLinkHref =
-    typeof headerConfig.avatarLinkHref === "string"
-      ? headerConfig.avatarLinkHref
-      : "/";
-
-  const navLinks: ReadonlyArray<{
-    labelKey: HeaderNavLabelKey;
-    href: InternalHref;
-  }> = headerConfig.navLinks.map((link) => {
-    if (!isHeaderNavLabelKey(link.labelKey)) {
-      throw new Error(`Invalid header nav labelKey: ${link.labelKey}`);
-    }
-
-    return {
-      labelKey: link.labelKey,
-      href: link.href as InternalHref,
-    };
-  });
+  const avatarLinkHref = "/";
+  const navLinks = getPortfolioNavigationLinks(
+    contentSnapshot.portfolio,
+    "header"
+  ).map((link) => ({
+    kind: "internal" as const,
+    label: link.label,
+    href: link.href as InternalHref,
+  }));
 
   return {
     avatarLinkHref,
@@ -106,6 +83,6 @@ export const AVATAR_LINK_HREF =
 export const HEADER_NAV_LINK_CONFIG: ReadonlyArray<HeaderNavLinkConfig> =
   HEADER_CONFIG_DATA.navLinks.map((link) => ({
     kind: "internal",
-    labelKey: link.labelKey,
+    label: link.label,
     href: link.href,
   }));

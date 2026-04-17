@@ -3,83 +3,44 @@
 /**
  * @file apps/web/src/app/(blog)/services/page.tsx
  * @author Guy Romelle Magayano
- * @description Services page for consulting, architecture, and delivery offerings.
+ * @description Static services page rendered from the canonical portfolio snapshot API.
  */
 
-import { type Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 
-import logger from "@portfolio/logger";
-
-import { Card } from "@web/components/card";
 import { SimpleLayout } from "@web/components/layout";
-import { Section } from "@web/components/section";
-import { Heading } from "@web/components/text";
-import { type CommonLayoutComponentData } from "@web/data/page";
 import {
-  PORTFOLIO_CAPABILITY_CLUSTERS,
-  PORTFOLIO_SERVICE_OFFERINGS,
-  PORTFOLIO_SHOWCASE_APPS,
-} from "@web/data/portfolio-showcase";
-import { getSafeHeroMessages, normalizeError } from "@web/utils/error";
+  buildPortfolioPageMetadata,
+  getPortfolioBrochurePage,
+} from "@web/app/_lib/portfolio-brochure";
 
-const SERVICES_PAGE_I18N_NAMESPACE = "page.services.labels";
-const SERVICES_PAGE_I18N_FALLBACK: CommonLayoutComponentData = {
-  subheading: "Services",
-  title: "Architecture, advisory, and delivery for product systems.",
-  intro:
-    "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work.",
-};
+export const dynamic = "force-static";
 
-export const metadata: Metadata = {
-  title: SERVICES_PAGE_I18N_FALLBACK.subheading,
-  description: SERVICES_PAGE_I18N_FALLBACK.intro,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { page } = await getPortfolioBrochurePage("services");
+
+  return buildPortfolioPageMetadata(page);
+}
 
 export default async function ServicesPage() {
-  const servicesPageI18n: CommonLayoutComponentData = await getTranslations(
-    SERVICES_PAGE_I18N_NAMESPACE
-  )
-    .then((data) => ({
-      subheading: getSafeHeroMessages(
-        SERVICES_PAGE_I18N_NAMESPACE,
-        data,
-        "subheading",
-        SERVICES_PAGE_I18N_FALLBACK.subheading
-      ),
-      title: getSafeHeroMessages(
-        SERVICES_PAGE_I18N_NAMESPACE,
-        data,
-        "title",
-        SERVICES_PAGE_I18N_FALLBACK.title
-      ),
-      intro: getSafeHeroMessages(
-        SERVICES_PAGE_I18N_NAMESPACE,
-        data,
-        "description",
-        SERVICES_PAGE_I18N_FALLBACK.intro
-      ),
-    }))
-    .catch((err) => {
-      const normalizedErr = normalizeError(err);
-
-      if (normalizedErr.isDynamicServerUsage) {
-        return SERVICES_PAGE_I18N_FALLBACK;
-      }
-
-      logger.error("Services page translations failed to load", normalizedErr, {
-        component: "web.app.services.page",
-        operation: "getServicesPageI18n",
-        metadata: {
-          namespace: SERVICES_PAGE_I18N_NAMESPACE,
-        },
-      });
-
-      return SERVICES_PAGE_I18N_FALLBACK;
-    });
+  const { snapshot, page } = await getPortfolioBrochurePage("services");
+  const services = snapshot.serviceOfferings
+    .filter((service) => service.status === "published")
+    .sort((left, right) => left.order - right.order);
+  const capabilityClusters = snapshot.capabilityClusters
+    .filter((cluster) => cluster.status === "published")
+    .sort((left, right) => left.order - right.order);
+  const showcaseApps = snapshot.showcaseApps
+    .filter((app) => app.status === "published")
+    .sort((left, right) => left.order - right.order);
 
   return (
-    <SimpleLayout {...servicesPageI18n} className="mt-16 sm:mt-32">
+    <SimpleLayout
+      className="mt-16 sm:mt-32"
+      subheading={page.subheading}
+      title={page.title}
+      intro={page.intro}
+    >
       <section
         aria-labelledby="services-offerings-heading"
         className="mt-16"
@@ -92,20 +53,18 @@ export default async function ServicesPage() {
           Ways to work with me
         </h2>
         <div className="mt-10 space-y-8">
-          {PORTFOLIO_SERVICE_OFFERINGS.map((service) => (
-            <Card
-              key={service.anchor}
-              as="article"
+          {services.map((service) => (
+            <article
+              key={service.id}
               id={service.anchor}
               className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
             >
-              <Heading
-                as="h3"
-                className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100"
-              >
+              <h3 className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
                 {service.name}
-              </Heading>
-              <Card.Description>{service.summary}</Card.Description>
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                {service.summary}
+              </p>
               <ul
                 className="mt-4 space-y-2 text-sm text-zinc-600 dark:text-zinc-400"
                 role="list"
@@ -124,19 +83,28 @@ export default async function ServicesPage() {
                 </span>{" "}
                 {service.bestFor}
               </p>
-              <Card.Cta href={service.href} title={service.ctaLabel}>
+              <a
+                className="mt-5 inline-flex text-sm font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
+                href={service.href}
+              >
                 {service.ctaLabel}
-              </Card.Cta>
-            </Card>
+              </a>
+            </article>
           ))}
         </div>
       </section>
       <div className="mt-20 space-y-16">
-        <Section title="Capabilities I usually bring in">
+        <section aria-labelledby="services-capabilities-heading" role="region">
+          <h2
+            id="services-capabilities-heading"
+            className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+          >
+            Capabilities I usually bring in
+          </h2>
           <div className="space-y-5">
-            {PORTFOLIO_CAPABILITY_CLUSTERS.map((cluster) => (
+            {capabilityClusters.map((cluster) => (
               <div
-                key={cluster.name}
+                key={cluster.id}
                 className="rounded-2xl border border-zinc-200/70 p-4 dark:border-zinc-800"
               >
                 <p className="font-medium text-zinc-900 dark:text-zinc-50">
@@ -148,12 +116,18 @@ export default async function ServicesPage() {
               </div>
             ))}
           </div>
-        </Section>
-        <Section title="Representative systems">
+        </section>
+        <section aria-labelledby="services-systems-heading" role="region">
+          <h2
+            id="services-systems-heading"
+            className="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50"
+          >
+            Representative systems
+          </h2>
           <div className="space-y-5">
-            {PORTFOLIO_SHOWCASE_APPS.map((app) => (
+            {showcaseApps.map((app) => (
               <div
-                key={app.anchor}
+                key={app.id}
                 className="rounded-2xl border border-zinc-200/70 p-4 dark:border-zinc-800"
               >
                 <p className="text-sm text-zinc-500 dark:text-zinc-400">
@@ -168,7 +142,7 @@ export default async function ServicesPage() {
               </div>
             ))}
           </div>
-        </Section>
+        </section>
         <section
           aria-labelledby="services-cta-heading"
           className="rounded-3xl border border-zinc-200/70 p-6 dark:border-zinc-800"
@@ -183,9 +157,12 @@ export default async function ServicesPage() {
             Send a short note with the current problem, where the product is
             stuck, and whether you need review, guidance, or direct execution.
           </p>
-          <Card.Cta href="/book" title="Choose a starting path">
+          <a
+            className="mt-5 inline-flex text-sm font-medium text-zinc-900 underline underline-offset-4 dark:text-zinc-50"
+            href="/book"
+          >
             Choose a starting path
-          </Card.Cta>
+          </a>
         </section>
       </div>
     </SimpleLayout>

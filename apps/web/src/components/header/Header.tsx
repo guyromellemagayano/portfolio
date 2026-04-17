@@ -153,12 +153,15 @@ HeaderAvatarContainer.displayName = "HeaderAvatarContainer";
 export type HeaderDesktopNavElementType = "nav";
 export type HeaderDesktopNavProps<P extends Record<string, unknown> = {}> =
   Omit<React.ComponentPropsWithRef<HeaderDesktopNavElementType>, "as"> &
-    P & { as?: HeaderDesktopNavElementType };
+    P & {
+      as?: HeaderDesktopNavElementType;
+      navLinks?: HeaderComponentNavLinks;
+    };
 
 function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
   props: HeaderDesktopNavProps<P>
 ) {
-  const { as: Component = "nav", ...rest } = props;
+  const { as: Component = "nav", navLinks, ...rest } = props;
 
   // Internationalization
   const headerI18n = useTranslations("components.header");
@@ -168,12 +171,8 @@ function HeaderDesktopNav<P extends Record<string, unknown> = {}>(
     desktopNavigation: headerI18n("labels.desktopNavigation"),
   };
 
-  const navConfig = HEADER_NAV_LINK_CONFIG;
-  const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
-    kind: "internal" as const,
-    label: headerI18n(`labels.${link.labelKey}`),
-    href: link.href,
-  }));
+  const navLinksWithLabels: HeaderComponentNavLinks =
+    navLinks ?? HEADER_NAV_LINK_CONFIG;
   const validLinks = filterValidNavigationLinks(navLinksWithLabels);
 
   if (!hasValidNavigationLinks(validLinks)) return null;
@@ -265,12 +264,15 @@ export type HeaderMobileNavProps<P extends Record<string, unknown> = {}> = Omit<
   React.ComponentPropsWithRef<HeaderMobileNavElementType>,
   "as"
 > &
-  P & { as?: HeaderMobileNavElementType };
+  P & {
+    as?: HeaderMobileNavElementType;
+    navLinks?: HeaderComponentNavLinks;
+  };
 
 function HeaderMobileNav<P extends Record<string, unknown> = {}>(
   props: HeaderMobileNavProps<P>
 ) {
-  const { as: Component = Popover, ...rest } = props;
+  const { as: Component = Popover, navLinks, ...rest } = props;
 
   // Internationalization
   const headerI18n = useTranslations("components.header");
@@ -282,12 +284,8 @@ function HeaderMobileNav<P extends Record<string, unknown> = {}>(
     mobileNavigation: headerI18n("labels.mobileNavigation"),
   };
 
-  const navConfig = HEADER_NAV_LINK_CONFIG;
-  const navLinksWithLabels: HeaderComponentNavLinks = navConfig.map((link) => ({
-    kind: "internal" as const,
-    label: headerI18n(`labels.${link.labelKey}`),
-    href: link.href,
-  }));
+  const navLinksWithLabels: HeaderComponentNavLinks =
+    navLinks ?? HEADER_NAV_LINK_CONFIG;
   const validLinks = filterValidNavigationLinks(navLinksWithLabels);
 
   if (!hasValidNavigationLinks(validLinks)) return null;
@@ -473,12 +471,25 @@ export type HeaderProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: HeaderElementType;
+    navLinks?: HeaderComponentNavLinks;
+    avatarHref?: React.ComponentPropsWithoutRef<typeof Link>["href"];
+    avatarAlt?: React.ComponentPropsWithoutRef<typeof Image>["alt"];
+    avatarSrc?: React.ComponentPropsWithoutRef<typeof Image>["src"];
   };
 
 export function Header<P extends Record<string, unknown> = {}>(
   props: HeaderProps<P>
 ) {
-  const { as: Component = "header", children, className, ...rest } = props;
+  const {
+    as: Component = "header",
+    children,
+    className,
+    navLinks,
+    avatarHref,
+    avatarAlt,
+    avatarSrc,
+    ...rest
+  } = props;
 
   // Internationalization
   const headerI18n = useTranslations("components.header");
@@ -642,6 +653,9 @@ export function Header<P extends Record<string, unknown> = {}>(
                   />
                   <HeaderAvatar
                     large
+                    alt={avatarAlt}
+                    href={avatarHref}
+                    src={avatarSrc}
                     style={{ transform: "var(--avatar-image-transform)" }}
                     className="block h-16 w-16 origin-left"
                   />
@@ -670,13 +684,23 @@ export function Header<P extends Record<string, unknown> = {}>(
               <div className="flex flex-1">
                 {!isHomePage ? (
                   <HeaderAvatarContainer>
-                    <HeaderAvatar />
+                    <HeaderAvatar
+                      alt={avatarAlt}
+                      href={avatarHref}
+                      src={avatarSrc}
+                    />
                   </HeaderAvatarContainer>
                 ) : null}
               </div>
               <div className="flex flex-1 justify-end md:justify-center">
-                <HeaderMobileNav className="pointer-events-auto md:hidden" />
-                <HeaderDesktopNav className="pointer-events-auto hidden md:block" />
+                <HeaderMobileNav
+                  className="pointer-events-auto md:hidden"
+                  navLinks={navLinks}
+                />
+                <HeaderDesktopNav
+                  className="pointer-events-auto hidden md:block"
+                  navLinks={navLinks}
+                />
               </div>
               <div className="flex justify-end md:flex-1">
                 <div className="pointer-events-auto">

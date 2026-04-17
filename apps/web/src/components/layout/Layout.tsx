@@ -18,8 +18,8 @@ import { useTranslations } from "next-intl";
 import { SVGBg } from "@web/components/bg";
 import { Button, SkipToMainContentButton } from "@web/components/button";
 import { Container } from "@web/components/container";
-import { Footer } from "@web/components/footer";
-import { Header } from "@web/components/header";
+import { Footer, type FooterProps } from "@web/components/footer";
+import { Header, type HeaderProps } from "@web/components/header";
 import { Icon } from "@web/components/icon";
 import { Prose } from "@web/components/prose";
 import { Heading, Lead, SubHeading } from "@web/components/text";
@@ -39,12 +39,24 @@ export type LayoutProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: LayoutElementType;
+    headerProps?: Pick<
+      HeaderProps,
+      "navLinks" | "avatarHref" | "avatarAlt" | "avatarSrc"
+    >;
+    footerProps?: Pick<FooterProps, "navLinks" | "legalText">;
   };
 
 export function Layout<P extends Record<string, unknown> = {}>(
   props: LayoutProps<P>
 ) {
-  const { as: Component = "div", children, className, ...rest } = props;
+  const {
+    as: Component = "div",
+    children,
+    className,
+    headerProps,
+    footerProps,
+    ...rest
+  } = props;
 
   if (children == null || children === false || children === "") return null;
 
@@ -56,11 +68,11 @@ export function Layout<P extends Record<string, unknown> = {}>(
       <SkipToMainContentButton href="#main" />
       <SVGBg />
       <div className="relative flex w-full flex-col">
-        <Header role="banner" />
+        <Header {...headerProps} role="banner" />
         <main id="main" role="main" tabIndex={-1}>
           {children}
         </main>
-        <Footer role="contentinfo" />
+        <Footer {...footerProps} role="contentinfo" />
       </div>
     </Component>
   );

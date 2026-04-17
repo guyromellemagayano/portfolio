@@ -38,12 +38,13 @@ export type FooterNavigationProps<P extends Record<string, unknown> = {}> =
   Omit<ComponentPropsWithRef<FooterNavigationElementType>, "as"> &
     P & {
       as?: FooterNavigationElementType;
+      navLinks?: ReadonlyArray<FooterLink>;
     };
 
 function FooterNavigation<P extends Record<string, unknown> = {}>(
   props: FooterNavigationProps<P>
 ) {
-  const { as: Component = "nav", className, ...rest } = props;
+  const { as: Component = "nav", className, navLinks, ...rest } = props;
 
   // Internationalization
   const footerI18n = useTranslations("components.footer");
@@ -51,14 +52,9 @@ function FooterNavigation<P extends Record<string, unknown> = {}>(
   // Footer navigation ARIA label and default nav links
   const FOOTER_I18N = {
     footerNavigation: footerI18n("labels.navigation"),
-    defaultNavLinks: FOOTER_NAV_LINK_CONFIG.map((link) => ({
-      kind: link.kind,
-      label: footerI18n(`navigation.${link.labelKey}`),
-      href: link.href,
-    })),
   };
 
-  const linksToUse = FOOTER_I18N.defaultNavLinks;
+  const linksToUse = navLinks ?? FOOTER_NAV_LINK_CONFIG;
   const validNavLinks = filterValidNavigationLinks(linksToUse);
 
   if (!hasValidNavigationLinks(validNavLinks)) return null;
@@ -116,25 +112,26 @@ export type FooterLegalProps<P extends Record<string, unknown> = {}> = Omit<
 > &
   P & {
     as?: FooterLegalElementType;
+    legalText?: string;
   };
 
 function FooterLegal<P extends Record<string, unknown> = {}>(
   props: FooterLegalProps<P>
 ) {
-  const { as: Component = "p", className, ...rest } = props;
+  const { as: Component = "p", className, legalText, ...rest } = props;
 
   // Internationalization
   const footerI18n = useTranslations("components.footer");
   const brandName = footerI18n("brandName");
   const currentYear = formatDateSafely(new Date(), { year: "numeric" });
-  const legalText = footerI18n("legal.copyright", {
+  const defaultLegalText = footerI18n("legal.copyright", {
     year: currentYear,
     brandName: brandName.trim(),
   });
 
   // Footer legal text and copyright text
   const FOOTER_I18N = {
-    legalText,
+    legalText: legalText || defaultLegalText,
   };
 
   if (!FOOTER_I18N.legalText) return null;
@@ -170,7 +167,13 @@ export type FooterProps<P extends Record<string, unknown> = {}> = Omit<
 export function Footer<P extends Record<string, unknown> = {}>(
   props: FooterProps<P>
 ) {
-  const { as: Component = "footer", className, ...rest } = props;
+  const {
+    as: Component = "footer",
+    className,
+    navLinks,
+    legalText,
+    ...rest
+  } = props;
 
   // Internationalization
   const footerI18n = useTranslations("components.footer");
@@ -190,8 +193,8 @@ export function Footer<P extends Record<string, unknown> = {}>(
         <div className="border-t border-zinc-100 pt-10 pb-16 dark:border-zinc-700/40">
           <Container.Inner>
             <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-              <FooterNavigation />
-              <FooterLegal />
+              <FooterNavigation navLinks={navLinks} />
+              <FooterLegal legalText={legalText} />
             </div>
           </Container.Inner>
         </div>

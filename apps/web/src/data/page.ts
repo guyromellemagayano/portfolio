@@ -6,14 +6,10 @@
 
 import { type ImageProps } from "next/image";
 
-import { type IconProps } from "@web/components/icon";
+import { contentSnapshot } from "@portfolio/content-data";
 
-// import logoAnimaginary from "@web/images/logos/animaginary.svg";
-// import logoCosmos from "@web/images/logos/cosmos.svg";
-// import logoHelioStream from "@web/images/logos/helio-stream.svg";
-// import logoOpenShuttle from "@web/images/logos/open-shuttle.svg";
-// import logoPlanetaria from "@web/images/logos/planetaria.svg";
-import pageData from "./page.json";
+import { type IconProps } from "@web/components/icon";
+import { getPortfolioSocialLinks } from "@web/utils/portfolio";
 
 // ============================================================================
 // SOCIAL LIST DATA
@@ -77,36 +73,15 @@ type PageData = Readonly<{
   socialLinks: SocialListComponentLabels;
 }>;
 
-const SOCIAL_ICON_NAMES: ReadonlyArray<IconProps["name"]> = [
-  "instagram",
-  "github",
-  "linkedin",
-  "mail",
-];
-
-const isSocialIconName = (
-  value: string | undefined
-): value is IconProps["name"] =>
-  SOCIAL_ICON_NAMES.includes(value as IconProps["name"]);
-
-// const isProjectLogoKey = (value: string): value is ProjectLogoKey =>
-//   Object.prototype.hasOwnProperty.call(PROJECT_LOGOS, value);
-
 const createPageData = (): PageData => {
-  const socialLinks: SocialListComponentLabels = pageData.socialLinks.map(
-    (link) => {
-      if (!isSocialIconName(link.icon)) {
-        throw new Error(`Invalid social icon: ${link.icon}`);
-      }
-
-      return {
-        label: link.label,
-        icon: link.icon,
-        href: link.href,
-        target: link.target,
-      };
-    }
-  );
+  const socialLinks: SocialListComponentLabels = getPortfolioSocialLinks(
+    contentSnapshot.portfolio
+  ).map((link) => ({
+    label: link.label,
+    icon: link.icon as IconProps["name"],
+    href: link.href,
+    target: link.target,
+  }));
 
   return {
     socialLinks,

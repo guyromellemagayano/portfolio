@@ -37,7 +37,7 @@
         "home": "Home",
         "services": "Services",
         "blog": "Blog",
-        "contact": "Contact",
+        "hire": "Hire",
         "projects": "Projects",
         "menu": "Menu",
         "closeMenu": "Close menu",
@@ -56,7 +56,7 @@
         "services": "Services",
         "blog": "Blog",
         "projects": "Projects",
-        "contact": "Contact"
+        "hire": "Hire"
       },
       "legal": {
         "copyright": "© {year} {brandName}. All rights reserved."
@@ -152,6 +152,13 @@
         "subheading": "Contact",
         "title": "Bring me in when the product needs stronger systems.",
         "description": "I’m interested in work that benefits from clear frontend architecture, reusable platform foundations, and pragmatic full-stack product thinking."
+      }
+    },
+    "hire": {
+      "labels": {
+        "subheading": "Hire",
+        "title": "Let’s build a clean next step together.",
+        "description": "Share your context and constraints, and I’ll help you move faster with the right product engineering move."
       }
     },
     "projects": {
