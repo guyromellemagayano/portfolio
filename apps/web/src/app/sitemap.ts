@@ -6,6 +6,7 @@
 
 import type { MetadataRoute } from "next";
 
+import { articlesSnapshot, pagesSnapshot } from "@portfolio/content-data";
 import logger from "@portfolio/logger";
 
 import { getAllArticles } from "@web/utils/articles";
@@ -23,11 +24,20 @@ const STATIC_SITEMAP_PATHS = [
   "/about",
   "/articles",
   "/book",
-  "/contact",
+  "/hire",
   "/projects",
   "/services",
   "/uses",
 ] as const;
+
+/** Indicates whether a portfolio content API base URL is explicitly configured. */
+function hasConfiguredPortfolioApiUrl(): boolean {
+  return Boolean(
+    getEnvVar("PORTFOLIO_API_URL") ||
+    getEnvVar("API_GATEWAY_URL") ||
+    getEnvVar("NEXT_PUBLIC_API_URL")
+  );
+}
 
 /** Reads and trims an env var value from the current server runtime. */
 function getEnvVar(key: string): string {
@@ -68,19 +78,7 @@ function getSiteUrlBase(): string {
   }
 
   if (getEnvVar("NODE_ENV") === "production") {
-    logger.warn(
-      "Sitemap site URL is not configured; falling back to localhost default",
-      {
-        route: "/sitemap.xml",
-        expectedEnvVars: [
-          "SITEMAP_SITE_URL",
-          "NEXT_PUBLIC_SITE_URL",
-          "VERCEL_PROJECT_PRODUCTION_URL",
-          "VERCEL_URL",
-        ],
-        fallbackUrl: DEFAULT_SITE_URL,
-      }
-    );
+    return resolveSiteUrlBaseOrDefault(DEFAULT_SITE_URL);
   }
 
   return resolveSiteUrlBaseOrDefault(DEFAULT_SITE_URL);
@@ -120,6 +118,7 @@ function createStaticSitemapEntries(
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrlBase = getSiteUrlBase();
   const staticEntries = createStaticSitemapEntries(siteUrlBase);
+  const canUsePortfolioApi = hasConfiguredPortfolioApiUrl();
 
   let articles = [] as Awaited<ReturnType<typeof getAllArticles>>;
   let pages = [] as Awaited<ReturnType<typeof getAllPages>>;
@@ -135,6 +134,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
 
     return staticEntries;
+  }
+
+  if (!canUsePortfolioApi) {
+    const articleEntries: MetadataRoute.Sitemap = articlesSnapshot
+      .filter(
+        (article) =>
+          article.hideFromSitemap !== true && article.seoNoIndex !== true
+      )
+      .map((article) => ({
+        url: `${siteUrlBase}/articles/${article.slug}`,
+        lastModified: article.publishedAt,
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      }));
+
+    const pageEntries: MetadataRoute.Sitemap = pagesSnapshot
+      .filter(
+        (page) => page.hideFromSitemap !== true && page.seoNoIndex !== true
+      )
+      .map((page) => ({
+        url: `${siteUrlBase}/${page.slug}`,
+        lastModified: page.updatedAt,
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      }));
+
+    return [...staticEntries, ...articleEntries, ...pageEntries];
   }
 
   try {
