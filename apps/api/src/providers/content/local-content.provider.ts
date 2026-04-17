@@ -60,5 +60,28 @@ export function createLocalContentProvider(): ContentProvider {
         body: [...page.body],
       };
     },
+    async getPortfolioSnapshot() {
+      return {
+        ...contentSnapshot.portfolio,
+        navigation: [...contentSnapshot.portfolio.navigation],
+        socialLinks: [...contentSnapshot.portfolio.socialLinks],
+        pages: [...contentSnapshot.portfolio.pages],
+        showcaseApps: [...contentSnapshot.portfolio.showcaseApps],
+        serviceOfferings: [...contentSnapshot.portfolio.serviceOfferings],
+        capabilityClusters: [...contentSnapshot.portfolio.capabilityClusters],
+        focusAreas: [...contentSnapshot.portfolio.focusAreas],
+        foundationCapabilities: [
+          ...contentSnapshot.portfolio.foundationCapabilities,
+        ],
+        buildSequence: [...contentSnapshot.portfolio.buildSequence],
+        bookingPaths: [...contentSnapshot.portfolio.bookingPaths],
+        operatingPrinciples: [...contentSnapshot.portfolio.operatingPrinciples],
+        projects: [...contentSnapshot.portfolio.projects],
+        speakingAppearances: [...contentSnapshot.portfolio.speakingAppearances],
+        useCategories: [...contentSnapshot.portfolio.useCategories],
+        workExperience: [...contentSnapshot.portfolio.workExperience],
+        photos: [...contentSnapshot.portfolio.photos],
+      };
+    },
   };
 }

@@ -28,16 +28,16 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
   },
   navigation: [
     {
-      id: "nav-about",
-      label: "About",
-      href: "/about",
+      id: "nav-services",
+      label: "Services",
+      href: "/services",
       order: 1,
       showInHeader: true,
       showInFooter: true,
     },
     {
-      id: "nav-articles",
-      label: "Articles",
+      id: "nav-blog",
+      label: "Blog",
       href: "/articles",
       order: 2,
       showInHeader: true,
@@ -52,26 +52,10 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       showInFooter: true,
     },
     {
-      id: "nav-speaking",
-      label: "Speaking",
-      href: "/speaking",
+      id: "nav-hire",
+      label: "Hire",
+      href: "/hire",
       order: 4,
-      showInHeader: true,
-      showInFooter: false,
-    },
-    {
-      id: "nav-uses",
-      label: "Uses",
-      href: "/uses",
-      order: 5,
-      showInHeader: true,
-      showInFooter: true,
-    },
-    {
-      id: "nav-contact",
-      label: "Contact",
-      href: "/contact",
-      order: 6,
       showInHeader: true,
       showInFooter: true,
     },
@@ -106,10 +90,287 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       order: 4,
     },
   ],
+  showcaseApps: [
+    {
+      id: "showcase-guy-os",
+      anchor: "guy-os",
+      href: "/projects#guy-os",
+      name: "Guy OS",
+      path: "apps/portfolio",
+      summary:
+        "The public shell for the entire portfolio monorepo, designed to frame products, reusable systems, and case studies as one coherent platform story.",
+      proofPoints: [
+        "Branding restraint and frontend quality",
+        "Case study storytelling and SEO",
+        "A clear entry point into the broader platform",
+      ],
+      order: 1,
+      status: "published",
+    },
+    {
+      id: "showcase-taskflow",
+      anchor: "taskflow",
+      href: "/projects#taskflow",
+      name: "TaskFlow",
+      path: "apps/saas-demo",
+      summary:
+        "A multi-tenant SaaS app that shows product engineering depth across accounts, teams, permissions, billing, events, and automation.",
+      proofPoints: [
+        "Multi-tenant application modeling",
+        "Product-grade data relationships",
+        "Full-stack delivery with clear UX tradeoffs",
+      ],
+      order: 2,
+      status: "published",
+    },
+    {
+      id: "showcase-cartforge",
+      anchor: "cartforge",
+      href: "/projects#cartforge",
+      name: "CartForge",
+      path: "apps/commerce-demo",
+      summary:
+        "A commerce-focused surface for catalog, cart, checkout, fulfillment, and transaction-state orchestration.",
+      proofPoints: [
+        "Commerce flows and transactional states",
+        "Pricing, checkout, and order thinking",
+        "High-friction UI paths handled pragmatically",
+      ],
+      order: 3,
+      status: "published",
+    },
+    {
+      id: "showcase-pulseops",
+      anchor: "pulseops",
+      href: "/projects#pulseops",
+      name: "PulseOps",
+      path: "apps/ops-demo",
+      summary:
+        "An operational console for queues, incidents, jobs, retries, and visibility into system health and manual interventions.",
+      proofPoints: [
+        "Operations UX for high-signal data",
+        "Observability-aware product design",
+        "Recovery paths and failure handling",
+      ],
+      order: 4,
+      status: "published",
+    },
+    {
+      id: "showcase-contentforge",
+      anchor: "contentforge",
+      href: "/projects#contentforge",
+      name: "ContentForge",
+      path: "apps/cms-demo",
+      summary:
+        "A content workflow app for structured editorial systems, preview, approvals, versioning, and headless CMS thinking.",
+      proofPoints: [
+        "Editorial and publishing workflows",
+        "Structured content relationships",
+        "Preview, approval, and governance layers",
+      ],
+      order: 5,
+      status: "published",
+    },
+  ],
+  serviceOfferings: [
+    {
+      id: "service-architecture-review",
+      anchor: "architecture-review",
+      name: "Architecture Review",
+      summary:
+        "A focused audit of your frontend or product platform: structure, boundaries, delivery risks, and the changes that will create the most leverage.",
+      deliverables: [
+        "Codebase and architecture review",
+        "A prioritized remediation plan",
+        "A working session to align next steps",
+      ],
+      bestFor:
+        "Teams about to scale a product surface, redesign a frontend foundation, or clean up a monorepo that is starting to fight back.",
+      ctaLabel: "Start a review",
+      href: "/hire",
+      order: 1,
+      status: "published",
+    },
+    {
+      id: "service-technical-advisory",
+      anchor: "advisory",
+      name: "Technical Advisory",
+      summary:
+        "Ongoing product and platform guidance for teams that need strong engineering judgment without hiring a full-time staff-level lead immediately.",
+      deliverables: [
+        "Architecture and design reviews",
+        "Async guidance on implementation direction",
+        "Ongoing input on standards and system boundaries",
+      ],
+      bestFor:
+        "Founders, engineering leads, and teams working through product/platform tradeoffs in real time.",
+      ctaLabel: "Discuss advisory",
+      href: "/hire",
+      order: 2,
+      status: "published",
+    },
+    {
+      id: "service-delivery-sprint",
+      anchor: "delivery-sprint",
+      name: "Delivery Sprint",
+      summary:
+        "A fixed-scope implementation sprint for high-leverage work like navigation refactors, design system foundations, CMS delivery layers, or portfolio/platform restructuring.",
+      deliverables: [
+        "Scoped implementation plan",
+        "Hands-on code and architecture changes",
+        "Verification and handoff notes",
+      ],
+      bestFor:
+        "Teams that already know the problem and need a senior engineer to push through the actual implementation.",
+      ctaLabel: "Scope a sprint",
+      href: "/hire",
+      order: 3,
+      status: "published",
+    },
+  ],
+  capabilityClusters: [
+    {
+      id: "capability-frontend-systems",
+      name: "Frontend Systems",
+      items: [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Design systems",
+        "Accessible component architecture",
+      ],
+      order: 1,
+      status: "published",
+    },
+    {
+      id: "capability-platform-work",
+      name: "Platform Work",
+      items: [
+        "Monorepos",
+        "API contracts",
+        "CMS delivery",
+        "Observability",
+        "Developer tooling",
+      ],
+      order: 2,
+      status: "published",
+    },
+    {
+      id: "capability-product-domains",
+      name: "Product Domains",
+      items: [
+        "Admin tools",
+        "Multi-tenant SaaS",
+        "Commerce flows",
+        "Operational consoles",
+        "Content workflows",
+      ],
+      order: 3,
+      status: "published",
+    },
+  ],
+  focusAreas: [
+    "Frontend Architecture",
+    "Design Systems",
+    "Platform Engineering",
+    "Content Modeling",
+    "Developer Experience",
+    "Product Systems",
+  ],
+  foundationCapabilities: [
+    "Shared UI primitives, layout systems, and interaction patterns",
+    "Typed API contracts and reusable client integrations",
+    "Authentication, role checks, and permission-aware routing",
+    "Observability helpers for errors, logs, and runtime confidence",
+    "Reusable data tables, forms, notifications, and audit log primitives",
+  ],
+  buildSequence: [
+    {
+      id: "build-sequence-foundation",
+      title: "Foundation",
+      detail:
+        "Build the shared platform first: UI, auth, layouts, forms, tables, notifications, and audit log primitives.",
+      order: 1,
+      status: "published",
+    },
+    {
+      id: "build-sequence-public-proof",
+      title: "Public Proof",
+      detail:
+        "Use `apps/portfolio` to frame the system and explain why the monorepo exists.",
+      order: 2,
+      status: "published",
+    },
+    {
+      id: "build-sequence-strongest-signal",
+      title: "Strongest Signal",
+      detail:
+        "Prioritize `apps/saas-demo` because it proves the highest-value day-to-day engineering work.",
+      order: 3,
+      status: "published",
+    },
+    {
+      id: "build-sequence-specialization",
+      title: "Specialization",
+      detail:
+        "Layer in commerce and operations once the platform foundation is reusable enough to accelerate both surfaces.",
+      order: 4,
+      status: "published",
+    },
+    {
+      id: "build-sequence-workflow-depth",
+      title: "Workflow Depth",
+      detail:
+        "Round out the story with content tooling to show editorial systems, governance, and structured publishing.",
+      order: 5,
+      status: "published",
+    },
+  ],
+  bookingPaths: [
+    {
+      id: "booking-path-email",
+      title: "Email me directly",
+      description:
+        "Best when you already know the project context and want to send a compact brief.",
+      href: "mailto:aspiredtechie2010@gmail.com?subject=Project%20Inquiry",
+      cta: "Send email",
+      target: "_blank",
+      order: 1,
+      status: "published",
+    },
+    {
+      id: "booking-path-hire-form",
+      title: "Start with the hire form",
+      description:
+        "Best when you want a simple path and a little more structure around the inquiry.",
+      href: "/hire",
+      cta: "Open hire form",
+      order: 2,
+      status: "published",
+    },
+    {
+      id: "booking-path-linkedin",
+      title: "Reach out on LinkedIn",
+      description:
+        "Best when the first conversation is more exploratory or relationship-driven.",
+      href: "https://www.linkedin.com/in/guyromellemagayano",
+      cta: "Open LinkedIn",
+      target: "_blank",
+      order: 3,
+      status: "published",
+    },
+  ],
+  operatingPrinciples: [
+    "Design the system before polishing the screen.",
+    "Reuse aggressively, but only where the abstraction stays honest.",
+    "Model real product constraints instead of portfolio-safe happy paths.",
+    "Keep the frontend expressive while the platform layer stays boring and reliable.",
+  ],
   pages: [
     {
       id: "page-home",
       slug: "",
+      subheading: "Home",
       title: "Home",
       intro:
         "The public shell for a reusable product platform spanning admin, SaaS, commerce, operations, and content workflows.",
@@ -161,6 +422,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
     {
       id: "page-about",
       slug: "about",
+      subheading: "About",
       title: "About",
       intro:
         "How I think about product engineering, reusable systems, and maintainable delivery.",
@@ -196,6 +458,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
     {
       id: "page-articles",
       slug: "articles",
+      subheading: "Articles",
       title: "Articles",
       intro:
         "Writing on architecture, delivery, reusable UI systems, and the mechanics behind good product engineering.",
@@ -217,8 +480,33 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       updatedAt: "2026-03-13T00:00:00.000Z",
     },
     {
+      id: "page-services",
+      slug: "services",
+      subheading: "Services",
+      title: "Architecture, advisory, and delivery for product systems.",
+      intro:
+        "I help teams make better frontend and platform decisions, then turn those decisions into maintainable implementation work.",
+      template: "services",
+      sections: [
+        {
+          type: "richText",
+          body: "Service offerings are sourced from the shared portfolio snapshot so the public brochure copy stays aligned with the API contract.",
+        },
+      ],
+      seoTitle: "Services - Guy Romelle Magayano",
+      seoDescription:
+        "Consulting, architecture review, advisory, and senior implementation work for frontend and platform systems.",
+      seoCanonicalPath: "/services",
+      hideFromSitemap: false,
+      seoNoIndex: false,
+      status: "published",
+      publishedAt: "2026-03-13T00:00:00.000Z",
+      updatedAt: "2026-03-13T00:00:00.000Z",
+    },
+    {
       id: "page-projects",
       slug: "projects",
+      subheading: "Projects",
       title: "Projects",
       intro:
         "A lineup of domain-specific apps built on one shared platform foundation.",
@@ -249,6 +537,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
     {
       id: "page-speaking",
       slug: "speaking",
+      subheading: "Speaking",
       title: "Speaking",
       intro: "Talks, podcasts, and workshops.",
       template: "speaking",
@@ -276,6 +565,7 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
     {
       id: "page-uses",
       slug: "uses",
+      subheading: "Uses",
       title: "Uses",
       intro:
         "Software, hardware, and workflow tools I use to ship maintainable product systems.",
@@ -303,16 +593,17 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
       updatedAt: "2026-03-13T00:00:00.000Z",
     },
     {
-      id: "page-contact",
-      slug: "contact",
-      title: "Contact",
+      id: "page-hire",
+      slug: "hire",
+      subheading: "Hire",
+      title: "Let’s build a clean next step together.",
       intro:
-        "Open to work that benefits from stronger frontend architecture and reusable platform systems.",
-      template: "contact",
+        "Share your context and constraints, and I’ll help you move faster with the right product engineering move.",
+      template: "hire",
       sections: [
         {
           type: "ctaList",
-          title: "Get in touch",
+          title: "Other ways to start",
           ctas: [
             {
               label: "Send me an email",
@@ -327,10 +618,50 @@ export const portfolioSnapshot: ContentPortfolioSnapshot = {
           ],
         },
       ],
-      seoTitle: "Contact - Guy Romelle Magayano",
+      seoTitle: "Hire - Guy Romelle Magayano",
       seoDescription:
-        "Contact information for consulting, collaborations, and product engineering work.",
-      seoCanonicalPath: "/contact",
+        "Start a consulting or product engineering conversation about architecture, advisory, or implementation work.",
+      seoCanonicalPath: "/hire",
+      hideFromSitemap: false,
+      seoNoIndex: false,
+      status: "published",
+      publishedAt: "2026-03-13T00:00:00.000Z",
+      updatedAt: "2026-03-13T00:00:00.000Z",
+    },
+    {
+      id: "page-book",
+      slug: "book",
+      subheading: "Book",
+      title: "Choose the best way to start the conversation.",
+      intro:
+        "If you're not sure whether you need a review, advisory, or hands-on implementation, this page gives you a clean starting point.",
+      template: "book",
+      sections: [
+        {
+          type: "ctaList",
+          title: "Starting points",
+          ctas: [
+            {
+              label: "Email me directly",
+              href: "mailto:aspiredtechie2010@gmail.com?subject=Project%20Inquiry",
+              target: "_blank",
+            },
+            {
+              label: "Open hire form",
+              href: "/hire",
+            },
+            {
+              label: "Reach out on LinkedIn",
+              href: "https://www.linkedin.com/in/guyromellemagayano",
+              target: "_blank",
+            },
+          ],
+        },
+      ],
+      seoTitle: "Book - Guy Romelle Magayano",
+      seoDescription:
+        "Choose the right first step for a project inquiry, architecture review, advisory engagement, or delivery sprint.",
+      seoCanonicalPath: "/book",
       hideFromSitemap: false,
       seoNoIndex: false,
       status: "published",

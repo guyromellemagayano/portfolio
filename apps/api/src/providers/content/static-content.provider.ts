@@ -22,5 +22,8 @@ export function createStaticContentProvider(): ContentProvider {
     async getPageBySlug() {
       return null;
     },
+    async getPortfolioSnapshot() {
+      return null;
+    },
   };
 }

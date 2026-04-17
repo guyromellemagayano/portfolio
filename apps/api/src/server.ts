@@ -26,6 +26,7 @@ import { createContentRouter } from "./modules/content/content.routes.js";
 import { createContentService } from "./modules/content/content.service.js";
 import { createHealthRouter } from "./modules/health/health.routes.js";
 import { createMessageRouter } from "./modules/message/message.routes.js";
+import { createPortfolioRouter } from "./modules/portfolio/portfolio.routes.js";
 import { createProviderRegistry } from "./providers/provider-registry.js";
 
 type CorsOriginConfig = string[] | true | false;
@@ -90,6 +91,11 @@ export const createServer = (): AnyElysiaInstance => {
               description:
                 "Content retrieval endpoints backed by configured providers.",
             },
+            {
+              name: "Portfolio",
+              description:
+                "Portfolio snapshot endpoints backed by configured providers.",
+            },
           ],
         },
       })
@@ -122,6 +128,7 @@ export const createServer = (): AnyElysiaInstance => {
     .use(createHealthRouter())
     .use(createMessageRouter())
     .use(createContentRouter(contentService))
+    .use(createPortfolioRouter(contentService))
     .use(createNotFoundHandler());
 
   if (corsOrigin === false && config.nodeEnv === "production") {

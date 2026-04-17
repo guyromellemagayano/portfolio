@@ -36,6 +36,7 @@ function createContentServiceMock(
     getArticleBySlug: vi.fn().mockResolvedValue(null),
     getPages: vi.fn().mockResolvedValue([]),
     getPageBySlug: vi.fn().mockResolvedValue(null),
+    getPortfolioSnapshot: vi.fn().mockResolvedValue(null),
     ...overrides,
   };
 }

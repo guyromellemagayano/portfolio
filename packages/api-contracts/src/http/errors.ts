@@ -8,6 +8,7 @@
 export const API_ERROR_CODES = {
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
   ROUTE_NOT_FOUND: "ROUTE_NOT_FOUND",
+  PORTFOLIO_NOT_FOUND: "PORTFOLIO_NOT_FOUND",
   CONTENT_ARTICLE_SLUG_REQUIRED: "CONTENT_ARTICLE_SLUG_REQUIRED",
   CONTENT_ARTICLE_NOT_FOUND: "CONTENT_ARTICLE_NOT_FOUND",
   CONTENT_PAGE_SLUG_REQUIRED: "CONTENT_PAGE_SLUG_REQUIRED",
@@ -25,6 +26,7 @@ export type ApiErrorCode =
 /** Canonical static API error messages shared across portfolio API modules. */
 export const API_ERROR_MESSAGES = {
   INTERNAL_SERVER_ERROR: "An unexpected internal error occurred.",
+  PORTFOLIO_NOT_FOUND: "Portfolio snapshot not found.",
   CONTENT_ARTICLE_SLUG_REQUIRED: "Article slug is required.",
   CONTENT_ARTICLE_NOT_FOUND: "Article not found.",
   CONTENT_PAGE_SLUG_REQUIRED: "Page slug is required.",

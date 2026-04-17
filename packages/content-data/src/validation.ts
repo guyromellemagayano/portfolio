@@ -183,6 +183,18 @@ export function validatePortfolioSnapshot(
     snapshot.pages.map((page) => page.slug || "__home__"),
     "portfolioSnapshot.pages.slug"
   );
+  collectDuplicates(
+    snapshot.showcaseApps.map((app) => app.anchor),
+    "portfolioSnapshot.showcaseApps.anchor"
+  );
+  collectDuplicates(
+    snapshot.serviceOfferings.map((service) => service.anchor),
+    "portfolioSnapshot.serviceOfferings.anchor"
+  );
+  collectDuplicates(
+    snapshot.bookingPaths.map((path) => path.id),
+    "portfolioSnapshot.bookingPaths.id"
+  );
 
   const projectSlugs = new Set(
     snapshot.projects.map((project) => project.slug)

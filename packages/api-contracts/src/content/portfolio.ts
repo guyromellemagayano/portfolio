@@ -4,6 +4,8 @@
  * @description Portfolio-style content contracts designed for headless CMS backends (including Django/Wagtail).
  */
 
+import { API_VERSION_PREFIX } from "../http/routes";
+
 /** Canonical social platform names used in profile/footer social links. */
 export type ContentSocialPlatform =
   | "github"
@@ -63,6 +65,63 @@ export type ContentProfile = {
   heroTitle: string;
   heroIntro: string;
   avatar?: ContentImageAsset;
+  status: ContentPublishStatus;
+};
+
+/** Canonical showcase app record used to present monorepo products on brochure pages. */
+export type ContentPortfolioShowcaseApp = {
+  id: string;
+  anchor: string;
+  href: string;
+  name: string;
+  path: string;
+  summary: string;
+  proofPoints: string[];
+  order: number;
+  status: ContentPublishStatus;
+};
+
+/** Canonical service offering record used across brochure pages. */
+export type ContentPortfolioServiceOffering = {
+  id: string;
+  anchor: string;
+  name: string;
+  summary: string;
+  deliverables: string[];
+  bestFor: string;
+  ctaLabel: string;
+  href: string;
+  order: number;
+  status: ContentPublishStatus;
+};
+
+/** Canonical capability cluster used to group related skills and domain expertise. */
+export type ContentPortfolioCapabilityCluster = {
+  id: string;
+  name: string;
+  items: string[];
+  order: number;
+  status: ContentPublishStatus;
+};
+
+/** Canonical build-sequence step used to explain portfolio rollout order. */
+export type ContentPortfolioBuildStep = {
+  id: string;
+  title: string;
+  detail: string;
+  order: number;
+  status: ContentPublishStatus;
+};
+
+/** Canonical booking path record used by the book page. */
+export type ContentPortfolioBookingPath = {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  cta: string;
+  target?: "_self" | "_blank";
+  order: number;
   status: ContentPublishStatus;
 };
 
@@ -218,15 +277,18 @@ export type ContentPortfolioPageTemplate =
   | "home"
   | "about"
   | "articles"
+  | "services"
   | "projects"
   | "speaking"
   | "uses"
-  | "contact";
+  | "hire"
+  | "book";
 
 /** Canonical Portfolio page document shape for a custom CMS. */
 export type ContentPortfolioPage = {
   id: string;
   slug: string;
+  subheading?: string;
   title: string;
   intro?: string;
   template: ContentPortfolioPageTemplate;
@@ -241,6 +303,9 @@ export type ContentPortfolioPage = {
   updatedAt: string;
 };
 
+/** Canonical route path for the portfolio snapshot endpoint in the portfolio API. */
+export const PORTFOLIO_ROUTE = `${API_VERSION_PREFIX}/portfolio`;
+
 /** Canonical site-level Portfolio snapshot for local/dev CMS parity. */
 export type ContentPortfolioSnapshot = {
   schemaVersion: "1.0";
@@ -248,9 +313,20 @@ export type ContentPortfolioSnapshot = {
   navigation: ContentNavigationItem[];
   socialLinks: ContentSocialLink[];
   pages: ContentPortfolioPage[];
+  showcaseApps: ContentPortfolioShowcaseApp[];
+  serviceOfferings: ContentPortfolioServiceOffering[];
+  capabilityClusters: ContentPortfolioCapabilityCluster[];
+  focusAreas: string[];
+  foundationCapabilities: string[];
+  buildSequence: ContentPortfolioBuildStep[];
+  bookingPaths: ContentPortfolioBookingPath[];
+  operatingPrinciples: string[];
   projects: ContentProject[];
   speakingAppearances: ContentSpeakingAppearance[];
   useCategories: ContentUseCategory[];
   workExperience: ContentWorkExperience[];
   photos: ContentPhoto[];
 };
+
+/** Canonical response payload returned by the portfolio snapshot endpoint. */
+export type ContentPortfolioSnapshotResponseData = ContentPortfolioSnapshot;
