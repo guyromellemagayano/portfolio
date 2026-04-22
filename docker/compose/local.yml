@@ -24,6 +24,7 @@ x-node-dev-env: &node_dev_env
 services:
   api:
     <<: *node_workspace_service
+    image: portfolio-api:local
     container_name: portfolio-api-local
     environment:
       <<: *node_dev_env
@@ -49,6 +50,7 @@ services:
       start_period: 20s
   web:
     <<: *node_workspace_service
+    image: portfolio-web:local
     container_name: portfolio-web-local
     environment:
       <<: *node_dev_env
@@ -90,6 +92,7 @@ services:
   tooling:
     profiles: ["tooling"]
     <<: *node_workspace_service
+    image: portfolio-tooling:local
     container_name: portfolio-tooling-local
     environment:
       <<: *node_env_common
