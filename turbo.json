@@ -7,7 +7,7 @@
     "signature": true
   },
   "globalDependencies": [
-    ".env*",
+    ".env*.*",
     "package.json",
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
@@ -98,20 +98,11 @@
         "^build"
       ],
       "inputs": [
-        ".env*",
         "$TURBO_DEFAULT$",
-        "next.config.*",
         "package.json",
-        "pnpm-lock.yaml",
-        "postcss.config.*",
-        "tailwind.config.*",
-        "tsconfig*.json",
-        "vite.config.*"
+        "tsconfig*.json"
       ],
       "outputs": [
-        "!.next/cache/**",
-        "!.next/standalone/**",
-        ".next/**",
         "dist/**"
       ]
     },

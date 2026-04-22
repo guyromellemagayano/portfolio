@@ -1,0 +1,24 @@
+{
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "next-env.d.ts",
+        "next.config.*",
+        "package.json",
+        "postcss.config.*",
+        "tailwind.config.*",
+        "tsconfig*.json"
+      ],
+      "outputs": [
+        "!.next/cache/**",
+        "!.next/standalone/**",
+        ".next/**"
+      ]
+    }
+  }
+}

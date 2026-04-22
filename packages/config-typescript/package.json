@@ -5,8 +5,17 @@
   "description": "Shared TypeScript configuration",
   "license": "MIT",
   "type": "module",
+  "scripts": {
+    "build": "node --eval \"\"",
+    "format": "prettier --write \"src/**/*.json\"",
+    "format:check": "prettier --check \"src/**/*.json\"",
+    "lint": "node --eval \"\"",
+    "lint:fix": "node --eval \"\""
+  },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "catalog:"
+  },
   "peerDependencies": {},
   "optionalDependencies": {},
   "publishConfig": {

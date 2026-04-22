@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "build": "node --eval \"\"",
     "check-types": "tsc --noEmit",
     "clean": "rimraf node_modules .turbo playwright-report test-results",
     "format": "prettier --write \"**/*.{js,cjs,mjs,ts,cts,mts,json,md,yaml,yml}\"",

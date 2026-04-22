@@ -26,10 +26,4 @@ export default {
       },
     ],
   },
-  overrides: [
-    {
-      files: ["**/*.scss"],
-      customSyntax: "postcss-scss",
-    },
-  ],
 };

@@ -24,7 +24,12 @@
     "__mocks__/**/*"
   ],
   "scripts": {
+    "build": "node --eval \"\"",
     "check-types": "tsc --noEmit",
+    "format": "prettier --write \"{__mocks__,__tests__,browser,node,react,shared}/**/*.{ts,tsx}\" \"*.{ts,tsx,js,cjs,mjs}\"",
+    "format:check": "prettier --check \"{__mocks__,__tests__,browser,node,react,shared}/**/*.{ts,tsx}\" \"*.{ts,tsx,js,cjs,mjs}\"",
+    "lint": "eslint \"{__mocks__,__tests__,browser,node,react,shared}/**/*.{ts,tsx}\" \"*.{ts,tsx,js,cjs,mjs}\"",
+    "lint:fix": "eslint --fix \"{__mocks__,__tests__,browser,node,react,shared}/**/*.{ts,tsx}\" \"*.{ts,tsx,js,cjs,mjs}\"",
     "test": "vitest --watch",
     "test:coverage": "vitest --coverage",
     "test:coverage:ui": "vitest --coverage --ui",
@@ -34,14 +39,19 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@portfolio/config-eslint": "workspace:*",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "@vitest/eslint-plugin": "catalog:",
     "@vitest/ui": "catalog:",
+    "eslint": "catalog:",
+    "globals": "catalog:",
     "jsdom": "catalog:",
     "postcss": "catalog:",
+    "prettier": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "vitest": "catalog:"
