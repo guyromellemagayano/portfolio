@@ -22,11 +22,6 @@ This catalog is for discovery only. README files should remain close to the code
 - `docs/services/api/README.md`
 - `docs/standards/README.md`
 
-## Docker Workspace (`docker/`)
-
-- `docker/README.md`
-- `docker/traefik/README.md`
-
 ## Apps (`apps/`)
 
 - `apps/api/README.md`
@@ -45,13 +40,9 @@ This catalog is for discovery only. README files should remain close to the code
 - `packages/utils/README.md`
 - `packages/utils/src/README.md`
 - `packages/vitest-presets/README.md`
-- `packages/w3x/README.md`
-- `packages/w3x/dom/README.md`
-- `packages/w3x/primitives/README.md`
-- `packages/w3x/ui/README.md`
 
 ## Related Non-README Entry Points (Frequently Used)
 
-- `docker/docs/local-dev.md`
-- `docker/docs/e2e.md`
-- `docker/docs/production-plan.md`
+- `docs/scripts/update-readme-catalog.sh`
+- `docs/scripts/check-readme-catalog.sh`
+- `docs/scripts/prod-vercel-smoke.sh`

@@ -47,26 +47,18 @@ else
   SOURCE_FILES="$ROOT_ENV_FILE $WEB_ENV_FILE $API_ENV_FILE"
 fi
 
-local_dev_domain=$(pick_env_value "LOCAL_DEV_DOMAIN" "\"guyromellemagayano.local\"" "$SOURCE_FILES")
-local_dev_domain_plain=$(printf '%s' "$local_dev_domain" | sed 's/^"//; s/"$//')
-local_url_scheme="https"
-case "$local_dev_domain_plain" in
-  localhost|127.0.0.1|0.0.0.0|::1)
-    local_url_scheme="http"
-    ;;
-esac
-portfolio_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
-next_public_api_url="\"${local_url_scheme}://api.${local_dev_domain_plain}\""
-next_public_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
+next_public_site_url=$(pick_env_value "NEXT_PUBLIC_SITE_URL" "\"http://127.0.0.1:3000\"" "$SOURCE_FILES")
+next_public_api_url=$(pick_env_value "NEXT_PUBLIC_API_URL" "\"http://127.0.0.1:5001\"" "$SOURCE_FILES")
+portfolio_api_url=$(pick_env_value "PORTFOLIO_API_URL" "$next_public_api_url" "$SOURCE_FILES")
 portfolio_api_content_provider=$(pick_env_value "PORTFOLIO_API_CONTENT_PROVIDER" "$(pick_env_value "API_GATEWAY_CONTENT_PROVIDER" "\"local\"" "$SOURCE_FILES")" "$SOURCE_FILES")
 portfolio_api_cors_origins=$(pick_env_value "PORTFOLIO_API_CORS_ORIGINS" "$(pick_env_value "API_GATEWAY_CORS_ORIGINS" "\"\"" "$SOURCE_FILES")" "$SOURCE_FILES")
 content_revalidate_secret=$(pick_env_value "CONTENT_REVALIDATE_SECRET" "\"\"" "$SOURCE_FILES")
 
-sitemap_site_url="\"${local_url_scheme}://${local_dev_domain_plain}\""
+sitemap_site_url=$(pick_env_value "SITEMAP_SITE_URL" "$next_public_site_url" "$SOURCE_FILES")
 sitemap_include_cms_content=$(pick_env_value "SITEMAP_INCLUDE_CMS_CONTENT" "\"true\"" "$SOURCE_FILES")
 sitemap_fail_on_cms_fetch_error=$(pick_env_value "SITEMAP_FAIL_ON_CMS_FETCH_ERROR" "\"false\"" "$SOURCE_FILES")
 
-e2e_base_url=$(pick_env_value "E2E_BASE_URL" "\"http://127.0.0.1:3000\"" "$SOURCE_FILES")
+e2e_base_url=$(pick_env_value "E2E_BASE_URL" "$next_public_site_url" "$SOURCE_FILES")
 e2e_use_external_servers=$(pick_env_value "E2E_USE_EXTERNAL_SERVERS" "\"\"" "$SOURCE_FILES")
 e2e_content_article_slug=$(pick_env_value "E2E_CONTENT_ARTICLE_SLUG" "\"\"" "$SOURCE_FILES")
 e2e_content_page_slug=$(pick_env_value "E2E_CONTENT_PAGE_SLUG" "\"\"" "$SOURCE_FILES")
@@ -81,13 +73,12 @@ tmp_env_file=$(mktemp)
 trap 'rm -f "$tmp_env_file"' EXIT
 
 cat >"$tmp_env_file" <<EOF
-# Local Docker env (single source of truth)
-LOCAL_DEV_DOMAIN=$local_dev_domain
+# Local workspace env (single source of truth)
 ENABLE_EXPERIMENTAL_COREPACK=$enable_experimental_corepack
 ESLINT_USE_FLAT_CONFIG=$eslint_use_flat_config
 BUNDLE_ANALYZE=$bundle_analyze
 
-# Local app URLs (used by host-side runs and Dockerized tooling)
+# Local app URLs
 PORTFOLIO_API_URL=$portfolio_api_url
 NEXT_PUBLIC_API_URL=$next_public_api_url
 NEXT_PUBLIC_SITE_URL=$next_public_site_url
@@ -121,4 +112,5 @@ if [ "${KEEP_APP_ENV_FILES:-0}" != "1" ]; then
 fi
 
 printf 'Normalized local env file: %s\n' "$ROOT_ENV_FILE"
-printf 'Domain: %s\n' "$local_dev_domain"
+printf 'Web URL: %s\n' "$next_public_site_url"
+printf 'API URL: %s\n' "$portfolio_api_url"

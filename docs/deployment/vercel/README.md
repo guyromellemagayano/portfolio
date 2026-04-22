@@ -114,4 +114,4 @@ make prod-smoke
 ## Notes
 
 - Do not use local hostnames (`localhost`, `127.0.0.1`, `*.local`) for production env values.
-- Local Docker + Traefik remains the local development platform.
+- Local development runs directly on the host workspace without container overlays.

@@ -19,14 +19,10 @@ Project-level documentation is centralized under `docs/`.
 - Content integration: `docs/integrations/content/README.md`
 - Portfolio API standards: `docs/standards/api/API_PORTFOLIO_STANDARDS.md`
 - Logging standards: `docs/standards/logging/LOGGING_STANDARDS.md`
-- Docker workspace index: `docker/README.md`
-- Docker local dev guide: `docker/docs/local-dev.md`
-- Docker e2e guide: `docker/docs/e2e.md`
-- Docker production plan: `docker/docs/production-plan.md`
 
 ## Repository README Catalog
 
-Use `docs/catalog/README.md` for a centralized index of every `README.md` in the monorepo (apps, packages, docker, docs, and root).
+Use `docs/catalog/README.md` for a centralized index of every `README.md` in the monorepo (apps, packages, docs, and root).
 
 Validate it from the repo root with:
 

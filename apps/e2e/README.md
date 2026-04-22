@@ -10,7 +10,7 @@ Playwright end-to-end testing workspace for the portfolio monorepo.
 - 🎯 **Smoke Suite**: Fast PR-gated checks using `@smoke` tags
 - 📱 **Mobile Coverage Project**: Dedicated `mobile-chrome` run target for smoke validation
 - 🧱 **Managed Service Startup**: Playwright `webServer` orchestration for API + web services
-- 🔌 **External Server Mode**: Support for Docker/pre-provisioned hosts via `E2E_USE_EXTERNAL_SERVERS=1`
+- 🔌 **External Server Mode**: Support for manually managed local or remote hosts via `E2E_USE_EXTERNAL_SERVERS=1`
 - 🧪 **Content Pipeline Checks**: Content and webhook smoke coverage for local data integration paths
 - 🔁 **Workspace Tooling Alignment**: Shared linting, typechecking, and formatting scripts
 
@@ -144,7 +144,7 @@ Content pipeline smoke checks are defined in `tests/content-pipeline.smoke.e2e.t
 ### 4. **Separate Runtime Modes Clearly**
 
 - Use Playwright `webServer` defaults for local/CI convenience.
-- Use `E2E_USE_EXTERNAL_SERVERS=1` for Dockerized or pre-provisioned targets.
+- Use `E2E_USE_EXTERNAL_SERVERS=1` for manually started or pre-provisioned targets.
 
 ## Troubleshooting
 

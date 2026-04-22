@@ -20,13 +20,6 @@ if (existsSync(workspaceRootEnvLocalFile)) {
   globalThis.process.loadEnvFile(workspaceRootEnvLocalFile);
 }
 
-const isDockerLocalDevelopment =
-  globalThis.process.env.DOCKER_LOCAL_DEV?.trim() === "1";
-const dockerWebDistDirectory = isDockerLocalDevelopment
-  ? globalThis.process.env.NEXT_WEB_DOCKER_DIST_DIR?.trim()
-  : undefined;
-const localDevelopmentDomain =
-  globalThis.process.env.LOCAL_DEV_DOMAIN?.trim() || "guyromellemagayano.local";
 const shouldUseStandaloneOutput =
   globalThis.process.env.NEXT_WEB_OUTPUT_STANDALONE?.trim() === "1";
 const portfolioPublicApiProxyTarget =
@@ -35,10 +28,7 @@ const portfolioPublicApiProxyTarget =
     ""
   ) || "";
 
-const allowedDevOrigins = [
-  localDevelopmentDomain,
-  `*.${localDevelopmentDomain}`,
-];
+const allowedDevOrigins = ["127.0.0.1", "localhost"];
 
 type ExperimentalNextConfig = NonNullable<NextConfig["experimental"]> & {
   isolatedDevBuild?: boolean;
@@ -46,16 +36,7 @@ type ExperimentalNextConfig = NonNullable<NextConfig["experimental"]> & {
 
 const experimentalNextConfig: ExperimentalNextConfig = {};
 
-if (isDockerLocalDevelopment) {
-  experimentalNextConfig.isolatedDevBuild = true;
-}
-
-if (isDockerLocalDevelopment) {
-  experimentalNextConfig.turbopackFileSystemCacheForDev = false;
-}
-
 const nextConfig: NextConfig = {
-  distDir: dockerWebDistDirectory || undefined,
   allowedDevOrigins,
   output: shouldUseStandaloneOutput ? "standalone" : undefined,
   outputFileTracingRoot: shouldUseStandaloneOutput

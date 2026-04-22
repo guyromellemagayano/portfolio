@@ -65,7 +65,7 @@ emit_section() {
   esac
 }
 
-grep -Ev '^(README\.md|docs/|docker/|apps/|packages/)' "$tmp_all" >"$tmp_other" || true
+grep -Ev '^(README\.md|docs/|apps/|packages/)' "$tmp_all" >"$tmp_other" || true
 
 cat >"$OUT_FILE" <<'EOF'
 # Repository README Catalog
@@ -77,7 +77,6 @@ EOF
 
 emit_section "Root" exact "README.md"
 emit_section "Docs (\`docs/\`)" prefix 'docs/'
-emit_section "Docker Workspace (\`docker/\`)" prefix 'docker/'
 emit_section "Apps (\`apps/\`)" prefix 'apps/'
 emit_section "Packages (\`packages/\`)" prefix 'packages/'
 
@@ -89,8 +88,8 @@ if [ -s "$tmp_other" ]; then
 fi
 
 printf '\n## Related Non-README Entry Points (Frequently Used)\n\n' >>"$OUT_FILE"
-emit_section "" file "docker/docs/local-dev.md"
-emit_section "" file "docker/docs/e2e.md"
-emit_section "" file "docker/docs/production-plan.md"
+emit_section "" file "docs/scripts/update-readme-catalog.sh"
+emit_section "" file "docs/scripts/check-readme-catalog.sh"
+emit_section "" file "docs/scripts/prod-vercel-smoke.sh"
 
 printf 'docs catalog updated: %s\n' "docs/catalog/README.md"

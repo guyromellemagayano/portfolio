@@ -50,25 +50,9 @@ corepack use pnpm@10.30.0
 ### Quick Start
 
 ```bash
+cp .env.example .env
 pnpm install
-pnpm dev
-```
-
-### Docker Local Workflow (Recommended For Full Stack)
-
-Primary guide: `docker/docs/local-dev.md`
-
-```bash
-# First-time setup
-make env-local-normalize
-make use-orbstack-domain   # default: guyromellemagayano.local
-make bootstrap
-make edge-smoke
-
-# Daily development
-make up-edge
-make logs-edge
-make down-edge
+make dev
 ```
 
 ### Workspace Map
@@ -96,33 +80,39 @@ Run from repo root.
 
 ```bash
 # Dev + build
-pnpm dev
-pnpm build
-pnpm build:packages
+make dev
+make build
+make build-packages
 
 # Code quality
-pnpm lint
-pnpm lint:ci
-pnpm lint:fix
-pnpm format
-pnpm format:check
-pnpm check-types
+make lint
+make lint-ci
+make lint-fix
+make format
+make format-check
+make check-types
 
 # Tests
-pnpm test
-pnpm test:run
-pnpm test:coverage
-pnpm test:packages
-pnpm test:apps
+make test
+make test-run
+make test-coverage
+make test-packages
+make test-apps
 
 # E2E
-pnpm test:e2e:install
-pnpm test:e2e:smoke
-pnpm test:e2e
-pnpm test:e2e:ui
+make test-e2e-install
+make test-e2e-smoke
+make test-e2e
+make test-e2e-ui
+
+# Local env helpers
+make env-local-normalize
+make content-check
 ```
 
-TypeScript unresolved imports are enforced by `pnpm check-types` (and included in `pnpm lint:ci`).
+Root `make` targets are thin wrappers around the existing root `pnpm` scripts, so the script definitions in `package.json` stay the single source of truth.
+
+TypeScript unresolved imports are enforced by `make check-types` (and included in `make lint-ci`).
 
 ### App-Scoped Commands
 
@@ -183,6 +173,13 @@ cp .env.example .env
 ```
 
 `turbo.json` also declares `globalEnv` keys for task hashing.
+
+Normalize a local `.env` from linked Vercel projects when needed:
+
+```bash
+make vercel-env-pull VERCEL_ENV_TARGET=development
+make vercel-env-sync-local VERCEL_ENV_TARGET=development
+```
 
 Content keys used by `apps/web`:
 
