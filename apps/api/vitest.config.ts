@@ -4,13 +4,49 @@
  * @description Vitest configuration for the portfolio API application.
  */
 
+import path from "path";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vitest/config";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   resolve: {
-    alias: {
-      "@api": new URL("./src", import.meta.url).pathname,
-    },
+    alias: [
+      {
+        find: /^@portfolio\/api-contracts\/content$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/api-contracts/src/content/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/api-contracts\/http$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/api-contracts/src/http/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/content-data$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/content-data/src/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/logger$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/logger/src/index.ts"
+        ),
+      },
+      {
+        find: "@api",
+        replacement: new URL("./src", import.meta.url).pathname,
+      },
+    ],
   },
   test: {
     environment: "node",

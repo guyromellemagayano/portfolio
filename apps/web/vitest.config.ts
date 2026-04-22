@@ -12,15 +12,52 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      "@portfolio/content-data": path.resolve(
-        __dirname,
-        "../../packages/content-data/src/index.ts"
-      ),
-      "@web": path.resolve(__dirname, "./src"),
+    alias: [
+      {
+        find: /^@portfolio\/api-contracts\/content$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/api-contracts/src/content/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/api-contracts\/http$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/api-contracts/src/http/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/content-data$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/content-data/src/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/logger$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/logger/src/index.ts"
+        ),
+      },
+      {
+        find: /^@portfolio\/utils$/,
+        replacement: path.resolve(
+          __dirname,
+          "../../packages/utils/src/index.ts"
+        ),
+      },
+      {
+        find: "@web",
+        replacement: path.resolve(__dirname, "./src"),
+      },
       // Centralized mocks
-      "@mocks": path.resolve(__dirname, "../../__mocks__"),
-    },
+      {
+        find: "@mocks",
+        replacement: path.resolve(__dirname, "../../__mocks__"),
+      },
+    ],
   },
   test: {
     ...reactPreset.test,
