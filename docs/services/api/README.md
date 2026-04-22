@@ -6,6 +6,8 @@ Current primary data flow for content:
 
 `apps/web` -> `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`) -> configured content provider (`local` or `static`)
 
+For this monorepo, the canonical content database is `@portfolio/content-data`. `apps/api` is the read-only delivery layer that normalizes, caches, and exposes that content safely to consumers.
+
 ## Current Modules
 
 - `health`: `/v1/status` (legacy `/status` redirects to `/v1/status`)

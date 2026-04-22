@@ -7,6 +7,7 @@ Current ownership model:
 - `apps/api` owns runtime content retrieval for article and standalone page APIs.
 - `apps/web` consumes content data from `apps/api` (`/v1/content/articles`, `/v1/content/articles/:slug`, `/v1/content/pages`, `/v1/content/pages/:slug`).
 - Local content snapshots are sourced from `@portfolio/content-data`.
+- `@portfolio/content-data` is the only content database in the monorepo.
 
 ## Runtime Notes
 
@@ -40,11 +41,26 @@ pnpm --filter e2e exec playwright test --project chromium --grep "@content"
 
 ## Snapshot Maintenance
 
-`@portfolio/content-data` is the canonical local snapshot source. Update `src/articles.ts` and `src/pages.ts` directly when content seed data changes.
+`@portfolio/content-data` is the canonical local snapshot source.
+
+Author content in:
+
+- `packages/content-data/src/articles.ts`
+- `packages/content-data/src/pages.ts`
+- `packages/content-data/src/portfolio.ts`
+- `packages/content-data/src/portfolio/`
+
+Use:
+
+```bash
+pnpm content:check
+```
+
+That validates the content package with type checks and tests before the change fans out through the API and web layers.
 
 ## Portfolio-Style Data Model
 
-`@portfolio/content-data/src/portfolio.ts` includes a Portfolio-style content graph compatible with custom CMS backends:
+`@portfolio/content-data/src/portfolio.ts` assembles a Portfolio-style content graph compatible with custom CMS backends:
 
 - `profile`, `navigation`, `socialLinks`
 - `projects`, `speakingAppearances`, `useCategories`, `workExperience`, `photos`

@@ -62,6 +62,7 @@ apps/api/src/
    - `production`: strict allowlist-only. Empty allowlist disables cross-origin browser requests.
    - `development` and `test`: empty allowlist defaults to permissive CORS.
 5. Local content provider reads typed snapshots from `@portfolio/content-data` by default.
+6. `@portfolio/content-data` is treated as the canonical content database for local and portfolio-managed content. `apps/api` is the read-only delivery boundary, not a second source of truth.
 
 ## Adding a New Integration
 
