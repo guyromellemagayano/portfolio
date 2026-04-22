@@ -14,6 +14,8 @@
     "clean": "turbo run clean",
     "commit": "NPM_CONFIG_LOGLEVEL=error czg gpg",
     "commit:retry": "git commit --amend --no-edit",
+    "content:check": "pnpm --filter @portfolio/content-data validate",
+    "content:test": "pnpm --filter @portfolio/content-data test:run",
     "dev": "turbo run dev --parallel --output-logs=full",
     "dev:docker": "docker compose --env-file .env -f docker/compose/local.yml up --build -d",
     "dev:docker:down": "docker compose -f docker/compose/local.yml down",

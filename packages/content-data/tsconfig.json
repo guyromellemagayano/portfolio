@@ -5,6 +5,10 @@
       "ES2015",
       "DOM"
     ],
+    "types": [
+      "node",
+      "vitest/globals"
+    ],
     "rootDir": "./src",
     "outDir": "./dist"
   },

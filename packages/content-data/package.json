@@ -28,12 +28,13 @@
     "format:check": "prettier --check \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
     "lint": "eslint \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}\"",
-    "test": "echo 'No tests configured for content-data package'",
-    "test:coverage": "echo 'No tests configured for content-data package'",
-    "test:coverage:ui": "echo 'No tests configured for content-data package'",
-    "test:run": "echo 'No tests configured for content-data package'",
-    "test:run:coverage": "echo 'No tests configured for content-data package'",
-    "test:ui": "echo 'No tests configured for content-data package'"
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "test:coverage:ui": "vitest --coverage --ui",
+    "test:run": "vitest run",
+    "test:run:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "validate": "pnpm check-types && pnpm test:run"
   },
   "dependencies": {
     "@portfolio/api-contracts": "workspace:*"
@@ -43,12 +44,14 @@
     "@portfolio/config-typescript": "workspace:*",
     "@portfolio/vitest-presets": "workspace:*",
     "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "bunchee": "catalog:",
     "eslint": "catalog:",
     "postcss": "catalog:",
     "prettier": "catalog:",
     "rimraf": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {},
   "optionalDependencies": {}

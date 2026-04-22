@@ -6,12 +6,14 @@
 
 import type { ContentPageDetail } from "@portfolio/api-contracts/content";
 
+import { createPortableTextParagraph, definePage } from "./authoring";
+
 /** Typed local page records used by the content data snapshot. */
 export type LocalPageRecord = ContentPageDetail;
 
 /** Seed page snapshot; update this list directly when local content changes. */
 export const pagesSnapshot: ReadonlyArray<LocalPageRecord> = [
-  {
+  definePage({
     id: "local-page-now",
     slug: "now",
     title: "Now",
@@ -22,20 +24,10 @@ export const pagesSnapshot: ReadonlyArray<LocalPageRecord> = [
     hideFromSitemap: false,
     seoNoIndex: false,
     body: [
-      {
-        _key: "now-page-paragraph-1",
-        _type: "block",
-        style: "normal",
-        markDefs: [],
-        children: [
-          {
-            _key: "now-page-span-1",
-            _type: "span",
-            text: "This page is served from local typed content data instead of an external CMS.",
-            marks: [],
-          },
-        ],
-      },
+      createPortableTextParagraph(
+        "now-page-paragraph-1",
+        "This page is served from local typed content data instead of an external CMS."
+      ),
     ],
-  },
+  }),
 ];

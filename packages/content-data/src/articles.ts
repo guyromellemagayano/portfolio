@@ -6,12 +6,14 @@
 
 import type { ContentArticleDetail } from "@portfolio/api-contracts/content";
 
+import { createPortableTextParagraph, defineArticle } from "./authoring";
+
 /** Typed local article records used by the content data snapshot. */
 export type LocalArticleRecord = ContentArticleDetail;
 
 /** Seed article snapshot; update this list directly when local content changes. */
 export const articlesSnapshot: ReadonlyArray<LocalArticleRecord> = [
-  {
+  defineArticle({
     id: "local-article-hello-world",
     title: "Hello world",
     slug: "hello-world",
@@ -22,20 +24,10 @@ export const articlesSnapshot: ReadonlyArray<LocalArticleRecord> = [
     seoNoIndex: false,
     tags: ["migration", "local-content"],
     body: [
-      {
-        _key: "hello-world-paragraph-1",
-        _type: "block",
-        style: "normal",
-        markDefs: [],
-        children: [
-          {
-            _key: "hello-world-span-1",
-            _type: "span",
-            text: "This article is served from local typed content data instead of an external CMS.",
-            marks: [],
-          },
-        ],
-      },
+      createPortableTextParagraph(
+        "hello-world-paragraph-1",
+        "This article is served from local typed content data instead of an external CMS."
+      ),
     ],
-  },
+  }),
 ];
