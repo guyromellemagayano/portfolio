@@ -70,6 +70,7 @@ describe("portfolio API content pages client", () => {
           revalidate: 60,
           tags: ["pages"],
         },
+        signal: expect.any(Object),
       }
     );
   });
@@ -127,7 +128,23 @@ describe("portfolio API content pages client", () => {
           revalidate: 60,
           tags: ["pages", "page:now"],
         },
+        signal: expect.any(Object),
       }
+    );
+  });
+
+  it("throws an actionable timeout error when the configured local API host stalls", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.guyromellemagayano.local");
+
+    const timeoutError = new Error("The operation was aborted.");
+    timeoutError.name = "AbortError";
+
+    const fetchMock = vi.fn().mockRejectedValue(timeoutError);
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getAllPortfolioPages()).rejects.toThrow(
+      /Point `PORTFOLIO_API_URL` to `http:\/\/localhost:5001`/
     );
   });
 

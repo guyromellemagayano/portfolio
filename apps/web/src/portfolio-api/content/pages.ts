@@ -18,7 +18,7 @@ import {
   type ApiSuccessEnvelope,
 } from "@portfolio/api-contracts/http";
 
-import { resolvePortfolioApiBaseUrl } from "./articles";
+import { fetchPortfolioApi, resolvePortfolioApiBaseUrl } from "./articles";
 
 type ContentPagesEnvelope =
   | ApiSuccessEnvelope<ContentPagesResponseData>
@@ -71,7 +71,7 @@ export const getAllPortfolioPages = cache(
 
     const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_PAGES_ROUTE}`;
 
-    const response = await globalThis.fetch(endpointUrl, {
+    const response = await fetchPortfolioApi(endpointUrl, {
       method: "GET",
       cache: "force-cache",
       next: {
@@ -125,7 +125,7 @@ export const getPortfolioPageBySlug = cache(
 
     const endpointUrl = `${portfolioApiBaseUrl}${getContentPageRoute(normalizedSlug)}`;
 
-    const response = await globalThis.fetch(endpointUrl, {
+    const response = await fetchPortfolioApi(endpointUrl, {
       method: "GET",
       cache: "force-cache",
       next: {

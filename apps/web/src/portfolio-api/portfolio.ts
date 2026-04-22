@@ -17,7 +17,10 @@ import {
 } from "@portfolio/api-contracts/http";
 import { contentSnapshot } from "@portfolio/content-data";
 
-import { resolvePortfolioApiBaseUrl } from "./content/articles";
+import {
+  fetchPortfolioApi,
+  resolvePortfolioApiBaseUrl,
+} from "./content/articles";
 
 type PortfolioSnapshotEnvelope =
   | ApiSuccessEnvelope<ContentPortfolioSnapshotResponseData>
@@ -59,7 +62,7 @@ export const getPortfolioSnapshot = cache(
 
     const endpointUrl = `${portfolioApiBaseUrl}${PORTFOLIO_ROUTE}`;
     try {
-      const response = await globalThis.fetch(endpointUrl, {
+      const response = await fetchPortfolioApi(endpointUrl, {
         method: "GET",
         cache: "force-cache",
         next: {

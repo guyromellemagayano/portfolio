@@ -57,12 +57,13 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
+    domains: ["cdn.example.com"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "cdn.example.com",
         port: "",
-        pathname: "/images/**",
+        pathname: "/**",
         search: "",
       },
     ],

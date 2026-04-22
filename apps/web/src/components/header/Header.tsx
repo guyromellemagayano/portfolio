@@ -87,6 +87,14 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
   const linkTargetProps = getLinkTargetProps(linkHref, target);
   const imageSrc = src && isValidImageSrc(src) ? src : avatarImage;
   const imageAlt = alt && alt.length > 0 ? alt : HEADER_AVATAR_I18N.brandName;
+  const imageSize = large ? 64 : 36;
+  const imageClassName = cn(
+    "rounded-full object-cover",
+    imageSrc ? "bg-transparent" : "bg-zinc-100 dark:bg-zinc-800",
+    large ? "h-16 w-16" : "h-9 w-9"
+  );
+  const isRemoteImageSrc =
+    typeof imageSrc === "string" && /^https?:\/\//i.test(imageSrc);
 
   return (
     <Component
@@ -102,17 +110,27 @@ function HeaderAvatar<P extends Record<string, unknown> = {}>(
         className
       )}
     >
-      <Image
-        src={imageSrc}
-        alt={imageAlt}
-        sizes={large ? "4rem" : "2.25rem"}
-        className={cn(
-          "rounded-full object-cover",
-          imageSrc ? "bg-transparent" : "bg-zinc-100 dark:bg-zinc-800",
-          large ? "h-16 w-16" : "h-9 w-9"
-        )}
-        priority
-      />
+      {isRemoteImageSrc ? (
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          width={imageSize}
+          height={imageSize}
+          className={imageClassName}
+          decoding="async"
+          fetchPriority="high"
+        />
+      ) : (
+        <Image
+          src={imageSrc}
+          alt={imageAlt}
+          width={imageSize}
+          height={imageSize}
+          sizes={large ? "4rem" : "2.25rem"}
+          className={imageClassName}
+          priority
+        />
+      )}
     </Component>
   );
 }

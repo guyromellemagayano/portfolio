@@ -21,6 +21,7 @@ import {
 import { isLocalOnlyHostname } from "@web/utils/site-url";
 
 const DEFAULT_PORTFOLIO_API_PORT = "5001";
+const PORTFOLIO_API_REQUEST_TIMEOUT_MS = 3000;
 
 type ContentArticlesEnvelope =
   | ApiSuccessEnvelope<ContentArticlesResponseData>
@@ -70,6 +71,61 @@ function createPortfolioApiRequestErrorMessage(
   }
 
   return baseMessage;
+}
+
+/** Builds a more actionable timeout message for stalled portfolio API requests. */
+function createPortfolioApiTimeoutErrorMessage(endpointUrl: string): string {
+  const baseMessage = `Portfolio API content request timed out after ${PORTFOLIO_API_REQUEST_TIMEOUT_MS}ms for ${endpointUrl}.`;
+
+  try {
+    const parsed = new URL(endpointUrl);
+
+    if (
+      getEnvVar("NODE_ENV") !== "production" &&
+      isLocalOnlyHostname(parsed.hostname)
+    ) {
+      return `${baseMessage} The configured local portfolio API host may be unreachable. Point \`PORTFOLIO_API_URL\` to \`http://localhost:${DEFAULT_PORTFOLIO_API_PORT}\` or start the local domain stack before loading API-backed routes.`;
+    }
+  } catch {
+    return baseMessage;
+  }
+
+  return baseMessage;
+}
+
+/** Indicates whether a thrown fetch error represents an aborted request. */
+function isAbortError(error: unknown): boolean {
+  return (
+    !!error &&
+    typeof error === "object" &&
+    "name" in error &&
+    error.name === "AbortError"
+  );
+}
+
+/** Fetches a portfolio API endpoint with a bounded timeout to avoid hanging SSR renders. */
+export async function fetchPortfolioApi(
+  endpointUrl: string,
+  init: Omit<RequestInit, "signal">
+): Promise<Response> {
+  try {
+    return await globalThis.fetch(endpointUrl, {
+      ...init,
+      signal: AbortSignal.timeout(PORTFOLIO_API_REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (isAbortError(error)) {
+      const timeoutError = new Error(
+        createPortfolioApiTimeoutErrorMessage(endpointUrl)
+      ) as Error & { cause?: unknown };
+
+      timeoutError.cause = error;
+
+      throw timeoutError;
+    }
+
+    throw error;
+  }
 }
 
 /** Resolves the portfolio API base URL for server-side fetches in `apps/web`. */
@@ -145,7 +201,7 @@ export const getAllPortfolioArticles = cache(
 
     const endpointUrl = `${portfolioApiBaseUrl}${CONTENT_ARTICLES_ROUTE}`;
 
-    const response = await globalThis.fetch(endpointUrl, {
+    const response = await fetchPortfolioApi(endpointUrl, {
       method: "GET",
       cache: "force-cache",
       next: {
@@ -199,7 +255,7 @@ export const getPortfolioArticleBySlug = cache(
 
     const endpointUrl = `${portfolioApiBaseUrl}${getContentArticleRoute(normalizedSlug)}`;
 
-    const response = await globalThis.fetch(endpointUrl, {
+    const response = await fetchPortfolioApi(endpointUrl, {
       method: "GET",
       cache: "force-cache",
       next: {

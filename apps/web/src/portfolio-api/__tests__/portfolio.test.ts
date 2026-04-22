@@ -82,6 +82,34 @@ describe("portfolio snapshot API client", () => {
           revalidate: 300,
           tags: ["portfolio"],
         },
+        signal: expect.any(Object),
+      }
+    );
+  });
+
+  it("falls back to the local snapshot when the API request times out", async () => {
+    vi.stubEnv("PORTFOLIO_API_URL", "https://api.example.com");
+
+    const timeoutError = new Error("The operation was aborted.");
+    timeoutError.name = "AbortError";
+
+    const fetchMock = vi.fn().mockRejectedValue(timeoutError);
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const snapshot = await getPortfolioSnapshot();
+
+    expect(snapshot).toEqual(contentSnapshot.portfolio);
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.example.com/v1/portfolio",
+      {
+        method: "GET",
+        cache: "force-cache",
+        next: {
+          revalidate: 300,
+          tags: ["portfolio"],
+        },
+        signal: expect.any(Object),
       }
     );
   });
