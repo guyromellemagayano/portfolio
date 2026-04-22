@@ -273,7 +273,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out links with missing href", () => {
@@ -285,7 +285,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out links with empty string label", () => {
@@ -297,7 +297,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out links with empty string href", () => {
@@ -309,7 +309,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("keeps links with whitespace-only label (function doesn't trim)", () => {
@@ -323,7 +323,7 @@ describe("filterValidNavigationLinks", () => {
       expect(result).toHaveLength(3);
       expect(result[0]!.label).toBe("Home");
       expect(result[1]!.label).toBe("   ");
-      expect(result[2]!.label).toBe("Contact");
+      expect(result[2]!.label).toBe("Hire");
     });
 
     it("keeps links with whitespace-only href (function doesn't trim)", () => {
@@ -337,7 +337,7 @@ describe("filterValidNavigationLinks", () => {
       expect(result).toHaveLength(3);
       expect(result[0]!.label).toBe("Home");
       expect(result[1]!.label).toBe("About");
-      expect(result[2]!.label).toBe("Contact");
+      expect(result[2]!.label).toBe("Hire");
     });
 
     it("filters out links with non-string label", () => {
@@ -349,7 +349,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out links with non-string href", () => {
@@ -361,7 +361,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out null links", () => {
@@ -373,7 +373,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links as any);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("filters out multiple invalid links", () => {
@@ -388,7 +388,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(2);
       expect(result[0]!.label).toBe("Home");
-      expect(result[1]!.label).toBe("Contact");
+      expect(result[1]!.label).toBe("Hire");
     });
 
     it("returns empty array when all links are invalid", () => {
@@ -460,7 +460,7 @@ describe("filterValidNavigationLinks", () => {
       const result = filterValidNavigationLinks(links);
       expect(result).toHaveLength(3);
       expect(result[0]!.label).toBe("Home & About");
-      expect(result[1]!.label).toBe("Contact Us!");
+      expect(result[1]!.label).toBe("Hire Me!");
       expect(result[2]!.label).toBe("FAQ's");
     });
 
@@ -474,7 +474,7 @@ describe("filterValidNavigationLinks", () => {
       expect(result).toHaveLength(3);
       expect(result[0]!.label).toBe("首页");
       expect(result[1]!.label).toBe("À propos");
-      expect(result[2]!.label).toBe("Kontakt");
+      expect(result[2]!.label).toBe("Beauftragen");
     });
   });
 });

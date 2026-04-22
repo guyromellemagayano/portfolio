@@ -7,19 +7,19 @@
 import { Elysia } from "elysia";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { contentSnapshot } from "@portfolio/content-data";
 import { PORTFOLIO_ROUTE } from "@portfolio/api-contracts/content";
 import {
   API_ERROR_CODES,
   API_ERROR_MESSAGES,
   CORRELATION_ID_HEADER,
 } from "@portfolio/api-contracts/http";
+import { contentSnapshot } from "@portfolio/content-data";
 
 import { createApiLogger } from "@api/config/logger";
 import { createErrorHandlerPlugin } from "@api/middleware/error-handler";
 import { createRequestContextPlugin } from "@api/middleware/request-context";
-import { createPortfolioRouter } from "@api/modules/portfolio/portfolio.routes";
 import type { ContentService } from "@api/modules/content/content.service";
+import { createPortfolioRouter } from "@api/modules/portfolio/portfolio.routes";
 
 function createContentServiceMock(
   overrides: Partial<ContentService> = {}

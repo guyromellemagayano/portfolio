@@ -14,21 +14,54 @@ export interface ArticleWithSlug extends Article {
   slug: string;
 }
 
+type ArticleModule = {
+  default: React.ComponentType<any>;
+  article: Partial<Article> | null;
+};
+
+type ArticleModuleLoader = (filename: string) => Promise<ArticleModule>;
+
+declare global {
+  interface ImportMeta {
+    glob<T>(pattern: string): Record<string, () => Promise<T>>;
+  }
+}
+
+const articleModules = import.meta.glob<ArticleModule>(
+  "../app/articles/**/*.mdx"
+);
+
+const defaultArticleModuleLoader: ArticleModuleLoader = async (filename) => {
+  const modulePath = `../app/articles/${filename}`;
+  const importer = articleModules[modulePath];
+
+  if (!importer) {
+    throw new Error(`Cannot find article module: ${modulePath}`);
+  }
+
+  return importer();
+};
+
+let articleModuleLoader: ArticleModuleLoader = defaultArticleModuleLoader;
+
+export const __setArticleModuleLoaderForTests = (
+  loader?: ArticleModuleLoader
+): void => {
+  articleModuleLoader = loader ?? defaultArticleModuleLoader;
+};
+
 /**
  * Import an article from the articles directory
  */
 export const importArticle = async (
   filename: string
 ): Promise<ArticleWithSlug> => {
-  let { article } = (await import(`../app/articles/${filename}`)) as {
-    default: React.ComponentType<any>;
-    article: Article;
-  };
+  const { article } = await articleModuleLoader(filename);
 
   return {
     slug: filename.replace(/(\/page)?\.mdx$/, ""),
-    ...article,
-  };
+    ...(article ?? {}),
+  } as ArticleWithSlug;
 };
 
 const MDXPageFile = "page.mdx";

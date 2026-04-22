@@ -452,6 +452,9 @@ importers:
       "@portfolio/components":
         specifier: workspace:*
         version: link:../../packages/components
+      "@portfolio/content-data":
+        specifier: workspace:*
+        version: link:../../packages/content-data
       "@portfolio/hooks":
         specifier: workspace:*
         version: link:../../packages/hooks

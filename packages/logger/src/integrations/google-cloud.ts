@@ -185,7 +185,21 @@ export class GoogleCloudIntegration extends BaseIntegration {
       this.accessToken = token.access_token;
       this.tokenExpiry = Date.now() + (token.expires_in - 60) * 1000; // 60s buffer
     } catch (error) {
-      throw new Error(`Failed to get Google Cloud access token: ${error}`);
+      const wrappedError = new Error(
+        `Failed to get Google Cloud access token: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      ) as Error & {
+        cause?: unknown;
+      };
+
+      wrappedError.cause = error;
+
+      if (error instanceof Error) {
+        throw wrappedError;
+      }
+
+      throw wrappedError;
     }
   }
 

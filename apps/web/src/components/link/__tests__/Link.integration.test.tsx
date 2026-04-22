@@ -64,7 +64,7 @@ describe("Link Integration Tests", () => {
       );
 
       expect(screen.getByText("About")).toBeInTheDocument();
-      expect(screen.getByText("Contact")).toBeInTheDocument();
+      expect(screen.getByText("Hire")).toBeInTheDocument();
       expect(screen.getByText("Blog")).toBeInTheDocument();
     });
 
@@ -107,7 +107,7 @@ describe("Link Integration Tests", () => {
 
       expect(screen.getByText("About")).toBeInTheDocument();
       expect(screen.getByRole("link", { name: "GitHub" })).toBeInTheDocument();
-      expect(screen.getByText("Contact")).toBeInTheDocument();
+      expect(screen.getByText("Hire")).toBeInTheDocument();
     });
   });
 

@@ -7,8 +7,20 @@ export default [
   ...baseEslintConfig,
   {
     files: ["src/**/*.{js,cjs,mjs,ts,cts,mts,tsx,jsx}"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
+    },
     rules: {
       "no-console": "off",
+    },
+  },
+  {
+    files: ["src/**/*.{ts,cts,mts,tsx}"],
+    rules: {
+      "no-undef": "off",
     },
   },
   {
@@ -17,6 +29,9 @@ export default [
       globals: {
         ...globals.node,
       },
+    },
+    rules: {
+      "testing-library/no-debugging-utils": "off",
     },
   },
 ];

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * Universal logger utilities for enhanced functionality
  * Provides ID generation, performance monitoring, and system detection

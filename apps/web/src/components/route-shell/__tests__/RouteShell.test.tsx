@@ -25,22 +25,22 @@ describe("RouteShell", () => {
     vi.clearAllMocks();
   });
 
-  it("wraps routes with Layout", () => {
-    render(<RouteShell>Site Content</RouteShell>);
+  it("wraps routes with Layout", async () => {
+    render(await RouteShell({ children: "Site Content" }));
 
     expect(screen.getByTestId("layout-shell")).toBeInTheDocument();
     expect(screen.getByText("Site Content")).toBeInTheDocument();
   });
 
-  it("preserves falsy renderable children", () => {
-    render(<RouteShell>{0}</RouteShell>);
+  it("preserves falsy renderable children", async () => {
+    render(await RouteShell({ children: 0 }));
 
     expect(screen.getByTestId("layout-shell")).toBeInTheDocument();
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("returns null when children are null", () => {
-    const { container } = render(<RouteShell>{null}</RouteShell>);
+  it("returns null when children are null", async () => {
+    const { container } = render(await RouteShell({ children: null }));
 
     expect(container).toBeEmptyDOMElement();
   });

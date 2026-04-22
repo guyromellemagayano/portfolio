@@ -2,6 +2,7 @@ import glob from "fast-glob";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
+  __setArticleModuleLoaderForTests,
   type Article,
   type ArticleWithSlug,
   getAllArticles,
@@ -13,13 +14,15 @@ vi.mock("fast-glob", () => ({
   default: vi.fn(),
 }));
 
-// Mock dynamic imports
-vi.mock("../app/articles", () => ({
-  // This will be mocked per test
-}));
-
 describe("Articles Module", () => {
   const mockGlob = glob as any;
+  const mockArticleModules = new Map<
+    string,
+    {
+      default: ReturnType<typeof vi.fn>;
+      article: Article | null;
+    }
+  >();
 
   const mockArticle: Article = {
     title: "Test Article",
@@ -36,19 +39,38 @@ describe("Articles Module", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    mockArticleModules.clear();
+    __setArticleModuleLoaderForTests(async (filename) => {
+      const articleModule = mockArticleModules.get(filename);
+
+      if (!articleModule) {
+        throw new Error(
+          `Cannot find article module: ../app/articles/${filename}`
+        );
+      }
+
+      return articleModule;
+    });
   });
 
   afterEach(() => {
+    __setArticleModuleLoaderForTests();
     vi.resetModules();
   });
 
+  const registerArticleModule = (
+    filename: string,
+    article: Article | null
+  ): void => {
+    mockArticleModules.set(filename, {
+      default: vi.fn(),
+      article,
+    });
+  };
+
   describe("importArticle", () => {
     it("imports an article and returns ArticleWithSlug", async () => {
-      // Mock the import function
-      vi.doMock("../app/articles/test-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+      registerArticleModule("test-article/page.mdx", mockArticle);
 
       const result = await importArticle("test-article/page.mdx");
 
@@ -62,10 +84,7 @@ describe("Articles Module", () => {
     });
 
     it("handles articles without page.mdx suffix", async () => {
-      vi.doMock("../app/articles/test-article.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+      registerArticleModule("test-article.mdx", mockArticle);
 
       const result = await importArticle("test-article.mdx");
 
@@ -73,10 +92,7 @@ describe("Articles Module", () => {
     });
 
     it("handles nested article paths", async () => {
-      vi.doMock("../app/articles/nested/path/article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+      registerArticleModule("nested/path/article/page.mdx", mockArticle);
 
       const result = await importArticle("nested/path/article/page.mdx");
 
@@ -89,10 +105,10 @@ describe("Articles Module", () => {
         date: "2024-12-31T23:59:59Z",
       };
 
-      vi.doMock("../app/articles/different-date/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithDifferentDate,
-      }));
+      registerArticleModule(
+        "different-date/page.mdx",
+        articleWithDifferentDate
+      );
 
       const result = await importArticle("different-date/page.mdx");
 
@@ -105,10 +121,7 @@ describe("Articles Module", () => {
         tags: [],
       };
 
-      vi.doMock("../app/articles/no-tags/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithEmptyTags,
-      }));
+      registerArticleModule("no-tags/page.mdx", articleWithEmptyTags);
 
       const result = await importArticle("no-tags/page.mdx");
 
@@ -121,10 +134,7 @@ describe("Articles Module", () => {
         tags: ["react", "typescript", "nextjs", "testing"],
       };
 
-      vi.doMock("../app/articles/multiple-tags/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithMultipleTags,
-      }));
+      registerArticleModule("multiple-tags/page.mdx", articleWithMultipleTags);
 
       const result = await importArticle("multiple-tags/page.mdx");
 
@@ -137,10 +147,7 @@ describe("Articles Module", () => {
         image: "",
       };
 
-      vi.doMock("../app/articles/no-image/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithoutImage,
-      }));
+      registerArticleModule("no-image/page.mdx", articleWithoutImage);
 
       const result = await importArticle("no-image/page.mdx");
 
@@ -154,10 +161,10 @@ describe("Articles Module", () => {
           "This is a very long description that might contain multiple sentences and should be handled properly by the import function without any issues.",
       };
 
-      vi.doMock("../app/articles/long-description/page.mdx", () => ({
-        default: vi.fn(),
-        article: articleWithLongDescription,
-      }));
+      registerArticleModule(
+        "long-description/page.mdx",
+        articleWithLongDescription
+      );
 
       const result = await importArticle("long-description/page.mdx");
 
@@ -185,10 +192,7 @@ describe("Articles Module", () => {
 
       // Mock dynamic imports for each article
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const result = await getAllArticles();
@@ -218,10 +222,7 @@ describe("Articles Module", () => {
       const mockArticleData = { ...mockArticle, title: "Single Article" };
 
       mockGlob.mockResolvedValue(mockFilenames);
-      vi.doMock("../app/articles/single-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticleData,
-      }));
+      registerArticleModule("single-article/page.mdx", mockArticleData);
 
       const result = await getAllArticles();
 
@@ -241,10 +242,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const result = await getAllArticles();
@@ -269,10 +267,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const result = await getAllArticles();
@@ -297,10 +292,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const result = await getAllArticles();
@@ -328,10 +320,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const result = await getAllArticles();
@@ -348,10 +337,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       // Mock successful import for first article
-      vi.doMock("../app/articles/valid-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: mockArticle,
-      }));
+      registerArticleModule("valid-article/page.mdx", mockArticle);
 
       const result = await getAllArticles();
 
@@ -368,10 +354,10 @@ describe("Articles Module", () => {
       };
 
       mockGlob.mockResolvedValue(mockFilenames);
-      vi.doMock("../app/articles/incomplete-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: incompleteArticle,
-      }));
+      registerArticleModule(
+        "incomplete-article/page.mdx",
+        incompleteArticle as Article
+      );
 
       const result = await getAllArticles();
 
@@ -434,11 +420,7 @@ describe("Articles Module", () => {
       const mockFilenames = ["malformed-article/page.mdx"];
       mockGlob.mockResolvedValue(mockFilenames);
 
-      // Mock article with malformed data
-      vi.doMock("../app/articles/malformed-article/page.mdx", () => ({
-        default: vi.fn(),
-        article: null, // Malformed data
-      }));
+      registerArticleModule("malformed-article/page.mdx", null);
 
       const result = await getAllArticles();
 
@@ -474,10 +456,7 @@ describe("Articles Module", () => {
       mockGlob.mockResolvedValue(mockFilenames);
 
       mockFilenames.forEach((filename, index) => {
-        vi.doMock(`../app/articles/${filename}`, () => ({
-          default: vi.fn(),
-          article: mockArticles[index],
-        }));
+        registerArticleModule(filename, mockArticles[index]!);
       });
 
       const startTime = Date.now();

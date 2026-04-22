@@ -13,6 +13,10 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+      "@portfolio/content-data": path.resolve(
+        __dirname,
+        "../../packages/content-data/src/index.ts"
+      ),
       "@web": path.resolve(__dirname, "./src"),
       // Centralized mocks
       "@mocks": path.resolve(__dirname, "../../__mocks__"),

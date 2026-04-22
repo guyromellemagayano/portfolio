@@ -4,12 +4,12 @@
  * @description Public exports for deterministic local content snapshot data and validation helpers.
  */
 
-export { articlesSnapshot } from "./articles";
 export type { LocalArticleRecord } from "./articles";
-export { pagesSnapshot } from "./pages";
+export { articlesSnapshot } from "./articles";
 export type { LocalPageRecord } from "./pages";
-export { contentSnapshot } from "./snapshot";
+export { pagesSnapshot } from "./pages";
 export { portfolioSnapshot } from "./portfolio";
+export { contentSnapshot } from "./snapshot";
 export {
   validateArticleSnapshot,
   validatePageSnapshot,
