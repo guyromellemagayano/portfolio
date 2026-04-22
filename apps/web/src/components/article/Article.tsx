@@ -4,9 +4,7 @@
  * @description Main Article component implementation.
  */
 
-"use client";
-
-import { type ComponentPropsWithRef, useId, useMemo } from "react";
+import { type ComponentPropsWithRef } from "react";
 
 import { useTranslations } from "next-intl";
 
@@ -31,11 +29,6 @@ export function Article<P extends Record<string, unknown> = {}>(
 ) {
   const { as: Component = Card, article, ...rest } = props;
 
-  // Generate unique IDs for ARIA relationships (SEO: proper semantic structure)
-  const articleId = useId();
-  const titleId = `${articleId}-title`;
-  const descriptionId = `${articleId}-description`;
-
   // Internationalization
   const articleI18n = useTranslations("components.article");
 
@@ -45,33 +38,22 @@ export function Article<P extends Record<string, unknown> = {}>(
     cta: articleI18n("cta"),
   };
 
-  // Article data object
-  const articleData = useMemo(() => {
-    if (!article) return null;
+  if (!article) return null;
 
-    // Use primitive dependencies to avoid unnecessary recalculations
-    const title = article.title?.trim() ?? "";
-    const description = article.description?.trim() ?? "";
-    const date = article.date?.trim() ?? null;
-    const slug = article.slug?.trim() ?? "";
-    const image = article.image?.trim();
-    const tagsString = article.tags?.map((tag) => tag.trim()).join(",") ?? "";
-
-    // Reconstruct tags array from string for consistency
-    const tags = tagsString ? tagsString.split(",").filter(Boolean) : [];
-
-    return {
-      title,
-      description,
-      date,
-      formattedDate: formatDateSafely(date),
-      slug: slug ? `/articles/${encodeURIComponent(slug)}` : undefined,
-      image: image || undefined,
-      tags,
-    };
-  }, [article]);
-
-  if (!articleData) return null;
+  const slugValue = article.slug?.trim() ?? "";
+  const articleId =
+    slugValue.length > 0
+      ? `article-${slugValue.replace(/[^a-zA-Z0-9_-]/g, "-")}`
+      : undefined;
+  const titleId = articleId ? `${articleId}-title` : undefined;
+  const descriptionId = articleId ? `${articleId}-description` : undefined;
+  const articleData = {
+    title: article.title?.trim() ?? "",
+    description: article.description?.trim() ?? "",
+    date: article.date?.trim() ?? null,
+    formattedDate: formatDateSafely(article.date?.trim() ?? null),
+    slug: slugValue ? `/articles/${encodeURIComponent(slugValue)}` : undefined,
+  };
 
   return (
     <Component

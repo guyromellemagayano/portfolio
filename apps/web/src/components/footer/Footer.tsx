@@ -4,8 +4,6 @@
  * @description Main Footer component implementation.
  */
 
-"use client";
-
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
@@ -28,6 +26,9 @@ import {
   type FooterLink,
 } from "@web/config/footer";
 import { cn } from "@web/utils/helpers";
+
+const getCurrentYear = (): string =>
+  formatDateSafely(new Date(), { year: "numeric" });
 
 // ============================================================================
 // FOOTER NAVIGATION COMPONENT
@@ -123,7 +124,7 @@ function FooterLegal<P extends Record<string, unknown> = {}>(
   // Internationalization
   const footerI18n = useTranslations("components.footer");
   const brandName = footerI18n("brandName");
-  const currentYear = formatDateSafely(new Date(), { year: "numeric" });
+  const currentYear = getCurrentYear();
   const defaultLegalText = footerI18n("legal.copyright", {
     year: currentYear,
     brandName: brandName.trim(),

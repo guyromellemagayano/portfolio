@@ -4,8 +4,6 @@
  * @description Main PhotoGallery component implementation.
  */
 
-"use client";
-
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,

@@ -4,8 +4,6 @@
  * @description Main Resume component implementation.
  */
 
-"use client";
-
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,

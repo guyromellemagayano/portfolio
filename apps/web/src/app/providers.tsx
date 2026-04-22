@@ -1,39 +1,14 @@
 /**
  * @file apps/web/src/app/providers.tsx
  * @author Guy Romelle Magayano
- * @description Implementation for providers.
+ * @description Client provider composition for the web app.
  */
 
 "use client";
 
 import React from "react";
 
-import { ThemeProvider, useTheme } from "next-themes";
-
-/** A component that watches the theme and updates the theme when the system theme changes. */
-const ThemeWatcher = function ThemeWatcher(): null {
-  let { resolvedTheme, setTheme } = useTheme();
-
-  React.useEffect(() => {
-    let media = window.matchMedia("(prefers-color-scheme: dark)");
-
-    const onMediaChange = (): void => {
-      let systemTheme = media.matches ? "dark" : "light";
-      if (resolvedTheme === systemTheme) {
-        setTheme("system");
-      }
-    };
-
-    onMediaChange();
-    media.addEventListener("change", onMediaChange);
-
-    return () => {
-      media.removeEventListener("change", onMediaChange);
-    };
-  }, [resolvedTheme, setTheme]);
-
-  return null;
-};
+import { ThemeProvider } from "next-themes";
 
 // ============================================================================
 // PROVIDERS COMPONENT
@@ -53,7 +28,6 @@ export function Providers(props: ProvidersProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <ThemeWatcher />
       {children}
     </ThemeProvider>
   );

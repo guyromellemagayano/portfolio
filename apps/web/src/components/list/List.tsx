@@ -6,8 +6,6 @@
  * @description Main List component implementation.
  */
 
-"use client";
-
 import {
   type ComponentPropsWithoutRef,
   type ComponentPropsWithRef,
