@@ -84,7 +84,7 @@ function createPortfolioApiTimeoutErrorMessage(endpointUrl: string): string {
       getEnvVar("NODE_ENV") !== "production" &&
       isLocalOnlyHostname(parsed.hostname)
     ) {
-      return `${baseMessage} The configured local portfolio API host may be unreachable. Point \`PORTFOLIO_API_URL\` to \`http://localhost:${DEFAULT_PORTFOLIO_API_PORT}\` or start the local domain stack before loading API-backed routes.`;
+      return `${baseMessage} The configured local portfolio API host may be unreachable. Point \`PORTFOLIO_API_URL\` to \`http://localhost:${DEFAULT_PORTFOLIO_API_PORT}\` before loading API-backed routes.`;
     }
   } catch {
     return baseMessage;

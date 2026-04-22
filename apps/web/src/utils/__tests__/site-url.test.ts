@@ -43,7 +43,7 @@ describe("site URL helpers", () => {
     );
   });
 
-  it("ignores .local site URLs in production and uses the Vercel production URL fallback", () => {
+  it("ignores local-only site URLs in production and uses the Vercel production URL fallback", () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://guyromellemagayano.local");
     vi.stubEnv("VERCEL_PROJECT_PRODUCTION_URL", "guyromellemagayano.com");

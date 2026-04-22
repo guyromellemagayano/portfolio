@@ -134,7 +134,7 @@ describe("portfolio API content pages client", () => {
   });
 
   it("throws an actionable timeout error when the configured local API host stalls", async () => {
-    vi.stubEnv("PORTFOLIO_API_URL", "https://api.guyromellemagayano.local");
+    vi.stubEnv("PORTFOLIO_API_URL", "http://localhost:5001");
 
     const timeoutError = new Error("The operation was aborted.");
     timeoutError.name = "AbortError";
